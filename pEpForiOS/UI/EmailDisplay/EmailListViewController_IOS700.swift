@@ -57,8 +57,8 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
             return _folderToShow
         }
     }
-    public var filterEnabled = false
-    public private(set) var enabledFilters : Filter? = nil
+    public var filterEnabled = false //BUFF: public?
+    public private(set) var enabledFilters : Filter? = nil //BUFF: public?
     private var lastFilterEnabled: Filter?
 
     init(delegate: EmailListViewModelDelegate? = nil, folderToShow: Folder? = nil) {
@@ -121,6 +121,10 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         }
         messages?.remove(object: previewMessage)
         message.delete()
+    }
+
+    func message(representedByRowAt indexPath: IndexPath) -> Message? {
+        return messages?.object(at: indexPath.row)?.message()
     }
 
     func freeMemory() {
@@ -326,6 +330,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
     }()
     private var operations = [IndexPath:Operation]()
     public static let storyboardId = "EmailListViewController"
+    fileprivate var lastSelectedIndexPath: IndexPath?
 
     let searchController = UISearchController(searchResultsController: nil)
 
@@ -507,13 +512,13 @@ class EmailListViewController_IOS700: BaseTableViewController {
         //BUFF: TODO:
 
         guard let flagAction = createFlagAction(forCellAt: indexPath),
-        let deleteAction = createDeleteAction(forCellAt: indexPath) else {
+        let deleteAction = createDeleteAction(forCellAt: indexPath),
+        let moreAction = createMoreAction(forCellAt: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "Error creating action.")
             return nil
         }
-//        let deleteAction = createDeleteAction(message: email, cell: cell)
-//        let moreAction = createMoreAction(message: email, cell: cell)
-        return [deleteAction, flagAction /*moreaction*/]
+
+        return [deleteAction, flagAction, moreAction]
     }
 
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -618,13 +623,13 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
 extension EmailListViewController_IOS700: UISearchResultsUpdating, UISearchControllerDelegate {
     public func updateSearchResults(for searchController: UISearchController) {
-        if var vm = model {
+        if let vm = model {
             vm.filterContentForSearchText(searchText: searchController.searchBar.text!, clear: false)
         }
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
-        if var vm = model {
+        if let vm = model {
             vm.filterContentForSearchText(clear: true)
         }
     }
@@ -663,19 +668,20 @@ extension EmailListViewController_IOS700: EmailListViewModelDelegate {
 // MARK: - ActionSheet & ActionSheet Actions
 
 extension EmailListViewController_IOS700 {
-    func showMoreActionSheet(cell: EmailListViewCell) {
+    func showMoreActionSheet(forRowAt indexPath: IndexPath) { //BUFF: HERE:
+        lastSelectedIndexPath = indexPath
         let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertControler.view.tintColor = .pEpGreen
         let cancelAction = createCancelAction()
-        let replyAction = createReplyAction(cell: cell)
-        let replyAllAction = createReplyAllAction(cell: cell)
-        let forwardAction = createForwardAction(cell: cell)
+        let replyAction = createReplyAction()
+        let replyAllAction = createReplyAllAction()
+        let forwardAction = createForwardAction()
         alertControler.addAction(cancelAction)
         alertControler.addAction(replyAction)
         alertControler.addAction(replyAllAction)
         alertControler.addAction(forwardAction)
         if let popoverPresentationController = alertControler.popoverPresentationController {
-            popoverPresentationController.sourceView = cell
+            popoverPresentationController.sourceView = tableView
         }
         present(alertControler, animated: true, completion: nil)
     }
@@ -683,24 +689,28 @@ extension EmailListViewController_IOS700 {
     // MARK: Action Sheet Actions
 
     func createCancelAction() -> UIAlertAction {
-        return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in}
+        return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+            self.tableView.beginUpdates()
+            self.tableView.setEditing(false, animated: true)
+            self.tableView.endUpdates()
+        }
     }
 
-    func createReplyAction(cell: EmailListViewCell) ->  UIAlertAction {
+    func createReplyAction() ->  UIAlertAction {
         return UIAlertAction(title: "Reply", style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueReply, sender: cell)
+            self.performSegue(withIdentifier: .segueReply, sender: self)
         }
     }
 
-    func createReplyAllAction(cell: EmailListViewCell) ->  UIAlertAction {
+    func createReplyAllAction() ->  UIAlertAction {
         return UIAlertAction(title: "Reply All", style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueReplyAll, sender: cell)
+            self.performSegue(withIdentifier: .segueReplyAll, sender: self)
         }
     }
 
-    func createForwardAction(cell: EmailListViewCell) -> UIAlertAction {
+    func createForwardAction() -> UIAlertAction {
         return UIAlertAction(title: "Forward", style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueForward, sender: cell)
+            self.performSegue(withIdentifier: .segueForward, sender: self)
         }
     }
 }
@@ -730,9 +740,9 @@ extension EmailListViewController_IOS700 {
             } else {
                 model?.setFlagged(forIndexPath: indexPath)
             }
-             tableView.beginUpdates()
-            self.tableView.setEditing(false, animated: true)
-            self.tableView.reloadRows(at: [indexPath], with: .none) //BUFF: glitches in UI. CHeck
+            tableView.beginUpdates()
+            tableView.setEditing(false, animated: true)
+            tableView.reloadRows(at: [indexPath], with: .none) //BUFF: glitches in UI. CHeck
             tableView.endUpdates()
         }
         let title: String
@@ -783,16 +793,16 @@ extension EmailListViewController_IOS700 {
 //        return isReadAction
 //    }
 
-//    func createMoreAction(message: Message, cell: EmailListViewCell) -> UITableViewRowAction {
-//        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-//            self.showMoreActionSheet(cell: cell)
-//        }
-//
-//        let title = NSLocalizedString("More", comment: "Message action (on swipe)")
-//        return createRowAction(
-//            cell: cell, image: UIImage(named: "swipe-more"), action: action,
-//            title: "\n\n\(title)")
-//    }
+    func createMoreAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
+        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
+            self.showMoreActionSheet(forRowAt: indexPath)
+        }
+
+        let title = NSLocalizedString("More", comment: "Message action (on swipe)")
+        return createRowAction(image: UIImage(named: "swipe-more"),
+                               action: action,
+                               title: "\n\n\(title)")
+    }
 }
 
 // MARK: - SegueHandlerType
@@ -811,15 +821,15 @@ extension EmailListViewController_IOS700: SegueHandlerType {
         case noSegue
     }
 
-    private func currentMessage(senderCell: Any?) -> (Message, IndexPath)? {
-        //BUFF:
-        //        if let cell = senderCell as? EmailListViewCell,
-        //            let indexPath = self.tableView.indexPath(for: cell),
-        //            let message = cell.messageAt(indexPath: indexPath, config: config) {
-        //            return (message, indexPath)
-        //        }
-        return nil
-    }
+//    private func currentMessage(senderCell: Any?) -> (Message, IndexPath)? {
+//        //BUFF:
+//        //        if let cell = senderCell as? EmailListViewCell,
+//        //            let indexPath = self.tableView.indexPath(for: cell),
+//        //            let message = cell.messageAt(indexPath: indexPath, config: config) {
+//        //            return (message, indexPath)
+//        //        }
+//        return nil
+//    }
 
     /// Figures out the the appropriate account to use as sender ("from" field) when composing a mail.
     ///
@@ -852,40 +862,44 @@ extension EmailListViewController_IOS700: SegueHandlerType {
         case .segueReply:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
-                let (theMessage, _) = currentMessage(senderCell: sender) else {
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             setup(composeViewController: destination, composeMode: .replyFrom,
-                  originalMessage: theMessage)
+                  originalMessage: message)
         case .segueReplyAll:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
-                let (theMessage, _) = currentMessage(senderCell: sender)  else {
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             setup(composeViewController: destination, composeMode: .replyAll,
-                  originalMessage: theMessage)
+                  originalMessage: message)
         case .segueShowEmail:
             guard let vc = segue.destination as? EmailViewController,
-                let (theMessage, indexPath) = currentMessage(senderCell: sender) else {
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath) else { //BUFF: maybe remove message(representedByRowAt: and handle in dvc. First try background pepColor in dvc
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             vc.appConfig = appConfig
-            vc.message = theMessage
+            vc.message = message
             vc.folderShow = folderToShow
-            vc.messageId = indexPath.row
+            vc.messageId = indexPath.row //BUFF: might be a problem. Re-think concept
         case .segueForward:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
-                let (theMessage, _) = currentMessage(senderCell: sender) else {
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             setup(composeViewController: destination, composeMode: .forward,
-                  originalMessage: theMessage)
+                  originalMessage: message)
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
