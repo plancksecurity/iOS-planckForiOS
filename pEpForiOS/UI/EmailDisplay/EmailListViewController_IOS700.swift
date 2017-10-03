@@ -574,6 +574,11 @@ class EmailListViewController_IOS700: BaseTableViewController {
         queue(operation: op, for: indexPath)
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        lastSelectedIndexPath = indexPath
+        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
+    }
+
     //    func updateFlags(message: Message) {
     //        let seen = haveSeen(message: message)
     //        let flagged = isFlagged(message: message)
