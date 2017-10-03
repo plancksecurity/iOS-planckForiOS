@@ -75,7 +75,6 @@ class EmailListViewCell_IOS700: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.selectionStyle = UITableViewCellSelectionStyle.none
         self.contactImageView.layer.cornerRadius = round(contactImageView.bounds.size.width / 2)
         self.contactImageView.layer.masksToBounds = true
         resetToDefault()

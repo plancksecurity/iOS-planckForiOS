@@ -558,6 +558,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
 
