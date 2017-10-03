@@ -10,6 +10,7 @@ import UIKit
 import MessageModel
 
 class EmailListViewCell_IOS700: UITableViewCell {
+    static let storyboardId = "EmailListViewCell"
     static var flaggedImage: UIImage? = nil
     static var emptyContactImage = UIImage.init(named: "empty-avatar")
 
