@@ -380,15 +380,13 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
     // MARK: - NavigationBar
 
-
-    //BUFF: has to be tested
     private func hideFoldersNavigationBarButton() {
         self.showFoldersButton.isEnabled = false
         self.showFoldersButton.tintColor = UIColor.clear
     }
-    //BUFF: has to be tested
+
     private func showFoldersNavigationBarButton() {
-        self.showFoldersButton.isEnabled = false
+        self.showFoldersButton.isEnabled = true
         self.showFoldersButton.tintColor = nil
     }
 
