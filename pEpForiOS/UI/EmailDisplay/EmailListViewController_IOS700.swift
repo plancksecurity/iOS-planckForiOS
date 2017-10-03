@@ -45,7 +45,7 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
 
     public var delegate: EmailListViewModelDelegate?
     private var _folderToShow: Folder?
-    private var folderToShow: Folder? {
+    public private(set) var folderToShow: Folder? {
         set{
             if newValue == _folderToShow {
                 return
@@ -222,15 +222,8 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
     }
 
     public func resetFilters() {
-        if let f = folderToShow {
-            lastFilterEnabled = f.filter
-            if f.isUnified {
-                let _ = folderToShow?.updateFilter(filter: Filter.unified())
-            } else {
-                let _ = folderToShow?.updateFilter(filter: Filter.empty())
-            }
-        }
-        //            self.delegate?.updateView() //BUFF:
+        lastFilterEnabled = folderToShow?.filter
+        folderToShow?.resetFilter()
     }
 }
 
@@ -304,19 +297,17 @@ class EmailListViewController_IOS700: BaseTableViewController {
             resetModel()
         }
         get {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Use only the folderToShow from model (model?folderToShow).")
             return _folderToShow
         }
     }
 
     func updateLastLookAt() {
-        guard let saveFolder = folderToShow else {
+        guard let saveFolder = model?.folderToShow else {
             return
         }
-        if saveFolder.isUnified {
-            saveFolder.updateLastLookAt()
-        } else {
-            saveFolder.updateLastLookAtAndSave()
-        }
+        saveFolder.updateLastLookAt()
     }
 
     private var model: EmailListViewModel_IOS700?
@@ -391,24 +382,19 @@ class EmailListViewController_IOS700: BaseTableViewController {
     }
 
     private func resetModel() {
-        model = EmailListViewModel_IOS700(delegate: self, folderToShow: folderToShow)
+        model = EmailListViewModel_IOS700(delegate: self, folderToShow: _folderToShow)
     }
 
     private func setup() {
         // We have not been created to show a specific folder, thus we show unified inbox
-        if folderToShow == nil {
-            folderToShow = Folder.unifiedInbox()
+        if model?.folderToShow == nil {
+            folderToShow = UnifiedInbox()
         }
 
         if noAccountsExist() {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
-        guard let saveFolder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We do not know what to show without a folder")
-            return
-        }
-        self.title = realName(of: saveFolder)
+        self.title = realNameOfFolderToShow()
     }
 
     private func noAccountsExist() -> Bool {
@@ -440,12 +426,8 @@ class EmailListViewController_IOS700: BaseTableViewController {
         }
     }
 
-    private func realName(of folder: Folder) -> String? {
-        if folder.isUnified {
-            return folder.name
-        } else {
-            return folder.realName
-        }
+    private func realNameOfFolderToShow() -> String? {
+        return model?.folderToShow?.realName
     }
 
     func handleButtonFilter(enabled: Bool) {
@@ -637,7 +619,7 @@ extension EmailListViewController_IOS700: EmailListViewModelDelegate {
 
     func updateView() {
         //BUFF: uncomment
-        //        if let m = model, let filter = folderToShow?.filter, filter.isDefault() {
+        //        if let m = model, let filter = model?.folderToShow?.filter, filter.isDefault() {
         //            m.filterEnabled = false
         //            handleButtonFilter(enabled: false)
         //        }
@@ -782,30 +764,13 @@ extension EmailListViewController_IOS700: SegueHandlerType {
         case noSegue
     }
 
-    /// Figures out the the appropriate account to use as sender ("from" field) when composing a mail.
-    ///
-    /// - Parameter vc: viewController to set the origin on
-    private func origin() -> Identity? {
-        guard let f = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder shown?")
-            return Account.defaultAccount()?.user
-        }
-        if f.isUnified {
-            //Set compose views sender ("from" field) to the default account.
-            return Account.defaultAccount()?.user
-        } else {
-            //Set compose views sender ("from" field) to the account we are currently viewing emails for
-            return f.account.user
-        }
-    }
-
     private func setup(composeViewController vc: ComposeTableViewController,
                        composeMode: ComposeTableViewController.ComposeMode = .normal,
                        originalMessage: Message? = nil) {
         vc.appConfig = appConfig
         vc.composeMode = composeMode
         vc.originalMessage = originalMessage
-        vc.origin = origin()
+        vc.origin = model?.folderToShow?.account.user
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -839,7 +804,7 @@ extension EmailListViewController_IOS700: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.message = message
-            vc.folderShow = folderToShow
+            vc.folderShow = model?.folderToShow
             vc.messageId = indexPath.row //BUFF: might be a problem. Re-think concept
         case .segueForward:
             guard let nav = segue.destination as? UINavigationController,
@@ -859,7 +824,7 @@ extension EmailListViewController_IOS700: SegueHandlerType {
             destiny.appConfig = appConfig
             //            destiny.filterDelegate = model //BUFF: adjust FilterTableViewController
             destiny.inFolder = false
-            destiny.filterEnabled = folderToShow?.filter
+            destiny.filterEnabled = model?.folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
             guard let vc = segue.destination as? LoginTableViewController  else {

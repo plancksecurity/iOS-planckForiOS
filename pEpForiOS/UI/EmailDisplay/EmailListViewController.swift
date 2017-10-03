@@ -80,11 +80,7 @@ class EmailListViewController: BaseTableViewController {
     }
 
     private func updateLastLookAt(on folder: Folder) {
-        if folder.isUnified {
-            folder.updateLastLookAt()
-        } else {
-            folder.updateLastLookAtAndSave()
-        }
+        folder.updateLastLookAt()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
