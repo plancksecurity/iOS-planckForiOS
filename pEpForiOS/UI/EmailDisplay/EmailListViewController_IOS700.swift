@@ -341,11 +341,13 @@ class EmailListViewController_IOS700: BaseTableViewController {
     private var _folderToShow: Folder?
     var folderToShow: Folder? {
         set {
-            if newValue == _folderToShow {
+            if newValue === _folderToShow {
                 return
             }
             if newValue == nil {
                 model = nil
+                _folderToShow = newValue
+                return
             }
             _folderToShow = newValue
             // Update the model to data of new folder
@@ -416,11 +418,6 @@ class EmailListViewController_IOS700: BaseTableViewController {
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
         setupFoldersBarButton()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        MessageModelConfig.messageFolderDelegate = nil
     }
 
     // MARK: - NavigationBar
@@ -918,7 +915,6 @@ extension EmailListViewController_IOS700: SegueHandlerType {
     }
 
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) { //BUFF: dead code? looks empty & unconnected
-        _folderToShow = nil
-        model = nil
+        // nothing to do.
     }
 }
