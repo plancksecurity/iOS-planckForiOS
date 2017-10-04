@@ -87,11 +87,6 @@ class FolderTableViewController: BaseTableViewController {
         }
 
         vc.appConfig = appConfig
-        //BUFF:
-//        let config = EmailListConfig(appConfig: appConfig,
-//                                     folder: folderVM[indexPath.section][indexPath.row]
-//                                        .getFolder())
-//        vc.config = config
         vc.folderToShow = folderVM[indexPath.section][indexPath.row].getFolder()
         vc.hidesBottomBarWhenPushed = false
         self.navigationController?.pushViewController(vc, animated: true)

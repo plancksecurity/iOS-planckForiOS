@@ -76,7 +76,6 @@ class EmailListViewController: BaseTableViewController {
             return
         }
 
-        //BUFF: TODO
         if let vm = model {
             self.textFilterButton.isEnabled = vm.isFilterEnabled
             updateFilterText()

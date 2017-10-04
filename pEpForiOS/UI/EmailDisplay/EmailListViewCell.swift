@@ -116,18 +116,18 @@ class EmailListViewCell: UITableViewCell {
     private func setSeen() {
         if let font = senderLabel.font {
             let font = UIFont.systemFont(ofSize: font.pointSize)
-            setLabels(font: font)
+            setupLabels(font: font)
         }
     }
 
     private func unsetSeen() {
         if let font = senderLabel.font {
             let font = UIFont.boldSystemFont(ofSize: font.pointSize)
-            setLabels(font: font)
+            setupLabels(font: font)
         }
     }
 
-    func setLabels(font: UIFont) { //BUFF: rename
+    func setupLabels(font: UIFont) {
         senderLabel.font = font
         subjectLabel.font = font
         summaryLabel.font = font

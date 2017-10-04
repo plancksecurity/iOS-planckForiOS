@@ -37,7 +37,7 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("Unread", comment: "title unread filter cell")
-            enabled = filter?.containsConstraint(ofType: .unread) ?? false//filter?.ofType(type: .unread) ?? false
+            enabled = filter?.containsConstraint(ofType: .unread) ?? false
             filter = Filter.unread()
 
         case .flagged:

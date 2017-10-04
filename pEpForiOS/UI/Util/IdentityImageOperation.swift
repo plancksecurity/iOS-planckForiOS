@@ -8,7 +8,7 @@
 
 import MessageModel
 
-//BUFF: maybe obsolete
+//maybe obsolete
 class IdentityImageOperation: Operation {
     /**
      The background color for the contact initials image.

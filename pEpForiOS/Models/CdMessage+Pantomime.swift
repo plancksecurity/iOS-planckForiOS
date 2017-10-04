@@ -362,7 +362,6 @@ extension CdMessage {
         if cwFlags.contain(.deleted) {
             Log.info(component: #function, content: "Message with flag deleted")
             if let msg = self.message() {
-                //                MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)//BUFF:
                 MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
 
             }
@@ -556,7 +555,6 @@ extension CdMessage {
             if msg.isGhost {
                 Log.info(component: #function, content: "Message ghost from full insert?")
             }
-            //            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg) //BUFF: OK?
             MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: msg)
         }
 
