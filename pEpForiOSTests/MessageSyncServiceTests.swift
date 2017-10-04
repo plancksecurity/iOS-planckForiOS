@@ -126,10 +126,14 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
             self.expMessagesDeleted = expMessagesDeleted
         }
 
-        func didChange(messageFolder: MessageFolder) {
-            if messageFolder.isGhost {
-                deletedMessages.insert(messageFolder)
-            }
+        func didUpdate(messageFolder: MessageFolder) {
+            //do nothing
+        }
+        func didCreate(messageFolder: MessageFolder) {
+            //do nothing
+        }
+        func didDelete(messageFolder: MessageFolder) {
+            deletedMessages.insert(messageFolder)
         }
     }
 
