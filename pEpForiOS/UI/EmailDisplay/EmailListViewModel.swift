@@ -289,7 +289,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    func didCreateInternal(messageFolder: MessageFolder) {
+    private func didCreateInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder)
             if let filter = folderToShow?.filter,
@@ -310,7 +310,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    func didDeleteInternal(messageFolder: MessageFolder) {
+    private func didDeleteInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder)
             guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
@@ -327,7 +327,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    func didUpdateInternal(messageFolder: MessageFolder) {
+    private func didUpdateInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder)
             //BUFF: test after IOS-748 is fixed (delegate not called for flag changes)
