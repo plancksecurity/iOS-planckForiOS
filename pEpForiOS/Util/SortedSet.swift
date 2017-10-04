@@ -40,6 +40,14 @@ class SortedSet<T: Equatable> {
         set.remove(object)
     }
 
+    public func removeObject(at index: Int) {
+        guard index >= 0, index < set.count else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Index out of range")
+            return
+        }
+        set.removeObject(at: index)
+    }
+
     public func object(at index: Int) -> T? {
         return set.object(at: index) as? T
     }
@@ -73,6 +81,7 @@ class SortedSet<T: Equatable> {
 
             if sortBlock(obj, testee) != .orderedAscending {
                 index = i
+                break
             }
         }
         return index

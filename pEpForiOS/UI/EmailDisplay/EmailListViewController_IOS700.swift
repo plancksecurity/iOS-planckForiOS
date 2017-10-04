@@ -13,6 +13,7 @@ import MessageModel
 
 protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel_IOS700, didInsertDataAt indexPath: IndexPath)
+    func emailListViewModel(viewModel: EmailListViewModel_IOS700, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel_IOS700, didRemoveDataAt indexPath: IndexPath)
 }
 
@@ -59,7 +60,6 @@ class EmailListViewModel_IOS700 {
     }
 
     private var messages: SortedSet<PreviewMessage>?
-
     public var delegate: EmailListViewModelDelegate?
     private var _folderToShow: Folder?
     public private(set) var folderToShow: Folder? {
@@ -100,6 +100,23 @@ class EmailListViewModel_IOS700 {
 
     var rowCount: Int {
         return messages?.count ?? 0
+    }
+
+    private func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
+        guard let previewMessages = messages else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data.")
+            return nil
+        }
+        for i in 0..<previewMessages.count {
+            guard let pvMsg = previewMessages.object(at: i) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Inconsistant data")
+                return nil
+            }
+            if pvMsg == msg {
+                return i
+            }
+        }
+        return nil
     }
 
     /// Returns the senders contact image to display.
@@ -237,11 +254,11 @@ class EmailListViewModel_IOS700 {
     }
 
     public func removeSearchFilter() {
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
+        guard let filter = folderToShow?.filter else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder.") //BUFF: should probaly not crash here
             return
         }
-        folder.filter.removeSearchFilter()
+        filter.removeSearchFilter()
         resetViewModel()
     }
 
@@ -262,15 +279,16 @@ extension EmailListViewModel_IOS700: MessageFolderDelegate {
     }
 
     private func didChangeInternal(messageFolder: MessageFolder) {
-        guard let filter = folderToShow?.filter, let message = messageFolder as? Message else {
+        guard let message = messageFolder as? Message else {
             Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
             return
         }
 
         if message.isOriginal {
             // new message has arrived
-            if !filter.fulfilsFilterConstraints(message: message) {
-                // The message does not fit in current filter criteria
+            if let filter = folderToShow?.filter,
+                !filter.fulfilsFilterConstraints(message: message) {
+                // The message does not fit in current filter criteria. Ignore- and do not show it.
                 return
             }
 
@@ -281,36 +299,40 @@ extension EmailListViewModel_IOS700: MessageFolderDelegate {
                 return
             }
             let indexPath = IndexPath(row: index, section: 0)
-//            Log.info(
-//                component: #function,
-//                content: "insert message at \(index), \(folder.messageCount()) messages")
             delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)
-            //                tableView.insertRows(at: [ip], with: .automatic)
         } else if message.isGhost {
-            //            if let vm = self
-            //                    ,let cell = vm.cellFor(message: message), let ip = tableView.indexPath(for: cell)
-            //            {
-            //BUFF: handle delete
-            //                    Log.info(
-            //                        component: #function,
-            //                        content: "delete message at \(index), \(folder.messageCount()) messages")
-            //BUFF: get data consistant, fugure out indexPath, and call delegate:
-            //                delegate?.emailListModel(emailListModel: self, didRemoveDataAt: <#T##IndexPath#>)
-            //                    tableView.deleteRows(at: [ip], with: .automatic)
-            //            } else {
-            delegate?.updateView()
-            //                tableView.reloadData()
-            //            }
+            guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
+                // We do not have this message in our model, so we do not have to remove it
+                return
+            }
+            guard let pvMsgs = messages else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+                return
+            }
+            pvMsgs.removeObject(at: indexExisting)
+            let indexPath = IndexPath(row: indexExisting, section: 0)
+            delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
         } else {
-            // other flags than delete must have been changed
-            //            if let vm = self//, let cell = vm.cellFor(message: message)
-            //            {
-            //BUFF: handle update flags
-            //                    cell.updateFlags(message: message)
-            //            } else {
-            delegate?.updateView()
-            //                tableView.reloadData()
-            //            }
+            //BUFF: test after IOS-748 is fixed (delegate not called for flag changes)
+            // Flag must have changed
+            guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
+                // We do not have this message in our model, so we do not have to update it
+                return
+            }
+            guard let pvMsgs = messages else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+                return
+            }
+            pvMsgs.removeObject(at: indexExisting)
+            let previewMessage = PreviewMessage(withMessage: message)
+            let newIndex = pvMsgs.insert(object: previewMessage)
+            if newIndex != indexExisting {
+                // As We are removing and inserting the same message,
+                // the resulting index must be the same as before.
+                Log.shared.errorAndCrash(component: #function, errorString: "Inconsistant data")
+            }
+            let indexPath = IndexPath(row: indexExisting, section: 0)
+            delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
         }
     }
 }
@@ -321,6 +343,9 @@ class EmailListViewController_IOS700: BaseTableViewController {
         set {
             if newValue == _folderToShow {
                 return
+            }
+            if newValue == nil {
+                model = nil
             }
             _folderToShow = newValue
             // Update the model to data of new folder
@@ -411,7 +436,9 @@ class EmailListViewController_IOS700: BaseTableViewController {
     }
 
     private func resetModel() {
-        model = EmailListViewModel_IOS700(delegate: self, folderToShow: _folderToShow)
+        if _folderToShow != nil {
+            model = EmailListViewModel_IOS700(delegate: self, folderToShow: _folderToShow)
+        }
     }
 
     private func setup() {
@@ -651,6 +678,12 @@ extension EmailListViewController_IOS700: EmailListViewModelDelegate {
         tableView.endUpdates()
     }
 
+    func emailListViewModel(viewModel: EmailListViewModel_IOS700, didUpdateDataAt indexPath: IndexPath) {
+        tableView.beginUpdates()
+        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.endUpdates()
+    }
+
     func updateView() {
         //BUFF: uncomment
         if let m = model, let filter = model?.folderToShow?.filter, filter.isDefault() {
@@ -885,5 +918,7 @@ extension EmailListViewController_IOS700: SegueHandlerType {
     }
 
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) { //BUFF: dead code? looks empty & unconnected
+        _folderToShow = nil
+        model = nil
     }
 }
