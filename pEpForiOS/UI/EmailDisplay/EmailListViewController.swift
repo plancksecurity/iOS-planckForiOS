@@ -86,7 +86,7 @@ class EmailListViewController: BaseTableViewController {
 
         setDefaultColors()
         setup()
-        updateView() //BUFF: check if triggered to often (model vs. here)
+        updateView()
 
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
@@ -220,24 +220,6 @@ class EmailListViewController: BaseTableViewController {
             return
         }
 
-        //BUFF: TODO
-        //        if let vm = viewModel {
-        //            if vm.filterEnabled {
-        //                vm.filterEnabled = false
-        //                handleButtonFilter(enabled: false)
-        //                if config != nil {
-        //                    vm.resetFilters()
-        //                }
-        //            } else {
-        //                vm.filterEnabled = true
-        //                if config != nil {
-        //                    vm.enableFilter()
-        //                }
-        //                handleButtonFilter(enabled: true)
-        //            }
-        //            self.textFilterButton.isEnabled = vm.filterEnabled
-        //        }
-
         textFilterButton.isEnabled = vm.isFilterEnabled
         if textFilterButton.isEnabled {
             enableFilterButton.image = UIImage(named: "unread-icon-active")
@@ -276,15 +258,12 @@ class EmailListViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
-        //BUFF: TODO:
-
         guard let flagAction = createFlagAction(forCellAt: indexPath),
             let deleteAction = createDeleteAction(forCellAt: indexPath),
             let moreAction = createMoreAction(forCellAt: indexPath) else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error creating action.")
                 return nil
         }
-
         return [deleteAction, flagAction, moreAction]
     }
 
@@ -314,8 +293,6 @@ class EmailListViewController: BaseTableViewController {
         }
     }
 
-    // MARK: - Trival Cache
-
     override func didReceiveMemoryWarning() {
         model?.freeMemory()
     }
@@ -343,7 +320,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath) {
-        tableView.beginUpdates() //BUFF: need testing
+        tableView.beginUpdates()
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
@@ -361,11 +338,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func updateView() {
-        //BUFF: uncomment
-//        if let m = model, let filter = model?.folderToShow?.filter, filter.isDefault() {
-////            m.isFilterEnabled = false //BUFF: remove enabled. Fixit
-////            handleButtonFilter(enabled: m.isFilterEnabled)
-//        }
         self.tableView.reloadData()
     }
 }
@@ -373,7 +345,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 // MARK: - ActionSheet & ActionSheet Actions
 
 extension EmailListViewController {
-    func showMoreActionSheet(forRowAt indexPath: IndexPath) { //BUFF: HERE:
+    func showMoreActionSheet(forRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
         let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertControler.view.tintColor = .pEpGreen
@@ -447,7 +419,7 @@ extension EmailListViewController {
             }
             tableView.beginUpdates()
             tableView.setEditing(false, animated: true)
-            tableView.reloadRows(at: [indexPath], with: .none) //BUFF: glitches in UI. CHeck
+            tableView.reloadRows(at: [indexPath], with: .none)
             tableView.endUpdates()
         }
         let title: String
@@ -536,14 +508,14 @@ extension EmailListViewController: SegueHandlerType {
         case .segueShowEmail:
             guard let vc = segue.destination as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else { //BUFF: maybe remove message(representedByRowAt: and handle in dvc. First try background pepColor in dvc
+                let message = model?.message(representedByRowAt: indexPath) else { //BUFF: maybe remove message(representedByRowAt: and handle in dvc.
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             vc.appConfig = appConfig
             vc.message = message
             vc.folderShow = model?.folderToShow
-            vc.messageId = indexPath.row //BUFF: might be a problem. Re-think concept
+            vc.messageId = indexPath.row //that looks wrong
         case .segueForward:
             guard let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
@@ -593,7 +565,7 @@ extension EmailListViewController: SegueHandlerType {
         }
     }
 
-    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) { //BUFF: dead code? looks empty & unconnected
+    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
         // nothing to do.
     }
 }

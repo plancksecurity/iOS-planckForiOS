@@ -9,7 +9,6 @@
 import Foundation
 import MessageModel
 
-
 protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
@@ -92,7 +91,6 @@ class EmailListViewModel {
                 return .orderedSame
             }
         }
-        
         messages = SortedSet(array: previewMessages, sortBlock: sortByDateSentAscending)
         delegate?.updateView()
     }
@@ -201,37 +199,13 @@ class EmailListViewModel {
             let message = previewMessage.message() else {
                 return
         }
-        
         previewMessage.isFlagged = flagged
         message.imapFlags?.flagged = flagged
         DispatchQueue.main.async {
             message.save()
         }
     }
-    
-    //BUFF: delete
-    //    func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
-    //        if clear {
-    //            if filterEnabled {
-    //                if let f = folderToShow?.filter {
-    //                    f.removeSearchFilter()
-    //                }
-    //            } else {
-    //                addFilter(Filter.unified())
-    //            }
-    //        } else {
-    //            if let text = searchText, text != "" {
-    //                let f = Filter.search(subject: text)
-    //                if filterEnabled {
-    //                    f.and(filter: Filter.unread())
-    //                    addFilter(f)
-    //                } else {
-    //                    addFilter(f)
-    //                }
-    //            }
-    //        }
-    //    }
-    
+
     // MARK: Filter
     
     public var isFilterEnabled = false {
@@ -247,10 +221,7 @@ class EmailListViewModel {
             return folder.filter
         }
     }
-    //BUFF: get from folder
-    //    private var lastFilterEnabled: Filter?
-    //    private var lastSearchFilter: Filter?
-    //    private var searchFilter: Filter?
+
     static let defaultFilterViewFilter = Filter.unread()
     private var _filterViewFilter: Filter = defaultFilterViewFilter
     private var filterViewFilter: Filter {
@@ -298,7 +269,7 @@ class EmailListViewModel {
     
     public func removeSearchFilter() {
         guard let filter = folderToShow?.filter else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder.") //BUFF: should probaly not crash here
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
             return
         }
         filter.removeSearchFilter()
@@ -321,12 +292,6 @@ class EmailListViewModel {
         }
         return folderFilter
     }
-    
-    //    public func resetFilters() {
-    //        lastFilterEnabled = folderToShow?.filter
-    //        folderToShow?.resetFilter()
-    //        resetViewModel()
-    //    }
 }
 
 // MARK: - MessageFolderDelegate
