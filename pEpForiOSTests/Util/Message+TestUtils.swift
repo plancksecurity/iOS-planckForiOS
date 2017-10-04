@@ -18,8 +18,7 @@ extension Message {
 
     static public func fakeMessage(uuid: MessageID) -> Message {
         // miss use unifiedInbox() to create fake folder
-        let fakeFolder = Folder.unifiedInbox()
-        fakeFolder.isUnified = false
+        let fakeFolder = UnifiedInbox()
         fakeFolder.filter = nil
 
         return Message(uuid: uuid, parentFolder: fakeFolder)
