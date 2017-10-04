@@ -22,7 +22,7 @@ class EmailListViewController: BaseTableViewController {
                 return
             }
             _folderToShow = newValue
-            // Update the model to data of new folder
+            // Update the model to data of new folder/filter
             resetModel()
         }
         get {
