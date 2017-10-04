@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setupInitialViewController(theAppConfig: AppConfig) -> Bool {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UINavigationController,
-            let rootVC = initialNVC.rootViewController as? EmailListViewController_IOS700
+            let rootVC = initialNVC.rootViewController as? EmailListViewController
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem initializing UI")
                 return false
