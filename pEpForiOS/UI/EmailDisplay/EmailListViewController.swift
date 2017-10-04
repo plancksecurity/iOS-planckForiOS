@@ -562,7 +562,7 @@ extension EmailListViewController: SegueHandlerType {
             destiny.appConfig = appConfig
             destiny.filterDelegate = model
             destiny.inFolder = false
-            destiny.filterEnabled = model?.folderToShow?.filter
+            destiny.filterEnabled = model?.folderToShow?.filter?.clone()
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
             guard let vc = segue.destination as? LoginTableViewController  else {
