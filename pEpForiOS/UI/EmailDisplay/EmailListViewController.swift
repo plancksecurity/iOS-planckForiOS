@@ -77,15 +77,17 @@ class EmailListViewController: BaseTableViewController {
         }
 
         if let vm = model {
+            // We came back from e.g EmailView ...
             self.textFilterButton.isEnabled = vm.isFilterEnabled
             updateFilterText()
+            // ... so we want to update "seen" status
+            vm.reloadData()
         } else {
             self.textFilterButton.isEnabled = false
         }
 
         setDefaultColors()
         setup()
-        updateView()
 
         // Mark this folder as having been looked at by the user
         updateLastLookAt()

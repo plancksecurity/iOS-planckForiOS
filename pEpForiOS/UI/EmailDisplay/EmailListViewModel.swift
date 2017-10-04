@@ -206,6 +206,10 @@ class EmailListViewModel {
         }
     }
 
+    public func reloadData() {
+        resetViewModel()
+    }
+
     // MARK: Filter
     
     public var isFilterEnabled = false {
