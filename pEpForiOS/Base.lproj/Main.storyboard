@@ -135,7 +135,7 @@
                     <toolbarItems>
                         <barButtonItem image="unread-icon" id="VEt-1N-tdD">
                             <connections>
-                                <action selector="showUnreadButtonTapped:" destination="kcA-RK-9Xg" id="FX3-N7-2dC"/>
+                                <action selector="filterButtonHasBeenPressed:" destination="kcA-RK-9Xg" id="FX3-N7-2dC"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="e6L-xz-NU2"/>

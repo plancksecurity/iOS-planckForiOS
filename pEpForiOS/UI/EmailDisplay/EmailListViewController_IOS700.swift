@@ -16,7 +16,24 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel_IOS700, didRemoveDataAt indexPath: IndexPath)
 }
 
-class EmailListViewModel_IOS700: FilterUpdateProtocol {
+// MARK: - FilterUpdateProtocol
+
+extension EmailListViewModel_IOS700: FilterUpdateProtocol {
+    public func addFilter(_ filter: Filter) {
+        if let updatee = folderToShow?.filter {
+            updatee.and(filter: filter)
+            folderToShow?.filter = updatee
+            enabledFilter = updatee
+        } else {
+            folderToShow?.filter = filter
+            enabledFilter = filter
+        }
+
+        resetViewModel() //BUFF:
+    }
+}
+
+class EmailListViewModel_IOS700 {
     let contactImageTool = IdentityImageTool()
     class Row {
         var senderContactImage: UIImage?
@@ -58,12 +75,14 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         }
     }
     public var filterEnabled = false //BUFF: public?
-    public private(set) var enabledFilters : Filter? = nil //BUFF: public?
+    public private(set) var enabledFilter : Filter? = nil //BUFF: public?
     private var lastFilterEnabled: Filter?
+    private var lastSearchFilter: Filter?
 
     init(delegate: EmailListViewModelDelegate? = nil, folderToShow: Folder? = nil) {
         self.delegate = delegate
         self.folderToShow = folderToShow
+        MessageModelConfig.messageFolderDelegate = self
     }
 
     func row(for indexPath: IndexPath) -> Row? {
@@ -184,19 +203,19 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
         if clear {
             if filterEnabled {
                 if let f = folderToShow?.filter {
-                    folderToShow?.filter = Filter.removeSearchFilter(filter: f)
+                    f.removeSearchFilter()
                 }
             } else {
-                updateFilter(filter: Filter.unified())
+                addFilter(Filter.unified())
             }
         } else {
             if let text = searchText, text != "" {
                 let f = Filter.search(subject: text)
                 if filterEnabled {
                     f.and(filter: Filter.unread())
-                    updateFilter(filter: f)
+                    addFilter(f)
                 } else {
-                    updateFilter(filter: f)
+                    addFilter(f)
                 }
             }
         }
@@ -204,32 +223,38 @@ class EmailListViewModel_IOS700: FilterUpdateProtocol {
 
     public func enableFilter() {
         if let lastFilter = lastFilterEnabled {
-            updateFilter(filter: lastFilter)
+            addFilter(lastFilter)
         } else {
-            updateFilter(filter: Filter.unread())
+            addFilter(Filter.unread())
         }
     }
 
-    public func updateFilter(filter: Filter) {
-        if let temporalfilters = folderToShow?.filter {
-            temporalfilters.and(filter: filter)
-            enabledFilters = folderToShow?.updateFilter(filter: temporalfilters)
-        } else {
-            enabledFilters = folderToShow?.updateFilter(filter: filter)
+    public func addSearchFilter(forSearchText txt: String = "") { //BUFF: here
+        if txt != "" {
+            let f = Filter.search(subject: txt)
+            addFilter(f)
         }
+    }
 
-        //            self.delegate?.updateView() //BUFF:
+    public func removeSearchFilter() {
+        guard let folder = folderToShow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
+            return
+        }
+        folder.filter.removeSearchFilter()
+        resetViewModel()
     }
 
     public func resetFilters() {
         lastFilterEnabled = folderToShow?.filter
         folderToShow?.resetFilter()
+        resetViewModel()
     }
 }
 
 // MARK: - MessageFolderDelegate
 
-extension EmailListViewModel_IOS700: MessageFolderDelegate { //BUFF: Shuld the model be the delegate? If so, it must be changed to a class
+extension EmailListViewModel_IOS700: MessageFolderDelegate {
     public func didChange(messageFolder: MessageFolder) {
         GCD.onMainWait { //BUFF: assure we are not on main thread alread, to avoid deadlock
             self.didChangeInternal(messageFolder: messageFolder)
@@ -237,25 +262,30 @@ extension EmailListViewModel_IOS700: MessageFolderDelegate { //BUFF: Shuld the m
     }
 
     private func didChangeInternal(messageFolder: MessageFolder) {
-        guard let folder = folderToShow,
-            let message = messageFolder as? Message,
-            folder.contains(message: message, deletedMessagesAreContained: true) else {
-                return
+        guard let filter = folderToShow?.filter, let message = messageFolder as? Message else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+            return
         }
 
         if message.isOriginal {
             // new message has arrived
-            if let index = folder.indexOf(message: message) {
-                let ip = IndexPath(row: index, section: 0)
-                Log.info(
-                    component: #function,
-                    content: "insert message at \(index), \(folder.messageCount()) messages")
-                delegate?.emailListViewModel(viewModel: self, didInsertDataAt: ip)
-                //                tableView.insertRows(at: [ip], with: .automatic)
-            } else {
-                delegate?.updateView()
-                //                tableView.reloadData()
+            if !filter.fulfilsFilterConstraints(message: message) {
+                // The message does not fit in current filter criteria
+                return
             }
+
+            let previewMessage = PreviewMessage(withMessage: message)
+            guard let index = messages?.insert(object: previewMessage) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "We should be able to insert.")
+                return
+            }
+            let indexPath = IndexPath(row: index, section: 0)
+//            Log.info(
+//                component: #function,
+//                content: "insert message at \(index), \(folder.messageCount()) messages")
+            delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)
+            //                tableView.insertRows(at: [ip], with: .automatic)
         } else if message.isGhost {
             //            if let vm = self
             //                    ,let cell = vm.cellFor(message: message), let ip = tableView.indexPath(for: cell)
@@ -346,7 +376,6 @@ class EmailListViewController_IOS700: BaseTableViewController {
             return
         }
 
-        MessageModelConfig.messageFolderDelegate = self as? MessageFolderDelegate
         //BUFF: TODO
         if let vm = model {
             self.textFilterButton.isEnabled = vm.filterEnabled
@@ -421,7 +450,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
     // MARK: - Other
 
     func updateFilterText() {
-        if let vm = model, let txt = vm.enabledFilters?.text {
+        if let vm = model, let txt = vm.enabledFilter?.text {
             textFilterButton.title = "Filter by: " + txt
         }
     }
@@ -495,7 +524,7 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
     // MARK: - Actions
 
-    @IBAction func showUnreadButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
         handlefilter()
     }
 
@@ -590,15 +619,20 @@ class EmailListViewController_IOS700: BaseTableViewController {
 
 extension EmailListViewController_IOS700: UISearchResultsUpdating, UISearchControllerDelegate {
     public func updateSearchResults(for searchController: UISearchController) {
-        if let vm = model {
-            vm.filterContentForSearchText(searchText: searchController.searchBar.text!, clear: false)
+        guard let vm = model, let searchText = searchController.searchBar.text else {
+            return
         }
+        vm.addSearchFilter(forSearchText: searchText)
+//        if let vm = model {
+//            vm.filterContentForSearchText(searchText: searchController.searchBar.text!, clear: false) //BUFF:
+//        }
     }
-
+    
     func didDismissSearchController(_ searchController: UISearchController) {
-        if let vm = model {
-            vm.filterContentForSearchText(clear: true)
+        guard let vm = model else {
+            return
         }
+        vm.removeSearchFilter()
     }
 }
 
@@ -619,16 +653,11 @@ extension EmailListViewController_IOS700: EmailListViewModelDelegate {
 
     func updateView() {
         //BUFF: uncomment
-        //        if let m = model, let filter = model?.folderToShow?.filter, filter.isDefault() {
-        //            m.filterEnabled = false
-        //            handleButtonFilter(enabled: false)
-        //        }
+        if let m = model, let filter = model?.folderToShow?.filter, filter.isDefault() {
+            m.filterEnabled = false //BUFF: remove enabled. Folder knows if no filter is set
+            handleButtonFilter(enabled: false)
+        }
         self.tableView.reloadData()
-        //        if var vm = self.model, let filter = vm.folderToShow?.filter, filter.isDefault() {
-        //            vm.filterEnabled = false
-        //            handleButtonFilter(enabled: false)
-        //        }
-        //        self.tableView.reloadData()
     }
 }
 

@@ -10,5 +10,5 @@ import Foundation
 import MessageModel
 
 public protocol FilterUpdateProtocol {
-    func updateFilter(filter: Filter)
+    func addFilter(_ filter: Filter)
 }

@@ -33,7 +33,7 @@ class FilterTableViewController: BaseTableViewController {
             filterEnabled?.without(filter: section.getInvaildFilter())
         }
         if let fe = filterEnabled {
-            filterDelegate?.updateFilter(filter: fe)
+            filterDelegate?.addFilter(fe)
         }
 
        _ = self.navigationController?.popViewController(animated: true)

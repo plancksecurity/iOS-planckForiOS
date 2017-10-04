@@ -66,19 +66,19 @@ public class EmailListViewModel : FilterUpdateProtocol{
         if clear {
             if filterEnabled {
                 if let f = folderToShow?.filter {
-                    folderToShow?.filter = Filter.removeSearchFilter(filter: f)
+                    f.removeSearchFilter()
                 }
             } else {
-                updateFilter(filter: Filter.unified())
+                addFilter(Filter.unified())
             }
         } else {
             if let text = searchText, text != "" {
                 let f = Filter.search(subject: text)
                 if filterEnabled {
                     f.and(filter: Filter.unread())
-                    updateFilter(filter: f)
+                    addFilter(f)
                 } else {
-                    updateFilter(filter: f)
+                    addFilter(f)
                 }
             }
         }
@@ -86,18 +86,20 @@ public class EmailListViewModel : FilterUpdateProtocol{
 
     public func enableFilter() {
         if let lastFilter = lastFilterEnabled {
-            updateFilter(filter: lastFilter)
+            addFilter(lastFilter)
         } else {
-            updateFilter(filter: Filter.unread())
+            addFilter(Filter.unread())
         }
     }
 
-    public func updateFilter(filter: Filter) {
+    public func addFilter(_ filter: Filter) {
         if let temporalfilters = folderToShow?.filter {
             temporalfilters.and(filter: filter)
-            enabledFilters = folderToShow?.updateFilter(filter: temporalfilters)
+            folderToShow?.filter = temporalfilters
+            enabledFilters = temporalfilters
         } else {
-            enabledFilters = folderToShow?.updateFilter(filter: filter)
+            folderToShow?.filter = filter
+            enabledFilters = filter
         }
 
         self.delegate?.updateView()
@@ -107,9 +109,9 @@ public class EmailListViewModel : FilterUpdateProtocol{
         if let f = folderToShow {
             lastFilterEnabled = f.filter
             if f.isUnified {
-                let _ = folderToShow?.updateFilter(filter: Filter.unified())
+               folderToShow?.filter = Filter.unified()
             } else {
-                let _ = folderToShow?.updateFilter(filter: Filter.empty())
+                folderToShow?.filter = Filter.empty()
             }
         }
         self.delegate?.updateView()

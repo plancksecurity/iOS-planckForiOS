@@ -10,7 +10,6 @@ import Foundation
 import MessageModel
 
 public class FilterCellViewModel {
-
     var account: Account?
     var icon: UIImage?
     var title: String
@@ -26,7 +25,7 @@ public class FilterCellViewModel {
         }
     }
 
-    init(type: FilterType, filter _filter: Filter? = nil) {
+    init(type: Filter.Constraint.ConstraintType, filter _filter: Filter? = nil) {
         filter = _filter
         let circleSize = CGSize(width: 14, height: 14)
         let squareSize = CGSize(width: 20, height: 14)
@@ -38,7 +37,7 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("Unread", comment: "title unread filter cell")
-            enabled = filter?.ofType(type: .unread) ?? false
+            enabled = filter?.containsConstraint(ofType: .unread) ?? false//filter?.ofType(type: .unread) ?? false
             filter = Filter.unread()
 
         case .flagged:
@@ -48,13 +47,13 @@ public class FilterCellViewModel {
             }
             icon = image
             title = NSLocalizedString("Flagged", comment: "title unread filter cell")
-            enabled = filter?.ofType(type: .flagged) ?? false
+            enabled = filter?.containsConstraint(ofType: .flagged) ?? false
             filter = Filter.flagged()
 
         case .attachment:
             self.icon = UIImage(named: "attachment-list-icon")!
             self.title = NSLocalizedString("Attachments", comment: "title attachments filter cell")
-            enabled = filter?.ofType(type: .attachment) ?? false
+            enabled = filter?.containsConstraint(ofType: .attachment) ?? false
             filter = Filter.attachment()
 
         default:
