@@ -103,4 +103,10 @@ class PreviewMessage: Equatable {
         lhs.parentFolderName == rhs.parentFolderName &&
         lhs.address == rhs.address
     }
+
+    static func ==(lhs: PreviewMessage, rhs: Message) -> Bool {
+        return lhs.uuid == rhs.uuid &&
+            lhs.parentFolderName == rhs.parent.name &&
+            lhs.address == rhs.parent.account.user.address
+    }
 }
