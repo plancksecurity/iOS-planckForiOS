@@ -65,6 +65,7 @@ class EmailListViewController: BaseTableViewController {
         super.viewDidLoad()
         title = NSLocalizedString("Inbox", comment: "General name for (unified) inbox")
         UIHelper.emailListTableHeight(self.tableView)
+        self.textFilterButton.isEnabled = false
         addSearchBar()
     }
 
@@ -77,7 +78,7 @@ class EmailListViewController: BaseTableViewController {
 
         //BUFF: TODO
         if let vm = model {
-            self.textFilterButton.isEnabled = vm.filterEnabled
+            self.textFilterButton.isEnabled = vm.isFilterEnabled
             updateFilterText()
         } else {
             self.textFilterButton.isEnabled = false
@@ -145,24 +146,8 @@ class EmailListViewController: BaseTableViewController {
 
     // MARK: - Other
 
-    func updateFilterText() {
-        if let vm = model, let txt = vm.enabledFilter?.text {
-            textFilterButton.title = "Filter by: " + txt
-        }
-    }
-
     private func realNameOfFolderToShow() -> String? {
         return model?.folderToShow?.realName
-    }
-
-    func handleButtonFilter(enabled: Bool) {
-        if enabled == false {
-            textFilterButton.title = ""
-            enableFilterButton.image = UIImage(named: "unread-icon")
-        } else {
-            enableFilterButton.image = UIImage(named: "unread-icon-active")
-            updateFilterText()
-        }
     }
 
     private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {
@@ -221,10 +206,20 @@ class EmailListViewController: BaseTableViewController {
     // MARK: - Actions
 
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
-        handlefilter()
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
+            return
+        }
+        vm.isFilterEnabled = !vm.isFilterEnabled
+        upadteFilterButtonView()
     }
 
-    func handlefilter() {
+    func upadteFilterButtonView() {
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
+            return
+        }
+
         //BUFF: TODO
         //        if let vm = viewModel {
         //            if vm.filterEnabled {
@@ -242,6 +237,21 @@ class EmailListViewController: BaseTableViewController {
         //            }
         //            self.textFilterButton.isEnabled = vm.filterEnabled
         //        }
+
+        textFilterButton.isEnabled = vm.isFilterEnabled
+        if textFilterButton.isEnabled {
+            enableFilterButton.image = UIImage(named: "unread-icon-active")
+            updateFilterText()
+        } else {
+            textFilterButton.title = ""
+            enableFilterButton.image = UIImage(named: "unread-icon")
+        }
+    }
+
+    func updateFilterText() {
+        if let vm = model, let txt = vm.activeFilter?.text {
+            textFilterButton.title = "Filter by: " + txt
+        }
     }
 
     // MARK: - UITableViewDataSource
@@ -318,10 +328,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
         guard let vm = model, let searchText = searchController.searchBar.text else {
             return
         }
-        vm.addSearchFilter(forSearchText: searchText)
-        //        if let vm = model {
-        //            vm.filterContentForSearchText(searchText: searchController.searchBar.text!, clear: false) //BUFF:
-        //        }
+        vm.setSearchFilter(forSearchText: searchText)
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
@@ -355,10 +362,10 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func updateView() {
         //BUFF: uncomment
-        if let m = model, let filter = model?.folderToShow?.filter, filter.isDefault() {
-            m.filterEnabled = false //BUFF: remove enabled. Folder knows if no filter is set
-            handleButtonFilter(enabled: false)
-        }
+//        if let m = model, let filter = model?.folderToShow?.filter, filter.isDefault() {
+////            m.isFilterEnabled = false //BUFF: remove enabled. Fixit
+////            handleButtonFilter(enabled: m.isFilterEnabled)
+//        }
         self.tableView.reloadData()
     }
 }
@@ -553,7 +560,7 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
             destiny.appConfig = appConfig
-            //            destiny.filterDelegate = model //BUFF: adjust FilterTableViewController
+            destiny.filterDelegate = model
             destiny.inFolder = false
             destiny.filterEnabled = model?.folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true

@@ -20,19 +20,11 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
 
 extension EmailListViewModel: FilterUpdateProtocol {
     public func addFilter(_ filter: Filter) {
-        //BUFF: TODO
-        //        if let updatee = folderToShow?.filter {
-        //            updatee.and(filter: filter)
-        //            folderToShow?.filter = updatee
-        //            enabledFilter = updatee
-        //        } else {
-        //            folderToShow?.filter = filter
-        //            enabledFilter = filter
-        //        }
-        //
-        //        resetViewModel() //BUFF:
+        setFilterViewFilter(filter: filter)
     }
 }
+
+// MARK: - EmailListViewModel
 
 class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
@@ -242,38 +234,62 @@ class EmailListViewModel {
     
     // MARK: Filter
     
-    public var isFilterEnabled = false //BUFF: public?
-        public private(set) var enabledFilter : Filter? = nil //BUFF: get from folder
+    public var isFilterEnabled = false {
+        didSet {
+            handleFilterEnabledSwitch()
+        }
+    }
+    public var activeFilter : Filter? {
+        get {
+            guard let folder = folderToShow else {
+                return nil
+            }
+            return folder.filter
+        }
+    }
+    //BUFF: get from folder
     //    private var lastFilterEnabled: Filter?
     //    private var lastSearchFilter: Filter?
     //    private var searchFilter: Filter?
-    private var filterViewSetFilter: Filter?
-    
-    //    public func enableFilter() {
-    //        if let lastFilter = lastFilterEnabled {
-    //            addFilter(lastFilter)
-    //        } else {
-    //            addFilter(Filter.unread())
-    //        }
-    //    }
+    static let defaultFilterViewFilter = Filter.unread()
+    private var _filterViewFilter: Filter = defaultFilterViewFilter
+    private var filterViewFilter: Filter {
+        get {
+            if _filterViewFilter.isEmpty() {
+                _filterViewFilter = EmailListViewModel.defaultFilterViewFilter
+            }
+            return _filterViewFilter
+        }
+        set {
+            _filterViewFilter = newValue
+        }
+    }
+
+    private func setFilterViewFilter(filter:Filter) {
+        if isFilterEnabled {
+            let folderFilter = assuredFilterOfFolderToShow()
+            folderFilter.without(filter: filterViewFilter)
+            folderFilter.and(filter: filter)
+            resetViewModel()
+        }
+        filterViewFilter = filter
+    }
+
+    private func handleFilterEnabledSwitch() {
+        let folderFilter = assuredFilterOfFolderToShow()
+        if isFilterEnabled {
+            folderFilter.and(filter: filterViewFilter)
+        } else {
+            folderFilter.without(filter: filterViewFilter)
+        }
+        resetViewModel()
+    }
     
     public func setSearchFilter(forSearchText txt: String = "") { //BUFF: here
         if txt == "" {
             return
         }
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
-            return
-        }
-        if folder.filter == nil{
-            folder.resetFilter()
-        }
-
-        guard let folderFilter = folder.filter else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We just set the filter but do not have one?")
-            return
-        }
+        let folderFilter = assuredFilterOfFolderToShow()
         folderFilter.removeSearchFilter()
         let searchFilter = Filter.search(subject: txt)
         folderFilter.and(filter: searchFilter)
@@ -287,6 +303,23 @@ class EmailListViewModel {
         }
         filter.removeSearchFilter()
         resetViewModel()
+    }
+
+    private func assuredFilterOfFolderToShow() -> Filter {
+        guard let folder = folderToShow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
+            return Filter.unified()
+        }
+        if folder.filter == nil{
+            folder.resetFilter()
+        }
+
+        guard let folderFilter = folder.filter else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We just set the filter but do not have one?")
+            return Filter.unified()
+        }
+        return folderFilter
     }
     
     //    public func resetFilters() {
