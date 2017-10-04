@@ -121,8 +121,4 @@ public class EmailListViewModel : FilterUpdateProtocol{
 }
 
 
-extension EmailListViewModel: MessageFolderDelegate {
-    public func didChange(messageFolder: MessageFolder) {
 
-    }
-}

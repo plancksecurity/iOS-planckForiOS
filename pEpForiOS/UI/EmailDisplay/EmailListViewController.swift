@@ -546,6 +546,16 @@ extension EmailListViewController: MessageFolderDelegate {
             self.didChangeInternal(messageFolder: messageFolder)
         }
     }
+
+    func didUpdate(messageFolder: MessageFolder) {
+        //dummy to conform
+    }
+    func didDelete(messageFolder: MessageFolder) {
+        //dummy to conform
+    }
+    func didCreate(messageFolder: MessageFolder) {
+        //dummy to conform
+    }
 }
 
 extension EmailListViewController: TableViewUpdate {
