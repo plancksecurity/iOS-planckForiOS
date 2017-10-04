@@ -417,7 +417,7 @@ extension CdMessage {
                     if mail.pEpRating != pEpRatingNone {
                         mail.serialNumber = mail.serialNumber + 1
                         if let msg = mail.message() {
-                            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+                            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
                         }
                     }
                 }
@@ -545,7 +545,8 @@ extension CdMessage {
             if msg.isGhost {
                 Log.info(component: #function, content: "Message ghost from full insert?")
             }
-            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+            //            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg) //BUFF: OK?
+            MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: msg)
         }
 
         return mail
