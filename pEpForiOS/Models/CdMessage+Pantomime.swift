@@ -427,7 +427,14 @@ extension CdMessage {
             return nil
         }
 
-        let mail = existing(pantomimeMessage: message, inAccount: account) ?? CdMessage.create()
+        var isUpdate = true
+        let mail:CdMessage
+        if let existing = existing(pantomimeMessage: message, inAccount: account) {
+            mail = existing
+        } else {
+            mail = CdMessage.create()
+            isUpdate = false
+        }
 
         if !moreMessagesThanRequested(mail: mail, messageUpdate: messageUpdate) {
             mail.parent = folder
@@ -446,6 +453,10 @@ extension CdMessage {
 
 
         let _ = mail.updateFromServer(cwFlags: message.flags())
+        if isUpdate,
+            let msg = mail.message() {
+            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+        }
 
         return mail
     }
