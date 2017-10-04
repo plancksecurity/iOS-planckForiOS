@@ -277,7 +277,18 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    //BUFF: move internals
+    func didUpdate(messageFolder: MessageFolder) {
+        GCD.onMainWait {
+            self.didUpdateInternal(messageFolder: messageFolder)
+        }
+    }
+
+    func didDelete(messageFolder: MessageFolder) {
+        GCD.onMainWait {
+            self.didDeleteInternal(messageFolder: messageFolder)
+        }
+    }
+
     func didCreateInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder)
@@ -299,12 +310,6 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    func didDelete(messageFolder: MessageFolder) {
-        GCD.onMainWait {
-            self.didDeleteInternal(messageFolder: messageFolder)
-        }
-    }
-
     func didDeleteInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder)
@@ -322,11 +327,6 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    func didUpdate(messageFolder: MessageFolder) {
-        GCD.onMainWait {
-            self.didUpdateInternal(messageFolder: messageFolder)
-        }
-    }
     func didUpdateInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder)
@@ -353,69 +353,4 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         }
     }
-
-    public func didChange(messageFolder: MessageFolder) {
-        //        GCD.onMainWait { //BUFF: assure we are not on main thread alread, to avoid deadlock
-        //            self.didChangeInternal(messageFolder: messageFolder)
-        //        }
-        Log.shared.errorAndCrash(component: #function, errorString: "DO NOTHING")
-    }
-
-    //    private func didChangeInternal(messageFolder: MessageFolder) {
-    //        guard let message = messageFolder as? Message else {
-    //            Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
-    //            return
-    //        }
-    //
-    //        if message.isOriginal {
-    ////            // new message has arrived
-    ////            if let filter = folderToShow?.filter,
-    ////                !filter.fulfilsFilterConstraints(message: message) {
-    ////                // The message does not fit in current filter criteria. Ignore- and do not show it.
-    ////                return
-    ////            }
-    ////
-    ////            let previewMessage = PreviewMessage(withMessage: message)
-    ////            guard let index = messages?.insert(object: previewMessage) else {
-    ////                Log.shared.errorAndCrash(component: #function,
-    ////                                         errorString: "We should be able to insert.")
-    ////                return
-    ////            }
-    ////            let indexPath = IndexPath(row: index, section: 0)
-    ////            delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)
-    //        } else if message.isGhost {
-    ////            guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
-    ////                // We do not have this message in our model, so we do not have to remove it
-    ////                return
-    ////            }
-    ////            guard let pvMsgs = messages else {
-    ////                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
-    ////                return
-    ////            }
-    ////            pvMsgs.removeObject(at: indexExisting)
-    ////            let indexPath = IndexPath(row: indexExisting, section: 0)
-    ////            delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
-    //        } else {
-    ////            //BUFF: test after IOS-748 is fixed (delegate not called for flag changes)
-    ////            // Flag must have changed
-    ////            guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
-    ////                // We do not have this message in our model, so we do not have to update it
-    ////                return
-    ////            }
-    ////            guard let pvMsgs = messages else {
-    ////                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
-    ////                return
-    ////            }
-    ////            pvMsgs.removeObject(at: indexExisting)
-    ////            let previewMessage = PreviewMessage(withMessage: message)
-    ////            let newIndex = pvMsgs.insert(object: previewMessage)
-    ////            if newIndex != indexExisting {
-    ////                // As We are removing and inserting the same message,
-    ////                // the resulting index must be the same as before.
-    ////                Log.shared.errorAndCrash(component: #function, errorString: "Inconsistant data")
-    ////            }
-    ////            let indexPath = IndexPath(row: indexExisting, section: 0)
-    ////            delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
-    //        }
-    //    }
 }
