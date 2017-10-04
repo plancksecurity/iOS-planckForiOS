@@ -67,7 +67,7 @@ class AttachmentsView: UIView {
 
         var lastView: UIView?
         for ac in attachmentViewContainers {
-            if let imgView = ac.view as? UIImageView {
+            if ac.isInlineImage, let imgView = ac.view as? UIImageView {
                 imgView.activateAspectRatioConstraint()
             }
 
@@ -77,12 +77,22 @@ class AttachmentsView: UIView {
             let guide = readableContentGuide
 
             // distance left
-            ac.view.leadingAnchor.constraint(
-                greaterThanOrEqualTo: guide.leadingAnchor).isActive = true
+            if ac.isInlineImage {
+                ac.view.leadingAnchor.constraint(
+                    greaterThanOrEqualTo: guide.leadingAnchor).isActive = true
+            } else {
+                ac.view.leadingAnchor.constraint(
+                    equalTo: guide.leadingAnchor).isActive = true
+            }
 
             // distance right
-            ac.view.trailingAnchor.constraint(
-                lessThanOrEqualTo: guide.trailingAnchor).isActive = true
+            if ac.isInlineImage {
+                ac.view.trailingAnchor.constraint(
+                    lessThanOrEqualTo: guide.trailingAnchor).isActive = true
+            } else {
+                ac.view.trailingAnchor.constraint(
+                    equalTo: guide.trailingAnchor).isActive = true
+            }
 
             // space between
             if let theLast = lastView {
