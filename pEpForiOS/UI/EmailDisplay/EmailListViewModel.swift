@@ -256,14 +256,15 @@ class EmailListViewModel {
         resetViewModel()
     }
     
-    public func setSearchFilter(forSearchText txt: String = "") { //BUFF: here
+    public func setSearchFilter(forSearchText txt: String = "") {
         if txt == "" {
-            return
+            assuredFilterOfFolderToShow().removeSearchFilter()
+        } else {
+            let folderFilter = assuredFilterOfFolderToShow()
+            folderFilter.removeSearchFilter()
+            let searchFilter = Filter.search(subject: txt)
+            folderFilter.and(filter: searchFilter)
         }
-        let folderFilter = assuredFilterOfFolderToShow()
-        folderFilter.removeSearchFilter()
-        let searchFilter = Filter.search(subject: txt)
-        folderFilter.and(filter: searchFilter)
         resetViewModel()
     }
     
