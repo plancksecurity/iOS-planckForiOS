@@ -330,7 +330,6 @@ extension EmailListViewModel: MessageFolderDelegate {
     private func didUpdateInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder)
-            //BUFF: test after IOS-748 is fixed (delegate not called for flag changes)
             // Flag must have changed
             guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
                 // We do not have this message in our model, so we do not have to update it
@@ -350,7 +349,6 @@ extension EmailListViewModel: MessageFolderDelegate {
             }
             let indexPath = IndexPath(row: indexExisting, section: 0)
             delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
-
         }
     }
 }
