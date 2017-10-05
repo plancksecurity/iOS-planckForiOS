@@ -76,18 +76,18 @@ class SortedSet<T: Equatable> {
     }
 
     private func indexOfObjectIfInserted(obj: T) -> Int {
-        var index = 0
         for i in 0..<set.count {
             guard let testee = set.object(at: i) as? T else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casing")
-                return index
+                return 0
             }
-
-            if sortBlock(obj, testee) != .orderedAscending {
-                index = i
+            if sortBlock(obj, testee) == .orderedAscending {
+                // following object found
+                return i
                 break
             }
         }
-        return index
+        // would be last object
+        return set.count - 1
     }
 }

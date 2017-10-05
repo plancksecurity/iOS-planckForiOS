@@ -132,4 +132,10 @@ class SortedSetTest: XCTestCase {
         let indexInserted = setSortedByDate?.insert(object: lastWeek)
         XCTAssertEqual(indexInserted, 0)
     }
+
+    func testInsertDate2() {
+        let nextWeek = TestObject(date: Date().addingTimeInterval(7 * oneDay), str: "last week")
+        let indexInserted = setSortedByDate?.insert(object: nextWeek)
+        XCTAssertNotEqual(indexInserted, 0)
+    }
 }
