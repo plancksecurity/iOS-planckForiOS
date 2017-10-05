@@ -11,6 +11,7 @@
 		1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */; };
 		1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */; };
 		1507BC331F2641FD0036B3E9 /* Message+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */; };
+		1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1508AEA91F862C85001D5230 /* SortedSetTest.swift */; };
 		15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */; };
 		153D08281F56BBCB00377110 /* AppendSendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */; };
 		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
@@ -27,7 +28,6 @@
 		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
 		15C5F2441F822560007DE086 /* PreviewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2431F822560007DE086 /* PreviewMessage.swift */; };
 		15C5F2461F823752007DE086 /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2451F823752007DE086 /* SortedSet.swift */; };
-		15CE73CE1F8628D000C06D76 /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CE73CD1F8628D000C06D76 /* SortedSetTest.swift */; };
 		15ECD7081F555E9D002889B8 /* CdAccount+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15ECD7071F555E9D002889B8 /* CdAccount+TestUtils.swift */; };
 		15ECD70A1F5564C1002889B8 /* NetworkServiceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15ECD7091F5564C1002889B8 /* NetworkServiceObserver.swift */; };
 		15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835231F34BE1300FCE887 /* AccountUserInput.swift */; };
@@ -374,6 +374,7 @@
 		1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperationTest.swift; sourceTree = "<group>"; };
 		1507BC301F2640960036B3E9 /* CdMessage+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+TestUtils.swift"; sourceTree = "<group>"; };
 		1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+TestUtils.swift"; sourceTree = "<group>"; };
+		1508AEA91F862C85001D5230 /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
 		15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityImageTool.swift; sourceTree = "<group>"; };
 		153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendSendMailsOperation.swift; sourceTree = "<group>"; };
 		153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
@@ -390,7 +391,6 @@
 		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
 		15C5F2431F822560007DE086 /* PreviewMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMessage.swift; sourceTree = "<group>"; };
 		15C5F2451F823752007DE086 /* SortedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
-		15CE73CD1F8628D000C06D76 /* SortedSetTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SortedSetTest.swift; path = pEpForiOSTests/Util/SortedSetTest.swift; sourceTree = SOURCE_ROOT; };
 		15ECD7071F555E9D002889B8 /* CdAccount+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+TestUtils.swift"; sourceTree = "<group>"; };
 		15ECD7091F5564C1002889B8 /* NetworkServiceObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceObserver.swift; sourceTree = "<group>"; };
 		15F835231F34BE1300FCE887 /* AccountUserInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUserInput.swift; sourceTree = "<group>"; };
@@ -810,15 +810,6 @@
 			path = Background;
 			sourceTree = "<group>";
 		};
-		15CE73CC1F86286100C06D76 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				15CE73CD1F8628D000C06D76 /* SortedSetTest.swift */,
-			);
-			name = Util;
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		220DCE281E0AB4DE002FE716 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1196,8 +1187,8 @@
 				43B2C3151D2280ED00A08557 /* Resources */,
 				4918EBF91E783C70006207FC /* Models */,
 				15B483DF1F290B14000FB2CF /* Background */,
-				15CE73CC1F86286100C06D76 /* Util */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
+				1508AEA91F862C85001D5230 /* SortedSetTest.swift */,
 				4336229D1DC76B8100133B3D /* MessageModelTests.swift */,
 				438D253B1D4B9E7500BFF7AA /* MimeTests.swift */,
 				43C7B9D01CEC4DDF007A612F /* MiscTests.swift */,
@@ -2107,7 +2098,7 @@
 				B70DE6881F2773BF00C0A50A /* EmailValidatiorTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
-				15CE73CE1F8628D000C06D76 /* SortedSetTest.swift in Sources */,
+				1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */,
 				43D2C26A1F1385CF00C97235 /* ServiceFactoryTests.swift in Sources */,
 				43200D9F1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift in Sources */,
 				432736D31F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift in Sources */,
