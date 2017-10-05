@@ -303,21 +303,27 @@ class EmailListViewModel {
 
 extension EmailListViewModel: MessageFolderDelegate {
     func didCreate(messageFolder: MessageFolder) {
+        objc_sync_enter(self)
         GCD.onMainWait {
             self.didCreateInternal(messageFolder: messageFolder)
         }
+        objc_sync_exit(self)
     }
     
     func didUpdate(messageFolder: MessageFolder) {
+        objc_sync_enter(self)
         GCD.onMainWait {
             self.didUpdateInternal(messageFolder: messageFolder)
         }
+        objc_sync_exit(self)
     }
     
     func didDelete(messageFolder: MessageFolder) {
+        objc_sync_enter(self)
         GCD.onMainWait {
             self.didDeleteInternal(messageFolder: messageFolder)
         }
+        objc_sync_exit(self)
     }
     
     private func didCreateInternal(messageFolder: MessageFolder) {
