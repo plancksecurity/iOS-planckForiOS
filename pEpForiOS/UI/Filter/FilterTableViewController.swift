@@ -12,7 +12,7 @@ import MessageModel
 class FilterTableViewController: BaseTableViewController {
 
     open var inFolder: Bool = false
-    open var filterEnabled: CompositeFilter?
+    open var filterEnabled: Filter?
     open var filterDelegate: FilterUpdateProtocol?
 
     var sections = [FilterViewModel]()
@@ -20,17 +20,18 @@ class FilterTableViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
-        self.navigationItem.rightBarButtonItem =
-            UIBarButtonItem(title: NSLocalizedString("Ok", comment: "Filter accept text"),
-                            style: .plain, target: self, action: #selector(ok(sender:)))
+        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: NSLocalizedString("Ok", comment: "Filter accept text"), style: .plain, target: self, action: #selector(ok(sender:)))
+
     }
 
     @objc func ok(sender: UIBarButtonItem) {
-        var newfilters = CompositeFilter()
-        for item in sections {
-            newfilters.With(filters: item.getFilters())
+        if filterEnabled == nil {
+            filterEnabled = Filter.empty()
         }
-        filterEnabled = newfilters
+        for section in sections {
+            filterEnabled?.and(filter: section.getFilter())
+            filterEnabled?.without(filter: section.getInvaildFilter())
+        }
         if let fe = filterEnabled {
             filterDelegate?.updateFilter(filter: fe)
         }

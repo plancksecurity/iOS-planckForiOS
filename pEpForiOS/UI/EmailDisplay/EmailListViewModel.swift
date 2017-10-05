@@ -18,9 +18,9 @@ public class EmailListViewModel : FilterUpdateProtocol{
 
     var filterEnabled = false
 
-    var enabledFilters : CompositeFilter?
+    var enabledFilters : Filter?
 
-    var lastFilterEnabled: CompositeFilter?
+    var lastFilterEnabled: Filter?
 
     init(config: EmailListConfig?, delegate: TableViewUpdate) {
         folderToShow = config?.folder
@@ -65,17 +65,21 @@ public class EmailListViewModel : FilterUpdateProtocol{
     func filterContentForSearchText(searchText: String? = nil, clear: Bool) {
         if clear {
             if filterEnabled {
-                folderToShow?.filter?.removeSearchFilter()
+                if let f = folderToShow?.filter {
+                    folderToShow?.filter = Filter.removeSearchFilter(filter: f)
+                }
             } else {
-                let cf = CompositeFilter()
-                cf.addFilter(filter: UnifiedFilter())
-                updateFilter(filter: cf)
+                updateFilter(filter: Filter.unified())
             }
         } else {
             if let text = searchText, text != "" {
-                let f = CompositeFilter()
-                f.addFilter(filter: SearchFilter(subject: text))
-                updateFilter(filter: f)
+                let f = Filter.search(subject: text)
+                if filterEnabled {
+                    f.and(filter: Filter.unread())
+                    updateFilter(filter: f)
+                } else {
+                    updateFilter(filter: f)
+                }
             }
         }
     }
@@ -84,15 +88,13 @@ public class EmailListViewModel : FilterUpdateProtocol{
         if let lastFilter = lastFilterEnabled {
             updateFilter(filter: lastFilter)
         } else {
-            let cf = CompositeFilter()
-            cf.addFilter(filter: UnreadFilter())
-            updateFilter(filter: cf)
+            updateFilter(filter: Filter.unread())
         }
     }
 
-    public func updateFilter(filter: CompositeFilter) {
+    public func updateFilter(filter: Filter) {
         if let temporalfilters = folderToShow?.filter {
-            temporalfilters.With(filters: filter)
+            temporalfilters.and(filter: filter)
             enabledFilters = folderToShow?.updateFilter(filter: temporalfilters)
         } else {
             enabledFilters = folderToShow?.updateFilter(filter: filter)
@@ -104,17 +106,18 @@ public class EmailListViewModel : FilterUpdateProtocol{
     public func resetFilters() {
         if let f = folderToShow {
             lastFilterEnabled = f.filter
-            let cf = CompositeFilter()
             if f.isUnified {
-                cf.addFilter(filter: UnreadFilter())
-                let _ = folderToShow?.updateFilter(filter: cf)
+                let _ = folderToShow?.updateFilter(filter: Filter.unified())
             } else {
-                let _ = folderToShow?.updateFilter(filter: cf)
+                let _ = folderToShow?.updateFilter(filter: Filter.empty())
             }
         }
         self.delegate?.updateView()
     }
+
+
 }
+
 
 extension EmailListViewModel: MessageFolderDelegate {
     public func didChange(messageFolder: MessageFolder) {

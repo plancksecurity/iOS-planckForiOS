@@ -55,9 +55,12 @@ class EmailListViewController: BaseTableViewController {
         if MiscUtil.isUnitTest() {
             return
         }
-        if Account.all().isEmpty {
-            performSegue(withIdentifier:.segueAddNewAccount, sender: self)
-            return
+
+        if let vm = viewModel {
+            self.textFilterButton.isEnabled = vm.filterEnabled
+            updateFilterText()
+        } else {
+            self.textFilterButton.isEnabled = false
         }
 
         setDefaultColors()
@@ -99,17 +102,14 @@ class EmailListViewController: BaseTableViewController {
                                      folder: Folder.unifiedInbox())
         }
 
+        if Account.all().isEmpty {
+            performSegue(withIdentifier:.segueAddNewAccount, sender: self)
+        }
+
         guard let folder = config?.folder else {
             return
         }
         self.title = realName(of: folder)
-
-        if let vm = viewModel {
-            self.textFilterButton.isEnabled = vm.filterEnabled
-            updateFilterText()
-        } else {
-            self.textFilterButton.isEnabled = false
-        }
     }
 
     func addSearchBar() {
@@ -159,7 +159,7 @@ class EmailListViewController: BaseTableViewController {
     }
 
     func updateFilterText() {
-        if let vm = viewModel, let txt = vm.enabledFilters?.title {
+        if let vm = viewModel, let txt = vm.enabledFilters?.text {
             textFilterButton.title = "Filter by: " + txt
         }
     }

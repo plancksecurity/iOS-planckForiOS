@@ -15,7 +15,7 @@ extension Attachment {
      Can this attachment be shown in the app?
      */
     public func isViewable() -> Bool {
-        if data == nil || AttachmentFilter.unviewableMimeTypes.contains(mimeType.lowercased()) {
+        if data == nil || Filter.unviewableMimeTypes.contains(mimeType.lowercased()) {
             return false
         }
         return true
