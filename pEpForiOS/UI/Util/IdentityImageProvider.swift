@@ -6,6 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
+//maybe obsolete
 import MessageModel
 
 typealias ImageReadyFunc = (UIImage, Identity) -> Void

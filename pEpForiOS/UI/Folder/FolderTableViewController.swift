@@ -79,7 +79,7 @@ class FolderTableViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
-            let vc = sb.instantiateViewController(withIdentifier: "EmailListViewController")
+            let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId)
                 as? EmailListViewController
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
@@ -87,10 +87,7 @@ class FolderTableViewController: BaseTableViewController {
         }
 
         vc.appConfig = appConfig
-        let config = EmailListConfig(appConfig: appConfig,
-                                     folder: folderVM[indexPath.section][indexPath.row]
-                                        .getFolder())
-        vc.config = config
+        vc.folderToShow = folderVM[indexPath.section][indexPath.row].getFolder()
         vc.hidesBottomBarWhenPushed = false
         self.navigationController?.pushViewController(vc, animated: true)
     }

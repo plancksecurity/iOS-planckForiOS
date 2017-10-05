@@ -69,21 +69,21 @@ class NetworkServiceTests: XCTestCase {
                 messagesByID[message.uuid] = [message]
             }
         }
-
-        func didChange(messageFolder: MessageFolder) {
+        
+        func didUpdate(messageFolder: MessageFolder) {
             if let msg = messageFolder as? Message {
-                if msg.isOriginal {
-                    add(message: msg)
-                } else {
-                    if msg.isGhost && messagesByID[msg.messageID] == nil {
-                        // this message has been deleted from the start, ignore
-                    } else {
-                        // messages has been changed during the test
-                        XCTAssertNotNil(messagesByID[msg.messageID])
-                        add(message: msg)
-                        changedMessagesByID[msg.messageID] = msg
-                    }
-                }
+                // messages has been changed during the test
+                XCTAssertNotNil(messagesByID[msg.messageID])
+                add(message: msg)
+                changedMessagesByID[msg.messageID] = msg
+            }
+        }
+        func didDelete(messageFolder: MessageFolder) {
+            // this message has been deleted from the start, ignore
+        }
+        func didCreate(messageFolder: MessageFolder) {
+            if let msg = messageFolder as? Message {
+                add(message: msg)
             }
         }
     }
@@ -150,7 +150,7 @@ class NetworkServiceTests: XCTestCase {
         }
         XCTAssertGreaterThan(allCdMessages.count, cdDecryptAgainCount)
 
-        let unifiedInbox = Folder.unifiedInbox()
+        let unifiedInbox = UnifiedInbox()
 
         let unifiedMessageCount = unifiedInbox.messageCount()
         XCTAssertGreaterThan(unifiedMessageCount, 0)
@@ -174,7 +174,8 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
 
         for msg in modelDelegate.messages {
-            XCTAssertTrue(msg.isOriginal)
+            let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
+            XCTAssertTrue(!msgIsFlaggedDeleted)
             XCTAssertTrue(sendLayerDelegate.messageIDs.contains(msg.messageID))
             XCTAssertTrue(inbox.contains(message: msg))
             if !unifiedInbox.contains(message: msg) {

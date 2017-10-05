@@ -10,13 +10,15 @@ import MessageModel
 
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
-
     private let title = "pEpForiOS"
-
     private lazy var session: PEPSession = PEPSessionCreator.shared.newSession()
-
     private var logEnabled = true
-    private let queue = DispatchQueue(label: "logging")
+    private let loggingQueue: OperationQueue = {
+       let createe = OperationQueue()
+        createe.qualityOfService = .background
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
 
     static open let shared: Log = {
         let instance = Log()
@@ -29,7 +31,7 @@ import MessageModel
             print("\(entity): \(description)")
         #endif
         if !MiscUtil.isUnitTest() {
-            queue.async {
+            loggingQueue.addOperation() {
                 if self.logEnabled {
                     self.session.logTitle(
                         self.title, entity: entity, description: description, comment: comment)
@@ -37,21 +39,21 @@ import MessageModel
             }
         }
     }
-    
+
     static open func disableLog() {
-        Log.shared.queue.async {
+        Log.shared.loggingQueue.addOperation() {
             Log.shared.logEnabled = false
         }
     }
 
     static open func enableLog() {
-        Log.shared.queue.async {
+        Log.shared.loggingQueue.addOperation() {
             Log.shared.logEnabled = true
         }
     }
 
     static open func checkEnabled(_ block: ((Bool) -> ())?) {
-        Log.shared.queue.sync {
+        Log.shared.loggingQueue.addOperation() {
             let b = Log.shared.logEnabled
             block?(b)
         }
@@ -59,7 +61,7 @@ import MessageModel
 
     static open func checklog(_ block: ((String) -> ())?) {
         if !MiscUtil.isUnitTest() {
-            Log.shared.queue.async {
+            Log.shared.loggingQueue.addOperation() {
                 let s = PEPSessionCreator.shared.newSession().getLog()
                 block?(s)
             }

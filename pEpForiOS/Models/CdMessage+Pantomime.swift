@@ -362,7 +362,8 @@ extension CdMessage {
         if cwFlags.contain(.deleted) {
             Log.info(component: #function, content: "Message with flag deleted")
             if let msg = self.message() {
-                MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+                MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+
             }
         }
 
@@ -415,7 +416,7 @@ extension CdMessage {
                     if mail.pEpRating != pEpRatingNone {
                         mail.serialNumber = mail.serialNumber + 1
                         if let msg = mail.message() {
-                            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+                            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
                         }
                     }
                 }
@@ -425,7 +426,14 @@ extension CdMessage {
             return nil
         }
 
-        let mail = existing(pantomimeMessage: message, inAccount: account) ?? CdMessage.create()
+        var isUpdate = true
+        let mail:CdMessage
+        if let existing = existing(pantomimeMessage: message, inAccount: account) {
+            mail = existing
+        } else {
+            mail = CdMessage.create()
+            isUpdate = false
+        }
 
         if !moreMessagesThanRequested(mail: mail, messageUpdate: messageUpdate) {
             mail.parent = folder
@@ -444,6 +452,10 @@ extension CdMessage {
 
 
         let _ = mail.updateFromServer(cwFlags: message.flags())
+        if isUpdate,
+            let msg = mail.message() {
+            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+        }
 
         return mail
     }
@@ -540,10 +552,7 @@ extension CdMessage {
         Record.saveAndWait()
         if mail.pEpRating != PEPUtil.pEpRatingNone,
             let msg = mail.message() {
-            if msg.isGhost {
-                Log.info(component: #function, content: "Message ghost from full insert?")
-            }
-            MessageModelConfig.messageFolderDelegate?.didChange(messageFolder: msg)
+            MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: msg)
         }
 
         return mail
