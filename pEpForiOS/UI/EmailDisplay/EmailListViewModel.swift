@@ -361,15 +361,20 @@ extension EmailListViewModel: MessageFolderDelegate {
     private func didUpdateInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder). Flag must have changed
-            guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
-                // We do not have this message in our model, so we do not have to update it
-                return
-            }
             guard let pvMsgs = messages else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
                 return
             }
+            guard let indexExisting = indexOfPreviewMessage(forMessage: message),
+                let existingMessage = pvMsgs.object(at: indexExisting) else {
+                // We do not have this message in our model, so we do not have to update it
+                return
+            }
             let previewMessage = PreviewMessage(withMessage: message)
+            if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
+                // We got called even the flaggs did not change. Ignore. Do nothing.
+                return
+            }
             pvMsgs.replaceObject(at: indexExisting, withObject: previewMessage)
             let indexPath = IndexPath(row: indexExisting, section: 0)
             delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)

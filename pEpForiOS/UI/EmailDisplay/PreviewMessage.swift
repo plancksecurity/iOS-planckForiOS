@@ -98,6 +98,13 @@ class PreviewMessage: Equatable {
         return msg
     }
 
+    public func flagsDiffer(previewMessage pvMsg: PreviewMessage) -> Bool {
+        if self != pvMsg {
+            return true
+        }
+        return self.isFlagged != pvMsg.isFlagged || self.isSeen != pvMsg.isSeen
+    }
+
     static func ==(lhs: PreviewMessage, rhs: PreviewMessage) -> Bool {
         return lhs.uuid == rhs.uuid &&
         lhs.parentFolderName == rhs.parentFolderName &&
