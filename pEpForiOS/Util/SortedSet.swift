@@ -52,10 +52,6 @@ class SortedSet<T: Equatable> {
         return set.object(at: index) as? T
     }
     
-    public func index(of object: T) -> Int{
-        return set.index(of: object)
-    }
-    
     public func replaceObject(at index: Int, withObject obj: T) {
         set.setObject(obj, at: index)
     }

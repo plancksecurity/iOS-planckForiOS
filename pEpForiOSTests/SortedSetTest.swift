@@ -127,15 +127,31 @@ class SortedSetTest: XCTestCase {
 
     // MARK: Insert
 
-    func testInsertDate() {
+    func testInsertDateInFront() {
         let lastWeek = TestObject(date: Date().addingTimeInterval(-7 * oneDay), str: "last week")
         let indexInserted = setSortedByDate?.insert(object: lastWeek)
-        XCTAssertEqual(indexInserted, 0)
+        let expectedIndex = 0
+        XCTAssertEqual(indexInserted, expectedIndex)
     }
 
-    func testInsertDate2() {
+    func testInsertDateInFrontFail() {
         let nextWeek = TestObject(date: Date().addingTimeInterval(7 * oneDay), str: "last week")
         let indexInserted = setSortedByDate?.insert(object: nextWeek)
         XCTAssertNotEqual(indexInserted, 0)
+    }
+
+    func testInsertDateAtEnd() {
+        let nextWeek = TestObject(date: Date().addingTimeInterval(7 * oneDay), str: "next week")
+        let indexInserted = setSortedByDate?.insert(object: nextWeek)
+        let expectedIndex = testObjects.count - 1
+        XCTAssertEqual(indexInserted, expectedIndex)
+    }
+
+    // MARK: RemoveAll
+
+    func testRemoveAll() {
+        let testee = setSortedByDate
+        testee?.removeAllObjects()
+        XCTAssertEqual(testee?.count, 0)
     }
 }
