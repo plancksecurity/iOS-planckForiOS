@@ -83,9 +83,9 @@ class EmailListViewModel {
         let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
         let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
         { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
-            if pvMsg1.dateSent < pvMsg1.dateSent {
+            if pvMsg1.dateSent > pvMsg2.dateSent {
                 return .orderedAscending
-            } else if pvMsg1.dateSent > pvMsg1.dateSent {
+            } else if pvMsg1.dateSent < pvMsg2.dateSent {
                 return .orderedDescending
             } else {
                 return .orderedSame

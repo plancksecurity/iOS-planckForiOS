@@ -81,12 +81,16 @@ class SortedSet<T: Equatable> {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casing")
                 return 0
             }
-            if sortBlock(obj, testee) == .orderedAscending ||  sortBlock(obj, testee) == .orderedSame{
+            if set.count == 0 {
+                //set is empty
+                return 0
+            }
+            if sortBlock(obj, testee) == .orderedAscending {
                 // following object found
                 return i
             }
         }
-        // set it empty or we would insert as the last object
+        // we would insert as the last object
         return max(0, set.count - 1)
     }
 }
