@@ -552,9 +552,6 @@ extension CdMessage {
         Record.saveAndWait()
         if mail.pEpRating != PEPUtil.pEpRatingNone,
             let msg = mail.message() {
-            if msg.isGhost {
-                Log.info(component: #function, content: "Message ghost from full insert?")
-            }
             MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: msg)
         }
 
