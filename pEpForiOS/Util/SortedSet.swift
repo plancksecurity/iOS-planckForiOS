@@ -13,19 +13,19 @@ import UIKit
 /// Has to be improved if this causes performance issue in the app.
 class SortedSet<T: Equatable> {
     typealias SortBlock = (_ first: T,_  second: T) -> ComparisonResult
-    private var set = NSMutableOrderedSet()
+    private var set = NSMutableOrderedSet() 
     private var sortBlock: SortBlock
-
+    
     public var count: Int {
         return set.count
     }
-
+    
     init(array: [T], sortBlock block: @escaping SortBlock) {
         set = NSMutableOrderedSet(array: array)
         sortBlock = block
         sort()
     }
-
+    
     /// Inserts an object keeping the Set sorted. Returns the index it has been inserted to.
     ///
     /// - Parameter object: object to insert
@@ -35,11 +35,11 @@ class SortedSet<T: Equatable> {
         set.insert(object, at: idx)
         return idx
     }
-
+    
     public func remove(object: T) {
         set.remove(object)
     }
-
+    
     public func removeObject(at index: Int) {
         guard index >= 0, index < set.count else {
             Log.shared.errorAndCrash(component: #function, errorString: "Index out of range")
@@ -47,23 +47,23 @@ class SortedSet<T: Equatable> {
         }
         set.removeObject(at: index)
     }
-
+    
     public func object(at index: Int) -> T? {
         return set.object(at: index) as? T
     }
-
+    
     public func index(of object: T) -> Int{
         return set.index(of: object)
     }
-
+    
     public func replaceObject(at index: Int, withObject obj: T) {
         set.setObject(obj, at: index)
     }
-
+    
     public func removeAllObjects() {
         set.removeAllObjects()
     }
-
+    
     private func sort()  {
         set.sort { (first: Any, second: Any) -> ComparisonResult in
             guard let firstT = first as? T,
@@ -74,14 +74,14 @@ class SortedSet<T: Equatable> {
             return sortBlock(firstT, secondT)
         }
     }
-
+    
     private func indexOfObjectIfInserted(obj: T) -> Int {
         for i in 0..<set.count {
             guard let testee = set.object(at: i) as? T else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casing")
                 return 0
             }
-            if sortBlock(obj, testee) == .orderedAscending {
+            if sortBlock(obj, testee) == .orderedAscending ||  sortBlock(obj, testee) == .orderedSame{
                 // following object found
                 return i
             }
