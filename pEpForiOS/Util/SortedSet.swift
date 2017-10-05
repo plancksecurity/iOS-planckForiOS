@@ -56,6 +56,10 @@ class SortedSet<T: Equatable> {
         return set.index(of: object)
     }
 
+    public func replaceObject(at index: Int, withObject obj: T) {
+        set.setObject(obj, at: index)
+    }
+
     public func removeAllObjects() {
         set.removeAllObjects()
     }

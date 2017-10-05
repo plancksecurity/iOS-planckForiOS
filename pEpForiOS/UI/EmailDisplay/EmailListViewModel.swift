@@ -360,8 +360,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     
     private func didUpdateInternal(messageFolder: MessageFolder) {
         if let message = messageFolder as? Message {
-            // Is a Message (not a Folder)
-            // Flag must have changed
+            // Is a Message (not a Folder). Flag must have changed
             guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
                 // We do not have this message in our model, so we do not have to update it
                 return
@@ -370,14 +369,8 @@ extension EmailListViewModel: MessageFolderDelegate {
                 Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
                 return
             }
-            pvMsgs.removeObject(at: indexExisting)
             let previewMessage = PreviewMessage(withMessage: message)
-            let newIndex = pvMsgs.insert(object: previewMessage)
-            if newIndex != indexExisting {
-                // As We are removing and inserting the same message,
-                // the resulting index must be the same as before.
-                Log.shared.errorAndCrash(component: #function, errorString: "Inconsistant data")
-            }
+            pvMsgs.replaceObject(at: indexExisting, withObject: previewMessage)
             let indexPath = IndexPath(row: indexExisting, section: 0)
             delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
         }
