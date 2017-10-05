@@ -84,10 +84,9 @@ class SortedSet<T: Equatable> {
             if sortBlock(obj, testee) == .orderedAscending {
                 // following object found
                 return i
-                break
             }
         }
-        // would be last object
-        return set.count - 1
+        // set it empty or we would insert as the last object
+        return max(0, set.count - 1)
     }
 }
