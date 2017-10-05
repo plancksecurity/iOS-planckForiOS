@@ -381,8 +381,14 @@ extension EmailListViewModel: MessageFolderDelegate {
                 // We got called even the flaggs did not change. Ignore. Do nothing.
                 return
             }
-            pvMsgs.replaceObject(at: indexExisting, withObject: previewMessage)
-            let indexPath = IndexPath(row: indexExisting, section: 0)
+            let indexToRemove = pvMsgs.index(of: existingMessage)
+            pvMsgs.removeObject(at: indexToRemove)
+            let indexInserted = pvMsgs.insert(object: previewMessage)
+            if indexToRemove != indexInserted  {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "The updated message must be at the same index")
+            }
+            let indexPath = IndexPath(row: indexInserted, section: 0)
             delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
         }
     }

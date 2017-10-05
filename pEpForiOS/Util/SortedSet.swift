@@ -52,8 +52,18 @@ class SortedSet<T: Equatable> {
         return set.object(at: index) as? T
     }
     
-    public func replaceObject(at index: Int, withObject obj: T) {
-        set.setObject(obj, at: index)
+    public func index(of object: T) -> Int {
+        let notFound = -1
+        for i in 0..<set.count {
+            guard let testee = set.object(at: i) as? T else {
+                Log.shared.errorAndCrash(component: #function, errorString: "error casting")
+                return notFound
+            }
+            if testee == object {
+                return i
+            }
+        }
+        return notFound
     }
     
     public func removeAllObjects() {

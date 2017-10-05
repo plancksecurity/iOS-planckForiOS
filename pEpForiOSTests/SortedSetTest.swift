@@ -154,4 +154,22 @@ class SortedSetTest: XCTestCase {
         testee?.removeAllObjects()
         XCTAssertEqual(testee?.count, 0)
     }
+
+    // MARK: indexOf
+
+    func testIndexOf() {
+        let nextWeek = TestObject(date: Date().addingTimeInterval(7 * oneDay), str: "next week")
+        guard let testee = setSortedByDate else {
+            XCTFail("no testee")
+            return
+        }
+        let countBefore = testee.count
+        let indexInserted = testee.insert(object: nextWeek)
+        let countAfter = testee.count
+        XCTAssertEqual(countAfter, countBefore + 1)
+        let expectedIndex = testObjects.count - 1
+        XCTAssertEqual(indexInserted, expectedIndex)
+        let indexOf = testee.index(of: nextWeek)
+        XCTAssertEqual(indexOf, indexInserted)
+    }
 }
