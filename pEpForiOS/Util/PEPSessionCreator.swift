@@ -13,9 +13,6 @@ final class PEPSessionCreator {
     private init() {}
 
     final func newSession() -> PEPSession {
-        objc_sync_enter(self)
-        let session = PEPSession()
-        objc_sync_exit(self)
-        return session
+        return PEPObjCAdapter.session()
     }
 }

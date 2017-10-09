@@ -11,7 +11,6 @@ import MessageModel
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
     private let title = "pEpForiOS"
-    private lazy var session: PEPSession = PEPSessionCreator.shared.newSession()
     private var logEnabled = true
     private let loggingQueue: OperationQueue = {
        let createe = OperationQueue()
@@ -33,7 +32,8 @@ import MessageModel
         if !MiscUtil.isUnitTest() {
             loggingQueue.addOperation() {
                 if self.logEnabled {
-                    self.session.logTitle(
+                    let session = PEPSessionCreator.shared.newSession()
+                    session.logTitle(
                         self.title, entity: entity, description: description, comment: comment)
                 }
             }

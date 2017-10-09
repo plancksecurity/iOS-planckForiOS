@@ -20,9 +20,7 @@ class BaseTableViewController: UITableViewController {
 
                 // The app should crash in the line before, so this never gets actually
                 // executed. Just here to make it compile.
-                return AppConfig(
-                    session: PEPSession(),
-                    mySelfer: self,
+                return AppConfig(mySelfer: self,
                     messageSyncService: MessageSyncService(
                         sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil))
             }
@@ -32,10 +30,6 @@ class BaseTableViewController: UITableViewController {
             _appConfig = newValue
             didSetAppConfig()
         }
-    }
-
-    var session: PEPSession {
-        return appConfig.session
     }
 
     func didSetAppConfig() {

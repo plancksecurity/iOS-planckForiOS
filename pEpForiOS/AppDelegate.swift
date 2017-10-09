@@ -81,13 +81,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let pEpReInitialized = deleteManagementDBIfRequired()
 
-        // Open the first session from the main thread and keep it open
-        let session = PEPSessionCreator.shared.newSession()
-
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
-        let theAppConfig = AppConfig(session: session, mySelfer: self,
+        let theAppConfig = AppConfig(mySelfer: self,
                                      messageSyncService: theMessageSyncService)
         appConfig = theAppConfig
 
@@ -155,9 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-
-        // Try to cleanly shutdown
-        appConfig?.tearDownSession()
+        
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler

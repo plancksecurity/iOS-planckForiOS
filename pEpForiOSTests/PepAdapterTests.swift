@@ -14,16 +14,17 @@ class PepAdapterTests: XCTestCase {
     let comp = "PepAdapterTests"
     let identity_me: NSMutableDictionary = [kPepAddress: "some@mail.com",
                                             kPepUsername: "This is me"]
-    var pEpSession: PEPSession!
+    var pEpSession: PEPSession {
+        return PEPSessionCreator.shared.newSession()
+    }
     
     override func setUp() {
         super.setUp()
         XCTAssertTrue(PEPUtil.pEpClean())
-        pEpSession = PEPSessionCreator.shared.newSession()
     }
     
     override func tearDown() {
-        pEpSession = nil
+        PEPObjCAdapter.cleanup()
         super.tearDown()
     }
 
