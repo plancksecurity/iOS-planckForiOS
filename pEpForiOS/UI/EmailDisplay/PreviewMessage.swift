@@ -10,6 +10,7 @@ import MessageModel
 import UIKit
 
 class PreviewMessage: Equatable {
+    private let uid: UInt
     private let uuid: MessageID
     private let userId: String?
     private let address: String
@@ -26,10 +27,9 @@ class PreviewMessage: Equatable {
     var maxBodyPreviewCharacters = 120
 
     init(withMessage msg: Message) {
-        if let rating = msg.pEpRatingInt,
-            let sent = msg.sent,
-            let saveFrom = msg.from{
+        if let rating = msg.pEpRatingInt, let sent = msg.sent, let saveFrom = msg.from {
             uuid = msg.uuid
+            uid = msg.uid
             userId = msg.parent.account.user.userID
             address = msg.parent.account.user.address
             parentFolderName = msg.parent.name
@@ -48,6 +48,7 @@ class PreviewMessage: Equatable {
                                      errorString: "We should have those values here")
             // Required field are missing. Should never happen. Return dummy data
             uuid = msg.uuid
+            uid = 0
             userId = nil
             address = msg.parent.account.user.address
             parentFolderName = msg.parent.name
@@ -60,7 +61,6 @@ class PreviewMessage: Equatable {
             isSeen = msg.imapFlags?.seen ?? false
             dateSent = Date()
         }
-
     }
 
 
@@ -87,12 +87,13 @@ class PreviewMessage: Equatable {
     }
 
     public func message() -> Message? {
-        guard let msg = Message.by(uuid: uuid,
-                                   parentFolderName: parentFolderName,
-                                   inAccountWithAddress: address)
+        guard let msg = Message.by(uid: uid,
+                                   folderName: parentFolderName,
+                                   accountAddress: address)
             else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "A we must always have a corresponding message")
+                Log.shared.errorAndCrash(
+                    component: #function,
+                    errorString: "A we must always have a corresponding message")
                 return nil
         }
         return msg
