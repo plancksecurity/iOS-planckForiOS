@@ -16,15 +16,20 @@ import MessageModel
  Tests for things not covered elsewhere.
  */
 class MiscTests: XCTestCase {
-    func testSignedNumbers32() {
-        let u: UInt32 = UInt32.max
-        let s: Int32 = Int32(bitPattern: u)
-        let u1: UInt32 = UInt32(bitPattern: s)
-        XCTAssertEqual(u1, UInt32.max)
-
-        let n = NSNumber.init(value: s as Int32)
-        let u2: UInt32 = UInt32(bitPattern: n.int32Value)
-        XCTAssertEqual(u2, UInt32.max)
+    /**
+     Tests the interaction between certain IMAP values like UID,
+     that are supposed to be 32-bit values, and represented in the DB as Int32,
+     and their counterpart in the UI, which often uses UInt.
+     */
+    func testUInt32ToUInt() {
+        let i32 = UInt32.max
+        let u = UInt(i32)
+        let i1 = Int64(i32)
+        let i2 = Int64(u)
+        XCTAssertEqual(i1, i2)
+        let i32Next = UInt32(u)
+        let i3 = Int64(i32Next)
+        XCTAssertEqual(i1, i3)
     }
 
     func testMimeTypeJson() {
