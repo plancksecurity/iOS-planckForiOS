@@ -85,11 +85,13 @@ class DecryptionTests: XCTestCase {
     func testBasicDecryption(shouldEncrypt: Bool) {
         let msgLongMessage = "This is a message!"
         let msgShortMessage = "Subject1"
+        let messageID = "somemessageid"
         var pEpMsg = PEPMessage()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
         pEpMsg[kPepLongMessage] = "Subject: \(msgShortMessage)\n\(msgLongMessage)" as NSString
         pEpMsg[kPepOutgoing] = true as AnyObject
+        pEpMsg[kPepID] = messageID as AnyObject
 
         var encryptedDict = PEPMessage()
 
@@ -183,13 +185,13 @@ class DecryptionTests: XCTestCase {
         Record.Context.default.refreshAllObjects()
         if shouldEncrypt {
             XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
+            XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
+            XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
         } else {
             XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
         }
-        if shouldEncrypt {
-            XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
-            XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
-        }
+
+        XCTAssertEqual(cdMsg.uuid, messageID)
 
         let pepDict = cdMsg.pEpMessage()
         let optFields = pepDict[kPepOptFields] as? [[String]]
