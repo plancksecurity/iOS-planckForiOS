@@ -93,7 +93,7 @@ class DecryptionTests: XCTestCase {
         pEpMsg[kPepOutgoing] = true as AnyObject
         pEpMsg[kPepID] = messageID as AnyObject
 
-        var encryptedDict = PEPMessage()
+        var encryptedOrNotMailDict = PEPMessage()
 
         if shouldEncrypt {
             let (status, encryptedDictOpt) = session.encrypt(pEpMessageDict: pEpMsg)
@@ -127,7 +127,9 @@ class DecryptionTests: XCTestCase {
             }
             XCTAssertTrue(pEpVersionFound)
 
-            encryptedDict = theEncryptedDict
+            encryptedOrNotMailDict = theEncryptedDict
+        } else {
+            encryptedOrNotMailDict = pEpMsg
         }
 
         guard let inboxName = cdInbox.name else {
@@ -135,7 +137,7 @@ class DecryptionTests: XCTestCase {
             return
         }
 
-        let pantMail = CWIMAPMessage(pEpMessage: encryptedDict, mailboxName: inboxName)
+        let pantMail = CWIMAPMessage(pEpMessage: encryptedOrNotMailDict, mailboxName: inboxName)
         pantMail.setUID(5) // some UID is needed to trigger decrypt
 
         if shouldEncrypt {
@@ -161,6 +163,8 @@ class DecryptionTests: XCTestCase {
         }
 
         Record.saveAndWait()
+
+        XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
 
         let expectationDecryptHasRun = expectation(description: "expectationDecryptHasRun")
         let errorContainer = ErrorContainer()
@@ -188,7 +192,7 @@ class DecryptionTests: XCTestCase {
             XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
             XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
         } else {
-            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
+            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEP_rating_unencrypted.rawValue))
         }
 
         XCTAssertEqual(cdMsg.uuid, messageID)
