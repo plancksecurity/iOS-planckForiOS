@@ -21,7 +21,7 @@ class CoreDataDrivenTestBase: XCTestCase {
     var imapSyncData: ImapSyncData!
 
     var session: PEPSession {
-        return PEPObjCAdapter.session()
+        return PEPSession()
     }
 
     override func setUp() {
@@ -48,7 +48,7 @@ class CoreDataDrivenTestBase: XCTestCase {
     override func tearDown() {
         imapSyncData?.sync?.close()
         persistentSetup = nil
-        PEPObjCAdapter.cleanup()
+        PEPSession().cleanup()
         super.tearDown()
     }
 

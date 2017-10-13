@@ -13,6 +13,6 @@ final class PEPSessionCreator {
     private init() {}
 
     final func newSession() -> PEPSession {
-        return PEPObjCAdapter.session()
+        return PEPSession()
     }
 }
