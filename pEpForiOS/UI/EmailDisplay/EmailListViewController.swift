@@ -212,10 +212,10 @@ class EmailListViewController: BaseTableViewController {
             return
         }
         vm.isFilterEnabled = !vm.isFilterEnabled
-        upadteFilterButtonView()
+        updateFilterButtonView()
     }
 
-    func upadteFilterButtonView() {
+    func updateFilterButtonView() {
         guard let vm = model else {
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
             return
@@ -232,7 +232,7 @@ class EmailListViewController: BaseTableViewController {
     }
 
     func updateFilterText() {
-        if let vm = model, let txt = vm.activeFilter?.text {
+        if let vm = model, let txt = vm.activeFilter?.title {
             textFilterButton.title = "Filter by: " + txt
         }
     }
@@ -535,7 +535,7 @@ extension EmailListViewController: SegueHandlerType {
             destiny.appConfig = appConfig
             destiny.filterDelegate = model
             destiny.inFolder = false
-            destiny.filterEnabled = model?.folderToShow?.filter?.clone()
+            destiny.filterEnabled = model?.folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
             guard let vc = segue.destination as? LoginTableViewController  else {

@@ -16,8 +16,15 @@ public class FilterViewModel {
 
     private var items: [FilterCellViewModel]
     public var title: String
+    public var filters: CompositeFilter<FilterBase>
 
-    public init(type: FilterSectionType, filter: Filter? = nil) {
+    public init(type: FilterSectionType, filter: CompositeFilter<FilterBase>? = nil) {
+
+        if let f = filter {
+            filters = f
+        } else {
+            filters = CompositeFilter()
+        }
 
         items = [FilterCellViewModel]()
         switch type {
@@ -31,43 +38,82 @@ public class FilterViewModel {
             self.title = ""
             break
         }
-
-        generateCells(type: type, filter: filter)
-
+        generateCells(type: type)
     }
 
-    private func generateCells(type: FilterSectionType, filter: Filter? = nil) {
+    private func generateCells(type: FilterSectionType) {
+        let circleSize = CGSize(width: 14, height: 14)
         switch type {
         case .accouts:
             for account in Account.all() {
-                items.append(FilterCellViewModel(account: account, filter: filter))
+                guard let icon = UIImage(named: "folders-icon-inbox") else {
+                    Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
+                        errorString: "Error Loading images")
+                    return
+                }
+                items.append(
+                    FilterCellViewModel(image: icon, title: account.user.address,
+                                        enabled: filters.contains(type: AccountFilter.self),
+                                        filter: AccountFilter(address: account.user.address)))
+
             }
             break
         case .include:
-            items.append(FilterCellViewModel(type: .unread, filter: filter))
-            items.append(FilterCellViewModel(type: .flagged, filter: filter))
+            guard let unreadIcon = FlagImages.create(imageSize: circleSize).notSeenImage else {
+                Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
+                    errorString: "Error Loading images")
+                return
+            }
+            items.append(
+                FilterCellViewModel(image: unreadIcon,
+                                    title: NSLocalizedString("Unread",
+                                                             comment: "title unread filter cell"),
+                                    enabled: filters.contains(type: UnreadFilter.self),
+                                    filter: UnreadFilter()))
+
+            guard let flaggedIcon = FlagImages.create(imageSize: circleSize).flaggedImage else {
+                Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
+                    errorString: "Error Loading images")
+                return
+            }
+            items.append(
+                FilterCellViewModel(image: flaggedIcon,
+                                    title: NSLocalizedString("Flagged",
+                                                             comment: "title unread filter cell"),
+                                    enabled: filters.contains(type: FlaggedFilter.self),
+                                    filter: FlaggedFilter()))
             break
         case .other:
-            items.append(FilterCellViewModel(type: .attachment, filter: filter))
+            guard let attachIcon = UIImage(named: "attachment-list-icon") else {
+                Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
+                    errorString: "Error Loading images")
+                return
+            }
+            items.append(
+                FilterCellViewModel(image: attachIcon,
+                                    title: NSLocalizedString("Attachments",
+                                                             comment: "title attachments filter cell"),
+                                    enabled: filters.contains(type: AttachmentFilter.self),
+                                    filter: AttachmentFilter()))
             break
         }
     }
 
-    func getFilter() -> Filter {
-        let filter = Filter.empty()
+    func getFilters() -> CompositeFilter<FilterBase> {
+        let filter = CompositeFilter<FilterBase>()
         for item in items {
-            if let f = item.getFilter(){
-                filter.and(filter: f)
+            if item.enabled {
+                filter.add(filter: item.filter)
             }
         }
         return filter
     }
 
-    func getInvaildFilter() -> Filter {
-        let filter = Filter.empty()
+    func getInvalidFilters() -> CompositeFilter<FilterBase> {
+        let filter = CompositeFilter<FilterBase>()
         for item in items {
-            if let f = item.getInvalidFilter() {
-                filter.and(filter: f)
+            if !item.enabled {
+                filter.add(filter: item.filter)
             }
         }
         return filter
@@ -82,3 +128,4 @@ public class FilterViewModel {
         return self.items.count
     }
 }
+
