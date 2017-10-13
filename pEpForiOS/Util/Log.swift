@@ -12,6 +12,7 @@ import MessageModel
 @objc open class Log: NSObject {
     private let title = "pEpForiOS"
     private var logEnabled = true
+    private var paused = false
     private let loggingQueue: OperationQueue = {
        let createe = OperationQueue()
         createe.qualityOfService = .background
@@ -31,13 +32,21 @@ import MessageModel
         #endif
         if !MiscUtil.isUnitTest() {
             loggingQueue.addOperation() {
-                if self.logEnabled {
+                if self.logEnabled && !self.paused {
                     let session = PEPSessionCreator.shared.newSession()
                     session.logTitle(
                         self.title, entity: entity, description: description, comment: comment)
                 }
             }
         }
+    }
+
+    func resume() {
+        Log.shared.paused = false
+    }
+
+    func pause() {
+        Log.shared.paused = true
     }
 
     static open func disableLog() {
