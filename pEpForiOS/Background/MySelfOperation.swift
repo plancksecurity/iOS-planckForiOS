@@ -56,9 +56,7 @@ open class MySelfOperation: BaseOperation {
 
         for pEpIdDict in ids {
             let taskID = backgrounder?.beginBackgroundTask(
-            taskName: MySelfOperation.taskNameSubOperation) {
-                // do nothing. //BUFF: remove block?!
-            }
+            taskName: MySelfOperation.taskNameSubOperation)
             let session = PEPSession()
             session.mySelf(pEpIdDict)
             Log.shared.info(
