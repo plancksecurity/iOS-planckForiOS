@@ -43,7 +43,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 var keys: NSArray?
                 Log.info(component: self.comp,
                          content: "Will decrypt \(cdMessage.logString())")
-                let session = PEPSessionCreator.shared.newSession()
+                let session = PEPSession()
                 let rating = session.decryptMessageDict(
                     pepMessage, dest: &pEpDecryptedMessage, keys: &keys)
                 Log.info(component: self.comp,

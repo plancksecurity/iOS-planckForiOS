@@ -33,7 +33,7 @@ import MessageModel
         if !MiscUtil.isUnitTest() {
             loggingQueue.addOperation() {
                 if self.logEnabled && !self.paused {
-                    let session = PEPSessionCreator.shared.newSession()
+                    let session = PEPSession()
                     session.logTitle(
                         self.title, entity: entity, description: description, comment: comment)
                 }
@@ -71,7 +71,7 @@ import MessageModel
     static open func checklog(_ block: ((String) -> ())?) {
         if !MiscUtil.isUnitTest() {
             Log.shared.loggingQueue.addOperation() {
-                let s = PEPSessionCreator.shared.newSession().getLog()
+                let s = PEPSession().getLog()
                 block?(s)
             }
         } else {

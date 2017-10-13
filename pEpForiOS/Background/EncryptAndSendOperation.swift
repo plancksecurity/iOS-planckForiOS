@@ -133,7 +133,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             context: context, cdAccount: cdAccount) {
             lastSentMessageObjectID = objID
             if protected {
-                let session = PEPSessionCreator.shared.newSession()
+                let session = PEPSession()
                 let (status, encMsg) = session.encrypt(pEpMessageDict: msg)
                 let (encMsg2, error) = PEPUtil.check(
                     comp: comp, status: status, encryptedMessage: encMsg)

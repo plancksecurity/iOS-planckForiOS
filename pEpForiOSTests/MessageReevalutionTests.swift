@@ -22,7 +22,7 @@ class MessageReevalutionTests: XCTestCase {
 
     var persistentSetup: PersistentSetup!
     var session: PEPSession {
-        return PEPSessionCreator.shared.newSession()
+        return PEPSession()
     }
     var backgroundQueue: OperationQueue!
 

@@ -53,13 +53,14 @@ open class MySelfOperation: BaseOperation {
         }
 
         // Invoke mySelf on all identities
-        var session: PEPSession? = PEPSessionCreator.shared.newSession()
+
         for pEpIdDict in ids {
             let taskID = backgrounder?.beginBackgroundTask(
             taskName: MySelfOperation.taskNameSubOperation) {
-                session = nil
+                // do nothing. //BUFF: remove block?!
             }
-            session?.mySelf(pEpIdDict)
+            let session = PEPSession()
+            session.mySelf(pEpIdDict)
             Log.shared.info(
                 component: #function,
                 content: "\(pEpIdDict[kPepAddress] ?? "<unknown>") -> \(pEpIdDict[kPepFingerprint] ?? "no fingerprint")")

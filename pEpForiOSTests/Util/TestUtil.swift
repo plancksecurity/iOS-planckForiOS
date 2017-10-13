@@ -393,7 +393,7 @@ class TestUtil {
         }
 
         if encrypt {
-            let session = PEPSessionCreator.shared.newSession()
+            let session = PEPSession()
             TestUtil.importKeyByFileName(
                 session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
         }
@@ -537,7 +537,7 @@ class TestUtil {
 
             Record.saveAndWait()
 
-            let session = PEPSessionCreator.shared.newSession()
+            let session = PEPSession()
             let mySelfIdentityMutable = mySelfID.pEpIdentity().mutableDictionary()
             session.mySelf(mySelfIdentityMutable)
             XCTAssertNotNil(mySelfIdentityMutable[kPepFingerprint])

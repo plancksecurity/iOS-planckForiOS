@@ -15,7 +15,7 @@ class PepAdapterTests: XCTestCase {
     let identity_me: NSMutableDictionary = [kPepAddress: "some@mail.com",
                                             kPepUsername: "This is me"]
     var pEpSession: PEPSession {
-        return PEPSessionCreator.shared.newSession()
+        return PEPSession()
     }
     
     override func setUp() {

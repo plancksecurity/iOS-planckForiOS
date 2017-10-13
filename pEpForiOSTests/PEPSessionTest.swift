@@ -53,7 +53,7 @@ class PEPSessionTest: XCTestCase {
         message.replyTo = [account.user]
         message.references = ["ref1"]
         message.save( )
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
         guard let first = CdMessage.first() else {
             XCTFail("No messages ...")
             return
@@ -85,7 +85,7 @@ class PEPSessionTest: XCTestCase {
             kPepOutgoing: NSNumber(booleanLiteral: true)
         ] as PEPMessage
 
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
 
         session.mySelf(NSMutableDictionary(dictionary: myself))
 
@@ -166,7 +166,7 @@ class PEPSessionTest: XCTestCase {
         }
 
         let pEpMessage = cdMessage.pEpMessage(outgoing: false)
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
         let _ = session.decryptMessageDict(
