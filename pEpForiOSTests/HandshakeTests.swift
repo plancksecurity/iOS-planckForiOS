@@ -41,6 +41,11 @@ class HandshakeTests: XCTestCase {
         decryptedMessageSetup()
     }
 
+    override func tearDown() {
+        PEPSession().cleanup()
+        super.tearDown()
+    }
+
     func decryptedMessageSetup() {
         let me: PEPIdentity = [
             kPepUserID: "userID" as AnyObject,

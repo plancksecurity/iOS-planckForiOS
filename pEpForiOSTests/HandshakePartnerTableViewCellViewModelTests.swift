@@ -36,11 +36,14 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+
         XCTAssertTrue(PEPUtil.pEpClean())
+
         persistentSetup = PersistentSetup()
     }
     
     override func tearDown() {
+        PEPSession().cleanup()
         persistentSetup = nil
         super.tearDown()
     }
