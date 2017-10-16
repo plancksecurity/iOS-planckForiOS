@@ -52,6 +52,10 @@ class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertib
     func didCancel(service: NetworkService) {
         expCanceled?.fulfill()
     }
+
+    func networkServiceDidFinishLastSyncLoop() {
+        Log.shared.errorAndCrash(component: #function, errorString: "Should not be called")
+    }
 }
 
 class SendLayerObserver: SendLayerDelegate {

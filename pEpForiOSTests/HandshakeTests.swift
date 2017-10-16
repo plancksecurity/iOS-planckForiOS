@@ -41,6 +41,11 @@ class HandshakeTests: XCTestCase {
         decryptedMessageSetup()
     }
 
+    override func tearDown() {
+        PEPSession().cleanup()
+        super.tearDown()
+    }
+
     func decryptedMessageSetup() {
         let me: PEPIdentity = [
             kPepUserID: "userID" as AnyObject,
@@ -48,7 +53,7 @@ class HandshakeTests: XCTestCase {
             kPepAddress: "iostest002@peptest.ch" as AnyObject
         ]
         let meDict = NSMutableDictionary(dictionary: me)
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
         session.mySelf(meDict)
         XCTAssertNotNil(meDict[kPepFingerprint])
 
@@ -108,7 +113,7 @@ class HandshakeTests: XCTestCase {
     }
 
     func testPositiveTrustResetCycle() {
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
         session.updateIdentity(fromDict)
         XCTAssertNotNil(fromDict[kPepFingerprint])
         XCTAssertFalse(fromDict.containsPGPCommType)
@@ -127,7 +132,7 @@ class HandshakeTests: XCTestCase {
     }
 
     func testNegativeTrustResetCycle() {
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
         session.updateIdentity(fromDict)
         XCTAssertNotNil(fromDict[kPepFingerprint])
         XCTAssertFalse(fromDict.containsPGPCommType)

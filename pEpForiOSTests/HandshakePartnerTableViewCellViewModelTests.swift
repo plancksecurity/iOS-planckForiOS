@@ -36,11 +36,14 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+
         XCTAssertTrue(PEPUtil.pEpClean())
+
         persistentSetup = PersistentSetup()
     }
     
     override func tearDown() {
+        PEPSession().cleanup()
         persistentSetup = nil
         super.tearDown()
     }
@@ -79,7 +82,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
      Tests trust/reset cycle without view model.
      */
     func testBasicTrustReset() {
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
 
         guard
             let (message: _, mySelfID: _, partnerID: partnerID) = importMail(session: session) else
@@ -106,7 +109,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
      to keep the comm type.
      */
     func testBasicTrustMistrustCycleUsingBackup() {
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
 
         guard
             let (message: _, mySelfID: mySelfID,
@@ -158,7 +161,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
      Test trust/reset/mistrust cycle using view model.
      */
     func testViewModelTrustMistrustCycles() {
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
 
         guard
             let (message: message, mySelfID: mySelfID,

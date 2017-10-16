@@ -105,6 +105,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     func showPepRating() {
+        let session = PEPSession()
         let _ = showPepRating(pEpRating: message.pEpRating(session: session))
         var allOwnKeysGenerated = true
         var atLeastOneHandshakableIdentityFound = false
@@ -191,6 +192,7 @@ class EmailViewController: BaseTableViewController {
      */
     @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
+            let session = PEPSession()
             PEPUtil.trust(identity: p, session: session)
             decryptAgain()
         }
@@ -201,6 +203,7 @@ class EmailViewController: BaseTableViewController {
      */
     @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
+            let session = PEPSession()
             PEPUtil.mistrust(identity: p, session: session)
             decryptAgain()
         }

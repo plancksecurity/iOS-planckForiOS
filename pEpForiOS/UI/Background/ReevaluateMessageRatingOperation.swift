@@ -40,7 +40,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
             addError(ReevaluationError.noMessageFound)
             return
         }
-        let theSession = PEPSessionCreator.shared.newSession()
+        let theSession = PEPSession()
         let pepMessage = cdMsg.pEpMessage()
         let newRating = theSession.reEvaluateMessageRating(pepMessage)
 
