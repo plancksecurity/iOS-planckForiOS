@@ -45,9 +45,9 @@ class ComposeTableViewController: BaseTableViewController {
     private let mimeTypeController = MimeTypeUtil()
 
     var origin : Identity?
-    private var destinyTo : [Identity]?
-    private var destinyCc : [Identity]?
-    private var destinyBcc : [Identity]?
+    private var destinyTo = [Identity]()
+    private var destinyCc = [Identity]()
+    private var destinyBcc = [Identity]()
 
     private let attachmentCounter = AttachmentCounter()
     private let mimeTypeUtil = MimeTypeUtil()
@@ -83,28 +83,25 @@ class ComposeTableViewController: BaseTableViewController {
             origin = om.parent.account.user
             if composeMode == .replyFrom {
                 if let from = om.from {
-                    destinyTo?.append(from)
+                    destinyTo.append(from)
                 }
             }
             if composeMode == .replyAll {
                 if let from = om.from {
-                    destinyTo?.append(from)
+                    destinyTo.append(from)
                 }
                 let to = om.to
                 for id in to {
                     if !id.isMySelf {
-                        destinyTo?.append(id)
+                        destinyTo.append(id)
                     }
                 }
                 for id in om.cc {
-                    destinyCc?.append(id)
+                    destinyCc.append(id)
                 }
             }
         }
-        if let cc = destinyCc,
-            let to = destinyTo,
-            let bcc = destinyBcc,
-            (!cc.isEmpty || !to.isEmpty || !bcc.isEmpty) {
+        if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
             messageCanBeSend(value: true)
         }
         calculateComposeColor()
@@ -527,10 +524,13 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func calculateComposeColor() {
-        if let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc, let from = origin {
+        if let from = origin {
             let session = PEPSession()
-            let rating = PEPUtil.outgoingMessageColor(from: from, to: to, cc: cc, bcc: bcc,
-                                                  session: session)
+            let rating = PEPUtil.outgoingMessageColor(from: from,
+                                                      to: destinyTo,
+                                                      cc: destinyCc,
+                                                      bcc: destinyBcc,
+                                                      session: session)
             if let b = showPepRating(pEpRating: rating, pEpProtection: pEpProtection) {
                 if rating == PEP_rating_reliable || rating == PEP_rating_trusted {
                     // disable protection only for certain ratings
