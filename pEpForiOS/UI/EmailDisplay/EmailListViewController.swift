@@ -81,7 +81,9 @@ class EmailListViewController: BaseTableViewController {
             self.textFilterButton.isEnabled = vm.isFilterEnabled
             updateFilterText()
             // ... so we want to update "seen" status
-            vm.reloadData()
+            DispatchQueue.main.async {
+                vm.reloadData()
+            }
         } else {
             self.textFilterButton.isEnabled = false
         }
