@@ -144,7 +144,7 @@ class EmailListViewController: BaseTableViewController {
         searchController.delegate = self
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-        tableView.setContentOffset(CGPoint(x: 0.0, y: 40.0), animated: false)
+        tableView.setContentOffset(CGPoint(x: 0.0, y: searchController.searchBar.frame.size.height), animated: false)
     }
     
     // MARK: - Other
