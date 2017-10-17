@@ -43,7 +43,7 @@ class EmailViewController: BaseTableViewController {
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
 
-        self.title = message.shortMessage//NSLocalizedString("Message", comment: "Message view title")
+        self.title = message.shortMessage
         saveTitleView()
     }
 
@@ -74,6 +74,7 @@ class EmailViewController: BaseTableViewController {
 
     func configureView() {
         tableData?.filterRows(message: message)
+        recoveryInitialTitle()
         checkMessageReEvaluation()
         showPepRating()
         message.markAsSeen()
@@ -87,7 +88,6 @@ class EmailViewController: BaseTableViewController {
         } else {
             self.nextMessage.isEnabled = true
         }
-
         updateFlaggedStatus()
     }
 
@@ -289,7 +289,7 @@ extension EmailViewController: SegueHandlerType {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                 break
             }
-            recoveryInitialTitle()
+            self.title = NSLocalizedString("Message", comment: "Message view title")
             destination.appConfig = appConfig
             destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
