@@ -31,16 +31,16 @@ class EmailListViewController: BaseTableViewController {
             return _folderToShow
         }
     }
-
+    
     func updateLastLookAt() {
         guard let saveFolder = model?.folderToShow else {
             return
         }
         saveFolder.updateLastLookAt()
     }
-
+    
     private var model: EmailListViewModel?
-
+    
     private let queue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInteractive
@@ -50,17 +50,17 @@ class EmailListViewController: BaseTableViewController {
     private var operations = [IndexPath:Operation]()
     public static let storyboardId = "EmailListViewController"
     fileprivate var lastSelectedIndexPath: IndexPath?
-
+    
     let searchController = UISearchController(searchResultsController: nil)
-
+    
     // MARK: - Outlets
-
+    
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var textFilterButton: UIBarButtonItem!
     @IBOutlet var showFoldersButton: UIBarButtonItem!
-
+    
     // MARK: - Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Inbox", comment: "General name for (unified) inbox")
@@ -68,14 +68,14 @@ class EmailListViewController: BaseTableViewController {
         self.textFilterButton.isEnabled = false
         addSearchBar()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(false, animated: true)
         if MiscUtil.isUnitTest() {
             return
         }
-
+        
         if let vm = model {
             // We came back from e.g EmailView ...
             self.textFilterButton.isEnabled = vm.isFilterEnabled
@@ -85,49 +85,49 @@ class EmailListViewController: BaseTableViewController {
         } else {
             self.textFilterButton.isEnabled = false
         }
-
+        
         setDefaultColors()
         setup()
-
+        
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
         setupFoldersBarButton()
     }
-
+    
     // MARK: - NavigationBar
-
+    
     private func hideFoldersNavigationBarButton() {
         self.showFoldersButton.isEnabled = false
         self.showFoldersButton.tintColor = UIColor.clear
     }
-
+    
     private func showFoldersNavigationBarButton() {
         self.showFoldersButton.isEnabled = true
         self.showFoldersButton.tintColor = nil
     }
-
+    
     private func resetModel() {
         if _folderToShow != nil {
             model = EmailListViewModel(delegate: self, folderToShow: _folderToShow)
         }
     }
-
+    
     private func setup() {
         // We have not been created to show a specific folder, thus we show unified inbox
         if model?.folderToShow == nil {
             folderToShow = UnifiedInbox()
         }
-
+        
         if noAccountsExist() {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
         self.title = realNameOfFolderToShow()
     }
-
+    
     private func noAccountsExist() -> Bool {
         return Account.all().isEmpty
     }
-
+    
     private func setupFoldersBarButton() {
         if let size = navigationController?.viewControllers.count, size > 1 {
             hideFoldersNavigationBarButton()
@@ -135,7 +135,7 @@ class EmailListViewController: BaseTableViewController {
             showFoldersNavigationBarButton()
         }
     }
-
+    
     private func addSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
@@ -144,13 +144,13 @@ class EmailListViewController: BaseTableViewController {
         tableView.tableHeaderView = searchController.searchBar
         tableView.setContentOffset(CGPoint(x: 0.0, y: 40.0), animated: false)
     }
-
+    
     // MARK: - Other
-
+    
     private func realNameOfFolderToShow() -> String? {
         return model?.folderToShow?.realName
     }
-
+    
     private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {
         // Configure lightweight stuff on main thread ...
         guard let saveModel = model else {
@@ -169,20 +169,20 @@ class EmailListViewController: BaseTableViewController {
         cell.dateLabel.text = row.dateText
         // Set image from cache if any
         cell.setContactImage(image: row.senderContactImage)
-
+        
         let op = BlockOperation() { [weak self] in
             // ... and expensive computations in background
             guard let strongSelf = self else {
                 // View is gone, nothing to do.
                 return
             }
-
+            
             var senderImage: UIImage?
             if row.senderContactImage == nil {
                 // image for identity has not been cached yet, get and cache it
                 senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
             }
-
+            
             // Set data on cell on main queue.
             // In theory we want to set all data in *one* async call. But as pEpRatingColorImage takes
             // very long, we are setting the sender image seperatelly.
@@ -191,9 +191,9 @@ class EmailListViewController: BaseTableViewController {
                     cell.contactImageView.image  = senderImage
                 }
             }
-
+            
             let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
-
+            
             // Set data on cell on main queue, again ...
             DispatchQueue.main.async {
                 if pEpRatingImage != nil {
@@ -203,9 +203,9 @@ class EmailListViewController: BaseTableViewController {
         }
         queue(operation: op, for: indexPath)
     }
-
+    
     // MARK: - Actions
-
+    
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
         guard let vm = model else {
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
@@ -214,13 +214,13 @@ class EmailListViewController: BaseTableViewController {
         vm.isFilterEnabled = !vm.isFilterEnabled
         updateFilterButtonView()
     }
-
+    
     func updateFilterButtonView() {
         guard let vm = model else {
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
             return
         }
-
+        
         textFilterButton.isEnabled = vm.isFilterEnabled
         if textFilterButton.isEnabled {
             enableFilterButton.image = UIImage(named: "unread-icon-active")
@@ -230,19 +230,19 @@ class EmailListViewController: BaseTableViewController {
             enableFilterButton.image = UIImage(named: "unread-icon")
         }
     }
-
+    
     func updateFilterText() {
         if let vm = model, let txt = vm.activeFilter?.title {
             textFilterButton.title = "Filter by: " + txt
         }
     }
-
+    
     // MARK: - UITableViewDataSource
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model?.rowCount ?? 0
     }
-
+    
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
@@ -254,9 +254,9 @@ class EmailListViewController: BaseTableViewController {
         configure(cell: cell, for: indexPath)
         return cell
     }
-
+    
     // MARK: - UITableViewDelegate
-
+    
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
         guard let flagAction = createFlagAction(forCellAt: indexPath),
@@ -267,24 +267,24 @@ class EmailListViewController: BaseTableViewController {
         }
         return [deleteAction, flagAction, moreAction]
     }
-
+    
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelOperation(for: indexPath)
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
-
+    
     // MARK: - Queue Handling
-
+    
     private func queue(operation op:Operation, for indexPath: IndexPath) {
         operations[indexPath] = op
         queue.addOperation(op)
     }
-
+    
     private func cancelOperation(for indexPath:IndexPath) {
         guard let op = operations.removeValue(forKey: indexPath) else {
             return
@@ -293,7 +293,7 @@ class EmailListViewController: BaseTableViewController {
             op.cancel()
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         model?.freeMemory()
     }
@@ -308,7 +308,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
         }
         vm.setSearchFilter(forSearchText: searchText)
     }
-
+    
     func didDismissSearchController(_ searchController: UISearchController) {
         guard let vm = model else {
             return
@@ -325,19 +325,19 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
-
+    
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath) {
         tableView.beginUpdates()
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
-
+    
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath) {
         tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .none)
         tableView.endUpdates()
     }
-
+    
     func updateView() {
         self.tableView.reloadData()
     }
@@ -363,9 +363,9 @@ extension EmailListViewController {
         }
         present(alertControler, animated: true, completion: nil)
     }
-
+    
     // MARK: Action Sheet Actions
-
+    
     func createCancelAction() -> UIAlertAction {
         return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in
             self.tableView.beginUpdates()
@@ -373,19 +373,19 @@ extension EmailListViewController {
             self.tableView.endUpdates()
         }
     }
-
+    
     func createReplyAction() ->  UIAlertAction {
         return UIAlertAction(title: "Reply", style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReply, sender: self)
         }
     }
-
+    
     func createReplyAllAction() ->  UIAlertAction {
         return UIAlertAction(title: "Reply All", style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyAll, sender: self)
         }
     }
-
+    
     func createForwardAction() -> UIAlertAction {
         return UIAlertAction(title: "Forward", style: .default) { (action) in
             self.performSegue(withIdentifier: .segueForward, sender: self)
@@ -406,7 +406,7 @@ extension EmailListViewController {
         }
         return rowAction
     }
-
+    
     func createFlagAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
         guard let row = model?.row(for: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
@@ -433,7 +433,7 @@ extension EmailListViewController {
         }
         return createRowAction(image: UIImage(named: "swipe-flag"), action: action, title: title)
     }
-
+    
     func createDeleteAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
         func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
             tableView.beginUpdates()
@@ -441,17 +441,17 @@ extension EmailListViewController {
             tableView.deleteRows(at: [indexPath], with: .none)
             tableView.endUpdates()
         }
-
+        
         let title = NSLocalizedString("Delete", comment: "Message action (on swipe)")
         return createRowAction(image: UIImage(named: "swipe-trash"), action: action,
                                title: "\n\n\(title)")
     }
-
+    
     func createMoreAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
         func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
             self.showMoreActionSheet(forRowAt: indexPath)
         }
-
+        
         let title = NSLocalizedString("More", comment: "Message action (on swipe)")
         return createRowAction(image: UIImage(named: "swipe-more"),
                                action: action,
@@ -462,7 +462,7 @@ extension EmailListViewController {
 // MARK: - SegueHandlerType
 
 extension EmailListViewController: SegueHandlerType {
-
+    
     enum SegueIdentifier: String {
         case segueAddNewAccount
         case segueShowEmail
@@ -474,7 +474,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueFolderViews
         case noSegue
     }
-
+    
     private func setup(composeViewController vc: ComposeTableViewController,
                        composeMode: ComposeTableViewController.ComposeMode = .normal,
                        originalMessage: Message? = nil) {
@@ -483,7 +483,7 @@ extension EmailListViewController: SegueHandlerType {
         vc.originalMessage = originalMessage
         vc.origin = model?.folderToShow?.account.user
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .segueReply:
@@ -509,7 +509,7 @@ extension EmailListViewController: SegueHandlerType {
         case .segueShowEmail:
             guard let vc = segue.destination as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else { //BUFF: maybe remove message(representedByRowAt: and handle in dvc.
+                let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
@@ -565,7 +565,7 @@ extension EmailListViewController: SegueHandlerType {
             break
         }
     }
-
+    
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
         // nothing to do.
     }

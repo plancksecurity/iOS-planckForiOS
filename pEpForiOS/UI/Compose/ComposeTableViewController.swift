@@ -72,7 +72,7 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableData?.filterRows(message: nil)
-        setEmailDisplayColors()
+        setEmailDisplayDefaultNavigationBarStyle()
     }
 
     func prepareColor() {
