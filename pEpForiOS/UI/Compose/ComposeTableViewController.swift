@@ -104,7 +104,6 @@ class ComposeTableViewController: BaseTableViewController {
         if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
             messageCanBeSend(value: true)
         }
-        calculateComposeColor()
     }
 
     // MARK: - Private Methods
@@ -297,6 +296,27 @@ class ComposeTableViewController: BaseTableViewController {
         return message
     }
 
+    fileprivate func calculateComposeColor() {
+        DispatchQueue.main.async {
+            if let from = self.origin {
+                let session = PEPSession()
+                let rating = PEPUtil.outgoingMessageColor(from: from,
+                                                          to: self.destinyTo,
+                                                          cc: self.destinyCc,
+                                                          bcc: self.destinyBcc,
+                                                          session: session)
+                if let b = self.showPepRating(pEpRating: rating, pEpProtection: self.pEpProtection) {
+                    if rating == PEP_rating_reliable || rating == PEP_rating_trusted {
+                        // disable protection only for certain ratings
+                        let r = UILongPressGestureRecognizer(target: self,
+                                                             action: #selector(self.toggleProtection))
+                        b.addGestureRecognizer(r)
+                    }
+                }
+            }
+        }
+    }
+
     // MARK: - Public Methods
 
     @objc public final func addMediaToCell() {
@@ -397,8 +417,22 @@ class ComposeTableViewController: BaseTableViewController {
             }
         }
 
+        if isRepresentingLastRow(indexpath: indexPath) {
+            calculateComposeColor()
+        }
+
         return cell
     }
+
+    private func isRepresentingLastRow(indexpath: IndexPath) -> Bool {
+        guard let numRows = tableData?.numberOfRows() else {
+            return false
+        }
+        return indexpath.row == max(0, numRows - 1)
+    }
+
+    // MARK: - TableViewDelegate
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView is SuggestTableView {
             guard let cell = self.tableView.cellForRow(at: currentCell) as? RecipientCell else {
@@ -426,7 +460,6 @@ class ComposeTableViewController: BaseTableViewController {
         cell.textView.text = origin?.address
         cell.pickerEmailAdresses = accounts.map { $0.user.address }
         cell.picker.reloadAllComponents()
-        calculateComposeColor()
     }
 
     // MARK: - IBActions
@@ -521,25 +554,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
             break
         }
         calculateComposeColor()
-    }
-
-    func calculateComposeColor() {
-        if let from = origin {
-            let session = PEPSession()
-            let rating = PEPUtil.outgoingMessageColor(from: from,
-                                                      to: destinyTo,
-                                                      cc: destinyCc,
-                                                      bcc: destinyBcc,
-                                                      session: session)
-            if let b = showPepRating(pEpRating: rating, pEpProtection: pEpProtection) {
-                if rating == PEP_rating_reliable || rating == PEP_rating_trusted {
-                    // disable protection only for certain ratings
-                    let r = UILongPressGestureRecognizer(target: self,
-                                                         action: #selector(toggleProtection))
-                    b.addGestureRecognizer(r)
-                }
-            }
-        }
     }
 
     @IBAction func toggleProtection(gestureRecognizer: UILongPressGestureRecognizer) {
