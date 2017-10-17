@@ -13,8 +13,11 @@ import MessageModel
 
 class EmailViewController: BaseTableViewController {
     @IBOutlet var handShakeButton: UIBarButtonItem!
-    var message: Message!
     @IBOutlet var flagButton: UIBarButtonItem!
+    @IBOutlet var previousMessage: UIBarButtonItem!
+    @IBOutlet var nextMessage: UIBarButtonItem!
+
+    var message: Message!
 
     var partnerIdentity: Identity?
     var tableData: ComposeDataSource?
@@ -25,9 +28,6 @@ class EmailViewController: BaseTableViewController {
 
     lazy var backgroundQueue = OperationQueue()
     lazy var documentInteractionController = UIDocumentInteractionController()
-
-    @IBOutlet var previousMessage: UIBarButtonItem!
-    @IBOutlet var nextMessage: UIBarButtonItem!
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -87,9 +87,14 @@ class EmailViewController: BaseTableViewController {
         } else {
             self.nextMessage.isEnabled = true
         }
-//        if message.imapFlags?.flagged {
-//            //flagButton.image
-//        }
+
+        updateFlaggedStatus()
+    }
+
+    func updateFlaggedStatus() {
+        if message.imapFlags?.flagged ?? false {
+            //flagButton
+        }
     }
 
     func checkMessageReEvaluation() {
@@ -100,6 +105,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     func showPepRating() {
+        let session = PEPSession()
         let _ = showPepRating(pEpRating: message.pEpRating(session: session))
         var allOwnKeysGenerated = true
         var atLeastOneHandshakableIdentityFound = false
@@ -186,6 +192,7 @@ class EmailViewController: BaseTableViewController {
      */
     @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
+            let session = PEPSession()
             PEPUtil.trust(identity: p, session: session)
             decryptAgain()
         }
@@ -196,6 +203,7 @@ class EmailViewController: BaseTableViewController {
      */
     @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
+            let session = PEPSession()
             PEPUtil.mistrust(identity: p, session: session)
             decryptAgain()
         }

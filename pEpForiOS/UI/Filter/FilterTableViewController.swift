@@ -12,7 +12,7 @@ import MessageModel
 class FilterTableViewController: BaseTableViewController {
 
     open var inFolder: Bool = false
-    open var filterEnabled: Filter?
+    open var filterEnabled: CompositeFilter<FilterBase>?
     open var filterDelegate: FilterUpdateProtocol?
 
     var sections = [FilterViewModel]()
@@ -25,16 +25,22 @@ class FilterTableViewController: BaseTableViewController {
     }
 
     @objc func ok(sender: UIBarButtonItem) {
-        if filterEnabled == nil {
-            filterEnabled = Filter.empty()
+        let filters = CompositeFilter<FilterBase>()
+        if let f = filterEnabled, f.isUnified() {
+            filters.add(filter: UnifiedFilter())
         }
         for section in sections {
-            filterEnabled?.and(filter: section.getFilter())
-            filterEnabled?.without(filter: section.getInvaildFilter())
+            filters.With(filters: section.getFilters())
+            filters.without(filters: section.getInvalidFilters())
+            Log.shared.info(component: #function, content: "valid filters")
+            Log.shared.info(component: #function, content: "\(section.getFilters().predicates)")
+            Log.shared.info(component: #function, content: "invalid filters")
+            Log.shared.info(component: #function, content: "\(section.getInvalidFilters().predicates)")
         }
-        if let fe = filterEnabled {
-            filterDelegate?.addFilter(fe)
-        }
+        Log.shared.info(component: #function, content: "\(filters.predicates)")
+        filterEnabled = filters
+        Log.shared.info(component: #function, content: "\(String(describing: filterEnabled?.predicates))")
+        filterDelegate?.addFilter(filters)
 
        _ = self.navigationController?.popViewController(animated: true)
     }

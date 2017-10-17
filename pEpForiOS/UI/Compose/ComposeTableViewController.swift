@@ -528,8 +528,9 @@ extension ComposeTableViewController: ComposeCellDelegate {
 
     func calculateComposeColor() {
         if let to = destinyTo, let cc = destinyCc, let bcc = destinyBcc, let from = origin {
+            let session = PEPSession()
             let rating = PEPUtil.outgoingMessageColor(from: from, to: to, cc: cc, bcc: bcc,
-                                                  session: appConfig.session)
+                                                  session: session)
             if let b = showPepRating(pEpRating: rating, pEpProtection: pEpProtection) {
                 if rating == PEP_rating_reliable || rating == PEP_rating_trusted {
                     // disable protection only for certain ratings

@@ -36,11 +36,14 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+
         XCTAssertTrue(PEPUtil.pEpClean())
+
         persistentSetup = PersistentSetup()
     }
     
     override func tearDown() {
+        PEPSession().cleanup()
         persistentSetup = nil
         super.tearDown()
     }
@@ -75,8 +78,11 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             return (message: message, mySelfID: mySelfID, partnerID: partnerID)
     }
 
-    func testBasicTrustAfterReset() {
-        let session = PEPSessionCreator.shared.newSession()
+    /**
+     Tests trust/reset cycle without view model.
+     */
+    func testBasicTrustReset() {
+        let session = PEPSession()
 
         guard
             let (message: _, mySelfID: _, partnerID: partnerID) = importMail(session: session) else
@@ -98,8 +104,12 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertFalse(partnerMutable.containsPGPCommType)
     }
 
-    func testBasicTrustMistrustCycles() {
-        let session = PEPSessionCreator.shared.newSession()
+    /**
+     Tests trust/reset/mistrust/resut cycle without view model, using a backup
+     to keep the comm type.
+     */
+    func testBasicTrustMistrustCycleUsingBackup() {
+        let session = PEPSession()
 
         guard
             let (message: _, mySelfID: mySelfID,
@@ -113,7 +123,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         myDictMutable.update(session: session)
         partnerMutable.update(session: session)
 
-        // copy the original
+        // back up the original
         let partnerDictOrig = NSDictionary(dictionary: partnerMutable)
         XCTAssertFalse(partnerDictOrig.containsPGPCommType)
 
@@ -121,23 +131,23 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         partnerMutable.update(session: session)
         XCTAssertFalse(partnerMutable.containsPGPCommType)
 
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
+        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig) // restore backup
         session.keyResetTrust(partnerMutable)
         partnerMutable.update(session: session)
         XCTAssertFalse(partnerMutable.containsPGPCommType)
 
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
+        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig) // restore backup
         session.keyMistrusted(partnerMutable)
         partnerMutable.update(session: session)
         XCTAssertFalse(partnerMutable.containsPGPCommType)
 
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
+        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig) // restore backup
         session.keyResetTrust(partnerMutable)
         partnerMutable.update(session: session)
         // engine forgets everything about that key
         XCTAssertTrue(partnerMutable.containsPGPCommType)
 
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig)
+        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig) // restore backup
         // The partner (restored from the backup) is still a pEp user
         XCTAssertFalse(partnerMutable.containsPGPCommType)
         session.trustPersonalKey(partnerMutable)
@@ -147,8 +157,11 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertTrue(partnerMutable.containsPGPCommType)
     }
 
+    /**
+     Test trust/reset/mistrust cycle using view model.
+     */
     func testViewModelTrustMistrustCycles() {
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
 
         guard
             let (message: message, mySelfID: mySelfID,

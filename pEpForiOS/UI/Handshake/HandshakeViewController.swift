@@ -16,7 +16,8 @@ class HandshakeViewController: BaseTableViewController {
 
     var message: Message? {
         didSet {
-            partners = message?.identitiesEligibleForHandshake(session: appConfig.session) ?? []
+            let session = PEPSession()
+            partners = message?.identitiesEligibleForHandshake(session: session) ?? []
         }
     }
 
@@ -57,6 +58,7 @@ class HandshakeViewController: BaseTableViewController {
         if let vm = identityViewModelCache.object(forKey: partnerIdentity) {
             return vm
         } else {
+            let session = PEPSession()
             let vm = HandshakePartnerTableViewCellViewModel(
                 message: message,
                 ownIdentity: selfIdentity,
@@ -190,6 +192,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
             let cell = tableView.cellForRow(at: indexPath)
                 as? HandshakePartnerTableViewCell {
             cell.viewModel?.trustwordsLanguage = lang.code
+            let session = PEPSession()
             cell.viewModel?.updateTrustwords(session: session)
             cell.updateTrustwords()
             tableView.updateSize()
@@ -216,7 +219,7 @@ extension HandshakeViewController: SegueHandlerType {
     }
 
     func prepare(destination: LanguageListViewController) {
-        let theSession = session
+        let theSession = PEPSession()
         destination.languages = theSession.languageList()
     }
 }

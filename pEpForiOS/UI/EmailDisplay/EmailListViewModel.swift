@@ -18,7 +18,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
 // MARK: - FilterUpdateProtocol
 
 extension EmailListViewModel: FilterUpdateProtocol {
-    public func addFilter(_ filter: Filter) {
+    public func addFilter(_ filter: CompositeFilter<FilterBase>) {
         setFilterViewFilter(filter: filter)
     }
 }
@@ -83,9 +83,9 @@ class EmailListViewModel {
         let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
         let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
         { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
-            if pvMsg1.dateSent < pvMsg1.dateSent {
+            if pvMsg1.dateSent > pvMsg2.dateSent {
                 return .orderedAscending
-            } else if pvMsg1.dateSent > pvMsg1.dateSent {
+            } else if pvMsg1.dateSent < pvMsg2.dateSent {
                 return .orderedDescending
             } else {
                 return .orderedSame
@@ -163,7 +163,7 @@ class EmailListViewModel {
                                          errorString: "InconsistencyviewModel vs. model")
                 return nil
         }
-        let session = PEPSessionCreator.shared.newSession()
+        let session = PEPSession()
         let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: session))
         let result = color.statusIcon()
         return result
@@ -217,7 +217,7 @@ class EmailListViewModel {
             handleFilterEnabledSwitch()
         }
     }
-    public var activeFilter : Filter? {
+    public var activeFilter : CompositeFilter<FilterBase>? {
         get {
             guard let folder = folderToShow else {
                 return nil
@@ -226,9 +226,9 @@ class EmailListViewModel {
         }
     }
 
-    static let defaultFilterViewFilter = Filter.unread()
-    private var _filterViewFilter: Filter = defaultFilterViewFilter
-    private var filterViewFilter: Filter {
+    static let defaultFilterViewFilter = CompositeFilter<FilterBase>.DefaultFilter()
+    private var _filterViewFilter: CompositeFilter = defaultFilterViewFilter
+    private var filterViewFilter: CompositeFilter<FilterBase> {
         get {
             if _filterViewFilter.isEmpty() {
                 _filterViewFilter = EmailListViewModel.defaultFilterViewFilter
@@ -240,11 +240,11 @@ class EmailListViewModel {
         }
     }
 
-    private func setFilterViewFilter(filter:Filter) {
+    private func setFilterViewFilter(filter: CompositeFilter<FilterBase>) {
         if isFilterEnabled {
             let folderFilter = assuredFilterOfFolderToShow()
-            folderFilter.without(filter: filterViewFilter)
-            folderFilter.and(filter: filter)
+            folderFilter.without(filters: filterViewFilter)
+            folderFilter.With(filters: filter)
             resetViewModel()
         }
         filterViewFilter = filter
@@ -253,9 +253,9 @@ class EmailListViewModel {
     private func handleFilterEnabledSwitch() {
         let folderFilter = assuredFilterOfFolderToShow()
         if isFilterEnabled {
-            folderFilter.and(filter: filterViewFilter)
+            folderFilter.With(filters: filterViewFilter)
         } else {
-            folderFilter.without(filter: filterViewFilter)
+            folderFilter.without(filters: filterViewFilter)
         }
         resetViewModel()
     }
@@ -266,8 +266,8 @@ class EmailListViewModel {
         } else {
             let folderFilter = assuredFilterOfFolderToShow()
             folderFilter.removeSearchFilter()
-            let searchFilter = Filter.search(subject: txt)
-            folderFilter.and(filter: searchFilter)
+            let searchFilter = SearchFilter(subject: txt)
+            folderFilter.add(filter: searchFilter)
         }
         resetViewModel()
     }
@@ -281,10 +281,12 @@ class EmailListViewModel {
         resetViewModel()
     }
 
-    private func assuredFilterOfFolderToShow() -> Filter {
+
+
+    private func assuredFilterOfFolderToShow() -> CompositeFilter<FilterBase> {
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
-            return Filter.unified()
+            return CompositeFilter<FilterBase>.DefaultFilter()
         }
         if folder.filter == nil{
             folder.resetFilter()
@@ -293,7 +295,7 @@ class EmailListViewModel {
         guard let folderFilter = folder.filter else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We just set the filter but do not have one?")
-            return Filter.unified()
+            return CompositeFilter<FilterBase>.DefaultFilter()
         }
         return folderFilter
     }
@@ -330,7 +332,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         if let message = messageFolder as? Message {
             // Is a Message (not a Folder)
             if let filter = folderToShow?.filter,
-                !filter.fulfilsFilterConstraints(message: message) {
+                !filter.fulfilsFilter(message: message) {
                 // The message does not fit in current filter criteria. Ignore- and do not show it.
                 return
             }
@@ -381,8 +383,14 @@ extension EmailListViewModel: MessageFolderDelegate {
                 // We got called even the flaggs did not change. Ignore. Do nothing.
                 return
             }
-            pvMsgs.replaceObject(at: indexExisting, withObject: previewMessage)
-            let indexPath = IndexPath(row: indexExisting, section: 0)
+            let indexToRemove = pvMsgs.index(of: existingMessage)
+            pvMsgs.removeObject(at: indexToRemove)
+            let indexInserted = pvMsgs.insert(object: previewMessage)
+            if indexToRemove != indexInserted  {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "The updated message must be at the same index")
+            }
+            let indexPath = IndexPath(row: indexInserted, section: 0)
             delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
         }
     }

@@ -56,6 +56,8 @@ open class NetworkServiceWorker {
             }
         }
     }
+
+    private var stopped = false
     
     var serviceConfig: NetworkService.ServiceConfig
 
@@ -83,7 +85,17 @@ open class NetworkServiceWorker {
      */
     public func start() {
         Log.info(component: #function, content: "\(String(describing: self))")
+        stopped = false
         self.process()
+    }
+
+    /**
+     Stops synchronizing after the currently running operationline has finished.
+     I.e. does not trigger a a new syncloop.
+     */
+    public func stop() {
+        Log.info(component: #function, content: "\(String(describing: self))")
+        doNotTriggerNewSyncLoop()
     }
 
     /**
@@ -110,6 +122,19 @@ open class NetworkServiceWorker {
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
             self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
             self.serviceConfig.networkServiceDelegate?.didCancel(service: networkService)
+        }
+    }
+
+    /**
+     Stops triggering new sync loops after the curently running one has finished.
+     */
+    public func doNotTriggerNewSyncLoop() {
+        let myComp = #function
+        stopped = true
+        Log.info(component: myComp, content: "\(String(describing: self)): do not trigger new sync loop")
+        workerQueue.async {
+            self.backgroundQueue.waitUntilAllOperationsAreFinished()
+            self.serviceConfig.networkServiceDelegate?.networkServiceDidFinishLastSyncLoop()
         }
     }
     
@@ -311,14 +336,14 @@ open class NetworkServiceWorker {
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation { [weak self] in
             self?.workerQueue.async {
-                Log.warn(component: #function, content: "IMAP sync finished")
+                Log.info(component: #function, content: "IMAP sync finished")
             }
         }
 
         // Operation depending on all SMTP operations for this account
         let opSmtpFinished = BlockOperation { [weak self] in
             self?.workerQueue.async {
-                Log.warn(component: #function, content: "SMTP sync finished")
+                Log.info(component: #function, content: "SMTP sync finished")
             }
         }
 
@@ -499,10 +524,9 @@ open class NetworkServiceWorker {
         }
     }
 
-    func processOperationLinesInternal(operationLines: [OperationLine],
-                                       repeatProcess: Bool = true) {
+    func processOperationLinesInternal(operationLines: [OperationLine], repeatProcess: Bool = true) {
         let theComp = "\(#function) processOperationLinesInternal"
-        if !self.cancelled {
+        if !self.cancelled && !stopped {
             var myLines = operationLines
             Log.verbose(component: theComp,
                         content: "\(operationLines.count) left, repeat? \(repeatProcess)")
@@ -524,11 +548,14 @@ open class NetworkServiceWorker {
                     }
                 })
             } else {
-                if repeatProcess && !cancelled {
-                    workerQueue.asyncAfter(deadline: DispatchTime.now() +
-                        self.serviceConfig.sleepTimeInSeconds) {
-                        self.processAllInternal()
-                    }
+                workerQueue.asyncAfter(deadline: DispatchTime.now() +
+                    self.serviceConfig.sleepTimeInSeconds) { [weak self] in
+                        guard let strongSelf = self else {
+                            return
+                        }
+                        if repeatProcess && !strongSelf.cancelled && !strongSelf.stopped {
+                            strongSelf.processAllInternal()
+                        }
                 }
             }
         } else {

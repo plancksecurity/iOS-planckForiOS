@@ -19,14 +19,16 @@ class DecryptionTests: XCTestCase {
     var cdInbox: CdFolder!
 
     var persistentSetup: PersistentSetup!
-    var session: PEPSession!
+    var session: PEPSession {
+        return PEPSession()
+    }
     var backgroundQueue: OperationQueue!
 
     override func setUp() {
         super.setUp()
-
+        
         XCTAssertTrue(PEPUtil.pEpClean())
-        session = PEPSessionCreator.shared.newSession()
+
         persistentSetup = PersistentSetup()
 
         let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
@@ -55,7 +57,7 @@ class DecryptionTests: XCTestCase {
         persistentSetup = nil
         backgroundQueue.cancelAllOperations()
         backgroundQueue = nil
-        session = nil
+        PEPSession().cleanup()
         super.tearDown()
     }
 
@@ -85,13 +87,15 @@ class DecryptionTests: XCTestCase {
     func testBasicDecryption(shouldEncrypt: Bool) {
         let msgLongMessage = "This is a message!"
         let msgShortMessage = "Subject1"
+        let messageID = "somemessageid"
         var pEpMsg = PEPMessage()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
         pEpMsg[kPepLongMessage] = "Subject: \(msgShortMessage)\n\(msgLongMessage)" as NSString
         pEpMsg[kPepOutgoing] = true as AnyObject
+        pEpMsg[kPepID] = messageID as AnyObject
 
-        var encryptedDict = PEPMessage()
+        var encryptedOrNotMailDict = PEPMessage()
 
         if shouldEncrypt {
             let (status, encryptedDictOpt) = session.encrypt(pEpMessageDict: pEpMsg)
@@ -125,7 +129,9 @@ class DecryptionTests: XCTestCase {
             }
             XCTAssertTrue(pEpVersionFound)
 
-            encryptedDict = theEncryptedDict
+            encryptedOrNotMailDict = theEncryptedDict
+        } else {
+            encryptedOrNotMailDict = pEpMsg
         }
 
         guard let inboxName = cdInbox.name else {
@@ -133,7 +139,7 @@ class DecryptionTests: XCTestCase {
             return
         }
 
-        let pantMail = CWIMAPMessage(pEpMessage: encryptedDict, mailboxName: inboxName)
+        let pantMail = CWIMAPMessage(pEpMessage: encryptedOrNotMailDict, mailboxName: inboxName)
         pantMail.setUID(5) // some UID is needed to trigger decrypt
 
         if shouldEncrypt {
@@ -160,6 +166,8 @@ class DecryptionTests: XCTestCase {
 
         Record.saveAndWait()
 
+        XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
+
         let expectationDecryptHasRun = expectation(description: "expectationDecryptHasRun")
         let errorContainer = ErrorContainer()
         let decryptOp = DecryptMessagesOperation(parentName: #function,
@@ -183,13 +191,13 @@ class DecryptionTests: XCTestCase {
         Record.Context.default.refreshAllObjects()
         if shouldEncrypt {
             XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
-        } else {
-            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPUtil.pEpRatingNone))
-        }
-        if shouldEncrypt {
             XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
             XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
+        } else {
+            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEP_rating_unencrypted.rawValue))
         }
+
+        XCTAssertEqual(cdMsg.uuid, messageID)
 
         let pepDict = cdMsg.pEpMessage()
         let optFields = pepDict[kPepOptFields] as? [[String]]

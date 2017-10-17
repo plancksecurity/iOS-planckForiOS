@@ -16,18 +16,6 @@ class AppConfig {
 
     let messageSyncService: MessageSyncServiceProtocol
 
-    private var theSession: PEPSession?
-
-    var session: PEPSession {
-        get {
-            guard let session = theSession else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No session!")
-                return PEPSessionCreator.shared.newSession()
-            }
-            return session
-        }
-    }
-
     /**
      As soon as the UI has at least one account that is in use, this is set here.
      */
@@ -38,14 +26,9 @@ class AppConfig {
      */
     let mySelfer: KickOffMySelfProtocol
 
-    init(session: PEPSession, mySelfer: KickOffMySelfProtocol,
+    init(mySelfer: KickOffMySelfProtocol,
          messageSyncService: MessageSyncServiceProtocol) {
-        self.theSession = session
         self.messageSyncService = messageSyncService
         self.mySelfer = mySelfer
-    }
-
-    public func tearDownSession() {
-        theSession = nil
     }
 }

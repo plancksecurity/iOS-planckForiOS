@@ -11,8 +11,8 @@ import MessageModel
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
     private let title = "pEpForiOS"
-    private lazy var session: PEPSession = PEPSessionCreator.shared.newSession()
     private var logEnabled = true
+    private var paused = false
     private let loggingQueue: OperationQueue = {
        let createe = OperationQueue()
         createe.qualityOfService = .background
@@ -32,12 +32,21 @@ import MessageModel
         #endif
         if !MiscUtil.isUnitTest() {
             loggingQueue.addOperation() {
-                if self.logEnabled {
-                    self.session.logTitle(
+                if self.logEnabled && !self.paused {
+                    let session = PEPSession()
+                    session.logTitle(
                         self.title, entity: entity, description: description, comment: comment)
                 }
             }
         }
+    }
+
+    func resume() {
+        Log.shared.paused = false
+    }
+
+    func pause() {
+        Log.shared.paused = true
     }
 
     static open func disableLog() {
@@ -62,7 +71,7 @@ import MessageModel
     static open func checklog(_ block: ((String) -> ())?) {
         if !MiscUtil.isUnitTest() {
             Log.shared.loggingQueue.addOperation() {
-                let s = PEPSessionCreator.shared.newSession().getLog()
+                let s = PEPSession().getLog()
                 block?(s)
             }
         } else {

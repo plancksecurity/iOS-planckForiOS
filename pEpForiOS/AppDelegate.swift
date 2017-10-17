@@ -67,6 +67,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    /// Signals al services to start/resume.
+    /// Also signals it is save to use PEPSessions (again)
+    private func startServices() {
+        Log.shared.resume()
+        networkService?.start()
+    }
+
+    /// Signals all PEPSession users to stop using a session as soon as possible.
+    // NetworkService will call it's delegate (me) after the last sync operation has finished.
+    private func stopUsingPepSession() {
+        networkService?.stop()
+        // Stop logging. It would create new sessions.
+        Log.shared.pause()
+    }
+
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -81,13 +96,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let pEpReInitialized = deleteManagementDBIfRequired()
 
-        // Open the first session from the main thread and keep it open
-        let session = PEPSessionCreator.shared.newSession()
-
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
-        let theAppConfig = AppConfig(session: session, mySelfer: self,
+        let theAppConfig = AppConfig(mySelfer: self,
                                      messageSyncService: theMessageSyncService)
         appConfig = theAppConfig
 
@@ -96,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Appearance.pep()
 
-        Log.warn(component: comp,
+        Log.info(component: comp,
                  content: "Library url: \(String(describing: applicationDirectory()))")
 
         loadCoreDataStack()
@@ -108,7 +120,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         networkService = NetworkService(parentName: #function, backgrounder: self, mySelfer: self)
         networkService?.sendLayerDelegate = sendLayerDelegate
         CdAccount.sendLayer = networkService
-        networkService?.start()
+        networkService?.networkServiceDelegate = self
+
+        startServices()
 
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
@@ -128,6 +142,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, content: "applicationDidEnterBackground")
+
+        stopUsingPepSession()
 
         self.application = application
         kickOffMySelf()
@@ -149,6 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.application = application
 
+        startServices()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
 
@@ -156,8 +173,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
 
-        // Try to cleanly shutdown
-        appConfig?.tearDownSession()
+        stopUsingPepSession()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
@@ -220,6 +236,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+// MARK: - BackgroundTaskProtocol
+
 extension AppDelegate: BackgroundTaskProtocol {
     func beginBackgroundTask(taskName: String? = nil,
                              expirationHandler: (() -> Void)? = nil) -> BackgroundTaskID {
@@ -233,13 +251,35 @@ extension AppDelegate: BackgroundTaskProtocol {
 
     func endBackgroundTask(_ taskID: BackgroundTaskID?) {
         if let bID = taskID {
+            PEPSession().cleanup()
             application.endBackgroundTask(bID)
         }
     }
 }
 
+// MARK: - KickOffMySelfProtocol
+
 extension AppDelegate: KickOffMySelfProtocol {
     func startMySelf() {
         kickOffMySelf()
+    }
+}
+
+// MARK: - NetworkServiceDelegate
+
+extension AppDelegate: NetworkServiceDelegate {
+    func didSync(service: NetworkService, accountInfo: AccountConnectInfo, errorProtocol: ServiceErrorProtocol) {
+        // do nothing
+    }
+
+    func didCancel(service: NetworkService) {
+        // do nothing
+    }
+
+    func networkServiceDidFinishLastSyncLoop() {
+        // According to the network service, we can guarantee no background service is running anymore,
+        // thus we consider it save to cleanup all sessions.
+        Log.shared.infoComponent(#function, message: "Clean up sessions.")
+        PEPSession().cleanup()
     }
 }

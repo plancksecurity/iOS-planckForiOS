@@ -15,6 +15,11 @@ public protocol NetworkServiceDelegate: class {
     func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol)
 
+    /// Called finishing the last sync loop.
+    /// No further sync loop will be triggered after this call.
+    /// All operations finished before this call.
+    func networkServiceDidFinishLastSyncLoop()
+
     /** Called after all operations have been canceled */
     func didCancel(service: NetworkService)
 }
@@ -102,6 +107,14 @@ public class NetworkService {
     public func start() {
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
         currentWorker?.start()
+    }
+
+    /**
+     Start endlessly synchronizing in the background.
+     NetworkServiceDelegate networkServiceDidFinishLastSyncLoop() is called after the last sync operation finished.
+     */
+    public func stop() {
+        currentWorker?.stop()
     }
 
     /**

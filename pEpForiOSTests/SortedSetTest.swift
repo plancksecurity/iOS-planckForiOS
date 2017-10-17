@@ -127,15 +127,49 @@ class SortedSetTest: XCTestCase {
 
     // MARK: Insert
 
-    func testInsertDate() {
+    func testInsertDateInFront() {
         let lastWeek = TestObject(date: Date().addingTimeInterval(-7 * oneDay), str: "last week")
         let indexInserted = setSortedByDate?.insert(object: lastWeek)
-        XCTAssertEqual(indexInserted, 0)
+        let expectedIndex = 0
+        XCTAssertEqual(indexInserted, expectedIndex)
     }
 
-    func testInsertDate2() {
+    func testInsertDateInFrontFail() {
         let nextWeek = TestObject(date: Date().addingTimeInterval(7 * oneDay), str: "last week")
         let indexInserted = setSortedByDate?.insert(object: nextWeek)
         XCTAssertNotEqual(indexInserted, 0)
+    }
+
+    func testInsertDateAtEnd() {
+        let nextWeek = TestObject(date: Date().addingTimeInterval(7 * oneDay), str: "next week")
+        let indexInserted = setSortedByDate?.insert(object: nextWeek)
+        let expectedIndex = testObjects.count - 1
+        XCTAssertEqual(indexInserted, expectedIndex)
+    }
+
+    // MARK: RemoveAll
+
+    func testRemoveAll() {
+        let testee = setSortedByDate
+        testee?.removeAllObjects()
+        XCTAssertEqual(testee?.count, 0)
+    }
+
+    // MARK: indexOf
+
+    func testIndexOf() {
+        let nextWeek = TestObject(date: Date().addingTimeInterval(7 * oneDay), str: "next week")
+        guard let testee = setSortedByDate else {
+            XCTFail("no testee")
+            return
+        }
+        let countBefore = testee.count
+        let indexInserted = testee.insert(object: nextWeek)
+        let countAfter = testee.count
+        XCTAssertEqual(countAfter, countBefore + 1)
+        let expectedIndex = testObjects.count - 1
+        XCTAssertEqual(indexInserted, expectedIndex)
+        let indexOf = testee.index(of: nextWeek)
+        XCTAssertEqual(indexOf, indexInserted)
     }
 }

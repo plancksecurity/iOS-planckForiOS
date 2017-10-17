@@ -52,12 +52,18 @@ class SortedSet<T: Equatable> {
         return set.object(at: index) as? T
     }
     
-    public func index(of object: T) -> Int{
-        return set.index(of: object)
-    }
-    
-    public func replaceObject(at index: Int, withObject obj: T) {
-        set.setObject(obj, at: index)
+    public func index(of object: T) -> Int {
+        let notFound = -1
+        for i in 0..<set.count {
+            guard let testee = set.object(at: i) as? T else {
+                Log.shared.errorAndCrash(component: #function, errorString: "error casting")
+                return notFound
+            }
+            if testee == object {
+                return i
+            }
+        }
+        return notFound
     }
     
     public func removeAllObjects() {
@@ -81,12 +87,16 @@ class SortedSet<T: Equatable> {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casing")
                 return 0
             }
-            if sortBlock(obj, testee) == .orderedAscending ||  sortBlock(obj, testee) == .orderedSame{
+            if set.count == 0 {
+                //set is empty
+                return 0
+            }
+            if sortBlock(obj, testee) == .orderedAscending {
                 // following object found
                 return i
             }
         }
-        // set it empty or we would insert as the last object
+        // we would insert as the last object
         return max(0, set.count - 1)
     }
 }
