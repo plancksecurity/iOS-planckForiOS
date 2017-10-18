@@ -387,8 +387,12 @@ extension EmailListViewModel: MessageFolderDelegate {
             pvMsgs.removeObject(at: indexToRemove)
             let indexInserted = pvMsgs.insert(object: previewMessage)
             if indexToRemove != indexInserted  {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "The updated message must be at the same index")
+                Log.shared.warn(component: #function,
+                                content:
+                    """
+We might have to serialize access to messages due to possible concurrent access from outside
+"""
+                )
             }
             let indexPath = IndexPath(row: indexInserted, section: 0)
             delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
