@@ -75,7 +75,7 @@ class PEPSessionTest: XCTestCase {
         let testData = TestData()
         let myself = testData.createWorkingIdentity(number: 0)
         let myID = "myID"
-        let references = ["ref1", "ref2"]
+        let references = ["ref1", "ref2", "ref3"]
         let dict = [
             kPepFrom: myself as AnyObject,
             kPepTo: NSArray(array: [myself]),
