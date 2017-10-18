@@ -10,17 +10,14 @@ import Foundation
 import MessageModel
 
 public class FolderSectionViewModel {
-    public var collapsed: Bool
+    public var collapsed = false
     private var account: Account
-    private var items: [FolderCellViewModel]
-    private var help :[FolderCellViewModel]
+    private var items = [FolderCellViewModel]()
+    private var help = [FolderCellViewModel]()
     let imageProvider = IdentityImageProvider()
 
     public init(account acc: Account) {
         self.account = acc
-        items = [FolderCellViewModel]()
-        help = [FolderCellViewModel]()
-        collapsed = false
         generateCells()
     }
 
@@ -40,13 +37,6 @@ public class FolderSectionViewModel {
 
     func getImage(callback: @escaping ImageReadyFunc) {
         imageProvider.image(forIdentity: account.user, callback: callback)
-    }
-
-    public var image: UIImage {
-        guard let img = account.user.thumbnailImage() else {
-            return UIImage(named: "pep-logo")!
-        }
-        return img
     }
 
     public var type: String {
