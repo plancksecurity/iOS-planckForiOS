@@ -10,28 +10,8 @@ import UIKit
 import MessageModel
 
 class EmailListViewController: BaseTableViewController {
-    private var _folderToShow: Folder?
-    var folderToShow: Folder? {
-        set {
-            if newValue === _folderToShow {
-                return
-            }
-            if newValue == nil {
-                model = nil
-                _folderToShow = newValue
-                return
-            }
-            _folderToShow = newValue
-            // Update the model to data of new folder/filter
-            resetModel()
-        }
-        get {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Use only the folderToShow from model (model?folderToShow).")
-            return _folderToShow
-        }
-    }
-    
+    var folderToShow: Folder?
+
     func updateLastLookAt() {
         guard let saveFolder = model?.folderToShow else {
             return
@@ -75,19 +55,7 @@ class EmailListViewController: BaseTableViewController {
         if MiscUtil.isUnitTest() {
             return
         }
-        
-        if let vm = model {
-            // We came back from e.g EmailView ...
-            self.textFilterButton.isEnabled = vm.isFilterEnabled
-            updateFilterText()
-            // ... so we want to update "seen" status
-            DispatchQueue.main.async {
-                vm.reloadData()
-            }
-        } else {
-            self.textFilterButton.isEnabled = false
-        }
-        
+
         setDefaultColors()
         setup()
         
@@ -109,21 +77,41 @@ class EmailListViewController: BaseTableViewController {
     }
     
     private func resetModel() {
-        if _folderToShow != nil {
-            model = EmailListViewModel(delegate: self, folderToShow: _folderToShow)
+        if folderToShow != nil {
+            model = EmailListViewModel(delegate: self, folderToShow: folderToShow)
         }
     }
     
     private func setup() {
-        // We have not been created to show a specific folder, thus we show unified inbox
-        if model?.folderToShow == nil {
+        if let vm = model {
+            // We came back from e.g EmailView ...
+            updateFilterText()
+            // ... so we want to update "seen" status
+            DispatchQueue.main.async {
+                vm.reloadData()
+            }
+        }
+
+        if folderToShow == nil {
+            // We have not been created to show a specific folder, thus we show unified inbox
             folderToShow = UnifiedInbox()
+            resetModel()
+        } else if model == nil {
+            // We still got no model, because:
+            // - We are not coming back from a pushed view (for instance ComposeEmailView)
+            // - We are not a UnifiedInbox
+            // So we have been created to show a specific folder, show it.
+            resetModel()
         }
         
         if noAccountsExist() {
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
         }
         self.title = realNameOfFolderToShow()
+    }
+
+    private func weCameBackFromAPushedView() -> Bool {
+        return model != nil
     }
     
     private func noAccountsExist() -> Bool {
@@ -483,7 +471,7 @@ extension EmailListViewController: SegueHandlerType {
         vc.appConfig = appConfig
         vc.composeMode = composeMode
         vc.originalMessage = originalMessage
-        vc.origin = model?.folderToShow?.account.user
+        vc.origin = folderToShow?.account.user
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -517,7 +505,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.message = message
-            vc.folderShow = model?.folderToShow
+            vc.folderShow = folderToShow
             vc.messageId = indexPath.row //that looks wrong
         case .segueForward:
             guard let nav = segue.destination as? UINavigationController,
@@ -537,7 +525,7 @@ extension EmailListViewController: SegueHandlerType {
             destiny.appConfig = appConfig
             destiny.filterDelegate = model
             destiny.inFolder = false
-            destiny.filterEnabled = model?.folderToShow?.filter
+            destiny.filterEnabled = folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
             guard let vc = segue.destination as? LoginTableViewController  else {
