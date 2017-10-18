@@ -13,7 +13,7 @@ class EmailListViewController: BaseTableViewController {
     var folderToShow: Folder?
 
     func updateLastLookAt() {
-        guard let saveFolder = model?.folderToShow else {
+        guard let saveFolder = folderToShow else {
             return
         }
         saveFolder.updateLastLookAt()
@@ -138,7 +138,7 @@ class EmailListViewController: BaseTableViewController {
     // MARK: - Other
     
     private func realNameOfFolderToShow() -> String? {
-        return model?.folderToShow?.realName
+        return folderToShow?.realName
     }
     
     private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {

@@ -53,7 +53,7 @@ class EmailListViewModel {
     private var messages: SortedSet<PreviewMessage>?
     public var delegate: EmailListViewModelDelegate?
     private var _folderToShow: Folder?
-    public private(set) var folderToShow: Folder? {
+    private var folderToShow: Folder? {
         set{
             if newValue == _folderToShow {
                 return
