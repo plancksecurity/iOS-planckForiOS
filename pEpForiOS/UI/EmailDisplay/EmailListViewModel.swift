@@ -53,6 +53,7 @@ class EmailListViewModel {
     private var messages: SortedSet<PreviewMessage>?
     public var delegate: EmailListViewModelDelegate?
     private var folderToShow: Folder?
+    
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
         if pvMsg1.dateSent > pvMsg2.dateSent {
@@ -86,6 +87,7 @@ class EmailListViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "No data, no cry.")
             return
         }
+        // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
         DispatchQueue.main.async {
             let messagesToDisplay = folder.allMessages()
@@ -307,27 +309,21 @@ class EmailListViewModel {
 
 extension EmailListViewModel: MessageFolderDelegate {
     func didCreate(messageFolder: MessageFolder) {
-        objc_sync_enter(self)
         GCD.onMainWait {
             self.didCreateInternal(messageFolder: messageFolder)
         }
-        objc_sync_exit(self)
     }
     
     func didUpdate(messageFolder: MessageFolder) {
-        objc_sync_enter(self)
         GCD.onMainWait {
             self.didUpdateInternal(messageFolder: messageFolder)
         }
-        objc_sync_exit(self)
     }
     
     func didDelete(messageFolder: MessageFolder) {
-        objc_sync_enter(self)
         GCD.onMainWait {
             self.didDeleteInternal(messageFolder: messageFolder)
         }
-        objc_sync_exit(self)
     }
     
     private func didCreateInternal(messageFolder: MessageFolder) {
