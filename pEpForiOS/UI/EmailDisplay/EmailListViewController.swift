@@ -87,20 +87,18 @@ class EmailListViewController: BaseTableViewController {
             // We came back from e.g EmailView ...
             updateFilterText()
             // ... so we want to update "seen" status
-            DispatchQueue.main.async {
-                vm.reloadData()
-            }
+            vm.reloadData()
         }
-
-        if folderToShow == nil {
+        else if folderToShow == nil {
             // We have not been created to show a specific folder, thus we show unified inbox
             folderToShow = UnifiedInbox()
             resetModel()
-        } else if model == nil {
+        }
+        else if model == nil {
             // We still got no model, because:
             // - We are not coming back from a pushed view (for instance ComposeEmailView)
             // - We are not a UnifiedInbox
-            // So we have been created to show a specific folder, show it.
+            // So we have been created to show a specific folder. Show it!
             resetModel()
         }
         

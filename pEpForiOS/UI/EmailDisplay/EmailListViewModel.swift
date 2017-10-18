@@ -52,26 +52,33 @@ class EmailListViewModel {
     
     private var messages: SortedSet<PreviewMessage>?
     public var delegate: EmailListViewModelDelegate?
-    private var _folderToShow: Folder?
-    private var folderToShow: Folder? {
-        set{
-            if newValue == _folderToShow {
-                return
-            }
-            _folderToShow = newValue
-            resetViewModel()
-        }
-        get {
-            return _folderToShow
+    private var folderToShow: Folder?
+    let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
+    { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
+        if pvMsg1.dateSent > pvMsg2.dateSent {
+            return .orderedAscending
+        } else if pvMsg1.dateSent < pvMsg2.dateSent {
+            return .orderedDescending
+        } else {
+            return .orderedSame
         }
     }
     
     // MARK: Life Cycle
     
     init(delegate: EmailListViewModelDelegate? = nil, folderToShow: Folder? = nil) {
+        self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.delegate = delegate
         self.folderToShow = folderToShow
+        resetViewModel()
+    }
+
+    private func startListeningToChanges() {
         MessageModelConfig.messageFolderDelegate = self
+    }
+
+    private func stopListeningToChanges() {
+        MessageModelConfig.messageFolderDelegate = nil
     }
     
     private func resetViewModel() {
@@ -79,20 +86,15 @@ class EmailListViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "No data, no cry.")
             return
         }
-        let messagesToDisplay = folder.allMessages()
-        let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
-        let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
-        { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
-            if pvMsg1.dateSent > pvMsg2.dateSent {
-                return .orderedAscending
-            } else if pvMsg1.dateSent < pvMsg2.dateSent {
-                return .orderedDescending
-            } else {
-                return .orderedSame
-            }
+        self.stopListeningToChanges()
+        DispatchQueue.main.async {
+            let messagesToDisplay = folder.allMessages()
+            let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
+
+            self.messages = SortedSet(array: previewMessages, sortBlock: self.sortByDateSentAscending)
+            self.delegate?.updateView()
+            self.startListeningToChanges()
         }
-        messages = SortedSet(array: previewMessages, sortBlock: sortByDateSentAscending)
-        delegate?.updateView()
     }
     
     // MARK: Internal
