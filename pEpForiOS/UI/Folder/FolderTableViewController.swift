@@ -29,8 +29,10 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Setup
 
     private func setupViewModel() {
-        self.folderVM =  FolderViewModel()
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.folderVM =  FolderViewModel()
+            self.tableView.reloadData()
+        }
     }
     
     private func initialConfig() {
