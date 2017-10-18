@@ -107,7 +107,7 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(status2, PEP_STATUS_OK)
         if let theEncMsg = encMsg2 {
             XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
-            XCTAssertEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
+            XCTAssertEqual(theEncMsg[kPepReferences] as? [String] ?? [], [])
             tryDecryptMessage(
                 message: theEncMsg, myID: myID, references: references, session: session)
         } else {
