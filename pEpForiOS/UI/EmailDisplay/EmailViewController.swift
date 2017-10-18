@@ -43,10 +43,8 @@ class EmailViewController: BaseTableViewController {
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
 
-        self.title = message.shortMessage//NSLocalizedString("Message", comment: "Message view title")
+        self.title = message.shortMessage
         saveTitleView()
-
-        setEmailDisplayDefaultNavigationBarStyle()
     }
 
     @IBAction func next(_ sender: Any) {
@@ -77,6 +75,8 @@ class EmailViewController: BaseTableViewController {
     func configureView() {
         tableData?.filterRows(message: message)
 
+        recoveryInitialTitle()
+
         if messageId <= 0 {
             self.previousMessage.isEnabled = false
         } else {
@@ -100,7 +100,9 @@ class EmailViewController: BaseTableViewController {
 
     func updateFlaggedStatus() {
         if message.imapFlags?.flagged ?? false {
-            //flagButton
+            flagButton.image = UIImage.init(named: "icon-flagged")
+        } else {
+            flagButton.image = UIImage.init(named: "icon-unflagged")
         }
     }
 
@@ -187,6 +189,8 @@ class EmailViewController: BaseTableViewController {
             message.imapFlags?.flagged = true
         }
         message.save()
+
+        updateFlaggedStatus()
     }
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
@@ -296,7 +300,7 @@ extension EmailViewController: SegueHandlerType {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                 break
             }
-            recoveryInitialTitle()
+            self.title = NSLocalizedString("Message", comment: "Message view title")
             destination.appConfig = appConfig
             destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
