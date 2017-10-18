@@ -93,7 +93,9 @@ class EmailViewController: BaseTableViewController {
 
     func updateFlaggedStatus() {
         if message.imapFlags?.flagged ?? false {
-            //flagButton
+            flagButton.image = UIImage.init(named: "icon-flagged")
+        } else {
+            flagButton.image = UIImage.init(named: "icon-unflagged")
         }
     }
 
@@ -180,6 +182,8 @@ class EmailViewController: BaseTableViewController {
             message.imapFlags?.flagged = true
         }
         message.save()
+
+        updateFlaggedStatus()
     }
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {

@@ -728,6 +728,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="flagButton" destination="bej-eI-LgY" id="Geb-Es-y6z"/>
                         <outlet property="handShakeButton" destination="1oP-DI-wuJ" id="uQN-WO-dVS"/>
                         <outlet property="nextMessage" destination="nCS-Wg-ZJI" id="Q0q-LK-Q5C"/>
                         <outlet property="previousMessage" destination="NsK-Ye-A0p" id="tHt-Ag-IaU"/>
@@ -1028,6 +1029,7 @@
         <image name="chevron-icon" width="8" height="13"/>
         <image name="contact-icon" width="46" height="46"/>
         <image name="empty-avatar" width="150" height="150"/>
+        <image name="icon-unflagged" width="64" height="64"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
