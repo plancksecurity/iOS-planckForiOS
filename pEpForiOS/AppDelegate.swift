@@ -91,6 +91,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
 
+        // Make sure a session for the main thread is created and kept.
+        PEPSession()
+
         self.application = application
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
@@ -251,7 +254,7 @@ extension AppDelegate: BackgroundTaskProtocol {
 
     func endBackgroundTask(_ taskID: BackgroundTaskID?) {
         if let bID = taskID {
-            PEPSession().cleanup()
+            //            PEPSession().cleanup()  //BUFF:
             application.endBackgroundTask(bID)
         }
     }
