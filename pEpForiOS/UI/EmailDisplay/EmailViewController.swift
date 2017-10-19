@@ -74,19 +74,26 @@ class EmailViewController: BaseTableViewController {
 
     func configureView() {
         tableData?.filterRows(message: message)
+
         recoveryInitialTitle()
-        checkMessageReEvaluation()
-        showPepRating()
-        message.markAsSeen()
+
         if messageId <= 0 {
             self.previousMessage.isEnabled = false
         } else {
             self.previousMessage.isEnabled = true
         }
-        if let total = folderShow?.messageCount(), messageId >= total - 1 {
-            self.nextMessage.isEnabled = false
-        } else {
-            self.nextMessage.isEnabled = true
+
+        DispatchQueue.main.async {
+            self.checkMessageReEvaluation()
+            self.showPepRating()
+
+            self.message.markAsSeen()
+
+            if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
+                self.nextMessage.isEnabled = false
+            } else {
+                self.nextMessage.isEnabled = true
+            }
         }
         updateFlaggedStatus()
     }
@@ -353,6 +360,7 @@ extension EmailViewController: MessageAttachmentDelegate {
 }
 
 // MARK: - Title View Extension
+
 extension EmailViewController {
 
     func saveTitleView() {
