@@ -12,10 +12,8 @@ import UIKit
 extension UIViewController {
 
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
-        setEmailDisplayColors()
-        
+        setEmailDisplayDefaultNavigationBarStyle()
         // icon
-        navigationItem.title = nil
         if let img = pEpRating?.pepColor().statusIcon(enabled: pEpProtection) {
             let v = UIImageView(image: img)
             navigationItem.titleView = v
@@ -34,7 +32,8 @@ extension UIViewController {
         navigationController?.navigationBar.backgroundColor = nil
     }
 
-    func setEmailDisplayColors() {
+    func setEmailDisplayDefaultNavigationBarStyle() {
+        navigationItem.title = nil
         setNoColor()
         navigationController?.navigationBar.titleTextAttributes =
             [NSAttributedStringKey.foregroundColor: UIColor.black]

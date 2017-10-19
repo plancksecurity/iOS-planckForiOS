@@ -9,14 +9,33 @@
 import UIKit
 
 class FolderTableViewController: BaseTableViewController {
-    var folderVM = FolderViewModel()
+    var folderVM: FolderViewModel?
+
+    // MARK: - Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         initialConfig()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(true, animated: true)
+        if folderVM == nil {
+            setupViewModel()
+        }
+    }
+
+    // MARK: - Setup
+
+    private func setupViewModel() {
+        DispatchQueue.main.async {
+            self.folderVM =  FolderViewModel()
+            self.tableView.reloadData()
+        }
+    }
     
-    func initialConfig() {
+    private func initialConfig() {
         self.title = NSLocalizedString("Folders", comment: "FolderView")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -27,23 +46,20 @@ class FolderTableViewController: BaseTableViewController {
         navigationItem.rightBarButtonItem = item
     }
 
+    // MARK: - Actions
+
     @objc func settingsTapped() {
         performSegue(withIdentifier: "SettingsSegue", sender: self)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setToolbarHidden(true, animated: true)
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return folderVM.count
+        return folderVM?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return folderVM[section].count
+        return folderVM?[section].count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -54,7 +70,12 @@ class FolderTableViewController: BaseTableViewController {
         } else {
             header = CollapsibleTableViewHeader(reuseIdentifier: "header")
         }
-        header!.configure(viewModel: folderVM[section], section: section)
+        guard let vm = folderVM, let safeHeader = header else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No header or no model.")
+            return header
+        }
+
+        safeHeader.configure(viewModel: vm[section], section: section)
         return header
     }
 
@@ -64,7 +85,11 @@ class FolderTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
-        let fcvm = folderVM[indexPath.section][indexPath.item]
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model")
+            return cell
+        }
+        let fcvm = vm[indexPath.section][indexPath.item]
         cell.detailTextLabel?.text = "\(fcvm.number)"
         cell.textLabel?.text = fcvm.title
         cell.accessoryType = .disclosureIndicator
@@ -73,8 +98,14 @@ class FolderTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath)
         -> Int {
-        return folderVM[indexPath.section][indexPath.item].level
+            guard let vm = folderVM else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No model")
+                return 0
+            }
+        return vm[indexPath.section][indexPath.item].level
     }
+
+    // MARK: - TableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
@@ -87,10 +118,16 @@ class FolderTableViewController: BaseTableViewController {
         }
 
         vc.appConfig = appConfig
-        vc.folderToShow = folderVM[indexPath.section][indexPath.row].getFolder()
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model")
+            return
+        }
+        vc.folderToShow = vm[indexPath.section][indexPath.row].folder
         vc.hidesBottomBarWhenPushed = false
         self.navigationController?.pushViewController(vc, animated: true)
     }
+
+    // MARK: - Segue
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newAccount" {

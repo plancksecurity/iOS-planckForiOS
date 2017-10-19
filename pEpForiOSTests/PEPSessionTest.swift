@@ -75,7 +75,7 @@ class PEPSessionTest: XCTestCase {
         let testData = TestData()
         let myself = testData.createWorkingIdentity(number: 0)
         let myID = "myID"
-        let references = ["ref1", "ref2"]
+        let references = ["ref1", "ref2", "ref3"]
         let dict = [
             kPepFrom: myself as AnyObject,
             kPepTo: NSArray(array: [myself]),
@@ -107,7 +107,7 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(status2, PEP_STATUS_OK)
         if let theEncMsg = encMsg2 {
             XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
-            XCTAssertEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
+            XCTAssertEqual(theEncMsg[kPepReferences] as? [String] ?? [], [])
             tryDecryptMessage(
                 message: theEncMsg, myID: myID, references: references, session: session)
         } else {

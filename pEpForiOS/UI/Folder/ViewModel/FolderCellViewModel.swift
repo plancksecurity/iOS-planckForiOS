@@ -34,10 +34,6 @@ public class FolderCellViewModel {
         self.level = level
     }
 
-    func getFolder() -> Folder {
-        return folder
-    }
-
     private var name: String {
         return self.folder.realName
     }

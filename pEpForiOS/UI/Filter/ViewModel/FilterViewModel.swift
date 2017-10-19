@@ -53,7 +53,7 @@ public class FilterViewModel {
                 }
                 items.append(
                     FilterCellViewModel(image: icon, title: account.user.address,
-                                        enabled: filters.contains(type: AccountFilter.self),
+                                        enabled: filters.contains(Address: account.user.address),
                                         filter: AccountFilter(address: account.user.address)))
 
             }
