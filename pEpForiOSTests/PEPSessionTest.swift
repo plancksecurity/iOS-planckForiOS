@@ -74,6 +74,7 @@ class PEPSessionTest: XCTestCase {
     func testMessageIDAndReferencesAfterEncrypt() {
         let testData = TestData()
         let myself = testData.createWorkingIdentity(number: 0)
+        let mySubject = "Some Subject"
         let myID = "myID"
         let references = ["ref1", "ref2", "ref3"]
         let dict = [
@@ -81,7 +82,7 @@ class PEPSessionTest: XCTestCase {
             kPepTo: NSArray(array: [myself]),
             kPepID: myID as AnyObject,
             kPepReferences: NSArray(array: references),
-            kPepShortMessage: "Some Subject" as AnyObject,
+            kPepShortMessage: mySubject as AnyObject,
             kPepLongMessage: "The text body" as AnyObject,
             kPepOutgoing: NSNumber(booleanLiteral: true)
         ] as PEPMessage
@@ -94,8 +95,11 @@ class PEPSessionTest: XCTestCase {
             pEpMessageDict: dict, forIdentity: myself)
         XCTAssertEqual(status1, PEP_STATUS_OK)
         if let theEncMsg = encMsg1 {
-            XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
-            XCTAssertEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
+            // expecting that sensitive data gets hidden (ENGINE-287)
+            XCTAssertNotEqual(theEncMsg[kPepID] as? String, myID)
+            XCTAssertNotEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
+            XCTAssertNotEqual(theEncMsg[kPepShortMessage] as? String, mySubject)
+
             tryDecryptMessage(
                 message: theEncMsg, myID:myID, references: references, session: session)
         } else {
@@ -106,8 +110,11 @@ class PEPSessionTest: XCTestCase {
             pEpMessageDict: dict)
         XCTAssertEqual(status2, PEP_STATUS_OK)
         if let theEncMsg = encMsg2 {
-            XCTAssertEqual(theEncMsg[kPepID] as? String, myID)
-            XCTAssertEqual(theEncMsg[kPepReferences] as? [String] ?? [], [])
+            // expecting that message ID gets hidden (ENGINE-288)
+            XCTAssertNotEqual(theEncMsg[kPepID] as? String, myID)
+
+            XCTAssertNotEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
+            XCTAssertNotEqual(theEncMsg[kPepShortMessage] as? String, mySubject)
             tryDecryptMessage(
                 message: theEncMsg, myID: myID, references: references, session: session)
         } else {
