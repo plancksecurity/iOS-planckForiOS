@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let sendLayerDelegate = DefaultUISendLayerDelegate()
 
+    var buteForceCleanupIfMySelfIsLate = false
+
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -70,6 +72,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
+        // The Engine requires that the first session is created on the main thread
+        // and is kept alive until the last session died.
+        // This responsibility should be shifted to the adapter.
+        buteForceCleanupIfMySelfIsLate = false
+        PEPSession()
         Log.shared.resume()
         networkService?.start()
     }
@@ -78,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // NetworkService will call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
         networkService?.stop()
-        // Stop logging. It would create new sessions.
+        // Stop logging to Engine. It would create new sessions.
         Log.shared.pause()
     }
 
@@ -143,10 +150,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, content: "applicationDidEnterBackground")
 
-        stopUsingPepSession()
-
         self.application = application
-        kickOffMySelf()
+        kickOffMySelf() //is this still required?
+        stopUsingPepSession()
     }
 
     func kickOffMySelf() {
@@ -155,6 +161,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.application = application
+
+        startServices()
 
         DispatchQueue.global(qos: .userInitiated).async {
             AddressBook.checkAndTransfer()
@@ -173,7 +181,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
 
-        stopUsingPepSession()
+        // Just in case, last chance to clean up. Should not be necessary though.
+        PEPSession().cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
@@ -251,8 +260,10 @@ extension AppDelegate: BackgroundTaskProtocol {
 
     func endBackgroundTask(_ taskID: BackgroundTaskID?) {
         if let bID = taskID {
-            PEPSession().cleanup()
             application.endBackgroundTask(bID)
+            if buteForceCleanupIfMySelfIsLate {
+                PEPSession().cleanup()
+            }
         }
     }
 }
@@ -280,6 +291,13 @@ extension AppDelegate: NetworkServiceDelegate {
         // According to the network service, we can guarantee no background service is running anymore,
         // thus we consider it save to cleanup all sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")
+        // No background service should be running after this method got called.
+
+        // No session should be created after calling htis method. MySelf sometimes does it.
+        // Assure they are cleaned up.
+        buteForceCleanupIfMySelfIsLate = true
+
+        // Currently MySelfOperation might run afterwards. Is MySelfOperation maybe obsolete?
         PEPSession().cleanup()
     }
 }
