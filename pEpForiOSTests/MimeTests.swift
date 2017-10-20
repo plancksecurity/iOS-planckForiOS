@@ -14,7 +14,7 @@ class MimeTests: XCTestCase {
             XCTAssertTrue(false)
             return
         }
-        let message = CWMessage.init(data: data)
+        let message = CWMessage(data: data)
         let content = message.content()
         guard let multi = content as? CWMIMEMultipart  else {
             XCTAssertTrue(false)
