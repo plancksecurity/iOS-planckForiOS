@@ -579,4 +579,31 @@ class TestUtil {
 
         return (mySelf: mySelfID, partner: partnerID, message: msg)
     }
+
+    /**
+     Loads the give file by name, parses it with pantomime and creates a CdMessage from it.
+     */
+    static func cdMessage(fileName: String, cdOwnAccount: CdAccount) -> CdMessage? {
+        guard
+            let msgTxt = TestUtil.loadData(
+                fileName: fileName)
+            else {
+                XCTFail()
+                return nil
+        }
+        let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
+        pantomimeMail.setUID(5) // some random UID out of nowhere
+        pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
+        guard let cdMessage = CdMessage.insertOrUpdate(
+            pantomimeMessage: pantomimeMail, account: cdOwnAccount,
+            messageUpdate: CWMessageUpdate(),
+            forceParseAttachments: true) else {
+                XCTFail()
+                return nil
+        }
+        XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
+        XCTAssertEqual(cdMessage.shortMessage, "pEp")
+
+        return cdMessage
+    }
 }
