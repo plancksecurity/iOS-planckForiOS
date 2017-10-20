@@ -34,8 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let sendLayerDelegate = DefaultUISendLayerDelegate()
 
-    var buteForceCleanupIfMySelfIsLate = false
-
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -72,11 +70,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        // The Engine requires that the first session is created on the main thread
-        // and is kept alive until the last session died.
-        // This responsibility should be shifted to the adapter.
-        buteForceCleanupIfMySelfIsLate = false
-        PEPSession()
         Log.shared.resume()
         networkService?.start()
     }
@@ -156,7 +149,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func kickOffMySelf() {
-        mySelfQueue.addOperation(MySelfOperation(parentName: #function, backgrounder: self))
+        let op = MySelfOperation(parentName: #function, backgrounder: self)
+        op.completionBlock = {
+            // We might be the last service that finishes, so we have to cleanup.
+            PEPSession.cleanup()
+        }
+        mySelfQueue.addOperation(op)
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -261,9 +259,6 @@ extension AppDelegate: BackgroundTaskProtocol {
     func endBackgroundTask(_ taskID: BackgroundTaskID?) {
         if let bID = taskID {
             application.endBackgroundTask(bID)
-            if buteForceCleanupIfMySelfIsLate {
-                PEPSession.cleanup()
-            }
         }
     }
 }
@@ -287,18 +282,9 @@ extension AppDelegate: NetworkServiceDelegate {
         // do nothing
     }
 
-    
     func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
-        // According to the network service, we can guarantee no background service is running anymore,
-        // thus we consider it save to cleanup all sessions.
+        // Cleanup sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")
-        // No background service should be running after this method got called.
-
-        // No session should be created after calling htis method. MySelf sometimes does it.
-        // Assure they are cleaned up.
-        buteForceCleanupIfMySelfIsLate = true
-
-        // Currently MySelfOperation might run afterwards. Is MySelfOperation maybe obsolete?
         PEPSession.cleanup()
     }
 }

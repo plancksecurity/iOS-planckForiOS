@@ -13,6 +13,7 @@ import MessageModel
     private let title = "pEpForiOS"
     private var logEnabled = true
     private var paused = false
+    private let session = PEPSession()
     private let loggingQueue: OperationQueue = {
        let createe = OperationQueue()
         createe.qualityOfService = .background
@@ -33,8 +34,7 @@ import MessageModel
         if !MiscUtil.isUnitTest() {
             loggingQueue.addOperation() {
                 if self.logEnabled && !self.paused {
-                    let session = PEPSession()
-                    session.logTitle(
+                    self.session.logTitle(
                         self.title, entity: entity, description: description, comment: comment)
                 }
             }
