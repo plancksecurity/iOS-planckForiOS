@@ -152,7 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let op = MySelfOperation(parentName: #function, backgrounder: self)
         op.completionBlock = {
             // We might be the last service that finishes, so we have to cleanup.
-            PEPSession().cleanup()
+            PEPSession.cleanup()
         }
         mySelfQueue.addOperation(op)
     }
