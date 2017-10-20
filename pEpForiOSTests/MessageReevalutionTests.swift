@@ -74,30 +74,17 @@ class MessageReevalutionTests: XCTestCase {
         persistentSetup = nil
         backgroundQueue.cancelAllOperations()
         backgroundQueue = nil
-        PEPSession().cleanup()
+        PEPSession.cleanup()
         super.tearDown()
     }
 
     func decryptTheMessage() {
-        guard
-            let msgTxt = TestUtil.loadData(
-                fileName: "CommunicationTypeTests_Message_test001_to_test002.txt")
-            else {
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: "CommunicationTypeTests_Message_test001_to_test002.txt",
+            cdOwnAccount: cdOwnAccount) else {
                 XCTFail()
                 return
         }
-        let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
-        pantomimeMail.setUID(5) // some random UID out of nowhere
-        pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-        guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantomimeMail, account: cdOwnAccount,
-            messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
-                XCTFail()
-                return
-        }
-        XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
-        XCTAssertEqual(cdMessage.shortMessage, "pEp")
 
         let expDecrypted = expectation(description: "expDecrypted")
         let errorContainer = ErrorContainer()

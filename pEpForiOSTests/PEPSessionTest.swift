@@ -24,7 +24,7 @@ class PEPSessionTest: XCTestCase {
     }
     override func tearDown() {
         persistentSetup = nil
-        PEPSession().cleanup()
+        PEPSession.cleanup()
         super.tearDown()
     }
 
@@ -132,18 +132,13 @@ class PEPSessionTest: XCTestCase {
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
 
-        guard let data = TestUtil.loadData(fileName: "MessageHeapBufferOverflow.txt") else {
-            XCTAssertTrue(false)
-            return
-        }
-        let pantMessage = CWIMAPMessage(data: data)
-        pantMessage.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-        guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantMessage, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: "MessageHeapBufferOverflow.txt", cdOwnAccount: cdAccount) else {
                 XCTFail()
                 return
         }
+
+        XCTAssertEqual(cdMessage.shortMessage, "test")
 
         for attch in (cdMessage.attachments?.array as? [CdAttachment] ?? []) {
             XCTAssertNotNil(attch.mimeType)
@@ -160,15 +155,8 @@ class PEPSessionTest: XCTestCase {
         folder.uuid = MessageID.generate()
         Record.saveAndWait()
 
-        guard let data = TestUtil.loadData(fileName: "MessageHeapBufferOverflow.txt") else {
-            XCTAssertTrue(false)
-            return
-        }
-        let pantMessage = CWIMAPMessage(data: data)
-        pantMessage.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-        guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantMessage, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: "MessageHeapBufferOverflow.txt", cdOwnAccount: cdAccount) else {
                 XCTFail()
                 return
         }
@@ -193,15 +181,8 @@ class PEPSessionTest: XCTestCase {
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
 
-        guard let data = TestUtil.loadData(fileName: "IOS-211-duplicated-attachments.txt") else {
-            XCTAssertTrue(false)
-            return
-        }
-        let pantMessage = CWIMAPMessage(data: data)
-        pantMessage.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-        guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantMessage, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: "IOS-211-duplicated-attachments.txt", cdOwnAccount: cdAccount) else {
                 XCTFail()
                 return
         }

@@ -180,7 +180,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
 
         // Just in case, last chance to clean up. Should not be necessary though.
-        PEPSession().cleanup()
+        PEPSession.cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
@@ -285,6 +285,6 @@ extension AppDelegate: NetworkServiceDelegate {
     func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
         // Cleanup sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")
-        PEPSession().cleanup()
+        PEPSession.cleanup()
     }
 }

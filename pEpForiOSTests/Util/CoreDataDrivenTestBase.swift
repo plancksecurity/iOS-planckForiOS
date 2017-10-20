@@ -48,7 +48,7 @@ class CoreDataDrivenTestBase: XCTestCase {
     override func tearDown() {
         imapSyncData?.sync?.close()
         persistentSetup = nil
-        PEPSession().cleanup()
+        PEPSession.cleanup()
         super.tearDown()
     }
 
