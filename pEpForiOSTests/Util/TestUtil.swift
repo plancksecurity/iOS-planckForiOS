@@ -587,8 +587,8 @@ class TestUtil {
         }
 
         let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
-        pantomimeMail.setUID(5) // some random UID out of nowhere
-        pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
+        pantomimeMail?.setUID(5) // some random UID out of nowhere
+        pantomimeMail?.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
 
         return pantomimeMail
     }

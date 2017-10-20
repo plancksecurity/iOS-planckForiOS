@@ -10,12 +10,13 @@ import XCTest
 
 class MimeTests: XCTestCase {
     func testPGPMimePantomime() {
-        guard let data = TestUtil.loadData(fileName: "PGPMimeMail.txt") else {
-            XCTAssertTrue(false)
-            return
+        guard
+            let data = TestUtil.loadData(fileName: "PGPMimeMail.txt"),
+            let cwMessage = CWMessage(data: data) else {
+                XCTAssertTrue(false)
+                return
         }
-        let message = CWMessage(data: data)
-        let content = message.content()
+        let content = cwMessage.content()
         guard let multi = content as? CWMIMEMultipart  else {
             XCTAssertTrue(false)
             return

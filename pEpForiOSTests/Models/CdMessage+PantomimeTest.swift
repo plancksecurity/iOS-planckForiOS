@@ -152,11 +152,12 @@ class CdMessage_PantomimeTest: XCTestCase {
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
 
-        guard let data = TestUtil.loadData(fileName: "UnencryptedHTMLMail.txt") else {
-            XCTAssertTrue(false)
-            return
+        guard
+            let data = TestUtil.loadData(fileName: "UnencryptedHTMLMail.txt"),
+            let message = CWIMAPMessage(data: data) else {
+                XCTAssertTrue(false)
+                return
         }
-        let message = CWIMAPMessage.init(data: data)
         message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
         let msg = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
