@@ -176,6 +176,7 @@ extension NetworkService: NetworkServiceWorkerDelegate {
     }
 
     public func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker) {
+        state = .stopped
         self.delegate?.networkServiceDidFinishLastSyncLoop(service: self)
     }
 
