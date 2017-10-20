@@ -323,7 +323,7 @@ class TestUtil {
                                          expAccountsSynced: expAccountsSynced,
                                          failOnError: true)
 
-        networkService.networkServiceDelegate = del
+        networkService.delegate = del
         networkService.sendLayerDelegate = sendLayerDelegate
 
         if skipValidation {
@@ -346,7 +346,7 @@ class TestUtil {
     static public func cancelNetworkService(networkService: NetworkService, testCase: XCTestCase) {
         let del = NetworkServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
-        networkService.networkServiceDelegate = del
+        networkService.delegate = del
         networkService.cancel()
 
         // Wait for cancellation

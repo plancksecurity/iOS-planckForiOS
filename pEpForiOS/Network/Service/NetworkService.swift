@@ -12,16 +12,16 @@ import MessageModel
 
 public protocol NetworkServiceDelegate: class {
     /** Called after each account sync */
-    func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
+    func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol)
 
     /// Called finishing the last sync loop.
     /// No further sync loop will be triggered after this call.
     /// All operations finished before this call.
-    func networkServiceDidFinishLastSyncLoop()
+    func networkServiceDidFinishLastSyncLoop(service:NetworkService)
 
     /** Called after all operations have been canceled */
-    func didCancel(service: NetworkService)
+    func networkServiveDidCancel(service: NetworkService)
 }
 
 /**
@@ -42,16 +42,13 @@ public class NetworkService {
         public var sleepTimeInSeconds: Double
 
         public var sendLayerDelegate: SendLayerDelegate?
-        public weak var networkServiceDelegate: NetworkServiceDelegate?
-        public var networkService: NetworkService?
+
         let parentName: String
         let mySelfer: KickOffMySelfProtocol?
         let backgrounder: BackgroundTaskProtocol?
 
-        init(
-            networkService: NetworkService?, sleepTimeInSeconds: Double, parentName: String,
+        init(sleepTimeInSeconds: Double, parentName: String,
             mySelfer: KickOffMySelfProtocol?, backgrounder: BackgroundTaskProtocol?) {
-            self.networkService = networkService
             self.sleepTimeInSeconds = sleepTimeInSeconds
             self.parentName = parentName
             self.mySelfer = mySelfer
@@ -59,18 +56,17 @@ public class NetworkService {
         }
     }
 
+    public enum State {
+        case running
+        case stopped
+    }
+
+    public private(set) var state = State.stopped
+
     var serviceConfig: ServiceConfig
     public private(set) var currentWorker: NetworkServiceWorker?
     var quickSync: QuickSyncService?
-
-    public weak var networkServiceDelegate: NetworkServiceDelegate? {
-        get {
-            return serviceConfig.networkServiceDelegate
-        }
-        set {
-            serviceConfig.networkServiceDelegate = newValue
-        }
-    }
+    public weak var delegate: NetworkServiceDelegate?
 
     /**
      Amount of time to "sleep" between complete syncs of all accounts.
@@ -92,13 +88,11 @@ public class NetworkService {
     public init(sleepTimeInSeconds: Double = 5.0,
                 parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil,
                 mySelfer: KickOffMySelfProtocol? = nil) {
-        serviceConfig = ServiceConfig(
-            networkService: nil, sleepTimeInSeconds: sleepTimeInSeconds,
-            parentName: parentName,
-            mySelfer: mySelfer ?? DefaultMySelfer(
-                parentName: parentName, backgrounder: backgrounder),
-            backgrounder: backgrounder)
-        serviceConfig.networkService = self
+        serviceConfig = ServiceConfig(sleepTimeInSeconds: sleepTimeInSeconds,
+                                      parentName: parentName,
+                                      mySelfer: mySelfer ?? DefaultMySelfer(
+                                        parentName: parentName, backgrounder: backgrounder),
+                                      backgrounder: backgrounder)
     }
 
     /**
@@ -106,6 +100,8 @@ public class NetworkService {
      */
     public func start() {
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
+        currentWorker?.delegate = self
+        state = .running
         currentWorker?.start()
     }
 
@@ -171,5 +167,23 @@ extension NetworkService: SendLayerProtocol {
 
     public func verify(cdAccount: CdAccount) {
         internalVerify(cdAccount: cdAccount)
+    }
+}
+
+extension NetworkService: NetworkServiceWorkerDelegate {
+    public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) {
+        self.delegate?.networkServiveDidCancel(service: self)
+    }
+
+    public func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker) {
+        self.delegate?.networkServiceDidFinishLastSyncLoop(service: self)
+    }
+
+    public func networkServicWorkerDidSync(worker: NetworkServiceWorker,
+                                           accountInfo: AccountConnectInfo,
+                                           errorProtocol: ServiceErrorProtocol) {
+        self.delegate?.networkServiceDidSync(service: self,
+                                             accountInfo: accountInfo,
+                                             errorProtocol: errorProtocol)
     }
 }

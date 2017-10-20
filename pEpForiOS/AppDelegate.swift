@@ -127,7 +127,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         networkService = NetworkService(parentName: #function, backgrounder: self, mySelfer: self)
         networkService?.sendLayerDelegate = sendLayerDelegate
         CdAccount.sendLayer = networkService
-        networkService?.networkServiceDelegate = self
+        networkService?.delegate = self
 
         startServices()
 
@@ -279,15 +279,16 @@ extension AppDelegate: KickOffMySelfProtocol {
 // MARK: - NetworkServiceDelegate
 
 extension AppDelegate: NetworkServiceDelegate {
-    func didSync(service: NetworkService, accountInfo: AccountConnectInfo, errorProtocol: ServiceErrorProtocol) {
+    func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo, errorProtocol: ServiceErrorProtocol) {
         // do nothing
     }
 
-    func didCancel(service: NetworkService) {
+    func networkServiveDidCancel(service: NetworkService) {
         // do nothing
     }
 
-    func networkServiceDidFinishLastSyncLoop() {
+    
+    func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
         // According to the network service, we can guarantee no background service is running anymore,
         // thus we consider it save to cleanup all sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")
