@@ -57,25 +57,12 @@ class HandshakeTests: XCTestCase {
         session.mySelf(meDict)
         XCTAssertNotNil(meDict[kPepFingerprint])
 
-        guard
-            let msgTxt = TestUtil.loadData(
-                fileName: "HandshakeTests_mail_001.txt")
-            else {
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: "HandshakeTests_mail_001.txt",
+            cdOwnAccount: cdOwnAccount) else {
                 XCTFail()
                 return
         }
-        let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
-        pantomimeMail.setUID(5) // some random UID out of nowhere
-        pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
-
-        guard let cdMessage = CdMessage.insertOrUpdate(
-            pantomimeMessage: pantomimeMail, account: cdOwnAccount,
-            messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
-                XCTFail()
-                return
-        }
-        XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
 
         let pEpMessage = cdMessage.pEpMessage()
 
