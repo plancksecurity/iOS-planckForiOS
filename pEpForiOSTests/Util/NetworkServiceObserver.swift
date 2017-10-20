@@ -33,7 +33,9 @@ class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertib
         self.failOnError = failOnError
     }
 
-    func didSync(service: NetworkService, accountInfo: AccountConnectInfo,
+    // MARK: - NetworkServiceDelegate
+
+    func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol) {
         Log.info(component: #function, content: "\(self)")
         if errorProtocol.hasErrors() && failOnError {
@@ -49,11 +51,12 @@ class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertib
         }
     }
 
-    func didCancel(service: NetworkService) {
+    
+    func networkServiveDidCancel(service: NetworkService) {
         expCanceled?.fulfill()
     }
 
-    func networkServiceDidFinishLastSyncLoop() {
+    func networkServiceDidFinishLastSyncLoop(service:NetworkService) {
         Log.shared.errorAndCrash(component: #function, errorString: "Should not be called")
     }
 }

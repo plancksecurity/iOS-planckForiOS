@@ -11,6 +11,20 @@ import CoreData
 
 import MessageModel
 
+public protocol NetworkServiceWorkerDelegate: class {
+    /** Called after each account sync */
+    func networkServicWorkerDidSync(worker: NetworkServiceWorker, accountInfo: AccountConnectInfo,
+                 errorProtocol: ServiceErrorProtocol)
+
+    /// Called finishing the last sync loop.
+    /// No further sync loop will be triggered after this call.
+    /// All operations finished before this call.
+    func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker)
+
+    /** Called after all operations have been canceled */
+    func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
+}
+
 open class NetworkServiceWorker {
     public struct FolderInfo {
         public let name: String
@@ -56,6 +70,8 @@ open class NetworkServiceWorker {
             }
         }
     }
+
+    public weak var delegate: NetworkServiceWorkerDelegate?
 
     private var stopped = false
     
@@ -111,17 +127,20 @@ open class NetworkServiceWorker {
         self.backgroundQueue.cancelAllOperations()
         Log.info(component: myComp, content: "\(String(describing: self)): all operations cancelled")
 
-        workerQueue.async {
+        workerQueue.async { [weak self] in
+            guard let me = self else {
+                return
+            }
             let observer = ObjectObserver(
-                backgroundQueue: self.backgroundQueue,
-                operationCountKeyPath: self.operationCountKeyPath, myComp: myComp)
-            self.backgroundQueue.addObserver(observer, forKeyPath: self.operationCountKeyPath,
+                backgroundQueue: me.backgroundQueue,
+                operationCountKeyPath: me.operationCountKeyPath, myComp: myComp)
+            me.backgroundQueue.addObserver(observer, forKeyPath: me.operationCountKeyPath,
                                              options: [.initial, .new],
                                              context: nil)
 
-            self.backgroundQueue.waitUntilAllOperationsAreFinished()
-            self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
-            self.serviceConfig.networkServiceDelegate?.didCancel(service: networkService)
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.backgroundQueue.removeObserver(observer, forKeyPath: me.operationCountKeyPath)
+            me.delegate?.networkServicWorkerDidCancel(worker: me)
         }
     }
 
@@ -134,7 +153,7 @@ open class NetworkServiceWorker {
         Log.info(component: myComp, content: "\(String(describing: self)): do not trigger new sync loop")
         workerQueue.async {
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
-            self.serviceConfig.networkServiceDelegate?.networkServiceDidFinishLastSyncLoop()
+            self.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: self)
         }
     }
     
@@ -536,16 +555,16 @@ open class NetworkServiceWorker {
                     [weak self, weak ol] in
                     Log.verbose(component: theComp,
                                 content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")
-                    if let me = self, let theOl = ol,
-                        let service = me.serviceConfig.networkService {
-                        Log.info(component: theComp,
-                                 content: "didSync \(String(describing: me.serviceConfig.networkServiceDelegate))")
-                        me.serviceConfig.networkServiceDelegate?.didSync(
-                            service: service, accountInfo: theOl.accountInfo,
-                            errorProtocol: theOl.errorContainer)
-                        // Process the rest
-                        me.processOperationLines(operationLines: myLines)
+                    guard let me = self, let theOl = ol else {
+                        return
                     }
+                    Log.info(component: theComp,
+                             content: "didSync")
+                    me.delegate?.networkServicWorkerDidSync(worker: me,
+                                                            accountInfo: theOl.accountInfo,
+                                                            errorProtocol: theOl.errorContainer)
+                    // Process the rest
+                    me.processOperationLines(operationLines: myLines)
                 })
             } else {
                 workerQueue.asyncAfter(deadline: DispatchTime.now() +

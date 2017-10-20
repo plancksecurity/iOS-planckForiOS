@@ -110,7 +110,7 @@ class NetworkServiceTests: XCTestCase {
 
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-        networkService.networkServiceDelegate = del
+        networkService.delegate = del
 
         networkService.sendLayerDelegate = sendLayerDelegate
 
@@ -250,7 +250,7 @@ class NetworkServiceTests: XCTestCase {
             expAccountsSynced: expAccountsSynced,
             failOnError: useCorrectSmtpAccount)
 
-        networkService.networkServiceDelegate = del
+        networkService.delegate = del
         networkService.sendLayerDelegate = sendLayerDelegate
 
         let cdAccount = useCorrectSmtpAccount ? TestData().createWorkingCdAccount() :
@@ -308,7 +308,7 @@ class NetworkServiceTests: XCTestCase {
         let expAccountsSynced2 = expectation(description: "expSingleAccountSynced2")
         del = NetworkServiceObserver(
             expAccountsSynced: expAccountsSynced2)
-        networkService.networkServiceDelegate = del
+        networkService.delegate = del
 
         // Wait for next sync, to verify outgoing mails
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
@@ -360,7 +360,7 @@ class NetworkServiceTests: XCTestCase {
 
         del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced3"))
-        networkService.networkServiceDelegate = del
+        networkService.delegate = del
         
         // Wait for next sync
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in

@@ -39,6 +39,8 @@ open class PEPUtil {
 
         let pEpItemsToDelete: [URL] = [
             homeURL.appendingPathComponent(".pEp_management.db"),
+            homeURL.appendingPathComponent(".pEp_management.db-shm"),
+            homeURL.appendingPathComponent(".pEp_management.db-wal"),
             keyRingURL.appendingPathComponent("secring.gpg"),
             keyRingURL.appendingPathComponent("pubring.gpg"),
             ]
