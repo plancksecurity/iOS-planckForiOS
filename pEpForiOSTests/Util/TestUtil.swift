@@ -574,6 +574,9 @@ class TestUtil {
         return (mySelf: mySelfID, partner: partnerID, message: msg)
     }
 
+    /**
+     Loads the given file by name and parses it into a pantomime message.
+     */
     static func cwImapMessage(fileName: String) -> CWIMAPMessage? {
         guard
             let msgTxt = TestUtil.loadData(
@@ -591,7 +594,7 @@ class TestUtil {
     }
 
     /**
-     Loads the give file by name, parses it with pantomime and creates a CdMessage from it.
+     Loads the given file by name, parses it with pantomime and creates a CdMessage from it.
      */
     static func cdMessage(fileName: String, cdOwnAccount: CdAccount) -> CdMessage? {
         guard let pantomimeMail = cwImapMessage(fileName: fileName) else {
