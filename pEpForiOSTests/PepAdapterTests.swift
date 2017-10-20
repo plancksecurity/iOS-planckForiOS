@@ -24,7 +24,7 @@ class PepAdapterTests: XCTestCase {
     }
     
     override func tearDown() {
-        PEPSession().cleanup()
+        PEPSession.cleanup()
         super.tearDown()
     }
 

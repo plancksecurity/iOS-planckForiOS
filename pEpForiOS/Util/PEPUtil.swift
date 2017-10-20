@@ -32,7 +32,7 @@ open class PEPUtil {
 
     /** Delete pEp working data. */
     open static func pEpClean() -> Bool {
-        PEPSession().cleanup()
+        PEPSession.cleanup()
 
         let homeURL = PEPObjCAdapter.homeURL() as URL
         let keyRingURL = homeURL.appendingPathComponent(".gnupg")

@@ -57,7 +57,7 @@ class DecryptionTests: XCTestCase {
         persistentSetup = nil
         backgroundQueue.cancelAllOperations()
         backgroundQueue = nil
-        PEPSession().cleanup()
+        PEPSession.cleanup()
         super.tearDown()
     }
 

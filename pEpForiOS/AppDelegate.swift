@@ -182,7 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
 
         // Just in case, last chance to clean up. Should not be necessary though.
-        PEPSession().cleanup()
+        PEPSession.cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
@@ -262,7 +262,7 @@ extension AppDelegate: BackgroundTaskProtocol {
         if let bID = taskID {
             application.endBackgroundTask(bID)
             if buteForceCleanupIfMySelfIsLate {
-                PEPSession().cleanup()
+                PEPSession.cleanup()
             }
         }
     }
@@ -299,6 +299,6 @@ extension AppDelegate: NetworkServiceDelegate {
         buteForceCleanupIfMySelfIsLate = true
 
         // Currently MySelfOperation might run afterwards. Is MySelfOperation maybe obsolete?
-        PEPSession().cleanup()
+        PEPSession.cleanup()
     }
 }

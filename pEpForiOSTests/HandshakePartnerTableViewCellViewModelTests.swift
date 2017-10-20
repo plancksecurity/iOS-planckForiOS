@@ -43,7 +43,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
     }
     
     override func tearDown() {
-        PEPSession().cleanup()
+        PEPSession.cleanup()
         persistentSetup = nil
         super.tearDown()
     }

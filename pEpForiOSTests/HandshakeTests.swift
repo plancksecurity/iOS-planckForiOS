@@ -42,7 +42,7 @@ class HandshakeTests: XCTestCase {
     }
 
     override func tearDown() {
-        PEPSession().cleanup()
+        PEPSession.cleanup()
         super.tearDown()
     }
 
