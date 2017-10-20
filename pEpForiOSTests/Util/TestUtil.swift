@@ -602,7 +602,6 @@ class TestUtil {
                 return nil
         }
         XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
-        XCTAssertEqual(cdMessage.shortMessage, "pEp")
 
         return cdMessage
     }
