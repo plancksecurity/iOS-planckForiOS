@@ -489,16 +489,10 @@ class TestUtil {
     static func setUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
         -> (mySelf: Identity, partner: Identity, message: Message)? {
-            guard
-                let msgTxt = TestUtil.loadData(
-                    fileName: emailFilePath)
-                else {
-                    XCTFail()
-                    return nil
+            guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
+                XCTFail()
+                return nil
             }
-            let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
-            pantomimeMail.setUID(5) // some random UID out of nowhere
-            pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
 
             guard let recipients = pantomimeMail.recipients() as? [CWInternetAddress] else {
                 XCTFail("Expected array of recipients")
@@ -580,10 +574,7 @@ class TestUtil {
         return (mySelf: mySelfID, partner: partnerID, message: msg)
     }
 
-    /**
-     Loads the give file by name, parses it with pantomime and creates a CdMessage from it.
-     */
-    static func cdMessage(fileName: String, cdOwnAccount: CdAccount) -> CdMessage? {
+    static func cwImapMessage(fileName: String) -> CWIMAPMessage? {
         guard
             let msgTxt = TestUtil.loadData(
                 fileName: fileName)
@@ -591,9 +582,23 @@ class TestUtil {
                 XCTFail()
                 return nil
         }
+
         let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
         pantomimeMail.setUID(5) // some random UID out of nowhere
         pantomimeMail.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
+
+        return pantomimeMail
+    }
+
+    /**
+     Loads the give file by name, parses it with pantomime and creates a CdMessage from it.
+     */
+    static func cdMessage(fileName: String, cdOwnAccount: CdAccount) -> CdMessage? {
+        guard let pantomimeMail = cwImapMessage(fileName: fileName) else {
+            XCTFail()
+            return nil
+        }
+
         guard let cdMessage = CdMessage.insertOrUpdate(
             pantomimeMessage: pantomimeMail, account: cdOwnAccount,
             messageUpdate: CWMessageUpdate(),
