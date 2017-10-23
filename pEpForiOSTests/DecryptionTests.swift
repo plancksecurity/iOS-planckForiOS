@@ -86,12 +86,12 @@ class DecryptionTests: XCTestCase {
 
     func testBasicDecryption(shouldEncrypt: Bool) {
         let msgLongMessage = "This is a message!"
-        let msgShortMessage = "Subject1"
+        let msgShortMessage = "Subject:\n \(msgLongMessage)"
         let messageID = "somemessageid"
         var pEpMsg = PEPMessage()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
-        pEpMsg[kPepLongMessage] = "Subject: \(msgShortMessage)\n\(msgLongMessage)" as NSString
+        pEpMsg[kPepLongMessage] = msgShortMessage as AnyObject
         pEpMsg[kPepOutgoing] = true as AnyObject
         pEpMsg[kPepID] = messageID as AnyObject
 
@@ -128,6 +128,10 @@ class DecryptionTests: XCTestCase {
                 }
             }
             XCTAssertTrue(pEpVersionFound)
+
+            XCTAssertNotEqual(theEncryptedDict[kPepID] as? String, messageID)
+            XCTAssertNotEqual(theEncryptedDict[kPepShortMessage] as? String, msgShortMessage)
+            XCTAssertNotEqual(theEncryptedDict[kPepLongMessage] as? String, msgLongMessage)
 
             encryptedOrNotMailDict = theEncryptedDict
         } else {
