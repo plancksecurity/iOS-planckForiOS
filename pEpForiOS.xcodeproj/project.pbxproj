@@ -108,6 +108,7 @@
 		432142661E8FD6A400FBE987 /* ServiceUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432142651E8FD6A400FBE987 /* ServiceUtil.swift */; };
 		432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432198E71DF6B51B00318A74 /* LoginImapOperation.swift */; };
 		432198ED1DF6B66800318A74 /* SharedObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432198EC1DF6B66800318A74 /* SharedObjects.swift */; };
+		4322E82F1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4322E82E1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt */; };
 		4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4323FE851E83D6FF006785E1 /* ImapFolderBuilder.swift */; };
 		43257C801F50064100DDC7F0 /* HtmlToTextSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43257C7F1F50064100DDC7F0 /* HtmlToTextSaxParser.swift */; };
 		43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43257C811F50179800DDC7F0 /* BasicSaxParser.swift */; };
@@ -470,6 +471,7 @@
 		432142651E8FD6A400FBE987 /* ServiceUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceUtil.swift; sourceTree = "<group>"; };
 		432198E71DF6B51B00318A74 /* LoginImapOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperation.swift; sourceTree = "<group>"; };
 		432198EC1DF6B66800318A74 /* SharedObjects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedObjects.swift; sourceTree = "<group>"; };
+		4322E82E1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Microsoft_Outlook_Probing_Message_001.txt; sourceTree = "<group>"; };
 		4323FE851E83D6FF006785E1 /* ImapFolderBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapFolderBuilder.swift; sourceTree = "<group>"; };
 		43257C7F1F50064100DDC7F0 /* HtmlToTextSaxParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HtmlToTextSaxParser.swift; sourceTree = "<group>"; };
 		43257C811F50179800DDC7F0 /* BasicSaxParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicSaxParser.swift; sourceTree = "<group>"; };
@@ -1333,6 +1335,7 @@
 		43B2C3151D2280ED00A08557 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4322E82E1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt */,
 				43F7F07B1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt */,
 				153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */,
 				43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */,
@@ -1714,6 +1717,7 @@
 				43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */,
 				436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */,
 				153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */,
+				4322E82F1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt in Resources */,
 				43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */,
 				436795FC1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc in Resources */,
 			);
