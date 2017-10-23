@@ -83,10 +83,10 @@ class EmailListViewController: BaseTableViewController {
     }
     
     private func setup() {
-        if noAccountsExist() {
+        /*if noAccountsExist() {
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
-        } else if let vm = model {
+        } else*/ if let vm = model {
             // We came back from e.g EmailView ...
             updateFilterText()
             // ... so we want to update "seen" status
@@ -263,6 +263,28 @@ class EmailListViewController: BaseTableViewController {
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
+
+    //BUFF:
+    private let numRowsBeforeLastToTriggerFetchOder = 5
+    private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
+        guard let vm = model else {
+            return false
+        }
+        return row >= vm.rowCount - numRowsBeforeLastToTriggerFetchOder
+    }
+
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+                            forRowAt indexPath: IndexPath) {
+
+        guard let folder = folderToShow,
+            !(folder is UnifiedInbox) else {
+                return //BUFF: check unified logic
+        }
+        if triggerFetchOlder(lastDisplayedRow: indexPath.row) {
+            appConfig.messageSyncService.requestFetchOlderMessages(inFolder: folder)
+        }
+    }
+    //FFUB
     
     // MARK: - Queue Handling
     
