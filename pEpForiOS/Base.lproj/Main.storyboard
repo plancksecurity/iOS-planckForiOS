@@ -635,7 +635,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMw-Ye-VBO">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMw-Ye-VBO" customClass="CopyLabel" customModule="pEpForiOS" customModuleProvider="target">
                                             <rect key="frame" x="16" y="8" width="343" height="184"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -1034,6 +1034,6 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YH0-dx-pSs"/>
+        <segue reference="70T-Gu-VTr"/>
     </inferredMetricsTieBreakers>
 </document>
