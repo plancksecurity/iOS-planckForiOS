@@ -18,8 +18,7 @@ class BaseTableViewController: UITableViewController {
             guard let theAC = _appConfig else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
 
-                // The app should crash in the line before, so this never gets actually
-                // executed. Just here to make it compile.
+                // We have no config. Return nonsense.
                 return AppConfig(mySelfer: self,
                     messageSyncService: MessageSyncService(
                         sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil))
