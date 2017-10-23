@@ -309,19 +309,19 @@ class EmailListViewModel {
 
 extension EmailListViewModel: MessageFolderDelegate {
     func didCreate(messageFolder: MessageFolder) {
-        GCD.onMainWait {
+        GCD.onMain {
             self.didCreateInternal(messageFolder: messageFolder)
         }
     }
     
     func didUpdate(messageFolder: MessageFolder) {
-        GCD.onMainWait {
+        GCD.onMain {
             self.didUpdateInternal(messageFolder: messageFolder)
         }
     }
     
     func didDelete(messageFolder: MessageFolder) {
-        GCD.onMainWait {
+        GCD.onMain {
             self.didDeleteInternal(messageFolder: messageFolder)
         }
     }
