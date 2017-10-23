@@ -92,6 +92,7 @@ class DecryptionTests: XCTestCase {
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
         pEpMsg[kPepLongMessage] = msgLongMessage as AnyObject
+        pEpMsg[kPepShortMessage] = msgShortMessage as AnyObject
         pEpMsg[kPepOutgoing] = true as AnyObject
         pEpMsg[kPepID] = messageID as AnyObject
 
