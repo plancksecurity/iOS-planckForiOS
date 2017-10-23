@@ -15,7 +15,9 @@ class SortedSet<T: Equatable> {
     typealias SortBlock = (_ first: T,_  second: T) -> ComparisonResult
     private var set = NSMutableOrderedSet() 
     private var sortBlock: SortBlock
-    
+
+    // MARK: - Public API
+
     public var count: Int {
         return set.count
     }
@@ -31,16 +33,25 @@ class SortedSet<T: Equatable> {
     /// - Parameter object: object to insert
     /// - Returns: index the object has been inserted to
     public func insert(object: T) -> Int {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+
         let idx = indexOfObjectIfInserted(obj: object)
         set.insert(object, at: idx)
         return idx
     }
     
     public func remove(object: T) {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+
         set.remove(object)
     }
     
     public func removeObject(at index: Int) {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+
         guard index >= 0, index < set.count else {
             Log.shared.errorAndCrash(component: #function, errorString: "Index out of range")
             return
@@ -49,10 +60,16 @@ class SortedSet<T: Equatable> {
     }
     
     public func object(at index: Int) -> T? {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+
         return set.object(at: index) as? T
     }
     
     public func index(of object: T) -> Int {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+
         let notFound = -1
         for i in 0..<set.count {
             guard let testee = set.object(at: i) as? T else {
@@ -67,8 +84,13 @@ class SortedSet<T: Equatable> {
     }
     
     public func removeAllObjects() {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+        
         set.removeAllObjects()
     }
+
+    // MARK: -
     
     private func sort()  {
         set.sort { (first: Any, second: Any) -> ComparisonResult in
