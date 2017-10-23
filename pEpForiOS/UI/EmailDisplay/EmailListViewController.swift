@@ -385,9 +385,9 @@ extension EmailListViewController {
 
 extension EmailListViewController {
     private func createRowAction(image: UIImage?,
-                                 action: @escaping (UITableViewRowAction, IndexPath) -> Void,
-                                 title: String) -> UITableViewRowAction {
-        let rowAction = UITableViewRowAction(style: .normal, title: title, handler: action)
+                                 action: @escaping (UITableViewRowAction, IndexPath) -> Void
+        ) -> UITableViewRowAction {
+        let rowAction = UITableViewRowAction(style: .normal, title: nil, handler: action)
         if let theImage = image {
             let iconColor = UIColor(patternImage: theImage)
             rowAction.backgroundColor = iconColor
@@ -411,15 +411,7 @@ extension EmailListViewController {
             tableView.reloadRows(at: [indexPath], with: .none)
             tableView.endUpdates()
         }
-        let title: String
-        if row.isFlagged{
-            let unflagString = NSLocalizedString("Unflag", comment: "Message action (on swipe)")
-            title = "\n\n\(unflagString)"
-        } else {
-            let flagString = NSLocalizedString("Flag", comment: "Message action (on swipe)")
-            title = "\n\n\(flagString)"
-        }
-        return createRowAction(image: UIImage(named: "swipe-flag"), action: action, title: title)
+        return createRowAction(image: UIImage(named: "swipe-flag"), action: action)
     }
     
     func createDeleteAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
@@ -429,21 +421,17 @@ extension EmailListViewController {
             tableView.deleteRows(at: [indexPath], with: .none)
             tableView.endUpdates()
         }
-        
-        let title = NSLocalizedString("Delete", comment: "Message action (on swipe)")
-        return createRowAction(image: UIImage(named: "swipe-trash"), action: action,
-                               title: "\n\n\(title)")
+
+        return createRowAction(image: UIImage(named: "swipe-trash"), action: action)
     }
     
     func createMoreAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
         func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
             self.showMoreActionSheet(forRowAt: indexPath)
         }
-        
-        let title = NSLocalizedString("More", comment: "Message action (on swipe)")
+
         return createRowAction(image: UIImage(named: "swipe-more"),
-                               action: action,
-                               title: "\n\n\(title)")
+                               action: action)
     }
 }
 
