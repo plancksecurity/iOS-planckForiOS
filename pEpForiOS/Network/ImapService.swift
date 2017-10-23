@@ -15,6 +15,7 @@ public protocol ImapSyncDelegate: class {
     func connectionTerminated(_ sync: ImapSync, notification: Notification?)
     func connectionTimedOut(_ sync: ImapSync, notification: Notification?)
     func folderFetchCompleted(_ sync: ImapSync, notification: Notification?)
+    func folderFetchOlderNeedsRefetch(_ sync: ImapSync, notification: Notification?)
     func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)
     func folderSyncFailed(_ sync: ImapSync, notification: Notification?)
     func messageChanged(_ sync: ImapSync, notification: Notification?)

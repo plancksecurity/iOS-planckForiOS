@@ -20,3 +20,21 @@ public class FetchOlderImapMessagesOperation: FetchMessagesOperation {
         }
     }
 }
+
+class FetchOlderMessagesSyncDelegate: FetchMessagesSyncDelegate {
+    override func folderFetchOlderNeedsRefetch(_ sync: ImapSync, notification: Notification?) {
+        //BUFF: refetch
+        (errorHandler as? FetchOlderImapMessagesOperation)?.fetchMessages(sync)
+    }
+//    public override func folderFetchCompleted(_ sync: ImapSync, notification: Notification?) {
+//        (errorHandler as? FetchMessagesOperation)?.waitForBackgroundTasksToFinish()
+//    }
+//
+//    public override func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
+//        // do nothing
+//    }
+//
+//    public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+//        (errorHandler as? FetchMessagesOperation)?.fetchMessages(sync)
+//    }
+}
