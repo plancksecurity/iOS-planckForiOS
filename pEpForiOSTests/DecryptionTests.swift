@@ -85,13 +85,13 @@ class DecryptionTests: XCTestCase {
     }
 
     func testBasicDecryption(shouldEncrypt: Bool) {
-        let msgLongMessage = "This is a message!"
-        let msgShortMessage = "Subject:\n \(msgLongMessage)"
+        let msgShortMessage = "Subject 1"
+        let msgLongMessage = "This is a message, for subject \(msgShortMessage)!"
         let messageID = "somemessageid"
         var pEpMsg = PEPMessage()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
-        pEpMsg[kPepLongMessage] = msgShortMessage as AnyObject
+        pEpMsg[kPepLongMessage] = msgLongMessage as AnyObject
         pEpMsg[kPepOutgoing] = true as AnyObject
         pEpMsg[kPepID] = messageID as AnyObject
 
