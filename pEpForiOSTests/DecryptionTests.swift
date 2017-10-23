@@ -84,7 +84,7 @@ class DecryptionTests: XCTestCase {
         return nil
     }
 
-    func testBasicDecryption(shouldEncrypt: Bool) {
+    func testBasicDecryption(shouldEncrypt: Bool, useSubject: Bool) {
         let msgShortMessage = "Subject 1"
         let msgLongMessage = "This is a message, for subject \(msgShortMessage)!"
         let messageID = "somemessageid"
@@ -92,7 +92,9 @@ class DecryptionTests: XCTestCase {
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
         pEpMsg[kPepLongMessage] = msgLongMessage as AnyObject
-        pEpMsg[kPepShortMessage] = msgShortMessage as AnyObject
+        if useSubject {
+            pEpMsg[kPepShortMessage] = msgShortMessage as AnyObject
+        }
         pEpMsg[kPepOutgoing] = true as AnyObject
         pEpMsg[kPepID] = messageID as AnyObject
 
@@ -196,7 +198,12 @@ class DecryptionTests: XCTestCase {
         Record.Context.default.refreshAllObjects()
         if shouldEncrypt {
             XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
-            XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
+            if useSubject {
+                XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
+            } else {
+                // ENGINE-291
+                XCTAssertNil(cdMsg.shortMessage)
+            }
             XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
         } else {
             XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEP_rating_unencrypted.rawValue))
@@ -227,11 +234,15 @@ class DecryptionTests: XCTestCase {
         }
     }
 
-    func testBasicDecryptionOfEncryptedMail() {
-        testBasicDecryption(shouldEncrypt: true)
+    func testBasicDecryptionOfEncryptedMailWithSubject() {
+        testBasicDecryption(shouldEncrypt: true, useSubject: true)
+    }
+
+    func testBasicDecryptionOfEncryptedMailWithoutSubject() {
+        testBasicDecryption(shouldEncrypt: true, useSubject: false)
     }
 
     func testBasicDecryptionOfUnEncryptedMail() {
-        testBasicDecryption(shouldEncrypt: false)
+        testBasicDecryption(shouldEncrypt: false, useSubject: true)
     }
 }
