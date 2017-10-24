@@ -119,6 +119,6 @@ class SortedSet<T: Equatable> {
             }
         }
         // we would insert as the last object
-        return max(0, set.count - 1)
+        return max(0, set.count)
     }
 }
