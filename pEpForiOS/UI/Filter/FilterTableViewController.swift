@@ -92,6 +92,7 @@ class FilterTableViewController: BaseTableViewController {
         let cellvm = sections[indexPath.section][indexPath.row]
         cell.textLabel?.text = cellvm.title
         cell.imageView?.image = cellvm.icon
+        cell.tintColor = UIColor.pEpGreen
         cell.accessoryType = (cellvm.enabled) ? .checkmark : .none
         cell.selectionStyle = .none
         return cell

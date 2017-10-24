@@ -202,6 +202,7 @@ class PEPSessionTest: XCTestCase {
                                            dest: &pepDecryptedMessage, keys: &keys)
         if let decMsg = pepDecryptedMessage {
             XCTAssertEqual(decMsg[kPepID] as? String, myID)
+            // check that original references are restored (ENGINE-290)
             XCTAssertEqual(decMsg[kPepReferences] as? [String] ?? [], references)
         } else {
             XCTFail()

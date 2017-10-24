@@ -59,7 +59,7 @@ public class FilterViewModel {
             }
             break
         case .include:
-            guard let unreadIcon = FlagImages.create(imageSize: circleSize).notSeenImage else {
+            guard let unreadIcon = UIImage(named: "icon-unread") else {
                 Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
                     errorString: "Error Loading images")
                 return
@@ -71,7 +71,7 @@ public class FilterViewModel {
                                     enabled: filters.contains(type: UnreadFilter.self),
                                     filter: UnreadFilter()))
 
-            guard let flaggedIcon = FlagImages.create(imageSize: circleSize).flaggedImage else {
+            guard let flaggedIcon = UIImage(named: "icon-flagged") else {
                 Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
                     errorString: "Error Loading images")
                 return
