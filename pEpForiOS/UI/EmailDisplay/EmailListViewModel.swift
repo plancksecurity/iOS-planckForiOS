@@ -327,24 +327,25 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
     
     private func didCreateInternal(messageFolder: MessageFolder) {
-        if let message = messageFolder as? Message {
-            // Is a Message (not a Folder)
-            if let filter = folderToShow?.filter,
-                !filter.fulfilsFilter(message: message) {
-                // The message does not fit in current filter criteria. Ignore- and do not show it.
-                return
-            }
-            
-            let previewMessage = PreviewMessage(withMessage: message)
-            guard let index = messages?.insert(object: previewMessage) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "We should be able to insert.")
-                return
-            }
-            let indexPath = IndexPath(row: index, section: 0)
-            delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)
-            
+        guard let message = messageFolder as? Message else {
+            // The createe is no message. Ignore.
+            return
         }
+        // Is a Message (not a Folder)
+        if let filter = folderToShow?.filter,
+            !filter.fulfilsFilter(message: message) {
+            // The message does not fit in current filter criteria. Ignore- and do not show it.
+            return
+        }
+
+        let previewMessage = PreviewMessage(withMessage: message)
+        guard let index = messages?.insert(object: previewMessage) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We should be able to insert.")
+            return
+        }
+        let indexPath = IndexPath(row: index, section: 0)
+        delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)  
     }
     
     private func didDeleteInternal(messageFolder: MessageFolder) {
