@@ -102,15 +102,20 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         cdMessage: CdMessage, keys: [String],
         underAttack: Bool,
         context: NSManagedObjectContext) {
-        if let decrypted = pEpDecryptedMessage as? PEPMessage {
-            cdMessage.update(pEpMessage: decrypted, pEpColorRating: pEpColorRating)
-            cdMessage.underAttack = underAttack
-            self.updateMessage(cdMessage: cdMessage, keys: keys, context: context)
-        } else {
+        guard let decrypted = pEpDecryptedMessage as? PEPMessage else {
             Log.shared.errorAndCrash(
                 component: #function,
                 errorString:"Decrypt with rating, but nil message")
+            return
         }
+        cdMessage.update(pEpMessage: decrypted, pEpColorRating: pEpColorRating)
+        cdMessage.underAttack = underAttack
+        self.updateMessage(cdMessage: cdMessage, keys: keys, context: context)
+        guard let message = cdMessage.message() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Error converting CDMesage")
+            return
+        }
+        MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: message) //BUFF: introduce didDecrypt?
     }
 
     /**
