@@ -366,35 +366,50 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
     
     private func didUpdateInternal(messageFolder: MessageFolder) {
-        if let message = messageFolder as? Message {
-            // Is a Message (not a Folder). Flag must have changed
-            guard let pvMsgs = messages else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+        // Make sure it is a Message (not a Folder). Flag must have changed
+        guard let message = messageFolder as? Message else {
+            // It is not a Message (probably it is a Folder).
+            return
+        }
+        guard let pvMsgs = messages else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+            return
+        }
+
+        if indexOfPreviewMessage(forMessage: message) == nil {
+            // We do not have this updated message in our model yet. It might have been updated in a way,
+            // that fulfills the current filters now but did not before the update.
+            // Or it has just been decrypted.
+            // Forward to didCreateInternal to figure out if we want to display it.
+            self.didCreateInternal(messageFolder: messageFolder)
+            return
+        }
+
+        // We do have this message in our model, so we do have to update it
+        guard let indexExisting = indexOfPreviewMessage(forMessage: message),
+            let existingMessage = pvMsgs.object(at: indexExisting) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "We should have the message at this point")
                 return
-            }
-            guard let indexExisting = indexOfPreviewMessage(forMessage: message),
-                let existingMessage = pvMsgs.object(at: indexExisting) else {
-                // We do not have this message in our model, so we do not have to update it
-                return
-            }
-            let previewMessage = PreviewMessage(withMessage: message)
-            if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
-                // We got called even the flaggs did not change. Ignore. Do nothing.
-                return
-            }
-            let indexToRemove = pvMsgs.index(of: existingMessage)
-            pvMsgs.removeObject(at: indexToRemove)
-            let indexInserted = pvMsgs.insert(object: previewMessage)
-            if indexToRemove != indexInserted  {
-                Log.shared.warn(component: #function,
-                                content:
-                    """
+        }
+
+        let previewMessage = PreviewMessage(withMessage: message)
+        if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
+            // We got called even the flaggs did not change. Ignore. Do nothing.
+            return
+        }
+        let indexToRemove = pvMsgs.index(of: existingMessage)
+        pvMsgs.removeObject(at: indexToRemove)
+        let indexInserted = pvMsgs.insert(object: previewMessage)
+        if indexToRemove != indexInserted  {
+            Log.shared.warn(component: #function,
+                            content:
+                """
 We might have to serialize access to messages due to possible concurrent access from outside
 """
-                )
-            }
-            let indexPath = IndexPath(row: indexInserted, section: 0)
-            delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+            )
         }
+        let indexPath = IndexPath(row: indexInserted, section: 0)
+        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
     }
 }
