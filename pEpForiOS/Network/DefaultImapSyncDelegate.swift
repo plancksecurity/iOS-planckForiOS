@@ -89,15 +89,6 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
         errorHandler?.handle(error: ImapSyncError.illegalState(#function))
     }
 
-    func folderFetchOlderNeedsRefetch(_ sync: ImapSync, notification: Notification?) {
-        guard let _ = errorHandler else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We must have an errorHandler here!")
-            return
-        }
-        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
-    }
-
     public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let _ = errorHandler else {
             Log.shared.errorAndCrash(component: #function,

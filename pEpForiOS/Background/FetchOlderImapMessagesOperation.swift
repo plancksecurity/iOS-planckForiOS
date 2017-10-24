@@ -8,9 +8,8 @@
 
 import Foundation
 
-/// Fetches the next bunch of messages that are older than the allready fetched ones.
+/// Fetches the next bunch of older messages (older than the allready fetched ones).
 public class FetchOlderImapMessagesOperation: FetchMessagesOperation {
-
     override func fetchMessages(_ sync: ImapSync) {
         do {
             try sync.fetchOlderMessages()
@@ -19,22 +18,4 @@ public class FetchOlderImapMessagesOperation: FetchMessagesOperation {
             waitForBackgroundTasksToFinish()
         }
     }
-}
-
-class FetchOlderMessagesSyncDelegate: FetchMessagesSyncDelegate {
-    override func folderFetchOlderNeedsRefetch(_ sync: ImapSync, notification: Notification?) {
-        //BUFF: refetch
-        (errorHandler as? FetchOlderImapMessagesOperation)?.fetchMessages(sync)
-    }
-//    public override func folderFetchCompleted(_ sync: ImapSync, notification: Notification?) {
-//        (errorHandler as? FetchMessagesOperation)?.waitForBackgroundTasksToFinish()
-//    }
-//
-//    public override func messagePrefetchCompleted(_ sync: ImapSync, notification: Notification?) {
-//        // do nothing
-//    }
-//
-//    public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-//        (errorHandler as? FetchMessagesOperation)?.fetchMessages(sync)
-//    }
 }

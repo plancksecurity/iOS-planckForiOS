@@ -15,7 +15,6 @@ public protocol ImapSyncDelegate: class {
     func connectionTerminated(_ sync: ImapSync, notification: Notification?)
     func connectionTimedOut(_ sync: ImapSync, notification: Notification?)
     func folderFetchCompleted(_ sync: ImapSync, notification: Notification?)
-    func folderFetchOlderNeedsRefetch(_ sync: ImapSync, notification: Notification?)
     func folderSyncCompleted(_ sync: ImapSync, notification: Notification?)
     func folderSyncFailed(_ sync: ImapSync, notification: Notification?)
     func messageChanged(_ sync: ImapSync, notification: Notification?)
@@ -110,9 +109,9 @@ open class ImapSync: Service {
             print("//IOS-674: ImapService delegate has been set to \(String(describing: delegate))")
         }
     }
-    //476.SOI
+    //476-SOI
 
-    open var maxFetchCount: UInt = 20
+    open var maxFetchCount: UInt = 2 //BUFF: 20
 
     var capabilities: Set<String> {
         return service.capabilities()
