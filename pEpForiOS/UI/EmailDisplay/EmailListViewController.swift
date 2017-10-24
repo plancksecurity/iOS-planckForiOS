@@ -265,7 +265,7 @@ class EmailListViewController: BaseTableViewController {
     }
 
     //BUFF:
-    private let numRowsBeforeLastToTriggerFetchOder = 5
+    private let numRowsBeforeLastToTriggerFetchOder = 1
     private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
         guard let vm = model else {
             return false
