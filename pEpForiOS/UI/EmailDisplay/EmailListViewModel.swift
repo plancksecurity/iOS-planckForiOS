@@ -395,7 +395,8 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         let previewMessage = PreviewMessage(withMessage: message)
         if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
-            // We got called even the flaggs did not change. Ignore. Do nothing.
+            // The only message properties displayed in this view that might be updated are flagged and seen.
+            // We got called even the flaggs did not change. Ignore.
             return
         }
         let indexToRemove = pvMsgs.index(of: existingMessage)
