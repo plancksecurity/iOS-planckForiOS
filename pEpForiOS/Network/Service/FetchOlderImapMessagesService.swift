@@ -43,6 +43,8 @@ public class FetchOlderImapMessagesService {
         let fetchOlderOp = FetchOlderImapMessagesOperation(errorContainer: errorContainer, imapSyncData: imapSyncData, folderName: folder.name)
         fetchOlderOp.completionBlock = {[weak self] in
             self?.removeFromRunning(opForFolder: folder)
+            let decryptOP = DecryptMessagesOperation(errorContainer: errorContainer)
+            self?.queue.addOperation(decryptOP)
         }
         runningOperations[folder] = fetchOlderOp
         queue.addOperation(loginOp)
@@ -50,10 +52,7 @@ public class FetchOlderImapMessagesService {
     }
 
     func removeFromRunning(opForFolder folder: Folder) {
-        guard let runningOp = runningOperations[folder] else {
-            return
-        }
-        runningOp.cancel()
+        runningOperations[folder] = nil
     }
 
     private func anOperationIsAlreadyRunning(forFolder folder: Folder) -> Bool {
