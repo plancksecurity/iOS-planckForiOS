@@ -27,6 +27,7 @@ extension EmailListViewModel: FilterUpdateProtocol {
 
 class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
+    let messageSyncService: MessageSyncServiceProtocol
     class Row {
         var senderContactImage: UIImage?
         var ratingImage: UIImage?
@@ -67,9 +68,11 @@ class EmailListViewModel {
     
     // MARK: Life Cycle
     
-    init(delegate: EmailListViewModelDelegate? = nil, folderToShow: Folder? = nil) {
+    init(delegate: EmailListViewModelDelegate? = nil, messageSyncService: MessageSyncServiceProtocol,
+         folderToShow: Folder? = nil) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.delegate = delegate
+        self.messageSyncService = messageSyncService
         self.folderToShow = folderToShow
         resetViewModel()
     }
@@ -285,8 +288,6 @@ class EmailListViewModel {
         resetViewModel()
     }
 
-
-
     private func assuredFilterOfFolderToShow() -> CompositeFilter<FilterBase> {
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
@@ -302,6 +303,55 @@ class EmailListViewModel {
             return CompositeFilter<FilterBase>.DefaultFilter()
         }
         return folderFilter
+    }
+
+    // MARK: - Fetch Older Messages
+
+    /// The number of rows (not yet displayed to the user) before we want to fetch older messages.
+    /// A balance between good user experience (have data in time, ideally before the user has scrolled
+    /// to the last row) and memory usage has to be found.
+    private let numRowsBeforeLastToTriggerFetchOder = 1
+
+    /// Figures out whether or not fetching of older messages should be requested.
+    /// Takes numRowsBeforeLastToTriggerFetchOder into account,
+    ///
+    /// - Parameter row: number of displayed tableView row to base computation on
+    /// - Returns: true if fetch older messages should be requested, false otherwize
+    private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
+        return row >= rowCount - numRowsBeforeLastToTriggerFetchOder
+    }
+
+    // Implemented to get informed about the currently visible cells.
+    // If the user has scrolled down (almost) to the end, we ask for older emails.
+
+    /// Get informed about the new visible cells.
+    /// If the user has scrolled down (almost) to the end, we ask for older emails.
+    ///
+    /// - Parameter indexPath: indexpath to check need for fetch older for
+    public func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath) {
+        guard let folder = folderToShow else {
+            return
+        }
+        if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
+            return
+        }
+        if folder is UnifiedInbox {
+            guard let unified = folder as? UnifiedInbox else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                return
+            }
+            requestFetchOlder(forFolders: unified.folders)
+        } else {
+            requestFetchOlder(forFolders: [folder])
+        }
+    }
+
+    private func requestFetchOlder(forFolders folders: [Folder]) {
+        DispatchQueue.main.async { [weak self] in
+            for folder in folders {
+                self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
+            }
+        }
     }
 }
 

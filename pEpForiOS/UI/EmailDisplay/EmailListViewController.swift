@@ -78,7 +78,9 @@ class EmailListViewController: BaseTableViewController {
     
     private func resetModel() {
         if folderToShow != nil {
-            model = EmailListViewModel(delegate: self, folderToShow: folderToShow)
+            model = EmailListViewModel(delegate: self,
+                                       messageSyncService: appConfig.messageSyncService,
+                                       folderToShow: folderToShow)
         }
     }
     
@@ -264,28 +266,17 @@ class EmailListViewController: BaseTableViewController {
         performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
 
-    //BUFF:
-    private let numRowsBeforeLastToTriggerFetchOder = 1
-    private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
-        guard let vm = model else {
-            return false
-        }
-        return row >= vm.rowCount - numRowsBeforeLastToTriggerFetchOder
-    }
-
+    // Implemented to get informed about the scrolling position.
+    // If the user has scrolled down (almost) to the end, we need to get older emails to display.
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
                             forRowAt indexPath: IndexPath) {
-
-        guard let folder = folderToShow,
-            !(folder is UnifiedInbox) else {
-                return //BUFF: check unified logic
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+            return
         }
-        if triggerFetchOlder(lastDisplayedRow: indexPath.row) {
-            appConfig.messageSyncService.requestFetchOlderMessages(inFolder: folder)
-        }
+        vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
     }
-    //FFUB
-    
+
     // MARK: - Queue Handling
     
     private func queue(operation op:Operation, for indexPath: IndexPath) {
@@ -301,7 +292,9 @@ class EmailListViewController: BaseTableViewController {
             op.cancel()
         }
     }
-    
+
+    // MARK: -
+
     override func didReceiveMemoryWarning() {
         model?.freeMemory()
     }
