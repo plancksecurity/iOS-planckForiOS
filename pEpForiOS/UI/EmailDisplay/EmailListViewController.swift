@@ -83,10 +83,10 @@ class EmailListViewController: BaseTableViewController {
     }
     
     private func setup() {
-        /*if noAccountsExist() {
+        if noAccountsExist() {
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
-        } else*/ if let vm = model {
+        } else if let vm = model {
             // We came back from e.g EmailView ...
             updateFilterText()
             // ... so we want to update "seen" status
