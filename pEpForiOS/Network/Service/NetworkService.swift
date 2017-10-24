@@ -106,7 +106,7 @@ public class NetworkService {
     }
 
     /**
-     Start endlessly synchronizing in the background.
+     Stop endlessly synchronizing in the background
      NetworkServiceDelegate networkServiceDidFinishLastSyncLoop() is called after the last sync operation finished.
      */
     public func stop() {
