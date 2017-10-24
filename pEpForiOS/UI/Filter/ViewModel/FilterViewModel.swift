@@ -59,7 +59,7 @@ public class FilterViewModel {
             }
             break
         case .include:
-            guard let unreadIcon = UIImage(named: "pEpForiOS-icon-unread") else {
+            guard let unreadIcon = UIImage(named: "icon-unread") else {
                 Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
                     errorString: "Error Loading images")
                 return
