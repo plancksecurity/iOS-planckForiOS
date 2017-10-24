@@ -88,6 +88,7 @@ class DecryptionTests: XCTestCase {
         let msgShortMessage = "Subject 1"
         let msgLongMessage = "This is a message, for subject \(msgShortMessage)!"
         let messageID = "somemessageid"
+        let references = ["ref1", "ref2", "ref3"]
         var pEpMsg = PEPMessage()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
@@ -97,6 +98,7 @@ class DecryptionTests: XCTestCase {
         }
         pEpMsg[kPepOutgoing] = true as AnyObject
         pEpMsg[kPepID] = messageID as AnyObject
+        pEpMsg[kPepReferences] = references as AnyObject
 
         var encryptedOrNotMailDict = PEPMessage()
 
@@ -135,6 +137,7 @@ class DecryptionTests: XCTestCase {
             XCTAssertNotEqual(theEncryptedDict[kPepID] as? String, messageID)
             XCTAssertNotEqual(theEncryptedDict[kPepShortMessage] as? String, msgShortMessage)
             XCTAssertNotEqual(theEncryptedDict[kPepLongMessage] as? String, msgLongMessage)
+            XCTAssertNotEqual(theEncryptedDict[kPepReferences] as? [String] ?? [], references)
 
             encryptedOrNotMailDict = theEncryptedDict
         } else {
@@ -205,6 +208,16 @@ class DecryptionTests: XCTestCase {
                 XCTAssertNil(cdMsg.shortMessage)
             }
             XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
+
+            // check references (ENGINE-290)
+            let cdRefs = (cdMsg.references?.array as? [CdMessageReference]) ?? []
+            if cdRefs.count == references.count {
+                for i in 0..<cdRefs.count {
+                    XCTAssertEqual(cdRefs[i].reference, references[i])
+                }
+            } else {
+                XCTFail()
+            }
         } else {
             XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEP_rating_unencrypted.rawValue))
         }
