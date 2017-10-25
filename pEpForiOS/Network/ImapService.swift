@@ -111,7 +111,7 @@ open class ImapSync: Service {
     }
     //476-SOI
 
-    open var maxFetchCount: UInt = 2 //BUFF: 20
+    open var maxFetchCount: UInt = 20
 
     var capabilities: Set<String> {
         return service.capabilities()
