@@ -111,11 +111,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         cdMessage.update(pEpMessage: decrypted, pEpColorRating: pEpColorRating)
         cdMessage.underAttack = underAttack
         self.updateMessage(cdMessage: cdMessage, keys: keys, context: context)
-        guard let message = cdMessage.message() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Error converting CDMesage")
-            return
-        }
-        MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: message)
     }
 
     /**
@@ -124,6 +119,14 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
     func updateMessage(cdMessage: CdMessage, keys: [String], context: NSManagedObjectContext) {
         cdMessage.updateKeyList(keys: keys)
         context.saveAndLogErrors()
-        cdMessage.updateDecrypted()
+        notifyDelegate(messageUpdated: cdMessage)
+    }
+
+    private func notifyDelegate(messageUpdated cdMessage: CdMessage) {
+        guard let message = cdMessage.message() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Error converting CDMesage")
+            return
+        }
+        MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: message)
     }
 }
