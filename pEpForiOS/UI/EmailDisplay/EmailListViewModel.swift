@@ -381,13 +381,17 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The createe is no message. Ignore.
             return
         }
+        if !isInFolderToShow(message: message) {
+            // The messsage is not in the folder we are currently showing.
+            // Ignore.
+            return
+        }
         // Is a Message (not a Folder)
         if let filter = folderToShow?.filter,
             !filter.fulfilsFilter(message: message) {
             // The message does not fit in current filter criteria. Ignore- and do not show it.
             return
         }
-
         let previewMessage = PreviewMessage(withMessage: message)
         guard let index = messages?.insert(object: previewMessage) else {
             Log.shared.errorAndCrash(component: #function,
@@ -399,26 +403,39 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
     
     private func didDeleteInternal(messageFolder: MessageFolder) {
-        if let message = messageFolder as? Message {
-            // Is a Message (not a Folder)
-            guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
-                // We do not have this message in our model, so we do not have to remove it
-                return
-            }
-            guard let pvMsgs = messages else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
-                return
-            }
-            pvMsgs.removeObject(at: indexExisting)
-            let indexPath = IndexPath(row: indexExisting, section: 0)
-            delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+        // Make sure it is a Message (not a Folder). Flag must have changed
+        guard let message = messageFolder as? Message else {
+            // It is not a Message (probably it is a Folder).
+            return
         }
+        if !isInFolderToShow(message: message) {
+            // The messsage is not in the folder we are currently showing.
+            // Ignore.
+            return
+        }
+        // Is a Message (not a Folder)
+        guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
+            // We do not have this message in our model, so we do not have to remove it
+            return
+        }
+        guard let pvMsgs = messages else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+            return
+        }
+        pvMsgs.removeObject(at: indexExisting)
+        let indexPath = IndexPath(row: indexExisting, section: 0)
+        delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
     }
     
     private func didUpdateInternal(messageFolder: MessageFolder) {
         // Make sure it is a Message (not a Folder). Flag must have changed
         guard let message = messageFolder as? Message else {
             // It is not a Message (probably it is a Folder).
+            return
+        }
+        if !isInFolderToShow(message: message) {
+            // The updated messsage is not in the folder we are currently showing.
+            // Ignore.
             return
         }
         guard let pvMsgs = messages else {
@@ -462,5 +479,9 @@ We might have to serialize access to messages due to possible concurrent access 
         }
         let indexPath = IndexPath(row: indexInserted, section: 0)
         delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+    }
+
+    private func isInFolderToShow(message: Message) -> Bool {
+        return message.parent == folderToShow
     }
 }
