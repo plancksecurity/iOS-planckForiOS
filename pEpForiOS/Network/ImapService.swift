@@ -109,7 +109,7 @@ open class ImapSync: Service {
             print("//IOS-674: ImapService delegate has been set to \(String(describing: delegate))")
         }
     }
-    //476.SOI
+    //476-SOI
 
     open var maxFetchCount: UInt = 20
 

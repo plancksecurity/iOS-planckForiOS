@@ -78,7 +78,9 @@ class EmailListViewController: BaseTableViewController {
     
     private func resetModel() {
         if folderToShow != nil {
-            model = EmailListViewModel(delegate: self, folderToShow: folderToShow)
+            model = EmailListViewModel(delegate: self,
+                                       messageSyncService: appConfig.messageSyncService,
+                                       folderToShow: folderToShow)
         }
     }
     
@@ -263,7 +265,18 @@ class EmailListViewController: BaseTableViewController {
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
-    
+
+    // Implemented to get informed about the scrolling position.
+    // If the user has scrolled down (almost) to the end, we need to get older emails to display.
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
+                            forRowAt indexPath: IndexPath) {
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+            return
+        }
+        vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
+    }
+
     // MARK: - Queue Handling
     
     private func queue(operation op:Operation, for indexPath: IndexPath) {
@@ -279,7 +292,9 @@ class EmailListViewController: BaseTableViewController {
             op.cancel()
         }
     }
-    
+
+    // MARK: -
+
     override func didReceiveMemoryWarning() {
         model?.freeMemory()
     }

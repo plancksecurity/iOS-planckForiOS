@@ -27,6 +27,7 @@ extension EmailListViewModel: FilterUpdateProtocol {
 
 class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
+    let messageSyncService: MessageSyncServiceProtocol
     class Row {
         var senderContactImage: UIImage?
         var ratingImage: UIImage?
@@ -67,9 +68,11 @@ class EmailListViewModel {
     
     // MARK: Life Cycle
     
-    init(delegate: EmailListViewModelDelegate? = nil, folderToShow: Folder? = nil) {
+    init(delegate: EmailListViewModelDelegate? = nil, messageSyncService: MessageSyncServiceProtocol,
+         folderToShow: Folder? = nil) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.delegate = delegate
+        self.messageSyncService = messageSyncService
         self.folderToShow = folderToShow
         resetViewModel()
     }
@@ -285,8 +288,6 @@ class EmailListViewModel {
         resetViewModel()
     }
 
-
-
     private func assuredFilterOfFolderToShow() -> CompositeFilter<FilterBase> {
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
@@ -302,6 +303,55 @@ class EmailListViewModel {
             return CompositeFilter<FilterBase>.DefaultFilter()
         }
         return folderFilter
+    }
+
+    // MARK: - Fetch Older Messages
+
+    /// The number of rows (not yet displayed to the user) before we want to fetch older messages.
+    /// A balance between good user experience (have data in time, ideally before the user has scrolled
+    /// to the last row) and memory usage has to be found.
+    private let numRowsBeforeLastToTriggerFetchOder = 1
+
+    /// Figures out whether or not fetching of older messages should be requested.
+    /// Takes numRowsBeforeLastToTriggerFetchOder into account,
+    ///
+    /// - Parameter row: number of displayed tableView row to base computation on
+    /// - Returns: true if fetch older messages should be requested, false otherwize
+    private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
+        return row >= rowCount - numRowsBeforeLastToTriggerFetchOder
+    }
+
+    // Implemented to get informed about the currently visible cells.
+    // If the user has scrolled down (almost) to the end, we ask for older emails.
+
+    /// Get informed about the new visible cells.
+    /// If the user has scrolled down (almost) to the end, we ask for older emails.
+    ///
+    /// - Parameter indexPath: indexpath to check need for fetch older for
+    public func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath) {
+        guard let folder = folderToShow else {
+            return
+        }
+        if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
+            return
+        }
+        if folder is UnifiedInbox {
+            guard let unified = folder as? UnifiedInbox else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                return
+            }
+            requestFetchOlder(forFolders: unified.folders)
+        } else {
+            requestFetchOlder(forFolders: [folder])
+        }
+    }
+
+    private func requestFetchOlder(forFolders folders: [Folder]) {
+        DispatchQueue.main.async { [weak self] in
+            for folder in folders {
+                self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
+            }
+        }
     }
 }
 
@@ -327,73 +377,111 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
     
     private func didCreateInternal(messageFolder: MessageFolder) {
-        if let message = messageFolder as? Message {
-            // Is a Message (not a Folder)
-            if let filter = folderToShow?.filter,
-                !filter.fulfilsFilter(message: message) {
-                // The message does not fit in current filter criteria. Ignore- and do not show it.
-                return
-            }
-            
-            let previewMessage = PreviewMessage(withMessage: message)
-            guard let index = messages?.insert(object: previewMessage) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "We should be able to insert.")
-                return
-            }
-            let indexPath = IndexPath(row: index, section: 0)
-            delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)
-            
+        guard let message = messageFolder as? Message else {
+            // The createe is no message. Ignore.
+            return
         }
+        if !isInFolderToShow(message: message) {
+            // The messsage is not in the folder we are currently showing.
+            // Ignore.
+            return
+        }
+        // Is a Message (not a Folder)
+        if let filter = folderToShow?.filter,
+            !filter.fulfilsFilter(message: message) {
+            // The message does not fit in current filter criteria. Ignore- and do not show it.
+            return
+        }
+        let previewMessage = PreviewMessage(withMessage: message)
+        guard let index = messages?.insert(object: previewMessage) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We should be able to insert.")
+            return
+        }
+        let indexPath = IndexPath(row: index, section: 0)
+        delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)  
     }
     
     private func didDeleteInternal(messageFolder: MessageFolder) {
-        if let message = messageFolder as? Message {
-            // Is a Message (not a Folder)
-            guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
-                // We do not have this message in our model, so we do not have to remove it
-                return
-            }
-            guard let pvMsgs = messages else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
-                return
-            }
-            pvMsgs.removeObject(at: indexExisting)
-            let indexPath = IndexPath(row: indexExisting, section: 0)
-            delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+        // Make sure it is a Message (not a Folder). Flag must have changed
+        guard let message = messageFolder as? Message else {
+            // It is not a Message (probably it is a Folder).
+            return
         }
+        if !isInFolderToShow(message: message) {
+            // The messsage is not in the folder we are currently showing.
+            // Ignore.
+            return
+        }
+        // Is a Message (not a Folder)
+        guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
+            // We do not have this message in our model, so we do not have to remove it
+            return
+        }
+        guard let pvMsgs = messages else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+            return
+        }
+        pvMsgs.removeObject(at: indexExisting)
+        let indexPath = IndexPath(row: indexExisting, section: 0)
+        delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
     }
     
     private func didUpdateInternal(messageFolder: MessageFolder) {
-        if let message = messageFolder as? Message {
-            // Is a Message (not a Folder). Flag must have changed
-            guard let pvMsgs = messages else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+        // Make sure it is a Message (not a Folder). Flag must have changed
+        guard let message = messageFolder as? Message else {
+            // It is not a Message (probably it is a Folder).
+            return
+        }
+        if !isInFolderToShow(message: message) {
+            // The updated messsage is not in the folder we are currently showing.
+            // Ignore.
+            return
+        }
+        guard let pvMsgs = messages else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+            return
+        }
+
+        if indexOfPreviewMessage(forMessage: message) == nil {
+            // We do not have this updated message in our model yet. It might have been updated in a way,
+            // that fulfills the current filters now but did not before the update.
+            // Or it has just been decrypted.
+            // Forward to didCreateInternal to figure out if we want to display it.
+            self.didCreateInternal(messageFolder: messageFolder)
+            return
+        }
+
+        // We do have this message in our model, so we do have to update it
+        guard let indexExisting = indexOfPreviewMessage(forMessage: message),
+            let existingMessage = pvMsgs.object(at: indexExisting) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "We should have the message at this point")
                 return
-            }
-            guard let indexExisting = indexOfPreviewMessage(forMessage: message),
-                let existingMessage = pvMsgs.object(at: indexExisting) else {
-                // We do not have this message in our model, so we do not have to update it
-                return
-            }
-            let previewMessage = PreviewMessage(withMessage: message)
-            if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
-                // We got called even the flaggs did not change. Ignore. Do nothing.
-                return
-            }
-            let indexToRemove = pvMsgs.index(of: existingMessage)
-            pvMsgs.removeObject(at: indexToRemove)
-            let indexInserted = pvMsgs.insert(object: previewMessage)
-            if indexToRemove != indexInserted  {
-                Log.shared.warn(component: #function,
-                                content:
-                    """
+        }
+
+        let previewMessage = PreviewMessage(withMessage: message)
+        if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
+            // The only message properties displayed in this view that might be updated are flagged and seen.
+            // We got called even the flaggs did not change. Ignore.
+            return
+        }
+        let indexToRemove = pvMsgs.index(of: existingMessage)
+        pvMsgs.removeObject(at: indexToRemove)
+        let indexInserted = pvMsgs.insert(object: previewMessage)
+        if indexToRemove != indexInserted  {
+            Log.shared.warn(component: #function,
+                            content:
+                """
 We might have to serialize access to messages due to possible concurrent access from outside
 """
-                )
-            }
-            let indexPath = IndexPath(row: indexInserted, section: 0)
-            delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+            )
         }
+        let indexPath = IndexPath(row: indexInserted, section: 0)
+        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+    }
+
+    private func isInFolderToShow(message: Message) -> Bool {
+        return message.parent == folderToShow
     }
 }

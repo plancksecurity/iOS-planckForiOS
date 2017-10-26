@@ -26,7 +26,11 @@ public class FetchOlderImapMessagesService {
         guard let cdFolder = CdFolder.search(folder: folder),
             let cdAccount = cdFolder.account else {
                 Log.shared.error(component: #function,
-                                 errorString: "Inconsistent DB state. CDFolder for Folder \(folder) does not exist or its mandatory field \"account\" is not set.")
+                                 errorString:
+                    """
+                    Inconsistent DB state. CDFolder for Folder \(folder) does not exist or its mandatory
+                    field \"account\" is not set.
+                    """)
                 return
         }
         guard let imapConnectInfo = cdAccount.imapConnectInfo else {
@@ -39,6 +43,8 @@ public class FetchOlderImapMessagesService {
         let fetchOlderOp = FetchOlderImapMessagesOperation(errorContainer: errorContainer, imapSyncData: imapSyncData, folderName: folder.name)
         fetchOlderOp.completionBlock = {[weak self] in
             self?.removeFromRunning(opForFolder: folder)
+            let decryptOP = DecryptMessagesOperation(errorContainer: errorContainer)
+            self?.queue.addOperation(decryptOP)
         }
         runningOperations[folder] = fetchOlderOp
         queue.addOperation(loginOp)
@@ -46,10 +52,7 @@ public class FetchOlderImapMessagesService {
     }
 
     func removeFromRunning(opForFolder folder: Folder) {
-        guard let runningOp = runningOperations[folder] else {
-            return
-        }
-        runningOp.cancel()
+        runningOperations[folder] = nil
     }
 
     private func anOperationIsAlreadyRunning(forFolder folder: Folder) -> Bool {
