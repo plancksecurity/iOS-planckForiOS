@@ -482,6 +482,13 @@ We might have to serialize access to messages due to possible concurrent access 
     }
 
     private func isInFolderToShow(message: Message) -> Bool {
-        return message.parent == folderToShow
+        if folderToShow is UnifiedInbox {
+            if message.parent.folderType == .inbox {
+                return true
+            }
+        } else {
+            return message.parent == folderToShow
+        }
+        return false
     }
 }
