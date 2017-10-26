@@ -294,6 +294,12 @@ extension PersistentImapFolder: CWIMAPCache {
 
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
+        if messageUpdate.isNoChange() {
+            // Do not trigger StorePrefetchedMailOperation if there is nothing to do.
+            // This happens if an already fetched message with no changes has been fetched again.
+            // E.g. to update the MSN of the  message.
+            return
+        }
         let opStore = StorePrefetchedMailOperation(
             parentName: functionName(#function),
             accountID: accountID, message: message, messageUpdate: messageUpdate,
