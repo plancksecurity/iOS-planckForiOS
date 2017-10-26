@@ -473,11 +473,6 @@ extension CdMessage {
     public static func insertOrUpdate(
         pantomimeMessage: CWIMAPMessage, account: CdAccount,
         messageUpdate: CWMessageUpdate, forceParseAttachments: Bool = false) -> CdMessage? {
-        if messageUpdate.isNoChange() {
-            // Nothing has been modified on the message, no need to update.
-            return nil
-        }
-
         guard let mail = quickInsertOrUpdate(
             pantomimeMessage: pantomimeMessage, account: account, messageUpdate: messageUpdate)
             else {
