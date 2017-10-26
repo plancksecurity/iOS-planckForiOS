@@ -452,9 +452,13 @@ extension CdMessage {
 
 
         let _ = mail.updateFromServer(cwFlags: message.flags())
-        if isUpdate,
-            let msg = mail.message() {
-            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+        if isUpdate {
+            guard let msg = mail.message(), let flags = msg.imapFlags else {
+                return mail
+            }
+            if !flags.deleted {
+                MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+            }
         }
 
         return mail
