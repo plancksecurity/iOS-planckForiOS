@@ -127,6 +127,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             Log.shared.errorAndCrash(component: #function, errorString: "Error converting CDMesage")
             return
         }
-        MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: message)
+                MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
     }
 }
