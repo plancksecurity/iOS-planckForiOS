@@ -361,10 +361,6 @@ extension CdMessage {
         serverFlags.update(cwFlags: cwFlags)
         if cwFlags.contain(.deleted) {
             Log.info(component: #function, content: "Message with flag deleted")
-            if let msg = self.message() {
-                MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
-
-            }
         }
 
         return changedLocalFlags
