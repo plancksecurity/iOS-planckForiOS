@@ -71,8 +71,7 @@ extension RecipientCell {
     public func textViewDidChangeSelection(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
         
-        if textView.selectedRange.location != NSNotFound {
-            let range = textView.selectedTextRange!
+        if textView.selectedRange.location != NSNotFound, let range = textView.selectedTextRange {
             let selected = textView.text(in: range)
             
             // Extract text attachments form selection
