@@ -1787,7 +1787,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp \"${SRCROOT}/../pEpEngine/db/system.db\" \"${SRCROOT}/pEpTrustWords.bundle\"\n";
+			shellScript = "THE_DB=${SRCROOT}/../pEpEngine/db/system.db\nif [ ! -f ${THE_DB} ]; then\ncd \"${SRCROOT}/../pEpEngine/\" && make db\nfi\ncp ${THE_DB} \"${SRCROOT}/pEpTrustWords.bundle\"\n";
 		};
 		4961BA0D1E7BEA4200920DF8 /* Warnings for TODO++ Script */ = {
 			isa = PBXShellScriptBuildPhase;
