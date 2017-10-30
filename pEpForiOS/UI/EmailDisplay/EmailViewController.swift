@@ -38,6 +38,10 @@ class EmailViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let m = message else{
+            Log.shared.errorAndCrash(component: #function, errorString: "no message to show")
+            return
+        }
 
         loadDatasource("MessageData")
 
@@ -46,7 +50,7 @@ class EmailViewController: BaseTableViewController {
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
 
-        self.title = message?.shortMessage
+        self.title = m.shortMessage
         saveTitleView()
     }
 
