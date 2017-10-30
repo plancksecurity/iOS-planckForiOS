@@ -31,9 +31,6 @@ class EmailViewController: BaseTableViewController {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        if message == nil {
-            Log.shared.errorAndCrash(component: #function, errorString: "no message")
-        }
     }
 
     override func viewDidLoad() {
