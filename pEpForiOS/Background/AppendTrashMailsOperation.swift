@@ -29,8 +29,8 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
             errorContainer: errorContainer)
     }
 
-    override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
-        var result: (PEPMessageDict, PEPIdentity, NSManagedObjectID)?
+    override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentityDict, NSManagedObjectID)? {
+        var result: (PEPMessageDict, PEPIdentityDict, NSManagedObjectID)?
         context.performAndWait {
             guard let folder = self.context.object(with: self.folderObjectID) as? CdFolder else {
                 return

@@ -18,7 +18,7 @@ public class AppendDraftMailsOperation: AppendMailsOperationBase {
         super.init(parentName: parentName, appendFolderType: appendFolder, imapSyncData: imapSyncData, errorContainer: errorContainer)
     }
 
-    override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
+    override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentityDict, NSManagedObjectID)? {
         var msg: CdMessage?
         context.performAndWait {
             let p = NSPredicate(

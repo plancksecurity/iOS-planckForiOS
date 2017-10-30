@@ -59,15 +59,15 @@ open class PEPUtil {
         return true
     }
 
-    open static func identity(account: CdAccount) -> PEPIdentity {
+    open static func identity(account: CdAccount) -> PEPIdentityDict {
         if let id = account.identity {
             return pEp(cdIdentity: id)
         }
         return [:]
     }
 
-    open static func pEp(identity: Identity) -> PEPIdentity {
-        var contact = PEPIdentity()
+    open static func pEp(identity: Identity) -> PEPIdentityDict {
+        var contact = PEPIdentityDict()
         contact[kPepAddress] = identity.address as AnyObject
         if let userN = identity.userName {
             contact[kPepUsername] = userN as AnyObject
@@ -86,8 +86,8 @@ open class PEPUtil {
      - Parameter cdIdentity: The core data contact object.
      - Returns: An `PEPIdentity` contact for pEp.
      */
-    open static func pEp(cdIdentity: CdIdentity) -> PEPIdentity {
-        var dict = PEPIdentity()
+    open static func pEp(cdIdentity: CdIdentity) -> PEPIdentityDict {
+        var dict = PEPIdentityDict()
         if let name = cdIdentity.userName {
             dict[kPepUsername] = name as NSObject
         }
@@ -101,14 +101,14 @@ open class PEPUtil {
     /**
      Creates pEp contact just from name and address.
      */
-    open static func pEpIdentity(email: String, name: String) -> PEPIdentity {
-        var identity = PEPIdentity()
+    open static func pEpIdentity(email: String, name: String) -> PEPIdentityDict {
+        var identity = PEPIdentityDict()
         identity[kPepAddress] = email as AnyObject
         identity[kPepUsername] = name as AnyObject
         return identity
     }
 
-    open static func pEpOptional(identity: Identity?) -> PEPIdentity? {
+    open static func pEpOptional(identity: Identity?) -> PEPIdentityDict? {
         guard let id = identity else {
             return nil
         }
@@ -282,7 +282,7 @@ open class PEPUtil {
     /**
      Converts a pEp identity dict to a pantomime address.
      */
-    open static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
+    open static func pantomime(pEpIdentity: PEPIdentityDict) -> CWInternetAddress {
         let address = CWInternetAddress()
         if let email = pEpIdentity[kPepAddress] as? String {
             address.setAddress(email)
@@ -296,7 +296,7 @@ open class PEPUtil {
     /**
      Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
      */
-    open static func pantomime(pEpIdentities: [PEPIdentity], recipientType: PantomimeRecipientType)
+    open static func pantomime(pEpIdentities: [PEPIdentityDict], recipientType: PantomimeRecipientType)
         -> [CWInternetAddress] {
             var addresses: [CWInternetAddress] = []
             for c in pEpIdentities {
@@ -307,7 +307,7 @@ open class PEPUtil {
             return addresses
     }
 
-    open static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
+    open static func add(pEpIdentities: [PEPIdentityDict], toPantomimeMessage: CWIMAPMessage,
                          recipientType: PantomimeRecipientType) {
         let addresses = pantomime(
             pEpIdentities: pEpIdentities, recipientType: recipientType)
@@ -462,7 +462,7 @@ open class PEPUtil {
         return PEP_rating(Int32(theInt))
     }
 
-    open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,
+    open static func trustwords(identity1: PEPIdentityDict, identity2: PEPIdentityDict,
                                 language: String, full: Bool = true,
                                 session: PEPSession) -> String? {
         return session.getTrustwordsIdentity1(identity1, identity2: identity2,
@@ -513,7 +513,7 @@ open class PEPUtil {
     }
 
     open static func encrypt(
-        pEpMessageDict: PEPMessageDict, forIdentity: PEPIdentity? = nil,
+        pEpMessageDict: PEPMessageDict, forIdentity: PEPIdentityDict? = nil,
         session: PEPSession) -> (PEP_STATUS, NSDictionary?) {
         var encryptedMessage: NSDictionary? = nil
 
@@ -577,8 +577,8 @@ extension UIFont {
 }
 
 extension NSDictionary {
-    func pEpIdentity() -> PEPIdentity {
-        var id = PEPIdentity()
+    func pEpIdentity() -> PEPIdentityDict {
+        var id = PEPIdentityDict()
         for (k, v) in self {
             if let ks = k as? String {
                 id[ks] = v as AnyObject

@@ -111,11 +111,11 @@ extension CdMessage {
         }
         CdHeaderField.deleteOrphans()
 
-        from = CdIdentity.from(pEpContact: pEpMessage[kPepFrom] as? PEPIdentity)
-        to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepTo] as? [PEPIdentity]))
-        cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepCC] as? [PEPIdentity]))
-        bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepBCC] as? [PEPIdentity]))
-        replyTo = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepReplyTo] as? [PEPIdentity]))
+        from = CdIdentity.from(pEpContact: pEpMessage[kPepFrom] as? PEPIdentityDict)
+        to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepTo] as? [PEPIdentityDict]))
+        cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepCC] as? [PEPIdentityDict]))
+        bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepBCC] as? [PEPIdentityDict]))
+        replyTo = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepReplyTo] as? [PEPIdentityDict]))
     }
 
     public func updateKeyList(keys: [String]) {

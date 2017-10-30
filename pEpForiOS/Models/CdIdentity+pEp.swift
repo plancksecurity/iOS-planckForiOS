@@ -12,7 +12,7 @@ import MessageModel
  pEp extension for CdIdentity
  */
 extension CdIdentity {
-    public static func from(pEpContact: PEPIdentity?) -> CdIdentity? {
+    public static func from(pEpContact: PEPIdentityDict?) -> CdIdentity? {
         guard let pEpC = pEpContact else {
             return nil
         }
@@ -26,7 +26,7 @@ extension CdIdentity {
         return theIdent
     }
 
-    public static func from(pEpContacts: [PEPIdentity]?) -> [CdIdentity] {
+    public static func from(pEpContacts: [PEPIdentityDict]?) -> [CdIdentity] {
         let theContacts = pEpContacts ?? []
         var contacts = [CdIdentity]()
         for p in theContacts {
@@ -45,7 +45,7 @@ extension CdIdentity {
         return PEPUtil.pEpColor(cdIdentity: self, session: session)
     }
 
-    public func pEpIdentity() -> PEPIdentity {
+    public func pEpIdentity() -> PEPIdentityDict {
         return PEPUtil.pEp(cdIdentity: self)
     }
 

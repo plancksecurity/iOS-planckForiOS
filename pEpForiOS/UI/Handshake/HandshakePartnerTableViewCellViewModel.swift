@@ -133,7 +133,7 @@ class HandshakePartnerTableViewCellViewModel {
      the 2 identies.
      */
     func determineTrustwords(
-        message: Message?, identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
+        message: Message?, identitySelf: PEPIdentityDict, identityPartner: PEPIdentityDict) -> String? {
 
         let selfDict = NSMutableDictionary(dictionary: identitySelf)
         let partnerDict = NSMutableDictionary(dictionary: identityPartner)

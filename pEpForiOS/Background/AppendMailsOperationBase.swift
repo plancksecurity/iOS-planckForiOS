@@ -56,7 +56,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         handleNextMessage()
     }
 
-    func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
+    func retrieveNextMessage() -> (PEPMessageDict, PEPIdentityDict, NSManagedObjectID)? {
         Log.shared.errorAndCrash(component: #function, errorString: "Must be overridden in subclass")
         return nil
     }

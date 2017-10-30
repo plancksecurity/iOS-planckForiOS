@@ -731,7 +731,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         session.mySelf(myself)
         XCTAssertNotNil(myself[kPepFingerprint])
 
-        let color2 = session.identityRating(myself as NSDictionary as! PEPIdentity)
+        let color2 = session.identityRating(myself as NSDictionary as! PEPIdentityDict)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
     }
 
@@ -741,7 +741,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         session.mySelf(myself)
         XCTAssertNotNil(myself[kPepFingerprint])
 
-        if let theID = identity as NSDictionary as? PEPIdentity,
+        if let theID = identity as NSDictionary as? PEPIdentityDict,
             let id = Identity.from(pEpIdentity: theID) {
             let account = TestData().createWorkingAccount()
             account.user = id
@@ -776,7 +776,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testOutgoingMailColorPerformanceWithoutMySelf() {
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
-        if let theID = identity as NSDictionary as? PEPIdentity,
+        if let theID = identity as NSDictionary as? PEPIdentityDict,
             let id = Identity.from(pEpIdentity: theID) {
             let account = TestData().createWorkingAccount()
             account.user = id

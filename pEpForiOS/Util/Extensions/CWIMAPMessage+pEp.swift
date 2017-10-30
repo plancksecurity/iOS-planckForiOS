@@ -14,23 +14,23 @@ extension CWIMAPMessage {
     public convenience init(pEpMessage: PEPMessageDict, mailboxName: String? = nil) {
         self.init()
 
-        if let from = pEpMessage[kPepFrom] as? PEPIdentity {
+        if let from = pEpMessage[kPepFrom] as? PEPIdentityDict {
             let address = PEPUtil.pantomime(pEpIdentity: from)
             self.setFrom(address)
         }
 
         if let recipients = pEpMessage[kPepTo] as? NSArray {
-            PEPUtil.add(pEpIdentities: recipients as! [PEPIdentity],
+            PEPUtil.add(pEpIdentities: recipients as! [PEPIdentityDict],
                         toPantomimeMessage: self,
                         recipientType: .toRecipient)
         }
         if let recipients = pEpMessage[kPepCC] as? NSArray {
-            PEPUtil.add(pEpIdentities: recipients as! [PEPIdentity],
+            PEPUtil.add(pEpIdentities: recipients as! [PEPIdentityDict],
                         toPantomimeMessage: self,
                         recipientType: .ccRecipient)
         }
         if let recipients = pEpMessage[kPepBCC] as? NSArray {
-            PEPUtil.add(pEpIdentities: recipients as! [PEPIdentity],
+            PEPUtil.add(pEpIdentities: recipients as! [PEPIdentityDict],
                         toPantomimeMessage: self,
                         recipientType: .bccRecipient)
         }

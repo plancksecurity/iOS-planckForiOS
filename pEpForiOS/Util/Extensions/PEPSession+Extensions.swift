@@ -15,7 +15,7 @@ public typealias PEPMessageDict = [String: AnyObject]
 /**
  Similar to `PEPMessage`
  */
-public typealias PEPIdentity = [String: AnyObject]
+public typealias PEPIdentityDict = [String: AnyObject]
 
 extension Dictionary where Key: ExpressibleByStringLiteral, Value: AnyObject {
     public func mutableDictionary() -> NSMutableDictionary {
@@ -23,7 +23,7 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: AnyObject {
     }
 }
 
-public func ==(lhs: PEPIdentity, rhs: PEPIdentity) -> Bool {
+public func ==(lhs: PEPIdentityDict, rhs: PEPIdentityDict) -> Bool {
     let a = NSDictionary.init(dictionary: lhs)
     let b = NSDictionary.init(dictionary: rhs)
     return a == b
@@ -60,14 +60,14 @@ public enum RecipientType: Int, Hashable {
  A PEP contact bundled with its receiver type (like BCC or CC).
  */
 open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
-    open let recipient: PEPIdentity
+    open let recipient: PEPIdentityDict
     open let recipientType: RecipientType
 
     open var description: String {
         return "\(String(describing: recipient[kPepAddress])) (\(recipientType))"
     }
 
-    public init(recipient: PEPIdentity, recipientType: RecipientType) {
+    public init(recipient: PEPIdentityDict, recipientType: RecipientType) {
         self.recipient = recipient
         self.recipientType = recipientType
     }
@@ -83,7 +83,7 @@ open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
  */
 public extension PEPSession {
     public func encrypt(pEpMessageDict: PEPMessageDict,
-                        forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
+                        forIdentity: PEPIdentityDict? = nil) -> (PEP_STATUS, NSDictionary?) {
         return PEPUtil.encrypt(
             pEpMessageDict: pEpMessageDict, forIdentity: forIdentity, session: self)
     }

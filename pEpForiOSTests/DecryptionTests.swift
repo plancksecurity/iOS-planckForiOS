@@ -13,9 +13,9 @@ import MessageModel
 
 class DecryptionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
-    var pEpOwnIdentity: PEPIdentity!
+    var pEpOwnIdentity: PEPIdentityDict!
     var cdSenderAccount: CdAccount!
-    var pEpSenderIdentity: PEPIdentity!
+    var pEpSenderIdentity: PEPIdentityDict!
     var cdInbox: CdFolder!
 
     var persistentSetup: PersistentSetup!
@@ -61,14 +61,14 @@ class DecryptionTests: XCTestCase {
         super.tearDown()
     }
 
-    func pEpIdentity(cdAccount: CdAccount) -> PEPIdentity? {
+    func pEpIdentity(cdAccount: CdAccount) -> PEPIdentityDict? {
         guard
             let identityDict = cdAccount.identity?.pEpIdentity().mutableDictionary() else {
                 XCTFail()
                 return nil
         }
         session.mySelf(identityDict)
-        guard let pEpId = identityDict as? PEPIdentity  else {
+        guard let pEpId = identityDict as? PEPIdentityDict  else {
             XCTFail()
             return nil
         }
