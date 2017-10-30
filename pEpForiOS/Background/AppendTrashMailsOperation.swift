@@ -36,8 +36,10 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
                 return
             }
             let p = NSPredicate(
-                format: "parent = %@ and imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
-                folder, Message.TrashedStatus.shouldBeTrashed.rawValue)
+                format: "parent = %@ AND imap.localFlags.flagDeleted = true AND imap.trashedStatusRawValue = %d AND parent.account = %@",
+                folder, Message.TrashedStatus.shouldBeTrashed.rawValue,
+                imapSyncData.connectInfo.accountObjectID)
+
             if let msg = CdMessage.first(predicate: p, in: self.context),
                 let cdIdent = msg.parent?.account?.identity {
                 result = (msg.pEpMessage(), cdIdent.pEpIdentity(), msg.objectID)

@@ -22,8 +22,9 @@ public class AppendSendMailsOperation: AppendMailsOperationBase {
         var msg: CdMessage?
         context.performAndWait {
             let p = NSPredicate(
-                format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d",
-                self.targetFolderType.rawValue, SendStatus.smtpDone.rawValue)
+                format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d AND parent.account = %@",
+                self.targetFolderType.rawValue, SendStatus.smtpDone.rawValue,
+                imapSyncData.connectInfo.accountObjectID)
             msg = CdMessage.first(predicate: p, in: self.context)
         }
         if let m = msg, let cdIdent = m.parent?.account?.identity {
