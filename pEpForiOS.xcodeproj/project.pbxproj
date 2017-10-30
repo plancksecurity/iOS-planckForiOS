@@ -335,6 +335,7 @@
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
 		B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */; };
 		B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */; };
+		B7B9B6601FA32B00003CDBB9 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7B9B65F1FA3286B003CDBB9 /* SwipeCellKit.framework */; };
 		B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */; };
 		B7F19A001E5DE9FB0079A513 /* FolderType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F199FF1E5DE9FB0079A513 /* FolderType+Extensions.swift */; };
 /* End PBXBuildFile section */
@@ -353,6 +354,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 43980E221CBD0BC900A7FC3C;
 			remoteInfo = pEpForiOS;
+		};
+		B7B9B65E1FA3286B003CDBB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7B9B65A1FA3286B003CDBB9 /* SwipeCellKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3F234AC31E44A7A400E22A38;
+			remoteInfo = SwipeCellKit;
+		};
+		B7B9B6611FA32C08003CDBB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7B9B65A1FA3286B003CDBB9 /* SwipeCellKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F234AC21E44A7A400E22A38;
+			remoteInfo = SwipeCellKit;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -728,6 +743,7 @@
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
 		B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
 		B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterCellViewModel.swift; path = Filter/ViewModel/FilterCellViewModel.swift; sourceTree = "<group>"; };
+		B7B9B65A1FA3286B003CDBB9 /* SwipeCellKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwipeCellKit.xcodeproj; path = ../../../SwipeCellKit/SwipeCellKit.xcodeproj; sourceTree = "<group>"; };
 		B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollapsibleTableViewHeader.swift; path = Folder/CollapsibleTableViewHeader.swift; sourceTree = "<group>"; };
 		B7F199FF1E5DE9FB0079A513 /* FolderType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FolderType+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -737,6 +753,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7B9B6601FA32B00003CDBB9 /* SwipeCellKit.framework in Frameworks */,
 				43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */,
 				43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */,
 				495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */,
@@ -1246,6 +1263,7 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				B7B9B65A1FA3286B003CDBB9 /* SwipeCellKit.xcodeproj */,
 				4362398D1EAE08F400BD2EB9 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
 				8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */,
@@ -1560,6 +1578,14 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
+		B7B9B65B1FA3286B003CDBB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B7B9B65F1FA3286B003CDBB9 /* SwipeCellKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1579,6 +1605,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				B7B9B6621FA32C08003CDBB9 /* PBXTargetDependency */,
 			);
 			name = pEp;
 			productName = pEpForiOS;
@@ -1671,6 +1698,12 @@
 			mainGroup = 43980E1A1CBD0BC900A7FC3C;
 			productRefGroup = 43980E241CBD0BC900A7FC3C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B7B9B65B1FA3286B003CDBB9 /* Products */;
+					ProjectRef = B7B9B65A1FA3286B003CDBB9 /* SwipeCellKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				43980E221CBD0BC900A7FC3C /* pEp */,
@@ -1679,6 +1712,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B7B9B65F1FA3286B003CDBB9 /* SwipeCellKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwipeCellKit.framework;
+			remoteRef = B7B9B65E1FA3286B003CDBB9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		43980E211CBD0BC900A7FC3C /* Resources */ = {
@@ -2130,6 +2173,11 @@
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* pEp */;
 			targetProxy = 43980E461CBD0BCA00A7FC3C /* PBXContainerItemProxy */;
+		};
+		B7B9B6621FA32C08003CDBB9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwipeCellKit;
+			targetProxy = B7B9B6611FA32C08003CDBB9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

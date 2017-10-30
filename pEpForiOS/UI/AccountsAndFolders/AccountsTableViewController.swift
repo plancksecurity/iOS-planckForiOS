@@ -7,8 +7,9 @@
 //
 
 import MessageModel
+import SwipeCellKit
 
-class AccountsTableViewController: BaseTableViewController {
+class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     let comp = "AccountsTableViewController"
 
     let viewModel = AccountsSettingsViewModel()
@@ -71,7 +72,7 @@ class AccountsTableViewController: BaseTableViewController {
 
         if indexPath.section == 1 && indexPath.row == 1 {
 
-            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath) as! SwipeTableViewCell
             cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
             let switchView = UISwitch(frame: CGRect.zero)
             switchView.setOn(false, animated: false)
@@ -85,6 +86,24 @@ class AccountsTableViewController: BaseTableViewController {
         cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
         cell.accessoryType = .disclosureIndicator
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        if indexPath.section == 0 {
+            let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+                // handle action by updating model with deletion
+            }
+            return (orientation == .right ?  nil : [deleteAction])
+        }
+
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        var options = SwipeTableOptions()
+        options.expansionStyle = .destructive
+        options.transitionStyle = .border
+        return options
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

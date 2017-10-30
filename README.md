@@ -67,6 +67,7 @@ cd ~/src
 git clone https://cacert.pep-security.lu/misc/ldns.git
 git clone https://github.com/fdik/libetpan.git
 git clone https://github.com/x2on/OpenSSL-for-iPhone.git
+git clone https://github.com/SwipeCellKit/SwipeCellKit.git
 
 hg clone https://cacert.pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://cacert.pep.foundation/dev/repos/netpgp-et
