@@ -75,6 +75,9 @@ open class PEPUtil {
         if let userID = identity.userID {
             contact[kPepUserID] = userID as AnyObject
         }
+        if identity.isMySelf {
+            contact[kPepIsOwnIdentity] = NSNumber(booleanLiteral: true)
+        }
         return contact
     }
 
