@@ -13,6 +13,7 @@
 		1507BC331F2641FD0036B3E9 /* Message+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1507BC321F2641FD0036B3E9 /* Message+TestUtils.swift */; };
 		1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1508AEA91F862C85001D5230 /* SortedSetTest.swift */; };
 		15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */; };
+		1527D1541FA790080036DA9C /* SwipeCellKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7B9B65F1FA3286B003CDBB9 /* SwipeCellKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		153D08281F56BBCB00377110 /* AppendSendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */; };
 		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
 		153EFA721F4AD51200C3432A /* TrashMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */; };
@@ -335,12 +336,18 @@
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
 		B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */; };
 		B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */; };
-		B7B9B6601FA32B00003CDBB9 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7B9B65F1FA3286B003CDBB9 /* SwipeCellKit.framework */; };
 		B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */; };
 		B7F19A001E5DE9FB0079A513 /* FolderType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F199FF1E5DE9FB0079A513 /* FolderType+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1527D1551FA790080036DA9C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7B9B65A1FA3286B003CDBB9 /* SwipeCellKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F234AC21E44A7A400E22A38;
+			remoteInfo = SwipeCellKit;
+		};
 		43980E3B1CBD0BCA00A7FC3C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 43980E1B1CBD0BC900A7FC3C /* Project object */;
@@ -378,6 +385,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				1527D1541FA790080036DA9C /* SwipeCellKit.framework in CopyFiles */,
 				49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -753,7 +761,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7B9B6601FA32B00003CDBB9 /* SwipeCellKit.framework in Frameworks */,
 				43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */,
 				43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */,
 				495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */,
@@ -1606,6 +1613,7 @@
 			);
 			dependencies = (
 				B7B9B6621FA32C08003CDBB9 /* PBXTargetDependency */,
+				1527D1561FA790080036DA9C /* PBXTargetDependency */,
 			);
 			name = pEp;
 			productName = pEpForiOS;
@@ -2164,6 +2172,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1527D1561FA790080036DA9C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SwipeCellKit;
+			targetProxy = 1527D1551FA790080036DA9C /* PBXContainerItemProxy */;
+		};
 		43980E3C1CBD0BCA00A7FC3C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 43980E221CBD0BC900A7FC3C /* pEp */;
@@ -2338,6 +2351,7 @@
 		43980E4F1CBD0BCA00A7FC3C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2364,6 +2378,7 @@
 		43980E501CBD0BCA00A7FC3C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
