@@ -43,7 +43,7 @@ class PepAdapterTests: XCTestCase {
      https://cacert.pep.foundation/jira/browse/ENGINE-159
      */
     func testDecryptMessageWithoutAttachments() {
-        let pepMessage: PEPMessage = [
+        let pepMessage: PEPMessageDict = [
             kPepAttachments: NSArray(),
             kPepTo: NSArray(array: [identity_me]),
             kPepFrom: identity_me,

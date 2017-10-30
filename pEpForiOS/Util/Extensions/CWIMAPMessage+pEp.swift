@@ -11,7 +11,7 @@ extension CWIMAPMessage {
      Creates a `CWIMAPMessage` from a given `PEPMessage`.
      See https://tools.ietf.org/html/rfc2822 for a better understanding of some fields.
      */
-    public convenience init(pEpMessage: PEPMessage, mailboxName: String? = nil) {
+    public convenience init(pEpMessage: PEPMessageDict, mailboxName: String? = nil) {
         self.init()
 
         if let from = pEpMessage[kPepFrom] as? PEPIdentity {

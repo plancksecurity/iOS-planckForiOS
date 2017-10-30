@@ -102,7 +102,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         cdMessage: CdMessage, keys: [String],
         underAttack: Bool,
         context: NSManagedObjectContext) {
-        guard let decrypted = pEpDecryptedMessage as? PEPMessage else {
+        guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
             Log.shared.errorAndCrash(
                 component: #function,
                 errorString:"Decrypt with rating, but nil message")

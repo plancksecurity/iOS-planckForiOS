@@ -147,8 +147,8 @@ open class PEPUtil {
             fileName: attachment.fileName, mimeType: attachment.mimeType, data: attachment.data)
     }
 
-    open static func pEp(message: Message, outgoing: Bool = true) -> PEPMessage {
-        var dict = PEPMessage()
+    open static func pEp(message: Message, outgoing: Bool = true) -> PEPMessageDict {
+        var dict = PEPMessageDict()
 
         if let subject = message.shortMessage {
             dict[kPepShortMessage] = subject as NSString
@@ -176,8 +176,8 @@ open class PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessage {
-        var dict = PEPMessage()
+    open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessageDict {
+        var dict = PEPMessageDict()
 
         if let sent = cdMessage.sent {
             dict[kPepSent] = sent as NSDate
@@ -245,13 +245,13 @@ open class PEPUtil {
             })
         }
 
-        return dict as PEPMessage
+        return dict as PEPMessageDict
     }
 
     /**
      For a PEPMessage, checks whether it is probably PGP/MIME encrypted.
      */
-    open static func isProbablyPGPMime(pEpMessage: PEPMessage) -> Bool {
+    open static func isProbablyPGPMime(pEpMessage: PEPMessageDict) -> Bool {
         guard let attachments = pEpMessage[kPepAttachments] as? NSArray else {
             return false
         }
@@ -330,7 +330,7 @@ open class PEPUtil {
         return pantomime(pEpMessage: pEp(message: message))
     }
 
-    open static func pantomime(pEpMessage: PEPMessage,
+    open static func pantomime(pEpMessage: PEPMessageDict,
                                mailboxName: String? = nil) -> CWIMAPMessage {
         return CWIMAPMessage(pEpMessage: pEpMessage, mailboxName: mailboxName)
     }
@@ -342,7 +342,7 @@ open class PEPUtil {
      or a "multipart/alternative" if there is both text and HTML,
      or nil.
      */
-    static func bodyPart(pEpMessage: PEPMessage) -> CWPart? {
+    static func bodyPart(pEpMessage: PEPMessageDict) -> CWPart? {
         let theBodyParts = bodyParts(pEpMessage: pEpMessage)
         if theBodyParts.count == 1 {
             return theBodyParts[0]
@@ -380,7 +380,7 @@ open class PEPUtil {
      Extracts text content from a pEp mail as a list of pantomime part object.
      - Returns: A list of pantomime parts. This list can have 0, 1 or 2 elements.
      */
-    static func bodyParts(pEpMessage: PEPMessage) -> [CWPart] {
+    static func bodyParts(pEpMessage: PEPMessageDict) -> [CWPart] {
         var parts: [CWPart] = []
 
         if let part = makePart(text: pEpMessage[kPepLongMessage] as? String,
@@ -513,7 +513,7 @@ open class PEPUtil {
     }
 
     open static func encrypt(
-        pEpMessageDict: PEPMessage, forIdentity: PEPIdentity? = nil,
+        pEpMessageDict: PEPMessageDict, forIdentity: PEPIdentity? = nil,
         session: PEPSession) -> (PEP_STATUS, NSDictionary?) {
         var encryptedMessage: NSDictionary? = nil
 

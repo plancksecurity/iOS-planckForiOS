@@ -10,7 +10,7 @@
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
  */
-public typealias PEPMessage = [String: AnyObject]
+public typealias PEPMessageDict = [String: AnyObject]
 
 /**
  Similar to `PEPMessage`
@@ -82,7 +82,7 @@ open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
  across apps.
  */
 public extension PEPSession {
-    public func encrypt(pEpMessageDict: PEPMessage,
+    public func encrypt(pEpMessageDict: PEPMessageDict,
                         forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
         return PEPUtil.encrypt(
             pEpMessageDict: pEpMessageDict, forIdentity: forIdentity, session: self)

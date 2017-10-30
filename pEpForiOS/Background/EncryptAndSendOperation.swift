@@ -63,8 +63,8 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     public static func retrieveNextMessage(
         context: NSManagedObjectContext,
-        cdAccount: CdAccount) -> (PEPMessage, Bool, NSManagedObjectID)? {
-        var pepMessage: PEPMessage?
+        cdAccount: CdAccount) -> (PEPMessageDict, Bool, NSManagedObjectID)? {
+        var pepMessage: PEPMessageDict?
         var objID: NSManagedObjectID?
         var protected = true
 
@@ -85,7 +85,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         return nil
     }
 
-    func send(pEpMessage: PEPMessage?) {
+    func send(pEpMessage: PEPMessageDict?) {
         guard let msg = pEpMessage else {
             handleError(Constants.errorInvalidParameter(comp), message: "Cannot send nil message")
             return
@@ -139,9 +139,9 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                     comp: comp, status: status, encryptedMessage: encMsg)
                 if let err = error {
                     Log.error(component: comp, error: err)
-                    send(pEpMessage: encMsg as? PEPMessage)
+                    send(pEpMessage: encMsg as? PEPMessageDict)
                 } else {
-                    send(pEpMessage: encMsg2 as? PEPMessage)
+                    send(pEpMessage: encMsg2 as? PEPMessageDict)
                 }
             } else {
                 send(pEpMessage: msg)

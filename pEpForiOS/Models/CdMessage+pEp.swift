@@ -28,7 +28,7 @@ extension CdMessage {
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
      */
-    public func update(pEpMessage: PEPMessage, pEpColorRating: PEP_rating? = nil) {
+    public func update(pEpMessage: PEPMessageDict, pEpColorRating: PEP_rating? = nil) {
         if let color = pEpColorRating {
             pEpRating = Int16(color.rawValue)
         }
@@ -128,7 +128,7 @@ extension CdMessage {
         }
     }
 
-    public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
+    public func pEpMessage(outgoing: Bool = true) -> PEPMessageDict {
         return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
     }
 

@@ -85,7 +85,7 @@ class PEPSessionTest: XCTestCase {
             kPepShortMessage: mySubject as AnyObject,
             kPepLongMessage: "The text body" as AnyObject,
             kPepOutgoing: NSNumber(booleanLiteral: true)
-        ] as PEPMessage
+        ] as PEPMessageDict
 
         let session = PEPSession()
 
@@ -198,7 +198,7 @@ class PEPSessionTest: XCTestCase {
         message: NSDictionary, myID: String, references: [String], session: PEPSession) {
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
-        let _ = session.decryptMessageDict(message as! PEPMessage,
+        let _ = session.decryptMessageDict(message as! PEPMessageDict,
                                            dest: &pepDecryptedMessage, keys: &keys)
         if let decMsg = pepDecryptedMessage {
             XCTAssertEqual(decMsg[kPepID] as? String, myID)
