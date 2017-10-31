@@ -48,7 +48,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func importMail(session: PEPSession) ->
+    func importMail(session: PEPSession = PEPSession()) ->
         (message: Message, mySelfID: Identity, partnerID: Identity)? {
             let decryptDelegate = DecryptionDelegate()
 

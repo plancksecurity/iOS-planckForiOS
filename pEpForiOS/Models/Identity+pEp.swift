@@ -18,11 +18,11 @@ extension Identity {
         return nil
     }
 
-    public func pEpRating(session: PEPSession) -> PEP_rating {
+    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
         return PEPUtil.pEpRating(identity: self, session: session)
     }
 
-    public func pEpColor(session: PEPSession) -> PEP_color {
+    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
 
@@ -30,11 +30,11 @@ extension Identity {
         return PEPUtil.pEp(identity: self)
     }
     
-    open func fingerPrint(session: PEPSession) -> String? {
+    open func fingerPrint(session: PEPSession = PEPSession()) -> String? {
         return PEPUtil.fingerPrint(identity: self, session: session)
     }
 
-    public func canHandshakeOn(session: PEPSession) -> Bool {
+    public func canHandshakeOn(session: PEPSession = PEPSession()) -> Bool {
         if isMySelf {
             return false
         }
@@ -42,12 +42,12 @@ extension Identity {
         return rating == PEP_rating_reliable
     }
 
-    public func canResetTrust(session: PEPSession) -> Bool {
+    public func canResetTrust(session: PEPSession = PEPSession()) -> Bool {
         let color = pEpColor(session: session)
         return color == PEP_color_green || color == PEP_color_red
     }
 
-    public func decorateButton(button: UIButton, session: PEPSession) {
+    public func decorateButton(button: UIButton, session: PEPSession = PEPSession()) {
         button.setTitleColor(.black, for: .normal)
         if let color = pEpColor(session: session).uiColor() {
             button.backgroundColor = color
@@ -63,7 +63,7 @@ extension Identity {
      Returns: A NSMutableDictionary that has been updated and thus should contain
      the fingerprint.
      */
-    public func updatedIdentityDictionary(session: PEPSession) -> NSMutableDictionary {
+    public func updatedIdentityDictionary(session: PEPSession = PEPSession()) -> NSMutableDictionary {
         let md = pEpIdentity().mutableDictionary()
         if isMySelf {
             session.mySelf(md)

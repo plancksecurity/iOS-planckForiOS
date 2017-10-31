@@ -111,7 +111,7 @@ class HandshakePartnerTableViewCellViewModel {
         updateTrustwords(session: session)
     }
 
-    func updateTrustwords(session: PEPSession) {
+    func updateTrustwords(session: PEPSession = PEPSession()) {
         if isPartnerPGPUser,
             let fprSelf = pEpSelf.object(forKey: kPepFingerprint) as? String,
             let fprPartner = pEpPartner.object(forKey: kPepFingerprint) as? String {

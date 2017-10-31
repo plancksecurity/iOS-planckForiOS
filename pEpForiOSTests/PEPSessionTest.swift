@@ -195,7 +195,7 @@ class PEPSessionTest: XCTestCase {
     // MARK: - Helper
 
     func tryDecryptMessage(
-        message: NSDictionary, myID: String, references: [String], session: PEPSession) {
+        message: NSDictionary, myID: String, references: [String], session: PEPSession = PEPSession()) {
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
         let _ = session.decryptMessageDict(message as! PEPMessageDict,
