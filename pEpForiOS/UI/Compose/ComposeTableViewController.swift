@@ -494,7 +494,7 @@ class ComposeTableViewController: BaseTableViewController {
                             }
                         } else {
                             Log.error(component: #function,
-                                      errorString: "No drafts folder for message")
+                                      errorString: "No message")
                         }
                         self.dismiss()
                 }))

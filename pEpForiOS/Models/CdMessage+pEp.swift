@@ -28,7 +28,7 @@ extension CdMessage {
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
      */
-    public func update(pEpMessage: PEPMessage, pEpColorRating: PEP_rating? = nil) {
+    public func update(pEpMessage: PEPMessageDict, pEpColorRating: PEP_rating? = nil) {
         if let color = pEpColorRating {
             pEpRating = Int16(color.rawValue)
         }
@@ -111,11 +111,11 @@ extension CdMessage {
         }
         CdHeaderField.deleteOrphans()
 
-        from = CdIdentity.from(pEpContact: pEpMessage[kPepFrom] as? PEPIdentity)
-        to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepTo] as? [PEPIdentity]))
-        cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepCC] as? [PEPIdentity]))
-        bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepBCC] as? [PEPIdentity]))
-        replyTo = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepReplyTo] as? [PEPIdentity]))
+        from = CdIdentity.from(pEpContact: pEpMessage[kPepFrom] as? PEPIdentityDict)
+        to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepTo] as? [PEPIdentityDict]))
+        cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepCC] as? [PEPIdentityDict]))
+        bcc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepBCC] as? [PEPIdentityDict]))
+        replyTo = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepReplyTo] as? [PEPIdentityDict]))
     }
 
     public func updateKeyList(keys: [String]) {
@@ -128,7 +128,7 @@ extension CdMessage {
         }
     }
 
-    public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
+    public func pEpMessage(outgoing: Bool = true) -> PEPMessageDict {
         return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
     }
 

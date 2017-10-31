@@ -111,9 +111,9 @@ class TestUtil {
     }
 
     static func setupSomeIdentities(_ session: PEPSession)
-        -> (identity: NSMutableDictionary, receiver1: PEPIdentity,
-        receiver2: PEPIdentity, receiver3: PEPIdentity,
-        receiver4: PEPIdentity) {
+        -> (identity: NSMutableDictionary, receiver1: PEPIdentityDict,
+        receiver2: PEPIdentityDict, receiver3: PEPIdentityDict,
+        receiver4: PEPIdentityDict) {
             let identity = NSMutableDictionary()
             identity[kPepUsername] = "Unit Test"
             identity[kPepAddress] = "somewhere@overtherainbow.com"
@@ -134,10 +134,10 @@ class TestUtil {
             receiver4[kPepUsername] = "receiver4"
             receiver4[kPepAddress] = "receiver4@shopsmart.com"
 
-            return (identity, receiver1 as NSDictionary as! PEPIdentity,
-                    receiver2 as NSDictionary as! PEPIdentity,
-                    receiver3 as NSDictionary as! PEPIdentity,
-                    receiver4 as NSDictionary as! PEPIdentity)
+            return (identity, receiver1 as NSDictionary as! PEPIdentityDict,
+                    receiver2 as NSDictionary as! PEPIdentityDict,
+                    receiver3 as NSDictionary as! PEPIdentityDict,
+                    receiver4 as NSDictionary as! PEPIdentityDict)
     }
 
     /**
@@ -145,7 +145,7 @@ class TestUtil {
      so they don't interfere with `isEqual`.
      */
     static func removeUnneededKeysForComparison(
-        _ keys: [String], fromMail: PEPMessage) -> PEPMessage {
+        _ keys: [String], fromMail: PEPMessageDict) -> PEPMessageDict {
         var m: [String: AnyObject] = fromMail
         for k in keys {
             m.removeValue(forKey: k)
@@ -153,7 +153,7 @@ class TestUtil {
         let keysToCheckRecursively = m.keys
         for k in keysToCheckRecursively {
             let value = m[k]
-            if let dict = value as? PEPMessage {
+            if let dict = value as? PEPMessageDict {
                 m[k] = removeUnneededKeysForComparison(keys, fromMail: dict) as AnyObject?
             }
         }

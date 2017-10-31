@@ -56,7 +56,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         handleNextMessage()
     }
 
-    func retrieveNextMessage() -> (PEPMessage, PEPIdentity, NSManagedObjectID)? {
+    func retrieveNextMessage() -> (PEPMessageDict, PEPIdentityDict, NSManagedObjectID)? {
         Log.shared.errorAndCrash(component: #function, errorString: "Must be overridden in subclass")
         return nil
     }
@@ -90,7 +90,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         }
     }
 
-    private func appendMessage(pEpMessage: PEPMessage?) {
+    private func appendMessage(pEpMessage: PEPMessageDict?) {
         guard let msg = pEpMessage else {
             handleError(Constants.errorInvalidParameter(comp),
                         message: NSLocalizedString("Cannot append nil message",
@@ -174,9 +174,9 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                     message: NSLocalizedString(
                         "Cannot encrypt message",
                         comment: "Background operation error message"))
-                appendMessage(pEpMessage: msg as PEPMessage)
+                appendMessage(pEpMessage: msg as PEPMessageDict)
             } else {
-                appendMessage(pEpMessage: encMsg2 as? PEPMessage)
+                appendMessage(pEpMessage: encMsg2 as? PEPMessageDict)
             }
         } else {
             markAsFinished()

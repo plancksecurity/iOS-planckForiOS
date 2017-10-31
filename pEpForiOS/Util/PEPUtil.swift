@@ -59,15 +59,15 @@ open class PEPUtil {
         return true
     }
 
-    open static func identity(account: CdAccount) -> PEPIdentity {
+    open static func identity(account: CdAccount) -> PEPIdentityDict {
         if let id = account.identity {
             return pEp(cdIdentity: id)
         }
         return [:]
     }
 
-    open static func pEp(identity: Identity) -> PEPIdentity {
-        var contact = PEPIdentity()
+    open static func pEp(identity: Identity) -> PEPIdentityDict {
+        var contact = PEPIdentityDict()
         contact[kPepAddress] = identity.address as AnyObject
         if let userN = identity.userName {
             contact[kPepUsername] = userN as AnyObject
@@ -86,8 +86,8 @@ open class PEPUtil {
      - Parameter cdIdentity: The core data contact object.
      - Returns: An `PEPIdentity` contact for pEp.
      */
-    open static func pEp(cdIdentity: CdIdentity) -> PEPIdentity {
-        var dict = PEPIdentity()
+    open static func pEp(cdIdentity: CdIdentity) -> PEPIdentityDict {
+        var dict = PEPIdentityDict()
         if let name = cdIdentity.userName {
             dict[kPepUsername] = name as NSObject
         }
@@ -101,14 +101,14 @@ open class PEPUtil {
     /**
      Creates pEp contact just from name and address.
      */
-    open static func pEpIdentity(email: String, name: String) -> PEPIdentity {
-        var identity = PEPIdentity()
+    open static func pEpIdentity(email: String, name: String) -> PEPIdentityDict {
+        var identity = PEPIdentityDict()
         identity[kPepAddress] = email as AnyObject
         identity[kPepUsername] = name as AnyObject
         return identity
     }
 
-    open static func pEpOptional(identity: Identity?) -> PEPIdentity? {
+    open static func pEpOptional(identity: Identity?) -> PEPIdentityDict? {
         guard let id = identity else {
             return nil
         }
@@ -147,8 +147,8 @@ open class PEPUtil {
             fileName: attachment.fileName, mimeType: attachment.mimeType, data: attachment.data)
     }
 
-    open static func pEp(message: Message, outgoing: Bool = true) -> PEPMessage {
-        var dict = PEPMessage()
+    open static func pEp(message: Message, outgoing: Bool = true) -> PEPMessageDict {
+        var dict = PEPMessageDict()
 
         if let subject = message.shortMessage {
             dict[kPepShortMessage] = subject as NSString
@@ -176,8 +176,8 @@ open class PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessage {
-        var dict = PEPMessage()
+    open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessageDict {
+        var dict = PEPMessageDict()
 
         if let sent = cdMessage.sent {
             dict[kPepSent] = sent as NSDate
@@ -245,13 +245,13 @@ open class PEPUtil {
             })
         }
 
-        return dict as PEPMessage
+        return dict as PEPMessageDict
     }
 
     /**
      For a PEPMessage, checks whether it is probably PGP/MIME encrypted.
      */
-    open static func isProbablyPGPMime(pEpMessage: PEPMessage) -> Bool {
+    open static func isProbablyPGPMime(pEpMessage: PEPMessageDict) -> Bool {
         guard let attachments = pEpMessage[kPepAttachments] as? NSArray else {
             return false
         }
@@ -282,7 +282,7 @@ open class PEPUtil {
     /**
      Converts a pEp identity dict to a pantomime address.
      */
-    open static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
+    open static func pantomime(pEpIdentity: PEPIdentityDict) -> CWInternetAddress {
         let address = CWInternetAddress()
         if let email = pEpIdentity[kPepAddress] as? String {
             address.setAddress(email)
@@ -296,7 +296,7 @@ open class PEPUtil {
     /**
      Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
      */
-    open static func pantomime(pEpIdentities: [PEPIdentity], recipientType: PantomimeRecipientType)
+    open static func pantomime(pEpIdentities: [PEPIdentityDict], recipientType: PantomimeRecipientType)
         -> [CWInternetAddress] {
             var addresses: [CWInternetAddress] = []
             for c in pEpIdentities {
@@ -307,7 +307,7 @@ open class PEPUtil {
             return addresses
     }
 
-    open static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
+    open static func add(pEpIdentities: [PEPIdentityDict], toPantomimeMessage: CWIMAPMessage,
                          recipientType: PantomimeRecipientType) {
         let addresses = pantomime(
             pEpIdentities: pEpIdentities, recipientType: recipientType)
@@ -330,7 +330,7 @@ open class PEPUtil {
         return pantomime(pEpMessage: pEp(message: message))
     }
 
-    open static func pantomime(pEpMessage: PEPMessage,
+    open static func pantomime(pEpMessage: PEPMessageDict,
                                mailboxName: String? = nil) -> CWIMAPMessage {
         return CWIMAPMessage(pEpMessage: pEpMessage, mailboxName: mailboxName)
     }
@@ -342,7 +342,7 @@ open class PEPUtil {
      or a "multipart/alternative" if there is both text and HTML,
      or nil.
      */
-    static func bodyPart(pEpMessage: PEPMessage) -> CWPart? {
+    static func bodyPart(pEpMessage: PEPMessageDict) -> CWPart? {
         let theBodyParts = bodyParts(pEpMessage: pEpMessage)
         if theBodyParts.count == 1 {
             return theBodyParts[0]
@@ -380,7 +380,7 @@ open class PEPUtil {
      Extracts text content from a pEp mail as a list of pantomime part object.
      - Returns: A list of pantomime parts. This list can have 0, 1 or 2 elements.
      */
-    static func bodyParts(pEpMessage: PEPMessage) -> [CWPart] {
+    static func bodyParts(pEpMessage: PEPMessageDict) -> [CWPart] {
         var parts: [CWPart] = []
 
         if let part = makePart(text: pEpMessage[kPepLongMessage] as? String,
@@ -462,7 +462,7 @@ open class PEPUtil {
         return PEP_rating(Int32(theInt))
     }
 
-    open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,
+    open static func trustwords(identity1: PEPIdentityDict, identity2: PEPIdentityDict,
                                 language: String, full: Bool = true,
                                 session: PEPSession) -> String? {
         return session.getTrustwordsIdentity1(identity1, identity2: identity2,
@@ -513,7 +513,7 @@ open class PEPUtil {
     }
 
     open static func encrypt(
-        pEpMessageDict: PEPMessage, forIdentity: PEPIdentity? = nil,
+        pEpMessageDict: PEPMessageDict, forIdentity: PEPIdentityDict? = nil,
         session: PEPSession) -> (PEP_STATUS, NSDictionary?) {
         var encryptedMessage: NSDictionary? = nil
 
@@ -577,8 +577,8 @@ extension UIFont {
 }
 
 extension NSDictionary {
-    func pEpIdentity() -> PEPIdentity {
-        var id = PEPIdentity()
+    func pEpIdentity() -> PEPIdentityDict {
+        var id = PEPIdentityDict()
         for (k, v) in self {
             if let ks = k as? String {
                 id[ks] = v as AnyObject

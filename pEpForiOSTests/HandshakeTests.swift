@@ -47,7 +47,7 @@ class HandshakeTests: XCTestCase {
     }
 
     func decryptedMessageSetup() {
-        let me: PEPIdentity = [
+        let me: PEPIdentityDict = [
             kPepUserID: "userID" as AnyObject,
             kPepUsername: "User Name" as AnyObject,
             kPepAddress: "iostest002@peptest.ch" as AnyObject
@@ -92,7 +92,7 @@ class HandshakeTests: XCTestCase {
             return
         }
 
-        guard let pEpFrom = theMessage[kPepFrom] as? PEPIdentity else {
+        guard let pEpFrom = theMessage[kPepFrom] as? PEPIdentityDict else {
             XCTFail("expected from in message")
             return
         }

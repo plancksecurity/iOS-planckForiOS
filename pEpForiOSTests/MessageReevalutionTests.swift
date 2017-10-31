@@ -13,9 +13,9 @@ import XCTest
 
 class MessageReevalutionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
-    var pEpOwnIdentity: PEPIdentity!
+    var pEpOwnIdentity: PEPIdentityDict!
     var cdSenderAccount: CdAccount!
-    var pEpSenderIdentity: PEPIdentity!
+    var pEpSenderIdentity: PEPIdentityDict!
     var cdInbox: CdFolder!
     var senderIdentity: Identity!
     var cdDecryptedMessage: CdMessage!

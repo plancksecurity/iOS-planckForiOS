@@ -9,7 +9,7 @@
 import MessageModel
 
 extension Identity {
-    open static func from(pEpIdentity: PEPIdentity) -> Identity? {
+    open static func from(pEpIdentity: PEPIdentityDict) -> Identity? {
         if let address = pEpIdentity[kPepAddress] as? String {
             let id = Identity.create(address: address, userID: pEpIdentity[kPepUserID] as? String,
                                      userName: pEpIdentity[kPepUsername] as? String)
@@ -26,7 +26,7 @@ extension Identity {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
 
-    public func pEpIdentity() -> PEPIdentity {
+    public func pEpIdentity() -> PEPIdentityDict {
         return PEPUtil.pEp(identity: self)
     }
     

@@ -17,7 +17,7 @@ class EmailViewController: BaseTableViewController {
     @IBOutlet var previousMessage: UIBarButtonItem!
     @IBOutlet var nextMessage: UIBarButtonItem!
 
-    var message: Message!
+    var message: Message?
 
     var partnerIdentity: Identity?
     var tableData: ComposeDataSource?
@@ -35,6 +35,10 @@ class EmailViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let m = message else{
+            Log.shared.errorAndCrash(component: #function, errorString: "no message to show")
+            return
+        }
 
         loadDatasource("MessageData")
 
@@ -43,13 +47,16 @@ class EmailViewController: BaseTableViewController {
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
 
-        self.title = message.shortMessage
+        self.title = m.shortMessage
         saveTitleView()
     }
 
     @IBAction func next(_ sender: Any) {
         messageId += 1
-        message = folderShow?.messageAt(index: messageId)
+        if let m = folderShow?.messageAt(index: messageId) {
+            message = m
+        }
+        //message =
         self.tableView.reloadData()
         configureView()
 
@@ -57,7 +64,9 @@ class EmailViewController: BaseTableViewController {
 
     @IBAction func previous(_ sender: Any) {
         messageId -= 1
-        message = folderShow?.messageAt(index: messageId)
+        if let m = folderShow?.messageAt(index: messageId) {
+            message = m
+        }
         self.tableView.reloadData()
         configureView()
     }
@@ -87,7 +96,7 @@ class EmailViewController: BaseTableViewController {
             self.checkMessageReEvaluation()
             self.showPepRating()
 
-            self.message.markAsSeen()
+            self.message?.markAsSeen()
 
             if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
                 self.nextMessage.isEnabled = false
@@ -99,7 +108,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     func updateFlaggedStatus() {
-        if message.imapFlags?.flagged ?? false {
+        if message?.imapFlags?.flagged ?? false {
             flagButton.image = UIImage.init(named: "icon-flagged")
         } else {
             flagButton.image = UIImage.init(named: "icon-unflagged")
@@ -107,28 +116,30 @@ class EmailViewController: BaseTableViewController {
     }
 
     func checkMessageReEvaluation() {
-        if ratingReEvaluator?.message != message {
-            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: message)
+        if let m = message, ratingReEvaluator?.message != m {
+            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: m)
             ratingReEvaluator?.delegate = self
         }
     }
 
     func showPepRating() {
         let session = PEPSession()
-        let _ = showPepRating(pEpRating: message.pEpRating(session: session))
+        let _ = showPepRating(pEpRating: message?.pEpRating(session: session))
         var allOwnKeysGenerated = true
         var atLeastOneHandshakableIdentityFound = false
-        for id in message.allIdentities {
-            if id.isMySelf {
-                // if we encounter an own identity, make sure it already has a key
-                if id.fingerPrint(session: session) == nil {
-                    allOwnKeysGenerated = false
-                    break
-                }
-            } else {
-                if id.canHandshakeOn(session: session) {
-                    atLeastOneHandshakableIdentityFound = true
-                    break
+        if let m = message {
+            for id in m.allIdentities {
+                if id.isMySelf {
+                    // if we encounter an own identity, make sure it already has a key
+                    if id.fingerPrint(session: session) == nil {
+                        allOwnKeysGenerated = false
+                        break
+                    }
+                } else {
+                    if id.canHandshakeOn(session: session) {
+                        atLeastOneHandshakableIdentityFound = true
+                        break
+                    }
                 }
             }
         }
@@ -183,18 +194,18 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
-        if (message.imapFlags?.flagged == true) {
-            message.imapFlags?.flagged = false
+        if (message?.imapFlags?.flagged == true) {
+            message?.imapFlags?.flagged = false
         } else {
-            message.imapFlags?.flagged = true
+            message?.imapFlags?.flagged = true
         }
-        message.save()
+        message?.save()
 
         updateFlaggedStatus()
     }
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
-        message.delete() // mark for deletion/trash
+        message?.delete() // mark for deletion/trash
         _ = navigationController?.popViewController(animated: true)
     }
 
@@ -238,10 +249,11 @@ extension EmailViewController {
             let row = tableData?.getRow(at: indexPath.row),
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: row.identifier,
-                for: indexPath) as? MessageCell else {
+                for: indexPath) as? MessageCell,
+            let m = message else {
                     return UITableViewCell()
         }
-        cell.updateCell(model: row, message: message, indexPath: indexPath)
+        cell.updateCell(model: row, message: m, indexPath: indexPath)
         cell.delegate = self
         return cell
     }

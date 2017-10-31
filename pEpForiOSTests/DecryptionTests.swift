@@ -13,9 +13,9 @@ import MessageModel
 
 class DecryptionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
-    var pEpOwnIdentity: PEPIdentity!
+    var pEpOwnIdentity: PEPIdentityDict!
     var cdSenderAccount: CdAccount!
-    var pEpSenderIdentity: PEPIdentity!
+    var pEpSenderIdentity: PEPIdentityDict!
     var cdInbox: CdFolder!
 
     var persistentSetup: PersistentSetup!
@@ -61,14 +61,14 @@ class DecryptionTests: XCTestCase {
         super.tearDown()
     }
 
-    func pEpIdentity(cdAccount: CdAccount) -> PEPIdentity? {
+    func pEpIdentity(cdAccount: CdAccount) -> PEPIdentityDict? {
         guard
             let identityDict = cdAccount.identity?.pEpIdentity().mutableDictionary() else {
                 XCTFail()
                 return nil
         }
         session.mySelf(identityDict)
-        guard let pEpId = identityDict as? PEPIdentity  else {
+        guard let pEpId = identityDict as? PEPIdentityDict  else {
             XCTFail()
             return nil
         }
@@ -89,7 +89,7 @@ class DecryptionTests: XCTestCase {
         let msgLongMessage = "This is a message, for subject \(msgShortMessage)!"
         let messageID = "somemessageid"
         let references = ["ref1", "ref2", "ref3"]
-        var pEpMsg = PEPMessage()
+        var pEpMsg = PEPMessageDict()
         pEpMsg[kPepFrom] = pEpSenderIdentity as AnyObject
         pEpMsg[kPepTo] = [pEpOwnIdentity] as NSArray
         pEpMsg[kPepLongMessage] = msgLongMessage as AnyObject
@@ -100,14 +100,14 @@ class DecryptionTests: XCTestCase {
         pEpMsg[kPepID] = messageID as AnyObject
         pEpMsg[kPepReferences] = references as AnyObject
 
-        var encryptedOrNotMailDict = PEPMessage()
+        var encryptedOrNotMailDict = PEPMessageDict()
 
         if shouldEncrypt {
             let (status, encryptedDictOpt) = session.encrypt(pEpMessageDict: pEpMsg)
             XCTAssertEqual(status, PEP_STATUS_OK)
 
             guard
-                let theEncryptedDict = encryptedDictOpt as? PEPMessage,
+                let theEncryptedDict = encryptedDictOpt as? PEPMessageDict,
                 let theAttachments = theEncryptedDict[kPepAttachments] as? NSArray else {
                     XCTFail()
                     return

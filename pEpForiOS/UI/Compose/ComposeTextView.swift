@@ -140,11 +140,12 @@ open class ComposeTextView: UITextView {
         var changed = false
         let theText = NSMutableAttributedString(attributedString: attributedText)
         let theRange = selectedRange
-        while !paddedByDoubleNewline(pureText: theText) {
+        //the text always must end with two \n
+        while (!theText.string.endsWith("\n\n")) {
             let appendedString = NSMutableAttributedString(string: "\n")
             appendedString.addAttribute(NSAttributedStringKey.font,
-                             value: UIFont.pEpInput,
-                             range: appendedString.wholeRange()
+                                        value: UIFont.pEpInput,
+                                        range: appendedString.wholeRange()
             )
 
             theText.append(appendedString)
