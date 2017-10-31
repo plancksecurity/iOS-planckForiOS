@@ -612,11 +612,10 @@ extension CdMessage {
 
         let cdID = CdIdentity.search(address: theEmail) ?? CdIdentity.create()
         if cdID.address == nil { // this identity is new
-            cdID.isMySelf = false
             cdID.address = theEmail
             cdID.userName = userName
         } else {
-            let isMySelf = cdID.isMySelf?.boolValue ?? false
+            let isMySelf = cdID.isMySelf
             if !isMySelf {
                 cdID.userName = userName
             }

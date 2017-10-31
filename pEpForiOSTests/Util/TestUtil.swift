@@ -504,13 +504,13 @@ class TestUtil {
                     mySelfIdentityOpt = rec.identity(userID: "!MYSELF!")
                 }
             }
-            guard let mySelfID = mySelfIdentityOpt else {
+            guard let safeOptId = mySelfIdentityOpt else {
                 XCTFail("Could not derive own identity from message")
                 return nil
             }
-
+            let mySelfID = Identity(identity: safeOptId, isMySelf: true)
             mySelfID.save()
-            mySelfID.isMySelf = true
+
             let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
             XCTAssertNotNil(cdMySelfIdentity)
 

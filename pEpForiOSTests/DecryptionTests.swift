@@ -32,9 +32,7 @@ class DecryptionTests: XCTestCase {
         persistentSetup = PersistentSetup()
 
         let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
-        cdMyAccount.identity?.isMySelf = true
         let cdSenderAccount = TestData().createWorkingCdAccount(number: 1)
-        cdSenderAccount.identity?.isMySelf = true
 
         cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName

@@ -30,13 +30,11 @@ class FetchFoldersServiceTests: XCTestCase {
         persistentSetup = PersistentSetup()
 
         let cdAccount = TestData().createWorkingCdAccount()
-        cdAccount.identity?.isMySelf = true
         TestUtil.skipValidation()
         Record.saveAndWait()
         self.cdAccount = cdAccount
 
         let cdDisfunctionalAccount = TestData().createDisfunctionalCdAccount()
-        cdDisfunctionalAccount.identity?.isMySelf = true
         TestUtil.skipValidation()
         Record.saveAndWait()
         self.cdAccountDisfunctional = cdDisfunctionalAccount
