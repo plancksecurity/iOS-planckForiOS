@@ -13,6 +13,7 @@ extension UIViewController {
 
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
         setEmailDisplayDefaultNavigationBarStyle()
+        navigationController?.navigationBar.barTintColor = pEpRating?.pepColor().uiColor()
         // icon
         if let img = pEpRating?.pepColor().statusIcon(enabled: pEpProtection) {
             let v = UIImageView(image: img)
