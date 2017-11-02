@@ -94,6 +94,9 @@ open class PEPUtil {
         if let userID = cdIdentity.userID {
             dict[kPepUserID] = userID as NSObject
         }
+        if cdIdentity.isMySelf {
+            dict[kPepIsOwnIdentity] = NSNumber(booleanLiteral: true)
+        }
         dict[kPepAddress] = cdIdentity.address as AnyObject
         return dict
     }
