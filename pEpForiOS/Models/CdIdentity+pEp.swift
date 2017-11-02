@@ -19,10 +19,8 @@ extension CdIdentity {
         guard let addr = pEpC[kPepAddress] as? String else {
             return nil
         }
-
         let userName = pEpC[kPepUsername] as? String
-        let userID = pEpC[kPepUserID] as? String
-
+        
         var identity: Identity
         if let existing = Identity.by(address: addr) {
             identity = existing
@@ -31,6 +29,7 @@ extension CdIdentity {
             }
         } else {
             // this identity has to be created
+            let userID = pEpC[kPepUserID] as? String
             identity = Identity.create(address: addr, userID: userID, userName: userName)
         }
         identity.save()
