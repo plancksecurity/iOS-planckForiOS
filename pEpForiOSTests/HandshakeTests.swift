@@ -26,7 +26,6 @@ class HandshakeTests: XCTestCase {
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
-        cdMyAccount.identity?.isMySelf = true
 
         let cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName

@@ -25,7 +25,6 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
         
         let cdAccount2 = TestData().createWorkingCdAccount(number: 1)
-        cdAccount2.identity?.isMySelf = true
         TestUtil.skipValidation()
         Record.saveAndWait()
         cdAccount2.createRequiredFoldersAndWait(testCase: self)

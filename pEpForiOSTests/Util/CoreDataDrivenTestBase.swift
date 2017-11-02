@@ -32,7 +32,6 @@ class CoreDataDrivenTestBase: XCTestCase {
         persistentSetup = PersistentSetup()
         
         let cdAccount = TestData().createWorkingCdAccount()
-        cdAccount.identity?.isMySelf = true
         TestUtil.skipValidation()
         Record.saveAndWait()
         self.cdAccount = cdAccount

@@ -53,7 +53,7 @@ class PEPSessionTest: XCTestCase {
         message.received = Date()
         message.replyTo = [account.user]
         message.references = ["ref1"]
-        message.save( )
+        message.save()
         let session = PEPSession()
         guard let first = CdMessage.first() else {
             XCTFail("No messages ...")
@@ -62,6 +62,7 @@ class PEPSessionTest: XCTestCase {
         let cdmessage1 = first
         let cdmessage2 = cdmessage1
         let pepmessage = cdmessage1.pEpMessage()
+
         session.encryptMessageDict(pepmessage, extra: nil, dest: nil)
         session.decryptMessageDict(pepmessage, dest: nil, keys: nil)
         cdmessage2.update(pEpMessage: pepmessage)
@@ -195,7 +196,7 @@ class PEPSessionTest: XCTestCase {
     // MARK: - Helper
 
     func tryDecryptMessage(
-        message: NSDictionary, myID: String, references: [String], session: PEPSession) {
+        message: NSDictionary, myID: String, references: [String], session: PEPSession = PEPSession()) {
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
         let _ = session.decryptMessageDict(message as! PEPMessageDict,

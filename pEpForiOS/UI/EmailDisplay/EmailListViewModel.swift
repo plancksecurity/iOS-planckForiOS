@@ -170,8 +170,7 @@ class EmailListViewModel {
                                          errorString: "InconsistencyviewModel vs. model")
                 return nil
         }
-        let session = PEPSession()
-        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating(session: session))
+        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
         let result = color.statusIcon()
         return result
     }

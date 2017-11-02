@@ -104,13 +104,13 @@ class TestUtil {
      - Parameter session: The pEp session to import the key into.
      - Parameter fileName: The file name of the key (complete with extension)
      */
-    static func importKeyByFileName(_ session: PEPSession, fileName: String) {
+    static func importKeyByFileName(_ session: PEPSession = PEPSession(), fileName: String) {
         if let content = loadString(fileName: fileName) {
             session.importKey(content as String)
         }
     }
 
-    static func setupSomeIdentities(_ session: PEPSession)
+    static func setupSomeIdentities(_ session: PEPSession = PEPSession())
         -> (identity: NSMutableDictionary, receiver1: PEPIdentityDict,
         receiver2: PEPIdentityDict, receiver3: PEPIdentityDict,
         receiver4: PEPIdentityDict) {
@@ -504,13 +504,13 @@ class TestUtil {
                     mySelfIdentityOpt = rec.identity(userID: "!MYSELF!")
                 }
             }
-            guard let mySelfID = mySelfIdentityOpt else {
+            guard let safeOptId = mySelfIdentityOpt else {
                 XCTFail("Could not derive own identity from message")
                 return nil
             }
-
+            let mySelfID = Identity(identity: safeOptId, isMySelf: true)
             mySelfID.save()
-            mySelfID.isMySelf = true
+
             let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
             XCTAssertNotNil(cdMySelfIdentity)
 

@@ -14,7 +14,7 @@ import XCTest
 class MessageReevalutionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentityDict!
-    var cdSenderAccount: CdAccount!
+    var cdSenderIdentity: CdIdentity!
     var pEpSenderIdentity: PEPIdentityDict!
     var cdInbox: CdFolder!
     var senderIdentity: Identity!
@@ -33,29 +33,37 @@ class MessageReevalutionTests: XCTestCase {
 
         persistentSetup = PersistentSetup()
 
+        // Account
         let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
-        cdMyAccount.identity?.isMySelf = true
 
-        let cdSenderAccount = TestData().createWorkingCdAccount(number: 1)
-        cdSenderAccount.identity?.userName = "iOS Test 001"
-        cdSenderAccount.identity?.userID = "iostest001@peptest.ch_ID"
-        cdSenderAccount.identity?.address = "iostest001@peptest.ch"
-        cdSenderAccount.identity?.isMySelf = false
-
+        // Inbox
         cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
-
         TestUtil.skipValidation()
         Record.saveAndWait()
-
         self.cdOwnAccount = cdMyAccount
-        self.cdSenderAccount = cdSenderAccount
 
+        // Sender
+        let senderUserName = "iOS Test 001"
+        let senderUserID = "iostest001@peptest.ch_ID"
+        let senderAddress = "iostest001@peptest.ch"
+        let senderIdentityBuilder = Identity.create(address: senderAddress,
+                                                    userID: senderUserID,
+                                                    userName: senderUserName,
+                                                    isMySelf: false)
+        senderIdentityBuilder.save()
+        guard let sender = CdIdentity.search(address: senderAddress) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Cant find ")
+            return
+        }
+        self.cdSenderIdentity =  sender
+
+        // Test Keys
         TestUtil.importKeyByFileName(
             session, fileName: "CommunicationTypeTests_test001@peptest.ch_sec.asc")
         TestUtil.importKeyByFileName(
@@ -123,7 +131,7 @@ class MessageReevalutionTests: XCTestCase {
             XCTFail()
             return
         }
-        XCTAssertEqual(theSenderIdentity.address, cdSenderAccount.identity?.address)
+        XCTAssertEqual(theSenderIdentity.address, cdSenderIdentity.address)
         XCTAssertFalse(theSenderIdentity.isMySelf)
 
         senderIdentity = theSenderIdentity
