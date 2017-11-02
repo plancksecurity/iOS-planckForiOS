@@ -19,11 +19,29 @@ extension CdIdentity {
         guard let addr = pEpC[kPepAddress] as? String else {
             return nil
         }
-        let theIdent = CdIdentity.search(address: addr) ?? CdIdentity.create()
-        theIdent.userName = pEpC[kPepUsername] as? String
-        theIdent.userID = pEpC[kPepUserID] as? String
-        Record.saveAndWait()
-        return theIdent
+
+        let userName = pEpC[kPepUsername] as? String
+        let userID = pEpC[kPepUserID] as? String
+
+        var identity: Identity
+        if let existing = Identity.by(address: addr) {
+            identity = existing
+            if !identity.isMySelf {
+                identity.userName = userName
+            }
+        } else {
+            // this identity has to be created
+            identity = Identity.create(address: addr, userID: userID, userName: userName)
+        }
+        identity.save()
+
+        guard let result = CdIdentity.search(address: addr) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We have just saved this identity. It has to exist.")
+            return CdIdentity.create()
+        }
+
+        return result
     }
 
     public static func from(pEpContacts: [PEPIdentityDict]?) -> [CdIdentity] {
