@@ -11,13 +11,7 @@ import XCTest
 import pEpForiOS
 @testable import MessageModel
 
-class CdMessage_PantomimeTest: XCTestCase {
-    var persistentSetup: PersistentSetup!
-
-    override func setUp() {
-        super.setUp()
-        persistentSetup = PersistentSetup()
-    }
+class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
 
     // MARK: - StoreCommandForFlagsToRemoved / Add
 
@@ -167,6 +161,34 @@ class CdMessage_PantomimeTest: XCTestCase {
             XCTAssertNotNil(m.longMessage)
             XCTAssertNotNil(m.longMessageFormatted)
         }
+    }
+
+    //IOS-211
+    func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated() {
+        let folder = CdFolder.create()
+        folder.account = cdAccount
+        folder.name = ImapSync.defaultImapInboxName
+        folder.uuid = MessageID.generate()
+
+        guard
+            let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211.txt"),
+            let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
+                XCTAssertTrue(false)
+                return
+        }
+        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        guard let msg = CdMessage.insertOrUpdate(
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
+            forceParseAttachments: true) else {
+                XCTFail("error parsing message")
+                return
+        }
+
+        let keyAttachment = 1
+        let pdfAttachment = 1;
+        let expectedNumAttatchments = keyAttachment + pdfAttachment
+
+        XCTAssertTrue(msg.attachments?.count == expectedNumAttatchments)
     }
 
     func testUpdateFromServer() {
