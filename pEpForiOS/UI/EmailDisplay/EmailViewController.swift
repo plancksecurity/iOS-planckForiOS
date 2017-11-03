@@ -299,9 +299,10 @@ extension EmailViewController: SegueHandlerType {
             destination.appConfig = appConfig
             destination.originalMessage = message
         case .segueForward:
-            guard let destination = segue.destination as? ComposeTableViewController else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
-                break
+            guard  let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? ComposeTableViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    break
             }
             destination.composeMode = .forward
             destination.appConfig = appConfig
