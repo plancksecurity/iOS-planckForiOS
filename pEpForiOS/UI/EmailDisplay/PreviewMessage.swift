@@ -12,7 +12,6 @@ import UIKit
 class PreviewMessage: Equatable {
     private let uid: UInt
     private let uuid: MessageID
-    private let userId: String?
     private let address: String
     private let parentFolderName: String
     var pEpRating: Int
@@ -30,7 +29,6 @@ class PreviewMessage: Equatable {
         if let rating = msg.pEpRatingInt, let sent = msg.sent, let saveFrom = msg.from {
             uuid = msg.uuid
             uid = msg.uid
-            userId = msg.parent.account.user.userID
             address = msg.parent.account.user.address
             parentFolderName = msg.parent.name
             pEpRating = rating
@@ -43,13 +41,12 @@ class PreviewMessage: Equatable {
             bodyPeek = ""
             bodyPeek = displayBody(fromMessage: msg)
         } else {
-            //this block is only to avoid init?
+            //this block is only to avoid returning an Optional (init?)
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We should have those values here")
             // Required field are missing. Should never happen. Return dummy data
             uuid = msg.uuid
             uid = 0
-            userId = nil
             address = msg.parent.account.user.address
             parentFolderName = msg.parent.name
             pEpRating = 0

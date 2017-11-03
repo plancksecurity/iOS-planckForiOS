@@ -610,17 +610,25 @@ extension CdMessage {
         let theEmail = pantomimeAddress.address().fullyUnquoted()
         let userName = pantomimeAddress.personal()?.fullyUnquoted()
 
-        let cdID = CdIdentity.search(address: theEmail) ?? CdIdentity.create()
-        if cdID.address == nil { // this identity is new
-            cdID.address = theEmail
-            cdID.userName = userName
-        } else {
-            let isMySelf = cdID.isMySelf
-            if !isMySelf {
-                cdID.userName = userName
+        var identity: Identity
+        if let existing = Identity.by(address: theEmail) {
+            identity = existing
+            if !identity.isMySelf {
+                identity.userName = userName
             }
+        } else {
+            // this identity has to be created
+            identity = Identity.create(address: theEmail, userName: userName)
         }
-        return cdID
+        identity.save()
+
+        guard let result = CdIdentity.search(address: theEmail) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We have just saved this identity. It has to exist.")
+            return CdIdentity.create()
+        }
+
+        return result
     }
 
     /**

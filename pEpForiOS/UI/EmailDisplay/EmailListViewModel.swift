@@ -171,7 +171,7 @@ class EmailListViewModel {
                 return nil
         }
         let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
-        let result = color.statusIcon()
+        let result = color.statusIcon(white: false)
         return result
     }
     

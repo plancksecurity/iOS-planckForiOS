@@ -37,9 +37,9 @@ class IdentityImageTool {
             return cachedImage
         }
 
-        if let theID = identity.userID {
+        if let addressBookID = identity.addressBookID {
             let ab = AddressBook()
-            if let contact = ab.contactBy(userID: theID),
+            if let contact = ab.contactBy(addressBookID: addressBookID),
                 let imgData = contact.thumbnailImageData {
                 image = UIImage(data: imgData)
             }
