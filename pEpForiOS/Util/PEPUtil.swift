@@ -59,11 +59,13 @@ open class PEPUtil {
         return true
     }
 
-    open static func identity(account: CdAccount) -> PEPIdentityDict {
+    open static func identity(account: CdAccount) -> PEPIdentity {
         if let id = account.identity {
             return pEp(cdIdentity: id)
+        } else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "account without identity: \(account)")
         }
-        return [:]
     }
 
     open static func pEp(identity: Identity) -> PEPIdentityDict {
@@ -397,7 +399,7 @@ open class PEPUtil {
     open static func pEpRating(cdIdentity: CdIdentity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(cdIdentity: cdIdentity)
-        let rating = session.identityRating(pepC)
+        let rating = session.identityRating(pepC.dictionary())
         return rating
     }
 

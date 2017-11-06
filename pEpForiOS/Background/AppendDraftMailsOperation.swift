@@ -12,13 +12,12 @@ import CoreData
 import MessageModel
 
 public class AppendDraftMailsOperation: AppendMailsOperationBase {
-
     public init(parentName: String = #function, imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         let appendFolder = FolderType.drafts
         super.init(parentName: parentName, appendFolderType: appendFolder, imapSyncData: imapSyncData, errorContainer: errorContainer)
     }
 
-    override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentityDict, NSManagedObjectID)? {
+    override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
         var msg: CdMessage?
         context.performAndWait {
             let p = NSPredicate(
