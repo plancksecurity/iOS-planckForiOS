@@ -138,12 +138,12 @@ class MessageReevalutionTests: XCTestCase {
     }
 
     func testCommunicationTypes() {
-        let senderDict = senderIdentity.updatedIdentityDictionary(session: session)
+        let senderIdent = senderIdentity.updatedIdentityDictionary(session: session)
 
-        XCTAssertTrue(senderDict.containsPGPCommType())
+        XCTAssertTrue(senderIdent.containsPGPCommType())
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
 
-        session.keyMistrusted(senderDict.mutableDictionary())
+        session.keyMistrusted(senderIdent.mutableDictionary())
         let senderDict2 = senderIdentity.updatedIdentityDictionary(session: session)
         XCTAssertFalse(senderDict2.containsPGPCommType()) // mistrusting sets the comm type to PEP_ct_mistrusted
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_mistrust)
@@ -184,43 +184,43 @@ class MessageReevalutionTests: XCTestCase {
 
     func testTrustMistrust() {
         let runReevaluationInBackground = false
-        let senderDict = senderIdentity.updatedIdentityDictionary(session: session)
+        let senderIdent = senderIdentity.updatedIdentityDictionary(session: session)
 
-        session.keyResetTrust(senderDict.mutableDictionary())
-        XCTAssertFalse(senderDict.isConfirmed)
+        session.keyResetTrust(senderIdent.mutableDictionary())
+        XCTAssertFalse(senderIdent.isConfirmed)
         reevaluateMessage(
             expectedRating: PEP_rating_reliable,
             inBackground: runReevaluationInBackground,
             infoMessage: "in the beginning")
 
         for _ in 0..<1 {
-            session.trustPersonalKey(senderDict.mutableDictionary())
-            XCTAssertTrue(senderDict.isConfirmed)
+            session.trustPersonalKey(senderIdent.mutableDictionary())
+            XCTAssertTrue(senderIdent.isConfirmed)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_trusted)
             reevaluateMessage(
                 expectedRating: PEP_rating_trusted,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after trust")
 
-            session.keyMistrusted(senderDict.mutableDictionary())
+            session.keyMistrusted(senderIdent.mutableDictionary())
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_mistrust)
             reevaluateMessage(
                 expectedRating: PEP_rating_mistrust,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after mistrust")
-            session.update(senderDict)
-            XCTAssertFalse(senderDict.isConfirmed)
+            session.update(senderIdent)
+            XCTAssertFalse(senderIdent.isConfirmed)
 
-            session.keyResetTrust(senderDict.mutableDictionary())
-            XCTAssertFalse(senderDict.isConfirmed)
+            session.keyResetTrust(senderIdent.mutableDictionary())
+            XCTAssertFalse(senderIdent.isConfirmed)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
             reevaluateMessage(
                 expectedRating: PEP_rating_reliable,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after reset trust")
 
-            session.keyResetTrust(senderDict.mutableDictionary())
-            XCTAssertFalse(senderDict.isConfirmed)
+            session.keyResetTrust(senderIdent.mutableDictionary())
+            XCTAssertFalse(senderIdent.isConfirmed)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
             reevaluateMessage(
                 expectedRating: PEP_rating_reliable,
