@@ -42,7 +42,7 @@ extension PEP_color {
     func uiColor() -> UIColor? {
         switch self {
         case PEP_color_no_color:
-            return nil
+            return UIColor.gray
         case PEP_color_red:
             return UIColor.pEpRed
         case PEP_color_yellow:

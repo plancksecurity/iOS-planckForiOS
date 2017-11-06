@@ -27,6 +27,12 @@ extension UIColor {
         }
     }
 
+    open class var pEpGray: UIColor {
+        get {
+            return UIColor(hex: "#8e8e93")
+        }
+    }
+
     open class var pEpYellow: UIColor {
         get {
             return UIColor(hex: "#FFCC00")
