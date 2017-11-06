@@ -90,10 +90,10 @@ class PEPSessionTest: XCTestCase {
 
         let session = PEPSession()
 
-        session.mySelf(NSMutableDictionary(dictionary: myself))
+        session.mySelf(myself)
 
         let (status1, encMsg1) = session.encrypt(
-            pEpMessageDict: dict, forIdentity: myself)
+            pEpMessageDict: dict, forIdentity: myself.dictionary() as PEPIdentityDict)
         XCTAssertEqual(status1, PEP_STATUS_OK)
         if let theEncMsg = encMsg1 {
             // expecting that sensitive data gets hidden (ENGINE-287)
