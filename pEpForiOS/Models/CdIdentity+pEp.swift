@@ -62,7 +62,7 @@ extension CdIdentity {
         return PEPUtil.pEpColor(cdIdentity: self, session: session)
     }
 
-    public func pEpIdentity() -> PEPIdentityDict {
+    public func pEpIdentity() -> PEPIdentity {
         return PEPUtil.pEp(cdIdentity: self)
     }
 
