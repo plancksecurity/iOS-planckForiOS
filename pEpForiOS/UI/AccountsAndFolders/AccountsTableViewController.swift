@@ -70,18 +70,11 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if indexPath.section == 1 && indexPath.row == 1 {
-            let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
-            guard let cell = dequeuedCell as? SwipeTableViewCell else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
-                return dequeuedCell
-            }
+        if indexPath.section == 0 {
+
+            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath) as! SwipeTableViewCell
             cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
-            let switchView = UISwitch(frame: CGRect.zero)
-            switchView.setOn(false, animated: false)
-            switchView.addTarget(self, action: #selector(switchChanged(sender:)), for: UIControlEvents.valueChanged)
-            cell.accessoryView = switchView
-            cell.selectionStyle = .none
+            cell.delegate = self
             return cell
         }
 
@@ -96,7 +89,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
                 // handle action by updating model with deletion
             }
-            return (orientation == .right ?  nil : [deleteAction])
+            return (orientation == .right ?   [deleteAction] : nil)
         }
 
         return nil
@@ -111,19 +104,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 0 ? true : false
-    }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            print("Deleted")
-
-            viewModel.delete(section: indexPath.section, cell: indexPath.row)
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-        }
-    }
-
-    @objc func switchChanged(sender: UISwitch) {
-        NSLog( "The switch is %@", sender.isOn ? "ON" : "OFF" );
     }
 
     // MARK: - Table view delegate
