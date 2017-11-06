@@ -65,22 +65,14 @@ open class PEPUtil {
         } else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "account without identity: \(account)")
+            return PEPIdentity(address: "none")
         }
     }
 
-    open static func pEp(identity: Identity) -> PEPIdentityDict {
-        var contact = PEPIdentityDict()
-        contact[kPepAddress] = identity.address as AnyObject
-        if let userN = identity.userName {
-            contact[kPepUsername] = userN as AnyObject
-        }
-        if let userID = identity.userID {
-            contact[kPepUserID] = userID as AnyObject
-        }
-        if identity.isMySelf {
-            contact[kPepIsOwnIdentity] = NSNumber(booleanLiteral: true)
-        }
-        return contact
+    open static func pEp(identity: Identity) -> PEPIdentity {
+        return PEPIdentity(
+            address: identity.address, userID: identity.userID, userName: identity.userName,
+            fingerPrint: nil, commType: Int(PEP_ct_unknown.rawValue), language: nil)
     }
 
     /**
@@ -96,6 +88,7 @@ open class PEPUtil {
         } else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "missing address: \(cdIdentity)")
+            return PEPIdentity(address: "none")
         }
     }
 
@@ -109,7 +102,7 @@ open class PEPUtil {
         return identity
     }
 
-    open static func pEpOptional(identity: Identity?) -> PEPIdentityDict? {
+    open static func pEpOptional(identity: Identity?) -> PEPIdentity? {
         guard let id = identity else {
             return nil
         }
@@ -411,7 +404,7 @@ open class PEPUtil {
     open static func pEpRating(identity: Identity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(identity: identity)
-        let rating = session.identityRating(pepC)
+        let rating = session.identityRating(pepC.dictionary())
         return rating
     }
 
@@ -472,35 +465,33 @@ open class PEPUtil {
 
     open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
         let pEpID = pEp(identity: identity)
-        let pEpDict = NSMutableDictionary(dictionary: pEpID)
-        session.updateIdentity(pEpDict)
-        return pEpDict[kPepFingerprint] as? String
+        session.update(pEpID)
+        return pEpID.fingerPrint
     }
 
     open static func fingerPrint(cdIdentity: CdIdentity,
                                  session: PEPSession = PEPSession()) -> String? {
         let pEpID = pEp(cdIdentity: cdIdentity)
-        let pEpDict = NSMutableDictionary(dictionary: pEpID)
-        session.updateIdentity(pEpDict)
-        return pEpDict[kPepFingerprint] as? String
+        session.update(pEpID)
+        return pEpID.fingerPrint
     }
 
     /**
      Trust that contact (yellow to green).
      */
     open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
-        session.updateIdentity(pepC)
-        session.trustPersonalKey(pepC)
+        let pEpID = pEp(identity: identity)
+        session.update(pEpID)
+        session.trustPersonalKey(pEpID.mutableDictionary())
     }
 
     /**
      Mistrust the identity (yellow to red)
      */
     open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
-        session.updateIdentity(pepC)
-        session.keyMistrusted(pepC)
+        let pEpID = pEp(identity: identity)
+        session.update(pEpID)
+        session.keyMistrusted(pEpID.mutableDictionary())
     }
 
     /**
@@ -508,9 +499,9 @@ open class PEPUtil {
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
     open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pepC = NSMutableDictionary(dictionary: pEp(identity: identity))
-        session.updateIdentity(pepC)
-        session.keyResetTrust(pepC)
+        let pEpID = pEp(identity: identity)
+        session.update(pEpID)
+        session.keyResetTrust(pEpID.mutableDictionary())
     }
 
     open static func encrypt(
