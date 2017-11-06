@@ -111,33 +111,30 @@ class TestUtil {
     }
 
     static func setupSomeIdentities(_ session: PEPSession = PEPSession())
-        -> (identity: NSMutableDictionary, receiver1: PEPIdentityDict,
-        receiver2: PEPIdentityDict, receiver3: PEPIdentityDict,
-        receiver4: PEPIdentityDict) {
-            let identity = NSMutableDictionary()
-            identity[kPepUsername] = "Unit Test"
-            identity[kPepAddress] = "somewhere@overtherainbow.com"
+        -> (identity: PEPIdentity, receiver1: PEPIdentity,
+        receiver2: PEPIdentity, receiver3: PEPIdentity,
+        receiver4: PEPIdentity) {
+            let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
+                                       userID: nil,
+                                       userName: "Unit Test")
 
-            let receiver1 = NSMutableDictionary()
-            receiver1[kPepUsername] = "receiver1"
-            receiver1[kPepAddress] = "receiver1@shopsmart.com"
+            let receiver1 = PEPIdentity(address: "receiver1@shopsmart.com",
+                                        userID: nil,
+                                        userName: "receiver1")
 
-            let receiver2 = NSMutableDictionary()
-            receiver2[kPepUsername] = "receiver2"
-            receiver2[kPepAddress] = "receiver2@shopsmart.com"
+            let receiver2 = PEPIdentity(address: "receiver2@shopsmart.com",
+                                        userID: nil,
+                                        userName: "receiver2")
 
-            let receiver3 = NSMutableDictionary()
-            receiver3[kPepUsername] = "receiver3"
-            receiver3[kPepAddress] = "receiver3@shopsmart.com"
+            let receiver3 = PEPIdentity(address: "receiver3@shopsmart.com",
+                                        userID: nil,
+                                        userName: "receiver3")
 
-            let receiver4 = NSMutableDictionary()
-            receiver4[kPepUsername] = "receiver4"
-            receiver4[kPepAddress] = "receiver4@shopsmart.com"
+            let receiver4 = PEPIdentity(address: "receiver4@shopsmart.com",
+                                        userID: nil,
+                                        userName: "receiver4")
 
-            return (identity, receiver1 as NSDictionary as! PEPIdentityDict,
-                    receiver2 as NSDictionary as! PEPIdentityDict,
-                    receiver3 as NSDictionary as! PEPIdentityDict,
-                    receiver4 as NSDictionary as! PEPIdentityDict)
+            return (identity, receiver1, receiver2, receiver3, receiver4)
     }
 
     /**
@@ -532,10 +529,10 @@ class TestUtil {
             Record.saveAndWait()
 
             let session = PEPSession()
-            let mySelfIdentityMutable = mySelfID.pEpIdentity().mutableDictionary()
-            session.mySelf(mySelfIdentityMutable)
-            XCTAssertNotNil(mySelfIdentityMutable[kPepFingerprint])
-            XCTAssertFalse(mySelfIdentityMutable.containsPGPCommType)
+            let mySelfIdentity = mySelfID.pEpIdentity()
+            session.mySelf(mySelfIdentity)
+            XCTAssertNotNil(mySelfIdentity.fingerPrint)
+            XCTAssertFalse(mySelfIdentity.containsPGPCommType())
 
             guard let cdMessage = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantomimeMail, account: cdMyAccount,

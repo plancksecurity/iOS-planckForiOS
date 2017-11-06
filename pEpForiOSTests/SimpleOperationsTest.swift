@@ -726,36 +726,30 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
      It's important to always provide the correct kPepUserID for a local account ID.
      */
     func testSimpleOutgoingMailColor() {
-        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        let myself = identity.mutableCopy() as! NSMutableDictionary
+        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
         session.mySelf(myself)
-        XCTAssertNotNil(myself[kPepFingerprint])
+        XCTAssertNotNil(myself.fingerPrint)
 
-        let color2 = session.identityRating(myself as NSDictionary as! PEPIdentityDict)
+        let color2 = session.identityRating(myself.dictionary())
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {
-        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        let myself = identity.mutableCopy() as! NSMutableDictionary
+        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
         session.mySelf(myself)
-        XCTAssertNotNil(myself[kPepFingerprint])
+        XCTAssertNotNil(myself.fingerPrint)
 
-        if let theID = identity as NSDictionary as? PEPIdentityDict,
-            let id = Identity.from(pEpIdentity: theID) {
-            let account = TestData().createWorkingAccount()
-            account.user = id
-            account.save()
+        let id = Identity.from(pEpIdentity: myself)
+        let account = TestData().createWorkingAccount()
+        account.user = id
+        account.save()
 
-            self.measure {
-                for _ in [1...1000] {
-                    let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
-                                                         cc: [id], bcc: [id],
-                                                         session: self.session)
-                }
+        self.measure {
+            for _ in [1...1000] {
+                let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
+                                                     cc: [id], bcc: [id],
+                                                     session: self.session)
             }
-        } else {
-            XCTFail()
         }
     }
 
@@ -776,20 +770,16 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testOutgoingMailColorPerformanceWithoutMySelf() {
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
-        if let theID = identity as NSDictionary as? PEPIdentityDict,
-            let id = Identity.from(pEpIdentity: theID) {
-            let account = TestData().createWorkingAccount()
-            account.user = id
-            account.save()
-            self.measure {
-                for _ in [1...1000] {
-                    let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
-                                                         cc: [id], bcc: [id],
-                                                         session: self.session)
-                }
+        let id = Identity.from(pEpIdentity: identity)
+        let account = TestData().createWorkingAccount()
+        account.user = id
+        account.save()
+        self.measure {
+            for _ in [1...1000] {
+                let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
+                                                     cc: [id], bcc: [id],
+                                                     session: self.session)
             }
-        } else {
-            XCTFail()
         }
     }
 
@@ -818,8 +808,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(theIdent.fingerPrint(session: session))
 
         let identDict = theIdent.updatedIdentityDictionary(session: session)
-        XCTAssertNotNil(identDict[kPepFingerprint])
-        XCTAssertNotNil(identDict[kPepUserID])
+        XCTAssertNotNil(identDict.fingerPrint)
+        XCTAssertNotNil(identDict.userID)
     }
 
     //fails on first run when the an account was setup on

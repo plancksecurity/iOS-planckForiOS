@@ -9,13 +9,20 @@
 import MessageModel
 
 extension Identity {
-    open static func from(pEpIdentity: PEPIdentityDict) -> Identity? {
-        if let address = pEpIdentity[kPepAddress] as? String {
-            let id = Identity.create(address: address, userID: pEpIdentity[kPepUserID] as? String,
-                                     userName: pEpIdentity[kPepUsername] as? String)
+    open static func from(pEpIdentityDict: PEPIdentityDict) -> Identity? {
+        if let address = pEpIdentityDict[kPepAddress] as? String {
+            let id = Identity.create(address: address,
+                                     userID: pEpIdentityDict[kPepUserID] as? String,
+                                     userName: pEpIdentityDict[kPepUsername] as? String)
             return id
         }
         return nil
+    }
+
+    open static func from(pEpIdentity: PEPIdentity) -> Identity {
+        let id = Identity.create(address: pEpIdentity.address, userID: pEpIdentity.userID,
+                                 userName: pEpIdentity.userName)
+        return id
     }
 
     public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
