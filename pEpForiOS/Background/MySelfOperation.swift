@@ -37,7 +37,7 @@ open class MySelfOperation: BaseOperation {
 
     open override func main() {
         let context = Record.Context.background
-        var ids = [NSMutableDictionary]()
+        var ids = [PEPIdentity]()
 
         // Which identities are owned?
         context.performAndWait {
@@ -48,20 +48,20 @@ open class MySelfOperation: BaseOperation {
                     return
             }
             for id in cdIds {
-                ids.append(NSMutableDictionary(dictionary: PEPUtil.pEp(cdIdentity: id)))
+                ids.append(PEPUtil.pEp(cdIdentity: id))
             }
         }
 
         // Invoke mySelf on all identities
 
-        for pEpIdDict in ids {
+        for pEpIdent in ids {
             let taskID = backgrounder?.beginBackgroundTask(
             taskName: MySelfOperation.taskNameSubOperation)
             let session = PEPSession()
-            session.mySelf(pEpIdDict)
+            session.mySelf(pEpIdent)
             Log.shared.info(
                 component: #function,
-                content: "\(pEpIdDict[kPepAddress] ?? "<unknown>") -> \(pEpIdDict[kPepFingerprint] ?? "no fingerprint")")
+                content: "\(pEpIdent) -> done")
             backgrounder?.endBackgroundTask(taskID)
         }
         backgrounder?.endBackgroundTask(wholeOperationTaskID)
