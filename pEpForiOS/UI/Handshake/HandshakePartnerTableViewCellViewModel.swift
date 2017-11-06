@@ -64,18 +64,18 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      Cache the updated own identity.
      */
-    let pEpSelf: NSMutableDictionary
+    let pEpSelf: PEPIdentity
 
     /**
      Cache the updated partner identity.
      */
-    var pEpPartner: NSMutableDictionary
+    var pEpPartner: PEPIdentity
 
     /**
      A copy of the partner dictionary, in case the user wants to undo a "Mistrust" action.
      See ENGINE-254.
      */
-    let pEpPartnerCopy: NSDictionary
+    let pEpPartnerCopy: PEPIdentity
 
     /**
      The message the status/trustwords are invoked for
@@ -97,9 +97,9 @@ class HandshakePartnerTableViewCellViewModel {
         pEpPartner = partner.updatedIdentityDictionary(session: session)
 
         // backup the partner dict
-        pEpPartnerCopy = NSDictionary(dictionary: pEpPartner)
+        pEpPartnerCopy = PEPIdentity(identity: pEpPartner)
 
-        isPartnerPGPUser = pEpPartner.containsPGPCommType
+        isPartnerPGPUser = pEpPartner.containsPGPCommType()
         self.message = message
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
@@ -113,8 +113,8 @@ class HandshakePartnerTableViewCellViewModel {
 
     func updateTrustwords(session: PEPSession = PEPSession()) {
         if isPartnerPGPUser,
-            let fprSelf = pEpSelf.object(forKey: kPepFingerprint) as? String,
-            let fprPartner = pEpPartner.object(forKey: kPepFingerprint) as? String {
+            let fprSelf = pEpSelf.fingerPrint,
+            let fprPartner = pEpPartner.fingerPrint {
             let fprPrettySelf = fprSelf.prettyFingerPrint()
             let fprPrettyPartner = fprPartner.prettyFingerPrint()
             self.trustwords =
@@ -122,8 +122,7 @@ class HandshakePartnerTableViewCellViewModel {
             "\(ownIdentity.userName ?? ownIdentity.address):\n\(fprPrettySelf)"
         } else {
             self.trustwords = determineTrustwords(
-                message: message, identitySelf: pEpSelf.pEpIdentity(),
-                identityPartner: pEpPartner.pEpIdentity())
+                message: message, identitySelf: pEpSelf, identityPartner: pEpPartner)
         }
     }
 
@@ -133,22 +132,18 @@ class HandshakePartnerTableViewCellViewModel {
      the 2 identies.
      */
     func determineTrustwords(
-        message: Message?, identitySelf: PEPIdentityDict, identityPartner: PEPIdentityDict) -> String? {
-
-        let selfDict = NSMutableDictionary(dictionary: identitySelf)
-        let partnerDict = NSMutableDictionary(dictionary: identityPartner)
-        selfDict.update(session: session)
-        partnerDict.update(session: session)
+        message: Message?, identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
+        session.update(identitySelf)
+        session.update(identityPartner)
 
         if let msg = message,
             let from = msg.from,
-            let partnerAddress = partnerDict[kPepAddress] as? String,
-            from.address == partnerAddress {
+            from.address == identityPartner.address {
             var pEpMessage = msg.pEpMessage()
-            pEpMessage[kPepFrom] = partnerDict as AnyObject
+            pEpMessage[kPepFrom] = identityPartner
             var pEpResult = PEP_UNKNOWN_ERROR
             let trustwordsResult = session.getTrustwordsMessageDict(
-                pEpMessage, receiverDict: selfDict.pEpIdentity(),
+                pEpMessage, receiverDict: identitySelf.dictionary(),
                 keysArray: msg.keyListFromDecryption,
                 language: trustwordsLanguage, full: trustwordsFull,
                 resultingStatus: &pEpResult)
@@ -161,8 +156,8 @@ class HandshakePartnerTableViewCellViewModel {
             }
         }
         let trustwordsResult = session.getTrustwordsIdentity1(
-            selfDict.pEpIdentity(),
-            identity2: partnerDict.pEpIdentity(),
+            identitySelf.dictionary(),
+            identity2: identityPartner.dictionary(),
             language: trustwordsLanguage,
             full: trustwordsFull)
         return trustwordsResult
@@ -173,9 +168,9 @@ class HandshakePartnerTableViewCellViewModel {
         updateTrustwords(session: session)
     }
 
-    func invokeTrustAction(action: (NSMutableDictionary) -> ()) {
+    func invokeTrustAction(action: (PEPIdentity) -> ()) {
         // Restore original partner, to preserve comm type
-        pEpPartner = NSMutableDictionary(dictionary: pEpPartnerCopy)
+        pEpPartner = PEPIdentity(identity:pEpPartnerCopy)
         action(pEpPartner)
         identityColor = partnerIdentity.pEpColor(session: session)
         rating = partnerIdentity.pEpRating(session: session)
@@ -184,19 +179,19 @@ class HandshakePartnerTableViewCellViewModel {
 
     public func confirmTrust() {
         invokeTrustAction() { thePartner in
-            session.trustPersonalKey(thePartner)
+            session.trustPersonalKey(thePartner.mutableDictionary())
         }
     }
 
     public func denyTrust() {
         invokeTrustAction() { thePartner in
-            session.keyMistrusted(thePartner)
+            session.keyMistrusted(thePartner.mutableDictionary())
         }
     }
 
     public func resetTrust() {
         invokeTrustAction() { thePartner in
-            session.keyResetTrust(thePartner)
+            session.keyResetTrust(thePartner.mutableDictionary())
         }
     }
 }

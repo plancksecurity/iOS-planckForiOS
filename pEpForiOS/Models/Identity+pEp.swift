@@ -26,7 +26,7 @@ extension Identity {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
 
-    public func pEpIdentity() -> PEPIdentityDict {
+    public func pEpIdentity() -> PEPIdentity {
         return PEPUtil.pEp(identity: self)
     }
     
@@ -65,7 +65,7 @@ extension Identity {
      */
     public func updatedIdentityDictionary(session: PEPSession = PEPSession()) -> PEPIdentity {
         let md = pEpIdentity()
-        session.updateIdentity(md)
+        session.update(md)
         return md
     }
 }
