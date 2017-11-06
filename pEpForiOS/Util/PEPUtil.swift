@@ -86,19 +86,15 @@ open class PEPUtil {
      - Parameter cdIdentity: The core data contact object.
      - Returns: An `PEPIdentity` contact for pEp.
      */
-    open static func pEp(cdIdentity: CdIdentity) -> PEPIdentityDict {
-        var dict = PEPIdentityDict()
-        if let name = cdIdentity.userName {
-            dict[kPepUsername] = name as NSObject
+    open static func pEp(cdIdentity: CdIdentity) -> PEPIdentity {
+        if let address = cdIdentity.address {
+            return PEPIdentity(address: address, userID: cdIdentity.userID,
+                               userName: cdIdentity.userName, fingerPrint: nil,
+                               commType: Int(PEP_ct_unknown.rawValue), language: nil)
+        } else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "missing address: \(cdIdentity)")
         }
-        if let userID = cdIdentity.userID {
-            dict[kPepUserID] = userID as NSObject
-        }
-        if cdIdentity.isMySelf {
-            dict[kPepIsOwnIdentity] = NSNumber(booleanLiteral: true)
-        }
-        dict[kPepAddress] = cdIdentity.address as AnyObject
-        return dict
     }
 
     /**
