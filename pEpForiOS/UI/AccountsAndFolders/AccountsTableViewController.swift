@@ -71,8 +71,11 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         if indexPath.section == 1 && indexPath.row == 1 {
-
-            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath) as! SwipeTableViewCell
+            let dequeuedCell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
+            guard let cell = dequeuedCell as? SwipeTableViewCell else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                return dequeuedCell
+            }
             cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
             let switchView = UISwitch(frame: CGRect.zero)
             switchView.setOn(false, animated: false)

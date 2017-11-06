@@ -162,7 +162,7 @@ extension Log: MessageModelLogging {
     ///   - error: error to log
     public func errorAndCrash(component: String, error: Error) {
         Log.error(component: component, error: error)
-        SystemUtils.crash()
+        SystemUtils.crash("🔥 ERROR \(component): \(error.localizedDescription)")
     }
 
     /// Logs component and error.
@@ -175,7 +175,7 @@ extension Log: MessageModelLogging {
     ///   - error: error to log
     public func errorAndCrash(component: String, errorString: String, error: Error) {
         Log.error(component: component, errorString: errorString, error: error)
-        SystemUtils.crash()
+        SystemUtils.crash("🔥 ERROR \(component): \(errorString): \(error.localizedDescription)")
     }
 
     /// Logs component and error.
@@ -187,6 +187,6 @@ extension Log: MessageModelLogging {
     ///   - errorString: error information to log
     public func errorAndCrash(component: String, errorString: String) {
         Log.error(component: component, errorString: errorString)
-        SystemUtils.crash()
+        SystemUtils.crash("🔥 ERROR \(component): \(errorString)")
     }
 }
