@@ -72,10 +72,10 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
         if indexPath.section == 0 {
 
-            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath) as! SwipeTableViewCell
-            cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
-            cell.delegate = self
-            return cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath) as? SwipeTableViewCell
+            cell?.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
+            cell?.delegate = self
+            return cell!
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
@@ -87,9 +87,9 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
             let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-                // handle action by updating model with deletion
+                self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
             }
-            return (orientation == .right ?   [deleteAction] : nil)
+            return (orientation == .left ?   [deleteAction] : nil)
         }
 
         return nil
