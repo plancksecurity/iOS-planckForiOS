@@ -255,18 +255,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
             let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-                //self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+                self.deleteAction(forCellAt: indexPath)
             }
             configure(action: deleteAction, with: .trash)
 
             let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
-                //self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+                self.flagAction(forCellAt: indexPath)
             }
             flagAction.hidesWhenSelected = true
             configure(action: flagAction, with: .flag)
 
             let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
-                //self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+                self.moreAction(forCellAt: indexPath)
             }
             moreAction.hidesWhenSelected = true
             configure(action: moreAction, with: .more)
@@ -297,17 +297,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action.font = .systemFont(ofSize: 13)
             action.transitionDelegate = ScaleTransition.default
         }
-    }
-
-    override func tableView(_ tableView: UITableView, editActionsForRowAt
-        indexPath: IndexPath)-> [UITableViewRowAction]? {
-        guard let flagAction = createFlagAction(forCellAt: indexPath),
-            let deleteAction = createDeleteAction(forCellAt: indexPath),
-            let moreAction = createMoreAction(forCellAt: indexPath) else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error creating action.")
-                return nil
-        }
-        return [deleteAction, flagAction, moreAction]
     }
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -462,43 +451,28 @@ extension EmailListViewController {
         return rowAction
     }
     
-    func createFlagAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
+    func flagAction(forCellAt indexPath: IndexPath) {
         guard let row = model?.row(for: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
-            return nil
+            return
         }
-        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            if row.isFlagged {
-                model?.unsetFlagged(forIndexPath: indexPath)
-            } else {
-                model?.setFlagged(forIndexPath: indexPath)
-            }
-            tableView.beginUpdates()
-            tableView.setEditing(false, animated: true)
-            tableView.reloadRows(at: [indexPath], with: .none)
-            tableView.endUpdates()
+        if row.isFlagged {
+            model?.unsetFlagged(forIndexPath: indexPath)
+        } else {
+            model?.setFlagged(forIndexPath: indexPath)
         }
-        return createRowAction(image: UIImage(named: "swipe-flag"), action: action)
+        tableView.beginUpdates()
+        tableView.setEditing(false, animated: true)
+        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.endUpdates()
     }
     
-    func createDeleteAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
-        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            tableView.beginUpdates()
-            model?.delete(forIndexPath: indexPath) // mark for deletion/trash
-            tableView.deleteRows(at: [indexPath], with: .none)
-            tableView.endUpdates()
-        }
-
-        return createRowAction(image: UIImage(named: "swipe-trash"), action: action)
+    func deleteAction(forCellAt indexPath: IndexPath) {
+        model?.delete(forIndexPath: indexPath) // mark for deletion/trash
     }
     
-    func createMoreAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
-        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            self.showMoreActionSheet(forRowAt: indexPath)
-        }
-
-        return createRowAction(image: UIImage(named: "swipe-more"),
-                               action: action)
+    func moreAction(forCellAt indexPath: IndexPath) {
+        self.showMoreActionSheet(forRowAt: indexPath)
     }
 }
 
