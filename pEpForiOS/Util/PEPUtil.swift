@@ -72,7 +72,7 @@ open class PEPUtil {
     open static func pEp(identity: Identity) -> PEPIdentity {
         return PEPIdentity(
             address: identity.address, userID: identity.userID, userName: identity.userName,
-            fingerPrint: nil, commType: PEP_ct_unknown, language: nil)
+            isOwn: identity.isMySelf, fingerPrint: nil, commType: PEP_ct_unknown, language: nil)
     }
 
     /**
@@ -83,8 +83,8 @@ open class PEPUtil {
     open static func pEp(cdIdentity: CdIdentity) -> PEPIdentity {
         if let address = cdIdentity.address {
             return PEPIdentity(address: address, userID: cdIdentity.userID,
-                               userName: cdIdentity.userName, fingerPrint: nil,
-                               commType: PEP_ct_unknown, language: nil)
+                               userName: cdIdentity.userName, isOwn: cdIdentity.isMySelf,
+                               fingerPrint: nil, commType: PEP_ct_unknown, language: nil)
         } else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "missing address: \(cdIdentity)")

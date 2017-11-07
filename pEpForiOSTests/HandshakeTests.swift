@@ -46,7 +46,8 @@ class HandshakeTests: XCTestCase {
     }
 
     func decryptedMessageSetup() {
-        let me = PEPIdentity(address: "iostest002@peptest.ch", userID: "userID", userName: "User Name")
+        let me = PEPIdentity(address: "iostest002@peptest.ch", userID: "userID",
+                             userName: "User Name", isOwn:true)
         let session = PEPSession()
         session.update(me)
         XCTAssertNotNil(me.fingerPrint)

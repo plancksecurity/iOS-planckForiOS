@@ -116,23 +116,28 @@ class TestUtil {
         receiver4: PEPIdentity) {
             let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
                                        userID: nil,
-                                       userName: "Unit Test")
+                                       userName: "Unit Test",
+                                       isOwn: true)
 
             let receiver1 = PEPIdentity(address: "receiver1@shopsmart.com",
                                         userID: nil,
-                                        userName: "receiver1")
+                                        userName: "receiver1",
+                                        isOwn: false)
 
             let receiver2 = PEPIdentity(address: "receiver2@shopsmart.com",
                                         userID: nil,
-                                        userName: "receiver2")
+                                        userName: "receiver2",
+                                        isOwn: false)
 
             let receiver3 = PEPIdentity(address: "receiver3@shopsmart.com",
                                         userID: nil,
-                                        userName: "receiver3")
+                                        userName: "receiver3",
+                                        isOwn: false)
 
             let receiver4 = PEPIdentity(address: "receiver4@shopsmart.com",
                                         userID: nil,
-                                        userName: "receiver4")
+                                        userName: "receiver4",
+                                        isOwn: false)
 
             return (identity, receiver1, receiver2, receiver3, receiver4)
     }
