@@ -34,9 +34,10 @@ class PepAdapterTests: XCTestCase {
     }
     
     func testMyself() {
+        let userID = identityMe.userID
         // This includes that a new key is generated.
         pEpSession.mySelf(identityMe)
-        XCTAssertNotNil(identityMe.userID)
+        XCTAssertEqual(identityMe.userID, userID)
     }
     
     /**
