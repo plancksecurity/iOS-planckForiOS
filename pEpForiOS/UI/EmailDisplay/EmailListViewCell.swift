@@ -8,8 +8,9 @@
 
 import UIKit
 import MessageModel
+import SwipeCellKit
 
-class EmailListViewCell: UITableViewCell {
+class EmailListViewCell: SwipeTableViewCell {
     static let storyboardId = "EmailListViewCell"
     static var flaggedImage: UIImage? = nil
     static var emptyContactImage = UIImage.init(named: "empty-avatar")

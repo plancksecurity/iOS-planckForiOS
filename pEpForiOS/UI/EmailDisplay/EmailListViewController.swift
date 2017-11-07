@@ -8,8 +8,9 @@
 
 import UIKit
 import MessageModel
+import SwipeCellKit
 
-class EmailListViewController: BaseTableViewController {
+class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     var folderToShow: Folder?
 
     func updateLastLookAt() {
@@ -32,6 +33,10 @@ class EmailListViewController: BaseTableViewController {
     fileprivate var lastSelectedIndexPath: IndexPath?
     
     let searchController = UISearchController(searchResultsController: nil)
+
+    //swipe acctions types
+    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    var buttonStyle: ButtonStyle = .backgroundColor
     
     // MARK: - Outlets
     
@@ -239,12 +244,61 @@ class EmailListViewController: BaseTableViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell!")
                 return UITableViewCell()
         }
+        cell.delegate = self
         configure(cell: cell, for: indexPath)
         return cell
     }
     
     // MARK: - UITableViewDelegate
-    
+
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        if indexPath.section == 0 {
+            let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+                //self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+            }
+            configure(action: deleteAction, with: .trash)
+
+            let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
+                //self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+            }
+            flagAction.hidesWhenSelected = true
+            configure(action: flagAction, with: .flag)
+
+            let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
+                //self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+            }
+            moreAction.hidesWhenSelected = true
+            configure(action: moreAction, with: .more)
+            return (orientation == .right ?   [deleteAction, flagAction, moreAction] : nil)
+        }
+
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        var options = SwipeTableOptions()
+        options.expansionStyle = .destructive
+        options.transitionStyle = .border
+        options.buttonSpacing = 11
+        return options
+    }
+
+    func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
+        }
+    }
+
     override func tableView(_ tableView: UITableView, editActionsForRowAt
         indexPath: IndexPath)-> [UITableViewRowAction]? {
         guard let flagAction = createFlagAction(forCellAt: indexPath),
@@ -558,4 +612,52 @@ extension EmailListViewController: SegueHandlerType {
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
         // nothing to do.
     }
+}
+
+//enums to simplify configurations
+
+enum ActionDescriptor {
+    case read, more, flag, trash
+
+    func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
+        guard displayMode != .imageOnly else { return nil }
+
+        switch self {
+        case .read: return NSLocalizedString("Read", comment: "read button")
+        case .more: return NSLocalizedString("More", comment: "more button")
+        case .flag: return NSLocalizedString("Flag", comment: "read button")
+        case .trash: return NSLocalizedString("Trash", comment: "Trash button")
+        }
+    }
+
+    func image(forStyle style: ButtonStyle, displayMode: ButtonDisplayMode) -> UIImage? {
+        guard displayMode != .titleOnly else { return nil }
+
+        let name: String
+        switch self {
+        case .read: name = "read"
+        case .more: name = "more"
+        case .flag: name = "flag"
+        case .trash: name = "trash"
+        }
+
+        return UIImage(named: "swipe-" + name)
+    }
+
+    var color: UIColor {
+        switch self {
+        case .read: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
+        case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
+        case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
+        }
+    }
+}
+
+enum ButtonDisplayMode {
+    case titleAndImage, titleOnly, imageOnly
+}
+
+enum ButtonStyle {
+    case backgroundColor, circular
 }
