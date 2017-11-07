@@ -69,6 +69,10 @@ class LoginViewModel {
         return !Account.all().isEmpty
     }
 
+    func exist(address: String) -> Bool {
+        return Account.by(address: address) != nil
+    }
+
     func login(account: String, password: String, login: String? = nil,
                userName: String? = nil, mySelfer: KickOffMySelfProtocol,
                callback: (Error?) -> Void) {

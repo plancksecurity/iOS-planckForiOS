@@ -13,6 +13,7 @@
     case missingPassword
     case noConnectData
     case missingUsername
+    case accountExistence
  }
 
  extension LoginTableViewControllerError: LocalizedError {
@@ -30,6 +31,8 @@
         case .noConnectData:
             return NSLocalizedString("Internal error",
                                      comment: "Automated account setup error description")
+        case .accountExistence:
+            return NSLocalizedString("account alredy exist", comment: "account exist error message")
         }
     }
  }
@@ -138,6 +141,11 @@
         isCurrentlyVerifying = true
         guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
             handleLoginError(error: LoginTableViewControllerError.missingEmail, extended: false)
+            return
+        }
+        guard !loginViewModel.exist(address: email) else {
+            isCurrentlyVerifying = false
+            handleLoginError(error: LoginTableViewControllerError.accountExistence, extended: false)
             return
         }
         guard let pass = password.text, pass != "" else {
