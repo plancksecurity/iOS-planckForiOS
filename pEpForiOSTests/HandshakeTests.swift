@@ -87,11 +87,11 @@ class HandshakeTests: XCTestCase {
             return
         }
 
-        guard let pEpFrom = theMessage[kPepFrom] as? PEPIdentityDict else {
+        guard let pEpFrom = theMessage[kPepFrom] as? PEPIdentity else {
             XCTFail("expected from in message")
             return
         }
-        self.fromIdent = PEPIdentity(dictionary: pEpFrom)
+        self.fromIdent = pEpFrom
     }
 
     func testPositiveTrustResetCycle() {
