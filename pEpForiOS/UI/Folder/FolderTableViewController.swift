@@ -21,9 +21,7 @@ class FolderTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(true, animated: true)
-        if folderVM == nil {
-            setupViewModel()
-        }
+        setupViewModel()
     }
 
     // MARK: - Setup
