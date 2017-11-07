@@ -276,32 +276,23 @@ open class PEPUtil {
     /**
      Converts a pEp identity dict to a pantomime address.
      */
-    open static func pantomime(pEpIdentity: PEPIdentityDict) -> CWInternetAddress {
-        let address = CWInternetAddress()
-        if let email = pEpIdentity[kPepAddress] as? String {
-            address.setAddress(email)
-        }
-        if let name = pEpIdentity[kPepUsername] as? String {
-            address.setPersonal(name)
-        }
-        return address
+    open static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
+        return CWInternetAddress(personal: pEpIdentity.userName, address: pEpIdentity.address)
     }
 
     /**
      Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
      */
-    open static func pantomime(pEpIdentities: [PEPIdentityDict], recipientType: PantomimeRecipientType)
+    open static func pantomime(pEpIdentities: [PEPIdentity], recipientType: PantomimeRecipientType)
         -> [CWInternetAddress] {
-            var addresses: [CWInternetAddress] = []
-            for c in pEpIdentities {
-                let address = pantomime(pEpIdentity: c)
-                address.setType(recipientType)
-                addresses.append(address)
+            return pEpIdentities.map {
+                let pant = pantomime(pEpIdentity: $0)
+                pant.setType(recipientType)
+                return pant
             }
-            return addresses
     }
 
-    open static func add(pEpIdentities: [PEPIdentityDict], toPantomimeMessage: CWIMAPMessage,
+    open static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
                          recipientType: PantomimeRecipientType) {
         let addresses = pantomime(
             pEpIdentities: pEpIdentities, recipientType: recipientType)
