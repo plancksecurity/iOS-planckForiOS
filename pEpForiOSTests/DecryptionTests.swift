@@ -202,8 +202,7 @@ class DecryptionTests: XCTestCase {
             if useSubject {
                 XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
             } else {
-                // ENGINE-291
-                XCTAssertNil(cdMsg.shortMessage)
+                XCTAssertTrue(cdMsg.shortMessage?.isEmpty ?? false)
             }
             XCTAssertEqual(cdMsg.longMessage, msgLongMessage)
 
