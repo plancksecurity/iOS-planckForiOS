@@ -8,8 +8,9 @@
 
 import UIKit
 import MessageModel
+import SwipeCellKit
 
-class EmailListViewController: BaseTableViewController {
+class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     var folderToShow: Folder?
 
     func updateLastLookAt() {
@@ -32,6 +33,10 @@ class EmailListViewController: BaseTableViewController {
     fileprivate var lastSelectedIndexPath: IndexPath?
     
     let searchController = UISearchController(searchResultsController: nil)
+
+    //swipe acctions types
+    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    var buttonStyle: ButtonStyle = .backgroundColor
     
     // MARK: - Outlets
     
@@ -239,21 +244,59 @@ class EmailListViewController: BaseTableViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell!")
                 return UITableViewCell()
         }
+        cell.delegate = self
         configure(cell: cell, for: indexPath)
         return cell
     }
     
     // MARK: - UITableViewDelegate
-    
-    override func tableView(_ tableView: UITableView, editActionsForRowAt
-        indexPath: IndexPath)-> [UITableViewRowAction]? {
-        guard let flagAction = createFlagAction(forCellAt: indexPath),
-            let deleteAction = createDeleteAction(forCellAt: indexPath),
-            let moreAction = createMoreAction(forCellAt: indexPath) else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error creating action.")
-                return nil
+
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        if indexPath.section == 0 {
+            let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+                self.deleteAction(forCellAt: indexPath)
+            }
+            configure(action: deleteAction, with: .trash)
+
+            let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
+                self.flagAction(forCellAt: indexPath)
+            }
+            flagAction.hidesWhenSelected = true
+            configure(action: flagAction, with: .flag)
+
+            let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
+                self.moreAction(forCellAt: indexPath)
+            }
+            moreAction.hidesWhenSelected = true
+            configure(action: moreAction, with: .more)
+            return (orientation == .right ?   [deleteAction, flagAction, moreAction] : nil)
         }
-        return [deleteAction, flagAction, moreAction]
+
+        return nil
+    }
+
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        var options = SwipeTableOptions()
+        options.expansionStyle = .destructive
+        options.transitionStyle = .border
+        options.buttonSpacing = 11
+        return options
+    }
+
+    func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
+        }
     }
     
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -408,43 +451,28 @@ extension EmailListViewController {
         return rowAction
     }
     
-    func createFlagAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
+    func flagAction(forCellAt indexPath: IndexPath) {
         guard let row = model?.row(for: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
-            return nil
+            return
         }
-        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            if row.isFlagged {
-                model?.unsetFlagged(forIndexPath: indexPath)
-            } else {
-                model?.setFlagged(forIndexPath: indexPath)
-            }
-            tableView.beginUpdates()
-            tableView.setEditing(false, animated: true)
-            tableView.reloadRows(at: [indexPath], with: .none)
-            tableView.endUpdates()
+        if row.isFlagged {
+            model?.unsetFlagged(forIndexPath: indexPath)
+        } else {
+            model?.setFlagged(forIndexPath: indexPath)
         }
-        return createRowAction(image: UIImage(named: "swipe-flag"), action: action)
+        tableView.beginUpdates()
+        tableView.setEditing(false, animated: true)
+        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.endUpdates()
     }
     
-    func createDeleteAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
-        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            tableView.beginUpdates()
-            model?.delete(forIndexPath: indexPath) // mark for deletion/trash
-            tableView.deleteRows(at: [indexPath], with: .none)
-            tableView.endUpdates()
-        }
-
-        return createRowAction(image: UIImage(named: "swipe-trash"), action: action)
+    func deleteAction(forCellAt indexPath: IndexPath) {
+        model?.delete(forIndexPath: indexPath) // mark for deletion/trash
     }
     
-    func createMoreAction(forCellAt indexPath: IndexPath) -> UITableViewRowAction? {
-        func action(action: UITableViewRowAction, indexPath: IndexPath) -> Void {
-            self.showMoreActionSheet(forRowAt: indexPath)
-        }
-
-        return createRowAction(image: UIImage(named: "swipe-more"),
-                               action: action)
+    func moreAction(forCellAt indexPath: IndexPath) {
+        self.showMoreActionSheet(forRowAt: indexPath)
     }
 }
 
@@ -558,4 +586,52 @@ extension EmailListViewController: SegueHandlerType {
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
         // nothing to do.
     }
+}
+
+//enums to simplify configurations
+
+enum ActionDescriptor {
+    case read, more, flag, trash
+
+    func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
+        guard displayMode != .imageOnly else { return nil }
+
+        switch self {
+        case .read: return NSLocalizedString("Read", comment: "read button")
+        case .more: return NSLocalizedString("More", comment: "more button")
+        case .flag: return NSLocalizedString("Flag", comment: "read button")
+        case .trash: return NSLocalizedString("Trash", comment: "Trash button")
+        }
+    }
+
+    func image(forStyle style: ButtonStyle, displayMode: ButtonDisplayMode) -> UIImage? {
+        guard displayMode != .titleOnly else { return nil }
+
+        let name: String
+        switch self {
+        case .read: name = "read"
+        case .more: name = "more"
+        case .flag: name = "flag"
+        case .trash: name = "trash"
+        }
+
+        return UIImage(named: "swipe-" + name)
+    }
+
+    var color: UIColor {
+        switch self {
+        case .read: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
+        case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
+        case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
+        }
+    }
+}
+
+enum ButtonDisplayMode {
+    case titleAndImage, titleOnly, imageOnly
+}
+
+enum ButtonStyle {
+    case backgroundColor, circular
 }
