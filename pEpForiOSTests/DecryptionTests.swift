@@ -13,9 +13,9 @@ import MessageModel
 
 class DecryptionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
-    var pEpOwnIdentity: PEPIdentityDict!
+    var pEpOwnIdentity: PEPIdentity!
     var cdSenderAccount: CdAccount!
-    var pEpSenderIdentity: PEPIdentityDict!
+    var pEpSenderIdentity: PEPIdentity!
     var cdInbox: CdFolder!
 
     var persistentSetup: PersistentSetup!
@@ -59,18 +59,14 @@ class DecryptionTests: XCTestCase {
         super.tearDown()
     }
 
-    func pEpIdentity(cdAccount: CdAccount) -> PEPIdentityDict? {
+    func pEpIdentity(cdAccount: CdAccount) -> PEPIdentity? {
         guard
-            let identityDict = cdAccount.identity?.pEpIdentity().mutableDictionary() else {
+            let identity = cdAccount.identity?.pEpIdentity() else {
                 XCTFail()
                 return nil
         }
-        session.mySelf(identityDict)
-        guard let pEpId = identityDict as? PEPIdentityDict  else {
-            XCTFail()
-            return nil
-        }
-        return pEpId
+        session.mySelf(identity)
+        return identity
     }
 
     func valueOf(header: String, inOptionalFields: [[String]]?) -> String? {
@@ -149,6 +145,10 @@ class DecryptionTests: XCTestCase {
 
         let pantMail = CWIMAPMessage(pEpMessage: encryptedOrNotMailDict, mailboxName: inboxName)
         pantMail.setUID(5) // some UID is needed to trigger decrypt
+
+        if pEpSenderIdentity.userName == nil {
+            XCTAssertNil(pantMail.from()?.personal())
+        }
 
         if shouldEncrypt {
             XCTAssertTrue(pantMail.headerValue(forName: kXpEpVersion) is String)
@@ -253,6 +253,11 @@ class DecryptionTests: XCTestCase {
     }
 
     func testBasicDecryptionOfUnEncryptedMail() {
+        testBasicDecryption(shouldEncrypt: false, useSubject: true)
+    }
+
+    func testBasicDecryptionOfUnEncryptedMailWithNilPersonal() {
+        pEpSenderIdentity.userName = nil
         testBasicDecryption(shouldEncrypt: false, useSubject: true)
     }
 

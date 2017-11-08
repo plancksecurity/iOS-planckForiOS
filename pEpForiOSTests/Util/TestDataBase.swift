@@ -126,12 +126,10 @@ class TestDataBase {
             return acc
         }
 
-        func pEpIdentity() -> [String: AnyObject] {
-            let theID = [
-                kPepAddress: idAddress as AnyObject,
-                kPepUsername: accountName as AnyObject
-                ] as [String: AnyObject]
-            return theID
+        func pEpIdentity() -> PEPIdentity {
+            var ident = PEPIdentity(address: idAddress)
+            ident.userName = accountName
+            return ident
         }
     }
 
@@ -184,7 +182,7 @@ class TestDataBase {
     /**
      - Returns: A valid `PEPIdentity`.
      */
-    func createWorkingIdentity(number: Int = 0) -> [String: AnyObject] {
+    func createWorkingIdentity(number: Int = 0) -> PEPIdentity {
         populateAccounts()
         return createWorkingAccountSettings(number: number).pEpIdentity()
     }

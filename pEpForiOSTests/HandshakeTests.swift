@@ -14,7 +14,7 @@ import XCTest
 class HandshakeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
     var cdOwnAccount: CdAccount!
-    var fromDict = NSMutableDictionary()
+    var fromIdent: PEPIdentity!
 
     override func setUp() {
         super.setUp()
@@ -46,15 +46,11 @@ class HandshakeTests: XCTestCase {
     }
 
     func decryptedMessageSetup() {
-        let me: PEPIdentityDict = [
-            kPepUserID: "userID" as AnyObject,
-            kPepUsername: "User Name" as AnyObject,
-            kPepAddress: "iostest002@peptest.ch" as AnyObject
-        ]
-        let meDict = NSMutableDictionary(dictionary: me)
+        let me = PEPIdentity(address: "iostest002@peptest.ch", userID: "userID",
+                             userName: "User Name", isOwn:true)
         let session = PEPSession()
-        session.mySelf(meDict)
-        XCTAssertNotNil(meDict[kPepFingerprint])
+        session.update(me)
+        XCTAssertNotNil(me.fingerPrint)
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "HandshakeTests_mail_001.txt",
@@ -91,44 +87,44 @@ class HandshakeTests: XCTestCase {
             return
         }
 
-        guard let pEpFrom = theMessage[kPepFrom] as? PEPIdentityDict else {
+        guard let pEpFrom = theMessage[kPepFrom] as? PEPIdentity else {
             XCTFail("expected from in message")
             return
         }
-        self.fromDict = NSMutableDictionary(dictionary: pEpFrom)
+        self.fromIdent = pEpFrom
     }
 
     func testPositiveTrustResetCycle() {
         let session = PEPSession()
-        session.updateIdentity(fromDict)
-        XCTAssertNotNil(fromDict[kPepFingerprint])
-        XCTAssertFalse(fromDict.containsPGPCommType)
+        session.update(fromIdent)
+        XCTAssertNotNil(fromIdent.fingerPrint)
+        XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.trustPersonalKey(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
+        session.trustPersonalKey(fromIdent.mutableDictionary())
+        XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.keyResetTrust(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
+        session.keyResetTrust(fromIdent.mutableDictionary())
+        XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.trustPersonalKey(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
+        session.trustPersonalKey(fromIdent.mutableDictionary())
+        XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.keyResetTrust(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
+        session.keyResetTrust(fromIdent.mutableDictionary())
+        XCTAssertFalse(fromIdent.containsPGPCommType())
     }
 
     func testNegativeTrustResetCycle() {
         let session = PEPSession()
-        session.updateIdentity(fromDict)
-        XCTAssertNotNil(fromDict[kPepFingerprint])
-        XCTAssertFalse(fromDict.containsPGPCommType)
+        session.update(fromIdent)
+        XCTAssertNotNil(fromIdent.fingerPrint)
+        XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.keyMistrusted(fromDict)
-        XCTAssertFalse(fromDict.containsPGPCommType)
+        session.keyMistrusted(fromIdent.mutableDictionary())
+        XCTAssertFalse(fromIdent.containsPGPCommType())
 
         // after mistrust, the engine throws away all status,
         // so this is expected behavior. See ENGINE-254
-        session.keyResetTrust(fromDict)
-        XCTAssertTrue(fromDict.containsPGPCommType)
+        session.keyResetTrust(fromIdent.mutableDictionary())
+        XCTAssertTrue(fromIdent.containsPGPCommType())
     }
 }

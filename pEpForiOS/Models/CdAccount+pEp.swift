@@ -8,7 +8,7 @@
 import MessageModel
 
 extension CdAccount {
-    open func pEpIdentity() -> PEPIdentityDict {
+    open func pEpIdentity() -> PEPIdentity {
         return PEPUtil.identity(account: self)
     }
 }

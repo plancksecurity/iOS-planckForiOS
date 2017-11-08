@@ -56,7 +56,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         handleNextMessage()
     }
 
-    func retrieveNextMessage() -> (PEPMessageDict, PEPIdentityDict, NSManagedObjectID)? {
+    func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
         Log.shared.errorAndCrash(component: #function, errorString: "Must be overridden in subclass")
         return nil
     }
@@ -165,7 +165,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             lastHandledMessageObjectID = objID
             determineTargetFolder(msgID: objID)
             let session = PEPSession()
-            let (status, encMsg) = session.encrypt(pEpMessageDict: msg, forIdentity: ident)
+            let (status, encMsg) = session.encrypt(
+                pEpMessageDict: msg, forIdentity: ident.dictionary() as PEPIdentityDict)
             let (encMsg2, error) = PEPUtil.check(
                 comp: comp, status: status, encryptedMessage: encMsg)
             if let err = error {

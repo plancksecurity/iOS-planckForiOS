@@ -12,8 +12,9 @@ import XCTest
 
 class PepAdapterTests: XCTestCase {
     let comp = "PepAdapterTests"
-    let identity_me: NSMutableDictionary = [kPepAddress: "some@mail.com",
-                                            kPepUsername: "This is me"]
+    let identityMe = PEPIdentity(address: "some@mail.com", userID: nil, userName: "This is me",
+                                 isOwn: true)
+
     var pEpSession: PEPSession {
         return PEPSession()
     }
@@ -33,9 +34,10 @@ class PepAdapterTests: XCTestCase {
     }
     
     func testMyself() {
+        let userID = identityMe.userID
         // This includes that a new key is generated.
-        pEpSession.mySelf(identity_me)
-        XCTAssertNotNil(identity_me[kPepUserID])
+        pEpSession.mySelf(identityMe)
+        XCTAssertEqual(identityMe.userID, userID)
     }
     
     /**
@@ -45,8 +47,8 @@ class PepAdapterTests: XCTestCase {
     func testDecryptMessageWithoutAttachments() {
         let pepMessage: PEPMessageDict = [
             kPepAttachments: NSArray(),
-            kPepTo: NSArray(array: [identity_me]),
-            kPepFrom: identity_me,
+            kPepTo: NSArray(array: [identityMe]),
+            kPepFrom: identityMe,
             kPepShortMessage: "Subject" as NSString,
             kPepLongMessage: "Long long message" as NSString
         ]

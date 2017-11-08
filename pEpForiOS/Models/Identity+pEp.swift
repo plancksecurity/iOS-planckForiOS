@@ -9,13 +9,20 @@
 import MessageModel
 
 extension Identity {
-    open static func from(pEpIdentity: PEPIdentityDict) -> Identity? {
-        if let address = pEpIdentity[kPepAddress] as? String {
-            let id = Identity.create(address: address, userID: pEpIdentity[kPepUserID] as? String,
-                                     userName: pEpIdentity[kPepUsername] as? String)
+    open static func from(pEpIdentityDict: PEPIdentityDict) -> Identity? {
+        if let address = pEpIdentityDict[kPepAddress] as? String {
+            let id = Identity.create(address: address,
+                                     userID: pEpIdentityDict[kPepUserID] as? String,
+                                     userName: pEpIdentityDict[kPepUsername] as? String)
             return id
         }
         return nil
+    }
+
+    open static func from(pEpIdentity: PEPIdentity) -> Identity {
+        let id = Identity.create(address: pEpIdentity.address, userID: pEpIdentity.userID,
+                                 userName: pEpIdentity.userName)
+        return id
     }
 
     public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
@@ -26,7 +33,7 @@ extension Identity {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
 
-    public func pEpIdentity() -> PEPIdentityDict {
+    public func pEpIdentity() -> PEPIdentity {
         return PEPUtil.pEp(identity: self)
     }
     
@@ -63,13 +70,9 @@ extension Identity {
      Returns: A NSMutableDictionary that has been updated and thus should contain
      the fingerprint.
      */
-    public func updatedIdentityDictionary(session: PEPSession = PEPSession()) -> NSMutableDictionary {
-        let md = pEpIdentity().mutableDictionary()
-        if isMySelf {
-            session.mySelf(md)
-        } else {
-            md.update(session: session)
-        }
+    public func updatedIdentityDictionary(session: PEPSession = PEPSession()) -> PEPIdentity {
+        let md = pEpIdentity()
+        session.update(md)
         return md
     }
 }

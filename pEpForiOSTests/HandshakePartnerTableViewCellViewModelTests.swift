@@ -62,18 +62,17 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             }
             XCTAssertNotEqual(mySelfID.address, partnerID.address)
 
-            let myDictMutable = mySelfID.pEpIdentity().mutableDictionary()
-            let partnerMutable = partnerID.pEpIdentity().mutableDictionary()
+            let meIdent = mySelfID.pEpIdentity()
+            let partnerIdent = partnerID.pEpIdentity()
 
-            myDictMutable.update(session: session)
-            partnerMutable.update(session: session)
+            session.update(meIdent)
+            session.update(partnerIdent)
 
-            XCTAssertNotNil(myDictMutable[kPepFingerprint])
-            XCTAssertNotNil(partnerMutable[kPepFingerprint])
-            XCTAssertFalse(partnerMutable.containsPGPCommType)
+            XCTAssertNotNil(meIdent.fingerPrint)
+            XCTAssertNotNil(partnerIdent.fingerPrint)
+            XCTAssertFalse(partnerIdent.containsPGPCommType())
 
-            XCTAssertEqual(partnerMutable[kPepFingerprint] as? String,
-                           "365AA0E985C912DAA867B1A77C6016EE84C971BF")
+            XCTAssertEqual(partnerIdent.fingerPrint, "365AA0E985C912DAA867B1A77C6016EE84C971BF")
 
             return (message: message, mySelfID: mySelfID, partnerID: partnerID)
     }
@@ -91,17 +90,17 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             return
         }
 
-        let partnerMutable = partnerID.pEpIdentity().mutableDictionary()
-        partnerMutable.update(session: session)
+        let partnerIdent = partnerID.pEpIdentity()
+        session.update(partnerIdent)
 
-        session.trustPersonalKey(partnerMutable)
-        partnerMutable.update(session: session)
-        XCTAssertFalse(partnerMutable.containsPGPCommType)
+        session.trustPersonalKey(partnerIdent.mutableDictionary())
+        session.update(partnerIdent)
+        XCTAssertFalse(partnerIdent.containsPGPCommType())
 
-        session.keyResetTrust(partnerMutable)
-        session.trustPersonalKey(partnerMutable)
-        partnerMutable.update(session: session)
-        XCTAssertFalse(partnerMutable.containsPGPCommType)
+        session.keyResetTrust(partnerIdent.mutableDictionary())
+        session.trustPersonalKey(partnerIdent.mutableDictionary())
+        session.update(partnerIdent)
+        XCTAssertFalse(partnerIdent.containsPGPCommType())
     }
 
     /**
@@ -118,43 +117,43 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                     return
         }
 
-        let myDictMutable = mySelfID.pEpIdentity().mutableDictionary()
-        var partnerMutable = partnerID.pEpIdentity().mutableDictionary()
-        myDictMutable.update(session: session)
-        partnerMutable.update(session: session)
+        let meIdent = mySelfID.pEpIdentity()
+        var partnerIdent = partnerID.pEpIdentity()
+        session.update(meIdent)
+        session.update(partnerIdent)
 
         // back up the original
-        let partnerDictOrig = NSDictionary(dictionary: partnerMutable)
-        XCTAssertFalse(partnerDictOrig.containsPGPCommType)
+        let partnerIdentOrig = PEPIdentity(identity: partnerIdent)
+        XCTAssertFalse(partnerIdentOrig.containsPGPCommType())
 
-        session.trustPersonalKey(partnerMutable)
-        partnerMutable.update(session: session)
-        XCTAssertFalse(partnerMutable.containsPGPCommType)
+        session.trustPersonalKey(partnerIdent.mutableDictionary())
+        session.update(partnerIdent)
+        XCTAssertFalse(partnerIdent.containsPGPCommType())
 
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig) // restore backup
-        session.keyResetTrust(partnerMutable)
-        partnerMutable.update(session: session)
-        XCTAssertFalse(partnerMutable.containsPGPCommType)
+        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
+        session.keyResetTrust(partnerIdent.mutableDictionary())
+        session.update(partnerIdent)
+        XCTAssertFalse(partnerIdent.containsPGPCommType())
 
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig) // restore backup
-        session.keyMistrusted(partnerMutable)
-        partnerMutable.update(session: session)
-        XCTAssertFalse(partnerMutable.containsPGPCommType)
+        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
+        session.keyMistrusted(partnerIdent.mutableDictionary())
+        session.update(partnerIdent)
+        XCTAssertFalse(partnerIdent.containsPGPCommType())
 
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig) // restore backup
-        session.keyResetTrust(partnerMutable)
-        partnerMutable.update(session: session)
+        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
+        session.keyResetTrust(partnerIdent.mutableDictionary())
+        session.update(partnerIdent)
         // engine forgets everything about that key
-        XCTAssertTrue(partnerMutable.containsPGPCommType)
+        XCTAssertTrue(partnerIdent.containsPGPCommType())
 
-        partnerMutable = NSMutableDictionary(dictionary: partnerDictOrig) // restore backup
+        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         // The partner (restored from the backup) is still a pEp user
-        XCTAssertFalse(partnerMutable.containsPGPCommType)
-        session.trustPersonalKey(partnerMutable)
-        partnerMutable.update(session: session)
+        XCTAssertFalse(partnerIdent.containsPGPCommType())
+        session.trustPersonalKey(partnerIdent.mutableDictionary())
+        session.update(partnerIdent)
 
         // This is incorrect behavior. The user should still (or again) be a pEp user
-        XCTAssertTrue(partnerMutable.containsPGPCommType)
+        XCTAssertTrue(partnerIdent.containsPGPCommType())
     }
 
     /**
