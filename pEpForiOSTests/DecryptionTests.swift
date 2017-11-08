@@ -146,6 +146,10 @@ class DecryptionTests: XCTestCase {
         let pantMail = CWIMAPMessage(pEpMessage: encryptedOrNotMailDict, mailboxName: inboxName)
         pantMail.setUID(5) // some UID is needed to trigger decrypt
 
+        if pEpSenderIdentity.userName == nil {
+            XCTAssertNil(pantMail.from()?.personal())
+        }
+
         if shouldEncrypt {
             XCTAssertTrue(pantMail.headerValue(forName: kXpEpVersion) is String)
         }
@@ -249,6 +253,11 @@ class DecryptionTests: XCTestCase {
     }
 
     func testBasicDecryptionOfUnEncryptedMail() {
+        testBasicDecryption(shouldEncrypt: false, useSubject: true)
+    }
+
+    func testBasicDecryptionOfUnEncryptedMailWithNilPersonal() {
+        pEpSenderIdentity.userName = nil
         testBasicDecryption(shouldEncrypt: false, useSubject: true)
     }
 
