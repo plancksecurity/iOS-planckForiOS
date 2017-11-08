@@ -100,13 +100,13 @@ class HandshakeTests: XCTestCase {
         XCTAssertNotNil(fromIdent.fingerPrint)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.trustPersonalKey(fromIdent.mutableDictionary())
+        session.trustPersonalKey(fromIdent)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
         session.keyResetTrust(fromIdent.mutableDictionary())
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.trustPersonalKey(fromIdent.mutableDictionary())
+        session.trustPersonalKey(fromIdent)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
         session.keyResetTrust(fromIdent.mutableDictionary())

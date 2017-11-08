@@ -179,7 +179,7 @@ class HandshakePartnerTableViewCellViewModel {
 
     public func confirmTrust() {
         invokeTrustAction() { thePartner in
-            session.trustPersonalKey(thePartner.mutableDictionary())
+            session.trustPersonalKey(thePartner)
         }
     }
 

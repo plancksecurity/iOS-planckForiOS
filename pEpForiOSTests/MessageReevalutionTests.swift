@@ -194,7 +194,7 @@ class MessageReevalutionTests: XCTestCase {
             infoMessage: "in the beginning")
 
         for _ in 0..<1 {
-            session.trustPersonalKey(senderIdent.mutableDictionary())
+            session.trustPersonalKey(senderIdent)
             XCTAssertTrue(senderIdent.isConfirmed)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_trusted)
             reevaluateMessage(

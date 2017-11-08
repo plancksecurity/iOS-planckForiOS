@@ -473,7 +473,7 @@ open class PEPUtil {
     open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
         let pEpID = pEp(identity: identity)
         session.update(pEpID)
-        session.trustPersonalKey(pEpID.mutableDictionary())
+        session.trustPersonalKey(pEpID)
     }
 
     /**
