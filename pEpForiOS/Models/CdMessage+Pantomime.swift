@@ -540,10 +540,15 @@ extension CdMessage {
 
         imap.contentType = pantomimeMessage.contentType()
 
-        if forceParseAttachments || mail.bodyFetched {
-            // Parsing attachments only makes sense once pantomime has received the
-            // mail body. Same goes for the snippet.
-            addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail, level: 0)
+        // If the mail contains attachments already, it is not a new mail but an updated mail that
+        // accidentally made its way until here.
+        // Do *not* add the attachments again.
+        if !containsAttachments(cdMessage: mail) {
+            if forceParseAttachments || mail.bodyFetched {
+                // Parsing attachments only makes sense once pantomime has received the
+                // mail body. Same goes for the snippet.
+                addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail, level: 0)
+            }
         }
 
         store(headerFieldNames: ["X-pEp-Version", "X-EncStatus", "X-KeyList"],
@@ -556,6 +561,13 @@ extension CdMessage {
         }
 
         return mail
+    }
+    
+    static private func containsAttachments(cdMessage: CdMessage) -> Bool {
+        guard let attachments = cdMessage.attachments else {
+            return false
+        }
+        return attachments.count > 0
     }
 
     static func store(headerFieldNames: [String], pantomimeMessage: CWIMAPMessage,
