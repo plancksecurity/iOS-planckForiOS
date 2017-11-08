@@ -103,13 +103,13 @@ class HandshakeTests: XCTestCase {
         session.trustPersonalKey(fromIdent)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.keyResetTrust(fromIdent.mutableDictionary())
+        session.keyResetTrust(fromIdent)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
         session.trustPersonalKey(fromIdent)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.keyResetTrust(fromIdent.mutableDictionary())
+        session.keyResetTrust(fromIdent)
         XCTAssertFalse(fromIdent.containsPGPCommType())
     }
 
@@ -119,12 +119,12 @@ class HandshakeTests: XCTestCase {
         XCTAssertNotNil(fromIdent.fingerPrint)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
-        session.keyMistrusted(fromIdent.mutableDictionary())
+        session.keyMistrusted(fromIdent)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
         // after mistrust, the engine throws away all status,
         // so this is expected behavior. See ENGINE-254
-        session.keyResetTrust(fromIdent.mutableDictionary())
+        session.keyResetTrust(fromIdent)
         XCTAssertTrue(fromIdent.containsPGPCommType())
     }
 }

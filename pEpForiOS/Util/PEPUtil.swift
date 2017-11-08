@@ -482,7 +482,7 @@ open class PEPUtil {
     open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
         let pEpID = pEp(identity: identity)
         session.update(pEpID)
-        session.keyMistrusted(pEpID.mutableDictionary())
+        session.keyMistrusted(pEpID)
     }
 
     /**
@@ -492,7 +492,7 @@ open class PEPUtil {
     open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
         let pEpID = pEp(identity: identity)
         session.update(pEpID)
-        session.keyResetTrust(pEpID.mutableDictionary())
+        session.keyResetTrust(pEpID)
     }
 
     open static func encrypt(

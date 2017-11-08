@@ -97,7 +97,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         session.update(partnerIdent)
         XCTAssertFalse(partnerIdent.containsPGPCommType())
 
-        session.keyResetTrust(partnerIdent.mutableDictionary())
+        session.keyResetTrust(partnerIdent)
         session.trustPersonalKey(partnerIdent)
         session.update(partnerIdent)
         XCTAssertFalse(partnerIdent.containsPGPCommType())
@@ -131,17 +131,17 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertFalse(partnerIdent.containsPGPCommType())
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        session.keyResetTrust(partnerIdent.mutableDictionary())
+        session.keyResetTrust(partnerIdent)
         session.update(partnerIdent)
         XCTAssertFalse(partnerIdent.containsPGPCommType())
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        session.keyMistrusted(partnerIdent.mutableDictionary())
+        session.keyMistrusted(partnerIdent)
         session.update(partnerIdent)
         XCTAssertFalse(partnerIdent.containsPGPCommType())
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        session.keyResetTrust(partnerIdent.mutableDictionary())
+        session.keyResetTrust(partnerIdent)
         session.update(partnerIdent)
         // engine forgets everything about that key
         XCTAssertTrue(partnerIdent.containsPGPCommType())

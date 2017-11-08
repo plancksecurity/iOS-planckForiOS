@@ -185,13 +185,13 @@ class HandshakePartnerTableViewCellViewModel {
 
     public func denyTrust() {
         invokeTrustAction() { thePartner in
-            session.keyMistrusted(thePartner.mutableDictionary())
+            session.keyMistrusted(thePartner)
         }
     }
 
     public func resetTrust() {
         invokeTrustAction() { thePartner in
-            session.keyResetTrust(thePartner.mutableDictionary())
+            session.keyResetTrust(thePartner)
         }
     }
 }
