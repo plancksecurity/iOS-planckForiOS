@@ -730,7 +730,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
-        let color2 = session.identityRating(myself.dictionary())
+        let color2 = session.identityRating(myself)
         XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
     }
 

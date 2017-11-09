@@ -383,7 +383,7 @@ open class PEPUtil {
     open static func pEpRating(cdIdentity: CdIdentity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(cdIdentity: cdIdentity)
-        let rating = session.identityRating(pepC.dictionary())
+        let rating = session.identityRating(pepC)
         return rating
     }
 
@@ -395,7 +395,7 @@ open class PEPUtil {
     open static func pEpRating(identity: Identity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(identity: identity)
-        let rating = session.identityRating(pepC.dictionary())
+        let rating = session.identityRating(pepC)
         return rating
     }
 
