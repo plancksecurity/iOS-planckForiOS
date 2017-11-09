@@ -9,31 +9,24 @@
 import UIKit
 
 extension PEP_color {
-    func statusIcon(enabled: Bool = true, white: Bool = true) -> UIImage? {
-        if !enabled {
-            return nil
-        }
+    func statusIcon(enabled: Bool = true) -> UIImage? {
         switch self {
         case PEP_color_no_color:
-            if white {
-                return UIImage(named: "pep-status-unknown")
-            }
             return nil
         case PEP_color_red:
-            if white {
-                return UIImage(named: "pep-status-unsecure")
-            }
             return UIImage(named: "pep-status-red")
         case PEP_color_yellow:
-            if white {
-                return UIImage(named: "pep-status-secure")
+            if enabled {
+                return UIImage(named: "pep-status-yellow")
+            } else {
+                return UIImage(named: "pep-status-yellow-gray")
             }
-            return UIImage(named: "pep-status-yellow")
         case PEP_color_green:
-            if white {
-                return UIImage(named: "pep-status-secure-trusted")
+            if enabled {
+                return UIImage(named: "pep-status-green")
+            } else {
+                return UIImage(named: "pep-status-green-gray")
             }
-            return UIImage(named: "pep-status-green")
         default:
             return nil
         }
