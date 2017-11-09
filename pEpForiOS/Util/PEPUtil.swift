@@ -447,7 +447,7 @@ open class PEPUtil {
         return PEP_rating(Int32(theInt))
     }
 
-    open static func trustwords(identity1: PEPIdentityDict, identity2: PEPIdentityDict,
+    open static func trustwords(identity1: PEPIdentity, identity2: PEPIdentity,
                                 language: String, full: Bool = true,
                                 session: PEPSession = PEPSession()) -> String? {
         return session.getTrustwordsIdentity1(identity1, identity2: identity2,

@@ -156,8 +156,8 @@ class HandshakePartnerTableViewCellViewModel {
             }
         }
         let trustwordsResult = session.getTrustwordsIdentity1(
-            identitySelf.dictionary(),
-            identity2: identityPartner.dictionary(),
+            identitySelf,
+            identity2: identityPartner,
             language: trustwordsLanguage,
             full: trustwordsFull)
         return trustwordsResult
