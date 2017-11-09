@@ -403,51 +403,56 @@ extension CdMessage {
         guard let folder = account.folder(byName: folderName) else {
             return nil
         }
-
-        // Bail out quickly if there is only a flag change needed
-        if messageUpdate.isFlagsOnly() {
-            if let mail = existing(pantomimeMessage: message, inAccount: account) {
-                if mail.updateFromServer(cwFlags: message.flags()) {
-                    Record.saveAndWait()
-                    if mail.pEpRating != pEpRatingNone {
-                        mail.serialNumber = mail.serialNumber + 1
-                        if let msg = mail.message() {
-                            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
-                        }
-                    }
-                }
-
-                return mail
-            }
-            return nil
-        }
-
-        var isUpdate = true
+        
+        var isUpdate = false
         let mail:CdMessage
         if let existing = existing(pantomimeMessage: message, inAccount: account) {
             mail = existing
+            isUpdate = true
         } else {
             mail = CdMessage.create()
-            isUpdate = false
         }
-
+        
+        let oldMSN = mail.imapFields().messageNumber
+        let newMSN = Int32(message.messageNumber())
+        
+        if mail.updateFromServer(cwFlags: message.flags()) {
+            if mail.pEpRating != pEpRatingNone {
+                mail.serialNumber = mail.serialNumber + 1
+                if let msg = mail.message() {
+                    MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+                }
+            }
+        }
+        // Bail out quickly if there is only a flag change needed
+        if messageUpdate.isFlagsOnly() {
+            guard isUpdate else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString:
+                    "If only flags did change, the message must have existed before. Thus it must be an update.")
+                return nil
+            }
+            if oldMSN != newMSN {
+                mail.imapFields().messageNumber = newMSN
+            }
+            return mail
+        }
+        
         if !moreMessagesThanRequested(mail: mail, messageUpdate: messageUpdate) {
             mail.parent = folder
             mail.bodyFetched = message.isInitialized()
             mail.sent = message.originationDate()
             mail.shortMessage = message.subject()
-
+            
             mail.uuid = message.messageID()
             mail.uid = Int32(message.uid())
-
+            
             let imap = mail.imapFields()
-
+            
             imap.messageNumber = Int32(message.messageNumber())
             imap.mimeBoundary = (message.boundary() as NSData?)?.asciiString()
         }
-
-
-        let _ = mail.updateFromServer(cwFlags: message.flags())
+        
         if isUpdate {
             guard let msg = mail.message(), let flags = msg.imapFlags else {
                 return mail
@@ -456,7 +461,7 @@ extension CdMessage {
                 MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
             }
         }
-
+        
         return mail
     }
 
@@ -473,6 +478,7 @@ extension CdMessage {
     public static func insertOrUpdate(
         pantomimeMessage: CWIMAPMessage, account: CdAccount,
         messageUpdate: CWMessageUpdate, forceParseAttachments: Bool = false) -> CdMessage? {
+
         guard let mail = quickInsertOrUpdate(
             pantomimeMessage: pantomimeMessage, account: account, messageUpdate: messageUpdate)
             else {
@@ -480,6 +486,7 @@ extension CdMessage {
         }
 
         if messageUpdate.isFlagsOnly() {
+            Record.saveAndWait()
             return mail
         }
 
@@ -540,7 +547,7 @@ extension CdMessage {
 
         imap.contentType = pantomimeMessage.contentType()
 
-        // If the mail contains attachments already, it is not a new mail but an updated mail that
+        // If the mail contains attachments already, it is not a new- but an updated mail that
         // accidentally made its way until here.
         // Do *not* add the attachments again.
         if !containsAttachments(cdMessage: mail) {

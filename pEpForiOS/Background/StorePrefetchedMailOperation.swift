@@ -74,24 +74,10 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
 
     func storeMessage(context: NSManagedObjectContext) {
         guard let account = context.object(with: accountID) as? CdAccount else {
-                addError(OperationError.cannotFindAccount)
-                return
+            addError(OperationError.cannotFindAccount)
+            return
         }
-        if messageUpdate.isFlagsOnly() {
-            guard let cdMsg = CdMessage.search(message: message, inAccount: account ) else {
-                    addError(OperationError.messageForFlagUpdateNotFound)
-                    return
-            }
-            let oldMSN = cdMsg.imapFields().messageNumber
-            let newMSN = Int32(message.messageNumber())
-
-            context.updateAndSave(object: cdMsg) {
-                let _ = cdMsg.updateFromServer(cwFlags: message.flags())
-                if oldMSN != newMSN {
-                    cdMsg.imapFields().messageNumber = newMSN
-                }
-            }
-        } else if let msg = insertOrUpdate(pantomimeMessage: message, account: account) {
+        if let msg = insertOrUpdate(pantomimeMessage: message, account: account) {
             if msg.received == nil {
                 msg.received = Date()
             }
@@ -100,6 +86,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                 messageFetchedBlock?(msg)
             }
         } else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Can not store message")
             self.addError(OperationError.cannotStoreMessage)
         }
     }
