@@ -166,7 +166,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             determineTargetFolder(msgID: objID)
             let session = PEPSession()
             let (status, encMsg) = session.encrypt(
-                pEpMessageDict: msg, forIdentity: ident.dictionary() as PEPIdentityDict)
+                pEpMessageDict: msg, forIdentity: ident)
             let (encMsg2, error) = PEPUtil.check(
                 comp: comp, status: status, encryptedMessage: encMsg)
             if let err = error {

@@ -93,7 +93,7 @@ class PEPSessionTest: XCTestCase {
         session.mySelf(myself)
 
         let (status1, encMsg1) = session.encrypt(
-            pEpMessageDict: dict, forIdentity: myself.dictionary() as PEPIdentityDict)
+            pEpMessageDict: dict, forIdentity: myself)
         XCTAssertEqual(status1, PEP_STATUS_OK)
         if let theEncMsg = encMsg1 {
             // expecting that sensitive data gets hidden (ENGINE-287)
