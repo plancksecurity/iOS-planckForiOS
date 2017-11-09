@@ -143,7 +143,7 @@ class HandshakePartnerTableViewCellViewModel {
             pEpMessage[kPepFrom] = identityPartner
             var pEpResult = PEP_UNKNOWN_ERROR
             let trustwordsResult = session.getTrustwordsMessageDict(
-                pEpMessage, receiverDict: identitySelf.dictionary(),
+                pEpMessage, receiver: identitySelf,
                 keysArray: msg.keyListFromDecryption,
                 language: trustwordsLanguage, full: trustwordsFull,
                 resultingStatus: &pEpResult)
