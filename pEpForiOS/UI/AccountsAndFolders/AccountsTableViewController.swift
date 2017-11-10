@@ -120,7 +120,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         }
-
     }
 
     // MARK: - Actions
@@ -128,7 +127,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
-
 }
 
 // MARK: - Navigation
@@ -165,6 +163,13 @@ extension AccountsTableViewController: SegueHandlerType {
                     return
             }
             destination.appConfig = self.appConfig
+            break
+        case .segueShowLog:
+            guard let destination = segue.destination as? UINavigationController,
+                    let viewController = destination.rootViewController as? LogViewController else {
+                return
+            }
+            viewController.appConfig = self.appConfig
             break
         default:()
         }
