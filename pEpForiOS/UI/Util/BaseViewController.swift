@@ -22,4 +22,9 @@ class BaseViewController: UIViewController {
             _appConfig = newValue
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
 }

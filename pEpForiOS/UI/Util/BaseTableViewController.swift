@@ -21,7 +21,7 @@ class BaseTableViewController: UITableViewController {
                 // We have no config. Return nonsense.
                 return AppConfig(mySelfer: self,
                     messageSyncService: MessageSyncService(
-                        sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil))
+                        sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil), errorHandler: ErrHandler())
             }
             return theAC
         }

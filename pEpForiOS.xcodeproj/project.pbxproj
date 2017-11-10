@@ -329,6 +329,7 @@
 		B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74940021ECB3BEB001A710B /* UILabel+Extension.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
+		B77076101FB5A1A70073B3A8 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B770760F1FB5A1A70073B3A8 /* ErrorHandler.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
 		B78309CA1EAA0AC90051A2E0 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C91EAA0AC90051A2E0 /* Settings.storyboard */; };
 		B783C1521E82BBE20093128C /* FolderViews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B783C1511E82BBE20093128C /* FolderViews.storyboard */; };
@@ -743,6 +744,7 @@
 		B74940021ECB3BEB001A710B /* UILabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = AccountsViewModel/LoginViewModel.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
+		B770760F1FB5A1A70073B3A8 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
 		B78309C91EAA0AC90051A2E0 /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		B783C1511E82BBE20093128C /* FolderViews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = FolderViews.storyboard; path = UI/FolderViews.storyboard; sourceTree = "<group>"; };
@@ -793,6 +795,7 @@
 			isa = PBXGroup;
 			children = (
 				1572B9BD1F3379990048BCF5 /* AccountSettingsUserInputError.swift */,
+				B770760F1FB5A1A70073B3A8 /* ErrorHandler.swift */,
 			);
 			name = Error;
 			sourceTree = "<group>";
@@ -2039,6 +2042,7 @@
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,
 				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
+				B77076101FB5A1A70073B3A8 /* ErrorHandler.swift in Sources */,
 				432A3E3F1F0E6B3700834749 /* SyncExistingMessagesService.swift in Sources */,
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
