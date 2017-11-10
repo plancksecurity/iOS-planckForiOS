@@ -20,8 +20,9 @@ class BaseTableViewController: UITableViewController {
 
                 // We have no config. Return nonsense.
                 return AppConfig(mySelfer: self,
-                    messageSyncService: MessageSyncService(
-                        sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil), errorHandler: ErrHandler())
+                                 messageSyncService: MessageSyncService(
+                                    sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil),
+                                 errorHandler: ErrHandler())
             }
             return theAC
         }
@@ -34,10 +35,21 @@ class BaseTableViewController: UITableViewController {
     func didSetAppConfig() {
         // do nothing. Meant to be overridden by subclasses that require this information
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        appConfig.errorHandler.subscribe(view: self)
+    }
 }
 
 extension BaseTableViewController: KickOffMySelfProtocol {
     func startMySelf() {
         Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
+    }
+}
+
+extension BaseTableViewController: handlerError {
+    func show(error: Error) {
+        //show error
     }
 }

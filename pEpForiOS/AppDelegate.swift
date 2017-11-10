@@ -124,6 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         networkService = NetworkService(parentName: #function, backgrounder: self, mySelfer: self)
         networkService?.sendLayerDelegate = sendLayerDelegate
+        networkService?.serviceConfig.errorPublisher = errorHandler
         CdAccount.sendLayer = networkService
         networkService?.delegate = self
 
