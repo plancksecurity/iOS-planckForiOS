@@ -412,16 +412,19 @@ extension CdMessage {
         } else {
             mail = CdMessage.create()
         }
-        
+
         let oldMSN = mail.imapFields().messageNumber
         let newMSN = Int32(message.messageNumber())
+        
+        // Bail out quickly if there is only a MSN change
+        if messageUpdate.isMsnOnly() {
+            mail.imapFields().messageNumber = newMSN
+            return mail
+        }
         
         if mail.updateFromServer(cwFlags: message.flags()) {
             if mail.pEpRating != pEpRatingNone {
                 mail.serialNumber = mail.serialNumber + 1
-                if let msg = mail.message() {
-                    MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
-                }
             }
         }
         // Bail out quickly if there is only a flag change needed
@@ -435,6 +438,7 @@ extension CdMessage {
             if oldMSN != newMSN {
                 mail.imapFields().messageNumber = newMSN
             }
+            informDelegate(messageUpdated: mail)
             return mail
         }
         
@@ -454,15 +458,19 @@ extension CdMessage {
         }
         
         if isUpdate {
-            guard let msg = mail.message(), let flags = msg.imapFlags else {
-                return mail
-            }
-            if !flags.deleted {
-                MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
-            }
+           informDelegate(messageUpdated: mail)
         }
         
         return mail
+    }
+    
+    static private func informDelegate(messageUpdated cdMmessage:CdMessage) {
+        guard let msg = cdMmessage.message(), let flags = msg.imapFlags else {
+            return
+        }
+        if !flags.deleted {
+            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+        }
     }
 
     /**
@@ -485,7 +493,7 @@ extension CdMessage {
                 return nil
         }
 
-        if messageUpdate.isFlagsOnly() {
+        if messageUpdate.isFlagsOnly() || messageUpdate.isMsnOnly() {
             Record.saveAndWait()
             return mail
         }
