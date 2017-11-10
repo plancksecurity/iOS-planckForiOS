@@ -50,6 +50,6 @@ extension BaseTableViewController: KickOffMySelfProtocol {
 
 extension BaseTableViewController: handlerError {
     func show(error: Error) {
-        //show error
+        showError(error: error)
     }
 }

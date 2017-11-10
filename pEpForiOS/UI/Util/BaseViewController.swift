@@ -31,7 +31,7 @@ class BaseViewController: UIViewController {
 
 extension BaseViewController: handlerError {
     func show(error: Error) {
-        //show error
+        showError(error: error)
     }
 }
 
