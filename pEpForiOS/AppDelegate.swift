@@ -26,6 +26,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     var messageSyncService: MessageSyncService?
 
+    /**
+     Error Handler to connect backend with UI
+     */
+    var errorHandler = ErrHandler()
+
     var application: UIApplication!
 
     let mySelfQueue = LimitedOperationQueue()
@@ -100,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
         let theAppConfig = AppConfig(mySelfer: self,
-                                     messageSyncService: theMessageSyncService)
+                                     messageSyncService: theMessageSyncService, errorHandler: errorHandler)
         appConfig = theAppConfig
 
         // set up logging for libraries
@@ -119,6 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         networkService = NetworkService(parentName: #function, backgrounder: self, mySelfer: self)
         networkService?.sendLayerDelegate = sendLayerDelegate
+        networkService?.serviceConfig.errorPublisher = errorHandler
         CdAccount.sendLayer = networkService
         networkService?.delegate = self
 

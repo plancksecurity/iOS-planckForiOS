@@ -46,9 +46,12 @@ public class NetworkService {
         let parentName: String
         let mySelfer: KickOffMySelfProtocol?
         let backgrounder: BackgroundTaskProtocol?
+        var errorPublisher: publisherError?
 
-        init(sleepTimeInSeconds: Double, parentName: String,
-            mySelfer: KickOffMySelfProtocol?, backgrounder: BackgroundTaskProtocol?) {
+        init(sleepTimeInSeconds: Double,
+             parentName: String,
+             mySelfer: KickOffMySelfProtocol?,
+             backgrounder: BackgroundTaskProtocol?) {
             self.sleepTimeInSeconds = sleepTimeInSeconds
             self.parentName = parentName
             self.mySelfer = mySelfer
