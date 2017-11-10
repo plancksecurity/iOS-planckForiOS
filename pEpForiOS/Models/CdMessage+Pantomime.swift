@@ -483,10 +483,12 @@ extension CdMessage {
      if the pantomime has not been initialized yet (useful for testing).
      - Returns: The newly created or updated Message
      */
-    public static func insertOrUpdate(
-        pantomimeMessage: CWIMAPMessage, account: CdAccount,
-        messageUpdate: CWMessageUpdate, forceParseAttachments: Bool = false) -> CdMessage? {
-
+    public static func insertOrUpdate( pantomimeMessage: CWIMAPMessage, account: CdAccount,
+                                       messageUpdate: CWMessageUpdate,
+                                       forceParseAttachments: Bool = false) -> CdMessage? {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+        
         guard let mail = quickInsertOrUpdate(
             pantomimeMessage: pantomimeMessage, account: account, messageUpdate: messageUpdate)
             else {

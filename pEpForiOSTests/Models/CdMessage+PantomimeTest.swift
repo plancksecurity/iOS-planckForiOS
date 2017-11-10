@@ -8,8 +8,9 @@
 
 import XCTest
 
-import pEpForiOS
+import CoreData
 @testable import MessageModel
+@testable import pEpForiOS
 
 class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
 
@@ -162,33 +163,66 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
             XCTAssertNotNil(m.longMessageFormatted)
         }
     }
+    
 
-    //IOS-211
-    func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated() {
+    //IOS-211 hi_there
+    func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file1() {
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
 
         guard
-            let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211.txt"),
+            let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211_hi_there.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
                 XCTAssertTrue(false)
                 return
         }
         message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
-        guard let msg = CdMessage.insertOrUpdate(
+        guard let _ = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
             forceParseAttachments: true) else {
                 XCTFail("error parsing message")
                 return
         }
-
+        XCTAssertEqual(CdMessage.all()?.count, 1)
+        guard let testee = CdMessage.search(message: message, inAccount: cdAccount) else {
+            XCTFail("No message")
+            return
+        }
         let keyAttachment = 1
         let pdfAttachment = 1;
         let expectedNumAttatchments = keyAttachment + pdfAttachment
-
-        XCTAssertTrue(msg.attachments?.count == expectedNumAttatchments)
+        XCTAssertTrue(testee.attachments?.count == expectedNumAttatchments)
+    }
+    
+    //IOS-211 pdfMail
+    func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file2() {
+        let folder = CdFolder.create()
+        folder.account = cdAccount
+        folder.name = ImapSync.defaultImapInboxName
+        folder.uuid = MessageID.generate()
+        guard
+            let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211-pdfEmail.txt"),
+            let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {
+                XCTAssertTrue(false)
+                return
+        }
+        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        guard let _ = CdMessage.insertOrUpdate(
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
+            forceParseAttachments: true) else {
+                XCTFail("error parsing message")
+                return
+        }
+        XCTAssertEqual(CdMessage.all()?.count, 1)
+        guard let testee = CdMessage.search(message: message, inAccount: cdAccount) else {
+            XCTFail("No message")
+            return
+        }
+        let pdfAttachment = 1;
+        
+        XCTAssertTrue(testee.attachments?.count == pdfAttachment)
     }
 
     func testUpdateFromServer() {
