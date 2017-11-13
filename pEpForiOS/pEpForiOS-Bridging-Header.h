@@ -43,6 +43,7 @@
 #import "pEpObjCAdapter/PEPLanguage.h"
 #import "pEpObjCAdapter/NSDictionary+Extension.h"
 #import "pEpObjCAdapter/PEPIdentity.h"
+#import "pEpObjCAdapter/PEPMessage.h"
 
 #pragma mark -- pEp AccountSettings Headers
 
