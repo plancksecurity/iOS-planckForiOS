@@ -29,12 +29,26 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
 
     public init?(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                  imapSyncData: ImapSyncData, folder: CdFolder) {
-        if let fn = folder.name {
-            folderName = fn
-        } else {
+        guard let moc = folder.managedObjectContext else {
+            Log.shared.errorAndCrash(component: #function, errorString: "MO without moc")
             return nil
         }
-        self.folderID = folder.objectID
+        var folderName:String? = nil
+        var folderID:NSManagedObjectID? = nil
+        moc.performAndWait {
+            if let fn = folder.name {
+                folderName = fn
+            } else {
+                return
+            }
+            folderID = folder.objectID
+        }
+        guard let safeFolderName = folderName, let safeFolderId = folderID else {
+            return nil
+        }
+        self.folderName = safeFolderName
+        self.folderID = safeFolderId
+        
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
@@ -42,11 +56,17 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     public convenience init?(parentName: String,
                              errorContainer: ServiceErrorProtocol = ErrorContainer(),
                              imapSyncData: ImapSyncData, folderID: NSManagedObjectID) {
-        guard let folder = Record.Context.default.object(with: folderID) as? CdFolder else {
+        let moc = Record.Context.background
+        var folder: CdFolder? = nil;
+        moc.performAndWait {
+            folder = moc.object(with: folderID) as? CdFolder
+        }
+        guard let safeFolder = folder else {
             return nil
         }
+        
         self.init(parentName: parentName, errorContainer: errorContainer,
-                  imapSyncData: imapSyncData, folder: folder)
+                  imapSyncData: imapSyncData, folder: safeFolder)
     }
 
     public override func main() {
@@ -111,12 +131,17 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     func folderOpenCompleted() {
         syncNextMessage(context: privateMOC)
     }
-
-    fileprivate func currentMessageNeedSyncRemoveFlagsToServer() -> Bool {
+    
+    fileprivate func
+        currentMessageNeedSyncRemoveFlagsToServer(context: NSManagedObjectContext) -> Bool {
         guard let message = currentlyProcessedMessage else {
             return false
         }
-        return message.storeCommandForUpdateFlags(to: .remove) != nil
+        var result = false
+        context.performAndWait {
+            result = message.storeCommandForUpdateFlags(to: .remove) != nil
+        }
+        return result
     }
 
     func updateFlags(message: CdMessage, context: NSManagedObjectContext) {
@@ -151,7 +176,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
             } else {
                 Log.shared.errorAndCrash(component: comp, errorString: "No IMAP store command")
             }
-        } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer() {
+        } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer(context: context) {
             updateFlags(to: .remove, context: context)
         } else {
             syncNextMessage(context: context)
@@ -161,20 +186,28 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     // MARK: - ImapSyncDelegate (internal)
 
     func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
-        // flags to add have been synced, but we might need to sync flags to remove also before
-        // processing the next message.
-        if currentMessageNeedSyncRemoveFlagsToServer() {
-            updateFlags(to: .remove, context: privateMOC)
-            return
-        }
-        guard let n = notification else {
-            handle(error: PantomimeError.missingNotification)
-            return
-        }
-        let context = privateMOC
-        context.perform() { [weak self] in
-            self?.storeMessages(context: context, notification: n) { [weak self] in
-                    self?.syncNextMessage(context: context)
+        let moc = privateMOC
+        moc.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "I am gone already")
+                return
+            }
+            // flags to add have been synced, but we might need to sync flags to remove also before
+            // processing the next message.
+            if currentMessageNeedSyncRemoveFlagsToServer(context: moc) {
+                updateFlags(to: .remove, context: moc)
+                return
+            }
+            guard let n = notification else {
+                handle(error: PantomimeError.missingNotification)
+                return
+            }
+            me.storeMessages(context: moc, notification: n) { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "I am gone already")
+                    return
+                }
+                me.syncNextMessage(context: moc)
             }
         }
     }
