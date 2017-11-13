@@ -402,26 +402,18 @@ open class PEPUtil {
     open static func outgoingMessageColor(from: Identity, to: [Identity],
                                           cc: [Identity], bcc: [Identity],
                                           session: PEPSession = PEPSession()) -> PEP_rating {
-        let fakeFolder: Folder
-        if let account = Account.by(address: from.address) {
-            fakeFolder = Folder(parent: nil, uuid: "fakeuuid", name: "fakename", account:account)
-        } else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "No account exists for Identity \"from\". That is inconsitant DB state and thus not allowed")
-            let fakeId = Identity(address: "fake@address.com", userID: nil, userName: "fakeName",
-                                  isMySelf: true)
-            let fakeAccount = Account(user: fakeId, servers: [Server]())
-            fakeFolder = Folder(parent: nil, uuid: "fakeuuid", name: "fakename", account:fakeAccount)
+        let msg = PEPMessage()
+        msg.direction = PEP_dir_outgoing
+        msg.from = from.pEpIdentity()
+        let mapper: (Identity) -> PEPIdentity = { ident in
+            return ident.pEpIdentity()
         }
-
-        let fakemail = Message(uuid: "fakeuuid", parentFolder: fakeFolder)
-        fakemail.from = from
-        fakemail.to = to
-        fakemail.cc = cc
-        fakemail.bcc = bcc
-        fakemail.shortMessage = ""
-        fakemail.longMessage = ""
-        return session.outgoingMessageColor(fakemail.pEpMessage(outgoing: true))
+        msg.to = to.map(mapper)
+        msg.cc = cc.map(mapper)
+        msg.bcc = bcc.map(mapper)
+        msg.shortMessage = "short"
+        msg.longMessage = "long"
+        return session.outgoingColor(for: msg)
     }
 
     open static func pEpColor(identity: Identity,
