@@ -42,70 +42,85 @@ public extension CdFolder {
      - Returns: An optional tuple consisting of a `CdFolder`, and a flag indicating
      that this folder is new. The Inbox will never be returned as new.
      */
-    public static func insertOrUpdate(
-        folderName: String,
-        folderSeparator: String?,
-        folderType: FolderType?,
-        account: CdAccount,
-        context: NSManagedObjectContext = Record.Context.default) -> (CdFolder, Bool)? {
-        // Treat Inbox specially, since its name is case insensitive.
-        // For all other folders, it's undefined if they have to be handled
-        // case insensitive or not, so no special handling for those.
-        if folderName.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
-            if let folder = by(folderType: .inbox, account: account, context: context) {
-                let _ = reactivate(folder: folder)
-                return (folder, false)
-            }
+    public static func insertOrUpdate(folderName: String,
+                                      folderSeparator: String?,
+                                      folderType: FolderType?,
+                                      account: CdAccount) -> (CdFolder, Bool)? {
+        guard let moc = account.managedObjectContext else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "ManagedObject without context.")
+            return nil
         }
-
-        // Reactivate if previously deleted
-        if let folder = by(name: folderName, account: account, context: context) {
-            if let type = folderType {
-                folder.folderType = type
+        var result: (CdFolder, Bool)?
+        moc.performAndWait {
+            // Treat Inbox specially, since its name is case insensitive.
+            // For all other folders, it's undefined if they have to be handled
+            // case insensitive or not, so no special handling for those.
+            if folderName.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
+                if let folder = by(folderType: .inbox, account: account, context: moc) {
+                    let _ = reactivate(folder: folder)
+                    result = (folder, false)
+                    return
+                }
             }
-
-            return (folder, reactivate(folder: folder))
-        }
-
-        if let separator = folderSeparator {
-            // Create folder hierarchy if necessary
-            var pathsSoFar = [String]()
-            var parentFolder: CdFolder? = nil
-            let paths = folderName.components(separatedBy: separator)
-            for p in paths {
-                pathsSoFar.append(p)
-                let pathName = (pathsSoFar as NSArray).componentsJoined(
-                    by: separator)
-                let folder = insert(folderName: pathName, folderType: nil, account: account,
-                                    context: context)
-                //if it is the actual folder (has no child folder), set its folder type
-                if p == paths.last {
-                    if let type = folderType {
-                        folder.folderType = type
+            
+            // Reactivate if previously deleted
+            if let folder = by(name: folderName, account: account, context: moc) {
+                if let type = folderType {
+                    folder.folderType = type
+                }
+                
+                result = (folder, reactivate(folder: folder))
+                return
+            }
+            
+            if let separator = folderSeparator {
+                // Create folder hierarchy if necessary
+                var pathsSoFar = [String]()
+                var parentFolder: CdFolder? = nil
+                let paths = folderName.components(separatedBy: separator)
+                for p in paths {
+                    pathsSoFar.append(p)
+                    let pathName = (pathsSoFar as NSArray).componentsJoined(
+                        by: separator)
+                    let folder = insert(folderName: pathName, folderType: nil, account: account,
+                                        context: moc)
+                    //if it is the actual folder (has no child folder), set its folder type
+                    if p == paths.last {
+                        if let type = folderType {
+                            folder.folderType = type
+                        }
                     }
+                    folder.parent = parentFolder
+                    let scalars = separator.unicodeScalars
+                    if let first = scalars.first {
+                        folder.folderSeparator = Int16(first.value)
+                    }
+                    parentFolder = folder
                 }
-                folder.parent = parentFolder
-                let scalars = separator.unicodeScalars
-                if let first = scalars.first {
-                    folder.folderSeparator = Int16(first.value)
+                if let createdFolder = parentFolder {
+                    result = (createdFolder, true)
+                    return
+                } else {
+                    result = nil
+                    return
                 }
-                parentFolder = folder
-            }
-            if let createdFolder = parentFolder {
-                return (createdFolder, true)
             } else {
-                return nil
+                // Just create the folder as-is, can't check for hierarchy
+                let folder = insert(folderName: folderName,
+                                    folderType: folderType,
+                                    account: account,
+                                    context: moc)
+                result = (folder, true)
+                return
             }
-        } else {
-            // Just create the folder as-is, can't check for hierarchy
-            let folder = insert(folderName: folderName, folderType: folderType, account: account)
-            return (folder, true)
         }
+        return result
     }
 
-    static func insert(
+    static private func insert(
         folderName: String, folderType: FolderType?, account: CdAccount,
-        context: NSManagedObjectContext = Record.Context.default) -> CdFolder {
+        context: NSManagedObjectContext) -> CdFolder {
         Log.verbose(component: comp, content: "insert \(folderName)")
 
         // Reactivate if previously deleted

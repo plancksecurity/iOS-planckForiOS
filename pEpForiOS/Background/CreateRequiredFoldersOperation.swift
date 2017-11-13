@@ -111,8 +111,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
     func createLocal(folderToCreate: FolderToCreate, context: NSManagedObjectContext) {
         let _ = CdFolder.insertOrUpdate(
             folderName: folderToCreate.folderName, folderSeparator: folderToCreate.folderSeparator,
-            folderType: folderToCreate.folderType, account: folderToCreate.cdAccount,
-            context: context)
+            folderType: folderToCreate.folderType, account: folderToCreate.cdAccount)
         Record.save()
     }
 
