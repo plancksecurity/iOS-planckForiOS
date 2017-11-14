@@ -100,15 +100,21 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
     ///
     /// - Parameter yahooFolders: folders fetched from a Yahoo account and created in pEp DB
     private func assertAllYahooFolderNamesExist(in yahooFolders:[CdFolder]) {
-        guard let account = yahooFolders.first?.account,
-            isYahooAccount(account:account)
-            else {
-                return
+        guard let first = yahooFolders.first, let moc = first.managedObjectContext else {
+            XCTFail("No folders")
+            return
         }
-        let folderNames: [String] = yahooFolders.map { $0.name! }
-        let yahooFolderNames = yahooFolderInfo.map { $0.0 }
-        for yahooName in yahooFolderNames {
-            XCTAssertTrue(folderNames.contains(yahooName))
+        moc.performAndWait {
+            guard let account = yahooFolders.first?.account,
+                isYahooAccount(account:account)
+                else {
+                    return
+            }
+            let folderNames: [String] = yahooFolders.map { $0.name! }
+            let yahooFolderNames = yahooFolderInfo.map { $0.0 }
+            for yahooName in yahooFolderNames {
+                XCTAssertTrue(folderNames.contains(yahooName))
+            }
         }
     }
 
@@ -117,25 +123,31 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
     ///
     /// - Parameter yahooFolders: folders fetched from a Yahoo account and created in pEp DB
     private func assertYahooFolderTypes(for yahooFolders:[CdFolder]) {
-        guard let account = yahooFolders.first?.account,
-            isYahooAccount(account:account)
-            else {
-                return
+        guard let first = yahooFolders.first, let moc = first.managedObjectContext else {
+            XCTFail("No folders")
+            return
         }
-        assertAllYahooFolderNamesExist(in: yahooFolders)
-        for folder in yahooFolders {
-            if folder.name! == "Bulk Mail" {
-                XCTAssertTrue(folder.folderType == .spam)
-            } else if folder.name! == "Archive" {
-                XCTAssertTrue(folder.folderType == .archive)
-            } else if folder.name! == "Draft" {
-                XCTAssertTrue(folder.folderType == .drafts)
-            } else if folder.name! == "Inbox" {
-                XCTAssertTrue(folder.folderType == .inbox)
-            } else if folder.name! == "Sent" {
-                XCTAssertTrue(folder.folderType == .sent)
-            } else if folder.name! == "Trash" {
-                XCTAssertTrue(folder.folderType == .trash)
+        moc.performAndWait {
+            guard let account = yahooFolders.first?.account,
+                isYahooAccount(account:account)
+                else {
+                    return
+            }
+            assertAllYahooFolderNamesExist(in: yahooFolders)
+            for folder in yahooFolders {
+                if folder.name! == "Bulk Mail" {
+                    XCTAssertTrue(folder.folderType == .spam)
+                } else if folder.name! == "Archive" {
+                    XCTAssertTrue(folder.folderType == .archive)
+                } else if folder.name! == "Draft" {
+                    XCTAssertTrue(folder.folderType == .drafts)
+                } else if folder.name! == "Inbox" {
+                    XCTAssertTrue(folder.folderType == .inbox)
+                } else if folder.name! == "Sent" {
+                    XCTAssertTrue(folder.folderType == .sent)
+                } else if folder.name! == "Trash" {
+                    XCTAssertTrue(folder.folderType == .trash)
+                }
             }
         }
     }
@@ -148,16 +160,22 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
     ///
     /// - Parameter yahooFolders: folders fetched from a Yahoo account and created in pEp DB
     private func assertOnlyRequiredFoldersCreated(for yahooFolders:[CdFolder]) {
-        // return if we are not dealing with a Yahoo account
-        guard let account = yahooFolders.first?.account,
-            isYahooAccount(account:account)
-            else {
-                return
+        guard let first = yahooFolders.first, let moc = first.managedObjectContext else {
+            XCTFail("No folders")
+            return
         }
-        for folder in yahooFolders {
-            let pEpNamesThatDifferFromYahooNames = ["Drafts", "Spam"]
-            let nonRequiredFoldersHaveBeenCreated = pEpNamesThatDifferFromYahooNames.contains(folder.name!)
-            XCTAssertFalse(nonRequiredFoldersHaveBeenCreated)
+        moc.performAndWait {
+            // return if we are not dealing with a Yahoo account
+            guard let account = yahooFolders.first?.account,
+                isYahooAccount(account:account)
+                else {
+                    return
+            }
+            for folder in yahooFolders {
+                let pEpNamesThatDifferFromYahooNames = ["Drafts", "Spam"]
+                let nonRequiredFoldersHaveBeenCreated = pEpNamesThatDifferFromYahooNames.contains(folder.name!)
+                XCTAssertFalse(nonRequiredFoldersHaveBeenCreated)
+            }
         }
     }
 

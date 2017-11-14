@@ -11,24 +11,24 @@ import MessageModel
 class AccountVerificationService: AccountVerificationServiceProtocol {
     weak var delegate: AccountVerificationServiceDelegate?
     var accountVerificationState = AccountVerificationState.idle
-
+    
     var runningOperations = [Account:[BaseOperation]]()
     let verificationQueue = DispatchQueue(
         label: "AccountVerificationService.verificationQueue", qos: .utility, target: nil)
     let backgroundQueue = OperationQueue()
-
+    
     func verify(account: Account) {
         verificationQueue.async {
             self.verifyInternal(account: account)
         }
     }
-
+    
     func removeFromRunning(account: Account) {
         verificationQueue.async {
             self.removeFromRunningInternal(account: account)
         }
     }
-
+    
     func removeFromRunningInternal(account: Account) {
         guard let ops = runningOperations[account] else {
             return
@@ -53,7 +53,7 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
             }
         }
     }
-
+    
     func verifyInternal(account: Account) {
         if runningOperations[account] != nil {
             return
