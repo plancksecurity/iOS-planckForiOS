@@ -86,12 +86,10 @@ extension RecipientCell {
     
     public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == .returnKey) {
-            guard let cTextview = textView as? ComposeTextView else { return false }
-            delegate?.textShouldReturn(at: index, textView: cTextview)
-            return false
+            generateContact(textView)
         }
         
-        if text.characters.count == 0 && range.location != NSNotFound && !hasSelection {
+        if text.utf8.count == 0 && range.location != NSNotFound && !hasSelection {
             let selectedRange = textView.selectedTextRange!
             
             if let newPos = textView.position(from: selectedRange.start, offset: -1) {
@@ -114,26 +112,30 @@ extension RecipientCell {
         return true
     }
 
-    public override func textViewDidEndEditing(_ textView: UITextView) {
+    fileprivate func generateContact(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
-        
         var string = cTextview.attributedText.string.cleanAttachments
-        if string.characters.count >= 3 && string.isEmailAddress {
+        if string.utf8.count >= 3 && string.isEmailAddress {
             let identity = Identity.create(address: string.trimmedWhiteSpace())
             identities.append(identity)
-            
+
             cTextview.insertImage(identity)
             cTextview.removePlainText()
         }
-
         let text = cTextview.attributedText.string.cleanAttachments
         delegate?.messageCanBeSend(value: (identities.count > 0 && text.isEmpty))
-        
+
         addButton.isHidden = cTextview.text.isEmpty
 
         delegate?.textDidEndEditing(at: index, textView: cTextview)
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
+    }
+
+    public override func textViewDidEndEditing(_ textView: UITextView) {
+
+        generateContact(textView)
+
     }
 }

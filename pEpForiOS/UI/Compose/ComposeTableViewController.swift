@@ -597,7 +597,10 @@ extension ComposeTableViewController: ComposeCellDelegate {
         suggestTableView.hide()
     }
 
-    func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {}
+    func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {
+
+        
+    }
 
     func messageCanBeSend(value: Bool) {
         self.sendButton.isEnabled = value
