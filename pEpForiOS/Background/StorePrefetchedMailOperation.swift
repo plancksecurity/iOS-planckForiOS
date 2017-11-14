@@ -86,7 +86,12 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                 messageFetchedBlock?(msg)
             }
         } else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Can not store message")
+            Log.shared.warn(component: #function,
+                            content:
+                """
+We could not store the message. This can happen if the belonging account just has been deleted.
+"""
+            )
             self.addError(OperationError.cannotStoreMessage)
         }
     }
