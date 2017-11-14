@@ -18,17 +18,18 @@ public class AppendDraftMailsOperation: AppendMailsOperationBase {
     }
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
-        var msg: CdMessage?
+        var result: (PEPMessageDict, PEPIdentity, NSManagedObjectID)? = nil
         context.performAndWait {
             let p = NSPredicate(
                 format: "uid = 0 AND parent.folderTypeRawValue = %d AND sendStatusRawValue = %d AND parent.account = %@",
                 FolderType.drafts.rawValue, SendStatus.none.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
-            msg = CdMessage.first(predicate: p, in: self.context)
+            let msg = CdMessage.first(predicate: p, in: self.context)
+            if let m = msg, let cdIdent = m.parent?.account?.identity {
+                result = (m.pEpMessage(), cdIdent.pEpIdentity(), m.objectID)
+            }
         }
-        if let m = msg, let cdIdent = m.parent?.account?.identity {
-            return (m.pEpMessage(), cdIdent.pEpIdentity(), m.objectID)
-        }
-        return nil
+        
+        return result
     }
 }

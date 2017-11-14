@@ -70,18 +70,23 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
     }
 
     static func foldersWithTrashedMessages(context: NSManagedObjectContext) -> [CdFolder] {
-        let p = NSPredicate(
-            format: "imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
-            Message.TrashedStatus.shouldBeTrashed.rawValue)
-        let msgs = CdMessage.all(predicate: p, orderedBy: nil, in: context) as? [CdMessage] ?? []
-        var folders = Set<CdFolder>()
-        for m in msgs {
-            if let p = m.parent {
-                folders.insert(p)
+        var result = [CdFolder]()
+        context.performAndWait {
+            let p = NSPredicate(
+                format: "imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
+                Message.TrashedStatus.shouldBeTrashed.rawValue)
+            let msgs = CdMessage.all(predicate: p, orderedBy: nil, in: context) as? [CdMessage] ?? []
+            var folders = Set<CdFolder>()
+            for m in msgs {
+                if let p = m.parent {
+                    folders.insert(p)
+                }
+            }
+            result = folders.sorted() { f1, f2 in
+                return f1.name ?? "" < f2.name ?? ""
             }
         }
-        return folders.sorted() { f1, f2 in
-            return f1.name ?? "" < f2.name ?? ""
-        }
+        
+        return result
     }
 }

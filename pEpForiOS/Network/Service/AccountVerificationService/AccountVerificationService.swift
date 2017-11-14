@@ -58,31 +58,38 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
         if runningOperations[account] != nil {
             return
         }
-        let cdAccount = CdAccount.updateOrCreate(account: account)
-        guard let imapConnectInfo = cdAccount.imapConnectInfo else {
-            delegate?.verified(account: account, service: self, result: .noImapConnectData)
-            return
+        let moc = Record.Context.background
+        moc.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
+                return
+            }
+            let cdAccount = CdAccount.updateOrCreate(account: account)
+            guard let imapConnectInfo = cdAccount.imapConnectInfo else {
+                me.delegate?.verified(account: account, service: me, result: .noImapConnectData)
+                return
+            }
+            guard let smtpConnectInfo = cdAccount.smtpConnectInfo else {
+                me.delegate?.verified(account: account, service: me, result: .noSmtpConnectData)
+                return
+            }
+            let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
+            let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
+            let imapVerifyOp = LoginImapOperation(
+                parentName: #function, errorContainer: ErrorContainer(), imapSyncData: imapSyncData)
+            imapVerifyOp.completionBlock = {[weak self] in
+                imapVerifyOp.completionBlock = nil
+                self?.removeFromRunning(account: account)
+            }
+            let smtpVerifyOp = LoginSmtpOperation(
+                parentName: #function, smtpSendData: smtpSendData, errorContainer: ErrorContainer())
+            smtpVerifyOp.completionBlock = {[weak self] in
+                smtpVerifyOp.completionBlock = nil
+                self?.removeFromRunning(account: account)
+            }
+            me.runningOperations[account] = [imapVerifyOp, smtpVerifyOp]
+            me.backgroundQueue.addOperation(imapVerifyOp)
+            me.backgroundQueue.addOperation(smtpVerifyOp)
         }
-        guard let smtpConnectInfo = cdAccount.smtpConnectInfo else {
-            delegate?.verified(account: account, service: self, result: .noSmtpConnectData)
-            return
-        }
-        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
-        let imapVerifyOp = LoginImapOperation(
-            parentName: #function, errorContainer: ErrorContainer(), imapSyncData: imapSyncData)
-        imapVerifyOp.completionBlock = {[weak self] in
-            imapVerifyOp.completionBlock = nil
-            self?.removeFromRunning(account: account)
-        }
-        let smtpVerifyOp = LoginSmtpOperation(
-            parentName: #function, smtpSendData: smtpSendData, errorContainer: ErrorContainer())
-        smtpVerifyOp.completionBlock = {[weak self] in
-            smtpVerifyOp.completionBlock = nil
-            self?.removeFromRunning(account: account)
-        }
-        runningOperations[account] = [imapVerifyOp, smtpVerifyOp]
-        backgroundQueue.addOperation(imapVerifyOp)
-        backgroundQueue.addOperation(smtpVerifyOp)
     }
 }
