@@ -308,9 +308,12 @@ class ComposeTableViewController: BaseTableViewController {
                 if let b = self.showPepRating(pEpRating: rating, pEpProtection: self.pEpProtection) {
                     if rating == PEP_rating_reliable || rating == PEP_rating_trusted {
                         // disable protection only for certain ratings
-                        let r = UILongPressGestureRecognizer(target: self,
-                                                             action: #selector(self.toggleProtection))
-                        b.addGestureRecognizer(r)
+                        let long = UILongPressGestureRecognizer(target: self,
+                                                                action: #selector(self.toggleProtection))
+                        b.addGestureRecognizer(long)
+                        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handshakeView))
+                        b.addGestureRecognizer(tap)
+
                     }
                 }
             }
@@ -561,6 +564,10 @@ extension ComposeTableViewController: ComposeCellDelegate {
             pEpProtection = !pEpProtection
             calculateComposeColor()
         }
+    }
+
+    @IBAction func handshakeView(gestureRecognizer: UITapGestureRecognizer) {
+        self.navigationController?.performSegue(withIdentifier: "Handshake", sender: nil)
     }
 
     func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
