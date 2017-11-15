@@ -400,15 +400,15 @@ class TestUtil {
                 session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
         }
 
-        let from = CdIdentity.create()
+        let from: CdIdentity = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let toWithKey = CdIdentity.create()
+        let toWithKey: CdIdentity = CdIdentity.create()
         toWithKey.userName = "Unit 001"
         toWithKey.address = "unittest.ios.1@peptest.ch"
 
-        let toWithoutKey = CdIdentity.create()
+        let toWithoutKey: CdIdentity = CdIdentity.create()
         toWithoutKey.userName = "Unit 002"
         toWithoutKey.address = "unittest.ios.2@peptest.ch"
 
@@ -421,7 +421,7 @@ class TestUtil {
         // Build emails
         var messagesInTheQueue = [CdMessage]()
         for i in 1...numberOfMails {
-            let message = CdMessage.create()
+            let message: CdMessage = CdMessage.create()
             message.from = from
             message.parent = sentFolder
             message.shortMessage = "Some subject \(i)"
@@ -436,7 +436,7 @@ class TestUtil {
                     let attachment = Attachment.create(
                         data: imageData, mimeType: MimeTypeUtil.jpegMimeType,
                         fileName: imageFileName)
-                    let cdAttachment = CdAttachment.create(attachment: attachment)
+                    let cdAttachment: CdAttachment = CdAttachment.create(attachment: attachment)
                      message.addAttachment(cdAttachment: cdAttachment)
                 }
             }
@@ -516,10 +516,10 @@ class TestUtil {
             let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
             XCTAssertNotNil(cdMySelfIdentity)
 
-            let cdMyAccount = CdAccount.create()
+            let cdMyAccount: CdAccount = CdAccount.create()
             cdMyAccount.identity = cdMySelfIdentity
 
-            let cdInbox = CdFolder.create()
+            let cdInbox: CdFolder = CdFolder.create()
             cdInbox.name = ImapSync.defaultImapInboxName
             cdInbox.uuid = MessageID.generate()
             cdInbox.account = cdMyAccount
@@ -548,7 +548,7 @@ class TestUtil {
             }
             XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
 
-            guard let cdM = CdMessage.first() else {
+            guard let cdM: CdMessage = CdMessage.first() else {
                 XCTFail("Expected the one message in the DB that we imported")
                 return nil
             }

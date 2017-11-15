@@ -55,7 +55,7 @@ class PEPSessionTest: XCTestCase {
         message.references = ["ref1"]
         message.save()
         let session = PEPSession()
-        guard let first = CdMessage.first() else {
+        guard let first: CdMessage = CdMessage.first() else {
             XCTFail("No messages ...")
             return
         }
@@ -128,7 +128,7 @@ class PEPSessionTest: XCTestCase {
 
         let cdAccount = TestData().createWorkingCdAccount()
 
-        let folder = CdFolder.create()
+        let folder: CdFolder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
@@ -150,7 +150,7 @@ class PEPSessionTest: XCTestCase {
     func testDecryptMessageHeapBufferOverflow() {
         let cdAccount = TestData().createWorkingCdAccount()
 
-        let folder = CdFolder.create()
+        let folder: CdFolder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
@@ -177,7 +177,7 @@ class PEPSessionTest: XCTestCase {
 
         let cdAccount = TestData().createWorkingCdAccount()
 
-        let folder = CdFolder.create()
+        let folder: CdFolder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()

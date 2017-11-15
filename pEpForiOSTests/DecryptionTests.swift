@@ -34,7 +34,8 @@ class DecryptionTests: XCTestCase {
         let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
         let cdSenderAccount = TestData().createWorkingCdAccount(number: 1)
 
-        cdInbox = CdFolder.create()
+        let newFolder: CdFolder = CdFolder.create()
+        cdInbox = newFolder
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount

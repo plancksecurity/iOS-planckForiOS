@@ -48,7 +48,7 @@ extension CdMessage {
 
     public static func create(messageID: String, uid: Int,
                               parent: CdFolder? = nil) -> CdMessage {
-        let msg = CdMessage.create()
+        let msg: CdMessage = CdMessage.create()
         msg.uuid = messageID
         msg.uid = Int32(uid)
         msg.parent = parent
@@ -119,7 +119,7 @@ extension CdMessage {
 
     static func insertAttachment(
         contentType: String?, filename: String?, data: Data) -> CdAttachment {
-        let attachment = CdAttachment.create()
+        let attachment: CdAttachment = CdAttachment.create()
         attachment.data = data
         attachment.length = Int64(data.count)
         attachment.mimeType = contentType?.lowercased()

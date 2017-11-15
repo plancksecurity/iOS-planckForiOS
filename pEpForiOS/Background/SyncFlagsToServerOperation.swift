@@ -233,7 +233,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
         }
 
         for cw in cwMessages {
-            if let cdMsg = CdMessage.first(
+            if let cdMsg: CdMessage = CdMessage.first(
                 attributes: ["uid": cw.uid(), "parent": folder], in: context) {
                 let cwFlags = cw.flags()
                 let imap = cdMsg.imapFields(context: context)

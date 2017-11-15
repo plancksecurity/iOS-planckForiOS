@@ -69,7 +69,7 @@ public class FetchMessagesOperation: ImapSyncOperation {
         // Treat Inbox specially, as it is the only mailbox
         // that is mandatorily case-insensitive.
         if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
-            if let folder = CdFolder.first(attributes: ["folderTypeRawValue": FolderType.inbox.rawValue,
+            if let folder: CdFolder = CdFolder.first(attributes: ["folderTypeRawValue": FolderType.inbox.rawValue,
                                                         "account": account]) {
                 self.folderToOpen = folder.name!
             }

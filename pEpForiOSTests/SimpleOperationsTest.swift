@@ -216,13 +216,13 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         var options: [String: Any] = ["folderTypeRawValue": FolderType.inbox.rawValue,
                                       "account": cdAccount]
-        let inboxFolder = CdFolder.first(attributes: options)
+        let inboxFolder: CdFolder? = CdFolder.first(attributes: options)
         options["folderTypeRawValue"] = FolderType.sent.rawValue
         XCTAssertNotNil(inboxFolder)
         XCTAssertEqual(inboxFolder?.name?.lowercased(),
                        ImapSync.defaultImapInboxName.lowercased())
 
-        let sentFolder = CdFolder.first(attributes: options)
+        let sentFolder: CdFolder? = CdFolder.first(attributes: options)
         XCTAssertNotNil(sentFolder)
     }
 
@@ -483,11 +483,11 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(fetchFoldersOp.hasErrors())
         })
 
-        let from = CdIdentity.create()
+        let from: CdIdentity = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let to = CdIdentity.create()
+        let to: CdIdentity = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
@@ -497,7 +497,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         // Build emails
         let numMails = 5
         for i in 1...numMails {
-            let message = CdMessage.create()
+            let message: CdMessage = CdMessage.create()
             message.from = from
             message.parent = folder
             message.shortMessage = "Some subject \(i)"
@@ -570,11 +570,11 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(fetchFoldersOp.hasErrors())
         })
 
-        let from = CdIdentity.create()
+        let from: CdIdentity = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let to = CdIdentity.create()
+        let to: CdIdentity = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
@@ -584,7 +584,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         // Build emails
         let numMails = 5
         for i in 1...numMails {
-            let message = CdMessage.create()
+            let message: CdMessage = CdMessage.create()
             message.from = from
             message.parent = folder
             message.shortMessage = "Some subject \(i)"
@@ -717,7 +717,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     //fails on first run when the an account was setup on
     func testFixAttachmentsOperation() {
-        let cdFolder = CdFolder.create()
+        let cdFolder: CdFolder = CdFolder.create()
         cdFolder.name = "AttachmentTestFolder"
         cdFolder.uuid = "1"
         cdFolder.folderType = FolderType.inbox
@@ -725,7 +725,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let cdMsg = CdMessage.create(messageID: "2", uid: 1, parent: cdFolder)
 
-        let cdAttachWithoutSize = CdAttachment.create()
+        let cdAttachWithoutSize: CdAttachment = CdAttachment.create()
         cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8)
         cdAttachWithoutSize.message = cdMsg
         cdAttachWithoutSize.length = 0

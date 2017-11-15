@@ -17,13 +17,13 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     // MARK: - StoreCommandForFlagsToRemoved / Add
 
     func testStoreCommandForFlagsToRemove_someServerFlagsSet() {
-        let m = CdMessage.create()
+        let m: CdMessage = CdMessage.create()
         m.imap = CdImapFields.create()
 
-        let localFlags = CdImapFlags.create()
+        let localFlags: CdImapFlags = CdImapFlags.create()
         m.imap?.localFlags = localFlags
 
-        let serverFlags = CdImapFlags.create()
+        let serverFlags: CdImapFlags = CdImapFlags.create()
         m.imap?.serverFlags = serverFlags
 
         m.uid = 1024
@@ -62,10 +62,10 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testStoreCommandForFlagsToAdd_noServerFlagsSet() {
-        let m = CdMessage.create()
+        let m: CdMessage = CdMessage.create()
         m.imap = CdImapFields.create()
 
-        let localFlags = CdImapFlags.create()
+        let localFlags: CdImapFlags = CdImapFlags.create()
         m.imap?.localFlags = localFlags
 
         m.uid = 1024
@@ -97,13 +97,13 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testStoreCommandForFlagsToAdd_someServerFlagsSet() {
-        let m = CdMessage.create()
+        let m: CdMessage = CdMessage.create()
         m.imap = CdImapFields.create()
 
-        let localFlags = CdImapFlags.create()
+        let localFlags: CdImapFlags = CdImapFlags.create()
         m.imap?.localFlags = localFlags
 
-        let serverFlags = CdImapFlags.create()
+        let serverFlags: CdImapFlags = CdImapFlags.create()
         m.imap?.serverFlags = serverFlags
 
         m.uid = 1024
@@ -142,7 +142,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     func testInsertOrUpdatePantomimeMessage() {
         let cdAccount = TestData().createWorkingCdAccount()
 
-        let folder = CdFolder.create()
+        let folder: CdFolder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
@@ -167,7 +167,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
 
     //IOS-211 hi_there
     func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file1() {
-        let folder = CdFolder.create()
+        let folder: CdFolder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
@@ -198,7 +198,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     
     //IOS-211 pdfMail
     func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file2() {
-        let folder = CdFolder.create()
+        let folder: CdFolder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
@@ -271,10 +271,10 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     // MARK: - HELPER
 
     func createCdMessageForFlags() -> (CdMessage, CdImapFields, CdImapFlags, CdImapFlags) {
-        let m = CdMessage.create()
-        let imap = CdImapFields.create()
-        let serverFlags = CdImapFlags.create()
-        let localFlags = CdImapFlags.create()
+        let m: CdMessage = CdMessage.create()
+        let imap: CdImapFields = CdImapFields.create()
+        let serverFlags: CdImapFlags = CdImapFlags.create()
+        let localFlags: CdImapFlags = CdImapFlags.create()
         m.imap = imap
         imap.localFlags = localFlags
         imap.serverFlags = serverFlags

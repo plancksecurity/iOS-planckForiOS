@@ -69,7 +69,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         var protected = true
 
         let p = predicateOutgoingMails(cdAccount: cdAccount)
-        if let m = CdMessage.first(predicate: p) {
+        if let m: CdMessage = CdMessage.first(predicate: p) {
             if m.sent == nil {
                 m.sent = Date()
                 context.saveAndLogErrors()
