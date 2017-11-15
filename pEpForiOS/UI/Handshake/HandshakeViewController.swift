@@ -32,6 +32,12 @@ class HandshakeViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
     }
 
+    override func viewDidLoad() {
+        partners = partners.filter { (identity) -> Bool in
+            return !identity.isMySelf
+        }
+    }
+
     func back(sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
     }

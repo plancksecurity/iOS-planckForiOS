@@ -377,7 +377,7 @@
                         <outlet property="dismissButton" destination="RnR-fE-Pxv" id="Fbo-FG-i5y"/>
                         <outlet property="sendButton" destination="whn-9f-Amb" id="zrx-hn-bgy"/>
                         <outlet property="view" destination="K3w-ql-tda" id="t7n-G3-sO0"/>
-                        <segue destination="Dbs-KG-RkX" kind="show" identifier="Handshake" id="oPc-EL-W2c"/>
+                        <segue destination="Dbs-KG-RkX" kind="show" identifier="segueHandshake" id="oPc-EL-W2c"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28t-ga-UrZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1035,7 +1035,7 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oPc-EL-W2c"/>
+        <segue reference="QeL-n1-BY9"/>
         <segue reference="xmi-xn-p8T"/>
     </inferredMetricsTieBreakers>
 </document>

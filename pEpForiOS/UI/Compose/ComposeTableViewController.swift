@@ -311,10 +311,9 @@ class ComposeTableViewController: BaseTableViewController {
                         let long = UILongPressGestureRecognizer(target: self,
                                                                 action: #selector(self.toggleProtection))
                         b.addGestureRecognizer(long)
-                        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handshakeView))
-                        b.addGestureRecognizer(tap)
-
                     }
+                    let tap = UITapGestureRecognizer(target: self, action: #selector(self.handshakeView))
+                    b.addGestureRecognizer(tap)
                 }
             }
         }
@@ -567,7 +566,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     @IBAction func handshakeView(gestureRecognizer: UITapGestureRecognizer) {
-        self.navigationController?.performSegue(withIdentifier: "Handshake", sender: nil)
+        self.performSegue(withIdentifier: "segueHandshake", sender: nil)
     }
 
     func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
@@ -718,4 +717,30 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
 // MARK: - UINavigationControllerDelegate
 
 extension ComposeTableViewController: UINavigationControllerDelegate {
+}
+
+extension ComposeTableViewController: SegueHandlerType {
+
+    enum SegueIdentifier: String {
+        case segueHandshake
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .segueHandshake:
+            guard let destination = segue.destination as? HandshakeViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
+            }
+            destination.appConfig = self.appConfig
+            destination.message = populateMessageForSending()
+        default:
+            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
+            break
+        }
+    }
+
+    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
+        // nothing to do.
+    }
 }
