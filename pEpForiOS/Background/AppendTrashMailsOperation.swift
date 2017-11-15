@@ -73,8 +73,8 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
         var result = [CdFolder]()
         context.performAndWait {
             let p = NSPredicate(
-                format: "imap.localFlags.flagDeleted = true and imap.trashedStatusRawValue = %d",
-                Message.TrashedStatus.shouldBeTrashed.rawValue)
+                format: "imap.localFlags.flagDeleted = true AND imap.trashedStatusRawValue = %d AND parent.folderTypeRawValue != %d",
+                Message.TrashedStatus.shouldBeTrashed.rawValue, FolderType.trash.rawValue)
             let msgs = CdMessage.all(predicate: p, orderedBy: nil, in: context) as? [CdMessage] ?? []
             var folders = Set<CdFolder>()
             for m in msgs {
