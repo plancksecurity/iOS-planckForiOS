@@ -17,7 +17,7 @@ class NoOpMySelfer: KickOffMySelfProtocol {
     }
 }
 
-class LoginViewModelTests: XCTestCase {
+class LoginViewModelTests: CoreDataDrivenTestBase {
     class TestMessageSyncService: MessageSyncServiceProtocol {
         weak var errorDelegate: MessageSyncServiceErrorDelegate?
         weak var sentDelegate: MessageSyncServiceSentDelegate?
@@ -77,17 +77,6 @@ class LoginViewModelTests: XCTestCase {
         func cancel(account: Account) {
             XCTFail("unexpected call to \(#function)")
         }
-    }
-
-    var persistentSetup: PersistentSetup!
-
-    override func setUp() {
-        super.setUp()
-        persistentSetup = PersistentSetup()
-    }
-
-    override func tearDown() {
-        persistentSetup = nil
     }
 
     /// This tests makes sense only if the server settings 
