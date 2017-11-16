@@ -38,7 +38,7 @@ class MessageModelTests: XCTestCase {
         msg.to.append(account.user)
         msg.save()
 
-        guard let cdMsg: CdMessage = CdMessage.first() else {
+        guard let cdMsg = CdMessage.first() else {
             XCTFail()
             return
         }

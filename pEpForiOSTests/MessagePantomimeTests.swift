@@ -25,10 +25,10 @@ class MessagePantomimeTests: XCTestCase {
     }
 
     func testPantomimeFlagsFromMessage() {
-        let m: CdMessage = CdMessage.create()
+        let m = CdMessage.create()
         m.imap = CdImapFields.create()
 
-        let cdFlags: CdImapFlags = CdImapFlags.create()
+        let cdFlags = CdImapFlags.create()
         m.imap?.localFlags = cdFlags
 
         cdFlags.flagFlagged = true
@@ -78,7 +78,7 @@ class MessagePantomimeTests: XCTestCase {
 
         let cdAccount = testData.createWorkingCdAccount()
 
-        let cdFolder: CdFolder = CdFolder.create()
+        let cdFolder = CdFolder.create()
         let folderName = "inbox"
         cdFolder.folderType = FolderType.inbox
         cdFolder.name = folderName

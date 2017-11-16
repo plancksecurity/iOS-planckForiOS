@@ -75,7 +75,7 @@ extension CdMessage {
                 guard let data = at[kPepMimeData] as? Data else {
                     continue
                 }
-                let attach: CdAttachment = CdAttachment.create()
+                let attach = CdAttachment.create()
                 attach.data = data
                 attach.length = Int64(data.count)
                 if let mt = at[kPepMimeType] as? String {
@@ -95,7 +95,7 @@ extension CdMessage {
         if let optFields = pEpMessage[kPepOptFields] as? NSArray {
             for item in optFields {
                 if let headerfield = item as? NSArray {
-                    let cdHeaderField: CdHeaderField = CdHeaderField.create()
+                    let cdHeaderField = CdHeaderField.create()
                     cdHeaderField.name = headerfield[0] as? String
                     cdHeaderField.value = headerfield[1] as? String
                     cdHeaderField.message = self

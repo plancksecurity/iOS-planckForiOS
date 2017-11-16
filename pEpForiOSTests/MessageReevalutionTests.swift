@@ -40,8 +40,7 @@ class MessageReevalutionTests: XCTestCase {
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
 
         // Inbox
-        let newFolder: CdFolder = CdFolder.create()
-        cdInbox = newFolder
+        cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount

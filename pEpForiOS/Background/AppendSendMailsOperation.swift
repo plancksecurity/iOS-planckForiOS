@@ -25,7 +25,7 @@ public class AppendSendMailsOperation: AppendMailsOperationBase {
                 format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d AND parent.account = %@",
                 self.targetFolderType.rawValue, SendStatus.smtpDone.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
-            let msg: CdMessage? = CdMessage.first(predicate: p, in: self.context)
+            let msg = CdMessage.first(predicate: p, in: self.context)
             if let m = msg, let cdIdent = m.parent?.account?.identity {
                 result = (m.pEpMessage(), cdIdent.pEpIdentity(), m.objectID)
             }

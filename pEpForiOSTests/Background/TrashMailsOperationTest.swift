@@ -43,11 +43,11 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(fetchFoldersOp.hasErrors())
         })
 
-        let from: CdIdentity = CdIdentity.create()
+        let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let to: CdIdentity = CdIdentity.create()
+        let to = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
@@ -68,7 +68,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         var originalMessages = [CdMessage]()
         let numMails = 3
         for i in 1...numMails {
-            let message: CdMessage = CdMessage.create()
+            let message = CdMessage.create()
             message.from = from
             if i == 1 {
                 message.parent = draftsFolder
@@ -80,8 +80,8 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.sendStatus = SendStatus.none
             message.addTo(cdIdentity: to)
-            let imapFields: CdImapFields = CdImapFields.create()
-            let imapFlags: CdImapFlags = CdImapFlags.create()
+            let imapFields = CdImapFields.create()
+            let imapFlags = CdImapFlags.create()
             imapFields.localFlags = imapFlags
             imapFlags.flagDeleted = true
             imapFields.trashedStatus = Message.TrashedStatus.shouldBeTrashed
@@ -183,7 +183,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             // Make sure the email now exists in the trash folder as well ...
             let trashedP = NSPredicate(format: "parent = %@", trashFolder)
             let trashedP1 = NSCompoundPredicate(andPredicateWithSubpredicates: [uuidP, trashedP])
-            let trashedCdMessage: CdMessage? = CdMessage.first(predicate: trashedP1)
+            let trashedCdMessage = CdMessage.first(predicate: trashedP1)
             guard let trashed = trashedCdMessage,
                 let localFlags = trashed.imapFields().localFlags else {
                     XCTFail("Message missing in trash folder? No flags?")

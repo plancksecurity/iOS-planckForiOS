@@ -59,7 +59,7 @@ class ImapFlagsTests: XCTestCase {
     func testCdImapFields() {
         let _ = PersistentSetup()
 
-        let cdFlags: CdImapFlags = CdImapFlags.create()
+        let cdFlags = CdImapFlags.create()
         let cwFlags = CWFlags()
 
         XCTAssertEqual(cwFlags.rawFlagsAsShort(), cdFlags.rawFlagsAsShort())

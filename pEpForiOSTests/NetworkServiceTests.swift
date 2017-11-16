@@ -128,7 +128,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNotNil(CdFolder.all())
         XCTAssertNotNil(CdMessage.all())
 
-        guard let cdFolder: CdFolder = CdFolder.first(
+        guard let cdFolder = CdFolder.first(
             attributes: ["folderTypeRawValue": FolderType.inbox.rawValue]) else {
                 XCTFail()
                 return
@@ -265,11 +265,11 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertNil(error)
         })
 
-        let from: CdIdentity = CdIdentity.create()
+        let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
-        let to: CdIdentity = CdIdentity.create()
+        let to = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
@@ -284,7 +284,7 @@ class NetworkServiceTests: XCTestCase {
         var outgoingMessageIDs = [String]()
         let numMails = 1
         for i in 1...numMails {
-            let message: CdMessage = CdMessage.create()
+            let message = CdMessage.create()
             message.from = from
             message.parent = sentFolder
             message.shortMessage = "Some subject \(i)"

@@ -132,7 +132,7 @@ public extension CdFolder {
             return folder
         }
 
-        let folder: CdFolder = CdFolder.create(context: context)
+        let folder = CdFolder.create(context: context)
         folder.name = folderName
         folder.account = account
         folder.uuid = MessageID.generate()
@@ -202,7 +202,7 @@ public extension CdFolder {
     }
 
     public func firstUID() -> UInt {
-        if let msg: CdMessage = CdMessage.first(
+        if let msg = CdMessage.first(
             predicate: allMessagesIncludingDeletedPredicate(),
             orderedBy: [NSSortDescriptor(key: "uid", ascending: true)]) {
             return UInt(msg.uid)
@@ -211,7 +211,7 @@ public extension CdFolder {
     }
 
     public func lastUID() -> UInt {
-        if let msg: CdMessage = CdMessage.first(
+        if let msg = CdMessage.first(
             predicate: allMessagesIncludingDeletedPredicate(),
             orderedBy: [NSSortDescriptor(key: "uid", ascending: false)]) {
             return UInt(msg.uid)

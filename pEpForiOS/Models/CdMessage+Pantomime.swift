@@ -592,7 +592,7 @@ extension CdMessage {
         var headerFields = [CdHeaderField]()
         for headerName in headerFieldNames {
             if let value = pantomimeMessage.headerValue(forName: headerName) as? String {
-                let hf: CdHeaderField = CdHeaderField.create()
+                let hf = CdHeaderField.create()
                 hf.name = headerName
                 hf.value = value
                 hf.message = cdMessage

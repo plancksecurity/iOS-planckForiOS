@@ -17,7 +17,7 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
     
     //IOS-815 pEpRating undefined
     func testPepratingUndefined() {
-        let folder: CdFolder = CdFolder.create()
+        let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
