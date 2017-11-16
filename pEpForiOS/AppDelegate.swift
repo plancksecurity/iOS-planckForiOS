@@ -131,7 +131,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         startServices()
 
         DispatchQueue.global(qos: .userInitiated).async {
-            AddressBook.checkAndTransfer()
+            MessageModel.perform {
+                AddressBook.checkAndTransfer()
+            }
         }
 
         let result = setupInitialViewController(theAppConfig: theAppConfig)
