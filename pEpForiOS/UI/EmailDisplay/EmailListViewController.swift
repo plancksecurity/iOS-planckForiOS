@@ -164,33 +164,35 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         cell.setContactImage(image: row.senderContactImage)
         
         let op = BlockOperation() { [weak self] in
-            // ... and expensive computations in background
-            guard let strongSelf = self else {
-                // View is gone, nothing to do.
-                return
-            }
-            
-            var senderImage: UIImage?
-            if row.senderContactImage == nil {
-                // image for identity has not been cached yet
-                // Get and cache it here in the background ...
-                senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
-
-                // ... and set it on the main queue
-                DispatchQueue.main.async {
-                    if senderImage != nil && senderImage != cell.contactImageView.image {
-                        cell.contactImageView.image  = senderImage
+            MessageModel.performAndWait {
+                // ... and expensive computations in background
+                guard let strongSelf = self else {
+                    // View is gone, nothing to do.
+                    return
+                }
+                
+                var senderImage: UIImage?
+                if row.senderContactImage == nil {
+                    // image for identity has not been cached yet
+                    // Get and cache it here in the background ...
+                    senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
+                    
+                    // ... and set it on the main queue
+                    DispatchQueue.main.async {
+                        if senderImage != nil && senderImage != cell.contactImageView.image {
+                            cell.contactImageView.image  = senderImage
+                        }
                     }
                 }
-            }
-
-            let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
-
-            // In theory we want to set all data in *one* async call. But as pEpRatingColorImage takes
-            // very long, we are setting the sender image seperatelly.
-            DispatchQueue.main.async {
-                if pEpRatingImage != nil {
-                    cell.setPepRatingImage(image: pEpRatingImage)
+                
+                let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
+                
+                // In theory we want to set all data in *one* async call. But as pEpRatingColorImage takes
+                // very long, we are setting the sender image seperatelly.
+                DispatchQueue.main.async {
+                    if pEpRatingImage != nil {
+                        cell.setPepRatingImage(image: pEpRatingImage)
+                    }
                 }
             }
         }
