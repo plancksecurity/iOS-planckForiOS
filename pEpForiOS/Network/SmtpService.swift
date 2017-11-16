@@ -71,37 +71,6 @@ open class SmtpSend: Service {
                            port: UInt32(connectInfo.networkPort),
                            transport: connectInfo.connectionTransport!)
     }
-
-    fileprivate func createMessage() -> CWMessage {
-        let msg = CWMessage.init()
-        msg.setSubject("Subject Message")
-        msg.setFrom(CWInternetAddress.init(personal: "Unit 004",
-            address: "unittest.ios.4@peptest.ch"))
-
-        let to = CWInternetAddress(personal: "Unit 001", address: "unittest.ios.1@peptest.ch")
-        to.setType(.toRecipient)
-        msg.addRecipient(to)
-
-        msg.setContentType(Constants.contentTypeText)
-        msg.setContentTransferEncoding(PantomimeEncodingNone)
-        msg.setCharset("utf-8")
-        msg.setContent("This was sent by pantomime".data(using: String.Encoding.utf8) as NSObject?)
-        return msg
-    }
-
-    fileprivate func sendMessage() {
-        smtp.setRecipients(nil)
-        smtp.setMessageData(nil)
-        smtp.setMessage(createMessage())
-        smtp.sendMessage()
-    }
-
-    /**
-     Resets the connection. Do this for each mail.
-     */
-    open func reset() {
-        smtp.reset()
-    }
 }
 
 extension SmtpSend: TransportClient {
