@@ -87,6 +87,12 @@ public extension PEPSession {
         return PEPUtil.encrypt(
             pEpMessageDict: pEpMessageDict, forIdentity: forIdentity, session: self)
     }
+
+    public func encrypt(pEpMessage: PEPMessage,
+                        forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, PEPMessage?) {
+        return PEPUtil.encrypt(
+            pEpMessage: pEpMessage, forIdentity: forIdentity, session: self)
+    }
 }
 
 public func ==(lhs: PEPRecipient, rhs: PEPRecipient) -> Bool {

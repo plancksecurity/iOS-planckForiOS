@@ -505,6 +505,24 @@ open class PEPUtil {
         }
     }
 
+    open static func encrypt(
+        pEpMessage: PEPMessage, forIdentity: PEPIdentity? = nil,
+        session: PEPSession = PEPSession()) -> (PEP_STATUS, PEPMessage?) {
+        var encryptedMessage: PEPMessage? = nil
+
+        if let ident = forIdentity {
+            let pepStatus = session.encryptMessage(
+                pEpMessage, identity: ident,
+                dest: &encryptedMessage)
+            return (pepStatus, encryptedMessage)
+        } else {
+            let pepStatus = session.encryptMessage(
+                pEpMessage, extra: nil,
+                dest: &encryptedMessage)
+            return (pepStatus, encryptedMessage)
+        }
+    }
+
     /**
      Checks the given pEp status and the given encrypted mail for errors and
      logs them.
