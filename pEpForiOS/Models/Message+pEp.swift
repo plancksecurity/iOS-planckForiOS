@@ -9,8 +9,8 @@
 import MessageModel
 
 extension Message {
-    public func pEpMessage(outgoing: Bool = true) -> PEPMessageDict {
-        return PEPUtil.pEp(message: self)
+    public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
+        return PEPUtil.pEpDict(message: self)
     }
 
     public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating? {

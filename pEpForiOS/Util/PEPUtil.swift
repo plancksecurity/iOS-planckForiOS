@@ -61,7 +61,7 @@ open class PEPUtil {
 
     open static func identity(account: CdAccount) -> PEPIdentity {
         if let id = account.identity {
-            return pEp(cdIdentity: id)
+            return pEpDict(cdIdentity: id)
         } else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "account without identity: \(account)")
@@ -69,7 +69,7 @@ open class PEPUtil {
         }
     }
 
-    open static func pEp(identity: Identity) -> PEPIdentity {
+    open static func pEpDict(identity: Identity) -> PEPIdentity {
         return PEPIdentity(
             address: identity.address, userID: identity.userID, userName: identity.userName,
             isOwn: identity.isMySelf, fingerPrint: nil, commType: PEP_ct_unknown, language: nil)
@@ -80,7 +80,7 @@ open class PEPUtil {
      - Parameter cdIdentity: The core data contact object.
      - Returns: An `PEPIdentity` contact for pEp.
      */
-    open static func pEp(cdIdentity: CdIdentity) -> PEPIdentity {
+    open static func pEpDict(cdIdentity: CdIdentity) -> PEPIdentity {
         if let address = cdIdentity.address {
             return PEPIdentity(address: address, userID: cdIdentity.userID,
                                userName: cdIdentity.userName, isOwn: cdIdentity.isMySelf,
@@ -106,7 +106,7 @@ open class PEPUtil {
         guard let id = identity else {
             return nil
         }
-        return pEp(identity: id)
+        return pEpDict(identity: id)
     }
 
     open static func pEpAttachment(
@@ -127,7 +127,7 @@ open class PEPUtil {
     /**
      Converts a `CdAttachment` into a pEp attachment.
      */
-    open static func pEp(cdAttachment: CdAttachment) -> [String: AnyObject] {
+    open static func pEpDict(cdAttachment: CdAttachment) -> [String: AnyObject] {
         return pEpAttachment(
             fileName: cdAttachment.fileName, mimeType: cdAttachment.mimeType,
             data: cdAttachment.data as Data?)
@@ -136,28 +136,28 @@ open class PEPUtil {
     /**
      Converts an `Attachment` into a pEp attachment.
      */
-    open static func pEp(attachment: Attachment) -> [String: AnyObject] {
+    open static func pEpDict(attachment: Attachment) -> [String: AnyObject] {
         return pEpAttachment(
             fileName: attachment.fileName, mimeType: attachment.mimeType, data: attachment.data)
     }
 
-    open static func pEp(message: Message, outgoing: Bool = true) -> PEPMessageDict {
+    open static func pEpDict(message: Message, outgoing: Bool = true) -> PEPMessageDict {
         var dict = PEPMessageDict()
 
         if let subject = message.shortMessage {
             dict[kPepShortMessage] = subject as NSString
         }
 
-        dict[kPepTo] = NSArray(array: message.to.map() { return pEp(identity: $0) })
-        dict[kPepCC] = NSArray(array: message.cc.map() { return pEp(identity: $0) })
-        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEp(identity: $0) })
+        dict[kPepTo] = NSArray(array: message.to.map() { return pEpDict(identity: $0) })
+        dict[kPepCC] = NSArray(array: message.cc.map() { return pEpDict(identity: $0) })
+        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEpDict(identity: $0) })
 
         dict[kPepFrom]  = pEpOptional(identity: message.from) as AnyObject
         dict[kPepID] = message.messageID as AnyObject
         dict[kPepOutgoing] = outgoing as AnyObject?
 
         dict[kPepAttachments] = NSArray(array: message.attachments.map() {
-            return pEp(attachment: $0)
+            return pEpDict(attachment: $0)
         })
 
         dict[kPepReferences] = message.references as AnyObject
@@ -170,7 +170,7 @@ open class PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessageDict {
+    open static func pEpDict(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessageDict {
         var dict = PEPMessageDict()
 
         if let sent = cdMessage.sent {
@@ -182,11 +182,11 @@ open class PEPUtil {
         }
 
         dict[kPepTo] = NSArray(array: cdMessage.to!.map()
-            { return pEp(cdIdentity: $0 as! CdIdentity) })
+            { return pEpDict(cdIdentity: $0 as! CdIdentity) })
         dict[kPepCC] = NSArray(array: cdMessage.cc!.map()
-            { return pEp(cdIdentity: $0 as! CdIdentity) })
+            { return pEpDict(cdIdentity: $0 as! CdIdentity) })
         dict[kPepBCC] = NSArray(array: cdMessage.bcc!.map()
-            { return pEp(cdIdentity: $0 as! CdIdentity) })
+            { return pEpDict(cdIdentity: $0 as! CdIdentity) })
 
         if let longMessage = cdMessage.longMessage {
             dict[kPepLongMessage] = longMessage as AnyObject
@@ -195,7 +195,7 @@ open class PEPUtil {
             dict[kPepLongMessageFormatted] = longMessageFormatted as AnyObject
         }
         if let from = cdMessage.from {
-            dict[kPepFrom]  = self.pEp(cdIdentity: from) as AnyObject
+            dict[kPepFrom]  = self.pEpDict(cdIdentity: from) as AnyObject
         }
         if let messageID = cdMessage.uuid {
             dict[kPepID] = messageID as AnyObject
@@ -204,7 +204,7 @@ open class PEPUtil {
 
         dict[kPepAttachments] = NSArray(
             array: (cdMessage.attachments?.array as? [CdAttachment] ?? []).map() {
-                return pEp(cdAttachment: $0)
+                return pEpDict(cdAttachment: $0)
         })
 
         var refs = [String]()
@@ -223,7 +223,7 @@ open class PEPUtil {
         }
 
         dict[kPepReplyTo] = NSArray(array: cdMessage.replyTo!.map()
-            { return pEp(cdIdentity: $0 as! CdIdentity) })
+            { return pEpDict(cdIdentity: $0 as! CdIdentity) })
 
         let headerFields = cdMessage.optionalFields?.array as? [CdHeaderField] ?? []
         var theFields = [(String, String)]()
@@ -245,8 +245,8 @@ open class PEPUtil {
     /**
      For a PEPMessage, checks whether it is probably PGP/MIME encrypted.
      */
-    open static func isProbablyPGPMime(pEpMessage: PEPMessageDict) -> Bool {
-        guard let attachments = pEpMessage[kPepAttachments] as? NSArray else {
+    open static func isProbablyPGPMime(pEpMessageDict: PEPMessageDict) -> Bool {
+        guard let attachments = pEpMessageDict[kPepAttachments] as? NSArray else {
             return false
         }
 
@@ -270,7 +270,7 @@ open class PEPUtil {
      For a CdMessage, checks whether it is probably PGP/MIME encrypted.
      */
     open static func isProbablyPGPMime(cdMessage: CdMessage) -> Bool {
-        return isProbablyPGPMime(pEpMessage: pEp(cdMessage: cdMessage))
+        return isProbablyPGPMime(pEpMessageDict: pEpDict(cdMessage: cdMessage))
     }
 
     /**
@@ -305,19 +305,19 @@ open class PEPUtil {
      Converts a given `CdMessage` into the equivalent `CWIMAPMessage`.
      */
     open static func pantomime(cdMessage: CdMessage) -> CWIMAPMessage {
-        return pantomime(pEpMessage: pEp(cdMessage: cdMessage))
+        return pantomime(pEpMessageDict: pEpDict(cdMessage: cdMessage))
     }
 
     /**
      Converts a given `Message` into the equivalent `CWIMAPMessage`.
      */
     open static func pantomime(message: Message) -> CWIMAPMessage {
-        return pantomime(pEpMessage: pEp(message: message))
+        return pantomime(pEpMessageDict: pEpDict(message: message))
     }
 
-    open static func pantomime(pEpMessage: PEPMessageDict,
+    open static func pantomime(pEpMessageDict: PEPMessageDict,
                                mailboxName: String? = nil) -> CWIMAPMessage {
-        return CWIMAPMessage(pEpMessage: pEpMessage, mailboxName: mailboxName)
+        return CWIMAPMessage(pEpMessageDict: pEpMessageDict, mailboxName: mailboxName)
     }
 
     /**
@@ -327,8 +327,8 @@ open class PEPUtil {
      or a "multipart/alternative" if there is both text and HTML,
      or nil.
      */
-    static func bodyPart(pEpMessage: PEPMessageDict) -> CWPart? {
-        let theBodyParts = bodyParts(pEpMessage: pEpMessage)
+    static func bodyPart(pEpMessageDict: PEPMessageDict) -> CWPart? {
+        let theBodyParts = bodyParts(pEpMessageDict: pEpMessageDict)
         if theBodyParts.count == 1 {
             return theBodyParts[0]
         } else if theBodyParts.count > 1 {
@@ -365,14 +365,14 @@ open class PEPUtil {
      Extracts text content from a pEp mail as a list of pantomime part object.
      - Returns: A list of pantomime parts. This list can have 0, 1 or 2 elements.
      */
-    static func bodyParts(pEpMessage: PEPMessageDict) -> [CWPart] {
+    static func bodyParts(pEpMessageDict: PEPMessageDict) -> [CWPart] {
         var parts: [CWPart] = []
 
-        if let part = makePart(text: pEpMessage[kPepLongMessage] as? String,
+        if let part = makePart(text: pEpMessageDict[kPepLongMessage] as? String,
                                contentType: Constants.contentTypeText) {
             parts.append(part)
         }
-        if let part = makePart(text: pEpMessage[kPepLongMessageFormatted] as? String,
+        if let part = makePart(text: pEpMessageDict[kPepLongMessageFormatted] as? String,
                                contentType: Constants.contentTypeHtml) {
             parts.append(part)
         }
@@ -382,7 +382,7 @@ open class PEPUtil {
 
     open static func pEpRating(cdIdentity: CdIdentity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
-        let pepC = pEp(cdIdentity: cdIdentity)
+        let pepC = pEpDict(cdIdentity: cdIdentity)
         let rating = session.identityRating(pepC)
         return rating
     }
@@ -394,7 +394,7 @@ open class PEPUtil {
 
     open static func pEpRating(identity: Identity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
-        let pepC = pEp(identity: identity)
+        let pepC = pEpDict(identity: identity)
         let rating = session.identityRating(pepC)
         return rating
     }
@@ -447,14 +447,14 @@ open class PEPUtil {
     }
 
     open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
-        let pEpID = pEp(identity: identity)
+        let pEpID = pEpDict(identity: identity)
         session.update(pEpID)
         return pEpID.fingerPrint
     }
 
     open static func fingerPrint(cdIdentity: CdIdentity,
                                  session: PEPSession = PEPSession()) -> String? {
-        let pEpID = pEp(cdIdentity: cdIdentity)
+        let pEpID = pEpDict(cdIdentity: cdIdentity)
         session.update(pEpID)
         return pEpID.fingerPrint
     }
@@ -463,7 +463,7 @@ open class PEPUtil {
      Trust that contact (yellow to green).
      */
     open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEp(identity: identity)
+        let pEpID = pEpDict(identity: identity)
         session.update(pEpID)
         session.trustPersonalKey(pEpID)
     }
@@ -472,7 +472,7 @@ open class PEPUtil {
      Mistrust the identity (yellow to red)
      */
     open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEp(identity: identity)
+        let pEpID = pEpDict(identity: identity)
         session.update(pEpID)
         session.keyMistrusted(pEpID)
     }
@@ -482,7 +482,7 @@ open class PEPUtil {
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
     open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEp(identity: identity)
+        let pEpID = pEpDict(identity: identity)
         session.update(pEpID)
         session.keyResetTrust(pEpID)
     }
@@ -500,6 +500,24 @@ open class PEPUtil {
         } else {
             let pepStatus = session.encryptMessageDict(
                 pEpMessageDict, extra: nil,
+                dest: &encryptedMessage)
+            return (pepStatus, encryptedMessage)
+        }
+    }
+
+    open static func encrypt(
+        pEpMessage: PEPMessage, forIdentity: PEPIdentity? = nil,
+        session: PEPSession = PEPSession()) -> (PEP_STATUS, PEPMessage?) {
+        var encryptedMessage: PEPMessage? = nil
+
+        if let ident = forIdentity {
+            let pepStatus = session.encryptMessage(
+                pEpMessage, identity: ident,
+                dest: &encryptedMessage)
+            return (pepStatus, encryptedMessage)
+        } else {
+            let pepStatus = session.encryptMessage(
+                pEpMessage, extra: nil,
                 dest: &encryptedMessage)
             return (pepStatus, encryptedMessage)
         }

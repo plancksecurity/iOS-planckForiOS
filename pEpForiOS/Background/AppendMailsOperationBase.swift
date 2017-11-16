@@ -90,8 +90,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         }
     }
 
-    private func appendMessage(pEpMessage: PEPMessageDict?) {
-        guard let msg = pEpMessage else {
+    private func appendMessage(pEpMessageDict: PEPMessageDict?) {
+        guard let msg = pEpMessageDict else {
             handleError(Constants.errorInvalidParameter(comp),
                         message: NSLocalizedString("Cannot append nil message",
                                                    comment: "Background operation error message"))
@@ -101,7 +101,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             return
         }
 
-        let pantMail = PEPUtil.pantomime(pEpMessage: msg)
+        let pantMail = PEPUtil.pantomime(pEpMessageDict: msg)
         let folder = CWIMAPFolder(name: folderName)
         if let sync = imapSyncData.sync {
             folder.setStore(sync.imapStore)
@@ -175,9 +175,9 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                     message: NSLocalizedString(
                         "Cannot encrypt message",
                         comment: "Background operation error message"))
-                appendMessage(pEpMessage: msg as PEPMessageDict)
+                appendMessage(pEpMessageDict: msg as PEPMessageDict)
             } else {
-                appendMessage(pEpMessage: encMsg2 as? PEPMessageDict)
+                appendMessage(pEpMessageDict: encMsg2 as? PEPMessageDict)
             }
         } else {
             markAsFinished()

@@ -41,7 +41,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
             return
         }
         let theSession = PEPSession()
-        let pepMessage = cdMsg.pEpMessage()
+        let pepMessage = cdMsg.pEpMessageDict()
         let newRating = theSession.reEvaluateMessageRating(pepMessage)
 
         context.updateAndSave(object: cdMsg) {

@@ -11,36 +11,36 @@ extension CWIMAPMessage {
      Creates a `CWIMAPMessage` from a given `PEPMessage`.
      See https://tools.ietf.org/html/rfc2822 for a better understanding of some fields.
      */
-    public convenience init(pEpMessage: PEPMessageDict, mailboxName: String? = nil) {
+    public convenience init(pEpMessageDict: PEPMessageDict, mailboxName: String? = nil) {
         self.init()
 
-        if let from = pEpMessage[kPepFrom] as? PEPIdentity {
+        if let from = pEpMessageDict[kPepFrom] as? PEPIdentity {
             let address = PEPUtil.pantomime(pEpIdentity: from)
             self.setFrom(address)
         }
 
-        if let recipients = pEpMessage[kPepTo] as? [PEPIdentity] {
+        if let recipients = pEpMessageDict[kPepTo] as? [PEPIdentity] {
             PEPUtil.add(pEpIdentities: recipients,
                         toPantomimeMessage: self,
                         recipientType: .toRecipient)
         }
-        if let recipients = pEpMessage[kPepCC] as? [PEPIdentity] {
+        if let recipients = pEpMessageDict[kPepCC] as? [PEPIdentity] {
             PEPUtil.add(pEpIdentities: recipients,
                         toPantomimeMessage: self,
                         recipientType: .ccRecipient)
         }
-        if let recipients = pEpMessage[kPepBCC] as? [PEPIdentity] {
+        if let recipients = pEpMessageDict[kPepBCC] as? [PEPIdentity] {
             PEPUtil.add(pEpIdentities: recipients,
                         toPantomimeMessage: self,
                         recipientType: .bccRecipient)
         }
-        if let messageID = pEpMessage[kPepID] as? String {
+        if let messageID = pEpMessageDict[kPepID] as? String {
             self.setMessageID(messageID)
         }
-        if let sentDate = pEpMessage[kPepSent] as? Date {
+        if let sentDate = pEpMessageDict[kPepSent] as? Date {
             self.setOriginationDate(sentDate)
         }
-        if let shortMsg = pEpMessage[kPepShortMessage] as? String {
+        if let shortMsg = pEpMessageDict[kPepShortMessage] as? String {
             self.setSubject(shortMsg)
         }
 
@@ -48,19 +48,19 @@ extension CWIMAPMessage {
         // as references, with the inReplyTo last
         // (https://cr.yp.to/immhf/thread.html)
         let allRefsAdded = NSMutableOrderedSet()
-        if let refs = pEpMessage[kPepReferences] as? [AnyObject] {
+        if let refs = pEpMessageDict[kPepReferences] as? [AnyObject] {
             for ref in refs {
                 allRefsAdded.add(ref)
             }
         }
-        if let inReplyTos = pEpMessage[kPepInReplyTo] as? [AnyObject] {
+        if let inReplyTos = pEpMessageDict[kPepInReplyTo] as? [AnyObject] {
             for inReplyTo in inReplyTos {
                 allRefsAdded.add(inReplyTo)
             }
         }
         self.setReferences(allRefsAdded.array)
 
-        if let optFields = pEpMessage[kPepOptFields] as? NSArray {
+        if let optFields = pEpMessageDict[kPepOptFields] as? NSArray {
             for item in optFields {
                 if let headerfield = item as? NSArray {
                     guard let header = headerfield[0] as? String else {
@@ -74,9 +74,9 @@ extension CWIMAPMessage {
             }
         }
 
-        let attachmentDictsOpt = pEpMessage[kPepAttachments] as? NSArray
+        let attachmentDictsOpt = pEpMessageDict[kPepAttachments] as? NSArray
         if !MiscUtil.isNilOrEmptyNSArray(attachmentDictsOpt) {
-            let encrypted = PEPUtil.isProbablyPGPMime(pEpMessage: pEpMessage)
+            let encrypted = PEPUtil.isProbablyPGPMime(pEpMessageDict: pEpMessageDict)
 
             // Create multipart mail
             let multiPart = CWMIMEMultipart()
@@ -87,7 +87,7 @@ extension CWIMAPMessage {
             } else {
                 self.setContentType(Constants.contentTypeMultipartRelated)
                 self.setContentTransferEncoding(PantomimeEncoding8bit)
-                if let bodyPart = PEPUtil.bodyPart(pEpMessage: pEpMessage) {
+                if let bodyPart = PEPUtil.bodyPart(pEpMessageDict: pEpMessageDict) {
                     multiPart.add(bodyPart)
                 }
             }
@@ -125,7 +125,7 @@ extension CWIMAPMessage {
                 }
             }
         } else {
-            if let body = PEPUtil.bodyPart(pEpMessage: pEpMessage) {
+            if let body = PEPUtil.bodyPart(pEpMessageDict: pEpMessageDict) {
                 self.setContent(body.content())
                 self.setContentType(body.contentType())
             }

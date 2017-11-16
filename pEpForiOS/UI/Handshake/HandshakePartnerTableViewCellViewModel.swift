@@ -139,7 +139,7 @@ class HandshakePartnerTableViewCellViewModel {
         if let msg = message,
             let from = msg.from,
             from.address == identityPartner.address {
-            var pEpMessage = msg.pEpMessage()
+            var pEpMessage = msg.pEpMessageDict()
             pEpMessage[kPepFrom] = identityPartner
             var pEpResult = PEP_UNKNOWN_ERROR
             let trustwordsResult = session.getTrustwordsMessageDict(

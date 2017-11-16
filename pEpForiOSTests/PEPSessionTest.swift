@@ -61,11 +61,11 @@ class PEPSessionTest: XCTestCase {
         }
         let cdmessage1 = first
         let cdmessage2 = cdmessage1
-        let pepmessage = cdmessage1.pEpMessage()
+        let pepmessage = cdmessage1.pEpMessageDict()
 
         session.encryptMessageDict(pepmessage, extra: nil, dest: nil)
         session.decryptMessageDict(pepmessage, dest: nil, keys: nil)
-        cdmessage2.update(pEpMessage: pepmessage)
+        cdmessage2.update(pEpMessageDict: pepmessage)
         XCTAssertEqual(cdmessage2,cdmessage1)
 
         Log.verbose(component: "testPEPConversion", content: "test")
@@ -78,28 +78,27 @@ class PEPSessionTest: XCTestCase {
         let mySubject = "Some Subject"
         let myID = "myID"
         let references = ["ref1", "ref2", "ref3"]
-        let dict = [
-            kPepFrom: myself as AnyObject,
-            kPepTo: NSArray(array: [myself]),
-            kPepID: myID as AnyObject,
-            kPepReferences: NSArray(array: references),
-            kPepShortMessage: mySubject as AnyObject,
-            kPepLongMessage: "The text body" as AnyObject,
-            kPepOutgoing: NSNumber(booleanLiteral: true)
-        ] as PEPMessageDict
+        let pEpMessage = PEPMessage()
+
+        pEpMessage.from = myself
+        pEpMessage.to = [myself]
+        pEpMessage.messageID = myID
+        pEpMessage.references = references
+        pEpMessage.shortMessage = mySubject
+        pEpMessage.longMessage = "The text body"
+        pEpMessage.direction = PEP_dir_outgoing
 
         let session = PEPSession()
 
         session.mySelf(myself)
 
-        let (status1, encMsg1) = session.encrypt(
-            pEpMessageDict: dict, forIdentity: myself)
+        let (status1, encMsg1) = session.encrypt(pEpMessage: pEpMessage, forIdentity: myself)
         XCTAssertEqual(status1, PEP_STATUS_OK)
         if let theEncMsg = encMsg1 {
             // expecting that sensitive data gets hidden (ENGINE-287)
-            XCTAssertNotEqual(theEncMsg[kPepID] as? String, myID)
-            XCTAssertNotEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
-            XCTAssertNotEqual(theEncMsg[kPepShortMessage] as? String, mySubject)
+            XCTAssertNotEqual(theEncMsg.messageID, myID)
+            XCTAssertNotEqual(theEncMsg.references ?? [], references)
+            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
 
             tryDecryptMessage(
                 message: theEncMsg, myID:myID, references: references, session: session)
@@ -108,14 +107,14 @@ class PEPSessionTest: XCTestCase {
         }
 
         let (status2, encMsg2) = session.encrypt(
-            pEpMessageDict: dict)
+            pEpMessage: pEpMessage)
         XCTAssertEqual(status2, PEP_STATUS_OK)
         if let theEncMsg = encMsg2 {
             // expecting that message ID gets hidden (ENGINE-288)
-            XCTAssertNotEqual(theEncMsg[kPepID] as? String, myID)
+            XCTAssertNotEqual(theEncMsg.messageID, myID)
 
-            XCTAssertNotEqual(theEncMsg[kPepReferences] as? [String] ?? [], references)
-            XCTAssertNotEqual(theEncMsg[kPepShortMessage] as? String, mySubject)
+            XCTAssertNotEqual(theEncMsg.references ?? [], references)
+            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
             tryDecryptMessage(
                 message: theEncMsg, myID: myID, references: references, session: session)
         } else {
@@ -162,7 +161,7 @@ class PEPSessionTest: XCTestCase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessage(outgoing: false)
+        let pEpMessage = cdMessage.pEpMessageDict(outgoing: false)
         let session = PEPSession()
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
@@ -196,15 +195,15 @@ class PEPSessionTest: XCTestCase {
     // MARK: - Helper
 
     func tryDecryptMessage(
-        message: NSDictionary, myID: String, references: [String], session: PEPSession = PEPSession()) {
-        var pepDecryptedMessage: NSDictionary? = nil
+        message: PEPMessage, myID: String, references: [String],
+        session: PEPSession = PEPSession()) {
+        var pepDecryptedMessage: PEPMessage? = nil
         var keys: NSArray?
-        let _ = session.decryptMessageDict(message as! PEPMessageDict,
-                                           dest: &pepDecryptedMessage, keys: &keys)
+        let _ = session.decryptMessage(message, dest: &pepDecryptedMessage, keys: &keys)
         if let decMsg = pepDecryptedMessage {
-            XCTAssertEqual(decMsg[kPepID] as? String, myID)
+            XCTAssertEqual(decMsg.messageID, myID)
             // check that original references are restored (ENGINE-290)
-            XCTAssertEqual(decMsg[kPepReferences] as? [String] ?? [], references)
+            XCTAssertEqual(decMsg.references ?? [], references)
         } else {
             XCTFail()
         }

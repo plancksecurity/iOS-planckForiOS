@@ -42,7 +42,7 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
 
             if let msg = CdMessage.first(predicate: p, in: self.context),
                 let cdIdent = msg.parent?.account?.identity {
-                result = (msg.pEpMessage(), cdIdent.pEpIdentity(), msg.objectID)
+                result = (msg.pEpMessageDict(), cdIdent.pEpIdentity(), msg.objectID)
             }
         }
         return result
