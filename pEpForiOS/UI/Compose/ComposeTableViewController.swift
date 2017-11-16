@@ -122,9 +122,7 @@ class ComposeTableViewController: BaseTableViewController {
                 if composeMode == .replyAll, let from = om.from {
                     let to = om.to
                     for identity in to {
-                        if !identity.isMySelf {
-                            recipientCell.addIdentity(identity)
-                        }
+                        recipientCell.addIdentity(identity)
                     }
                     recipientCell.addIdentity(from)
                 }
