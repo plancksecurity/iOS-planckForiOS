@@ -10,6 +10,6 @@ import MessageModel
 
 extension CdAttachment {
     public func pEpAttachment() -> [String: AnyObject] {
-        return PEPUtil.pEp(cdAttachment: self)
+        return PEPUtil.pEpDict(cdAttachment: self)
     }
 }

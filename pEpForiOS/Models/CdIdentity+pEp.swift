@@ -58,7 +58,7 @@ extension CdIdentity {
     }
 
     public func pEpIdentity() -> PEPIdentity {
-        return PEPUtil.pEp(cdIdentity: self)
+        return PEPUtil.pEpDict(cdIdentity: self)
     }
 
     public func fingerPrint(session: PEPSession = PEPSession()) -> String? {

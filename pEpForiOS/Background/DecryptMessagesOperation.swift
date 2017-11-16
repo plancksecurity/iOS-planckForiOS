@@ -38,7 +38,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     outgoing = folderType.isOutgoing()
                 }
 
-                let pepMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: outgoing)
+                let pepMessage = PEPUtil.pEpDict(cdMessage: cdMessage, outgoing: outgoing)
                 var pEpDecryptedMessage: NSDictionary? = nil
                 var keys: NSArray?
                 Log.info(component: self.comp,
@@ -108,7 +108,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 errorString:"Decrypt with rating, but nil message")
             return
         }
-        cdMessage.update(pEpMessage: decrypted, pEpColorRating: pEpColorRating)
+        cdMessage.update(pEpMessageDict: decrypted, pEpColorRating: pEpColorRating)
         cdMessage.underAttack = underAttack
         self.updateMessage(cdMessage: cdMessage, keys: keys, context: context)
     }

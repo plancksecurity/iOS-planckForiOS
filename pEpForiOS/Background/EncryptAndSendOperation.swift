@@ -85,12 +85,12 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         return nil
     }
 
-    func send(pEpMessage: PEPMessageDict?) {
-        guard let msg = pEpMessage else {
+    func send(pEpMessageDict: PEPMessageDict?) {
+        guard let msg = pEpMessageDict else {
             handleError(Constants.errorInvalidParameter(comp), message: "Cannot send nil message")
             return
         }
-        let pantMail = PEPUtil.pantomime(pEpMessage: msg)
+        let pantMail = PEPUtil.pantomime(pEpMessageDict: msg)
         smtpSend.smtp.setRecipients(nil)
         smtpSend.smtp.setMessageData(nil)
         smtpSend.smtp.setMessage(pantMail)
@@ -139,12 +139,12 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                     comp: comp, status: status, encryptedMessage: encMsg)
                 if let err = error {
                     Log.error(component: comp, error: err)
-                    send(pEpMessage: encMsg as? PEPMessageDict)
+                    send(pEpMessageDict: encMsg as? PEPMessageDict)
                 } else {
-                    send(pEpMessage: encMsg2 as? PEPMessageDict)
+                    send(pEpMessageDict: encMsg2 as? PEPMessageDict)
                 }
             } else {
-                send(pEpMessage: msg)
+                send(pEpMessageDict: msg)
             }
         } else {
             markAsFinished()

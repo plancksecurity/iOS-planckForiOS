@@ -28,35 +28,35 @@ extension CdMessage {
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
      */
-    public func update(pEpMessage: PEPMessageDict, pEpColorRating: PEP_rating? = nil) {
+    public func update(pEpMessageDict: PEPMessageDict, pEpColorRating: PEP_rating? = nil) {
         if let color = pEpColorRating {
             pEpRating = Int16(color.rawValue)
         }
 
         bodyFetched = true
 
-        shortMessage = pEpMessage[kPepShortMessage] as? String
-        longMessage = pEpMessage[kPepLongMessage] as? String
-        longMessageFormatted = pEpMessage[kPepLongMessageFormatted] as? String
+        shortMessage = pEpMessageDict[kPepShortMessage] as? String
+        longMessage = pEpMessageDict[kPepLongMessage] as? String
+        longMessageFormatted = pEpMessageDict[kPepLongMessageFormatted] as? String
 
-        if let testsent = pEpMessage[kPepSent] as? Date {
+        if let testsent = pEpMessageDict[kPepSent] as? Date {
             sent = testsent
         }
-        if let testrecived = pEpMessage[kPepReceived] as? Date {
+        if let testrecived = pEpMessageDict[kPepReceived] as? Date {
             received = testrecived
         }
 
-        uuid = pEpMessage[kPepID] as? String
+        uuid = pEpMessageDict[kPepID] as? String
 
         Log.info(component: #function, content: "before")
         let refsToConvert = MutableOrderedSet<String>()
-        if let refs = pEpMessage[kPepReferences] as? [String] {
+        if let refs = pEpMessageDict[kPepReferences] as? [String] {
             for item in refs {
                 refsToConvert.append(item)
             }
         }
 
-        if let refs2 = pEpMessage[kPepInReplyTo] as? [String] {
+        if let refs2 = pEpMessageDict[kPepInReplyTo] as? [String] {
             for item in refs2 {
                 refsToConvert.insert(item)
             }
@@ -67,7 +67,7 @@ extension CdMessage {
         Log.info(component: #function, content: "after deleting orphans")
 
         var attachments = [CdAttachment]()
-        if let attachmentDicts = pEpMessage[kPepAttachments] as? NSArray {
+        if let attachmentDicts = pEpMessageDict[kPepAttachments] as? NSArray {
             for atDict in attachmentDicts {
                 guard let at = atDict as? NSDictionary else {
                     continue
@@ -92,7 +92,7 @@ extension CdMessage {
         CdAttachment.deleteOrphans()
 
         var newOptFields = [CdHeaderField]()
-        if let optFields = pEpMessage[kPepOptFields] as? NSArray {
+        if let optFields = pEpMessageDict[kPepOptFields] as? NSArray {
             for item in optFields {
                 if let headerfield = item as? NSArray {
                     let cdHeaderField = CdHeaderField.create()
@@ -111,13 +111,13 @@ extension CdMessage {
         }
         CdHeaderField.deleteOrphans()
 
-        from = CdIdentity.from(pEpContact: pEpMessage[kPepFrom] as? PEPIdentity)
-        to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepTo] as? [PEPIdentity]))
-        cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessage[kPepCC] as? [PEPIdentity]))
+        from = CdIdentity.from(pEpContact: pEpMessageDict[kPepFrom] as? PEPIdentity)
+        to = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessageDict[kPepTo] as? [PEPIdentity]))
+        cc = NSOrderedSet(array: CdIdentity.from(pEpContacts: pEpMessageDict[kPepCC] as? [PEPIdentity]))
         bcc = NSOrderedSet(array: CdIdentity.from(
-            pEpContacts: pEpMessage[kPepBCC] as? [PEPIdentity]))
+            pEpContacts: pEpMessageDict[kPepBCC] as? [PEPIdentity]))
         replyTo = NSOrderedSet(array: CdIdentity.from(
-            pEpContacts: pEpMessage[kPepReplyTo] as? [PEPIdentity]))
+            pEpContacts: pEpMessageDict[kPepReplyTo] as? [PEPIdentity]))
     }
 
     public func updateKeyList(keys: [String]) {
@@ -131,7 +131,7 @@ extension CdMessage {
     }
 
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
-        return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
+        return PEPUtil.pEpDict(cdMessage: self, outgoing: outgoing)
     }
 
     public func isProbablyPGPMime() -> Bool {

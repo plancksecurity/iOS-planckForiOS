@@ -48,7 +48,7 @@ open class MySelfOperation: BaseOperation {
                     return
             }
             for id in cdIds {
-                ids.append(PEPUtil.pEp(cdIdentity: id))
+                ids.append(PEPUtil.pEpDict(cdIdentity: id))
             }
         }
 

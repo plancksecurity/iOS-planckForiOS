@@ -143,7 +143,7 @@ class DecryptionTests: XCTestCase {
             return
         }
 
-        let pantMail = CWIMAPMessage(pEpMessage: encryptedOrNotMailDict, mailboxName: inboxName)
+        let pantMail = CWIMAPMessage(pEpMessageDict: encryptedOrNotMailDict, mailboxName: inboxName)
         pantMail.setUID(5) // some UID is needed to trigger decrypt
 
         if pEpSenderIdentity.userName == nil {

@@ -65,7 +65,7 @@ class PEPSessionTest: XCTestCase {
 
         session.encryptMessageDict(pepmessage, extra: nil, dest: nil)
         session.decryptMessageDict(pepmessage, dest: nil, keys: nil)
-        cdmessage2.update(pEpMessage: pepmessage)
+        cdmessage2.update(pEpMessageDict: pepmessage)
         XCTAssertEqual(cdmessage2,cdmessage1)
 
         Log.verbose(component: "testPEPConversion", content: "test")
