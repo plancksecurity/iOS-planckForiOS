@@ -133,9 +133,9 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         mySelfer?.startMySelf()
-        /*if result != .ok {
+        if result != .ok {
             account.delete()
-        }*/
+        }
         delegate?.didVerify(result: result)
     }
 }
