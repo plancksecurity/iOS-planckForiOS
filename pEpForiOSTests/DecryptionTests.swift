@@ -196,7 +196,7 @@ class DecryptionTests: XCTestCase {
 
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
 
-        Record.Context.default.refreshAllObjects()
+        Record.Context.main.refreshAllObjects()
         if shouldEncrypt {
             XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEP_rating_reliable.rawValue)
             if useSubject {

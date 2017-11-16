@@ -67,7 +67,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
             return
         }
 
-        let context = Record.Context.default
+        let context = Record.Context.background
         context.perform() {
             self.process(context: context)
         }

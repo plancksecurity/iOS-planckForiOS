@@ -47,7 +47,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
             content: "\(selfInfo) \(canceled)")
 
         if !isCancelled {
-            let privateMOC = Record.Context.default
+            let privateMOC = Record.Context.background
             privateMOC.perform() { [weak self] in
                 if let theSelf = self {
                     if !theSelf.isCancelled {

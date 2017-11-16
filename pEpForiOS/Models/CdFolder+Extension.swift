@@ -24,14 +24,14 @@ public extension CdFolder {
     }
 
     public static func by(folderType: FolderType, account: CdAccount,
-                          context: NSManagedObjectContext = Record.Context.default) -> CdFolder? {
+                          context: NSManagedObjectContext? = nil) -> CdFolder? {
         return CdFolder.first(attributes: ["folderTypeRawValue": folderType.rawValue, "account": account],
                               in: context)
     }
 
     public static func by(
         name: String, account: CdAccount,
-        context: NSManagedObjectContext = Record.Context.default) -> CdFolder? {
+        context: NSManagedObjectContext? = nil) -> CdFolder? {
         if name.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
             return CdFolder.by(folderType: .inbox, account: account, context: context)
         }

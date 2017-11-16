@@ -56,17 +56,6 @@ extension CdMessage {
         return msg
     }
 
-    public static func createWithDefaults(
-        messageID: String, uid: Int, parent: CdFolder? = nil,
-        in context: NSManagedObjectContext = Record.Context.default) -> CdMessage {
-        let imap = CdImapFields.create(context: context)
-        var dict: [String: Any] = ["uuid": messageID, "uid": uid, "imap": imap]
-        if let pf = parent {
-            dict["parent"] = pf
-        }
-        return create(attributes: dict)
-    }
-
     static func existingMessagesPredicate() -> NSPredicate {
         let pBody = NSPredicate.init(format: "bodyFetched = true")
         let pNotDeleted = NSPredicate(format: "imap.localFlags.flagDeleted = false")
