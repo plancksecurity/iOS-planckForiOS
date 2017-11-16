@@ -427,7 +427,10 @@ class TestUtil {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sent = Date()
+            // Add some time difference recognised by Date().sort.
+            // That makes it easier to misuse thoses mails for manual debugging.
+            let sentTimeOffset = Double(i) - 1
+            message.sent = Date().addingTimeInterval(sentTimeOffset)
             message.addTo(cdIdentity: toWithKey)
 
             // add attachment to last and previous-to-last mail, if desired

@@ -211,6 +211,8 @@ class PersistentImapFolder: CWIMAPFolder {
             parentName: functionName(#function),
             folderID: folderID, uid: uid, msn: msn)
         backgroundQueue.addOperation(opMatch)
+        // We might have feched a message soley to update its MSN, we rely on it, so we have to wait
+        opMatch.waitUntilFinished()
     }
 }
 
