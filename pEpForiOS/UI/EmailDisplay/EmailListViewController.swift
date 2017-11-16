@@ -309,6 +309,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         lastSelectedIndexPath = indexPath
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+            return
+        }
+        vm.markRead(forIndexPath: indexPath)
     }
 
     // Implemented to get informed about the scrolling position.

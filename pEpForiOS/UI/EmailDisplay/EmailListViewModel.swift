@@ -183,6 +183,14 @@ class EmailListViewModel {
         setFlagged(forIndexPath: indexPath, newValue: false)
     }
     
+    func markRead(forIndexPath indexPath: IndexPath) {
+        guard let previewMessage = messages?.object(at: indexPath.row) else {
+            return
+        }
+        previewMessage.isSeen = true
+        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+    }
+    
     func delete(forIndexPath indexPath: IndexPath) {
         guard let previewMessage = messages?.object(at: indexPath.row),
             let message = previewMessage.message() else {
