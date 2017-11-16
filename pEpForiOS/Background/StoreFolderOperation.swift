@@ -38,7 +38,7 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
 
     override public func main() {
         Log.verbose(component: comp, content: "main \(folderInfo.name)")
-        let privateMOC = Record.Context.default
+        let privateMOC = Record.Context.background
         privateMOC.perform({
             self.process(context: privateMOC)
         })

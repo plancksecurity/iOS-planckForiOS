@@ -134,7 +134,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
 
         let changedMessages = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: folder, context: Record.Context.default)
+            folder: folder, context: Record.Context.main)
         XCTAssertEqual(changedMessages.count, allMessages.count)
 
         let expMailsSynced = expectation(description: "expMailsSynced")
@@ -160,7 +160,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         // that should not get overwritten by the server.
         // Hence, all messages are still the same.
         for (i, m) in allMessages.enumerated() {
-            m.refresh(mergeChanges: true, in: Record.Context.default)
+            m.refresh(mergeChanges: true, in: Record.Context.main)
             XCTAssertFalse(m.imap?.localFlags?.flagSeen == flagsSeenBefore[i])
         }
     }
@@ -425,7 +425,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             parentName: #function,
             smtpSendData: smtpSendData, errorContainer: errorContainer)
         XCTAssertNotNil(EncryptAndSendOperation.retrieveNextMessage(
-            context: Record.Context.default, cdAccount: cdAccount))
+            context: Record.Context.main, cdAccount: cdAccount))
         sendOp.addDependency(smtpLogin)
         sendOp.completionBlock = {
             sendOp.completionBlock = nil
@@ -746,7 +746,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(fixAttachmentsOp.hasErrors())
         })
         
-        Record.Context.default.refreshAllObjects()
+        Record.Context.main.refreshAllObjects()
         
         guard let allAttachments = CdAttachment.all() as? [CdAttachment] else {
             XCTFail()

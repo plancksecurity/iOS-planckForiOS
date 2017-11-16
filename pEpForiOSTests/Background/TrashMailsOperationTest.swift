@@ -91,7 +91,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
 
         let foldersWithTrashedMessages = AppendTrashMailsOperation.foldersWithTrashedMessages(
-            context: Record.Context.default)
+            context: Record.Context.main)
         XCTAssertEqual(foldersWithTrashedMessages.count, 2)
         if inboxFolder.name ?? "" < draftsFolder.name ?? "" {
             XCTAssertEqual(foldersWithTrashedMessages[safe: 0], inboxFolder)
@@ -135,7 +135,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             XCTAssertFalse(trashMailsOp2.hasErrors())
         })
 
-        Record.Context.default.refreshAllObjects()
+        Record.Context.main.refreshAllObjects()
         XCTAssertEqual(trashFolder.messages?.count ?? 0, 0)
 
         let expTrashFetched = expectation(description: "expTrashFetched")

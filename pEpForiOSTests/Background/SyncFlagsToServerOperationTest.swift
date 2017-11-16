@@ -98,7 +98,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         }
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -119,7 +119,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
@@ -169,7 +169,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -190,7 +190,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
@@ -242,7 +242,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -263,7 +263,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0, "all done")
         XCTAssertEqual(op.numberOfMessagesSynced, 0,
                        "no messages have been synced as all flag were already set before")
@@ -324,7 +324,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         // ...so all messages should need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
             folder: inbox,
-            context: Record.Context.default)
+            context: Record.Context.main)
 
         XCTAssertEqual(messagesToBeSynced.count, messages.count,
                        "all messages should need to be synced")
@@ -347,7 +347,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0, "all done")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
                        "flagDeleted changes, so all messages should be updated")
@@ -405,7 +405,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -426,7 +426,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -485,7 +485,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -506,7 +506,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -565,7 +565,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -586,7 +586,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -644,7 +644,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be added on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function,
@@ -667,7 +667,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -719,7 +719,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
 
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -740,7 +740,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         XCTAssertEqual(op.numberOfMessagesSynced, 0, "no message has been synced")
     }
@@ -795,7 +795,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // nothing changed, so no sync should take place
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -816,7 +816,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, 0,
@@ -873,7 +873,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function,
@@ -896,7 +896,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -953,7 +953,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -974,7 +974,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1031,7 +1031,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function,
@@ -1054,7 +1054,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1111,7 +1111,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
@@ -1132,7 +1132,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1189,7 +1189,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
         guard let op = SyncFlagsToServerOperation(parentName: #function,
@@ -1212,7 +1212,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
 
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0,
                        "no messages have to be synced after syncing")
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count,
@@ -1274,7 +1274,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
         // since a flag has be removed on all messages, all messages need to be synced
         var messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
         
         let numSyncOpsToTrigger = 5
@@ -1312,7 +1312,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         })
         
         messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(
-            folder: inbox, context: Record.Context.default)
+            folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
         
         var first = true
