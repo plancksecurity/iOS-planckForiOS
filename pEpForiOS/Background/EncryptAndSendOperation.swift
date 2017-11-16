@@ -74,7 +74,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                 m.sent = Date()
                 context.saveAndLogErrors()
             }
-            pepMessage = m.pEpMessage()
+            pepMessage = m.pEpMessageDict()
             protected = m.pEpProtected
             objID = m.objectID
         }

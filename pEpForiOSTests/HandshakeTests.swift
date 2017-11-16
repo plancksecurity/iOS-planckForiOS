@@ -59,7 +59,7 @@ class HandshakeTests: XCTestCase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessage()
+        let pEpMessage = cdMessage.pEpMessageDict()
 
         guard let optFields = pEpMessage[kPepOptFields] as? [[String]] else {
             XCTFail("expected optional_fields to be defined")

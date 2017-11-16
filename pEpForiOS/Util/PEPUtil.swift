@@ -141,7 +141,7 @@ open class PEPUtil {
             fileName: attachment.fileName, mimeType: attachment.mimeType, data: attachment.data)
     }
 
-    open static func pEp(message: Message, outgoing: Bool = true) -> PEPMessageDict {
+    open static func pEpDict(message: Message, outgoing: Bool = true) -> PEPMessageDict {
         var dict = PEPMessageDict()
 
         if let subject = message.shortMessage {
@@ -312,7 +312,7 @@ open class PEPUtil {
      Converts a given `Message` into the equivalent `CWIMAPMessage`.
      */
     open static func pantomime(message: Message) -> CWIMAPMessage {
-        return pantomime(pEpMessage: pEp(message: message))
+        return pantomime(pEpMessage: pEpDict(message: message))
     }
 
     open static func pantomime(pEpMessage: PEPMessageDict,

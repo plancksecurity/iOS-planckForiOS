@@ -61,7 +61,7 @@ class PEPSessionTest: XCTestCase {
         }
         let cdmessage1 = first
         let cdmessage2 = cdmessage1
-        let pepmessage = cdmessage1.pEpMessage()
+        let pepmessage = cdmessage1.pEpMessageDict()
 
         session.encryptMessageDict(pepmessage, extra: nil, dest: nil)
         session.decryptMessageDict(pepmessage, dest: nil, keys: nil)
@@ -161,7 +161,7 @@ class PEPSessionTest: XCTestCase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessage(outgoing: false)
+        let pEpMessage = cdMessage.pEpMessageDict(outgoing: false)
         let session = PEPSession()
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?

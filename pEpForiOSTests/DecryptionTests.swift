@@ -221,7 +221,7 @@ class DecryptionTests: XCTestCase {
 
         XCTAssertEqual(cdMsg.uuid, messageID)
 
-        let pepDict = cdMsg.pEpMessage()
+        let pepDict = cdMsg.pEpMessageDict()
         let optFields = pepDict[kPepOptFields] as? [[String]]
         if shouldEncrypt {
             XCTAssertNotNil(pepDict[kPepOptFields])

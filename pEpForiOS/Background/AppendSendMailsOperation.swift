@@ -27,7 +27,7 @@ public class AppendSendMailsOperation: AppendMailsOperationBase {
                 imapSyncData.connectInfo.accountObjectID)
             let msg = CdMessage.first(predicate: p, in: self.context)
             if let m = msg, let cdIdent = m.parent?.account?.identity {
-                result = (m.pEpMessage(), cdIdent.pEpIdentity(), m.objectID)
+                result = (m.pEpMessageDict(), cdIdent.pEpIdentity(), m.objectID)
             }
         }
         return result
