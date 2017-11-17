@@ -136,6 +136,7 @@
     {
       "idiom" : "ios-marketing",
       "size" : "1024x1024",
+      "filename" : "AppStore1024x1024.png",
       "scale" : "1x"
     },
     {
@@ -206,8 +207,9 @@
       "subtype" : "42mm"
     },
     {
-      "idiom" : "watch-marketing",
       "size" : "1024x1024",
+      "idiom" : "watch-marketing",
+      "filename" : "AppStore1024x1024.png",
       "scale" : "1x"
     },
     {
