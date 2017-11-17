@@ -275,39 +275,33 @@ extension EmailViewController: SegueHandlerType {
         case segueReplyAllForm
         case segueForward
         case segueHandshake
+        case segueCompose
         case noSegue
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .segueReplyFrom:
+        let theId = segueIdentifier(for: segue)
+        switch theId {
+        case .segueReplyFrom, .segueReplyAllForm, .segueForward, .segueCompose:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
-            destination.composeMode = .replyFrom
+
             destination.appConfig = appConfig
-            destination.originalMessage = message
-        case .segueReplyAllForm:
-            guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
-                    break
+
+            if theId == .segueReplyFrom {
+                destination.composeMode = .replyFrom
+                destination.originalMessage = message
+            } else if theId == .segueReplyAllForm {
+                destination.composeMode = .replyAll
+                destination.originalMessage = message
+            } else if theId == .segueForward {
+                destination.composeMode = .forward
+                destination.originalMessage = message
+            } else if theId == .segueCompose {
             }
-            destination.composeMode = .replyAll
-            destination.appConfig = appConfig
-            destination.originalMessage = message
-        case .segueForward:
-            guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
-                    break
-            }
-            destination.composeMode = .forward
-            destination.appConfig = appConfig
-            destination.originalMessage = message
-            break
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")

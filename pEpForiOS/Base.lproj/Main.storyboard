@@ -704,7 +704,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="eZb-1l-AhY"/>
                         <barButtonItem systemItem="compose" id="olT-gI-RWB">
                             <connections>
-                                <segue destination="NY2-HI-4ou" kind="presentation" id="70T-Gu-VTr"/>
+                                <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" id="70T-Gu-VTr"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
@@ -1036,6 +1036,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="QeL-n1-BY9"/>
-        <segue reference="xmi-xn-p8T"/>
+        <segue reference="70T-Gu-VTr"/>
     </inferredMetricsTieBreakers>
 </document>
