@@ -12,7 +12,8 @@ from subprocess import call
 
 base = '../'
 dirs = ['pEp_for_iOS', 'MessageModel', 'pEpObjCAdapter', 'pantomime-iOS',
-        'pEpEngine', 'netpgp-et', 'libAccountSettings', 'OpenSSL-for-iPhone']
+        'pEpEngine', 'netpgp-et', 'libAccountSettings', 'OpenSSL-for-iPhone',
+        'libetpan']
 
 if __name__ == '__main__':
     current_dir = os.getcwd()
