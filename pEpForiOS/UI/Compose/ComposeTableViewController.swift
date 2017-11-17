@@ -133,7 +133,11 @@ class ComposeTableViewController: BaseTableViewController {
                     }
                 }
             case .bcc:
-                //in case of Bcc we don't do anything
+                if composeMode == .replyAll {
+                    for ident in om.bcc {
+                        recipientCell.addIdentity(ident)
+                    }
+                }
                 break
             default:
                 break
