@@ -27,6 +27,8 @@
 		1572B9CB1F3474880048BCF5 /* AccountSettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */; };
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A763D01F72D68000670313 /* KeyChainTest.swift */; };
+		15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */; };
+		15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */; };
 		15B483D91F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */; };
 		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
 		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
@@ -415,6 +417,8 @@
 		1572B9CA1F3474880048BCF5 /* AccountSettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModelTest.swift; sourceTree = "<group>"; };
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		15A763D01F72D68000670313 /* KeyChainTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
+		15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
+		15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoPlist+pEpStrings.swift"; sourceTree = "<group>"; };
 		15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataDrivenTestBase.swift; sourceTree = "<group>"; };
 		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
 		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
@@ -1351,6 +1355,8 @@
 				B74940021ECB3BEB001A710B /* UILabel+Extension.swift */,
 				1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */,
 				4330278D1F7BABFF00D685F8 /* GradientView.swift */,
+				15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */,
+				15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1990,6 +1996,7 @@
 				43122B1A1DF5B48B00610253 /* ImapService.swift in Sources */,
 				222B35651DF96A9C007A1F82 /* ComposeCellProtocols.swift in Sources */,
 				43A6E04B1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift in Sources */,
+				15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */,
 				15C5F2461F823752007DE086 /* SortedSet.swift in Sources */,
 				43FC24211F04F3F400C32110 /* ImapSmtpSyncService.swift in Sources */,
 				431E2B071F02550C000035FA /* CheckOutgoingMessagesOperation.swift in Sources */,
@@ -2081,6 +2088,7 @@
 				B7365CDE1EAF45F30036ECC7 /* UITextField+Extension.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
+				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				43C579EB1F0A382400A8EDF0 /* FetchFoldersService.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,

@@ -23,9 +23,10 @@ class LogViewController: BaseViewController {
             GCD.onMain {
                 self.enableLogSwitch.isOn = enabled
                 if self.enableLogSwitch.isOn {
+                    let version = (InfoPlist.versionDisplayString() ?? "") + "\n"
                     Log.checklog() { logString in
                         GCD.onMain {
-                            self.logTextView.text = logString
+                            self.logTextView.text = version + logString
                         }
                     }
                 }
