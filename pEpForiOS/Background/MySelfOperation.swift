@@ -43,7 +43,7 @@ open class MySelfOperation: BaseOperation {
         context.performAndWait {
             let pOwnIdentity = CdIdentity.PredicateFactory.isMySelf()
             let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pOwnIdentity])
-            guard let cdIds = CdIdentity.all(predicate: p)
+            guard let cdIds = CdIdentity.all(predicate: p, in: context)
                 as? [CdIdentity] else {
                     return
             }
