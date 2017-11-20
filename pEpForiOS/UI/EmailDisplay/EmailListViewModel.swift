@@ -26,6 +26,8 @@ extension EmailListViewModel: FilterUpdateProtocol {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel {
+    let messageFolderDelegateHandlingQueue = DispatchQueue(label:
+        "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
     let messageSyncService: MessageSyncServiceProtocol
     class Row {
@@ -365,20 +367,21 @@ class EmailListViewModel {
 // MARK: - MessageFolderDelegate
 
 extension EmailListViewModel: MessageFolderDelegate {
+
     func didCreate(messageFolder: MessageFolder) {
-        GCD.onMain {
+        messageFolderDelegateHandlingQueue.async {
             self.didCreateInternal(messageFolder: messageFolder)
         }
     }
     
     func didUpdate(messageFolder: MessageFolder) {
-        GCD.onMain {
+        messageFolderDelegateHandlingQueue.async {
             self.didUpdateInternal(messageFolder: messageFolder)
         }
     }
     
     func didDelete(messageFolder: MessageFolder) {
-        GCD.onMain {
+        messageFolderDelegateHandlingQueue.async {
             self.didDeleteInternal(messageFolder: messageFolder)
         }
     }
@@ -406,7 +409,9 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
         let indexPath = IndexPath(row: index, section: 0)
-        delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)  
+        DispatchQueue.main.async {
+            self.delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)
+        }
     }
     
     private func didDeleteInternal(messageFolder: MessageFolder) {
@@ -431,7 +436,9 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
         pvMsgs.removeObject(at: indexExisting)
         let indexPath = IndexPath(row: indexExisting, section: 0)
-        delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+        DispatchQueue.main.async {
+            self.delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+        }
     }
     
     private func didUpdateInternal(messageFolder: MessageFolder) {
@@ -485,7 +492,9 @@ We might have to serialize access to messages due to possible concurrent access 
             )
         }
         let indexPath = IndexPath(row: indexInserted, section: 0)
-        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+        DispatchQueue.main.async {
+            self.delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+        }
     }
 
     private func isInFolderToShow(message: Message) -> Bool {
