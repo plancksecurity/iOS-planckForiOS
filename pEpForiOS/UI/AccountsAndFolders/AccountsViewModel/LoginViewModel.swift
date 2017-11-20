@@ -134,7 +134,9 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                   result: AccountVerificationResult) {
         mySelfer?.startMySelf()
         if result != .ok {
-            account.delete()
+            MessageModel.performAndWait {
+                account.delete()
+            }
         }
         delegate?.didVerify(result: result)
     }
