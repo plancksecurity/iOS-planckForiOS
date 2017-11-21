@@ -36,6 +36,8 @@ class BaseTableViewController: UITableViewController {
         appConfig.errorHandler.subscribe(view: self)
     }
 
+    // The soley reason for implementing this method is to make sure
+    // we did not forget to pass appConfig
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard _appConfig != nil else {
