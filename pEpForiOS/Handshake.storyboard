@@ -15,16 +15,16 @@
         <scene sceneID="IVD-QH-CTl">
             <objects>
                 <tableViewController id="Jbh-LP-Jl1" customClass="HandshakeViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="288" sectionHeaderHeight="28" sectionFooterHeight="28" id="oZy-Mt-k2w">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="307" sectionHeaderHeight="28" sectionFooterHeight="28" id="oZy-Mt-k2w">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="handshakePartnerCell" rowHeight="288" id="amH-Dy-6D1" customClass="HandshakePartnerTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="288"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="handshakePartnerCell" rowHeight="307" id="amH-Dy-6D1" customClass="HandshakePartnerTableViewCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="307"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="amH-Dy-6D1" id="sNy-KY-p78">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="288"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="307"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9sp-4d-rJe" userLabel="headerView">
@@ -100,7 +100,7 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9bw-BE-9Ag" userLabel="trustWordsView">
-                                            <rect key="frame" x="0.0" y="170.5" width="375" height="101.5"/>
+                                            <rect key="frame" x="0.0" y="171" width="375" height="126"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" ambiguous="YES" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="trustWordsLabel">
                                                     <rect key="frame" x="20" y="20" width="335" height="21"/>
@@ -108,16 +108,16 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="confirmButton">
-                                                    <rect key="frame" x="20" y="48.5" width="163.5" height="33"/>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="confirmButton">
+                                                    <rect key="frame" x="20" y="49" width="164" height="50"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Confirm Trustwords"/>
                                                     <connections>
                                                         <action selector="confirmAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="0Ra-lN-sx4"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="wrongButton">
-                                                    <rect key="frame" x="191.5" y="49" width="163.5" height="33"/>
+                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="wrongButton">
+                                                    <rect key="frame" x="192" y="49" width="164" height="50"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Wrong Trustwords"/>
                                                     <connections>
@@ -129,10 +129,10 @@
                                             <constraints>
                                                 <constraint firstItem="dbO-2K-SpB" firstAttribute="baseline" secondItem="Jgi-7k-Ymf" secondAttribute="baseline" id="24l-3q-C5q"/>
                                                 <constraint firstItem="Jgi-7k-Ymf" firstAttribute="leading" secondItem="9bw-BE-9Ag" secondAttribute="leading" constant="20" symbolic="YES" id="5PH-bJ-aXM"/>
-                                                <constraint firstAttribute="bottom" secondItem="Jgi-7k-Ymf" secondAttribute="bottom" priority="999" constant="20" symbolic="YES" id="6bv-z3-3DD"/>
+                                                <constraint firstAttribute="bottom" secondItem="Jgi-7k-Ymf" secondAttribute="bottom" priority="999" constant="27" id="6bv-z3-3DD"/>
                                                 <constraint firstItem="dbO-2K-SpB" firstAttribute="width" secondItem="Jgi-7k-Ymf" secondAttribute="width" id="FZ1-3b-Qs6"/>
                                                 <constraint firstItem="dbO-2K-SpB" firstAttribute="leading" secondItem="Jgi-7k-Ymf" secondAttribute="trailing" constant="8" symbolic="YES" id="MUn-fO-Eej"/>
-                                                <constraint firstAttribute="trailing" secondItem="dbO-2K-SpB" secondAttribute="trailing" constant="20" symbolic="YES" id="UHr-YV-k6p"/>
+                                                <constraint firstAttribute="trailing" secondItem="dbO-2K-SpB" secondAttribute="trailing" constant="19" id="UHr-YV-k6p"/>
                                                 <constraint firstItem="dbO-2K-SpB" firstAttribute="height" secondItem="Jgi-7k-Ymf" secondAttribute="height" id="WjJ-tF-o5y"/>
                                                 <constraint firstItem="Jgi-7k-Ymf" firstAttribute="top" secondItem="lHS-sc-yWR" secondAttribute="bottom" constant="8" symbolic="YES" id="eyh-Wl-hwH"/>
                                                 <constraint firstItem="lHS-sc-yWR" firstAttribute="leading" secondItem="9bw-BE-9Ag" secondAttribute="leading" constant="20" symbolic="YES" id="nEO-Om-YdP"/>

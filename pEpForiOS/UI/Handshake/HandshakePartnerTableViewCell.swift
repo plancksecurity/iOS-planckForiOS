@@ -311,10 +311,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                               comment: "Incorrect trustwords (pEp, long version)")
 
         let confirmShort =
-            NSLocalizedString("Confirm",
+            NSLocalizedString("Confirm Trustwords",
                               comment: "Confirm correct trustwords (PGP, pEp, short version)")
         let mistrustShort =
-            NSLocalizedString("Wrong",
+            NSLocalizedString("Wrong Trustwords",
                               comment: "Incorrect trustwords (PGP, pEp, short version)")
         let confirmPGPShort = confirmShort
         let mistrustPGPShort = mistrustShort

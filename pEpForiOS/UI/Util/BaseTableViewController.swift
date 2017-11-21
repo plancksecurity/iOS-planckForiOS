@@ -33,12 +33,15 @@ class BaseTableViewController: UITableViewController {
     }
 
     func didSetAppConfig() {
-        // do nothing. Meant to be overridden by subclasses that require this information
+        appConfig.errorHandler.subscribe(view: self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        appConfig.errorHandler.subscribe(view: self)
+        guard _appConfig != nil else {
+            Log.shared.errorAndCrash(component: #function, errorString: "AppConfig is nil in viewWillAppear")
+            return
+        }
     }
 }
 

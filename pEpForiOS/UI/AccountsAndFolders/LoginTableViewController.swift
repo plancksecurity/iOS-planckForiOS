@@ -63,6 +63,7 @@
     }
 
     override func didSetAppConfig() {
+        super.didSetAppConfig()
         loginViewModel.messageSyncService = appConfig.messageSyncService
     }
 
