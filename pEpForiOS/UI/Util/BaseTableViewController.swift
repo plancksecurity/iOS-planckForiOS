@@ -39,7 +39,8 @@ class BaseTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard _appConfig != nil else {
-            Log.shared.errorAndCrash(component: #function, errorString: "AppConfig is nil in viewWillAppear")
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "AppConfig is nil in viewWillAppear")
             return
         }
     }
