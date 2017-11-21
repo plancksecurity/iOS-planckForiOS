@@ -212,7 +212,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try Record.loadCoreDataStack(managedObjectModel: objectModel, storeURL: nil)
         } catch {
-            Log.error(component: comp, errorString: "Error while Loading DataStack")
+            Log.shared.errorAndCrash(component: comp, errorString: "Error while Loading DataStack")
         }
     }
 
