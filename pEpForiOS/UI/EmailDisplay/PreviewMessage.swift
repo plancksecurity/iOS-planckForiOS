@@ -19,8 +19,8 @@ class PreviewMessage: Equatable {
     let from: Identity
     let subject: String
     var bodyPeek: String
-    var isFlagged: Bool = false
-    var isSeen: Bool = false
+    var isFlagged = false
+    var isSeen = false
     let dateSent: Date
 
     var maxBodyPreviewCharacters = 120
@@ -105,12 +105,14 @@ class PreviewMessage: Equatable {
 
     static func ==(lhs: PreviewMessage, rhs: PreviewMessage) -> Bool {
         return lhs.uuid == rhs.uuid &&
-        lhs.parentFolderName == rhs.parentFolderName &&
-        lhs.address == rhs.address
+            lhs.uid == rhs.uid &&
+            lhs.parentFolderName == rhs.parentFolderName &&
+            lhs.address == rhs.address
     }
-
+    
     static func ==(lhs: PreviewMessage, rhs: Message) -> Bool {
         return lhs.uuid == rhs.uuid &&
+            lhs.uid == rhs.uid &&
             lhs.parentFolderName == rhs.parent.name &&
             lhs.address == rhs.parent.account.user.address
     }
