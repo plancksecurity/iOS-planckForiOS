@@ -53,9 +53,10 @@ public class FilterViewModel {
                 }
                 items.append(
                     FilterCellViewModel(image: icon, title: account.user.address,
-                                        enabled: filters.contains(Address: account.user.address),
+                                        enabled: filters.contains(Address: account.user.address)
+                                            ||
+                                            filters.isUnified(),
                                         filter: AccountFilter(address: account.user.address)))
-
             }
             break
         case .include:
