@@ -39,7 +39,7 @@ public extension String {
                 return name
             }
         } catch let err as NSError {
-            Log.error(component: "unquote", error: err)
+            Log.shared.errorAndCrash(component: "unquote", error: err)
         }
         return self
     }
@@ -62,7 +62,7 @@ public extension String {
             let matches = internalExpression.matches(in: self, options: [], range: wholeRange())
             return matches.count == 1
         } catch let err as NSError {
-            Log.error(component: "String", error: err)
+            Log.shared.errorAndCrash(component: "String", error: err)
             return false
         }
     }
@@ -101,7 +101,7 @@ public extension String {
                 }
             }
         } catch let err as NSError {
-            Log.error(component: String.comp, error: err)
+            Log.shared.errorAndCrash(component: String.comp, error: err)
         }
         return self.replacingOccurrences(of: "@", with: "_")
     }
@@ -200,7 +200,7 @@ public extension String {
             }
         }
         catch let err as NSError {
-            Log.error(component: String.comp, error: err)
+            Log.shared.errorAndCrash(component: String.comp, error: err)
         }
         return result
     }
@@ -225,7 +225,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
         } catch let err as NSError {
-            Log.error(component: String.comp, error: err)
+            Log.shared.errorAndCrash(component: String.comp, error: err)
         }
         return false
     }
@@ -256,7 +256,7 @@ public extension String {
                 }
             }
         } catch let err as NSError {
-            Log.error(component: String.comp, error: err)
+            Log.shared.errorAndCrash(component: String.comp, error: err)
         }
         return self
     }
@@ -279,7 +279,7 @@ public extension String {
                 }
             }
         } catch let err as NSError {
-            Log.error(component: String.comp, error: err)
+            Log.shared.errorAndCrash(component: String.comp, error: err)
         }
         return self
     }
@@ -323,7 +323,7 @@ public extension String {
             return regex.stringByReplacingMatches(
                 in: self, options: [], range: self.wholeRange(), withTemplate: delimiter)
         } catch let err as NSError {
-            Log.error(component: #function, error: err)
+            Log.shared.errorAndCrash(component: #function, error: err)
             return self
         }
     }
@@ -338,7 +338,7 @@ public extension String {
             return regex.stringByReplacingMatches(
                 in: self, options: [], range: self.wholeRange(), withTemplate: "\n\n")
         } catch let err as NSError {
-            Log.error(component: #function, error: err)
+            Log.shared.errorAndCrash(component: #function, error: err)
             return self
         }
     }
@@ -357,7 +357,7 @@ public extension String {
                 return (name, ext)
             }
         } catch let err as NSError {
-            Log.error(component: #function, error: err)
+            Log.shared.errorAndCrash(component: #function, error: err)
         }
         return (self, nil)
     }

@@ -20,7 +20,7 @@ extension String {
             }
             return nil
         } catch let err as NSError {
-            Log.error(component: #function, error: err)
+            Log.shared.errorAndCrash(component: #function, error: err)
             return nil
         }
     }

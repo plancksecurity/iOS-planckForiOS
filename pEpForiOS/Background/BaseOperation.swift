@@ -44,7 +44,7 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
                 }
             }
         } catch let error as NSError {
-            Log.error(component: comp, error: error)
+            Log.shared.errorAndCrash(component: comp, error: error)
         }
 
         comp = "\(comp) \(unsafeBitCast(self, to: UnsafeRawPointer.self)) [\(parentName)]"

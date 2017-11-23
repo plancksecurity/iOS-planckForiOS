@@ -22,7 +22,7 @@ open class ComposeTextView: UITextView {
             newLinePaddingRegEx = try NSRegularExpression(
                 pattern: ".*[^\n]+(\n){2,}$", options: [])
         } catch let err {
-            Log.shared.error(component: #function, error: err)
+            Log.shared.errorAndCrash(component: #function, error: err)
             newLinePaddingRegEx = nil
         }
         super.init(coder: aDecoder)
