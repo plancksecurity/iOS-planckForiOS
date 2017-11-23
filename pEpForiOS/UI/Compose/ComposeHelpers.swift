@@ -87,6 +87,11 @@ open class ComposeHelper {
             NSAttributedStringKey.font: UIFont.pEpInput
         ]
 
+        let options = [
+            NSStringDrawingOptions.truncatesLastVisibleLine,
+            NSStringDrawingOptions.usesLineFragmentOrigin
+        ]
+
         let textMargin: CGFloat = 4.0
         let textSize = text.size(withAttributes: attributes)
         var textFrame = CGRect(x: 0, y: 0, width: maxWidth, height: textSize.height)
@@ -107,7 +112,11 @@ open class ComposeHelper {
 
         UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
 
-        text.draw(in: textFrame, withAttributes: attributes)
+        text.draw(with: textFrame, options: [
+            NSStringDrawingOptions.truncatesLastVisibleLine,
+            NSStringDrawingOptions.usesLineFragmentOrigin
+            ], attributes: attributes, context: nil)
+        //text.draw(in: textFrame, withAttributes: attributes)
 
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
