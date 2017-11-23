@@ -689,12 +689,15 @@ extension ComposeTableViewController: CNContactPickerDelegate {
 // MARK: - UIImagePickerControllerDelegate
 
 extension ComposeTableViewController: UIImagePickerControllerDelegate {
-    public func imagePickerController(
-        _ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String: Any]) {
+    public func imagePickerController( _ picker: UIImagePickerController,
+                                       didFinishPickingMediaWithInfo info: [String: Any]) {
+        defer {
+            dismiss(animated: true, completion: nil)
+            tableView.updateSize()
+        }
         guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else {
             return
         }
-
         guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return
         }
@@ -710,9 +713,6 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
                 cell.insert(createAttachment(assetUrl: url, image: image))
             }
         }
-        
-        tableView.updateSize()
-        dismiss(animated: true, completion: nil)
     }
 }
 
