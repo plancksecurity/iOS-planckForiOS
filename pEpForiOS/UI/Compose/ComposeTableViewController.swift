@@ -342,6 +342,14 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
+    @objc // required for using it in #selector()
+    public final func addAttachment() {
+        let documentPicker = UIDocumentPickerViewController(
+            documentTypes: ["public.data"], in: .import)
+        documentPicker.delegate = self
+        present(documentPicker, animated: true, completion: nil)
+    }
+
     // MARK: - Table view data source
 
     override func tableView(
@@ -634,8 +642,11 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
             title: NSLocalizedString("Attach",
                                      comment: "Attach photo/video (message text context menu)"),
             action: #selector(addMediaToCell))
-
-        menuController.menuItems = [media]
+        let attachment = UIMenuItem(
+            title: NSLocalizedString("Insert Document",
+                                     comment: "Insert document in message text context menu"),
+            action: #selector(addAttachment))
+        menuController.menuItems = [media, attachment]
     }
 
     func didEndEditing(at indexPath: IndexPath) {
@@ -713,6 +724,18 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
                 cell.insert(createAttachment(assetUrl: url, image: image))
             }
         }
+    }
+}
+
+// MARK: - UIDocumentPickerDelegate
+
+extension ComposeTableViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
+        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else {
+            return
+        }
+        cell.add(createAttachment(assetUrl: url))
+        tableView.updateSize()
     }
 }
 
