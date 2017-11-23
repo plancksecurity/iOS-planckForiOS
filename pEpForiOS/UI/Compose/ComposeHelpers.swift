@@ -81,7 +81,7 @@ extension UIImage {
 // MARK: - Compose Helper Class
 
 open class ComposeHelper {
-    public static func recepient(_ text: String, textColor: UIColor = .black) -> UIImage {
+    public static func recepient(_ text: String, textColor: UIColor = .black, maxWidth: CGFloat = 0.0) -> UIImage {
         let attributes = [
             NSAttributedStringKey.foregroundColor: textColor,
             NSAttributedStringKey.font: UIFont.pEpInput
@@ -89,7 +89,7 @@ open class ComposeHelper {
 
         let textMargin: CGFloat = 4.0
         let textSize = text.size(withAttributes: attributes)
-        var textFrame = CGRect(x: 0, y: 0, width: textSize.width, height: textSize.height)
+        var textFrame = CGRect(x: 0, y: 0, width: maxWidth, height: textSize.height)
 
         let label = UILabel()
         label.text = "Hello"

@@ -205,7 +205,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Anc-8J-vDp" customClass="ComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="38" y="0.0" width="287" height="38"/>
+                                            <rect key="frame" x="38" y="0.0" width="327" height="38"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -213,28 +213,17 @@
                                                 <outlet property="delegate" destination="Epo-ru-S9d" id="Mlo-a9-pVX"/>
                                             </connections>
                                         </textView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vj4-L8-0TL">
-                                            <rect key="frame" x="343" y="15" width="22" height="22"/>
-                                            <state key="normal" image="button-add"/>
-                                            <connections>
-                                                <action selector="openAdressbook:" destination="Epo-ru-S9d" eventType="touchUpInside" id="Zsh-6N-zOs"/>
-                                            </connections>
-                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="lwf-Sw-cKo" firstAttribute="leading" secondItem="KqB-b6-IoI" secondAttribute="leading" constant="8" id="2HN-3E-FxZ"/>
                                         <constraint firstItem="Anc-8J-vDp" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" priority="1" constant="11" id="9Vj-75-oUR"/>
-                                        <constraint firstAttribute="trailing" secondItem="Vj4-L8-0TL" secondAttribute="trailing" constant="10" id="Ckl-3C-ClW"/>
                                         <constraint firstItem="Anc-8J-vDp" firstAttribute="leading" secondItem="lwf-Sw-cKo" secondAttribute="trailing" constant="7.5" id="DAd-Gp-wwF"/>
                                         <constraint firstItem="lwf-Sw-cKo" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" priority="1" constant="17" id="KT9-to-rrM"/>
-                                        <constraint firstItem="Vj4-L8-0TL" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" priority="1" constant="15" id="LF7-8i-5AK"/>
                                         <constraint firstAttribute="bottom" secondItem="Anc-8J-vDp" secondAttribute="bottom" constant="19.5" id="WUm-BF-ifd"/>
-                                        <constraint firstItem="Vj4-L8-0TL" firstAttribute="leading" secondItem="Anc-8J-vDp" secondAttribute="trailing" constant="18" id="geX-Fh-d0G"/>
-                                        <constraint firstAttribute="trailing" secondItem="Anc-8J-vDp" secondAttribute="trailing" constant="50" id="qAV-qc-JnG"/>
+                                        <constraint firstAttribute="trailing" secondItem="Anc-8J-vDp" secondAttribute="trailing" constant="10" id="qAV-qc-JnG"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="addButton" destination="Vj4-L8-0TL" id="zem-oa-2OY"/>
                                     <outlet property="textView" destination="Anc-8J-vDp" id="sI6-8y-0jR"/>
                                     <outlet property="titleLabel" destination="lwf-Sw-cKo" id="csc-XT-CoJ"/>
                                 </connections>
@@ -1025,7 +1014,6 @@
         <image name="arrow-lft-active" width="10" height="18"/>
         <image name="arrow-rgt-active" width="10" height="18"/>
         <image name="attachment-list-icon" width="14" height="15"/>
-        <image name="button-add" width="22" height="22"/>
         <image name="button-trustwords-icon" width="21" height="21"/>
         <image name="chevron-icon" width="8" height="13"/>
         <image name="contact-icon" width="46" height="46"/>

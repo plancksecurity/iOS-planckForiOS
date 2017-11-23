@@ -46,11 +46,11 @@ open class ComposeTextView: UITextView {
         contentOffset = .zero
     }
         
-    public final func insertImage(_ identity: Identity, _ hasName: Bool = false) {
+    public final func insertImage(_ identity: Identity, _ hasName: Bool = false, maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         
         let string = identity.userName ?? identity.address.trim
-        let img = ComposeHelper.recepient(string, textColor: .black)
+        let img = ComposeHelper.recepient(string, textColor: .black, maxWidth: maxWidth-20.0)
         let at = TextAttachment()
         at.image = img
         at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)

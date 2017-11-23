@@ -21,13 +21,13 @@ class RecipientCell: ComposeCell {
     
     override open func awakeFromNib() {
         selectionStyle = .none
-        addButton.isHidden = true
+
     }
     
     public func addIdentity(_ identity: Identity) {
         identities.append(identity)
-        
-        textView.insertImage(identity, true)
+        let width = self.textView.bounds.width
+        textView.insertImage(identity, true, maxWidth: width)
         textView.removePlainText()
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
@@ -56,8 +56,7 @@ class RecipientCell: ComposeCell {
 extension RecipientCell {
     public override func textViewDidBeginEditing(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
-        
-        addButton.isHidden = false
+
         delegate?.textdidStartEditing(at: index, textView: cTextview)
     }
     
@@ -118,14 +117,13 @@ extension RecipientCell {
         if string.utf8.count >= 3 && string.isEmailAddress {
             let identity = Identity.create(address: string.trimmedWhiteSpace())
             identities.append(identity)
-
-            cTextview.insertImage(identity)
+            let width = self.textView.bounds.width
+            cTextview.insertImage(identity, maxWidth: width)
             cTextview.removePlainText()
         }
         let text = cTextview.attributedText.string.cleanAttachments
         delegate?.messageCanBeSend(value: (identities.count > 0 && text.isEmpty))
 
-        addButton.isHidden = cTextview.text.isEmpty
 
         delegate?.textDidEndEditing(at: index, textView: cTextview)
         if let fm = super.fieldModel {
