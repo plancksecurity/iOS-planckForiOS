@@ -94,7 +94,11 @@ open class ComposeHelper {
 
         let textMargin: CGFloat = 4.0
         let textSize = text.size(withAttributes: attributes)
-        var textFrame = CGRect(x: 0, y: 0, width: maxWidth, height: textSize.height)
+        var width = textSize.width
+        if width > maxWidth {
+            width = maxWidth
+        }
+        var textFrame = CGRect(x: 0, y: 0, width: width, height: textSize.height)
 
         let label = UILabel()
         label.text = "Hello"
