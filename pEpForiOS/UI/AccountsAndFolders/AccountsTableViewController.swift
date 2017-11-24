@@ -136,9 +136,9 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     // MARK: - Actions
 
-    /*@IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
-    }*/
+    }
     
     @IBAction func newAccountCreatedSegue(_ segue: UIStoryboardSegue) {
     }
