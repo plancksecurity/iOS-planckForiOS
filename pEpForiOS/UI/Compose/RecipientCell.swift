@@ -108,6 +108,12 @@ extension RecipientCell {
         }
         
         hasSelection = false
+
+        let last = textView.text.last
+        if "\n" == last {
+            return false
+        }
+
         return true
     }
 
