@@ -15,8 +15,6 @@ public class TextAttachment: NSTextAttachment {
 }
 
 class MessageBodyCell: ComposeCell {
-    public var nonInlinedAttachments = [Attachment]()
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -69,8 +67,8 @@ extension MessageBodyCell {
     }
     
     public final func add(_ attachment: Attachment) {
-        //BUFF: create new cell for attachments
-        nonInlinedAttachments.append(attachment)
+        guard let delegate = delegate as? MessageBodyCellDelegate else { return }
+        delegate.messageBodyCell(bodyCell: self, didAddNonInlinedAttachment: attachment)
     }
 
     public final func allInlinedAttachments() -> [Attachment] {

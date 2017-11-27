@@ -29,7 +29,6 @@
 		1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F41FC82A4900D52A5D /* URL+MIME.swift */; };
 		1541D7FA1FCC18E100D52A5D /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */; };
 		1541D7FC1FCC199B00D52A5D /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */; };
-		1541D7FE1FCC1A6B00D52A5D /* AttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7FD1FCC1A6B00D52A5D /* AttachmentView.swift */; };
 		1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */; };
 		1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */; };
 		1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */; };
@@ -426,7 +425,6 @@
 		1541D7F41FC82A4900D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
 		1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
 		1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
-		1541D7FD1FCC1A6B00D52A5D /* AttachmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentView.swift; sourceTree = "<group>"; };
 		1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesOperation.swift; sourceTree = "<group>"; };
 		1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesService.swift; sourceTree = "<group>"; };
 		1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
@@ -815,6 +813,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		156BEDED1FCC563B006C1492 /* AttachmentCell */ = {
+			isa = PBXGroup;
+			children = (
+				1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */,
+				1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */,
+			);
+			name = AttachmentCell;
+			sourceTree = "<group>";
+		};
 		1572B9BA1F3376EE0048BCF5 /* Error */ = {
 			isa = PBXGroup;
 			children = (
@@ -876,15 +883,13 @@
 		222B35701DF96C7F007A1F82 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				156BEDED1FCC563B006C1492 /* AttachmentCell */,
 				222B35641DF96A9C007A1F82 /* ComposeCellProtocols.swift */,
 				222B356C1DF96C30007A1F82 /* ComposeCell.swift */,
 				431AE5D81D2EC99B00F609D3 /* MessageBodyCell.swift */,
 				431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */,
 				222B35BB1E00049C007A1F82 /* AccountCell.swift */,
 				4340F5F81D363BE6006A5C82 /* ContactCell.swift */,
-				1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */,
-				1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */,
-				1541D7FD1FCC1A6B00D52A5D /* AttachmentView.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -2123,7 +2128,6 @@
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 				4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */,
-				1541D7FE1FCC1A6B00D52A5D /* AttachmentView.swift in Sources */,
 				433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */,
 				4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */,
 				B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */,

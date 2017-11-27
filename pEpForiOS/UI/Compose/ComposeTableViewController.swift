@@ -11,6 +11,7 @@ import Contacts
 import ContactsUI
 import MobileCoreServices
 import MessageModel
+import SwipeCellKit
 
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
@@ -29,8 +30,13 @@ class ComposeTableViewController: BaseTableViewController {
     private let menuController = UIMenuController.shared
 
     private var suggestTableView: SuggestTableView!
+    private let composeSection = 0
+    private let attachmentSection = 1
+    lazy private var attachmentFileIOQueue = DispatchQueue(label: "net.pep-security.ComposeTableViewController.attachmentFileIOQueue",
+                                                      qos: .userInitiated)
     private var tableDict: NSDictionary?
-    private var tableData: ComposeDataSource? = nil
+    private var composeData: ComposeDataSource? = nil
+    private var nonInlinedAttachmentData = ComposeDataSource.AttachmentDataSource()
     private var currentCell: IndexPath!
     private var allCells = MutableOrderedSet<ComposeCell>()
     private var ccEnabled = false
@@ -64,6 +70,7 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        registerXibs()
         addContactSuggestTable()
         prepareFields()
         prepareColor()
@@ -71,7 +78,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableData?.filterRows(message: nil)
+        composeData?.filterRows(message: nil)
         setEmailDisplayDefaultNavigationBarStyle()
     }
 
@@ -158,6 +165,7 @@ class ComposeTableViewController: BaseTableViewController {
             if let attachment = mtao.attachment {
                 messageBodyCell.add(attachment)
             }
+            //BUFF: deal with forwarded attachments
         }
     }
 
@@ -176,7 +184,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         if let dict = tableDict as? [String: Any], let dictRows = dict["Rows"] as? [[String: Any]]{
-            tableData = ComposeDataSource(with: dictRows)
+            composeData = ComposeDataSource(with: dictRows)
         }
     }
 
@@ -198,9 +206,13 @@ class ComposeTableViewController: BaseTableViewController {
     ///   - assetUrl: URL of the asset
     ///   - image: image to create attachment for
     /// - Returns: attachment for given image
-    fileprivate final func createAttachment(forAssetWithUrl assetUrl: URL, image: UIImage) -> Attachment {
+    fileprivate final func createAttachment(forAssetWithUrl assetUrl: URL,
+                                            image: UIImage) -> Attachment {
         let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-        return Attachment.createFromAsset(mimeType: mimeType, assetUrl: assetUrl, image: image)
+        let attachment = Attachment.createFromAsset(mimeType: mimeType,
+                                                    assetUrl: assetUrl,
+                                                    image: image)
+        return attachment
     }
 
     /// Used to create an Attachment from files that are not a security scoped resource.
@@ -209,17 +221,23 @@ class ComposeTableViewController: BaseTableViewController {
     /// - Parameters:
     ///   - resourceUrl: URL of the resource to create an attachment for
     /// - Returns: attachment for given resource
-    fileprivate final func createAttachment(forResource resourceUrl: URL) -> Attachment? {
-        //BUFF: get data. Maybe add completion handler.
-        guard let resourceData = try? Data(contentsOf: resourceUrl) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Cound not get data for URL")
-            return nil
-        }
+    fileprivate final func createAttachment(forResource resourceUrl: URL,
+                                            completion: @escaping (Attachment?) -> Void) {
+        attachmentFileIOQueue.async {
+            guard let resourceData = try? Data(contentsOf: resourceUrl) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Cound not get data for URL")
+                completion(nil)
+                return
+            }
 
-        let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-        let filename = resourceUrl.fileName(includingExtension: true)
-        return Attachment.create(data: resourceData, mimeType: mimeType, fileName: filename)
+            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+            let filename = resourceUrl.fileName(includingExtension: true)
+            let attachment =  Attachment.create(data: resourceData,
+                                                mimeType: mimeType,
+                                                fileName: filename)
+            completion(attachment)
+        }
     }
 
     /// Used to create an Attachment from security scoped resources.
@@ -228,21 +246,25 @@ class ComposeTableViewController: BaseTableViewController {
     /// - Parameters:
     ///   - resourceUrl: URL of the resource to create an attachment for
     /// - Returns: attachment for given resource
-    fileprivate final func createAttachment(forSecurityScopedResource resourceUrl: URL) -> Attachment? {
-        //BUFF:Maybe add completion handler and show spinner
+    fileprivate final func createAttachment(forSecurityScopedResource resourceUrl: URL,
+                                            completion: @escaping (Attachment?) -> Void) {
         let cfUrl = resourceUrl as CFURL
-        CFURLStartAccessingSecurityScopedResource(cfUrl)
-        defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
-        guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data for URL.")
-            return nil
+
+        attachmentFileIOQueue.async {
+            CFURLStartAccessingSecurityScopedResource(cfUrl)
+            defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
+            guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No data for URL.")
+                completion(nil)
+                return
+            }
+            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+            let filename = resourceUrl.fileName(includingExtension: true)
+            let attachment = Attachment.create(data: resourceData,
+                                               mimeType: mimeType,
+                                               fileName: filename)
+            completion(attachment)
         }
-        let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-        let filename = resourceUrl.fileName(includingExtension: true)
-        let attachment = Attachment.create(data: resourceData,
-                                           mimeType: mimeType,
-                                           fileName: filename)
-       return attachment
     }
 
     fileprivate final func addContactSuggestTable() {
@@ -304,7 +326,7 @@ class ComposeTableViewController: BaseTableViewController {
             } else if let bodyCell = cell as? MessageBodyCell {
                 let inlinedAttachments = bodyCell.allInlinedAttachments()
                 // add non-inlined attachments to our message ...
-                message.attachments = bodyCell.nonInlinedAttachments
+                message.attachments = nonInlinedAttachmentData.attachments()
                 
                 if inlinedAttachments.count > 0 {
                     // ... and also inlined ones, parsed from the text.
@@ -404,10 +426,10 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func tableView(
         _ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView.isEqual(suggestTableView) {
+        if tableView.isEqual(suggestTableView) || indexPath.section == attachmentSection {
             return UITableViewAutomaticDimension
         }
-        guard let row = tableData?.getRow(at: indexPath.row) else {
+        guard let row = composeData?.getRow(at: indexPath.row) else {
             return UITableViewAutomaticDimension
         }
         return row.height
@@ -418,7 +440,10 @@ class ComposeTableViewController: BaseTableViewController {
         if tableView.isEqual(suggestTableView) {
             return UITableViewAutomaticDimension
         }
-        guard let row = tableData?.getRow(at: indexPath.row) else {
+        if indexPath.section == attachmentSection  {
+            return AttachmentCell.preferredHigh
+        }
+        guard let row = composeData?.getRow(at: indexPath.row) else {
             return UITableViewAutomaticDimension
         }
         guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else {
@@ -454,43 +479,91 @@ class ComposeTableViewController: BaseTableViewController {
         if tableView.isEqual(suggestTableView) {
             return suggestTableView.numberOfRows(inSection: section)
         }
-        return tableData?.numberOfRows() ?? 0
+        switch section {
+        case 0:
+            return composeData?.numberOfRows() ?? 0
+        case 1:
+            return nonInlinedAttachmentData.count()
+        default:
+            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled section")
+            return 0
+        }
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        let composeCells = 1
+        let attachmentCells = 1
+        return composeCells + attachmentCells
     }
 
     override func tableView(
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let row = tableData?.getRow(at: indexPath.row) else { return UITableViewCell() }
 
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: row.identifier, for: indexPath) as! ComposeCell
-        cell.updateCell(row, indexPath)
-        cell.delegate = self
-
-        if !allCells.contains(cell) {
-            allCells.append(cell)
-            if let rc = cell as? RecipientCell {
-                updateInitialContent(recipientCell: rc)
-            } else if let mc = cell as? MessageBodyCell {
-                updateInitialContent(messageBodyCell: mc)
-            } else if let fm = cell.fieldModel, fm.type == .subject {
-                updateInitialContent(composeCell: cell)
-            } else if let ac = cell as? AccountCell {
-                setupAccountCell(cell: ac)
+        let returnee: UITableViewCell
+        if indexPath.section == composeSection {
+            guard
+                let row = composeData?.getRow(at: indexPath.row),
+                let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
+                                                         for: indexPath) as? ComposeCell
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell")
+                    return UITableViewCell()
             }
+            returnee = cell
+            cell.updateCell(row, indexPath)
+            cell.delegate = self
+
+            if !allCells.contains(cell) {
+                allCells.append(cell)
+                if let rc = cell as? RecipientCell {
+                    updateInitialContent(recipientCell: rc)
+                } else if let mc = cell as? MessageBodyCell {
+                    updateInitialContent(messageBodyCell: mc)
+                } else if let fm = cell.fieldModel, fm.type == .subject {
+                    updateInitialContent(composeCell: cell)
+                } else if let ac = cell as? AccountCell {
+                    setup(accountCell: ac)
+                }
+            }
+        } else if indexPath.section == attachmentSection {
+            guard
+                let cell = tableView.dequeueReusableCell(
+                withIdentifier: AttachmentCell.storyboardID) as? AttachmentCell
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell")
+                    return UITableViewCell()
+            }
+            setup(attachmentCell: cell, forCellAtAttachmentRow: indexPath.row)
+            returnee = cell
+        } else {
+            returnee = UITableViewCell()
         }
 
         if isRepresentingLastRow(indexpath: indexPath) {
+            // Calculate color only once.
             calculateComposeColor()
         }
 
-        return cell
+        return returnee
     }
 
     private func isRepresentingLastRow(indexpath: IndexPath) -> Bool {
-        guard let numRows = tableData?.numberOfRows() else {
+        guard let numComposeRows = composeData?.numberOfRows() else {
             return false
         }
-        return indexpath.row == max(0, numRows - 1)
+        let numAttachmentRows = nonInlinedAttachmentData.count()
+        switch indexpath.section {
+        case 0:
+            if numAttachmentRows > 0 {
+                return false
+            }
+            return indexpath.row == max(0, numComposeRows - 1)
+        case 1:
+            return indexpath.row == max(0, numAttachmentRows - 1)
+        default:
+            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled section")
+            return false
+        }
     }
 
     // MARK: - TableViewDelegate
@@ -516,7 +589,47 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    private func setupAccountCell(cell: AccountCell) {
+    // MARK: - SwipeTableViewCell
+
+    private func deleteAction(forCellAt indexPath: IndexPath) {
+        guard indexPath.section == attachmentSection else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "only attachments have delete actions")
+            return
+        }
+        nonInlinedAttachmentData.remove(at: indexPath.row)
+        tableView.beginUpdates()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+    }
+
+    private func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+        action.title = NSLocalizedString("Remove", comment:
+            """
+ComposeTableView: Label of swipe left. Removing of attachment.
+"""
+        )
+        action.backgroundColor = descriptor.color
+    }
+
+    // MARK: - other
+
+    private func registerXibs() {
+        let nib = UINib(nibName: AttachmentCell.storyboardID, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: AttachmentCell.storyboardID)
+    }
+
+    private func setup(attachmentCell cell: AttachmentCell, forCellAtAttachmentRow row: Int) {
+        guard let rowData = nonInlinedAttachmentData[row] else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            return
+        }
+        cell.delegate = self
+        cell.fileName.text = rowData.fileName
+        cell.fileExtension.text = rowData.fileExtesion
+    }
+
+    private func setup(accountCell cell: AccountCell) {
         let accounts = Account.all()
         origin = origin ?? accounts.first?.user
         cell.textView.text = origin?.address
@@ -634,7 +747,10 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textdidChange(at indexPath: IndexPath, textView: ComposeTextView) {
-        let fModel = tableData?.getVisibleRows().filter{ $0.type == textView.fieldModel?.type }
+        guard indexPath.section == composeSection else {
+            return
+        }
+        let fModel = composeData?.getVisibleRows().filter{ $0.type == textView.fieldModel?.type }
         fModel?.first?.value = textView.attributedText
         let suggestContacts = fModel?.first?.contactSuggestion ?? false
 
@@ -702,6 +818,14 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
     func didEndEditing(at indexPath: IndexPath) {
         menuController.menuItems?.removeAll()
     }
+
+    func messageBodyCell(bodyCell: MessageBodyCell, didAddNonInlinedAttachment attachment: Attachment) {
+        let indexInserted = nonInlinedAttachmentData.add(attachment: attachment)
+        let indexPath = IndexPath(row: indexInserted, section: attachmentSection)
+        tableView.beginUpdates()
+        tableView.insertRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+    }
 }
 
 // MARK: - CNContactPickerViewController Delegate
@@ -765,20 +889,28 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
                 Log.shared.errorAndCrash(component: #function, errorString: "No URL for image?")
                 return
             }
-            cell.inline(attachment: createAttachment(forAssetWithUrl: url, image: image))
+
+            let attachment = createAttachment(forAssetWithUrl: url, image: image)
+            cell.inline(attachment: attachment)
+            self.tableView.updateSize()
+
         } else {
             // We got something from picker that is not an image. Probalby video/movie.
-            guard
-                let url = info[UIImagePickerControllerMediaURL] as? URL,
-                let attachment = createAttachment(forResource: url)
-                else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Please check.")
-                    return
+            guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Please check.")
+                return
             }
-            cell.addMovie(attachment: attachment)
-
+            createAttachment(forResource: url) { (attachment: Attachment?) in
+                guard let safeAttachment = attachment else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No attachment")
+                    return
+                }
+                GCD.onMain {
+                    cell.addMovie(attachment: safeAttachment)
+                    self.tableView.updateSize()
+                }
+            }
         }
-        tableView.updateSize()
     }
 }
 
@@ -791,14 +923,19 @@ extension ComposeTableViewController: UIDocumentPickerDelegate {
         }
         
         for url in urls {
-            guard let attachment = createAttachment(forSecurityScopedResource: url) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Error creating attachment")
-                return
+            createAttachment(forSecurityScopedResource: url) { (attachment: Attachment?) in
+
+                guard let safeAttachment = attachment else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "No attachment")
+                    return
+                }
+                GCD.onMain {
+                    cell.add(safeAttachment)
+                    self.tableView.updateSize()
+                }
             }
-            cell.add(attachment)
         }
-        tableView.updateSize()
     }
 }
 
@@ -806,6 +943,8 @@ extension ComposeTableViewController: UIDocumentPickerDelegate {
 
 extension ComposeTableViewController: UINavigationControllerDelegate {
 }
+
+// MARK: - SegueHandlerType
 
 extension ComposeTableViewController: SegueHandlerType {
 
@@ -830,5 +969,21 @@ extension ComposeTableViewController: SegueHandlerType {
 
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
         // nothing to do.
+    }
+}
+
+// MARK: - SwipeTableViewCellDelegate
+
+extension ComposeTableViewController: SwipeTableViewCellDelegate {
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard indexPath.section == attachmentSection else {
+            return nil
+        }
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            self.deleteAction(forCellAt: indexPath)
+        }
+        configure(action: deleteAction, with: .trash)
+        return (orientation == .right ?   [deleteAction] : nil)
     }
 }

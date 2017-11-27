@@ -6,19 +6,19 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
+import SwipeCellKit
 
-class AttachmentCell: UITableViewCell {
+class AttachmentCell: SwipeTableViewCell {
+    static let storyboardID = "AttachmentCell"
+    static let preferredHigh: CGFloat = 114.0
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+    @IBOutlet weak var fileName: UILabel!
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
+    @IBOutlet weak var fileExtension: UILabel!
 
-        // Configure the view for the selected state
+    override func prepareForReuse() {
+        fileName.text = ""
+        fileExtension.text = ""
     }
 
 }

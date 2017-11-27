@@ -28,7 +28,9 @@ public protocol RecipientCellDelegate: ComposeCellDelegate {
     func shouldOpenAddressbook(at indexPath: IndexPath)
 }
 
-public protocol MessageBodyCellDelegate: ComposeCellDelegate {
+protocol MessageBodyCellDelegate: ComposeCellDelegate {
     func didStartEditing(at indexPath: IndexPath)
     func didEndEditing(at indexPath: IndexPath)
+    func messageBodyCell(bodyCell: MessageBodyCell,
+                         didAddNonInlinedAttachment attachment: Attachment)
 }

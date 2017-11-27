@@ -50,4 +50,50 @@ class ComposeDataSource: NSObject {
         let visibleRows = getVisibleRows()
         return visibleRows[index]
     }
+
+    // MARK: - AttachmentDataSource
+
+    struct AttachmentDataSource {
+        struct Row {
+            let fileName: String?
+            let fileExtesion: String?
+        }
+        private var nonInlinedAttachments = [Attachment]()
+        let mimeTypeUtil = MimeTypeUtil()
+
+        func attachments() -> [Attachment] {
+            return nonInlinedAttachments
+        }
+
+        func count() -> Int {
+            return nonInlinedAttachments.count
+        }
+
+        subscript(index: Int) -> Row? {
+            if index < 0 || index > (nonInlinedAttachments.count - 1) {
+                Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
+                return nil
+            }
+            let attachment = nonInlinedAttachments[index]
+            return Row(fileName: attachment.fileName,
+                       fileExtesion: mimeTypeUtil?.fileExtension(mimeType: attachment.mimeType) ?? "")
+        }
+
+        /// Adds an attachment to the data source and returns the index it has been inserted in.
+        ///
+        /// - Parameter attachment: attachment to add
+        /// - Returns: index the attachment has been inserted in
+        mutating func add(attachment: Attachment) -> Int {
+            nonInlinedAttachments.append(attachment)
+            return nonInlinedAttachments.count - 1
+        }
+
+        mutating func remove(at index: Int) {
+            if index < 0 || index > (nonInlinedAttachments.count - 1) {
+                Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
+                return
+            }
+            nonInlinedAttachments.remove(at: index)
+        }
+    }
 }
