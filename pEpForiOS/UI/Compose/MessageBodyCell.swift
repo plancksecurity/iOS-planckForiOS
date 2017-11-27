@@ -15,8 +15,7 @@ public class TextAttachment: NSTextAttachment {
 }
 
 class MessageBodyCell: ComposeCell {
-    public var photos = [Attachment]()
-    public var attachments = [Attachment]()
+    public var nonInlinedAttachments = [Attachment]()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,9 +39,7 @@ class MessageBodyCell: ComposeCell {
 }
 
 extension MessageBodyCell {
-    public final func insert(_ attachment: Attachment) {
-        photos.append(attachment)
-        
+    public final func inline(attachment: Attachment) {
         let textAttachment = TextAttachment()
         textAttachment.image = attachment.image
         textAttachment.attachment = attachment
@@ -64,37 +61,19 @@ extension MessageBodyCell {
         return CGRect(x: 0, y: 0, width: fixedWidth, height: newHeight)
     }
     
-    public final func addMovie(_ attachment: Attachment) {
-        let amount = attachments.count
-        let validAttachment = attachment
-        
-        if amount > 0 {
-            let nameurl = URL(fileURLWithPath: attachment.fileName)
-            let fileext = nameurl.pathExtension
-            let name = nameurl.deletingPathExtension().lastPathComponent
-            validAttachment.fileName = "\(name)_\(String(amount)).\(fileext)"
-        }
-        add(validAttachment)
+    public final func addMovie(attachment: Attachment) {
+        // We currently handle videos like any other attachment that is not an image.
+        // Maybe we want to be able to play videos inlined later.
+        // Not sure if that makes sense when composing the mail though.
+        add(attachment)
     }
     
     public final func add(_ attachment: Attachment) {
-        attachments.append(attachment)
-        
-        let selectedRange = textView.selectedRange
-        let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
-        let template = UIImage(named: "attachment-icon")!
-        let icon = template.attachment(attachment.fileName)
-        let at = TextAttachment()
-        at.image = icon
-        at.attachment = attachment
-        at.bounds = CGRect(x: 0, y: 0, width: icon.size.width, height: icon.size.height)
-        
-        let attachString = NSAttributedString(attachment: at)
-        attrText.replaceCharacters(in: selectedRange, with: attachString)
-        textView.attributedText = attrText
+        //BUFF: create new cell for attachments
+        nonInlinedAttachments.append(attachment)
     }
-    
-    public final func allAttachments() -> [Attachment] {
+
+    public final func allInlinedAttachments() -> [Attachment] {
         let attachments = textView.textAttachments()
         var mailAttachments = [Attachment]()
         attachments.forEach { (attachment) in
@@ -103,5 +82,9 @@ extension MessageBodyCell {
             }
         }
         return mailAttachments
+    }
+
+    public func hasInlinedAttatchments() -> Bool {
+        return allInlinedAttachments().count > 0
     }
 }

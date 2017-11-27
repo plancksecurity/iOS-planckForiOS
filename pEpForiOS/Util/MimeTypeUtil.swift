@@ -33,7 +33,7 @@ open class MimeTypeUtil {
                     mimeTypeToExtension[mimeType.lowercased()] = theExtension
                     extensionToMimeType[theExtension.lowercased()] = mimeType
                 }
-                // manual fixes
+                // "image/jpeg" is missing in ourt data. Fix it.
                 mimeTypeToExtension[MimeTypeUtil.jpegMimeType] = "jpg"
             }
         } catch let error as NSError {

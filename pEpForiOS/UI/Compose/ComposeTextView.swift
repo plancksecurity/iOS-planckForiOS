@@ -63,7 +63,7 @@ open class ComposeTextView: UITextView {
         )
         attributedText = attrText
     }
-    
+
     public final func textAttachments(range: NSRange? = nil) -> [TextAttachment] {
         let theRange = range ?? NSMakeRange(0, attributedText.length)
         var allAttachments = [TextAttachment]()
@@ -77,12 +77,12 @@ open class ComposeTextView: UITextView {
                     }
             }
         }
-        
+
         return allAttachments
     }
-    
+
     public final func textAttachments(string: String) -> [TextAttachment] {
-        return textAttachments(range: NSMakeRange(0, string.characters.count))
+        return textAttachments(range: NSMakeRange(0, string.count))
     }
     
     public final func removePlainText() {
