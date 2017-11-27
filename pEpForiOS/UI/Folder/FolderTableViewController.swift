@@ -91,6 +91,7 @@ class FolderTableViewController: BaseTableViewController {
         cell.detailTextLabel?.text = "\(fcvm.number)"
         cell.textLabel?.text = fcvm.title
         cell.accessoryType = .disclosureIndicator
+        cell.indentationWidth = 20.0
         return cell
     }
 
@@ -100,7 +101,7 @@ class FolderTableViewController: BaseTableViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "No model")
                 return 0
             }
-        return vm[indexPath.section][indexPath.item].level
+        return vm[indexPath.section][indexPath.item].level - 1
     }
 
     // MARK: - TableViewDelegate
