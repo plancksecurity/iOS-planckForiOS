@@ -83,7 +83,7 @@ class ComposeDataSource: NSObject {
         ///
         /// - Parameter attachment: attachment to add
         /// - Returns: index the attachment has been inserted in
-        mutating func add(attachment: Attachment) -> Int {
+        @discardableResult mutating func add(attachment: Attachment) -> Int {
             nonInlinedAttachments.append(attachment)
             return nonInlinedAttachments.count - 1
         }

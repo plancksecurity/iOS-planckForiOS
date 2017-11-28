@@ -58,18 +58,6 @@ extension MessageBodyCell {
         let newHeight = fixedWidth / fixRatio
         return CGRect(x: 0, y: 0, width: fixedWidth, height: newHeight)
     }
-    
-    public final func addMovie(attachment: Attachment) {
-        // We currently handle videos like any other attachment that is not an image.
-        // Maybe we want to be able to play videos inlined later.
-        // Not sure if that makes sense when composing the mail though.
-        add(attachment)
-    }
-    
-    public final func add(_ attachment: Attachment) {
-        guard let delegate = delegate as? MessageBodyCellDelegate else { return }
-        delegate.messageBodyCell(bodyCell: self, didAddNonInlinedAttachment: attachment)
-    }
 
     public final func allInlinedAttachments() -> [Attachment] {
         let attachments = textView.textAttachments()

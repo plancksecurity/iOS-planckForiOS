@@ -113,7 +113,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    // MARK: - Private Methods
+    // MARK: - Setup & Configuration
 
     /**
      Updates the given `RecipientCell` with data from the `originalMessage`,
@@ -163,9 +163,10 @@ class ComposeTableViewController: BaseTableViewController {
             let mtao = MessageToAttachmentOperation(parentName: #function, message: om)
             mtao.main()
             if let attachment = mtao.attachment {
-                messageBodyCell.add(attachment)
+                //                messageBodyCell.add(attachment) //BUFF:
+                nonInlinedAttachmentData.add(attachment: attachment)
             }
-            //BUFF: deal with forwarded attachments
+            //BUFF: fix: deal with forwarded attachments
         }
     }
 
@@ -188,6 +189,8 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
+    // MARK: - Addressbook
+    //BUFF: addressbook obsolete?
     fileprivate final func openAddressBook() {
         contactPicker.delegate = self
         contactPicker.displayedPropertyKeys = [
@@ -198,73 +201,6 @@ class ComposeTableViewController: BaseTableViewController {
         contactPicker.predicateForSelectionOfContact = NSPredicate(
             format: "emailAddresses.@count == 1")
         present(contactPicker, animated: true, completion: nil)
-    }
-
-    /// Used to create an Attachment from images provided by UIImagePicker
-    ///
-    /// - Parameters:
-    ///   - assetUrl: URL of the asset
-    ///   - image: image to create attachment for
-    /// - Returns: attachment for given image
-    fileprivate final func createAttachment(forAssetWithUrl assetUrl: URL,
-                                            image: UIImage) -> Attachment {
-        let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-        let attachment = Attachment.createFromAsset(mimeType: mimeType,
-                                                    assetUrl: assetUrl,
-                                                    image: image)
-        return attachment
-    }
-
-    /// Used to create an Attachment from files that are not a security scoped resource.
-    /// E.g. videos provided by UIImagePicker
-    ///
-    /// - Parameters:
-    ///   - resourceUrl: URL of the resource to create an attachment for
-    /// - Returns: attachment for given resource
-    fileprivate final func createAttachment(forResource resourceUrl: URL,
-                                            completion: @escaping (Attachment?) -> Void) {
-        attachmentFileIOQueue.async {
-            guard let resourceData = try? Data(contentsOf: resourceUrl) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Cound not get data for URL")
-                completion(nil)
-                return
-            }
-
-            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-            let filename = resourceUrl.fileName(includingExtension: true)
-            let attachment =  Attachment.create(data: resourceData,
-                                                mimeType: mimeType,
-                                                fileName: filename)
-            completion(attachment)
-        }
-    }
-
-    /// Used to create an Attachment from security scoped resources.
-    /// E.g. Documents provided by UIDocumentPicker
-    ///
-    /// - Parameters:
-    ///   - resourceUrl: URL of the resource to create an attachment for
-    /// - Returns: attachment for given resource
-    fileprivate final func createAttachment(forSecurityScopedResource resourceUrl: URL,
-                                            completion: @escaping (Attachment?) -> Void) {
-        let cfUrl = resourceUrl as CFURL
-
-        attachmentFileIOQueue.async {
-            CFURLStartAccessingSecurityScopedResource(cfUrl)
-            defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
-            guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No data for URL.")
-                completion(nil)
-                return
-            }
-            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-            let filename = resourceUrl.fileName(includingExtension: true)
-            let attachment = Attachment.create(data: resourceData,
-                                               mimeType: mimeType,
-                                               fileName: filename)
-            completion(attachment)
-        }
     }
 
     fileprivate final func addContactSuggestTable() {
@@ -393,9 +329,9 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    // MARK: - Public Methods
+    // MARK: - Attachments
 
-    @objc public final func addMediaToCell() {
+    @objc fileprivate final func addMediaToCell() {
         let media = Capability.media
 
         media.request { (success, error) in
@@ -415,11 +351,122 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     @objc // required for using it in #selector()
-    public final func addAttachment() {
+    fileprivate final func addAttachment() {
         let documentPicker = UIDocumentPickerViewController(
             documentTypes: ["public.data"], in: .import)
         documentPicker.delegate = self
         present(documentPicker, animated: true, completion: nil)
+    }
+
+    /// Used to create an Attachment from images provided by UIImagePicker
+    ///
+    /// - Parameters:
+    ///   - assetUrl: URL of the asset
+    ///   - image: image to create attachment for
+    /// - Returns: attachment for given image
+    fileprivate final func createAttachment(forAssetWithUrl assetUrl: URL,
+                                            image: UIImage) -> Attachment {
+        let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+        let attachment = Attachment.createFromAsset(mimeType: mimeType,
+                                                    assetUrl: assetUrl,
+                                                    image: image)
+        return attachment
+    }
+
+    /// Used to create an Attachment from files that are not a security scoped resource.
+    /// E.g. videos provided by UIImagePicker
+    ///
+    /// - Parameters:
+    ///   - resourceUrl: URL of the resource to create an attachment for
+    /// - Returns: attachment for given resource
+    fileprivate final func createAttachment(forResource resourceUrl: URL,
+                                            completion: @escaping (Attachment?) -> Void) {
+        attachmentFileIOQueue.async {
+            guard let resourceData = try? Data(contentsOf: resourceUrl) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Cound not get data for URL")
+                completion(nil)
+                return
+            }
+
+            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+            let filename = resourceUrl.fileName(includingExtension: true)
+            let attachment =  Attachment.create(data: resourceData,
+                                                mimeType: mimeType,
+                                                fileName: filename)
+            completion(attachment)
+        }
+    }
+
+    /// Used to create an Attachment from security scoped resources.
+    /// E.g. Documents provided by UIDocumentPicker
+    ///
+    /// - Parameters:
+    ///   - resourceUrl: URL of the resource to create an attachment for
+    /// - Returns: attachment for given resource
+    fileprivate final func createAttachment(forSecurityScopedResource resourceUrl: URL,
+                                            completion: @escaping (Attachment?) -> Void) {
+        let cfUrl = resourceUrl as CFURL
+
+        attachmentFileIOQueue.async {
+            CFURLStartAccessingSecurityScopedResource(cfUrl)
+            defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
+            guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No data for URL.")
+                completion(nil)
+                return
+            }
+            let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+            let filename = resourceUrl.fileName(includingExtension: true)
+            let attachment = Attachment.create(data: resourceData,
+                                               mimeType: mimeType,
+                                               fileName: filename)
+            completion(attachment)
+        }
+    }
+
+    fileprivate func inline(image: UIImage, forMediaWithInfo info: [String: Any]) {
+        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell,
+            let url = info[UIImagePickerControllerReferenceURL] as? URL
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
+                return
+        }
+
+        let attachment = createAttachment(forAssetWithUrl: url, image: image)
+        cell.inline(attachment: attachment)
+        self.tableView.updateSize()
+    }
+
+    fileprivate func attachVideo(forMediaWithInfo info: [String: Any]) {
+        guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Please check.")
+            return
+        }
+        createAttachment(forResource: url) { (attachment: Attachment?) in
+            guard let safeAttachment = attachment else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No attachment")
+                return
+            }
+            GCD.onMain {
+                self.addMovie(attachment: safeAttachment)
+                self.tableView.updateSize()
+            }
+        }
+    }
+
+    func add(nonInlinedAttachment attachment: Attachment) {
+        let indexInserted = nonInlinedAttachmentData.add(attachment: attachment)
+        let indexPath = IndexPath(row: indexInserted, section: attachmentSection)
+        tableView.beginUpdates()
+        tableView.insertRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+    }
+
+    public final func addMovie(attachment: Attachment) {
+        // We currently handle videos like any other attachment that is not an image.
+        // Maybe we want to be able to play videos inlined later. See discussion in IOS-201.
+        add(nonInlinedAttachment: attachment)
     }
 
     // MARK: - Table view data source
@@ -553,16 +600,17 @@ class ComposeTableViewController: BaseTableViewController {
         }
         let numAttachmentRows = nonInlinedAttachmentData.count()
         switch indexpath.section {
-        case 0:
+        case composeSection:
             if numAttachmentRows > 0 {
+                // We have more rows in attachments section
                 return false
             }
             return indexpath.row == max(0, numComposeRows - 1)
-        case 1:
+        case attachmentSection:
             return indexpath.row == max(0, numAttachmentRows - 1)
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled section")
-            return false
+            return true
         }
     }
 
@@ -818,14 +866,6 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
     func didEndEditing(at indexPath: IndexPath) {
         menuController.menuItems?.removeAll()
     }
-
-    func messageBodyCell(bodyCell: MessageBodyCell, didAddNonInlinedAttachment attachment: Attachment) {
-        let indexInserted = nonInlinedAttachmentData.add(attachment: attachment)
-        let indexPath = IndexPath(row: indexInserted, section: attachmentSection)
-        tableView.beginUpdates()
-        tableView.insertRows(at: [indexPath], with: .automatic)
-        tableView.endUpdates()
-    }
 }
 
 // MARK: - CNContactPickerViewController Delegate
@@ -876,40 +916,13 @@ extension ComposeTableViewController: CNContactPickerDelegate {
 extension ComposeTableViewController: UIImagePickerControllerDelegate {
     public func imagePickerController( _ picker: UIImagePickerController,
                                        didFinishPickingMediaWithInfo info: [String: Any]) {
-        defer {
-            dismiss(animated: true, completion: nil)
-        }
-        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No cell.")
-            return
-        }
+        defer { dismiss(animated: true, completion: nil) }
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             // We got an image.
-            guard let url = info[UIImagePickerControllerReferenceURL] as? URL else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No URL for image?")
-                return
-            }
-
-            let attachment = createAttachment(forAssetWithUrl: url, image: image)
-            cell.inline(attachment: attachment)
-            self.tableView.updateSize()
-
+            inline(image: image, forMediaWithInfo: info)
         } else {
             // We got something from picker that is not an image. Probalby video/movie.
-            guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Please check.")
-                return
-            }
-            createAttachment(forResource: url) { (attachment: Attachment?) in
-                guard let safeAttachment = attachment else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No attachment")
-                    return
-                }
-                GCD.onMain {
-                    cell.addMovie(attachment: safeAttachment)
-                    self.tableView.updateSize()
-                }
-            }
+            attachVideo(forMediaWithInfo: info)
         }
     }
 }
@@ -918,10 +931,6 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
 
 extension ComposeTableViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell else {
-            return
-        }
-        
         for url in urls {
             createAttachment(forSecurityScopedResource: url) { (attachment: Attachment?) in
 
@@ -931,7 +940,7 @@ extension ComposeTableViewController: UIDocumentPickerDelegate {
                     return
                 }
                 GCD.onMain {
-                    cell.add(safeAttachment)
+                    self.add(nonInlinedAttachment: safeAttachment)
                     self.tableView.updateSize()
                 }
             }

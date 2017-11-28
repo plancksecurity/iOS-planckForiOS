@@ -31,6 +31,7 @@ public protocol RecipientCellDelegate: ComposeCellDelegate {
 protocol MessageBodyCellDelegate: ComposeCellDelegate {
     func didStartEditing(at indexPath: IndexPath)
     func didEndEditing(at indexPath: IndexPath)
-    func messageBodyCell(bodyCell: MessageBodyCell,
-                         didAddNonInlinedAttachment attachment: Attachment)
+    //BUFF:
+//    func messageBodyCell(bodyCell: MessageBodyCell,
+//                         didAddNonInlinedAttachment attachment: Attachment)
 }
