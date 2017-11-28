@@ -135,8 +135,7 @@ class FolderTableViewController: BaseTableViewController {
                 vc.hidesBottomBarWhenPushed = true
             }
         } else if segue.identifier == "SettingsSegue" {
-            guard let dnc = segue.destination as? UINavigationController,
-                let dvc = dnc.rootViewController as? AccountsTableViewController else {
+            guard let dvc = segue.destination as? AccountsTableViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
                     return
             }
