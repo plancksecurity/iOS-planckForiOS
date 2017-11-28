@@ -42,6 +42,7 @@ sudo port select python python27
 
 sudo port install autoconf
 sudo port install libtool
+sudo port install automake
 ```
 
 ### Other dependecies
