@@ -88,6 +88,12 @@ class ComposeDataSource: NSObject {
             return nonInlinedAttachments.count - 1
         }
 
+        mutating func add(attachments: [Attachment]) {
+            for attachment in attachments {
+                nonInlinedAttachments.append(attachment)
+            }
+        }
+
         mutating func remove(at index: Int) {
             if index < 0 || index > (nonInlinedAttachments.count - 1) {
                 Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")

@@ -80,6 +80,7 @@ class ComposeTableViewController: BaseTableViewController {
         super.viewWillAppear(animated)
         composeData?.filterRows(message: nil)
         setEmailDisplayDefaultNavigationBarStyle()
+        addAttachmentsForForwading()
     }
 
     func prepareColor() {
@@ -160,13 +161,6 @@ class ComposeTableViewController: BaseTableViewController {
         if let om = originalMessage, composeMode == .forward {
             messageBodyCell.setInitial(
                 text: ReplyUtil.quotedMessageText(message: om, replyAll: composeMode == .forward))
-            let mtao = MessageToAttachmentOperation(parentName: #function, message: om)
-            mtao.main()
-            if let attachment = mtao.attachment {
-                //                messageBodyCell.add(attachment) //BUFF:
-                nonInlinedAttachmentData.add(attachment: attachment)
-            }
-            //BUFF: fix: deal with forwarded attachments
         }
     }
 
@@ -186,6 +180,12 @@ class ComposeTableViewController: BaseTableViewController {
 
         if let dict = tableDict as? [String: Any], let dictRows = dict["Rows"] as? [[String: Any]]{
             composeData = ComposeDataSource(with: dictRows)
+        }
+    }
+
+    private func addAttachmentsForForwading() {
+        if let om = originalMessage, composeMode == .forward {
+                nonInlinedAttachmentData.add(attachments: om.attachments)
         }
     }
 
