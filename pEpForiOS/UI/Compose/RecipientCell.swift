@@ -44,11 +44,6 @@ class RecipientCell: ComposeCell {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
     }
-
-    @IBAction func openAdressbook(_ sender: UIButton) {
-        guard let delegate = delegate as? RecipientCellDelegate else { return }
-        delegate.shouldOpenAddressbook(at: index)
-    }
 }
 
 // MARK: - UITextViewDelegate

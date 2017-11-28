@@ -189,19 +189,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    // MARK: - Addressbook
-    //BUFF: addressbook obsolete?
-    fileprivate final func openAddressBook() {
-        contactPicker.delegate = self
-        contactPicker.displayedPropertyKeys = [
-            CNContactEmailAddressesKey, CNContactGivenNameKey, CNContactFamilyNameKey,
-            CNContactMiddleNameKey, CNContactIdentifierKey]
-        contactPicker.predicateForEnablingContact = NSPredicate(
-            format: "emailAddresses.@count > 0")
-        contactPicker.predicateForSelectionOfContact = NSPredicate(
-            format: "emailAddresses.@count == 1")
-        present(contactPicker, animated: true, completion: nil)
-    }
+    // MARK: - Address Suggstions
 
     fileprivate final func addContactSuggestTable() {
         suggestTableView = storyboard?.instantiateViewController(
@@ -211,6 +199,8 @@ class ComposeTableViewController: BaseTableViewController {
         updateSuggestTable(defaultCellHeight, true)
         tableView.addSubview(suggestTableView)
     }
+
+    // MARK: - Composing Mail
 
     fileprivate final func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
         var pos = position
@@ -837,15 +827,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 }
 
-// MARK: - RecipientCellDelegate
-
-extension ComposeTableViewController: RecipientCellDelegate {
-    func shouldOpenAddressbook(at indexPath: IndexPath) {
-        currentCell = indexPath
-        openAddressBook()
-    }
-}
-
 // MARK: - MessageBodyCellDelegate
 
 extension ComposeTableViewController: MessageBodyCellDelegate {
@@ -865,49 +846,6 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
 
     func didEndEditing(at indexPath: IndexPath) {
         menuController.menuItems?.removeAll()
-    }
-}
-
-// MARK: - CNContactPickerViewController Delegate
-
-extension ComposeTableViewController: CNContactPickerDelegate {
-    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact) {
-        add(contact: contact)
-    }
-
-    func contactPicker(
-        _ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
-        add(contact: contactProperty.contact, contactProperty: contactProperty)
-    }
-
-    /**
-     The emails from contact are only traversed if `contactProperty` is nil.
-     Otherwise, the email information is only used by `contactProperty`, which allows the
-     user to select one and only one email for sending.
-     */
-    func add(contact: CNContact, contactProperty: CNContactProperty? = nil) {
-        if let address = contactProperty?.value as? String {
-            let partner = Identity.create(address: address, userID: contactProperty?.identifier)
-            partner.userName = CNContactFormatter.string(
-                from: contact, style: .fullName)
-            add(identity: partner)
-        } else {
-            for emailLabel in contact.emailAddresses {
-                let address = emailLabel.value as String
-                let partner = Identity.create(address: address, userID: contact.identifier)
-                partner.userName = CNContactFormatter.string(from: contact, style: .fullName)
-                add(identity: partner)
-            }
-        }
-        tableView.updateSize()
-    }
-
-    func add(identity: Identity) {
-        identity.save()
-        guard let cell = tableView.cellForRow(at: currentCell) as? RecipientCell else {
-            return
-        }
-        cell.addIdentity(identity)
     }
 }
 

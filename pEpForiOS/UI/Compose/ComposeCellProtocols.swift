@@ -24,14 +24,7 @@ public protocol ComposeCellDelegate: class {
     func messageCanBeSend(value: Bool)
 }
 
-public protocol RecipientCellDelegate: ComposeCellDelegate {
-    func shouldOpenAddressbook(at indexPath: IndexPath)
-}
-
 protocol MessageBodyCellDelegate: ComposeCellDelegate {
     func didStartEditing(at indexPath: IndexPath)
     func didEndEditing(at indexPath: IndexPath)
-    //BUFF:
-//    func messageBodyCell(bodyCell: MessageBodyCell,
-//                         didAddNonInlinedAttachment attachment: Attachment)
 }
