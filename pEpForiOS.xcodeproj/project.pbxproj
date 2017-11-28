@@ -210,6 +210,8 @@
 		436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		4374320B1CFC49B1000F8D35 /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4374320A1CFC49B1000F8D35 /* TestUtil.swift */; };
+		43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43754AC71FCD7ABC009A8E63 /* ldns_xcode.framework */; };
+		43754AC81FCD8348009A8E63 /* ldns_xcode.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 43754AC71FCD7ABC009A8E63 /* ldns_xcode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437671471D8FF2A5004DD205 /* DeleteFolderOperation.swift */; };
 		43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
 		4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4381D0FE1E51A124002743C3 /* NetworkServiceWorker.swift */; };
@@ -396,6 +398,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				43754AC81FCD8348009A8E63 /* ldns_xcode.framework in CopyFiles */,
 				1527D1541FA790080036DA9C /* SwipeCellKit.framework in CopyFiles */,
 				49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */,
 			);
@@ -627,6 +630,7 @@
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
 		4374320A1CFC49B1000F8D35 /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
+		43754AC71FCD7ABC009A8E63 /* ldns_xcode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ldns_xcode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		437671471D8FF2A5004DD205 /* DeleteFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteFolderOperation.swift; sourceTree = "<group>"; };
 		43800D981D112A2A00821E34 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
 		4381D0FE1E51A124002743C3 /* NetworkServiceWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceWorker.swift; sourceTree = "<group>"; };
@@ -783,6 +787,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */,
 				43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */,
 				43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */,
 				495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */,
@@ -1516,6 +1521,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43754AC71FCD7ABC009A8E63 /* ldns_xcode.framework */,
 				43209B531ECC5A9B007E7E2E /* libpEpObjCAdapter.a */,
 				43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */,
 				49D521561E73E1C70097987B /* ServerConfig.framework */,
@@ -2433,6 +2439,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = SBPJ2E4G5X;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2460,6 +2467,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = SBPJ2E4G5X;
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
