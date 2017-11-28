@@ -39,6 +39,9 @@ sudo port install py27-lxml
 
 sudo port install python_select
 sudo port select python python27
+
+sudo port install autoreconf
+sudo port install libtool
 ```
 
 ### Other dependecies
