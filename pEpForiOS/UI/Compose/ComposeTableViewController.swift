@@ -380,12 +380,22 @@ class ComposeTableViewController: BaseTableViewController {
             }
 
             let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-            let filename = resourceUrl.fileName(includingExtension: true)
+            let filename = self.fileName(forVideoAt: resourceUrl)
             let attachment =  Attachment.create(data: resourceData,
                                                 mimeType: mimeType,
                                                 fileName: filename)
             completion(attachment)
         }
+    }
+
+    private func fileName(forVideoAt url: URL) -> String {
+        let fileName = NSLocalizedString("Video",
+                                                comment:
+            "File name used for videos the user attaches.")
+        let numAttachment = nonInlinedAttachmentData.count() + 1
+        let numDisplay = numAttachment > 1 ? " " + String(numAttachment) : ""
+        let fileExtension = url.pathExtension
+        return fileName + numDisplay + "." + fileExtension
     }
 
     /// Used to create an Attachment from security scoped resources.
