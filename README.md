@@ -64,7 +64,7 @@ popd
 mkdir ~/src
 cd ~/src
 
-git clone https://cacert.pep-security.lu/misc/ldns.git
+git clone https://letsencrypt.pep-security.lu/gitlab/misc/ldns/
 git clone https://github.com/fdik/libetpan.git
 git clone https://github.com/x2on/OpenSSL-for-iPhone.git
 git clone https://github.com/SwipeCellKit/SwipeCellKit.git
