@@ -105,7 +105,7 @@ extension RecipientCell {
         hasSelection = false
 
         let last = textView.text.last
-        if "\n" == last {
+        if "\n" == last && text == "\n" {
             return false
         }
 
