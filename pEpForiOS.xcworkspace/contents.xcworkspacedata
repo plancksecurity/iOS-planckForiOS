@@ -16,7 +16,4 @@
    <FileRef
       location = "group:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
-   </FileRef>
 </Workspace>
