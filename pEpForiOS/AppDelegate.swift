@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /**
      Error Handler to connect backend with UI
      */
-    var errorHandler = ErrorPropagator()
+    var errorPropagator = ErrorPropagator()
 
     var application: UIApplication!
 
@@ -105,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
         let theAppConfig = AppConfig(mySelfer: self,
-                                     messageSyncService: theMessageSyncService, errorHandler: errorHandler)
+                                     messageSyncService: theMessageSyncService, errorHandler: errorPropagator)
         appConfig = theAppConfig
 
         // set up logging for libraries
@@ -124,7 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         networkService = NetworkService(parentName: #function, backgrounder: self, mySelfer: self)
         networkService?.sendLayerDelegate = sendLayerDelegate
-        networkService?.serviceConfig.errorPublisher = errorHandler
+        networkService?.serviceConfig.errorPropagator = errorPropagator
         CdAccount.sendLayer = networkService
         networkService?.delegate = self
 

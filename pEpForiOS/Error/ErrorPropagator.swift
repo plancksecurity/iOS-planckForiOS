@@ -8,14 +8,14 @@
 
 import Foundation
 
-protocol ErrorPropagatorSubscriber: class {
+public protocol ErrorPropagatorSubscriber: class {
     func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error:Error)
 }
 
-class ErrorPropagator {
-    weak var subscriber: ErrorPropagatorSubscriber?
-    
-    func report(error: Error) {
+public class ErrorPropagator {
+    public weak var subscriber: ErrorPropagatorSubscriber?
+
+    public func report(error: Error) {
         subscriber?.errorPropagator(self, errorHasBeenReported: error)
     }
 }

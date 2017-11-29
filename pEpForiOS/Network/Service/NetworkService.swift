@@ -46,16 +46,18 @@ public class NetworkService {
         let parentName: String
         let mySelfer: KickOffMySelfProtocol?
         let backgrounder: BackgroundTaskProtocol?
-        var errorPublisher: ErrorPropagator?
+        var errorPropagator: ErrorPropagator?
 
         init(sleepTimeInSeconds: Double,
              parentName: String,
              mySelfer: KickOffMySelfProtocol?,
-             backgrounder: BackgroundTaskProtocol?) {
+             backgrounder: BackgroundTaskProtocol?,
+             errorPropagator: ErrorPropagator?) {
             self.sleepTimeInSeconds = sleepTimeInSeconds
             self.parentName = parentName
             self.mySelfer = mySelfer
             self.backgrounder = backgrounder
+            self.errorPropagator = errorPropagator
         }
     }
 
@@ -89,13 +91,17 @@ public class NetworkService {
     var lastConnectionDataCache: [EmailConnectInfo: ImapSyncData]?
 
     public init(sleepTimeInSeconds: Double = 5.0,
-                parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil,
-                mySelfer: KickOffMySelfProtocol? = nil) {
+                parentName: String = #function,
+                backgrounder: BackgroundTaskProtocol? = nil,
+                mySelfer: KickOffMySelfProtocol? = nil,
+                errorPropagator: ErrorPropagator? = nil) {
         serviceConfig = ServiceConfig(sleepTimeInSeconds: sleepTimeInSeconds,
                                       parentName: parentName,
-                                      mySelfer: mySelfer ?? DefaultMySelfer(
-                                        parentName: parentName, backgrounder: backgrounder),
-                                      backgrounder: backgrounder)
+                                      mySelfer: mySelfer ??
+                                        DefaultMySelfer( parentName: parentName,
+                                                         backgrounder: backgrounder),
+                                      backgrounder: backgrounder,
+                                      errorPropagator: errorPropagator)
     }
 
     /**

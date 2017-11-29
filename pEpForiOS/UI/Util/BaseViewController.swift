@@ -25,13 +25,13 @@ class BaseViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        appConfig?.errorHandler.subscribe(self)
+        appConfig?.errorHandler.subscriber = self
     }
 }
 
 extension BaseViewController: ErrorPropagatorSubscriber {
     func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error: Error) {
-        showError(error: error)
+        show(error: error)
     }
 }
 
