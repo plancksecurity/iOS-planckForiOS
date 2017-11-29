@@ -199,9 +199,9 @@ open class NetworkServiceWorker {
         }
         // 3.a Items not associated with any mailbox (e.g., SMTP send)
         let smtpSendData = SmtpSendData(connectInfo: smtpCI)
-        let loginOp = LoginSmtpOperation(
-            parentName: serviceConfig.parentName,
-            smtpSendData: smtpSendData, errorContainer: errorContainer)
+        let loginOp = LoginSmtpOperation(parentName: serviceConfig.parentName,
+                                         smtpSendData: smtpSendData,
+                                         errorContainer: errorContainer)
         loginOp.completionBlock = { [weak self] in
             loginOp.completionBlock = nil
             if let me = self {

@@ -202,6 +202,8 @@ extension NetworkService: NetworkServiceWorkerDelegate {
     }
 
     public func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error) {
-        serviceConfig.errorPropagator?.report(error: error)
+        GCD.onMain {
+            self.serviceConfig.errorPropagator?.report(error: error)
+        }
     }
 }

@@ -53,10 +53,11 @@ open class ErrorContainer: ServiceErrorProtocol { //BUFF:
 
 //BUFF: move
 
+
 public protocol ReportingErrorContainerDelegate: class {
     func reportingErrorContainer(_ errorContainer: ReportingErrorContainer, didReceive error: Error)
 }
-
+/// Same as ErrorContainer, but offers delegate that is informed in case of any reported error.
 open class ReportingErrorContainer: ErrorContainer {
     weak public var delegate: ReportingErrorContainerDelegate?
 
@@ -70,4 +71,3 @@ open class ReportingErrorContainer: ErrorContainer {
         delegate?.reportingErrorContainer(self, didReceive: error)
     }
 }
-
