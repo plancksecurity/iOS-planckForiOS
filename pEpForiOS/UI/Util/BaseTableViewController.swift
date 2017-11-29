@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseTableViewController: UITableViewController {
+class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
 
     var originalTitleView: String?
@@ -46,16 +46,16 @@ class BaseTableViewController: UITableViewController {
             return
         }
     }
+
+    // MARK: - ErrorPropagatorSubscriber
+
+    func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error: Error) {
+        UIUtils.show(error: error, inViewController: self)
+    }
 }
 
 extension BaseTableViewController: KickOffMySelfProtocol {
     func startMySelf() {
         Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
-    }
-}
-
-extension BaseTableViewController: ErrorPropagatorSubscriber {
-    func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error: Error) {
-        show(error: error)
     }
 }

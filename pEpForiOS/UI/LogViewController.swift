@@ -43,7 +43,7 @@ class LogViewController: BaseViewController {
     }
 
     @IBAction func showError(_ sender: Any) {
-        self.show(error: testErrorLog.testError)
+        UIUtils.show(error: testErrorLog.testError, inViewController: self)
     }
 
     @IBAction func copyAction(_ sender: Any) {
