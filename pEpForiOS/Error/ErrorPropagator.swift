@@ -1,5 +1,5 @@
 //
-//  ErrorHandler.swift
+//  ErrorPropagator.swift
 //  pEp
 //
 //  Created by Xavier Algarra on 10/11/2017.
@@ -20,8 +20,7 @@ protocol handlerError {
     func show(error:Error)
 }
 
-public class ErrHandler: subscriberError, publisherError {
-
+public class ErrorPropagator: subscriberError, publisherError {
     var delgate: handlerError?
 
     func subscribe(view: handlerError) {
@@ -31,5 +30,4 @@ public class ErrHandler: subscriberError, publisherError {
     func publish(error: Error) {
         delgate?.show(error: error)
     }
-
 }

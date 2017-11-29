@@ -46,7 +46,7 @@ public class NetworkService {
         let parentName: String
         let mySelfer: KickOffMySelfProtocol?
         let backgrounder: BackgroundTaskProtocol?
-        var errorPublisher: publisherError?
+        var errorPublisher: ErrorPropagator?
 
         init(sleepTimeInSeconds: Double,
              parentName: String,

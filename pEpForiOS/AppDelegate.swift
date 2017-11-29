@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /**
      Error Handler to connect backend with UI
      */
-    var errorHandler = ErrHandler()
+    var errorHandler = ErrorPropagator()
 
     var application: UIApplication!
 

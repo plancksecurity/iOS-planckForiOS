@@ -22,7 +22,7 @@ class BaseTableViewController: UITableViewController {
                 return AppConfig(mySelfer: self,
                                  messageSyncService: MessageSyncService(
                                     sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil),
-                                 errorHandler: ErrHandler())
+                                 errorHandler: ErrorPropagator())
             }
             return theAC
         }
