@@ -25,7 +25,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        appConfig?.errorHandler.subscriber = self
+        appConfig?.errorPropagator.subscriber = self
     }
 
     // MARK: - ErrorPropagatorSubscriber

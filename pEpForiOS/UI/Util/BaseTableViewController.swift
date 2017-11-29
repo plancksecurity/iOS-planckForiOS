@@ -20,9 +20,10 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
                 // We have no config. Return nonsense.
                 return AppConfig(mySelfer: self,
-                                 messageSyncService: MessageSyncService(
-                                    sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil),
-                                 errorHandler: ErrorPropagator())
+                                 messageSyncService: MessageSyncService( sleepTimeInSeconds: 2,
+                                                                         backgrounder: nil,
+                                                                         mySelfer: nil),
+                                 errorPropagator: ErrorPropagator())
             }
             return theAC
         }
@@ -33,7 +34,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     }
 
     func didSetAppConfig() {
-        appConfig.errorHandler.subscriber = self
+        appConfig.errorPropagator.subscriber = self
     }
 
     // The soley reason for implementing this method is to make sure
