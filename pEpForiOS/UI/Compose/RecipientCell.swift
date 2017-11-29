@@ -80,7 +80,9 @@ extension RecipientCell {
     
     public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == .returnKey) {
-            generateContact(textView)
+            let result = generateContact(textView)
+
+            return result
         }
         
         if text.utf8.count == 0 && range.location != NSNotFound && !hasSelection {
@@ -112,8 +114,9 @@ extension RecipientCell {
         return true
     }
 
-    fileprivate func generateContact(_ textView: UITextView) {
-        guard let cTextview = textView as? ComposeTextView else { return }
+    fileprivate func generateContact(_ textView: UITextView) -> Bool {
+        guard let cTextview = textView as? ComposeTextView else { return false }
+        var mail = false
         var string = cTextview.attributedText.string.cleanAttachments
         if string.utf8.count >= 3 && string.isEmailAddress {
             let identity = Identity.create(address: string.trimmedWhiteSpace())
@@ -121,6 +124,7 @@ extension RecipientCell {
             let width = self.textView.bounds.width
             cTextview.insertImage(identity, maxWidth: width)
             cTextview.removePlainText()
+            mail =  true
         }
         let text = cTextview.attributedText.string.cleanAttachments
         delegate?.messageCanBeSend(value: (identities.count > 0 && text.isEmpty))
@@ -130,11 +134,12 @@ extension RecipientCell {
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
+        return mail
     }
 
     public override func textViewDidEndEditing(_ textView: UITextView) {
 
-        generateContact(textView)
+        let _ = generateContact(textView)
 
     }
 }
