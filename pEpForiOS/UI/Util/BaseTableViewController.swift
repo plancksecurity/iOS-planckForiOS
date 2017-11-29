@@ -33,7 +33,7 @@ class BaseTableViewController: UITableViewController {
     }
 
     func didSetAppConfig() {
-        appConfig.errorHandler.subscribe(view: self)
+        appConfig.errorHandler.subscribe(self)
     }
 
     // The soley reason for implementing this method is to make sure
@@ -54,8 +54,8 @@ extension BaseTableViewController: KickOffMySelfProtocol {
     }
 }
 
-extension BaseTableViewController: handlerError {
-    func show(error: Error) {
+extension BaseTableViewController: ErrorPropagatorSubscriber {
+    func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error: Error) {
         showError(error: error)
     }
 }

@@ -8,26 +8,18 @@
 
 import Foundation
 
-protocol subscriberError {
-    func subscribe(view: handlerError)
+protocol ErrorPropagatorSubscriber {
+    func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error:Error)
 }
 
-protocol publisherError {
-    func publish(error: Error)
-}
+class ErrorPropagator {
+    var subscriber: ErrorPropagatorSubscriber?
 
-protocol handlerError {
-    func show(error:Error)
-}
-
-public class ErrorPropagator: subscriberError, publisherError {
-    var delgate: handlerError?
-
-    func subscribe(view: handlerError) {
-        delgate = view
+    func subscribe(_ subscriber: ErrorPropagatorSubscriber) {
+        self.subscriber = subscriber
     }
 
-    func publish(error: Error) {
-        delgate?.show(error: error)
+    func report(error: Error) {
+        subscriber?.errorPropagator(self, errorHasBeenReported: error)
     }
 }

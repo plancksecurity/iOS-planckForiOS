@@ -55,7 +55,7 @@ extension UIViewController {
         navigationController?.toolbar.tintColor = UIToolbar.appearance().tintColor
     }
 
-    func showError(error: Error) {
+    func show(error: Error) {
         Log.shared.error(component: #function, error: error)
         let alertView = UIAlertController(
             title: NSLocalizedString("Error", comment: "UIAlertController error title"),
