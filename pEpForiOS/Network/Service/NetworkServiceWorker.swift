@@ -190,41 +190,41 @@ open class NetworkServiceWorker {
         return result
     }
 
-    func buildSmtpOperations(
-        accountInfo: AccountConnectInfo, errorContainer: ServiceErrorProtocol,
-        opSmtpFinished: Operation, lastOperation: Operation?) -> (BaseOperation?, [Operation]) {
-        if let smtpCI = accountInfo.smtpConnectInfo {
-            // 3.a Items not associated with any mailbox (e.g., SMTP send)
-            let smtpSendData = SmtpSendData(connectInfo: smtpCI)
-            let loginOp = LoginSmtpOperation(
-                parentName: serviceConfig.parentName,
-                smtpSendData: smtpSendData, errorContainer: errorContainer)
-            loginOp.completionBlock = { [weak self] in
-                loginOp.completionBlock = nil
-                if let me = self {
-                    me.workerQueue.async {
-                        Log.info(component: #function, content: "opSmtpLogin finished")
-                    }
-                }
-            }
-            if let lastOp = lastOperation {
-                loginOp.addDependency(lastOp)
-            }
-            opSmtpFinished.addDependency(loginOp)
-            var operations = [Operation]()
-            operations.append(loginOp)
-
-            let sendOp = EncryptAndSendOperation(
-                parentName: serviceConfig.parentName, smtpSendData: smtpSendData,
-                errorContainer: errorContainer)
-            opSmtpFinished.addDependency(sendOp)
-            sendOp.addDependency(loginOp)
-            operations.append(sendOp)
-
-            return (sendOp, operations)
-        } else {
+    func buildSmtpOperations(accountInfo: AccountConnectInfo,
+                             errorContainer: ServiceErrorProtocol,
+                             opSmtpFinished: Operation,
+                             lastOperation: Operation?) -> (BaseOperation?, [Operation]) {
+        guard let smtpCI = accountInfo.smtpConnectInfo else {
             return (nil, [])
         }
+        // 3.a Items not associated with any mailbox (e.g., SMTP send)
+        let smtpSendData = SmtpSendData(connectInfo: smtpCI)
+        let loginOp = LoginSmtpOperation(
+            parentName: serviceConfig.parentName,
+            smtpSendData: smtpSendData, errorContainer: errorContainer)
+        loginOp.completionBlock = { [weak self] in
+            loginOp.completionBlock = nil
+            if let me = self {
+                me.workerQueue.async {
+                    Log.info(component: #function, content: "opSmtpLogin finished")
+                }
+            }
+        }
+        if let lastOp = lastOperation {
+            loginOp.addDependency(lastOp)
+        }
+        opSmtpFinished.addDependency(loginOp)
+        var operations = [Operation]()
+        operations.append(loginOp)
+
+        let sendOp = EncryptAndSendOperation(
+            parentName: serviceConfig.parentName, smtpSendData: smtpSendData,
+            errorContainer: errorContainer)
+        opSmtpFinished.addDependency(sendOp)
+        sendOp.addDependency(loginOp)
+        operations.append(sendOp)
+
+        return (sendOp, operations)
     }
 
     func buildSendOperations(
