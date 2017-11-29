@@ -90,6 +90,15 @@ public class NetworkService {
      */
     var lastConnectionDataCache: [EmailConnectInfo: ImapSyncData]?
 
+    public var timeIntervalForInterestingFolders: TimeInterval {
+        get {
+            return serviceConfig.timeIntervalForInterestingFolders
+        }
+        set {
+            serviceConfig.timeIntervalForInterestingFolders = newValue
+        }
+    }
+
     public init(sleepTimeInSeconds: Double = 5.0,
                 parentName: String = #function,
                 backgrounder: BackgroundTaskProtocol? = nil,
@@ -148,21 +157,14 @@ public class NetworkService {
         quickSync?.sync(completionBlock: completionHandler)
     }
 
-    public var timeIntervalForInterestingFolders: TimeInterval {
-        get {
-            return serviceConfig.timeIntervalForInterestingFolders
-        }
-        set {
-            serviceConfig.timeIntervalForInterestingFolders = newValue
-        }
-    }
-
     public func internalVerify(cdAccount account: CdAccount) {
         cancel() // cancel the current worker
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
         currentWorker?.start()
     }
 }
+
+// MARK: - SendLayerProtocol
 
 extension NetworkService: SendLayerProtocol {
     public var sendLayerDelegate: SendLayerDelegate? {
@@ -178,6 +180,8 @@ extension NetworkService: SendLayerProtocol {
         internalVerify(cdAccount: cdAccount)
     }
 }
+
+// MARK: - NetworkServiceWorkerDelegate
 
 extension NetworkService: NetworkServiceWorkerDelegate {
     public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) {
@@ -195,5 +199,9 @@ extension NetworkService: NetworkServiceWorkerDelegate {
         self.delegate?.networkServiceDidSync(service: self,
                                              accountInfo: accountInfo,
                                              errorProtocol: errorProtocol)
+    }
+
+    public func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error) {
+        serviceConfig.errorPropagator?.report(error: error)
     }
 }

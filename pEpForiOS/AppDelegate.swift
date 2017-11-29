@@ -123,11 +123,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         kickOffMySelf()
 
-        networkService = NetworkService(parentName: #function, backgrounder: self, mySelfer: self)
+        networkService = NetworkService(parentName: #function,
+                                        backgrounder: self,
+                                        mySelfer: self,
+                                        errorPropagator: errorPropagator)
         networkService?.sendLayerDelegate = sendLayerDelegate
-        networkService?.serviceConfig.errorPropagator = errorPropagator
-        CdAccount.sendLayer = networkService
         networkService?.delegate = self
+        CdAccount.sendLayer = networkService
 
         startServices()
 

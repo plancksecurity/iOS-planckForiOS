@@ -23,6 +23,9 @@ public protocol NetworkServiceWorkerDelegate: class {
 
     /** Called after all operations have been canceled */
     func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
+
+    //BUFF:
+    func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error)
 }
 
 open class NetworkServiceWorker {
@@ -350,7 +353,7 @@ open class NetworkServiceWorker {
 
     func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
 
-        let errorContainer = ErrorContainer()
+        let errorContainer = ReportingErrorContainer(delegate: self)
 
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation { [weak self] in
@@ -395,13 +398,13 @@ open class NetworkServiceWorker {
         #endif
 
         let fixAttachmentsOp = FixAttachmentsOperation(
-            parentName: description, errorContainer: ErrorContainer())
+            parentName: description, errorContainer: ReportingErrorContainer(delegate: self)) //ErrorContainer() //BUFF: do we ant to report errors in fixAttachments? How do we filter errrors anyway?
         operations.append(fixAttachmentsOp)
         opAllFinished.addDependency(fixAttachmentsOp)
 
         // 3.a Items not associated with any mailbox (e.g., SMTP send)
         let (_, smtpOperations) = buildSmtpOperations(
-            accountInfo: accountInfo, errorContainer: ErrorContainer(),
+            accountInfo: accountInfo, errorContainer: ReportingErrorContainer(delegate: self),
             opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
         operations.append(contentsOf: smtpOperations)
 
@@ -476,7 +479,7 @@ open class NetworkServiceWorker {
             }
 
             let opDecrypt = DecryptMessagesOperation(
-                parentName: description, errorContainer: ErrorContainer())
+                parentName: description, errorContainer: ReportingErrorContainer(delegate: self)) //BUFF: report decrypt errors?
 
             opDecrypt.addDependency(lastImapOp)
             opImapFinished.addDependency(opDecrypt)
@@ -582,6 +585,16 @@ open class NetworkServiceWorker {
         }
     }
 }
+
+// MARK: - ReportingErrorContainerDelegate
+
+extension NetworkServiceWorker: ReportingErrorContainerDelegate {//BUFF:
+    public func reportingErrorContainer(_ errorContainer: ReportingErrorContainer, didReceive error: Error) {
+        delegate?.networkServiceWorker(self, errorOccured: error)
+    }
+}
+
+// MARK: - CustomStringConvertible
 
 extension NetworkServiceWorker: CustomStringConvertible {
     public var description: String {
