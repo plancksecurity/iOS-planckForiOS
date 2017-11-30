@@ -15,7 +15,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
     var appConfig: AppConfig {
         get {
-            guard let theAC = _appConfig else {
+            guard let safeConfig = _appConfig else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
 
                 // We have no config. Return nonsense.
@@ -25,7 +25,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                                                                          mySelfer: nil),
                                  errorPropagator: ErrorPropagator())
             }
-            return theAC
+            return safeConfig
         }
         set {
             _appConfig = newValue
@@ -34,18 +34,17 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     }
 
     func didSetAppConfig() {
-        appConfig.errorPropagator.subscriber = self
+        // Do nothing. Meant to override in subclasses.
     }
 
-    // The soley reason for implementing this method is to make sure
-    // we did not forget to pass appConfig
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard _appConfig != nil else {
             Log.shared.errorAndCrash(component: #function,
-                                     errorString: "AppConfig is nil in viewWillAppear")
+                                     errorString: "AppConfig is nil in viewWillAppear!")
             return
         }
+        appConfig.errorPropagator.subscriber = self
     }
 
     // MARK: - ErrorPropagatorSubscriber
