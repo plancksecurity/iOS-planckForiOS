@@ -19,12 +19,19 @@ public protocol NetworkServiceWorkerDelegate: class {
     /// Called finishing the last sync loop.
     /// No further sync loop will be triggered after this call.
     /// All operations finished before this call.
+    /// - Parameters:
+    ///   - worker: sender
     func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker)
 
-    /** Called after all operations have been canceled */
+    /// Called after all operations have been canceled
+    /// - Parameters:
+    ///   - worker: sender
     func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
 
-    //BUFF:
+    /// Used to report errors in operation line.
+    /// - Parameters:
+    ///   - worker: sender
+    ///   - error: error reported by an operation in operation line
     func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error)
 }
 
@@ -397,8 +404,10 @@ open class NetworkServiceWorker {
             operations.append(debugTimerOp)
         #endif
 
-        let fixAttachmentsOp = FixAttachmentsOperation(
-            parentName: description, errorContainer: ReportingErrorContainer(delegate: self)) //ErrorContainer() //BUFF: do we ant to report errors in fixAttachments? How do we filter errrors anyway?
+        // If we need to report errors while fixing attachmnets, use
+        // ReportingErrorContainer(delegate: self) here instead of ErrorContainer()
+        let fixAttachmentsOp = FixAttachmentsOperation(parentName: description,
+                                                       errorContainer: ErrorContainer())
         operations.append(fixAttachmentsOp)
         opAllFinished.addDependency(fixAttachmentsOp)
 
@@ -478,8 +487,10 @@ open class NetworkServiceWorker {
                 lastImapOp = fetchMessagesOp
             }
 
-            let opDecrypt = DecryptMessagesOperation(
-                parentName: description, errorContainer: ReportingErrorContainer(delegate: self)) //BUFF: report decrypt errors?
+            // If we need to report errors while decrypting, use
+            // ReportingErrorContainer(delegate: self) here instead of ErrorContainer()
+            let opDecrypt = DecryptMessagesOperation(parentName: description,
+                                                     errorContainer: ErrorContainer())
 
             opDecrypt.addDependency(lastImapOp)
             opImapFinished.addDependency(opDecrypt)
@@ -588,7 +599,7 @@ open class NetworkServiceWorker {
 
 // MARK: - ReportingErrorContainerDelegate
 
-extension NetworkServiceWorker: ReportingErrorContainerDelegate {//BUFF:
+extension NetworkServiceWorker: ReportingErrorContainerDelegate {
     public func reportingErrorContainer(_ errorContainer: ReportingErrorContainer, didReceive error: Error) {
         delegate?.networkServiceWorker(self, errorOccured: error)
     }
