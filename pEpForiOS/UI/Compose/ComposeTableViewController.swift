@@ -228,6 +228,7 @@ class ComposeTableViewController: BaseTableViewController {
 
         allCells.forEach() { (cell) in
             if let tempCell = cell as? RecipientCell, let fm = cell.fieldModel {
+                tempCell.generateContact(tempCell.textView)
                 let addresses = (tempCell).identities
 
                 switch fm.type {
