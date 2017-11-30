@@ -81,9 +81,14 @@ extension RecipientCell {
     public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == .returnKey) {
             let result = generateContact(textView)
-
             return result
         }
+
+        //enable send button when there are something in recipents and disable it if its empty
+        delegate?.messageCanBeSend(value: !(
+            (textView.text.isEmpty || text.isEmpty)
+                &&
+            (range.length == 1 && !(range.location > 0))))
         
         if text.utf8.count == 0 && range.location != NSNotFound && !hasSelection {
             let selectedRange = textView.selectedTextRange!
@@ -127,8 +132,6 @@ extension RecipientCell {
             mail =  true
         }
         let text = cTextview.attributedText.string.cleanAttachments
-        delegate?.messageCanBeSend(value: (identities.count > 0 && text.isEmpty))
-
 
         delegate?.textDidEndEditing(at: index, textView: cTextview)
         if let fm = super.fieldModel {
