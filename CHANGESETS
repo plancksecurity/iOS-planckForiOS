@@ -1,9 +1,9 @@
-v0.0.24
-pEpEngine fa00137505b8
+v0.0.25
+pEpEngine 67d86917978d
 pEpObjCAdapter 95e01265dc66
 netpgp-et 6837c983ba83
-MessageModel 3daf52ed907e
-pantomime-iOS 7c992d73390a
-libAccountSettings 849666bf1a37
+MessageModel 1f5a04f3fb1f
+pantomime-iOS 67fda370a368
+libAccountSettings 0baa0b398b4b
 OpenSSL-for-iPhone 10019638e80e8a8a5fc19642a840d8a69fac7349
 libetpan cc4c5c5e3eb3d294fc58710d10821de4748b4df2
