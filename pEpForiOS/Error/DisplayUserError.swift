@@ -11,16 +11,16 @@ import Foundation
 /// Error to display to the user.
 /// The multiple errors reported from different layers can and should be clustered here to not
 /// overwhelm the user with internals.
-struct DisplayUserError {
+class DisplayUserError {
     enum ErrorType {
         case authenticationFailed
         case internalError
         case brokenServerConnection
         case unknownError
     }
-
     /// Description taken over from errors we do not know and thus can not classify
     private var foreignDescription: String?
+
     /// The type of the DisplayUserError. Meant to give clients the chance to handle different
     /// errors differentelly or even ignore certain types.
     let type:ErrorType
@@ -41,7 +41,9 @@ struct DisplayUserError {
         case .authenticationFailed:
             return NSLocalizedString("Login Failed",
                                      comment:
-                "Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed.")
+                """
+Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed.
+""")
         case .brokenServerConnection:
             return NSLocalizedString("Server Unreachable)",
                                      comment:
@@ -67,7 +69,9 @@ related to the server
         case .authenticationFailed:
             return NSLocalizedString("It was impossible to login to the server.",
                                      comment:
-                "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
+                """
+Error message shown to the user in case the authentication to IMAP or SMTP server failed.
+""")
         case .brokenServerConnection:
             return NSLocalizedString("We could not connect to the server.)",
                                      comment:
