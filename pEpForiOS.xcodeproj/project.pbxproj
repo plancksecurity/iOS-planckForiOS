@@ -44,6 +44,7 @@
 		15B483D91F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */; };
 		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
 		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
+		15BBBC631FD0496800B9DCC8 /* ReportingErrorContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC621FD0496800B9DCC8 /* ReportingErrorContainer.swift */; };
 		15C5F2441F822560007DE086 /* PreviewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2431F822560007DE086 /* PreviewMessage.swift */; };
 		15C5F2461F823752007DE086 /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2451F823752007DE086 /* SortedSet.swift */; };
 		15ECD7081F555E9D002889B8 /* CdAccount+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15ECD7071F555E9D002889B8 /* CdAccount+TestUtils.swift */; };
@@ -442,6 +443,7 @@
 		15B483D81F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataDrivenTestBase.swift; sourceTree = "<group>"; };
 		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
 		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
+		15BBBC621FD0496800B9DCC8 /* ReportingErrorContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingErrorContainer.swift; sourceTree = "<group>"; };
 		15C5F2431F822560007DE086 /* PreviewMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMessage.swift; sourceTree = "<group>"; };
 		15C5F2451F823752007DE086 /* SortedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		15ECD7071F555E9D002889B8 /* CdAccount+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+TestUtils.swift"; sourceTree = "<group>"; };
@@ -872,6 +874,18 @@
 			path = Background;
 			sourceTree = "<group>";
 		};
+		15BBBC611FD0461000B9DCC8 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				4326D3FA1EFBC55C0016AB0D /* OperationError.swift */,
+				4326D3FC1EFBC7320016AB0D /* CoreDataError.swift */,
+				43D755F51F262B37006F933A /* PantomimeError.swift */,
+				43A26FB91E0408FB00AF0B84 /* ErrorProtocol.swift */,
+				15BBBC621FD0496800B9DCC8 /* ReportingErrorContainer.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
 		220DCE281E0AB4DE002FE716 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -920,13 +934,10 @@
 		431144A61CC0CB0A0007639D /* Background */ = {
 			isa = PBXGroup;
 			children = (
-				4326D3FA1EFBC55C0016AB0D /* OperationError.swift */,
-				4326D3FC1EFBC7320016AB0D /* CoreDataError.swift */,
-				43D755F51F262B37006F933A /* PantomimeError.swift */,
+				15BBBC611FD0461000B9DCC8 /* Error */,
 				43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */,
 				1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */,
 				4356102B1DEF019400808C8E /* SyncMessagesOperation.swift */,
-				43A26FB91E0408FB00AF0B84 /* ErrorProtocol.swift */,
 				431144B61CC11D6A0007639D /* BaseOperation.swift */,
 				43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */,
 				5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */,
@@ -2132,6 +2143,7 @@
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
 				43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */,
 				43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */,
+				15BBBC631FD0496800B9DCC8 /* ReportingErrorContainer.swift in Sources */,
 				150B8E981FCDACBB00374438 /* ErrorPropagator.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
