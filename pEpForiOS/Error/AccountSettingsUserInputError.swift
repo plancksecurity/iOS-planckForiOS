@@ -2,7 +2,7 @@
 //  AccountSettingsUserInputError.swift
 //  pEpForiOS
 //
-//  Created by buff on 03.08.17.
+//  Created by Andreas Buff on 03.08.17.
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
@@ -44,7 +44,7 @@ extension testErrorLog: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .testError:
-            return NSLocalizedString("this error is only for test propuse", comment: "test error")
+            return NSLocalizedString("this error is only for testing purposes", comment: "test error")
         }
     }
 }

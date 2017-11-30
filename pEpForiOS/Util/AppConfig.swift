@@ -16,7 +16,7 @@ class AppConfig {
 
     let messageSyncService: MessageSyncServiceProtocol
 
-    let errorHandler : ErrHandler
+    let errorPropagator : ErrorPropagator
     /**
      As soon as the UI has at least one account that is in use, this is set here.
      */
@@ -29,9 +29,9 @@ class AppConfig {
 
     init(mySelfer: KickOffMySelfProtocol,
          messageSyncService: MessageSyncServiceProtocol,
-         errorHandler: ErrHandler) {
+         errorPropagator: ErrorPropagator) {
         self.messageSyncService = messageSyncService
         self.mySelfer = mySelfer
-        self.errorHandler = errorHandler
+        self.errorPropagator = errorPropagator
     }
 }

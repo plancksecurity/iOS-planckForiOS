@@ -12,7 +12,8 @@ public class LoginSmtpOperation: ConcurrentBaseOperation {
     var service: SmtpSend!
     var smtpSendData: SmtpSendData
 
-    public init(parentName: String = #function, smtpSendData: SmtpSendData,
+    public init(parentName: String = #function,
+                smtpSendData: SmtpSendData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.smtpSendData = smtpSendData
         super.init(parentName: parentName, errorContainer: errorContainer)

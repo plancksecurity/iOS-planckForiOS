@@ -19,10 +19,20 @@ public protocol NetworkServiceWorkerDelegate: class {
     /// Called finishing the last sync loop.
     /// No further sync loop will be triggered after this call.
     /// All operations finished before this call.
+    /// - Parameters:
+    ///   - worker: sender
     func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker)
 
-    /** Called after all operations have been canceled */
+    /// Called after all operations have been canceled
+    /// - Parameters:
+    ///   - worker: sender
     func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
+
+    /// Used to report errors in operation line.
+    /// - Parameters:
+    ///   - worker: sender
+    ///   - error: error reported by an operation in operation line
+    func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error)
 }
 
 open class NetworkServiceWorker {
@@ -187,41 +197,41 @@ open class NetworkServiceWorker {
         return result
     }
 
-    func buildSmtpOperations(
-        accountInfo: AccountConnectInfo, errorContainer: ServiceErrorProtocol,
-        opSmtpFinished: Operation, lastOperation: Operation?) -> (BaseOperation?, [Operation]) {
-        if let smtpCI = accountInfo.smtpConnectInfo {
-            // 3.a Items not associated with any mailbox (e.g., SMTP send)
-            let smtpSendData = SmtpSendData(connectInfo: smtpCI)
-            let loginOp = LoginSmtpOperation(
-                parentName: serviceConfig.parentName,
-                smtpSendData: smtpSendData, errorContainer: errorContainer)
-            loginOp.completionBlock = { [weak self] in
-                loginOp.completionBlock = nil
-                if let me = self {
-                    me.workerQueue.async {
-                        Log.info(component: #function, content: "opSmtpLogin finished")
-                    }
-                }
-            }
-            if let lastOp = lastOperation {
-                loginOp.addDependency(lastOp)
-            }
-            opSmtpFinished.addDependency(loginOp)
-            var operations = [Operation]()
-            operations.append(loginOp)
-
-            let sendOp = EncryptAndSendOperation(
-                parentName: serviceConfig.parentName, smtpSendData: smtpSendData,
-                errorContainer: errorContainer)
-            opSmtpFinished.addDependency(sendOp)
-            sendOp.addDependency(loginOp)
-            operations.append(sendOp)
-
-            return (sendOp, operations)
-        } else {
+    func buildSmtpOperations(accountInfo: AccountConnectInfo,
+                             errorContainer: ServiceErrorProtocol,
+                             opSmtpFinished: Operation,
+                             lastOperation: Operation?) -> (BaseOperation?, [Operation]) {
+        guard let smtpCI = accountInfo.smtpConnectInfo else {
             return (nil, [])
         }
+        // 3.a Items not associated with any mailbox (e.g., SMTP send)
+        let smtpSendData = SmtpSendData(connectInfo: smtpCI)
+        let loginOp = LoginSmtpOperation(parentName: serviceConfig.parentName,
+                                         smtpSendData: smtpSendData,
+                                         errorContainer: errorContainer)
+        loginOp.completionBlock = { [weak self] in
+            loginOp.completionBlock = nil
+            if let me = self {
+                me.workerQueue.async {
+                    Log.info(component: #function, content: "opSmtpLogin finished")
+                }
+            }
+        }
+        if let lastOp = lastOperation {
+            loginOp.addDependency(lastOp)
+        }
+        opSmtpFinished.addDependency(loginOp)
+        var operations = [Operation]()
+        operations.append(loginOp)
+
+        let sendOp = EncryptAndSendOperation(
+            parentName: serviceConfig.parentName, smtpSendData: smtpSendData,
+            errorContainer: errorContainer)
+        opSmtpFinished.addDependency(sendOp)
+        sendOp.addDependency(loginOp)
+        operations.append(sendOp)
+
+        return (sendOp, operations)
     }
 
     func buildSendOperations(
@@ -350,7 +360,7 @@ open class NetworkServiceWorker {
 
     func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
 
-        let errorContainer = ErrorContainer()
+        let errorContainer = ReportingErrorContainer(delegate: self)
 
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation { [weak self] in
@@ -394,14 +404,16 @@ open class NetworkServiceWorker {
             operations.append(debugTimerOp)
         #endif
 
-        let fixAttachmentsOp = FixAttachmentsOperation(
-            parentName: description, errorContainer: ErrorContainer())
+        // If we need to report errors while fixing attachmnets, use
+        // ReportingErrorContainer(delegate: self) here instead of ErrorContainer()
+        let fixAttachmentsOp = FixAttachmentsOperation(parentName: description,
+                                                       errorContainer: ErrorContainer())
         operations.append(fixAttachmentsOp)
         opAllFinished.addDependency(fixAttachmentsOp)
 
         // 3.a Items not associated with any mailbox (e.g., SMTP send)
         let (_, smtpOperations) = buildSmtpOperations(
-            accountInfo: accountInfo, errorContainer: ErrorContainer(),
+            accountInfo: accountInfo, errorContainer: ReportingErrorContainer(delegate: self),
             opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
         operations.append(contentsOf: smtpOperations)
 
@@ -475,8 +487,10 @@ open class NetworkServiceWorker {
                 lastImapOp = fetchMessagesOp
             }
 
-            let opDecrypt = DecryptMessagesOperation(
-                parentName: description, errorContainer: ErrorContainer())
+            // If we need to report errors while decrypting, use
+            // ReportingErrorContainer(delegate: self) here instead of ErrorContainer()
+            let opDecrypt = DecryptMessagesOperation(parentName: description,
+                                                     errorContainer: ErrorContainer())
 
             opDecrypt.addDependency(lastImapOp)
             opImapFinished.addDependency(opDecrypt)
@@ -582,6 +596,16 @@ open class NetworkServiceWorker {
         }
     }
 }
+
+// MARK: - ReportingErrorContainerDelegate
+
+extension NetworkServiceWorker: ReportingErrorContainerDelegate {
+    public func reportingErrorContainer(_ errorContainer: ReportingErrorContainer, didReceive error: Error) {
+        delegate?.networkServiceWorker(self, errorOccured: error)
+    }
+}
+
+// MARK: - CustomStringConvertible
 
 extension NetworkServiceWorker: CustomStringConvertible {
     public var description: String {

@@ -50,7 +50,7 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
                                      errorString: "We must have an errorHandler here!")
             return
         }
-        errorHandler?.handle(error: ImapSyncError.illegalState(#function))
+        errorHandler?.handle(error: ImapSyncError.authenticationFailed(#function))
     }
 
     public func connectionLost(_ sync: ImapSync, notification: Notification?) {

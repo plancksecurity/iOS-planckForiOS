@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BaseViewController: UIViewController {
+class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
     var appConfig: AppConfig? {
         get {
@@ -25,13 +25,12 @@ class BaseViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        appConfig?.errorHandler.subscribe(view: self)
+        appConfig?.errorPropagator.subscriber = self
+    }
+
+    // MARK: - ErrorPropagatorSubscriber
+
+    func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error: Error) {
+        UIUtils.show(error: error, inViewController: self)
     }
 }
-
-extension BaseViewController: handlerError {
-    func show(error: Error) {
-        showError(error: error)
-    }
-}
-

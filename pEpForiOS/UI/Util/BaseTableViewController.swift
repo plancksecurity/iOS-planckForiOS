@@ -8,23 +8,24 @@
 
 import UIKit
 
-class BaseTableViewController: UITableViewController {
+class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
 
     var originalTitleView: String?
 
     var appConfig: AppConfig {
         get {
-            guard let theAC = _appConfig else {
+            guard let safeConfig = _appConfig else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
 
                 // We have no config. Return nonsense.
                 return AppConfig(mySelfer: self,
-                                 messageSyncService: MessageSyncService(
-                                    sleepTimeInSeconds: 2, backgrounder: nil, mySelfer: nil),
-                                 errorHandler: ErrHandler())
+                                 messageSyncService: MessageSyncService( sleepTimeInSeconds: 2,
+                                                                         backgrounder: nil,
+                                                                         mySelfer: nil),
+                                 errorPropagator: ErrorPropagator())
             }
-            return theAC
+            return safeConfig
         }
         set {
             _appConfig = newValue
@@ -33,29 +34,28 @@ class BaseTableViewController: UITableViewController {
     }
 
     func didSetAppConfig() {
-        appConfig.errorHandler.subscribe(view: self)
+        // Do nothing. Meant to override in subclasses.
     }
 
-    // The soley reason for implementing this method is to make sure
-    // we did not forget to pass appConfig
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard _appConfig != nil else {
             Log.shared.errorAndCrash(component: #function,
-                                     errorString: "AppConfig is nil in viewWillAppear")
+                                     errorString: "AppConfig is nil in viewWillAppear!")
             return
         }
+        appConfig.errorPropagator.subscriber = self
+    }
+
+    // MARK: - ErrorPropagatorSubscriber
+
+    func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error: Error) {
+        UIUtils.show(error: error, inViewController: self)
     }
 }
 
 extension BaseTableViewController: KickOffMySelfProtocol {
     func startMySelf() {
         Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
-    }
-}
-
-extension BaseTableViewController: handlerError {
-    func show(error: Error) {
-        showError(error: error)
     }
 }
