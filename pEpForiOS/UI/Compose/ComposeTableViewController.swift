@@ -33,7 +33,7 @@ class ComposeTableViewController: BaseTableViewController {
     private let composeSection = 0
     private let attachmentSection = 1
     lazy private var attachmentFileIOQueue = DispatchQueue(label: "net.pep-security.ComposeTableViewController.attachmentFileIOQueue",
-                                                      qos: .userInitiated)
+                                                           qos: .userInitiated)
     private var tableDict: NSDictionary?
     private var composeData: ComposeDataSource? = nil
     private var nonInlinedAttachmentData = ComposeDataSource.AttachmentDataSource()
@@ -69,7 +69,6 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         registerXibs()
         addContactSuggestTable()
         prepareFields()
@@ -83,7 +82,7 @@ class ComposeTableViewController: BaseTableViewController {
         addAttachmentsForForwading()
     }
 
-    func prepareColor() {
+    func prepareColor() { //BUFF: rename. Does nothing with color
         destinyTo = [Identity]()
         destinyCc = [Identity]()
         destinyBcc = [Identity]()
@@ -124,6 +123,7 @@ class ComposeTableViewController: BaseTableViewController {
         if let fm = recipientCell.fieldModel, let om = originalMessage {
             switch fm.type {
             case .to:
+
                 if composeMode == .replyFrom, let from = om.from {
                     recipientCell.addIdentity(from)
                 }
@@ -133,15 +133,19 @@ class ComposeTableViewController: BaseTableViewController {
                         recipientCell.addIdentity(identity)
                     }
                     recipientCell.addIdentity(from)
+                }else if composeMode == .draft {
+                    for ident in om.to {
+                        recipientCell.addIdentity(ident)
+                    }
                 }
             case .cc:
-                if composeMode == .replyAll {
+                if composeMode == .replyAll || composeMode == .draft {
                     for ident in om.cc {
                         recipientCell.addIdentity(ident)
                     }
                 }
             case .bcc:
-                if composeMode == .replyAll {
+                if composeMode == .replyAll  || composeMode == .draft {
                     for ident in om.bcc {
                         recipientCell.addIdentity(ident)
                     }
@@ -153,23 +157,60 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    func updateInitialContent(messageBodyCell: MessageBodyCell) {
-        if let om = originalMessage, composeMode == .replyFrom || composeMode == .replyAll {
-            messageBodyCell.setInitial(
-                text: ReplyUtil.quotedMessageText(message: om, replyAll: composeMode == .replyAll))
+    private func updateInitialContent(messageBodyCell: MessageBodyCell) {
+        guard let om = originalMessage else {
+            // We have no original message. That's OK for compose mode .normal.
+            return
         }
-        if let om = originalMessage, composeMode == .forward {
+
+        switch composeMode {
+        case .replyFrom:
+            messageBodyCell.setInitial(text: ReplyUtil.quotedMessageText(message: om,
+                                                                         replyAll: false))
+        case .replyAll:
             messageBodyCell.setInitial(
-                text: ReplyUtil.quotedMessageText(message: om, replyAll: composeMode == .forward))
+                text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
+        case .forward:
+            messageBodyCell.setInitial(
+                text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
+        case .draft:
+            messageBodyCell.setInitial(text: om.longMessageFormatted ?? om.longMessage ?? "") //BUFF: tripple check body.
+        case .normal: fallthrough// do nothing.
+        default:
+            guard composeMode == .normal else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString:
+                    """
+.normal is the only compose mode that is intentionally ignored here
+""")
+                return
+            }
         }
     }
 
-    func updateInitialContent(composeCell: ComposeCell) {
-        if let om = originalMessage, composeMode == .replyFrom || composeMode == .replyAll {
-            composeCell.setInitial(text: ReplyUtil.replySubject(message: om))
+    private func updateInitialContent(subjectCell: ComposeCell) {
+        guard let om = originalMessage else {
+            // We have no original message. That's OK for compose mode .normal.
+            return
         }
-        if let om = originalMessage, composeMode == .forward {
-            composeCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
+        switch composeMode {
+        case .replyFrom,
+             .replyAll:
+            subjectCell.setInitial(text: ReplyUtil.replySubject(message: om))
+        case .forward:
+            subjectCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
+        case .draft:
+            subjectCell.setInitial(text: om.shortMessage ?? "")
+        case .normal: fallthrough// do nothing.
+        default:
+            guard composeMode == .normal else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString:
+                    """
+.normal is the only compose mode that is intentionally ignored here
+""")
+                return
+            }
         }
     }
 
@@ -185,7 +226,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func addAttachmentsForForwading() {
         if let om = originalMessage, composeMode == .forward {
-                nonInlinedAttachmentData.add(attachments: om.attachments)
+            nonInlinedAttachmentData.add(attachments: om.attachments)
         }
     }
 
@@ -254,7 +295,7 @@ class ComposeTableViewController: BaseTableViewController {
                 let inlinedAttachments = bodyCell.allInlinedAttachments()
                 // add non-inlined attachments to our message ...
                 message.attachments = nonInlinedAttachmentData.attachments()
-                
+
                 if inlinedAttachments.count > 0 {
                     // ... and also inlined ones, parsed from the text.
                     // This can only work fro images. I case we decide to inline generic file icons,
@@ -391,7 +432,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func fileName(forVideoAt url: URL) -> String {
         let fileName = NSLocalizedString("Video",
-                                                comment:
+                                         comment:
             "File name used for videos the user attaches.")
         let numAttachment = nonInlinedAttachmentData.count() + 1
         let numDisplay = numAttachment > 1 ? " " + String(numAttachment) : ""
@@ -568,20 +609,20 @@ class ComposeTableViewController: BaseTableViewController {
                 } else if let mc = cell as? MessageBodyCell {
                     updateInitialContent(messageBodyCell: mc)
                 } else if let fm = cell.fieldModel, fm.type == .subject {
-                    updateInitialContent(composeCell: cell)
+                    updateInitialContent(subjectCell: cell)
                 } else if let ac = cell as? AccountCell {
-                    setup(accountCell: ac)
+                    setup(ac)
                 }
             }
         } else if indexPath.section == attachmentSection {
             guard
                 let cell = tableView.dequeueReusableCell(
-                withIdentifier: AttachmentCell.storyboardID) as? AttachmentCell
+                    withIdentifier: AttachmentCell.storyboardID) as? AttachmentCell
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell")
                     return UITableViewCell()
             }
-            setup(attachmentCell: cell, forCellAtAttachmentRow: indexPath.row)
+            setup(cell, for: indexPath)
             returnee = cell
         } else {
             returnee = UITableViewCell()
@@ -668,19 +709,21 @@ ComposeTableView: Label of swipe left. Removing of attachment.
         tableView.register(nib, forCellReuseIdentifier: AttachmentCell.storyboardID)
     }
 
-    private func setup(attachmentCell cell: AttachmentCell, forCellAtAttachmentRow row: Int) {
-        guard let rowData = nonInlinedAttachmentData[row] else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data")
-            return
+    private func setup(_ cell: AttachmentCell, for indexPath: IndexPath) {
+        guard
+            indexPath.section == 1,
+            let rowData = nonInlinedAttachmentData[indexPath.row] else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No data")
+                return
         }
         cell.delegate = self
         cell.fileName.text = rowData.fileName
         cell.fileExtension.text = rowData.fileExtesion
     }
 
-    private func setup(accountCell cell: AccountCell) {
+    private func setup(_ cell: AccountCell) {
         let accounts = Account.all()
-        origin = origin ?? accounts.first?.user
+        origin = origin ?? accounts.first?.user //BUFF: tripple check
         cell.textView.text = origin?.address
         cell.pickerEmailAdresses = accounts.map { $0.user.address }
         cell.picker.reloadAllComponents()
@@ -712,7 +755,7 @@ ComposeTableView: Label of swipe left. Removing of attachment.
                     .default, {
                         if let msg = self.populateMessageForSending() {
                             let acc = msg.parent.account
-                            if let f = Folder.by(account:acc, folderType: .drafts) {
+                            if let f = Folder.by(account:acc, folderType: .drafts) { //BUFF:
                                 msg.parent = f
                                 msg.save()
                             }
@@ -830,7 +873,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
 
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {
 
-        
+
     }
 
     func messageCanBeSend(value: Bool) {
@@ -914,8 +957,8 @@ extension ComposeTableViewController: SegueHandlerType {
         switch segueIdentifier(for: segue) {
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                    return
+                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                return
             }
             destination.appConfig = self.appConfig
             destination.message = populateMessageForSending()
