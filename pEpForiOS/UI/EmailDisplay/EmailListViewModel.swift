@@ -215,8 +215,8 @@ class EmailListViewModel {
             let message = previewMessage.message() else {
                 return
         }
-        previewMessage.isFlagged = flagged
         message.imapFlags?.flagged = flagged
+        didUpdate(messageFolder: message)
         DispatchQueue.main.async {
             message.save()
         }
@@ -480,17 +480,32 @@ extension EmailListViewModel: MessageFolderDelegate {
             // We got called even the flaggs did not change. Ignore.
             return
         }
+        
         let indexToRemove = pvMsgs.index(of: existingMessage)
         pvMsgs.removeObject(at: indexToRemove)
+
+        if let filter = folderToShow?.filter,
+            !filter.fulfilsFilter(message: message) {
+            // The message was included in the model, but does not fulfil the filter criteria
+            // anymore after it has been updated.
+            // Remove it.
+            let indexPath = IndexPath(row: indexToRemove, section: 0)
+            DispatchQueue.main.async {
+                self.delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+            }
+            return
+        }
+        // The updated message has to be shown. Add it to the model ...
         let indexInserted = pvMsgs.insert(object: previewMessage)
-        if indexToRemove != indexInserted  {
-            Log.shared.warn(component: #function,
-                            content:
-                """
-We might have to serialize access to messages due to possible concurrent access from outside
+        if indexToRemove != indexInserted  {Log.shared.warn(component: #function,
+                                                            content:
+            """
+When updating a message, the the new index of the message must be the same as the old index.
+Something is fishy here.
 """
             )
         }
+        // ...  and inform the delegate.
         let indexPath = IndexPath(row: indexInserted, section: 0)
         DispatchQueue.main.async {
             self.delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
