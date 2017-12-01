@@ -198,6 +198,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         queue(operation: op, for: indexPath)
     }
+
+    private func showComposeView() {
+        self.performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
+    }
+
+    private func showEmail(forCellAt indexPath: IndexPath) {
+        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+            return
+        }
+        vm.markRead(forIndexPath: indexPath)
+    }
     
     // MARK: - Actions
     
@@ -306,14 +319,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        lastSelectedIndexPath = indexPath
-        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
-        guard let vm = model else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+        guard let folder = folderToShow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
             return
         }
-        vm.markRead(forIndexPath: indexPath)
+        lastSelectedIndexPath = indexPath
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+
+        if folder.folderType == .drafts {
+            showComposeView()
+        } else {
+            showEmail(forCellAt: indexPath)
+        }
     }
 
     // Implemented to get informed about the scrolling position.
@@ -494,42 +511,21 @@ extension EmailListViewController: SegueHandlerType {
         case segueReply
         case segueReplyAll
         case segueForward
+        case segueEditDraft
         case segueFilter
         case segueFolderViews
         case noSegue
     }
     
-    private func setup(composeViewController vc: ComposeTableViewController,
-                       composeMode: ComposeTableViewController.ComposeMode = .normal,
-                       originalMessage: Message? = nil) {
-        vc.appConfig = appConfig
-        vc.composeMode = composeMode
-        vc.originalMessage = originalMessage
-        vc.origin = folderToShow?.account.user
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .segueReply:
-            guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController,
-                let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                    return
-            }
-            setup(composeViewController: destination, composeMode: .replyFrom,
-                  originalMessage: message)
-        case .segueReplyAll:
-            guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController,
-                let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                    return
-            }
-            setup(composeViewController: destination, composeMode: .replyAll,
-                  originalMessage: message)
+        let segueId = segueIdentifier(for: segue)
+        switch segueId {
+        case .segueReply,
+             .segueReplyAll,
+             .segueForward,
+             .segueCompose,
+             .segueEditDraft:
+            setupComposeViewController(for: segue)
         case .segueShowEmail:
             guard let vc = segue.destination as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
@@ -541,16 +537,6 @@ extension EmailListViewController: SegueHandlerType {
             vc.message = message
             vc.folderShow = folderToShow
             vc.messageId = indexPath.row //that looks wrong
-        case .segueForward:
-            guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController,
-                let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                    return
-            }
-            setup(composeViewController: destination, composeMode: .forward,
-                  originalMessage: message)
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -577,13 +563,6 @@ extension EmailListViewController: SegueHandlerType {
             vC.appConfig = appConfig
             vC.hidesBottomBarWhenPushed = true
             break
-        case .segueCompose:
-            guard let nav = segue.destination as? UINavigationController,
-                let destination = nav.rootViewController as? ComposeTableViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                    return
-            }
-            setup(composeViewController: destination)
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
@@ -592,6 +571,50 @@ extension EmailListViewController: SegueHandlerType {
     
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
         // nothing to do.
+    }
+
+    private func setupComposeViewController(for segue: UIStoryboardSegue) {
+        let segueId = segueIdentifier(for: segue)
+        guard
+            let nav = segue.destination as? UINavigationController,
+            let composeVc = nav.topViewController as? ComposeTableViewController,
+            let composeMode = composeMode(for: segueId) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "composeViewController setup issue")
+                return
+        }
+        composeVc.appConfig = appConfig
+        composeVc.composeMode = composeMode
+        composeVc.origin = folderToShow?.account.user
+        if composeMode != .normal {
+            // This is not a simple compose (but reply, forward or such),
+            // thus we have to pass the original meaasge.
+            guard
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath) else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "No original message")
+                    return
+            }
+            composeVc.originalMessage = message
+        }
+    }
+
+    private func composeMode(for segueId: SegueIdentifier) -> ComposeTableViewController.ComposeMode? {
+        switch segueId {
+        case .segueReply:
+            return .replyFrom
+        case .segueReplyAll:
+            return .replyAll
+        case .segueForward:
+            return .forward
+        case .segueCompose:
+            return .normal
+        case .segueEditDraft:
+            return .draft
+        default:
+            return nil
+        }
     }
 }
 

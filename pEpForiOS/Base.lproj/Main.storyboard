@@ -168,6 +168,7 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="YH0-dx-pSs"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReply" id="I15-Dm-oo1"/>
                         <segue destination="3bx-34-vLD" kind="show" identifier="segueShowEmail" id="CUV-ox-IiR"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueEditDraft" id="fJ0-cY-ZEb"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1025,6 +1026,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="QeL-n1-BY9"/>
-        <segue reference="2fD-kL-Bvj"/>
+        <segue reference="fJ0-cY-ZEb"/>
     </inferredMetricsTieBreakers>
 </document>
