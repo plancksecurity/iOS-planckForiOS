@@ -264,28 +264,39 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return cell
     }
     
-    // MARK: - UITableViewDelegate
-
+    // MARK: - SwipeTableViewCellDelegate
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
+            /// Create swipe actions, taking the currently displayed folder into account
+            var swipeActions = [SwipeAction]()
             let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
                 self.deleteAction(forCellAt: indexPath)
             }
             configure(action: deleteAction, with: .trash)
+            swipeActions.append(deleteAction)
 
             let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
                 self.flagAction(forCellAt: indexPath)
             }
             flagAction.hidesWhenSelected = true
             configure(action: flagAction, with: .flag)
+            swipeActions.append(flagAction)
 
-            let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
-                self.moreAction(forCellAt: indexPath)
+            guard let folder = folderToShow else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+                return nil
             }
-            moreAction.hidesWhenSelected = true
-            configure(action: moreAction, with: .more)
-            return (orientation == .right ?   [deleteAction, flagAction, moreAction] : nil)
+            if folder.folderType != .drafts {
+                // Do not add "more" actions (reply...) to drafted mails.
+                let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
+                    self.moreAction(forCellAt: indexPath)
+                }
+                moreAction.hidesWhenSelected = true
+                configure(action: moreAction, with: .more)
+                swipeActions.append(moreAction)
+            }
+            return (orientation == .right ?   swipeActions : nil)
         }
 
         return nil
