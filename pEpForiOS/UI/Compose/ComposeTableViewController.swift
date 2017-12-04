@@ -154,11 +154,12 @@ class ComposeTableViewController: BaseTableViewController {
             return
         }
         origin = om.parent.account.user
-        if composeMode == .replyFrom {
+        switch composeMode {
+        case .replyFrom:
             if let from = om.from {
                 destinyTo.append(from)
             }
-        } else if composeMode == .replyAll {
+        case .replyAll:
             if let from = om.from {
                 destinyTo.append(from)
             }
@@ -171,7 +172,14 @@ class ComposeTableViewController: BaseTableViewController {
             for id in om.cc {
                 destinyCc.append(id)
             }
-        } else if composeMode == .draft {
+            case .normal:
+                // Do nothing, has no recipient by definition, can not be send.
+            break
+        case .forward:
+            // Do nothing. A initial forwarded message has no recipient by definition and thus
+            // can not be send.
+            break
+        case .draft:
             for id in om.to {
                 destinyTo.append(id)
             }
@@ -181,9 +189,6 @@ class ComposeTableViewController: BaseTableViewController {
             for id in om.bcc {
                 destinyBcc.append(id)
             }
-        } else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Unhadled case for having an original message")
         }
 
         if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
