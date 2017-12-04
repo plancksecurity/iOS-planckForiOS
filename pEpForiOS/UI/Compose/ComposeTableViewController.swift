@@ -72,7 +72,7 @@ class ComposeTableViewController: BaseTableViewController {
         registerXibs()
         addContactSuggestTable()
         prepareFields()
-        prepareColor()
+        //        setCanBeSendStatus()//BUFF:
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -80,37 +80,7 @@ class ComposeTableViewController: BaseTableViewController {
         composeData?.filterRows(message: nil)
         setEmailDisplayDefaultNavigationBarStyle()
         takeOverAttachmentsIfRequired()
-    }
-
-    func prepareColor() { //BUFF: rename. Does nothing with color
-        destinyTo = [Identity]()
-        destinyCc = [Identity]()
-        destinyBcc = [Identity]()
-        if let om = originalMessage {
-            origin = om.parent.account.user
-            if composeMode == .replyFrom {
-                if let from = om.from {
-                    destinyTo.append(from)
-                }
-            }
-            if composeMode == .replyAll {
-                if let from = om.from {
-                    destinyTo.append(from)
-                }
-                let to = om.to
-                for id in to {
-                    if !id.isMySelf {
-                        destinyTo.append(id)
-                    }
-                }
-                for id in om.cc {
-                    destinyCc.append(id)
-                }
-            }
-        }
-        if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
-            messageCanBeSend(value: true)
-        }
+        setInitialSendButtonStatus()
     }
 
     // MARK: - Setup & Configuration
@@ -171,6 +141,54 @@ class ComposeTableViewController: BaseTableViewController {
             default:
                 break
             }
+        }
+    }
+
+    private func setInitialSendButtonStatus() {
+        destinyTo = [Identity]()
+        destinyCc = [Identity]()
+        destinyBcc = [Identity]()
+        guard let om = originalMessage else {
+            // Nothing to do.
+            // We have no original message, thus recipient fileds must be empty,
+            // thus we can not send the mail and.
+            return
+        }
+        origin = om.parent.account.user
+        if composeMode == .replyFrom {
+            if let from = om.from {
+                destinyTo.append(from)
+            }
+        } else if composeMode == .replyAll {
+            if let from = om.from {
+                destinyTo.append(from)
+            }
+            let to = om.to
+            for id in to {
+                if !id.isMySelf {
+                    destinyTo.append(id)
+                }
+            }
+            for id in om.cc {
+                destinyCc.append(id)
+            }
+        } else if composeMode == .draft {
+            for id in om.to {
+                destinyTo.append(id)
+            }
+            for id in om.cc {
+                destinyCc.append(id)
+            }
+            for id in om.bcc {
+                destinyBcc.append(id)
+            }
+        } else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Unhadled case for having an original message")
+        }
+
+        if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
+            messageCanBeSend(value: true)
         }
     }
 
