@@ -72,7 +72,6 @@ class ComposeTableViewController: BaseTableViewController {
         registerXibs()
         addContactSuggestTable()
         prepareFields()
-        //        setCanBeSendStatus()//BUFF:
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -209,7 +208,7 @@ class ComposeTableViewController: BaseTableViewController {
             messageBodyCell.setInitial(
                 text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
         case .draft:
-            messageBodyCell.setInitial(text: om.longMessageFormatted ?? om.longMessage ?? "") //BUFF: tripple check body.
+            messageBodyCell.setInitial(text: om.longMessageFormatted ?? om.longMessage ?? "")
         case .normal: fallthrough// do nothing.
         default:
             guard composeMode == .normal else {
