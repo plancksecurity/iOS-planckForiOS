@@ -254,7 +254,7 @@ class ComposeTableViewController: BaseTableViewController {
                 "We must take over attachments from original message, but original message is nil.")
             return
         }
-        nonInlinedAttachmentData.add(attachments: om.attachments)
+        nonInlinedAttachmentData.add(attachments: om.viewableAttachments())
     }
 
     /// Computes whether or not attachments must be taken over in current compose mode
