@@ -736,11 +736,31 @@ ComposeTableView: Label of swipe left. Removing of attachment.
         action.backgroundColor = descriptor.color
     }
 
-    // MARK: - other
+    // MARK: - Other
 
     private func registerXibs() {
         let nib = UINib(nibName: AttachmentCell.storyboardID, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: AttachmentCell.storyboardID)
+    }
+
+    private func saveDraft() {
+        if self.composeMode == .draft {
+            // We are in drafts folder and, from user perespective, are editing a drafted mail.
+            // Technically we have to create a new one and delete the original message, as the
+            // mail is already synced with the IMAP server and thus we must not modify it.
+            self.deleteOriginalMessage()
+        }
+
+        if let msg = self.populateMessageFromUserInput() {
+            let acc = msg.parent.account
+            if let f = Folder.by(account:acc, folderType: .drafts) {
+                msg.parent = f
+                msg.save()
+            }
+        } else {
+            Log.error(component: #function,
+                      errorString: "No message")
+        }
     }
 
     private func deleteOriginalMessage() {
@@ -780,24 +800,10 @@ ComposeTableView: Label of swipe left. Removing of attachment.
             text = NSLocalizedString("Save", comment: "compose email save")
         }
 
-        action = ac.action(text, .default, {
-            // From user perespective we are editing a drafted mail.
-            // Technically we have to create a new one and delete the original message, as the
-            // mail is already synced with the IMAP server and thus we must not modify it.
-            self.deleteOriginalMessage()
-
-            if let msg = self.populateMessageFromUserInput() { //BUFF: TODO: do *not* save new. Add uid, uuid?
-                let acc = msg.parent.account
-                if let f = Folder.by(account:acc, folderType: .drafts) {
-                    msg.parent = f
-                    msg.save()
-                }
-            } else {
-                Log.error(component: #function,
-                          errorString: "No message")
-            }
+        action = ac.action(text, .default) {
+            self.saveDraft()
             self.dismiss()
-        })
+        }
         return action
     }
 
