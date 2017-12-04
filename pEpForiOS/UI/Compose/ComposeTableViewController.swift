@@ -79,7 +79,7 @@ class ComposeTableViewController: BaseTableViewController {
         super.viewWillAppear(animated)
         composeData?.filterRows(message: nil)
         setEmailDisplayDefaultNavigationBarStyle()
-        addAttachmentsForForwading()
+        takeOverAttachmentsIfRequired()
     }
 
     func prepareColor() { //BUFF: rename. Does nothing with color
@@ -241,10 +241,27 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    private func addAttachmentsForForwading() {
-        if let om = originalMessage, composeMode == .forward {
-            nonInlinedAttachmentData.add(attachments: om.attachments)
+    /// If appropriate for the current compose mode, it takes over attachments
+    /// from original message.
+    /// Does nothing otherwise
+    private func takeOverAttachmentsIfRequired() {
+        guard shouldTakeOverAttachments() else {
+            return // Nothing to do.
         }
+        guard let om = originalMessage else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString:
+                "We must take over attachments from original message, but original message is nil.")
+            return
+        }
+        nonInlinedAttachmentData.add(attachments: om.attachments)
+    }
+
+    /// Computes whether or not attachments must be taken over in current compose mode
+    ///
+    /// - Returns: true if we must take over attachments from the original message, false otherwize
+    private func shouldTakeOverAttachments() -> Bool {
+        return composeMode == .forward || composeMode == .draft
     }
 
     // MARK: - Address Suggstions
@@ -759,17 +776,16 @@ ComposeTableView: Label of swipe left. Removing of attachment.
         if composeMode == .draft {
             text = NSLocalizedString("Save changes", comment:
                 "ComposeTableView: button to decide to save changes made on a drafted mail.")
-
-            // From user perespective we are editing a drafted mail.
-            // Technically we have to create a new one and delete the original message, as the
-            // mail is already synced with the IMAP server and thus we must not modify it.
-            deleteOriginalMessage()
-
         } else {
             text = NSLocalizedString("Save", comment: "compose email save")
         }
 
         action = ac.action(text, .default, {
+            // From user perespective we are editing a drafted mail.
+            // Technically we have to create a new one and delete the original message, as the
+            // mail is already synced with the IMAP server and thus we must not modify it.
+            self.deleteOriginalMessage()
+
             if let msg = self.populateMessageFromUserInput() { //BUFF: TODO: do *not* save new. Add uid, uuid?
                 let acc = msg.parent.account
                 if let f = Folder.by(account:acc, folderType: .drafts) {
