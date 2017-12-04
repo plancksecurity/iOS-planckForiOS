@@ -750,7 +750,7 @@ ComposeTableView: Label of swipe left. Removing of attachment.
                 "We are currently editing a drafted mail but have no originalMessage?")
             return
         }
-        om.delete()
+        om.imapDeleteAndMarkTrashed()
     }
 
     // MARK: - UIAlertController

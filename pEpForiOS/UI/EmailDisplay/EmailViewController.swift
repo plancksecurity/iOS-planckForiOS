@@ -205,7 +205,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
-        message?.delete() // mark for deletion/trash
+        message?.imapDelete() // mark for deletion/trash
         _ = navigationController?.popViewController(animated: true)
     }
 

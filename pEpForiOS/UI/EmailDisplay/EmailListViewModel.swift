@@ -199,7 +199,7 @@ class EmailListViewModel {
                 return
         }
         messages?.remove(object: previewMessage)
-        message.delete()
+        message.imapDelete()
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
