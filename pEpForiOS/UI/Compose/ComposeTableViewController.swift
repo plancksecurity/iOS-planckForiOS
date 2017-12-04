@@ -143,17 +143,15 @@ class ComposeTableViewController: BaseTableViewController {
         if let fm = recipientCell.fieldModel, let om = originalMessage {
             switch fm.type {
             case .to:
-
                 if composeMode == .replyFrom, let from = om.from {
                     recipientCell.addIdentity(from)
-                }
-                if composeMode == .replyAll, let from = om.from {
+                } else if composeMode == .replyAll, let from = om.from {
                     let to = om.to
                     for identity in to {
                         recipientCell.addIdentity(identity)
                     }
                     recipientCell.addIdentity(from)
-                }else if composeMode == .draft {
+                } else if composeMode == .draft {
                     for ident in om.to {
                         recipientCell.addIdentity(ident)
                     }
@@ -170,7 +168,6 @@ class ComposeTableViewController: BaseTableViewController {
                         recipientCell.addIdentity(ident)
                     }
                 }
-                break
             default:
                 break
             }
