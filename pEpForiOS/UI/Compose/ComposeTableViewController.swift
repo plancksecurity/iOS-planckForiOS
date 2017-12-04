@@ -129,7 +129,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func setup(_ cell: AccountCell) {
         let accounts = Account.all()
-        origin = origin ?? accounts.first?.user // Wrong. Use default account 
+        origin = origin ?? Account.defaultAccount()?.user
         cell.textView.text = origin?.address
         cell.pickerEmailAdresses = accounts.map { $0.user.address }
         cell.picker.reloadAllComponents()
