@@ -115,11 +115,31 @@ class ComposeTableViewController: BaseTableViewController {
 
     // MARK: - Setup & Configuration
 
+    private func setup(_ cell: AttachmentCell, for indexPath: IndexPath) {
+        guard
+            indexPath.section == 1,
+            let rowData = nonInlinedAttachmentData[indexPath.row] else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No data")
+                return
+        }
+        cell.delegate = self
+        cell.fileName.text = rowData.fileName
+        cell.fileExtension.text = rowData.fileExtesion
+    }
+
+    private func setup(_ cell: AccountCell) {
+        let accounts = Account.all()
+        origin = origin ?? accounts.first?.user // Wrong. Use default account 
+        cell.textView.text = origin?.address
+        cell.pickerEmailAdresses = accounts.map { $0.user.address }
+        cell.picker.reloadAllComponents()
+    }
+
     /**
      Updates the given `RecipientCell` with data from the `originalMessage`,
      if this is a suitable `ComposeMode`.
      */
-    func updateInitialContent(recipientCell: RecipientCell) {
+    private func updateInitialContent(recipientCell: RecipientCell) {
         if let fm = recipientCell.fieldModel, let om = originalMessage {
             switch fm.type {
             case .to:
@@ -250,7 +270,7 @@ class ComposeTableViewController: BaseTableViewController {
         suggestTableView.frame.size.height = tableView.bounds.size.height - pos + 2
     }
 
-    fileprivate final func populateMessageForSending() -> Message? {
+    fileprivate final func populateMessageFromUserInput() -> Message? {
         let fromCells = allCells.filter { $0.fieldModel?.type == .from }
         guard fromCells.count == 1,
             let fromCell = fromCells.first,
@@ -709,64 +729,86 @@ ComposeTableView: Label of swipe left. Removing of attachment.
         tableView.register(nib, forCellReuseIdentifier: AttachmentCell.storyboardID)
     }
 
-    private func setup(_ cell: AttachmentCell, for indexPath: IndexPath) {
-        guard
-            indexPath.section == 1,
-            let rowData = nonInlinedAttachmentData[indexPath.row] else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No data")
-                return
+    private func deleteOriginalMessage() {
+        guard let om = originalMessage else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString:
+                "We are currently editing a drafted mail but have no originalMessage?")
+            return
         }
-        cell.delegate = self
-        cell.fileName.text = rowData.fileName
-        cell.fileExtension.text = rowData.fileExtesion
+        om.delete()
     }
 
-    private func setup(_ cell: AccountCell) {
-        let accounts = Account.all()
-        origin = origin ?? accounts.first?.user //BUFF: tripple check
-        cell.textView.text = origin?.address
-        cell.pickerEmailAdresses = accounts.map { $0.user.address }
-        cell.picker.reloadAllComponents()
+    // MARK: - UIAlertController
+
+    private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        let action: UIAlertAction
+        let text: String
+        if composeMode == .draft {
+            text = NSLocalizedString("Discharge changes", comment:
+                "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
+        } else {
+            text = NSLocalizedString("Delete", comment: "compose email delete")
+        }
+        action = ac.action(text, .destructive) {
+            self.dismiss()
+        }
+        return action
+    }
+
+    private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        let action: UIAlertAction
+        let text:String
+        if composeMode == .draft {
+            text = NSLocalizedString("Save changes", comment:
+                "ComposeTableView: button to decide to save changes made on a drafted mail.")
+
+            // From user perespective we are editing a drafted mail.
+            // Technically we have to create a new one and delete the original message, as the
+            // mail is already synced with the IMAP server and thus we must not modify it.
+            deleteOriginalMessage()
+
+        } else {
+            text = NSLocalizedString("Save", comment: "compose email save")
+        }
+
+        action = ac.action(text, .default, {
+            if let msg = self.populateMessageFromUserInput() { //BUFF: TODO: do *not* save new. Add uid, uuid?
+                let acc = msg.parent.account
+                if let f = Folder.by(account:acc, folderType: .drafts) {
+                    msg.parent = f
+                    msg.save()
+                }
+            } else {
+                Log.error(component: #function,
+                          errorString: "No message")
+            }
+            self.dismiss()
+        })
+        return action
+    }
+
+    private func showAlertControllerWithOptionsForCanceling() {
+        let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertCtrl.view.tintColor = .pEpGreen
+        if let popoverPresentationController = alertCtrl.popoverPresentationController {
+            popoverPresentationController.sourceView = view
+        }
+        alertCtrl.addAction(alertCtrl.action(NSLocalizedString("Cancel",
+                                                               comment: "compose email cancel"),
+                                             .cancel,
+                                             {}))
+        alertCtrl.addAction(deleteAction(forAlertController: alertCtrl))
+        alertCtrl.addAction(saveAction(forAlertController: alertCtrl))
+
+        present(alertCtrl, animated: true, completion: nil)
     }
 
     // MARK: - IBActions
 
     @IBAction func cancel() {
         if edited {
-            let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alertCtrl.view.tintColor = .pEpGreen
-            if let popoverPresentationController = alertCtrl.popoverPresentationController {
-                popoverPresentationController.sourceView = view
-            }
-
-            alertCtrl.addAction(
-                alertCtrl.action(NSLocalizedString("Cancel", comment: "compose email cancel"),
-                                 .cancel, {}))
-
-            alertCtrl.addAction(
-                alertCtrl.action(NSLocalizedString("Delete", comment: "compose email delete"),
-                                 .destructive, {
-                                    self.dismiss()
-                }))
-
-            alertCtrl.addAction(
-                alertCtrl.action(
-                    NSLocalizedString("Save", comment: "compose email save"),
-                    .default, {
-                        if let msg = self.populateMessageForSending() {
-                            let acc = msg.parent.account
-                            if let f = Folder.by(account:acc, folderType: .drafts) { //BUFF:
-                                msg.parent = f
-                                msg.save()
-                            }
-                        } else {
-                            Log.error(component: #function,
-                                      errorString: "No message")
-                        }
-                        self.dismiss()
-                }))
-
-            present(alertCtrl, animated: true, completion: nil)
+           showAlertControllerWithOptionsForCanceling()
         } else {
             self.dismiss()
         }
@@ -777,7 +819,7 @@ ComposeTableView: Label of swipe left. Removing of attachment.
     }
 
     @IBAction func send() {
-        if let msg = populateMessageForSending() {
+        if let msg = populateMessageFromUserInput() {
             msg.save()
         } else {
             Log.error(component: #function, errorString: "No message for sending")
@@ -961,7 +1003,7 @@ extension ComposeTableViewController: SegueHandlerType {
                 return
             }
             destination.appConfig = self.appConfig
-            destination.message = populateMessageForSending()
+            destination.message = populateMessageFromUserInput()
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break

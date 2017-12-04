@@ -119,7 +119,7 @@ extension RecipientCell {
         return true
     }
 
-    func generateContact(_ textView: UITextView) -> Bool {
+    @discardableResult  func generateContact(_ textView: UITextView) -> Bool {
         guard let cTextview = textView as? ComposeTextView else { return false }
         var mail = false
         var string = cTextview.attributedText.string.cleanAttachments
