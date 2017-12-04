@@ -26,7 +26,7 @@ class MessageAttachmentsCell: MessageCell {
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
-        guard message.underAttack != true else {
+        guard message.underAttack == false else {
             return
         }
         if let m = lastMessage, m == message {
