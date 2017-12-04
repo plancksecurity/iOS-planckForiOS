@@ -116,6 +116,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="accessoryDisclosureIndicator" destination="MDV-jl-oqJ" id="qFC-0O-RXG"/>
                                     <outlet property="attachmentIcon" destination="3BC-6k-zL0" id="ZMO-5d-OGj"/>
                                     <outlet property="contactImageView" destination="YqR-ga-Tf9" id="E2c-EP-D1U"/>
                                     <outlet property="dateLabel" destination="Wkg-wf-Dbd" id="TSP-tH-GR2"/>

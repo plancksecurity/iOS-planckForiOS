@@ -29,6 +29,7 @@ class EmailListViewCell: SwipeTableViewCell {
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
 
+    @IBOutlet weak var accessoryDisclosureIndicator: UIImageView!
     var isFlagged:Bool = false {
         didSet {
             if isFlagged {

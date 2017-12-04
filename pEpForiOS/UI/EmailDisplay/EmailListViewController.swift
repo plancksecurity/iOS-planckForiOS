@@ -153,6 +153,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
             return
         }
+        guard let folder = folderToShow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+            return
+        }
+        if folder.folderType == .drafts {
+            // Mails in drafts folder can only be opened in compose mode, which is shown modally.
+            cell.accessoryDisclosureIndicator.isHidden = true
+        }
         cell.senderLabel.text = row.from
         cell.subjectLabel.text = row.subject
         cell.summaryLabel.text = row.bodyPeek
@@ -162,7 +170,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         cell.dateLabel.text = row.dateText
         // Set image from cache if any
         cell.setContactImage(image: row.senderContactImage)
-        
+
         let op = BlockOperation() { [weak self] in
             MessageModel.performAndWait {
                 // ... and expensive computations in background
