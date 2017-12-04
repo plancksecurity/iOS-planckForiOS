@@ -19,7 +19,7 @@ extension Message {
         self.save()
     }
 
-    /// Sets flag "deleted" and sets trashed status to "trashed".
+    /// Sets flag "deleted".
     /// Use this method if you want the message to be copied to trash folder.
     func imapDelete() {
         let theFlags = imapFlags ?? ImapFlags()
