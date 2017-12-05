@@ -17,6 +17,7 @@ class PreviewMessage: Equatable {
     var pEpRating: Int
     let hasAttachments: Bool
     let from: Identity
+    let to: String
     let subject: String
     var bodyPeek: String
     var isFlagged = false
@@ -34,6 +35,7 @@ class PreviewMessage: Equatable {
             pEpRating = rating
             hasAttachments = msg.attachments.count > 0
             from = saveFrom
+            to = msg.to.first?.userNameOrAddress ?? ""
             subject = msg.shortMessage ?? ""
             isFlagged = msg.imapFlags?.flagged ?? false
             isSeen = msg.imapFlags?.seen ?? false
@@ -52,6 +54,7 @@ class PreviewMessage: Equatable {
             pEpRating = 0
             hasAttachments = msg.attachments.count > 0
             from = Identity(address: "")
+            to = msg.to.first?.userNameOrAddress ?? ""
             subject = msg.shortMessage ?? ""
             bodyPeek = msg.longMessageFormatted ?? msg.longMessage ?? ""
             isFlagged = msg.imapFlags?.flagged ?? false
@@ -59,7 +62,6 @@ class PreviewMessage: Equatable {
             dateSent = Date()
         }
     }
-
 
     private func displayBody(fromMessage msg: Message) -> String {
         var body: String?

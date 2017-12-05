@@ -143,6 +143,42 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private func realNameOfFolderToShow() -> String? {
         return folderToShow?.realName
     }
+
+    private func address(forRowAt indexPath: IndexPath) -> String {
+        guard
+            let saveModel = model,
+            let row = saveModel.row(for: indexPath),
+            let folder = folderToShow
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                return ""
+        }
+        switch folder.folderType {
+        case .all: fallthrough
+        case .archive: fallthrough
+        case .spam: fallthrough
+        case .trash: fallthrough
+        case .flagged: fallthrough
+        case .inbox: fallthrough
+        case .normal:
+            return row.from
+        case .drafts: fallthrough
+        case .sent:
+            return row.to
+        }
+    }
+
+    private func shouldShowAccessoryDisclosureIndicator() -> Bool {
+        guard let folder = folderToShow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+            return true
+        }
+        if folder.folderType == .drafts {
+            // Mails in drafts folder can only be opened in compose mode, which is shown modally.
+            return false
+        }
+        return true
+    }
     
     private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {
         // Configure lightweight stuff on main thread ...
@@ -153,15 +189,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
             return
         }
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
-            return
-        }
-        if folder.folderType == .drafts {
-            // Mails in drafts folder can only be opened in compose mode, which is shown modally.
-            cell.accessoryDisclosureIndicator.isHidden = true
-        }
-        cell.senderLabel.text = row.from
+        // Mails in drafts folder can only be opened in compose mode, which is shown modally.
+        cell.accessoryDisclosureIndicator.isHidden = shouldShowAccessoryDisclosureIndicator()
+        cell.addressLabel.text = address(forRowAt: indexPath)
         cell.subjectLabel.text = row.subject
         cell.summaryLabel.text = row.bodyPeek
         cell.isFlagged = row.isFlagged
@@ -182,7 +212,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 var senderImage: UIImage?
                 if row.senderContactImage == nil {
                     // image for identity has not been cached yet
-                    // Get and cache it here in the background ...
+                    // Get (and cache) it here in the background ...
                     senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
                     
                     // ... and set it on the main queue

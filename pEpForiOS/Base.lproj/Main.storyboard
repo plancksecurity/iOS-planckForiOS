@@ -117,12 +117,12 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="accessoryDisclosureIndicator" destination="MDV-jl-oqJ" id="qFC-0O-RXG"/>
+                                    <outlet property="addressLabel" destination="tWZ-jW-sUg" id="4xO-Zs-PDB"/>
                                     <outlet property="attachmentIcon" destination="3BC-6k-zL0" id="ZMO-5d-OGj"/>
                                     <outlet property="contactImageView" destination="YqR-ga-Tf9" id="E2c-EP-D1U"/>
                                     <outlet property="dateLabel" destination="Wkg-wf-Dbd" id="TSP-tH-GR2"/>
                                     <outlet property="flaggedImageView" destination="BLq-0g-OgR" id="a6H-Fv-kDq"/>
                                     <outlet property="ratingImage" destination="m0u-Jn-mQU" id="Xod-5v-9K3"/>
-                                    <outlet property="senderLabel" destination="tWZ-jW-sUg" id="lM6-YZ-J7S"/>
                                     <outlet property="subjectLabel" destination="5Py-55-oem" id="UtV-Po-SPg"/>
                                     <outlet property="summaryLabel" destination="BvI-Zi-zU6" id="oGG-8D-EeC"/>
                                 </connections>

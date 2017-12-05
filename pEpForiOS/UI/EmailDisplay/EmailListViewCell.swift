@@ -15,7 +15,7 @@ class EmailListViewCell: SwipeTableViewCell {
     static var flaggedImage: UIImage? = nil
     static var emptyContactImage = UIImage.init(named: "empty-avatar")
 
-    @IBOutlet weak var senderLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
@@ -87,7 +87,7 @@ class EmailListViewCell: SwipeTableViewCell {
     }
 
     private func resetToDefault() {
-        senderLabel.text = nil
+        addressLabel.text = nil
         subjectLabel.text = nil
         summaryLabel.text = nil
         dateLabel.text = nil
@@ -116,21 +116,21 @@ class EmailListViewCell: SwipeTableViewCell {
     }
 
     private func setSeen() {
-        if let font = senderLabel.font {
+        if let font = addressLabel.font {
             let font = UIFont.systemFont(ofSize: font.pointSize)
             setupLabels(font: font)
         }
     }
 
     private func unsetSeen() {
-        if let font = senderLabel.font {
+        if let font = addressLabel.font {
             let font = UIFont.boldSystemFont(ofSize: font.pointSize)
             setupLabels(font: font)
         }
     }
 
     func setupLabels(font: UIFont) {
-        senderLabel.font = font
+        addressLabel.font = font
         subjectLabel.font = font
         summaryLabel.font = font
         dateLabel.font = font

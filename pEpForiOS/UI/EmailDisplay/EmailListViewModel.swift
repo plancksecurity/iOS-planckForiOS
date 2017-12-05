@@ -35,6 +35,7 @@ class EmailListViewModel {
         var ratingImage: UIImage?
         var showAttchmentIcon: Bool = false
         let from: String
+        let to: String
         let subject: String
         let bodyPeek: String
         var isFlagged: Bool = false
@@ -45,6 +46,7 @@ class EmailListViewModel {
             self.senderContactImage = senderContactImage
             showAttchmentIcon = pvmsg.hasAttachments
             from = pvmsg.from.userNameOrAddress
+            to = pvmsg.to
             subject = pvmsg.subject
             bodyPeek = pvmsg.bodyPeek
             isFlagged = pvmsg.isFlagged
