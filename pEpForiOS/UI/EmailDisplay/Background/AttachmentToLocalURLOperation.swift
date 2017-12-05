@@ -20,22 +20,26 @@ class AttachmentToLocalURLOperation: Operation {
     }
 
     override func main() {
-        if let data = attachment.data {
-            var tmpDirURL: URL?
-            if #available(iOS 10.0, *) {
-                tmpDirURL = FileManager.default.temporaryDirectory
-            } else {
-                tmpDirURL = URL(fileURLWithPath: NSTemporaryDirectory())
-            }
-            if let tmpDir = tmpDirURL {
-                let theURL = tmpDir.appendingPathComponent(attachment.fileName)
-                do {
-                    try data.write(to: theURL)
-                    fileURL = theURL
-                } catch let e as NSError {
-                    Log.error(component: #function, error: e)
-                }
-            }
+        guard let data = attachment.data else {
+            Log.shared.warn(component: #function, content: "Attachment without data")
+            return
+        }
+        var tmpDirURL: URL?
+        if #available(iOS 10.0, *) {
+            tmpDirURL = FileManager.default.temporaryDirectory
+        } else {
+            tmpDirURL = URL(fileURLWithPath: NSTemporaryDirectory())
+        }
+        guard let tmpDir = tmpDirURL else {
+            return
+        }
+        let fileName = attachment.fileName ?? Constants.defaultFileName
+        let theURL = tmpDir.appendingPathComponent(fileName)
+        do {
+            try data.write(to: theURL)
+            fileURL = theURL
+        } catch let e as NSError {
+            Log.error(component: #function, error: e)
         }
     }
 }

@@ -113,7 +113,8 @@ class AttachmentSummaryView: UIView {
     }
 
     func createLabels() -> (UILabel, UILabel?) {
-        let (name, ext) = attachment.fileName.splitFileExtension()
+        let (name, ext) =
+            attachment.fileName?.splitFileExtension() ?? (Constants.defaultFileName, nil)
 
         let nameLabel = createLabel()
         nameLabel.numberOfLines = 0

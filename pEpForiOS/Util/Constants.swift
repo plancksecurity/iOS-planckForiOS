@@ -51,6 +51,10 @@ open class Constants {
      */
     open static let attachedEmailMimeType = "message/rfc822"
 
+    static let defaultFileName = NSLocalizedString("unknown",
+                                                   comment:
+        "file name used for unnamed attachments")
+
     public enum GeneralErrorCode: Int {
         case notImplemented = 1000
         case illegalState
