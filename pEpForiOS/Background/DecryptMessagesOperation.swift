@@ -10,6 +10,7 @@ import MessageModel
 
 import CoreData
 
+// Only used in Tests. Maybe refactor out.
 public protocol DecryptMessagesOperationDelegateProtocol: class {
     /**
      Called whenever a message just got decrypted. Useful for tests.
@@ -19,7 +20,7 @@ public protocol DecryptMessagesOperationDelegateProtocol: class {
 }
 
 public class DecryptMessagesOperation: ConcurrentBaseOperation {
-    public weak var delegate: DecryptMessagesOperationDelegateProtocol?
+    public weak var delegate: DecryptMessagesOperationDelegateProtocol?// Only used in Tests. Maybe refactor out.
 
     public override func main() {
         let context = Record.Context.background
@@ -53,7 +54,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
 
                 self.delegate?.decrypted(
                     originalCdMessage: cdMessage, decryptedMessageDict: pEpDecryptedMessage,
-                    rating: rating, keys: theKeys)
+                    rating: rating, keys: theKeys) // Only used in Tests. Maybe refactor out.
 
                 switch rating {
                 case PEP_rating_undefined,
@@ -127,6 +128,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             Log.shared.errorAndCrash(component: #function, errorString: "Error converting CDMesage")
             return
         }
-                MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
+        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
     }
 }
