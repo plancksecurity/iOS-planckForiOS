@@ -29,10 +29,6 @@ class EmailViewController: BaseTableViewController {
     lazy var backgroundQueue = OperationQueue()
     lazy var documentInteractionController = UIDocumentInteractionController()
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         guard let m = message else{
