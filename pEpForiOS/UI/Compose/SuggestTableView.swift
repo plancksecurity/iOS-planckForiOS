@@ -38,7 +38,7 @@ open class SuggestTableView: UITableView, UITableViewDataSource {
         identities.removeAll()
         
         let search = string.cleanAttachments
-        if (search.characters.count >= 3) {
+        if (search.count >= 3) {
             identities = Identity.by(snippet: search)
             
             if identities.count > 0 {

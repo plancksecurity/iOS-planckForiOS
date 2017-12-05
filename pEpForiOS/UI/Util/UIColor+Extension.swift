@@ -58,7 +58,7 @@ extension UIColor {
     convenience init(hex: String) {
         var hexstr = hex
         if hexstr.hasPrefix("#") {
-            hexstr = String(hexstr.characters.dropFirst())
+            hexstr = String(hexstr.dropFirst())
         }
 
         var rgbValue: UInt32 = 0

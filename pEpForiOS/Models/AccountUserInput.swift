@@ -35,13 +35,13 @@ public struct AccountUserInput {
 
     public var isValidPassword: Bool {
         if let pass = password {
-            return pass.characters.count > 0
+            return pass.count > 0
         }
         return false
     }
 
     public var isValidName: Bool {
-        return (userName?.characters.count ?? 0) >= 1
+        return (userName?.count ?? 0) >= 1
     }
 
     public var isValidUser: Bool {

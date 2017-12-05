@@ -1045,9 +1045,6 @@ extension ComposeTableViewController: SegueHandlerType {
             }
             destination.appConfig = self.appConfig
             destination.message = populateMessageFromUserInput()
-        default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
-            break
         }
     }
 

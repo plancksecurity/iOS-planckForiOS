@@ -191,7 +191,7 @@ extension String {
         var packCount = 0
         var currentPack = ""
         var result = ""
-        for ch in upper.characters {
+        for character in upper {
             if totalCount != 0 && totalCount % 4 == 0 {
                 if packCount == 5 {
                     result += "  "
@@ -202,7 +202,7 @@ extension String {
                 packCount += 1
                 currentPack = ""
             }
-            currentPack.append(ch)
+            currentPack.append(character)
             totalCount += 1
         }
         if !currentPack.isEmpty {

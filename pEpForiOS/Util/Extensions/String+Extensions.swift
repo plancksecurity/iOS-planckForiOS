@@ -174,14 +174,14 @@ public extension String {
 
         // With a regex there are problems with "\r\n" at the beginning of the String,
         // so solve that part manually.
-        for ch in characters {
+        for character in self {
             if state == .start {
-                if !ch.isWhitespace() {
+                if !character.isWhitespace() {
                     state = .middle
-                    result.append(ch)
+                    result.append(character)
                 }
             } else {
-                result.append(ch)
+                result.append(character)
             }
         }
 
@@ -307,8 +307,8 @@ public extension String {
     }
 
     public func endsWith(_ suffix: String) -> Bool {
-        let suffixCount = suffix.characters.count
-        if characters.count < suffixCount {
+        let suffixCount = suffix.count
+        if self.count < suffixCount {
             return false
         }
         let fromWhere = index(endIndex, offsetBy: -suffixCount)
@@ -425,7 +425,7 @@ extension String {
      - Returns: The first part of a String, with a maximum length of `ofLength`.
      */
     func prefix(ofLength: Int) -> String {
-        if self.characters.count >= ofLength {
+        if self.count >= ofLength {
             let start = self.startIndex
             return String(prefix(upTo: self.index(start, offsetBy: ofLength)))
         } else {

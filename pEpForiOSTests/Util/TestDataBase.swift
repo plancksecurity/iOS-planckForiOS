@@ -127,7 +127,7 @@ class TestDataBase {
         }
 
         func pEpIdentity() -> PEPIdentity {
-            var ident = PEPIdentity(address: idAddress)
+            let ident = PEPIdentity(address: idAddress)
             ident.userName = accountName
             return ident
         }

@@ -23,7 +23,7 @@ open class MiscUtil {
         if s == nil {
             return true
         }
-        if s?.characters.count == 0 {
+        if s?.count == 0 {
             return true
         }
         return false

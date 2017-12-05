@@ -24,7 +24,7 @@ extension String {
     }
 
     var isAttachment: Bool {
-        guard self.characters.count == 1 else {
+        guard self.count == 1 else {
             return false
         }
         if let ch = self.unicodeScalars.first {
@@ -34,7 +34,7 @@ extension String {
     }
     
     var truncate: String {
-        let length = self.characters.count
+        let length = self.count
         if length > defaultFilenameLength {
             let index: String.Index = self.index(self.startIndex, offsetBy: defaultFilenameLength)
             return String(prefix(upTo: index))
@@ -85,13 +85,8 @@ open class ComposeHelper {
         let attributes = [
             NSAttributedStringKey.foregroundColor: textColor,
             NSAttributedStringKey.font: UIFont.pEpInput
-            ]
-
-        let options = [
-            NSStringDrawingOptions.truncatesLastVisibleLine,
-            NSStringDrawingOptions.usesLineFragmentOrigin
         ]
-
+        
         let textMargin: CGFloat = 4.0
         let textSize = text.size(withAttributes: attributes)
         var width = textSize.width

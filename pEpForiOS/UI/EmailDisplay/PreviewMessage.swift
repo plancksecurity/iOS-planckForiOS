@@ -76,7 +76,7 @@ class PreviewMessage: Equatable {
         }
 
         let result: String
-        if saveBody.characters.count <= maxBodyPreviewCharacters {
+        if saveBody.count <= maxBodyPreviewCharacters {
             result = saveBody
         } else {
             let endIndex = saveBody.index(saveBody.startIndex, offsetBy: maxBodyPreviewCharacters)

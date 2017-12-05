@@ -42,7 +42,6 @@ public class FilterViewModel {
     }
 
     private func generateCells(type: FilterSectionType) {
-        let circleSize = CGSize(width: 14, height: 14)
         switch type {
         case .accouts:
             for account in Account.all() {
