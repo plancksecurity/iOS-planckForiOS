@@ -160,9 +160,9 @@
         let internalLoginName = loginName.text
         loginViewModel.delegate = self
         loginViewModel.login(account: email, password: pass, login: internalLoginName,
-                             userName: username, mySelfer: appConfig.mySelfer) { (err) in
+                             userName: username, mySelfer: appConfig.mySelfer) { [weak self] err in
                                 if let error = err {
-                                    handleLoginError(error: error, extended: true)
+                                    self?.handleLoginError(error: error, extended: true)
                                 }
         }
     }

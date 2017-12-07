@@ -14,8 +14,8 @@ enum AccountSettingsError: Error {
     case notFound
     case illegalValue
 
-    init?(status: AS_STATUS) {
-        switch status {
+    init?(accountSettings: AccountSettingsProtocol) {
+        switch accountSettings.status {
         case AS_TIMEOUT:
             self = .timeOut
         case AS_NOT_FOUND:
@@ -23,7 +23,11 @@ enum AccountSettingsError: Error {
         case AS_ILLEGAL_VALUE:
             self = .illegalValue
         default:
-            return nil
+            if let _ = accountSettings.outgoing, let _ = accountSettings.incoming {
+                return nil
+            } else {
+                self = .notFound
+            }
         }
     }
 }
@@ -75,36 +79,42 @@ class LoginViewModel {
 
     func login(account: String, password: String, login: String? = nil,
                userName: String? = nil, mySelfer: KickOffMySelfProtocol,
-               callback: (Error?) -> Void) {
+               callback: @escaping (Error?) -> Void) {
         self.mySelfer = mySelfer
-        let acSettings = ASAccountSettings(accountName: account, provider: password,
-                                           flags: AS_FLAG_USE_ANY, credentials: nil)
-        if let err = AccountSettingsError(status: acSettings.status) {
+        let acSettings = AccountSettings(accountName: account, provider: password,
+                                         flags: AS_FLAG_USE_ANY, credentials: nil)
+        if let err = AccountSettingsError(accountSettings: acSettings) {
             Log.shared.error(component: #function, error: err)
             callback(err)
             return
         }
 
-        let imapTransport = ConnectionTransport(
-            accountSettingsTransport: acSettings.incoming.transport)
-        let smtpTransport = ConnectionTransport(
-            accountSettingsTransport: acSettings.outgoing.transport)
+        func statusOk() {
+            guard let incomingServer = acSettings.incoming,
+                let outgoingServer = acSettings.outgoing else {
+                    return
+            }
+            let imapTransport = ConnectionTransport(
+                accountSettingsTransport: incomingServer.transport)
+            let smtpTransport = ConnectionTransport(
+                accountSettingsTransport: outgoingServer.transport)
 
-        let newAccount = AccountUserInput(
-            address: account, userName: userName ?? account,
-            loginName: login, password: password,
-            serverIMAP: acSettings.incoming.hostname,
-            portIMAP: UInt16(acSettings.incoming.port),
-            transportIMAP: imapTransport,
-            serverSMTP: acSettings.outgoing.hostname,
-            portSMTP: UInt16(acSettings.outgoing.port),
-            transportSMTP: smtpTransport)
+            let newAccount = AccountUserInput(
+                address: account, userName: userName ?? account,
+                loginName: login, password: password,
+                serverIMAP: incomingServer.hostname,
+                portIMAP: UInt16(incomingServer.port),
+                transportIMAP: imapTransport,
+                serverSMTP: outgoingServer.hostname,
+                portSMTP: UInt16(outgoingServer.port),
+                transportSMTP: smtpTransport)
 
-        do {
-            try verifyAccount(model: newAccount)
-        } catch {
-            Log.shared.error(component: #function, error: error)
-            callback(error)
+            do {
+                try verifyAccount(model: newAccount)
+            } catch {
+                Log.shared.error(component: #function, error: error)
+                callback(error)
+            }
         }
     }
 

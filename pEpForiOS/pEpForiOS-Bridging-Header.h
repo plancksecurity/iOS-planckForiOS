@@ -47,7 +47,7 @@
 
 #pragma mark -- pEp AccountSettings Headers
 
-#import "ASAccountSettings.h"
+#import "AccountSettings.h"
 #import "AccountSettingsServer.h"
 
 #pragma mark -- HTML/Markdown
