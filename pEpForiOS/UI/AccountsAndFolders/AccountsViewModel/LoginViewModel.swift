@@ -83,15 +83,22 @@ class LoginViewModel {
         self.mySelfer = mySelfer
         let acSettings = AccountSettings(accountName: account, provider: password,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
-        if let err = AccountSettingsError(accountSettings: acSettings) {
-            Log.shared.error(component: #function, error: err)
-            callback(err)
-            return
+        acSettings.lookupCompletion() { [weak self] settings in
+            GCD.onMain() {
+                statusOk()
+            }
         }
 
         func statusOk() {
+            if let err = AccountSettingsError(accountSettings: acSettings) {
+                Log.shared.error(component: #function, error: err)
+                callback(err)
+                return
+            }
+
             guard let incomingServer = acSettings.incoming,
                 let outgoingServer = acSettings.outgoing else {
+                    // AccountSettingsError() already handled the error
                     return
             }
             let imapTransport = ConnectionTransport(
