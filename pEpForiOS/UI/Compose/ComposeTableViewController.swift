@@ -1087,7 +1087,7 @@ extension ComposeTableViewController: HtmlToAttributedTextSaxParserAttachmentDel
             if attachment.fileName?.extractCid() == src?.extractCid() {
                 // The attachment is inlined.
                 assertImage(inAttachment: attachment)
-                // Remove from non-inlined attachments.
+                // Remove from non-inlined attachments if contained.
                 tableView.beginUpdates()
                 if let _ = nonInlinedAttachmentData.remove(attachment: attachment) {
                     // dataSource has changed. Refresh tableView.
