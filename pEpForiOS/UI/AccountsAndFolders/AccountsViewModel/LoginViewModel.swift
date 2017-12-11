@@ -79,7 +79,7 @@ class LoginViewModel {
 
     func login(account: String, password: String, login: String? = nil,
                userName: String? = nil, mySelfer: KickOffMySelfProtocol,
-               callback: @escaping (Error?) -> Void) {
+               errorCallback: @escaping (Error) -> Void) {
         self.mySelfer = mySelfer
         let acSettings = AccountSettings(accountName: account, provider: password,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -92,7 +92,7 @@ class LoginViewModel {
         func statusOk() {
             if let err = AccountSettingsError(accountSettings: acSettings) {
                 Log.shared.error(component: #function, error: err)
-                callback(err)
+                errorCallback(err)
                 return
             }
 
@@ -120,7 +120,7 @@ class LoginViewModel {
                 try verifyAccount(model: newAccount)
             } catch {
                 Log.shared.error(component: #function, error: error)
-                callback(error)
+                errorCallback(error)
             }
         }
     }

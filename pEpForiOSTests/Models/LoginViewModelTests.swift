@@ -124,7 +124,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
 
         vm.login(account: accountSettings.idAddress, password: passw, login: nil, userName: nil,
                  mySelfer: NoOpMySelfer()) { error in
-                    XCTAssertNil(error)
+                    XCTFail("Unexpected error: \(error)")
         }
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
