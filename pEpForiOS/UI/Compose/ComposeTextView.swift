@@ -102,21 +102,6 @@ open class ComposeTextView: UITextView {
         }
     }
 
-    //BUFF: dead code
-//    public final func removeAttachments() {
-//        let mutAttrString = NSMutableAttributedString(attributedString: attributedText)
-//        let range = NSMakeRange(0, mutAttrString.length)
-//
-//        mutAttrString.enumerateAttributes(in: range, options: .reverse) {
-//            (attributes, theRange, stop) -> Void in
-//            for attachment in attributes {
-//                if attachment.value is NSTextAttachment {
-//                    mutAttrString.removeAttribute(attachment.0, range: theRange)
-//                }
-//            }
-//        }
-//    }
-
     public func toMarkdown() -> (String, [Attachment]) {
         return attributedText.convertToMarkDown()
     }
