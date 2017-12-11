@@ -172,8 +172,8 @@ class ComposeTableViewController: BaseTableViewController {
             for id in om.cc {
                 destinyCc.append(id)
             }
-            case .normal:
-                // Do nothing, has no recipient by definition, can not be send.
+        case .normal:
+            // Do nothing, has no recipient by definition, can not be send.
             break
         case .forward:
             // Do nothing. A initial forwarded message has no recipient by definition and thus
@@ -213,7 +213,14 @@ class ComposeTableViewController: BaseTableViewController {
             messageBodyCell.setInitial(
                 text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
         case .draft:
-            messageBodyCell.setInitial(text: om.longMessageFormatted ?? om.longMessage ?? "")
+            if let html = om.longMessageFormatted {
+                // We have HTML content. Parse it also taking attachments into account.
+                let attributedString = html.htmlToAttributedString(attachmentDelegate: self)
+                messageBodyCell.setInitial(text:attributedString)
+            } else {
+                // No HTML available. Let's take what we got.
+                messageBodyCell.setInitial(text: om.longMessage ?? "")
+            }
         case .normal: fallthrough// do nothing.
         default:
             guard composeMode == .normal else {
@@ -350,7 +357,7 @@ class ComposeTableViewController: BaseTableViewController {
             } else if let bodyCell = cell as? MessageBodyCell {
                 let inlinedAttachments = bodyCell.allInlinedAttachments()
                 // add non-inlined attachments to our message ...
-                message.attachments = nonInlinedAttachmentData.attachments()
+                message.attachments = nonInlinedAttachmentData.attachments
 
                 if inlinedAttachments.count > 0 {
                     // ... and also inlined ones, parsed from the text.
@@ -849,7 +856,7 @@ ComposeTableView: Label of swipe left. Removing of attachment.
 
     @IBAction func cancel() {
         if edited {
-           showAlertControllerWithOptionsForCanceling()
+            showAlertControllerWithOptionsForCanceling()
         } else {
             self.dismiss()
         }
@@ -1066,5 +1073,44 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         }
         configure(action: deleteAction, with: .trash)
         return (orientation == .right ?   [deleteAction] : nil)
+    }
+}
+
+// MARK: - HtmlToAttributedTextSaxParserAttachmentDelegate
+
+extension ComposeTableViewController: HtmlToAttributedTextSaxParserAttachmentDelegate {
+    func imageAttachment(src: String?, alt: String?) -> Attachment? {
+        guard let origAttachments = originalMessage?.attachments else {
+            return nil
+        }
+        for attachment in origAttachments {
+            if attachment.fileName?.extractCid() == src?.extractCid() {
+                // The attachment is inlined.
+                assertImage(inAttachment: attachment)
+                // Remove from non-inlined attachments.
+                tableView.beginUpdates()
+                if let _ = nonInlinedAttachmentData.remove(attachment: attachment) {
+                    // dataSource has changed. Refresh tableView.
+                    tableView.reloadData()
+                }
+                tableView.endUpdates()
+
+                return attachment
+            }
+        }
+        return nil
+    }
+
+    private func assertImage(inAttachment attachment: Attachment) {
+        // Assure the image is set ...
+        if attachment.image == nil {
+            guard let safeData = attachment.data else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No data")
+                return
+            }
+            attachment.image = UIImage(data: safeData)
+        }
+        // ... and adjust its size.
+        attachment.image = attachment.image?.resized(newWidth: tableView.contentSize.width)
     }
 }

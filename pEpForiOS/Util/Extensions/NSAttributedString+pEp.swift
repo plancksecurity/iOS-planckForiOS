@@ -26,7 +26,6 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
             let cidBase = "attached-inline-image-\(count)-\(theExt)-\(theID)"
             let cidSrc = "cid:\(cidBase)"
             let cidUrl = "cid://\(cidBase)"
-
             theAttachment.fileName = cidUrl
 
             let alt = String(

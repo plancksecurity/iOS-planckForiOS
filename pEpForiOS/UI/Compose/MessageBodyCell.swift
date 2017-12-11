@@ -38,25 +38,21 @@ class MessageBodyCell: ComposeCell {
 
 extension MessageBodyCell {
     public final func inline(attachment: Attachment) {
+        guard let image = attachment.image else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No image")
+            return
+        }
         let textAttachment = TextAttachment()
-        textAttachment.image = attachment.image
+        textAttachment.image = image
         textAttachment.attachment = attachment
         let imageString = NSAttributedString(attachment: textAttachment)
         
-        textAttachment.bounds = obtainContainerToMaintainRatio(textView.bounds.width,
-                                                               rectangle: (attachment.image?.size)!)
+        textAttachment.bounds = CGRect.rect(withWidth: textView.bounds.width, ratioOf: image.size)
         
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
         attrText.replaceCharacters(in: selectedRange, with: imageString)
         textView.attributedText = attrText
-    }
-    
-    fileprivate final func obtainContainerToMaintainRatio(_ fixedWidth: CGFloat,
-                                                          rectangle: CGSize) -> CGRect {
-        let fixRatio = rectangle.width / rectangle.height
-        let newHeight = fixedWidth / fixRatio
-        return CGRect(x: 0, y: 0, width: fixedWidth, height: newHeight)
     }
 
     public final func allInlinedAttachments() -> [Attachment] {

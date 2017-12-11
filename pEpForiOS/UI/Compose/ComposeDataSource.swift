@@ -58,23 +58,19 @@ class ComposeDataSource: NSObject {
             let fileName: String?
             let fileExtesion: String?
         }
-        private var nonInlinedAttachments = [Attachment]()
+        public private(set) var attachments = [Attachment]()
         let mimeTypeUtil = MimeTypeUtil()
 
-        func attachments() -> [Attachment] {
-            return nonInlinedAttachments
-        }
-
         func count() -> Int {
-            return nonInlinedAttachments.count
+            return attachments.count
         }
 
         subscript(index: Int) -> Row? {
-            if index < 0 || index > (nonInlinedAttachments.count - 1) {
+            if index < 0 || index > (attachments.count - 1) {
                 Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
                 return nil
             }
-            let attachment = nonInlinedAttachments[index]
+            let attachment = attachments[index]
             return Row(fileName: attachment.fileName,
                        fileExtesion: mimeTypeUtil?.fileExtension(mimeType: attachment.mimeType) ?? "")
         }
@@ -84,22 +80,38 @@ class ComposeDataSource: NSObject {
         /// - Parameter attachment: attachment to add
         /// - Returns: index the attachment has been inserted in
         @discardableResult mutating func add(attachment: Attachment) -> Int {
-            nonInlinedAttachments.append(attachment)
-            return nonInlinedAttachments.count - 1
+            attachments.append(attachment)
+            return attachments.count - 1
+        }
+
+        /// Removes an attachment from the data source and returns the index
+        /// it has been removed from.
+        ///
+        /// - Parameter attachment: attachment to remove
+        /// - Returns: If the attachment was found, the index the attachment has been removed from.
+        ///             nil otherwize
+        @discardableResult mutating func remove(attachment: Attachment) -> Int? {
+            for (index, existingAttachment) in attachments.enumerated() {
+                if existingAttachment == attachment {
+                    attachments.remove(at: index)
+                    return index
+                }
+            }
+            return nil
         }
 
         mutating func add(attachments: [Attachment]) {
             for attachment in attachments {
-                nonInlinedAttachments.append(attachment)
+                self.attachments.append(attachment)
             }
         }
 
         mutating func remove(at index: Int) {
-            if index < 0 || index > (nonInlinedAttachments.count - 1) {
+            if index < 0 || index > (attachments.count - 1) {
                 Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
                 return
             }
-            nonInlinedAttachments.remove(at: index)
+            attachments.remove(at: index)
         }
     }
 }

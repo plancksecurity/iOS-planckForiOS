@@ -38,4 +38,10 @@ extension CGRect {
 
         return CGRect(origin: orig, size: CGSize(width: theWidth, height: theWidth))
     }
+
+    static public func rect(withWidth width: CGFloat, ratioOf size: CGSize) -> CGRect {
+        let fixRatio = size.width / size.height
+        let newHeight = width / fixRatio
+        return CGRect(x: 0, y: 0, width: width, height: newHeight)
+    }
 }

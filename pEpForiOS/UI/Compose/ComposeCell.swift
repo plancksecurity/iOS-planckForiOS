@@ -28,6 +28,10 @@ open class ComposeCell: UITableViewCell, CellProtocol {
         textView.text = text
     }
 
+    func setInitial(text: NSAttributedString) {
+        textView.attributedText = text
+    }
+
     public func updateCell(_ model: ComposeFieldModel, _ indexPath: IndexPath) {
         index = indexPath // a cell must not know it's index path
         fieldModel = model
