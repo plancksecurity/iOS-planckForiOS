@@ -26,9 +26,11 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate?
 
         let accountSettings: TestDataBase.AccountSettings
+        let expLookedUp: XCTestExpectation
 
-        init(accountSettings: TestDataBase.AccountSettings) {
+        init(accountSettings: TestDataBase.AccountSettings, expLookedUp: XCTestExpectation) {
             self.accountSettings = accountSettings
+            self.expLookedUp = expLookedUp
         }
 
         func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
@@ -48,6 +50,8 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
             XCTAssertEqual(smtpServer.transport, accountSettings.smtpServerTransport)
             XCTAssertEqual(smtpServer.port, accountSettings.smtpServerPort)
             XCTAssertEqual(smtpServer.address, accountSettings.smtpServerAddress)
+
+            expLookedUp.fulfill()
         }
 
         func requestFetchOlderMessages(inFolder folder: Folder) {
@@ -114,13 +118,17 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
 //                return
 //        }
 
-        let ms = TestMessageSyncService(accountSettings: accountSettings)
+        let expLookedUp = expectation(description: "expLookedUp")
+        let ms = TestMessageSyncService(accountSettings: accountSettings, expLookedUp: expLookedUp)
         let vm = LoginViewModel(messageSyncService: ms)
 
         vm.login(account: accountSettings.idAddress, password: passw, login: nil, userName: nil,
-                 mySelfer: NoOpMySelfer()) {
-                    error in
-                    XCTAssertNil(error)
+                 mySelfer: NoOpMySelfer()) { error in
+                    XCTFail("Unexpected error: \(error)")
         }
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
     }
 }
