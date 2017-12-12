@@ -56,4 +56,8 @@
 #import "cmark.h"
 #import "NSString+Markdown.h"
 
+#pragma mark -- AppAuth
+
+#import "AppAuth.h"
+
 #endif /* pEpForiOS_Bridging_Header_h */
