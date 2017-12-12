@@ -12,20 +12,11 @@ import SwipeCellKit
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     var folderToShow: Folder?
-
-    func updateLastLookAt() {
-        guard let saveFolder = folderToShow else {
-            return
-        }
-        saveFolder.updateLastLookAt()
-    }
-    
     private var model: EmailListViewModel?
-    
     private let queue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInteractive
-        createe.maxConcurrentOperationCount = 10
+        createe.maxConcurrentOperationCount = 5
         return createe
     }()
     private var operations = [IndexPath:Operation]()
@@ -43,7 +34,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var textFilterButton: UIBarButtonItem!
     @IBOutlet var showFoldersButton: UIBarButtonItem!
-    
+
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -139,6 +130,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     // MARK: - Other
+
+    private func updateLastLookAt() {
+        guard let saveFolder = folderToShow else {
+            return
+        }
+        saveFolder.updateLastLookAt()
+    }
     
     private func realNameOfFolderToShow() -> String? {
         return folderToShow?.realName
@@ -181,10 +179,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {
-        // Configure lightweight stuff on main thread ...
-        guard let saveModel = model else {
+
+        guard let saveModel = model, !saveModel.isLoading else {
             return
         }
+
+        // Configure lightweight stuff on main thread ...
         guard let row = saveModel.row(for: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
             return
@@ -257,6 +257,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
             return
         }
+
         vm.isFilterEnabled = !vm.isFilterEnabled
         updateFilterButtonView()
     }
@@ -450,9 +451,18 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.reloadRows(at: [indexPath], with: .none)
         tableView.endUpdates()
     }
-    
-    func updateView() {
-        self.tableView.reloadData()
+
+    func emailListViewModelPrapareForResetData(viewModel: EmailListViewModel,
+                                               readyForReset: () -> Void) {
+        // Make sure no backgraound task accesses the model while or after the reset.
+        queue.cancelAllOperations()
+        queue.waitUntilAllOperationsAreFinished()
+        // Inform the model that it is save to reset.
+        readyForReset()
+    }
+
+    func emailListViewModelDidResetData(viewModel: EmailListViewModel) {
+        tableView.reloadData()
     }
 }
 
