@@ -393,9 +393,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The createe is no message. Ignore.
             return
         }
-        if !isInFolderToShow(message: message) {
-            // The messsage is not in the folder we are currently showing.
-            // Ignore.
+        if !shouldBeDisplayed(message: message){
             return
         }
         // Is a Message (not a Folder)
@@ -422,9 +420,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // It is not a Message (probably it is a Folder).
             return
         }
-        if !isInFolderToShow(message: message) {
-            // The messsage is not in the folder we are currently showing.
-            // Ignore.
+        if !shouldBeDisplayed(message: message){
             return
         }
         // Is a Message (not a Folder)
@@ -449,9 +445,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // It is not a Message (probably it is a Folder).
             return
         }
-        if !isInFolderToShow(message: message) {
-            // The updated messsage is not in the folder we are currently showing.
-            // Ignore.
+        if !shouldBeDisplayed(message: message){
             return
         }
         guard let pvMsgs = messages else {
@@ -512,6 +506,16 @@ Something is fishy here.
         DispatchQueue.main.async {
             self.delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
         }
+    }
+
+    private func shouldBeDisplayed(message: Message) -> Bool {
+        if !isInFolderToShow(message: message) {
+            return false
+        }
+        if message.isEncrypted {
+            return false
+        }
+        return true
     }
 
     private func isInFolderToShow(message: Message) -> Bool {
