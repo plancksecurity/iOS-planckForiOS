@@ -26,6 +26,34 @@ public struct ReplyUtil {
         return "\n\n\(footer())"
     }
 
+    /// Adds citation header with data of a given message to a given text.
+    ///
+    /// - Parameters:
+    ///   - textToCite: text to cite
+    ///   - msg: message to take data (sender, date sent ...) from
+    /// - Returns: text with citation header and "send by pEp" footer
+    public static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
+        let citation = citationHeaderForMessage(msg, replyAll: false)
+        return "\n\n\(footer())\n\n\(citation)\n\n\(textToCite)"
+    }
+
+    /// Adds citation header with data of a given message to a given text.
+    ///
+    /// - Parameters:
+    ///   - textToCite: text to cite
+    ///   - msg: message to take data (sender, date sent ...) from
+    /// - Returns: text with citation header and "send by pEp" footer
+    public static func citedMessageText(textToCite: NSAttributedString,
+                                        fromMessage msg: Message) -> NSAttributedString {
+        let citation = citationHeaderForMessage(msg, replyAll: false)
+
+        let defaultFont = UIFont.preferredFont(forTextStyle: .body)
+        var result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
+            attributes: [NSAttributedStringKey(rawValue: "NSFont"): defaultFont])
+        result = result + textToCite
+        return result
+    }
+
     /**
      Gets the subject for replying to the given `Message`.
      */

@@ -210,17 +210,9 @@ class ComposeTableViewController: BaseTableViewController {
             messageBodyCell.setInitial(
                 text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
         case .forward:
-            messageBodyCell.setInitial(
-                text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
+            setBodyText(forMessage: om, to: messageBodyCell, composeMode: .forward)
         case .draft:
-            if let html = om.longMessageFormatted {
-                // We have HTML content. Parse it also taking attachments into account.
-                let attributedString = html.htmlToAttributedString(attachmentDelegate: self)
-                messageBodyCell.setInitial(text:attributedString)
-            } else {
-                // No HTML available. Let's take what we got.
-                messageBodyCell.setInitial(text: om.longMessage ?? "")
-            }
+            setBodyText(forMessage: om, to: messageBodyCell, composeMode: .draft)
         case .normal: fallthrough// do nothing.
         default:
             guard composeMode == .normal else {
@@ -231,6 +223,35 @@ class ComposeTableViewController: BaseTableViewController {
 """)
                 return
             }
+        }
+    }
+
+    private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell,
+                             composeMode mode: ComposeMode) {
+        guard mode == .draft || mode == .forward else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Compose mode \(mode) is not supported")
+            return
+        }
+        if let html = msg.longMessageFormatted {
+            // We have HTML content. Parse it taking inlined attachments into account.
+            let attributedString = html.htmlToAttributedString(attachmentDelegate: self)
+            var result = attributedString
+            if mode == .forward {
+                // forwarded messges must have a cite header ("yxz wrote on ...")
+                result = ReplyUtil.citedMessageText(textToCite: attributedString,
+                                                           fromMessage: msg)
+            }
+            cell.setInitial(text:result)
+        } else {
+            // No HTML available.
+            var result = msg.longMessage ?? ""
+            if mode == .forward {
+                // forwarded messges must have a cite header ("yxz wrote on ...")
+                result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
+                                           fromMessage: msg)
+            }
+            cell.setInitial(text: result)
         }
     }
 
