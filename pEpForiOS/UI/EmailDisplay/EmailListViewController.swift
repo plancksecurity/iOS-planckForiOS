@@ -58,6 +58,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
         setupFoldersBarButton()
+        updateFilterButtonView()
     }
     
     // MARK: - NavigationBar
