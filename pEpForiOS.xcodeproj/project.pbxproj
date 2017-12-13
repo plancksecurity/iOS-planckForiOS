@@ -56,6 +56,8 @@
 		15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835231F34BE1300FCE887 /* AccountUserInput.swift */; };
 		15F835281F3B497D00FCE887 /* FetchMessagesOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835271F3B497D00FCE887 /* FetchMessagesOperationTest.swift */; };
 		15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */; };
+		15FE1F781FE19A3A00CC2D97 /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B54F971FE02D02008EC427 /* AppAuth.framework */; };
+		15FE1F791FE19A3A00CC2D97 /* AppAuth.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 43B54F971FE02D02008EC427 /* AppAuth.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageCell.swift */; };
 		220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 220DCE2D1E0AB544002FE716 /* MessageData.plist */; };
 		220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE301E0AB5CC002FE716 /* MailinglistCell.swift */; };
@@ -410,6 +412,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				15FE1F791FE19A3A00CC2D97 /* AppAuth.framework in CopyFiles */,
 				43754AC81FCD8348009A8E63 /* ldns_xcode.framework in CopyFiles */,
 				1527D1541FA790080036DA9C /* SwipeCellKit.framework in CopyFiles */,
 				49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */,
@@ -811,6 +814,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15FE1F781FE19A3A00CC2D97 /* AppAuth.framework in Frameworks */,
 				43B54F961FE02D02008EC427 /* AppAuth.framework in Frameworks */,
 				43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */,
 				43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */,
