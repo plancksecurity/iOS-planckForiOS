@@ -8,7 +8,7 @@
 
 import WebKit
 
-class CreditsViewController: UIViewController, WKUIDelegate {
+class CreditsViewController: UIViewController {
 
     var webView: WKWebView!
 
@@ -34,15 +34,86 @@ class CreditsViewController: UIViewController, WKUIDelegate {
     // MARK: - Other
 
     private func html() -> String {
-        return
-            """
-<blockquote>
-        <p><span style=\"color: #333333;\">p&equiv;p for iOS</span><br /><span style=\"color: #333333;\"> Version: $current_app_version</span></p>
-        <p><span style=\"color: #333333;\">Credits:</span><br /><span style=\"color: #333333;\"> Volker Birk, Sandro K&ouml;chle, Sabrina Schleifer, Robert Goldmann, Rena Tangens, Patricia Bednar, Patrick Meier, padeluun, Nana Karlstetter, Meinhard Starostik, Mathijs de Haan, Martin Vojcik, Markus Schaber, Lix, Leonard Marquitan, Leon Schumacher, Lars Rohwedder, Krista Bennet, Kinga Prettenhoffer, Hussein Kasem, Hern&acirc;ni Marques, Dol&ccedil;a Moreno, Dirk Zimmermann, Xavier Algarra Torello, Andreas Buff, Andreas, Dietz Proepper, Detlev Sieber, Dean, Daniel Sosa, be, Berna Alp, Bart Polot, Andy Weber, Ana Rebolledo</span></p>
-        <p><span style=\"color: #333333;\">Thanks to:</span><br /><span style=\"color: #333333;\"> GPG4Win <a class=\"external-link\" style=\"color: #333333;\" href=\"https://www.gpg4win.org/\" rel=\"nofollow\">https://www.gpg4win.org/</a></span><br /><span style=\"color: #333333;\"> pEpEngine <a class=\"external-link\" style=\"color: #333333;\" href=\"https://cacert.pep.foundation/dev/repos/pEpEngine/\" rel=\"nofollow\">https://cacert.pep.foundation/dev/repos/pEpEngine/</a></span><br /><span style=\"color: #333333;\"> GPGME <a class=\"external-link\" style=\"color: #333333;\" href=\"https://gnupeg.org/related_software/gpgme/index.html\" rel=\"nofollow\">https://gnupeg.org/related_software/gpgme/index.html</a></span><br /><span style=\"color: #333333;\"> LibGPG-error <a class=\"external-link\" style=\"color: #333333;\" href=\"https://gnupg.org/related_software/libgpg-error/index.html\" rel=\"nofollow\">https://gnupg.org/related_software/libgpg-error/index.html</a></span><br /><span style=\"color: #333333;\"> Libcrypt <a class=\"external-link\" style=\"color: #333333;\" href=\"https://directory.fsf.org/wiki/Libgpgcrypt\" rel=\"nofollow\">https://directory.fsf.org/wiki/Libgpgcrypt</a></span><br /><span style=\"color: #333333;\"> Libassuan <a class=\"external-link\" style=\"color: #333333;\" href=\"https://gnupg.org/related_software/libassuan/index.html\" rel=\"nofollow\">https://gnupg.org/related_software/libassuan/index.html</a></span><br /><span style=\"color: #333333;\"> Libksba <a class=\"external-link\" style=\"color: #333333;\" href=\"https://gnupg.org/related_software/libksba/index.html\" rel=\"nofollow\">https://gnupg.org/related_software/libksba/index.html</a></span><br /><span style=\"color: #333333;\"> GNUPG <a class=\"external-link\" style=\"color: #333333;\" href=\"https://gnupg.org/\" rel=\"nofollow\">https://gnupg.org/</a></span><br /><span style=\"color: #333333;\"> Libcurl <a class=\"external-link\" style=\"color: #333333;\" href=\"https://curl.haxx.se/libcurl/\" rel=\"nofollow\">https://curl.haxx.se/libcurl/</a></span><br /><span style=\"color: #333333;\"> Libiconv <a class=\"external-link\" style=\"color: #333333;\" href=\"https://www.gnu.org/software/libiconv/\" rel=\"nofollow\">https://www.gnu.org/software/libiconv/</a></span><br /><span style=\"color: #333333;\"> LibEtPan <a class=\"external-link\" style=\"color: #333333;\" href=\"https://www.etpan.org/libetpan.html\" rel=\"nofollow\">https://www.etpan.org/libetpan.html</a></span><br /><span style=\"color: #333333;\"> MimeKitLite <a class=\"external-link\" style=\"color: #333333;\" href=\"https://www.mimekit.net/\" rel=\"nofollow\">https://www.mimekit.net/</a></span></p>
+        let appVersion = InfoPlist.versionDisplayString() ?? "666"
+        let backgroundColor = UIColor.hexPEpLightBackground
+        let fontColor = UIColor.hexPEpGray
+        let fontSize = "28"
+        let fontFamily = "Helvetica Neue"
+        let fontWeight = "500"
+        let styleP = "p {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
+        let styleBody = "body {background-color: \(backgroundColor);}"
+        let styleA = "a {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
+        let styleColumn = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 25%;}.right {width: 75%;}.row:after {content: \"\";display: table;clear: both;}"
+        let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)</style>"
+        let result = """
+        <html> <head> \(style)
+
+        </head>
+        <body>
+        <blockquote>
+        <p>&nbsp;</p>
+        <p>p&equiv;p for iOS<br/> \(appVersion)</p>
+        <p>Credits:<br />
+            Volker Birk, Sandro K&ouml;chle, Sabrina Schleifer, Robert Goldmann, Rena Tangens, Patricia Bednar, Patrick Meier, padeluun, Nana Karlstetter, Meinhard Starostik, Mathijs de Haan, Martin Vojcik, Markus Schaber, Lix, Leonard Marquitan, Leon Schumacher, Lars Rohwedder, Krista Bennet, Kinga Prettenhoffer, Hussein Kasem, Hern&acirc;ni Marques, Dol&ccedil;a Moreno, Dirk Zimmermann, Xavier Algarra Torello, Andreas Buff, Andreas, Dietz Proepper, Detlev Sieber, Dean, Daniel Sosa, be, Berna Alp, Bart Polot, Andy Weber, Ana Rebolledo
+        </p>
+        <p>&nbsp;</p>
+        <p>Thanks to:
+        \(thanxRows())
+        </p>
         </blockquote>
+        </body>
+        </html>
 """
+
+        return result
     }
 
+    private func thanxRows() -> String {
+        let names = ["GPG4Win",
+                     "pEpEngine",
+                     "GPGME",
+                     "LibGPG-error",
+                     "Libcrypt",
+                     "Libassuan",
+                     "Libksba",
+                     "GNUPG",
+                     "Libcurl",
+                     "Libiconv",
+                     "LibEtPan",
+                     "MimeKitLite"]
+        let links = ["https://www.gpg4win.org/",
+                     "https://cacert.pep.foundation/dev/repos/pEpEngine/",
+                     "https://gnupeg.org/related_software/gpgme/index.html",
+                     "https://gnupg.org/related_software/libgpg-error/index.html",
+                     "https://directory.fsf.org/wiki/Libgpgcrypt",
+                     "https://gnupg.org/related_software/libassuan/index.html",
+                     "https://gnupg.org/related_software/libksba/index.html",
+                     "https://gnupg.org/",
+                     "https://curl.haxx.se/libcurl/",
+                     "https://www.gnu.org/software/libiconv/",
+                     "https://www.etpan.org/libetpan.html",
+                     "https://www.mimekit.net/"]
+
+        var htmlThanx = ""
+        for (i, name) in names.enumerated() {
+            let link = links[i]
+            var row = "<div class=\"row\">"
+            row += "<div class=\"column left\">"
+            row += "<p>\(name)</p>"
+            row += "</div>"
+            row += "<div class=\"column right\">"
+            row += "<p><a href=\"\(link)\"</a> \(link)</p>"
+            row += "</div>"
+            row += "</div> "
+            htmlThanx += row
+        }
+
+        return htmlThanx
+    }
+}
+
+// MARK: - WKUIDelegate
+
+extension CreditsViewController: WKUIDelegate {
 
 }
