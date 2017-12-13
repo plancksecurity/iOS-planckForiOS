@@ -36,8 +36,13 @@ protocol OAuth2AuthorizationProtocol {
     /**
      Trigger an authorization request. When it was successful, or on error,
      the delegate is invoked.
+     - parameter viewController: The UIViewController that will be the parent of any
+     browser interaction for signing in
+     - parameter scopes: The scopes to request authorization for. E.g., for gmail via
+     IMAP/SMTP this is ["https://mail.google.com/"]
      */
-    func startAuthorizationRequest(viewController: UIViewController)
+    func startAuthorizationRequest(viewController: UIViewController,
+                                   config: OAuth2AuthorizationConfig, scopes: [String])
 }
 
 /**

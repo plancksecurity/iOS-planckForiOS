@@ -1,5 +1,5 @@
 //
-//  OAuth2.swift
+//  OAuth2Authorization.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 13.12.17.
@@ -8,28 +8,38 @@
 
 import Foundation
 
-class OAuth2 {
+extension OAuth2AuthorizationConfig {
+    func configurationOID() -> OIDServiceConfiguration {
+        switch self {
+        case .google:
+            return OIDServiceConfiguration(
+                authorizationEndpoint: URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!,
+                tokenEndpoint: URL(string: "https://www.googleapis.com/oauth2/v4/token")!)
+        }
+    }
+}
+
+/**
+ Base implementation of OAuth2 authorization.
+ */
+class OAuth2Authorization: OAuth2AuthorizationProtocol {
+    let kClientID = "uieauiaeiae"
+
     var currentAuthorizationFlow: OIDAuthorizationFlowSession?
     var authState: OIDAuthState?
 
-    func googleConfig() -> OIDServiceConfiguration {
-        let authorizationEndpoint = URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!
-        let tokenEndpoint = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
-        return OIDServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
-                                       tokenEndpoint: tokenEndpoint)
-    }
+    // MARK: - OAuth2AuthorizationProtocol
 
-    func request(viewController: UIViewController) {
-        let configuration = googleConfig()
-        let kClientID = "uieauiaeiae"
-        let kClientSecret = "uiaeuiaeuiaeuiae"
+    weak var delegate: OAuth2AuthorizationDelegateProtocol?
 
+    func startAuthorizationRequest(viewController: UIViewController,
+                                   config: OAuth2AuthorizationConfig, scopes: [String]) {
         let redirectUrl = URL(string: "http://myLocalUrl")!
 
         let request = OIDAuthorizationRequest(
-            configuration: configuration,
+            configuration: config.configurationOID(),
             clientId: kClientID,
-            clientSecret: kClientSecret,
+            clientSecret: nil,
             scopes: [OIDScopeOpenID, OIDScopeProfile],
             redirectURL: redirectUrl,
             responseType: OIDResponseTypeCode,
@@ -47,8 +57,10 @@ class OAuth2 {
             }
         }
     }
+}
 
-    func processRedirect(url: URL) -> Bool {
+extension OAuth2Authorization: OAuth2AuthorizationURLHandlerProtocol {
+    func processAuthorizationRedirect(url: URL) -> Bool {
         guard let authFlow = currentAuthorizationFlow else {
             return false
         }
