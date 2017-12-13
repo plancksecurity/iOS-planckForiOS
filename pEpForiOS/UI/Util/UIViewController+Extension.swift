@@ -39,6 +39,7 @@ extension UIViewController {
             [NSAttributedStringKey.foregroundColor: UIColor.black]
         navigationController?.navigationBar.tintColor = UIColor.pEpGreen
         navigationController?.toolbar.tintColor = UIColor.pEpGreen
+        navigationController?.toolbar.backgroundColor = nil
     }
 
     func setDefaultColors() {
