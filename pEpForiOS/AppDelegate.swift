@@ -254,17 +254,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Record.saveAndWait()
         }
     }
-
-    /**
-     This code is only temporarily here, to prove that AppAuth can be used.
-     Will be moved to its own separate class.
-     */
-    func oauth2() {
-        let authorizationEndpoint = URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!
-        let tokenEndpoint = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
-        let _ = OIDServiceConfiguration(authorizationEndpoint: authorizationEndpoint,
-                                        tokenEndpoint: tokenEndpoint)
-    }
 }
 
 // MARK: - BackgroundTaskProtocol
