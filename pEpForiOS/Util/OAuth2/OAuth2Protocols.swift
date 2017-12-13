@@ -23,7 +23,7 @@ protocol OAuth2AuthorizationFactoryProtocol {
  A view controller that initiates an authorization request typically implements this.
  Since this is a delegate, derive from class so it can be used weakly.
  */
-protocol OAuth2UIDelegate: class {
+protocol OAuth2AuthorizationDelegateProtocol: class {
     func authorizationRequestFinished(error: Error?)
 }
 
@@ -31,7 +31,7 @@ protocol OAuth2UIDelegate: class {
  The part of OAuth2 that a view controller sees, that wants to set it up.
  */
 protocol OAuth2AuthorizationProtocol {
-    weak var delegate: OAuth2UIDelegate? { get set }
+    weak var delegate: OAuth2AuthorizationDelegateProtocol? { get set }
 
     /**
      Trigger an authorization request. When it was successful, or on error,
