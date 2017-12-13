@@ -55,6 +55,7 @@
 		15ECD70A1F5564C1002889B8 /* NetworkServiceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15ECD7091F5564C1002889B8 /* NetworkServiceObserver.swift */; };
 		15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835231F34BE1300FCE887 /* AccountUserInput.swift */; };
 		15F835281F3B497D00FCE887 /* FetchMessagesOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835271F3B497D00FCE887 /* FetchMessagesOperationTest.swift */; };
+		15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */; };
 		220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE2C1E0AB544002FE716 /* MessageCell.swift */; };
 		220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 220DCE2D1E0AB544002FE716 /* MessageData.plist */; };
 		220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE301E0AB5CC002FE716 /* MailinglistCell.swift */; };
@@ -465,6 +466,7 @@
 		15ECD7091F5564C1002889B8 /* NetworkServiceObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceObserver.swift; sourceTree = "<group>"; };
 		15F835231F34BE1300FCE887 /* AccountUserInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUserInput.swift; sourceTree = "<group>"; };
 		15F835271F3B497D00FCE887 /* FetchMessagesOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesOperationTest.swift; sourceTree = "<group>"; };
+		15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
 		220DCE2C1E0AB544002FE716 /* MessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		220DCE2D1E0AB544002FE716 /* MessageData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MessageData.plist; sourceTree = "<group>"; };
 		220DCE301E0AB5CC002FE716 /* MailinglistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailinglistCell.swift; sourceTree = "<group>"; };
@@ -923,6 +925,14 @@
 				15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		15FE1F741FE122B200CC2D97 /* Credits */ = {
+			isa = PBXGroup;
+			children = (
+				15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */,
+			);
+			path = Credits;
 			sourceTree = "<group>";
 		};
 		220DCE281E0AB4DE002FE716 /* Cells */ = {
@@ -1530,6 +1540,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				15FE1F741FE122B200CC2D97 /* Credits */,
 				B706C0EF1EA8C378006B2F6C /* StoryboardFiles */,
 				43AA82511E9B925000ABD5A8 /* Util */,
 				B78CF8261E76D70D008C1739 /* Filter */,
@@ -2190,6 +2201,7 @@
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
+				15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */,
 				B7365CDE1EAF45F30036ECC7 /* UITextField+Extension.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,

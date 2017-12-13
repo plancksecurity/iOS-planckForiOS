@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -99,6 +99,24 @@
             </objects>
             <point key="canvasLocation" x="6432.8000000000002" y="332.38380809595208"/>
         </scene>
+        <!--Credits View Controller-->
+        <scene sceneID="T9v-3i-MfR">
+            <objects>
+                <viewController id="9LH-QE-79O" customClass="CreditsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jVT-Gd-Scu"/>
+                        <viewControllerLayoutGuide type="bottom" id="Mdh-43-LcB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QiT-Mr-baO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mXj-Sq-nBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4324" y="-4"/>
+        </scene>
         <!--Accounts Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
             <objects>
@@ -137,6 +155,7 @@
                         <outlet property="appVersion" destination="3Zw-ad-15x" id="aVy-ZB-EZl"/>
                         <segue destination="Eri-pJ-T3J" kind="show" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="3GT-NT-vyR" kind="show" identifier="segueShowLog" id="uAI-I4-HaK"/>
+                        <segue destination="9LH-QE-79O" kind="show" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>

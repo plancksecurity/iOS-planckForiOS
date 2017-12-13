@@ -36,6 +36,9 @@ public class AccountsSettingsCellViewModel {
                     return NSLocalizedString("Logging", comment: "")
                 case .organizedByThread:
                     return NSLocalizedString("Enable Threading", comment: "")
+                case .credits:
+                    return NSLocalizedString("Credits", comment:
+                        "AccountsSettings: Cell (button) title to view app credits")
                 }
             }
             return nil

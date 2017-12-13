@@ -17,6 +17,7 @@ public enum SettingsSection {
 public enum SettingsCell {
     case showLog
     case organizedByThread
+    case credits
 }
 
 public class AccountsSettingsSectionViewModel {
@@ -44,6 +45,7 @@ public class AccountsSettingsSectionViewModel {
     func generateSettingsCells() {
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
         self.cells.append(AccountsSettingsCellViewModel(type: .organizedByThread))
+        self.cells.append(AccountsSettingsCellViewModel(type: .credits))
     }
 
     func delete(cell: Int) {

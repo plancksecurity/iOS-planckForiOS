@@ -121,16 +121,28 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let accountsSection = 0
+        let settingsSection = 1
+        let settingsRowLogging = 0
+        let settingsRowEnableThreading = 1
+        let settingsRowCredits = 2
 
-        if indexPath.section == 1 {
-            if indexPath.row == 1 {
-
-            } else {
-                performSegue(withIdentifier: .segueShowLog, sender: self)
-            }
-        } else {
+        if indexPath.section == accountsSection {
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
+        } else if indexPath.section == settingsSection {
+            switch indexPath.row {
+            case settingsRowLogging:
+                performSegue(withIdentifier: .segueShowLog, sender: self)
+            case settingsRowEnableThreading:
+            break // We currenty do nothing
+            case settingsRowCredits:
+                performSegue(withIdentifier: .sequeShowCredits, sender: self)
+            default:
+                Log.shared.errorAndCrash(component: #function, errorString: "Unhadled row")
+            }
+        } else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled section")
         }
     }
 
@@ -148,6 +160,7 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueAddNewAccount
         case segueEditAccount
         case segueShowLog
+        case sequeShowCredits
         case noSegue
     }
 
@@ -182,6 +195,7 @@ extension AccountsTableViewController: SegueHandlerType {
             }
             viewController.appConfig = self.appConfig
             break
+        case .sequeShowCredits: fallthrough
         default:()
         }
     }
