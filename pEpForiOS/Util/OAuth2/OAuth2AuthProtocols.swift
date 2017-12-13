@@ -24,7 +24,7 @@ protocol OAuth2AuthorizationFactoryProtocol {
  Since this is a delegate, derive from class so it can be used weakly.
  */
 protocol OAuth2AuthorizationDelegateProtocol: class {
-    func authorizationRequestFinished(error: Error?)
+    func authorizationRequestFinished(error: Error?, accessToken: String, idToken: String)
 }
 
 /**
