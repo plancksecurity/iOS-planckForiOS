@@ -32,6 +32,10 @@ class AccountsSettingsViewModel {
         }
     }
 
+    func noAccounts() -> Bool {
+        return Account.all().count <= 0
+    }
+
     var count: Int {
         get {
             return sections.count

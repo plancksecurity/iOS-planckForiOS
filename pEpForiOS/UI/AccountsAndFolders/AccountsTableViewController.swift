@@ -85,6 +85,9 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         if indexPath.section == 0 {
             let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
                 self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+                if self.viewModel.noAccounts() {
+                    self.performSegue(withIdentifier: "noAccounts", sender: nil)
+                }
             }
             return (orientation == .left ?   [deleteAction] : nil)
         }
