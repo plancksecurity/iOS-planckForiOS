@@ -10,10 +10,6 @@ import MessageModel
 import SwipeCellKit
 
 class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
-    let comp = "AccountsTableViewController"
-
-    @IBOutlet weak var appVersion: UILabel!
-    
     let viewModel = AccountsSettingsViewModel()
 
     /** Our vanilla table view cell */
@@ -33,7 +29,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         super.viewDidLoad()
         title = NSLocalizedString("Accounts", comment: "Accounts view title")
         UIHelper.variableCellHeightsTableView(self.tableView)
-        setAppVersion()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -43,20 +38,10 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             super.viewWillAppear(animated)
             return
         }
-
         updateModel()
     }
     
     // MARK: - Internal
-    
-    private func setAppVersion() {
-        appVersion.textColor = UIColor.pEpGray
-        guard let version = InfoPlist.versionDisplayString() else {
-            appVersion.text = ""
-            return
-        }
-        appVersion.text = version
-    }
 
     private func updateModel() {
         //reload data in view model

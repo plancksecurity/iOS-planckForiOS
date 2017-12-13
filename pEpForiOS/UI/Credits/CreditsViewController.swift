@@ -16,7 +16,6 @@ class CreditsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         webView.loadHTMLString(html(), baseURL: nil)
     }
 

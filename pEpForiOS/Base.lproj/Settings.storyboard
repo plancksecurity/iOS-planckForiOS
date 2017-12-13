@@ -125,13 +125,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AppVersion" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3Zw-ad-15x">
-                            <rect key="frame" x="0.0" y="117.5" width="375" height="45"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accountsCell" id="03J-Ut-4Ls" userLabel="Account" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
@@ -152,7 +145,6 @@
                         <barButtonItem systemItem="compose" id="eLo-P1-6VE"/>
                     </toolbarItems>
                     <connections>
-                        <outlet property="appVersion" destination="3Zw-ad-15x" id="aVy-ZB-EZl"/>
                         <segue destination="Eri-pJ-T3J" kind="show" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="3GT-NT-vyR" kind="show" identifier="segueShowLog" id="uAI-I4-HaK"/>
                         <segue destination="9LH-QE-79O" kind="show" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
