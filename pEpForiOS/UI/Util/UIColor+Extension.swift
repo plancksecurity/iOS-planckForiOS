@@ -9,33 +9,40 @@
 import UIKit
 
 extension UIColor {
+    static let hexPEpGreen = "#4CD964"
+    static let hexPEpDarkGreen = "#1AAA50"
+    static let hexPEpRed = "#FF3B30"
+    static let hexPEpGray = "#8e8e93"
+    static let hexPEpYellow = "#FFCC00"
+    static let hexPEpLightBackground = "#F2F2F2"
+
     open class var pEpGreen: UIColor {
         get {
-            return UIColor(hex: "#4CD964")
+            return UIColor(hex: hexPEpGreen)
         }
     }
 
     open class var pEpDarkGreen: UIColor {
         get {
-            return UIColor(hex: "#1AAA50")
+            return UIColor(hex: hexPEpDarkGreen)
         }
     }
 
     open class var pEpRed: UIColor {
         get {
-            return UIColor(hex: "#FF3B30")
+            return UIColor(hex: hexPEpRed)
         }
     }
 
     open class var pEpGray: UIColor {
         get {
-            return UIColor(hex: "#8e8e93")
+            return UIColor(hex: hexPEpGray)
         }
     }
 
     open class var pEpYellow: UIColor {
         get {
-            return UIColor(hex: "#FFCC00")
+            return UIColor(hex: hexPEpYellow)
         }
     }
 
@@ -44,7 +51,7 @@ extension UIColor {
      */
     open class var pEpLightBackground: UIColor {
         get {
-            return UIColor(redInt: 242, greenInt: 242, blueInt: 242)
+            return UIColor(hex: hexPEpLightBackground)
         }
     }
 
