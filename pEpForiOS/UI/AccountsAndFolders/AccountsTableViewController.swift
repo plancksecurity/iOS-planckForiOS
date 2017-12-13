@@ -145,11 +145,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled section")
         }
     }
-
-    // MARK: - Actions
-
-    @IBAction func newAccountCreatedSegue(_ segue: UIStoryboardSegue) {
-    }
 }
 
 // MARK: - Navigation
