@@ -27,7 +27,7 @@ class CreditsViewController: UIViewController {
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        webView.uiDelegate = self
+        webView.navigationDelegate = self
         view = webView
     }
 
@@ -64,7 +64,6 @@ class CreditsViewController: UIViewController {
         </body>
         </html>
 """
-
         return result
     }
 
@@ -83,17 +82,16 @@ class CreditsViewController: UIViewController {
                      "MimeKitLite"]
         let links = ["https://www.gpg4win.org/",
                      "https://cacert.pep.foundation/dev/repos/pEpEngine/",
-                     "https://gnupeg.org/related_software/gpgme/index.html",
-                     "https://gnupg.org/related_software/libgpg-error/index.html",
+                     "https://www.gnupg.org/software/gpgme/",
+                     "https://gnupg.org/related_software/libgpg-error/",
                      "https://directory.fsf.org/wiki/Libgpgcrypt",
-                     "https://gnupg.org/related_software/libassuan/index.html",
-                     "https://gnupg.org/related_software/libksba/index.html",
+                     "https://gnupg.org/related_software/libassuan/",
+                     "https://gnupg.org/related_software/libksba/",
                      "https://gnupg.org/",
                      "https://curl.haxx.se/libcurl/",
                      "https://www.gnu.org/software/libiconv/",
                      "https://www.etpan.org/libetpan.html",
                      "https://www.mimekit.net/"]
-
         var htmlThanx = ""
         for (i, name) in names.enumerated() {
             let link = links[i]
@@ -114,6 +112,26 @@ class CreditsViewController: UIViewController {
 
 // MARK: - WKUIDelegate
 
-extension CreditsViewController: WKUIDelegate {
-
+extension CreditsViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .other:
+            // We are initially loading our own HTML
+            decisionHandler(.allow)
+            return
+        case .linkActivated:
+            // Open clicked links in Safari
+            guard let newURL = navigationAction.request.url, UIApplication.shared.canOpenURL(newURL)
+                else {
+                    break
+            }
+            UIApplication.shared.openURL(newURL)
+        case .backForward: fallthrough
+        case .formResubmitted: fallthrough
+        case .formSubmitted: fallthrough
+        case .reload:
+            break
+        }
+        decisionHandler(.cancel)
+    }
 }
