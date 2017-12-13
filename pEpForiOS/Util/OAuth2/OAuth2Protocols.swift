@@ -31,7 +31,7 @@ protocol OAuth2UIDelegate: class {
  The part of OAuth2 that a view controller sees, that wants to set it up.
  */
 protocol OAuth2AuthorizationProtocol {
-    var delegate: OAuth2UIDelegate { get set }
+    weak var delegate: OAuth2UIDelegate? { get set }
 
     /**
      Trigger an authorization request. When it was successful, or on error,
