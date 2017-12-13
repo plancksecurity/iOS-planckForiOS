@@ -18,7 +18,19 @@ struct UIUtils {
                                           preferredStyle: .alert)
         alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment:
-            "UIAlertAction ok after error"),
+            "Error alert positive button button"),
+                                          style: .default,
+                                          handler: nil))
+        vc.present(alertView, animated: true, completion: nil)
+    }
+
+    static func showAlertWithOnlyPositiveButton(title: String, message: String, inViewController vc: UIViewController) {
+        let alertView = UIAlertController(title: title,
+                                          message: message,
+                                          preferredStyle: .alert)
+        alertView.view.tintColor = .pEpGreen
+        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment:
+            "General alert positive button"),
                                           style: .default,
                                           handler: nil))
         vc.present(alertView, animated: true, completion: nil)

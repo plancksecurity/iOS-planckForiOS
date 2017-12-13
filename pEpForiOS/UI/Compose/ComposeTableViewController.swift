@@ -12,6 +12,7 @@ import ContactsUI
 import MobileCoreServices
 import MessageModel
 import SwipeCellKit
+import Photos
 
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
@@ -450,17 +451,20 @@ class ComposeTableViewController: BaseTableViewController {
     @objc fileprivate final func addMediaToCell() {
         let media = Capability.media
 
-        media.request { (success, error) in
-            self.imagePicker.delegate = self
-            self.imagePicker.modalPresentationStyle = .currentContext
-            self.imagePicker.allowsEditing = false
-            self.imagePicker.sourceType = .photoLibrary
-
-            if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) {
-                self.imagePicker.mediaTypes = mediaTypes
-            }
-
+        media.request { (permissionsGranted: Bool, error: Capability.AccessError?) in
             GCD.onMain {
+                guard permissionsGranted else {
+                    self.handleNoPhotoPermissionsError()
+                    return
+                }
+                self.imagePicker.delegate = self
+                self.imagePicker.modalPresentationStyle = .currentContext
+                self.imagePicker.allowsEditing = false
+                self.imagePicker.sourceType = .photoLibrary
+
+                if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) {
+                    self.imagePicker.mediaTypes = mediaTypes
+                }
                 self.present(self.imagePicker, animated: true, completion: nil)
             }
         }
@@ -787,6 +791,18 @@ ComposeTableView: Label of swipe left. Removing of attachment.
     }
 
     // MARK: - Other
+    
+    private func handleNoPhotoPermissionsError() {
+        let title = NSLocalizedString("No Permissions",
+                                      comment:
+            "Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions.")
+        let message = NSLocalizedString("p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App.",
+                                        comment:
+            "Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions.")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                inViewController: self)
+    }
 
     private func registerXibs() {
         let nib = UINib(nibName: AttachmentCell.storyboardID, bundle: nil)
@@ -1028,6 +1044,8 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
             attachVideo(forMediaWithInfo: info)
         }
     }
+
+
 }
 
 // MARK: - UIDocumentPickerDelegate
@@ -1054,6 +1072,9 @@ extension ComposeTableViewController: UIDocumentPickerDelegate {
 // MARK: - UINavigationControllerDelegate
 
 extension ComposeTableViewController: UINavigationControllerDelegate {
+    // We have to conform to UINavigationControllerDelegate to be ab le to set our self as
+    // UIImagePickerController delegate, which is defined as
+    // (UIImagePickerControllerDelegate & UINavigationControllerDelegate)?
 }
 
 // MARK: - SegueHandlerType
