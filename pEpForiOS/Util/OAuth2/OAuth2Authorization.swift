@@ -47,10 +47,7 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
 
         currentAuthorizationFlow = OIDAuthState.authState(
         byPresenting: request, presenting: viewController) { [weak self] authState, error in
-            self?.authState = nil
-            if error != nil {
-                self?.delegate?.authorizationRequestFinished(error: error, accessToken: nil)
-            } else if authState != nil,
+            if error == nil,
                 let accessToken = authState?.lastTokenResponse?.accessToken,
                 let idToken = authState?.lastTokenResponse?.idToken {
                 self?.authState = authState
@@ -58,8 +55,9 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
                     error: error,
                     accessToken: OAuth2AccessToken(accessToken: accessToken, idToken: idToken))
             } else {
+                self?.authState = nil
                 self?.delegate?.authorizationRequestFinished(
-                    error: OAuth2AuthorizationError.inconsistentAuthorizationResult,
+                    error: error ?? OAuth2AuthorizationError.inconsistentAuthorizationResult,
                     accessToken: nil)
             }
         }
