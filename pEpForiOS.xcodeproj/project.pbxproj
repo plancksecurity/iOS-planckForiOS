@@ -162,7 +162,7 @@
 		4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330278D1F7BABFF00D685F8 /* GradientView.swift */; };
 		43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */; };
 		43306EC01FE126C40045DD00 /* OAuth2AuthProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EBF1FE126C40045DD00 /* OAuth2AuthProtocols.swift */; };
-		43306EC21FE129840045DD00 /* OAuth2AuthorizationConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EC11FE129840045DD00 /* OAuth2AuthorizationConfig.swift */; };
+		43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43306EC11FE129840045DD00 /* OAuth2Type.swift */; };
 		43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43313DFB1DEC7F6000C111C8 /* DeleteFoldersOperation.swift */; };
 		4333A2A31E5C62860025D8A5 /* AttachmentCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333A2A21E5C62860025D8A5 /* AttachmentCounter.swift */; };
 		4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4333A2A41E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift */; };
@@ -574,7 +574,7 @@
 		4330278D1F7BABFF00D685F8 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Authorization.swift; sourceTree = "<group>"; };
 		43306EBF1FE126C40045DD00 /* OAuth2AuthProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthProtocols.swift; sourceTree = "<group>"; };
-		43306EC11FE129840045DD00 /* OAuth2AuthorizationConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AuthorizationConfig.swift; sourceTree = "<group>"; };
+		43306EC11FE129840045DD00 /* OAuth2Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Type.swift; sourceTree = "<group>"; };
 		43313DFB1DEC7F6000C111C8 /* DeleteFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteFoldersOperation.swift; sourceTree = "<group>"; };
 		4333A2A21E5C62860025D8A5 /* AttachmentCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCounter.swift; sourceTree = "<group>"; };
 		4333A2A41E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FixAttachmentsOperation.swift; sourceTree = "<group>"; };
@@ -1137,9 +1137,9 @@
 		43306EBC1FE125950045DD00 /* OAuth2 */ = {
 			isa = PBXGroup;
 			children = (
-				43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */,
 				43306EBF1FE126C40045DD00 /* OAuth2AuthProtocols.swift */,
-				43306EC11FE129840045DD00 /* OAuth2AuthorizationConfig.swift */,
+				43306EC11FE129840045DD00 /* OAuth2Type.swift */,
+				43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */,
 			);
 			path = OAuth2;
 			sourceTree = "<group>";
@@ -2174,7 +2174,7 @@
 				1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
 				1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */,
 				431E2B091F0281DF000035FA /* SmtpSendService.swift in Sources */,
-				43306EC21FE129840045DD00 /* OAuth2AuthorizationConfig.swift in Sources */,
+				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				1541D7FC1FCC199B00D52A5D /* AttachmentCell.swift in Sources */,
 				222B35BC1E00049C007A1F82 /* AccountCell.swift in Sources */,

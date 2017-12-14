@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension OAuth2AuthorizationConfig {
+extension OAuth2Type {
     func configurationOID() -> OIDServiceConfiguration {
         switch self {
         case .google:
@@ -33,11 +33,11 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
     weak var delegate: OAuth2AuthorizationDelegateProtocol?
 
     func startAuthorizationRequest(viewController: UIViewController,
-                                   config: OAuth2AuthorizationConfig, scopes: [String]) {
+                                   oauth2Type: OAuth2Type, scopes: [String]) {
         let redirectUrl = URL(string: "http://myLocalUrl")!
 
         let request = OIDAuthorizationRequest(
-            configuration: config.configurationOID(),
+            configuration: oauth2Type.configurationOID(),
             clientId: kClientID,
             clientSecret: nil,
             scopes: [OIDScopeOpenID, OIDScopeProfile],

@@ -1,5 +1,5 @@
 //
-//  OAuth2AuthorizationConfig.swift
+//  OAuth2Type.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 13.12.17.
@@ -8,6 +8,10 @@
 
 import Foundation
 
-enum OAuth2AuthorizationConfig {
+/**
+ The kind of endpoint/provider that should be used.
+ Abstracts configuration.
+ */
+enum OAuth2Type {
     case google
 }
