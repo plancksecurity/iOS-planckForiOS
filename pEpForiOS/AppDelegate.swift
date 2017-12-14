@@ -11,7 +11,7 @@ import CoreData
 import MessageModel
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, OAuth2AuthorizationFactoryProtocol {
     let comp = "AppDelegate"
 
     var window: UIWindow?
@@ -263,6 +263,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             CdHeaderField.deleteOrphans()
             Record.saveAndWait()
         }
+    }
+
+    // MARK: - OAuth2AuthorizationFactoryProtocol
+
+    var oauth2Authorizers = [OAuth2AuthorizationProtocol]()
+
+    func createOAuth2Authorizer() -> OAuth2AuthorizationProtocol {
+        let oauth2 = OAuth2Authorization()
+        oauth2Authorizers.append(oauth2)
+        return oauth2
     }
 }
 
