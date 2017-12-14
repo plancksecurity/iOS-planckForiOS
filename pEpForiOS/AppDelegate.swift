@@ -210,6 +210,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.scheme == "security.pEp.apps.pEpForiOS.oauth2" {
+            // TODO: Send the url to the currentAuthorizationFlow(s)
+            return true
+        } else {
+            return false
+        }
+    }
+
     func loadCoreDataStack() {
         let objectModel = MessageModelData.MessageModelData()
         do {
