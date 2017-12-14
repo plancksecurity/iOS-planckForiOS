@@ -23,6 +23,8 @@ extension OAuth2Type {
  Base implementation of OAuth2 authorization.
  */
 class OAuth2Authorization: OAuth2AuthorizationProtocol {
+    let uuid = Foundation.UUID()
+
     let kClientID = "uieauiaeiae"
 
     var currentAuthorizationFlow: OIDAuthorizationFlowSession?
@@ -74,5 +76,17 @@ extension OAuth2Authorization: OAuth2AuthorizationURLHandlerProtocol {
             return true
         }
         return false
+    }
+}
+
+extension OAuth2Authorization: Equatable {
+    public static func ==(lhs: OAuth2Authorization, rhs: OAuth2Authorization) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+}
+
+extension OAuth2Authorization: Hashable {
+    var hashValue: Int {
+        return uuid.hashValue
     }
 }

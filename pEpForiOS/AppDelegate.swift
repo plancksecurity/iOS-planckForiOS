@@ -213,7 +213,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OAuth2AuthorizationFactor
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if url.scheme == "security.pEp.apps.pEpForiOS.oauth2" {
-            // TODO: Send the url to the currentAuthorizationFlow(s)
+            var doneAuthorizerToRemove: OAuth2Authorization?
+            for oauth in oauth2Authorizers {
+                if oauth.processAuthorizationRedirect(url: url) {
+                    doneAuthorizerToRemove = oauth
+                    break
+                }
+            }
+            if let theOne = doneAuthorizerToRemove {
+                oauth2Authorizers.remove(theOne)
+            }
             return true
         } else {
             return false
@@ -267,11 +276,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OAuth2AuthorizationFactor
 
     // MARK: - OAuth2AuthorizationFactoryProtocol
 
-    var oauth2Authorizers = [OAuth2AuthorizationProtocol]()
+    var oauth2Authorizers = Set<OAuth2Authorization>()
 
     func createOAuth2Authorizer() -> OAuth2AuthorizationProtocol {
         let oauth2 = OAuth2Authorization()
-        oauth2Authorizers.append(oauth2)
+        oauth2Authorizers.insert(oauth2)
         return oauth2
     }
 }
