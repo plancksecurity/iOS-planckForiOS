@@ -58,6 +58,6 @@
 
 #pragma mark -- AppAuth
 
-#import "AppAuth.h"
+#import "AppAuth/AppAuth.h"
 
 #endif /* pEpForiOS_Bridging_Header_h */
