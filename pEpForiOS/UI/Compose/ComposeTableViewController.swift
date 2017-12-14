@@ -454,7 +454,7 @@ class ComposeTableViewController: BaseTableViewController {
         media.request { (permissionsGranted: Bool, error: Capability.AccessError?) in
             GCD.onMain {
                 guard permissionsGranted else {
-                    self.handleNoPhotoPermissionsError()
+                    self.handleNoPhotoGalleryPermissionsGranted()
                     return
                 }
                 self.imagePicker.delegate = self
@@ -791,8 +791,8 @@ ComposeTableView: Label of swipe left. Removing of attachment.
     }
 
     // MARK: - Other
-    
-    private func handleNoPhotoPermissionsError() {
+
+    private func handleNoPhotoGalleryPermissionsGranted() {
         let title = NSLocalizedString("No Permissions",
                                       comment:
             "Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions.")
