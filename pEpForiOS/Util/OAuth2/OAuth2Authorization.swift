@@ -49,11 +49,18 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
         byPresenting: request, presenting: viewController) { [weak self] authState, error in
             self?.authState = nil
             if error != nil {
-                // todo: communicate error
-            } else if authState != nil {
+                self?.delegate?.authorizationRequestFinished(error: error, accessToken: nil)
+            } else if authState != nil,
+                let accessToken = authState?.lastTokenResponse?.accessToken,
+                let idToken = authState?.lastTokenResponse?.idToken {
                 self?.authState = authState
+                self?.delegate?.authorizationRequestFinished(
+                    error: error,
+                    accessToken: OAuth2AccessToken(accessToken: accessToken, idToken: idToken))
             } else {
-                // todo: communicate unknown error
+                self?.delegate?.authorizationRequestFinished(
+                    error: OAuth2AuthorizationError.inconsistentAuthorizationResult,
+                    accessToken: nil)
             }
         }
     }

@@ -19,12 +19,21 @@ protocol OAuth2AuthorizationFactoryProtocol {
     func createOAuth2Authorizer() -> OAuth2AuthorizationProtocol
 }
 
+struct OAuth2AccessToken {
+    let accessToken: String
+    let idToken: String
+}
+
+enum OAuth2AuthorizationError: Error {
+    case inconsistentAuthorizationResult
+}
+
 /**
  A view controller that initiates an authorization request typically implements this.
  Since this is a delegate, derive from class so it can be used weakly.
  */
 protocol OAuth2AuthorizationDelegateProtocol: class {
-    func authorizationRequestFinished(error: Error?, accessToken: String, idToken: String)
+    func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessToken?)
 }
 
 /**
