@@ -2,6 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>security.pEp.apps.pEpForiOS.oauth2</key>
+	<string>Verify OAuth2 authorization requests</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>security.pEp.apps.pEpForiOS.oauth2</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>security.pEp.apps.pEpForiOS.oauth2</string>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_GB</string>
 	<key>CFBundleDisplayName</key>
