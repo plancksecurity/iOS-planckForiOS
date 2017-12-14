@@ -450,23 +450,19 @@ class ComposeTableViewController: BaseTableViewController {
 
     @objc fileprivate final func addMediaToCell() {
         let media = Capability.media
-
-        media.request { (permissionsGranted: Bool, error: Capability.AccessError?) in
-            GCD.onMain {
-                guard permissionsGranted else {
-                    self.handleNoPhotoGalleryPermissionsGranted()
-                    return
-                }
-                self.imagePicker.delegate = self
-                self.imagePicker.modalPresentationStyle = .currentContext
-                self.imagePicker.allowsEditing = false
-                self.imagePicker.sourceType = .photoLibrary
-
-                if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) {
-                    self.imagePicker.mediaTypes = mediaTypes
-                }
-                self.present(self.imagePicker, animated: true, completion: nil)
+        media.requestAndInformUserInErrorCase(viewController: self)  { (permissionsGranted: Bool, error: Capability.AccessError?) in
+            guard permissionsGranted else {
+                return
             }
+            self.imagePicker.delegate = self
+            self.imagePicker.modalPresentationStyle = .currentContext
+            self.imagePicker.allowsEditing = false
+            self.imagePicker.sourceType = .photoLibrary
+
+            if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) {
+                self.imagePicker.mediaTypes = mediaTypes
+            }
+            self.present(self.imagePicker, animated: true, completion: nil)
         }
     }
 
@@ -791,18 +787,6 @@ ComposeTableView: Label of swipe left. Removing of attachment.
     }
 
     // MARK: - Other
-
-    private func handleNoPhotoGalleryPermissionsGranted() {
-        let title = NSLocalizedString("No Permissions",
-                                      comment:
-            "Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions.")
-        let message = NSLocalizedString("p≡p has no permissions to access \nthe Photo Gallery. You can grand permissions in Settings App.",
-                                        comment:
-            "Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions.")
-        UIUtils.showAlertWithOnlyPositiveButton(title: title,
-                                                message: message,
-                                                inViewController: self)
-    }
 
     private func registerXibs() {
         let nib = UINib(nibName: AttachmentCell.storyboardID, bundle: nil)
