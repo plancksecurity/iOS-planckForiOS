@@ -8,17 +8,6 @@
 
 import Foundation
 
-/**
- Typically implemented by the app delegate, and made available to view controllers
- interested in OAuth2, e.g. via app config.
- For every oauth authorization object created, the app delegate must keep a reference to
- a corresponding OAuth2AuthorizationURLHandlerProtocol,
- so it can later correctly assign the redirect.
- */
-protocol OAuth2AuthorizationFactoryProtocol {
-    func createOAuth2Authorizer() -> OAuth2AuthorizationProtocol
-}
-
 struct OAuth2AccessToken {
     let accessToken: String
     let idToken: String
