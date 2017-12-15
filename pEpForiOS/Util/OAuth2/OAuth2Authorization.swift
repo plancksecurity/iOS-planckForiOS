@@ -36,13 +36,13 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
 
     func startAuthorizationRequest(viewController: UIViewController,
                                    oauth2Type: OAuth2Type, scopes: [String]) {
-        let redirectUrl = URL(string: "http://myLocalUrl")!
+        let redirectUrl = URL(string: "http://\(OAuth2Provider.oauth2OAuth2Scheme)/oauth2")!
 
         let request = OIDAuthorizationRequest(
             configuration: oauth2Type.configurationOID(),
             clientId: kClientID,
             clientSecret: nil,
-            scopes: [OIDScopeOpenID, OIDScopeProfile],
+            scopes: scopes,
             redirectURL: redirectUrl,
             responseType: OIDResponseTypeCode,
             additionalParameters: nil)

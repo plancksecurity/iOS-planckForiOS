@@ -214,7 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        if url.scheme == "security.pEp.apps.pEpForiOS.oauth2" {
+        if url.scheme == OAuth2Provider.oauth2OAuth2Scheme {
             return oauth2Provider.processAuthorizationRedirect(url: url)
         } else {
             return false

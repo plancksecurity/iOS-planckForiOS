@@ -9,6 +9,11 @@
 import Foundation
 
 class OAuth2Provider: OAuth2ProviderProtocol {
+    /**
+     This must be the same you use for oauth2 redirect detection in your app delegate,
+     and also be defined in one of your supported URL schemes in your Info.plist.
+     */
+    static let oauth2OAuth2Scheme = "security.pEp.apps.pEpForiOS.oauth2"
 
     // MARK: - OAuth2AuthorizationFactoryProtocol
 
