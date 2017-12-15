@@ -1145,14 +1145,14 @@
 		43306EBC1FE125950045DD00 /* OAuth2 */ = {
 			isa = PBXGroup;
 			children = (
-				43306EC11FE129840045DD00 /* OAuth2Type.swift */,
-				43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */,
 				43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */,
-				43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */,
-				43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */,
 				438052861FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift */,
 				438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */,
 				4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */,
+				43306EC11FE129840045DD00 /* OAuth2Type.swift */,
+				43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */,
+				43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */,
+				43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */,
 			);
 			path = OAuth2;
 			sourceTree = "<group>";
