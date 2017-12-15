@@ -11,7 +11,7 @@ import CoreData
 import MessageModel
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, OAuth2AuthorizationFactoryProtocol {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     let comp = "AppDelegate"
 
     var window: UIWindow?
@@ -38,6 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OAuth2AuthorizationFactor
     lazy var appSettings = AppSettings()
 
     let sendLayerDelegate = DefaultUISendLayerDelegate()
+
+    let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
@@ -213,17 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OAuth2AuthorizationFactor
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
         if url.scheme == "security.pEp.apps.pEpForiOS.oauth2" {
-            var doneAuthorizerToRemove: OAuth2Authorization?
-            for oauth in oauth2Authorizers {
-                if oauth.processAuthorizationRedirect(url: url) {
-                    doneAuthorizerToRemove = oauth
-                    break
-                }
-            }
-            if let theOne = doneAuthorizerToRemove {
-                oauth2Authorizers.remove(theOne)
-            }
-            return true
+            return oauth2Provider.processAuthorizationRedirect(url: url)
         } else {
             return false
         }
@@ -272,16 +264,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OAuth2AuthorizationFactor
             CdHeaderField.deleteOrphans()
             Record.saveAndWait()
         }
-    }
-
-    // MARK: - OAuth2AuthorizationFactoryProtocol
-
-    var oauth2Authorizers = Set<OAuth2Authorization>()
-
-    func createOAuth2Authorizer() -> OAuth2AuthorizationProtocol {
-        let oauth2 = OAuth2Authorization()
-        oauth2Authorizers.insert(oauth2)
-        return oauth2
     }
 }
 

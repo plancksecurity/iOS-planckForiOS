@@ -20,7 +20,7 @@ extension OAuth2Type {
 }
 
 /**
- Base implementation of OAuth2 authorization.
+ Base implementation of OAuth2AuthorizationProtocol and OAuth2AuthorizationURLHandlerProtocol.
  */
 class OAuth2Authorization: OAuth2AuthorizationProtocol {
     let uuid = Foundation.UUID()
