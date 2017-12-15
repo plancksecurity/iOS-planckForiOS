@@ -8,42 +8,6 @@
 
 import Foundation
 
-struct OAuth2AccessToken {
-    let accessToken: String
-    let idToken: String
-}
-
-enum OAuth2AuthorizationError: Error {
-    case inconsistentAuthorizationResult
-}
-
-/**
- A view controller that initiates an authorization request typically implements this.
- Since this is a delegate, derive from class so it can be used weakly.
- */
-protocol OAuth2AuthorizationDelegateProtocol: class {
-    func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessToken?)
-}
-
-/**
- The part of OAuth2 that a view controller sees, that wants to set it up.
- */
-protocol OAuth2AuthorizationProtocol {
-    weak var delegate: OAuth2AuthorizationDelegateProtocol? { get set }
-
-    /**
-     Trigger an authorization request. When it was successful, or on error,
-     the delegate is invoked.
-     - parameter viewController: The UIViewController that will be the parent of any
-     browser interaction for signing in
-     - parameter oauth2Type: The choice of OAuth2 (endpoint, provider) that you want to trigger
-     - parameter scopes: The scopes to request authorization for. E.g., for gmail via
-     IMAP/SMTP this is ["https://mail.google.com/"]
-     */
-    func startAuthorizationRequest(viewController: UIViewController,
-                                   oauth2Type: OAuth2Type, scopes: [String])
-}
-
 /**
  The part that an application delegate interacts with.
  */
