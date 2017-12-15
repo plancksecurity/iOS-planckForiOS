@@ -81,7 +81,7 @@ class LoginViewModel {
                userName: String? = nil, mySelfer: KickOffMySelfProtocol,
                errorCallback: @escaping (Error) -> Void) {
         self.mySelfer = mySelfer
-        let acSettings = AccountSettings(accountName: account, provider: password,
+        let acSettings = AccountSettings(accountName: account, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
         acSettings.lookupCompletion() { [weak self] settings in
             GCD.onMain() {
