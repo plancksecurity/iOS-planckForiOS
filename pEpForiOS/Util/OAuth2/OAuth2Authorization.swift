@@ -25,8 +25,6 @@ extension OAuth2Type {
 class OAuth2Authorization: OAuth2AuthorizationProtocol {
     let uuid = Foundation.UUID()
 
-    let kClientID = "uieauiaeiae"
-
     var currentAuthorizationFlow: OIDAuthorizationFlowSession?
     var authState: OIDAuthState?
 
@@ -35,15 +33,13 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
     weak var delegate: OAuth2AuthorizationDelegateProtocol?
 
     func startAuthorizationRequest(viewController: UIViewController,
-                                   oauth2Type: OAuth2Type, scopes: [String]) {
-        let redirectUrl = URL(string: "http://\(OAuth2Provider.oauth2OAuth2Scheme)/oauth2")!
-
+                                   oauth2Configuration: OAuth2Configuration) {
         let request = OIDAuthorizationRequest(
-            configuration: oauth2Type.configurationOID(),
-            clientId: kClientID,
+            configuration: oauth2Configuration.oauth2Type.configurationOID(),
+            clientId: oauth2Configuration.clientID,
             clientSecret: nil,
-            scopes: scopes,
-            redirectURL: redirectUrl,
+            scopes: oauth2Configuration.scopes,
+            redirectURL: oauth2Configuration.redirectURL,
             responseType: OIDResponseTypeCode,
             additionalParameters: nil)
 
