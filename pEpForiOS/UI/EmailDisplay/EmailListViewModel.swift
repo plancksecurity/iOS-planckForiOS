@@ -336,15 +336,12 @@ class EmailListViewModel {
     private let numRowsBeforeLastToTriggerFetchOder = 1
 
     /// Figures out whether or not fetching of older messages should be requested.
-    /// Takes numRowsBeforeLastToTriggerFetchOder into account.
+    /// Takes numRowsBeforeLastToTriggerFetchOder into account,
     ///
     /// - Parameter row: number of displayed tableView row to base computation on
     /// - Returns: true if fetch older messages should be requested, false otherwize
     private func triggerFetchOlder(lastDisplayedRow row: Int) -> Bool {
-        let weGetOutOfDataToDisplay = row >= rowCount - numRowsBeforeLastToTriggerFetchOder
-        let maxNumRowsFittingOneScreen = 7
-        let moreRowsCanBeShowsWithoutFetchingOlder = row < maxNumRowsFittingOneScreen
-        return !moreRowsCanBeShowsWithoutFetchingOlder && weGetOutOfDataToDisplay
+        return row >= rowCount - numRowsBeforeLastToTriggerFetchOder
     }
 
     // Implemented to get informed about the currently visible cells.
