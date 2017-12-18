@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
         Log.shared.resume()
-        networkService?.start()
+        //        networkService?.start()//BUFF:
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
@@ -135,6 +135,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         startServices()
 
+        //BUFF:
+
+        UserNotificationTool.resetApplicationIconBadgeNumber()
+
+        UserNotificationTool.askForPermissions() { granted in
+//            if granted {
+//                application.regi
+//            }
+
+        }
+
         DispatchQueue.global(qos: .userInitiated).async {
             MessageModel.perform {
                 AddressBook.checkAndTransfer()
@@ -186,6 +197,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.application = application
 
+        //BUFF:
+        UserNotificationTool.resetApplicationIconBadgeNumber()
+
         startServices()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
@@ -200,16 +214,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        networkService?.quickSync() { status in
-            switch status {
-            case .failed:
+        let networkService = NetworkService()
+        networkService.checkForNewMails() { (numMails: Int?) in
+            guard let numMails = numMails else {
                 completionHandler(.failed)
-            case .fetchedData:
-                completionHandler(.newData)
-            case .noData:
+                return
+            }
+            switch numMails {
+            case 0:
                 completionHandler(.noData)
+            default:
+                //BUFF: post notify
+                self.informUser(numNewMails: numMails)
+                completionHandler(.newData)
             }
         }
+    }
+
+    //BUFF: move
+    private func informUser(numNewMails:Int) {
+        print("Notify user about \(numNewMails) new mails")
+        let title: String
+//        let body: String
+        if numNewMails == 1 {
+            title = NSLocalizedString("New message received",
+                                      comment:
+                "Title for notification show on lock screen for *one* new mail")
+//            body = NSLocalizedString("You have 1 new message",
+//                                      comment:
+//                "Body for notification show on lock screen for *one* new mail")
+        } else {
+            title = NSLocalizedString("\(numNewMails) new messages received",
+                                          comment:
+                "Title for notification show on lock screen for new mails")
+//            body = NSLocalizedString("You have \(numNewMails) new messages",
+//                                     comment:
+//                "Body for notification show on lock screen for new mails")
+        }
+        UserNotificationTool.post(title: title, batch: numNewMails)
     }
 
     func application(_ app: UIApplication, open url: URL,

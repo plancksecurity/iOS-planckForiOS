@@ -11,15 +11,11 @@ import CoreData
 
 import MessageModel
 
-public enum QuickSyncResult {
-    case failed
-    case noData
-    case fetchedData
-}
 
-public typealias QuickSyncCompletionBlock = (QuickSyncResult) -> ()
 
-open class QuickSyncService {
+open class QuickSyncService { //BUFF: rename
+//    public typealias CompletionBlock = (_ numNewMails: Int?) -> ()
+
     var imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]
     let context = Record.Context.background
     let workerQueue = DispatchQueue(
@@ -27,7 +23,7 @@ open class QuickSyncService {
     let backgroundQueue = OperationQueue()
     var errorContainer: ErrorContainer?
 
-    public init(imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]?) {
+    public init(imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]? = nil) {
         self.imapConnectionDataCache = imapConnectionDataCache ?? [EmailConnectInfo: ImapSyncData]()
     }
 
@@ -55,21 +51,22 @@ open class QuickSyncService {
         return connectInfos
     }
 
-    public func sync(completionBlock: @escaping QuickSyncCompletionBlock) {
+    public func sync(completionBlock: @escaping (_ numNewMails: Int?) -> ()) {
         workerQueue.async {
-            self.kickOffOperationsAndWait()
+            let numNewMails = self.kickOffOperationsAndWait()
             if self.errorContainer?.hasErrors() ?? false {
-                completionBlock(.failed)
+                completionBlock(nil)
             } else {
-                completionBlock(.fetchedData)
+                completionBlock(numNewMails)
             }
         }
     }
 
-    func kickOffOperationsAndWait() {
+    func kickOffOperationsAndWait() -> Int {
         let theErrorContainer = ErrorContainer()
         errorContainer = theErrorContainer
         let cis = gatherConnectInfos()
+        var result = 0
         for connectInfo in cis {
             let imapSyncData = ServiceUtil.cachedImapSync(
                 imapConnectionDataCache: imapConnectionDataCache, connectInfo: connectInfo)
@@ -77,7 +74,17 @@ open class QuickSyncService {
                 parentName: #function, errorContainer: theErrorContainer,
                 imapSyncData: imapSyncData)
             backgroundQueue.addOperation(loginOp)
+            let fetchNumNewMailsOp = FetchNumberOfNewMailsOperation(imapSyncData: imapSyncData) {
+                (numNewMails: Int?) in
+                if let safeNewMails = numNewMails {
+                    result += safeNewMails
+                }
+            }
+            fetchNumNewMailsOp.addDependency(loginOp)
+            backgroundQueue.addOperation(fetchNumNewMailsOp)
         }
         backgroundQueue.waitUntilAllOperationsAreFinished()
+
+        return result
     }
 }

@@ -32,6 +32,8 @@
 		1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F41FC82A4900D52A5D /* URL+MIME.swift */; };
 		1541D7FA1FCC18E100D52A5D /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */; };
 		1541D7FC1FCC199B00D52A5D /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */; };
+		1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */; };
+		155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */; };
 		1555E97C1FD587A300BF8E0E /* Message+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */; };
 		1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */; };
 		1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */; };
@@ -452,6 +454,8 @@
 		1541D7F41FC82A4900D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
 		1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
 		1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
+		154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNumberOfNewMailsOperation.swift; sourceTree = "<group>"; };
+		155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserNotificationTool.swift; sourceTree = "<group>"; };
 		1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+IMAP.swift"; sourceTree = "<group>"; };
 		1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesOperation.swift; sourceTree = "<group>"; };
 		1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesService.swift; sourceTree = "<group>"; };
@@ -1026,6 +1030,7 @@
 				4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */,
 				431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */,
 				43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */,
+				154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -1435,6 +1440,7 @@
 				B741D5021F26234A00DFD93A /* EmailAddressValidation.swift */,
 				15C5F2451F823752007DE086 /* SortedSet.swift */,
 				15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */,
+				155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2070,6 +2076,7 @@
 				43ED53791CC77F95006AB156 /* UserInfoTableViewController.swift in Sources */,
 				43200D9D1F0CBC4000FFDE56 /* FetchMessagesService.swift in Sources */,
 				43C322101EA91764005073FB /* UIImage+Extension.swift in Sources */,
+				1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */,
 				43F848461EA9EB9D00DBE460 /* IdentityImageOperation.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43122B1B1DF5B48B00610253 /* SmtpService.swift in Sources */,
@@ -2210,6 +2217,7 @@
 				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
 				432AC3061ECB0C44007DC418 /* CWIMAPMessage+pEp.swift in Sources */,
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
+				155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */,
 				430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */,
 				4351C2D21F4441190053381F /* html.c in Sources */,
 				4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */,

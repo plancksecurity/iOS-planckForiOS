@@ -150,12 +150,20 @@ public class NetworkService {
         currentWorker = nil
     }
 
-    public func quickSync(completionHandler: @escaping (QuickSyncResult) -> ()) {
-        let connectionCache = currentWorker?.imapConnectionDataCache ?? lastConnectionDataCache
-        cancel()
-        quickSync = QuickSyncService(imapConnectionDataCache: connectionCache)
+//    public func quickSync(completionHandler: @escaping (QuickSyncResult) -> ()) {
+//        let connectionCache = currentWorker?.imapConnectionDataCache ?? lastConnectionDataCache
+//        cancel()
+//        quickSync = QuickSyncService(imapConnectionDataCache: connectionCache)
+//        quickSync?.sync(completionBlock: completionHandler)
+//    }
+
+    //BUFF:
+
+    public func checkForNewMails(completionHandler: @escaping (_ numNewMails: Int?) -> ()) {
+        quickSync = QuickSyncService(imapConnectionDataCache: nil)
         quickSync?.sync(completionBlock: completionHandler)
     }
+    //FFUB
 
     public func internalVerify(cdAccount account: CdAccount) {
         cancel() // cancel the current worker
