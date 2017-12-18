@@ -455,7 +455,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func emailListViewModelPrapareForResetData(viewModel: EmailListViewModel,
+    func emailListViewModelPrepareForResetData(viewModel: EmailListViewModel,
                                                readyForReset: () -> Void) {
         // Make sure no backgraound task accesses the model while or after the reset.
         queue.cancelAllOperations()

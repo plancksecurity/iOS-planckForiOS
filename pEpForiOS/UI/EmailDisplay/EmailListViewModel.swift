@@ -13,7 +13,7 @@ protocol EmailListViewModelDelegate: class {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
-    func emailListViewModelPrapareForResetData(viewModel: EmailListViewModel,
+    func emailListViewModelPrepareForResetData(viewModel: EmailListViewModel,
                                                readyForReset: ()->Void)
     func emailListViewModelDidResetData(viewModel: EmailListViewModel)
 }
@@ -104,7 +104,7 @@ class EmailListViewModel {
         // Ignore MessageModelConfig.messageFolderDelegate while reloading data.
         self.stopListeningToChanges()
         isLoading = true
-        delegate?.emailListViewModelPrapareForResetData(viewModel: self) {
+        delegate?.emailListViewModelPrepareForResetData(viewModel: self) {
             let messagesToDisplay = folder.allMessages()
             let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
 
