@@ -49,5 +49,5 @@ protocol OAuth2AuthorizationProtocol {
      IMAP/SMTP this is ["https://mail.google.com/"]
      */
     func startAuthorizationRequest(viewController: UIViewController,
-                                   oauth2Configuration: OAuth2Configuration)
+                                   oauth2Configuration: OAuth2ConfigurationProtocol)
 }

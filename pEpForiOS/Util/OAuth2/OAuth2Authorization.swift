@@ -33,7 +33,7 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
     weak var delegate: OAuth2AuthorizationDelegateProtocol?
 
     func startAuthorizationRequest(viewController: UIViewController,
-                                   oauth2Configuration: OAuth2Configuration) {
+                                   oauth2Configuration: OAuth2ConfigurationProtocol) {
         let request = OIDAuthorizationRequest(
             configuration: oauth2Configuration.oauth2Type.configurationOID(),
             clientId: oauth2Configuration.clientID,

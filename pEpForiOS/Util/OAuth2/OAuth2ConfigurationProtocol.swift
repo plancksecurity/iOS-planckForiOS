@@ -1,5 +1,5 @@
 //
-//  OAuth2Configuration.swift
+//  OAuth2ConfigurationProtocol.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 18.12.17.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol OAuth2Configuration {
+protocol OAuth2ConfigurationProtocol {
     var oauth2Type: OAuth2Type { get }
     var clientID: String { get }
     var redirectURL: URL { get }
