@@ -41,14 +41,12 @@
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
-    @IBOutlet var loginName: UITextField!
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var manualConfigButton: UIButton!
     @IBOutlet var loginButton: UIButton!
     @IBOutlet var user: UITextField!
 
-    @IBOutlet var loginNameTableViewCell: UITableViewCell!
     @IBOutlet var UserTableViewCell: UITableViewCell!
     @IBOutlet var emailTableViewCell: UITableViewCell!
     @IBOutlet var passwordTableViewCell: UITableViewCell!
@@ -84,8 +82,6 @@
             placeHolder: NSLocalizedString("Password", comment: "password"), delegate: self)
         self.loginButton.convertToLoginButton(
             placeHolder: NSLocalizedString("Sign In", comment: "Login"))
-        self.loginName.convertToLoginTextField(
-            placeHolder: NSLocalizedString("Log In Name", comment: "LoginName"), delegate: self)
         self.manualConfigButton.convertToLoginButton(
             placeHolder: NSLocalizedString("Manual configuration", comment: "manual"))
         self.user.convertToLoginTextField(
@@ -105,11 +101,9 @@
         passwordTableViewCell.backgroundColor = UIColor.clear
         loginTableViewCell.backgroundColor = UIColor.clear
         manualConfigTableViewCell.backgroundColor = UIColor.clear
-        loginNameTableViewCell.backgroundColor = UIColor.clear
 
         //hide extended login fields
         manualConfigButton.isHidden = true
-        loginName.isHidden = true
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginTableViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -157,11 +151,10 @@
             handleLoginError(error: LoginTableViewControllerError.missingUsername, extended: false)
             return
         }
-        let internalLoginName = loginName.text
         loginViewModel.delegate = self
         loginViewModel.login(
-            account: email, password: pass, login: internalLoginName,
-            userName: username, mySelfer: appConfig.mySelfer) { [weak self] error in
+            account: email, password: pass,userName: username,
+            mySelfer: appConfig.mySelfer) { [weak self] error in
                 self?.handleLoginError(error: error, extended: true)
         }
     }
@@ -188,7 +181,6 @@
                 comment: "UIAlertAction ok after error"),
             style: .default, handler: {action in
                 if extended {
-                    self.loginName.isHidden = false
                     self.manualConfigButton.isHidden = false
                     self.extendedLogin = true
                 }
@@ -197,9 +189,7 @@
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == self.loginName {
-            self.user.becomeFirstResponder()
-        } else if textField == self.user {
+        if textField == self.user {
             self.emailAddress.becomeFirstResponder()
         } else if textField == self.emailAddress {
             self.password.becomeFirstResponder()
