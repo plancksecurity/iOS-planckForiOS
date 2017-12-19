@@ -137,12 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         UserNotificationTool.resetApplicationIconBadgeNumber()
 
-        UserNotificationTool.askForPermissions() { granted in //BUFF:
-//            if granted {
-//                application.regi
-//            }
-
-        }
+        UserNotificationTool.askForPermissions()
 
         DispatchQueue.global(qos: .userInitiated).async {
             MessageModel.perform {
@@ -226,29 +221,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 completionHandler(.newData)
             }
         }
-    }
-
-    //BUFF: move. Maybe formatted "slide for more"
-    private func informUser(numNewMails:Int) {
-        print("Notify user about \(numNewMails) new mails")
-        let title: String
-//        let body: String
-        if numNewMails == 1 {
-            title = NSLocalizedString("New message received",
-                                      comment:
-                "Title for notification show on lock screen for *one* new mail")
-//            body = NSLocalizedString("You have 1 new message",
-//                                      comment:
-//                "Body for notification show on lock screen for *one* new mail")
-        } else {
-            title = NSLocalizedString("\(numNewMails) new messages received",
-                                          comment:
-                "Title for notification show on lock screen for new mails")
-//            body = NSLocalizedString("You have \(numNewMails) new messages",
-//                                     comment:
-//                "Body for notification show on lock screen for new mails")
-        }
-        UserNotificationTool.post(title: title, batch: numNewMails)
     }
 
     func application(_ app: UIApplication, open url: URL,
@@ -349,5 +321,15 @@ extension AppDelegate: NetworkServiceDelegate {
         // Cleanup sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")
         PEPSession.cleanup()
+    }
+}
+
+// MARK: - User Notifiation
+
+extension AppDelegate {
+    private func informUser(numNewMails:Int) {
+        GCD.onMain {
+            UserNotificationTool.postUserNotification(forNumNewMails: numNewMails)
+        }
     }
 }

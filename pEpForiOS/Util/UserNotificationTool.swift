@@ -11,10 +11,6 @@ import UserNotifications
 /// A simple wrapper around Local Notification stuff
 struct UserNotificationTool {
     //BUFF: TODO: iOS<10 compatibility
-
-    //BUFF:
-    // application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))
-
     static public func askForPermissions(completion: ((_ granted: Bool) -> Void)? = nil) {
         if #available(iOS 10, *) {
             let options: UNAuthorizationOptions = [.alert, .badge, .sound];
@@ -52,7 +48,7 @@ struct UserNotificationTool {
             }
             content.sound = UNNotificationSound.default()
 
-            let identifier = "PEPLLocalNotification"
+            let identifier = "PEPLocalNotification"
             // For some reason the notification is not triggered with timeInterval == nil
             let now = 0.01
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: now, repeats: false)
