@@ -78,7 +78,13 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
             if let folder = CdFolder.first(attributes: ["folderTypeRawValue": FolderType.inbox.rawValue,
                                                         "account": account]) {
-                self.folderToOpen = folder.name!
+                guard let folderName = folder.name else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No name.")
+                    markAsFinished()
+                    waitForBackgroundTasksToFinish()
+                    return
+                }
+                self.folderToOpen = folderName
             }
         }
         syncDelegate = FetchNumberOfNewMailsSyncDelegate(errorHandler: self)
