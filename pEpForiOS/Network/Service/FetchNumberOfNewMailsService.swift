@@ -1,5 +1,5 @@
 //
-//  QuickSyncService.swift
+//  FetchNumberOfNewMailsService.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 01.04.17.
@@ -11,28 +11,43 @@ import CoreData
 
 import MessageModel
 
-
-
-open class QuickSyncService { //BUFF: rename
-//    public typealias CompletionBlock = (_ numNewMails: Int?) -> ()
-
-    var imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]
-    let context = Record.Context.background
-    let workerQueue = DispatchQueue(
+/// Figures out the number of new (to us) messages in Inbox, taking all verified accounts
+/// into account.
+open class FetchNumberOfNewMailsService { //BUFF: rename
+    private var imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]
+    private let context = Record.Context.background
+    private let workerQueue = DispatchQueue(
         label: "NetworkService", qos: .utility, target: nil)
-    let backgroundQueue = OperationQueue()
-    var errorContainer: ErrorContainer?
+    private let backgroundQueue = OperationQueue()
+    private var errorContainer: ErrorContainer?
 
     public init(imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]? = nil) {
         self.imapConnectionDataCache = imapConnectionDataCache ?? [EmailConnectInfo: ImapSyncData]()
     }
 
-    func fetchAccounts() -> [CdAccount] {
+    public func start(completionBlock: @escaping (_ numNewMails: Int?) -> ()) {
+        workerQueue.async {
+            let numNewMails = self.kickOffOperationsAndWait()
+            if self.errorContainer?.hasErrors() ?? false {
+                completionBlock(nil)
+            } else {
+                completionBlock(numNewMails)
+            }
+        }
+    }
+
+    public func stop() {
+        backgroundQueue.cancelAllOperations()
+    }
+
+    // MARK: - Internal
+
+    private func fetchAccounts() -> [CdAccount] {
         let p = NSPredicate(format: "needsVerification = false")
         return CdAccount.all(predicate: p, in: context) as? [CdAccount] ?? []
     }
 
-    func gatherConnectInfos() -> [EmailConnectInfo] {
+    private func gatherConnectInfos() -> [EmailConnectInfo] {
         var connectInfos = [EmailConnectInfo]()
         if !imapConnectionDataCache.isEmpty {
             for ci in imapConnectionDataCache.keys {
@@ -51,18 +66,7 @@ open class QuickSyncService { //BUFF: rename
         return connectInfos
     }
 
-    public func sync(completionBlock: @escaping (_ numNewMails: Int?) -> ()) {
-        workerQueue.async {
-            let numNewMails = self.kickOffOperationsAndWait()
-            if self.errorContainer?.hasErrors() ?? false {
-                completionBlock(nil)
-            } else {
-                completionBlock(numNewMails)
-            }
-        }
-    }
-
-    func kickOffOperationsAndWait() -> Int {
+    private func kickOffOperationsAndWait() -> Int {
         let theErrorContainer = ErrorContainer()
         errorContainer = theErrorContainer
         let cis = gatherConnectInfos()
