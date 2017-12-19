@@ -12,6 +12,9 @@ import UserNotifications
 struct UserNotificationTool {
     //BUFF: TODO: iOS<10 compatibility
 
+    //BUFF:
+    // application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil))
+
     static public func askForPermissions(completion: ((_ granted: Bool) -> Void)? = nil) {
         if #available(iOS 10, *) {
             let options: UNAuthorizationOptions = [.alert, .badge, .sound];

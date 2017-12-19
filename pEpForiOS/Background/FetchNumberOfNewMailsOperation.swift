@@ -12,12 +12,12 @@ import MessageModel
 /// Fetches UIDs of  new (to us) messages in a given folder and returns its count.
 class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     typealias CompletionBlock = (_ numNewMails: Int?) -> ()
-    
+
     private let context = Record.Context.background
     private var folderToOpen = ImapSync.defaultImapInboxName
     private var syncDelegate: FetchNumberOfNewMailsSyncDelegate?
     private var numNewMailsFetchedBlock: CompletionBlock?
-    
+
     init(parentName: String = #function,
          errorContainer: ServiceErrorProtocol = ErrorContainer(),
          imapSyncData: ImapSyncData,
@@ -28,18 +28,18 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
-    
+
     // MARK: - Operation
-    
+
     override public func main() {
         if !shouldRun() {
             return
         }
-        
+
         if !checkImapSync() {
             return
         }
-        
+
         //        let context = Record.Context.background
         context.perform() { [weak self] in
             guard let me = self else {
@@ -49,7 +49,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
             me.process()
         }
     }
-    
+
     public override func cancel() {
         Log.info(component: comp, content: "cancel")
         if let sync = imapSyncData.sync {
@@ -57,16 +57,16 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         }
         super.cancel()
     }
-    
+
     // MARK: - ImapSyncOperation
-    
+
     public override func waitForBackgroundTasksToFinish() {
         syncDelegate = nil
         super.waitForBackgroundTasksToFinish()
     }
-    
+
     // MARK: - Internal
-    
+
     private func cdFolder() -> CdFolder? {
         var result: CdFolder?
         context.performAndWait {
@@ -90,28 +90,28 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         }
         return result
     }
-    
+
     private func process() {
         let folderBuilder = ImapFolderBuilder(
             accountID: self.imapSyncData.connectInfo.accountObjectID,
             backgroundQueue: self.backgroundQueue, name: name)
-        
+
         let cdFolderToOpen = cdFolder()
         if  let name = cdFolderToOpen?.name {
             folderToOpen = name
         }
-        
+
         syncDelegate = FetchNumberOfNewMailsSyncDelegate(errorHandler: self)
         self.imapSyncData.sync?.delegate = syncDelegate
         self.imapSyncData.sync?.folderBuilder = folderBuilder
-        
+
         if let sync = imapSyncData.sync {
             if !sync.openMailBox(name: self.folderToOpen) {
                 self.fetchUids(sync)
             }
         }
     }
-    
+
     fileprivate func fetchUids(_ sync: ImapSync) {
         do {
             try sync.fetchUidsForNewMessages()
@@ -126,7 +126,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         numNewMailsFetchedBlock?(uids?.count)
         waitForBackgroundTasksToFinish()
     }
-    
+
     /// If no new mails exist, the server returns the UID of the last (also locally) existing mail.
     /// This method handles this case and filters the existing UID.
     ///
@@ -155,7 +155,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
             // that "there are no new messages"
             return []
         }
-        
+
         return uids
     }
 }
@@ -166,7 +166,7 @@ class FetchNumberOfNewMailsSyncDelegate: DefaultImapSyncDelegate {
             notification?.userInfo?["Uids"] as? [Int]
         )
     }
-    
+
     public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         (errorHandler as? FetchNumberOfNewMailsOperation)?.fetchUids(sync)
     }

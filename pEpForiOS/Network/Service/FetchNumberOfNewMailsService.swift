@@ -25,9 +25,14 @@ open class FetchNumberOfNewMailsService {
         self.imapConnectionDataCache = imapConnectionDataCache ?? [EmailConnectInfo: ImapSyncData]()
     }
 
+    /// Starts the service
+    ///
+    /// - Parameter completionBlock: called when the service has finished.
+    ///                              Passes nil if we could not figure out whether or not
+    ///                              there are new emails.
     public func start(completionBlock: @escaping (_ numNewMails: Int?) -> ()) {
         workerQueue.async {
-            let numNewMails = self.kickOffOperationsAndWait()
+            let numNewMails = self.numberOfNewMails()
             if self.errorContainer?.hasErrors() ?? false {
                 completionBlock(nil)
             } else {
@@ -36,6 +41,7 @@ open class FetchNumberOfNewMailsService {
         }
     }
 
+    /// Cancels all background tasks.
     public func stop() {
         backgroundQueue.cancelAllOperations()
     }
@@ -66,7 +72,7 @@ open class FetchNumberOfNewMailsService {
         return connectInfos
     }
 
-    private func kickOffOperationsAndWait() -> Int {
+    private func numberOfNewMails() -> Int {
         let theErrorContainer = ErrorContainer()
         errorContainer = theErrorContainer
         let cis = gatherConnectInfos()
