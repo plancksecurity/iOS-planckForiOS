@@ -40,7 +40,6 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
             return
         }
 
-        //        let context = Record.Context.background
         context.perform() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "I lost me")
