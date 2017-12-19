@@ -137,11 +137,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         UserNotificationTool.resetApplicationIconBadgeNumber()
 
-        UserNotificationTool.askForPermissions()
-
-        DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
-                AddressBook.checkAndTransfer()
+        UserNotificationTool.askForPermissions() { granted in
+            // We do not care about whether or not the user granted permissions to
+            // post notifications here (e.g. we ignore granted)
+            // The calls are nested to avoid simultaniously showing permissions alert for notifications
+            // and contact access.
+            DispatchQueue.global(qos: .userInitiated).async {
+                MessageModel.perform {
+                    AddressBook.checkAndTransfer()
+                }
             }
         }
 
@@ -189,10 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.application = application
-
-        //BUFF:
         UserNotificationTool.resetApplicationIconBadgeNumber()
-
         startServices()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }

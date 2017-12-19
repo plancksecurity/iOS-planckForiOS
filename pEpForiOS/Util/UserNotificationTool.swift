@@ -10,7 +10,6 @@ import UserNotifications
 
 /// A simple wrapper around Local Notification stuff
 struct UserNotificationTool {
-    //BUFF: TODO: iOS<10 compatibility
     static public func askForPermissions(completion: ((_ granted: Bool) -> Void)? = nil) {
         if #available(iOS 10, *) {
             let options: UNAuthorizationOptions = [.alert, .badge, .sound];
@@ -20,7 +19,11 @@ struct UserNotificationTool {
                 completion?(granted)
             }
         } else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Unimplemented stub")
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types:
+                [.alert, .badge, .sound], categories: nil))
+            isAuthorized() { granted in
+                completion?(granted)
+            }
         }
     }
 
@@ -31,11 +34,18 @@ struct UserNotificationTool {
                 completion?(settings.authorizationStatus == .authorized)
             }
         } else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Unimplemented stub")
+            guard let grantedTypes = UIApplication.shared.currentUserNotificationSettings?.types else {
+                completion?(false)
+                return
+            }
+            completion?(grantedTypes.contains(.alert))
         }
     }
 
     static public func post(title: String, body: String? = nil, batch: Int?) {
+        // For some reason the notification is not triggered with timeInterval == nil
+        let now = 0.01
+
         if #available(iOS 10, *) {
             let center = UNUserNotificationCenter.current()
             let content = UNMutableNotificationContent()
@@ -47,10 +57,7 @@ struct UserNotificationTool {
                 content.badge = batch
             }
             content.sound = UNNotificationSound.default()
-
             let identifier = "PEPLocalNotification"
-            // For some reason the notification is not triggered with timeInterval == nil
-            let now = 0.01
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: now, repeats: false)
             let request = UNNotificationRequest(identifier: identifier,
                                                 content: content, trigger: trigger)
@@ -61,11 +68,26 @@ struct UserNotificationTool {
                 }
             }
         } else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Unimplemented stub")
+            let notification = UILocalNotification()
+            notification.fireDate = Date(timeIntervalSinceNow: now)
+            notification.alertBody = title
+            if let body = body {
+                notification.alertAction = body
+            }
+            notification.soundName = UILocalNotificationDefaultSoundName
+            UIApplication.shared.scheduleLocalNotification(notification)
+
+            if let batch = batch {
+                setApplicationIconBadgeNumber(batch)
+            }
         }
     }
 
     static public func resetApplicationIconBadgeNumber() {
         UIApplication.shared.applicationIconBadgeNumber = 0
+    }
+
+    static public func setApplicationIconBadgeNumber(_ num: Int) {
+        UIApplication.shared.applicationIconBadgeNumber = num
     }
 }
