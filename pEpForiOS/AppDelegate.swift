@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
         Log.shared.resume()
-        //        networkService?.start()//BUFF:
+        networkService?.start()
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
@@ -135,11 +135,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         startServices()
 
-        //BUFF:
-
         UserNotificationTool.resetApplicationIconBadgeNumber()
 
-        UserNotificationTool.askForPermissions() { granted in
+        UserNotificationTool.askForPermissions() { granted in //BUFF:
 //            if granted {
 //                application.regi
 //            }
@@ -224,14 +222,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             case 0:
                 completionHandler(.noData)
             default:
-                //BUFF: post notify
                 self.informUser(numNewMails: numMails)
                 completionHandler(.newData)
             }
         }
     }
 
-    //BUFF: move
+    //BUFF: move. Maybe formatted "slide for more"
     private func informUser(numNewMails:Int) {
         print("Notify user about \(numNewMails) new mails")
         let title: String

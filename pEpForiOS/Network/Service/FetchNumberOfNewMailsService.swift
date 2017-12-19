@@ -13,7 +13,7 @@ import MessageModel
 
 /// Figures out the number of new (to us) messages in Inbox, taking all verified accounts
 /// into account.
-open class FetchNumberOfNewMailsService { //BUFF: rename
+open class FetchNumberOfNewMailsService {
     private var imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]
     private let context = Record.Context.background
     private let workerQueue = DispatchQueue(

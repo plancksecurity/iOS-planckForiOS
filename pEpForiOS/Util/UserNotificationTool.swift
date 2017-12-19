@@ -50,7 +50,9 @@ struct UserNotificationTool {
             content.sound = UNNotificationSound.default()
 
             let identifier = "PEPLLocalNotification"
-            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.01, repeats: false)
+            // For some reason the notification is not triggered with timeInterval == nil
+            let now = 0.01
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: now, repeats: false)
             let request = UNNotificationRequest(identifier: identifier,
                                                 content: content, trigger: trigger)
             center.add(request) { (error) in

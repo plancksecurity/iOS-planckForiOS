@@ -70,7 +70,7 @@ public class NetworkService {
 
     var serviceConfig: ServiceConfig
     public private(set) var currentWorker: NetworkServiceWorker?
-    var quickSync: QuickSyncService?
+    var newMailsService: FetchNumberOfNewMailsService?
     public weak var delegate: NetworkServiceDelegate?
 
     /**
@@ -132,7 +132,7 @@ public class NetworkService {
     }
 
     /**
-     Cancel the worker.
+     Cancel worker and services.
      */
     public func cancel() {
         // Keep the current config
@@ -148,22 +148,15 @@ public class NetworkService {
         lastConnectionDataCache = currentWorker?.imapConnectionDataCache
         currentWorker?.cancel(networkService: self)
         currentWorker = nil
+
+        // Only to make sure. Should not be required.
+        newMailsService?.stop()
     }
-
-//    public func quickSync(completionHandler: @escaping (QuickSyncResult) -> ()) {
-//        let connectionCache = currentWorker?.imapConnectionDataCache ?? lastConnectionDataCache
-//        cancel()
-//        quickSync = QuickSyncService(imapConnectionDataCache: connectionCache)
-//        quickSync?.sync(completionBlock: completionHandler)
-//    }
-
-    //BUFF:
 
     public func checkForNewMails(completionHandler: @escaping (_ numNewMails: Int?) -> ()) {
-        quickSync = QuickSyncService(imapConnectionDataCache: nil)
-        quickSync?.sync(completionBlock: completionHandler)
+        newMailsService = FetchNumberOfNewMailsService(imapConnectionDataCache: nil)
+        newMailsService?.start(completionBlock: completionHandler)
     }
-    //FFUB
 
     public func internalVerify(cdAccount account: CdAccount) {
         cancel() // cancel the current worker
