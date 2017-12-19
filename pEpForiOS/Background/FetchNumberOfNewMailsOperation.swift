@@ -66,7 +66,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         let folderBuilder = ImapFolderBuilder(
             accountID: self.imapSyncData.connectInfo.accountObjectID,
             backgroundQueue: self.backgroundQueue, name: name)
-        guard let account = Record.Context.background.object(
+        guard let account = context.object(
             with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(Constants.errorCannotFindAccount(component: comp))
