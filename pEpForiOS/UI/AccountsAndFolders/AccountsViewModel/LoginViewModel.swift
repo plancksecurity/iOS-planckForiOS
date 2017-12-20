@@ -77,11 +77,11 @@ class LoginViewModel {
         return Account.by(address: address) != nil
     }
 
-    func login(account: String, password: String, login: String? = nil,
+    func login(accountName: String, password: String, login: String? = nil,
                userName: String? = nil, mySelfer: KickOffMySelfProtocol,
                errorCallback: @escaping (Error) -> Void) {
         self.mySelfer = mySelfer
-        let acSettings = AccountSettings(accountName: account, provider: nil,
+        let acSettings = AccountSettings(accountName: accountName, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
         acSettings.lookupCompletion() { [weak self] settings in
             GCD.onMain() {
@@ -107,7 +107,7 @@ class LoginViewModel {
                 accountSettingsTransport: outgoingServer.transport)
 
             let newAccount = AccountUserInput(
-                address: account, userName: userName ?? account,
+                address: accountName, userName: userName ?? accountName,
                 loginName: login, password: password,
                 serverIMAP: incomingServer.hostname,
                 portIMAP: UInt16(incomingServer.port),

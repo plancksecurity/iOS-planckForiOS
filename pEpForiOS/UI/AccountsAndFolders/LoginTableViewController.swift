@@ -153,7 +153,7 @@
         }
         loginViewModel.accountVerificationResultDelegate = self
         loginViewModel.login(
-            account: email, password: pass,userName: username,
+            accountName: email, password: pass,userName: username,
             mySelfer: appConfig.mySelfer) { [weak self] error in
                 self?.handleLoginError(error: error, extended: true)
         }
