@@ -191,7 +191,8 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
     }
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
-        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted"))
+        addError(Constants.BackgroundGeneralError.illegalState)
+        //        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted")) //BUFF: test
         markAsFinished()
     }
 

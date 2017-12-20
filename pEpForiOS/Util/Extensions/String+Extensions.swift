@@ -39,7 +39,7 @@ public extension String {
                 return name
             }
         } catch let err as NSError {
-            Log.shared.errorAndCrash(component: "unquote", error: err)
+            Log.shared.errorAndCrash(component: #function, error: err)
         }
         return self
     }

@@ -119,8 +119,8 @@ open class Constants {
     /**
      Errors dealing with IMAP.
      */
-    public enum ImapErrorCode: Int {
-        case unknownError = 7000 //uu
+    public enum ImapErrorCode: Int { //BUFF: done
+//        case unknownError = 7000 //uu
         case invalidConnection
 //        case badResponseError //uu
 //        case messageStoreFailed //uu
@@ -130,37 +130,22 @@ open class Constants {
 //        case folderSyncFailed //uu
     }
 
-    /**
-     Errors dealing with the pEp engine.
-     */
-    public enum BackgroundCorePepError: Error {
-        case encryptionError(info: String?)
-    }
-
-    /**
-     Errors dealing with IMAP.
-     */
-    public enum BackgroundImapError: Error {
-        case unknownError(info: String?)
-        case invalidConnection(info: String?)
-    }
-
-    static func errorIllegalState(_ component: String = #function, stateName: String) -> NSError {
-        let error = NSError.init(
-            domain: component, code: GeneralErrorCode.notImplemented.rawValue, //BUFF:  notImplemented for getting unexpected callback?
-            userInfo: [NSLocalizedDescriptionKey:
-                String.init(format: NSLocalizedString("Unexpected state: %@",
-                    comment: "General error description for operation that encountered an unexpected state/callback, e.g. a 'message received' when waiting for a list of folders"),
-                    stateName)])
-        return error
-    }
-
-    static func errorIllegalState(_ component: String = #function, errorMessage: String) -> NSError {
-        let error = NSError.init(
-            domain: component, code: GeneralErrorCode.notImplemented.rawValue,
-            userInfo: [NSLocalizedDescriptionKey: errorMessage])
-        return error
-    }
+//    static func errorIllegalState(_ component: String = #function, stateName: String) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: GeneralErrorCode.notImplemented.rawValue, //BUFF:  notImplemented for getting unexpected callback?
+//            userInfo: [NSLocalizedDescriptionKey:
+//                String.init(format: NSLocalizedString("Unexpected state: %@",
+//                    comment: "General error description for operation that encountered an unexpected state/callback, e.g. a 'message received' when waiting for a list of folders"),
+//                    stateName)])
+//        return error
+//    }
+//
+//    static func errorIllegalState(_ component: String = #function, errorMessage: String) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: GeneralErrorCode.notImplemented.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey: errorMessage])
+//        return error
+//    }
 
     static func errorInvalidParameter(_ component: String = #function) -> NSError {
         let error = NSError.init(
