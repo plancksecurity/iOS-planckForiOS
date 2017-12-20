@@ -122,7 +122,9 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         let ms = TestMessageSyncService(accountSettings: accountSettings, expLookedUp: expLookedUp)
         let vm = LoginViewModel(messageSyncService: ms)
 
-        vm.login(account: accountSettings.idAddress, password: passw, login: nil, userName: nil,
+        vm.login(accountName: accountSettings.idAddress, password: passw,
+                 loginName: nil,
+                 userName: nil,
                  mySelfer: NoOpMySelfer()) { error in
                     XCTFail("Unexpected error: \(error)")
         }
