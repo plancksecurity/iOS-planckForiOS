@@ -129,7 +129,7 @@ open class Constants {
         case folderSyncFailed
     }
 
-    static func errorNotImplemented(_ component: String) -> NSError {
+    static func errorNotImplemented(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.notImplemented.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -139,7 +139,7 @@ open class Constants {
         return error
     }
 
-    static func errorIllegalState(_ component: String, stateName: String) -> NSError {
+    static func errorIllegalState(_ component: String = #function, stateName: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.notImplemented.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -149,34 +149,34 @@ open class Constants {
         return error
     }
 
-    static func errorIllegalState(_ component: String, errorMessage: String) -> NSError {
+    static func errorIllegalState(_ component: String = #function, errorMessage: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.notImplemented.rawValue,
             userInfo: [NSLocalizedDescriptionKey: errorMessage])
         return error
     }
 
-    static func errorInvalidParameter(_ component: String) -> NSError {
+    static func errorInvalidParameter(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.invalidParameter.rawValue)
         return error
     }
 
-    static func errorInvalidParameter(_ component: String, errorMessage: String) -> NSError {
+    static func errorInvalidParameter(_ component: String = #function, errorMessage: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.invalidParameter.rawValue,
             userInfo: [NSLocalizedDescriptionKey: errorMessage])
         return error
     }
 
-    static func errorOperationFailed(_ component: String, errorMessage: String) -> NSError {
+    static func errorOperationFailed(_ component: String = #function, errorMessage: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.operationFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey: errorMessage])
         return error
     }
 
-    static func errorFolderNotOpen(_ component: String, folderName: String) -> NSError {
+    static func errorFolderNotOpen(_ component: String = #function, folderName: String) -> NSError {
         let error = NSError.init(
             domain: component, code: GeneralErrorCode.illegalState.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -186,7 +186,7 @@ open class Constants {
         return error
     }
 
-    static func errorFolderDoesNotExist(_ component: String,
+    static func errorFolderDoesNotExist(_ component: String = #function,
                                                      folderName: String) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.folderDoesNotExist.rawValue,
@@ -197,7 +197,7 @@ open class Constants {
         return error
     }
 
-    static func errorCannotStoreMessage(_ component: String) -> NSError {
+    static func errorCannotStoreMessage(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.cannotStoreMessage.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -206,7 +206,7 @@ open class Constants {
         return error
     }
 
-    static func errorCouldNotUpdateOrAddContact(_ component: String, name: String) -> NSError {
+    static func errorCouldNotUpdateOrAddContact(_ component: String = #function, name: String) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.couldNotUpdateOrAddContact.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -216,7 +216,7 @@ open class Constants {
         return error
     }
 
-    static func errorCouldNotStoreFolder(_ component: String, name: String) -> NSError {
+    static func errorCouldNotStoreFolder(_ component: String = #function, name: String) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.couldNotStoreFolder.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -227,7 +227,7 @@ open class Constants {
     }
 
     static func errorCannotFindAccountForEmail(
-        _ component: String, email: String) -> NSError {
+        _ component: String = #function, email: String) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.cannotFindAccountForEmail.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -238,7 +238,7 @@ open class Constants {
         return error
     }
 
-    static func errorCannotFindAccount(component: String) -> NSError {
+    static func errorCannotFindAccount(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.cannotFindAccount.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -248,7 +248,7 @@ open class Constants {
         return error
     }
     
-    static func errorCannotFindFolder(component: String) -> NSError {
+    static func errorCannotFindFolder(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.cannotFindFolder.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -259,7 +259,7 @@ open class Constants {
     }
 
     static func errorCannotFindServer(
-        component: String, accountEmail: String) -> NSError {
+        component: String = #function, accountEmail: String) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.cannotFindServerForAccount.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -270,7 +270,7 @@ open class Constants {
         return error
     }
 
-    static func errorCannotFindServer(component: String) -> NSError {
+    static func errorCannotFindServer(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.cannotFindServer.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -280,7 +280,7 @@ open class Constants {
         return error
     }
 
-    static func errorCannotFindServerCredentials(component: String) -> NSError {
+    static func errorCannotFindServerCredentials(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.cannotFindServerCredentials.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -290,7 +290,7 @@ open class Constants {
         return error
     }
 
-    static func errorCannotFindMessage(component: String) -> NSError {
+    static func errorCannotFindMessage(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.cannotFindMessage.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -300,7 +300,7 @@ open class Constants {
         return error
     }
 
-    static func errorNoImapConnectInfo(component: String) -> NSError {
+    static func errorNoImapConnectInfo(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.noImapConnectInfo.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -310,7 +310,7 @@ open class Constants {
         return error
     }
 
-    static func errorNoFlags(component: String) -> NSError {
+    static func errorNoFlags(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: CoreDataErrorCode.noFlags.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -320,7 +320,7 @@ open class Constants {
         return error
     }
 
-    static func errorTimeout(_ component: String) -> NSError {
+    static func errorTimeout(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: NetworkError.timeout.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -329,7 +329,7 @@ open class Constants {
         return error
     }
 
-    static func errorAuthenticationFailed(_ component: String) -> NSError {
+    static func errorAuthenticationFailed(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: NetworkError.authenticationFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -338,7 +338,7 @@ open class Constants {
         return error
     }
 
-    static func errorConnectionLost(_ component: String) -> NSError {
+    static func errorConnectionLost(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: NetworkError.connectionLost.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -347,7 +347,7 @@ open class Constants {
         return error
     }
 
-    static func errorConnectionTerminated(_ component: String) -> NSError {
+    static func errorConnectionTerminated(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: NetworkError.connectionLost.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -356,7 +356,7 @@ open class Constants {
         return error
     }
 
-    static func errorConnectionTimeout(_ component: String) -> NSError {
+    static func errorConnectionTimeout(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: NetworkError.connectionTimeout.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -365,7 +365,7 @@ open class Constants {
         return error
     }
 
-    static func errorSmtp(_ component: String, code: SmtpErrorCode) -> NSError {
+    static func errorSmtp(_ component: String = #function, code: SmtpErrorCode) -> NSError {
         let error = NSError.init(
             domain: component, code: code.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -375,7 +375,7 @@ open class Constants {
         return error
     }
 
-    static func errorEncryption(_ component: String, status: PEP_STATUS) -> NSError {
+    static func errorEncryption(_ component: String = #function, status: PEP_STATUS) -> NSError {
         let error = NSError.init(
             domain: component, code: PepErrorCode.encryptionError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
@@ -385,7 +385,7 @@ open class Constants {
         return error
     }
 
-    static func errorSmtpInvalidConnection(component: String) -> NSError {
+    static func errorSmtpInvalidConnection(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: SmtpErrorCode.invalidConnection.rawValue,
             userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
@@ -393,7 +393,7 @@ open class Constants {
         return error
     }
 
-    static func errorImapUnknown(_ component: String) -> NSError {
+    static func errorImapUnknown(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.unknownError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
@@ -401,7 +401,7 @@ open class Constants {
         return error
     }
 
-    static func errorImapInvalidConnection(component: String) -> NSError {
+    static func errorImapInvalidConnection(component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.invalidConnection.rawValue,
             userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
@@ -409,7 +409,7 @@ open class Constants {
         return error
     }
 
-    static func errorImapBadResponse(_ component: String, response: String) -> NSError {
+    static func errorImapBadResponse(_ component: String = #function, response: String) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.badResponseError.rawValue,
             userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
@@ -419,7 +419,7 @@ open class Constants {
         return error
     }
 
-    static func errorMessageStoreFailed(_ component: String) -> NSError {
+    static func errorMessageStoreFailed(_ component: String = #function) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.messageStoreFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
@@ -428,7 +428,7 @@ open class Constants {
         return error
     }
 
-    static func errorFolderCreateFailed(_ component: String, name: String) -> NSError {
+    static func errorFolderCreateFailed(_ component: String = #function, name: String) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.folderCreateFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -438,7 +438,7 @@ open class Constants {
         return error
     }
 
-    static func errorFolderDeleteFailed(_ component: String, name: String) -> NSError {
+    static func errorFolderDeleteFailed(_ component: String = #function, name: String) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.folderDeleteFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -448,7 +448,7 @@ open class Constants {
         return error
     }
 
-    static func errorAppendFailed(_ component: String, folderName: String) -> NSError {
+    static func errorAppendFailed(_ component: String = #function, folderName: String) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.appendFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
@@ -459,7 +459,7 @@ open class Constants {
         return error
     }
 
-    static func errorFolderSyncFailed(_ component: String, folderName: String) -> NSError {
+    static func errorFolderSyncFailed(_ component: String = #function, folderName: String) -> NSError {
         let error = NSError.init(
             domain: component, code: ImapErrorCode.folderSyncFailed.rawValue,
             userInfo: [NSLocalizedDescriptionKey:
