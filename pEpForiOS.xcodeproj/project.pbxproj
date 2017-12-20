@@ -150,7 +150,6 @@
 		432645811F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432645801F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift */; };
 		43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */; };
 		432677161F17796D00F01F5A /* ImapIdleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432677151F17796D00F01F5A /* ImapIdleService.swift */; };
-		4326D3FB1EFBC55C0016AB0D /* OperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326D3FA1EFBC55C0016AB0D /* OperationError.swift */; };
 		4326D3FF1EFBC8DB0016AB0D /* FolderInfoOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */; };
 		432736D31F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432736D21F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift */; };
 		43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */; };
@@ -572,7 +571,6 @@
 		432645801F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Parsing.swift"; sourceTree = "<group>"; };
 		43264E9A1D76B7110098DCAC /* SyncFlagsToServerOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperation.swift; sourceTree = "<group>"; };
 		432677151F17796D00F01F5A /* ImapIdleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapIdleService.swift; sourceTree = "<group>"; };
-		4326D3FA1EFBC55C0016AB0D /* OperationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationError.swift; sourceTree = "<group>"; };
 		4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderInfoOperation.swift; sourceTree = "<group>"; };
 		432736D21F7114B3007CB989 /* DecryptionAttemptCounterDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptionAttemptCounterDelegate.swift; sourceTree = "<group>"; };
 		43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -924,7 +922,6 @@
 		15BBBC611FD0461000B9DCC8 /* Error */ = {
 			isa = PBXGroup;
 			children = (
-				4326D3FA1EFBC55C0016AB0D /* OperationError.swift */,
 				43D755F51F262B37006F933A /* PantomimeError.swift */,
 				43A26FB91E0408FB00AF0B84 /* ServiceErrorProtocol.swift */,
 				155050F51FEAB082009CEAD2 /* ErrorContainer.swift */,
@@ -2102,7 +2099,6 @@
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
 				B72528371EE9562200815118 /* AccountsSettingsSectionViewModel.swift in Sources */,
 				432DA7461EE027EB00B30BAA /* MessageSyncService.swift in Sources */,
-				4326D3FB1EFBC55C0016AB0D /* OperationError.swift in Sources */,
 				43A26FBA1E0408FB00AF0B84 /* ServiceErrorProtocol.swift in Sources */,
 				43C3220C1EA915C6005073FB /* CGRect+Util.swift in Sources */,
 				B714C4851ED437A7000BC84D /* LoginTableViewController.swift in Sources */,

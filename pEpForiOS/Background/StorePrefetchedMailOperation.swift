@@ -17,7 +17,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     enum OperationError: Error, LocalizedError {
         case cannotFindAccount
         case cannotStoreMessage
-        case messageForFlagUpdateNotFound
+        case messageForFlagUpdateNotFound //BUFF: uu, delete the hole thing
     }
 
     let message: CWIMAPMessage

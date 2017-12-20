@@ -67,7 +67,9 @@ extension SmtpSendService: ServiceExecutionProtocol {
                 let imapSyncData = self?.imapSyncData,
                 let smtpSendData = self?.smtpSendData else {
                     self?.handle(
-                        error: OperationError.illegalParameter, taskID: bgID, handler: handler)
+                        error: BackgroundError.GeneralError.invalidParameter(info: #function),
+                        taskID: bgID,
+                        handler: handler)
                     return
             }
 

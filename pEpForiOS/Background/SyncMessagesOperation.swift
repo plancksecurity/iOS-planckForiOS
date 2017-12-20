@@ -52,7 +52,8 @@ public class SyncMessagesOperation: ImapSyncOperation {
             return false
         }
         if firstUID > lastUID {
-            handleError(OperationError.illegalParameter, message: "firstUID should be <= lastUID?")
+            handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
+                        message: "firstUID should be <= lastUID?") //BUFF: OperationError.illegalParameter
             return false
         }
         return true
