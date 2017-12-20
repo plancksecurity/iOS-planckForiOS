@@ -11,6 +11,10 @@ import Foundation
 /// Error to display to the user.
 /// The multiple errors reported from different layers can and should be clustered here to not
 /// overwhelm the user with internals.
+/// As errors are most likely shown to the user in some alert-like view, it offers a title and
+/// a message.
+/// Buttons and actions to react to buttons have intentionally not been implemented. Currently not
+/// required.
 struct DisplayUserError {
     enum ErrorType {
         case authenticationFailed
