@@ -12,3 +12,4 @@ pEpTrustWords\.bundle/system\.db
 glob
 pEpForiOSTests/Util/TestData.swift
 pEpForiOSUITests/UITestData.swift
+pEpForiOS/Util/OAuth2/OAuth2GmailConfig.swift

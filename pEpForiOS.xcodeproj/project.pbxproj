@@ -250,6 +250,8 @@
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
+		439932251FEA70D000E92C35 /* OAuth2GmailConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439932241FEA70D000E92C35 /* OAuth2GmailConfig.swift */; };
+		439932271FEA722100E92C35 /* OAuth2Configurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439932261FEA722100E92C35 /* OAuth2Configurator.swift */; };
 		439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */; };
 		439D40701CC78930009A4E7C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
 		439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
@@ -698,6 +700,8 @@
 		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		43980EF91CBD415700A7FC3C /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		439932241FEA70D000E92C35 /* OAuth2GmailConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2GmailConfig.swift; sourceTree = "<group>"; };
+		439932261FEA722100E92C35 /* OAuth2Configurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configurator.swift; sourceTree = "<group>"; };
 		439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Pantomime.swift"; sourceTree = "<group>"; };
 		439D406F1CC78930009A4E7C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		439D40711CC78958009A4E7C /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
@@ -1163,6 +1167,8 @@
 				43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */,
 				43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */,
 				431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */,
+				439932241FEA70D000E92C35 /* OAuth2GmailConfig.swift */,
+				439932261FEA722100E92C35 /* OAuth2Configurator.swift */,
 			);
 			path = OAuth2;
 			sourceTree = "<group>";
@@ -2067,6 +2073,7 @@
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,
 				43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */,
+				439932251FEA70D000E92C35 /* OAuth2GmailConfig.swift in Sources */,
 				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
 				43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */,
 				431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */,
@@ -2181,6 +2188,7 @@
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,
 				155050F21FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift in Sources */,
 				4362399A1EAE0CE800BD2EB9 /* Actionsheet+Extension.swift in Sources */,
+				439932271FEA722100E92C35 /* OAuth2Configurator.swift in Sources */,
 				B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
 				431E58FA1ED591E900EFA77F /* AccountVerificationService.swift in Sources */,
