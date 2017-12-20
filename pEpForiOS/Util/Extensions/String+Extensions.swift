@@ -390,34 +390,6 @@ public extension Character {
     }
 }
 
-class Regex {
-    let comp = "Regex"
-    let internalExpression: NSRegularExpression
-    let pattern: String
-
-    init?(pattern: String, options: NSRegularExpression.Options) {
-        self.pattern = pattern
-        do {
-            try internalExpression = NSRegularExpression(
-                pattern: pattern, options: options)
-        } catch let err as NSError {
-            Log.error(component: comp, error: err)
-            return nil
-        }
-    }
-
-    convenience init?(_ pattern: String) {
-        self.init(pattern: pattern, options: [])
-    }
-
-    func test(_ input: String) -> Bool {
-        let matches = self.internalExpression.matches(
-            in: input, options: .reportProgress,
-            range:input.wholeRange())
-        return matches.count > 0
-    }
-}
-
 // MARK: - Extensions for drawing initials from users
 
 extension String {
