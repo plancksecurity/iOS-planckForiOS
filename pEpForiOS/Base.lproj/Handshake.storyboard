@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Jbh-LP-Jl1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Jbh-LP-Jl1">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -87,7 +87,9 @@
                                                 <constraint firstItem="yXG-vT-v6v" firstAttribute="centerY" secondItem="hFh-wv-YAc" secondAttribute="centerY" id="DSz-2Z-CE8"/>
                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="9sp-4d-rJe" secondAttribute="leading" constant="20" symbolic="YES" id="DVg-hd-uGF"/>
                                                 <constraint firstItem="5RJ-Gx-qBT" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="leading" id="HtP-sE-ieg"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5RJ-Gx-qBT" secondAttribute="trailing" constant="20" symbolic="YES" id="KjZ-cN-SAL"/>
                                                 <constraint firstItem="hFh-wv-YAc" firstAttribute="leading" secondItem="rG1-9L-QdA" secondAttribute="trailing" constant="8" symbolic="YES" id="OSJ-kn-VC6"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Y4f-BW-EI0" secondAttribute="trailing" constant="20" symbolic="YES" id="SmW-sE-28U"/>
                                                 <constraint firstItem="Y4f-BW-EI0" firstAttribute="top" secondItem="eaF-0u-kGb" secondAttribute="bottom" constant="8" symbolic="YES" id="TEP-9Q-Wuz"/>
                                                 <constraint firstItem="yXG-vT-v6v" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="trailing" constant="8" symbolic="YES" id="TTS-KA-cIe"/>
                                                 <constraint firstItem="5RJ-Gx-qBT" firstAttribute="top" secondItem="hFh-wv-YAc" secondAttribute="bottom" constant="8" symbolic="YES" id="bsR-QC-Q3E"/>
@@ -108,16 +110,16 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="confirmButton">
-                                                    <rect key="frame" x="20" y="49" width="164" height="50"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="confirmButton">
+                                                    <rect key="frame" x="20" y="49" width="164" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Confirm Trustwords"/>
                                                     <connections>
                                                         <action selector="confirmAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="0Ra-lN-sx4"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="wrongButton">
-                                                    <rect key="frame" x="192" y="49" width="164" height="50"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="wrongButton">
+                                                    <rect key="frame" x="192" y="49" width="164" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Wrong Trustwords"/>
                                                     <connections>
