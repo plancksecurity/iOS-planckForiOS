@@ -57,7 +57,7 @@ class LoginViewModel {
     var loginAccount : Account?
     var extendedLogin = false
     var messageSyncService: MessageSyncServiceProtocol?
-    weak var delegate: AccountVerificationResultDelegate?
+    weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
 
     /**
      The last mySelfer, as indicated by login(), so after account verification,
@@ -155,6 +155,6 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                 account.delete()
             }
         }
-        delegate?.didVerify(result: result)
+        accountVerificationResultDelegate?.didVerify(result: result)
     }
 }

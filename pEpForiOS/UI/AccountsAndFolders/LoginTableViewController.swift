@@ -151,7 +151,7 @@
             handleLoginError(error: LoginTableViewControllerError.missingUsername, extended: false)
             return
         }
-        loginViewModel.delegate = self
+        loginViewModel.accountVerificationResultDelegate = self
         loginViewModel.login(
             account: email, password: pass,userName: username,
             mySelfer: appConfig.mySelfer) { [weak self] error in
