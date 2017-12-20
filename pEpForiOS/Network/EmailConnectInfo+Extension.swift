@@ -14,10 +14,10 @@ import MessageModel
 extension EmailConnectInfo {
     func folderBy(name: String, context: NSManagedObjectContext) throws -> CdFolder {
         guard let cdAccount = context.object(with: accountObjectID) as? CdAccount else {
-            throw CoreDataError.couldNotFindAccount
+            throw BackgroundError.CoreDataError.couldNotFindAccount(info: #function)//BUFF: CoreDataError.couldNotFindAccount
         }
         guard let cdFolder = CdFolder.by(name: name, account: cdAccount, context: context) else {
-            throw CoreDataError.couldNotFindFolder
+            throw BackgroundError.CoreDataError.couldNotFindFolder(info: #function)//BUFF: CoreDataError.couldNotFindFolder
         }
         return cdFolder
     }

@@ -73,7 +73,7 @@ extension SmtpSendService: ServiceExecutionProtocol {
 
             guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
                 as? CdAccount else {
-                    handler?(CoreDataError.couldNotFindAccount)
+                    handler?(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))//BUFF: CoreDataError.couldNotFindAccount)
                     self?.backgrounder?.endBackgroundTask(bgID)
                     return
             }

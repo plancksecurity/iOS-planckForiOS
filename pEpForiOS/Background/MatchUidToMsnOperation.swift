@@ -37,12 +37,12 @@ class MatchUidToMsnOperation: ConcurrentBaseOperation {
 
     func process(context: NSManagedObjectContext) {
         guard let cdFolder = context.object(with: folderID) as? CdFolder else {
-            handleError(CoreDataError.couldNotFindFolder)
+            handleError(BackgroundError.CoreDataError.couldNotFindFolder(info: nil))//BUFF:CoreDataError.couldNotFindFolder)
             markAsFinished()
             return
         }
         guard let cdMsg = cdFolder.message(byUID: uid) else {
-            handleError(CoreDataError.couldNotFindMessage)
+            handleError(BackgroundError.CoreDataError.couldNotFindMessage(info: nil))//BUFF: CoreDataError.couldNotFindMessage)
             markAsFinished()
             return
         }

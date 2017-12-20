@@ -78,13 +78,13 @@ public class SyncMessagesOperation: ImapSyncOperation {
             let cdAccount = context.object(
                 with: imapSyncData.connectInfo.accountObjectID) as? CdAccount
             else {
-                handleError(CoreDataError.couldNotFindAccount)
+                handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))//BUFF:CoreDataError.couldNotFindAccount)
                 return
         }
         guard
             let cdFolder = CdFolder.by(name: folderToOpen, account: cdAccount)
             else {
-                handleError(CoreDataError.couldNotFindFolder)
+                handleError(BackgroundError.CoreDataError.couldNotFindFolder(info: nil))//BUFF: CoreDataError.couldNotFindFolder)
                 return
         }
         folderID = cdFolder.objectID
@@ -117,7 +117,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
         guard
             let theFolderID = folderID,
             let folder = context.object(with: theFolderID) as? CdFolder else {
-                handleError(CoreDataError.couldNotFindFolder)
+                handleError(BackgroundError.CoreDataError.couldNotFindFolder(info: nil))//BUFF: CoreDataError.couldNotFindFolder)
                 return
         }
         let p1 = NSPredicate(format: "uid >= %d and uid <= %d", firstUID, lastUID)

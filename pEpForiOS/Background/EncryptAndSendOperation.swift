@@ -124,7 +124,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
         guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
             as? CdAccount else {
-                handleError(CoreDataError.couldNotFindAccount)
+                handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))//BUFF: CoreDataError.couldNotFindAccount)
                 return
         }
 
@@ -191,7 +191,7 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
     }
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
-        addError(Constants.BackgroundGeneralError.illegalState)
+        addError(BackgroundError.GeneralError.illegalState(info: #function))
         //        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted")) //BUFF: test
         markAsFinished()
     }
