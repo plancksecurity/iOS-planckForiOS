@@ -77,7 +77,17 @@ class LoginViewModel {
         return Account.by(address: address) != nil
     }
 
-    func login(accountName: String, password: String, login: String? = nil,
+    /**
+     Tries to "login", that is, retrieve account data, with the given parameters.
+     - parameter accountName: The email of this account
+     - parameter password: The password for the account
+     - parameter loginName: The optional login name for this account, if different from the email
+     - parameter userName: The chosen name of the user, or nick
+     - parameter mySelfer: An object to request a mySelf operation from, must be used immediately
+     after account setup
+     - parameter errorCallback: Any errors are reported via this callback
+     */
+    func login(accountName: String, password: String, loginName: String? = nil,
                userName: String? = nil, mySelfer: KickOffMySelfProtocol,
                errorCallback: @escaping (Error) -> Void) {
         self.mySelfer = mySelfer
@@ -108,7 +118,7 @@ class LoginViewModel {
 
             let newAccount = AccountUserInput(
                 address: accountName, userName: userName ?? accountName,
-                loginName: login, password: password,
+                loginName: loginName, password: password,
                 serverIMAP: incomingServer.hostname,
                 portIMAP: UInt16(incomingServer.port),
                 transportIMAP: imapTransport,
