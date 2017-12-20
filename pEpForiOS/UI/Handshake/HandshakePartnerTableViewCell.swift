@@ -37,7 +37,7 @@ protocol HandshakePartnerTableViewCellDelegate: class {
 
 class HandshakePartnerTableViewCell: UITableViewCell {
     /**
-     Programmatically created constraints for expanding elements of thes cell,
+     Programmatically created constraints for expanding elements of this cell,
      depending on state changes.
      */
     struct Constraints {
