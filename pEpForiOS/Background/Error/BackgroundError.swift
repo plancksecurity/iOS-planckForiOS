@@ -96,6 +96,7 @@ struct BackgroundError {
     public enum CoreDataError: Error {
         case couldNotInsertOrUpdate(info: String?)
         case couldNotStoreFolder(info: String?)
+        case couldNotStoreMessage(info: String?)
         case couldNotFindAccount(info: String?)
         case couldNotFindFolder(info: String?)
         case couldNotFindMessage(info: String?)
@@ -105,6 +106,8 @@ struct BackgroundError {
             case .couldNotInsertOrUpdate(let info):
                 return info
             case .couldNotStoreFolder(let info):
+                return info
+            case .couldNotStoreMessage(let info):
                 return info
             case .couldNotFindAccount(let info):
                 return info

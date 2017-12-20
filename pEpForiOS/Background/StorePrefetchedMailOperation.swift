@@ -14,12 +14,6 @@ import MessageModel
  This can be used in a queue, or directly called with ```start()```.
  */
 public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
-    enum OperationError: Error, LocalizedError {
-        case cannotFindAccount
-        case cannotStoreMessage
-        case messageForFlagUpdateNotFound //BUFF: uu, delete the hole thing
-    }
-
     let message: CWIMAPMessage
     let accountID: NSManagedObjectID
     let messageFetchedBlock: MessageFetchedBlock?
@@ -74,7 +68,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
 
     func storeMessage(context: NSManagedObjectContext) {
         guard let account = context.object(with: accountID) as? CdAccount else {
-            addError(OperationError.cannotFindAccount)
+            addError(BackgroundError.CoreDataError.couldNotFindAccount(info: #function))//BUFF: OperationError.cannotFindAccount)
             return
         }
         if let msg = insertOrUpdate(pantomimeMessage: message, account: account) {
@@ -92,7 +86,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
 We could not store the message. This can happen if the belonging account just has been deleted.
 """
             )
-            self.addError(OperationError.cannotStoreMessage)
+            self.addError(BackgroundError.CoreDataError.couldNotStoreMessage(info: #function))//BUFF: OperationError.cannotStoreMessage)
         }
     }
 
