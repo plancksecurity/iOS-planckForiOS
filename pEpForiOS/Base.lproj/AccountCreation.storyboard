@@ -612,6 +612,9 @@
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress"/>
+                                                    <connections>
+                                                        <action selector="emailChanged:" destination="0x8-ea-YBj" eventType="editingChanged" id="SL4-RM-GHl"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>

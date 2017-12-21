@@ -65,20 +65,6 @@ class LoginViewModel {
      */
     var mySelfer: KickOffMySelfProtocol?
 
-    /**
-     The email the user has entered so far.
-     The vc sets this regularly, so the model can figure out if the vc should
-     ask for a password.
-     */
-    var currentEmail: String?
-
-    /**
-     Based on the currentEmail the user has typed.
-     */
-    var passwordNecessary: Bool {
-        return true
-    }
-
     init(messageSyncService: MessageSyncServiceProtocol? = nil) {
         self.messageSyncService = messageSyncService
     }
@@ -166,6 +152,18 @@ class LoginViewModel {
             ms.requestVerification(account: account, delegate: self)
         } catch {
             throw error
+        }
+    }
+
+    /**
+     Is an account with this email address typically an OAuth2 account?
+     - Returns false, if this is an OAuth2 email address, true otherwise.
+     */
+    func isOAuth2Possible(email: String?) -> Bool {
+        if let theMail = email?.trimmedWhiteSpace() {
+            return theMail.isGmailAddress
+        } else {
+            return false
         }
     }
 }

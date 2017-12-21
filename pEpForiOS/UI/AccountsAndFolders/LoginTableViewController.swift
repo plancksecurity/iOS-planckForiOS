@@ -37,7 +37,7 @@
     }
  }
 
- class LoginTableViewController: BaseTableViewController, UITextFieldDelegate {
+ class LoginTableViewController: BaseTableViewController {
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
@@ -131,34 +131,6 @@
         manualConfigButton.isEnabled = !isCurrentlyVerifying
     }
 
-    @IBAction func logIn(_ sender: Any) {
-        dismissKeyboard()
-        isCurrentlyVerifying = true
-        guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingEmail, extended: false)
-            return
-        }
-        guard !loginViewModel.exist(address: email) else {
-            isCurrentlyVerifying = false
-            handleLoginError(error: LoginTableViewControllerError.accountExistence, extended: false)
-            return
-        }
-        guard let pass = password.text, pass != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingPassword, extended: false)
-            return
-        }
-        guard let username = user.text, username != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingUsername, extended: false)
-            return
-        }
-        loginViewModel.accountVerificationResultDelegate = self
-        loginViewModel.login(
-            accountName: email, password: pass, userName: username,
-            mySelfer: appConfig.mySelfer) { [weak self] error in
-                self?.handleLoginError(error: error, extended: true)
-        }
-    }
-
     public func handleLoginError(error: Error, extended: Bool) {
         Log.shared.error(component: #function, error: error)
         self.isCurrentlyVerifying = false
@@ -188,6 +160,59 @@
         present(alertView, animated: true, completion: nil)
     }
 
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+
+    func viewLog() {
+        performSegue(withIdentifier: .viewLogSegue, sender: self)
+    }
+
+    // MARK: IBAction
+
+    @IBAction func logIn(_ sender: Any) {
+        dismissKeyboard()
+        isCurrentlyVerifying = true
+        guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
+            handleLoginError(error: LoginTableViewControllerError.missingEmail, extended: false)
+            return
+        }
+        guard !loginViewModel.exist(address: email) else {
+            isCurrentlyVerifying = false
+            handleLoginError(error: LoginTableViewControllerError.accountExistence, extended: false)
+            return
+        }
+        guard let pass = password.text, pass != "" else {
+            handleLoginError(error: LoginTableViewControllerError.missingPassword, extended: false)
+            return
+        }
+        guard let username = user.text, username != "" else {
+            handleLoginError(error: LoginTableViewControllerError.missingUsername, extended: false)
+            return
+        }
+        loginViewModel.accountVerificationResultDelegate = self
+        loginViewModel.login(
+            accountName: email, password: pass, userName: username,
+            mySelfer: appConfig.mySelfer) { [weak self] error in
+                self?.handleLoginError(error: error, extended: true)
+        }
+    }
+
+    @IBAction func emailChanged(_ sender: UITextField) {
+        #if false
+            updatePasswordField(email: sender.text)
+        #endif
+    }
+
+    // MARK: Util
+
+    func updatePasswordField(email: String?) {
+        let oauth2Possible = loginViewModel.isOAuth2Possible(email: email)
+        password.isEnabled = !oauth2Possible
+    }
+ }
+
+ extension LoginTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == self.user {
             self.emailAddress.becomeFirstResponder()
@@ -197,14 +222,6 @@
             self.logIn(self.password)
         }
         return true
-    }
-
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-
-    func viewLog() {
-        performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
  }
 
