@@ -72,7 +72,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
             guard let account = context.object(
                 with: imapSyncData.connectInfo.accountObjectID)
                 as? CdAccount else {
-                    addError(Constants.errorCannotFindAccount(component: comp))
+                    addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                     waitForBackgroundTasksToFinish()
                     return
             }
@@ -114,8 +114,8 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     fileprivate func fetchUids(_ sync: ImapSync) {
         do {
             try sync.fetchUidsForNewMessages()
-        } catch let err as NSError {
-            addIMAPError(err)
+        } catch {
+            addIMAPError(error)
             waitForBackgroundTasksToFinish()
         }
     }

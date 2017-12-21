@@ -133,12 +133,11 @@
 
     public func handleLoginError(error: Error, extended: Bool) {
         Log.shared.error(component: #function, error: error)
+        let error = DisplayUserError(withError: error)
         self.isCurrentlyVerifying = false
-        let alertView = UIAlertController(
-            title: NSLocalizedString(
-                "Error",
-                comment: "UIAlertController error title"),
-            message:error.localizedDescription, preferredStyle: .alert)
+        let alertView = UIAlertController(title: error.title,
+                                          message:error.localizedDescription,
+                                          preferredStyle: .alert)
         alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(

@@ -24,17 +24,15 @@ open class MessageToAttachmentOperation: BaseOperation {
     open override func main() {
         let pantMail = PEPUtil.pantomime(message: message)
         guard let data = pantMail.dataValue() else {
-            errorMessage(NSLocalizedString(
-                "Could not get data from forwarded message", comment: "Internal error"),
-                         logMessage: "Could not get data from forwarded message")
+            errorMessage(logMessage: "Could not get data from forwarded message")
             return
         }
         attachment = Attachment.create(data: data, mimeType: Constants.attachedEmailMimeType,
                                        fileName: "mail.eml")
     }
 
-    func errorMessage(_ localizedMessage: String, logMessage: String) {
-        addError(Constants.errorOperationFailed(comp, errorMessage: localizedMessage))
+    func errorMessage(logMessage: String) {
+        addError(BackgroundError.GeneralError.operationFailed(info: comp))
         Log.error(component: comp, errorString: logMessage)
     }
 }

@@ -52,7 +52,8 @@ public class SyncMessagesOperation: ImapSyncOperation {
             return false
         }
         if firstUID > lastUID {
-            handleError(OperationError.illegalParameter, message: "firstUID should be <= lastUID?")
+            handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
+                        message: "firstUID should be <= lastUID?")
             return false
         }
         return true
@@ -78,13 +79,13 @@ public class SyncMessagesOperation: ImapSyncOperation {
             let cdAccount = context.object(
                 with: imapSyncData.connectInfo.accountObjectID) as? CdAccount
             else {
-                handleError(CoreDataError.couldNotFindAccount)
+                handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                 return
         }
         guard
             let cdFolder = CdFolder.by(name: folderToOpen, account: cdAccount)
             else {
-                handleError(CoreDataError.couldNotFindFolder)
+                handleError(BackgroundError.CoreDataError.couldNotFindFolder(info: nil))
                 return
         }
         folderID = cdFolder.objectID
@@ -107,8 +108,8 @@ public class SyncMessagesOperation: ImapSyncOperation {
     func syncMessages(_ sync: ImapSync) {
         do {
             try sync.syncMessages(firstUID: firstUID, lastUID: lastUID)
-        } catch let err as NSError {
-            addError(err)
+        } catch {
+            addError(error)
             waitForBackgroundTasksToFinish()
         }
     }
@@ -117,7 +118,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
         guard
             let theFolderID = folderID,
             let folder = context.object(with: theFolderID) as? CdFolder else {
-                handleError(CoreDataError.couldNotFindFolder)
+                handleError(BackgroundError.CoreDataError.couldNotFindFolder(info: nil))
                 return
         }
         let p1 = NSPredicate(format: "uid >= %d and uid <= %d", firstUID, lastUID)

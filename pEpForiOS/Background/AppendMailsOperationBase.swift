@@ -80,10 +80,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                     theSelf.context.saveAndLogErrors()
                 } else {
                     theSelf.handleError(
-                        Constants.errorInvalidParameter(theSelf.comp),
-                        message:
-                        NSLocalizedString("Cannot find message just stored in the sent folder",
-                                          comment: "Background operation error message"))
+                        BackgroundError.GeneralError.invalidParameter(info: #function),
+                        message: "Cannot find message just stored in the sent folder")
                     return
                 }
             }
@@ -92,9 +90,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
 
     private func appendMessage(pEpMessageDict: PEPMessageDict?) {
         guard let msg = pEpMessageDict else {
-            handleError(Constants.errorInvalidParameter(comp),
-                        message: NSLocalizedString("Cannot append nil message",
-                                                   comment: "Background operation error message"))
+            handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
+                        message: "Cannot append nil message")
             return
         }
         guard let folderName = targetFolderName else {
@@ -117,40 +114,27 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         if targetFolderName == nil {
             context.performAndWait {
                 guard let msg = self.context.object(with: msgID) as? CdMessage else {
-                    self.handleError(
-                        Constants.errorInvalidParameter(self.comp),
-                        message:
-                        NSLocalizedString(
-                            "Need a valid message for determining the sent folder name",
-                            comment: "Background operation error message"))
+                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                     message:
+                        "Need a valid message for determining the sent folder name")
                     return
                 }
                 guard let account = msg.parent?.account else {
-                    self.handleError(
-                        Constants.errorInvalidParameter(self.comp),
-                        message:
-                        NSLocalizedString(
-                            "Cannot append message without parent folder and this, account",
-                            comment: "Background operation error message"))
+                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                     message:
+                        "Cannot append message without parent folder and this, account")
                     return
                 }
                 guard let folder = self.retrieveFolderForAppend(
                     account: account, context: self.context) else {
                         self.handleError(
-                            Constants.errorInvalidParameter(self.comp),
-                            message:
-                            NSLocalizedString(
-                                "Cannot find sent folder for message to append",
-                                comment: "Background operation error message"))
+                            BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                            message: "Cannot find sent folder for message to append")
                         return
                 }
                 guard let fn = folder.name else {
-                    self.handleError(
-                        Constants.errorInvalidParameter(self.comp),
-                        message:
-                        NSLocalizedString(
-                            "Need the name for the sent folder",
-                            comment: "Background operation error message"))
+                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                     message: "Need the name for the sent folder")
                     return
                 }
                 self.targetFolderName = fn
@@ -170,11 +154,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             let (encMsg2, error) = PEPUtil.check(
                 comp: comp, status: status, encryptedMessage: encMsg)
             if let err = error {
-                handleError(
-                    err,
-                    message: NSLocalizedString(
-                        "Cannot encrypt message",
-                        comment: "Background operation error message"))
+                handleError(err, message: "Cannot encrypt message")
                 appendMessage(pEpMessageDict: msg as PEPMessageDict)
             } else {
                 appendMessage(pEpMessageDict: encMsg2 as? PEPMessageDict)

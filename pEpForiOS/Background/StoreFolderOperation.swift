@@ -48,7 +48,7 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
         Log.verbose(component: comp, content: "process \(folderInfo.name)")
         guard let account = context.object(with: connectInfo.accountObjectID)
             as? CdAccount else {
-                addError(Constants.errorCannotFindAccount(component: comp))
+                addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                 return
         }
 
@@ -65,7 +65,7 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
                 delegate?.didCreate(cdFolder: cdFolder)
             }
         } else {
-            self.addError(Constants.errorCouldNotStoreFolder(comp, name: folderInfo.name))
+            self.addError(BackgroundError.CoreDataError.couldNotStoreFolder(info: "\(comp)-\(folderInfo.name)"))
         }
 
         Record.saveAndWait()

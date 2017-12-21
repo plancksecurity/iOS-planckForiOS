@@ -206,13 +206,10 @@ open class ImapSync: Service {
 
     func openFolder() throws -> CWIMAPFolder {
         guard let folderName = imapState.currentFolderName else {
-            throw Constants.errorIllegalState(
-                comp,
-                stateName: NSLocalizedString("No open folder",
-                                             comment: "Need an open folder to sync messages"))
+            throw BackgroundError.GeneralError.illegalState(info: #function)
         }
         guard let folder = imapStore.folder(forName: imapState.currentFolderName) else {
-            throw Constants.errorFolderNotOpen(comp, folderName: folderName)
+            throw BackgroundError.GeneralError.illegalState(info: "\(comp)- no folder: \(folderName)")
         }
         return folder as! CWIMAPFolder
     }

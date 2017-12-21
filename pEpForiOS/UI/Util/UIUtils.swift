@@ -24,7 +24,8 @@ struct UIUtils {
         vc.present(alertView, animated: true, completion: nil)
     }
 
-    static func showAlertWithOnlyPositiveButton(title: String, message: String, inViewController vc: UIViewController) {
+    static func showAlertWithOnlyPositiveButton(title: String, message: String,
+                                                inViewController vc: UIViewController) {
         let alertView = UIAlertController(title: title,
                                           message: message,
                                           preferredStyle: .alert)

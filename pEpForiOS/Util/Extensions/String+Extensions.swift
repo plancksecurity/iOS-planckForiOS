@@ -222,8 +222,8 @@ public extension String {
             let regex = try NSRegularExpression(pattern: pattern, options: reOptions)
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: String.comp, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return false
     }
@@ -253,8 +253,8 @@ public extension String {
                     return result
                 }
             }
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: String.comp, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return self
     }
@@ -276,8 +276,8 @@ public extension String {
                     return result
                 }
             }
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: String.comp, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return self
     }

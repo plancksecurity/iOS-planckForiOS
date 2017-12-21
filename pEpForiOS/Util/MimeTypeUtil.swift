@@ -36,7 +36,7 @@ open class MimeTypeUtil {
                 // "image/jpeg" is missing in ourt data. Fix it.
                 mimeTypeToExtension[MimeTypeUtil.jpegMimeType] = "jpg"
             }
-        } catch let error as NSError {
+        } catch {
             Log.shared.error(component: comp, error: error)
             return nil
         }

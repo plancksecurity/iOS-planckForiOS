@@ -23,8 +23,8 @@ class DateTests: XCTestCase {
             reWeekday = try NSRegularExpression.init(pattern: "^(\\w+)$", options: [])
             reTime = try NSRegularExpression.init(pattern: "^\\d\\d?:\\d\\d (?:A|P)M$", options: [])
             reDate = try NSRegularExpression.init(pattern: "^\\d\\d?/\\d\\d?/\\d\\d$", options: [])
-        } catch let err as NSError {
-            XCTFail(err.localizedDescription)
+        } catch {
+            XCTFail(error.localizedDescription)
         }
     }
 

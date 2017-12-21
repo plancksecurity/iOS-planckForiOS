@@ -65,7 +65,7 @@ class FolderInfoOperation: ConcurrentBaseOperation {
     func process(context: NSManagedObjectContext) {
         guard
             let cdAccount = context.object(with: accountObjectID) as? CdAccount else {
-                handleError(CoreDataError.couldNotFindAccount)
+                handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                 return
         }
         var theCdFolder: CdFolder?
@@ -76,7 +76,7 @@ class FolderInfoOperation: ConcurrentBaseOperation {
         }
         guard
             let cdFolder = theCdFolder else {
-                handleError(CoreDataError.couldNotFindFolder)
+                handleError(BackgroundError.CoreDataError.couldNotFindFolder(info: nil))
                 return
         }
         folderInfo.firstUID = cdFolder.firstUID()

@@ -37,7 +37,9 @@ class SyncFlagsToServerService: BackgroundOperationImapService {
             guard let syncOp = SyncFlagsToServerOperation(
                 parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
                 folder: cdFolder) else {
-                    handle(error: OperationError.illegalParameter, taskID: taskID, handler: handler)
+                    handle(error: BackgroundError.GeneralError.invalidParameter(info: #function),
+                           taskID: taskID,
+                           handler: handler)
                     return
             }
 

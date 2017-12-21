@@ -109,7 +109,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
 
     func nextMessageToBeSynced(context: NSManagedObjectContext) -> CdMessage? {
         guard let folder = context.object(with: folderID) as? CdFolder else {
-            addError(Constants.errorCannotFindFolder(component: comp))
+            addError(BackgroundError.CoreDataError.couldNotFindFolder(info: comp))
             waitForBackgroundTasksToFinish()
             return nil
         }
@@ -215,7 +215,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     func storeMessages(context: NSManagedObjectContext,
                        notification n: Notification, handler: () -> ()) {
         guard let folder = context.object(with: folderID) as? CdFolder else {
-            addError(Constants.errorCannotFindFolder(component: comp))
+            addError(BackgroundError.CoreDataError.couldNotFindFolder(info: comp))
             waitForBackgroundTasksToFinish()
             handler()
             return
@@ -245,7 +245,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
                 delegate?.flagsUploaded(cdMessage: cdMsg)
                 changedMessageIDs.append(cdMsg.objectID)
             } else {
-                handle(error: CoreDataError.couldNotFindMessage)
+                handle(error: BackgroundError.CoreDataError.couldNotFindMessage(info: nil))
             }
         }
         context.saveAndLogErrors()

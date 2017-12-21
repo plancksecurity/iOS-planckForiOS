@@ -66,7 +66,7 @@ public class FetchFoldersOperation: ImapSyncOperation {
                 guard let account = self.privateMOC.object(
                     with: self.imapSyncData.connectInfo.accountObjectID)
                     as? CdAccount else {
-                        self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                        self.addError(BackgroundError.CoreDataError.couldNotFindAccount(info: self.comp))
                         self.markAsFinished()
                         return
                 }

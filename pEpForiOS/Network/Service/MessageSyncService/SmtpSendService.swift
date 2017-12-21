@@ -67,13 +67,15 @@ extension SmtpSendService: ServiceExecutionProtocol {
                 let imapSyncData = self?.imapSyncData,
                 let smtpSendData = self?.smtpSendData else {
                     self?.handle(
-                        error: OperationError.illegalParameter, taskID: bgID, handler: handler)
+                        error: BackgroundError.GeneralError.invalidParameter(info: #function),
+                        taskID: bgID,
+                        handler: handler)
                     return
             }
 
             guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
                 as? CdAccount else {
-                    handler?(CoreDataError.couldNotFindAccount)
+                    handler?(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                     self?.backgrounder?.endBackgroundTask(bgID)
                     return
             }
