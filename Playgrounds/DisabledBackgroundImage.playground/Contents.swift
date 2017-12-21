@@ -29,7 +29,7 @@ extension UIColor {
 }
 
 func getTargetDirectory() -> URL {
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    let paths = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask)
     let documentsDirectory = paths[0]
     return documentsDirectory
 }
@@ -39,8 +39,9 @@ func getTargetFilePath(fileName: String) -> String {
 }
 
 func produceImage(size: CGSize, fileName: String, block: (CGContext, CGSize) -> ()) {
+    let completeFilename = getTargetFilePath(fileName: fileName)
     let rect = CGRect(origin: CGPoint(), size: size)
-    UIGraphicsBeginPDFContextToFile(fileName, rect, nil)
+    UIGraphicsBeginPDFContextToFile(completeFilename, rect, nil)
     UIGraphicsBeginPDFPage()
     if let ctx = UIGraphicsGetCurrentContext() {
         block(ctx, rect.size)
@@ -48,11 +49,20 @@ func produceImage(size: CGSize, fileName: String, block: (CGContext, CGSize) -> 
     }
 }
 
-func disabledBackground() {
+func produceDisabledBackground() {
     func image(context: CGContext, size: CGSize) {
-        let _ = UIColor.pEpGreen
+        let uiGreen = UIColor.pEpGreen
+        var red, green, blue, alpha: CGFloat
+        (red, green, blue, alpha) = (0, 0, 0, 0)
+        uiGreen.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        alpha = 0.5
+        context.setFillColor(red: red, green: green, blue: blue, alpha: alpha)
+        context.setStrokeColor(red: red, green: green, blue: blue, alpha: alpha)
+        context.fill(CGRect(origin: CGPoint(x: 0, y: 0), size: size))
     }
 
     produceImage(size: CGSize(width: 1, height: 1), fileName: "UITextFieldDisabledBackground",
                  block: image)
 }
+
+produceDisabledBackground()
