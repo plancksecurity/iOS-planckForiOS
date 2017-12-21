@@ -11,7 +11,14 @@ import Foundation
 struct BackgroundError {
 
     public enum GeneralError: Error {
-        //        case notImplemented(info: String?) //UU?
+        //        case notImplemented(info: String?) //BUFF: UU?
+
+        /// Unexpected state.
+        /// Examples are:
+        /// An operation that encountered an unexpected state/callback, e.g. a 'message received'
+        /// when waiting for a list of folders
+        /// or
+        /// An operation that needs an open folder, but there was none
         case illegalState(info: String?)
         case invalidParameter(info: String?)
         case operationFailed(info: String?)
@@ -23,16 +30,6 @@ struct BackgroundError {
             case .invalidParameter(let info):
                 return info
             case .operationFailed(let info):
-                return info
-            }
-        }
-    }
-
-    public enum NetworkError: Error {
-        case timeout(info: String?)
-        public func info() -> String? {
-            switch self {
-            case .timeout(let info):
                 return info
             }
         }
@@ -122,7 +119,7 @@ struct BackgroundError {
     /**
      Errors dealing with the pEp engine.
      */
-    public enum CorePepError: Error {
+    public enum PepError: Error {
         case encryptionError(info: String?)
 
         public func info() -> String? {

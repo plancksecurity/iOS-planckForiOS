@@ -41,7 +41,7 @@ public class DeleteFoldersOperation: ImapSyncOperation {
     func mainInternal() {
         account = privateMOC.object(with: accountID) as? CdAccount
         guard account != nil else {
-            addError(Constants.errorCannotFindAccount(component: comp))
+            addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
             markAsFinished()
             return
         }

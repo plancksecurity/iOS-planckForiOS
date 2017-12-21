@@ -147,109 +147,110 @@ open class Constants {
 //        return error
 //    }
 
-    static func errorInvalidParameter(_ component: String = #function) -> NSError {
-        let error = NSError.init(
-            domain: component, code: GeneralErrorCode.invalidParameter.rawValue)
-        return error
-    }
+//    static func errorInvalidParameter(_ component: String = #function) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: GeneralErrorCode.invalidParameter.rawValue)
+//        return error
+//    }
+//
+//    static func errorInvalidParameter(_ component: String = #function, errorMessage: String) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: GeneralErrorCode.invalidParameter.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey: errorMessage])
+//        return error
+//    }
 
-    static func errorInvalidParameter(_ component: String = #function, errorMessage: String) -> NSError {
-        let error = NSError.init(
-            domain: component, code: GeneralErrorCode.invalidParameter.rawValue,
-            userInfo: [NSLocalizedDescriptionKey: errorMessage])
-        return error
-    }
+//    static func errorOperationFailed(_ component: String = #function, errorMessage: String) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: GeneralErrorCode.operationFailed.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey: errorMessage])
+//        return error
+//    }
 
-    static func errorOperationFailed(_ component: String = #function, errorMessage: String) -> NSError {
-        let error = NSError.init(
-            domain: component, code: GeneralErrorCode.operationFailed.rawValue,
-            userInfo: [NSLocalizedDescriptionKey: errorMessage])
-        return error
-    }
+//    static func errorFolderNotOpen(_ component: String = #function, folderName: String) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: GeneralErrorCode.illegalState.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey:
+//                String.init(format: NSLocalizedString("Folder is not open: %@",
+//                    comment: "General error description for operation that needs an open folder, but there was none"),
+//                    folderName)])
+//        return error
+//    }
 
-    static func errorFolderNotOpen(_ component: String = #function, folderName: String) -> NSError {
-        let error = NSError.init(
-            domain: component, code: GeneralErrorCode.illegalState.rawValue,
-            userInfo: [NSLocalizedDescriptionKey:
-                String.init(format: NSLocalizedString("Folder is not open: %@",
-                    comment: "General error description for operation that needs an open folder, but there was none"),
-                    folderName)])
-        return error
-    }
+//    static func errorCouldNotStoreFolder(_ component: String = #function, name: String) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: CoreDataErrorCode.couldNotStoreFolder.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey:
+//                String.init(format: NSLocalizedString("Cannot store folder: %@",
+//                    comment: "Error description when not being able to store a folder"),
+//                    name)])
+//        return error
+//    }
 
-    static func errorCouldNotStoreFolder(_ component: String = #function, name: String) -> NSError {
-        let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.couldNotStoreFolder.rawValue,
-            userInfo: [NSLocalizedDescriptionKey:
-                String.init(format: NSLocalizedString("Cannot store folder: %@",
-                    comment: "Error description when not being able to store a folder"),
-                    name)])
-        return error
-    }
+//    static func errorCannotFindAccount(component: String = #function) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: CoreDataErrorCode.cannotFindAccount.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey:
+//                NSLocalizedString(
+//                    "Cannot find/access account", comment:
+//                    "Technical error description when not being able to fetch an account")])
+//        return error
+//    }
 
-    static func errorCannotFindAccount(component: String = #function) -> NSError {
-        let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.cannotFindAccount.rawValue,
-            userInfo: [NSLocalizedDescriptionKey:
-                NSLocalizedString(
-                    "Cannot find/access account", comment:
-                    "Technical error description when not being able to fetch an account")])
-        return error
-    }
+//    static func errorCannotFindFolder(component: String = #function) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: CoreDataErrorCode.cannotFindFolder.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey:
+//                NSLocalizedString(
+//                    "Cannot find folder from object ID", comment:
+//                    "Technical error description when not being able to fetch a folder by object ID")])
+//        return error
+//    }
 
-    static func errorCannotFindFolder(component: String = #function) -> NSError {
-        let error = NSError.init(
-            domain: component, code: CoreDataErrorCode.cannotFindFolder.rawValue,
-            userInfo: [NSLocalizedDescriptionKey:
-                NSLocalizedString(
-                    "Cannot find folder from object ID", comment:
-                    "Technical error description when not being able to fetch a folder by object ID")])
-        return error
-    }
+    //UU
+//    static func errorTimeout(_ component: String = #function) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: NetworkError.timeout.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey:
+//                NSLocalizedString("Timeout",
+//                    comment: "General error description for a timeout")])
+//        return error
+//    }
 
-    static func errorTimeout(_ component: String = #function) -> NSError {
-        let error = NSError.init(
-            domain: component, code: NetworkError.timeout.rawValue,
-            userInfo: [NSLocalizedDescriptionKey:
-                NSLocalizedString("Timeout",
-                    comment: "General error description for a timeout")])
-        return error
-    }
+//    static func errorSmtp(_ component: String = #function, code: SmtpErrorCode) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: code.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey:
+//                String.init(format:
+//                    NSLocalizedString("SMTP Error (%d)", comment: ""),
+//                    code.rawValue)])
+//        return error
+//    }
 
-    static func errorSmtp(_ component: String = #function, code: SmtpErrorCode) -> NSError {
-        let error = NSError.init(
-            domain: component, code: code.rawValue,
-            userInfo: [NSLocalizedDescriptionKey:
-                String.init(format:
-                    NSLocalizedString("SMTP Error (%d)", comment: ""),
-                    code.rawValue)])
-        return error
-    }
+//    //BUFF: used in PEPUtil?
+//    static func errorEncryption(_ component: String = #function, status: PEP_STATUS) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: PepErrorCode.encryptionError.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
+//                "Could not encrypt message, pEp status: %d",
+//                comment: "Error message when the engine failed to encrypt a message."),
+//                status.rawValue)])
+//        return error
+//    }
 
-    //BUFF: used in PEPUtil?
-    static func errorEncryption(_ component: String = #function, status: PEP_STATUS) -> NSError {
-        let error = NSError.init(
-            domain: component, code: PepErrorCode.encryptionError.rawValue,
-            userInfo: [NSLocalizedDescriptionKey: String.init(format: NSLocalizedString(
-                "Could not encrypt message, pEp status: %d",
-                comment: "Error message when the engine failed to encrypt a message."),
-                status.rawValue)])
-        return error
-    }
+//    static func errorSmtpInvalidConnection(component: String = #function) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: SmtpErrorCode.invalidConnection.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
+//                "Invalid connection", comment: "used internally")])
+//        return error
+//    }
 
-    static func errorSmtpInvalidConnection(component: String = #function) -> NSError {
-        let error = NSError.init(
-            domain: component, code: SmtpErrorCode.invalidConnection.rawValue,
-            userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
-                "Invalid connection", comment: "used internally")])
-        return error
-    }
-
-    static func errorImapInvalidConnection(component: String = #function) -> NSError {
-        let error = NSError.init(
-            domain: component, code: ImapErrorCode.invalidConnection.rawValue,
-            userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
-                "Invalid connection", comment: "used internally")])
-        return error
-    }
+//    static func errorImapInvalidConnection(component: String = #function) -> NSError {
+//        let error = NSError.init(
+//            domain: component, code: ImapErrorCode.invalidConnection.rawValue,
+//            userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
+//                "Invalid connection", comment: "used internally")])
+//        return error
+//    }
 }

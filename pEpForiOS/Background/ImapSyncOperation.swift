@@ -19,7 +19,7 @@ public class ImapSyncOperation: ConcurrentBaseOperation {
 
     public func checkImapSync() -> Bool {
         if imapSyncData.sync == nil {
-            addError(Constants.errorImapInvalidConnection(component: comp))
+            addError(BackgroundError.ImapError.invalidConnection(info: comp))
             markAsFinished()
             return false
         }

@@ -213,7 +213,7 @@ open class ImapSync: Service {
 //                                             comment: "Need an open folder to sync messages"))
         }
         guard let folder = imapStore.folder(forName: imapState.currentFolderName) else {
-            throw Constants.errorFolderNotOpen(comp, folderName: folderName)
+            throw BackgroundError.GeneralError.illegalState(info: "\(comp)- no folder: \(folderName)")//BUFF:Constants.errorFolderNotOpen(comp, folderName: folderName)
         }
         return folder as! CWIMAPFolder
     }

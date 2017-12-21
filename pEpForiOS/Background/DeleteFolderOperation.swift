@@ -37,7 +37,7 @@ public class DeleteFolderOperation: ImapSyncOperation {
         privateMOC.perform() {
             self.account = self.privateMOC.object(with: self.accountID) as? CdAccount
             guard self.account != nil else {
-                self.addError(Constants.errorCannotFindAccount(component: self.comp))
+                self.addError(BackgroundError.CoreDataError.couldNotFindAccount(info: self.comp))
                 self.markAsFinished()
                 return
             }

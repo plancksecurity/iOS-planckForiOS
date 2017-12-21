@@ -522,15 +522,16 @@ open class PEPUtil {
      - Returns: A tuple of the encrypted mail and an error. Both can be nil.
      */
     static func check(comp: String, status: PEP_STATUS,
-                      encryptedMessage: NSDictionary?) -> (NSDictionary?, NSError?) {
+                      encryptedMessage: NSDictionary?) -> (NSDictionary?, Error?) {
         if encryptedMessage != nil && status == PEP_UNENCRYPTED {
             // Don't interpret that as an error
             return (encryptedMessage, nil)
         }
         if encryptedMessage == nil || status != PEP_STATUS_OK {
-            let error = Constants.errorEncryption(comp, status: status)
-            Log.error(component: comp, error: Constants.errorInvalidParameter(
-                comp, errorMessage: "Could not encrypt message, pEp status \(status)"))
+            let error = BackgroundError.PepError.encryptionError(info: "\(comp)- status: \(status)")
+            Log.error(component: comp,
+                      error: BackgroundError.GeneralError.invalidParameter(info:
+                        "Could not encrypt message, pEp status \(status)"))
             return (encryptedMessage, error)
         }
         return (encryptedMessage, nil)
