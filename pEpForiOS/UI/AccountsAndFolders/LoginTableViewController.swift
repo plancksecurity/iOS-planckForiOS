@@ -199,9 +199,7 @@
     }
 
     @IBAction func emailChanged(_ sender: UITextField) {
-        #if false
-            updatePasswordField(email: sender.text)
-        #endif
+        updatePasswordField(email: sender.text)
     }
 
     // MARK: Util
