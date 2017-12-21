@@ -13,7 +13,7 @@ class IdentityImageOperation: Operation {
     /**
      The background color for the contact initials image.
      */
-    let imageBackgroundColor = UIColor(hex: "#c8c7cc")
+    let imageBackgroundColor = UIColor(hexString: "#c8c7cc")
 
     /**
      The text color for the contact initials image.
