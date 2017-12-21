@@ -19,7 +19,7 @@ import Foundation
 /// a message.
 /// Buttons and actions to react to buttons have intentionally not been implemented. Currently not
 /// required.
-struct DisplayUserError {
+struct DisplayUserError: LocalizedError {
     enum ErrorType {
         /// We could not login for some reason
         case authenticationFailed
