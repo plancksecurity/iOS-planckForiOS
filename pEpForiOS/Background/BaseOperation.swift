@@ -14,6 +14,9 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
 
     let errorContainer: ServiceErrorProtocol
 
+    static let moduleTitleRegex = try! NSRegularExpression(
+        pattern: "<pEpForiOS\\.(\\w+):", options: [])
+
     open var error: Error? {
         return errorContainer.error
     }
@@ -34,17 +37,13 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
 
         comp = String(describing: self)
 
-        do {
-            let regex = try NSRegularExpression(pattern: "<pEpForiOS\\.(\\w+):", options: [])
-            if let m = regex.firstMatch(in: comp, options: [], range: comp.wholeRange()) {
-                if m.numberOfRanges > 1 {
-                    let r = m.range(at: 1)
-                    let s = comp as NSString
-                    comp = s.substring(with: r)
-                }
+        if let m = BaseOperation.moduleTitleRegex.firstMatch(
+            in: comp, options: [], range: comp.wholeRange()) {
+            if m.numberOfRanges > 1 {
+                let r = m.range(at: 1)
+                let s = comp as NSString
+                comp = s.substring(with: r)
             }
-        } catch {
-            Log.shared.errorAndCrash(component: comp, error: error)
         }
 
         comp = "\(comp) \(unsafeBitCast(self, to: UnsafeRawPointer.self)) [\(parentName)]"

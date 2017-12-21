@@ -14,6 +14,26 @@ public extension String {
     static let returnKey = "\n"
     static let comp = "String.Extensions"
     
+    static let unquoteRegex = try! NSRegularExpression(
+        pattern: "^\"(.*)\"$", options: [])
+
+    static let probablyValidEmailRegex = try! NSRegularExpression(
+        pattern: "^[^@,]+@[^@,]+$", options: .caseInsensitive)
+
+    static let namePartOfEmailRegex = try! NSRegularExpression(pattern: "^([^@]+)@", options: [])
+
+    static let endWhiteSpaceRegex = try! NSRegularExpression(
+        pattern: "^(.*?)\\s*$", options: [])
+
+    static let newlineRegex = try! NSRegularExpression(
+        pattern: "(\\n|\\r\\n)+", options: [])
+
+    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(
+        pattern: "(\\n|\\r\\n){3,}", options: [])
+
+    static let fileExtensionRegex = try! NSRegularExpression(
+        pattern: "^([^.]+)\\.([^.]+)$", options: [])
+
     public var trim: String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -28,19 +48,13 @@ public extension String {
     }
 
     public func unquote() -> String {
-        do {
-            let regex = try NSRegularExpression(
-                pattern: "^\"(.*)\"$", options: [])
-            if let match = regex.firstMatch(
+        if let match = String.unquoteRegex.firstMatch(
                 in: self, options: [],
                 range: wholeRange()) {
                 let r1 = match.range(at: 1)
                 let name = (self as NSString).substring(with: r1)
                 return name
             }
-        } catch {
-            Log.shared.errorAndCrash(component: #function, error: error)
-        }
         return self
     }
 
@@ -56,15 +70,9 @@ public extension String {
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
      */
     public func isProbablyValidEmail() -> Bool {
-        do {
-            let internalExpression = try NSRegularExpression(
-                pattern: "^[^@,]+@[^@,]+$", options: .caseInsensitive)
-            let matches = internalExpression.matches(in: self, options: [], range: wholeRange())
+        let matches = String.probablyValidEmailRegex.matches(
+            in: self, options: [], range: wholeRange())
             return matches.count == 1
-        } catch {
-            Log.shared.errorAndCrash(component: "String", error: error)
-            return false
-        }
     }
 
     /**
@@ -88,9 +96,8 @@ public extension String {
      - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
      */
     public func namePartOfEmail() -> String {
-        do {
-            let regex = try NSRegularExpression(pattern: "^([^@]+)@", options: [])
-            let matches = regex.matches(in: self, options: [], range: wholeRange())
+            let matches = String.namePartOfEmailRegex.matches(
+                in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
                 let r = m.range(at: 1)
@@ -100,9 +107,6 @@ public extension String {
                     return result
                 }
             }
-        } catch {
-            Log.shared.errorAndCrash(component: String.comp, error: error)
-        }
         return self.replacingOccurrences(of: "@", with: "_")
     }
 
@@ -185,22 +189,16 @@ public extension String {
             }
         }
 
-        do {
-            let regex = try NSRegularExpression(pattern: "^(.*?)\\s*$",
-                                                     options: [])
-            let matches = regex.matches(in: result, options: [], range: result.wholeRange())
-            if matches.count > 0 {
-                let m = matches[0]
-                let r = m.range(at: 1)
-                if r.location != NSNotFound {
-                    let s = result as NSString
-                    let result = s.substring(with: r)
-                    return result
-                }
+        let matches = String.endWhiteSpaceRegex.matches(
+            in: result, options: [], range: result.wholeRange())
+        if matches.count > 0 {
+            let m = matches[0]
+            let r = m.range(at: 1)
+            if r.location != NSNotFound {
+                let s = result as NSString
+                let result = s.substring(with: r)
+                return result
             }
-        }
-        catch {
-            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return result
     }
@@ -317,47 +315,27 @@ public extension String {
     }
 
     public func replaceNewLinesWith(_ delimiter: String) -> String {
-        do {
-            let regex = try NSRegularExpression(
-                pattern: "(\\n|\\r\\n)+", options: [])
-            return regex.stringByReplacingMatches(
-                in: self, options: [], range: self.wholeRange(), withTemplate: delimiter)
-        } catch {
-            Log.shared.errorAndCrash(component: #function, error: error)
-            return self
-        }
+        return String.newlineRegex.stringByReplacingMatches(
+            in: self, options: [], range: self.wholeRange(), withTemplate: delimiter)
     }
 
     /**
      - Returns: A new string that never contains 3 or more consecutive newlines.
      */
     public func eliminateExcessiveNewLines() -> String {
-        do {
-            let regex = try NSRegularExpression(
-                pattern: "(\\n|\\r\\n){3,}", options: [])
-            return regex.stringByReplacingMatches(
-                in: self, options: [], range: self.wholeRange(), withTemplate: "\n\n")
-        } catch {
-            Log.shared.errorAndCrash(component: #function, error: error)
-            return self
-        }
+        return String.threeOrMoreNewlinesRegex.stringByReplacingMatches(
+            in: self, options: [], range: self.wholeRange(), withTemplate: "\n\n")
     }
 
     public func splitFileExtension() -> (String, String?) {
-        do {
-            let regex = try NSRegularExpression(
-                pattern: "^([^.]+)\\.([^.]+)$", options: [])
-            if let match = regex.firstMatch(
-                in: self, options: [],
-                range: wholeRange()) {
-                let r1 = match.range(at: 1)
-                let name = (self as NSString).substring(with: r1)
-                let r2 = match.range(at: 2)
-                let ext = (self as NSString).substring(with: r2)
-                return (name, ext)
-            }
-        } catch {
-            Log.shared.errorAndCrash(component: #function, error: error)
+        if let match = String.fileExtensionRegex.firstMatch(
+            in: self, options: [],
+            range: wholeRange()) {
+            let r1 = match.range(at: 1)
+            let name = (self as NSString).substring(with: r1)
+            let r2 = match.range(at: 2)
+            let ext = (self as NSString).substring(with: r2)
+            return (name, ext)
         }
         return (self, nil)
     }
@@ -387,34 +365,6 @@ public extension Character {
         default:
             return false
         }
-    }
-}
-
-class Regex {
-    let comp = "Regex"
-    let internalExpression: NSRegularExpression
-    let pattern: String
-
-    init?(pattern: String, options: NSRegularExpression.Options) {
-        self.pattern = pattern
-        do {
-            try internalExpression = NSRegularExpression(
-                pattern: pattern, options: options)
-        } catch {
-            Log.error(component: comp, error: error)
-            return nil
-        }
-    }
-
-    convenience init?(_ pattern: String) {
-        self.init(pattern: pattern, options: [])
-    }
-
-    func test(_ input: String) -> Bool {
-        let matches = self.internalExpression.matches(
-            in: input, options: .reportProgress,
-            range:input.wholeRange())
-        return matches.count > 0
     }
 }
 

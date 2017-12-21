@@ -3,7 +3,7 @@
 import UIKit
 
 func getTargetDirectory() -> URL {
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    let paths = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask)
     let documentsDirectory = paths[0]
     return documentsDirectory
 }

@@ -54,10 +54,10 @@ enum LoginCellType {
 }
 
 class LoginViewModel {
-    var loginAccount : Account?
+    var loginAccount: Account?
     var extendedLogin = false
     var messageSyncService: MessageSyncServiceProtocol?
-    weak var delegate: AccountVerificationResultDelegate?
+    weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
 
     /**
      The last mySelfer, as indicated by login(), so after account verification,
@@ -77,11 +77,21 @@ class LoginViewModel {
         return Account.by(address: address) != nil
     }
 
-    func login(account: String, password: String, login: String? = nil,
+    /**
+     Tries to "login", that is, retrieve account data, with the given parameters.
+     - parameter accountName: The email of this account
+     - parameter password: The password for the account
+     - parameter loginName: The optional login name for this account, if different from the email
+     - parameter userName: The chosen name of the user, or nick
+     - parameter mySelfer: An object to request a mySelf operation from, must be used immediately
+     after account setup
+     - parameter errorCallback: Any errors are reported via this callback
+     */
+    func login(accountName: String, password: String, loginName: String? = nil,
                userName: String? = nil, mySelfer: KickOffMySelfProtocol,
                errorCallback: @escaping (Error) -> Void) {
         self.mySelfer = mySelfer
-        let acSettings = AccountSettings(accountName: account, provider: nil,
+        let acSettings = AccountSettings(accountName: accountName, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
         acSettings.lookupCompletion() { [weak self] settings in
             GCD.onMain() {
@@ -107,8 +117,8 @@ class LoginViewModel {
                 accountSettingsTransport: outgoingServer.transport)
 
             let newAccount = AccountUserInput(
-                address: account, userName: userName ?? account,
-                loginName: login, password: password,
+                address: accountName, userName: userName ?? accountName,
+                loginName: loginName, password: password,
                 serverIMAP: incomingServer.hostname,
                 portIMAP: UInt16(incomingServer.port),
                 transportIMAP: imapTransport,
@@ -144,6 +154,18 @@ class LoginViewModel {
             throw error
         }
     }
+
+    /**
+     Is an account with this email address typically an OAuth2 account?
+     - Returns false, if this is an OAuth2 email address, true otherwise.
+     */
+    func isOAuth2Possible(email: String?) -> Bool {
+        if let theMail = email?.trimmedWhiteSpace() {
+            return theMail.isGmailAddress
+        } else {
+            return false
+        }
+    }
 }
 
 extension LoginViewModel: AccountVerificationServiceDelegate {
@@ -155,6 +177,6 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                 account.delete()
             }
         }
-        delegate?.didVerify(result: result)
+        accountVerificationResultDelegate?.didVerify(result: result)
     }
 }

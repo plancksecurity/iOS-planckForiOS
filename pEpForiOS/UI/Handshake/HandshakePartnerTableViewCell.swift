@@ -37,7 +37,7 @@ protocol HandshakePartnerTableViewCellDelegate: class {
 
 class HandshakePartnerTableViewCell: UITableViewCell {
     /**
-     Programmatically created constraints for expanding elements of thes cell,
+     Programmatically created constraints for expanding elements of this cell,
      depending on state changes.
      */
     struct Constraints {
@@ -125,11 +125,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     let boundsWidthKeyPath = "bounds"
 
     var buttonsFitWidth = [(Tuple<UIButton, CGFloat>): Bool]()
-    var buttonsUsingLongTitle = [UIButton: Bool]()
 
 
     override func awakeFromNib() {
-        updateConfirmDistrustButtonsTitle(useLongTitles: true)
+        updateConfirmDistrustButtonsTitle()
 
         startStopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow,
                                                textColor: .black)
@@ -137,19 +136,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
         setupAdditionalConstraints()
 
-        confirmButton.addObserver(self, forKeyPath: boundsWidthKeyPath,
-                                  options: [.old, .new],
-                                  context: nil)
-        wrongButton.addObserver(self, forKeyPath: boundsWidthKeyPath,
-                                options: [.old, .new],
-                                context: nil)
-
         setNeedsLayout()
-    }
-
-    deinit {
-        confirmButton.removeObserver(self, forKeyPath: boundsWidthKeyPath)
-        wrongButton.removeObserver(self, forKeyPath: boundsWidthKeyPath)
     }
 
     func setupAdditionalConstraints() {
@@ -215,9 +202,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
         updateStopTrustingButtonTitle()
 
-        let useLong = (buttonsUsingLongTitle[confirmButton] ?? true) ||
-            (buttonsUsingLongTitle[wrongButton] ?? true)
-        updateConfirmDistrustButtonsTitle(useLongTitles: useLong)
+        updateConfirmDistrustButtonsTitle()
 
         updateAdditionalConstraints()
     }
@@ -296,7 +281,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    func updateTitle(button: UIButton, useLongTitle: Bool) {
+    func updateTitle(button: UIButton) {
         let confirmPGPLong =
             NSLocalizedString("Confirm Fingerprint",
                               comment: "Confirm correct fingerprint (PGP, long version)")
@@ -310,50 +295,24 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             NSLocalizedString("Wrong Trustwords",
                               comment: "Incorrect trustwords (pEp, long version)")
 
-        let confirmShort =
-            NSLocalizedString("Confirm Trustwords",
-                              comment: "Confirm correct trustwords (PGP, pEp, short version)")
-        let mistrustShort =
-            NSLocalizedString("Wrong Trustwords",
-                              comment: "Incorrect trustwords (PGP, pEp, short version)")
-        let confirmPGPShort = confirmShort
-        let mistrustPGPShort = mistrustShort
-
         if button == confirmButton {
             if isPartnerPGPUser {
-                if useLongTitle {
-                    button.setTitle(confirmPGPLong, for: .normal)
-                } else {
-                    button.setTitle(confirmPGPShort, for: .normal)
-                }
+                button.setTitle(confirmPGPLong, for: .normal)
             } else {
-                if useLongTitle {
-                    button.setTitle(confirmLong, for: .normal)
-                } else {
-                    button.setTitle(confirmShort, for: .normal)
-                }
+                button.setTitle(confirmLong, for: .normal)
             }
         } else if button == wrongButton {
             if isPartnerPGPUser {
-                if useLongTitle {
-                    button.setTitle(mistrustPGPLong, for: .normal)
-                } else {
-                    button.setTitle(mistrustPGPShort, for: .normal)
-                }
+                button.setTitle(mistrustPGPLong, for: .normal)
             } else {
-                if useLongTitle {
-                    button.setTitle(mistrustLong, for: .normal)
-                } else {
-                    button.setTitle(mistrustShort, for: .normal)
-                }
+                button.setTitle(mistrustLong, for: .normal)
             }
         }
-        buttonsUsingLongTitle[button] = useLongTitle
     }
 
-    func updateConfirmDistrustButtonsTitle(useLongTitles: Bool = true) {
-        updateTitle(button: confirmButton, useLongTitle: useLongTitles)
-        updateTitle(button: wrongButton, useLongTitle: useLongTitles)
+    func updateConfirmDistrustButtonsTitle() {
+        updateTitle(button: confirmButton)
+        updateTitle(button: wrongButton)
     }
 
     func updatePrivacyStatus(color: PEP_color) {
@@ -393,42 +352,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                 cell: self,
                 indexPath: indexPath,
                 viewModel: viewModel)
-        }
-    }
-
-    // MARK: - Wrap trust buttons around
-
-    override open func observeValue(forKeyPath keyPath: String?, of object: Any?,
-                                    change: [NSKeyValueChangeKey : Any]?,
-                                    context: UnsafeMutableRawPointer?) {
-        if keyPath == boundsWidthKeyPath {
-            handleButtonSizeChanged(object: object, change: change, context: context)
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change,
-                               context: context)
-        }
-    }
-
-    func handleButtonSizeChanged(object: Any?,
-                                 change: [NSKeyValueChangeKey : Any]?,
-                                 context: UnsafeMutableRawPointer?) {
-        if let oldRect = change?[NSKeyValueChangeKey.oldKey] as? CGRect,
-            let newRect = change?[NSKeyValueChangeKey.newKey] as? CGRect,
-            newRect.size.width != oldRect.size.width,
-            let button = object as? UIButton {
-            let newWidth = newRect.size.width
-
-            let usingLongTitle = buttonsUsingLongTitle[button] ?? false
-            let shortTitleMightFit = buttonsFitWidth[Tuple(values: (button, newWidth))] ?? true
-
-            if usingLongTitle && !button.contentFitsWidth() {
-                // not enought room, switching to the short title might help
-                updateTitle(button: button, useLongTitle: false)
-                buttonsFitWidth[Tuple(values: (button, newWidth))] = false
-            } else if !usingLongTitle && button.contentFitsWidth() && shortTitleMightFit {
-                // have room, might use it for the long title
-                updateTitle(button: button, useLongTitle: true)
-            }
         }
     }
 

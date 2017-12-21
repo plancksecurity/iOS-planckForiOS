@@ -17,6 +17,9 @@
       location = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../SwipeCellKit/SwipeCellKit.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
    </FileRef>
    <FileRef

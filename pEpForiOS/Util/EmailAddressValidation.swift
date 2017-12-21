@@ -9,7 +9,6 @@
 import Foundation
 
 public class EmailAddressValidation {
-
     public init(address: String, separator: String = "@") {
         self.addressComponents = address.components(separatedBy: separator)
         self.generalValidation()

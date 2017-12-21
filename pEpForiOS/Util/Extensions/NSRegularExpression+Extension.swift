@@ -9,6 +9,9 @@
 import Foundation
 
 extension NSRegularExpression {
+    /**
+     Does the first match cover the whole string?
+     */
     public func matchesWhole(string: String?) -> Bool {
         if let s = string {
             let range = rangeOfFirstMatch(in: s, options: [], range: s.wholeRange())

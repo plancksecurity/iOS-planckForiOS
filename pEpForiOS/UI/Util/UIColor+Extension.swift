@@ -18,31 +18,31 @@ extension UIColor {
 
     open class var pEpGreen: UIColor {
         get {
-            return UIColor(hex: hexPEpGreen)
+            return UIColor(hexString: hexPEpGreen)
         }
     }
 
     open class var pEpDarkGreen: UIColor {
         get {
-            return UIColor(hex: hexPEpDarkGreen)
+            return UIColor(hexString: hexPEpDarkGreen)
         }
     }
 
     open class var pEpRed: UIColor {
         get {
-            return UIColor(hex: hexPEpRed)
+            return UIColor(hexString: hexPEpRed)
         }
     }
 
     open class var pEpGray: UIColor {
         get {
-            return UIColor(hex: hexPEpGray)
+            return UIColor(hexString: hexPEpGray)
         }
     }
 
     open class var pEpYellow: UIColor {
         get {
-            return UIColor(hex: hexPEpYellow)
+            return UIColor(hexString: hexPEpYellow)
         }
     }
 
@@ -51,7 +51,7 @@ extension UIColor {
      */
     open class var pEpLightBackground: UIColor {
         get {
-            return UIColor(hex: hexPEpLightBackground)
+            return UIColor(hexString: hexPEpLightBackground)
         }
     }
 
@@ -62,14 +62,14 @@ extension UIColor {
                   alpha: alpha)
     }
 
-    convenience init(hex: String) {
-        var hexstr = hex
-        if hexstr.hasPrefix("#") {
-            hexstr = String(hexstr.dropFirst())
+    convenience init(hexString: String) {
+        var theHexString = hexString
+        if theHexString.hasPrefix("#") {
+            theHexString = String(theHexString.dropFirst())
         }
 
         var rgbValue: UInt32 = 0
-        Scanner(string: hexstr).scanHexInt32(&rgbValue)
+        Scanner(string: theHexString).scanHexInt32(&rgbValue)
 
         let r = CGFloat((rgbValue >> 16) & 0xff) / 255.0
         let g = CGFloat((rgbValue >> 08) & 0xff) / 255.0
@@ -78,11 +78,11 @@ extension UIColor {
         self.init(red: r, green: g, blue: b, alpha: 1.0)
     }
 
-    convenience init(hex: Int, alpha: CGFloat = 1.0) {
+    convenience init(intValue32: Int, alpha: CGFloat = 1.0) {
         self.init(
-            red:   CGFloat((hex & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((hex & 0x00FF00) >> 8)  / 255.0,
-            blue:  CGFloat((hex & 0x0000FF) >> 0)  / 255.0,
+            red:   CGFloat((intValue32 & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((intValue32 & 0x00FF00) >> 8)  / 255.0,
+            blue:  CGFloat((intValue32 & 0x0000FF) >> 0)  / 255.0,
             alpha: alpha
         )
     }
