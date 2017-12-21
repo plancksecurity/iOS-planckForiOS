@@ -154,11 +154,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             let (encMsg2, error) = PEPUtil.check(
                 comp: comp, status: status, encryptedMessage: encMsg)
             if let err = error {
-                handleError(
-                    err,
-                    message: NSLocalizedString(
-                        "Cannot encrypt message",
-                        comment: "Background operation error message"))
+                handleError(err, message: "Cannot encrypt message")
                 appendMessage(pEpMessageDict: msg as PEPMessageDict)
             } else {
                 appendMessage(pEpMessageDict: encMsg2 as? PEPMessageDict)
