@@ -51,72 +51,6 @@ struct DisplayUserError {
         }
     }
 
-    public var title: String? {
-        switch type {
-        case .authenticationFailed:
-            return NSLocalizedString("Login Failed",
-                                     comment:
-                """
-Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed.
-""")
-        case .messageNotSent:
-            return NSLocalizedString("Error",
-                                     comment:
-                """
-Title of error alert shown to the user in case a message could not be sent
-""")
-        case .brokenServerConnection:
-            return NSLocalizedString("Server Unreachable",
-                                     comment:
-                "Title of error alert shown to the user in case we can not connect to the server")
-        case .internalError:
-            return NSLocalizedString("Internal Error",
-                                     comment:
-                """
-Title of error alert shown to the user in case an error in the app occured that is not caused or
-related to the server
-""")
-        case .unknownError:
-            // We have an error that is not known to us.
-            // All we can do is pass its description.
-            return NSLocalizedString("Error",
-                                     comment:
-                "Title of error alert shown to the user in case an unknown error occured.")
-        }
-    }
-
-    public var errorDescription: String? {
-        switch type {
-        case .authenticationFailed:
-            return NSLocalizedString("It was impossible to login to the server.",
-                                     comment:
-                """
-Error message shown to the user in case the authentication to IMAP or SMTP server failed.
-""")
-        case .messageNotSent:
-            return NSLocalizedString("The message could not be sent. Please try again later.",
-                                     comment:
-                """
-Error message shown to the user in case a message could not be sent.
-""")
-        case .brokenServerConnection:
-            return NSLocalizedString("We could not connect to the server.)",
-                                     comment:
-                "Error message shown to the user in case we can not connect to the server")
-        case .internalError:
-            return NSLocalizedString("An internal error occured. Sorry, that should not happen.",
-                                     comment:
-                """
-Error message shown to the user in case an error in the app occured that is not caused or
-related to the server
-""")
-        case .unknownError:
-            // We have an error that is not known to us.
-            // All we can do is pass its description.
-            return foreignDescription
-        }
-    }
-
     // MARK: - Cluster Errors
 
     // MARK: SmtpSendError
@@ -237,6 +171,74 @@ related to the server
         switch error {
         case .encryptionError:
             return .internalError
+        }
+    }
+
+    // MARK: - Title & Message
+
+    public var title: String? {
+        switch type {
+        case .authenticationFailed:
+            return NSLocalizedString("Login Failed",
+                                     comment:
+                """
+Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed.
+""")
+        case .messageNotSent:
+            return NSLocalizedString("Error",
+                                     comment:
+                """
+Title of error alert shown to the user in case a message could not be sent
+""")
+        case .brokenServerConnection:
+            return NSLocalizedString("Server Unreachable",
+                                     comment:
+                "Title of error alert shown to the user in case we can not connect to the server")
+        case .internalError:
+            return NSLocalizedString("Internal Error",
+                                     comment:
+                """
+Title of error alert shown to the user in case an error in the app occured that is not caused or
+related to the server
+""")
+        case .unknownError:
+            // We have an error that is not known to us.
+            // All we can do is pass its description.
+            return NSLocalizedString("Error",
+                                     comment:
+                "Title of error alert shown to the user in case an unknown error occured.")
+        }
+    }
+
+    public var errorDescription: String? {
+        switch type {
+        case .authenticationFailed:
+            return NSLocalizedString("It was impossible to login to the server.",
+                                     comment:
+                """
+Error message shown to the user in case the authentication to IMAP or SMTP server failed.
+""")
+        case .messageNotSent:
+            return NSLocalizedString("The message could not be sent. Please try again later.",
+                                     comment:
+                """
+Error message shown to the user in case a message could not be sent.
+""")
+        case .brokenServerConnection:
+            return NSLocalizedString("We could not connect to the server.)",
+                                     comment:
+                "Error message shown to the user in case we can not connect to the server")
+        case .internalError:
+            return NSLocalizedString("An internal error occured. Sorry, that should not happen.",
+                                     comment:
+                """
+Error message shown to the user in case an error in the app occured that is not caused or
+related to the server
+""")
+        case .unknownError:
+            // We have an error that is not known to us.
+            // All we can do is pass its description.
+            return foreignDescription
         }
     }
 }
