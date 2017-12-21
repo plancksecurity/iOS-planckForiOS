@@ -14,6 +14,9 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
 
     let errorContainer: ServiceErrorProtocol
 
+    static let moduleTitleRegex = try! NSRegularExpression(
+        pattern: "<pEpForiOS\\.(\\w+):", options: [])
+
     open var error: Error? {
         return errorContainer.error
     }
@@ -34,7 +37,8 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
 
         comp = String(describing: self)
 
-        if let m = Regex.moduleTitleRegex.firstMatch(in: comp, options: [], range: comp.wholeRange()) {
+        if let m = BaseOperation.moduleTitleRegex.firstMatch(
+            in: comp, options: [], range: comp.wholeRange()) {
             if m.numberOfRanges > 1 {
                 let r = m.range(at: 1)
                 let s = comp as NSString

@@ -14,6 +14,26 @@ public extension String {
     static let returnKey = "\n"
     static let comp = "String.Extensions"
     
+    static let unquoteRegex = try! NSRegularExpression(
+        pattern: "^\"(.*)\"$", options: [])
+
+    static let probablyValidEmailRegex = try! NSRegularExpression(
+        pattern: "^[^@,]+@[^@,]+$", options: .caseInsensitive)
+
+    static let namePartOfEmailRegex = try! NSRegularExpression(pattern: "^([^@]+)@", options: [])
+
+    static let endWhiteSpaceRegex = try! NSRegularExpression(
+        pattern: "^(.*?)\\s*$", options: [])
+
+    static let newlineRegex = try! NSRegularExpression(
+        pattern: "(\\n|\\r\\n)+", options: [])
+
+    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(
+        pattern: "(\\n|\\r\\n){3,}", options: [])
+
+    static let fileExtensionRegex = try! NSRegularExpression(
+        pattern: "^([^.]+)\\.([^.]+)$", options: [])
+
     public var trim: String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -28,7 +48,7 @@ public extension String {
     }
 
     public func unquote() -> String {
-        if let match = Regex.unquoteRegex.firstMatch(
+        if let match = String.unquoteRegex.firstMatch(
                 in: self, options: [],
                 range: wholeRange()) {
                 let r1 = match.range(at: 1)
@@ -50,7 +70,7 @@ public extension String {
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
      */
     public func isProbablyValidEmail() -> Bool {
-        let matches = Regex.probablyValidEmailRegex.matches(
+        let matches = String.probablyValidEmailRegex.matches(
             in: self, options: [], range: wholeRange())
             return matches.count == 1
     }
@@ -76,7 +96,7 @@ public extension String {
      - Returns: The name part of an email, e.g. "test@blah.com" -> "test"
      */
     public func namePartOfEmail() -> String {
-            let matches = Regex.namePartOfEmailRegex.matches(
+            let matches = String.namePartOfEmailRegex.matches(
                 in: self, options: [], range: wholeRange())
             if matches.count == 1 {
                 let m = matches[0]
@@ -169,7 +189,7 @@ public extension String {
             }
         }
 
-        let matches = Regex.endWhiteSpaceRegex.matches(
+        let matches = String.endWhiteSpaceRegex.matches(
             in: result, options: [], range: result.wholeRange())
         if matches.count > 0 {
             let m = matches[0]
@@ -295,7 +315,7 @@ public extension String {
     }
 
     public func replaceNewLinesWith(_ delimiter: String) -> String {
-        return Regex.newlineRegex.stringByReplacingMatches(
+        return String.newlineRegex.stringByReplacingMatches(
             in: self, options: [], range: self.wholeRange(), withTemplate: delimiter)
     }
 
@@ -303,12 +323,12 @@ public extension String {
      - Returns: A new string that never contains 3 or more consecutive newlines.
      */
     public func eliminateExcessiveNewLines() -> String {
-        return Regex.threeOrMoreNewlinesRegex.stringByReplacingMatches(
+        return String.threeOrMoreNewlinesRegex.stringByReplacingMatches(
             in: self, options: [], range: self.wholeRange(), withTemplate: "\n\n")
     }
 
     public func splitFileExtension() -> (String, String?) {
-        if let match = Regex.fileExtensionRegex.firstMatch(
+        if let match = String.fileExtensionRegex.firstMatch(
             in: self, options: [],
             range: wholeRange()) {
             let r1 = match.range(at: 1)
