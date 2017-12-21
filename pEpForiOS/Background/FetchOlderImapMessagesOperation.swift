@@ -13,8 +13,8 @@ public class FetchOlderImapMessagesOperation: FetchMessagesOperation {
     override func fetchMessages(_ sync: ImapSync) {
         do {
             try sync.fetchOlderMessages()
-        } catch let err as NSError {
-            addIMAPError(err)
+        } catch {
+            addIMAPError(error)
             waitForBackgroundTasksToFinish()
         }
     }

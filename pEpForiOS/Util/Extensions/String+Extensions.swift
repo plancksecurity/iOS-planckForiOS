@@ -38,8 +38,8 @@ public extension String {
                 let name = (self as NSString).substring(with: r1)
                 return name
             }
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: #function, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: #function, error: error)
         }
         return self
     }
@@ -61,8 +61,8 @@ public extension String {
                 pattern: "^[^@,]+@[^@,]+$", options: .caseInsensitive)
             let matches = internalExpression.matches(in: self, options: [], range: wholeRange())
             return matches.count == 1
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: "String", error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: "String", error: error)
             return false
         }
     }
@@ -100,8 +100,8 @@ public extension String {
                     return result
                 }
             }
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: String.comp, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return self.replacingOccurrences(of: "@", with: "_")
     }
@@ -199,8 +199,8 @@ public extension String {
                 }
             }
         }
-        catch let err as NSError {
-            Log.shared.errorAndCrash(component: String.comp, error: err)
+        catch {
+            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return result
     }
@@ -224,8 +224,8 @@ public extension String {
             let regex = try NSRegularExpression(pattern: pattern, options: reOptions)
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: String.comp, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return false
     }
@@ -255,8 +255,8 @@ public extension String {
                     return result
                 }
             }
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: String.comp, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return self
     }
@@ -278,8 +278,8 @@ public extension String {
                     return result
                 }
             }
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: String.comp, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: String.comp, error: error)
         }
         return self
     }
@@ -322,8 +322,8 @@ public extension String {
                 pattern: "(\\n|\\r\\n)+", options: [])
             return regex.stringByReplacingMatches(
                 in: self, options: [], range: self.wholeRange(), withTemplate: delimiter)
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: #function, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: #function, error: error)
             return self
         }
     }
@@ -337,8 +337,8 @@ public extension String {
                 pattern: "(\\n|\\r\\n){3,}", options: [])
             return regex.stringByReplacingMatches(
                 in: self, options: [], range: self.wholeRange(), withTemplate: "\n\n")
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: #function, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: #function, error: error)
             return self
         }
     }
@@ -356,8 +356,8 @@ public extension String {
                 let ext = (self as NSString).substring(with: r2)
                 return (name, ext)
             }
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: #function, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: #function, error: error)
         }
         return (self, nil)
     }
@@ -400,8 +400,8 @@ class Regex {
         do {
             try internalExpression = NSRegularExpression(
                 pattern: pattern, options: options)
-        } catch let err as NSError {
-            Log.error(component: comp, error: err)
+        } catch {
+            Log.error(component: comp, error: error)
             return nil
         }
     }

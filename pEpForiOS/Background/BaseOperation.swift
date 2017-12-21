@@ -43,7 +43,7 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
                     comp = s.substring(with: r)
                 }
             }
-        } catch let error as NSError {
+        } catch {
             Log.shared.errorAndCrash(component: comp, error: error)
         }
 

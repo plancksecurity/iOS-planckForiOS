@@ -38,8 +38,8 @@ class AttachmentToLocalURLOperation: Operation {
         do {
             try data.write(to: theURL)
             fileURL = theURL
-        } catch let e as NSError {
-            Log.error(component: #function, error: e)
+        } catch {
+            Log.error(component: #function, error: error)
         }
     }
 }

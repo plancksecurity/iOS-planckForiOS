@@ -108,8 +108,8 @@ public class SyncMessagesOperation: ImapSyncOperation {
     func syncMessages(_ sync: ImapSync) {
         do {
             try sync.syncMessages(firstUID: firstUID, lastUID: lastUID)
-        } catch let err as NSError {
-            addError(err)
+        } catch {
+            addError(error)
             waitForBackgroundTasksToFinish()
         }
     }

@@ -114,8 +114,8 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     fileprivate func fetchUids(_ sync: ImapSync) {
         do {
             try sync.fetchUidsForNewMessages()
-        } catch let err as NSError {
-            addIMAPError(err)
+        } catch {
+            addIMAPError(error)
             waitForBackgroundTasksToFinish()
         }
     }

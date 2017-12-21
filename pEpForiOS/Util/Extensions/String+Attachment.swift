@@ -19,8 +19,8 @@ extension String {
                 return s
             }
             return nil
-        } catch let err as NSError {
-            Log.shared.errorAndCrash(component: #function, error: err)
+        } catch {
+            Log.shared.errorAndCrash(component: #function, error: error)
             return nil
         }
     }

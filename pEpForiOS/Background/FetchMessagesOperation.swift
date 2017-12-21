@@ -89,8 +89,8 @@ public class FetchMessagesOperation: ImapSyncOperation {
     func fetchMessages(_ sync: ImapSync) {
         do {
             try sync.fetchMessages()
-        } catch let err as NSError {
-            addIMAPError(err)
+        } catch {
+            addIMAPError(error)
             waitForBackgroundTasksToFinish()
         }
     }
