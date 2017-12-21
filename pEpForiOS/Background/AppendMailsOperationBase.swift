@@ -82,14 +82,6 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                     theSelf.handleError(
                         BackgroundError.GeneralError.invalidParameter(info: #function),
                         message: "Cannot find message just stored in the sent folder")
-
-/* //BUFF:
-                    theSelf.handleError(
-                        Constants.errorInvalidParameter(theSelf.comp),
-                        message:
-                        NSLocalizedString("Cannot find message just stored in the sent folder",
-                                          comment: "Background operation error message"))
- */
                     return
                 }
             }
@@ -100,11 +92,6 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         guard let msg = pEpMessageDict else {
             handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
                         message: "Cannot append nil message")
-/*//BUFF:
-            handleError(Constants.errorInvalidParameter(comp),
-                        message: NSLocalizedString("Cannot append nil message",
-                                                   comment: "Background operation error message"))
- */
             return
         }
         guard let folderName = targetFolderName else {

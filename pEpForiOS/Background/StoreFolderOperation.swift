@@ -65,7 +65,7 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
                 delegate?.didCreate(cdFolder: cdFolder)
             }
         } else {
-            self.addError(BackgroundError.CoreDataError.couldNotStoreFolder(info: "\(comp)-\(folderInfo.name)"))//BUFF: Constants.errorCouldNotStoreFolder(comp, name: folderInfo.name
+            self.addError(BackgroundError.CoreDataError.couldNotStoreFolder(info: "\(comp)-\(folderInfo.name)"))
         }
 
         Record.saveAndWait()

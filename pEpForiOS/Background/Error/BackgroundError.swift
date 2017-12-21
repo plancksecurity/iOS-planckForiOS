@@ -8,11 +8,10 @@
 
 import Foundation
 
+/// Wraps all errors that might occur in Background/Service layer
 struct BackgroundError {
 
     public enum GeneralError: Error {
-        //        case notImplemented(info: String?) //BUFF: UU?
-
         /// Unexpected state.
         /// Examples are:
         /// An operation that encountered an unexpected state/callback, e.g. a 'message received'
@@ -35,9 +34,6 @@ struct BackgroundError {
         }
     }
 
-    /**
-     Errors dealing with IMAP.
-     */
     public enum ImapError: Error {
         case invalidConnection(info: String?)
 

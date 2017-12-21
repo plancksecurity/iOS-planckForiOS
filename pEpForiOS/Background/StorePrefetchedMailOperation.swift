@@ -68,7 +68,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
 
     func storeMessage(context: NSManagedObjectContext) {
         guard let account = context.object(with: accountID) as? CdAccount else {
-            addError(BackgroundError.CoreDataError.couldNotFindAccount(info: #function))//BUFF: OperationError.cannotFindAccount)
+            addError(BackgroundError.CoreDataError.couldNotFindAccount(info: #function))
             return
         }
         if let msg = insertOrUpdate(pantomimeMessage: message, account: account) {
@@ -86,7 +86,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
 We could not store the message. This can happen if the belonging account just has been deleted.
 """
             )
-            self.addError(BackgroundError.CoreDataError.couldNotStoreMessage(info: #function))//BUFF: OperationError.cannotStoreMessage)
+            self.addError(BackgroundError.CoreDataError.couldNotStoreMessage(info: #function))
         }
     }
 

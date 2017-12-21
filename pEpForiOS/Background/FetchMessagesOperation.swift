@@ -61,7 +61,7 @@ public class FetchMessagesOperation: ImapSyncOperation {
         guard let account = Record.Context.background.object(
             with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
-                addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp)) //BUFF: Constants.errorCannotFindAccount(component: comp)
+                addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                 waitForBackgroundTasksToFinish()
                 return
         }

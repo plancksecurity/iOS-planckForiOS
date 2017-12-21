@@ -245,7 +245,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
                 delegate?.flagsUploaded(cdMessage: cdMsg)
                 changedMessageIDs.append(cdMsg.objectID)
             } else {
-                handle(error: BackgroundError.CoreDataError.couldNotFindMessage(info: nil))//BUFF: CoreDataError.couldNotFindMessage)
+                handle(error: BackgroundError.CoreDataError.couldNotFindMessage(info: nil))
             }
         }
         context.saveAndLogErrors()

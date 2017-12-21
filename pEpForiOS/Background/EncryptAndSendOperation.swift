@@ -125,7 +125,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
         guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
             as? CdAccount else {
-                handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))//BUFF: CoreDataError.couldNotFindAccount)
+                handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                 return
         }
 
@@ -155,7 +155,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
 extension EncryptAndSendOperation: SmtpSendDelegate {
     public func badResponse(_ smtp: SmtpSend, response: String?) {
-        let error = BackgroundError.SmtpError.badResponse(info: comp)//BUFF: Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.badResponse)
+        let error = BackgroundError.SmtpError.badResponse(info: comp)
         handleError(error, message: "badResponse")
     }
 
@@ -164,46 +164,45 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
     }
 
     public func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {
-        let error = BackgroundError.SmtpError.messageNotSent(info: comp)//BUFF: Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.messageNotSent)
+        let error = BackgroundError.SmtpError.messageNotSent(info: comp)
         handleError(error, message: "messageNotSent")
     }
 
     public func transactionInitiationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     public func transactionInitiationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        let error = BackgroundError.SmtpError.transactionInitiationFailed(info: comp)//BUFF: Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.transactionInitiationFailed)
+        let error = BackgroundError.SmtpError.transactionInitiationFailed(info: comp)
         handleError(error, message: "transactionInitiationFailed")
     }
 
     public func recipientIdentificationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     public func recipientIdentificationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        let error = BackgroundError.SmtpError.recipientIdentificationFailed(info: comp) //BUFF: Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.recipientIdentificationFailed)
+        let error = BackgroundError.SmtpError.recipientIdentificationFailed(info: comp)
         handleError(error, message: "recipientIdentificationFailed")
     }
 
     public func transactionResetCompleted(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     public func transactionResetFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        let error = BackgroundError.SmtpError.transactionResetFailed(info: comp)//BUFF: Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.transactionResetFailed)
+        let error = BackgroundError.SmtpError.transactionResetFailed(info: comp)
         handleError(error, message: "transactionResetFailed")
     }
 
     public func authenticationCompleted(_ smtp: SmtpSend, theNotification: Notification?) {
         addError(BackgroundError.GeneralError.illegalState(info: #function))
-        //        addError(Constants.errorIllegalState(comp, stateName: "authenticationCompleted")) //BUFF: test
         markAsFinished()
     }
 
     public func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        let error = BackgroundError.SmtpError.authenticationFailed(info: comp)//BUFF: Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.authenticationFailed)
+        let error = BackgroundError.SmtpError.authenticationFailed(info: comp)
         handleError(error, message: "authenticationFailed")
     }
 
     public func connectionEstablished(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     public func connectionLost(_ smtp: SmtpSend, theNotification: Notification?) {
-        let error = BackgroundError.SmtpError.connectionLost(info: comp)//BUFF: Constants.errorSmtp(comp, code: Constants.SmtpErrorCode.connectionLost)
+        let error = BackgroundError.SmtpError.connectionLost(info: comp)
         handleError(error, message: "connectionLost")
     }
 
