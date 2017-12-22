@@ -12,7 +12,7 @@ extension UIImage {
     /**
      An image that can be used for disabling UITextFields.
      */
-    open static func disabledBackgroundImage() -> UIImage? {
+    open static func disabledBackgroundImageUITextField() -> UIImage? {
         let image = generate(size: CGSize(width: 100, height: 100)) { context, size in
             let fillColor = UIColor.black
             var red, green, blue, alpha: CGFloat

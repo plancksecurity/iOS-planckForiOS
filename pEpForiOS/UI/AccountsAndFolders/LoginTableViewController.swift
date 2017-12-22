@@ -41,7 +41,7 @@
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
-    let disabledBackgroundImage = UIImage.disabledBackgroundImage()
+    let disabledBackgroundImage = UIImage.disabledBackgroundImageUITextField()
 
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
