@@ -2,67 +2,30 @@
 
 import UIKit
 
-extension UIColor {
-    static let hexPEpGreen = "#4CD964"
-
-    convenience init(hexString: String) {
-        var hexstr = hexString
-        if hexstr.hasPrefix("#") {
-            hexstr = String(hexstr.dropFirst())
-        }
-
-        var rgbValue: UInt32 = 0
-        Scanner(string: hexstr).scanHexInt32(&rgbValue)
-
-        let r = CGFloat((rgbValue >> 16) & 0xff) / 255.0
-        let g = CGFloat((rgbValue >> 08) & 0xff) / 255.0
-        let b = CGFloat((rgbValue >> 00) & 0xff) / 255.0
-
-        self.init(red: r, green: g, blue: b, alpha: 1.0)
-    }
-
-    open class var pEpGreen: UIColor {
-        get {
-            return UIColor(hexString: hexPEpGreen)
-        }
-    }
-}
-
-func getTargetDirectory() -> URL {
-    let paths = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask)
-    let documentsDirectory = paths[0]
-    return documentsDirectory
-}
-
-func getTargetFilePath(fileName: String) -> String {
-    return getTargetDirectory().appendingPathComponent(fileName).path
-}
-
-func produceImage(size: CGSize, fileName: String, block: (CGContext, CGSize) -> ()) {
-    let completeFilename = getTargetFilePath(fileName: fileName)
-    let rect = CGRect(origin: CGPoint(), size: size)
-    UIGraphicsBeginPDFContextToFile(completeFilename, rect, nil)
-    UIGraphicsBeginPDFPage()
+func generate(size: CGSize, block: (CGContext, CGSize) -> ()) -> UIImage? {
+    var theImage: UIImage?
+    UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
     if let ctx = UIGraphicsGetCurrentContext() {
-        block(ctx, rect.size)
-        UIGraphicsEndPDFContext()
+        block(ctx, size)
+        theImage = UIGraphicsGetImageFromCurrentImageContext()
     }
+    UIGraphicsEndImageContext()
+    return theImage
 }
 
-func produceDisabledBackground() {
+func produceDisabledBackground() -> UIImage? {
     func image(context: CGContext, size: CGSize) {
-        let uiGreen = UIColor.pEpGreen
+        let fillColor = UIColor.black
         var red, green, blue, alpha: CGFloat
         (red, green, blue, alpha) = (0, 0, 0, 0)
-        uiGreen.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        alpha = 0.5
+        fillColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        alpha = 1.0
         context.setFillColor(red: red, green: green, blue: blue, alpha: alpha)
         context.setStrokeColor(red: red, green: green, blue: blue, alpha: alpha)
         context.fill(CGRect(origin: CGPoint(x: 0, y: 0), size: size))
     }
 
-    produceImage(size: CGSize(width: 1, height: 1), fileName: "UITextFieldDisabledBackground",
-                 block: image)
+    return generate(size: CGSize(width: 100, height: 100), block: image)
 }
 
 produceDisabledBackground()
