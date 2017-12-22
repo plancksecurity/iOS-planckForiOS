@@ -41,9 +41,6 @@
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
-    let disabledUITextFieldBackgroundImage = UIImage.disabledUITextFieldBackgroundImage()
-    let defaultUITextFieldBackgroundImage = UIImage.defaultUITextFieldBackgroundImage()
-
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var manualConfigButton: UIButton!
@@ -92,9 +89,6 @@
 
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
 
-        password.borderStyle = .none
-        password.background = defaultUITextFieldBackgroundImage
-        password.disabledBackground = disabledUITextFieldBackgroundImage
         password.isEnabled = false
 
         //color and spacing configurations
