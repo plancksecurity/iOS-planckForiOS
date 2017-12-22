@@ -92,6 +92,7 @@
 
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
 
+        password.borderStyle = .none
         password.background = defaultUITextFieldBackgroundImage
         password.disabledBackground = disabledUITextFieldBackgroundImage
         password.isEnabled = false

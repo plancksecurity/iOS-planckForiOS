@@ -15,7 +15,7 @@ extension UIImage {
      */
     open static func disabledUITextFieldBackgroundImage() -> UIImage? {
         let image = generate(size: CGSize(width: 1, height: 1)) { context, size in
-            let fillColor = UIColor.black
+            let fillColor = UIColor.gray
             var red, green, blue, alpha: CGFloat
             (red, green, blue, alpha) = (0, 0, 0, 0)
             fillColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
@@ -33,7 +33,7 @@ extension UIImage {
      */
     open static func defaultUITextFieldBackgroundImage() -> UIImage? {
         let image = generate(size: CGSize(width: 1, height: 1)) { context, size in
-            let fillColor = UIColor.black
+            let fillColor = UIColor.pEpDarkGreen
             var red, green, blue, alpha: CGFloat
             (red, green, blue, alpha) = (0, 0, 0, 0)
             fillColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
