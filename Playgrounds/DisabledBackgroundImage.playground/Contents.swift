@@ -2,15 +2,17 @@
 
 import UIKit
 
-func generate(size: CGSize, block: (CGContext, CGSize) -> ()) -> UIImage? {
-    var theImage: UIImage?
-    UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-    if let ctx = UIGraphicsGetCurrentContext() {
-        block(ctx, size)
-        theImage = UIGraphicsGetImageFromCurrentImageContext()
+extension UIImage {
+    open static func generate(size: CGSize, block: (CGContext, CGSize) -> ()) -> UIImage? {
+        var theImage: UIImage?
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        if let ctx = UIGraphicsGetCurrentContext() {
+            block(ctx, size)
+            theImage = UIGraphicsGetImageFromCurrentImageContext()
+        }
+        UIGraphicsEndImageContext()
+        return theImage
     }
-    UIGraphicsEndImageContext()
-    return theImage
 }
 
 func produceDisabledBackground() -> UIImage? {
@@ -25,7 +27,7 @@ func produceDisabledBackground() -> UIImage? {
         context.fill(CGRect(origin: CGPoint(x: 0, y: 0), size: size))
     }
 
-    return generate(size: CGSize(width: 100, height: 100), block: image)
+    return UIImage.generate(size: CGSize(width: 100, height: 100), block: image)
 }
 
 produceDisabledBackground()
