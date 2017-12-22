@@ -9,7 +9,7 @@
 import UIKit
 
 extension UITextField {
-    func convertToLoginTextField(placeHolder: String, delegate: UITextFieldDelegate) {
+    func convertToLoginField(placeHolder: String, delegate: UITextFieldDelegate) {
         self.delegate = delegate
         self.backgroundColor = UIColor.clear
         self.tintColor = UIColor.white

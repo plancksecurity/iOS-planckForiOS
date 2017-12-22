@@ -76,15 +76,15 @@
 
     func configureView(){
         UIHelper.variableCellHeightsTableView(self.tableView)
-        self.emailAddress.convertToLoginTextField(
+        self.emailAddress.convertToLoginField(
             placeHolder: NSLocalizedString("Email", comment: "Email"), delegate: self)
-        self.password.convertToLoginTextField(
+        self.password.convertToLoginField(
             placeHolder: NSLocalizedString("Password", comment: "password"), delegate: self)
         self.loginButton.convertToLoginButton(
             placeHolder: NSLocalizedString("Sign In", comment: "Login"))
         self.manualConfigButton.convertToLoginButton(
             placeHolder: NSLocalizedString("Manual configuration", comment: "manual"))
-        self.user.convertToLoginTextField(
+        self.user.convertToLoginField(
             placeHolder: NSLocalizedString("Name", comment: "username"), delegate: self)
 
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
