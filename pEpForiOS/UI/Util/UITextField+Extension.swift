@@ -19,4 +19,10 @@ extension UITextField {
         self.attributedPlaceholder = NSAttributedString(
             string:placeHolder, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
     }
+
+    func disableLoginField() {
+    }
+
+    func enableLoginField() {
+    }
 }

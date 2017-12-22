@@ -90,6 +90,7 @@
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
 
         password.isEnabled = false
+        password.enableLoginField()
 
         //color and spacing configurations
         let bgView = GradientView(colors: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
@@ -209,6 +210,11 @@
     func updatePasswordField(email: String?) {
         let oauth2Possible = loginViewModel.isOAuth2Possible(email: email)
         password.isEnabled = !oauth2Possible
+        if password.isEnabled {
+            password.enableLoginField()
+        } else {
+            password.disableLoginField()
+        }
     }
  }
 
