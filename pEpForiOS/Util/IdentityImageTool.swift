@@ -72,7 +72,7 @@ class IdentityImageTool {
     private func identityImageFromName(initials: String, size: CGSize, textColor: UIColor,
                                        font: UIFont = UIFont.systemFont(ofSize: 24),
                                        imageBackgroundColor: UIColor) -> UIImage? {
-        return UIImage.generate(size: size) { ctx in
+        return UIImage.generate(size: size) { ctx, size in
             drawCircle(ctx: ctx, size: size, color: imageBackgroundColor)
             initials.draw(centeredIn: size, color: textColor, font: font)
         }

@@ -41,6 +41,8 @@
     var loginViewModel = LoginViewModel()
     var extendedLogin = false
 
+    let disabledBackgroundImage = UIImage.disabledBackgroundImage()
+
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
     @IBOutlet var manualConfigButton: UIButton!
@@ -89,6 +91,9 @@
 
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
 
+        password.disabledBackground = disabledBackgroundImage
+        password.isEnabled = false
+
         //color and spacing configurations
         let bgView = GradientView(colors: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
         tableView.backgroundView = bgView
@@ -109,7 +114,8 @@
         view.addGestureRecognizer(tap)
 
         self.navigationItem.hidesBackButton = true
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
     }
 
     @objc func backButton() {

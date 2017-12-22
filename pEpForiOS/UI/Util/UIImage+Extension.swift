@@ -9,11 +9,11 @@
 import UIKit
 
 extension UIImage {
-    open static func generate(size: CGSize, block: (CGContext) -> ()) -> UIImage? {
+    open static func generate(size: CGSize, block: (CGContext, CGSize) -> ()) -> UIImage? {
         var theImage: UIImage?
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         if let ctx = UIGraphicsGetCurrentContext() {
-            block(ctx)
+            block(ctx, size)
             theImage = UIGraphicsGetImageFromCurrentImageContext()
         }
         UIGraphicsEndImageContext()
