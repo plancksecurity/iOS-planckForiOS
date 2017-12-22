@@ -176,6 +176,7 @@
     @IBAction func logIn(_ sender: Any) {
         dismissKeyboard()
         isCurrentlyVerifying = true
+
         guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
             handleLoginError(error: LoginTableViewControllerError.missingEmail, extended: false)
             return
@@ -185,14 +186,16 @@
             handleLoginError(error: LoginTableViewControllerError.accountExistence, extended: false)
             return
         }
-        guard let pass = password.text, pass != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingPassword, extended: false)
-            return
-        }
         guard let username = user.text, username != "" else {
             handleLoginError(error: LoginTableViewControllerError.missingUsername, extended: false)
             return
         }
+
+        guard let pass = password.text, pass != "" else {
+            handleLoginError(error: LoginTableViewControllerError.missingPassword, extended: false)
+            return
+        }
+
         loginViewModel.accountVerificationResultDelegate = self
         loginViewModel.login(
             accountName: email, password: pass, userName: username,
