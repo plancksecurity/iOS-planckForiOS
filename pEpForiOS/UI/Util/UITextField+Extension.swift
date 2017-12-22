@@ -9,20 +9,37 @@
 import UIKit
 
 extension UITextField {
-    func convertToLoginField(placeHolder: String, delegate: UITextFieldDelegate) {
+    func convertToLoginField(placeholder: String, delegate: UITextFieldDelegate) {
+        // common properties
         self.delegate = delegate
         self.backgroundColor = UIColor.clear
         self.tintColor = UIColor.white
-        self.textColor = UIColor.white
-        self.layer.borderColor = UIColor.white.cgColor
         self.layer.borderWidth = 1.0
-        self.attributedPlaceholder = NSAttributedString(
-            string:placeHolder, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white])
+        self.placeholder = placeholder
+
+        // properties divided between enabled/disabled
+        if isEnabled {
+            enableLoginField()
+        } else {
+            disableLoginField()
+        }
     }
 
     func disableLoginField() {
+        enableOrDisableLoginField(enable: false)
     }
 
     func enableLoginField() {
+        enableOrDisableLoginField(enable: true)
+    }
+
+    func enableOrDisableLoginField(enable: Bool) {
+        let theColor = enable ? UIColor.white : UIColor.gray
+        self.textColor = theColor
+        self.layer.borderColor = theColor.cgColor
+        if let ph = placeholder {
+            self.attributedPlaceholder = NSAttributedString(
+                string: ph, attributes: [NSAttributedStringKey.foregroundColor: theColor])
+        }
     }
 }

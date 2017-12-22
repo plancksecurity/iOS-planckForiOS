@@ -20,12 +20,12 @@ extension UIButton {
         contentEdgeInsets = UIEdgeInsetsMake(insetV, insetV, insetV, insetV)
     }
 
-    func convertToLoginButton(placeHolder: String) {
+    func convertToLoginButton(placeholder: String) {
         self.backgroundColor = UIColor.clear
         self.tintColor = UIColor.white
         self.layer.borderColor = UIColor.white.cgColor
         self.layer.borderWidth = 1.0
-        self.setTitle(placeHolder, for: .normal)
+        self.setTitle(placeholder, for: .normal)
     }
 
     /**

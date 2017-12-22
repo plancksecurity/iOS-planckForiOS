@@ -76,21 +76,21 @@
 
     func configureView(){
         UIHelper.variableCellHeightsTableView(self.tableView)
+
+        password.isEnabled = true
+
         self.emailAddress.convertToLoginField(
-            placeHolder: NSLocalizedString("Email", comment: "Email"), delegate: self)
+            placeholder: NSLocalizedString("Email", comment: "Email"), delegate: self)
         self.password.convertToLoginField(
-            placeHolder: NSLocalizedString("Password", comment: "password"), delegate: self)
+            placeholder: NSLocalizedString("Password", comment: "password"), delegate: self)
         self.loginButton.convertToLoginButton(
-            placeHolder: NSLocalizedString("Sign In", comment: "Login"))
+            placeholder: NSLocalizedString("Sign In", comment: "Login"))
         self.manualConfigButton.convertToLoginButton(
-            placeHolder: NSLocalizedString("Manual configuration", comment: "manual"))
+            placeholder: NSLocalizedString("Manual configuration", comment: "manual"))
         self.user.convertToLoginField(
-            placeHolder: NSLocalizedString("Name", comment: "username"), delegate: self)
+            placeholder: NSLocalizedString("Name", comment: "username"), delegate: self)
 
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
-
-        password.isEnabled = false
-        password.enableLoginField()
 
         //color and spacing configurations
         let bgView = GradientView(colors: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
