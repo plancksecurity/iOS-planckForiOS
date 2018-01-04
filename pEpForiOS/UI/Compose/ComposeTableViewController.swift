@@ -40,6 +40,7 @@ class ComposeTableViewController: BaseTableViewController {
     private var nonInlinedAttachmentData = ComposeDataSource.AttachmentDataSource()
     private var currentCell: IndexPath!
     private var allCells = MutableOrderedSet<ComposeCell>()
+    private var cells = [ComposeFieldModel.FieldType:ComposeCell]()
     private var ccEnabled = false
 
     var composeMode: ComposeMode = .normal
@@ -58,6 +59,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private let attachmentCounter = AttachmentCounter()
     private let mimeTypeUtil = MimeTypeUtil()
+
 
     private var edited = false
 
@@ -673,29 +675,41 @@ class ComposeTableViewController: BaseTableViewController {
         _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let returnee: UITableViewCell
+        var cell: ComposeCell
+        guard let row = composeData?.getRow(at: indexPath.row) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Wrong data")
+            return UITableViewCell()
+        }
         if indexPath.section == composeSection {
-            guard
-                let row = composeData?.getRow(at: indexPath.row),
-                let cell = tableView.dequeueReusableCell(withIdentifier: row.identifier,
-                                                         for: indexPath) as? ComposeCell
-                else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell")
-                    return UITableViewCell()
+            if let c = cells[row.type] {
+                cell = c
+            } else {
+                guard
+                let c = tableView.dequeueReusableCell(withIdentifier: row.identifier, for: indexPath) as? ComposeCell
+                    else {
+                        Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell")
+                        return UITableViewCell()
+                }
+                c.updateCell(row, indexPath)
+                c.delegate = self
+                cell = c
             }
             returnee = cell
-            cell.updateCell(row, indexPath)
-            cell.delegate = self
 
             if !allCells.contains(cell) {
                 allCells.append(cell)
-                if let rc = cell as? RecipientCell {
+                if let rc = cell as? RecipientCell, let type = rc.fieldModel?.type {
                     updateInitialContent(recipientCell: rc)
-                } else if let mc = cell as? MessageBodyCell {
+                    cells[type] = rc
+                } else if let mc = cell as? MessageBodyCell, let type = mc.fieldModel?.type {
                     updateInitialContent(messageBodyCell: mc)
+                    cells[type] = mc
                 } else if let fm = cell.fieldModel, fm.type == .subject {
                     updateInitialContent(subjectCell: cell)
-                } else if let ac = cell as? AccountCell {
+                    cells[fm.type] = cell
+                } else if let ac = cell as? AccountCell, let type = ac.fieldModel?.type {
                     setup(ac)
+                    cells[type] = ac
                 }
             }
         } else if indexPath.section == attachmentSection {
