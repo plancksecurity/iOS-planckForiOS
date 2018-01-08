@@ -989,6 +989,8 @@ extension ComposeTableViewController: ComposeCellDelegate {
         } else {
             tableView.updateSize()
         }
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+
     }
 
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView) {

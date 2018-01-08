@@ -13,8 +13,10 @@ extension UITableView {
      This magic code should trigger a height refresh for table cells.
      */
     public final func updateSize() {
-        beginUpdates()
-        endUpdates()
+        UIView.performWithoutAnimation {
+            beginUpdates()
+            endUpdates()
+        }
     }
 
     public final func scrollToTopOf(_ cell: UITableViewCell) {
