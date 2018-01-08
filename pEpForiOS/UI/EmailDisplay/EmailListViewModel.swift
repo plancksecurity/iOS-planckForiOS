@@ -56,6 +56,11 @@ class EmailListViewModel {
     }
     
     private var messages: SortedSet<PreviewMessage>?
+    private let queue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .userInteractive
+        return createe
+    }()
     public var delegate: EmailListViewModelDelegate?
     private var folderToShow: Folder?
     
@@ -96,13 +101,15 @@ class EmailListViewModel {
         }
         // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
-        DispatchQueue.main.async {
+        queue.addOperation {
             let messagesToDisplay = folder.allMessages()
             let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
 
             self.messages = SortedSet(array: previewMessages, sortBlock: self.sortByDateSentAscending)
-            self.delegate?.updateView()
-            self.startListeningToChanges()
+            DispatchQueue.main.async {
+                self.delegate?.updateView()
+                self.startListeningToChanges()
+            }
         }
     }
     

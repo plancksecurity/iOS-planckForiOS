@@ -25,7 +25,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private let queue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInteractive
-        createe.maxConcurrentOperationCount = 10
+        createe.maxConcurrentOperationCount = 5
         return createe
     }()
     private var operations = [IndexPath:Operation]()
@@ -37,6 +37,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     //swipe acctions types
     var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
     var buttonStyle: ButtonStyle = .backgroundColor
+
+    /// Indicates that we must not trigger reloadData.
+    private var loadingBlocked = false
     
     // MARK: - Outlets
     
@@ -253,18 +256,22 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         vm.markRead(forIndexPath: indexPath)
     }
     
-    // MARK: - Actions
+    // MARK: - Action Filter Button
     
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
+        guard !loadingBlocked else {
+            return
+        }
         guard let vm = model else {
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
             return
         }
+        stopLoading()
         vm.isFilterEnabled = !vm.isFilterEnabled
         updateFilterButtonView()
     }
     
-    func updateFilterButtonView() {
+    private func updateFilterButtonView() {
         guard let vm = model else {
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
             return
@@ -280,7 +287,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
     
-    func updateFilterText() {
+    private func updateFilterText() {
         if let vm = model, let txt = vm.activeFilter?.title {
             textFilterButton.title = "Filter by: " + txt
         }
@@ -393,6 +400,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     // MARK: - Queue Handling
+
+    /// Cancels all operations and sets tableView.dataSource to nil.
+    /// Used to avoid that an operation accesses an outdated view model
+    private func stopLoading() {
+        loadingBlocked = true
+        tableView.dataSource = nil
+        queue.cancelAllOperations()
+        queue.waitUntilAllOperationsAreFinished()
+    }
     
     private func queue(operation op:Operation, for indexPath: IndexPath) {
         operations[indexPath] = op
@@ -455,7 +471,9 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
     
     func updateView() {
-        self.tableView.reloadData()
+        loadingBlocked = false
+        tableView.dataSource = self
+        tableView.reloadData()
     }
 }
 
