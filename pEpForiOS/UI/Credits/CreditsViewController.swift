@@ -53,7 +53,7 @@ class CreditsViewController: UIViewController {
         <p>&nbsp;</p>
         <p>p&equiv;p for iOS<br/> \(appVersion)</p>
         <p>Credits:<br />
-            Volker Birk, Simon Witts, Sandro K&ouml;chle, Sabrina Schleifer, Robert Goldmann, Rena Tangens, Patricia Bednar, Patrick Meier, padeluun, Nana Karlstetter, Meinhard Starostik, Mathijs de Haan, Martin Vojcik, Markus Schaber, Leonard Marquitan, Leon Schumacher, Lars Rohwedder, Krista Bennet, Kinga Prettenhoffer, Hussein Kasem, Hern&acirc;ni Marques, Edouard Tisserant, Dol&ccedil;a Moreno, Dirk Zimmermann, Dietz Proepper, Detlev Sieber, Dean, Daniel Sosa, be, Berna Alp, Bart Polot, Arturo Jim&eacute;nez, Andy Weber, Ana Rebolledo, Xavier Algarra Torello, Andreas Buff, Andreas
+            Xavier Algarra Torello, Volker Birk, Simon Witts, Sandro K&ouml;chle, Sabrina Schleifer, Robert Goldmann, Rena Tangens, Patricia Bednar, Patrick Meier, padeluun, Nana Karlstetter, Meinhard Starostik, Mathijs de Haan, Martin Vojcik, Markus Schaber, Leonard Marquitan, Leon Schumacher, Lars Rohwedder, Krista Bennet, Kinga Prettenhoffer, Hussein Kasem, Hern&acirc;ni Marques, Edouard Tisserant, Dol&ccedil;a Moreno, Dirk Zimmermann, Dietz Proepper, Detlev Sieber, Dean, Daniel Sosa, be, Berna Alp, Bart Polot, Arturo Jim&eacute;nez, Andy Weber, Andreas Buff, Ana Rebolledo
         </p>
         <p>&nbsp;</p>
         <p>Thanks to:
