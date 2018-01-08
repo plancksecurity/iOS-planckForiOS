@@ -67,30 +67,28 @@ class CreditsViewController: UIViewController {
     }
 
     private func thanxRows() -> String {
-        let names = ["GPG4Win",
-                     "pEpEngine",
-                     "GPGME",
-                     "LibGPG-error",
-                     "Libcrypt",
+        let names = ["pEpEngine",
                      "Libassuan",
                      "Libksba",
-                     "GNUPG",
                      "Libcurl",
                      "Libiconv",
                      "LibEtPan",
-                     "MimeKitLite"]
-        let links = ["https://www.gpg4win.org/",
-                     "https://cacert.pep.foundation/dev/repos/pEpEngine/",
-                     "https://www.gnupg.org/software/gpgme/",
-                     "https://gnupg.org/related_software/libgpg-error/",
-                     "https://directory.fsf.org/wiki/Libgpgcrypt",
-                     "https://gnupg.org/related_software/libassuan/",
-                     "https://gnupg.org/related_software/libksba/",
-                     "https://gnupg.org/",
+                     "Pantomime",
+                     "OpenSSL-for-iPhone",
+                     "SwipeCellKit",
+                     "AppAuth-iOS",
+                     "netpgp"]
+        let links = ["https://cacert.pep.foundation/dev/repos/pEpEngine/",
+                     "https://gnupg.org/related_software/libassuan",
+                     "https://gnupg.org/related_software/libksba",
                      "https://curl.haxx.se/libcurl/",
                      "https://www.gnu.org/software/libiconv/",
                      "https://www.etpan.org/libetpan.html",
-                     "https://www.mimekit.net/"]
+                     "http://wiki.gnustep.org/index.php/Pantomime  https://github.com/timburks/Pantomime",
+                     "https://github.com/x2on/OpenSSL-for-iPhone",
+                     "https://github.com/SwipeCellKit/SwipeCellKit",
+                     "https://github.com/openid/AppAuth-iOS",
+                     "http://www.netpgp.com/"]
         var htmlThanx = ""
         for (i, name) in names.enumerated() {
             let link = links[i]
