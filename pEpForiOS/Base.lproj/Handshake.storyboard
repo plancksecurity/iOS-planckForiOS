@@ -110,7 +110,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="confirmButton">
+                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="confirmButton">
                                                     <rect key="frame" x="20" y="49" width="164" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Confirm Trustwords"/>
@@ -118,7 +118,7 @@
                                                         <action selector="confirmAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="0Ra-lN-sx4"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="wrongButton">
+                                                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="wrongButton">
                                                     <rect key="frame" x="192" y="49" width="164" height="33"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Wrong Trustwords"/>
