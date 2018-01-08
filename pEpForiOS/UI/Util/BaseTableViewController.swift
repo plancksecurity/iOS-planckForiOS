@@ -40,8 +40,10 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         guard _appConfig != nil else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "AppConfig is nil in viewWillAppear!")
+            if !MiscUtil.isUnitTest() {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "AppConfig is nil in viewWillAppear!")
+            }
             return
         }
         appConfig.errorPropagator.subscriber = self
