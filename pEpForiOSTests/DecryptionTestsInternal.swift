@@ -1,5 +1,5 @@
 //
-//  DecryptionTests.swift
+//  DecryptionTestsInternal.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 15.05.17.
@@ -11,7 +11,11 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-class DecryptionTests: XCTestCase {
+/**
+ Tests internal encryption and decryption (that is, the test creates encrypted messages itself,
+ and does not rely on outside data/services).
+ */
+class DecryptionTestsInternal: XCTestCase {
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderAccount: CdAccount!
