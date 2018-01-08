@@ -36,18 +36,91 @@ class DecryptImportedMessagesTests: XCTestCase {
         super.tearDown()
     }
 
-    func createLocalAccount(ownUserName: String, ownUserID: String, ownEmailAddress: String) {
-        let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
-        cdMyAccount.identity?.userName = ownUserName
-        cdMyAccount.identity?.userID = ownUserID
-        cdMyAccount.identity?.address = ownEmailAddress
+    func createLocalAccount(ownUserName: String, ownUserID: String,
+                            ownEmailAddress: String) -> CdAccount {
+        let cdOwnAccount = TestData().createWorkingCdAccount(number: 0)
+        cdOwnAccount.identity?.userName = ownUserName
+        cdOwnAccount.identity?.userID = ownUserID
+        cdOwnAccount.identity?.address = ownEmailAddress
 
         let cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.uuid = MessageID.generate()
-        cdInbox.account = cdMyAccount
+        cdInbox.account = cdOwnAccount
 
         TestUtil.skipValidation()
         Record.saveAndWait()
+
+        return cdOwnAccount
+    }
+
+    func decryptTheMessage(cdOwnAccount: CdAccount, fileName: String) -> CdMessage? {
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: fileName,
+            cdOwnAccount: cdOwnAccount) else {
+                XCTFail()
+                return nil
+        }
+
+        let expDecrypted = expectation(description: "expDecrypted")
+        let errorContainer = ErrorContainer()
+        let decryptOperation = DecryptMessagesOperation(
+            parentName: #function, errorContainer: errorContainer)
+        decryptOperation.completionBlock = {
+            decryptOperation.completionBlock = nil
+            expDecrypted.fulfill()
+        }
+        let decryptDelegate = DecryptionAttemptCounterDelegate()
+        decryptOperation.delegate = decryptDelegate
+        backgroundQueue.addOperation(decryptOperation)
+
+        waitForExpectations(timeout: TestUtil.waitTime) { error in
+            XCTAssertNil(error)
+        }
+
+        XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
+        Record.Context.main.refreshAllObjects()
+        XCTAssertEqual(cdMessage.pEpRating, Int16(PEP_rating_reliable.rawValue))
+
+        guard
+            let cdRecipients = cdMessage.to?.array as? [CdIdentity],
+            cdRecipients.count == 1,
+            let recipientIdentity = cdRecipients[0].identity()
+            else {
+                XCTFail()
+                return cdMessage
+        }
+        XCTAssertTrue(recipientIdentity.isMySelf)
+
+        guard let theSenderIdentity = cdMessage.from?.identity() else {
+            XCTFail()
+            return cdMessage
+        }
+        XCTAssertFalse(theSenderIdentity.isMySelf)
+
+        return cdMessage
+    }
+
+    func testDecrypt001() {
+        let cdOwnAccount = createLocalAccount(ownUserName: "test002", ownUserID: "test002",
+                                              ownEmailAddress: "iostest002@peptest.ch")
+
+        // own keys
+        TestUtil.importKeyByFileName(
+            session, fileName: "IOS-884_001_iostest002@peptest.ch.pub.key")
+        TestUtil.importKeyByFileName(
+            session, fileName: "IOS-884_001_iostest002@peptest.ch.sec.key")
+
+        // partner
+        TestUtil.importKeyByFileName(
+            session, fileName: "IOS-884_001_test010@peptest.ch.pub.key")
+
+        self.backgroundQueue = OperationQueue()
+        let cdMessage = decryptTheMessage(
+            cdOwnAccount: cdOwnAccount, fileName: "IOS-884_001_Mail_from_P4A.txt")
+
+        XCTAssertEqual(cdMessage?.shortMessage, "Re:  ")
+        XCTAssertTrue(cdMessage?.longMessage?.startsWith("It is yellow?") ?? false)
+        XCTAssertEqual(cdMessage?.attachments?.count ?? 50, 0)
     }
 }
