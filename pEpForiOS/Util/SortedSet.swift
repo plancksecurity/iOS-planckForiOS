@@ -63,11 +63,6 @@ class SortedSet<T: Equatable> {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
 
-        guard index >= 0, index < set.count else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Index out of range")
-            return nil
-        }
-
         return set.object(at: index) as? T
     }
     

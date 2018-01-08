@@ -9,13 +9,10 @@
 import Foundation
 import MessageModel
 
-protocol EmailListViewModelDelegate: class {
+protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
-    func emailListViewModelPrepareForResetData(viewModel: EmailListViewModel,
-                                               readyForReset: ()->Void)
-    func emailListViewModelDidResetData(viewModel: EmailListViewModel)
 }
 
 // MARK: - FilterUpdateProtocol
@@ -29,10 +26,10 @@ extension EmailListViewModel: FilterUpdateProtocol {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel {
-    fileprivate let messageFolderDelegateHandlingQueue = DispatchQueue(label:
+    let messageFolderDelegateHandlingQueue = DispatchQueue(label:
         "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
-    private let contactImageTool = IdentityImageTool()
-    private let messageSyncService: MessageSyncServiceProtocol
+    let contactImageTool = IdentityImageTool()
+    let messageSyncService: MessageSyncServiceProtocol
     class Row {
         var senderContactImage: UIImage?
         var ratingImage: UIImage?
@@ -59,8 +56,10 @@ class EmailListViewModel {
     }
     
     private var messages: SortedSet<PreviewMessage>?
+    public var delegate: EmailListViewModelDelegate?
     private var folderToShow: Folder?
-    private let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
+    
+    let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
         if pvMsg1.dateSent > pvMsg2.dateSent {
             return .orderedAscending
@@ -70,9 +69,6 @@ class EmailListViewModel {
             return .orderedSame
         }
     }
-
-    public weak var delegate: EmailListViewModelDelegate?
-    public private(set) var isLoading = false
     
     // MARK: Life Cycle
     
@@ -98,23 +94,15 @@ class EmailListViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "No data, no cry.")
             return
         }
-        guard !isLoading else {
-            return
-        }
-        // Ignore MessageModelConfig.messageFolderDelegate while reloading data.
+        // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
-        isLoading = true
-        delegate?.emailListViewModelPrepareForResetData(viewModel: self) {
+        DispatchQueue.main.async {
             let messagesToDisplay = folder.allMessages()
             let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
 
-            self.messages = SortedSet(array: previewMessages,
-                                      sortBlock: self.sortByDateSentAscending)
-            DispatchQueue.main.async {
-                self.isLoading = false
-                self.delegate?.emailListViewModelDidResetData(viewModel: self)
-                self.startListeningToChanges()
-            }
+            self.messages = SortedSet(array: previewMessages, sortBlock: self.sortByDateSentAscending)
+            self.delegate?.updateView()
+            self.startListeningToChanges()
         }
     }
     
