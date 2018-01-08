@@ -286,6 +286,10 @@
 		43C322101EA91764005073FB /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3220E1EA91764005073FB /* UIImage+Extension.swift */; };
 		43C322111EA91764005073FB /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3220F1EA91764005073FB /* UIImageView+Extension.swift */; };
 		43C3B1602003851100ED48A4 /* DecryptImportedMessagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3B15F2003851100ED48A4 /* DecryptImportedMessagesTests.swift */; };
+		43C3B1622003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B1612003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt */; };
+		43C3B16620038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B16320038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key */; };
+		43C3B16720038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B16420038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key */; };
+		43C3B16820038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */; };
 		43C579E91F0A1FEC00A8EDF0 /* AtomicImapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C579E81F0A1FEC00A8EDF0 /* AtomicImapService.swift */; };
 		43C579EB1F0A382400A8EDF0 /* FetchFoldersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C579EA1F0A382400A8EDF0 /* FetchFoldersService.swift */; };
 		43C579ED1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C579EC1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift */; };
@@ -720,6 +724,10 @@
 		43C3220E1EA91764005073FB /* UIImage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		43C3220F1EA91764005073FB /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		43C3B15F2003851100ED48A4 /* DecryptImportedMessagesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptImportedMessagesTests.swift; sourceTree = "<group>"; };
+		43C3B1612003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_Mail_from_P4A.txt"; sourceTree = "<group>"; };
+		43C3B16320038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_iostest002@peptest.ch.pub.key"; sourceTree = "<group>"; };
+		43C3B16420038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_iostest002@peptest.ch.sec.key"; sourceTree = "<group>"; };
+		43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_test010@peptest.ch.pub.key"; sourceTree = "<group>"; };
 		43C579E81F0A1FEC00A8EDF0 /* AtomicImapService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AtomicImapService.swift; sourceTree = "<group>"; };
 		43C579EA1F0A382400A8EDF0 /* FetchFoldersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersService.swift; sourceTree = "<group>"; };
 		43C579EC1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchFoldersServiceTests.swift; sourceTree = "<group>"; };
@@ -1500,6 +1508,10 @@
 		43B2C3151D2280ED00A08557 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				43C3B16320038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key */,
+				43C3B16420038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key */,
+				43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */,
+				43C3B1612003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt */,
 				153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */,
 				153CA6E71FB61B53003C9629 /* IOS-815_pep_rating_zero.txt */,
 				1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */,
@@ -1878,13 +1890,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
+				43C3B16620038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key in Resources */,
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
 				43F7F07C1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt in Resources */,
+				43C3B16820038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key in Resources */,
 				436795FB1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc in Resources */,
 				430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */,
 				436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */,
 				438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */,
+				43C3B1622003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt in Resources */,
 				43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */,
 				43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */,
 				153CA6EA1FB62195003C9629 /* IOS-211-pdfEmail.txt in Resources */,
@@ -1892,6 +1907,7 @@
 				436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */,
 				153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */,
 				4322E82F1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt in Resources */,
+				43C3B16720038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key in Resources */,
 				43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */,
 				1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */,
 				153CA6E81FB61B53003C9629 /* IOS-815_pep_rating_zero.txt in Resources */,
