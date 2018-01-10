@@ -1,5 +1,5 @@
 //
-//  AccountSettingsVIewModel.swift
+//  AccountSettingsViewModel.swift
 //  pEpForiOS
 //
 //  Created by Xavier Algarra on 13/06/2017.
