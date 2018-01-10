@@ -36,30 +36,6 @@ protocol HandshakePartnerTableViewCellDelegate: class {
 }
 
 class HandshakePartnerTableViewCell: UITableViewCell {
-    /**
-     Programmatically created constraints for expanding elements of this cell,
-     depending on state changes.
-     */
-    struct Constraints {
-        /** For expanding the explanation */
-        let explanationHeightZero: NSLayoutConstraint
-
-        /** For hiding the start/stop trust button */
-        let startStopTrustingHeightZero: NSLayoutConstraint
-
-        /** For hiding trust/mistrust buttons */
-        let confirmTrustHeightZero: NSLayoutConstraint
-
-        /** For hiding trustwords label */
-        let trustWordsLabelHeightZero: NSLayoutConstraint
-
-        /** For hiding the whole view dealing with trustwords */
-        let trustWordsViewHeightZero: NSLayoutConstraint
-
-        let privacyStatusTitleBottom: NSLayoutConstraint
-        let privacyStatusDescriptionBottom: NSLayoutConstraint
-    }
-
     @IBOutlet weak var startStopTrustingButton: UIButton!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var wrongButton: UIButton!
@@ -76,11 +52,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     weak var delegate: HandshakePartnerTableViewCellDelegate?
 
     var indexPath: IndexPath = IndexPath()
-
-    /**
-     The additional constraints we have to deal with.
-     */
-    var additionalConstraints: Constraints?
 
     var viewModel: HandshakePartnerTableViewCellViewModel? {
         didSet {
@@ -134,39 +105,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                                                textColor: .black)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
-        setupAdditionalConstraints()
 
         setNeedsLayout()
-    }
-
-    func setupAdditionalConstraints() {
-        if additionalConstraints == nil {
-            let explanationHeightZero = privacyStatusDescription.heightAnchor.constraint(
-                equalToConstant: 0)
-            let startStopTrustingHeightZero = startStopTrustingButton.heightAnchor.constraint(
-                equalToConstant: 0)
-
-            let confirmTrustHeightZero = confirmButton.heightAnchor.constraint(equalToConstant: 0)
-            let trustWordsLabelHeightZero = trustWordsLabel.heightAnchor.constraint(
-                equalToConstant: 0)
-            let trustWordsViewHeightZero = trustWordsView.heightAnchor.constraint(
-                equalToConstant: 0)
-
-            let defaultYMargin: CGFloat = 16
-            let privacyStatusTitleBottom = privacyStatusTitle.bottomAnchor.constraint(
-                equalTo: headerView.bottomAnchor, constant: -defaultYMargin)
-            let privacyStatusDescriptionBottom = privacyStatusDescription.bottomAnchor.constraint(
-                equalTo: headerView.bottomAnchor, constant: -defaultYMargin)
-
-            additionalConstraints = Constraints(
-                explanationHeightZero: explanationHeightZero,
-                startStopTrustingHeightZero: startStopTrustingHeightZero,
-                confirmTrustHeightZero: confirmTrustHeightZero,
-                trustWordsLabelHeightZero: trustWordsLabelHeightZero,
-                trustWordsViewHeightZero: trustWordsViewHeightZero,
-                privacyStatusTitleBottom: privacyStatusTitleBottom,
-                privacyStatusDescriptionBottom: privacyStatusDescriptionBottom)
-        }
     }
 
     func updateView() {
@@ -227,36 +167,21 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateAdditionalConstraints() {
-        updateStartStopTrustingButtonConstraints()
-        updateExplanationExpansionConstraints()
-        updateTrustwordsExpansionConstraints()
+        updateStartStopTrustingButtonVisibility()
+        updateExplanationExpansionVisibility()
+        updateTrustwordsExpansionVisibility()
     }
 
-    func updateStartStopTrustingButtonConstraints() {
-        if let constraints = additionalConstraints {
-            // Hide the stop/start trust button for states other than
-            // .mistrusted an .secureAndTrusted.
-            constraints.startStopTrustingHeightZero.isActive = !showStopStartTrustButton
-            startStopTrustingButton.isHidden = !showStopStartTrustButton
-        }
+    func updateStartStopTrustingButtonVisibility() {
+        startStopTrustingButton.isHidden = !showStopStartTrustButton
     }
 
-    func updateExplanationExpansionConstraints() {
-        if let constraints = additionalConstraints {
-            constraints.explanationHeightZero.isActive = expandedState == .notExpanded
-            constraints.privacyStatusTitleBottom.isActive =
-                !showStopStartTrustButton && expandedState == .notExpanded
-            constraints.privacyStatusDescriptionBottom.isActive =
-                !showStopStartTrustButton && expandedState == .expanded
-        }
+    func updateExplanationExpansionVisibility() {
+        privacyStatusDescription.isHidden = expandedState == .expanded
     }
 
-    func updateTrustwordsExpansionConstraints() {
-        if let constraints = additionalConstraints {
-            constraints.confirmTrustHeightZero.isActive = !showTrustwords
-            constraints.trustWordsLabelHeightZero.isActive = !showTrustwords
-            constraints.trustWordsViewHeightZero.isActive = !showTrustwords
-        }
+    func updateTrustwordsExpansionVisibility() {
+        trustWordsView.isHidden = !showTrustwords
     }
 
     func updateStopTrustingButtonTitle() {
@@ -324,7 +249,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         } else {
             expandedState = .expanded
         }
-        updateExplanationExpansionConstraints()
+        updateExplanationExpansionVisibility()
         UIView.animate(withDuration: 0.3) {
             self.contentView.layoutIfNeeded()
         }
