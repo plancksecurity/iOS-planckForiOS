@@ -31,7 +31,7 @@
                                             <rect key="frame" x="20" y="20" width="335" height="267"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Hwo-n8-tYE" userLabel="Header View">
-                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="173.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="80"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFH-dH-XjY" userLabel="Partner Token View">
                                                             <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
@@ -64,7 +64,7 @@
                                                             </constraints>
                                                         </view>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Vj3-9e-bA1">
-                                                            <rect key="frame" x="63" y="0.0" width="213" height="101.5"/>
+                                                            <rect key="frame" x="63" y="0.0" width="213" height="48.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc">
                                                                     <rect key="frame" x="0.0" y="0.0" width="120" height="20.5"/>
@@ -80,22 +80,6 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb">
-                                                                    <rect key="frame" x="0.0" y="58.5" width="0.0" height="0.0"/>
-                                                                    <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-BW-EI0">
-                                                                    <rect key="frame" x="0.0" y="68.5" width="108" height="33"/>
-                                                                    <accessibility key="accessibilityConfiguration" identifier="startStopTrustingButton"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                                    <state key="normal" title="Stop Trusting"/>
-                                                                    <connections>
-                                                                        <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="XzM-B3-yD3"/>
-                                                                    </connections>
-                                                                </button>
                                                             </subviews>
                                                         </stackView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grid-globe" translatesAutoresizingMaskIntoConstraints="NO" id="yXG-vT-v6v">
@@ -108,6 +92,22 @@
                                                         </imageView>
                                                     </subviews>
                                                 </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb">
+                                                    <rect key="frame" x="0.0" y="100" width="335" height="20.5"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-BW-EI0">
+                                                    <rect key="frame" x="0.0" y="140.5" width="335" height="33"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="startStopTrustingButton"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <state key="normal" title="Stop Trusting"/>
+                                                    <connections>
+                                                        <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="XzM-B3-yD3"/>
+                                                    </connections>
+                                                </button>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="8yT-Z5-Z9m" userLabel="Trustwords View">
                                                     <rect key="frame" x="0.0" y="193.5" width="335" height="73.5"/>
                                                     <subviews>
