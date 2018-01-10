@@ -230,8 +230,7 @@ class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewD
 extension AccountSettingsTableViewController {
     public func handleLoginError(error: Error, extended: Bool) {
         Log.shared.error(component: #function, error: error)
-        let displayError = DisplayUserError(withError: error)
-        UIUtils.show(error: displayError, inViewController: self)
+        UIUtils.show(error: error, inViewController: self)
     }
 }
 

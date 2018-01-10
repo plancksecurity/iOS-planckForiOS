@@ -10,21 +10,20 @@ import UIKit
 
 struct UIUtils {
     
+    /// Converts the error to a user frienldy DisplayUserError and presents it to the user
+    ///
+    /// - Parameters:
+    ///   - error: error to preset to user
+    ///   - vc: ViewController to present the error on
     static func show(error: Error, inViewController vc: UIViewController) {
         Log.shared.errorComponent(#function, message: "Will display error to user: \(error)")
         let displayError = DisplayUserError(withError: error)
-        let alertView = UIAlertController(title: displayError.title,
-                                          message:displayError.errorDescription,
-                                          preferredStyle: .alert)
-        alertView.view.tintColor = .pEpGreen
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment:
-            "Error alert positive button button"),
-                                          style: .default,
-                                          handler: nil))
-        vc.present(alertView, animated: true, completion: nil)
+        showAlertWithOnlyPositiveButton(title: displayError.title,
+                                        message: displayError.errorDescription,
+                                        inViewController: vc)
     }
 
-    static func showAlertWithOnlyPositiveButton(title: String, message: String,
+    static func showAlertWithOnlyPositiveButton(title: String?, message: String?,
                                                 inViewController vc: UIViewController) {
         let alertView = UIAlertController(title: title,
                                           message: message,
