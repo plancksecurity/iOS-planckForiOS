@@ -190,16 +190,23 @@
             return
         }
 
-        guard let pass = password.text, pass != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingPassword, extended: false)
-            return
-        }
+        if loginViewModel.isOAuth2Possible(email: email) {
+            let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
+            loginViewModel.requestOauth2Authorization(
+                viewController: self, emailAddress: email, oauth2Authorizer: oauth)
+        } else {
+            guard let pass = password.text, pass != "" else {
+                handleLoginError(error: LoginTableViewControllerError.missingPassword,
+                                 extended: false)
+                return
+            }
 
-        loginViewModel.accountVerificationResultDelegate = self
-        loginViewModel.login(
-            accountName: email, password: pass, userName: username,
-            mySelfer: appConfig.mySelfer) { [weak self] error in
-                self?.handleLoginError(error: error, extended: true)
+            loginViewModel.accountVerificationResultDelegate = self
+            loginViewModel.login(
+                accountName: email, password: pass, userName: username,
+                mySelfer: appConfig.mySelfer) { [weak self] error in
+                    self?.handleLoginError(error: error, extended: true)
+            }
         }
     }
 
