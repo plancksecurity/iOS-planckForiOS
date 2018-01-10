@@ -184,11 +184,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         languageSelectorImageView.isUserInteractionEnabled = !isPartnerPGPUser
         trustWordsLabel.isUserInteractionEnabled = !isPartnerPGPUser
 
-        if isPartnerPGPUser {
-            languageSelectorImageView.image = nil
-        } else if showTrustwords {
-            languageSelectorImageView.image = UIImage(named: "grid-globe")
-
+        languageSelectorImageView.isHidden = isPartnerPGPUser
+        if !isPartnerPGPUser && showTrustwords {
             install(gestureRecognizer: UITapGestureRecognizer(
                 target: self,
                 action: #selector(languageSelectorAction(_:))),
