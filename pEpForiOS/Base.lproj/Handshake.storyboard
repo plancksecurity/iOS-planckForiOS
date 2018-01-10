@@ -27,47 +27,62 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="307"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9sp-4d-rJe">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="170.5"/>
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="9sp-4d-rJe">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="197.5"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="rG1-9L-QdA">
-                                                    <rect key="frame" x="20" y="20" width="48" height="48"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="partnerImageView"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFH-dH-XjY" userLabel="Partner Token View">
+                                                    <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="rG1-9L-QdA">
+                                                            <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="partnerImageView"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="48" id="Ig0-Bb-oFZ"/>
+                                                                <constraint firstAttribute="width" secondItem="rG1-9L-QdA" secondAttribute="height" multiplier="1:1" id="pDW-C2-utk"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-e1-puE">
+                                                            <rect key="frame" x="28" y="28" width="20" height="20"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="hZH-e1-puE" secondAttribute="height" multiplier="1:1" id="And-L7-gTh"/>
+                                                                <constraint firstAttribute="width" constant="20" id="GNL-nL-hic"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="48" id="Ig0-Bb-oFZ"/>
-                                                        <constraint firstAttribute="width" secondItem="rG1-9L-QdA" secondAttribute="height" multiplier="1:1" id="pDW-C2-utk"/>
+                                                        <constraint firstItem="rG1-9L-QdA" firstAttribute="top" secondItem="SFH-dH-XjY" secondAttribute="top" id="H8t-IG-t8x"/>
+                                                        <constraint firstAttribute="width" secondItem="SFH-dH-XjY" secondAttribute="height" multiplier="1:1" id="IKs-R6-4ca"/>
+                                                        <constraint firstAttribute="width" constant="48" id="Lnh-Oc-3AP"/>
+                                                        <constraint firstAttribute="bottom" secondItem="hZH-e1-puE" secondAttribute="bottom" id="do2-MY-H0j"/>
+                                                        <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="SFH-dH-XjY" secondAttribute="leading" id="eYT-j1-B0t"/>
+                                                        <constraint firstAttribute="trailing" secondItem="hZH-e1-puE" secondAttribute="trailing" id="jF0-Ie-G4Z"/>
                                                     </constraints>
-                                                </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-e1-puE">
-                                                    <rect key="frame" x="48" y="48" width="20" height="20"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="20" id="GNL-nL-hic"/>
-                                                    </constraints>
-                                                </imageView>
+                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc">
-                                                    <rect key="frame" x="76" y="33.5" width="227" height="21"/>
+                                                    <rect key="frame" x="58" y="60.5" width="245" height="21"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" ambiguous="YES" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT">
-                                                    <rect key="frame" x="76" y="62.5" width="179.5" height="18"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT">
+                                                    <rect key="frame" x="58" y="89.5" width="179.5" height="18"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="privacyStatusTitle"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb">
-                                                    <rect key="frame" x="76" y="88.5" width="279" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb">
+                                                    <rect key="frame" x="58" y="115.5" width="297" height="21"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="privacyStatusDescription"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-BW-EI0">
-                                                    <rect key="frame" x="76" y="117.5" width="108" height="33"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4f-BW-EI0">
+                                                    <rect key="frame" x="58" y="144.5" width="108" height="33"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="startStopTrustingButton"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <state key="normal" title="Stop Trusting"/>
@@ -76,7 +91,7 @@
                                                     </connections>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yXG-vT-v6v">
-                                                    <rect key="frame" x="311" y="22" width="44" height="44"/>
+                                                    <rect key="frame" x="311" y="49" width="44" height="44"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="Language Selector Image View"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="A0c-dq-F2y"/>
@@ -88,31 +103,27 @@
                                             <accessibility key="accessibilityConfiguration" identifier="headerView"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="yXG-vT-v6v" secondAttribute="trailing" constant="20" symbolic="YES" id="1Bi-7Z-wqE"/>
-                                                <constraint firstItem="rG1-9L-QdA" firstAttribute="top" secondItem="9sp-4d-rJe" secondAttribute="top" constant="20" symbolic="YES" id="2JJ-Dt-d39"/>
                                                 <constraint firstAttribute="trailing" secondItem="eaF-0u-kGb" secondAttribute="trailing" constant="20" symbolic="YES" id="44G-LK-kdf"/>
-                                                <constraint firstItem="hZH-e1-puE" firstAttribute="bottom" secondItem="rG1-9L-QdA" secondAttribute="bottom" id="8jC-h4-X86"/>
                                                 <constraint firstAttribute="bottom" secondItem="Y4f-BW-EI0" secondAttribute="bottom" priority="999" constant="20" symbolic="YES" id="9JQ-G2-xmU"/>
                                                 <constraint firstItem="yXG-vT-v6v" firstAttribute="centerY" secondItem="hFh-wv-YAc" secondAttribute="centerY" id="DSz-2Z-CE8"/>
-                                                <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="9sp-4d-rJe" secondAttribute="leading" constant="20" symbolic="YES" id="DVg-hd-uGF"/>
                                                 <constraint firstItem="5RJ-Gx-qBT" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="leading" id="HtP-sE-ieg"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5RJ-Gx-qBT" secondAttribute="trailing" constant="20" symbolic="YES" id="KjZ-cN-SAL"/>
-                                                <constraint firstItem="hFh-wv-YAc" firstAttribute="leading" secondItem="rG1-9L-QdA" secondAttribute="trailing" constant="8" symbolic="YES" id="OSJ-kn-VC6"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Y4f-BW-EI0" secondAttribute="trailing" constant="20" symbolic="YES" id="SmW-sE-28U"/>
                                                 <constraint firstItem="Y4f-BW-EI0" firstAttribute="top" secondItem="eaF-0u-kGb" secondAttribute="bottom" constant="8" symbolic="YES" id="TEP-9Q-Wuz"/>
                                                 <constraint firstItem="yXG-vT-v6v" firstAttribute="leading" secondItem="hFh-wv-YAc" secondAttribute="trailing" constant="8" symbolic="YES" id="TTS-KA-cIe"/>
                                                 <constraint firstItem="5RJ-Gx-qBT" firstAttribute="top" secondItem="hFh-wv-YAc" secondAttribute="bottom" constant="8" symbolic="YES" id="bsR-QC-Q3E"/>
                                                 <constraint firstItem="eaF-0u-kGb" firstAttribute="top" secondItem="5RJ-Gx-qBT" secondAttribute="bottom" priority="999" constant="8" symbolic="YES" id="cTE-aL-uah"/>
-                                                <constraint firstItem="hZH-e1-puE" firstAttribute="trailing" secondItem="rG1-9L-QdA" secondAttribute="trailing" id="dj3-k8-xCJ"/>
-                                                <constraint firstItem="hZH-e1-puE" firstAttribute="width" secondItem="hZH-e1-puE" secondAttribute="height" multiplier="1:1" id="gbk-3E-XmV"/>
+                                                <constraint firstItem="SFH-dH-XjY" firstAttribute="leading" secondItem="9sp-4d-rJe" secondAttribute="leading" id="d1a-Xl-fyX"/>
                                                 <constraint firstItem="eaF-0u-kGb" firstAttribute="leading" secondItem="5RJ-Gx-qBT" secondAttribute="leading" id="glo-KH-bVx"/>
-                                                <constraint firstItem="hFh-wv-YAc" firstAttribute="centerY" secondItem="rG1-9L-QdA" secondAttribute="centerY" id="jvH-Ic-H25"/>
+                                                <constraint firstItem="SFH-dH-XjY" firstAttribute="top" secondItem="9sp-4d-rJe" secondAttribute="top" id="nPP-IO-Byw"/>
+                                                <constraint firstItem="hFh-wv-YAc" firstAttribute="leading" secondItem="SFH-dH-XjY" secondAttribute="trailing" constant="10" id="oA5-er-FAV"/>
                                                 <constraint firstItem="Y4f-BW-EI0" firstAttribute="leading" secondItem="eaF-0u-kGb" secondAttribute="leading" id="wWX-bC-Qro"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9bw-BE-9Ag">
-                                            <rect key="frame" x="0.0" y="171" width="375" height="126"/>
+                                        <view contentMode="scaleToFill" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="9bw-BE-9Ag">
+                                            <rect key="frame" x="0.0" y="198" width="375" height="109"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" ambiguous="YES" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR">
                                                     <rect key="frame" x="20" y="20" width="335" height="21"/>
                                                     <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
