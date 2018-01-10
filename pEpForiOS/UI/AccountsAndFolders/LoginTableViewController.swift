@@ -171,7 +171,7 @@
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
 
-    // MARK: IBAction
+    // MARK: - IBAction
 
     @IBAction func logIn(_ sender: Any) {
         dismissKeyboard()
@@ -208,7 +208,7 @@
         updatePasswordField(email: sender.text)
     }
 
-    // MARK: Util
+    // MARK: - Util
 
     func updatePasswordField(email: String?) {
         let oauth2Possible = loginViewModel.isOAuth2Possible(email: email)
