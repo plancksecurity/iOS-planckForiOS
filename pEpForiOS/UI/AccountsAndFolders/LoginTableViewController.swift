@@ -191,16 +191,22 @@
             return
         }
 
-        guard let pass = password.text, pass != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingPassword, extended: false)
-            return
-        }
+        if loginViewModel.isOAuth2Possible(email: email) {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "OAuth2 not implemented yet")
+        } else {
+            guard let pass = password.text, pass != "" else {
+                handleLoginError(error: LoginTableViewControllerError.missingPassword,
+                                 extended: false)
+                return
+            }
 
-        loginViewModel.accountVerificationResultDelegate = self
-        loginViewModel.login(
-            accountName: email, password: pass, userName: username,
-            mySelfer: appConfig.mySelfer) { [weak self] error in
-                self?.handleLoginError(error: error, extended: true)
+            loginViewModel.accountVerificationResultDelegate = self
+            loginViewModel.login(
+                accountName: email, password: pass, userName: username,
+                mySelfer: appConfig.mySelfer) { [weak self] error in
+                    self?.handleLoginError(error: error, extended: true)
+            }
         }
     }
 

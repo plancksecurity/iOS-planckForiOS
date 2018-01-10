@@ -39,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let sendLayerDelegate = DefaultUISendLayerDelegate()
 
+    /**
+     This is used to handle OAuth2 requests.
+     */
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     func applicationDirectory() -> URL? {
@@ -108,7 +111,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         messageSyncService = theMessageSyncService
         let theAppConfig = AppConfig(mySelfer: self,
                                      messageSyncService: theMessageSyncService,
-                                     errorPropagator: errorPropagator)
+                                     errorPropagator: errorPropagator,
+                                     oauth2AuthorizationFactory: oauth2Provider)
         appConfig = theAppConfig
 
         // set up logging for libraries

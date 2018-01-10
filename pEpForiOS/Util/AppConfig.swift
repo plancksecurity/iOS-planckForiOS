@@ -27,11 +27,18 @@ class AppConfig {
      */
     let mySelfer: KickOffMySelfProtocol
 
+    /**
+     For the views to kick off oauth2 requests.
+     */
+    let oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol
+
     init(mySelfer: KickOffMySelfProtocol,
          messageSyncService: MessageSyncServiceProtocol,
-         errorPropagator: ErrorPropagator) {
+         errorPropagator: ErrorPropagator,
+         oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
         self.messageSyncService = messageSyncService
         self.mySelfer = mySelfer
         self.errorPropagator = errorPropagator
+        self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
     }
 }
