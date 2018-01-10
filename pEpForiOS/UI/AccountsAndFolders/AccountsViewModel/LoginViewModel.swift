@@ -77,6 +77,22 @@ class LoginViewModel {
         return Account.by(address: address) != nil
     }
 
+    func requestOauth2Authorization(
+        viewController: UIViewController,
+        emailAddress: String,
+        oauth2Authorizer: OAuth2AuthorizationProtocol) {
+        var theAuth = oauth2Authorizer
+        theAuth.delegate = self
+        var config: OAuth2ConfigurationProtocol?
+        if emailAddress.isGmailAddress {
+            config = OAuth2GmailConfig()
+        }
+        if let theConfig = config {
+            theAuth.startAuthorizationRequest(
+                viewController: viewController, oauth2Configuration: theConfig)
+        }
+    }
+
     /**
      Tries to "login", that is, retrieve account data, with the given parameters.
      - parameter accountName: The email of this account
@@ -178,5 +194,11 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
             }
         }
         accountVerificationResultDelegate?.didVerify(result: result)
+    }
+}
+
+extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
+    func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessToken?) {
+
     }
 }

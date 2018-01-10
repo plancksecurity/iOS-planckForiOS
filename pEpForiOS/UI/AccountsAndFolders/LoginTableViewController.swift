@@ -192,8 +192,9 @@
         }
 
         if loginViewModel.isOAuth2Possible(email: email) {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "OAuth2 not implemented yet")
+            let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
+            loginViewModel.requestOauth2Authorization(
+                viewController: self, emailAddress: email, oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
                 handleLoginError(error: LoginTableViewControllerError.missingPassword,
