@@ -177,7 +177,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateExplanationExpansionVisibility() {
-        privacyStatusDescription.isHidden = expandedState == .expanded
+        privacyStatusDescription.isHidden = expandedState == .notExpanded
     }
 
     func updateTrustwordsExpansionVisibility() {
