@@ -39,7 +39,7 @@ class NewAccountSetupUITest: XCTestCase {
             guard let text = textField.value as? String else {
                 break
             }
-            if text.characters.count == 0 {
+            if text.count == 0 {
                 break
             }
             textField.typeText("\u{8}")
