@@ -13,11 +13,15 @@ extension UIButton {
      Makes the button the typical look for a pEp button used in the handshake dialogs.
      */
     func pEpIfyForTrust(backgroundColor: UIColor, textColor: UIColor) {
+        titleLabel?.numberOfLines = 0
+        titleLabel?.lineBreakMode = .byWordWrapping
+        titleLabel?.textAlignment = .center
+
         self.backgroundColor = backgroundColor
         setTitleColor(textColor, for: .normal)
         layer.cornerRadius = 2
-        let insetV: CGFloat = 5
-        let insetH: CGFloat = 5
+        let insetV: CGFloat = 15
+        let insetH: CGFloat = 15
         contentEdgeInsets = UIEdgeInsetsMake(insetV, insetH, insetV, insetH)
     }
 
