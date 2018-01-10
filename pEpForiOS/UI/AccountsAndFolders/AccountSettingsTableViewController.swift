@@ -225,25 +225,17 @@ class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewD
     }
 }
 
-//Error Handling
+// MARK: - Error Handling
+
 extension AccountSettingsTableViewController {
     public func handleLoginError(error: Error, extended: Bool) {
         Log.shared.error(component: #function, error: error)
-        let alertView = UIAlertController(
-            title: NSLocalizedString(
-                "Error",
-                comment: "UIAlertController error title"),
-            message:error.localizedDescription, preferredStyle: .alert)
-        alertView.view.tintColor = .pEpGreen
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "Ok",
-                comment: "UIAlertAction ok after error"),
-            style: .default, handler: {action in
-        }))
-        present(alertView, animated: true, completion: nil)
+        let displayError = DisplayUserError(withError: error)
+        UIUtils.show(error: displayError, inViewController: self)
     }
 }
+
+// MARK: - AccountVerificationResultDelegate
 
 extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult) {
