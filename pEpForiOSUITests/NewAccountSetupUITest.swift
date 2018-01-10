@@ -96,7 +96,7 @@ class NewAccountSetupUITest: XCTestCase {
         nextButton.tap()
     }
 
-    func newAccountSetup(account: Account) {
+    func newAccountSetup(account: Account, enterPassword: Bool = true) {
         let tablesQuery = XCUIApplication().tables
 
         var tf = tablesQuery.cells.textFields["userName"]
@@ -107,9 +107,11 @@ class NewAccountSetupUITest: XCTestCase {
         tf.tap()
         tf.typeText(account.email)
 
-        tf = tablesQuery.cells.secureTextFields["password"]
-        tf.tap()
-        tf.typeText(account.password)
+        if enterPassword {
+            tf = tablesQuery.cells.secureTextFields["password"]
+            tf.tap()
+            tf.typeText(account.password)
+        }
 
         XCUIApplication().tables.cells.buttons["Sign In"].tap()
     }
@@ -165,6 +167,12 @@ class NewAccountSetupUITest: XCTestCase {
         openAddAccountManualConfiguration()
         let account = UITestData.workingYahooAccount
         manualNewAccountSetup(account)
+        waitForever()
+    }
+
+    func testTriggerGmailOauth2() {
+        let account = UITestData.gmailOAuth2Account
+        newAccountSetup(account: account, enterPassword: false)
         waitForever()
     }
 
