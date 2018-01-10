@@ -70,7 +70,9 @@ public class AccountSettingsViewModel {
     var smtpServer: ServerViewModel {
         get {
             if let server = account.smtpServer {
-                return ServerViewModel(address: server.address, port: "\(server.port)", transport: server.transport?.asString())
+                return ServerViewModel(address: server.address,
+                                       port: "\(server.port)",
+                    transport: server.transport?.asString())
             }
             return ServerViewModel()
         }
@@ -79,7 +81,9 @@ public class AccountSettingsViewModel {
     var imapServer: ServerViewModel {
         get {
             if let server = account.imapServer {
-                return ServerViewModel(address: server.address, port: "\(server.port)", transport: server.transport?.asString())
+                return ServerViewModel(address: server.address,
+                                       port: "\(server.port)",
+                    transport: server.transport?.asString())
             }
             return ServerViewModel()
         }
@@ -88,13 +92,15 @@ public class AccountSettingsViewModel {
     var messageSyncService: MessageSyncServiceProtocol?
     weak var delegate: AccountVerificationResultDelegate?
 
-    //Currently we assume imap and smtp servers exist already (update). If we run into problems here modify to updateOrCreate
+    //Currently we assume imap and smtp servers exist already (update).
+    // If we run into problems here modify to updateOrCreate
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
         clonedAccount = account.clone()
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Account misses imap or smtp server.")
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Account misses imap or smtp server.")
                 return
         }
         let pass : String?
@@ -103,10 +109,15 @@ public class AccountSettingsViewModel {
         } else {
             pass = serverImap.credentials.password
         }
-        guard let editedServerImap = server(from: imap, serverType: .imap, loginName: loginName,
-                                            password: pass),
-            let editedServerSmtp = server(from: smtp, serverType: .smtp, loginName: loginName,
-                                          password: pass)
+        guard let editedServerImap = server(from: imap, serverType: .imap,
+                                            loginName: loginName,
+                                            password: pass,
+                                            key: serverImap.credentials.key),
+            let editedServerSmtp = server(from: smtp,
+                                          serverType: .smtp,
+                                          loginName: loginName,
+                                          password: pass,
+                                          key: serverSmtp.credentials.key)
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Invalid input.")
                 return
@@ -147,7 +158,7 @@ public class AccountSettingsViewModel {
 
     //MARK: - PRIVATE
     private func server(from viewModel:ServerViewModel, serverType:Server.ServerType,
-                        loginName: String, password: String?) -> Server? {
+                        loginName: String, password: String?, key: String? = nil) -> Server? {
         guard let viewModelPort = viewModel.port,
             let port = UInt16(viewModelPort),
             let address = viewModel.address else {
@@ -157,7 +168,7 @@ public class AccountSettingsViewModel {
         }
         let transport = Server.Transport.init(fromString: viewModel.transport)
 
-        let credentials = ServerCredentials.create(loginName: loginName)
+        let credentials = ServerCredentials.create(loginName: loginName, key: key)
         if password != nil && password != "" {
             credentials.password = password
         }
