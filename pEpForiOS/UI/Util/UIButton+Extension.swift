@@ -13,11 +13,12 @@ extension UIButton {
      Makes the button the typical look for a pEp button used in the handshake dialogs.
      */
     func pEpIfyForTrust(backgroundColor: UIColor, textColor: UIColor) {
-        layer.cornerRadius = 2
         self.backgroundColor = backgroundColor
         setTitleColor(textColor, for: .normal)
+        layer.cornerRadius = 2
         let insetV: CGFloat = 5
-        contentEdgeInsets = UIEdgeInsetsMake(insetV, insetV, insetV, insetV)
+        let insetH: CGFloat = 5
+        contentEdgeInsets = UIEdgeInsetsMake(insetV, insetH, insetV, insetH)
     }
 
     func convertToLoginButton(placeholder: String) {
