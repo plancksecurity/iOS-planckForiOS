@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import MessageModel
+@testable import MessageModel
 
 /*
  This belongs to MessageModelTests, but has been moved here due an Apple bug.
@@ -19,7 +19,7 @@ class KeyChainTest: XCTestCase {
         let pass = "0001"
         let key = String(RAND_MAX%32)
         let server = "1"
-        XCTAssertEqual(true, KeyChain.add(key: key, serverType: server , password: pass))
+        XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
         XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))
     }
 
@@ -27,10 +27,10 @@ class KeyChainTest: XCTestCase {
         let pass = "0001"
         let key = String(RAND_MAX%32)
         let server = "1"
-        XCTAssertEqual(true, KeyChain.add(key: key, serverType: server , password: pass))
+        XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
         XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))
         let newpass = "0002"
-        XCTAssertEqual(true, KeyChain.update(key: key, newPassword: newpass))
+        XCTAssertTrue(KeyChain.update(key: key, newPassword: newpass))
         XCTAssertEqual(newpass, KeyChain.password(key: key, serverType: server))
     }
 
@@ -38,9 +38,9 @@ class KeyChainTest: XCTestCase {
         let pass = "0001"
         let key = String(RAND_MAX%32)
         let server = "1"
-        XCTAssertEqual(true, KeyChain.add(key: key, serverType: server , password: pass))
+        XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
         XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))
-        XCTAssertEqual(true, KeyChain.delete(key: key))
-        XCTAssertEqual(nil, KeyChain.password(key: key, serverType: server))
+        XCTAssertTrue(KeyChain.delete(key: key))
+        XCTAssertNil(KeyChain.password(key: key, serverType: server))
     }
 }

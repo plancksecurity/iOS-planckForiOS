@@ -135,7 +135,7 @@
         manualConfigButton.isEnabled = !isCurrentlyVerifying
     }
 
-    public func handleLoginError(error: Error, extended: Bool) {
+    private func handleLoginError(error: Error, extended: Bool) {
         Log.shared.error(component: #function, error: error)
         let error = DisplayUserError(withError: error)
         self.isCurrentlyVerifying = false
@@ -144,8 +144,7 @@
                                           preferredStyle: .alert)
         alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "View log",
+            title: NSLocalizedString( "View log",
                 comment: "Button for viewing the log on error"),
             style: .default, handler: { action in
                 self.viewLog()
@@ -171,7 +170,7 @@
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
 
-    // MARK: IBAction
+    // MARK: - IBAction
 
     @IBAction func logIn(_ sender: Any) {
         dismissKeyboard()
@@ -215,7 +214,7 @@
         updatePasswordField(email: sender.text)
     }
 
-    // MARK: Util
+    // MARK: - Util
 
     func updatePasswordField(email: String?) {
         let oauth2Possible = loginViewModel.isOAuth2Possible(email: email)

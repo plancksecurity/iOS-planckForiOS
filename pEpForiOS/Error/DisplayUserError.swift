@@ -25,12 +25,13 @@ struct DisplayUserError: LocalizedError {
         case authenticationFailed
         /// We could not send a mesage for some reason
         case messageNotSent
-        /// Somthing went wrong internally. Do not bother the user with technical details
+        /// Somthing went wrong internally. Do not bother the user with technical details.
+        /// It has to be decided if we want to show internal errors to the user at all.
         case internalError
         /// Any issue comunicating with the server
         case brokenServerConnection
-        /// Use this only for errors that are not known and thus can not be categorized in a
-        /// DisplayUserError
+        /// Use this only for errors that are not known to DisplayUserError yet and thus can not
+        /// be categorized
         case unknownError
     }
     /// Description taken over from errors we do not know and thus can not classify
@@ -41,7 +42,9 @@ struct DisplayUserError: LocalizedError {
     let type:ErrorType
 
     init(withError error: Error) {
-        if let smtpError = error as? SmtpSendError {
+        if let displayUserError = error as? DisplayUserError {
+            self = displayUserError
+        } else if let smtpError = error as? SmtpSendError {
             type = DisplayUserError.type(forError: smtpError)
         } else if let imapError = error as? ImapSyncError {
             type = DisplayUserError.type(forError: imapError)
