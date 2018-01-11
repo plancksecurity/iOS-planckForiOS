@@ -711,6 +711,7 @@
 		43AE48E61EEFC93900B92BB6 /* DebugMergePolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMergePolicy.swift; sourceTree = "<group>"; };
 		43B0443820067CC7007BCE3F /* UIAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAccount.swift; sourceTree = "<group>"; };
 		43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestDataProtocol.swift; sourceTree = "<group>"; };
+		43B04440200762AF007BCE3F /* general.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = general.xcconfig; sourceTree = "<group>"; };
 		43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAccountSettingsAdapter.a; path = "../../../Library/Developer/Xcode/DerivedData/pEpForiOS-hgrtosyrynxrmfdxochylcgjfvka/Build/Products/Debug-iphonesimulator/libAccountSettingsAdapter.a"; sourceTree = "<group>"; };
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
 		43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
@@ -1312,6 +1313,7 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
+				43B04440200762AF007BCE3F /* general.xcconfig */,
 				43980ECE1CBD1CAD00A7FC3C /* Libraries */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
@@ -2427,6 +2429,7 @@
 /* Begin XCBuildConfiguration section */
 		43980E4C1CBD0BCA00A7FC3C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43B04440200762AF007BCE3F /* general.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2493,6 +2496,7 @@
 		};
 		43980E4D1CBD0BCA00A7FC3C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 43B04440200762AF007BCE3F /* general.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
