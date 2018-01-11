@@ -32,6 +32,13 @@ enum AccountSettingsError: Error {
     }
 }
 
+enum OAuth2InternalError: Error {
+    /**
+     No configuration available for running the oauth2 request.
+     */
+    case noConfiguration
+}
+
 protocol AccountVerificationResultDelegate: class {
     func didVerify(result: AccountVerificationResult)
 }
@@ -92,7 +99,8 @@ class LoginViewModel {
             theAuth.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
         } else {
-            // TODO signal error
+            authorizationRequestFinished(error: OAuth2InternalError.noConfiguration,
+                                         accessToken: nil)
         }
     }
 
