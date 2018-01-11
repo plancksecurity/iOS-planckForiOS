@@ -260,7 +260,8 @@
                 vc.model.userName = user.text
             }
         case .viewLogSegue:
-            if let navVC = segue.destination as? UINavigationController, let vc = navVC.topViewController as? LogViewController {
+            if let navVC = segue.destination as? UINavigationController,
+                let vc = navVC.topViewController as? LogViewController {
                 vc.appConfig = appConfig
                 vc.navigationController?.navigationBar.isHidden = false
             }
