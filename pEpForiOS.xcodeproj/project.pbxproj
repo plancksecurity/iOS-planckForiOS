@@ -1356,10 +1356,10 @@
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
 				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
+				43B04443200768E4007BCE3F /* OAuth2.plist */,
 				43B044412007683E007BCE3F /* general.xcconfig */,
 				433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */,
 				430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */,
-				43B04443200768E4007BCE3F /* OAuth2.plist */,
 			);
 			path = pEpForiOS;
 			sourceTree = "<group>";
