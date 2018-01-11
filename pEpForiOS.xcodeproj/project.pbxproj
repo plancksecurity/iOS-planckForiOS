@@ -272,6 +272,7 @@
 		43B0443920067CC7007BCE3F /* UIAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443820067CC7007BCE3F /* UIAccount.swift */; };
 		43B0443B20067D25007BCE3F /* UITestDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */; };
 		43B044422007683E007BCE3F /* general.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 43B044412007683E007BCE3F /* general.xcconfig */; };
+		43B04444200768E4007BCE3F /* OAuth2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43B04443200768E4007BCE3F /* OAuth2.plist */; };
 		43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */; };
 		43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */; };
 		43B2660D1D252C93009D57E8 /* ConcurrentBaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */; };
@@ -713,6 +714,7 @@
 		43B0443820067CC7007BCE3F /* UIAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAccount.swift; sourceTree = "<group>"; };
 		43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestDataProtocol.swift; sourceTree = "<group>"; };
 		43B044412007683E007BCE3F /* general.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = general.xcconfig; sourceTree = "<group>"; };
+		43B04443200768E4007BCE3F /* OAuth2.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = OAuth2.plist; sourceTree = "<group>"; };
 		43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAccountSettingsAdapter.a; path = "../../../Library/Developer/Xcode/DerivedData/pEpForiOS-hgrtosyrynxrmfdxochylcgjfvka/Build/Products/Debug-iphonesimulator/libAccountSettingsAdapter.a"; sourceTree = "<group>"; };
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
 		43B2660C1D252C93009D57E8 /* ConcurrentBaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentBaseOperation.swift; sourceTree = "<group>"; };
@@ -1354,6 +1356,7 @@
 				43B044412007683E007BCE3F /* general.xcconfig */,
 				433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */,
 				430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */,
+				43B04443200768E4007BCE3F /* OAuth2.plist */,
 			);
 			path = pEpForiOS;
 			sourceTree = "<group>";
@@ -1894,6 +1897,7 @@
 				B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */,
 				151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */,
 				430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
+				43B04444200768E4007BCE3F /* OAuth2.plist in Resources */,
 				1541D7FA1FCC18E100D52A5D /* AttachmentCell.xib in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */,
