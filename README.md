@@ -104,11 +104,6 @@ struct OAuth2GmailConfig: OAuth2ConfigurationProtocol {
 }
 ```
 
-### UI Tests
-
-Set up needed working accounts for UI tests in UITestData (./pEpForiOSUITests/UITestData.swift),
-according to the protocol UITestDataProtocol.
-
 ### Build Project
 
 Open pEpForiOS.xcworkspace and build schema "pEp".
@@ -124,3 +119,7 @@ The tests will not compile without a syntactically correct TestData.swift that i
 ```
 cp pEpForiOSTests/Util/TestData_sample.swift pEpForiOSTests/Util/TestData.swift
 ```
+### UI Tests
+
+Set up needed working accounts for UI tests in UITestData (./pEpForiOSUITests/UITestData.swift),
+according to the protocol UITestDataProtocol.
