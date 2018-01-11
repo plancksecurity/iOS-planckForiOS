@@ -72,5 +72,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>GMAIL_CLIENT_ID</key>
+	<string>${GMAIL_CLIENT_ID}</string>
+	<key>GMAIL_REDIRECT_URL</key>
+	<string>${GMAIL_REDIRECT_URL}</string>
 </dict>
 </plist>

@@ -13,7 +13,7 @@ class OAuth2Configurator {
         switch oauth2Type {
         case .google:
             return OAuth2Configuration(
-                oauth2Type: .google, scopes: ["https://mail.google.com/"], plistName: "OAuth2",
+                oauth2Type: .google, scopes: ["https://mail.google.com/"],
                 clientIDKey: "GMAIL_CLIENT_ID", redirectURLKey: "GMAIL_REDIRECT_URL")
         }
     }

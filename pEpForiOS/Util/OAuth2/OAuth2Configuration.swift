@@ -14,20 +14,17 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     let clientID: String
     let redirectURL: URL
 
-    init?(oauth2Type: OAuth2Type, scopes: [String], plistName: String,
-         clientIDKey: String, redirectURLKey: String) {
+    init?(oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String, redirectURLKey: String) {
         self.oauth2Type = oauth2Type
         self.scopes = scopes
-        guard let filePath = Bundle.main.path(forResource: plistName, ofType: "plist") else {
+
+        guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
-        guard let settings = NSDictionary(contentsOfFile: filePath) else {
+        guard let clientID = settings[clientIDKey] as? String else {
             return nil
         }
-        guard let clientID = settings.object(forKey: clientIDKey) as? String else {
-            return nil
-        }
-        guard let redirectURLString = settings.object(forKey: redirectURLKey) as? String else {
+        guard let redirectURLString = settings[redirectURLKey] as? String else {
             return nil
         }
         guard let redirectURL = URL(string: redirectURLString) else {
