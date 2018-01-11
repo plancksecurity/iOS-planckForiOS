@@ -38,4 +38,20 @@ extension String {
     public func extractFileName() -> String? {
         return firstMatch(pattern: "^file://(.+)$")
     }
+
+    /// Extracts filename or content ID (cid) in case one of the following prefixes is found:
+    /// cid://
+    /// cid:
+    /// file://
+    /// Otherwize the unmodified string is returned.
+    ///
+    /// - Returns: If prefixed: the parsed filename/cid
+    ///            Otherwize the unmodified string
+    public func extractFileNameOrCid() -> String {
+        if let cid = self.extractCid() {
+            return cid
+        } else {
+            return self.extractFileName() ?? self
+        }
+    }
 }

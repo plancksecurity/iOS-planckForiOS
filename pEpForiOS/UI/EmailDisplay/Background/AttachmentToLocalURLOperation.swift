@@ -33,8 +33,9 @@ class AttachmentToLocalURLOperation: Operation {
         guard let tmpDir = tmpDirURL else {
             return
         }
-        let fileName = attachment.fileName ?? Constants.defaultFileName
+        let fileName = (attachment.fileName ?? Constants.defaultFileName).extractFileNameOrCid()
         let theURL = tmpDir.appendingPathComponent(fileName)
+
         do {
             try data.write(to: theURL)
             fileURL = theURL

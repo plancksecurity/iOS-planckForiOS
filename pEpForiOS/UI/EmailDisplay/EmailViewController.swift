@@ -348,14 +348,17 @@ extension EmailViewController: MessageAttachmentDelegate {
         let attachmentOp = AttachmentToLocalURLOperation(attachment: attachment)
         attachmentOp.completionBlock = { [weak self] in
             attachmentOp.completionBlock = nil
-            if let url = attachmentOp.fileURL {
-                GCD.onMain {
+            GCD.onMain {
+                defer {
                     if let bState = busyState {
                         inView?.stopDisplayingAsBusy(viewBusyState: bState)
                     }
-                    self?.didCreateLocally(attachment: attachment, url: url, cell: cell,
-                                           location: location, inView: inView)
                 }
+                guard let url = attachmentOp.fileURL else {
+                    return
+                }
+                self?.didCreateLocally(attachment: attachment, url: url, cell: cell,
+                                       location: location, inView: inView)
             }
         }
         backgroundQueue.addOperation(attachmentOp)
