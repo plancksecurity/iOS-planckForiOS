@@ -52,7 +52,7 @@ class NewAccountSetupUITest: XCTestCase {
         }
     }
 
-    func manualNewAccountSetup(_ account: Account) {
+    func manualNewAccountSetup(_ account: UIAccount) {
         let tablesQuery = XCUIApplication().tables
 
         var tf = tablesQuery.cells.textFields["nameOfTheUser"]
@@ -96,7 +96,7 @@ class NewAccountSetupUITest: XCTestCase {
         nextButton.tap()
     }
 
-    func newAccountSetup(account: Account, enterPassword: Bool = true) {
+    func newAccountSetup(account: UIAccount, enterPassword: Bool = true) {
         let tablesQuery = XCUIApplication().tables
 
         var tf = tablesQuery.cells.textFields["userName"]
