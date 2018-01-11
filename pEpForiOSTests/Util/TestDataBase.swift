@@ -145,6 +145,24 @@ class TestDataBase {
        * The first 2 accounts play in tandem for some tests.
      */
     func populateAccounts() {
+        // Some sample code, use this in your own implementation.
+        append(accountSettings: AccountSettings(
+            accountName: "Whatever_you_want",
+            idAddress: "whatever_you_want@yahoo.com",
+            idUserName: "whatever_you_want@yahoo.com",
+
+            imapServerAddress: "imap.mail.yahoo.com",
+            imapServerType: Server.ServerType.imap,
+            imapServerTransport: Server.Transport.tls,
+            imapServerPort: 993,
+
+            smtpServerAddress: "smtp.mail.yahoo.com",
+            smtpServerType: Server.ServerType.smtp,
+            smtpServerTransport: Server.Transport.tls,
+            smtpServerPort: 465,
+
+            password: "whatever_you_want"))
+
         fatalError("Abstract method. Must be overridden")
     }
 

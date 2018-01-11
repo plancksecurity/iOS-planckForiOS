@@ -110,9 +110,8 @@ Open pEpForiOS.xcworkspace and build schema "pEp".
 
 ### Unit Tests
 
-You need to create a copy of `./pEpForiOSTests/Util/TestData_sample.swift` as TestData.swift
-in the same directory. Populate it with your test accounts. The base class, TestDataBase, is checked in,
-so structural changes will be noticed
+The non-existing file referenced in the unit test project, ./pEpForiOSTests/Util/TestData.swift, must be
+created, with a class named TestData, derived from TestDataBase. Override populateAccounts().
 
 The tests will not compile without a syntactically correct TestData.swift that inherits from TestDataBase.
 
@@ -123,3 +122,5 @@ cp pEpForiOSTests/Util/TestData_sample.swift pEpForiOSTests/Util/TestData.swift
 
 There is a file referenced in the UI test project, UITestData. You need to create it
 (./pEpForiOSUITests/UITestData.swift), and implement it according to the protocol UITestDataProtocol.
+
+The UI tests will not compile without it.
