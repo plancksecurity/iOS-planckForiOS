@@ -39,10 +39,6 @@ enum OAuth2InternalError: Error {
     case noConfiguration
 }
 
-protocol AccountVerificationResultDelegate: class {
-    func didVerify(result: AccountVerificationResult)
-}
-
 extension AccountSettingsError: LocalizedError {
     var errorDescription: String? {
         switch self {
