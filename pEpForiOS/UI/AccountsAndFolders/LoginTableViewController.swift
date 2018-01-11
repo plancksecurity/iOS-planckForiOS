@@ -32,7 +32,7 @@
             return NSLocalizedString("Internal error",
                                      comment: "Automated account setup error description")
         case .accountExistence:
-            return NSLocalizedString("account alredy exist", comment: "account exist error message")
+            return NSLocalizedString("Account already exist", comment: "account exist error message")
         }
     }
  }
