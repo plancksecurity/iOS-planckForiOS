@@ -9,10 +9,12 @@
 import Foundation
 
 class OAuth2Configurator {
-    func oauth2ConfigFor(oauth2Type: OAuth2Type) -> OAuth2ConfigurationProtocol {
+    func oauth2ConfigFor(oauth2Type: OAuth2Type) -> OAuth2ConfigurationProtocol? {
         switch oauth2Type {
         case .google:
-            return OAuth2GmailConfig() // create your own OAuth2GmailConfig
+            return OAuth2Configuration(
+                oauth2Type: .google, scopes: ["https://mail.google.com/"], plistName: "OAuth2",
+                clientIDKey: "GMAIL_CLIENT_ID", redirectURLKey: "GMAIL_REDIRECT_URL")
         }
     }
 }

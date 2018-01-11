@@ -84,12 +84,15 @@ class LoginViewModel {
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
         var config: OAuth2ConfigurationProtocol?
+        let configurator = OAuth2Configurator()
         if emailAddress.isGmailAddress {
-            config = OAuth2GmailConfig()
+            config = configurator.oauth2ConfigFor(oauth2Type: .google)
         }
         if let theConfig = config {
             theAuth.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
+        } else {
+            // TODO signal error
         }
     }
 
