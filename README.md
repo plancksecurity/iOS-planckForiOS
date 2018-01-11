@@ -124,3 +124,12 @@ There is a file referenced in the UI test project, UITestData. You need to creat
 (./pEpForiOSUITests/UITestData.swift), and implement it according to the protocol UITestDataProtocol.
 
 The UI tests will not compile without it.
+
+### general.xcconfig
+
+Create general.xcconfig in the root of the project, with those contents:
+
+```
+GMAIL_CLIENT_ID=<your client ID here>
+GMAIL_REDIRECT_URL=<your redirect URL here>
+```
