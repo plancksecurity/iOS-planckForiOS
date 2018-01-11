@@ -249,7 +249,6 @@
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
-		439932251FEA70D000E92C35 /* OAuth2GmailConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439932241FEA70D000E92C35 /* OAuth2GmailConfig.swift */; };
 		439932271FEA722100E92C35 /* OAuth2Configurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439932261FEA722100E92C35 /* OAuth2Configurator.swift */; };
 		439932291FEA7E7A00E92C35 /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439932281FEA7E7A00E92C35 /* String+Email.swift */; };
 		439932301FEA9B7200E92C35 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439932311FEA9B7200E92C35 /* SwipeCellKit.framework */; };
@@ -692,7 +691,6 @@
 		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		43980EF91CBD415700A7FC3C /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
-		439932241FEA70D000E92C35 /* OAuth2GmailConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2GmailConfig.swift; sourceTree = "<group>"; };
 		439932261FEA722100E92C35 /* OAuth2Configurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configurator.swift; sourceTree = "<group>"; };
 		439932281FEA7E7A00E92C35 /* String+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		439932311FEA9B7200E92C35 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1180,7 +1178,6 @@
 				43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */,
 				43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */,
 				431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */,
-				439932241FEA70D000E92C35 /* OAuth2GmailConfig.swift */,
 				439932261FEA722100E92C35 /* OAuth2Configurator.swift */,
 				43B0444B20077323007BCE3F /* OAuth2Configuration.swift */,
 			);
@@ -2078,7 +2075,6 @@
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,
 				43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */,
-				439932251FEA70D000E92C35 /* OAuth2GmailConfig.swift in Sources */,
 				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
 				155050F61FEAB082009CEAD2 /* ErrorContainer.swift in Sources */,
 				43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */,

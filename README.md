@@ -88,22 +88,6 @@ hg clone https://cacert.pep-security.ch/dev/repos/pEp_for_iOS/
 Note that pEpEngine includes a static libcurl. For
 rebuilding see the respective scripts. But you should not have to do that for iOS.
 
-### Create OAuth2 configurations
-
-You need to create the missing struct pEpForiOS/Util/OAuth2/OAuth2GmailConfig.swift
-that adheres to OAuth2ConfigurationProtocol.
-
-The struct is referenced by Xcode, but does not exist, because an OAuth2 configuration is considered secret.
-
-```
-struct OAuth2GmailConfig: OAuth2ConfigurationProtocol {
-    let oauth2Type = OAuth2Type.google
-    let clientID = ""
-    let redirectURL = URL(string: "myscheme:blah")!
-    let scopes = [""]
-}
-```
-
 ### Build Project
 
 Open pEpForiOS.xcworkspace and build schema "pEp".
@@ -125,11 +109,11 @@ There is a file referenced in the UI test project, UITestData. You need to creat
 
 The UI tests will not compile without it.
 
-### general.xcconfig
+### general.xcconfig (needed for OAuth2 config secrects and others)
 
 Create general.xcconfig in the root of the project, with those contents:
 
 ```
-GMAIL_CLIENT_ID=<your client ID here>
-GMAIL_REDIRECT_URL=<your redirect URL here>
+GMAIL_CLIENT_ID = <your client ID here>
+GMAIL_REDIRECT_URL = <your redirect URL here>
 ```
