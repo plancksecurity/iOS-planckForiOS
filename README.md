@@ -121,5 +121,5 @@ cp pEpForiOSTests/Util/TestData_sample.swift pEpForiOSTests/Util/TestData.swift
 ```
 ### UI Tests
 
-Set up needed working accounts for UI tests in UITestData (./pEpForiOSUITests/UITestData.swift),
-according to the protocol UITestDataProtocol.
+There is a file referenced in the UI test project, UITestData. You need to create it
+(./pEpForiOSUITests/UITestData.swift), and implement it according to the protocol UITestDataProtocol.
