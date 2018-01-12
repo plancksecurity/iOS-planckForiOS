@@ -229,11 +229,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        if url.scheme == OAuth2Provider.oauth2OAuth2Scheme {
-            return oauth2Provider.processAuthorizationRedirect(url: url)
-        } else {
-            return false
-        }
+        // Unclear if this is needed, presumabley doesn't get invoked for OAuth2 because
+        // SFSafariViewController is involved there.
+        return oauth2Provider.processAuthorizationRedirect(url: url)
     }
 
     func loadCoreDataStack() {
