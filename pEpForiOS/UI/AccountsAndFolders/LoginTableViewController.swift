@@ -13,6 +13,7 @@
     case missingPassword
     case noConnectData
     case missingUsername
+    case minimumLengthUsername
     case accountExistence
  }
 
@@ -28,6 +29,9 @@
         case .missingUsername:
             return NSLocalizedString("Username must not be empty.",
                                      comment: "Empty username message")
+        case .minimumLengthUsername:
+            return NSLocalizedString("Username must have more than 5 characters.",
+                                     comment: "minimum username length")
         case .noConnectData:
             return NSLocalizedString("Internal error",
                                      comment: "Automated account setup error description")
@@ -185,8 +189,13 @@
             handleLoginError(error: LoginTableViewControllerError.accountExistence, extended: false)
             return
         }
-        guard let username = user.text, username != "" else {
+        guard let username = user.text, username != ""  else {
             handleLoginError(error: LoginTableViewControllerError.missingUsername, extended: false)
+            return
+        }
+
+        guard username.count > 4 else {
+            handleLoginError(error: LoginTableViewControllerError.minimumLengthUsername, extended: false)
             return
         }
 
