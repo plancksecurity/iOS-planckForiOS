@@ -12,5 +12,6 @@ import Foundation
  After a successful authorization, use this to get access to tokens.
  */
 protocol OAuth2AccessTokenProtocol {
-
+    func performAction(
+        freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void)
 }

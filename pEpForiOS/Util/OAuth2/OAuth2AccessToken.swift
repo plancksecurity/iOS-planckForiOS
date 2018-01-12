@@ -18,4 +18,11 @@ class OAuth2AccessToken: OAuth2AccessTokenProtocol {
     init(authState: OIDAuthState) {
         self.authState = authState
     }
+
+    func performAction(
+        freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void) {
+        authState.performAction() { accessToken, idToken, error in
+            freshTokensBlock(error, accessToken)
+        }
+    }
 }
