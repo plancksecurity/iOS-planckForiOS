@@ -46,12 +46,11 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
         currentAuthorizationFlow = OIDAuthState.authState(
         byPresenting: request, presenting: viewController) { [weak self] authState, error in
             if error == nil,
-                let accessToken = authState?.lastTokenResponse?.accessToken,
-                let idToken = authState?.lastTokenResponse?.idToken {
+                let accessToken = authState?.lastTokenResponse?.accessToken {
                 self?.authState = authState
                 self?.delegate?.authorizationRequestFinished(
                     error: error,
-                    accessToken: OAuth2AccessToken(accessToken: accessToken, idToken: idToken))
+                    accessToken: OAuth2AccessToken(accessToken: accessToken))
             } else {
                 self?.authState = nil
                 self?.delegate?.authorizationRequestFinished(

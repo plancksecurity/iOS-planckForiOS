@@ -13,7 +13,6 @@ import Foundation
  */
 struct OAuth2AccessToken {
     let accessToken: String
-    let idToken: String
 }
 
 /**
