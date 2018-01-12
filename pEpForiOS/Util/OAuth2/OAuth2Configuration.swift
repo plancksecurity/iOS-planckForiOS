@@ -24,10 +24,10 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
         guard let clientID = settings[clientIDKey] as? String else {
             return nil
         }
-        guard let redirectURLString = settings[redirectURLKey] as? String else {
+        guard let redirectURLScheme = settings[redirectURLKey] as? String else {
             return nil
         }
-        guard let redirectURL = URL(string: redirectURLString) else {
+        guard let redirectURL = URL(string: "\(redirectURLScheme):/\(Date().hashValue)") else {
             return nil
         }
 

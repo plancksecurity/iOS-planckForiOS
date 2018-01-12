@@ -8,7 +8,7 @@ Pods/.*
 scripts/config.ini$
 .*~.storyboard$
 pEpTrustWords\.bundle/system\.db
-\.xcconfig$
+secret\.xcconfig$
 
 glob
 pEpForiOSTests/Util/TestData.swift

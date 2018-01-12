@@ -14,7 +14,8 @@ class OAuth2Configurator {
         case .google:
             return OAuth2Configuration(
                 oauth2Type: .google, scopes: ["https://mail.google.com/"],
-                clientIDKey: "GMAIL_CLIENT_ID", redirectURLKey: "GMAIL_REDIRECT_URL")
+                clientIDKey: "OAUTH2_GMAIL_CLIENT_ID",
+                redirectURLKey: "OAUTH2_GMAIL_REDIRECT_URL_SCHEME")
         }
     }
 }

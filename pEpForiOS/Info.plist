@@ -9,10 +9,10 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>security.pEp.apps.pEpForiOS.oauth2</string>
+				<string>${OAUTH2_GMAIL_REDIRECT_URL_SCHEME}</string>
 			</array>
 			<key>CFBundleURLName</key>
-			<string>security.pEp.apps.pEpForiOS.oauth2</string>
+			<string>gmail</string>
 		</dict>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
@@ -72,9 +72,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>GMAIL_CLIENT_ID</key>
-	<string>${GMAIL_CLIENT_ID}</string>
-	<key>GMAIL_REDIRECT_URL</key>
-	<string>${GMAIL_REDIRECT_URL}</string>
+	<key>OAUTH2_GMAIL_CLIENT_ID</key>
+	<string>${OAUTH2_GMAIL_CLIENT_ID}</string>
+	<key>OAUTH2_GMAIL_REDIRECT_URL_SCHEME</key>
+	<string>${OAUTH2_GMAIL_REDIRECT_URL_SCHEME}</string>
 </dict>
 </plist>

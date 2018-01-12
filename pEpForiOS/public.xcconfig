@@ -1,0 +1,11 @@
+//
+//  public.xcconfig
+//  pEpForiOS
+//
+//  Created by Dirk Zimmermann on 12.01.18.
+//  Copyright © 2018 p≡p Security S.A. All rights reserved.
+//
+
+#include "secret.xcconfig"
+
+OAUTH2_GMAIL_REDIRECT_URL_SCHEME = security.pEp.apps.pEpForiOS.oauth2
