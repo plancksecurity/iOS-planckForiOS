@@ -205,7 +205,7 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
 }
 
 extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
-    func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessToken?) {
+    func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         if let err = error {
             Log.shared.error(component: #function, error: err)
         } else {

@@ -9,13 +9,6 @@
 import Foundation
 
 /**
- The result of an authorization request.
- */
-struct OAuth2AccessToken {
-    let accessToken: String
-}
-
-/**
  The error that gets delegated when there was no error during authorization, but
  neither a valid access token.
  */
@@ -28,7 +21,7 @@ enum OAuth2AuthorizationError: Error {
  Since this is a delegate, derive from class so it can be used weakly.
  */
 protocol OAuth2AuthorizationDelegateProtocol: class {
-    func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessToken?)
+    func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessTokenProtocol?)
 }
 
 /**

@@ -239,6 +239,8 @@
 		438281831E891B7E00087343 /* DateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438281821E891B7E00087343 /* DateTests.swift */; };
 		4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */; };
 		4384ABB01F3B5A11006982B8 /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4384ABAF1F3B5A11006982B8 /* Data+Extensions.swift */; };
+		4388A0E22008F813008CB98D /* OAuth2AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388A0E12008F813008CB98D /* OAuth2AccessToken.swift */; };
+		4388A0E42008F8F4008CB98D /* OAuth2AccessTokenProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388A0E32008F8F4008CB98D /* OAuth2AccessTokenProtocol.swift */; };
 		438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438D253B1D4B9E7500BFF7AA /* MimeTests.swift */; };
 		438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 438D253F1D4B9EDB00BFF7AA /* PGPMimeMail.txt */; };
 		438D5A711EA77CFC001A37E1 /* HandshakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */; };
@@ -675,6 +677,8 @@
 		4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistentImapFolder.swift; sourceTree = "<group>"; };
 		4384ABAF1F3B5A11006982B8 /* Data+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		4388A0E02008AF61008CB98D /* public.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = public.xcconfig; sourceTree = "<group>"; };
+		4388A0E12008F813008CB98D /* OAuth2AccessToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AccessToken.swift; sourceTree = "<group>"; };
+		4388A0E32008F8F4008CB98D /* OAuth2AccessTokenProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AccessTokenProtocol.swift; sourceTree = "<group>"; };
 		438D253B1D4B9E7500BFF7AA /* MimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTests.swift; sourceTree = "<group>"; };
 		438D253F1D4B9EDB00BFF7AA /* PGPMimeMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PGPMimeMail.txt; sourceTree = "<group>"; };
 		438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakeViewController.swift; sourceTree = "<group>"; };
@@ -1172,6 +1176,8 @@
 			children = (
 				43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */,
 				438052861FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift */,
+				4388A0E32008F8F4008CB98D /* OAuth2AccessTokenProtocol.swift */,
+				4388A0E12008F813008CB98D /* OAuth2AccessToken.swift */,
 				438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */,
 				4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */,
 				43306EC11FE129840045DD00 /* OAuth2Type.swift */,
@@ -2196,6 +2202,7 @@
 				B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
 				431E58FA1ED591E900EFA77F /* AccountVerificationService.swift in Sources */,
+				4388A0E22008F813008CB98D /* OAuth2AccessToken.swift in Sources */,
 				43C3220D1EA915C6005073FB /* UIColor+Extension.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
@@ -2258,6 +2265,7 @@
 				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				43C579EB1F0A382400A8EDF0 /* FetchFoldersService.swift in Sources */,
+				4388A0E42008F8F4008CB98D /* OAuth2AccessTokenProtocol.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
