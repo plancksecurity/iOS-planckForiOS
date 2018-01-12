@@ -270,7 +270,7 @@
 		43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE48E61EEFC93900B92BB6 /* DebugMergePolicy.swift */; };
 		43B0443920067CC7007BCE3F /* UIAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443820067CC7007BCE3F /* UIAccount.swift */; };
 		43B0443B20067D25007BCE3F /* UITestDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */; };
-		43B044422007683E007BCE3F /* general.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 43B044412007683E007BCE3F /* general.xcconfig */; };
+		43B044422007683E007BCE3F /* secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 43B044412007683E007BCE3F /* secret.xcconfig */; };
 		43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
 		43B044542007AFDA007BCE3F /* AccountVerificationResultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B044532007AFDA007BCE3F /* AccountVerificationResultDelegate.swift */; };
 		43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */; };
@@ -712,7 +712,7 @@
 		43AE48E61EEFC93900B92BB6 /* DebugMergePolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMergePolicy.swift; sourceTree = "<group>"; };
 		43B0443820067CC7007BCE3F /* UIAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAccount.swift; sourceTree = "<group>"; };
 		43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestDataProtocol.swift; sourceTree = "<group>"; };
-		43B044412007683E007BCE3F /* general.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = general.xcconfig; sourceTree = "<group>"; };
+		43B044412007683E007BCE3F /* secret.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = secret.xcconfig; sourceTree = "<group>"; };
 		43B0444B20077323007BCE3F /* OAuth2Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configuration.swift; sourceTree = "<group>"; };
 		43B044532007AFDA007BCE3F /* AccountVerificationResultDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVerificationResultDelegate.swift; sourceTree = "<group>"; };
 		43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAccountSettingsAdapter.a; path = "../../../Library/Developer/Xcode/DerivedData/pEpForiOS-hgrtosyrynxrmfdxochylcgjfvka/Build/Products/Debug-iphonesimulator/libAccountSettingsAdapter.a"; sourceTree = "<group>"; };
@@ -1353,7 +1353,7 @@
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
 				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
-				43B044412007683E007BCE3F /* general.xcconfig */,
+				43B044412007683E007BCE3F /* secret.xcconfig */,
 				433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */,
 				430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */,
 			);
@@ -1890,7 +1890,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
-				43B044422007683E007BCE3F /* general.xcconfig in Resources */,
+				43B044422007683E007BCE3F /* secret.xcconfig in Resources */,
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				222B35831DF97A44007A1F82 /* ComposeData.plist in Resources */,
 				43980E311CBD0BCA00A7FC3C /* Assets.xcassets in Resources */,
@@ -2435,7 +2435,7 @@
 /* Begin XCBuildConfiguration section */
 		43980E4C1CBD0BCA00A7FC3C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43B044412007683E007BCE3F /* general.xcconfig */;
+			baseConfigurationReference = 43B044412007683E007BCE3F /* secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2502,7 +2502,7 @@
 		};
 		43980E4D1CBD0BCA00A7FC3C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43B044412007683E007BCE3F /* general.xcconfig */;
+			baseConfigurationReference = 43B044412007683E007BCE3F /* secret.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
