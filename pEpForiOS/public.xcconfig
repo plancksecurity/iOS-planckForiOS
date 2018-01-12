@@ -8,4 +8,3 @@
 
 #include "secret.xcconfig"
 
-OAUTH2_GMAIL_REDIRECT_URL_SCHEME = security.pEp.apps.pEpForiOS.oauth2
