@@ -133,19 +133,16 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         if let (msg, protected, objID) = EncryptAndSendOperation.retrieveNextMessage(
             context: context, cdAccount: cdAccount) {
             lastSentMessageObjectID = objID
-            if protected {
-                let session = PEPSession()
-                let (status, encMsg) = session.encrypt(pEpMessageDict: msg)
-                let (encMsg2, error) = PEPUtil.check(
-                    comp: comp, status: status, encryptedMessage: encMsg)
-                if let err = error {
-                    Log.error(component: comp, error: err)
-                    send(pEpMessageDict: encMsg as? PEPMessageDict)
-                } else {
-                    send(pEpMessageDict: encMsg2 as? PEPMessageDict)
-                }
+            let session = PEPSession()
+            let (status, encMsg) = session.encrypt(
+                pEpMessageDict: msg, encryptionFormat: protected ? PEP_enc_PEP : PEP_enc_none)
+            let (encMsg2, error) = PEPUtil.check(
+                comp: comp, status: status, encryptedMessage: encMsg)
+            if let err = error {
+                Log.error(component: comp, error: err)
+                send(pEpMessageDict: encMsg as? PEPMessageDict)
             } else {
-                send(pEpMessageDict: msg)
+                send(pEpMessageDict: encMsg2 as? PEPMessageDict)
             }
         } else {
             markAsFinished()

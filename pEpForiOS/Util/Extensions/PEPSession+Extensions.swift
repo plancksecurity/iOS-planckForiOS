@@ -83,9 +83,11 @@ open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
  */
 public extension PEPSession {
     public func encrypt(pEpMessageDict: PEPMessageDict,
+                        encryptionFormat: PEP_enc_format = PEP_enc_PEP,
                         forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
         return PEPUtil.encrypt(
-            pEpMessageDict: pEpMessageDict, forIdentity: forIdentity, session: self)
+            pEpMessageDict: pEpMessageDict, encryptionFormat: encryptionFormat,
+            forIdentity: forIdentity, session: self)
     }
 
     public func encrypt(pEpMessage: PEPMessage,
