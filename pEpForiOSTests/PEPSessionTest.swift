@@ -63,7 +63,7 @@ class PEPSessionTest: XCTestCase {
         let cdmessage2 = cdmessage1
         let pepmessage = cdmessage1.pEpMessageDict()
 
-        session.encryptMessageDict(pepmessage, extra: nil, dest: nil)
+        session.encryptMessageDict(pepmessage, extra: nil, encFormat: PEP_enc_PEP, dest: nil)
         session.decryptMessageDict(pepmessage, dest: nil, keys: nil)
         cdmessage2.update(pEpMessageDict: pepmessage)
         XCTAssertEqual(cdmessage2,cdmessage1)

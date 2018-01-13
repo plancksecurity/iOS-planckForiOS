@@ -481,7 +481,8 @@ open class PEPUtil {
     }
 
     open static func encrypt(
-        pEpMessageDict: PEPMessageDict, forIdentity: PEPIdentity? = nil,
+        pEpMessageDict: PEPMessageDict, encryptionFormat: PEP_enc_format = PEP_enc_PEP,
+        forIdentity: PEPIdentity? = nil,
         session: PEPSession = PEPSession()) -> (PEP_STATUS, NSDictionary?) {
         var encryptedMessage: NSDictionary? = nil
 
@@ -493,6 +494,7 @@ open class PEPUtil {
         } else {
             let pepStatus = session.encryptMessageDict(
                 pEpMessageDict, extra: nil,
+                encFormat: encryptionFormat,
                 dest: &encryptedMessage)
             return (pepStatus, encryptedMessage)
         }
