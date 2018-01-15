@@ -14,7 +14,7 @@ import Foundation
 extension String {
     static let gmailRegex = try! NSRegularExpression(
         // character classes: https://en.wikipedia.org/wiki/Unicode_character_property
-        pattern: "[-_[\\p{Ll}\\p{Lu}\\p{Nd}]]+@gmail\\.[a-z]+",
+        pattern: "[-_[\\p{Ll}\\p{Lu}\\p{Nd}.]]+@gmail\\.[a-z]+",
         options: [])
 
     var isGmailAddress: Bool {
