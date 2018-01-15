@@ -17,6 +17,12 @@ class NoOpMySelfer: KickOffMySelfProtocol {
     }
 }
 
+class ErrorHandler: LoginViewModelLoginErrorDelegate {
+    func handle(loginError: Error) {
+        XCTFail("Error: \(loginError)")
+    }
+}
+
 class LoginViewModelTests: CoreDataDrivenTestBase {
     class TestMessageSyncService: MessageSyncServiceProtocol {
         weak var errorDelegate: MessageSyncServiceErrorDelegate?
@@ -121,13 +127,13 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         let expLookedUp = expectation(description: "expLookedUp")
         let ms = TestMessageSyncService(accountSettings: accountSettings, expLookedUp: expLookedUp)
         let vm = LoginViewModel(messageSyncService: ms)
-
-        vm.login(accountName: accountSettings.idAddress, password: passw,
+        let errorHandler = ErrorHandler()
+        vm.loginViewModelLoginErrorDelegate = errorHandler
+        vm.login(accountName: accountSettings.idAddress,
+                 password: passw,
                  loginName: nil,
                  userName: nil,
-                 mySelfer: NoOpMySelfer()) { error in
-                    XCTFail("Unexpected error: \(error)")
-        }
+                 mySelfer: NoOpMySelfer())
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
