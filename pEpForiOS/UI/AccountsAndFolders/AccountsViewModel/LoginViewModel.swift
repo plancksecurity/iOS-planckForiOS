@@ -108,7 +108,6 @@ class LoginViewModel {
      - parameter userName: The chosen name of the user, or nick
      - parameter mySelfer: An object to request a mySelf operation from, must be used immediately
      after account setup
-     - parameter errorCallback: Any errors are reported via this callback
      */
     func login(accountName: String, password: String, loginName: String? = nil,
                userName: String? = nil, mySelfer: KickOffMySelfProtocol) {
