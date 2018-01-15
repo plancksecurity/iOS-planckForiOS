@@ -43,7 +43,7 @@
 
  class LoginTableViewController: BaseTableViewController {
     var loginViewModel = LoginViewModel()
-    var extendedLogin = false
+    var offerManualSetup = false
 
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
@@ -139,7 +139,7 @@
         manualConfigButton.isEnabled = !isCurrentlyVerifying
     }
 
-    private func handleLoginError(error: Error, extended: Bool) {
+    private func handleLoginError(error: Error, offerManualSetup: Bool) {
         Log.shared.error(component: #function, error: error)
         let error = DisplayUserError(withError: error)
         self.isCurrentlyVerifying = false
@@ -158,9 +158,9 @@
                 "Ok",
                 comment: "UIAlertAction ok after error"),
             style: .default, handler: {action in
-                if extended {
+                if offerManualSetup {
                     self.manualConfigButton.isHidden = false
-                    self.extendedLogin = true
+                    self.offerManualSetup = true
                 }
         }))
         present(alertView, animated: true, completion: nil)
@@ -181,21 +181,25 @@
         isCurrentlyVerifying = true
 
         guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingEmail, extended: false)
+            handleLoginError(error: LoginTableViewControllerError.missingEmail,
+                             offerManualSetup: false)
             return
         }
         guard !loginViewModel.exist(address: email) else {
             isCurrentlyVerifying = false
-            handleLoginError(error: LoginTableViewControllerError.accountExistence, extended: false)
+            handleLoginError(error: LoginTableViewControllerError.accountExistence,
+                             offerManualSetup: false)
             return
         }
         guard let username = user.text, username != ""  else {
-            handleLoginError(error: LoginTableViewControllerError.missingUsername, extended: false)
+            handleLoginError(error: LoginTableViewControllerError.missingUsername,
+                             offerManualSetup: false)
             return
         }
 
         guard username.count > 4 else {
-            handleLoginError(error: LoginTableViewControllerError.minimumLengthUsername, extended: false)
+            handleLoginError(error: LoginTableViewControllerError.minimumLengthUsername,
+                             offerManualSetup: false)
             return
         }
 
@@ -206,7 +210,7 @@
         } else {
             guard let pass = password.text, pass != "" else {
                 handleLoginError(error: LoginTableViewControllerError.missingPassword,
-                                 extended: false)
+                                 offerManualSetup: false)
                 return
             }
 
@@ -286,11 +290,12 @@
                 // unwind back to INBOX on success
                 self.performSegue(withIdentifier: .backToEmailList, sender: self)
             case .imapError(let err):
-                self.handleLoginError(error: err, extended: true)
+                self.handleLoginError(error: err, offerManualSetup: true)
             case .smtpError(let err):
-                self.handleLoginError(error: err, extended: true)
+                self.handleLoginError(error: err, offerManualSetup: true)
             case .noImapConnectData, .noSmtpConnectData:
-                self.handleLoginError(error: LoginTableViewControllerError.noConnectData, extended: true)
+                self.handleLoginError(error: LoginTableViewControllerError.noConnectData,
+                                      offerManualSetup: true)
             }
         }
     }
@@ -298,6 +303,6 @@
 
  extension LoginTableViewController: LoginViewModelErrorDelegate {
     func handle(error: Error) {
-        self.handleLoginError(error: error, extended: true)
+        self.handleLoginError(error: error, offerManualSetup: true)
     }
  }
