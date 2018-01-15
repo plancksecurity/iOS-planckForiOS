@@ -43,6 +43,7 @@ open class ImapSync: Service {
     public struct ImapState {
         enum State {
             case initial
+            case startedTLS
             case authenticated
             case idling
             case error
@@ -50,6 +51,12 @@ open class ImapSync: Service {
         var state: State = .initial {
             didSet {
                 Log.shared.info(component: #function, content: "\(oldValue) -> \(state)")
+            }
+        }
+
+        var hasStartedTLS: Bool {
+            get {
+                return state == .startedTLS
             }
         }
 
@@ -214,6 +221,11 @@ open class ImapSync: Service {
         return folder as! CWIMAPFolder
     }
 
+    fileprivate func startTLS() {
+        imapState.state = .startedTLS
+        imapStore.startTLS()
+    }
+
     open func fetchMessages() throws {
         let folder = try openFolder()
         folder.fetch()
@@ -363,8 +375,11 @@ extension ImapSync: CWServiceClient {
 
     @objc public func serviceInitialized(_ notification: Notification?) {
         dumpMethodName("serviceInitialized", notification: notification)
-
-        if let loginName = connectInfo.loginName,
+        
+        if connectInfo.connectionTransport == ConnectionTransport.startTLS
+            && !imapState.hasStartedTLS {
+            startTLS()
+        } else if let loginName = connectInfo.loginName,
             let loginPassword = connectInfo.loginPassword {
             imapStore.authenticate(loginName,
                                    password: loginPassword,
