@@ -302,8 +302,8 @@
     }
  }
 
- extension LoginTableViewController: LoginViewModelErrorDelegate {
-    func handle(error: Error) {
-        self.handleLoginError(error: error, offerManualSetup: true)
+ extension LoginTableViewController: LoginViewModelLoginErrorDelegate {
+    func handle(loginError: Error) {
+        self.handleLoginError(error: loginError, offerManualSetup: true)
     }
  }

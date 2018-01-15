@@ -60,7 +60,7 @@ class LoginViewModel {
     var loginAccount: Account?
     var messageSyncService: MessageSyncServiceProtocol?
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
-    weak var loginViewModelErrorDelegate: LoginViewModelErrorDelegate?
+    weak var loginViewModelErrorDelegate: LoginViewModelLoginErrorDelegate?
 
     /**
      The last mySelfer, as indicated by login(), so after account verification,
@@ -123,7 +123,7 @@ class LoginViewModel {
         func statusOk() {
             if let error = AccountSettingsError(accountSettings: acSettings) {
                 Log.shared.error(component: #function, error: error)
-                loginViewModelErrorDelegate?.handle(error: error)
+                loginViewModelErrorDelegate?.handle(loginError: error)
                 return
             }
 
@@ -151,7 +151,7 @@ class LoginViewModel {
                 try verifyAccount(model: newAccount)
             } catch {
                 Log.shared.error(component: #function, error: error)
-                loginViewModelErrorDelegate?.handle(error: error)
+                loginViewModelErrorDelegate?.handle(loginError: error)
             }
         }
     }
