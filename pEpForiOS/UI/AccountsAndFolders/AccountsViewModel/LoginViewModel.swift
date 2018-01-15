@@ -61,6 +61,7 @@ class LoginViewModel {
     var extendedLogin = false
     var messageSyncService: MessageSyncServiceProtocol?
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
+    weak var loginViewModelErrorDelegate: LoginViewModelErrorDelegate?
 
     /**
      The last mySelfer, as indicated by login(), so after account verification,
@@ -111,8 +112,7 @@ class LoginViewModel {
      - parameter errorCallback: Any errors are reported via this callback
      */
     func login(accountName: String, password: String, loginName: String? = nil,
-               userName: String? = nil, mySelfer: KickOffMySelfProtocol,
-               errorCallback: @escaping (Error) -> Void) {
+               userName: String? = nil, mySelfer: KickOffMySelfProtocol) {
         self.mySelfer = mySelfer
         let acSettings = AccountSettings(accountName: accountName, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -123,9 +123,9 @@ class LoginViewModel {
         }
 
         func statusOk() {
-            if let err = AccountSettingsError(accountSettings: acSettings) {
-                Log.shared.error(component: #function, error: err)
-                errorCallback(err)
+            if let error = AccountSettingsError(accountSettings: acSettings) {
+                Log.shared.error(component: #function, error: error)
+                loginViewModelErrorDelegate?.handle(error: error)
                 return
             }
 
@@ -153,7 +153,7 @@ class LoginViewModel {
                 try verifyAccount(model: newAccount)
             } catch {
                 Log.shared.error(component: #function, error: error)
-                errorCallback(error)
+                loginViewModelErrorDelegate?.handle(error: error)
             }
         }
     }

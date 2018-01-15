@@ -213,9 +213,7 @@
             loginViewModel.accountVerificationResultDelegate = self
             loginViewModel.login(
                 accountName: email, password: pass, userName: username,
-                mySelfer: appConfig.mySelfer) { [weak self] error in
-                    self?.handleLoginError(error: error, extended: true)
-            }
+                mySelfer: appConfig.mySelfer)
         }
     }
 
@@ -295,5 +293,11 @@
                 self.handleLoginError(error: LoginTableViewControllerError.noConnectData, extended: true)
             }
         }
+    }
+ }
+
+ extension LoginTableViewController: LoginViewModelErrorDelegate {
+    func handle(error: Error) {
+        self.handleLoginError(error: error, extended: true)
     }
  }
