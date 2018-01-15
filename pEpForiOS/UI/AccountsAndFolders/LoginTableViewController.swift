@@ -71,7 +71,7 @@
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loginViewModel.loginViewModelErrorDelegate = self
+        loginViewModel.loginViewModelLoginErrorDelegate = self
         configureView()
     }
 
