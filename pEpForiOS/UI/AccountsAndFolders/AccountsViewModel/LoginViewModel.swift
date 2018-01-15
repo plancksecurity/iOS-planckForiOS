@@ -32,11 +32,19 @@ enum AccountSettingsError: Error {
     }
 }
 
+/**
+ Errors that are not directly reported by the used OAuth2 lib, but detected internally.
+ */
 enum OAuth2InternalError: Error {
     /**
      No configuration available for running the oauth2 request.
      */
     case noConfiguration
+
+    /**
+     The OAuth2 call yielded no token, but there was no error condition
+     */
+    case noToken
 }
 
 extension AccountSettingsError: LocalizedError {
@@ -61,6 +69,7 @@ class LoginViewModel {
     var messageSyncService: MessageSyncServiceProtocol?
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
+    weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
 
     /**
      The last mySelfer, as indicated by login(), so after account verification,
@@ -209,11 +218,12 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
 extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
     func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         if let err = error {
-            Log.shared.error(component: #function, error: err)
+            loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
         } else {
             if let token = accessToken {
                 Log.shared.info(component: #function, content: "got token \(token)")
             } else {
+                loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: OAuth2InternalError.noToken)
                 Log.shared.error(component: #function, errorString: "No error, but no token")
             }
         }

@@ -72,6 +72,7 @@
     override func viewDidLoad() {
         super.viewDidLoad()
         loginViewModel.loginViewModelLoginErrorDelegate = self
+        loginViewModel.loginViewModelOAuth2ErrorDelegate = self
         configureView()
     }
 
@@ -305,5 +306,11 @@
  extension LoginTableViewController: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
         self.handleLoginError(error: loginError, offerManualSetup: true)
+    }
+ }
+
+ extension LoginTableViewController: LoginViewModelOAuth2ErrorDelegate {
+    func handle(oauth2Error: Error) {
+        self.handleLoginError(error: oauth2Error, offerManualSetup: false)
     }
  }
