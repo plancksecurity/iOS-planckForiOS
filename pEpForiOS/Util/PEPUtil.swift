@@ -492,10 +492,10 @@ open class PEPUtil {
                 dest: &encryptedMessage)
             return (pepStatus, encryptedMessage)
         } else {
-            let pepStatus = session.encryptMessageDict(
-                pEpMessageDict, extra: nil,
-                encFormat: encryptionFormat,
-                dest: &encryptedMessage)
+            let pepStatus = session.encryptMessageDict(pEpMessageDict,
+                                                       extra: nil,
+                                                       encFormat: encryptionFormat,
+                                                       dest: &encryptedMessage)
             return (pepStatus, encryptedMessage)
         }
     }

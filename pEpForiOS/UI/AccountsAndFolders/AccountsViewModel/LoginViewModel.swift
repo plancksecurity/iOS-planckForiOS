@@ -191,6 +191,8 @@ class LoginViewModel {
     }
 }
 
+// MARK: - AccountVerificationServiceDelegate
+
 extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
@@ -203,6 +205,8 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
         accountVerificationResultDelegate?.didVerify(result: result)
     }
 }
+
+// MARK: - OAuth2AuthorizationDelegateProtocol
 
 extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
     func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
