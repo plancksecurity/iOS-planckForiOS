@@ -58,7 +58,6 @@ enum LoginCellType {
 
 class LoginViewModel {
     var loginAccount: Account?
-    var extendedLogin = false
     var messageSyncService: MessageSyncServiceProtocol?
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelErrorDelegate: LoginViewModelErrorDelegate?
