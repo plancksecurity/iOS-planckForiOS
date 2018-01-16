@@ -139,11 +139,6 @@ public class NetworkService {
         if let config = currentWorker?.serviceConfig {
             serviceConfig = config
         }
-        //IOS-674: debug code. Remove after issue is fixed.
-        guard let _ = currentWorker else {
-            print("//IOS-674: NetworkService - No worker")
-            return
-        }
         //476.SOI
         lastConnectionDataCache = currentWorker?.imapConnectionDataCache
         currentWorker?.cancel(networkService: self)

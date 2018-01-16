@@ -110,12 +110,7 @@ open class ImapSync: Service {
 
     let nonExistantMailboxName = MessageID.generate()
 
-    //IOS-674: debug code. Remove didSet after issue is fixed.
-    weak open var delegate: ImapSyncDelegate? {
-        didSet {
-            print("//IOS-674: ImapService delegate has been set to \(String(describing: delegate))")
-        }
-    }
+    weak open var delegate: ImapSyncDelegate?
     //476-SOI
 
     open var maxFetchCount: UInt = 20

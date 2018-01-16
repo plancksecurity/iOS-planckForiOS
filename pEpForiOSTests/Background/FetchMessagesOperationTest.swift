@@ -13,9 +13,6 @@ import CoreData
 @testable import pEpForiOS
 
 class FetchMessagesOperationTest: CoreDataDrivenTestBase {
-
-    //IOS-674: Randomly triggers IOS-674 sync stops forever
-
     // IOS-671 pEp app has two accounts. Someone sends a mail to both
     // (with both accounts in receipients).
     // Message must exist twice, once for each account, after fetching mails from server.
