@@ -67,6 +67,7 @@ public enum AuthMethod: String {
     case Plain = "PLAIN"
     case Login = "LOGIN"
     case CramMD5 = "CRAM-MD5"
+    case saslXoauth2 = "SASL XOAUTH2"
 
     init?(string: String?) {
         guard let s = string else {
@@ -78,6 +79,8 @@ public enum AuthMethod: String {
             self = .Login
         } else if s.isEqual(AuthMethod.CramMD5.rawValue) {
             self = .CramMD5
+        } else if s.isEqual(AuthMethod.saslXoauth2.rawValue) {
+            self = .saslXoauth2
         } else {
             return nil
         }
