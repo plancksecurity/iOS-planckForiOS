@@ -12,7 +12,7 @@ import Foundation
  Result of an OAuth2 authorization request. Persist this, and invoke it anytime you need
  fresh tokens.
  */
-class OAuth2AccessToken: NSSecureCoding, OAuth2AccessTokenProtocol {
+class OAuth2AccessToken: NSObject, NSSecureCoding, OAuth2AccessTokenProtocol {
     let authState: OIDAuthState
 
     init(authState: OIDAuthState) {

@@ -169,11 +169,17 @@ class LoginViewModel {
             let smtpTransport = ConnectionTransport(
                 accountSettingsTransport: outgoingServer.transport)
 
+            var thePassword = password
+            if let accessToken = lastOAuth2Parameters?.accessToken {
+                let data = NSKeyedArchiver.archivedData(withRootObject: accessToken)
+                thePassword = data.base64EncodedString()
+            }
+
             let newAccount = AccountUserInput(
                 address: accountName, userName: userName,
                 loginName: loginName,
                 authMethod: lastOAuth2Parameters?.accessToken != nil ? .saslXoauth2 : nil,
-                password: password,
+                password: thePassword,
                 serverIMAP: incomingServer.hostname,
                 portIMAP: UInt16(incomingServer.port),
                 transportIMAP: imapTransport,
