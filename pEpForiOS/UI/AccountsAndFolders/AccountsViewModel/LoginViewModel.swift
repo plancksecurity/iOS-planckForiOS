@@ -75,6 +75,7 @@ class LoginViewModel {
         let emailAddress: String
         let userName: String
         let mySelfer: KickOffMySelfProtocol
+        var accessToken: OAuth2AccessTokenProtocol?
     }
 
     var loginAccount: Account?
@@ -113,7 +114,7 @@ class LoginViewModel {
         oauth2Authorizer: OAuth2AuthorizationProtocol) {
 
         lastOAuth2Parameters = OAuth2Parameters(
-            emailAddress: emailAddress, userName: userName, mySelfer: mySelfer)
+            emailAddress: emailAddress, userName: userName, mySelfer: mySelfer, accessToken: nil)
 
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
@@ -142,8 +143,6 @@ class LoginViewModel {
      */
     func login(accountName: String, userName: String, loginName: String? = nil,
                password: String? = nil, mySelfer: KickOffMySelfProtocol) {
-        lastOAuth2Parameters = nil
-
         self.mySelfer = mySelfer
         let acSettings = AccountSettings(accountName: accountName, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -227,6 +226,8 @@ class LoginViewModel {
 extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
+        lastOAuth2Parameters = nil
+
         if result == .ok {
             mySelfer?.startMySelf()
         } else {
@@ -234,6 +235,7 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                 account.delete()
             }
         }
+
         accountVerificationResultDelegate?.didVerify(result: result)
     }
 }
@@ -247,6 +249,7 @@ extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
         } else {
             if let token = accessToken {
                 Log.shared.info(component: #function, content: "received token \(token)")
+                lastOAuth2Parameters?.accessToken = accessToken
                 guard let oauth2Params = lastOAuth2Parameters else {
                     loginViewModelOAuth2ErrorDelegate?.handle(
                         oauth2Error: OAuth2InternalError.noParametersForVerification)
