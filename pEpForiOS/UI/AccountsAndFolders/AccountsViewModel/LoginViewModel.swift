@@ -118,8 +118,8 @@ class LoginViewModel {
      - parameter mySelfer: An object to request a mySelf operation from, must be used immediately
      after account setup
      */
-    func login(accountName: String, password: String, loginName: String? = nil,
-               userName: String? = nil, mySelfer: KickOffMySelfProtocol) {
+    func login(accountName: String, password: String?, userName: String,
+               loginName: String? = nil, mySelfer: KickOffMySelfProtocol) {
         self.mySelfer = mySelfer
         let acSettings = AccountSettings(accountName: accountName, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -147,7 +147,7 @@ class LoginViewModel {
                 accountSettingsTransport: outgoingServer.transport)
 
             let newAccount = AccountUserInput(
-                address: accountName, userName: userName ?? accountName,
+                address: accountName, userName: userName,
                 loginName: loginName, password: password,
                 serverIMAP: incomingServer.hostname,
                 portIMAP: UInt16(incomingServer.port),
