@@ -205,6 +205,8 @@
             return
         }
 
+        loginViewModel.accountVerificationResultDelegate = self
+
         if loginViewModel.isOAuth2Possible(email: email) {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
             loginViewModel.loginWithOAuth2(
@@ -217,7 +219,6 @@
                 return
             }
 
-            loginViewModel.accountVerificationResultDelegate = self
             loginViewModel.login(
                 accountName: email, userName: username, password: pass,
                 mySelfer: appConfig.mySelfer)
