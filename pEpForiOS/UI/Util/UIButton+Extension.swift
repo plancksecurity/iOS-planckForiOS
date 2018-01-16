@@ -42,3 +42,23 @@ extension UIButton {
         return iSize.width < actSize.width
     }
 }
+
+public class handshakeButton: UIButton {
+
+    public override var intrinsicContentSize: CGSize {
+        if let titleContentSize = self.titleLabel?.intrinsicContentSize {
+            return titleContentSize
+        } else {
+            return super.intrinsicContentSize
+        }
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        if let titleWidth = self.titleLabel?.frame.size.width {
+            self.titleLabel?.preferredMaxLayoutWidth = titleWidth
+            super.layoutSubviews()
+        }
+    }
+
+}
