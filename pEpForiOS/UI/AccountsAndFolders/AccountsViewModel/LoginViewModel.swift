@@ -45,6 +45,12 @@ enum OAuth2InternalError: Error {
      The OAuth2 call yielded no token, but there was no error condition
      */
     case noToken
+
+    /**
+     The OAuth2 authorization was successful, but we lack the `lastOAuth2Parameters`
+     for continuing login.
+     */
+    case noParametersForVerification
 }
 
 extension AccountSettingsError: LocalizedError {
@@ -65,8 +71,18 @@ enum LoginCellType {
 }
 
 class LoginViewModel {
+    struct OAuth2Parameters {
+        let emailAddress: String
+        let userName: String
+        let mySelfer: KickOffMySelfProtocol
+    }
+
     var loginAccount: Account?
     var messageSyncService: MessageSyncServiceProtocol?
+
+    /** If the last login attempt was via OAuth2, this will collect temporary parameters */
+    private var lastOAuth2Parameters: OAuth2Parameters?
+
     weak var accountVerificationResultDelegate: AccountVerificationResultDelegate?
     weak var loginViewModelLoginErrorDelegate: LoginViewModelLoginErrorDelegate?
     weak var loginViewModelOAuth2ErrorDelegate: LoginViewModelOAuth2ErrorDelegate?
@@ -89,10 +105,16 @@ class LoginViewModel {
         return Account.by(address: address) != nil
     }
 
-    func requestOauth2Authorization(
+    func loginWithOAuth2(
         viewController: UIViewController,
         emailAddress: String,
+        userName: String,
+        mySelfer: KickOffMySelfProtocol,
         oauth2Authorizer: OAuth2AuthorizationProtocol) {
+
+        lastOAuth2Parameters = OAuth2Parameters(
+            emailAddress: emailAddress, userName: userName, mySelfer: mySelfer)
+
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
         var config: OAuth2ConfigurationProtocol?
@@ -118,8 +140,10 @@ class LoginViewModel {
      - parameter mySelfer: An object to request a mySelf operation from, must be used immediately
      after account setup
      */
-    func login(accountName: String, password: String?, userName: String,
-               loginName: String? = nil, mySelfer: KickOffMySelfProtocol) {
+    func login(accountName: String, userName: String, loginName: String? = nil,
+               password: String? = nil, mySelfer: KickOffMySelfProtocol) {
+        lastOAuth2Parameters = nil
+
         self.mySelfer = mySelfer
         let acSettings = AccountSettings(accountName: accountName, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -221,7 +245,14 @@ extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
             loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
         } else {
             if let token = accessToken {
-                Log.shared.info(component: #function, content: "got token \(token)")
+                Log.shared.info(component: #function, content: "received token \(token)")
+                guard let oauth2Params = lastOAuth2Parameters else {
+                    loginViewModelOAuth2ErrorDelegate?.handle(
+                        oauth2Error: OAuth2InternalError.noParametersForVerification)
+                    return
+                }
+                login(accountName: oauth2Params.emailAddress, userName: oauth2Params.userName,
+                      mySelfer: oauth2Params.mySelfer)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: OAuth2InternalError.noToken)
             }

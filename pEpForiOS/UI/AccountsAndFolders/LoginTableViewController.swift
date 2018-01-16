@@ -207,8 +207,9 @@
 
         if loginViewModel.isOAuth2Possible(email: email) {
             let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
-            loginViewModel.requestOauth2Authorization(
-                viewController: self, emailAddress: email, oauth2Authorizer: oauth)
+            loginViewModel.loginWithOAuth2(
+                viewController: self, emailAddress: email, userName: username,
+                mySelfer: appConfig.mySelfer, oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
                 handleLoginError(error: LoginTableViewControllerError.missingPassword,
@@ -218,7 +219,7 @@
 
             loginViewModel.accountVerificationResultDelegate = self
             loginViewModel.login(
-                accountName: email, password: pass, userName: username,
+                accountName: email, userName: username, password: pass,
                 mySelfer: appConfig.mySelfer)
         }
     }
