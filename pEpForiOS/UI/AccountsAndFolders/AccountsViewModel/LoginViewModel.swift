@@ -227,8 +227,9 @@ class LoginViewModel {
 extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
-        mySelfer?.startMySelf()
-        if result != .ok {
+        if result == .ok {
+            mySelfer?.startMySelf()
+        } else {
             MessageModel.performAndWait {
                 account.delete()
             }
