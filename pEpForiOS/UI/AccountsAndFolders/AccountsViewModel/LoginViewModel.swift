@@ -224,7 +224,6 @@ extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
                 Log.shared.info(component: #function, content: "got token \(token)")
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: OAuth2InternalError.noToken)
-                Log.shared.error(component: #function, errorString: "No error, but no token")
             }
         }
     }
