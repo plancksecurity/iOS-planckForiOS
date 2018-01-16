@@ -130,9 +130,9 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         let errorHandler = ErrorHandler()
         vm.loginViewModelLoginErrorDelegate = errorHandler
         vm.login(accountName: accountSettings.idAddress,
-                 password: passw,
+                 userName: "User Name",
                  loginName: nil,
-                 userName: nil,
+                 password: passw,
                  mySelfer: NoOpMySelfer())
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
