@@ -171,7 +171,9 @@ class LoginViewModel {
 
             let newAccount = AccountUserInput(
                 address: accountName, userName: userName,
-                loginName: loginName, password: password,
+                loginName: loginName,
+                authMethod: lastOAuth2Parameters?.accessToken != nil ? .saslXoauth2 : nil,
+                password: password,
                 serverIMAP: incomingServer.hostname,
                 portIMAP: UInt16(incomingServer.port),
                 transportIMAP: imapTransport,

@@ -21,7 +21,18 @@ public struct AccountUserInput {
      */
     public var loginName: String?
 
+    /**
+     Currently, the only use case for this is .saslXoauth2. In all other cases,
+     this should be nil.
+     */
+    public let authMethod: AuthMethod?
+
+    /**
+     With `authMethod` nil, this is a simple password. With `authMethod` of .saslXoauth2,
+     this is expected to be a string representation of an object that can reconstruct a token.
+     */
     public var password: String?
+
     public var serverIMAP: String?
     public var portIMAP: UInt16 = 993
     public var transportIMAP = ConnectionTransport.TLS
@@ -100,6 +111,7 @@ public struct AccountUserInput {
 
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
                                        transport: self.transportIMAP.toServerTransport(),
+                                       authMethod: authMethod?.rawValue,
                                        credentials: credentialsImap)
         imapServer.needsVerification = true
 
@@ -108,10 +120,23 @@ public struct AccountUserInput {
         credentialsSmtp.needsVerification = true
         let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
                                        transport: self.transportSMTP.toServerTransport(),
+                                       authMethod: authMethod?.rawValue,
                                        credentials: credentialsSmtp)
         smtpServer.needsVerification = true
 
         let account = Account(user: identity, servers: [imapServer, smtpServer])
         return account
+    }
+}
+
+extension AccountUserInput {
+    init() {
+        self.address = nil
+        self.userName = nil
+        self.loginName = nil
+        self.authMethod = nil
+        self.password = nil
+        self.serverIMAP = nil
+        self.serverSMTP = nil
     }
 }
