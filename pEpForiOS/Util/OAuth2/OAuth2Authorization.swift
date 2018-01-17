@@ -49,7 +49,7 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
                 self?.authState = state
                 self?.delegate?.authorizationRequestFinished(
                     error: error,
-                    accessToken: OAuth2AccessToken(authState: state))
+                    accessToken: OAuth2AccessToken(authState: state, keyChainID: UUID().uuidString))
             } else {
                 self?.authState = nil
                 self?.delegate?.authorizationRequestFinished(

@@ -27,11 +27,12 @@ public struct AccountUserInput {
      */
     public let authMethod: AuthMethod?
 
-    /**
-     With `authMethod` nil, this is a simple password. With `authMethod` of .saslXoauth2,
-     this is expected to be a string representation of an object that can reconstruct a token.
-     */
     public var password: String?
+
+    /**
+     If the user chose OAuth2, this is the token. `password` then should be nil.
+     */
+    var accessToken: OAuth2AccessTokenProtocol?
 
     public var serverIMAP: String?
     public var portIMAP: UInt16 = 993
@@ -105,8 +106,13 @@ public struct AccountUserInput {
             logIn = address
         }
 
+        let thePassword = accessToken?.persistIntoString() ?? password
+
+        // The key is created upfront, in case of SASL XOAUTH2, where we want to link
+        // the token to the same key
         let credentialsImap = ServerCredentials.create(loginName: logIn,
-                                                       password: self.password)
+                                                       password: thePassword,
+                                                       key: accessToken?.keyChainID)
         credentialsImap.needsVerification = true
 
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
@@ -115,14 +121,21 @@ public struct AccountUserInput {
                                        credentials: credentialsImap)
         imapServer.needsVerification = true
 
+        // In case of SASL XOAUTH2, there will be only 1 credential, with our created key
         let credentialsSmtp = authMethod == .saslXoauth2 ? credentialsImap :
-            ServerCredentials.create(loginName: logIn, password: self.password)
+            ServerCredentials.create(loginName: logIn, password: thePassword,
+                                     key: accessToken?.keyChainID)
         credentialsSmtp.needsVerification = true
+
         let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
                                        transport: self.transportSMTP.toServerTransport(),
                                        authMethod: authMethod?.rawValue,
                                        credentials: credentialsSmtp)
         smtpServer.needsVerification = true
+
+        if authMethod == .saslXoauth2 {
+            credentialsImap.password = ""
+        }
 
         let account = Account(user: identity, servers: [imapServer, smtpServer])
         return account

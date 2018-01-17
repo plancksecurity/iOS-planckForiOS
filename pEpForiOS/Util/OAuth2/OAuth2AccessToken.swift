@@ -9,14 +9,16 @@
 import Foundation
 
 /**
- Result of an OAuth2 authorization request. Persist this, and invoke it anytime you need
+ Result of an OAuth2 authorization request. Persist this, and use it anytime you need
  fresh tokens.
  */
 class OAuth2AccessToken: NSObject, NSSecureCoding {
+    let keyChainID: String
     let authState: OIDAuthState
 
-    init(authState: OIDAuthState) {
+    init(authState: OIDAuthState, keyChainID: String) {
         self.authState = authState
+        self.keyChainID = keyChainID
         super.init()
         listenToStateChanges()
     }
@@ -24,6 +26,7 @@ class OAuth2AccessToken: NSObject, NSSecureCoding {
     // MARK: NSSecureCoding
 
     private let kAuthState = "authState"
+    private let kKeyChainID = "keyChainID"
 
     static var supportsSecureCoding: Bool = true
 
@@ -33,11 +36,19 @@ class OAuth2AccessToken: NSObject, NSSecureCoding {
                 return nil
         }
         self.authState = authState
+
+        guard let keyChainID = aDecoder.decodeObject(
+            of: NSString.self, forKey: kKeyChainID) else {
+                return nil
+        }
+        self.keyChainID = keyChainID as String
+
         super.init()
         listenToStateChanges()
     }
 
     func encode(with aCoder: NSCoder) {
+        aCoder.encode(keyChainID, forKey: kKeyChainID)
         aCoder.encode(authState, forKey: kAuthState)
     }
 
