@@ -28,13 +28,11 @@ extension CdAccount {
         for cdServer in cdServers {
             if cdServer.serverType == Server.ServerType.imap
                 || cdServer.serverType == Server.ServerType.smtp  {
-                guard let password = cdServer.credentials?.password,
-                    let cdCredentials = cdServer.credentials else {
+                guard let cdCredentials = cdServer.credentials else {
                         continue
                 }
                 if let emailConnectInfo = emailConnectInfo(
-                    account: self, server: cdServer, credentials: cdCredentials,
-                    password: password) {
+                    account: self, server: cdServer, credentials: cdCredentials) {
                     result.append((emailConnectInfo, cdCredentials))
                 }
             }
@@ -58,8 +56,7 @@ extension CdAccount {
     }
 
     func emailConnectInfo(account: CdAccount, server: CdServer,
-                          credentials: CdServerCredentials,
-                          password: String?) -> EmailConnectInfo? {
+                          credentials: CdServerCredentials) -> EmailConnectInfo? {
         if let port = server.port?.int16Value,
             let address = server.address,
             let emailProtocol = EmailProtocol(serverType: server.serverType) {
@@ -67,7 +64,7 @@ extension CdAccount {
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
                 credentialsObjectID: credentials.objectID,
                 loginName: credentials.loginName,
-                loginPassword: password,
+                loginPassword: credentials.password,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,
                 networkTransportType: nil, emailProtocol: emailProtocol,
