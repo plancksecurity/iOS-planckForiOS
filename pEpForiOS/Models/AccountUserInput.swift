@@ -133,10 +133,6 @@ public struct AccountUserInput {
                                        credentials: credentialsSmtp)
         smtpServer.needsVerification = true
 
-        if authMethod == .saslXoauth2 {
-            credentialsImap.password = ""
-        }
-
         let account = Account(user: identity, servers: [imapServer, smtpServer])
         return account
     }
