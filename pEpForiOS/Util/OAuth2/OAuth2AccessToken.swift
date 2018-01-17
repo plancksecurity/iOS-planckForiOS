@@ -43,4 +43,19 @@ class OAuth2AccessToken: NSObject, NSSecureCoding, OAuth2AccessTokenProtocol {
     func encode(with aCoder: NSCoder) {
         aCoder.encode(authState, forKey: kAuthState)
     }
+
+    /**
+     Persists itself into a string.
+     */
+    func persistIntoString() -> String {
+        let data = NSKeyedArchiver.archivedData(withRootObject: self)
+        return data.base64EncodedString()
+    }
+
+    static func from(base64Encoded: String) -> OAuth2AccessTokenProtocol? {
+        guard let data = Data(base64Encoded: base64Encoded) else {
+            return nil
+        }
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? OAuth2AccessToken
+    }
 }

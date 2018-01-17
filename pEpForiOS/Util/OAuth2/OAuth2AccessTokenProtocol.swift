@@ -12,6 +12,13 @@ import Foundation
  After a successful authorization, use this to get access to tokens.
  */
 protocol OAuth2AccessTokenProtocol {
+    // MARK: Persistence
+
+    static func from(base64Encoded: String) -> OAuth2AccessTokenProtocol?
+    func persistIntoString() -> String
+
+    // MARK: Refreshing tokens
+
     func performAction(
         freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void)
 }
