@@ -115,8 +115,8 @@ public struct AccountUserInput {
                                        credentials: credentialsImap)
         imapServer.needsVerification = true
 
-        let credentialsSmtp = ServerCredentials.create(loginName: logIn,
-                                                       password: self.password)
+        let credentialsSmtp = authMethod == .saslXoauth2 ? credentialsImap :
+            ServerCredentials.create(loginName: logIn, password: self.password)
         credentialsSmtp.needsVerification = true
         let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
                                        transport: self.transportSMTP.toServerTransport(),
