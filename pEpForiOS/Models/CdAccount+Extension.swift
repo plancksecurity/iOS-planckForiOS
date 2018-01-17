@@ -60,8 +60,6 @@ extension CdAccount {
     func emailConnectInfo(account: CdAccount, server: CdServer,
                           credentials: CdServerCredentials,
                           password: String?) -> EmailConnectInfo? {
-        let connectionTransport = ConnectionTransport(fromInt: Int(server.transportRawValue))
-
         if let port = server.port?.int16Value,
             let address = server.address,
             let emailProtocol = EmailProtocol(serverType: server.serverType) {
@@ -73,7 +71,7 @@ extension CdAccount {
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,
                 networkTransportType: nil, emailProtocol: emailProtocol,
-                connectionTransport: connectionTransport,
+                connectionTransport: ConnectionTransport(fromInt: Int(server.transportRawValue)),
                 authMethod: AuthMethod(string: server.authMethod),
                 trusted: server.trusted)
         }
