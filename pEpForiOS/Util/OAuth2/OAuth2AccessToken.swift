@@ -12,18 +12,13 @@ import Foundation
  Result of an OAuth2 authorization request. Persist this, and invoke it anytime you need
  fresh tokens.
  */
-class OAuth2AccessToken: NSObject, NSSecureCoding, OAuth2AccessTokenProtocol {
+class OAuth2AccessToken: NSObject, NSSecureCoding {
     let authState: OIDAuthState
 
     init(authState: OIDAuthState) {
         self.authState = authState
-    }
-
-    func performAction(
-        freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void) {
-        authState.performAction() { accessToken, idToken, error in
-            freshTokensBlock(error, accessToken)
-        }
+        super.init()
+        listenToStateChanges()
     }
 
     // MARK: NSSecureCoding
@@ -38,15 +33,29 @@ class OAuth2AccessToken: NSObject, NSSecureCoding, OAuth2AccessTokenProtocol {
                 return nil
         }
         self.authState = authState
+        super.init()
+        listenToStateChanges()
     }
 
     func encode(with aCoder: NSCoder) {
         aCoder.encode(authState, forKey: kAuthState)
     }
 
-    /**
-     Persists itself into a string.
-     */
+    func listenToStateChanges() {
+        authState.stateChangeDelegate = self
+    }
+}
+
+extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
+    func performAction(
+        freshTokensBlock: @escaping (_ error: Error?, _ accessToken: String?) -> Void) {
+        authState.performAction() { accessToken, idToken, error in
+            freshTokensBlock(error, accessToken)
+        }
+    }
+
+    // MARK: Own persistence code
+
     func persistIntoString() -> String {
         let data = NSKeyedArchiver.archivedData(withRootObject: self)
         return data.base64EncodedString()
@@ -57,5 +66,12 @@ class OAuth2AccessToken: NSObject, NSSecureCoding, OAuth2AccessTokenProtocol {
             return nil
         }
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? OAuth2AccessToken
+    }
+}
+
+extension OAuth2AccessToken: OIDAuthStateChangeDelegate {
+    func didChange(_ state: OIDAuthState) {
+        // TODO: Have to persist the change
+        Log.shared.info(component: #function, content: "should persist")
     }
 }

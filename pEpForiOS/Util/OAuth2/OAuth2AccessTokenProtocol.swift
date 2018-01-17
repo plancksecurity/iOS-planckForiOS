@@ -15,6 +15,10 @@ protocol OAuth2AccessTokenProtocol {
     // MARK: Persistence
 
     static func from(base64Encoded: String) -> OAuth2AccessTokenProtocol?
+
+    /**
+     Persists itself into a string.
+     */
     func persistIntoString() -> String
 
     // MARK: Refreshing tokens
