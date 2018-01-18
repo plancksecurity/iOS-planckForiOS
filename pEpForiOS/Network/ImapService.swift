@@ -374,18 +374,27 @@ extension ImapSync: CWServiceClient {
         if connectInfo.connectionTransport == ConnectionTransport.startTLS
             && !imapState.hasStartedTLS {
             startTLS()
+        } else if let authMethod = connectInfo.authMethod,
+            authMethod == .saslXoauth2,
+            let loginName = connectInfo.loginName,
+            let token = connectInfo.accessToken {
+            token.performAction() { [weak self] error, freshToken in
+                if let err = error {
+                    Log.shared.error(component: #function, error: err)
+                    if let theSelf = self {
+                        theSelf.runOnDelegate(logName: #function) { theDelegate in
+                            theDelegate.authenticationFailed(theSelf, notification: notification)
+                        }
+                    }
+                } else {
+                    self?.imapStore.authenticate(
+                        loginName, password: freshToken, mechanism: authMethod.rawValue)
+                }
+            }
         } else if let loginName = connectInfo.loginName,
             let loginPassword = connectInfo.loginPassword {
-            if let authMethod = connectInfo.authMethod, authMethod == .saslXoauth2 {
-                let token = OAuth2AccessTokenFactory.from(base64Encoded: loginPassword)
-                token?.performAction() { [weak self] error, freshToken in
-                    self?.imapStore.authenticate(
-                        loginName, password: loginPassword, mechanism: authMethod.rawValue)
-                }
-            } else {
-                imapStore.authenticate(
-                    loginName, password: loginPassword, mechanism: bestAuthMethod().rawValue)
-            }
+            imapStore.authenticate(
+                loginName, password: loginPassword, mechanism: bestAuthMethod().rawValue)
         } else {
             if connectInfo.loginPassword == nil {
                 Log.error(component: comp, errorString: "Want to login, but don't have a password")
