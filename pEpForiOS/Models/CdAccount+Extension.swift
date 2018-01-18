@@ -25,6 +25,7 @@ extension CdAccount {
             return result
         }
 
+        let accessTokens = Dictionary<String, OAuth2AccessTokenProtocol>()
         for cdServer in cdServers {
             if cdServer.serverType == Server.ServerType.imap
                 || cdServer.serverType == Server.ServerType.smtp  {
@@ -32,7 +33,8 @@ extension CdAccount {
                         continue
                 }
                 if let emailConnectInfo = emailConnectInfo(
-                    account: self, server: cdServer, credentials: cdCredentials) {
+                    account: self, server: cdServer, credentials: cdCredentials,
+                    accessTokens: accessTokens) {
                     result.append((emailConnectInfo, cdCredentials))
                 }
             }
@@ -56,7 +58,18 @@ extension CdAccount {
     }
 
     func emailConnectInfo(account: CdAccount, server: CdServer,
-                          credentials: CdServerCredentials) -> EmailConnectInfo? {
+                          credentials: CdServerCredentials,
+                          accessTokens: [String:OAuth2AccessTokenProtocol]) -> EmailConnectInfo? {
+        var accessTokens = accessTokens
+        var accessToken: OAuth2AccessTokenProtocol?
+        if let authMethod = AuthMethod(string: server.authMethod),
+            authMethod == .saslXoauth2,
+            let password = credentials.password,
+            let token = OAuth2AccessToken.from(base64Encoded: password) {
+            accessToken = accessTokens[token.keyChainID] ?? token
+            accessTokens[token.keyChainID] = accessToken
+        }
+
         if let port = server.port?.int16Value,
             let address = server.address,
             let emailProtocol = EmailProtocol(serverType: server.serverType) {
@@ -64,7 +77,7 @@ extension CdAccount {
                 accountObjectID: account.objectID, serverObjectID: server.objectID,
                 credentialsObjectID: credentials.objectID,
                 loginName: credentials.loginName,
-                loginPassword: credentials.password,
+                loginPassword: accessToken == nil ? credentials.password : nil,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,
                 networkTransportType: nil, emailProtocol: emailProtocol,
