@@ -376,9 +376,16 @@ extension ImapSync: CWServiceClient {
             startTLS()
         } else if let loginName = connectInfo.loginName,
             let loginPassword = connectInfo.loginPassword {
-            imapStore.authenticate(loginName,
-                                   password: loginPassword,
-                                   mechanism: bestAuthMethod().rawValue)
+            if let authMethod = connectInfo.authMethod, authMethod == .saslXoauth2 {
+                let token = OAuth2AccessToken.from(base64Encoded: loginPassword)
+                token?.performAction() { [weak self] error, freshToken in
+                    self?.imapStore.authenticate(
+                        loginName, password: loginPassword, mechanism: authMethod.rawValue)
+                }
+            } else {
+                imapStore.authenticate(
+                    loginName, password: loginPassword, mechanism: bestAuthMethod().rawValue)
+            }
         } else {
             if connectInfo.loginPassword == nil {
                 Log.error(component: comp, errorString: "Want to login, but don't have a password")
