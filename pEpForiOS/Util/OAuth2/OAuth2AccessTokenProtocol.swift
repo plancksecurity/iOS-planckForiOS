@@ -11,7 +11,7 @@ import Foundation
 /**
  After a successful authorization, use this to get access to tokens.
  */
-protocol OAuth2AccessTokenProtocol {
+public protocol OAuth2AccessTokenProtocol {
     /**
      This object might be persisted into the keychain store. In that case,
      this key is used.

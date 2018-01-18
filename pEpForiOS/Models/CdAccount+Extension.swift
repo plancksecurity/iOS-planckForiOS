@@ -25,7 +25,7 @@ extension CdAccount {
             return result
         }
 
-        let accessTokens = Dictionary<String, OAuth2AccessTokenProtocol>()
+        let accessTokens = NSMutableDictionary()
         for cdServer in cdServers {
             if cdServer.serverType == Server.ServerType.imap
                 || cdServer.serverType == Server.ServerType.smtp  {
@@ -59,14 +59,14 @@ extension CdAccount {
 
     func emailConnectInfo(account: CdAccount, server: CdServer,
                           credentials: CdServerCredentials,
-                          accessTokens: [String:OAuth2AccessTokenProtocol]) -> EmailConnectInfo? {
-        var accessTokens = accessTokens
+                          accessTokens: NSMutableDictionary) -> EmailConnectInfo? {
         var accessToken: OAuth2AccessTokenProtocol?
         if let authMethod = AuthMethod(string: server.authMethod),
             authMethod == .saslXoauth2,
             let password = credentials.password,
             let token = OAuth2AccessToken.from(base64Encoded: password) {
-            accessToken = accessTokens[token.keyChainID] ?? token
+            accessToken = accessTokens.object(
+                forKey: token.keyChainID) as? OAuth2AccessTokenProtocol ?? token
             accessTokens[token.keyChainID] = accessToken
         }
 
@@ -78,6 +78,7 @@ extension CdAccount {
                 credentialsObjectID: credentials.objectID,
                 loginName: credentials.loginName,
                 loginPassword: accessToken == nil ? credentials.password : nil,
+                accessToken: accessToken,
                 networkAddress: address, networkPort: UInt16(port),
                 networkAddressType: nil,
                 networkTransportType: nil, emailProtocol: emailProtocol,
