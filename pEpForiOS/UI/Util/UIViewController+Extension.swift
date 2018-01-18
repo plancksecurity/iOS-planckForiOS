@@ -36,7 +36,7 @@ extension UIViewController {
         navigationItem.title = nil
         setNoColor()
         navigationController?.navigationBar.titleTextAttributes =
-            [NSAttributedStringKey.foregroundColor: UIColor.black]
+            [NSAttributedStringKey.foregroundColor: UIColor.white]
         navigationController?.navigationBar.tintColor = UIColor.pEpGreen
         navigationController?.toolbar.tintColor = UIColor.pEpGreen
         navigationController?.toolbar.backgroundColor = nil
