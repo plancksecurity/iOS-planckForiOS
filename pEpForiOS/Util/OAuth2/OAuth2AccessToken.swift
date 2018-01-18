@@ -71,13 +71,6 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
         let data = NSKeyedArchiver.archivedData(withRootObject: self)
         return data.base64EncodedString()
     }
-
-    static func from(base64Encoded: String) -> OAuth2AccessTokenProtocol? {
-        guard let data = Data(base64Encoded: base64Encoded) else {
-            return nil
-        }
-        return NSKeyedUnarchiver.unarchiveObject(with: data) as? OAuth2AccessToken
-    }
 }
 
 extension OAuth2AccessToken: OIDAuthStateChangeDelegate {

@@ -377,7 +377,7 @@ extension ImapSync: CWServiceClient {
         } else if let loginName = connectInfo.loginName,
             let loginPassword = connectInfo.loginPassword {
             if let authMethod = connectInfo.authMethod, authMethod == .saslXoauth2 {
-                let token = OAuth2AccessToken.from(base64Encoded: loginPassword)
+                let token = OAuth2AccessTokenFactory.from(base64Encoded: loginPassword)
                 token?.performAction() { [weak self] error, freshToken in
                     self?.imapStore.authenticate(
                         loginName, password: loginPassword, mechanism: authMethod.rawValue)
