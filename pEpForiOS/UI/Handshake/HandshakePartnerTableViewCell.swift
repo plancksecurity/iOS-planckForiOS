@@ -33,6 +33,7 @@ protocol HandshakePartnerTableViewCellDelegate: class {
     func toggleTrustwordsLength(sender: UIView,  cell: HandshakePartnerTableViewCell,
                                 indexPath: IndexPath,
                                 viewModel: HandshakePartnerTableViewCellViewModel?)
+    func updateSize()
 }
 
 class HandshakePartnerTableViewCell: UITableViewCell {
@@ -106,7 +107,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
 
-        setNeedsLayout()
+        //layoutIfNeeded()
+        //setNeedsLayout()
     }
 
     func updateView() {
@@ -116,6 +118,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             headerView.backgroundColor = UIColor.white
         }
         partnerNameLabel.text = viewModel?.partnerName
+        //partnerNameLabel.sizeToFit()
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(color: identityColor)
         updateTrustwords()
@@ -123,6 +126,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
         languageSelectorImageView.isUserInteractionEnabled = !isPartnerPGPUser
         trustWordsLabel.isUserInteractionEnabled = !isPartnerPGPUser
+        //trustWordsLabel.sizeToFit()
 
         languageSelectorImageView.isHidden = isPartnerPGPUser
         if !isPartnerPGPUser && showTrustwords {
@@ -142,6 +146,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateConfirmDistrustButtonsTitle()
 
         updateAdditionalConstraints()
+        //setNeedsLayout()
+        //layoutIfNeeded()
+
+
     }
 
     /**
@@ -181,7 +189,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateTrustwordsExpansionVisibility() {
-        trustWordsView.isHidden = !showTrustwords
+        //trustWordsView.isHidden = !showTrustwords
     }
 
     func updateStopTrustingButtonTitle() {

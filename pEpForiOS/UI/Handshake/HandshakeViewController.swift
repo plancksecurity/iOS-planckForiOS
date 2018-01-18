@@ -28,7 +28,7 @@ class HandshakeViewController: BaseTableViewController {
     var indexPathRequestingLanguage: IndexPath?
 
     override func awakeFromNib() {
-        tableView.estimatedRowHeight = 72.0
+        tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableViewAutomaticDimension
     }
 
@@ -97,6 +97,10 @@ class HandshakeViewController: BaseTableViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(
@@ -119,6 +123,10 @@ class HandshakeViewController: BaseTableViewController {
             adjustBackgroundColor(viewModel: viewModel, indexPath: indexPath)
             cell.viewModel = viewModel
             cell.indexPath = indexPath
+            cell.sizeToFit()
+            cell.needsUpdateConstraints()
+            cell.updateConstraintsIfNeeded()
+
 
             return cell
         }
@@ -139,6 +147,10 @@ class HandshakeViewController: BaseTableViewController {
 // MARK: - HandshakePartnerTableViewCellDelegate
 
 extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
+    func updateSize() {
+        tableView.updateSize()
+    }
+
     func invokeTrustAction(cell: HandshakePartnerTableViewCell, indexPath: IndexPath,
                            action: () -> ()) {
         action()
