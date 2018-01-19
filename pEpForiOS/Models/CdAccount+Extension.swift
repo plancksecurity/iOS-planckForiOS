@@ -64,7 +64,8 @@ extension CdAccount {
         if let authMethod = AuthMethod(string: server.authMethod),
             authMethod == .saslXoauth2,
             let password = credentials.password,
-            let token = OAuth2AccessTokenFactory.from(base64Encoded: password) {
+            let token = OAuth2AccessToken.from(
+                base64Encoded: password) as? OAuth2AccessTokenProtocol {
             accessToken = accessTokens.object(
                 forKey: token.keyChainID) as? OAuth2AccessTokenProtocol ?? token
             accessTokens[token.keyChainID] = accessToken

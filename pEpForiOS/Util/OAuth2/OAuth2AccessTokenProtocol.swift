@@ -11,19 +11,12 @@ import Foundation
 /**
  After a successful authorization, use this to get access to tokens.
  */
-public protocol OAuth2AccessTokenProtocol {
+public protocol OAuth2AccessTokenProtocol: NSSecureCoding {
     /**
      This object might be persisted into the keychain store. In that case,
      this key is used.
      */
     var keyChainID: String { get }
-
-    // MARK: Persistence
-
-    /**
-     Persists itself into a string.
-     */
-    func persistIntoString() -> String
 
     // MARK: Refreshing tokens
 
