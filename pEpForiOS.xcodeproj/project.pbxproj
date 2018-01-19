@@ -108,6 +108,7 @@
 		43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3D1DF5BB6600610253 /* MySelfOperation.swift */; };
 		431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 431394A81E4B03AA00D92F33 /* Settings.bundle */; };
 		431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431394C01E4B11CF00D92F33 /* AppSettings.swift */; };
+		4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4BE2011FD6900F68763 /* AuthMethod.swift */; };
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
 		4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */; };
 		431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D41D2EC0C000F609D3 /* ComposeTableViewController.swift */; };
@@ -527,6 +528,7 @@
 		43122B3D1DF5BB6600610253 /* MySelfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySelfOperation.swift; sourceTree = "<group>"; };
 		431394A81E4B03AA00D92F33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		431394C01E4B11CF00D92F33 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		4315E4BE2011FD6900F68763 /* AuthMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthMethod.swift; sourceTree = "<group>"; };
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToAttachmentOperation.swift; sourceTree = "<group>"; };
@@ -1068,6 +1070,7 @@
 			children = (
 				43122B3A1DF5B75000610253 /* Service */,
 				43122B121DF5B48B00610253 /* ConnectInfo.swift */,
+				4315E4BE2011FD6900F68763 /* AuthMethod.swift */,
 				43122B131DF5B48B00610253 /* EmailConnectInfo.swift */,
 				43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */,
 				43122B141DF5B48B00610253 /* EmailService.swift */,
@@ -2246,6 +2249,7 @@
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
+				4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
 				430EA5FA1F0FAD7700F816D4 /* ServiceChainExecutor.swift in Sources */,
