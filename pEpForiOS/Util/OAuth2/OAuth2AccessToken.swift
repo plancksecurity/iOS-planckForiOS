@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel // for access to KeyChain
+
 /**
  Result of an OAuth2 authorization request. Persist this, and use it anytime you need
  fresh tokens.
@@ -75,7 +77,7 @@ extension OAuth2AccessToken: OAuth2AccessTokenProtocol {
 
 extension OAuth2AccessToken: OIDAuthStateChangeDelegate {
     func didChange(_ state: OIDAuthState) {
-        // TODO: Have to persist the change
-        Log.shared.info(component: #function, content: "should persist")
+        let payload = persistIntoString()
+        KeyChain.updateCreateOrDelete(password: payload, forKey: keyChainID)
     }
 }
