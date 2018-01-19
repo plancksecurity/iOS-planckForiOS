@@ -12,6 +12,8 @@ import CoreData
 import MessageModel
 
 class TestDataBase {
+    let userIdMyself = "own_myself_user_id_unitTest"
+
     struct AccountSettings {
         var accountName: String?
         var idAddress: String
@@ -169,8 +171,12 @@ class TestDataBase {
     /**
      - Returns: A valid `CdAccount`.
      */
-    func createWorkingCdAccount(number: Int = 0) -> CdAccount {
-        return createWorkingAccountSettings(number: number).cdAccount()
+    func createWorkingCdAccount(number: Int = 0, isMyself: Bool = true) -> CdAccount {
+        let result = createWorkingAccountSettings(number: number).cdAccount()
+        if isMyself {
+            result.identity?.userID = userIdMyself
+        }
+        return result
     }
 
     /**
@@ -200,9 +206,11 @@ class TestDataBase {
     /**
      - Returns: A valid `PEPIdentity`.
      */
-    func createWorkingIdentity(number: Int = 0) -> PEPIdentity {
+    func createWorkingIdentity(number: Int = 0, isMyself: Bool = true) -> PEPIdentity {
         populateAccounts()
-        return createWorkingAccountSettings(number: number).pEpIdentity()
+
+        return createWorkingCdAccount(number: number, isMyself: isMyself).pEpIdentity()  //BUFF:
+//        return createWorkingAccountSettings(number: number).pEpIdentity()
     }
 
     /**

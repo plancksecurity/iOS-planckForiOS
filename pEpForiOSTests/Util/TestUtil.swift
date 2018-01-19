@@ -115,7 +115,7 @@ class TestUtil {
         receiver2: PEPIdentity, receiver3: PEPIdentity,
         receiver4: PEPIdentity) {
             let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
-                                       userID: nil,
+                                       userID: TestData().userIdMyself,
                                        userName: "Unit Test",
                                        isOwn: true)
 
@@ -403,6 +403,10 @@ class TestUtil {
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+        guard let fromUserId = cdAccount.identity?.userID else { //BUFF:
+            fatalError("No userId")
+        }
+        from.userID = fromUserId
 
         let toWithKey = CdIdentity.create()
         toWithKey.userName = "Unit 001"

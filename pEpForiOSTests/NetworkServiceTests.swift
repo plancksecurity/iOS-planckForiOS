@@ -269,6 +269,8 @@ class NetworkServiceTests: XCTestCase {
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
 
+//        from.userID =//BUFF:
+
         let to = CdIdentity.create()
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
@@ -279,24 +281,31 @@ class NetworkServiceTests: XCTestCase {
         }
         XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
 
-        // Build outgoing emails
-        var outgoingMails = [CdMessage]()
-        var outgoingMessageIDs = [String]()
+        //BUFF:
         let numMails = 1
-        for i in 1...numMails {
-            let message = CdMessage.create()
-            message.from = from
-            message.parent = sentFolder
-            message.shortMessage = "Some subject \(i)"
-            message.longMessage = "Long message \(i)"
-            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.addTo(cdIdentity: to)
-            let messageID = MessageID.generate()
-            message.uuid = messageID
-            outgoingMails.append(message)
-            outgoingMessageIDs.append(messageID)
-        }
-        Record.saveAndWait()
+        let outgoingMails = TestUtil.createOutgoingMails(cdAccount: cdAccount, testCase: self, numberOfMails: numMails)
+        let outgoingMessageIDs: [String] = outgoingMails
+            .map() { $0.messageID ?? "" }
+            .filter() { $0 != "" }
+        //FFUB
+        // Build outgoing emails //BUFF:
+//        var outgoingMails = [CdMessage]()
+//        var outgoingMessageIDs = [String]()
+//        let numMails = 1
+//        for i in 1...numMails {
+//            let message = CdMessage.create()
+//            message.from = from
+//            message.parent = sentFolder
+//            message.shortMessage = "Some subject \(i)"
+//            message.longMessage = "Long message \(i)"
+//            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+//            message.addTo(cdIdentity: to)
+//            let messageID = MessageID.generate()
+//            message.uuid = messageID
+//            outgoingMails.append(message)
+//            outgoingMessageIDs.append(messageID)
+//        }
+//        Record.saveAndWait()
 
         // Verify outgoing mails
         for m in outgoingMails {

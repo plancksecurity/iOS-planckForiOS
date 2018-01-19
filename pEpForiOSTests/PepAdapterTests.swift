@@ -12,7 +12,7 @@ import XCTest
 
 class PepAdapterTests: XCTestCase {
     let comp = "PepAdapterTests"
-    let identityMe = PEPIdentity(address: "some@mail.com", userID: nil, userName: "This is me",
+    let identityMe = PEPIdentity(address: "some@mail.com", userID: TestData().userIdMyself, userName: "This is me",
                                  isOwn: true)
 
     var pEpSession: PEPSession {
