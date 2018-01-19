@@ -16,6 +16,11 @@ class OAuth2Configurator {
                 oauth2Type: .google, scopes: ["https://mail.google.com/"],
                 clientIDKey: "OAUTH2_GMAIL_CLIENT_ID",
                 redirectURLKey: "OAUTH2_GMAIL_REDIRECT_URL_SCHEME")
+        case .yahoo:
+            return OAuth2Configuration(
+                oauth2Type: .yahoo, scopes: ["mail-r", "mail-w"],
+                clientIDKey: "OAUTH2_YAHOO_CLIENT_ID",
+                redirectURLKey: "OAUTH2_YAHOO_REDIRECT_URL_SCHEME")
         }
     }
 }

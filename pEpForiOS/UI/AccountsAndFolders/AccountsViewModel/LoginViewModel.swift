@@ -122,6 +122,8 @@ class LoginViewModel {
         let configurator = OAuth2Configurator()
         if emailAddress.isGmailAddress {
             config = configurator.oauth2ConfigFor(oauth2Type: .google)
+        } else if emailAddress.isYahooAddress {
+            config = configurator.oauth2ConfigFor(oauth2Type: .yahoo)
         }
         if let theConfig = config {
             theAuth.startAuthorizationRequest(
@@ -217,7 +219,7 @@ class LoginViewModel {
      */
     func isOAuth2Possible(email: String?) -> Bool {
         if let theMail = email?.trimmedWhiteSpace() {
-            return theMail.isGmailAddress
+            return theMail.isGmailAddress || theMail.isYahooAddress
         } else {
             return false
         }

@@ -15,6 +15,10 @@ extension OAuth2Type {
             return OIDServiceConfiguration(
                 authorizationEndpoint: URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!,
                 tokenEndpoint: URL(string: "https://www.googleapis.com/oauth2/v4/token")!)
+        case .yahoo:
+            return OIDServiceConfiguration(
+                authorizationEndpoint: URL(string: "https://api.login.yahoo.com/oauth2/request_auth")!,
+                tokenEndpoint: URL(string: "https://api.login.yahoo.com/oauth2/get_token")!)
         }
     }
 }
