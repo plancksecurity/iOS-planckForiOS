@@ -383,7 +383,7 @@ extension ImapSync: CWServiceClient {
                     Log.shared.error(component: #function, error: err)
                     if let theSelf = self {
                         theSelf.runOnDelegate(logName: #function) { theDelegate in
-                            theDelegate.authenticationFailed(theSelf, notification: notification)
+                            theDelegate.authenticationFailed(theSelf, notification: nil)
                         }
                     }
                 } else {
