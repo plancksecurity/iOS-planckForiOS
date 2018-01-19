@@ -167,7 +167,25 @@ extension SmtpSend: CWServiceClient {
             self.smtpStatus.haveStartedTLS = true
             self.smtp.startTLS()
         } else {
-            if let loginName = connectInfo.loginName, let password = connectInfo.loginPassword {
+            if let authMethod = connectInfo.authMethod,
+                authMethod == .saslXoauth2,
+                let loginName = connectInfo.loginName,
+                let token = connectInfo.accessToken {
+                token.performAction() { [weak self] error, freshToken in
+                    if let err = error {
+                        Log.shared.error(component: #function, error: err)
+                        if let theSelf = self {
+                            theSelf.delegate?.authenticationFailed(theSelf, theNotification: nil)
+                        }
+                    } else {
+                        if let theSelf = self {
+                            theSelf.smtp.authenticate(
+                                loginName, password: freshToken, mechanism: authMethod.rawValue)
+                        }
+                    }
+                }
+            } else if let loginName = connectInfo.loginName,
+                let password = connectInfo.loginPassword {
                 self.smtp.authenticate(loginName, password: password,
                                        mechanism: self.bestAuthMethod().rawValue)
             } else {
