@@ -9,15 +9,6 @@
 import MessageModel
 
 extension CdAccount {
-    func serverNTuple(credentials: CdServerCredentials,
-                      server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        if let key = credentials.key {
-            let serverType = server.serverType.asString()
-            return (server, credentials, KeyChain.password(key: key, serverType: serverType))
-        }
-        return nil
-    }
-
     private func emailConnectInfos() -> [(EmailConnectInfo, CdServerCredentials)] {
         var result = [(emailConnectInfo: EmailConnectInfo,
                        cdServerCredentials: CdServerCredentials)]()
