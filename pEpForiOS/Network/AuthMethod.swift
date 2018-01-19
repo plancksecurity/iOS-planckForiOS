@@ -13,8 +13,8 @@ public enum AuthMethod: String {
     case login = "LOGIN"
     case cramMD5 = "CRAM-MD5"
 
-    /** Pantomime requires XOAUTH2, but still working on error propagation */
-    case saslXoauth2 = "SASL XOAUTH2"
+    /** Pantomime requires XOAUTH2 */
+    case saslXoauth2 = "XOAUTH2"
 
     init?(string: String?) {
         guard let s = string else {
