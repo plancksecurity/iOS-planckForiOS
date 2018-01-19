@@ -1,16 +1,16 @@
 //
-//  OAuth2Configurator.swift
+//  OAuth2Type+Extension.swift
 //  pEp
 //
-//  Created by Dirk Zimmermann on 20.12.17.
-//  Copyright © 2017 p≡p Security S.A. All rights reserved.
+//  Created by Dirk Zimmermann on 19.01.18.
+//  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
 
-class OAuth2Configurator {
-    func oauth2ConfigFor(oauth2Type: OAuth2Type) -> OAuth2ConfigurationProtocol? {
-        switch oauth2Type {
+extension OAuth2Type {
+    func oauth2Config() -> OAuth2ConfigurationProtocol? {
+        switch self {
         case .google:
             return OAuth2Configuration(
                 oauth2Type: .google, scopes: ["https://mail.google.com/"],

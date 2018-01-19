@@ -118,12 +118,13 @@ class LoginViewModel {
 
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
+
+        // Determine oauth2 configuration
         var config: OAuth2ConfigurationProtocol?
-        let configurator = OAuth2Configurator()
         if emailAddress.isGmailAddress {
-            config = configurator.oauth2ConfigFor(oauth2Type: .google)
+            config = OAuth2Type.google.oauth2Config()
         } else if emailAddress.isYahooAddress {
-            config = configurator.oauth2ConfigFor(oauth2Type: .yahoo)
+            config = OAuth2Type.yahoo.oauth2Config()
         }
         if let theConfig = config {
             theAuth.startAuthorizationRequest(
