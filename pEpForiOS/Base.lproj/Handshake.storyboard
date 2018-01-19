@@ -31,7 +31,7 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1sS-UJ-WGa">
                                             <rect key="frame" x="20" y="20" width="335" height="310"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Hwo-n8-tYE" userLabel="Header View">
+                                                <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Hwo-n8-tYE" userLabel="Header View">
                                                     <rect key="frame" x="0.0" y="0.0" width="335" height="123"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SFH-dH-XjY" userLabel="Partner Token View">
@@ -113,7 +113,7 @@
                                                         <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="XzM-B3-yD3"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR">
                                                     <rect key="frame" x="0.0" y="236.5" width="335" height="20.5"/>
                                                     <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
