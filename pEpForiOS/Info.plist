@@ -76,5 +76,9 @@
 	<string>${OAUTH2_GMAIL_CLIENT_ID}</string>
 	<key>OAUTH2_GMAIL_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_GMAIL_REDIRECT_URL_SCHEME}</string>
+	<key>OAUTH2_YAHOO_CLIENT_ID</key>
+	<string>${OAUTH2_YAHOO_CLIENT_ID}</string>
+	<key>OAUTH2_YAHOO_REDIRECT_URL_SCHEME</key>
+	<string>${OAUTH2_YAHOO_REDIRECT_URL_SCHEME}</string>
 </dict>
 </plist>

@@ -9,15 +9,6 @@
 import MessageModel
 
 extension CdAccount {
-    func serverNTuple(credentials: CdServerCredentials,
-                      server: CdServer) -> (CdServer, CdServerCredentials, String?)? {
-        if let key = credentials.key {
-            let serverType = server.serverType.asString()
-            return (server, credentials, KeyChain.password(key: key, serverType: serverType))
-        }
-        return nil
-    }
-
     private func emailConnectInfos() -> [(EmailConnectInfo, CdServerCredentials)] {
         var result = [(emailConnectInfo: EmailConnectInfo,
                        cdServerCredentials: CdServerCredentials)]()
@@ -64,7 +55,8 @@ extension CdAccount {
         if let authMethod = AuthMethod(string: server.authMethod),
             authMethod == .saslXoauth2,
             let password = credentials.password,
-            let token = OAuth2AccessTokenFactory.from(base64Encoded: password) {
+            let token = OAuth2AccessToken.from(
+                base64Encoded: password) as? OAuth2AccessTokenProtocol {
             accessToken = accessTokens.object(
                 forKey: token.keyChainID) as? OAuth2AccessTokenProtocol ?? token
             accessTokens[token.keyChainID] = accessToken

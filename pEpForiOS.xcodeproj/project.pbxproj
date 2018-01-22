@@ -81,7 +81,6 @@
 		4301B3161E28D259007D626C /* AppendMailsOperationBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4301B3151E28D259007D626C /* AppendMailsOperationBase.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */; };
-		43069BAE2010F01700DC6920 /* OAuth2AccessTokenFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43069BAD2010F01700DC6920 /* OAuth2AccessTokenFactory.swift */; };
 		4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4307C46F1ED81F3100A276A4 /* DefaultImapSyncDelegate.swift */; };
 		4307C4721ED826E400A276A4 /* SmtpSendError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4307C4711ED826E400A276A4 /* SmtpSendError.swift */; };
 		430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */; };
@@ -108,6 +107,9 @@
 		43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3D1DF5BB6600610253 /* MySelfOperation.swift */; };
 		431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 431394A81E4B03AA00D92F33 /* Settings.bundle */; };
 		431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431394C01E4B11CF00D92F33 /* AppSettings.swift */; };
+		4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4BE2011FD6900F68763 /* AuthMethod.swift */; };
+		4315E4C120120F1600F68763 /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C020120F1600F68763 /* NSSecureCoding+Extension.swift */; };
+		4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
 		4318FF4A1D80551900B5BE18 /* MessageToAttachmentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */; };
 		431AE5D51D2EC0C000F609D3 /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431AE5D41D2EC0C000F609D3 /* ComposeTableViewController.swift */; };
@@ -254,7 +256,6 @@
 		43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */; };
 		43980EE01CBD24B000A7FC3C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
 		43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EF91CBD415700A7FC3C /* AppConfig.swift */; };
-		439932271FEA722100E92C35 /* OAuth2Configurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439932261FEA722100E92C35 /* OAuth2Configurator.swift */; };
 		439932291FEA7E7A00E92C35 /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439932281FEA7E7A00E92C35 /* String+Email.swift */; };
 		439932301FEA9B7200E92C35 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439932311FEA9B7200E92C35 /* SwipeCellKit.framework */; };
 		439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */; };
@@ -501,7 +502,6 @@
 		4301B3151E28D259007D626C /* AppendMailsOperationBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendMailsOperationBase.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListViewController.swift; sourceTree = "<group>"; };
-		43069BAD2010F01700DC6920 /* OAuth2AccessTokenFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2AccessTokenFactory.swift; sourceTree = "<group>"; };
 		4307C46F1ED81F3100A276A4 /* DefaultImapSyncDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultImapSyncDelegate.swift; path = ../DefaultImapSyncDelegate.swift; sourceTree = "<group>"; };
 		4307C4711ED826E400A276A4 /* SmtpSendError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSendError.swift; sourceTree = "<group>"; };
 		430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Extension.swift"; sourceTree = "<group>"; };
@@ -527,6 +527,9 @@
 		43122B3D1DF5BB6600610253 /* MySelfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySelfOperation.swift; sourceTree = "<group>"; };
 		431394A81E4B03AA00D92F33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		431394C01E4B11CF00D92F33 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		4315E4BE2011FD6900F68763 /* AuthMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthMethod.swift; sourceTree = "<group>"; };
+		4315E4C020120F1600F68763 /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
+		4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Extension.swift"; sourceTree = "<group>"; };
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		4318FF491D80551900B5BE18 /* MessageToAttachmentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToAttachmentOperation.swift; sourceTree = "<group>"; };
@@ -702,7 +705,6 @@
 		43980EDF1CBD24B000A7FC3C /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		43980EF91CBD415700A7FC3C /* AppConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
-		439932261FEA722100E92C35 /* OAuth2Configurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configurator.swift; sourceTree = "<group>"; };
 		439932281FEA7E7A00E92C35 /* String+Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		439932311FEA9B7200E92C35 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Pantomime.swift"; sourceTree = "<group>"; };
@@ -1068,6 +1070,7 @@
 			children = (
 				43122B3A1DF5B75000610253 /* Service */,
 				43122B121DF5B48B00610253 /* ConnectInfo.swift */,
+				4315E4BE2011FD6900F68763 /* AuthMethod.swift */,
 				43122B131DF5B48B00610253 /* EmailConnectInfo.swift */,
 				43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */,
 				43122B141DF5B48B00610253 /* EmailService.swift */,
@@ -1183,16 +1186,15 @@
 				43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */,
 				438052861FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift */,
 				4388A0E32008F8F4008CB98D /* OAuth2AccessTokenProtocol.swift */,
-				43069BAD2010F01700DC6920 /* OAuth2AccessTokenFactory.swift */,
 				4388A0E12008F813008CB98D /* OAuth2AccessToken.swift */,
 				438052881FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift */,
 				4380528A1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift */,
 				43306EC11FE129840045DD00 /* OAuth2Type.swift */,
+				4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */,
 				43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */,
 				43306EBD1FE125B50045DD00 /* OAuth2Authorization.swift */,
 				43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */,
 				431C6E031FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift */,
-				439932261FEA722100E92C35 /* OAuth2Configurator.swift */,
 				43B0444B20077323007BCE3F /* OAuth2Configuration.swift */,
 			);
 			path = OAuth2;
@@ -1287,6 +1289,7 @@
 				1541D7F21FC8292D00D52A5D /* URL+MIME.swift */,
 				157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */,
 				155050F11FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift */,
+				4315E4C020120F1600F68763 /* NSSecureCoding+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2040,6 +2043,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
 				43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */,
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
 				B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */,
@@ -2051,6 +2055,7 @@
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
 				43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */,
 				43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */,
+				4315E4C120120F1600F68763 /* NSSecureCoding+Extension.swift in Sources */,
 				4351C2D71F4441190053381F /* node.c in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */,
@@ -2154,7 +2159,6 @@
 				222B35861DF97A44007A1F82 /* ComposeDataSource.swift in Sources */,
 				4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */,
 				43CE63CF1DE8845E00FAC505 /* CdAttachment+pEp.swift in Sources */,
-				43069BAE2010F01700DC6920 /* OAuth2AccessTokenFactory.swift in Sources */,
 				43AAC22B1F7A5AEE00F435F4 /* BaseViewController.swift in Sources */,
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
 				4362399C1EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift in Sources */,
@@ -2210,7 +2214,6 @@
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,
 				155050F21FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift in Sources */,
 				4362399A1EAE0CE800BD2EB9 /* Actionsheet+Extension.swift in Sources */,
-				439932271FEA722100E92C35 /* OAuth2Configurator.swift in Sources */,
 				B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
 				431E58FA1ED591E900EFA77F /* AccountVerificationService.swift in Sources */,
@@ -2246,6 +2249,7 @@
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
+				4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
 				430EA5FA1F0FAD7700F816D4 /* ServiceChainExecutor.swift in Sources */,

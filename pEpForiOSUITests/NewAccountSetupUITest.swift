@@ -176,6 +176,12 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
+    func testTriggerYahooOauth2() {
+        let account = UITestData.yahooOAuth2Account
+        newAccountSetup(account: account, enterPassword: false)
+        waitForever()
+    }
+
     // Mark: DEBUG ONLY HELPER
 
     // Opens the "add account" setting in manual configuration mode.

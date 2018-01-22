@@ -106,7 +106,7 @@ public struct AccountUserInput {
             logIn = address
         }
 
-        let thePassword = accessToken?.persistIntoString() ?? password
+        let thePassword = accessToken?.persistBase64Encoded() ?? password
 
         // The key is created upfront, in case of SASL XOAUTH2, where we want to link
         // the token to the same key
