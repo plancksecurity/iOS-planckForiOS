@@ -378,6 +378,11 @@ extension ImapSync: CWServiceClient {
             authMethod == .saslXoauth2,
             let loginName = connectInfo.loginName,
             let token = connectInfo.accessToken {
+            // The CWIMAPStore seems to expect that that its delegate (us) processes synchronously
+            // and thus has all work done when returning. Thus we have to wait.
+            //BUFF: might be the reason for sending NULL requests in other places also?
+            let group = DispatchGroup()
+            group.enter()
             token.performAction() { [weak self] error, freshToken in
                 if let err = error {
                     Log.shared.error(component: #function, error: err)
@@ -386,11 +391,20 @@ extension ImapSync: CWServiceClient {
                             theDelegate.authenticationFailed(theSelf, notification: nil)
                         }
                     }
+                    group.leave()
                 } else {
-                    self?.imapStore.authenticate(
-                        loginName, password: freshToken, mechanism: authMethod.rawValue)
+                    // Our OAuthToken runs the competion handler on the main thread,
+                    // thus we dispatch away from it.
+                    let queue = DispatchQueue(label: "net.pep-security.pep4iOS.NetworkService.ImapService")
+                    queue.async {
+                        self?.imapStore.authenticate(
+                            loginName, password: freshToken, mechanism: authMethod.rawValue)
+                        group.leave()
+                    }
                 }
             }
+            group.wait()
+            return
         } else if let loginName = connectInfo.loginName,
             let loginPassword = connectInfo.loginPassword {
             imapStore.authenticate(
