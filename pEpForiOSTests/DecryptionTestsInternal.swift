@@ -35,8 +35,18 @@ class DecryptionTestsInternal: XCTestCase {
 
         persistentSetup = PersistentSetup()
 
-        let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
-        let cdSenderAccount = TestData().createWorkingCdAccount(number: 1)
+        let cdMyAccount = TestData().createWorkingCdAccount(number: 0, isMyself: true) //BUFF:
+//        guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
+//            XCTFail("Error PEPIdentity")
+//            return
+//        }
+
+        let cdSenderAccount = TestData().createWorkingCdAccount(number: 1, isMyself: true)
+//        guard let senderPepIdentity = cdSenderAccount.identity?.pEpIdentity() else {
+//            XCTFail("Error PEPIdentity")
+//            return
+//        }
+//        session.mySelf(senderPepIdentity)
 
         cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
@@ -65,10 +75,17 @@ class DecryptionTestsInternal: XCTestCase {
 
     func pEpIdentity(cdAccount: CdAccount) -> PEPIdentity? {
         guard
-            let identity = cdAccount.identity?.pEpIdentity() else {
-                XCTFail()
+            let cdIdentity = cdAccount.identity,
+            cdIdentity.isMySelf,
+            cdIdentity.userID == CdIdentity.pEpOwnUserID else {
+                XCTFail(
+                    """
+An account must have an identity that is mySelf and thus must have pEpOwnUserID set.
+"""
+                )
                 return nil
         }
+        let identity = cdIdentity.pEpIdentity()
         session.mySelf(identity)
         return identity
     }
@@ -107,7 +124,7 @@ class DecryptionTestsInternal: XCTestCase {
             guard
                 let theEncryptedDict = encryptedDictOpt as? PEPMessageDict,
                 let theAttachments = theEncryptedDict[kPepAttachments] as? NSArray else {
-                    XCTFail()
+                    XCTFail("No attachments")
                     return
             }
             XCTAssertEqual(theAttachments.count, 2)

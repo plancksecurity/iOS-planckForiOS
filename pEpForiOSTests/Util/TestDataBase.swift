@@ -100,10 +100,19 @@ class TestDataBase {
             credImap.loginName = id.address
             credImap.key = keyImap
             imap.credentials = credImap
-            
+
             acc.addToServers(imap)
 
             return acc
+        }
+
+        func cdIdentityWithoutAccount() -> CdIdentity {
+            let id = CdIdentity.create()
+            id.address = idAddress
+            id.userName = idUserName
+            //BUFF: need random ID for non myself?
+
+            return id
         }
 
         func account() -> Account {
@@ -180,6 +189,14 @@ class TestDataBase {
     }
 
     /**
+     - Returns: A valid `CdIdentity` without parent account.
+     */
+    func createWorkingCdIdentity(number: Int = 0) -> CdIdentity {
+        let result = createWorkingAccountSettings(number: number).cdIdentityWithoutAccount()
+        return result
+    }
+
+    /**
      - Returns: A `CdAccount` that should not be able to be verified.
      */
     func createDisfunctionalCdAccount() -> CdAccount {
@@ -206,10 +223,11 @@ class TestDataBase {
     /**
      - Returns: A valid `PEPIdentity`.
      */
-    func createWorkingIdentity(number: Int = 0, isMyself: Bool = true) -> PEPIdentity {
+    func createWorkingIdentity(number: Int = 0) -> PEPIdentity {
         populateAccounts()
 
-        return createWorkingCdAccount(number: number, isMyself: isMyself).pEpIdentity()  //BUFF:
+        return createWorkingCdIdentity(number: number).pEpIdentity() 
+//        return createWorkingCdAccount(number: number, isMyself: isMyself).pEpIdentity()  //BUFF:
 //        return createWorkingAccountSettings(number: number).pEpIdentity()
     }
 
