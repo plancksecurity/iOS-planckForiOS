@@ -27,7 +27,8 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
         guard let redirectURLScheme = settings[redirectURLKey] as? String else {
             return nil
         }
-        guard let redirectURL = URL(string: "\(redirectURLScheme):/\(Date().hashValue)") else {
+        let path = Date().timeIntervalSinceReferenceDate
+        guard let redirectURL = URL(string: "\(redirectURLScheme):/\(path)") else {
             return nil
         }
 
