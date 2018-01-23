@@ -379,8 +379,7 @@ extension ImapSync: CWServiceClient {
             let loginName = connectInfo.loginName,
             let token = connectInfo.accessToken {
             // The CWIMAPStore seems to expect that that its delegate (us) processes synchronously
-            // and thus has all work done when returning. Thus we have to wait.
-            //BUFF: might be the reason for sending NULL requests in other places also?
+            // and all work is done when returning. Thus we have to wait.
             let group = DispatchGroup()
             group.enter()
             token.performAction() { [weak self] error, freshToken in

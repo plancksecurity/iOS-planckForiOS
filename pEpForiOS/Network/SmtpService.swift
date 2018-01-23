@@ -183,18 +183,25 @@ extension SmtpSend: CWServiceClient {
                         if let theSelf = self {
                             theSelf.delegate?.authenticationFailed(theSelf, theNotification: nil)
                         }
+                        group.leave()
                     } else {
                         if let theSelf = self {
                             // Our OAuthToken runs this competion handler on the main thread,
                             // thus we dispatch away from it.
                             let queue = DispatchQueue(label: "net.pep-security.pep4iOS.NetworkService.ImapService")
-                            queue.async {
+                            queue.sync {
                                 theSelf.smtp.authenticate(
                                     loginName, password: freshToken, mechanism: authMethod.rawValue)
+                                group.leave()
                             }
+                        } else {
+                            Log.shared.errorAndCrash(component: #function,
+                                                     errorString: "Lost myself")
+                            group.leave()
+
                         }
                     }
-                    group.leave()
+
                 }
                 group.wait()
             } else if let loginName = connectInfo.loginName,
