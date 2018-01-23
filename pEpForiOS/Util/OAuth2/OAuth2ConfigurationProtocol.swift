@@ -13,4 +13,5 @@ protocol OAuth2ConfigurationProtocol {
     var clientID: String { get }
     var redirectURL: URL { get }
     var scopes: [String] { get }
+    var clientSecret: String? { get }
 }

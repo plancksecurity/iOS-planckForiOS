@@ -13,25 +13,41 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     let scopes: [String]
     let clientID: String
     let redirectURL: URL
+    let clientSecret: String?
 
-    init?(oauth2Type: OAuth2Type, scopes: [String], clientID: String, redirectURL: URL) {
+    init?(
+        oauth2Type: OAuth2Type, scopes: [String], clientID: String, clientSecret: String? = nil,
+        redirectURL: URL) {
         self.oauth2Type = oauth2Type
         self.scopes = scopes
         self.clientID = clientID
+        self.clientSecret = clientSecret
         self.redirectURL = redirectURL
     }
-    init?(oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String, redirectURL: URL) {
+
+    init?(
+        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
+        clientSecretKey: String? = nil, redirectURL: URL) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
         guard let clientID = settings[clientIDKey] as? String else {
             return nil
         }
+
+        var clientSecret: String? = nil
+        if let theKey = clientSecretKey,
+            let theClientSecret = settings[theKey] as? String {
+            clientSecret = theClientSecret
+        }
+
         self.init(oauth2Type: oauth2Type, scopes: scopes, clientID: clientID,
-                  redirectURL: redirectURL)
+                  clientSecret: clientSecret, redirectURL: redirectURL)
     }
 
-    init?(oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String, redirectURLKey: String) {
+    init?(
+        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
+        clientSecretKey: String? = nil, redirectURLKey: String) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
@@ -46,7 +62,13 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
             return nil
         }
 
+        var clientSecret: String? = nil
+        if let theKey = clientSecretKey,
+            let theClientSecret = settings[theKey] as? String {
+            clientSecret = theClientSecret
+        }
+
         self.init(oauth2Type: oauth2Type, scopes: scopes, clientID: clientID,
-                  redirectURL: redirectURL)
+                  clientSecret: clientSecret, redirectURL: redirectURL)
     }
 }

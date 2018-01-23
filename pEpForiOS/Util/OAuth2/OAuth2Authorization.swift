@@ -41,7 +41,7 @@ class OAuth2Authorization: OAuth2AuthorizationProtocol {
         let request = OIDAuthorizationRequest(
             configuration: oauth2Configuration.oauth2Type.configurationOID(),
             clientId: oauth2Configuration.clientID,
-            clientSecret: nil,
+            clientSecret: oauth2Configuration.clientSecret,
             scopes: oauth2Configuration.scopes,
             redirectURL: oauth2Configuration.redirectURL,
             responseType: OIDResponseTypeCode,

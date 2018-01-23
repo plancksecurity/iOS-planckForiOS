@@ -18,8 +18,9 @@ extension OAuth2Type {
                 redirectURLKey: "OAUTH2_GMAIL_REDIRECT_URL_SCHEME")
         case .yahoo:
             return OAuth2Configuration(
-                oauth2Type: .yahoo, scopes: ["mail-r", "mail-w"],
+                oauth2Type: .yahoo, scopes: ["openid"],
                 clientIDKey: "OAUTH2_YAHOO_CLIENT_ID",
+                clientSecretKey: "OAUTH2_YAHOO_CLIENT_SECRET",
                 redirectURL: URL(string: "oob")!)
         }
     }

@@ -88,5 +88,7 @@
 	<string>${OAUTH2_YAHOO_CLIENT_ID}</string>
 	<key>OAUTH2_YAHOO_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_YAHOO_REDIRECT_URL_SCHEME}</string>
+	<key>OAUTH2_YAHOO_CLIENT_SECRET</key>
+	<string>${OAUTH2_YAHOO_CLIENT_SECRET}</string>
 </dict>
 </plist>
