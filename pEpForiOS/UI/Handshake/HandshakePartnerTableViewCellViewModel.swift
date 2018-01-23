@@ -51,7 +51,6 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     var partnerImage = ObservableValue<UIImage>()
-    var rating: PEP_rating = PEP_rating_undefined
     var trustwords: String?
 
     /**
@@ -90,8 +89,6 @@ class HandshakePartnerTableViewCellViewModel {
         self.partnerIdentity = partner
         self.session = session
         self.identityColor = partner.pEpColor(session: session)
-
-        self.rating = partner.pEpRating(session: session)
 
         pEpSelf = ownIdentity.updatedIdentityDictionary(session: session)
         pEpPartner = partner.updatedIdentityDictionary(session: session)
@@ -173,7 +170,6 @@ class HandshakePartnerTableViewCellViewModel {
         pEpPartner = PEPIdentity(identity:pEpPartnerCopy)
         action(pEpPartner)
         identityColor = partnerIdentity.pEpColor(session: session)
-        rating = partnerIdentity.pEpRating(session: session)
         updateTrustwords(session: session)
     }
 
