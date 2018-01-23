@@ -20,7 +20,7 @@ extension OAuth2Type {
             return OAuth2Configuration(
                 oauth2Type: .yahoo, scopes: ["mail-r", "mail-w"],
                 clientIDKey: "OAUTH2_YAHOO_CLIENT_ID",
-                redirectURLKey: "OAUTH2_YAHOO_REDIRECT_URL_SCHEME")
+                redirectURL: URL(string: "oob")!)
         }
     }
 }
