@@ -48,6 +48,10 @@ struct DisplayUserError: LocalizedError {
             type = DisplayUserError.type(forError: smtpError)
         } else if let imapError = error as? ImapSyncError {
             type = DisplayUserError.type(forError: imapError)
+        } else if let oauthInternalError = error as? OAuth2InternalError {
+            type = DisplayUserError.type(forError: oauthInternalError)
+        } else if let oauthError = error as? OAuth2AuthorizationError {
+            type = DisplayUserError.type(forError: oauthError)
         } else {
             foreignDescription = error.localizedDescription
             type = .unknownError
@@ -174,6 +178,25 @@ struct DisplayUserError: LocalizedError {
         switch error {
         case .encryptionError:
             return .internalError
+        }
+    }
+
+    // MARK: OAuth2InternalError
+
+    static private func type(forError error: OAuth2InternalError) -> ErrorType {
+        // All OAuth2InternalErrors are internal errors.
+        switch error {
+        default:
+            return .internalError
+        }
+    }
+
+    // MARK: OAuth2AuthorizationError
+
+    static private func type(forError error: OAuth2AuthorizationError) -> ErrorType {
+        switch error {
+        case .inconsistentAuthorizationResult:
+            return .authenticationFailed
         }
     }
 
