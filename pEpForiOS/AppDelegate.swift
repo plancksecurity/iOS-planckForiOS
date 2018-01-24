@@ -92,6 +92,62 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.shared.pause()
     }
 
+    func kickOffMySelf() {
+        let op = MySelfOperation(parentName: #function, backgrounder: self)
+        op.completionBlock = {
+            // We might be the last service that finishes, so we have to cleanup.
+            PEPSession.cleanup()
+        }
+        mySelfQueue.addOperation(op)
+    }
+
+    func loadCoreDataStack() {
+        let objectModel = MessageModelData.MessageModelData()
+        do {
+            try Record.loadCoreDataStack(managedObjectModel: objectModel, storeURL: nil)
+        } catch {
+            Log.shared.errorAndCrash(component: comp, errorString: "Error while Loading DataStack")
+        }
+    }
+
+    /**
+     Removes all keys, and the management DB, when the user chooses so.
+     - Returns: True if the pEp management DB was deleted, so further actions can be taken.
+     */
+    func deleteManagementDBIfRequired() -> Bool {
+        if appSettings.shouldReinitializePepOnNextStartup {
+            appSettings.shouldReinitializePepOnNextStartup = false
+            let _ = PEPUtil.pEpClean()
+            return true
+        }
+        return false
+    }
+
+    /**
+     If pEp has been reinitialized, delete all folders and messsages.
+     */
+    func deleteAllFolders(pEpReInitialized: Bool) {
+        if pEpReInitialized {
+            // NSBatchDeleteRequest doesn't work so well here because of the need
+            // to nullify the relations. This is used only for internal testing, so the
+            // performance is neglible.
+            let folders = CdFolder.all() as? [CdFolder] ?? []
+            for f in folders {
+                f.delete()
+            }
+
+            let msgs = CdMessage.all() as? [CdMessage] ?? []
+            for m in msgs {
+                m.delete()
+            }
+
+            CdHeaderField.deleteOrphans()
+            Record.saveAndWait()
+        }
+    }
+
+    // MARK: - UIApplicationDelegate
+
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -173,15 +229,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         stopUsingPepSession()
     }
 
-    func kickOffMySelf() {
-        let op = MySelfOperation(parentName: #function, backgrounder: self)
-        op.completionBlock = {
-            // We might be the last service that finishes, so we have to cleanup.
-            PEPSession.cleanup()
-        }
-        mySelfQueue.addOperation(op)
-    }
-
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.application = application
 
@@ -234,50 +281,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return oauth2Provider.processAuthorizationRedirect(url: url)
     }
 
-    func loadCoreDataStack() {
-        let objectModel = MessageModelData.MessageModelData()
-        do {
-            try Record.loadCoreDataStack(managedObjectModel: objectModel, storeURL: nil)
-        } catch {
-            Log.shared.errorAndCrash(component: comp, errorString: "Error while Loading DataStack")
-        }
-    }
-
-    /**
-     Removes all keys, and the management DB, when the user chooses so.
-     - Returns: True if the pEp management DB was deleted, so further actions can be taken.
-     */
-    func deleteManagementDBIfRequired() -> Bool {
-        if appSettings.shouldReinitializePepOnNextStartup {
-            appSettings.shouldReinitializePepOnNextStartup = false
-            let _ = PEPUtil.pEpClean()
-            return true
-        }
-        return false
-    }
-
-    /**
-     If pEp has been reinitialized, delete all folders and messsages.
-     */
-    func deleteAllFolders(pEpReInitialized: Bool) {
-        if pEpReInitialized {
-            // NSBatchDeleteRequest doesn't work so well here because of the need
-            // to nullify the relations. This is used only for internal testing, so the
-            // performance is neglible.
-            let folders = CdFolder.all() as? [CdFolder] ?? []
-            for f in folders {
-                f.delete()
-            }
-
-            let msgs = CdMessage.all() as? [CdMessage] ?? []
-            for m in msgs {
-                m.delete()
-            }
-
-            CdHeaderField.deleteOrphans()
-            Record.saveAndWait()
-        }
-    }
 }
 
 // MARK: - BackgroundTaskProtocol
