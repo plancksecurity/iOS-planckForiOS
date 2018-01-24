@@ -281,6 +281,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return oauth2Provider.processAuthorizationRedirect(url: url)
     }
 
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let theUrl = userActivity.webpageURL {
+            return oauth2Provider.processAuthorizationRedirect(url: theUrl)
+        }
+        return false
+    }
 }
 
 // MARK: - BackgroundTaskProtocol
