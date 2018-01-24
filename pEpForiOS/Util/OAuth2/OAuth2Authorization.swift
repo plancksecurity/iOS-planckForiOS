@@ -8,21 +8,6 @@
 
 import Foundation
 
-extension OAuth2Type {
-    func configurationOID() -> OIDServiceConfiguration {
-        switch self {
-        case .google:
-            return OIDServiceConfiguration(
-                authorizationEndpoint: URL(string: "https://accounts.google.com/o/oauth2/v2/auth")!,
-                tokenEndpoint: URL(string: "https://www.googleapis.com/oauth2/v4/token")!)
-        case .yahoo:
-            return OIDServiceConfiguration(
-                authorizationEndpoint: URL(string: "https://api.login.yahoo.com/oauth2/request_auth")!,
-                tokenEndpoint: URL(string: "https://api.login.yahoo.com/oauth2/get_token")!)
-        }
-    }
-}
-
 /**
  Base implementation of OAuth2AuthorizationProtocol and OAuth2AuthorizationURLHandlerProtocol.
  */

@@ -47,14 +47,14 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
 
     init?(
         oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
-        clientSecretKey: String? = nil, redirectURLKey: String) {
+        clientSecretKey: String? = nil, redirectURLSchemeKey: String) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
         guard let clientID = settings[clientIDKey] as? String else {
             return nil
         }
-        guard let redirectURLScheme = settings[redirectURLKey] as? String else {
+        guard let redirectURLScheme = settings[redirectURLSchemeKey] as? String else {
             return nil
         }
         let path = Date().timeIntervalSinceReferenceDate
