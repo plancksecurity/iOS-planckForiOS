@@ -171,19 +171,39 @@ extension SmtpSend: CWServiceClient {
                 authMethod == .saslXoauth2,
                 let loginName = connectInfo.loginName,
                 let token = connectInfo.accessToken {
+                // The CWIMAPStore seems to expect that that its delegate (us) processes
+                // synchronously and thus has all work done when returning.
+                // I am not sure if the same is true for CWSMTP but took the waiting approach over
+                // for safety reasons.
+                let group = DispatchGroup()
+                group.enter()
                 token.performAction() { [weak self] error, freshToken in
                     if let err = error {
                         Log.shared.error(component: #function, error: err)
                         if let theSelf = self {
                             theSelf.delegate?.authenticationFailed(theSelf, theNotification: nil)
                         }
+                        group.leave()
                     } else {
                         if let theSelf = self {
-                            theSelf.smtp.authenticate(
-                                loginName, password: freshToken, mechanism: authMethod.rawValue)
+                            // Our OAuthToken runs this competion handler on the main thread,
+                            // thus we dispatch away from it.
+                            let queue = DispatchQueue(label: "net.pep-security.pep4iOS.NetworkService.ImapService")
+                            queue.sync {
+                                theSelf.smtp.authenticate(
+                                    loginName, password: freshToken, mechanism: authMethod.rawValue)
+                                group.leave()
+                            }
+                        } else {
+                            Log.shared.errorAndCrash(component: #function,
+                                                     errorString: "Lost myself")
+                            group.leave()
+
                         }
                     }
+
                 }
+                group.wait()
             } else if let loginName = connectInfo.loginName,
                 let password = connectInfo.loginPassword {
                 self.smtp.authenticate(loginName, password: password,

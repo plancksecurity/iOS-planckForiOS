@@ -13,25 +13,62 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
     let scopes: [String]
     let clientID: String
     let redirectURL: URL
+    let clientSecret: String?
 
-    init?(oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String, redirectURLKey: String) {
+    init?(
+        oauth2Type: OAuth2Type, scopes: [String], clientID: String, clientSecret: String? = nil,
+        redirectURL: URL) {
         self.oauth2Type = oauth2Type
         self.scopes = scopes
+        self.clientID = clientID
+        self.clientSecret = clientSecret
+        self.redirectURL = redirectURL
+    }
 
+    init?(
+        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
+        clientSecretKey: String? = nil, redirectURL: URL) {
         guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
         guard let clientID = settings[clientIDKey] as? String else {
             return nil
         }
-        guard let redirectURLScheme = settings[redirectURLKey] as? String else {
+
+        var clientSecret: String? = nil
+        if let theKey = clientSecretKey,
+            let theClientSecret = settings[theKey] as? String {
+            clientSecret = theClientSecret
+        }
+
+        self.init(oauth2Type: oauth2Type, scopes: scopes, clientID: clientID,
+                  clientSecret: clientSecret, redirectURL: redirectURL)
+    }
+
+    init?(
+        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
+        clientSecretKey: String? = nil, redirectURLSchemeKey: String) {
+        guard let settings = Bundle.main.infoDictionary else {
             return nil
         }
-        guard let redirectURL = URL(string: "\(redirectURLScheme):/\(Date().hashValue)") else {
+        guard let clientID = settings[clientIDKey] as? String else {
+            return nil
+        }
+        guard let redirectURLScheme = settings[redirectURLSchemeKey] as? String else {
+            return nil
+        }
+        let path = Date().timeIntervalSinceReferenceDate
+        guard let redirectURL = URL(string: "\(redirectURLScheme):/\(path)") else {
             return nil
         }
 
-        self.clientID = clientID
-        self.redirectURL = redirectURL
+        var clientSecret: String? = nil
+        if let theKey = clientSecretKey,
+            let theClientSecret = settings[theKey] as? String {
+            clientSecret = theClientSecret
+        }
+
+        self.init(oauth2Type: oauth2Type, scopes: scopes, clientID: clientID,
+                  clientSecret: clientSecret, redirectURL: redirectURL)
     }
 }

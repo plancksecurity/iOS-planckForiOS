@@ -264,4 +264,11 @@ class SyncFlagsToServerSyncDelegate: DefaultImapSyncDelegate {
     public override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         (errorHandler as? SyncFlagsToServerOperation)?.folderOpenCompleted()
     }
+
+    public override func messageChanged(_ sync: ImapSync, notification: Notification?) {
+        // We are informed about a change on the message. As we triggered this change ourself by
+        // syncing flag changes to the server, we ignore this information and ...
+
+        // ... do nothing
+    }
 }

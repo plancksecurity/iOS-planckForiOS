@@ -14,6 +14,14 @@
 			<key>CFBundleURLName</key>
 			<string>gmail</string>
 		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>${OAUTH2_YAHOO_REDIRECT_URL_SCHEME}</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>yahoo</string>
+		</dict>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en_US</string>
@@ -80,5 +88,7 @@
 	<string>${OAUTH2_YAHOO_CLIENT_ID}</string>
 	<key>OAUTH2_YAHOO_REDIRECT_URL_SCHEME</key>
 	<string>${OAUTH2_YAHOO_REDIRECT_URL_SCHEME}</string>
+	<key>OAUTH2_YAHOO_CLIENT_SECRET</key>
+	<string>${OAUTH2_YAHOO_CLIENT_SECRET}</string>
 </dict>
 </plist>
