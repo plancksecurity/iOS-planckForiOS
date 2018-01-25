@@ -42,8 +42,7 @@ open class MySelfOperation: BaseOperation {
         // Which identities are owned?
         context.performAndWait {
             let pOwnIdentity = CdIdentity.PredicateFactory.isMySelf()
-//            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pOwnIdentity]) //BUFF: remove, obsolete.
-            guard let cdIds = CdIdentity.all(predicate: pOwnIdentity, in: context) //BUFF:
+            guard let cdIds = CdIdentity.all(predicate: pOwnIdentity, in: context)
                 as? [CdIdentity] else {
                     return
             }

@@ -108,7 +108,7 @@ class TestDataBase {
             let id = CdIdentity.create()
             id.address = idAddress
             id.userName = idUserName
-            if isMyself { //BUFF:
+            if isMyself {
                 id.userID = CdIdentity.pEpOwnUserID
             } else {
                 id.userID = UUID().uuidString
@@ -181,11 +181,10 @@ class TestDataBase {
     /**
      - Returns: A valid `CdAccount`.
      */
-    func createWorkingCdAccount(number: Int = 0, isMyself: Bool = true) -> CdAccount {
+    func createWorkingCdAccount(number: Int = 0) -> CdAccount {
         let result = createWorkingAccountSettings(number: number).cdAccount()
-        if isMyself { //BUFF: account identity is myself by definition. Remove 
-            result.identity?.userID = CdIdentity.pEpOwnUserID
-        }
+        // The identity of an account is mySelf by definion.
+        result.identity?.userID = CdIdentity.pEpOwnUserID
         return result
     }
 
@@ -226,10 +225,7 @@ class TestDataBase {
      */
     func createWorkingIdentity(number: Int = 0, isMyself: Bool = false) -> PEPIdentity {
         populateAccounts()
-
-        return createWorkingCdIdentity(number: number, isMyself: isMyself).pEpIdentity() 
-//        return createWorkingCdAccount(number: number, isMyself: isMyself).pEpIdentity()  //BUFF:
-//        return createWorkingAccountSettings(number: number).pEpIdentity()
+        return createWorkingCdIdentity(number: number, isMyself: isMyself).pEpIdentity()
     }
 
     /**

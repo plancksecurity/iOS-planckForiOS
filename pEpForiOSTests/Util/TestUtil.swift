@@ -403,7 +403,7 @@ class TestUtil {
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
-        guard let fromUserId = cdAccount.identity?.userID else { //BUFF:
+        guard let fromUserId = cdAccount.identity?.userID else {
             fatalError("No userId")
         }
         from.userID = fromUserId
