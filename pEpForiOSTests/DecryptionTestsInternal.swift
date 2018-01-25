@@ -35,18 +35,21 @@ class DecryptionTestsInternal: XCTestCase {
 
         persistentSetup = PersistentSetup()
 
-        let cdMyAccount = TestData().createWorkingCdAccount(number: 0, isMyself: true) //BUFF:
-//        guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
-//            XCTFail("Error PEPIdentity")
-//            return
-//        }
+        let cdMyAccount = TestData().createWorkingCdAccount(number: 0, isMyself: true)
+        guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
+            fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
+        }
+        pEpOwnIdentity = myPepIdentity
 
         let cdSenderAccount = TestData().createWorkingCdAccount(number: 1, isMyself: true)
-//        guard let senderPepIdentity = cdSenderAccount.identity?.pEpIdentity() else {
-//            XCTFail("Error PEPIdentity")
-//            return
-//        }
-//        session.mySelf(senderPepIdentity)
+        guard let senderPepIdentity = cdSenderAccount.identity?.pEpIdentity() else {
+            fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
+        }
+        self.cdOwnAccount = cdMyAccount
+        self.cdSenderAccount = cdSenderAccount
+
+        pEpSenderIdentity = senderPepIdentity
+        session.mySelf(senderPepIdentity)
 
         cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
@@ -55,12 +58,6 @@ class DecryptionTestsInternal: XCTestCase {
 
         TestUtil.skipValidation()
         Record.saveAndWait()
-
-        self.cdOwnAccount = cdMyAccount
-        self.cdSenderAccount = cdSenderAccount
-
-        self.pEpOwnIdentity = pEpIdentity(cdAccount: cdMyAccount)
-        self.pEpSenderIdentity = pEpIdentity(cdAccount: cdSenderAccount)
 
         self.backgroundQueue = OperationQueue()
     }
@@ -74,15 +71,8 @@ class DecryptionTestsInternal: XCTestCase {
     }
 
     func pEpIdentity(cdAccount: CdAccount) -> PEPIdentity? {
-        guard
-            let cdIdentity = cdAccount.identity,
-            cdIdentity.isMySelf,
-            cdIdentity.userID == CdIdentity.pEpOwnUserID else {
-                XCTFail(
-                    """
-An account must have an identity that is mySelf and thus must have pEpOwnUserID set.
-"""
-                )
+        guard let cdIdentity = cdAccount.identity, cdIdentity.isMySelf else {
+                XCTFail("An account must have an identity that is mySelf.")
                 return nil
         }
         let identity = cdIdentity.pEpIdentity()
