@@ -12,8 +12,6 @@ import CoreData
 import MessageModel
 
 class TestDataBase {
-    let userIdMyself = "own_myself_user_id_unitTest"
-
     struct AccountSettings {
         var accountName: String?
         var idAddress: String
@@ -106,12 +104,15 @@ class TestDataBase {
             return acc
         }
 
-        func cdIdentityWithoutAccount() -> CdIdentity {
+        func cdIdentityWithoutAccount(isMyself: Bool = false) -> CdIdentity {
             let id = CdIdentity.create()
             id.address = idAddress
             id.userName = idUserName
-            //BUFF: need random ID for non myself?
-
+            if isMyself { //BUFF:
+                id.userID = CdIdentity.pEpOwnUserID
+            } else {
+                id.userID = UUID().uuidString
+            }
             return id
         }
 
@@ -182,8 +183,8 @@ class TestDataBase {
      */
     func createWorkingCdAccount(number: Int = 0, isMyself: Bool = true) -> CdAccount {
         let result = createWorkingAccountSettings(number: number).cdAccount()
-        if isMyself {
-            result.identity?.userID = userIdMyself
+        if isMyself { //BUFF: account identity is myself by definition. Remove 
+            result.identity?.userID = CdIdentity.pEpOwnUserID
         }
         return result
     }
@@ -191,8 +192,8 @@ class TestDataBase {
     /**
      - Returns: A valid `CdIdentity` without parent account.
      */
-    func createWorkingCdIdentity(number: Int = 0) -> CdIdentity {
-        let result = createWorkingAccountSettings(number: number).cdIdentityWithoutAccount()
+    func createWorkingCdIdentity(number: Int = 0, isMyself: Bool = false) -> CdIdentity {
+        let result = createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself)
         return result
     }
 
@@ -223,10 +224,10 @@ class TestDataBase {
     /**
      - Returns: A valid `PEPIdentity`.
      */
-    func createWorkingIdentity(number: Int = 0) -> PEPIdentity {
+    func createWorkingIdentity(number: Int = 0, isMyself: Bool = false) -> PEPIdentity {
         populateAccounts()
 
-        return createWorkingCdIdentity(number: number).pEpIdentity() 
+        return createWorkingCdIdentity(number: number, isMyself: isMyself).pEpIdentity() 
 //        return createWorkingCdAccount(number: number, isMyself: isMyself).pEpIdentity()  //BUFF:
 //        return createWorkingAccountSettings(number: number).pEpIdentity()
     }

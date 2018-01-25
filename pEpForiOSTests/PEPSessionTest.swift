@@ -72,55 +72,55 @@ class PEPSessionTest: XCTestCase {
         Log.error(component: "testPEPConversion", errorString: "test")
     }
 
-//    func testMessageIDAndReferencesAfterEncrypt() { //BUFF: Problem! fails
-//        let testData = TestData()
-//        let myself = testData.createWorkingIdentity(number: 0) //BUFF: createWorkingIdentity changed by me
-//        let mySubject = "Some Subject"
-//        let myMessageID = "myID"
-//        let references = ["ref1", "ref2", "ref3"]
-//        let pEpMessage = PEPMessage()
-//
-//        pEpMessage.from = myself
-//        pEpMessage.to = [myself]
-//        pEpMessage.messageID = myMessageID
-//        pEpMessage.references = references
-//        pEpMessage.shortMessage = mySubject
-//        pEpMessage.longMessage = "The text body"
-//        pEpMessage.direction = PEP_dir_outgoing
-//
-//        let session = PEPSession()
-//
-//        session.mySelf(myself)
-//
-//        let (status1, encMsg1) = session.encrypt(pEpMessage: pEpMessage, forIdentity: myself)
-//        XCTAssertEqual(status1, PEP_STATUS_OK)
-//        if let theEncMsg = encMsg1 {
-//            // expecting that sensitive data gets hidden (ENGINE-287)
-//            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
-//            XCTAssertNotEqual(theEncMsg.references ?? [], references)
-//            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
-//
-//            tryDecryptMessage(
-//                message: theEncMsg, myID:myMessageID, references: references, session: session)
-//        } else {
-//            XCTFail()
-//        }
-//
-//        let (status2, encMsg2) = session.encrypt(
-//            pEpMessage: pEpMessage)
-//        XCTAssertEqual(status2, PEP_STATUS_OK)
-//        if let theEncMsg = encMsg2 {
-//            // expecting that message ID gets hidden (ENGINE-288)
-//            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
-//
-//            XCTAssertNotEqual(theEncMsg.references ?? [], references)
-//            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
-//            tryDecryptMessage(
-//                message: theEncMsg, myID: myMessageID, references: references, session: session)
-//        } else {
-//            XCTFail()
-//        }
-//    }
+    func testMessageIDAndReferencesAfterEncrypt() {
+        let testData = TestData()
+        let myself = testData.createWorkingIdentity(number: 0)
+        let mySubject = "Some Subject"
+        let myMessageID = "myID"
+        let references = ["ref1", "ref2", "ref3"]
+        let pEpMessage = PEPMessage()
+
+        pEpMessage.from = myself
+        pEpMessage.to = [myself]
+        pEpMessage.messageID = myMessageID
+        pEpMessage.references = references
+        pEpMessage.shortMessage = mySubject
+        pEpMessage.longMessage = "The text body"
+        pEpMessage.direction = PEP_dir_outgoing
+
+        let session = PEPSession()
+
+        session.mySelf(myself)
+
+        let (status1, encMsg1) = session.encrypt(pEpMessage: pEpMessage, forIdentity: myself)
+        XCTAssertEqual(status1, PEP_STATUS_OK)
+        if let theEncMsg = encMsg1 {
+            // expecting that sensitive data gets hidden (ENGINE-287)
+            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
+            XCTAssertNotEqual(theEncMsg.references ?? [], references)
+            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
+
+            tryDecryptMessage(
+                message: theEncMsg, myID:myMessageID, references: references, session: session)
+        } else {
+            XCTFail()
+        }
+
+        let (status2, encMsg2) = session.encrypt(
+            pEpMessage: pEpMessage)
+        XCTAssertEqual(status2, PEP_STATUS_OK)
+        if let theEncMsg = encMsg2 {
+            // expecting that message ID gets hidden (ENGINE-288)
+            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
+
+            XCTAssertNotEqual(theEncMsg.references ?? [], references)
+            XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
+            tryDecryptMessage(
+                message: theEncMsg, myID: myMessageID, references: references, session: session)
+        } else {
+            XCTFail()
+        }
+    }
 
     func testParseMessageHeapBufferOverflow() {
         CWLogger.setLogger(Log.shared)
