@@ -57,8 +57,8 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
         guard let redirectURLScheme = settings[redirectURLSchemeKey] as? String else {
             return nil
         }
-        let path = Date().timeIntervalSinceReferenceDate
-        guard let redirectURL = URL(string: "\(redirectURLScheme):/\(path)") else {
+        guard let redirectURL = URL(
+            string: "\(redirectURLScheme):/oauth2\(OAuth2Configuration.createTokenURLParamString())") else {
             return nil
         }
 
@@ -70,5 +70,40 @@ struct OAuth2Configuration: OAuth2ConfigurationProtocol {
 
         self.init(oauth2Type: oauth2Type, scopes: scopes, clientID: clientID,
                   clientSecret: clientSecret, redirectURL: redirectURL)
+    }
+
+    init?(
+        oauth2Type: OAuth2Type, scopes: [String], clientIDKey: String,
+        clientSecretKey: String? = nil, redirectURLKey: String) {
+        guard let settings = Bundle.main.infoDictionary else {
+            return nil
+        }
+        guard let clientID = settings[clientIDKey] as? String else {
+            return nil
+        }
+        guard let redirectURLBase = settings[redirectURLKey] as? String else {
+            return nil
+        }
+        guard let redirectURL = URL(
+            string: "\(redirectURLBase)\(OAuth2Configuration.createTokenURLParamString())") else {
+                return nil
+        }
+
+        var clientSecret: String? = nil
+        if let theKey = clientSecretKey,
+            let theClientSecret = settings[theKey] as? String {
+            clientSecret = theClientSecret
+        }
+
+        self.init(oauth2Type: oauth2Type, scopes: scopes, clientID: clientID,
+                  clientSecret: clientSecret, redirectURL: redirectURL)
+    }
+
+    static func createTokenURLParamString() -> String {
+        return "?token=\(createToken())"
+    }
+
+    static func createToken() -> String {
+        return "\(Date().timeIntervalSinceReferenceDate)"
     }
 }
