@@ -21,7 +21,7 @@ extension OAuth2Type {
                 oauth2Type: .yahoo, scopes: ["openid"],
                 clientIDKey: "OAUTH2_YAHOO_CLIENT_ID",
                 clientSecretKey: "OAUTH2_YAHOO_CLIENT_SECRET",
-                redirectURL: URL(string: "code")!)
+                redirectURLKey: "OAUTH2_YAHOO_REDIRECT_URL")
         }
     }
 
