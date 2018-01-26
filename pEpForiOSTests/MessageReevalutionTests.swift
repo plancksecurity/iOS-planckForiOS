@@ -45,7 +45,6 @@ class MessageReevalutionTests: XCTestCase {
         cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
         TestUtil.skipValidation()
-        Record.saveAndWait()
         self.cdOwnAccount = cdMyAccount
 
         // Sender
@@ -61,6 +60,7 @@ class MessageReevalutionTests: XCTestCase {
             Log.shared.errorAndCrash(component: #function, errorString: "Cant find ")
             return
         }
+        Record.saveAndWait()
         self.cdSenderIdentity =  sender
 
         // Test Keys
@@ -139,19 +139,14 @@ class MessageReevalutionTests: XCTestCase {
 
     func testCommunicationTypes() {
         let senderIdent = senderIdentity.updatedIdentityDictionary(session: session)
-
         XCTAssertTrue(senderIdent.containsPGPCommType())
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
 
         session.keyMistrusted(senderIdent)
-        let senderDict2 = senderIdentity.updatedIdentityDictionary(session: session)
-        XCTAssertFalse(senderDict2.containsPGPCommType()) // mistrusting sets the comm type to PEP_ct_mistrusted
-        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_mistrust)
 
-        session.keyResetTrust(senderDict2)
-        let senderDict3 = senderIdentity.updatedIdentityDictionary(session: session)
-        XCTAssertTrue(senderDict3.containsPGPCommType())
-        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
+        let senderDict2 = senderIdentity.updatedIdentityDictionary(session: session)
+        XCTAssertFalse(senderDict2.containsPGPCommType())
+        XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_undefined) // if this seems unexpected for you, read the comments in ENGINE-343
     }
 
     func reevaluateMessage(expectedRating: PEP_rating, inBackground: Bool = true,
