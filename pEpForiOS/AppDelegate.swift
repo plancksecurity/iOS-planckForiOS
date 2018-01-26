@@ -287,7 +287,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let theUrl = userActivity.webpageURL {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
         }
-        return true
+        return false
     }
 }
 
