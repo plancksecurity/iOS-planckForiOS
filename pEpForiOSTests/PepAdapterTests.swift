@@ -8,11 +8,12 @@
 
 import XCTest
 
+import MessageModel
 @testable import pEpForiOS
 
 class PepAdapterTests: XCTestCase {
     let comp = "PepAdapterTests"
-    let identityMe = PEPIdentity(address: "some@mail.com", userID: nil, userName: "This is me",
+    let identityMe = PEPIdentity(address: "some@mail.com", userID: CdIdentity.pEpOwnUserID, userName: "This is me",
                                  isOwn: true)
 
     var pEpSession: PEPSession {

@@ -98,10 +98,22 @@ class TestDataBase {
             credImap.loginName = id.address
             credImap.key = keyImap
             imap.credentials = credImap
-            
+
             acc.addToServers(imap)
 
             return acc
+        }
+
+        func cdIdentityWithoutAccount(isMyself: Bool = false) -> CdIdentity {
+            let id = CdIdentity.create()
+            id.address = idAddress
+            id.userName = idUserName
+            if isMyself {
+                id.userID = CdIdentity.pEpOwnUserID
+            } else {
+                id.userID = UUID().uuidString
+            }
+            return id
         }
 
         func account() -> Account {
@@ -170,7 +182,18 @@ class TestDataBase {
      - Returns: A valid `CdAccount`.
      */
     func createWorkingCdAccount(number: Int = 0) -> CdAccount {
-        return createWorkingAccountSettings(number: number).cdAccount()
+        let result = createWorkingAccountSettings(number: number).cdAccount()
+        // The identity of an account is mySelf by definion.
+        result.identity?.userID = CdIdentity.pEpOwnUserID
+        return result
+    }
+
+    /**
+     - Returns: A valid `CdIdentity` without parent account.
+     */
+    func createWorkingCdIdentity(number: Int = 0, isMyself: Bool = false) -> CdIdentity {
+        let result = createWorkingAccountSettings(number: number).cdIdentityWithoutAccount(isMyself: isMyself)
+        return result
     }
 
     /**
@@ -200,9 +223,9 @@ class TestDataBase {
     /**
      - Returns: A valid `PEPIdentity`.
      */
-    func createWorkingIdentity(number: Int = 0) -> PEPIdentity {
+    func createWorkingIdentity(number: Int = 0, isMyself: Bool = false) -> PEPIdentity {
         populateAccounts()
-        return createWorkingAccountSettings(number: number).pEpIdentity()
+        return createWorkingCdIdentity(number: number, isMyself: isMyself).pEpIdentity()
     }
 
     /**

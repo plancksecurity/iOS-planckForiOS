@@ -36,7 +36,20 @@ class DecryptionTestsInternal: XCTestCase {
         persistentSetup = PersistentSetup()
 
         let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
+        guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
+            fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
+        }
+        pEpOwnIdentity = myPepIdentity
+
         let cdSenderAccount = TestData().createWorkingCdAccount(number: 1)
+        guard let senderPepIdentity = cdSenderAccount.identity?.pEpIdentity() else {
+            fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
+        }
+        self.cdOwnAccount = cdMyAccount
+        self.cdSenderAccount = cdSenderAccount
+
+        pEpSenderIdentity = senderPepIdentity
+        session.mySelf(senderPepIdentity)
 
         cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
@@ -45,12 +58,6 @@ class DecryptionTestsInternal: XCTestCase {
 
         TestUtil.skipValidation()
         Record.saveAndWait()
-
-        self.cdOwnAccount = cdMyAccount
-        self.cdSenderAccount = cdSenderAccount
-
-        self.pEpOwnIdentity = pEpIdentity(cdAccount: cdMyAccount)
-        self.pEpSenderIdentity = pEpIdentity(cdAccount: cdSenderAccount)
 
         self.backgroundQueue = OperationQueue()
     }
@@ -64,11 +71,11 @@ class DecryptionTestsInternal: XCTestCase {
     }
 
     func pEpIdentity(cdAccount: CdAccount) -> PEPIdentity? {
-        guard
-            let identity = cdAccount.identity?.pEpIdentity() else {
-                XCTFail()
+        guard let cdIdentity = cdAccount.identity, cdIdentity.isMySelf else {
+                XCTFail("An account must have an identity that is mySelf.")
                 return nil
         }
+        let identity = cdIdentity.pEpIdentity()
         session.mySelf(identity)
         return identity
     }
@@ -107,7 +114,7 @@ class DecryptionTestsInternal: XCTestCase {
             guard
                 let theEncryptedDict = encryptedDictOpt as? PEPMessageDict,
                 let theAttachments = theEncryptedDict[kPepAttachments] as? NSArray else {
-                    XCTFail()
+                    XCTFail("No attachments")
                     return
             }
             XCTAssertEqual(theAttachments.count, 2)

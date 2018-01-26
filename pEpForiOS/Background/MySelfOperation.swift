@@ -42,8 +42,7 @@ open class MySelfOperation: BaseOperation {
         // Which identities are owned?
         context.performAndWait {
             let pOwnIdentity = CdIdentity.PredicateFactory.isMySelf()
-            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pOwnIdentity])
-            guard let cdIds = CdIdentity.all(predicate: p, in: context)
+            guard let cdIds = CdIdentity.all(predicate: pOwnIdentity, in: context)
                 as? [CdIdentity] else {
                     return
             }
@@ -58,6 +57,11 @@ open class MySelfOperation: BaseOperation {
             let taskID = backgrounder?.beginBackgroundTask(
             taskName: MySelfOperation.taskNameSubOperation)
             let session = PEPSession()
+            if pEpIdent.userID != CdIdentity.pEpOwnUserID {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString:
+                    "We are about to call mySelf() on a identity with userID other than pEpOwnUserID.")
+            }
             session.mySelf(pEpIdent)
             Log.shared.info(
                 component: #function,

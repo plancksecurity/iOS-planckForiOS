@@ -302,7 +302,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertEqual(CdMessage.all()?.count, numMails)
     }
 
-    /// The test makes no sense with servers supporting Special-Use Mailboxes, as it is not allowed to delete folder marked as reserved for special-use
+    /// The test makes no sense for servers supporting Special-Use Mailboxes, as it is not allowed
+    /// to delete folder marked as reserved for special-use
     func testCreateRequiredFoldersOperation() {
         let imapLogin = LoginImapOperation(
             parentName: #function, imapSyncData: imapSyncData)
@@ -633,8 +634,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
-        let color2 = session.identityRating(myself)
-        XCTAssertGreaterThanOrEqual(color2.rawValue, PEP_rating_reliable.rawValue)
+        let color = session.identityRating(myself)
+        XCTAssertGreaterThanOrEqual(color.rawValue, PEP_rating_reliable.rawValue)
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {

@@ -76,13 +76,13 @@ class PEPSessionTest: XCTestCase {
         let testData = TestData()
         let myself = testData.createWorkingIdentity(number: 0)
         let mySubject = "Some Subject"
-        let myID = "myID"
+        let myMessageID = "myID"
         let references = ["ref1", "ref2", "ref3"]
         let pEpMessage = PEPMessage()
 
         pEpMessage.from = myself
         pEpMessage.to = [myself]
-        pEpMessage.messageID = myID
+        pEpMessage.messageID = myMessageID
         pEpMessage.references = references
         pEpMessage.shortMessage = mySubject
         pEpMessage.longMessage = "The text body"
@@ -96,12 +96,12 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(status1, PEP_STATUS_OK)
         if let theEncMsg = encMsg1 {
             // expecting that sensitive data gets hidden (ENGINE-287)
-            XCTAssertNotEqual(theEncMsg.messageID, myID)
+            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
             XCTAssertNotEqual(theEncMsg.references ?? [], references)
             XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
 
             tryDecryptMessage(
-                message: theEncMsg, myID:myID, references: references, session: session)
+                message: theEncMsg, myID:myMessageID, references: references, session: session)
         } else {
             XCTFail()
         }
@@ -111,12 +111,12 @@ class PEPSessionTest: XCTestCase {
         XCTAssertEqual(status2, PEP_STATUS_OK)
         if let theEncMsg = encMsg2 {
             // expecting that message ID gets hidden (ENGINE-288)
-            XCTAssertNotEqual(theEncMsg.messageID, myID)
+            XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
 
             XCTAssertNotEqual(theEncMsg.references ?? [], references)
             XCTAssertNotEqual(theEncMsg.shortMessage, mySubject)
             tryDecryptMessage(
-                message: theEncMsg, myID: myID, references: references, session: session)
+                message: theEncMsg, myID: myMessageID, references: references, session: session)
         } else {
             XCTFail()
         }

@@ -120,11 +120,13 @@ class HandshakeTests: XCTestCase {
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
         session.keyMistrusted(fromIdent)
+        session.update(fromIdent)
         XCTAssertFalse(fromIdent.containsPGPCommType())
 
         // after mistrust, the engine throws away all status,
         // so this is expected behavior. See ENGINE-254
         session.keyResetTrust(fromIdent)
+        session.update(fromIdent)
         XCTAssertTrue(fromIdent.containsPGPCommType())
     }
 }

@@ -115,27 +115,27 @@ class TestUtil {
         receiver2: PEPIdentity, receiver3: PEPIdentity,
         receiver4: PEPIdentity) {
             let identity = PEPIdentity(address: "somewhere@overtherainbow.com",
-                                       userID: nil,
+                                       userID: CdIdentity.pEpOwnUserID,
                                        userName: "Unit Test",
                                        isOwn: true)
 
             let receiver1 = PEPIdentity(address: "receiver1@shopsmart.com",
-                                        userID: nil,
+                                        userID: UUID().uuidString,
                                         userName: "receiver1",
                                         isOwn: false)
 
             let receiver2 = PEPIdentity(address: "receiver2@shopsmart.com",
-                                        userID: nil,
+                                        userID:  UUID().uuidString,
                                         userName: "receiver2",
                                         isOwn: false)
 
             let receiver3 = PEPIdentity(address: "receiver3@shopsmart.com",
-                                        userID: nil,
+                                        userID:  UUID().uuidString,
                                         userName: "receiver3",
                                         isOwn: false)
 
             let receiver4 = PEPIdentity(address: "receiver4@shopsmart.com",
-                                        userID: nil,
+                                        userID:  UUID().uuidString,
                                         userName: "receiver4",
                                         isOwn: false)
 
@@ -403,6 +403,10 @@ class TestUtil {
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
         from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+        guard let fromUserId = cdAccount.identity?.userID else {
+            fatalError("No userId")
+        }
+        from.userID = fromUserId
 
         let toWithKey = CdIdentity.create()
         toWithKey.userName = "Unit 001"
