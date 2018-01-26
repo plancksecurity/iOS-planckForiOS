@@ -4,8 +4,7 @@
 <dict>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:*.prettyeasyprivacy.com</string>
-		<string>applinks:*.pep.security</string>
+		<string>applinks:pep.security</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array/>

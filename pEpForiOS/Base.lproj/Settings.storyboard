@@ -148,10 +148,11 @@
                         <segue destination="Eri-pJ-T3J" kind="show" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="3GT-NT-vyR" kind="show" identifier="segueShowLog" id="uAI-I4-HaK"/>
                         <segue destination="9LH-QE-79O" kind="show" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
-                        <segue destination="Rly-af-89k" kind="show" identifier="noAccounts" id="3NQ-O4-agd"/>
+                        <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindAccountAddedWithSegue:" id="dbj-Gx-Exo"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="1at-88-jou" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="5172" y="-54"/>
         </scene>

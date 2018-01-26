@@ -144,6 +144,7 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueEditAccount
         case segueShowLog
         case sequeShowCredits
+        case noAccounts
         case noSegue
     }
 
@@ -163,6 +164,7 @@ extension AccountsTableViewController: SegueHandlerType {
                 }
             }
             break
+        case .noAccounts: fallthrough
         case .segueAddNewAccount:
             guard
                 let destination = segue.destination as? LoginTableViewController
