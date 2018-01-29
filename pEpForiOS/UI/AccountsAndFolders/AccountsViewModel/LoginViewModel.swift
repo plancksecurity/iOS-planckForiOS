@@ -178,6 +178,8 @@ class LoginViewModel {
             let smtpTransport = ConnectionTransport(
                 accountSettingsTransport: outgoingServer.transport)
 
+            // Note: auth method is never taken from LAS. We either have OAuth2,
+            // as determined previously, or we will defer to pantomime to find out the best method.
             let newAccount = AccountUserInput(
                 address: accountName, userName: userName,
                 loginName: loginName,
