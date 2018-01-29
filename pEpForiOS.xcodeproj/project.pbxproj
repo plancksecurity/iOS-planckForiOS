@@ -45,6 +45,7 @@
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15A4566C201F396000B6B2CD /* FolderSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A4566B201F396000B6B2CD /* FolderSubscription.swift */; };
 		15A45670201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A4566F201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift */; };
+		15A45672201F674E00B6B2CD /* PEPIdentity+ProviderUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A45671201F674E00B6B2CD /* PEPIdentity+ProviderUtilsTest.swift */; };
 		15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A763D01F72D68000670313 /* KeyChainTest.swift */; };
 		15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */; };
 		15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */; };
@@ -470,6 +471,7 @@
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		15A4566B201F396000B6B2CD /* FolderSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSubscription.swift; sourceTree = "<group>"; };
 		15A4566F201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPIdentity+ProviderUtils.swift"; sourceTree = "<group>"; };
+		15A45671201F674E00B6B2CD /* PEPIdentity+ProviderUtilsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPIdentity+ProviderUtilsTest.swift"; sourceTree = "<group>"; };
 		15A763D01F72D68000670313 /* KeyChainTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
 		15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
 		15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoPlist+pEpStrings.swift"; sourceTree = "<group>"; };
@@ -1667,6 +1669,7 @@
 			children = (
 				4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */,
 				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
+				15A45671201F674E00B6B2CD /* PEPIdentity+ProviderUtilsTest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2364,6 +2367,7 @@
 				15B483D91F28CD8E000FB2CF /* CoreDataDrivenTestBase.swift in Sources */,
 				43C579ED1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift in Sources */,
 				1507BC311F2640960036B3E9 /* CdMessage+TestUtils.swift in Sources */,
+				15A45672201F674E00B6B2CD /* PEPIdentity+ProviderUtilsTest.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
 				15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */,
 				431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */,
