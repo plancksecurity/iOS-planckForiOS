@@ -23,7 +23,10 @@ public class FolderSectionViewModel {
 
     private func generateCells() {
         for folder in account.rootFolders {
-            items.append(FolderCellViewModel(folder: folder, level: 0))
+            if FolderSubscription.subscribe(to: folder) {
+                items.append(FolderCellViewModel(folder: folder, level: 0))
+            }
+
             childFolder(root: folder, level: 1)
         }
     }
