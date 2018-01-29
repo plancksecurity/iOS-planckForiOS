@@ -44,6 +44,7 @@
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15A4566C201F396000B6B2CD /* FolderSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A4566B201F396000B6B2CD /* FolderSubscription.swift */; };
+		15A45670201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A4566F201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift */; };
 		15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A763D01F72D68000670313 /* KeyChainTest.swift */; };
 		15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */; };
 		15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */; };
@@ -468,6 +469,7 @@
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		15A4566B201F396000B6B2CD /* FolderSubscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSubscription.swift; sourceTree = "<group>"; };
+		15A4566F201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPIdentity+ProviderUtils.swift"; sourceTree = "<group>"; };
 		15A763D01F72D68000670313 /* KeyChainTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
 		15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
 		15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoPlist+pEpStrings.swift"; sourceTree = "<group>"; };
@@ -1593,6 +1595,7 @@
 				439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */,
 				15F835231F34BE1300FCE887 /* AccountUserInput.swift */,
 				1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */,
+				15A4566F201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2154,6 +2157,7 @@
 				43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */,
 				43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */,
 				43257C801F50064100DDC7F0 /* HtmlToTextSaxParser.swift in Sources */,
+				15A45670201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift in Sources */,
 				431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,

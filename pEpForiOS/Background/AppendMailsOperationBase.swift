@@ -145,22 +145,23 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     final func handleNextMessage() {
         markLastMessageAsFinished()
 
-        if let (msg, ident, objID) = retrieveNextMessage() {
-            lastHandledMessageObjectID = objID
-            determineTargetFolder(msgID: objID)
-            let session = PEPSession()
-            let (status, encMsg) = session.encrypt(
-                pEpMessageDict: msg, forIdentity: ident)
-            let (encMsg2, error) = PEPUtil.check(
-                comp: comp, status: status, encryptedMessage: encMsg)
-            if let err = error {
-                handleError(err, message: "Cannot encrypt message")
-                appendMessage(pEpMessageDict: msg as PEPMessageDict)
-            } else {
-                appendMessage(pEpMessageDict: encMsg2 as? PEPMessageDict)
-            }
+        guard let (msg, ident, objID) = retrieveNextMessage(),
+            !ident.providerDoesHandleAppend(forFolderOfType: targetFolderType) else {
+                markAsFinished()
+                return
+        }
+        lastHandledMessageObjectID = objID
+        determineTargetFolder(msgID: objID)
+        let session = PEPSession()
+        let (status, encMsg) = session.encrypt(
+            pEpMessageDict: msg, forIdentity: ident)
+        let (encMsg2, error) = PEPUtil.check(
+            comp: comp, status: status, encryptedMessage: encMsg)
+        if let err = error {
+            handleError(err, message: "Cannot encrypt message")
+            appendMessage(pEpMessageDict: msg as PEPMessageDict)
         } else {
-            markAsFinished()
+            appendMessage(pEpMessageDict: encMsg2 as? PEPMessageDict)
         }
     }
 
