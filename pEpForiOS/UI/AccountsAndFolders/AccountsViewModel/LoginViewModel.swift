@@ -228,7 +228,22 @@ class LoginViewModel {
      */
     func isOAuth2Possible(email: String?) -> Bool {
         if let theMail = email?.trimmedWhiteSpace() {
-            return theMail.isGmailAddress || theMail.isYahooAddress
+            let acSettings = AccountSettings(accountName: theMail, provider: nil,
+                                             flags: AS_FLAG_USE_ANY_LOCAL, credentials: nil)
+
+            // do a sync call, but this should only lookup local information, so not blocking
+            acSettings.lookup()
+
+            if let _ = AccountSettingsError(accountSettings: acSettings) {
+                return false
+            }
+
+            guard let incomingServer = acSettings.incoming,
+                let outgoingServer = acSettings.outgoing else {
+                    return false
+            }
+
+            return incomingServer.authMethod == .OAUTH2 && outgoingServer.authMethod == .OAUTH2
         } else {
             return false
         }
