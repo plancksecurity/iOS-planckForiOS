@@ -75,7 +75,6 @@ class LoginViewModel {
         let emailAddress: String
         let userName: String
         let mySelfer: KickOffMySelfProtocol
-        var accessToken: OAuth2AccessTokenProtocol?
     }
 
     var loginAccount: Account?
@@ -119,7 +118,7 @@ class LoginViewModel {
         oauth2Authorizer: OAuth2AuthorizationProtocol) {
 
         lastOAuth2Parameters = OAuth2Parameters(
-            emailAddress: emailAddress, userName: userName, mySelfer: mySelfer, accessToken: nil)
+            emailAddress: emailAddress, userName: userName, mySelfer: mySelfer)
 
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
@@ -151,7 +150,8 @@ class LoginViewModel {
      after account setup
      */
     func login(accountName: String, userName: String, loginName: String? = nil,
-               password: String? = nil, mySelfer: KickOffMySelfProtocol) {
+               password: String? = nil, accessToken: OAuth2AccessTokenProtocol? = nil,
+               mySelfer: KickOffMySelfProtocol) {
         self.mySelfer = mySelfer
         let acSettings = AccountSettings(accountName: accountName, provider: nil,
                                          flags: AS_FLAG_USE_ANY, credentials: nil)
@@ -183,9 +183,9 @@ class LoginViewModel {
             let newAccount = AccountUserInput(
                 address: accountName, userName: userName,
                 loginName: loginName,
-                authMethod: lastOAuth2Parameters?.accessToken != nil ? .saslXoauth2 : nil,
-                password: lastOAuth2Parameters?.accessToken == nil ? password : nil,
-                accessToken: lastOAuth2Parameters?.accessToken,
+                authMethod: accessToken != nil ? .saslXoauth2 : nil,
+                password: accessToken == nil ? password : nil,
+                accessToken: accessToken,
                 serverIMAP: incomingServer.hostname,
                 portIMAP: UInt16(incomingServer.port),
                 transportIMAP: imapTransport,
@@ -240,8 +240,6 @@ class LoginViewModel {
 extension LoginViewModel: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
-        lastOAuth2Parameters = nil
-
         if result == .ok {
             mySelfer?.startMySelf()
         } else {
@@ -263,18 +261,18 @@ extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
         } else {
             if let token = accessToken {
                 Log.shared.info(component: #function, content: "received token \(token)")
-                lastOAuth2Parameters?.accessToken = accessToken
                 guard let oauth2Params = lastOAuth2Parameters else {
                     loginViewModelOAuth2ErrorDelegate?.handle(
                         oauth2Error: OAuth2InternalError.noParametersForVerification)
                     return
                 }
                 login(accountName: oauth2Params.emailAddress, userName: oauth2Params.userName,
-                      mySelfer: oauth2Params.mySelfer)
+                      accessToken: accessToken, mySelfer: oauth2Params.mySelfer)
             } else {
                 loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: OAuth2InternalError.noToken)
             }
         }
+        lastOAuth2Parameters = nil
         currentOauth2Authorizer = nil
     }
 }
