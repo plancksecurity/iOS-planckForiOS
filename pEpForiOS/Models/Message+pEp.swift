@@ -9,8 +9,6 @@
 import MessageModel
 
 extension Message {
-
-
     public var isEncrypted: Bool {
         return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_undefined
     }
