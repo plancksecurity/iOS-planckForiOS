@@ -207,31 +207,21 @@
 
         loginViewModel.accountVerificationResultDelegate = self
 
-        loginViewModel.isOAuth2Possible(email: email) { [weak self] in
-            if let theSelf = self {
-                reactOnOuth2(possible: $0, viewController: theSelf)
+        if loginViewModel.isOAuth2Possible(email: email) {
+            let oauth = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
+            loginViewModel.loginWithOAuth2(
+                viewController: self, emailAddress: email, userName: username,
+                mySelfer: appConfig.mySelfer, oauth2Authorizer: oauth)
+        } else {
+            guard let pass = password.text, pass != "" else {
+                handleLoginError(error: LoginTableViewControllerError.missingPassword,
+                                 offerManualSetup: false)
+                return
             }
-        }
 
-        func reactOnOuth2(possible: Bool, viewController vc: LoginTableViewController) {
-            GCD.onMain {
-                if possible {
-                    let oauth = vc.appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
-                    vc.loginViewModel.loginWithOAuth2(
-                        viewController: vc, emailAddress: email, userName: username,
-                        mySelfer: vc.appConfig.mySelfer, oauth2Authorizer: oauth)
-                } else {
-                    guard let pass = vc.password.text, pass != "" else {
-                        vc.handleLoginError(error: LoginTableViewControllerError.missingPassword,
-                                            offerManualSetup: false)
-                        return
-                    }
-
-                    vc.loginViewModel.login(
-                        accountName: email, userName: username, password: pass,
-                        mySelfer: self.appConfig.mySelfer)
-                }
-            }
+            loginViewModel.login(
+                accountName: email, userName: username, password: pass,
+                mySelfer: appConfig.mySelfer)
         }
     }
 
@@ -242,17 +232,12 @@
     // MARK: - Util
 
     func updatePasswordField(email: String?) {
-        loginViewModel.isOAuth2Possible(email: email) { [weak self] oauth2Possible in
-            if let theSelf = self {
-                GCD.onMain {
-                    theSelf.password.isEnabled = !oauth2Possible
-                    if theSelf.password.isEnabled {
-                        theSelf.password.enableLoginField()
-                    } else {
-                        theSelf.password.disableLoginField()
-                    }
-                }
-            }
+        let oauth2Possible = loginViewModel.isOAuth2Possible(email: email)
+        password.isEnabled = !oauth2Possible
+        if password.isEnabled {
+            password.enableLoginField()
+        } else {
+            password.disableLoginField()
         }
     }
  }
