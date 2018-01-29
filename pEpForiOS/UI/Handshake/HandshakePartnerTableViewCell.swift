@@ -101,7 +101,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         updateConfirmDistrustButtonsTitle()
-
+        trustWordsLabel.preferredMaxLayoutWidth = self.bounds.width
         startStopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow,
                                                textColor: .black)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)

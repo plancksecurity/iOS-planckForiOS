@@ -18,7 +18,7 @@ extension Message {
     }
 
     public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating? {
-        if belongToSentFolder() {
+        if belongToSentFolder()  || belongToDraftFolder () {
             return Message.calculateOutgoingColorFromMessage(message: self, session: session)
         } else {
             return PEPUtil.pEpRatingFromInt(pEpRatingInt)
@@ -27,6 +27,14 @@ extension Message {
 
     func belongToSentFolder() -> Bool {
         if self.parent.folderType  == FolderType.sent {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func belongToDraftFolder() -> Bool {
+        if self.parent.folderType  == FolderType.drafts {
             return true
         } else {
             return false
