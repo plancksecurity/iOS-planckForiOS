@@ -94,6 +94,11 @@ class LoginViewModel {
      */
     var mySelfer: KickOffMySelfProtocol?
 
+    /**
+     An OAuth2 process lives longer than the method call, so this object needs to survive.
+     */
+    var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
+
     init(messageSyncService: MessageSyncServiceProtocol? = nil) {
         self.messageSyncService = messageSyncService
     }
@@ -127,6 +132,7 @@ class LoginViewModel {
             config = OAuth2Type.yahoo.oauth2Config()
         }
         if let theConfig = config {
+            currentOauth2Authorizer = oauth2Authorizer
             theAuth.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
         } else {
@@ -267,5 +273,6 @@ extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
                 loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: OAuth2InternalError.noToken)
             }
         }
+        currentOauth2Authorizer = nil
     }
 }
