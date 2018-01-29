@@ -226,11 +226,11 @@ class LoginViewModel {
      Is an account with this email address typically an OAuth2 account?
      - Returns true, if this is an OAuth2 email address, true otherwise.
      */
-    func isOAuth2Possible(email: String?) -> Bool {
+    func isOAuth2Possible(email: String?, callback: (Bool) -> ()) {
         if let theMail = email?.trimmedWhiteSpace() {
-            return theMail.isGmailAddress || theMail.isYahooAddress
+            callback(theMail.isGmailAddress || theMail.isYahooAddress)
         } else {
-            return false
+            callback(false)
         }
     }
 }
