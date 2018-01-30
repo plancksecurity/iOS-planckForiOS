@@ -45,6 +45,7 @@ public extension CdFolder {
     public static func insertOrUpdate(folderName: String,
                                       folderSeparator: String?,
                                       folderType: FolderType?,
+                                      selectable: Bool = true,
                                       account: CdAccount) -> (CdFolder, Bool)? {
         guard let moc = account.managedObjectContext else {
             Log.shared.errorAndCrash(component: #function,
@@ -69,7 +70,7 @@ public extension CdFolder {
                 if let type = folderType {
                     folder.folderType = type
                 }
-                
+                folder.selectable = selectable
                 result = (folder, reactivate(folder: folder))
                 return
             }
@@ -90,6 +91,7 @@ public extension CdFolder {
                         if let type = folderType {
                             folder.folderType = type
                         }
+                        folder.selectable = selectable
                     }
                     folder.parent = parentFolder
                     let scalars = separator.unicodeScalars

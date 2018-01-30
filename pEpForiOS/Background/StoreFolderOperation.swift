@@ -22,6 +22,7 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
         let name: String
         let separator: String?
         let folderType: FolderType?
+        let selectable: Bool
     }
     
     let folderInfo: FolderInfo
@@ -60,6 +61,7 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
             folderName: folderInfo.name,
             folderSeparator: folderInfo.separator,
             folderType: folderInfo.folderType,
+            selectable: folderInfo.selectable,
             account: account) {
             if newlyCreated {
                 delegate?.didCreate(cdFolder: cdFolder)

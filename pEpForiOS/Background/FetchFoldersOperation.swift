@@ -108,10 +108,14 @@ public class FetchFoldersOperation: ImapSyncOperation {
         super.markAsFinished()
     }
 
-    func folderNameParsed(syncOp: FetchFoldersOperation, folderName: String, folderSeparator: String?,
-                          folderType: FolderType?) {
-        let folderInfo = StoreFolderOperation.FolderInfo(
-            name: folderName, separator: folderSeparator, folderType: folderType)
+    func folderNameParsed(syncOp: FetchFoldersOperation, folderName: String,
+                          folderSeparator: String?,
+                          folderType: FolderType?,
+                          selectable: Bool = false) {
+        let folderInfo = StoreFolderOperation.FolderInfo(name: folderName,
+                                                         separator: folderSeparator,
+                                                         folderType: folderType,
+                                                         selectable: selectable)
         let storeFolderOp = StoreFolderOperation(
             parentName: comp, connectInfo: syncOp.imapSyncData.connectInfo,
             folderInfo: folderInfo)
@@ -147,10 +151,28 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
             folderType = FolderType.from(pantomimeSpecialUseMailboxType: specialUseMailboxType)
         }
 
+        /*
+         IMAP (and thus Pantomime) reports several folder attributes:
+         PantomimeHoldsFolders = 1,
+         PantomimeHoldsMessages = 2,
+         PantomimeNoInferiors = 4,
+         PantomimeNoSelect = 8,
+         PantomimeMarked = 16,
+         PantomimeUnmarked = 32
+
+         We currently only take NoSelect into account.
+         */
+        var isSelectable = true
+        if let folderFlags = folderInfoDict[PantomimeFolderFlagsKey] as? UInt32,
+            (folderFlags & PantomimeNoSelect.rawValue) > 0 {
+            isSelectable = false
+        }
+
         (errorHandler as? FetchFoldersOperation)?.folderNameParsed(syncOp: syncOp,
                                                                    folderName: folderName,
                                                                    folderSeparator: folderSeparator,
-                                                                   folderType:folderType)
+                                                                   folderType:folderType,
+                                                                   selectable: isSelectable)
     }
 }
 
