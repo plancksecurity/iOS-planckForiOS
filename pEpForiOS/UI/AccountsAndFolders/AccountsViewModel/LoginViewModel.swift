@@ -123,14 +123,7 @@ class LoginViewModel {
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
 
-        // Determine oauth2 configuration
-        var config: OAuth2ConfigurationProtocol?
-        if emailAddress.isGmailAddress {
-            config = OAuth2Type.google.oauth2Config()
-        } else if emailAddress.isYahooAddress {
-            config = OAuth2Type.yahoo.oauth2Config()
-        }
-        if let theConfig = config {
+        if let theConfig = OAuth2Type(emailAddress: emailAddress)?.oauth2Config() {
             currentOauth2Authorizer = oauth2Authorizer
             theAuth.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
