@@ -9,13 +9,19 @@
 import XCTest
 
 class NewAccountSetupUITest: XCTestCase {
+    func app() -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchEnvironment = ["ASAN_OPTIONS": "detect_odr_violation=0"]
+        return app
+    }
+
     override func setUp() {
         super.setUp()
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        XCUIApplication().launch()
+        app().launch()
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
@@ -53,7 +59,8 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func manualNewAccountSetup(_ account: UIAccount) {
-        let tablesQuery = XCUIApplication().tables
+        let theApp = app()
+        let tablesQuery = theApp.tables
 
         var tf = tablesQuery.cells.textFields["nameOfTheUser"]
         typeTextIfEmpty(textField: tf, text: account.nameOfTheUser)
@@ -66,7 +73,7 @@ class NewAccountSetupUITest: XCTestCase {
         tf.tap()
         typeTextIfEmpty(textField: tf, text: account.password)
 
-        XCUIApplication().navigationBars.buttons["Next"].tap()
+        theApp.navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["imapServer"]
         tf.typeText(account.imapServerName)
@@ -76,11 +83,11 @@ class NewAccountSetupUITest: XCTestCase {
         tf.typeText(String(account.imapPort))
 
         tablesQuery.buttons["imapTransportSecurity"].tap()
-        let sheet = XCUIApplication().sheets["Transport protocol"]
+        let sheet = theApp.sheets["Transport protocol"]
         sheet.buttons[account.imapTransportSecurityString].tap()
 
         // TODO: Support alert for choosing transport
-        XCUIApplication().navigationBars.buttons["Next"].tap()
+        theApp.navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["smtpServer"]
         tf.typeText(account.smtpServerName)
@@ -92,12 +99,13 @@ class NewAccountSetupUITest: XCTestCase {
         tablesQuery.buttons["smtpTransportSecurity"].tap()
         sheet.buttons[account.smtpTransportSecurityString].tap()
 
-        let nextButton = XCUIApplication().navigationBars.buttons["Next"]
+        let nextButton = theApp.navigationBars.buttons["Next"]
         nextButton.tap()
     }
 
     func newAccountSetup(account: UIAccount, enterPassword: Bool = true) {
-        let tablesQuery = XCUIApplication().tables
+        let theApp = app()
+        let tablesQuery = theApp.tables
 
         var tf = tablesQuery.cells.textFields["userName"]
         tf.tap()
@@ -113,7 +121,7 @@ class NewAccountSetupUITest: XCTestCase {
             tf.typeText(account.password)
         }
 
-        XCUIApplication().tables.cells.buttons["Sign In"].tap()
+        theApp.tables.cells.buttons["Sign In"].tap()
     }
 
     func testInitialAccountSetup() {
@@ -123,9 +131,9 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func testAdditionalAccount() {
-        let app = XCUIApplication()
-        app.navigationBars["Inbox"].buttons["Folders"].tap()
-        app.tables.buttons["add account"].tap()
+        let theApp = app()
+        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
+        theApp.tables.buttons["add account"].tap()
 
         let account = UITestData.workingAccount2
         newAccountSetup(account: account)
@@ -136,9 +144,9 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = UITestData.workingAccount1
         newAccountSetup(account: account1)
 
-        let app = XCUIApplication()
-        app.navigationBars["Inbox"].buttons["Folders"].tap()
-        app.tables.buttons["add account"].tap()
+        let theApp = app()
+        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
+        theApp.tables.buttons["add account"].tap()
 
         let account2 = UITestData.workingAccount2
         newAccountSetup(account: account2)
@@ -148,12 +156,13 @@ class NewAccountSetupUITest: XCTestCase {
     /// Start app, accept contact permissions manually, start test,
     /// wait for alert and click OK manually
     func testNewAccountSetupManuallyAccountThatDoesNotWorkAutomatically() {
+        let theApp = app()
         let account = UITestData.manualAccount
         newAccountSetup(account: account)
 
         //wait until manual setup button appaers
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(80), execute: {
-            XCUIApplication().buttons["Manual configuration"].tap()
+            theApp.buttons["Manual configuration"].tap()
             self.manualNewAccountSetup(account)
         })
 
@@ -190,15 +199,15 @@ class NewAccountSetupUITest: XCTestCase {
         XCUIDevice.shared.orientation = .faceUp
         XCUIDevice.shared.orientation = .faceUp
 
-        let app = XCUIApplication()
-        app.navigationBars["Inbox"].buttons["Folders"].tap()
+        let theApp = app()
+        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
 
-        let tablesQuery2 = app.tables
+        let tablesQuery2 = theApp.tables
         tablesQuery2.buttons["button add"].tap()
 
         let tablesQuery = tablesQuery2
         tablesQuery.buttons["Sign In"].tap()
-        app.alerts["Error"].buttons["Ok"].tap()
+        theApp.alerts["Error"].buttons["Ok"].tap()
         tablesQuery.buttons["Manual configuration"].tap()
     }
 }
