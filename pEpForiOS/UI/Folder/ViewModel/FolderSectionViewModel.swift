@@ -23,7 +23,7 @@ public class FolderSectionViewModel {
 
     private func generateCells() {
         for folder in account.rootFolders {
-            if FolderSubscription.subscribe(to: folder) {
+            if folder.selectable {
                 items.append(FolderCellViewModel(folder: folder, level: 0))
             }
 
