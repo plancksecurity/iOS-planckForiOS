@@ -148,6 +148,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - UIApplicationDelegate
 
+    //BUFF: move
+
+    private func setupServices() {
+        Log.info(component: comp, content: "IOS-562: Setup Services")
+
+        let theMessageSyncService = MessageSyncService(
+            parentName: #function, backgrounder: self, mySelfer: self)
+        messageSyncService = theMessageSyncService
+        let theAppConfig = AppConfig(mySelfer: self,
+                                     messageSyncService: theMessageSyncService,
+                                     errorPropagator: errorPropagator,
+                                     oauth2AuthorizationFactory: oauth2Provider)
+        appConfig = theAppConfig
+
+        // set up logging for libraries
+        MessageModelConfig.logger = Log.shared
+
+        loadCoreDataStack()
+
+        networkService = NetworkService(parentName: #function,
+                                        backgrounder: self,
+                                        mySelfer: self,
+                                        errorPropagator: errorPropagator)
+        networkService?.sendLayerDelegate = sendLayerDelegate
+        networkService?.delegate = self
+        CdAccount.sendLayer = networkService
+    }
+
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -258,16 +286,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let networkService = NetworkService()
+
+        if networkService == nil {
+            setupServices()
+        }
+
+        guard let networkService = networkService else {
+            Log.shared.error(component: #function, errorString: "no networkService")
+            UserNotificationTool.post(title: "IOS-562:", body: "no networkService")
+            return
+        }
+
         networkService.checkForNewMails() { (numMails: Int?) in
             guard let numMails = numMails else {
+                UserNotificationTool.post(title: "IOS-562: FAILED", body: "FAILED")
                 completionHandler(.failed)
                 return
             }
             switch numMails {
             case 0:
+                UserNotificationTool.post(title: "IOS-562: NO DATA", body: "NO DATA")
                 completionHandler(.noData)
             default:
+                UserNotificationTool.post(title: "IOS-562: NEW DATA", body: "\(numMails) NEW DATA", batch: numMails)
                 self.informUser(numNewMails: numMails)
                 completionHandler(.newData)
             }

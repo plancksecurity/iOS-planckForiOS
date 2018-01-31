@@ -42,7 +42,7 @@ struct UserNotificationTool {
         }
     }
 
-    static public func post(title: String, body: String? = nil, batch: Int?) {
+    static public func post(title: String, body: String? = nil, batch: Int? = nil) {
         // For some reason the notification is not triggered with timeInterval == nil
         let now = 0.01
 
