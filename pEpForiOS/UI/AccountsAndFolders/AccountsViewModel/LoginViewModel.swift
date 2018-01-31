@@ -123,7 +123,7 @@ class LoginViewModel {
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
 
-        if let theConfig = oauth2Configuration(email: emailAddress)?.oauth2Type.oauth2Config() {
+        if let theConfig = oauth2Configuration(email: emailAddress) {
             currentOauth2Authorizer = oauth2Authorizer
             theAuth.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
@@ -252,7 +252,7 @@ class LoginViewModel {
      - Returns The oauth2 configuration the given email.
      */
     func oauth2Configuration(email: String?) -> OAuth2ConfigurationProtocol? {
-        return OAuth2Type(accountSettings: accountSettings(email: email))?.oauth2Config()
+        return OAuth2Type(emailAddress: email)?.oauth2Config()
     }
 }
 

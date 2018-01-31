@@ -9,6 +9,19 @@
 import Foundation
 
 extension OAuth2Type {
+    init?(emailAddress: String?) {
+        guard let theAddress = emailAddress else {
+            return nil
+        }
+        if theAddress.isGmailAddress {
+            self = .google
+        } else if theAddress.isYahooAddress {
+            self = .yahoo
+        } else {
+            return nil
+        }
+    }
+
     func oauth2Config() -> OAuth2ConfigurationProtocol? {
         switch self {
         case .google:
