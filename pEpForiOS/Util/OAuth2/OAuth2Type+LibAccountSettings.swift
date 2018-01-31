@@ -13,10 +13,10 @@ extension OAuth2Type {
         guard let ac = accountSettings else {
             return nil
         }
-        if let provider = ac.provider {
-            if provider == "google" {
+        if let provider = ac.providerID {
+            if provider == AccountSettingsProviderIDGmail {
                 self = .google
-            } else if provider == "yahoo" {
+            } else if provider == AccountSettingsProviderIDYahoo {
                 self = .yahoo
             } else {
                 return nil
