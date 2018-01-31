@@ -231,12 +231,7 @@ class LoginViewModel {
                 return false
             }
 
-            guard let incomingServer = acSettings.incoming,
-                let outgoingServer = acSettings.outgoing else {
-                    return false
-            }
-
-            return incomingServer.authMethod == .OAUTH2 && outgoingServer.authMethod == .OAUTH2
+            return acSettings.supportsOAuth2
         } else {
             return false
         }
