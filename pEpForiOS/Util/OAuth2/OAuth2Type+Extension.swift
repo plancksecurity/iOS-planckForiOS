@@ -12,7 +12,6 @@ extension OAuth2Type {
     init?(emailAddress: String) {
         if emailAddress.isGmailAddress {
             self = .google
-            Log.shared.info(component: #function, content: "\(self)")
         } else if emailAddress.isYahooAddress {
             self = .yahoo
         } else {
