@@ -123,7 +123,7 @@ class LoginViewModel {
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
 
-        if let theConfig = OAuth2Type(emailAddress: emailAddress)?.oauth2Config() {
+        if let theConfig = oauth2Configuration(email: emailAddress)?.oauth2Type.oauth2Config() {
             currentOauth2Authorizer = oauth2Authorizer
             theAuth.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
@@ -216,10 +216,10 @@ class LoginViewModel {
     }
 
     /**
-     Is an account with this email address typically an OAuth2 account?
-     - Returns true, if this is an OAuth2 email address, true otherwise.
+     Determines `AccountSettingsProtocol` for a given email address,
+     only doing fast local lookups.
      */
-    func isOAuth2Possible(email: String?) -> Bool {
+    func accountSettings(email: String?) -> AccountSettingsProtocol? {
         if let theMail = email?.trimmedWhiteSpace() {
             let acSettings = AccountSettings(accountName: theMail, provider: nil,
                                              flags: AS_FLAG_USE_ANY_LOCAL, credentials: nil)
@@ -228,18 +228,31 @@ class LoginViewModel {
             acSettings.lookup()
 
             if let _ = AccountSettingsError(accountSettings: acSettings) {
-                return false
+                return nil
             }
 
-            guard let incomingServer = acSettings.incoming,
-                let outgoingServer = acSettings.outgoing else {
-                    return false
-            }
-
-            return incomingServer.authMethod == .OAUTH2 && outgoingServer.authMethod == .OAUTH2
+            return acSettings
         } else {
-            return false
+            return nil
         }
+    }
+
+    /**
+     Is an account with this email address typically an OAuth2 account?
+     Only uses fast local lookups.
+     - Returns true, if this is an OAuth2 email address, true otherwise.
+     */
+    func isOAuth2Possible(email: String?) -> Bool {
+        return accountSettings(email: email)?.supportsOAuth2 ?? false
+    }
+
+    /**
+     Determines `OAuth2ConfigurationProtocol` for a given email address.
+     Only uses fast local lookups.
+     - Returns The oauth2 configuration the given email.
+     */
+    func oauth2Configuration(email: String?) -> OAuth2ConfigurationProtocol? {
+        return OAuth2Type(accountSettings: accountSettings(email: email))?.oauth2Config()
     }
 }
 
