@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     var errorPropagator = ErrorPropagator()
 
-    var application: UIApplication!
+    var application = UIApplication.shared
 
     let mySelfQueue = LimitedOperationQueue()
 
@@ -60,7 +60,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    private func setupInitialViewController(theAppConfig: AppConfig) -> Bool {
+    private func setupInitialViewController() -> Bool {
+        guard let appConfig = appConfig else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No AppConfig")
+            return false
+        }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UINavigationController,
             let rootVC = initialNVC.rootViewController as? EmailListViewController
@@ -68,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem initializing UI")
                 return false
         }
-        rootVC.appConfig = theAppConfig
+        rootVC.appConfig = appConfig
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
         window.rootViewController = initialNVC
@@ -146,21 +150,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    // MARK: - UIApplicationDelegate
-
-    func application(
-        _ application: UIApplication, didFinishLaunchingWithOptions
-        launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        if MiscUtil.isUnitTest() {
-            // If unit tests are running, leave the stage for them
-            // and pretty much don't do anything.
-            return false
-        }
-
-        self.application = application
-        application.setMinimumBackgroundFetchInterval(60.0 * 10)
-
-        let pEpReInitialized = deleteManagementDBIfRequired()
+    private func setupServices() {
+        Log.info(component: comp, content: "IOS-562: Setup Services")
 
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
@@ -174,16 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
 
-        Appearance.pep()
-
-        Log.info(component: comp,
-                 content: "Library url: \(String(describing: applicationDirectory()))")
-
         loadCoreDataStack()
-
-        deleteAllFolders(pEpReInitialized: pEpReInitialized)
-
-        kickOffMySelf()
 
         networkService = NetworkService(parentName: #function,
                                         backgrounder: self,
@@ -192,11 +174,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         networkService?.sendLayerDelegate = sendLayerDelegate
         networkService?.delegate = self
         CdAccount.sendLayer = networkService
+    }
 
-        startServices()
-
+    private func prepareUserNotifications() {
         UserNotificationTool.resetApplicationIconBadgeNumber()
-
         UserNotificationTool.askForPermissions() { granted in
             // We do not care about whether or not the user granted permissions to
             // post notifications here (e.g. we ignore granted)
@@ -208,8 +189,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
+    }
 
-        let result = setupInitialViewController(theAppConfig: theAppConfig)
+    // MARK: - UIApplicationDelegate
+
+    func application(
+        _ application: UIApplication, didFinishLaunchingWithOptions
+        launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        if MiscUtil.isUnitTest() {
+            // If unit tests are running, leave the stage for them
+            // and pretty much don't do anything.
+            return false
+        }
+        self.application = application
+
+        application.setMinimumBackgroundFetchInterval(60.0 * 10)
+
+        Appearance.pep()
+
+        let pEpReInitialized = deleteManagementDBIfRequired()
+
+        setupServices()
+        Log.info(component: comp,
+                 content: "Library url: \(String(describing: applicationDirectory()))")
+        deleteAllFolders(pEpReInitialized: pEpReInitialized)
+        kickOffMySelf()
+
+        startServices()
+
+        prepareUserNotifications()
+
+        let result = setupInitialViewController()
 
         return result
     }
@@ -258,16 +268,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let networkService = NetworkService()
+
+        // Assure services are setup. Should never be the case.
+        // IOS-562: Remove after background fetch is up and running.
+        if networkService == nil {
+            setupServices()
+        }
+
+        guard let networkService = networkService else {
+            Log.shared.error(component: #function, errorString: "no networkService")
+            UserNotificationTool.post(title: "IOS-562:", body: "no networkService")
+            return
+        }
+
         networkService.checkForNewMails() { (numMails: Int?) in
             guard let numMails = numMails else {
+                UserNotificationTool.post(title: "IOS-562: FAILED", body: "FAILED")
                 completionHandler(.failed)
                 return
             }
             switch numMails {
             case 0:
+                UserNotificationTool.post(title: "IOS-562: NO DATA", body: "NO DATA")
                 completionHandler(.noData)
             default:
+                UserNotificationTool.post(title: "IOS-562: NEW DATA", body: "\(numMails) NEW DATA", batch: numMails)
                 self.informUser(numNewMails: numMails)
                 completionHandler(.newData)
             }
