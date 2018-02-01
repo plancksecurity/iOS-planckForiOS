@@ -153,6 +153,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setupServices() {
         Log.info(component: comp, content: "IOS-562: Setup Services")
 
+        let unencryptedSubject = AppSettings().unecryptedSubjectEnabled
+        PEPObjCAdapter.setUnecryptedSubjectEnabled(unencryptedSubject)
+
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService

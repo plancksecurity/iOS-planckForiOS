@@ -9,24 +9,36 @@
 import UIKit
 
 class AppSettings {
-    static let reinitializePepOnNextStartup = "reinitializePepOnNextStartup"
+    static private let keyReinitializePepOnNextStartup = "reinitializePepOnNextStartup"
+    static private let keyUnecryptedSubjectEnabled = "unecryptedSubjectEnabled"
 
     var shouldReinitializePepOnNextStartup: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: AppSettings.reinitializePepOnNextStartup)
+            return UserDefaults.standard.bool(forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: AppSettings.reinitializePepOnNextStartup)
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
     }
+
+    var unecryptedSubjectEnabled: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: AppSettings.keyUnecryptedSubjectEnabled)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyUnecryptedSubjectEnabled)
+        }
+    }
+
 
     init() {
         registerDefaults()
     }
 
-    func registerDefaults() {
+    private func registerDefaults() {
         var defaults = [String: Any]()
-        defaults[AppSettings.reinitializePepOnNextStartup] = false
+        defaults[AppSettings.keyReinitializePepOnNextStartup] = false
+        defaults[AppSettings.keyUnecryptedSubjectEnabled] = true
         UserDefaults.standard.register(defaults: defaults)
     }
 }
