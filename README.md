@@ -83,9 +83,9 @@ There is a file referenced in the UI test project, UITestData. You need to creat
 
 The UI tests will not compile without it.
 
-### general.xcconfig (needed for OAuth2 config secrects and others)
+### secret.xcconfig (needed for OAuth2 config secrects and others)
 
-Create general.xcconfig in the root of the project, with those contents:
+Create secret.xcconfig @ pEpForiOS/secret.xcconfig, with those contents:
 
 ```
 GMAIL_CLIENT_ID = <your client ID here>
