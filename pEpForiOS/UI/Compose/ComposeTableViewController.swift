@@ -43,6 +43,8 @@ class ComposeTableViewController: BaseTableViewController {
     private var cells = [ComposeFieldModel.FieldType:ComposeCell]()
     private var ccEnabled = false
 
+    var rating : String = ""
+
     var composeMode: ComposeMode = .normal
     private var messageToSend: Message?
     var originalMessage: Message?
@@ -429,13 +431,14 @@ class ComposeTableViewController: BaseTableViewController {
         DispatchQueue.main.async {
             if let from = self.origin {
                 let session = PEPSession()
-                let rating = PEPUtil.outgoingMessageColor(from: from,
+                let ratingValue = PEPUtil.outgoingMessageColor(from: from,
                                                           to: self.destinyTo,
                                                           cc: self.destinyCc,
                                                           bcc: self.destinyBcc,
                                                           session: session)
-                if let b = self.showPepRating(pEpRating: rating, pEpProtection: self.pEpProtection) {
-                    if rating == PEP_rating_reliable || rating == PEP_rating_trusted {
+                self.rating = session.string(from: ratingValue)
+                if let b = self.showPepRating(pEpRating: ratingValue, pEpProtection: self.pEpProtection) {
+                    if ratingValue == PEP_rating_reliable || ratingValue == PEP_rating_trusted {
                         // disable protection only for certain ratings
                         let long = UILongPressGestureRecognizer(target: self,
                                                                 action: #selector(self.toggleProtection))
