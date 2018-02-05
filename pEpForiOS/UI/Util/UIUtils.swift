@@ -25,6 +25,14 @@ struct UIUtils {
 
     static func showAlertWithOnlyPositiveButton(title: String?, message: String?,
                                                 inViewController vc: UIViewController) {
+        // Do not show alerts when app is in background.
+        if UIApplication.shared.applicationState != .active {
+            #if DEBUG
+                // show alert in background when in debug.
+            #else
+                return
+            #endif
+        }
         let alertView = UIAlertController(title: title,
                                           message: message,
                                           preferredStyle: .alert)
