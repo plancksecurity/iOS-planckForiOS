@@ -92,12 +92,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals all PEPSession users to stop using a session as soon as possible.
     // NetworkService will call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
+        printDebugInfo()
         networkService?.stop()
         // Stop logging to Engine. It would create new sessions.
         Log.shared.pause()
     }
 
     func kickOffMySelf() {
+        printDebugInfo()
         let op = MySelfOperation(parentName: #function, backgrounder: self)
         op.completionBlock = {
             // We might be the last service that finishes, so we have to cleanup.
@@ -200,14 +202,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //IOS-562: debug info
     private func printDebugInfo(component: String = #function, msg: String = "") {
         let state = UIApplication.shared.applicationState
+        let stateStrg: String
+        switch state.rawValue {
+        case 0:
+            stateStrg = "active"
+        case 1:
+            stateStrg = "inactive"
+        case 2:
+            stateStrg = "background"
+        default:
+            fatalError("Unhandled case")
+        }
         Log.info(component: component,
-                 content: "IOS-562: State: \(state) \(msg == "" ? "" : "msg: \(msg)")")
+                 content: "IOS-562: State: \(stateStrg) \(msg == "" ? "" : "msg: \(msg)")")
     }
 
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        printDebugInfo()
+        printDebugInfo(msg: "launchOptions: \(launchOptions)")
 
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
@@ -226,9 +239,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.info(component: comp,
                  content: "Library url: \(String(describing: applicationDirectory()))")
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
-        kickOffMySelf()
+//        kickOffMySelf() //IOS-562
 
-        startServices()
+//        startServices() //IOS-562
 
         prepareUserNotifications()
 
@@ -254,8 +267,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.application = application
-        printDebugInfo(msg: "Will call startServices()")
-        startServices()
+        printDebugInfo()
+        //        startServices() //IOS-562
 
         DispatchQueue.global(qos: .userInitiated).async {
             MessageModel.perform {
@@ -267,7 +280,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.application = application
-        printDebugInfo()
+        printDebugInfo(msg: "Will call startServices()")
+        startServices() //IOS-562
+        kickOffMySelf() //IOS-562
         UserNotificationTool.resetApplicationIconBadgeNumber()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
@@ -354,6 +369,7 @@ extension AppDelegate: BackgroundTaskProtocol {
 
 extension AppDelegate: KickOffMySelfProtocol {
     func startMySelf() {
+        printDebugInfo()
         kickOffMySelf()
     }
 }
