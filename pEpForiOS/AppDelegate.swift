@@ -84,8 +84,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
+        printDebugInfo(msg:"startServices()")
         Log.shared.resume()
-                networkService?.start()
+        networkService?.start()
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
@@ -196,9 +197,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - UIApplicationDelegate
 
+    //IOS-562: debug info
+    private func printDebugInfo(component: String = #function, msg: String = "") {
+        let state = UIApplication.shared.applicationState
+        Log.info(component: component,
+                 content: "IOS-562: State: \(state) \(msg == "" ? "" : "msg: \(msg)")")
+    }
+
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        printDebugInfo()
+
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.
@@ -229,14 +239,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {
         self.application = application
-
+        printDebugInfo()
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, content: "applicationDidEnterBackground")
-
+        printDebugInfo()
         self.application = application
         kickOffMySelf() //is this still required?
         stopUsingPepSession()
@@ -244,7 +254,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.application = application
-
+        printDebugInfo(msg: "Will call startServices()")
         startServices()
 
         DispatchQueue.global(qos: .userInitiated).async {
@@ -257,6 +267,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.application = application
+        printDebugInfo()
         UserNotificationTool.resetApplicationIconBadgeNumber()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
@@ -264,14 +275,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
-
+        printDebugInfo()
         // Just in case, last chance to clean up. Should not be necessary though.
         PEPSession.cleanup()
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
+        printDebugInfo()
         // Assure services are setup. Should never be the case.
         // IOS-562: Remove after background fetch is up and running.
         if networkService == nil {
