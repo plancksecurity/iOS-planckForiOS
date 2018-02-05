@@ -153,6 +153,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func setupServices() {
         Log.info(component: comp, content: "IOS-562: Setup Services")
 
+        let unencryptedSubject = AppSettings().unecryptedSubjectEnabled
+        PEPObjCAdapter.setUnecryptedSubjectEnabled(unencryptedSubject)
+
         let theMessageSyncService = MessageSyncService(
             parentName: #function, backgrounder: self, mySelfer: self)
         messageSyncService = theMessageSyncService
@@ -277,22 +280,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         guard let networkService = networkService else {
             Log.shared.error(component: #function, errorString: "no networkService")
-            UserNotificationTool.post(title: "IOS-562:", body: "no networkService")
+//            UserNotificationTool.post(title: "IOS-562:", body: "no networkService")
             return
         }
 
         networkService.checkForNewMails() { (numMails: Int?) in
             guard let numMails = numMails else {
-                UserNotificationTool.post(title: "IOS-562: FAILED", body: "FAILED")
+//                UserNotificationTool.post(title: "IOS-562: FAILED", body: "FAILED")
                 completionHandler(.failed)
                 return
             }
             switch numMails {
             case 0:
-                UserNotificationTool.post(title: "IOS-562: NO DATA", body: "NO DATA")
+//                UserNotificationTool.post(title: "IOS-562: NO DATA", body: "NO DATA")
                 completionHandler(.noData)
             default:
-                UserNotificationTool.post(title: "IOS-562: NEW DATA", body: "\(numMails) NEW DATA", batch: numMails)
+//                UserNotificationTool.post(title: "IOS-562: NEW DATA", body: "\(numMails) NEW DATA", batch: numMails)
                 self.informUser(numNewMails: numMails)
                 completionHandler(.newData)
             }

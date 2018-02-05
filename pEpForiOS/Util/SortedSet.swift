@@ -38,6 +38,7 @@ class SortedSet<T: Equatable> {
 
         let idx = indexOfObjectIfInserted(obj: object)
         set.insert(object, at: idx)
+        Log.shared.info(component: #function, content: "\(count)")
         return idx
     }
     
@@ -46,6 +47,7 @@ class SortedSet<T: Equatable> {
         defer { objc_sync_exit(self) }
 
         set.remove(object)
+        Log.shared.info(component: #function, content: "\(count)")
     }
     
     public func removeObject(at index: Int) {
@@ -57,6 +59,7 @@ class SortedSet<T: Equatable> {
             return
         }
         set.removeObject(at: index)
+        Log.shared.info(component: #function, content: "\(count)")
     }
     
     public func object(at index: Int) -> T? {
@@ -88,6 +91,7 @@ class SortedSet<T: Equatable> {
         defer { objc_sync_exit(self) }
         
         set.removeAllObjects()
+        Log.shared.info(component: #function, content: "\(count)")
     }
 
     // MARK: -

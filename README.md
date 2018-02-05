@@ -50,7 +50,6 @@ git clone https://github.com/fdik/libetpan.git
 git clone https://github.com/x2on/OpenSSL-for-iPhone.git
 git clone https://github.com/SwipeCellKit/SwipeCellKit.git
 git clone https://github.com/openid/AppAuth-iOS
-git clone ssh://git@git.pep-security.lu:23000/iOS/pEp-Translate.git
 
 hg clone https://pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://pep.foundation/dev/repos/netpgp-et
@@ -84,9 +83,9 @@ There is a file referenced in the UI test project, UITestData. You need to creat
 
 The UI tests will not compile without it.
 
-### general.xcconfig (needed for OAuth2 config secrects and others)
+### secret.xcconfig (needed for OAuth2 config secrects and others)
 
-Create general.xcconfig in the root of the project, with those contents:
+Create secret.xcconfig @ pEpForiOS/secret.xcconfig, with those contents:
 
 ```
 GMAIL_CLIENT_ID = <your client ID here>

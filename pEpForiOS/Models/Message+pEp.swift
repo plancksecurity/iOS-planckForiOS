@@ -18,8 +18,11 @@ extension Message {
     }
 
     public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating? {
-        if belongToSentFolder()  || belongToDraftFolder () {
-            return Message.calculateOutgoingColorFromMessage(message: self, session: session)
+        if belongToSentFolder()  || belongToDraftFolder () || belongToTrashFolder() {
+            if let original = self.optionalFields[Headers.originalRating.rawValue] {
+                return session.rating(from: original)
+            }
+            return PEP_rating_undefined
         } else {
             return PEPUtil.pEpRatingFromInt(pEpRatingInt)
         }
@@ -35,6 +38,14 @@ extension Message {
     
     func belongToDraftFolder() -> Bool {
         if self.parent.folderType  == FolderType.drafts {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    func belongToTrashFolder() -> Bool {
+        if self.parent.folderType  == FolderType.trash {
             return true
         } else {
             return false

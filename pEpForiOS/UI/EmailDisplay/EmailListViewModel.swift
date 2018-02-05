@@ -410,14 +410,17 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
         let previewMessage = PreviewMessage(withMessage: message)
-        guard let index = messages?.insert(object: previewMessage) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We should be able to insert.")
-            return
-        }
-        let indexPath = IndexPath(row: index, section: 0)
-        DispatchQueue.main.async {
-            self.delegate?.emailListViewModel(viewModel: self, didInsertDataAt: indexPath)
+
+        DispatchQueue.main.async { [weak self] in
+            if let theSelf = self {
+                guard let index = theSelf.messages?.insert(object: previewMessage) else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "We should be able to insert.")
+                    return
+                }
+                let indexPath = IndexPath(row: index, section: 0)
+                theSelf.delegate?.emailListViewModel(viewModel: theSelf, didInsertDataAt: indexPath)
+            }
         }
     }
     
