@@ -11,12 +11,6 @@ import XCTest
 @testable import pEpForiOS
 
 class PantomimeFolderAttribute_ExtensionsTest: XCTestCase {
-    let attributes = [PantomimeHoldsFolders,
-                      PantomimeHoldsMessages,
-                      PantomimeNoInferiors,
-                      PantomimeNoSelect,
-                      PantomimeMarked,
-                      PantomimeUnmarked]
 
     func testPantomimeHoldsFolders() {
         let testee = PantomimeHoldsFolders
