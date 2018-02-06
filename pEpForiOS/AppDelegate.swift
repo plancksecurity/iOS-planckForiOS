@@ -44,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
+    var backgroundFetchTaskID = UIBackgroundTaskInvalid
+
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -239,9 +241,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.info(component: comp,
                  content: "Library url: \(String(describing: applicationDirectory()))")
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
-//        kickOffMySelf() //IOS-562
+        //        kickOffMySelf() //IOS-562
 
-//        startServices() //IOS-562
+        //        startServices() //IOS-562
 
         prepareUserNotifications()
 
@@ -298,6 +300,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         printDebugInfo()
+
+        backgroundFetchTaskID = application.beginBackgroundTask(expirationHandler: {
+            self.printDebugInfo(msg: "background task expired")
+            application.endBackgroundTask(self.backgroundFetchTaskID)
+            self.backgroundFetchTaskID = UIBackgroundTaskInvalid;
+        })
+
         // Assure services are setup. Should never be the case.
         // IOS-562: Remove after background fetch is up and running.
         if networkService == nil {
@@ -306,23 +315,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         guard let networkService = networkService else {
             Log.shared.error(component: #function, errorString: "no networkService")
-//            UserNotificationTool.post(title: "IOS-562:", body: "no networkService")
+            //            UserNotificationTool.post(title: "IOS-562:", body: "no networkService")
             return
         }
 
         networkService.checkForNewMails() { (numMails: Int?) in
             guard let numMails = numMails else {
-//                UserNotificationTool.post(title: "IOS-562: FAILED", body: "FAILED")
+                //                UserNotificationTool.post(title: "IOS-562: FAILED", body: "FAILED")
+                self.backgroundFetchTaskID = UIBackgroundTaskInvalid;
                 completionHandler(.failed)
                 return
             }
             switch numMails {
             case 0:
-//                UserNotificationTool.post(title: "IOS-562: NO DATA", body: "NO DATA")
+                //                UserNotificationTool.post(title: "IOS-562: NO DATA", body: "NO DATA")
+                self.backgroundFetchTaskID = UIBackgroundTaskInvalid;
                 completionHandler(.noData)
             default:
-//                UserNotificationTool.post(title: "IOS-562: NEW DATA", body: "\(numMails) NEW DATA", batch: numMails)
+                //                UserNotificationTool.post(title: "IOS-562: NEW DATA", body: "\(numMails) NEW DATA", batch: numMails)
                 self.informUser(numNewMails: numMails)
+                self.backgroundFetchTaskID = UIBackgroundTaskInvalid;
                 completionHandler(.newData)
             }
         }
@@ -401,3 +413,4 @@ extension AppDelegate {
         }
     }
 }
+
