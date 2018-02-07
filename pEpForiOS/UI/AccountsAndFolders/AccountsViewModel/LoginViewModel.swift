@@ -167,9 +167,9 @@ class LoginViewModel {
                     return
             }
             let imapTransport = ConnectionTransport(
-                accountSettingsTransport: incomingServer.transport)
+                accountSettingsTransport: incomingServer.transport, imapPort: incomingServer.port)
             let smtpTransport = ConnectionTransport(
-                accountSettingsTransport: outgoingServer.transport)
+                accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
 
             // Note: auth method is never taken from LAS. We either have OAuth2,
             // as determined previously, or we will defer to pantomime to find out the best method.
