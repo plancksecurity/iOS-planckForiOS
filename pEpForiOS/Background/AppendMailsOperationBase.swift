@@ -50,6 +50,11 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             return
         }
 
+        // We must never append mails to virual mailboxes.
+        if targetFolderType.isVirtualMailbox {
+            return
+        }
+
         syncDelegate = AppendMailsSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
 
