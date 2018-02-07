@@ -9,5 +9,5 @@
 import Foundation
 
 protocol AccountVerificationResultDelegate: class {
-    func didVerify(result: AccountVerificationResult)
+    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?)
 }

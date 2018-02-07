@@ -189,7 +189,7 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
                   result: AccountVerificationResult) {
         cleanClonedAccount()
         DispatchQueue.main.sync {
-            delegate?.didVerify(result: result)
+            delegate?.didVerify(result: result, accountInput: nil)
         }
     }
 }

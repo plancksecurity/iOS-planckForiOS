@@ -237,7 +237,7 @@ extension AccountSettingsTableViewController {
 // MARK: - AccountVerificationResultDelegate
 
 extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult) {
+    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
         GCD.onMain() {
             switch result {
             case .ok:
