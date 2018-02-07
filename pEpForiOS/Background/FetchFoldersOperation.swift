@@ -164,7 +164,8 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
          change [Cd]Folder `isSelectable` field to `folderAttributes[RawVAlue]`.
          */
         var isSelectable = true
-        if let folderFlags = folderInfoDict[PantomimeFolderFlagsKey] as? PantomimeFolderAttribute {
+        if let rawFlags = folderInfoDict[PantomimeFolderFlagsKey] as? UInt32 {
+            let folderFlags = PantomimeFolderAttribute(rawValue: rawFlags)
             isSelectable = folderFlags.isSelectable
         }
 
