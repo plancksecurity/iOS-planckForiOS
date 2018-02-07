@@ -228,7 +228,7 @@ class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewD
 // MARK: - Error Handling
 
 extension AccountSettingsTableViewController {
-    public func handleLoginError(error: Error, extended: Bool) {
+    public func handleLoginError(error: Error) {
         Log.shared.error(component: #function, error: error)
         UIUtils.show(error: error, inViewController: self)
     }
@@ -243,11 +243,11 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
             case .ok:
                 self.navigationController?.popViewController(animated: true)
             case .imapError(let err):
-                self.handleLoginError(error: err, extended: true)
+                self.handleLoginError(error: err)
             case .smtpError(let err):
-                self.handleLoginError(error: err, extended: true)
+                self.handleLoginError(error: err)
             case .noImapConnectData, .noSmtpConnectData:
-                self.handleLoginError(error: LoginTableViewControllerError.noConnectData, extended: true)
+                self.handleLoginError(error: LoginTableViewControllerError.noConnectData)
             }
         }
     }
