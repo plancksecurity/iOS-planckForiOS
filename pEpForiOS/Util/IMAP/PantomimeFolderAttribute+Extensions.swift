@@ -17,57 +17,41 @@
  PantomimeMarked = 16,
  PantomimeUnmarked = 32
  */
+
 extension PantomimeFolderAttribute {
 
     /// Whether or not the folder is able to hold (sub)folders
-    ///
-    /// - Returns: true if HoldsFolders attribute is set, false otherwize
-    func imapAttributeHoldsFolders() -> Bool {
+    var imapAttributeHoldsFolders: Bool {
         return (self.rawValue & PantomimeHoldsFolders.rawValue) > 0
     }
 
     /// Whether or not the folder is able to hold meaages.
-    ///
-    /// - Returns: true if HoldsMessages attribute is set, false otherwize
-    func imapAttributeHoldsMessages() -> Bool {
+    var imapAttributeHoldsMessages: Bool {
         return (self.rawValue & PantomimeHoldsMessages.rawValue) > 0
     }
 
     /// Whether or not the NoInferiors attribute is set.
-    ///
-    /// - Returns: true if NoInferiors attribute is set, false otherwize
-    func imapAttributeNoInferiors() -> Bool {
+    var imapAttributeNoInferiors: Bool {
         return (self.rawValue & PantomimeNoInferiors.rawValue) > 0
     }
 
     /// Whether or not the NoSelect attribute is set.
-    ///
-    /// - Returns: true if NoSelect attribute is set, false otherwize
-    func imapAttributeNoSelect() -> Bool {
+    var imapAttributeNoSelect: Bool {
         return (self.rawValue & PantomimeNoSelect.rawValue) > 0
     }
 
     /// Whether or not the folder is marked.
-    ///
-    /// - Returns: true if PantomimeMarked attribute is set, false otherwize
-    func imapAttributeMarked() -> Bool {
+    var imapAttributeMarked: Bool {
         return (self.rawValue & PantomimeMarked.rawValue) > 0
     }
 
     /// Whether or not the folder is unmarked.
-    ///
-    /// - Returns: true if PantomimeUnmarked attribute is set, false otherwize
-    func imapAttributeUnmarked() -> Bool {
+    var imapAttributeUnmarked: Bool {
         return (self.rawValue & PantomimeUnmarked.rawValue) > 0
     }
 
     /// Whether or not the attribute marks as selectable.
-    ///
-    /// - Returns: false, if attribute "\NoSelect" is set, true otherwize
-    func isSelectable() -> Bool {
-        if self.imapAttributeNoSelect() {
-            return false
-        }
-        return true
+    var isSelectable: Bool {
+        return !self.imapAttributeNoSelect
     }
 }

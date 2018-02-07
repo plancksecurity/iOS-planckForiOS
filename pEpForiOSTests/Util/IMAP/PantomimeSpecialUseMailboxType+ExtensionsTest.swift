@@ -14,114 +14,97 @@ class PantomimeSpecialUseMailboxType_ExtensionsTest: XCTestCase {
 
     func testSpecialUseMailboxNormal() {
         let testee = PantomimeSpecialUseMailboxNormal
-        XCTAssertTrue(testee.imapSpecialUseMailboxNormal())
-        XCTAssertFalse(testee.imapSpecialUseMailboxAll())
-        XCTAssertFalse(testee.imapSpecialUseMailboxArchive())
-        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts())
-        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged())
-        XCTAssertFalse(testee.imapSpecialUseMailboxJunk())
-        XCTAssertFalse(testee.imapSpecialUseMailboxSent())
-        XCTAssertFalse(testee.imapSpecialUseMailboxTrash())
-        XCTAssertFalse(testee.isVirtualMailbox())
+        XCTAssertTrue(testee.imapSpecialUseMailboxNormal)
+        XCTAssertFalse(testee.imapSpecialUseMailboxAll)
+        XCTAssertFalse(testee.imapSpecialUseMailboxArchive)
+        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts)
+        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged)
+        XCTAssertFalse(testee.imapSpecialUseMailboxJunk)
+        XCTAssertFalse(testee.imapSpecialUseMailboxSent)
+        XCTAssertFalse(testee.imapSpecialUseMailboxTrash)
     }
 
     func testSpecialUseMailboxAll() {
         let testee = PantomimeSpecialUseMailboxAll
-        XCTAssertTrue(testee.imapSpecialUseMailboxAll())
-        XCTAssertFalse(testee.imapSpecialUseMailboxNormal())
-        XCTAssertFalse(testee.imapSpecialUseMailboxArchive())
-        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts())
-        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged())
-        XCTAssertFalse(testee.imapSpecialUseMailboxJunk())
-        XCTAssertFalse(testee.imapSpecialUseMailboxSent())
-        XCTAssertFalse(testee.imapSpecialUseMailboxTrash())
+        XCTAssertTrue(testee.imapSpecialUseMailboxAll)
+        XCTAssertFalse(testee.imapSpecialUseMailboxNormal)
+        XCTAssertFalse(testee.imapSpecialUseMailboxArchive)
+        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts)
+        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged)
+        XCTAssertFalse(testee.imapSpecialUseMailboxJunk)
+        XCTAssertFalse(testee.imapSpecialUseMailboxSent)
+        XCTAssertFalse(testee.imapSpecialUseMailboxTrash)
     }
 
     func testSpecialUseMailboxArchive() {
         let testee = PantomimeSpecialUseMailboxArchive
-        XCTAssertTrue(testee.imapSpecialUseMailboxArchive())
-        XCTAssertFalse(testee.imapSpecialUseMailboxNormal())
-        XCTAssertFalse(testee.imapSpecialUseMailboxAll())
-        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts())
-        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged())
-        XCTAssertFalse(testee.imapSpecialUseMailboxJunk())
-        XCTAssertFalse(testee.imapSpecialUseMailboxSent())
-        XCTAssertFalse(testee.imapSpecialUseMailboxTrash())
-        XCTAssertFalse(testee.isVirtualMailbox())
+        XCTAssertTrue(testee.imapSpecialUseMailboxArchive)
+        XCTAssertFalse(testee.imapSpecialUseMailboxNormal)
+        XCTAssertFalse(testee.imapSpecialUseMailboxAll)
+        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts)
+        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged)
+        XCTAssertFalse(testee.imapSpecialUseMailboxJunk)
+        XCTAssertFalse(testee.imapSpecialUseMailboxSent)
+        XCTAssertFalse(testee.imapSpecialUseMailboxTrash)
     }
 
     func testSpecialUseMailboxDrafts() {
         let testee = PantomimeSpecialUseMailboxDrafts
-        XCTAssertTrue(testee.imapSpecialUseMailboxDrafts())
-        XCTAssertFalse(testee.imapSpecialUseMailboxNormal())
-        XCTAssertFalse(testee.imapSpecialUseMailboxAll())
-        XCTAssertFalse(testee.imapSpecialUseMailboxArchive())
-        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged())
-        XCTAssertFalse(testee.imapSpecialUseMailboxJunk())
-        XCTAssertFalse(testee.imapSpecialUseMailboxSent())
-        XCTAssertFalse(testee.imapSpecialUseMailboxTrash())
-        XCTAssertFalse(testee.isVirtualMailbox())
+        XCTAssertTrue(testee.imapSpecialUseMailboxDrafts)
+        XCTAssertFalse(testee.imapSpecialUseMailboxNormal)
+        XCTAssertFalse(testee.imapSpecialUseMailboxAll)
+        XCTAssertFalse(testee.imapSpecialUseMailboxArchive)
+        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged)
+        XCTAssertFalse(testee.imapSpecialUseMailboxJunk)
+        XCTAssertFalse(testee.imapSpecialUseMailboxSent)
+        XCTAssertFalse(testee.imapSpecialUseMailboxTrash)
     }
 
     func testSpecialUseMailboxFlagged() {
         let testee = PantomimeSpecialUseMailboxFlagged
-        XCTAssertTrue(testee.imapSpecialUseMailboxFlagged())
-        XCTAssertFalse(testee.imapSpecialUseMailboxNormal())
-        XCTAssertFalse(testee.imapSpecialUseMailboxAll())
-        XCTAssertFalse(testee.imapSpecialUseMailboxArchive())
-        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts())
-        XCTAssertFalse(testee.imapSpecialUseMailboxJunk())
-        XCTAssertFalse(testee.imapSpecialUseMailboxSent())
-        XCTAssertFalse(testee.imapSpecialUseMailboxTrash())
+        XCTAssertTrue(testee.imapSpecialUseMailboxFlagged)
+        XCTAssertFalse(testee.imapSpecialUseMailboxNormal)
+        XCTAssertFalse(testee.imapSpecialUseMailboxAll)
+        XCTAssertFalse(testee.imapSpecialUseMailboxArchive)
+        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts)
+        XCTAssertFalse(testee.imapSpecialUseMailboxJunk)
+        XCTAssertFalse(testee.imapSpecialUseMailboxSent)
+        XCTAssertFalse(testee.imapSpecialUseMailboxTrash)
     }
 
     func testSpecialUseMailboxJunk() {
         let testee = PantomimeSpecialUseMailboxJunk
-        XCTAssertTrue(testee.imapSpecialUseMailboxJunk())
-        XCTAssertFalse(testee.imapSpecialUseMailboxNormal())
-        XCTAssertFalse(testee.imapSpecialUseMailboxAll())
-        XCTAssertFalse(testee.imapSpecialUseMailboxArchive())
-        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts())
-        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged())
-        XCTAssertFalse(testee.imapSpecialUseMailboxSent())
-        XCTAssertFalse(testee.imapSpecialUseMailboxTrash())
-        XCTAssertFalse(testee.isVirtualMailbox())
+        XCTAssertTrue(testee.imapSpecialUseMailboxJunk)
+        XCTAssertFalse(testee.imapSpecialUseMailboxNormal)
+        XCTAssertFalse(testee.imapSpecialUseMailboxAll)
+        XCTAssertFalse(testee.imapSpecialUseMailboxArchive)
+        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts)
+        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged)
+        XCTAssertFalse(testee.imapSpecialUseMailboxSent)
+        XCTAssertFalse(testee.imapSpecialUseMailboxTrash)
     }
 
     func testSpecialUseMailboxSent() {
         let testee = PantomimeSpecialUseMailboxSent
-        XCTAssertTrue(testee.imapSpecialUseMailboxSent())
-        XCTAssertFalse(testee.imapSpecialUseMailboxNormal())
-        XCTAssertFalse(testee.imapSpecialUseMailboxAll())
-        XCTAssertFalse(testee.imapSpecialUseMailboxArchive())
-        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts())
-        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged())
-        XCTAssertFalse(testee.imapSpecialUseMailboxJunk())
-        XCTAssertFalse(testee.imapSpecialUseMailboxTrash())
-        XCTAssertFalse(testee.isVirtualMailbox())
+        XCTAssertTrue(testee.imapSpecialUseMailboxSent)
+        XCTAssertFalse(testee.imapSpecialUseMailboxNormal)
+        XCTAssertFalse(testee.imapSpecialUseMailboxAll)
+        XCTAssertFalse(testee.imapSpecialUseMailboxArchive)
+        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts)
+        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged)
+        XCTAssertFalse(testee.imapSpecialUseMailboxJunk)
+        XCTAssertFalse(testee.imapSpecialUseMailboxTrash)
     }
 
     func testSpecialUseMailboxTrash() {
         let testee = PantomimeSpecialUseMailboxTrash
-        XCTAssertTrue(testee.imapSpecialUseMailboxTrash())
-
-        XCTAssertFalse(testee.imapSpecialUseMailboxNormal())
-        XCTAssertFalse(testee.imapSpecialUseMailboxAll())
-        XCTAssertFalse(testee.imapSpecialUseMailboxArchive())
-        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts())
-        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged())
-        XCTAssertFalse(testee.imapSpecialUseMailboxJunk())
-        XCTAssertFalse(testee.imapSpecialUseMailboxSent())
-        XCTAssertFalse(testee.isVirtualMailbox())
-    }
-
-    func testIsVirtualMailbox_all() {
-        let testee = PantomimeSpecialUseMailboxAll
-        XCTAssertTrue(testee.isVirtualMailbox())
-    }
-
-    func testIsVirtualMailbox_flagged() {
-        let testee = PantomimeSpecialUseMailboxFlagged
-        XCTAssertTrue(testee.isVirtualMailbox())
+        XCTAssertTrue(testee.imapSpecialUseMailboxTrash)
+        XCTAssertFalse(testee.imapSpecialUseMailboxNormal)
+        XCTAssertFalse(testee.imapSpecialUseMailboxAll)
+        XCTAssertFalse(testee.imapSpecialUseMailboxArchive)
+        XCTAssertFalse(testee.imapSpecialUseMailboxDrafts)
+        XCTAssertFalse(testee.imapSpecialUseMailboxFlagged)
+        XCTAssertFalse(testee.imapSpecialUseMailboxJunk)
+        XCTAssertFalse(testee.imapSpecialUseMailboxSent)
     }
 }

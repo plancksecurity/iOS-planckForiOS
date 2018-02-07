@@ -160,11 +160,12 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
          PantomimeMarked = 16,
          PantomimeUnmarked = 32
 
-         We currently only take NoSelect into account.
+         We currently only take NoSelect into account. If we have to take others into account also
+         change [Cd]Folder `isSelectable` field to `folderAttributes[RawVAlue]`.
          */
         var isSelectable = true
         if let folderFlags = folderInfoDict[PantomimeFolderFlagsKey] as? PantomimeFolderAttribute {
-            isSelectable = folderFlags.isSelectable()
+            isSelectable = folderFlags.isSelectable
         }
 
         (errorHandler as? FetchFoldersOperation)?.folderNameParsed(syncOp: syncOp,
