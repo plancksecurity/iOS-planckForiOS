@@ -56,7 +56,7 @@ public class handshakeButton: UIButton {
     public override func layoutSubviews() {
         super.layoutSubviews()
         if let titleWidth = self.titleLabel?.frame.size.width {
-            self.titleLabel?.preferredMaxLayoutWidth = titleWidth
+            self.titleLabel?.preferredMaxLayoutWidth = titleWidth + 2.0
             super.layoutSubviews()
         }
     }

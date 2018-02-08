@@ -26,6 +26,7 @@ class HandshakeViewController: BaseTableViewController {
     let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
 
     var indexPathRequestingLanguage: IndexPath?
+    var onlyonce = true
 
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 400.0
@@ -36,6 +37,20 @@ class HandshakeViewController: BaseTableViewController {
         partners = partners.filter { (identity) -> Bool in
             return !identity.isMySelf
         }
+    }
+
+    override func viewDidLayoutSubviews() {
+
+        let cells = tableView.visibleCells
+        for cell in cells {
+            let size = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+            if cell.frame.size.height != size.height {
+                cell.frame.size.height = size.height
+                cell.layoutIfNeeded()
+            }
+        }
+
+        tableView.layoutIfNeeded()
     }
 
     func back(sender: UIBarButtonItem) {
