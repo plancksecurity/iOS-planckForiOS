@@ -838,6 +838,9 @@ ComposeTableView: Label of swipe left. Removing of attachment.
                 "We are currently editing a drafted mail but have no originalMessage?")
             return
         }
+        // Make sure the "draft" flag is not set to avoid the original msg will keep in virtual
+        // mailboxes, that show all flagged messages.
+        om.imapFlags?.draft = false
         om.imapDeleteAndMarkTrashed()
     }
 
@@ -906,12 +909,21 @@ ComposeTableView: Label of swipe left. Removing of attachment.
     }
 
     @IBAction func send() {
-        if let msg = populateMessageFromUserInput() {
-            msg.save()
-        } else {
-            Log.error(component: #function, errorString: "No message for sending")
+        defer {
+            dismiss(animated: true, completion: nil)
         }
-        dismiss(animated: true, completion: nil)
+        guard let msg = populateMessageFromUserInput() else {
+            Log.error(component: #function, errorString: "No message for sending")
+            return
+        }
+        msg.save()
+        if composeMode == .draft {
+            // From user perspective, we have edited a drafted message and will send it.
+            // Technically we are creating and sending a new message (msg), thus we have to
+            // delete the original, previously drafted one.
+            deleteOriginalMessage()
+        }
+
     }
 }
 

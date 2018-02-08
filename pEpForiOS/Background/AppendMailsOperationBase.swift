@@ -132,7 +132,6 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                             message: "Cannot find sent folder for message to append")
                         return
                 }
-
                 if cdFolder.folder().shouldNotAppendMessages {
                     // We are not supposed to append messages to this (probably virtual) mailbox.
                     handleNextMessage()
