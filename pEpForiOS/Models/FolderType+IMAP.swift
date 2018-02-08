@@ -9,10 +9,11 @@
 import MessageModel
 
 extension FolderType {
-    /// Whether or not the folder type is most likly realized as virtual mailbox on server side.
+    /// Whether or not the folder type is most likely realized as virtual mailbox on server side.
     /// See RFC-6154
-    var isVirtualMailbox: Bool {
-        let virtualMailboxesTypes = [FolderType.all, FolderType.flagged]
+    var isMostLikelyVirtualMailbox: Bool {
+        let virtualMailboxesTypes = [FolderType.all,        // RFC for \All: "When this special use is supported, it is almost certain to represent a virtual mailbox"
+            FolderType.flagged]    // RFC for \Flagged: it is likely to represent a virtual mailbox collecting messages (from other mailboxes) that are marked with the "\Flagged" message flag.
         return virtualMailboxesTypes.contains(self)
     }
 }

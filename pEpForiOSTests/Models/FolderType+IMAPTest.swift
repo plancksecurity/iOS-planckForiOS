@@ -28,9 +28,9 @@ class FolderType_IMAPTest: XCTestCase {
     func testCorrectIsVirtualMailbox() {
         for testee in allFolderTypes {
             if virtualMailboxes.contains(testee) {
-                XCTAssertTrue(testee.isVirtualMailbox)
+                XCTAssertTrue(testee.isMostLikelyVirtualMailbox)
             } else {
-                XCTAssertFalse(testee.isVirtualMailbox)
+                XCTAssertFalse(testee.isMostLikelyVirtualMailbox)
             }
         }
     }

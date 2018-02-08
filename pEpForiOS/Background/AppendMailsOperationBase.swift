@@ -50,11 +50,6 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             return
         }
 
-        // We must never append mails to virual mailboxes.
-        if targetFolderType.isVirtualMailbox {
-            return
-        }
-
         syncDelegate = AppendMailsSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
 
@@ -130,14 +125,20 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                         "Cannot append message without parent folder and this, account")
                     return
                 }
-                guard let folder = self.retrieveFolderForAppend(
+                guard let cdFolder = self.retrieveFolderForAppend(
                     account: account, context: self.context) else {
                         self.handleError(
                             BackgroundError.GeneralError.invalidParameter(info: self.comp),
                             message: "Cannot find sent folder for message to append")
                         return
                 }
-                guard let fn = folder.name else {
+
+                if cdFolder.folder().shouldNotAppendMessages {
+                    // We are not supposed to append messages to this (probably virtual) mailbox.
+                    handleNextMessage()
+                    return
+                }
+                guard let fn = cdFolder.name else {
                     self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
                                      message: "Need the name for the sent folder")
                     return
