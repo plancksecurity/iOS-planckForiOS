@@ -53,11 +53,14 @@ extension Folder {
     /// - the message is contained in any folder
     /// - the message has imapFlag ".draft" set
     /// - the message has not the imaFlag ".deleted" set
+    /// 2) Gmail Trash
+    /// You MUST append drafted mails to the [Gmail]/Trash folder to make them show up there.
+    // The "Trash" folder is the only "non-virtual mailbox" on Gmail.
     private var appandableVirtualMailboxTypesGmail: [FolderType] {
-        return [FolderType.drafts] //BUFF: trash too?
+        return [FolderType.drafts, .trash]
     }
 
-    /// All subfolders of folder named "[Gmail]" are virtual.
+    /// Whether or not it is a subfolders of folder named "[Gmail]".
     private var isGmailVirtualMailbox: Bool {
         return account.user.address.isGmailAddress
             && parent != nil
