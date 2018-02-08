@@ -822,6 +822,7 @@ ComposeTableView: Label of swipe left. Removing of attachment.
             let acc = msg.parent.account
             if let f = Folder.by(account:acc, folderType: .drafts) {
                 msg.parent = f
+                msg.imapFlags?.draft = true
                 msg.save()
             }
         } else {
