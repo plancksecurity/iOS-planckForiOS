@@ -28,7 +28,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
         let expAccountVerified: XCTestExpectation
         var verificationResult: AccountVerificationResult?
 
-        func didVerify(result: AccountVerificationResult) {
+        func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
             self.verificationResult = result
             expAccountVerified.fulfill()
         }
