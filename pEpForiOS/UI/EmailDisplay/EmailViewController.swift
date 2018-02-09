@@ -12,10 +12,11 @@ import UIKit
 import MessageModel
 
 class EmailViewController: BaseTableViewController {
-    @IBOutlet var handShakeButton: UIBarButtonItem!
-    @IBOutlet var flagButton: UIBarButtonItem!
-    @IBOutlet var previousMessage: UIBarButtonItem!
-    @IBOutlet var nextMessage: UIBarButtonItem!
+    @IBOutlet weak var handShakeButton: UIBarButtonItem!
+    @IBOutlet weak var flagButton: UIBarButtonItem!
+    @IBOutlet weak var destructiveButton: UIBarButtonItem!
+    @IBOutlet weak var previousMessage: UIBarButtonItem!
+    @IBOutlet weak var nextMessage: UIBarButtonItem!
 
     var message: Message?
 
@@ -78,6 +79,8 @@ class EmailViewController: BaseTableViewController {
     }
 
     func configureView() {
+        setupDestructiveButtonIcon()
+
         tableData?.filterRows(message: message)
 
         recoveryInitialTitle()
@@ -148,6 +151,26 @@ class EmailViewController: BaseTableViewController {
                 tableData = ComposeDataSource(with: dict["Rows"] as! [[String: Any]])
             }
         }
+    }
+
+    // MARK: - SETUP
+
+    // Sets the destructive bottom bar item accordint to the message (trash/archive)
+    private func setupDestructiveButtonIcon() {
+        guard let msg = message else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No message")
+            return
+        }
+
+        //IOS-938:
+        // We currently are lacking an archive icon asset and thus show the trash bin for archiving also.
+        // After getting the icon set it using the below commented if clause.
+//        if msg.parent.defaultDestructiveActionIsArchive {
+//            destructiveButton = UIBarButtonItem(image: UIImage(named:NAME_OF_ARCHIVE_ICON_GOES_HERE), style: .plain, target: self, action: #selector(deleteButtonTapped(_:)))
+//        } else {
+//             destructiveButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonTapped(_:))
+//        }
+
     }
 
     // MARK: - IBActions

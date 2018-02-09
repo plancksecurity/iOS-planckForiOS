@@ -28,7 +28,7 @@ extension Message {
         }
     }
 
-    func belongToSentFolder() -> Bool {
+    func belongToSentFolder() -> Bool { //BUFF: cleanup
         if self.parent.folderType  == FolderType.sent {
             return true
         } else {
