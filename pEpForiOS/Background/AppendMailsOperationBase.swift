@@ -132,7 +132,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                             message: "Cannot find sent folder for message to append")
                         return
                 }
-                if cdFolder.folder().shouldNotAppendMessages {
+                if cdFolder.folder().shouldNotAppendMessages {//BUFF: leave for savty reasons, e.g. user moves msg to All folder? //BUFF: do not mark for append in the first place. (sent, trash)
                     // We are not supposed to append messages to this (probably virtual) mailbox.
                     handleNextMessage()
                     return
@@ -154,10 +154,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                 markAsFinished()
                 return
         }
-        //        if ident.providerDoesHandleAppend(forFolderOfType: targetFolderType) { //BUFF: should be handled in determineTargetFolder
-//            markAsFinished()
-//            return
-//        }
+
         lastHandledMessageObjectID = objID
         determineTargetFolder(msgID: objID)
         let session = PEPSession()

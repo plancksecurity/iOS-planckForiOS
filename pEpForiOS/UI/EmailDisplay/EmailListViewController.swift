@@ -314,28 +314,27 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     // MARK: - SwipeTableViewCellDelegate
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    func tableView(_ tableView: UITableView,
+                   editActionsForRowAt
+        indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder")
             return nil
         }
         // Create swipe actions, taking the currently displayed folder into account
         var swipeActions = [SwipeAction]()
-        // Delete & Archive
-        if folder.defaultDestructiveActionIsArchive {
-            //BUFF: HEERE
-            let archiveAction = SwipeAction(style: .destructive, title: "Archive/BUFF:") { action, indexPath in //BUFF: title localized?
-                self.deleteAction(forCellAt: indexPath) //BUFF: wrong action!
-            }
-            configure(action: archiveAction, with: .archive)
-            swipeActions.append(archiveAction)
-        } else { // default action is trash
-            let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+
+        // Delete or Archive
+        let titleDestructive = folder.defaultDestructiveActionIsArchive ? "Archive" : "Delete"
+        let descriptorDestructive: ActionDescriptor =
+            folder.defaultDestructiveActionIsArchive ? .archive : .trash
+        let archiveAction =
+            SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
                 self.deleteAction(forCellAt: indexPath)
-            }
-            configure(action: deleteAction, with: .trash)
-            swipeActions.append(deleteAction)
         }
+        configure(action: archiveAction, with: descriptorDestructive)
+        swipeActions.append(archiveAction)
 
         // Flag
         let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
@@ -344,12 +343,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         flagAction.hidesWhenSelected = true
         configure(action: flagAction, with: .flag)
         swipeActions.append(flagAction)
-
-        //BUFF:
-//        guard let folder = folderToShow else {
-//            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
-//            return nil
-//        }
 
         // More (reply++)
         if folder.folderType != .drafts {
@@ -579,7 +572,7 @@ extension EmailListViewController {
     }
     
     func deleteAction(forCellAt indexPath: IndexPath) {
-        model?.delete(forIndexPath: indexPath) // mark for deletion/trash //BUFF: or archive
+        model?.delete(forIndexPath: indexPath)
     }
     
     func moreAction(forCellAt indexPath: IndexPath) {

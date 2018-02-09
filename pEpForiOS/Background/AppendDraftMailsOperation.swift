@@ -25,7 +25,7 @@ public class AppendDraftMailsOperation: AppendMailsOperationBase {
         context.performAndWait {
             let p = NSPredicate(
                 format: "uid = 0 AND parent.folderTypeRawValue = %d AND sendStatusRawValue = %d AND parent.account = %@",
-                FolderType.drafts.rawValue, SendStatus.none.rawValue,
+                targetFolderType.rawValue, SendStatus.none.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
             let msg = CdMessage.first(predicate: p, in: self.context)
             if let m = msg, let cdIdent = m.parent?.account?.identity {
