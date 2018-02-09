@@ -49,6 +49,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var trustWordsView: UIView!
     @IBOutlet weak var languageSelectorImageView: UIImageView!
+    var sizeHelper = false
 
     weak var delegate: HandshakePartnerTableViewCellDelegate?
 

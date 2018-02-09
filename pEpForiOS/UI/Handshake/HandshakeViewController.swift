@@ -43,13 +43,15 @@ class HandshakeViewController: BaseTableViewController {
 
         let cells = tableView.visibleCells
         for cell in cells {
-            let size = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-            if cell.frame.size.height != size.height {
+            if let c = cell as? HandshakePartnerTableViewCell, c.sizeHelper == false {
+                c.sizeHelper = true
+                let size = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+                if cell.frame.size.height != size.height {
                 cell.frame.size.height = size.height
                 cell.layoutIfNeeded()
+                }
             }
         }
-
         tableView.layoutIfNeeded()
     }
 
