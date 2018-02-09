@@ -315,14 +315,29 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - SwipeTableViewCellDelegate
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        /// Create swipe actions, taking the currently displayed folder into account
-        var swipeActions = [SwipeAction]()
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            self.deleteAction(forCellAt: indexPath)
+        guard let folder = folderToShow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+            return nil
         }
-        configure(action: deleteAction, with: .trash)
-        swipeActions.append(deleteAction)
+        // Create swipe actions, taking the currently displayed folder into account
+        var swipeActions = [SwipeAction]()
+        // Delete & Archive
+        if folder.defaultDestructiveActionIsArchive {
+            //BUFF: HEERE
+            let archiveAction = SwipeAction(style: .destructive, title: "Archive/BUFF:") { action, indexPath in //BUFF: title localized?
+                self.deleteAction(forCellAt: indexPath) //BUFF: wrong action!
+            }
+            configure(action: archiveAction, with: .archive)
+            swipeActions.append(archiveAction)
+        } else { // default action is trash
+            let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+                self.deleteAction(forCellAt: indexPath)
+            }
+            configure(action: deleteAction, with: .trash)
+            swipeActions.append(deleteAction)
+        }
 
+        // Flag
         let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
             self.flagAction(forCellAt: indexPath)
         }
@@ -330,10 +345,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         configure(action: flagAction, with: .flag)
         swipeActions.append(flagAction)
 
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
-            return nil
-        }
+        //BUFF:
+//        guard let folder = folderToShow else {
+//            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+//            return nil
+//        }
+
+        // More (reply++)
         if folder.folderType != .drafts {
             // Do not add "more" actions (reply...) to drafted mails.
             let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
@@ -561,7 +579,7 @@ extension EmailListViewController {
     }
     
     func deleteAction(forCellAt indexPath: IndexPath) {
-        model?.delete(forIndexPath: indexPath) // mark for deletion/trash
+        model?.delete(forIndexPath: indexPath) // mark for deletion/trash //BUFF: or archive
     }
     
     func moreAction(forCellAt indexPath: IndexPath) {
@@ -690,16 +708,17 @@ extension EmailListViewController: SegueHandlerType {
 //enums to simplify configurations
 
 enum ActionDescriptor {
-    case read, more, flag, trash
+    case read, more, flag, trash, archive
 
     func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
         guard displayMode != .imageOnly else { return nil }
 
         switch self {
-        case .read: return NSLocalizedString("Read", comment: "read button")
-        case .more: return NSLocalizedString("More", comment: "more button")
-        case .flag: return NSLocalizedString("Flag", comment: "read button")
-        case .trash: return NSLocalizedString("Trash", comment: "Trash button")
+        case .read: return NSLocalizedString("Read", comment: "read button in slidw left menu")
+        case .more: return NSLocalizedString("More", comment: "more button in slidw left menu")
+        case .flag: return NSLocalizedString("Flag", comment: "read button in slidw left menu")
+        case .trash: return NSLocalizedString("Trash", comment: "Trash button in slidw left menu")
+        case .archive: return NSLocalizedString("Archive", comment: "Archive button in slidw left menu")
         }
     }
 
@@ -712,6 +731,7 @@ enum ActionDescriptor {
         case .more: name = "more"
         case .flag: name = "flag"
         case .trash: name = "trash"
+        case .archive: name = "trash"
         }
 
         return UIImage(named: "swipe-" + name)
@@ -723,6 +743,7 @@ enum ActionDescriptor {
         case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
+        case .archive: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
         }
     }
 }

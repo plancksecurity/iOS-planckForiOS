@@ -60,6 +60,7 @@
 		15A45670201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A4566F201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift */; };
 		15A45672201F674E00B6B2CD /* PEPIdentity+ProviderUtilsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A45671201F674E00B6B2CD /* PEPIdentity+ProviderUtilsTest.swift */; };
 		15A75CE1202B57BF00C0DA28 /* Folder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */; };
+		15A75CE5202CCA2F00C0DA28 /* Folder+ProviderUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE4202CCA2F00C0DA28 /* Folder+ProviderUtils.swift */; };
 		15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A763D01F72D68000670313 /* KeyChainTest.swift */; };
 		15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */; };
 		15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */; };
@@ -493,6 +494,7 @@
 		15A4566F201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPIdentity+ProviderUtils.swift"; sourceTree = "<group>"; };
 		15A45671201F674E00B6B2CD /* PEPIdentity+ProviderUtilsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEPIdentity+ProviderUtilsTest.swift"; sourceTree = "<group>"; };
 		15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+VirtualMailbox.swift"; sourceTree = "<group>"; };
+		15A75CE4202CCA2F00C0DA28 /* Folder+ProviderUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+ProviderUtils.swift"; sourceTree = "<group>"; };
 		15A763D01F72D68000670313 /* KeyChainTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
 		15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
 		15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoPlist+pEpStrings.swift"; sourceTree = "<group>"; };
@@ -1639,6 +1641,7 @@
 				B7F199FF1E5DE9FB0079A513 /* FolderType+Extensions.swift */,
 				153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */,
 				15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */,
+				15A75CE4202CCA2F00C0DA28 /* Folder+ProviderUtils.swift */,
 				1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */,
 				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
 				15A4566F201F493400B6B2CD /* PEPIdentity+ProviderUtils.swift */,
@@ -2131,6 +2134,7 @@
 				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
 				4362399F1EAE2F0A00BD2EB9 /* UITableView+Extension.swift in Sources */,
+				15A75CE5202CCA2F00C0DA28 /* Folder+ProviderUtils.swift in Sources */,
 				4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */,
 				4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */,
 				433019E61E01A71300788B89 /* PeriodicTask.swift in Sources */,

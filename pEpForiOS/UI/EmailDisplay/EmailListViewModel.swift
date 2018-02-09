@@ -208,7 +208,11 @@ class EmailListViewModel {
                 return
         }
         messages?.remove(object: previewMessage)
+
+        //BUFF: if delete
         message.imapDelete()
+        //else if archive
+//        message.imapDeleteAndMarkTrashed()
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
