@@ -44,7 +44,7 @@ extension Folder {
     /// - Error returned from server
     /// - Duplicated messages (as the server handles append)
     /// - Possibly all kinds of undefined behavior
-    var shouldNotAppendMessages: Bool { //BUFF: make obsolete?
+    var shouldNotAppendMessages: Bool {
         let defaultValue = false
         guard let providerInfo = providerSpecificInfo else {
             // There are no provider specific rules
