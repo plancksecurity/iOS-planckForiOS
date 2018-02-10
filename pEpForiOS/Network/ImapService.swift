@@ -221,6 +221,15 @@ open class ImapSync: Service {
         imapStore.startTLS()
     }
 
+    // MARK: - EXPUNGE
+
+    open func expunge(uid: Int32) throws { //BUFF:
+        let folder = try openFolder()
+        folder.expunge(UInt(uid))
+    }
+
+    // MARK: - FETCH
+
     open func fetchMessages() throws {
         let folder = try openFolder()
         folder.fetch()

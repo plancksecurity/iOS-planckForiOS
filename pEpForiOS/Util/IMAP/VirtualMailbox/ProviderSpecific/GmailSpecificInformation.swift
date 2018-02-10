@@ -13,6 +13,10 @@ struct GmailSpecificInformation {
         return [FolderType.all]
     }
 
+    private var mailboxTypesDeletedMailsShouldBeExpungedAfterCopyingdToTrash: [FolderType] {
+        return [FolderType.all]
+    }
+
     private var appandableVirtualMailboxTypes: [FolderType] {
         return [FolderType.drafts, .trash]
     }
@@ -38,6 +42,10 @@ extension GmailSpecificInformation: ProviderSpecificInformationProtocol {
 
     func deletedMailsShouldBeCopiedToTrashFrom(_ folder: Folder) -> Bool {
         return mailboxTypesDeletedMailsShouldBeCopiedToTrashFrom.contains(folder.folderType)
+    }
+
+    func mailsCopiedToTrashShouldBeExpungedFrom(_ folder: Folder) -> Bool {
+        return mailboxTypesDeletedMailsShouldBeExpungedAfterCopyingdToTrash.contains(folder.folderType)
     }
 
     func defaultDestructiveActionIsArchive(forFolder folder: Folder) -> Bool {

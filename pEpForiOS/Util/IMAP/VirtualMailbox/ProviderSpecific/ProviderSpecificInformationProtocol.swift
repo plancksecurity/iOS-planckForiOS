@@ -42,6 +42,9 @@ protocol ProviderSpecificInformationProtocol {
     /// - Returns:  Whether or not deleted messages in the given folder should also be copied to trash.
     func deletedMailsShouldBeCopiedToTrashFrom(_ folder: Folder) -> Bool
 
+    /// - Returns:  Whether or not deleted messages should be expunged after copying to trash
+    func mailsCopiedToTrashShouldBeExpungedFrom(_ folder: Folder) -> Bool
+
     /// Whether or not the default destructive action is "archive" instead of "delete".
     func defaultDestructiveActionIsArchive(forFolder folder: Folder) -> Bool
 }

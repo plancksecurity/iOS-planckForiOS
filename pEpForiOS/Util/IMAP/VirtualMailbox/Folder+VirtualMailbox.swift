@@ -65,4 +65,14 @@ extension Folder {
         }
         return providerInfo.deletedMailsShouldBeCopiedToTrashFrom(self)
     }
+
+    var shouldUidExpungeDeletedMessagesAfterCopyToTrash: Bool {
+        // We only want to expunge if the provider offers no alternative.
+        let defaultValue = false
+        guard let providerInfo = providerSpecificInfo else {
+            // There are no provider specific rules
+            return defaultValue
+        }
+        return providerInfo.mailsCopiedToTrashShouldBeExpungedFrom(self)
+    }
 }
