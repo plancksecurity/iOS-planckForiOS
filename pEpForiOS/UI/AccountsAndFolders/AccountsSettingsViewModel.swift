@@ -27,7 +27,8 @@ class AccountsSettingsViewModel {
     }
 
     func delete(section: Int, cell: Int) {
-        if section == 0 {
+        let accountsSection = 0
+        if section == accountsSection {
             sections[section].delete(cell: cell)
         }
     }
