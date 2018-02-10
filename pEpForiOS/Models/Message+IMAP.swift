@@ -14,7 +14,7 @@ extension Message {
     func imapDeleteAndMarkTrashed() {
         let theFlags = imapFlags ?? ImapFlags()
         theFlags.deleted = true
-        imapFieldTrashedStatus = .trashed
+        imapFields?.trashedStatus = .trashed
         imapFlags = theFlags
         self.save()
     }
@@ -23,8 +23,10 @@ extension Message {
     func imapDelete() {
         let theFlags = imapFlags ?? ImapFlags()
         theFlags.deleted = true
-        imapFieldTrashedStatus =
-            self.parent.shouldCopyDeletedMessagesToTrash ? .shouldBeTrashed : .trashed
+        imapFields?.trashedStatus =
+            parent.shouldCopyDeletedMessagesToTrash ? .shouldBeTrashed : .trashed
+        imapFields?.uidExpungedStatus =
+            parent.shouldUidExpungeDeletedMessagesAfterCopyToTrash ? .shouldBeExpunged : .none
         imapFlags = theFlags
         self.save()
     }
