@@ -58,7 +58,7 @@ extension Folder {
     var shouldCopyDeletedMessagesToTrash: Bool {
         // The default is to copy deleted messages to trash in all folders but trash folder itself.
         let defaultValue = folderType == .trash ? false : true
-        guard let providerInfo = providerSpecificInfo, providerInfo.isVirtualMailbox(self) else {
+        guard let providerInfo = providerSpecificInfo else {
             // There are no provider specific rules
             // or we are supposed to use the default behaviour (not virtual mailbox)
             return defaultValue
