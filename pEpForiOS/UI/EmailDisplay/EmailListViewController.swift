@@ -318,17 +318,29 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                    editActionsForRowAt
         indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
-            return nil
-        }
+
         // Create swipe actions, taking the currently displayed folder into account
         var swipeActions = [SwipeAction]()
 
+        // Get messages parent folder
+        let parentFolder: Folder
+        if let folder = folderToShow, !(folder is UnifiedInbox) {
+            // Do not bother our imperformant MessageModel if we already know the parent folder
+            parentFolder = folder
+        } else {
+            // folderToShow is unified inbox, fetch parent folder from DB.
+            guard let vm = model,
+                let folder = vm.message(representedByRowAt: indexPath)?.parent else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
+                    return nil
+            }
+            parentFolder = folder
+        }
+
         // Delete or Archive
-        let titleDestructive = folder.defaultDestructiveActionIsArchive ? "Archive" : "Delete"
-        let descriptorDestructive: ActionDescriptor =
-            folder.defaultDestructiveActionIsArchive ? .archive : .trash
+        let defaultIsArchive = parentFolder.defaultDestructiveActionIsArchive
+        let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
+        let descriptorDestructive: ActionDescriptor = defaultIsArchive ? .archive : .trash
         let archiveAction =
             SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
                 self.deleteAction(forCellAt: indexPath)
@@ -345,7 +357,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         swipeActions.append(flagAction)
 
         // More (reply++)
-        if folder.folderType != .drafts {
+        if parentFolder.folderType != .drafts {
             // Do not add "more" actions (reply...) to drafted mails.
             let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
                 self.moreAction(forCellAt: indexPath)
