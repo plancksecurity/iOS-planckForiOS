@@ -29,7 +29,6 @@ public class AppendSendMailsOperation: AppendMailsOperationBase {
                 let msg = CdMessage.first(predicate: p, in: self.context),
                 let cdIdent = msg.parent?.account?.identity,
                 let folder = msg.parent?.folder() else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling message")
                     result = nil
                     return
             }
@@ -41,10 +40,10 @@ public class AppendSendMailsOperation: AppendMailsOperationBase {
                 // (SendStatus.smtpDone) and the server is responsible for appending sent mails.
                 msg.delete()
                 Record.saveAndWait(context: context)
-                // Recursivly get thenext message
+                // Recursivly get the next message.
                 result = retrieveNextMessage()
+                return
             }
-
             result = (msg.pEpMessageDict(), cdIdent.pEpIdentity(), msg.objectID)
         }
         return result
