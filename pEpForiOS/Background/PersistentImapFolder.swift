@@ -61,7 +61,7 @@ class PersistentImapFolder: CWIMAPFolder {
     let messageFetchedBlock: MessageFetchedBlock?
 
     init?(name: String, accountID: NSManagedObjectID, backgroundQueue: OperationQueue,
-          logName: String? = nil, messageFetchedBlock: MessageFetchedBlock? = nil) {
+          logName: String? = #function, messageFetchedBlock: MessageFetchedBlock? = nil) {
         self.accountID = accountID
         self.backgroundQueue = backgroundQueue
         self.logName = "PersistentImapFolder (\(logName ?? "<unknown>"))"
@@ -84,7 +84,7 @@ class PersistentImapFolder: CWIMAPFolder {
         return PersistentImapFolder.functionName(logName: logName, functionName: name)
     }
 
-    static func functionName(logName: String?, functionName: String) -> String {
+    static func functionName(logName: String? = #function, functionName: String) -> String {
         if let ln = logName {
             return "\(ln): \(functionName)"
         } else {
@@ -93,7 +93,7 @@ class PersistentImapFolder: CWIMAPFolder {
     }
 
     static func folderObject(context: NSManagedObjectContext,
-                             logName: String?,
+                             logName: String? = #function,
                              name: String,
                              accountID: NSManagedObjectID) -> CdFolder? {
         var folder: CdFolder? = nil
