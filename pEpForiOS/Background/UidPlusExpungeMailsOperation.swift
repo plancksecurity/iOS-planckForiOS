@@ -118,8 +118,11 @@ class UidPlusExpungeMailsOperation: ImapSyncOperation {
     }
 }
 
+// MARK: - UidPlusExpungeMailsSyncDelegate
+
 class UidPlusExpungeMailsSyncDelegate: DefaultImapSyncDelegate {
     // Success
+
     override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let handler = errorHandler as? UidPlusExpungeMailsOperation else {
             Log.shared.errorAndCrash(component: #function, errorString: "No handler")
@@ -136,8 +139,6 @@ class UidPlusExpungeMailsSyncDelegate: DefaultImapSyncDelegate {
         handler.handleNextMessage()
     }
 
-    //
-
     // Error
 
     override func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
@@ -152,6 +153,7 @@ class UidPlusExpungeMailsSyncDelegate: DefaultImapSyncDelegate {
         handle(error: ImapSyncError.actionFailed, on: errorHandler)
     }
 
+    // Helper
     private func handle(error: Error, on errorHandler: ImapSyncDelegateErrorHandlerProtocol?) {
         guard let handler = errorHandler as? UidPlusExpungeMailsOperation else {
             Log.shared.errorAndCrash(component: #function, errorString: "Wrong delegate called")

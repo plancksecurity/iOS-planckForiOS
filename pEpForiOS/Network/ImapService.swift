@@ -209,7 +209,7 @@ open class ImapSync: Service {
 
     func openFolder() throws -> CWIMAPFolder {
         guard let folderName = imapState.currentFolderName else {
-            throw BackgroundError.GeneralError.illegalState(info: #function) //BUFF:here
+            throw BackgroundError.GeneralError.illegalState(info: #function)
         }
         guard let folder = imapStore.folder(forName: imapState.currentFolderName) else {
             throw BackgroundError.GeneralError.illegalState(info: "\(comp)- no folder: \(folderName)")
@@ -224,7 +224,7 @@ open class ImapSync: Service {
 
     // MARK: - EXPUNGE
 
-    open func expunge(uid: Int32) throws { //BUFF:
+    open func expunge(uid: Int32) throws {
         let folder = try openFolder()
         folder.expunge(UInt(uid))
     }
