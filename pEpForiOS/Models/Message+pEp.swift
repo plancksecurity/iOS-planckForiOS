@@ -68,3 +68,24 @@ extension Message {
         return attachments.filter() { return $0.isViewable() }
     }
 }
+
+// MARK: - Fetching
+
+extension Message {
+
+    /// - Returns: all messages marked for uidExpunge
+    static public func allMessagesMarkedForUidExpunge() -> [Message] {
+        let predicateMarkedUidExpunge = CdMessage.PredicateFactory.markedForUidExpunge()
+        let cdMessages = CdMessage.all(predicate: predicateMarkedUidExpunge) as? [CdMessage] ?? []
+        var result = [Message]()
+        for cdMessage in cdMessages {
+            guard let message = cdMessage.message() else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "No Message for CdMesssage")
+                continue
+            }
+            result.append(message)
+        }
+        return result
+    }
+}
