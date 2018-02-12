@@ -15,6 +15,7 @@ protocol ImapSyncDelegateErrorHandlerProtocol: class {
  that considers everything to be an error ('illegal state').
  */
 class DefaultImapSyncDelegate: ImapSyncDelegate {
+
     weak var errorHandler: ImapSyncDelegateErrorHandlerProtocol?
 
     class CrashingErrorHandler: ImapSyncDelegateErrorHandlerProtocol {
@@ -111,6 +112,10 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
     }
 
     public func messageStoreFailed(_ sync: ImapSync, notification: Notification?) {
+        forceErrorDelegate().handle(error: ImapSyncError.illegalState(#function))
+    }
+
+    func messageUidExpungeCompleted(_ sync: ImapSync, notification: Notification?) {
         forceErrorDelegate().handle(error: ImapSyncError.illegalState(#function))
     }
 
