@@ -65,7 +65,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             let meIdent = mySelfID.pEpIdentity()
             let partnerIdent = partnerID.pEpIdentity()
 
-            session.update(meIdent)
+            session.mySelf(meIdent)
             session.update(partnerIdent)
 
             XCTAssertNotNil(meIdent.fingerPrint)
