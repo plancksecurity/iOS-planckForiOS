@@ -58,7 +58,7 @@ class HandshakePartnerTableViewCellViewModel {
      */
     let session: PEPSession
 
-    var isPartnerPGPUser = false
+    //var isPartnerPEPUser = false
     var isPartnerpEpUser = false
 
     /**
@@ -97,7 +97,6 @@ class HandshakePartnerTableViewCellViewModel {
         // backup the partner dict
         pEpPartnerCopy = PEPIdentity(identity: pEpPartner)
         isPartnerpEpUser = session.isPEPUser(pEpPartner)
-        isPartnerPGPUser = pEpPartner.containsPGPCommType()
         self.message = message
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
