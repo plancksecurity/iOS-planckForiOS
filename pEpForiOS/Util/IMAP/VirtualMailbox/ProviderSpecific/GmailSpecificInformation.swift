@@ -23,12 +23,12 @@ struct GmailSpecificInformation {
         // In Gmail the server takes care to UID MOVE messages that are flagged \deleted for all
         // folders but "All Messages", thus the only use case we have to actively UID MOVE a
         // message to trash id from "All Messages"
-        return [FolderType.all]
+        return [.all, .drafts]
     }
 
     /// Foldertypes that should provide "trash" action (not "archive") is the Trash folder
     private var mailboxTypesWithDefaultDestructiveActionTrash: [FolderType] {
-        return [.all, .trash]
+        return [.all, .drafts, .trash]
     }
 
     private var appandableVirtualMailboxTypes: [FolderType] {
