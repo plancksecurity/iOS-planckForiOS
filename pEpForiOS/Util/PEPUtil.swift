@@ -69,7 +69,7 @@ open class PEPUtil {
         }
     }
 
-    open static func pEpDict(identity: Identity) -> PEPIdentity {
+    open static func pEp(identity: Identity) -> PEPIdentity {
         return PEPIdentity(
             address: identity.address, userID: identity.userID, userName: identity.userName,
             isOwn: identity.isMySelf, fingerPrint: nil, commType: PEP_ct_unknown, language: nil)
@@ -116,7 +116,7 @@ open class PEPUtil {
         guard let id = identity else {
             return nil
         }
-        return pEpDict(identity: id)
+        return pEp(identity: id)
     }
 
     open static func pEpAttachment(
@@ -158,9 +158,9 @@ open class PEPUtil {
             dict[kPepShortMessage] = subject as NSString
         }
 
-        dict[kPepTo] = NSArray(array: message.to.map() { return pEpDict(identity: $0) })
-        dict[kPepCC] = NSArray(array: message.cc.map() { return pEpDict(identity: $0) })
-        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEpDict(identity: $0) })
+        dict[kPepTo] = NSArray(array: message.to.map() { return pEp(identity: $0) })
+        dict[kPepCC] = NSArray(array: message.cc.map() { return pEp(identity: $0) })
+        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEp(identity: $0) })
 
         dict[kPepFrom]  = pEpOptional(identity: message.from) as AnyObject
         dict[kPepID] = message.messageID as AnyObject
@@ -482,7 +482,7 @@ open class PEPUtil {
 
     open static func pEpRating(identity: Identity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
-        let pepC = pEpDict(identity: identity)
+        let pepC = pEp(identity: identity)
         let rating = session.identityRating(pepC)
         return rating
     }
@@ -528,7 +528,7 @@ open class PEPUtil {
     }
 
     open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
-        let pEpID = pEpDict(identity: identity)
+        let pEpID = pEp(identity: identity)
         session.update(pEpID)
         return pEpID.fingerPrint
     }
@@ -544,7 +544,7 @@ open class PEPUtil {
      Trust that contact (yellow to green).
      */
     open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEpDict(identity: identity)
+        let pEpID = pEp(identity: identity)
         session.update(pEpID)
         session.trustPersonalKey(pEpID)
     }
@@ -553,7 +553,7 @@ open class PEPUtil {
      Mistrust the identity (yellow to red)
      */
     open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEpDict(identity: identity)
+        let pEpID = pEp(identity: identity)
         session.update(pEpID)
         session.keyMistrusted(pEpID)
     }
@@ -563,7 +563,7 @@ open class PEPUtil {
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
     open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEpDict(identity: identity)
+        let pEpID = pEp(identity: identity)
         session.update(pEpID)
         session.keyResetTrust(pEpID)
     }
