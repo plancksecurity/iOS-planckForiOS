@@ -26,7 +26,8 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
             parentName: parentName,
             appendFolderType: trashFolderType,
             imapSyncData: imapSyncData,
-            errorContainer: errorContainer)
+            errorContainer: errorContainer,
+            encryptMode: .encryptToMySelf)
     }
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {

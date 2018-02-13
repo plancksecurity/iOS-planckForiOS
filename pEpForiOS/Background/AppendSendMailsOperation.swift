@@ -13,9 +13,13 @@ import CoreData
  Stores SMTPed mails in the sent folder.
  */
 public class AppendSendMailsOperation: AppendMailsOperationBase {
-    public init(parentName: String = #function, imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+    public init(
+        parentName: String = #function, imapSyncData: ImapSyncData,
+        errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         let appendFolder = FolderType.sent
-        super.init(parentName: parentName, appendFolderType: appendFolder, imapSyncData: imapSyncData, errorContainer: errorContainer)
+        super.init(parentName: parentName, appendFolderType: appendFolder,
+                   imapSyncData: imapSyncData, errorContainer: errorContainer,
+                   encryptMode: .encryptAsOutgoing)
     }
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
