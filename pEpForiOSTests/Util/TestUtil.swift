@@ -447,10 +447,6 @@ class TestUtil {
                      message.addAttachment(cdAttachment: cdAttachment)
                 }
             }
-            // prevent encryption for last mail
-            if i == numberOfMails {
-                message.bcc = NSOrderedSet(object: toWithoutKey)
-            }
 
             messagesInTheQueue.append(message)
         }
