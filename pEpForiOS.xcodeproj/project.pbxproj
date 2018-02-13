@@ -29,7 +29,6 @@
 		151F7200202A06760057C74D /* TestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F5202A06750057C74D /* TestUtil.swift */; };
 		151F7201202A06760057C74D /* CdAccount+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F6202A06750057C74D /* CdAccount+TestUtils.swift */; };
 		151F7205202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F7204202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift */; };
-		151F7209202A18F80057C74D /* PantomimeSpecialUseMailboxType+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F7208202A18F80057C74D /* PantomimeSpecialUseMailboxType+ExtensionsTest.swift */; };
 		15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */; };
 		153CA6E41FB60D99003C9629 /* DercyptMessagesOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */; };
 		153CA6E81FB61B53003C9629 /* IOS-815_pep_rating_zero.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E71FB61B53003C9629 /* IOS-815_pep_rating_zero.txt */; };
@@ -59,7 +58,6 @@
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */; };
 		15A75CE1202B57BF00C0DA28 /* Folder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */; };
-		15A75CE8202DE66A00C0DA28 /* PantomimeSpecialUseMailboxType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F7206202A124C0057C74D /* PantomimeSpecialUseMailboxType+Extensions.swift */; };
 		15A75CEA202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */; };
 		15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */; };
 		15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A763D01F72D68000670313 /* KeyChainTest.swift */; };
@@ -463,8 +461,6 @@
 		151F71F5202A06750057C74D /* TestUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtil.swift; sourceTree = "<group>"; };
 		151F71F6202A06750057C74D /* CdAccount+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+TestUtils.swift"; sourceTree = "<group>"; };
 		151F7204202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PantomimeFolderAttribute+ExtensionsTest.swift"; sourceTree = "<group>"; };
-		151F7206202A124C0057C74D /* PantomimeSpecialUseMailboxType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PantomimeSpecialUseMailboxType+Extensions.swift"; sourceTree = "<group>"; };
-		151F7208202A18F80057C74D /* PantomimeSpecialUseMailboxType+ExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PantomimeSpecialUseMailboxType+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		152130531FD00B7A00688DF2 /* DisplayUserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayUserError.swift; sourceTree = "<group>"; };
 		15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityImageTool.swift; sourceTree = "<group>"; };
 		153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DercyptMessagesOperationTest.swift; sourceTree = "<group>"; };
@@ -922,7 +918,6 @@
 			children = (
 				15A75CE7202DE65700C0DA28 /* VirtualMailbox */,
 				151F71D12029FA1B0057C74D /* PantomimeFolderAttribute+Extensions.swift */,
-				151F7206202A124C0057C74D /* PantomimeSpecialUseMailboxType+Extensions.swift */,
 			);
 			path = IMAP;
 			sourceTree = "<group>";
@@ -956,7 +951,6 @@
 			isa = PBXGroup;
 			children = (
 				151F7204202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift */,
-				151F7208202A18F80057C74D /* PantomimeSpecialUseMailboxType+ExtensionsTest.swift */,
 			);
 			path = IMAP;
 			sourceTree = "<group>";
@@ -2260,7 +2254,6 @@
 				43FC24211F04F3F400C32110 /* ImapSmtpSyncService.swift in Sources */,
 				431E2B071F02550C000035FA /* CheckOutgoingMessagesOperation.swift in Sources */,
 				43ED536F1CC77F95006AB156 /* EmailListViewCell.swift in Sources */,
-				15A75CE8202DE66A00C0DA28 /* PantomimeSpecialUseMailboxType+Extensions.swift in Sources */,
 				432142641E8FD66900FBE987 /* FetchNumberOfNewMailsService.swift in Sources */,
 				4351C2C81F4441190053381F /* blocks.c in Sources */,
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
@@ -2440,7 +2433,6 @@
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
 				43C579ED1F0A465000A8EDF0 /* FetchFoldersServiceTests.swift in Sources */,
 				151F7205202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */,
-				151F7209202A18F80057C74D /* PantomimeSpecialUseMailboxType+ExtensionsTest.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
 				15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */,
 				431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */,
