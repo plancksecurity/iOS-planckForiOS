@@ -270,7 +270,7 @@ open class PEPUtil {
      - Returns: A PEPMessage suitable for processing with pEp.
      */
     open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessage {
-        var pEpMessage = PEPMessage()
+        let pEpMessage = PEPMessage()
 
         pEpMessage.sentDate = cdMessage.sent
         pEpMessage.shortMessage = cdMessage.shortMessage
