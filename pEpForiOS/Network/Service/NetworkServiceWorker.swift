@@ -270,11 +270,11 @@ open class NetworkServiceWorker {
                                            opImapFinished: Operation,
                                            previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
         var lastOp = previousOp
-        var createdOps = [UidPlusExpungeMailsOperation]()
+        var createdOps = [UidMoveMailsToTrashOperation]()
         MessageModel.performAndWait {
-            let folders = UidPlusExpungeMailsOperation.foldersContainingMarkedUidExpungeMessages()
+            let folders = UidMoveMailsToTrashOperation.foldersContainingMarkedToUidMoveToTrash()
             for folder in folders {
-                let op = UidPlusExpungeMailsOperation(imapSyncData: imapSyncData,
+                let op = UidMoveMailsToTrashOperation(imapSyncData: imapSyncData,
                                                       errorContainer: errorContainer,
                                                       folder: folder)
                 op.addDependency(lastOp)

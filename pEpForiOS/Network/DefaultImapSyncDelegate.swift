@@ -115,7 +115,7 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
         forceErrorDelegate().handle(error: ImapSyncError.illegalState(#function))
     }
 
-    func messageUidExpungeCompleted(_ sync: ImapSync, notification: Notification?) {
+    func messageUidMoveCompleted(_ sync: ImapSync, notification: Notification?) {
         forceErrorDelegate().handle(error: ImapSyncError.illegalState(#function))
     }
 

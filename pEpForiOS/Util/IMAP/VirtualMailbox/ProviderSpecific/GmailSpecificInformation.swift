@@ -9,16 +9,30 @@
 import MessageModel
 
 struct GmailSpecificInformation {
+
     private var mailboxTypesDeletedMailsShouldBeCopiedToTrashFrom: [FolderType] {
+        // In Gmail we must not copy any mail to trash.
+        // In all folders but "All Messages":
+        // - the server takes care to UID MOVE messages that are flagged \deleted
+        // In "All Messages" folder:
+        // - We have to UID MOVE the message to trash folder
+        return []
+    }
+
+    private var mailboxTypesDeletedMailsShouldBeUidMovedToTrash: [FolderType] {
+        // In Gmail the server takes care to UID MOVE messages that are flagged \deleted for all
+        // folders but "All Messages", thus the only use case we have to actively UID MOVE a
+        // message to trash id from "All Messages"
         return [FolderType.all]
     }
 
-    private var mailboxTypesDeletedMailsShouldBeExpungedAfterCopyingdToTrash: [FolderType] {
-        return [FolderType.all]
+    /// Foldertypes that should provide "trash" action (not "archive") is the Trash folder
+    private var mailboxTypesWithDefaultDestructiveActionTrash: [FolderType] {
+        return [.all, .trash]
     }
 
     private var appandableVirtualMailboxTypes: [FolderType] {
-        return [FolderType.drafts, .trash]
+        return [FolderType.drafts]
     }
 }
 
@@ -44,14 +58,12 @@ extension GmailSpecificInformation: ProviderSpecificInformationProtocol {
         return mailboxTypesDeletedMailsShouldBeCopiedToTrashFrom.contains(folder.folderType)
     }
 
-    func mailsCopiedToTrashShouldBeExpungedFrom(_ folder: Folder) -> Bool {
-        return mailboxTypesDeletedMailsShouldBeExpungedAfterCopyingdToTrash.contains(folder.folderType)
+    func shouldUidMoveMailsToTrashWhenDeleted(inFolder folder: Folder) -> Bool {
+        return mailboxTypesDeletedMailsShouldBeUidMovedToTrash.contains(folder.folderType)
     }
 
     func defaultDestructiveActionIsArchive(forFolder folder: Folder) -> Bool {
-        // The only folder that should provide "trash" action (not "archive") is the Trash folder
         return belongsToProvider(folder)
-            && folder.folderType != .trash
-            && !mailboxTypesDeletedMailsShouldBeCopiedToTrashFrom.contains(folder.folderType)
+            && !mailboxTypesWithDefaultDestructiveActionTrash.contains(folder.folderType)
     }
 }

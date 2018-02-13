@@ -25,8 +25,8 @@ extension Message {
         theFlags.deleted = true
         imapFields?.trashedStatus =
             parent.shouldCopyDeletedMessagesToTrash ? .shouldBeTrashed : .trashed
-        imapFields?.uidExpungedStatus =
-            parent.shouldUidExpungeDeletedMessagesAfterCopyToTrash ? .shouldBeExpunged : .none
+        imapFields?.uidMoveToTrashStatus =
+            parent.shouldUidMoveDeletedMessagesToTrash ? .shouldBeMoved : .none
         imapFlags = theFlags
         self.save()
     }

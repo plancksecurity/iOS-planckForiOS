@@ -28,7 +28,7 @@ public protocol ImapSyncDelegate: class {
     func folderAppendFailed(_ sync: ImapSync, notification: Notification?)
     func messageStoreCompleted(_ sync: ImapSync, notification: Notification?)
     func messageStoreFailed(_ sync: ImapSync, notification: Notification?)
-    func messageUidExpungeCompleted(_ sync: ImapSync, notification: Notification?)
+    func messageUidMoveCompleted(_ sync: ImapSync, notification: Notification?)
     func folderCreateCompleted(_ sync: ImapSync, notification: Notification?)
     func folderCreateFailed(_ sync: ImapSync, notification: Notification?)
     func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?)
@@ -222,13 +222,6 @@ open class ImapSync: Service {
         imapStore.startTLS()
     }
 
-    // MARK: - EXPUNGE
-
-    open func expunge(uid: Int32) throws {
-        let folder = try openFolder()
-        folder.expunge(UInt(uid))
-    }
-
     // MARK: - FETCH
 
     open func fetchMessages() throws {
@@ -378,10 +371,10 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func messageUidExpungeCompleted(_ theNotification: Notification?) {
-        dumpMethodName("messageUidExpungeCompleted", notification: theNotification)
+    @objc public func messageUidMoveCompleted(_ theNotification: Notification?) {
+        dumpMethodName("messageUidMoveCompleted", notification: theNotification)
         runOnDelegate() { theDelegate in
-            theDelegate.messageUidExpungeCompleted(self, notification: theNotification)
+            theDelegate.messageUidMoveCompleted(self, notification: theNotification)
         }
     }
 

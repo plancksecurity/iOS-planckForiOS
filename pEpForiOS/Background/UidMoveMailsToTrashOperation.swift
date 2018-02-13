@@ -1,5 +1,5 @@
 //
-//  UidPlusExpungeMailsOperation.swift
+//  UidMoveMailsToTrashOperation.swift
 //  pEp
 //
 //  Created by Andreas Buff on 10.02.18.
@@ -8,23 +8,34 @@
 
 import MessageModel
 
-class UidPlusExpungeMailsOperation: ImapSyncOperation {
-    var syncDelegate: UidPlusExpungeMailsSyncDelegate?
-    /// Folder to uidExpunge messages from
+/// Soley implemented for Gmail.
+/// Uses the UID MOVE command to move deleted mails to trash folder
+/// (instead of copying and appending it).
+/// That is the only way found to move a message from Gmails "All Messages" virtual mailbox
+/// to "Trash".
+class UidMoveMailsToTrashOperation: ImapSyncOperation {
+    var syncDelegate: UidMoveMailsToTrashOperationSyncDelegate?
+    /// Folder to move messages from
     let folder: Folder
+    /// Folder type to move messages to
+    let targetFolderType: FolderType
+    /// Folder to move messages to
+    var targetFolder: Folder?
 
     var lastProcessedMessage: Message?
 
     init(parentName: String = #function, imapSyncData: ImapSyncData,
          errorContainer: ServiceErrorProtocol = ErrorContainer(), folder: Folder) {
         self.folder = folder
+        self.targetFolderType = .trash
+
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
-        setupImapFolder()
+        determineTargetFolder()
     }
 
     override public func main() {
-        if !shouldRun() {
+       if !shouldRun() {
             return
         }
 
@@ -32,10 +43,15 @@ class UidPlusExpungeMailsOperation: ImapSyncOperation {
             return
         }
 
-        syncDelegate = UidPlusExpungeMailsSyncDelegate(errorHandler: self)
+        syncDelegate = UidMoveMailsToTrashOperationSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
 
         process()
+    }
+
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
     }
 
     private func retrieveNextMessage() -> Message? {
@@ -53,21 +69,17 @@ class UidPlusExpungeMailsOperation: ImapSyncOperation {
         return result
     }
 
-    fileprivate func deleteLastExpungedMessage() {
+    fileprivate func deleteLastMovedMessage() {
         guard let toDelete = lastProcessedMessage else {
             return
         }
+
         MessageModel.performAndWait {
+            toDelete.imapFields?.uidMoveToTrashStatus = .moved
             toDelete.delete()
+            toDelete.save()
         }
         lastProcessedMessage = nil
-    }
-
-    private func setupImapFolder() {
-        let imapFolder = CWIMAPFolder(name: folder.name)
-        if let sync = imapSyncData.sync {
-            imapFolder.setStore(sync.imapStore)
-        }
     }
 
     fileprivate func process() {
@@ -79,7 +91,7 @@ class UidPlusExpungeMailsOperation: ImapSyncOperation {
     }
 
     fileprivate func handleNextMessage() {
-        deleteLastExpungedMessage()
+        deleteLastMovedMessage()
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
@@ -90,28 +102,34 @@ class UidPlusExpungeMailsOperation: ImapSyncOperation {
                 return
             }
             me.lastProcessedMessage = message
-            do {
-                try me.imapSyncData.sync?.expunge(uid: Int32(message.uid))
-            } catch {
-                Log.shared.errorAndCrash(component: #function, errorString: "Problem opening folder")
-                me.lastProcessedMessage = nil
-                me.addIMAPError(error)
+
+            guard let targetFolderName = me.targetFolder?.name else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No target folder")
                 me.markAsFinished()
                 return
             }
+            let imapFolder = CWIMAPFolder(name: me.folder.name)
+            if let sync = me.imapSyncData.sync {
+                imapFolder.setStore(sync.imapStore)
+            }
+            imapFolder.moveMessage(withUid: message.uid, toFolderNamed: targetFolderName)
         }
     }
 
-    override func markAsFinished() {
-        syncDelegate = nil
-        super.markAsFinished()
+    private func determineTargetFolder() {
+        guard let account = Account.by(address: folder.account.user.address) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No Account")
+            markAsFinished()
+            return
+        }
+        targetFolder = Folder.by(account: account, folderType: targetFolderType)
     }
 
-    static func foldersContainingMarkedUidExpungeMessages() -> [Folder] {
+    static func foldersContainingMarkedToUidMoveToTrash() -> [Folder] {
         var result = [Folder]()
         MessageModel.performAndWait {
-            let allUidExpunchMessages = Message.allMessagesMarkedForUidExpunge()
-            let foldersContainingMarkedMessages = allUidExpunchMessages.map { $0.parent }
+            let allUidMoveMessages = Message.allMessagesMarkedForUidExpunge()
+            let foldersContainingMarkedMessages = allUidMoveMessages.map { $0.parent }
             result = Array(Set(foldersContainingMarkedMessages))
         }
         return result
@@ -120,26 +138,27 @@ class UidPlusExpungeMailsOperation: ImapSyncOperation {
 
 // MARK: - UidPlusExpungeMailsSyncDelegate
 
-class UidPlusExpungeMailsSyncDelegate: DefaultImapSyncDelegate {
-    // Success
+class UidMoveMailsToTrashOperationSyncDelegate: DefaultImapSyncDelegate {
+
+    // MARK: Success
 
     override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        guard let handler = errorHandler as? UidPlusExpungeMailsOperation else {
+        guard let handler = errorHandler as? UidMoveMailsToTrashOperation else {
             Log.shared.errorAndCrash(component: #function, errorString: "No handler")
             return
         }
         handler.handleNextMessage()
     }
 
-    override func messageUidExpungeCompleted(_ sync: ImapSync, notification: Notification?) {
-        guard let handler = errorHandler as? UidPlusExpungeMailsOperation else {
+    override func messageUidMoveCompleted(_ sync: ImapSync, notification: Notification?) {
+        guard let handler = errorHandler as? UidMoveMailsToTrashOperation else {
             Log.shared.errorAndCrash(component: #function, errorString: "No handler")
             return
         }
         handler.handleNextMessage()
     }
 
-    // Error
+    // MARK: Error
 
     override func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
         handle(error: ImapSyncError.actionFailed, on: errorHandler)
@@ -153,9 +172,10 @@ class UidPlusExpungeMailsSyncDelegate: DefaultImapSyncDelegate {
         handle(error: ImapSyncError.actionFailed, on: errorHandler)
     }
 
-    // Helper
-    private func handle(error: Error, on errorHandler: ImapSyncDelegateErrorHandlerProtocol?) {
-        guard let handler = errorHandler as? UidPlusExpungeMailsOperation else {
+    // MARK: Helper
+
+    fileprivate func handle(error: Error, on errorHandler: ImapSyncDelegateErrorHandlerProtocol?) {
+        guard let handler = errorHandler as? UidMoveMailsToTrashOperation else {
             Log.shared.errorAndCrash(component: #function, errorString: "Wrong delegate called")
             return
         }
