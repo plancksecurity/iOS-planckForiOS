@@ -14,17 +14,19 @@ extension Message {
     func imapDeleteAndMarkTrashed() {
         let theFlags = imapFlags ?? ImapFlags()
         theFlags.deleted = true
-        imapFieldTrashedStatus = .trashed
+        imapFields?.trashedStatus = .trashed
         imapFlags = theFlags
         self.save()
     }
 
-    /// Sets flag "deleted".
-    /// Use this method if you want the message to be copied to trash folder.
+    /// Sets flag "deleted" and marks the message to be copied to trash if appropriate.
     func imapDelete() {
         let theFlags = imapFlags ?? ImapFlags()
         theFlags.deleted = true
-        imapFieldTrashedStatus = .shouldBeTrashed
+        imapFields?.trashedStatus =
+            parent.shouldCopyDeletedMessagesToTrash ? .shouldBeTrashed : .trashed
+        imapFields?.uidMoveToTrashStatus =
+            parent.shouldUidMoveDeletedMessagesToTrash ? .shouldBeMoved : .none
         imapFlags = theFlags
         self.save()
     }

@@ -31,9 +31,22 @@ public class AppendSendMailsOperation: AppendMailsOperationBase {
                 imapSyncData.connectInfo.accountObjectID)
             guard
                 let msg = CdMessage.first(predicate: p, in: self.context),
-                let cdIdent = msg.parent?.account?.identity else {
+                let cdIdent = msg.parent?.account?.identity,
+                let folder = msg.parent?.folder() else {
                     result = nil
                     return
+            }
+
+            if folder.shouldNotAppendMessages {
+                // For this folder the server appends send mails.
+                // To avoid the current msg is processed here on every sync loop, we delete it.
+                // That should be save as the message has been send successfully
+                // (SendStatus.smtpDone) and the server is responsible for appending sent mails.
+                msg.delete()
+                Record.saveAndWait(context: context)
+                // Recursivly get the next message.
+                result = retrieveNextMessage()
+                return
             }
             result = (msg.pEpMessageDict(), cdIdent.pEpIdentity(), msg.objectID)
         }

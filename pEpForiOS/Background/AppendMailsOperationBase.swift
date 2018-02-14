@@ -137,45 +137,59 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     }
 
     func determineTargetFolder(msgID: NSManagedObjectID) {
-        if targetFolderName == nil {
-            context.performAndWait {
-                guard let msg = self.context.object(with: msgID) as? CdMessage else {
-                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
-                                     message:
-                        "Need a valid message for determining the sent folder name")
-                    return
-                }
-                guard let account = msg.parent?.account else {
-                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
-                                     message:
-                        "Cannot append message without parent folder and this, account")
-                    return
-                }
-                guard let folder = self.retrieveFolderForAppend(
-                    account: account, context: self.context) else {
-                        self.handleError(
-                            BackgroundError.GeneralError.invalidParameter(info: self.comp),
-                            message: "Cannot find sent folder for message to append")
-                        return
-                }
-                guard let fn = folder.name else {
-                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
-                                     message: "Need the name for the sent folder")
-                    return
-                }
-                self.targetFolderName = fn
+        if targetFolderName != nil {
+            // We already know the target folder, nothing to do
+            return
+        }
+        context.performAndWait {
+            guard let msg = self.context.object(with: msgID) as? CdMessage else {
+                self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                 message:
+                    "Need a valid message for determining the sent folder name")
+                return
             }
+            guard let account = msg.parent?.account else {
+                self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                 message:
+                    "Cannot append message without parent folder and this, account")
+                return
+            }
+            guard let cdFolder = self.retrieveFolderForAppend(
+                account: account, context: self.context) else {
+                    self.handleError(
+                        BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                        message: "Cannot find sent folder for message to append")
+                    return
+            }
+            if cdFolder.folder().shouldNotAppendMessages {
+                // We are not supposed to append messages to this (probably virtual) mailbox.
+                // This is only for savety reasons, we should never come in here as messages
+                // should not be marked for appending in the first place.
+                // In case it turns out that there *Are* valid cases to reach this, we should
+                // also delete the triggering message to avoid that it is processed here on
+                // every sync loop.
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "We should never come here.")
+                handleNextMessage()
+                return
+            }
+            guard let fn = cdFolder.name else {
+                self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                 message: "Need the name for the sent folder")
+                return
+            }
+            self.targetFolderName = fn
         }
     }
 
     final func handleNextMessage() {
         markLastMessageAsFinished()
 
-        guard let (msg, ident, objID) = retrieveNextMessage(),
-            !ident.providerDoesHandleAppend(forFolderOfType: targetFolderType) else {
+        guard let (msg, ident, objID) = retrieveNextMessage() else {
                 markAsFinished()
                 return
         }
+
         lastHandledMessageObjectID = objID
         determineTargetFolder(msgID: objID)
         let session = PEPSession()

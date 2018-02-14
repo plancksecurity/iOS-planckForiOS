@@ -346,7 +346,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             return
         }
         // Let's delete a special folder, if it exists
-        if let spamFolder = CdFolder.by(folderType: .spam, account: cdAccount),
+        if let spamFolder = CdFolder.by(folderType: .trash, account: cdAccount),
             let fn = spamFolder.name {
             let expDeleted = expectation(description: "expFolderDeleted")
             let opDelete = DeleteFolderOperation(
