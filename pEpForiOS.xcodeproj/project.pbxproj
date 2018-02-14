@@ -100,6 +100,7 @@
 		430972661DDEEBB50062E308 /* CdIdentity+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */; };
 		430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */; };
 		430A6E541DFB08CE006273A5 /* UITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430A6E531DFB08CE006273A5 /* UITestData.swift */; };
+		430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */; };
 		430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */; };
 		430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */; };
@@ -531,6 +532,7 @@
 		430972651DDEEBB50062E308 /* CdIdentity+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+Extension.swift"; sourceTree = "<group>"; };
 		430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdImapFlags+Pantomime.swift"; sourceTree = "<group>"; };
 		430A6E531DFB08CE006273A5 /* UITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITestData.swift; sourceTree = "<group>"; };
+		430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CdMessagePEPMessageTests.swift; sourceTree = "<group>"; };
 		430C80D41D0EAB6E00CD4582 /* pEpTrustWords.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = pEpTrustWords.bundle; path = ../pEpTrustWords.bundle; sourceTree = "<group>"; };
 		430C80DF1D0EADC200CD4582 /* PepAdapterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PepAdapterTests.swift; sourceTree = "<group>"; };
 		430D73641E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewOperation.swift; sourceTree = "<group>"; };
@@ -1486,6 +1488,7 @@
 				431F987E1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift */,
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
 				1541D7F41FC82A4900D52A5D /* URL+MIME.swift */,
+				430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -2435,6 +2438,7 @@
 				151F7205202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
 				15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */,
+				430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */,
 				431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */,
 				1572B9CB1F3474880048BCF5 /* AccountSettingsViewModelTest.swift in Sources */,
 				432A3E441F0E793A00834749 /* SyncExistingMessagesServiceTests.swift in Sources */,
