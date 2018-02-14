@@ -99,11 +99,13 @@ public class SyncMessagesOperation: ImapSyncOperation {
         self.imapSyncData.sync?.delegate = syncDelegate
         self.imapSyncData.sync?.folderBuilder = folderBuilder
 
-        if let sync = self.imapSyncData.sync {
-            if !sync.openMailBox(name: self.folderToOpen) {
-                sync.imapState.currentFolder?.resetMatchedUIDs()
-                self.syncMessages(sync)
-            }
+        guard let sync = self.imapSyncData.sync else {
+            handle(error: BackgroundError.GeneralError.illegalState(info: "No sync"))
+            return
+        }
+        if !sync.openMailBox(name: self.folderToOpen) {
+            sync.imapState.currentFolder?.resetMatchedUIDs()
+            self.syncMessages(sync)
         }
     }
 

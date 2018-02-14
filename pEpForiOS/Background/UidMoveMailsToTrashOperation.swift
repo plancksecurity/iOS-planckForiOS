@@ -89,6 +89,8 @@ class UidMoveMailsToTrashOperation: ImapSyncOperation {
             if !sync.openMailBox(name: folder.name) {
                 handleNextMessage()
             }
+        } else {
+            handle(error: BackgroundError.GeneralError.illegalState(info: "No sync"))
         }
     }
 
