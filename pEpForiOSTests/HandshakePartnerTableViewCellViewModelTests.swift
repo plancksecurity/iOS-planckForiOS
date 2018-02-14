@@ -175,21 +175,14 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             imageProvider: imageProvider)
         XCTAssertEqual(imageProvider.identitiesRequested.count, 1)
         XCTAssertEqual(imageProvider.identitiesRequested.first, partnerID)
-        XCTAssertFalse(vm.isPartnerPGPUser)
 
         vm.confirmTrust()
-        XCTAssertFalse(vm.isPartnerPGPUser)
         vm.resetTrust()
-        XCTAssertFalse(vm.isPartnerPGPUser)
 
         vm.denyTrust()
-        XCTAssertFalse(vm.isPartnerPGPUser)
         vm.resetTrust()
-        XCTAssertFalse(vm.isPartnerPGPUser)
 
         vm.confirmTrust()
-        XCTAssertFalse(vm.isPartnerPGPUser)
         vm.resetTrust()
-        XCTAssertFalse(vm.isPartnerPGPUser)
     }
 }
