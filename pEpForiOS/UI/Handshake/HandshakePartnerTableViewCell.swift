@@ -87,8 +87,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    var isPartnerPGPUser: Bool {
-        return viewModel?.isPartnerPGPUser ?? false
+    var isPartnerPEPUser: Bool {
+        return viewModel?.isPartnerpEpUser ?? false
     }
 
     var trustwordsFull: Bool {
@@ -119,18 +119,16 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             headerView.backgroundColor = UIColor.white
         }
         partnerNameLabel.text = viewModel?.partnerName
-        //partnerNameLabel.sizeToFit()
         updateStopTrustingButtonTitle()
         updatePrivacyStatus(color: identityColor)
         updateTrustwords()
         partnerImageView.image = viewModel?.partnerImage.value
 
-        languageSelectorImageView.isUserInteractionEnabled = !isPartnerPGPUser
-        trustWordsLabel.isUserInteractionEnabled = !isPartnerPGPUser
-        //trustWordsLabel.sizeToFit()
+        languageSelectorImageView.isUserInteractionEnabled = isPartnerPEPUser
+        trustWordsLabel.isUserInteractionEnabled = isPartnerPEPUser
 
-        languageSelectorImageView.isHidden = isPartnerPGPUser
-        if !isPartnerPGPUser && showTrustwords {
+        languageSelectorImageView.isHidden = !isPartnerPEPUser
+        if isPartnerPEPUser && showTrustwords {
             install(gestureRecognizer: UITapGestureRecognizer(
                 target: self,
                 action: #selector(languageSelectorAction(_:))),
@@ -147,10 +145,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateConfirmDistrustButtonsTitle()
 
         updateAdditionalConstraints()
-        //setNeedsLayout()
-        //layoutIfNeeded()
-
-
     }
 
     /**
@@ -166,7 +160,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateTrustwords() {
-        let showElipsis = !isPartnerPGPUser && !trustwordsFull
+        let showElipsis = isPartnerPEPUser && !trustwordsFull
         if showElipsis,
             let trustwords = viewModel?.trustwords {
             trustWordsLabel.text = "\(trustwords) …"
@@ -190,7 +184,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateTrustwordsExpansionVisibility() {
-        //trustWordsView.isHidden = !showTrustwords
+        
     }
 
     func updateStopTrustingButtonTitle() {
@@ -227,13 +221,13 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                               comment: "Incorrect trustwords (pEp, long version)")
 
         if button == confirmButton {
-            if isPartnerPGPUser {
+            if !isPartnerPEPUser {
                 button.setTitle(confirmPGPLong, for: .normal)
             } else {
                 button.setTitle(confirmLong, for: .normal)
             }
         } else if button == wrongButton {
-            if isPartnerPGPUser {
+            if !isPartnerPEPUser {
                 button.setTitle(mistrustPGPLong, for: .normal)
             } else {
                 button.setTitle(mistrustLong, for: .normal)

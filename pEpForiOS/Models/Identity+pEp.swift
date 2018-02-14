@@ -34,7 +34,7 @@ extension Identity {
     }
 
     public func pEpIdentity() -> PEPIdentity {
-        return PEPUtil.pEpDict(identity: self)
+        return PEPUtil.pEp(identity: self)
     }
     
     open func fingerPrint(session: PEPSession = PEPSession()) -> String? {

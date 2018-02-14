@@ -17,7 +17,8 @@ public class AppendDraftMailsOperation: AppendMailsOperationBase {
         errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         let appendFolder = FolderType.drafts
         super.init(parentName: parentName, appendFolderType: appendFolder,
-                   imapSyncData: imapSyncData, errorContainer: errorContainer)
+                   imapSyncData: imapSyncData, errorContainer: errorContainer,
+                   encryptMode: .encryptToMySelf)
     }
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {

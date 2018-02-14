@@ -59,4 +59,10 @@ class PepAdapterTests: XCTestCase {
             pepMessage, dest: &pepDecryptedMessage, keys: &keys)
         XCTAssertEqual(color, PEP_rating_unencrypted)
     }
+
+    func testIsPEPUser() {
+        let ident = PEPIdentity()
+        ident.userID = "some_fake_userid"
+        XCTAssertFalse(pEpSession.isPEPUser(ident))
+    }
 }

@@ -484,9 +484,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(fetchFoldersOp.hasErrors())
         })
 
-        let from = CdIdentity.create()
-        from.userName = cdAccount.identity?.userName ?? "Unit 004"
-        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+        guard let from = cdAccount.identity else {
+            XCTFail()
+            return
+        }
 
         let to = CdIdentity.create()
         to.userName = "Unit 001"

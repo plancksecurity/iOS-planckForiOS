@@ -58,7 +58,8 @@ class HandshakePartnerTableViewCellViewModel {
      */
     let session: PEPSession
 
-    var isPartnerPGPUser = false
+    //var isPartnerPEPUser = false
+    var isPartnerpEpUser = false
 
     /**
      Cache the updated own identity.
@@ -95,8 +96,7 @@ class HandshakePartnerTableViewCellViewModel {
 
         // backup the partner dict
         pEpPartnerCopy = PEPIdentity(identity: pEpPartner)
-
-        isPartnerPGPUser = pEpPartner.containsPGPCommType()
+        isPartnerpEpUser = session.isPEPUser(pEpPartner)
         self.message = message
 
         imageProvider.image(forIdentity: partner) { [weak self] img, ident in
@@ -109,7 +109,7 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func updateTrustwords(session: PEPSession = PEPSession()) {
-        if isPartnerPGPUser,
+        if !isPartnerpEpUser,
             let fprSelf = pEpSelf.fingerPrint,
             let fprPartner = pEpPartner.fingerPrint {
             let fprPrettySelf = fprSelf.prettyFingerPrint()

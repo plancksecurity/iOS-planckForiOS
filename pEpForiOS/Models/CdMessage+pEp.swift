@@ -10,7 +10,6 @@
 import MessageModel
 
 extension CdMessage {
-
     open var sendStatus: SendStatus {
         get {
             guard let status = SendStatus(rawValue: self.sendStatusRawValue) else {

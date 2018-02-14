@@ -21,6 +21,25 @@ import MessageModel
  For marking the message as done, you MAY overwrite `markLastMessageAsFinished`.
  */
 public class AppendMailsOperationBase: ImapSyncOperation {
+    public enum EncryptMode {
+        // Encrypt messages for myself
+        case encryptToMySelf
+
+        // Encrypt messages as if they were outgoing
+        case encryptAsOutgoing
+
+        public func encrypt(session: PEPSession, pEpMessageDict: PEPMessageDict,
+                            forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
+            switch self {
+            case .encryptToMySelf:
+                return session.encrypt(
+                    pEpMessageDict: pEpMessageDict, forIdentity: forIdentity)
+            case .encryptAsOutgoing:
+                return session.encrypt(pEpMessageDict: pEpMessageDict)
+            }
+        }
+    }
+
     lazy private(set) var context = Record.Context.background
 
     var syncDelegate: AppendMailsSyncDelegate?
@@ -34,9 +53,16 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     /** On finish, the messageIDs of the messages that have been sent successfully */
     private(set) var successAppendedMessageIDs = [String]()
 
+    /**
+     This changes the encryption that is used for the message to be appended.
+     */
+    private let encryptMode: EncryptMode
+
     init(parentName: String = #function, appendFolderType: FolderType, imapSyncData: ImapSyncData,
-                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+                errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                encryptMode: EncryptMode) {
         targetFolderType = appendFolderType
+        self.encryptMode = encryptMode
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
@@ -167,8 +193,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         lastHandledMessageObjectID = objID
         determineTargetFolder(msgID: objID)
         let session = PEPSession()
-        let (status, encMsg) = session.encrypt(
-            pEpMessageDict: msg, forIdentity: ident)
+        let (status, encMsg) = encryptMode.encrypt(session: session, pEpMessageDict: msg,
+                                                   forIdentity: ident)
         let (encMsg2, error) = PEPUtil.check(
             comp: comp, status: status, encryptedMessage: encMsg)
         if let err = error {
