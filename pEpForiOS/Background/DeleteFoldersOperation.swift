@@ -35,7 +35,7 @@ public class DeleteFoldersOperation: ImapSyncOperation {
             return
         }
 
-        privateMOC.perform() { //BUFF: potetial mem cycle. Use unowned
+        privateMOC.perform() { [unowned self] in
             self.process()
         }
     }
