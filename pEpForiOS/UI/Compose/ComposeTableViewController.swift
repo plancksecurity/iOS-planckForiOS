@@ -1005,7 +1005,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
         } else {
             tableView.updateSize()
         }
-        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
 
     }
 
