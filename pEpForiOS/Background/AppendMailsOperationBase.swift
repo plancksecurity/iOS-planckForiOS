@@ -83,7 +83,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     }
 
     func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
-        Log.shared.errorAndCrash(component: #function, errorString: "Must be overridden in subclass")
+        Log.shared.errorAndCrash(component: #function,
+                                 errorString: "Must be overridden in subclass")
         return nil
     }
 
@@ -186,8 +187,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         markLastMessageAsFinished()
 
         guard let (msg, ident, objID) = retrieveNextMessage() else {
-                markAsFinished()
-                return
+            markAsFinished()
+            return
         }
 
         lastHandledMessageObjectID = objID
