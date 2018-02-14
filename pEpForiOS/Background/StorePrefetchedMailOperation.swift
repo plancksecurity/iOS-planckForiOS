@@ -35,10 +35,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
         let selfInfo = "\(unsafeBitCast(self, to: UnsafeRawPointer.self))"
         let theComp = comp
         let canceled = "\(self.isCancelled ? "" : "not") canceled"
-
-        Log.shared.info(
-            component: theComp,
-            content: "\(selfInfo) \(canceled)")
+        Log.shared.info( component: theComp, content: "\(selfInfo) \(canceled)")
 
         if isCancelled {
             markAsFinished()

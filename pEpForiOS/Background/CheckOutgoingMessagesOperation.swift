@@ -40,8 +40,8 @@ class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
                 return
         }
 
-        if let _ = EncryptAndSendOperation.retrieveNextMessage(
-            context: context, cdAccount: cdAccount) {
+        if let _ = EncryptAndSendOperation.retrieveNextMessage(context: context,
+                                                               cdAccount: cdAccount) {
             hasMessagesReadyToBeSent = true
         } else {
             hasMessagesReadyToBeSent = false
