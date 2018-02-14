@@ -35,12 +35,12 @@ public class DeleteFoldersOperation: ImapSyncOperation {
             return
         }
 
-        privateMOC.perform() {
-            self.mainInternal()
+        privateMOC.perform() { //BUFF: potetial mem cycle. Use unowned
+            self.process()
         }
     }
 
-    func mainInternal() {
+    func process() {
         account = privateMOC.object(with: accountID) as? CdAccount
         guard account != nil else {
             addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
