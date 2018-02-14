@@ -50,10 +50,12 @@ public class FetchFoldersOperation: ImapSyncOperation {
 
     public override func main() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
 
         if !checkImapSync() {
+            markAsFinished()
             return
         }
 

@@ -27,10 +27,12 @@ public class DeleteFolderOperation: ImapSyncOperation {
 
     public override func main() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
 
         if !checkImapSync() {
+            markAsFinished()
             return
         }
 

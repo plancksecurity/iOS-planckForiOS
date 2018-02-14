@@ -21,6 +21,7 @@ public class LoginSmtpOperation: ConcurrentBaseOperation {
 
     override public func main() {
         if self.isCancelled {
+            markAsFinished()
             return
         }
         service = SmtpSend(connectInfo: smtpSendData.connectInfo)

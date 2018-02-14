@@ -69,10 +69,12 @@ public class AppendMailsOperationBase: ImapSyncOperation {
 
     override public func main() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
 
         if !checkImapSync() {
+            markAsFinished()
             return
         }
 
@@ -97,6 +99,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         if let msgID = lastHandledMessageObjectID {
             context.performAndWait { [weak self] in
                 guard let theSelf = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "I got lost")
                     return
                 }
                 if let obj = theSelf.context.object(with: msgID) as? CdMessage {
@@ -122,6 +125,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             return
         }
         guard let folderName = targetFolderName else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No target")
+            markAsFinished()
             return
         }
 
