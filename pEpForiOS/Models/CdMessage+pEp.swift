@@ -133,6 +133,10 @@ extension CdMessage {
         return PEPUtil.pEpDict(cdMessage: self, outgoing: outgoing)
     }
 
+    public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
+        return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
+    }
+
     public func isProbablyPGPMime() -> Bool {
         return PEPUtil.isProbablyPGPMime(cdMessage: self)
     }
