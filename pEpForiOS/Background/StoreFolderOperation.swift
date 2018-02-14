@@ -38,6 +38,10 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         Log.verbose(component: comp, content: "main \(folderInfo.name)")
         let privateMOC = Record.Context.background
         privateMOC.perform({

@@ -20,7 +20,7 @@ public class LoginSmtpOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
-        if self.isCancelled {
+        if isCancelled {
             markAsFinished()
             return
         }

@@ -28,6 +28,10 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
     }
 
     open override func main() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         let theContext = Record.Context.background
         theContext.perform {
             self.reevaluate(context: theContext)

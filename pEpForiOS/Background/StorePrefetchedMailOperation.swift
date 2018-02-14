@@ -40,29 +40,29 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
             component: theComp,
             content: "\(selfInfo) \(canceled)")
 
-        if !isCancelled {
-            let privateMOC = Record.Context.background
-            privateMOC.perform() { [weak self] in
-                if let theSelf = self {
-                    if !theSelf.isCancelled {
-                        theSelf.storeMessage(context: privateMOC)
-                        Log.shared.info(
-                            component: theComp,
-                            content: "\(selfInfo) stored: \(canceled)")
-                    } else {
-                        Log.shared.info(
-                            component: theComp,
-                            content: "\(selfInfo) not stored: \(canceled)")
-                    }
-                    theSelf.markAsFinished()
+        if isCancelled {
+            markAsFinished()
+            return
+        }
+        let privateMOC = Record.Context.background
+        privateMOC.perform() { [weak self] in
+            if let theSelf = self {
+                if !theSelf.isCancelled {
+                    theSelf.storeMessage(context: privateMOC)
+                    Log.shared.info(
+                        component: theComp,
+                        content: "\(selfInfo) stored: \(canceled)")
                 } else {
                     Log.shared.info(
                         component: theComp,
-                        content: "\(selfInfo) no self anymore, could not store")
+                        content: "\(selfInfo) not stored: \(canceled)")
                 }
+                theSelf.markAsFinished()
+            } else {
+                Log.shared.info(
+                    component: theComp,
+                    content: "\(selfInfo) no self anymore, could not store")
             }
-        } else {
-            markAsFinished()
         }
     }
 

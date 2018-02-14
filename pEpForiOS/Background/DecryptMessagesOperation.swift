@@ -23,6 +23,10 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
     public weak var delegate: DecryptMessagesOperationDelegateProtocol?// Only used in Tests. Maybe refactor out.
 
     public override func main() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         let context = Record.Context.background
         context.perform() {
             guard let messages = CdMessage.all(

@@ -72,7 +72,7 @@ public class DeleteFoldersOperation: ImapSyncOperation {
                 }
             }
         }
-        if !self.isCancelled {
+        if !isCancelled {
             if let fn = folderNamesToDelete.first {
                 currentFolderName = fn
                 imapSyncData.sync?.deleteFolderWithName(fn)

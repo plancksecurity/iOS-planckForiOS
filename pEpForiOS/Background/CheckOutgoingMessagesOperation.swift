@@ -23,6 +23,10 @@ class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
     }
 
     override func main() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         let context = Record.Context.background
         context.perform {
             self.process(context: context)
@@ -42,7 +46,7 @@ class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
         } else {
             hasMessagesReadyToBeSent = false
         }
-        hasMessagesReadyToBeSent = true // TODO debugging
+        hasMessagesReadyToBeSent = true // TODO debugging //BUFF: wrong?! Always true?
         markAsFinished()
     }
 }

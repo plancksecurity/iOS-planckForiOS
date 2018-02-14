@@ -15,6 +15,10 @@ public class LoginImapOperation: ImapSyncOperation {
     var capabilities: Set<String>?
 
     public override func main() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         var service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
         if service.imapState.hasError {
             service = ImapSync(connectInfo: imapSyncData.connectInfo)
