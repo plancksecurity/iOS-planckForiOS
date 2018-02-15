@@ -39,10 +39,12 @@ public class FetchMessagesOperation: ImapSyncOperation {
 
     override public func main() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
 
         if !checkImapSync() {
+            markAsFinished()
             return
         }
 
@@ -71,7 +73,7 @@ public class FetchMessagesOperation: ImapSyncOperation {
         if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {
             if let folder = CdFolder.first(attributes: ["folderTypeRawValue": FolderType.inbox.rawValue,
                                                         "account": account]) {
-                self.folderToOpen = folder.name!
+                folderToOpen = folder.name!
             }
         }
 
@@ -81,7 +83,7 @@ public class FetchMessagesOperation: ImapSyncOperation {
 
         if let sync = imapSyncData.sync {
             if !sync.openMailBox(name: self.folderToOpen) {
-                self.fetchMessages(sync)
+                fetchMessages(sync)
             }
         }
     }

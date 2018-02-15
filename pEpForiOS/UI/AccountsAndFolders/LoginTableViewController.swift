@@ -64,6 +64,11 @@
         }
     }
 
+    /**
+     The last account input as determined by LAS, and delivered via didVerify.
+     */
+    var lastAccountInput: AccountUserInput?
+
     override func didSetAppConfig() {
         super.didSetAppConfig()
         loginViewModel.messageSyncService = appConfig.messageSyncService
@@ -270,6 +275,12 @@
                 let navVC = segue.destination as? UINavigationController,
                 let vc = navVC.topViewController as? UserInfoTableViewController {
                 vc.appConfig = appConfig
+
+                if let accountInput = lastAccountInput {
+                    vc.model = accountInput // give the user some prefilled data in manual mode
+                }
+
+                // Overwrite with more recent data that we might have (in case it was changed)
                 vc.model.address = emailAddress.text
                 vc.model.password = password.text
                 vc.model.userName = user.text
@@ -287,19 +298,22 @@
  }
 
  extension LoginTableViewController: AccountVerificationResultDelegate {
-    func didVerify(result: AccountVerificationResult) {
-        GCD.onMain() {
+    func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
+        GCD.onMain() { [weak self] in
+            self?.lastAccountInput = nil
             switch result {
-            case .ok:
-                // unwind back to INBOX on success
-                self.performSegue(withIdentifier: .backToEmailList, sender: self)
+            case .ok: // unwind back to INBOX on success
+                self?.performSegue(withIdentifier: .backToEmailList, sender: self)
             case .imapError(let err):
-                self.handleLoginError(error: err, offerManualSetup: true)
+                self?.lastAccountInput = accountInput
+                self?.handleLoginError(error: err, offerManualSetup: true)
             case .smtpError(let err):
-                self.handleLoginError(error: err, offerManualSetup: true)
+                self?.lastAccountInput = accountInput
+                self?.handleLoginError(error: err, offerManualSetup: true)
             case .noImapConnectData, .noSmtpConnectData:
-                self.handleLoginError(error: LoginTableViewControllerError.noConnectData,
-                                      offerManualSetup: true)
+                self?.lastAccountInput = accountInput
+                self?.handleLoginError(error: LoginTableViewControllerError.noConnectData,
+                                       offerManualSetup: true)
             }
         }
     }

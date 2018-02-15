@@ -721,6 +721,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="destructiveButton" destination="Swu-yi-LdI" id="RX6-Nq-DS2"/>
                         <outlet property="flagButton" destination="bej-eI-LgY" id="Geb-Es-y6z"/>
                         <outlet property="handShakeButton" destination="1oP-DI-wuJ" id="uQN-WO-dVS"/>
                         <outlet property="nextMessage" destination="nCS-Wg-ZJI" id="Q0q-LK-Q5C"/>
@@ -1027,6 +1028,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="QeL-n1-BY9"/>
-        <segue reference="fJ0-cY-ZEb"/>
+        <segue reference="70T-Gu-VTr"/>
     </inferredMetricsTieBreakers>
 </document>

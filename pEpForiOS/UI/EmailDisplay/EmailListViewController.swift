@@ -314,15 +314,41 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     // MARK: - SwipeTableViewCellDelegate
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        /// Create swipe actions, taking the currently displayed folder into account
-        var swipeActions = [SwipeAction]()
-        let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
-            self.deleteAction(forCellAt: indexPath)
-        }
-        configure(action: deleteAction, with: .trash)
-        swipeActions.append(deleteAction)
+    func tableView(_ tableView: UITableView,
+                   editActionsForRowAt
+        indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
 
+        // Create swipe actions, taking the currently displayed folder into account
+        var swipeActions = [SwipeAction]()
+
+        // Get messages parent folder
+        let parentFolder: Folder
+        if let folder = folderToShow, !(folder is UnifiedInbox) {
+            // Do not bother our imperformant MessageModel if we already know the parent folder
+            parentFolder = folder
+        } else {
+            // folderToShow is unified inbox, fetch parent folder from DB.
+            guard let vm = model,
+                let folder = vm.message(representedByRowAt: indexPath)?.parent else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
+                    return nil
+            }
+            parentFolder = folder
+        }
+
+        // Delete or Archive
+        let defaultIsArchive = parentFolder.defaultDestructiveActionIsArchive
+        let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
+        let descriptorDestructive: ActionDescriptor = defaultIsArchive ? .archive : .trash
+        let archiveAction =
+            SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
+                self.deleteAction(forCellAt: indexPath)
+        }
+        configure(action: archiveAction, with: descriptorDestructive)
+        swipeActions.append(archiveAction)
+
+        // Flag
         let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
             self.flagAction(forCellAt: indexPath)
         }
@@ -330,11 +356,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         configure(action: flagAction, with: .flag)
         swipeActions.append(flagAction)
 
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
-            return nil
-        }
-        if folder.folderType != .drafts {
+        // More (reply++)
+        if parentFolder.folderType != .drafts {
             // Do not add "more" actions (reply...) to drafted mails.
             let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
                 self.moreAction(forCellAt: indexPath)
@@ -554,14 +577,10 @@ extension EmailListViewController {
         } else {
             model?.setFlagged(forIndexPath: indexPath)
         }
-        tableView.beginUpdates()
-        tableView.setEditing(false, animated: true)
-        tableView.reloadRows(at: [indexPath], with: .none)
-        tableView.endUpdates()
     }
     
     func deleteAction(forCellAt indexPath: IndexPath) {
-        model?.delete(forIndexPath: indexPath) // mark for deletion/trash
+        model?.delete(forIndexPath: indexPath)
     }
     
     func moreAction(forCellAt indexPath: IndexPath) {
@@ -690,16 +709,17 @@ extension EmailListViewController: SegueHandlerType {
 //enums to simplify configurations
 
 enum ActionDescriptor {
-    case read, more, flag, trash
+    case read, more, flag, trash, archive
 
     func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
         guard displayMode != .imageOnly else { return nil }
 
         switch self {
-        case .read: return NSLocalizedString("Read", comment: "read button")
-        case .more: return NSLocalizedString("More", comment: "more button")
-        case .flag: return NSLocalizedString("Flag", comment: "read button")
-        case .trash: return NSLocalizedString("Trash", comment: "Trash button")
+        case .read: return NSLocalizedString("Read", comment: "read button in slidw left menu")
+        case .more: return NSLocalizedString("More", comment: "more button in slidw left menu")
+        case .flag: return NSLocalizedString("Flag", comment: "read button in slidw left menu")
+        case .trash: return NSLocalizedString("Trash", comment: "Trash button in slidw left menu")
+        case .archive: return NSLocalizedString("Archive", comment: "Archive button in slidw left menu")
         }
     }
 
@@ -712,6 +732,7 @@ enum ActionDescriptor {
         case .more: name = "more"
         case .flag: name = "flag"
         case .trash: name = "trash"
+        case .archive: name = "trash"
         }
 
         return UIImage(named: "swipe-" + name)
@@ -723,6 +744,7 @@ enum ActionDescriptor {
         case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
+        case .archive: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
         }
     }
 }

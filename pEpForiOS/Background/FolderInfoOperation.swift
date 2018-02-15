@@ -56,6 +56,10 @@ class FolderInfoOperation: ConcurrentBaseOperation {
     }
 
     override func main() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         let context = Record.Context.background
         context.perform {
             self.process(context: context)

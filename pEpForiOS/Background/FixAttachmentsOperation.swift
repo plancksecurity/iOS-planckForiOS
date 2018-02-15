@@ -22,6 +22,10 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
     var openFetchCount = 0
 
     override public func main() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         privateMOC.perform {
             self.fixAttachments(context: self.privateMOC)
         }

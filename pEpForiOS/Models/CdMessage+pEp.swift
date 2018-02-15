@@ -10,7 +10,6 @@
 import MessageModel
 
 extension CdMessage {
-
     open var sendStatus: SendStatus {
         get {
             guard let status = SendStatus(rawValue: self.sendStatusRawValue) else {
@@ -132,6 +131,10 @@ extension CdMessage {
 
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
         return PEPUtil.pEpDict(cdMessage: self, outgoing: outgoing)
+    }
+
+    public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
+        return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
     }
 
     public func isProbablyPGPMime() -> Bool {

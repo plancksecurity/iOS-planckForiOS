@@ -41,19 +41,21 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
 
     public override func main() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
 
         if !checkImapSync() {
+            markAsFinished()
             return
         }
 
         privateMOC.perform() {
-            self.mainInternal()
+            self.process()
         }
     }
 
-    func mainInternal() {
+    func process() {
         guard let theAccount = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))

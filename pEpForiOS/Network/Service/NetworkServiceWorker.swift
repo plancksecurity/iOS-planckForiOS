@@ -265,6 +265,27 @@ open class NetworkServiceWorker {
         return (lastOp, trashOps)
     }
 
+    private func buildUidExpungeOperations(imapSyncData: ImapSyncData,
+                                           errorContainer: ServiceErrorProtocol,
+                                           opImapFinished: Operation,
+                                           previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
+        var lastOp = previousOp
+        var createdOps = [UidMoveMailsToTrashOperation]()
+        MessageModel.performAndWait {
+            let folders = UidMoveMailsToTrashOperation.foldersContainingMarkedToUidMoveToTrash()
+            for folder in folders {
+                let op = UidMoveMailsToTrashOperation(imapSyncData: imapSyncData,
+                                                      errorContainer: errorContainer,
+                                                      folder: folder)
+                op.addDependency(lastOp)
+                opImapFinished.addDependency(op)
+                lastOp = op
+                createdOps.append(op)
+            }
+        }
+        return (lastOp, createdOps)
+    }
+
     /**
      Determine "interesting" folder names that should be synced, and for each:
      Determine current firstUID, lastUID, and store it (for later sync of existing messages).
@@ -463,12 +484,20 @@ open class NetworkServiceWorker {
                 opImapFinished: opImapFinished, previousOp: lastSendOp ?? opRequiredFolders)
             operations.append(contentsOf: trashOperations)
 
+            // UidExpunge
+            let (lastUidExpungeOp, uidExpungeOperations) =
+                buildUidExpungeOperations(imapSyncData: imapSyncData,
+                                          errorContainer: errorContainer,
+                                          opImapFinished: opImapFinished,
+                                          previousOp: lastTrashOp ?? lastSendOp ?? opRequiredFolders)
+            operations.append(contentsOf: uidExpungeOperations)
+
             // 3.d Server-to-client synchronization (IMAP)
 
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
             // sync new messages
-            var lastImapOp: Operation = (lastTrashOp ?? lastSendOp) ?? opRequiredFolders
+            var lastImapOp: Operation = (lastUidExpungeOp ?? lastSendOp) ?? opRequiredFolders
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
                     parentName: description, errorContainer: errorContainer,

@@ -26,19 +26,21 @@ public class DeleteFoldersOperation: ImapSyncOperation {
 
     public override func main() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
 
         if !checkImapSync() {
+            markAsFinished()
             return
         }
 
-        privateMOC.perform() {
-            self.mainInternal()
+        privateMOC.perform() { [unowned self] in
+            self.process()
         }
     }
 
-    func mainInternal() {
+    func process() {
         account = privateMOC.object(with: accountID) as? CdAccount
         guard account != nil else {
             addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
@@ -70,7 +72,7 @@ public class DeleteFoldersOperation: ImapSyncOperation {
                 }
             }
         }
-        if !self.isCancelled {
+        if !isCancelled {
             if let fn = folderNamesToDelete.first {
                 currentFolderName = fn
                 imapSyncData.sync?.deleteFolderWithName(fn)

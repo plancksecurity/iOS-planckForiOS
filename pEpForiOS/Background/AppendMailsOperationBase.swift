@@ -21,6 +21,25 @@ import MessageModel
  For marking the message as done, you MAY overwrite `markLastMessageAsFinished`.
  */
 public class AppendMailsOperationBase: ImapSyncOperation {
+    public enum EncryptMode {
+        // Encrypt messages for myself
+        case encryptToMySelf
+
+        // Encrypt messages as if they were outgoing
+        case encryptAsOutgoing
+
+        public func encrypt(session: PEPSession, pEpMessageDict: PEPMessageDict,
+                            forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
+            switch self {
+            case .encryptToMySelf:
+                return session.encrypt(
+                    pEpMessageDict: pEpMessageDict, forIdentity: forIdentity)
+            case .encryptAsOutgoing:
+                return session.encrypt(pEpMessageDict: pEpMessageDict)
+            }
+        }
+    }
+
     lazy private(set) var context = Record.Context.background
 
     var syncDelegate: AppendMailsSyncDelegate?
@@ -34,19 +53,28 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     /** On finish, the messageIDs of the messages that have been sent successfully */
     private(set) var successAppendedMessageIDs = [String]()
 
+    /**
+     This changes the encryption that is used for the message to be appended.
+     */
+    private let encryptMode: EncryptMode
+
     init(parentName: String = #function, appendFolderType: FolderType, imapSyncData: ImapSyncData,
-                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+                errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                encryptMode: EncryptMode) {
         targetFolderType = appendFolderType
+        self.encryptMode = encryptMode
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
 
     override public func main() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
 
         if !checkImapSync() {
+            markAsFinished()
             return
         }
 
@@ -57,7 +85,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     }
 
     func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
-        Log.shared.errorAndCrash(component: #function, errorString: "Must be overridden in subclass")
+        Log.shared.errorAndCrash(component: #function,
+                                 errorString: "Must be overridden in subclass")
         return nil
     }
 
@@ -70,6 +99,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         if let msgID = lastHandledMessageObjectID {
             context.performAndWait { [weak self] in
                 guard let theSelf = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "I got lost")
                     return
                 }
                 if let obj = theSelf.context.object(with: msgID) as? CdMessage {
@@ -95,6 +125,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             return
         }
         guard let folderName = targetFolderName else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No target")
+            markAsFinished()
             return
         }
 
@@ -111,50 +143,64 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     }
 
     func determineTargetFolder(msgID: NSManagedObjectID) {
-        if targetFolderName == nil {
-            context.performAndWait {
-                guard let msg = self.context.object(with: msgID) as? CdMessage else {
-                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
-                                     message:
-                        "Need a valid message for determining the sent folder name")
-                    return
-                }
-                guard let account = msg.parent?.account else {
-                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
-                                     message:
-                        "Cannot append message without parent folder and this, account")
-                    return
-                }
-                guard let folder = self.retrieveFolderForAppend(
-                    account: account, context: self.context) else {
-                        self.handleError(
-                            BackgroundError.GeneralError.invalidParameter(info: self.comp),
-                            message: "Cannot find sent folder for message to append")
-                        return
-                }
-                guard let fn = folder.name else {
-                    self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
-                                     message: "Need the name for the sent folder")
-                    return
-                }
-                self.targetFolderName = fn
+        if targetFolderName != nil {
+            // We already know the target folder, nothing to do
+            return
+        }
+        context.performAndWait {
+            guard let msg = self.context.object(with: msgID) as? CdMessage else {
+                self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                 message:
+                    "Need a valid message for determining the sent folder name")
+                return
             }
+            guard let account = msg.parent?.account else {
+                self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                 message:
+                    "Cannot append message without parent folder and this, account")
+                return
+            }
+            guard let cdFolder = self.retrieveFolderForAppend(
+                account: account, context: self.context) else {
+                    self.handleError(
+                        BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                        message: "Cannot find sent folder for message to append")
+                    return
+            }
+            if cdFolder.folder().shouldNotAppendMessages {
+                // We are not supposed to append messages to this (probably virtual) mailbox.
+                // This is only for savety reasons, we should never come in here as messages
+                // should not be marked for appending in the first place.
+                // In case it turns out that there *Are* valid cases to reach this, we should
+                // also delete the triggering message to avoid that it is processed here on
+                // every sync loop.
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "We should never come here.")
+                handleNextMessage()
+                return
+            }
+            guard let fn = cdFolder.name else {
+                self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
+                                 message: "Need the name for the sent folder")
+                return
+            }
+            self.targetFolderName = fn
         }
     }
 
     final func handleNextMessage() {
         markLastMessageAsFinished()
 
-        guard let (msg, ident, objID) = retrieveNextMessage(),
-            !ident.providerDoesHandleAppend(forFolderOfType: targetFolderType) else {
-                markAsFinished()
-                return
+        guard let (msg, ident, objID) = retrieveNextMessage() else {
+            markAsFinished()
+            return
         }
+
         lastHandledMessageObjectID = objID
         determineTargetFolder(msgID: objID)
         let session = PEPSession()
-        let (status, encMsg) = session.encrypt(
-            pEpMessageDict: msg, forIdentity: ident)
+        let (status, encMsg) = encryptMode.encrypt(session: session, pEpMessageDict: msg,
+                                                   forIdentity: ident)
         let (encMsg2, error) = PEPUtil.check(
             comp: comp, status: status, encryptedMessage: encMsg)
         if let err = error {

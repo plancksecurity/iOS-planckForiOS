@@ -35,34 +35,23 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
         let selfInfo = "\(unsafeBitCast(self, to: UnsafeRawPointer.self))"
         let theComp = comp
         let canceled = "\(self.isCancelled ? "" : "not") canceled"
+        Log.shared.info( component: theComp, content: "\(selfInfo) \(canceled)")
 
-        Log.shared.info(
-            component: theComp,
-            content: "\(selfInfo) \(canceled)")
-
-        if !isCancelled {
-            let privateMOC = Record.Context.background
-            privateMOC.perform() { [weak self] in
-                if let theSelf = self {
-                    if !theSelf.isCancelled {
-                        theSelf.storeMessage(context: privateMOC)
-                        Log.shared.info(
-                            component: theComp,
-                            content: "\(selfInfo) stored: \(canceled)")
-                    } else {
-                        Log.shared.info(
-                            component: theComp,
-                            content: "\(selfInfo) not stored: \(canceled)")
-                    }
-                    theSelf.markAsFinished()
-                } else {
-                    Log.shared.info(
-                        component: theComp,
-                        content: "\(selfInfo) no self anymore, could not store")
-                }
-            }
-        } else {
+        if isCancelled {
             markAsFinished()
+            return
+        }
+        let privateMOC = Record.Context.background
+        privateMOC.perform() {
+            if self.isCancelled {
+                Log.shared.info(component: theComp,
+                                content: "\(selfInfo) not stored: \(canceled)")
+                self.markAsFinished()
+                return
+            }
+            self.storeMessage(context: privateMOC)
+            Log.shared.info(component: theComp, content: "\(selfInfo) stored: \(canceled)")
+            self.markAsFinished()
         }
     }
 

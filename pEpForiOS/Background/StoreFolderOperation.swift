@@ -38,6 +38,10 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
+        if isCancelled {
+            markAsFinished()
+            return
+        }
         Log.verbose(component: comp, content: "main \(folderInfo.name)")
         let privateMOC = Record.Context.background
         privateMOC.perform({
@@ -47,16 +51,17 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
 
     func process(context: NSManagedObjectContext) {
         Log.verbose(component: comp, content: "process \(folderInfo.name)")
+        defer {
+            markAsFinished()
+        }
         guard let account = context.object(with: connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                 return
         }
-
         if let server = context.object(with: connectInfo.serverObjectID) as? CdServer {
             server.imapFolderSeparator = folderInfo.separator
         }
-
         if let (cdFolder, newlyCreated) = CdFolder.insertOrUpdate(
             folderName: folderInfo.name,
             folderSeparator: folderInfo.separator,
@@ -71,6 +76,5 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
         }
 
         Record.saveAndWait()
-        self.markAsFinished()
     }
 }

@@ -98,6 +98,11 @@ class LoginViewModel {
      */
     var currentOauth2Authorizer: OAuth2AuthorizationProtocol?
 
+    /**
+     The most current account in verification.
+     */
+    var accountInVerification: AccountUserInput?
+
     init(messageSyncService: MessageSyncServiceProtocol? = nil) {
         self.messageSyncService = messageSyncService
     }
@@ -167,9 +172,9 @@ class LoginViewModel {
                     return
             }
             let imapTransport = ConnectionTransport(
-                accountSettingsTransport: incomingServer.transport)
+                accountSettingsTransport: incomingServer.transport, imapPort: incomingServer.port)
             let smtpTransport = ConnectionTransport(
-                accountSettingsTransport: outgoingServer.transport)
+                accountSettingsTransport: outgoingServer.transport, smtpPort: outgoingServer.port)
 
             // Note: auth method is never taken from LAS. We either have OAuth2,
             // as determined previously, or we will defer to pantomime to find out the best method.
@@ -185,6 +190,7 @@ class LoginViewModel {
                 serverSMTP: outgoingServer.hostname,
                 portSMTP: UInt16(outgoingServer.port),
                 transportSMTP: smtpTransport)
+            accountInVerification = newAccount
 
             do {
                 try verifyAccount(model: newAccount)
@@ -269,7 +275,8 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
             }
         }
 
-        accountVerificationResultDelegate?.didVerify(result: result)
+        accountVerificationResultDelegate?.didVerify(result: result,
+                                                     accountInput: accountInVerification)
     }
 }
 

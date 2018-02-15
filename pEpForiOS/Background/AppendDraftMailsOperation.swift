@@ -12,9 +12,13 @@ import CoreData
 import MessageModel
 
 public class AppendDraftMailsOperation: AppendMailsOperationBase {
-    public init(parentName: String = #function, imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+    public init(
+        parentName: String = #function, imapSyncData: ImapSyncData,
+        errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         let appendFolder = FolderType.drafts
-        super.init(parentName: parentName, appendFolderType: appendFolder, imapSyncData: imapSyncData, errorContainer: errorContainer)
+        super.init(parentName: parentName, appendFolderType: appendFolder,
+                   imapSyncData: imapSyncData, errorContainer: errorContainer,
+                   encryptMode: .encryptToMySelf)
     }
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
@@ -22,7 +26,7 @@ public class AppendDraftMailsOperation: AppendMailsOperationBase {
         context.performAndWait {
             let p = NSPredicate(
                 format: "uid = 0 AND parent.folderTypeRawValue = %d AND sendStatusRawValue = %d AND parent.account = %@",
-                FolderType.drafts.rawValue, SendStatus.none.rawValue,
+                targetFolderType.rawValue, SendStatus.none.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
             let msg = CdMessage.first(predicate: p, in: self.context)
             if let m = msg, let cdIdent = m.parent?.account?.identity {

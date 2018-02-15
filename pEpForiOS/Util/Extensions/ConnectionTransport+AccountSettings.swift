@@ -21,4 +21,38 @@ extension ConnectionTransport {
             self = .plain
         }
     }
+
+    /**
+     If the IMAP transport is unknown, tries to figure out the default for this port.
+     */
+    init(accountSettingsTransport: AccountSettingsServerTransport, imapPort: Int) {
+        switch accountSettingsTransport {
+        case .unknown:
+            switch imapPort {
+            case 143:
+                self = .plain
+            default:
+                self = .TLS
+            }
+        default:
+            self = ConnectionTransport(accountSettingsTransport: accountSettingsTransport)
+        }
+    }
+
+    /**
+     If the SMTP transport is unknown, tries to figure out the default for this port.
+     */
+    init(accountSettingsTransport: AccountSettingsServerTransport, smtpPort: Int) {
+        switch accountSettingsTransport {
+        case .unknown:
+            switch smtpPort {
+            case 465:
+                self = .TLS
+            default:
+                self = .startTLS
+            }
+        default:
+            self = ConnectionTransport(accountSettingsTransport: accountSettingsTransport)
+        }
+    }
 }

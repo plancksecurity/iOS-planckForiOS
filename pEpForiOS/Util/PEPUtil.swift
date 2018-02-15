@@ -69,14 +69,24 @@ open class PEPUtil {
         }
     }
 
-    open static func pEpDict(identity: Identity) -> PEPIdentity {
+    open static func pEp(identity: Identity) -> PEPIdentity {
         return PEPIdentity(
             address: identity.address, userID: identity.userID, userName: identity.userName,
             isOwn: identity.isMySelf, fingerPrint: nil, commType: PEP_ct_unknown, language: nil)
     }
 
     /**
-     Converts a `CdIdentity` to a pEp contact.
+     Like the corresponding `pEpDict(cdIdentity)`, but dealing with optional parameters.
+     */
+    open static func pEpDict(cdIdentityOptional: CdIdentity?) -> PEPIdentity? {
+        guard let cdIdentity = cdIdentityOptional else {
+            return nil
+        }
+        return pEpDict(cdIdentity: cdIdentity)
+    }
+
+    /**
+     Converts a `CdIdentity` to a pEp contact (`PEPId`).
      - Parameter cdIdentity: The core data contact object.
      - Returns: An `PEPIdentity` contact for pEp.
      */
@@ -106,7 +116,7 @@ open class PEPUtil {
         guard let id = identity else {
             return nil
         }
-        return pEpDict(identity: id)
+        return pEp(identity: id)
     }
 
     open static func pEpAttachment(
@@ -148,9 +158,9 @@ open class PEPUtil {
             dict[kPepShortMessage] = subject as NSString
         }
 
-        dict[kPepTo] = NSArray(array: message.to.map() { return pEpDict(identity: $0) })
-        dict[kPepCC] = NSArray(array: message.cc.map() { return pEpDict(identity: $0) })
-        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEpDict(identity: $0) })
+        dict[kPepTo] = NSArray(array: message.to.map() { return pEp(identity: $0) })
+        dict[kPepCC] = NSArray(array: message.cc.map() { return pEp(identity: $0) })
+        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEp(identity: $0) })
 
         dict[kPepFrom]  = pEpOptional(identity: message.from) as AnyObject
         dict[kPepID] = message.messageID as AnyObject
@@ -239,7 +249,85 @@ open class PEPUtil {
             })
         }
 
-        return dict as PEPMessageDict
+        return dict
+    }
+
+    /**
+     Converts a typical core data set of CdIdentities into pEp identities.
+     */
+    open static func pEpIdentities(cdIdentitiesSet: NSOrderedSet?) -> [PEPIdentity]? {
+        guard let cdIdentities = cdIdentitiesSet?.array as? [CdIdentity] else {
+            return nil
+        }
+        return cdIdentities.map {
+            return pEpDict(cdIdentity: $0)
+        }
+    }
+
+    /**
+     Converts a core data message into the format required by pEp.
+     - Parameter message: The core data message to convert
+     - Returns: A PEPMessage suitable for processing with pEp.
+     */
+    open static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessage {
+        let pEpMessage = PEPMessage()
+
+        pEpMessage.sentDate = cdMessage.sent
+        pEpMessage.shortMessage = cdMessage.shortMessage
+        pEpMessage.longMessage = cdMessage.longMessage
+        pEpMessage.longMessageFormatted = cdMessage.longMessageFormatted
+
+        pEpMessage.to = pEpIdentities(cdIdentitiesSet: cdMessage.to)
+        pEpMessage.cc = pEpIdentities(cdIdentitiesSet: cdMessage.cc)
+        pEpMessage.bcc = pEpIdentities(cdIdentitiesSet: cdMessage.bcc)
+
+        pEpMessage.from = pEpDict(cdIdentityOptional: cdMessage.from)
+        pEpMessage.messageID = cdMessage.uuid
+        pEpMessage.direction = outgoing ? PEP_dir_outgoing : PEP_dir_incoming
+
+        if let cdAttachments = cdMessage.attachments?.array as? [CdAttachment] {
+            pEpMessage.attachments = cdAttachments.map {
+                return pEpDict(cdAttachment: $0)
+            }
+        }
+
+        var refs = [String]()
+        for ref in cdMessage.references?.array as? [CdMessageReference] ?? [] {
+            if let refString = ref.reference {
+                refs.append(refString)
+            }
+        }
+        if !refs.isEmpty {
+            pEpMessage.references = refs
+        }
+
+        var replyTos = [PEPIdentity]()
+        if let r = cdMessage.replyTo {
+            for ident in r.array {
+                if let cdIdent = ident as? CdIdentity {
+                    replyTos.append(cdIdent.pEpIdentity())
+                }
+            }
+            if !replyTos.isEmpty {
+                pEpMessage.replyTo = replyTos
+            }
+        }
+
+        if let headerFields = cdMessage.optionalFields?.array as? [CdHeaderField] {
+            var theFields = [(String, String)]()
+            for field in headerFields {
+                if let name = field.name, let value = field.value {
+                    theFields.append((name, value))
+                }
+            }
+            if !theFields.isEmpty {
+                pEpMessage.optionalFields = theFields.map { (s1, s2) in
+                    return [s1, s2]
+                }
+            }
+        }
+
+        return pEpMessage
     }
 
     /**
@@ -394,7 +482,7 @@ open class PEPUtil {
 
     open static func pEpRating(identity: Identity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
-        let pepC = pEpDict(identity: identity)
+        let pepC = pEp(identity: identity)
         let rating = session.identityRating(pepC)
         return rating
     }
@@ -440,7 +528,7 @@ open class PEPUtil {
     }
 
     open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
-        let pEpID = pEpDict(identity: identity)
+        let pEpID = pEp(identity: identity)
         session.update(pEpID)
         return pEpID.fingerPrint
     }
@@ -456,7 +544,7 @@ open class PEPUtil {
      Trust that contact (yellow to green).
      */
     open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEpDict(identity: identity)
+        let pEpID = pEp(identity: identity)
         session.update(pEpID)
         session.trustPersonalKey(pEpID)
     }
@@ -465,7 +553,7 @@ open class PEPUtil {
      Mistrust the identity (yellow to red)
      */
     open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEpDict(identity: identity)
+        let pEpID = pEp(identity: identity)
         session.update(pEpID)
         session.keyMistrusted(pEpID)
     }
@@ -475,7 +563,7 @@ open class PEPUtil {
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
     open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
-        let pEpID = pEpDict(identity: identity)
+        let pEpID = pEp(identity: identity)
         session.update(pEpID)
         session.keyResetTrust(pEpID)
     }

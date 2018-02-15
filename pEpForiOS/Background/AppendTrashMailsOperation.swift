@@ -26,7 +26,8 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
             parentName: parentName,
             appendFolderType: trashFolderType,
             imapSyncData: imapSyncData,
-            errorContainer: errorContainer)
+            errorContainer: errorContainer,
+            encryptMode: .encryptToMySelf)
     }
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
@@ -40,10 +41,11 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
                 folder, Message.TrashedStatus.shouldBeTrashed.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
 
-            if let msg = CdMessage.first(predicate: p, in: self.context),
-                let cdIdent = msg.parent?.account?.identity {
-                result = (msg.pEpMessageDict(), cdIdent.pEpIdentity(), msg.objectID)
+            guard let msg = CdMessage.first(predicate: p, in: self.context),
+                let cdIdent = msg.parent?.account?.identity else {
+                    return
             }
+            result = (msg.pEpMessageDict(), cdIdent.pEpIdentity(), msg.objectID)
         }
         return result
     }

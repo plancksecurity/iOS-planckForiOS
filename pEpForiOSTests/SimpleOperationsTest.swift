@@ -346,7 +346,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             return
         }
         // Let's delete a special folder, if it exists
-        if let spamFolder = CdFolder.by(folderType: .spam, account: cdAccount),
+        if let spamFolder = CdFolder.by(folderType: .trash, account: cdAccount),
             let fn = spamFolder.name {
             let expDeleted = expectation(description: "expFolderDeleted")
             let opDelete = DeleteFolderOperation(
@@ -484,9 +484,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(fetchFoldersOp.hasErrors())
         })
 
-        let from = CdIdentity.create()
-        from.userName = cdAccount.identity?.userName ?? "Unit 004"
-        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+        guard let from = cdAccount.identity else {
+            XCTFail()
+            return
+        }
 
         let to = CdIdentity.create()
         to.userName = "Unit 001"

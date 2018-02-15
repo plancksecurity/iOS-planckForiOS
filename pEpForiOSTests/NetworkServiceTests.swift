@@ -280,7 +280,8 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
 
         let numMails = 1
-        let outgoingMails = TestUtil.createOutgoingMails(cdAccount: cdAccount, testCase: self, numberOfMails: numMails)
+        let outgoingMails = TestUtil.createOutgoingMails(cdAccount: cdAccount,
+                                                         testCase: self, numberOfMails: numMails)
         let outgoingMessageIDs: [String] = outgoingMails
             .map() { $0.messageID ?? "" }
             .filter() { $0 != "" }
@@ -289,7 +290,7 @@ class NetworkServiceTests: XCTestCase {
         for m in outgoingMails {
             XCTAssertEqual(m.parent?.folderType, FolderType.sent)
             XCTAssertEqual(m.uid, Int32(0))
-            XCTAssertEqual(m.sendStatus, SendStatus.none    )
+            XCTAssertEqual(m.sendStatus, SendStatus.none)
         }
 
         let expAccountsSynced2 = expectation(description: "expSingleAccountSynced2")

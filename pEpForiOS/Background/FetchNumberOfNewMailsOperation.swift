@@ -33,10 +33,12 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
 
     override public func main() {
         if !shouldRun() {
+            markAsFinished()
             return
         }
 
         if !checkImapSync() {
+            markAsFinished()
             return
         }
 
@@ -108,6 +110,9 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
             if !sync.openMailBox(name: self.folderToOpen) {
                 self.fetchUids(sync)
             }
+        } else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No sync")
+            markAsFinished()
         }
     }
 
