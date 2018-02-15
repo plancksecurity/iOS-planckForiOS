@@ -59,9 +59,9 @@ class HandshakeTests: XCTestCase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessageDict()
+        let pEpMessage = cdMessage.pEpMessage()
 
-        guard let optFields = pEpMessage[kPepOptFields] as? [[String]] else {
+        guard let optFields = pEpMessage.optionalFields else {
             XCTFail("expected optional_fields to be defined")
             return
         }
@@ -77,9 +77,9 @@ class HandshakeTests: XCTestCase {
         }
         XCTAssertTrue(foundXpEpVersion)
 
-        var pEpDecryptedMessage: NSDictionary? = nil
+        var pEpDecryptedMessage: PEPMessage? = nil
         var keys: NSArray?
-        let rating = session.decryptMessageDict(pEpMessage, dest: &pEpDecryptedMessage, keys: &keys)
+        let rating = session.decryptMessage(pEpMessage, dest: &pEpDecryptedMessage, keys: &keys)
         XCTAssertEqual(rating, PEP_rating_unencrypted)
 
         guard let theMessage = pEpDecryptedMessage else {
@@ -87,7 +87,7 @@ class HandshakeTests: XCTestCase {
             return
         }
 
-        guard let pEpFrom = theMessage[kPepFrom] as? PEPIdentity else {
+        guard let pEpFrom = theMessage.from else {
             XCTFail("expected from in message")
             return
         }
@@ -121,10 +121,9 @@ class HandshakeTests: XCTestCase {
 
         session.keyMistrusted(fromIdent)
         session.update(fromIdent)
-        XCTAssertFalse(fromIdent.containsPGPCommType())
+        XCTAssertTrue(session.isPEPUser(fromIdent))
 
-        // after mistrust, the engine throws away all status,
-        // so this is expected behavior. See ENGINE-254
+        // After mistrust, the engine now still remebers pEp status. See ENGINE-254.
         session.keyResetTrust(fromIdent)
         session.update(fromIdent)
         XCTAssertTrue(session.isPEPUser(fromIdent))
