@@ -146,7 +146,8 @@ class MessageReevalutionTests: XCTestCase {
 
         let senderDict2 = senderIdentity.updatedIdentityDictionary(session: session)
         XCTAssertFalse(senderDict2.containsPGPCommType())
-        XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_undefined) // if this seems unexpected for you, read the comments in ENGINE-343
+        // ENGINE-343: At one point the rating was PEP_rating_undefined.
+        XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_have_no_key)
     }
 
     func reevaluateMessage(expectedRating: PEP_rating, inBackground: Bool = true,
@@ -198,7 +199,7 @@ class MessageReevalutionTests: XCTestCase {
                 infoMessage: "after trust")
 
             session.keyMistrusted(senderIdent)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_mistrust)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_have_no_key)
             reevaluateMessage(
                 expectedRating: PEP_rating_mistrust,
                 inBackground: runReevaluationInBackground,
@@ -208,7 +209,7 @@ class MessageReevalutionTests: XCTestCase {
 
             session.keyResetTrust(senderIdent)
             XCTAssertFalse(senderIdent.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_have_no_key)
             reevaluateMessage(
                 expectedRating: PEP_rating_reliable,
                 inBackground: runReevaluationInBackground,
@@ -216,7 +217,7 @@ class MessageReevalutionTests: XCTestCase {
 
             session.keyResetTrust(senderIdent)
             XCTAssertFalse(senderIdent.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_have_no_key)
             reevaluateMessage(
                 expectedRating: PEP_rating_reliable,
                 inBackground: runReevaluationInBackground,
