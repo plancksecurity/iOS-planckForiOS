@@ -577,10 +577,6 @@ extension EmailListViewController {
         } else {
             model?.setFlagged(forIndexPath: indexPath)
         }
-        tableView.beginUpdates()
-        tableView.setEditing(false, animated: true)
-        tableView.reloadRows(at: [indexPath], with: .none)
-        tableView.endUpdates()
     }
     
     func deleteAction(forCellAt indexPath: IndexPath) {
