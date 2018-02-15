@@ -98,26 +98,26 @@ class HandshakeTests: XCTestCase {
         let session = PEPSession()
         session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
-        XCTAssertFalse(fromIdent.containsPGPCommType())
+        XCTAssertTrue(session.isPEPUser(fromIdent))
 
         session.trustPersonalKey(fromIdent)
-        XCTAssertFalse(fromIdent.containsPGPCommType())
+        XCTAssertTrue(session.isPEPUser(fromIdent))
 
         session.keyResetTrust(fromIdent)
-        XCTAssertFalse(fromIdent.containsPGPCommType())
+        XCTAssertTrue(session.isPEPUser(fromIdent))
 
         session.trustPersonalKey(fromIdent)
-        XCTAssertFalse(fromIdent.containsPGPCommType())
+        XCTAssertTrue(session.isPEPUser(fromIdent))
 
         session.keyResetTrust(fromIdent)
-        XCTAssertFalse(fromIdent.containsPGPCommType())
+        XCTAssertTrue(session.isPEPUser(fromIdent))
     }
 
     func testNegativeTrustResetCycle() {
         let session = PEPSession()
         session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
-        XCTAssertFalse(fromIdent.containsPGPCommType())
+        XCTAssertTrue(session.isPEPUser(fromIdent))
 
         session.keyMistrusted(fromIdent)
         session.update(fromIdent)
@@ -127,6 +127,6 @@ class HandshakeTests: XCTestCase {
         // so this is expected behavior. See ENGINE-254
         session.keyResetTrust(fromIdent)
         session.update(fromIdent)
-        XCTAssertTrue(fromIdent.containsPGPCommType())
+        XCTAssertTrue(session.isPEPUser(fromIdent))
     }
 }
