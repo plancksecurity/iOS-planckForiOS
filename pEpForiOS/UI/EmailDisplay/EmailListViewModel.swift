@@ -187,11 +187,11 @@ class EmailListViewModel {
     }
     
     func setFlagged(forIndexPath indexPath: IndexPath) {
-        setFlagged(forIndexPath: indexPath, newValue: true)
+        setFlaggedValue(forIndexPath: indexPath, newValue: true)
     }
     
     func unsetFlagged(forIndexPath indexPath: IndexPath) {
-        setFlagged(forIndexPath: indexPath, newValue: false)
+        setFlaggedValue(forIndexPath: indexPath, newValue: false)
     }
     
     func markRead(forIndexPath indexPath: IndexPath) {
@@ -219,7 +219,7 @@ class EmailListViewModel {
         contactImageTool.clearCache()
     }
     
-    private func setFlagged(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+    private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
         guard let previewMessage = messages?.object(at: indexPath.row),
             let message = previewMessage.message() else {
                 return
