@@ -205,7 +205,6 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             comp: comp, status: status, encryptedMessage: encMsg)
         if let err = error {
             handleError(err, message: "Cannot encrypt message")
-            appendMessage(pEpMessageDict: msg as PEPMessageDict)
         } else {
             appendMessage(pEpMessageDict: encMsg2 as? PEPMessageDict)
         }
