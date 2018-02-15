@@ -19,7 +19,7 @@ class CdMessagePEPMessageTests: CoreDataDrivenTestBase {
         let cdReceiver = CdIdentity.create()
         cdReceiver.address = "receiver@example.com"
         cdReceiver.userID = "receiver_user_id"
-        cdMsg.addToTo(cdReceiver)
+        cdMsg.to = NSOrderedSet(array: [cdReceiver])
 
         let pEpReceiver = cdReceiver.pEpIdentity()
 
