@@ -46,7 +46,7 @@ class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
         } else {
             hasMessagesReadyToBeSent = false
         }
-        hasMessagesReadyToBeSent = true // TODO debugging //BUFF: wrong?! Always true?
+
         markAsFinished()
     }
 }
