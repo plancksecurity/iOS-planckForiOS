@@ -34,7 +34,9 @@ public class ConcurrentBaseOperation: BaseOperation {
     /** Keypath for `OperationQueue.isCancelled` */
     let isCancelledKeyPath = "isCancelled"
 
-    lazy var privateMOC: NSManagedObjectContext = Record.Context.background
+    var privateMOC: NSManagedObjectContext {
+        return Record.Context.background
+    }
 
     var myFinished: Bool = false
 
