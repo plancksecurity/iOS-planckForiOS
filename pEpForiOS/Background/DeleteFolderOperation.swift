@@ -50,9 +50,10 @@ public class DeleteFolderOperation: ImapSyncOperation {
     }
 
     func deleteLocalFolderAndFinish() {
-        privateMOC.perform() {
+        privateMOC.perform {
             if let folder = CdFolder.by(name: self.folderName, account: self.account) {
                 self.privateMOC.delete(folder)
+                Record.saveAndWait()
             }
             self.markAsFinished()
         }

@@ -50,7 +50,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             return
         }
 
-        privateMOC.perform() {
+        privateMOC.perform {
             self.process()
         }
     }
@@ -114,7 +114,8 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         let _ = CdFolder.insertOrUpdate(
             folderName: folderToCreate.folderName, folderSeparator: folderToCreate.folderSeparator,
             folderType: folderToCreate.folderType, account: folderToCreate.cdAccount)
-        Record.save()
+        Record.saveAndWait()
+
     }
 
     func createFolderAgain(potentialError: Error) {
