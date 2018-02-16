@@ -201,12 +201,10 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         let session = PEPSession()
         let (status, encMsg) = encryptMode.encrypt(session: session, pEpMessageDict: msg,
                                                    forIdentity: ident)
-        let (encMsg2, error) = PEPUtil.check(
-            comp: comp, status: status, encryptedMessage: encMsg)
-        if let err = error {
+        if let err = PEPUtil.check(status: status, encryptedMessage: encMsg, comp: comp) {
             handleError(err, message: "Cannot encrypt message")
         } else {
-            appendMessage(pEpMessageDict: encMsg2 as? PEPMessageDict)
+            appendMessage(pEpMessageDict: encMsg as? PEPMessageDict)
         }
     }
 

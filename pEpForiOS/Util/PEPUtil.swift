@@ -607,24 +607,17 @@ open class PEPUtil {
     }
 
     /**
-     Checks the given pEp status and the given encrypted mail for errors and
-     logs them.
-     - Returns: A tuple of the encrypted mail and an error. Both can be nil.
+     Checks the given pEp status and the given encrypted mail for errors.
+     - Returns: An error if something went wrong, nil otherwise.
      */
-    static func check(comp: String, status: PEP_STATUS,
-                      encryptedMessage: NSDictionary?) -> (NSDictionary?, Error?) {
-        if encryptedMessage != nil && status == PEP_UNENCRYPTED {
-            // Don't interpret that as an error
-            return (encryptedMessage, nil)
+    static func check(status: PEP_STATUS, encryptedMessage: NSDictionary?,
+                      comp: String? = nil) -> Error? {
+        if encryptedMessage == nil || (status != PEP_STATUS_OK && status != PEP_UNENCRYPTED) {
+            let error = BackgroundError.PepError.encryptionError(
+                info: "\(comp ?? "Unknown component") - status: \(status)")
+            return error
         }
-        if encryptedMessage == nil || status != PEP_STATUS_OK {
-            let error = BackgroundError.PepError.encryptionError(info: "\(comp)- status: \(status)")
-            Log.error(component: comp,
-                      error: BackgroundError.GeneralError.invalidParameter(info:
-                        "Could not encrypt message, pEp status \(status)"))
-            return (encryptedMessage, error)
-        }
-        return (encryptedMessage, nil)
+        return nil
     }
 
     public static func ownIdentity(message: Message) -> Identity? {
