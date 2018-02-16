@@ -114,7 +114,6 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
 
         let expTrashed = expectation(description: "expTrashed")
-
         let trashMailsOp1 = AppendTrashMailsOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder)
@@ -139,7 +138,6 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(trashFolder.messages?.count ?? 0, 0)
 
         let expTrashFetched = expectation(description: "expTrashFetched")
-
         let fetchTrashOp = FetchMessagesOperation(
             parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData,
             folderName: trashFolder.name ?? "", messageFetchedBlock: nil)
@@ -147,13 +145,22 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             fetchTrashOp.completionBlock = nil
             expTrashFetched.fulfill()
         }
-
         queue.addOperation(fetchTrashOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(trashMailsOp2.hasErrors())
+            XCTAssertFalse(fetchTrashOp.hasErrors())
         })
+
+        //DEBUG
+        let trashFolderBuff = CdFolder.by(folderType: FolderType.trash, account: cdAccount)!
+        let trashed = trashFolderBuff.allMessages().map { $0.uuid! }
+
+        print("trashed: \(trashed)")
+        print("originalMessages: \(originalMessages.map { $0.uuid! })")
+        // The problem is that the UUIDS differ between trashed and original messages.
+        // Fix it!
+        //GUBED
 
         for m in originalMessages {
             guard let mID = m.uuid else {
