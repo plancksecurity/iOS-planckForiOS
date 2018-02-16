@@ -80,7 +80,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
             return
         }
 
-        privateMOC.performAndWait() {
+        privateMOC.perform() {
             self.startSync(context: self.privateMOC)
         }
     }
