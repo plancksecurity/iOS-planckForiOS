@@ -366,9 +366,10 @@ open class NetworkServiceWorker {
                 opImapFinished.addDependency(syncMessagesOp)
                 theLastImapOp = syncMessagesOp
 
-                if let syncFlagsOp = SyncFlagsToServerOperation(
-                    parentName: description, errorContainer: errorContainer,
-                    imapSyncData: imapSyncData, folderID: folderID) {
+                if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
+                                                                errorContainer: errorContainer,
+                                                                imapSyncData: imapSyncData,
+                                                                folderID: folderID) {
                     syncFlagsOp.addDependency(theLastImapOp)
                     operations.append(syncFlagsOp)
                     opImapFinished.addDependency(syncFlagsOp)
