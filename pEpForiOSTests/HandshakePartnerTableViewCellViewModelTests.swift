@@ -119,7 +119,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
         let meIdent = mySelfID.pEpIdentity()
         var partnerIdent = partnerID.pEpIdentity()
-        session.update(meIdent)
+        session.mySelf(meIdent)
         session.update(partnerIdent)
 
         // back up the original
