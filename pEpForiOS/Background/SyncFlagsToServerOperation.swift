@@ -80,7 +80,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
             return
         }
 
-        privateMOC.perform() {
+        privateMOC.performAndWait() {
             self.startSync(context: self.privateMOC)
         }
     }
@@ -121,7 +121,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     func syncNextMessage(context: NSManagedObjectContext) {
-        context.perform() {
+        context.performAndWait() {
             guard let m = self.nextMessageToBeSynced(context: context) else {
                 self.waitForBackgroundTasksToFinish()
                 return
