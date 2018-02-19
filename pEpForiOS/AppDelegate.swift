@@ -267,25 +267,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
+        
         guard let networkService = networkService else {
             Log.shared.error(component: #function, errorString: "no networkService")
-                        UserNotificationTool.post(title: "IOS-562:", body: "no networkService")
             return
         }
-
+        
         networkService.checkForNewMails() { (numMails: Int?) in
             guard let numMails = numMails else {
-                                UserNotificationTool.post(title: "IOS-562: FAILED", body: "FAILED")
                 completionHandler(.failed)
                 return
             }
             switch numMails {
             case 0:
-                                UserNotificationTool.post(title: "IOS-562: NO DATA", body: "NO DATA")
                 completionHandler(.noData)
             default:
-                UserNotificationTool.post(title: "IOS-562: NEW DATA", body: "\(numMails) NEW DATA", batch: numMails)
                 self.informUser(numNewMails: numMails) {
                     completionHandler(.newData)
                 }
