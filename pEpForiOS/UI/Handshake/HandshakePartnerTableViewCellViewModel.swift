@@ -58,7 +58,6 @@ class HandshakePartnerTableViewCellViewModel {
      */
     let session: PEPSession
 
-    //var isPartnerPEPUser = false
     var isPartnerpEpUser = false
 
     /**
@@ -70,12 +69,6 @@ class HandshakePartnerTableViewCellViewModel {
      Cache the updated partner identity.
      */
     var pEpPartner: PEPIdentity
-
-    /**
-     A copy of the partner dictionary, in case the user wants to undo a "Mistrust" action.
-     See ENGINE-254.
-     */
-    let pEpPartnerCopy: PEPIdentity
 
     /**
      The message the status/trustwords are invoked for
@@ -95,7 +88,6 @@ class HandshakePartnerTableViewCellViewModel {
         pEpPartner = partner.updatedIdentity(session: session)
 
         // backup the partner dict
-        pEpPartnerCopy = PEPIdentity(identity: pEpPartner)
         isPartnerpEpUser = session.isPEPUser(pEpPartner)
         self.message = message
 
@@ -130,8 +122,6 @@ class HandshakePartnerTableViewCellViewModel {
      */
     func determineTrustwords(
         message: Message?, identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
-        session.update(identitySelf)
-        session.update(identityPartner)
 
         if let msg = message,
             let from = msg.from,
@@ -166,8 +156,6 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func invokeTrustAction(action: (PEPIdentity) -> ()) {
-        // Restore original partner, to preserve comm type
-        pEpPartner = PEPIdentity(identity:pEpPartnerCopy)
         action(pEpPartner)
         identityColor = partnerIdentity.pEpColor(session: session)
         updateTrustwords(session: session)
