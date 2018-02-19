@@ -97,7 +97,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWE-s0-h4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6432.8000000000002" y="332.38380809595208"/>
+            <point key="canvasLocation" x="6500" y="456"/>
         </scene>
         <!--Credits View Controller-->
         <scene sceneID="T9v-3i-MfR">
@@ -126,12 +126,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accountsCell" id="03J-Ut-4Ls" userLabel="Account" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accountsCell" textLabel="vjp-2e-dTM" detailTextLabel="cYR-jQ-s80" style="IBUITableViewCellStyleValue1" id="03J-Ut-4Ls" userLabel="Account" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="03J-Ut-4Ls" id="dVc-Gs-baq">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vjp-2e-dTM">
+                                            <rect key="frame" x="16" y="12" width="33.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cYR-jQ-s80">
+                                            <rect key="frame" x="315" y="12" width="44" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -149,6 +165,7 @@
                         <segue destination="3GT-NT-vyR" kind="show" identifier="segueShowLog" id="uAI-I4-HaK"/>
                         <segue destination="9LH-QE-79O" kind="show" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
                         <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindAccountAddedWithSegue:" id="dbj-Gx-Exo"/>
+                        <segue destination="EOv-Ee-Waq" kind="show" identifier="segueShowSettingSyncTrash" id="W4o-Ei-uzM"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -521,7 +538,7 @@
                 <viewControllerPlaceholder storyboardName="AccountCreation" id="Rly-af-89k" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5904" y="-377.81109445277366"/>
+            <point key="canvasLocation" x="5880" y="-721"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oQR-4y-gfE">
@@ -540,6 +557,60 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YDK-fm-lri" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5654" y="721"/>
+        </scene>
+        <!--Setting Sync Trash View Controller-->
+        <scene sceneID="qJL-Xh-Gld">
+            <objects>
+                <viewController id="EOv-Ee-Waq" customClass="SettingSyncTrashViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="R9V-sT-QDd"/>
+                        <viewControllerLayoutGuide type="bottom" id="Nmp-x3-Sok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Zry-xu-tEo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ysl-Jw-ZPh">
+                                <rect key="frame" x="290" y="30" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchChanged:" destination="EOv-Ee-Waq" eventType="valueChanged" id="8sl-aJ-Ekv"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync Trash Folder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkK-aU-Vvk">
+                                <rect key="frame" x="16" y="35" width="138" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="If enabled, messages in the Trash folder are synced with other devices." translatesAutoresizingMaskIntoConstraints="NO" id="boR-Zs-5NC">
+                                <rect key="frame" x="16" y="81" width="343" height="566"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="boR-Zs-5NC" secondAttribute="trailing" id="3S3-6U-dBc"/>
+                            <constraint firstItem="Nmp-x3-Sok" firstAttribute="top" secondItem="boR-Zs-5NC" secondAttribute="bottom" constant="20" id="3n8-oz-doG"/>
+                            <constraint firstItem="hkK-aU-Vvk" firstAttribute="top" secondItem="R9V-sT-QDd" secondAttribute="bottom" constant="15" id="43Y-ON-Eo7"/>
+                            <constraint firstItem="boR-Zs-5NC" firstAttribute="top" secondItem="Ysl-Jw-ZPh" secondAttribute="bottom" constant="20" id="9jy-HT-aqK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ysl-Jw-ZPh" secondAttribute="trailing" constant="20" id="JVM-sQ-jgc"/>
+                            <constraint firstItem="hkK-aU-Vvk" firstAttribute="centerY" secondItem="Ysl-Jw-ZPh" secondAttribute="centerY" id="XLh-EU-D2L"/>
+                            <constraint firstItem="Ysl-Jw-ZPh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hkK-aU-Vvk" secondAttribute="trailing" constant="15" id="XZK-ZS-znW"/>
+                            <constraint firstItem="boR-Zs-5NC" firstAttribute="leading" secondItem="Zry-xu-tEo" secondAttribute="leadingMargin" id="ihf-dn-3Us"/>
+                            <constraint firstItem="hkK-aU-Vvk" firstAttribute="leading" secondItem="Zry-xu-tEo" secondAttribute="leadingMargin" id="m2O-5N-bID"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="longDescription" destination="boR-Zs-5NC" id="KwG-PF-hv1"/>
+                        <outlet property="switch" destination="Ysl-Jw-ZPh" id="jPI-gf-cc0"/>
+                        <outlet property="switchDescription" destination="hkK-aU-Vvk" id="xBz-aI-a8Z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jgT-NF-o3r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6500" y="-248"/>
         </scene>
     </scenes>
 </document>

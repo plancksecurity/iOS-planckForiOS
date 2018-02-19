@@ -70,6 +70,9 @@
 		15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152130531FD00B7A00688DF2 /* DisplayUserError.swift */; };
 		15C5F2441F822560007DE086 /* PreviewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2431F822560007DE086 /* PreviewMessage.swift */; };
 		15C5F2461F823752007DE086 /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2451F823752007DE086 /* SortedSet.swift */; };
+		15EE5A74203B15670041F076 /* SettingSyncTrashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A71203B15660041F076 /* SettingSyncTrashViewController.swift */; };
+		15EE5A75203B15670041F076 /* SettingBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A72203B15660041F076 /* SettingBaseViewController.swift */; };
+		15EE5A76203B15670041F076 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A73203B15660041F076 /* LogViewController.swift */; };
 		15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835231F34BE1300FCE887 /* AccountUserInput.swift */; };
 		15F835281F3B497D00FCE887 /* FetchMessagesOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835271F3B497D00FCE887 /* FetchMessagesOperationTest.swift */; };
 		15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */; };
@@ -379,7 +382,6 @@
 		B714C4851ED437A7000BC84D /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B714C4841ED437A7000BC84D /* LoginTableViewController.swift */; };
 		B716BE031EF01EB900523453 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B716BE021EF01EB900523453 /* AccountSettingsViewModel.swift */; };
 		B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */; };
-		B7208EB01E437C1C00B08B22 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7208EAF1E437C1C00B08B22 /* LogViewController.swift */; };
 		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
 		B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */; };
 		B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */; };
@@ -501,6 +503,9 @@
 		15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayUserErrorTest.swift; sourceTree = "<group>"; };
 		15C5F2431F822560007DE086 /* PreviewMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMessage.swift; sourceTree = "<group>"; };
 		15C5F2451F823752007DE086 /* SortedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
+		15EE5A71203B15660041F076 /* SettingSyncTrashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingSyncTrashViewController.swift; sourceTree = "<group>"; };
+		15EE5A72203B15660041F076 /* SettingBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingBaseViewController.swift; sourceTree = "<group>"; };
+		15EE5A73203B15660041F076 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		15F835231F34BE1300FCE887 /* AccountUserInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUserInput.swift; sourceTree = "<group>"; };
 		15F835271F3B497D00FCE887 /* FetchMessagesOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchMessagesOperationTest.swift; sourceTree = "<group>"; };
 		15FE1F751FE122D900CC2D97 /* CreditsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsViewController.swift; sourceTree = "<group>"; };
@@ -839,7 +844,6 @@
 		B714C4841ED437A7000BC84D /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTableViewController.swift; sourceTree = "<group>"; };
 		B716BE021EF01EB900523453 /* AccountSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsViewModel.swift; sourceTree = "<group>"; };
 		B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewController.swift; path = Folder/FolderTableViewController.swift; sourceTree = "<group>"; };
-		B7208EAF1E437C1C00B08B22 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderCellViewModel.swift; path = Folder/ViewModel/FolderCellViewModel.swift; sourceTree = "<group>"; };
 		B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderSectionViewModel.swift; path = Folder/ViewModel/FolderSectionViewModel.swift; sourceTree = "<group>"; };
 		B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderUiProtocols.swift; sourceTree = "<group>"; };
@@ -1026,6 +1030,16 @@
 				15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		15EE5A70203B15660041F076 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				15EE5A72203B15660041F076 /* SettingBaseViewController.swift */,
+				15EE5A71203B15660041F076 /* SettingSyncTrashViewController.swift */,
+				15EE5A73203B15660041F076 /* LogViewController.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		15F82A072006552B0084F9EA /* Tests from MessageModel in Exile due to Apple Bug */ = {
@@ -1667,7 +1681,7 @@
 				B78CF8261E76D70D008C1739 /* Filter */,
 				43A6E0491E5726C8005BEE69 /* Background */,
 				B71EBBB41E55E43100150177 /* Folder */,
-				B7208EAE1E437BF800B08B22 /* Settings */,
+				15EE5A70203B15660041F076 /* Settings */,
 				43ED53621CC77F95006AB156 /* EmailDisplay */,
 				431B0B961D6734BF0082D0DB /* AccountsSettings */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
@@ -1754,14 +1768,6 @@
 				B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */,
 			);
 			name = Folder;
-			sourceTree = "<group>";
-		};
-		B7208EAE1E437BF800B08B22 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				B7208EAF1E437C1C00B08B22 /* LogViewController.swift */,
-			);
-			name = Settings;
 			sourceTree = "<group>";
 		};
 		B722EC471E5B019B00A2B9D5 /* ViewModel */ = {
@@ -2180,6 +2186,7 @@
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
 				432677161F17796D00F01F5A /* ImapIdleService.swift in Sources */,
 				B72528331EE948B800815118 /* AccountsSettingsViewModel.swift in Sources */,
+				15EE5A75203B15670041F076 /* SettingBaseViewController.swift in Sources */,
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
 				43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
@@ -2196,7 +2203,6 @@
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableViewController.swift in Sources */,
 				43257C891F50683600DDC7F0 /* NSAttributedString+pEp.swift in Sources */,
 				431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */,
-				B7208EB01E437C1C00B08B22 /* LogViewController.swift in Sources */,
 				431E8F7E1CFDCF3A00C33647 /* EmailViewController.swift in Sources */,
 				43B044542007AFDA007BCE3F /* AccountVerificationResultDelegate.swift in Sources */,
 				438052891FE3E24400ACF729 /* OAuth2AuthorizationProtocol.swift in Sources */,
@@ -2220,6 +2226,7 @@
 				4362399C1EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift in Sources */,
 				43C322091EA90192005073FB /* PEP+UI.swift in Sources */,
 				43549A8E1E48B54100210D86 /* AppendTrashMailsOperation.swift in Sources */,
+				15EE5A76203B15670041F076 /* LogViewController.swift in Sources */,
 				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
 				8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */,
 				B741D5031F26234A00DFD93A /* EmailAddressValidation.swift in Sources */,
@@ -2295,6 +2302,7 @@
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,
 				1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
+				15EE5A74203B15670041F076 /* SettingSyncTrashViewController.swift in Sources */,
 				1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */,
 				431E2B091F0281DF000035FA /* SmtpSendService.swift in Sources */,
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,

@@ -62,28 +62,38 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         return viewModel.count
     }
 
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView,
+                            titleForHeaderInSection section: Int) -> String? {
         return viewModel[section].title
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath) as? SwipeTableViewCell
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let accountsSection = 0
+        if indexPath.section == accountsSection {
+            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier,
+                                                     for: indexPath) as? SwipeTableViewCell
             cell?.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
+            cell?.detailTextLabel?.text = nil
             cell?.delegate = self
             return cell!
         }
+        // Settings Section
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier,
+                                                 for: indexPath)
         cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
+        cell.detailTextLabel?.text = viewModel[indexPath.section][indexPath.item].value
         cell.accessoryType = .disclosureIndicator
         return cell
     }
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    func tableView(_ tableView: UITableView,
+                   editActionsForRowAt indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
-            let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+            let deleteAction = SwipeAction(style: .destructive,
+                                           title: "Delete") { action, indexPath in
                 self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
                 if self.viewModel.noAccounts() {
                     self.performSegue(withIdentifier: "noAccounts", sender: nil)
@@ -95,7 +105,9 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         return nil
     }
 
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+    func tableView(_ tableView: UITableView,
+                   editActionsOptionsForRowAt indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         var options = SwipeTableOptions()
         options.expansionStyle = .destructive
         options.transitionStyle = .border
@@ -111,15 +123,18 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let accountsSection = 0
         let settingsSection = 1
-        let settingsRowLogging = 0
+        let settingSyncTrash = 0
         let settingsRowEnableThreading = 1
         let settingsRowCredits = 2
+        let settingsRowLogging = 3
 
         if indexPath.section == accountsSection {
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         } else if indexPath.section == settingsSection {
             switch indexPath.row {
+            case settingSyncTrash:
+                performSegue(withIdentifier: .segueShowSettingSyncTrash, sender: self)
             case settingsRowLogging:
                 performSegue(withIdentifier: .segueShowLog, sender: self)
             case settingsRowEnableThreading:
@@ -143,6 +158,7 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueAddNewAccount
         case segueEditAccount
         case segueShowLog
+        case segueShowSettingSyncTrash
         case sequeShowCredits
         case noAccounts
         case noSegue
@@ -165,9 +181,10 @@ extension AccountsTableViewController: SegueHandlerType {
             }
             break
         case .noAccounts: fallthrough
+        case .segueShowSettingSyncTrash: fallthrough
         case .segueAddNewAccount:
             guard
-                let destination = segue.destination as? LoginTableViewController
+                let destination = segue.destination as? BaseViewController
                 else {
                     return
             }

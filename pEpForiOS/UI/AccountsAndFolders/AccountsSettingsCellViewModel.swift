@@ -39,6 +39,29 @@ public class AccountsSettingsCellViewModel {
                 case .credits:
                     return NSLocalizedString("Credits", comment:
                         "AccountsSettings: Cell (button) title to view app credits")
+                case .syncTrash:
+                    return NSLocalizedString("Sync Trash Folder", comment:
+                        "AccountsSettings: Cell (button) title to view syncing trashed setting")
+                }
+            }
+            return nil
+        }
+    }
+
+    public var value : String? {
+        get {
+           if let type = self.type {
+                switch type {
+                case .showLog:
+                    return nil
+                case .organizedByThread:
+                    return nil // Feature unimplemented
+                case .credits:
+                    return nil
+                case .syncTrash:
+                    return AppSettings().shouldImapAppendTrashMails
+                    ? NSLocalizedString("On", comment: "On/Off status of synTrash setting")
+                    : NSLocalizedString("Off", comment: "On/Off status of synTrash setting")
                 }
             }
             return nil
