@@ -85,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
         Log.shared.resume()
-                networkService?.start()
+        networkService?.start()
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
@@ -199,6 +199,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.
@@ -216,9 +217,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.info(component: comp,
                  content: "Library url: \(String(describing: applicationDirectory()))")
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
-        kickOffMySelf()
-
-        startServices()
 
         prepareUserNotifications()
 
@@ -229,14 +227,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {
         self.application = application
-
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, content: "applicationDidEnterBackground")
-
         self.application = application
         kickOffMySelf() //is this still required?
         stopUsingPepSession()
@@ -244,8 +240,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         self.application = application
-
-        startServices()
 
         DispatchQueue.global(qos: .userInitiated).async {
             MessageModel.perform {
@@ -257,6 +251,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.application = application
+        startServices()
+        kickOffMySelf()
         UserNotificationTool.resetApplicationIconBadgeNumber()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
@@ -271,33 +267,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
-        // Assure services are setup. Should never be the case.
-        // IOS-562: Remove after background fetch is up and running.
-        if networkService == nil {
-            setupServices()
-        }
-
+        
         guard let networkService = networkService else {
             Log.shared.error(component: #function, errorString: "no networkService")
-//            UserNotificationTool.post(title: "IOS-562:", body: "no networkService")
             return
         }
-
+        
         networkService.checkForNewMails() { (numMails: Int?) in
             guard let numMails = numMails else {
-//                UserNotificationTool.post(title: "IOS-562: FAILED", body: "FAILED")
                 completionHandler(.failed)
                 return
             }
             switch numMails {
             case 0:
-//                UserNotificationTool.post(title: "IOS-562: NO DATA", body: "NO DATA")
                 completionHandler(.noData)
             default:
-//                UserNotificationTool.post(title: "IOS-562: NEW DATA", body: "\(numMails) NEW DATA", batch: numMails)
-                self.informUser(numNewMails: numMails)
-                completionHandler(.newData)
+                self.informUser(numNewMails: numMails) {
+                    completionHandler(.newData)
+                }
             }
         }
     }
@@ -368,9 +355,10 @@ extension AppDelegate: NetworkServiceDelegate {
 // MARK: - User Notifiation
 
 extension AppDelegate {
-    private func informUser(numNewMails:Int) {
+    private func informUser(numNewMails:Int, completion: @escaping ()->()) {
         GCD.onMain {
             UserNotificationTool.postUserNotification(forNumNewMails: numNewMails)
+            completion()
         }
     }
 }
