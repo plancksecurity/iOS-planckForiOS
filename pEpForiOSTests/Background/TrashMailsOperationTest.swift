@@ -69,6 +69,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         let numMails = 3
         for i in 1...numMails {
             let message = CdMessage.create()
+            message.uuid = "test_" + UUID().uuidString
             message.from = from
             if i == 1 {
                 message.parent = draftsFolder
@@ -114,7 +115,6 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
 
         let expTrashed = expectation(description: "expTrashed")
-
         let trashMailsOp1 = AppendTrashMailsOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder)
@@ -139,7 +139,6 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(trashFolder.messages?.count ?? 0, 0)
 
         let expTrashFetched = expectation(description: "expTrashFetched")
-
         let fetchTrashOp = FetchMessagesOperation(
             parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData,
             folderName: trashFolder.name ?? "", messageFetchedBlock: nil)
@@ -147,25 +146,34 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             fetchTrashOp.completionBlock = nil
             expTrashFetched.fulfill()
         }
-
         queue.addOperation(fetchTrashOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(trashMailsOp2.hasErrors())
+            XCTAssertFalse(fetchTrashOp.hasErrors())
         })
+
+        // Get uuids of messages in trash folder
+        let trashFolderBuff = CdFolder.by(folderType: FolderType.trash, account: cdAccount)!
+        let trashed = trashFolderBuff.allMessages()
+        let decryptedTrashUUIDs = trashed.map { (cdEncrypredMessage: CdMessage) -> String in
+            var decrypted: PEPMessage? = nil
+            PEPSession().decryptMessage(cdEncrypredMessage.pEpMessage(),
+                                        dest: &decrypted,
+                                        keys: nil)
+            return  decrypted!.messageID!
+        }
 
         for m in originalMessages {
             guard let mID = m.uuid else {
                 XCTFail()
                 continue
             }
-            let uuidP = NSPredicate(format: "uuid = %@", mID)
-            guard let cdMessages = CdMessage.all(predicate: uuidP) else {
+            // Make sure the email now exists in the trash folder as well with same uuid
+            if !decryptedTrashUUIDs.contains(mID) {
                 XCTFail()
-                continue
+                break
             }
-            XCTAssertEqual(cdMessages.count, 2)
 
             guard let folder = m.parent else {
                 XCTFail()
@@ -180,18 +188,6 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             // Check the original message's flags
             XCTAssertTrue(imap.localFlags?.flagDeleted ?? false)
             XCTAssertEqual(imap.trashedStatus, Message.TrashedStatus.trashed)
-            // Make sure the email now exists in the trash folder as well ...
-            let trashedP = NSPredicate(format: "parent = %@", trashFolder)
-            let trashedP1 = NSCompoundPredicate(andPredicateWithSubpredicates: [uuidP, trashedP])
-            let trashedCdMessage = CdMessage.first(predicate: trashedP1)
-            guard let trashed = trashedCdMessage,
-                let localFlags = trashed.imapFields().localFlags else {
-                    XCTFail("Message missing in trash folder? No flags?")
-                    return
-            }
-            // ... and check the newly created (in trash folder) message's flags
-            XCTAssertFalse(localFlags.flagDeleted)
-            XCTAssertTrue(trashed.imapFields().trashedStatus == .none)
         }
     }
 }

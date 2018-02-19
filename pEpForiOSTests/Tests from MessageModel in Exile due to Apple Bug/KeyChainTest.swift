@@ -17,7 +17,7 @@ class KeyChainTest: XCTestCase {
 
     func testStore() {
         let pass = "0001"
-        let key = String(RAND_MAX%32)
+        let key = UUID().uuidString
         let server = "1"
         XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
         XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))
@@ -25,7 +25,7 @@ class KeyChainTest: XCTestCase {
 
     func testUpdate() {
         let pass = "0001"
-        let key = String(RAND_MAX%32)
+        let key = UUID().uuidString
         let server = "1"
         XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
         XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))
@@ -36,7 +36,7 @@ class KeyChainTest: XCTestCase {
 
     func testDelete() {
         let pass = "0001"
-        let key = String(RAND_MAX%32)
+        let key = UUID().uuidString
         let server = "1"
         XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
         XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))

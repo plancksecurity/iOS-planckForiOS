@@ -44,7 +44,8 @@ class MatchUidToMsnOperation: ConcurrentBaseOperation {
             return
         }
         guard let cdMsg = cdFolder.message(byUID: uid) else {
-            handleError(BackgroundError.CoreDataError.couldNotFindMessage(info: nil))
+            // Not being able to find the message by UID is no error.
+            // This can happen e.g. on first fetch, when no mail has yet been downloaded.
             markAsFinished()
             return
         }

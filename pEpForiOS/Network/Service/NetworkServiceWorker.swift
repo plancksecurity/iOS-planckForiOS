@@ -236,12 +236,14 @@ open class NetworkServiceWorker {
         opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
 
         let opAppend = AppendSendMailsOperation(
-            parentName: serviceConfig.parentName, imapSyncData: imapSyncData)
+            parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
+            errorContainer: errorContainer)
         opAppend.addDependency(previousOp)
         opImapFinished.addDependency(opAppend)
 
         let opDrafts = AppendDraftMailsOperation(
-            parentName: serviceConfig.parentName, imapSyncData: imapSyncData)
+            parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
+            errorContainer: errorContainer)
         opDrafts.addDependency(opAppend)
         opImapFinished.addDependency(opDrafts)
 
@@ -256,7 +258,8 @@ open class NetworkServiceWorker {
         let folders = AppendTrashMailsOperation.foldersWithTrashedMessages(context: context)
         for cdF in folders {
             let op = AppendTrashMailsOperation(
-                parentName: serviceConfig.parentName, imapSyncData: imapSyncData, folder: cdF)
+                parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
+                errorContainer: errorContainer, folder: cdF)
             op.addDependency(lastOp)
             opImapFinished.addDependency(op)
             lastOp = op
@@ -363,9 +366,10 @@ open class NetworkServiceWorker {
                 opImapFinished.addDependency(syncMessagesOp)
                 theLastImapOp = syncMessagesOp
 
-                if let syncFlagsOp = SyncFlagsToServerOperation(
-                    parentName: description, errorContainer: errorContainer,
-                    imapSyncData: imapSyncData, folderID: folderID) {
+                if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
+                                                                errorContainer: errorContainer,
+                                                                imapSyncData: imapSyncData,
+                                                                folderID: folderID) {
                     syncFlagsOp.addDependency(theLastImapOp)
                     operations.append(syncFlagsOp)
                     opImapFinished.addDependency(syncFlagsOp)
