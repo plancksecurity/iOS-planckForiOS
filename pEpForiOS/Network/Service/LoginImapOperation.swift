@@ -53,7 +53,7 @@ class LoginImapSyncDelegate: DefaultImapSyncDelegate {
 
         op.capabilities = sync.capabilities
         let context = Record.Context.background
-        context.perform {
+        context.performAndWait {
             if let err = op.imapSyncData.connectInfo.unsetNeedsVerificationAndFinish(
                 context: context) {
                 op.addError(err)
@@ -63,8 +63,6 @@ class LoginImapSyncDelegate: DefaultImapSyncDelegate {
     }
 
     override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
-        // Should not generate an error, since we may try to select an non-existant
-        // mailbox as alternative to CLOSE.
         (errorHandler as? ImapSyncOperation)?.markAsFinished()
     }
 
