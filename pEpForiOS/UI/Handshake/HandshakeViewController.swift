@@ -83,7 +83,6 @@ class HandshakeViewController: BaseTableViewController {
         } else {
             let session = PEPSession()
             let vm = HandshakePartnerTableViewCellViewModel(
-                message: message,
                 ownIdentity: selfIdentity,
                 partner: partnerIdentity,
                 session: session,

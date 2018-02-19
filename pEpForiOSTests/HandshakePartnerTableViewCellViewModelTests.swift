@@ -161,7 +161,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         let session = PEPSession()
 
         guard
-            let (message: message, mySelfID: mySelfID,
+            let (message: _, mySelfID: mySelfID,
                  partnerID: partnerID) = importMail(session: session) else {
                     XCTFail()
                     return
@@ -169,8 +169,8 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
         let imageProvider = ImageProvider()
         let vm = HandshakePartnerTableViewCellViewModel(
-            message: message, ownIdentity: mySelfID, partner: partnerID, session: session,
-            imageProvider: imageProvider)
+            ownIdentity: mySelfID, partner: partnerID,
+            session: session, imageProvider: imageProvider)
         XCTAssertEqual(imageProvider.identitiesRequested.count, 1)
         XCTAssertEqual(imageProvider.identitiesRequested.first, partnerID)
 
