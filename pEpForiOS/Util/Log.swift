@@ -68,11 +68,10 @@ import MessageModel
         }
     }
 
-    static open func checklog(_ block: ((String) -> ())?) {
+    static open func checklog(_ block: ((String?) -> ())?) {
         if !MiscUtil.isUnitTest() {
             Log.shared.loggingQueue.addOperation() {
-                let s = PEPSession().getLog()
-                block?(s)
+                block?(PEPSession().getLog())
             }
         } else {
             block?("")
