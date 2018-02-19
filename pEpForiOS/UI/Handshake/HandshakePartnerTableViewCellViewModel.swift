@@ -126,7 +126,7 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      If the message is defined, and the partner is the sender, tries message trustwords.
      If not, or message trustwords does not compute, it determines the trustwords between
-     the 2 identies.
+     the 2 identities.
      */
     func determineTrustwords(
         message: Message?, identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
