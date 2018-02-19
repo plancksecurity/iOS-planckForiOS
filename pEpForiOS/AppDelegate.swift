@@ -251,6 +251,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         self.application = application
+        if MiscUtil.isUnitTest() {
+            // Do nothing if unit tests are running
+            return
+        }
         startServices()
         kickOffMySelf()
         UserNotificationTool.resetApplicationIconBadgeNumber()
