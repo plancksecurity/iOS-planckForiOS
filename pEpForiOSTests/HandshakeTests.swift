@@ -119,13 +119,15 @@ class HandshakeTests: XCTestCase {
         XCTAssertNotNil(fromIdent.fingerPrint)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
+        let fromIdentCopy = PEPIdentity(identity: fromIdent)
         session.keyMistrusted(fromIdent)
         session.update(fromIdent)
+        XCTAssertNil(fromIdent.fingerPrint)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
         // After mistrust, the engine now still remebers pEp status. See ENGINE-254.
-        session.keyResetTrust(fromIdent)
-        session.update(fromIdent)
-        XCTAssertTrue(session.isPEPUser(fromIdent))
+        session.keyResetTrust(fromIdentCopy)
+        session.update(fromIdentCopy)
+        XCTAssertTrue(session.isPEPUser(fromIdentCopy))
     }
 }
