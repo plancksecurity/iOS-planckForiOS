@@ -138,13 +138,13 @@ class MessageReevalutionTests: XCTestCase {
     }
 
     func testCommunicationTypes() {
-        let senderIdent = senderIdentity.updatedIdentityDictionary(session: session)
+        let senderIdent = senderIdentity.updatedIdentity(session: session)
         XCTAssertTrue(senderIdent.containsPGPCommType())
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
 
         session.keyMistrusted(senderIdent)
 
-        let senderDict2 = senderIdentity.updatedIdentityDictionary(session: session)
+        let senderDict2 = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(senderDict2.containsPGPCommType())
         // ENGINE-343: At one point the rating was PEP_rating_undefined.
         XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_have_no_key)
@@ -180,7 +180,7 @@ class MessageReevalutionTests: XCTestCase {
 
     func testTrustMistrust() {
         let runReevaluationInBackground = false
-        let senderIdent = senderIdentity.updatedIdentityDictionary(session: session)
+        let senderIdent = senderIdentity.updatedIdentity(session: session)
 
         session.keyResetTrust(senderIdent)
         XCTAssertFalse(senderIdent.isConfirmed)

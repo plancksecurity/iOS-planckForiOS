@@ -91,8 +91,8 @@ class HandshakePartnerTableViewCellViewModel {
         self.session = session
         self.identityColor = partner.pEpColor(session: session)
 
-        pEpSelf = ownIdentity.updatedIdentityDictionary(session: session)
-        pEpPartner = partner.updatedIdentityDictionary(session: session)
+        pEpSelf = ownIdentity.updatedIdentity(session: session)
+        pEpPartner = partner.updatedIdentity(session: session)
 
         // backup the partner dict
         pEpPartnerCopy = PEPIdentity(identity: pEpPartner)

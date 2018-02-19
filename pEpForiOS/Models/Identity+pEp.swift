@@ -70,7 +70,7 @@ extension Identity {
      Returns: A NSMutableDictionary that has been updated and thus should contain
      the fingerprint.
      */
-    public func updatedIdentityDictionary(session: PEPSession = PEPSession()) -> PEPIdentity {
+    public func updatedIdentity(session: PEPSession = PEPSession()) -> PEPIdentity {
         let md = pEpIdentity()
         session.update(md)
         return md

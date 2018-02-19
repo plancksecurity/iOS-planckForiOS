@@ -712,7 +712,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
         XCTAssertNotNil(theIdent.fingerPrint(session: session))
 
-        let identDict = theIdent.updatedIdentityDictionary(session: session)
+        let identDict = theIdent.updatedIdentity(session: session)
         XCTAssertNotNil(identDict.fingerPrint)
         XCTAssertNotNil(identDict.userID)
     }
