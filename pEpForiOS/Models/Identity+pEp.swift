@@ -72,7 +72,11 @@ extension Identity {
      */
     public func updatedIdentity(session: PEPSession = PEPSession()) -> PEPIdentity {
         let md = pEpIdentity()
-        session.update(md)
+        if md.isOwn {
+            session.mySelf(md)
+        } else {
+            session.update(md)
+        }
         return md
     }
 }
