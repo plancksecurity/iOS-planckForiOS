@@ -146,6 +146,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         // engine forgets everything about that key
         XCTAssertTrue(partnerIdent.containsPGPCommType())
 
+        /* TODO: ENGINE-384 commented out due to crash
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         // The partner (restored from the backup) is still a pEp user
         XCTAssertFalse(partnerIdent.containsPGPCommType())
@@ -154,6 +155,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
         // This is incorrect behavior. The user should still (or again) be a pEp user
         XCTAssertTrue(partnerIdent.containsPGPCommType())
+         */
     }
 
     /**
