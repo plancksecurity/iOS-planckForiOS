@@ -30,8 +30,70 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
             encryptMode: .encryptToMySelf)
     }
 
+    override func handleNextMessage() {
+        // Power User
+        if AppSettings().shouldSyncImapTrashWithServer { //BUFF: bubble setting up
+            // If we are supposed to sync trash, the default implementation is fine
+            super.handleNextMessage()
+            return
+        }
+        // Non Power User
+        guard
+            let msg = nextCdMessage(),
+            let context = msg.managedObjectContext else {
+                self.markAsFinished()
+                return
+        }
+
+        context.performAndWait {
+            guard let cdAccount = context.object(with: imapSyncData.connectInfo.accountObjectID) as? CdAccount,
+                let orig = msg.message() else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "IUhu__ ...")
+                    markAsFinished()
+                    return
+            }
+
+            let account = cdAccount.account()
+            guard let trashFolder = Folder.by(account: account, folderType: .trash) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No trash")
+                self.markAsFinished()
+                return
+            }
+            let newTrashMsg = Message(uuid: orig.uuid, uid: 0, parentFolder: trashFolder)
+            newTrashMsg.attachments = orig.attachments
+            newTrashMsg.bcc = orig.bcc
+            newTrashMsg.cc = orig.cc
+            newTrashMsg.from = orig.from
+            newTrashMsg.longMessage = orig.longMessage
+            newTrashMsg.longMessageFormatted = orig.longMessageFormatted
+            newTrashMsg.pEpRatingInt = Int(PEP_rating_unencrypted.rawValue)
+            newTrashMsg.sent = orig.sent
+            newTrashMsg.shortMessage = orig.shortMessage
+            newTrashMsg.to = orig.to
+            newTrashMsg.save()
+
+            msg.imap?.trashedStatus = .trashed
+            context.delete(msg)
+        }
+        Record.saveAndWait()
+
+        handleNextMessage()
+    }
+
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
         var result: (PEPMessageDict, PEPIdentity, NSManagedObjectID)?
+        context.performAndWait {
+            guard let msg = nextCdMessage(),
+                let cdIdent = msg.parent?.account?.identity else {
+                    return
+            }
+            result = (msg.pEpMessageDict(), cdIdent.pEpIdentity(), msg.objectID)
+        }
+        return result
+    }
+
+    private func nextCdMessage() -> CdMessage? {
+        var result: CdMessage? = nil
         context.performAndWait {
             guard let folder = self.context.object(with: self.folderObjectID) as? CdFolder else {
                 return
@@ -41,11 +103,7 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
                 folder, Message.TrashedStatus.shouldBeTrashed.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
 
-            guard let msg = CdMessage.first(predicate: p, in: self.context),
-                let cdIdent = msg.parent?.account?.identity else {
-                    return
-            }
-            result = (msg.pEpMessageDict(), cdIdent.pEpIdentity(), msg.objectID)
+            result = CdMessage.first(predicate: p, in: self.context)
         }
         return result
     }

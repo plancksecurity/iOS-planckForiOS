@@ -188,7 +188,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         }
     }
 
-    final func handleNextMessage() {
+    func handleNextMessage() {
         markLastMessageAsFinished()
 
         guard let (msg, ident, objID) = retrieveNextMessage() else {
