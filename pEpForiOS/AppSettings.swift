@@ -22,7 +22,7 @@ class AppSettings {
         }
     }
 
-    var shouldImapAppendTrashMails: Bool {
+    var shouldSyncImapTrashWithServer: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyAppendTrashMails)
         }

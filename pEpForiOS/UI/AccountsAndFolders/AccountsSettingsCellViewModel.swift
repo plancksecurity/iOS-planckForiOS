@@ -59,7 +59,7 @@ public class AccountsSettingsCellViewModel {
                 case .credits:
                     return nil
                 case .syncTrash:
-                    return AppSettings().shouldImapAppendTrashMails
+                    return AppSettings().shouldSyncImapTrashWithServer
                     ? NSLocalizedString("On", comment: "On/Off status of synTrash setting")
                     : NSLocalizedString("Off", comment: "On/Off status of synTrash setting")
                 }

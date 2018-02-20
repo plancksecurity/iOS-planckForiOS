@@ -10,10 +10,10 @@ import UIKit
 
 class SettingSyncTrashViewController: SettingBaseViewController {
     override func handleSwitchChange() {
-        AppSettings().shouldImapAppendTrashMails = `switch`.isOn
+        AppSettings().shouldSyncImapTrashWithServer = `switch`.isOn
     }
 
     override func setSwitchValue() {
-        `switch`.isOn = AppSettings().shouldImapAppendTrashMails
+        `switch`.isOn = AppSettings().shouldSyncImapTrashWithServer
     }
 }
