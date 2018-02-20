@@ -259,7 +259,8 @@ open class NetworkServiceWorker {
         for cdF in folders {
             let op = AppendTrashMailsOperation(
                 parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
-                errorContainer: errorContainer, folder: cdF)
+                errorContainer: errorContainer, folder: cdF,
+                syncTrashWithServer: FolderType.trash.shouldBeSyncedWithServer)
             op.addDependency(lastOp)
             opImapFinished.addDependency(op)
             lastOp = op

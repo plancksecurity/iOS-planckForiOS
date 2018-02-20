@@ -17,11 +17,14 @@ import MessageModel
  */
 public class AppendTrashMailsOperation: AppendMailsOperationBase {
     let folderObjectID: NSManagedObjectID
+    let syncTrashWithServer: Bool
 
     public init(parentName: String = #function, imapSyncData: ImapSyncData,
-                errorContainer: ServiceErrorProtocol = ErrorContainer(), folder: CdFolder) {
+                errorContainer: ServiceErrorProtocol = ErrorContainer(), folder: CdFolder,
+                syncTrashWithServer: Bool) {
         let trashFolderType = FolderType.trash
         self.folderObjectID = folder.objectID
+        self.syncTrashWithServer = syncTrashWithServer
         super.init(
             parentName: parentName,
             appendFolderType: trashFolderType,
@@ -32,7 +35,7 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
 
     override func handleNextMessage() {
         // Power User
-        if AppSettings().shouldSyncImapTrashWithServer { //BUFF: bubble setting up
+        if syncTrashWithServer {
             // If we are supposed to sync trash, the default implementation is fine
             super.handleNextMessage()
             return
