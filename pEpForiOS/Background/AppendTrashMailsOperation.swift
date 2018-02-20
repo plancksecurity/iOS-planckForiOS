@@ -59,7 +59,7 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
                 self.markAsFinished()
                 return
             }
-            let newTrashMsg = Message(uuid: orig.uuid, uid: 0, parentFolder: trashFolder)
+            let newTrashMsg = Message(uuid: MessageID.generate(), uid: 0, parentFolder: trashFolder)
             newTrashMsg.attachments = orig.attachments
             newTrashMsg.bcc = orig.bcc
             newTrashMsg.cc = orig.cc
