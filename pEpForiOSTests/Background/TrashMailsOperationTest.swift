@@ -13,35 +13,21 @@ import CoreData
 import MessageModel
 
 class TrashMailsOperationTest: CoreDataDrivenTestBase {
-    func testTrashCdMessages() {
-        let errorContainer = ErrorContainer()
+    var errorContainer = ErrorContainer()
+    var queue = OperationQueue()
 
-        let imapLogin = LoginImapOperation(
-            parentName: #function,
-            errorContainer: errorContainer, imapSyncData: imapSyncData)
-        imapLogin.completionBlock = {
-            imapLogin.completionBlock = nil
-            XCTAssertNotNil(self.imapSyncData.sync)
-        }
+    override func setUp() {
+        super.setUp()
+        errorContainer = ErrorContainer()
+        queue = OperationQueue()
+    }
 
-        let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(
-            parentName: #function, imapSyncData: imapSyncData)
-        fetchFoldersOp.addDependency(imapLogin)
-        fetchFoldersOp.completionBlock = {
-            fetchFoldersOp.completionBlock = nil
-            expFoldersFetched.fulfill()
-        }
+    // MARK: - Sync Trash With Server Enabled
 
-        let queue = OperationQueue()
-        queue.addOperation(imapLogin)
-        queue.addOperation(fetchFoldersOp)
+    func testTrashCdMessages_powerUser() {
+        let syncTrashWithServer = true
 
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(fetchFoldersOp.hasErrors())
-        })
+        loginAndWait()
 
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
@@ -109,30 +95,34 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
                     m.parent?.folderType == FolderType.drafts)
                 XCTAssertEqual(m.uid, Int32(0))
                 XCTAssertEqual(m.sendStatus, SendStatus.none)
+                XCTAssertEqual(m.imap?.trashedStatus, Message.TrashedStatus.shouldBeTrashed)
             }
         } else {
             XCTFail("No mesages?")
         }
 
         let expTrashed = expectation(description: "expTrashed")
-        let trashMailsOp1 = AppendTrashMailsOperation(
+        let trashMailsOpInbox = AppendTrashMailsOperation(
             parentName: #function,
-            imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder)
-        let trashMailsOp2 = AppendTrashMailsOperation(
+            imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder,
+            syncTrashWithServer: syncTrashWithServer)
+        let trashMailsOpDrafts = AppendTrashMailsOperation(
             parentName: #function,
-            imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder)
-        trashMailsOp2.addDependency(trashMailsOp1)
-        trashMailsOp2.completionBlock = {
-            trashMailsOp2.completionBlock = nil
+            imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder,
+            syncTrashWithServer: syncTrashWithServer)
+        trashMailsOpDrafts.addDependency(trashMailsOpInbox)
+        trashMailsOpDrafts.completionBlock = {
+            trashMailsOpDrafts.completionBlock = nil
             expTrashed.fulfill()
         }
 
-        queue.addOperation(trashMailsOp1)
-        queue.addOperation(trashMailsOp2)
+        queue.addOperation(trashMailsOpInbox)
+        queue.addOperation(trashMailsOpDrafts)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(trashMailsOp2.hasErrors())
+            XCTAssertFalse(trashMailsOpInbox.hasErrors())
+            XCTAssertFalse(trashMailsOpDrafts.hasErrors())
         })
 
         Record.Context.main.refreshAllObjects()
@@ -154,8 +144,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         })
 
         // Get uuids of messages in trash folder
-        let trashFolderBuff = CdFolder.by(folderType: FolderType.trash, account: cdAccount)!
-        let trashed = trashFolderBuff.allMessages()
+        let trashed = trashFolder.allMessages()
         let decryptedTrashUUIDs = trashed.map { (cdEncrypredMessage: CdMessage) -> String in
             var decrypted: PEPMessage? = nil
             PEPSession().decryptMessage(cdEncrypredMessage.pEpMessage(),
@@ -189,5 +178,157 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             XCTAssertTrue(imap.localFlags?.flagDeleted ?? false)
             XCTAssertEqual(imap.trashedStatus, Message.TrashedStatus.trashed)
         }
+    }
+
+    // MARK: - Sync Trash With Server Disabled
+
+    func testTrashCdMessages_default() {
+        let syncTrashWithServer = false
+        loginAndWait()
+
+        let from = CdIdentity.create()
+        from.userName = cdAccount.identity?.userName ?? "Unit 004"
+        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+
+        let to = CdIdentity.create()
+        to.userName = "Unit 001"
+        to.address = "unittest.ios.1@peptest.ch"
+
+        guard let inboxFolder = CdFolder.by(folderType: .inbox, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+        guard let draftsFolder = CdFolder.by(folderType: .drafts, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+        guard let trashFolder = CdFolder.by(folderType: .trash, account: cdAccount) else {
+            XCTFail()
+            return
+        }
+
+        // Build emails
+        var originalMessages = [CdMessage]()
+        let numMails = 3
+        for i in 1...numMails {
+            let message = CdMessage.create()
+            message.uuid = "test_" + UUID().uuidString
+            message.from = from
+            if i == 1 {
+                message.parent = draftsFolder
+            } else {
+                message.parent = inboxFolder
+            }
+            message.shortMessage = "Some subject \(i)"
+            message.longMessage = "Long message \(i)"
+            message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
+            message.sendStatus = SendStatus.none
+            message.addTo(cdIdentity: to)
+            let imapFields = CdImapFields.create()
+            let imapFlags = CdImapFlags.create()
+            imapFields.localFlags = imapFlags
+            imapFlags.flagDeleted = true
+            imapFields.trashedStatus = Message.TrashedStatus.shouldBeTrashed
+            message.imap = imapFields
+            originalMessages.append(message)
+        }
+        Record.saveAndWait()
+
+        let foldersWithTrashedMessages = AppendTrashMailsOperation.foldersWithTrashedMessages(
+            context: Record.Context.main)
+        XCTAssertEqual(foldersWithTrashedMessages.count, 2)
+        if inboxFolder.name ?? "" < draftsFolder.name ?? "" {
+            XCTAssertEqual(foldersWithTrashedMessages[safe: 0], inboxFolder)
+            XCTAssertEqual(foldersWithTrashedMessages[safe: 1], draftsFolder)
+        } else {
+            XCTAssertEqual(foldersWithTrashedMessages[safe: 1], inboxFolder)
+            XCTAssertEqual(foldersWithTrashedMessages[safe: 0], draftsFolder)
+        }
+
+        if let msgs = CdMessage.all() as? [CdMessage] {
+            for m in msgs {
+                XCTAssertNotNil(m.messageID)
+                XCTAssertTrue(m.parent?.folderType == FolderType.inbox ||
+                    m.parent?.folderType == FolderType.drafts)
+                XCTAssertEqual(m.uid, Int32(0))
+                XCTAssertEqual(m.sendStatus, SendStatus.none)
+                XCTAssertEqual(m.imap?.trashedStatus, Message.TrashedStatus.shouldBeTrashed)
+            }
+        } else {
+            XCTFail("No mesages?")
+        }
+
+        let expTrashed = expectation(description: "expTrashed")
+        let trashMailsOpInbox = AppendTrashMailsOperation(
+            parentName: #function,
+            imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder,
+            syncTrashWithServer: syncTrashWithServer)
+        let trashMailsOpDrafts = AppendTrashMailsOperation(
+            parentName: #function,
+            imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder,
+            syncTrashWithServer: syncTrashWithServer)
+        trashMailsOpDrafts.addDependency(trashMailsOpInbox)
+        trashMailsOpDrafts.completionBlock = {
+            trashMailsOpDrafts.completionBlock = nil
+            expTrashed.fulfill()
+        }
+
+        queue.addOperation(trashMailsOpInbox)
+        queue.addOperation(trashMailsOpDrafts)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(trashMailsOpInbox.hasErrors())
+            XCTAssertFalse(trashMailsOpDrafts.hasErrors())
+        })
+
+        Record.Context.main.refreshAllObjects()
+        XCTAssertEqual(trashFolder.messages?.count ?? 0, numMails)
+
+        for m in originalMessages {
+            guard let folder = m.parent else {
+                XCTFail()
+                continue
+            }
+            XCTAssertTrue(folder.folderType == FolderType.inbox ||
+                folder.folderType == FolderType.drafts)
+            guard let imap = m.imap else {
+                XCTFail()
+                continue
+            }
+            // Check the original message's flags
+            XCTAssertTrue(imap.localFlags?.flagDeleted ?? false)
+            XCTAssertEqual(imap.trashedStatus, Message.TrashedStatus.trashed)
+        }
+    }
+
+    // MARK: - HELPER
+
+    private func loginAndWait() {
+        let imapLogin = LoginImapOperation(
+            parentName: #function,
+            errorContainer: errorContainer, imapSyncData: imapSyncData)
+        imapLogin.completionBlock = {
+            imapLogin.completionBlock = nil
+            XCTAssertNotNil(self.imapSyncData.sync)
+        }
+
+        let expFoldersFetched = expectation(description: "expFoldersFetched")
+        let fetchFoldersOp = FetchFoldersOperation(
+            parentName: #function, imapSyncData: imapSyncData)
+        fetchFoldersOp.addDependency(imapLogin)
+        fetchFoldersOp.completionBlock = {
+            fetchFoldersOp.completionBlock = nil
+            expFoldersFetched.fulfill()
+        }
+
+        queue.addOperation(imapLogin)
+        queue.addOperation(fetchFoldersOp)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(imapLogin.hasErrors())
+            XCTAssertFalse(fetchFoldersOp.hasErrors())
+        })
     }
 }
