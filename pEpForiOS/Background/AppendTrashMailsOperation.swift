@@ -73,7 +73,6 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
             newTrashMsg.save()
 
             msg.imap?.trashedStatus = .trashed
-            context.delete(msg)
         }
         Record.saveAndWait()
 
