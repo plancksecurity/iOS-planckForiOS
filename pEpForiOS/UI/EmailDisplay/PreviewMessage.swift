@@ -87,6 +87,7 @@ class PreviewMessage: Equatable {
 
     public func message() -> Message? {
         guard let msg = Message.by(uid: uid,
+                                   uuid: uuid,
                                    folderName: parentFolderName,
                                    accountAddress: address)
             else {
