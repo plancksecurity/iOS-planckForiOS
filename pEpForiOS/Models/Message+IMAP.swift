@@ -23,11 +23,11 @@ extension Message {
     func imapDelete() {
         let theFlags = imapFlags ?? ImapFlags()
         theFlags.deleted = true
+        imapFlags = theFlags
         imapFields?.trashedStatus =
             parent.shouldCopyDeletedMessagesToTrash ? .shouldBeTrashed : .trashed
         imapFields?.uidMoveToTrashStatus =
             parent.shouldUidMoveDeletedMessagesToTrash ? .shouldBeMoved : .none
-        imapFlags = theFlags
         self.save()
     }
 }
