@@ -11,14 +11,7 @@ import MessageModel
 extension FolderType {
     var shouldBeSyncedWithServer: Bool {
         switch self {
-        case .all: fallthrough
-        case .archive: fallthrough
-        case .drafts: fallthrough
-        case .flagged: fallthrough
-        case .inbox: fallthrough
-        case .normal: fallthrough
-        case .sent: fallthrough
-        case .spam:
+        case .all, .archive, .drafts, .flagged, .inbox, .normal, .sent, .spam:
             return true
         case .trash:
             return AppSettings().shouldSyncImapTrashWithServer
