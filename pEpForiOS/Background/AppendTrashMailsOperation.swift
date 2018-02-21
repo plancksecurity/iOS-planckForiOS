@@ -41,6 +41,8 @@ public class AppendTrashMailsOperation: AppendMailsOperationBase {
             return
         }
         // Non Power User
+        // Trashed messages are not synced with server, thus we save an unencrypted copy in our
+        // store locally.
         guard
             let msg = nextCdMessage(),
             let context = msg.managedObjectContext else {
