@@ -84,7 +84,7 @@ class CreditsViewController: UIViewController {
                      "SwipeCellKit",
                      "AppAuth-iOS",
                      "netpgp"]
-        let links = ["https://cacert.pep.foundation/dev/repos/pEpEngine/",
+        let links = ["https://pep.foundation/dev/repos/pEpEngine/",
                      "https://gnupg.org/related_software/libassuan",
                      "https://gnupg.org/related_software/libksba",
                      "https://curl.haxx.se/libcurl/",
