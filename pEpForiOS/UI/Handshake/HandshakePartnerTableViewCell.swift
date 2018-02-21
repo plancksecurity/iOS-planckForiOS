@@ -252,9 +252,9 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             expandedState = .expanded
         }
         updateExplanationExpansionVisibility()
-        UIView.animate(withDuration: 0.3) {
+        //UIView.animate(withDuration: 0.3) {
             self.contentView.layoutIfNeeded()
-        }
+        //}
     }
 
     // MARK: - Gestures
