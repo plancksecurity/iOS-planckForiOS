@@ -46,17 +46,15 @@ class PepAdapterTests: XCTestCase {
      https://cacert.pep.foundation/jira/browse/ENGINE-159
      */
     func testDecryptMessageWithoutAttachments() {
-        let pepMessage: PEPMessageDict = [
-            kPepAttachments: NSArray(),
-            kPepTo: NSArray(array: [identityMe]),
-            kPepFrom: identityMe,
-            kPepShortMessage: "Subject" as NSString,
-            kPepLongMessage: "Long long message" as NSString
-        ]
-        var pepDecryptedMessage: NSDictionary? = nil
+        let pEpMessage = PEPMessage()
+        pEpMessage.to = [identityMe]
+        pEpMessage.from = identityMe
+        pEpMessage.shortMessage = "Subject"
+        pEpMessage.longMessage = "Long Message"
+
+        var pEpDecryptedMessage: PEPMessage? = nil
         var keys: NSArray?
-        let color = pEpSession.decryptMessageDict(
-            pepMessage, dest: &pepDecryptedMessage, keys: &keys)
+        let color = pEpSession.decryptMessage(pEpMessage, dest: &pEpDecryptedMessage, keys: &keys)
         XCTAssertEqual(color, PEP_rating_unencrypted)
     }
 
