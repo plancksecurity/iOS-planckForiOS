@@ -40,7 +40,6 @@ class HandshakeViewController: BaseTableViewController {
     }
 
     override func viewDidLayoutSubviews() {
-
         let cells = tableView.visibleCells
         for cell in cells {
             if let c = cell as? HandshakePartnerTableViewCell, c.sizeHelper == false {
