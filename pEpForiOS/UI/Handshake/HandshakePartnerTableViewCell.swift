@@ -99,7 +99,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     var buttonsFitWidth = [(Tuple<UIButton, CGFloat>): Bool]()
 
-
     override func awakeFromNib() {
         updateConfirmDistrustButtonsTitle()
         trustWordsLabel.preferredMaxLayoutWidth = self.bounds.width
