@@ -139,13 +139,13 @@ class MessageReevalutionTests: XCTestCase {
 
     func testCommunicationTypes() {
         let senderIdent = senderIdentity.updatedIdentity(session: session)
-        XCTAssertTrue(senderIdent.containsPGPCommType())
+        XCTAssertFalse(senderIdent.isPEPUser(session))
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
 
         session.keyMistrusted(senderIdent)
 
         let senderDict2 = senderIdentity.updatedIdentity(session: session)
-        XCTAssertFalse(senderDict2.containsPGPCommType())
+        XCTAssertFalse(senderDict2.isPEPUser(session))
         // ENGINE-343: At one point the rating was PEP_rating_undefined.
         XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_have_no_key)
     }

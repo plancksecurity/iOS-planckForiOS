@@ -70,7 +70,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
             XCTAssertNotNil(meIdent.fingerPrint)
             XCTAssertNotNil(partnerIdent.fingerPrint)
-            XCTAssertFalse(partnerIdent.containsPGPCommType())
+            XCTAssertTrue(partnerIdent.isPEPUser(session))
 
             XCTAssertEqual(partnerIdent.fingerPrint, "365AA0E985C912DAA867B1A77C6016EE84C971BF")
 
@@ -95,12 +95,12 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
         session.trustPersonalKey(partnerIdent)
         session.update(partnerIdent)
-        XCTAssertFalse(partnerIdent.containsPGPCommType())
+        XCTAssertTrue(partnerIdent.isPEPUser(session))
 
         session.keyResetTrust(partnerIdent)
         session.trustPersonalKey(partnerIdent)
         session.update(partnerIdent)
-        XCTAssertFalse(partnerIdent.containsPGPCommType())
+        XCTAssertTrue(partnerIdent.isPEPUser(session))
     }
 
     /**
