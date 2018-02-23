@@ -44,6 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
+    var backgroundTaskId: BackgroundTaskID? = nil
+
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -89,11 +91,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
-    // NetworkService will call it's delegate (me) after the last sync operation has finished.
+    /// NetworkService will assure all local changes triggered by the user are synced to the server
+    /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
-        networkService?.stop()
+        backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+            guard let id = self.backgroundTaskId else {
+                Log.shared.error(component: #function, errorString: "No ID.")
+                return
+            }
+            Log.shared.warn(component: #function, content: "BackgroundTrask with ID \(id) expired.")
+
+            UIApplication.shared.endBackgroundTask(id)
+        })
+        networkService?.processAllUserActionsAndstop()
         // Stop logging to Engine. It would create new sessions.
-        Log.shared.pause()
+        //        Log.shared.pause() BUFF:
     }
 
     func kickOffMySelf() {
@@ -232,7 +244,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, content: "applicationDidEnterBackground")
         self.application = application
-        kickOffMySelf() //is this still required?
+        kickOffMySelf() //is this still required? //BUFF: on "to-foreground" only
         stopUsingPepSession()
     }
 
@@ -351,6 +363,13 @@ extension AppDelegate: NetworkServiceDelegate {
         // Cleanup sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")
         PEPSession.cleanup()
+        guard let id = self.backgroundTaskId else {
+            Log.shared.error(component: #function, errorString: "No ID.")
+            return
+        }
+        DispatchQueue.main.async {
+            UIApplication.shared.endBackgroundTask(id)
+        }
     }
 }
 

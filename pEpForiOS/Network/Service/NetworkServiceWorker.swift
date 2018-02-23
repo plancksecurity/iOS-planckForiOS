@@ -110,17 +110,16 @@ open class NetworkServiceWorker {
      */
     public func start() {
         Log.info(component: #function, content: "\(String(describing: self))")
+        cancelled = false
         stopped = false
         self.process()
     }
 
-    /**
-     Stops synchronizing after the currently running operationline has finished.
-     I.e. does not trigger a a new syncloop.
-     */
+    /// Stops synchronizing after all local changes are synced to server.
+    /// Calls delegate networkServicWorkerDidFinishLastSyncLoop when done.
     public func stop() {
         Log.info(component: #function, content: "\(String(describing: self))")
-        doNotTriggerNewSyncLoop()
+        syncLocalChangesWithServerAndStop()
     }
 
     /**
@@ -132,32 +131,50 @@ open class NetworkServiceWorker {
 
         self.cancelled = true
         self.backgroundQueue.cancelAllOperations()
-        Log.info(component: myComp, content: "\(String(describing: self)): all operations cancelled")
+        Log.info(component: myComp,
+                 content: "\(String(describing: self)): all operations cancelled")
 
-        workerQueue.async {
+        workerQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
             let observer = ObjectObserver(
-                backgroundQueue: self.backgroundQueue,
-                operationCountKeyPath: self.operationCountKeyPath, myComp: myComp)
-            self.backgroundQueue.addObserver(observer, forKeyPath: self.operationCountKeyPath,
+                backgroundQueue: me.backgroundQueue,
+                operationCountKeyPath: me.operationCountKeyPath, myComp: myComp)
+            me.backgroundQueue.addObserver(observer, forKeyPath: me.operationCountKeyPath,
                                              options: [.initial, .new],
                                              context: nil)
-
-            self.backgroundQueue.waitUntilAllOperationsAreFinished()
-            self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
-            self.delegate?.networkServicWorkerDidCancel(worker: self)
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.backgroundQueue.removeObserver(observer, forKeyPath: me.operationCountKeyPath)
+            me.delegate?.networkServicWorkerDidCancel(worker: me)
         }
     }
 
-    /**
-     Stops triggering new sync loops after the curently running one has finished.
-     */
-    public func doNotTriggerNewSyncLoop() {
-        let myComp = #function
-        stopped = true
-        Log.info(component: myComp, content: "\(String(describing: self)): do not trigger new sync loop")
-        workerQueue.async {
-            self.backgroundQueue.waitUntilAllOperationsAreFinished()
-            self.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: self)
+     /// Stops all queued operations, syncs all local changes with server and informs delegate
+     /// when done.
+    public func syncLocalChangesWithServerAndStop() {
+        stopped = true //BUFF: I think cancled should be enough. Tripple check
+        Log.info(component: #function,
+                 content: "\(String(describing: self)): syncLocalChangesWithServerAndStop")
+        backgroundQueue.cancelAllOperations()
+
+        workerQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            let connectInfos = ServiceUtil.gatherConnectInfos(context: me.context,
+                                                              accounts: me.fetchAccounts())
+            let operationLines =
+                me.buildSyncLocalChangesOperationLines(accountConnectInfos: connectInfos)
+            for operartionLine in operationLines {
+//                self.scheduleOperationLine(operationLine: operartionLine)
+                me.backgroundQueue.addOperations(operartionLine.operations,
+                                                   waitUntilFinished: false)
+            }
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: me)
         }
     }
     
@@ -269,7 +286,7 @@ open class NetworkServiceWorker {
         return (lastOp, trashOps)
     }
 
-    private func buildUidExpungeOperations(imapSyncData: ImapSyncData,
+    private func buildUidExpungeOperations(imapSyncData: ImapSyncData, //BUFF: rename
                                            errorContainer: ServiceErrorProtocol,
                                            opImapFinished: Operation,
                                            previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
@@ -700,8 +717,14 @@ open class NetworkServiceWorker {
         }
     }
 
-    func scheduleOperationLineInternal(
-        operationLine: OperationLine, completionBlock: (() -> Void)?) {
+    func buildSyncLocalChangesOperationLines(accountConnectInfos: [AccountConnectInfo]) -> [OperationLine] {
+        return accountConnectInfos.map {
+            return buildProcessUserActionsOperationLine(accountInfo: $0) //BUFF: rename
+        }
+    }
+
+    func scheduleOperationLine(
+        operationLine: OperationLine, completionBlock: (() -> Void)? = nil) {
         if cancelled {
             return
         }
@@ -737,7 +760,7 @@ open class NetworkServiceWorker {
                         content: "\(operationLines.count) left, repeat? \(repeatProcess)")
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
-                scheduleOperationLineInternal(operationLine: ol, completionBlock: {
+                scheduleOperationLine(operationLine: ol, completionBlock: {
                     [weak self, weak ol] in
                     Log.verbose(component: theComp,
                                 content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")

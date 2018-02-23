@@ -47,6 +47,7 @@ import MessageModel
 
     func pause() {
         Log.shared.paused = true
+        Log.shared.loggingQueue.cancelAllOperations()
     }
 
     static open func disableLog() {
