@@ -381,6 +381,36 @@ open class NetworkServiceWorker {
         return (theLastImapOp, operations)
     }
 
+    //BUFF:
+    func syncFlagsToServerOperations(
+        folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
+        imapSyncData: ImapSyncData,
+        lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
+        var theLastImapOp = lastImapOp
+        var operations: [Operation] = []
+        for fi in folderInfos {
+            if let folderID = fi.folderID, let firstUID = fi.firstUID,
+                let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
+                firstUID <= lastUID {
+                if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
+                                                                errorContainer: errorContainer,
+                                                                imapSyncData: imapSyncData,
+                                                                folderID: folderID) {
+                    syncFlagsOp.addDependency(theLastImapOp)
+                    operations.append(syncFlagsOp)
+                    opImapFinished.addDependency(syncFlagsOp)
+                    theLastImapOp = syncFlagsOp
+                }
+            }
+        }
+        return (theLastImapOp, operations)
+    }
+
+    /// Builds a line of opertations to completely sync one e-mail account.
+    /// Use this operation line when going into background.
+    ///
+    /// - Parameter accountInfo: Account info for account to sync
+    /// - Returns:  Operation line contaning all operations required to sync one account
     func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
 
         let errorContainer = ReportingErrorContainer(delegate: self)
@@ -537,6 +567,119 @@ open class NetworkServiceWorker {
                 imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
             lastImapOp = lastOp
             operations.append(contentsOf: syncOperations)
+        }
+
+        operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
+
+        return OperationLine(accountInfo: accountInfo, operations: operations,
+                             finalOperation: opAllFinished, errorContainer: errorContainer)
+    }
+
+    //BUFF:
+    /// Builds a line of opertations that do just enough to make sure all user actions (sent,
+    /// deleted, flagged) are synced with the server for one e-mail account.
+    /// Use this operation line when going into background.
+    ///
+    /// - Parameter accountInfo: Account info for account to process user actions for.
+    /// - Returns:  Operation line contaning all operations required to sync user actions
+    ///             for one account.
+    func buildProcessUserActionsOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
+        let errorContainer = ReportingErrorContainer(delegate: self)
+
+        // Operation depending on all IMAP operations for this account
+        let opImapFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                Log.info(component: #function, content: "IMAP sync finished")
+            }
+        }
+        // Operation depending on all SMTP operations for this account
+        let opSmtpFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                Log.info(component: #function, content: "SMTP sync finished")
+            }
+        }
+        #if DEBUG
+            var startTime = Date()
+        #endif
+
+        // Operation depending on all IMAP and SMTP operations
+        let opAllFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                #if DEBUG
+                    Log.info(component: #function,
+                             content: "sync finished in \(-startTime.timeIntervalSinceNow) seconds")
+                #else
+                    Log.info(component: #function, content: "sync finished")
+                #endif
+            }
+        }
+        opAllFinished.addDependency(opImapFinished)
+        opAllFinished.addDependency(opSmtpFinished)
+
+        var operations = [Operation]()
+
+        #if DEBUG
+            let debugTimerOp = BlockOperation() {
+                startTime = Date()
+            }
+            opAllFinished.addDependency(debugTimerOp)
+            operations.append(debugTimerOp)
+        #endif
+
+        // SMTP
+        // send
+        let (_, smtpOperations) =
+            buildSmtpOperations(accountInfo: accountInfo,
+                                errorContainer: ReportingErrorContainer(delegate: self),
+                                opSmtpFinished: opSmtpFinished,
+                                lastOperation: nil)
+        operations.append(contentsOf: smtpOperations)
+
+        // IMAP
+        if let imapCI = accountInfo.imapConnectInfo {
+            let imapSyncData = ServiceUtil.cachedImapSync(
+                imapConnectionDataCache: imapConnectionDataCache, connectInfo: imapCI)
+
+            // login
+            let opImapLogin = LoginImapOperation(
+                parentName: description, errorContainer: errorContainer,
+                imapSyncData: imapSyncData)
+            opImapLogin.addDependency(opSmtpFinished)
+            opImapFinished.addDependency(opImapLogin)
+            operations.append(opImapLogin)
+
+            // append sent
+            let (lastSendOp, sendOperations) = buildSendOperations(
+                imapSyncData: imapSyncData, errorContainer: errorContainer,
+                opImapFinished: opImapFinished, previousOp: opImapLogin)
+            operations.append(contentsOf: sendOperations)
+
+            // append trash
+            let (lastTrashOp, trashOperations) =
+                buildTrashOperations(imapSyncData: imapSyncData,
+                                     errorContainer: errorContainer,
+                                     opImapFinished: opImapFinished,
+                                     previousOp: lastSendOp ?? opImapLogin)
+            operations.append(contentsOf: trashOperations)
+            let (lastUidExpungeOp, uidExpungeOperations) =
+                buildUidExpungeOperations(imapSyncData: imapSyncData,
+                                          errorContainer: errorContainer,
+                                          opImapFinished: opImapFinished,
+                                          previousOp: lastTrashOp ?? lastSendOp ?? opImapLogin)
+            operations.append(contentsOf: uidExpungeOperations)
+
+            // sync flags
+            let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
+            let (_, syncFlagsOps) =
+                syncFlagsToServerOperations(folderInfos: folderInfos,
+                                            errorContainer: errorContainer,
+                                            imapSyncData: imapSyncData,
+                                            lastImapOp: lastUidExpungeOp
+                                                ?? lastTrashOp
+                                                ?? lastSendOp
+                                                ?? opImapLogin,
+                                            opImapFinished: opImapFinished)
+            operations.append(contentsOf: syncFlagsOps)
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
