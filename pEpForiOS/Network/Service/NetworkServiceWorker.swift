@@ -161,12 +161,12 @@ open class NetworkServiceWorker {
 
             me.backgroundQueue.cancelAllOperations()
             //IOS-958: debug
-            var counter = 0
-            while me.backgroundQueue.operations.count > 0 {
-                counter += 1
-                print("\(counter)OPS (#\(me.backgroundQueue.operations.count): \(me.backgroundQueue.operations)")
-                sleep(1)
-            }
+//            var counter = 0
+//            while me.backgroundQueue.operations.count > 0 {
+//                counter += 1
+//                print("\(counter)OPS (#\(me.backgroundQueue.operations.count): \(me.backgroundQueue.operations)")
+//                sleep(1)
+//            }
             //END IOS-958
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
 
