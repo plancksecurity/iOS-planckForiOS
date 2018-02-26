@@ -9,8 +9,8 @@
 import UIKit
 import MessageModel
 
-class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
-    
+class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewDelegate,
+UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var nameTextfield: UITextField!
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var usernameTextfield: UITextField!
@@ -71,12 +71,18 @@ class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewD
     }
 
     private func informUser(about error:Error) {
-        let alert = UIAlertController(title: NSLocalizedString("Invalid Input", comment: "Title of invalid accout settings user input alert"),
-                                      message: error.localizedDescription,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(
+            title: NSLocalizedString(
+                "Invalid Input",
+                comment: "Title of invalid accout settings user input alert"),
+            message: error.localizedDescription,
+            preferredStyle: UIAlertControllerStyle.alert)
 
-        let cancelAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
-                                         style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(
+            title: NSLocalizedString(
+                "OK",
+                comment: "OK button for invalid accout settings user input alert"),
+            style: .cancel, handler: nil)
 
         alert.addAction(cancelAction)
         present(alert, animated: true)
@@ -89,44 +95,52 @@ class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewD
         loginName: String) {
             //IMAP
             guard let addrImap = imapServerTextfield.text, addrImap != "" else {
-                let msg = NSLocalizedString("IMAP server must not be empty.", comment: "Empty IMAP server message")
+                let msg = NSLocalizedString("IMAP server must not be empty.",
+                                            comment: "Empty IMAP server message")
                 throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
             }
 
             guard let portImap = imapPortTextfield.text, portImap != "" else {
-                let msg = NSLocalizedString("IMAP Port must not be empty.", comment: "Empty IMAP port server message")
+                let msg = NSLocalizedString("IMAP Port must not be empty.",
+                                            comment: "Empty IMAP port server message")
                 throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
             }
 
             guard let transImap = imapSecurityTextfield.text, transImap != "" else {
-                let msg = NSLocalizedString("Choose IMAP transport security method.", comment: "Empty IMAP transport security method")
+                let msg = NSLocalizedString("Choose IMAP transport security method.",
+                                            comment: "Empty IMAP transport security method")
                 throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
             }
 
             //SMTP
             guard let addrSmpt = smtpServerTextfield.text, addrSmpt != "" else {
-                let msg = NSLocalizedString("SMTP server must not be empty.", comment: "Empty SMTP server message")
+                let msg = NSLocalizedString("SMTP server must not be empty.",
+                                            comment: "Empty SMTP server message")
                 throw AccountSettingsUserInputError.invalidInputServer(localizedMessage: msg)
             }
 
             guard let portSmtp = smtpPortTextfield.text, portSmtp != "" else {
-                let msg = NSLocalizedString("SMTP Port must not be empty.", comment: "Empty SMTP port server message")
+                let msg = NSLocalizedString("SMTP Port must not be empty.",
+                                            comment: "Empty SMTP port server message")
                 throw AccountSettingsUserInputError.invalidInputPort(localizedMessage: msg)
             }
 
             guard let transSmtp = smtpSecurityTextfield.text, transSmtp != "" else {
-                let msg = NSLocalizedString("Choose SMTP transport security method.", comment: "Empty SMTP transport security method")
+                let msg = NSLocalizedString("Choose SMTP transport security method.",
+                                            comment: "Empty SMTP transport security method")
                 throw AccountSettingsUserInputError.invalidInputTransport(localizedMessage: msg)
             }
 
             //other
             guard let name = nameTextfield.text, name != "" else {
-                let msg = NSLocalizedString("Account name must not be empty.", comment: "Empty account name message")
+                let msg = NSLocalizedString("Account name must not be empty.",
+                                            comment: "Empty account name message")
                 throw AccountSettingsUserInputError.invalidInputAccountName(localizedMessage: msg)
             }
 
             guard let loginName = usernameTextfield.text, loginName != "" else {
-                let msg = NSLocalizedString("Username must not be empty.", comment: "Empty username message")
+                let msg = NSLocalizedString("Username must not be empty.",
+                                            comment: "Empty username message")
                 throw AccountSettingsUserInputError.invalidInputUserName(localizedMessage: msg)
             }
 
@@ -211,14 +225,16 @@ class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewD
         return 0
     }
 
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int,
+                    forComponent component: Int) -> String? {
         if let vm = viewModel {
             return vm.svm[row]
         }
         return nil
     }
 
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int,
+                    inComponent component: Int) {
         if let c = current, let vm = viewModel {
             c.text = vm.svm[row]
         }
