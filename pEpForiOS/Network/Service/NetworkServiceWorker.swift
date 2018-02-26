@@ -156,29 +156,33 @@ open class NetworkServiceWorker {
     public func syncLocalChangesWithServerAndStop() {
         stopped = true //BUFF: I think cancled should be enough. Tripple check
         cancelled = true //BUFF:
-        Log.info(component: #function,
-                 content: "\(String(describing: self)): syncLocalChangesWithServerAndStop")
-        backgroundQueue.cancelAllOperations()
-
 
         workerQueue.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
+
+            me.backgroundQueue.cancelAllOperations()
+            //BUFF: debug
+            var counter = 0
+            while me.backgroundQueue.operations.count > 0 {
+                counter += 1
+                print("\(counter)OPS (#\(me.backgroundQueue.operations.count): \(me.backgroundQueue.operations)")
+                sleep(1)
+            }
+            //FFUB
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
+
             let connectInfos = ServiceUtil.gatherConnectInfos(context: me.context,
-                                                              accounts: me.fetchAccounts()) //BUFF: make computed property
+                                                              accounts: me.fetchAccounts())
             let operationLines =
                 me.buildSyncLocalChangesOperationLines(accountConnectInfos: connectInfos)
             for operartionLine in operationLines {
-//                self.scheduleOperationLine(operationLine: operartionLine)
                 me.backgroundQueue.addOperations(operartionLine.operations,
                                                    waitUntilFinished: false)
             }
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
-            //BUFF: debug
-            if me.delegate == nil { fatalError() }
             me.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: me)
         }
     }
@@ -589,6 +593,16 @@ open class NetworkServiceWorker {
                 imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
             lastImapOp = lastOp
             operations.append(contentsOf: syncOperations)
+
+            //BUFF: test
+            let logoutImapOp = BlockOperation() {
+                imapSyncData.sync?.close()
+            }
+            logoutImapOp.addDependency(lastOp)
+            opImapFinished.addDependency(logoutImapOp)
+            lastImapOp = logoutImapOp
+            operations.append(logoutImapOp)
+            //FFUB
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
@@ -693,7 +707,7 @@ open class NetworkServiceWorker {
 
             // sync flags
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
-            let (_, syncFlagsOps) =
+            let (lastSyncFlagsOp, syncFlagsOps) =
                 syncFlagsToServerOperations(folderInfos: folderInfos,
                                             errorContainer: errorContainer,
                                             imapSyncData: imapSyncData,
@@ -703,6 +717,15 @@ open class NetworkServiceWorker {
                                                 ?? opImapLogin,
                                             opImapFinished: opImapFinished)
             operations.append(contentsOf: syncFlagsOps)
+
+            //BUFF: test
+            let logoutImapOp = BlockOperation() {
+                imapSyncData.sync?.close()
+            }
+            logoutImapOp.addDependency(lastSyncFlagsOp)
+            opImapFinished.addDependency(logoutImapOp)
+            operations.append(logoutImapOp)
+            //FFUB
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
