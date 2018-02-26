@@ -186,34 +186,12 @@ class LoginViewModel {
     }
 
     /**
-     Determines `AccountSettingsProtocol` for a given email address,
-     only doing fast local lookups.
-     */
-    func accountSettings(email: String?) -> AccountSettingsProtocol? {
-        if let theMail = email?.trimmedWhiteSpace() {
-            let acSettings = AccountSettings(accountName: theMail, provider: nil,
-                                             flags: AS_FLAG_USE_ANY_LOCAL, credentials: nil)
-
-            // do a sync call, but this should only lookup local information, so not blocking
-            acSettings.lookup()
-
-            if let _ = AccountSettingsError(accountSettings: acSettings) {
-                return nil
-            }
-
-            return acSettings
-        } else {
-            return nil
-        }
-    }
-
-    /**
      Is an account with this email address typically an OAuth2 account?
      Only uses fast local lookups.
      - Returns true, if this is an OAuth2 email address, true otherwise.
      */
     func isOAuth2Possible(email: String?) -> Bool {
-        return accountSettings(email: email)?.supportsOAuth2 ?? false
+        return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
     }
 
     /**
@@ -222,7 +200,8 @@ class LoginViewModel {
      - Returns The oauth2 configuration the given email.
      */
     func oauth2Configuration(email: String?) -> OAuth2ConfigurationProtocol? {
-        return OAuth2Type(accountSettings: accountSettings(email: email))?.oauth2Config()
+        return OAuth2Type(
+            accountSettings: AccountSettings.quickLookUp(emailAddress: email))?.oauth2Config()
     }
 }
 
