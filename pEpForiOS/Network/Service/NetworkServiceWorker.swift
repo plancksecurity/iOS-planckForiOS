@@ -131,20 +131,16 @@ open class NetworkServiceWorker {
         Log.info(component: myComp,
                  content: "\(String(describing: self)): all operations cancelled")
 
-        workerQueue.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
+        workerQueue.async { // Looks suspiciouly like a potential retain cycle
             let observer = ObjectObserver(
-                backgroundQueue: me.backgroundQueue,
-                operationCountKeyPath: me.operationCountKeyPath, myComp: myComp)
-            me.backgroundQueue.addObserver(observer, forKeyPath: me.operationCountKeyPath,
+                backgroundQueue: self.backgroundQueue,
+                operationCountKeyPath: self.operationCountKeyPath, myComp: myComp)
+            self.backgroundQueue.addObserver(observer, forKeyPath: self.operationCountKeyPath,
                                              options: [.initial, .new],
                                              context: nil)
-            me.backgroundQueue.waitUntilAllOperationsAreFinished()
-            me.backgroundQueue.removeObserver(observer, forKeyPath: me.operationCountKeyPath)
-            me.delegate?.networkServicWorkerDidCancel(worker: me)
+            self.backgroundQueue.waitUntilAllOperationsAreFinished()
+            self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
+            self.delegate?.networkServicWorkerDidCancel(worker: self)
         }
     }
 
