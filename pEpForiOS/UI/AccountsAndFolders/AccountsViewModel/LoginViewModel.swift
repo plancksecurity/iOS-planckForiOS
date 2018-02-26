@@ -9,29 +9,6 @@
 import Foundation
 import MessageModel
 
-enum AccountSettingsError: Error {
-    case timeOut
-    case notFound
-    case illegalValue
-
-    init?(accountSettings: AccountSettingsProtocol) {
-        switch accountSettings.status {
-        case AS_TIMEOUT:
-            self = .timeOut
-        case AS_NOT_FOUND:
-            self = .notFound
-        case AS_ILLEGAL_VALUE:
-            self = .illegalValue
-        default:
-            if let _ = accountSettings.outgoing, let _ = accountSettings.incoming {
-                return nil
-            } else {
-                self = .notFound
-            }
-        }
-    }
-}
-
 /**
  Errors that are not directly reported by the used OAuth2 lib, but detected internally.
  */
@@ -51,19 +28,6 @@ enum OAuth2InternalError: Error {
      for continuing login.
      */
     case noParametersForVerification
-}
-
-extension AccountSettingsError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-        case .timeOut:
-            return NSLocalizedString("Account detection timed out",
-                                     comment: "Error description detecting account settings")
-        case .notFound, .illegalValue:
-            return NSLocalizedString("Could not find servers",
-                                     comment: "Error description detecting account settings")
-        }
-    }
 }
 
 enum LoginCellType {
@@ -222,34 +186,12 @@ class LoginViewModel {
     }
 
     /**
-     Determines `AccountSettingsProtocol` for a given email address,
-     only doing fast local lookups.
-     */
-    func accountSettings(email: String?) -> AccountSettingsProtocol? {
-        if let theMail = email?.trimmedWhiteSpace() {
-            let acSettings = AccountSettings(accountName: theMail, provider: nil,
-                                             flags: AS_FLAG_USE_ANY_LOCAL, credentials: nil)
-
-            // do a sync call, but this should only lookup local information, so not blocking
-            acSettings.lookup()
-
-            if let _ = AccountSettingsError(accountSettings: acSettings) {
-                return nil
-            }
-
-            return acSettings
-        } else {
-            return nil
-        }
-    }
-
-    /**
      Is an account with this email address typically an OAuth2 account?
      Only uses fast local lookups.
      - Returns true, if this is an OAuth2 email address, true otherwise.
      */
     func isOAuth2Possible(email: String?) -> Bool {
-        return accountSettings(email: email)?.supportsOAuth2 ?? false
+        return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
     }
 
     /**
@@ -258,7 +200,8 @@ class LoginViewModel {
      - Returns The oauth2 configuration the given email.
      */
     func oauth2Configuration(email: String?) -> OAuth2ConfigurationProtocol? {
-        return OAuth2Type(accountSettings: accountSettings(email: email))?.oauth2Config()
+        return OAuth2Type(
+            accountSettings: AccountSettings.quickLookUp(emailAddress: email))?.oauth2Config()
     }
 }
 
