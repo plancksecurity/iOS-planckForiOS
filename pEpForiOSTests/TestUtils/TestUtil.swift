@@ -340,7 +340,6 @@ class TestUtil {
             XCTAssertNil(error)
         })
 
-        networkService.cancel()
         TestUtil.cancelNetworkService(networkService: networkService, testCase: testCase)
     }
 
