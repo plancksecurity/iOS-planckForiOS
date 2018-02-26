@@ -104,10 +104,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // shuts down everything.
             UIApplication.shared.endBackgroundTask(id)
         })
-        print("background time start: \(UIApplication.shared.backgroundTimeRemaining) for task with ID \(backgroundTaskId ?? -1)")
         networkService?.processAllUserActionsAndstop()
         // Stop logging to Engine. It would create new sessions.
-        //        Log.shared.pause() BUFF:
+        Log.shared.pause()
     }
 
     func kickOffMySelf() {
@@ -246,7 +245,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, content: "applicationDidEnterBackground")
         self.application = application
-        kickOffMySelf() //is this still required? //BUFF: on "to-foreground" only
+        kickOffMySelf() //is this still required? Call in applicationDidBecomeActive might be enough.
         stopUsingPepSession()
     }
 
@@ -353,7 +352,9 @@ extension AppDelegate: KickOffMySelfProtocol {
 // MARK: - NetworkServiceDelegate
 
 extension AppDelegate: NetworkServiceDelegate {
-    func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo, errorProtocol: ServiceErrorProtocol) {
+    func networkServiceDidSync(service: NetworkService,
+                               accountInfo: AccountConnectInfo,
+                               errorProtocol: ServiceErrorProtocol) {
         // do nothing
     }
 
@@ -370,7 +371,6 @@ extension AppDelegate: NetworkServiceDelegate {
             return
         }
         DispatchQueue.main.async {
-            print("background time end: \(UIApplication.shared.backgroundTimeRemaining). Task ID: \(id)")
             UIApplication.shared.endBackgroundTask(id)
         }
     }

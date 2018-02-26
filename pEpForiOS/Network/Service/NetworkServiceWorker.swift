@@ -491,8 +491,6 @@ open class NetworkServiceWorker {
             opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
         operations.append(contentsOf: smtpOperations)
 
-
-
         if let imapCI = accountInfo.imapConnectInfo {
             let imapSyncData = ServiceUtil.cachedImapSync(
                 imapConnectionDataCache: imapConnectionDataCache, connectInfo: imapCI)
