@@ -100,7 +100,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
             }
             Log.shared.warn(component: #function, content: "BackgroundTrask with ID \(id) expired.")
-
+            // We should call some emergency shutdown on NetworkService here that brutally
+            // shuts down everything.
             UIApplication.shared.endBackgroundTask(id)
         })
         print("background time start: \(UIApplication.shared.backgroundTimeRemaining) for task with ID \(backgroundTaskId ?? -1)")
