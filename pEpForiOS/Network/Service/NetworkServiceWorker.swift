@@ -291,7 +291,7 @@ open class NetworkServiceWorker {
         return (lastOp, trashOps)
     }
 
-    private func buildUidExpungeOperations(imapSyncData: ImapSyncData, //BUFF: rename
+    private func buildUidMoveMailsToTrashOperations(imapSyncData: ImapSyncData,
                                            errorContainer: ServiceErrorProtocol,
                                            opImapFinished: Operation,
                                            previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
@@ -543,7 +543,7 @@ open class NetworkServiceWorker {
 
             // UidExpunge
             let (lastUidExpungeOp, uidExpungeOperations) =
-                buildUidExpungeOperations(imapSyncData: imapSyncData,
+                buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
                                           errorContainer: errorContainer,
                                           opImapFinished: opImapFinished,
                                           previousOp: lastTrashOp ?? lastSendOp ?? opRequiredFolders)
@@ -695,7 +695,7 @@ open class NetworkServiceWorker {
                                      previousOp: lastSendOp ?? opImapLogin)
             operations.append(contentsOf: trashOperations)
             let (lastUidExpungeOp, uidExpungeOperations) =
-                buildUidExpungeOperations(imapSyncData: imapSyncData,
+                buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
                                           errorContainer: errorContainer,
                                           opImapFinished: opImapFinished,
                                           previousOp: lastTrashOp ?? lastSendOp ?? opImapLogin)
