@@ -521,6 +521,7 @@
                         <outlet property="imapSecurityTextfield" destination="rCJ-UW-Jmn" id="Vz4-6T-rdl"/>
                         <outlet property="imapServerTextfield" destination="LOO-6m-Q5O" id="2JT-EB-GaR"/>
                         <outlet property="nameTextfield" destination="RpU-jD-tx7" id="eBg-fx-AAF"/>
+                        <outlet property="passwordTableViewCell" destination="ha3-pb-H6q" id="hS0-M0-ZIT"/>
                         <outlet property="passwordTextfield" destination="74n-su-y4m" id="cdw-kQ-Z8v"/>
                         <outlet property="smtpPortTextfield" destination="f4i-WV-eyd" id="SWD-86-mCa"/>
                         <outlet property="smtpSecurityTextfield" destination="JLc-di-cx2" id="sqO-QP-g1u"/>
