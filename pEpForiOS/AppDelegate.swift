@@ -103,6 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             UIApplication.shared.endBackgroundTask(id)
         })
+        print("background time start: \(UIApplication.shared.backgroundTimeRemaining) for task with ID \(backgroundTaskId ?? -1)")
         networkService?.processAllUserActionsAndstop()
         // Stop logging to Engine. It would create new sessions.
         //        Log.shared.pause() BUFF:
@@ -368,6 +369,7 @@ extension AppDelegate: NetworkServiceDelegate {
             return
         }
         DispatchQueue.main.async {
+            print("background time end: \(UIApplication.shared.backgroundTimeRemaining). Task ID: \(id)")
             UIApplication.shared.endBackgroundTask(id)
         }
     }

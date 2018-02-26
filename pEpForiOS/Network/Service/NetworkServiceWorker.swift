@@ -155,17 +155,20 @@ open class NetworkServiceWorker {
      /// when done.
     public func syncLocalChangesWithServerAndStop() {
         stopped = true //BUFF: I think cancled should be enough. Tripple check
+        cancelled = true //BUFF:
         Log.info(component: #function,
                  content: "\(String(describing: self)): syncLocalChangesWithServerAndStop")
         backgroundQueue.cancelAllOperations()
+
 
         workerQueue.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
             let connectInfos = ServiceUtil.gatherConnectInfos(context: me.context,
-                                                              accounts: me.fetchAccounts())
+                                                              accounts: me.fetchAccounts()) //BUFF: make computed property
             let operationLines =
                 me.buildSyncLocalChangesOperationLines(accountConnectInfos: connectInfos)
             for operartionLine in operationLines {
@@ -174,6 +177,8 @@ open class NetworkServiceWorker {
                                                    waitUntilFinished: false)
             }
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            //BUFF: debug
+            if me.delegate == nil { fatalError() }
             me.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: me)
         }
     }
@@ -241,14 +246,14 @@ open class NetworkServiceWorker {
         let sendOp = EncryptAndSendOperation(
             parentName: serviceConfig.parentName, smtpSendData: smtpSendData,
             errorContainer: errorContainer)
-        opSmtpFinished.addDependency(sendOp)
         sendOp.addDependency(loginOp)
+        opSmtpFinished.addDependency(sendOp)
         operations.append(sendOp)
-
+        
         return (sendOp, operations)
     }
 
-    func buildSendOperations(
+    func buildAppendSendAndDraftOperations(
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
 
@@ -526,7 +531,7 @@ open class NetworkServiceWorker {
             operations.append(opRequiredFolders)
 
             // 3.c Client-to-server synchronization (IMAP)
-            let (lastSendOp, sendOperations) = buildSendOperations(
+            let (lastSendOp, sendOperations) = buildAppendSendAndDraftOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
                 opImapFinished: opImapFinished, previousOp: opRequiredFolders)
             operations.append(contentsOf: sendOperations)
@@ -600,21 +605,22 @@ open class NetworkServiceWorker {
     /// - Parameter accountInfo: Account info for account to process user actions for.
     /// - Returns:  Operation line contaning all operations required to sync user actions
     ///             for one account.
-    func buildProcessUserActionsOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
+    func buildProcessUserActionsOperationLine(accountInfo: AccountConnectInfo) -> OperationLine { //BUFF: rename
         let errorContainer = ReportingErrorContainer(delegate: self)
 
-        // Operation depending on all IMAP operations for this account
-        let opImapFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                Log.info(component: #function, content: "IMAP sync finished")
-            }
-        }
         // Operation depending on all SMTP operations for this account
         let opSmtpFinished = BlockOperation { [weak self] in
             self?.workerQueue.async {
                 Log.info(component: #function, content: "SMTP sync finished")
             }
         }
+        // Operation depending on all IMAP operations for this account
+        let opImapFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                Log.info(component: #function, content: "IMAP sync finished")
+            }
+        }
+        opImapFinished.addDependency(opSmtpFinished)
         #if DEBUG
             var startTime = Date()
         #endif
@@ -630,8 +636,9 @@ open class NetworkServiceWorker {
                 #endif
             }
         }
-        opAllFinished.addDependency(opImapFinished)
         opAllFinished.addDependency(opSmtpFinished)
+        opAllFinished.addDependency(opImapFinished)
+
 
         var operations = [Operation]()
 
@@ -661,12 +668,11 @@ open class NetworkServiceWorker {
             let opImapLogin = LoginImapOperation(
                 parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
-            opImapLogin.addDependency(opSmtpFinished)
             opImapFinished.addDependency(opImapLogin)
             operations.append(opImapLogin)
 
             // append sent
-            let (lastSendOp, sendOperations) = buildSendOperations(
+            let (lastSendOp, sendOperations) = buildAppendSendAndDraftOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
                 opImapFinished: opImapFinished, previousOp: opImapLogin)
             operations.append(contentsOf: sendOperations)
