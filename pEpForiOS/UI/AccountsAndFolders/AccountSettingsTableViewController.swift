@@ -152,11 +152,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     // MARK: - UItableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        var value = 0
-        if let vm = viewModel {
-            value = vm.count
-        }
-        return value
+        return viewModel?.count ?? 0
     }
     
     override func tableView(
