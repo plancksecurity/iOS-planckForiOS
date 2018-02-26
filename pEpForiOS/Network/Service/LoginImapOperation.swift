@@ -13,13 +13,22 @@ import MessageModel
 public class LoginImapOperation: ImapSyncOperation {
     var syncDelegate: LoginImapSyncDelegate?
     var capabilities: Set<String>?
+    var service: ImapSync
+
+    override public init(parentName: String = #function,
+                         errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                         imapSyncData: ImapSyncData) {
+        service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
+        super.init(parentName: parentName, errorContainer: errorContainer,
+                   imapSyncData: imapSyncData)
+    }
 
     public override func main() {
         if isCancelled {
             markAsFinished()
             return
         }
-        var service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
+
         if service.imapState.hasError {
             service = ImapSync(connectInfo: imapSyncData.connectInfo)
         }

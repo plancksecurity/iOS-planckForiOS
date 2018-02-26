@@ -123,11 +123,10 @@ public class NetworkService {
         currentWorker?.start()
     }
 
-    /**
-     Stop endlessly synchronizing in the background
-     NetworkServiceDelegate networkServiceDidFinishLastSyncLoop() is called after the last sync operation finished.
-     */
-    public func stop() {
+    /// Stop endlessly synchronizing in the background, syncs all pending changes triggered by the
+    /// user with server.
+    /// Calls NetworkServiceDelegate networkServiceDidFinishLastSyncLoop() when done.
+    public func processAllUserActionsAndstop() {
         currentWorker?.stop()
     }
 
@@ -141,7 +140,7 @@ public class NetworkService {
         }
         //476.SOI
         lastConnectionDataCache = currentWorker?.imapConnectionDataCache
-        currentWorker?.cancel(networkService: self)
+        currentWorker?.cancel()
         currentWorker = nil
 
         // Only to make sure. Should not be required.

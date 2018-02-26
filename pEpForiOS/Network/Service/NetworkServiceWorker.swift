@@ -82,8 +82,6 @@ open class NetworkServiceWorker {
 
     public weak var delegate: NetworkServiceWorkerDelegate?
 
-    private var stopped = false
-    
     var serviceConfig: NetworkService.ServiceConfig
 
     var cancelled = false
@@ -110,54 +108,74 @@ open class NetworkServiceWorker {
      */
     public func start() {
         Log.info(component: #function, content: "\(String(describing: self))")
-        stopped = false
+        cancelled = false
         self.process()
     }
 
-    /**
-     Stops synchronizing after the currently running operationline has finished.
-     I.e. does not trigger a a new syncloop.
-     */
+    /// Stops synchronizing after all local changes are synced to server.
+    /// Calls delegate networkServicWorkerDidFinishLastSyncLoop when done.
     public func stop() {
         Log.info(component: #function, content: "\(String(describing: self))")
-        doNotTriggerNewSyncLoop()
+        syncLocalChangesWithServerAndStop()
     }
 
     /**
      Cancel all background operations, finish main loop.
      */
-    public func cancel(networkService: NetworkService) {
+    public func cancel() {
         //476.SOI
         let myComp = #function
 
         self.cancelled = true
         self.backgroundQueue.cancelAllOperations()
-        Log.info(component: myComp, content: "\(String(describing: self)): all operations cancelled")
+        Log.info(component: myComp,
+                 content: "\(String(describing: self)): all operations cancelled")
 
-        workerQueue.async {
+        workerQueue.async { // Looks suspiciouly like a potential retain cycle
             let observer = ObjectObserver(
                 backgroundQueue: self.backgroundQueue,
                 operationCountKeyPath: self.operationCountKeyPath, myComp: myComp)
             self.backgroundQueue.addObserver(observer, forKeyPath: self.operationCountKeyPath,
                                              options: [.initial, .new],
                                              context: nil)
-
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
             self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
             self.delegate?.networkServicWorkerDidCancel(worker: self)
         }
     }
 
-    /**
-     Stops triggering new sync loops after the curently running one has finished.
-     */
-    public func doNotTriggerNewSyncLoop() {
-        let myComp = #function
-        stopped = true
-        Log.info(component: myComp, content: "\(String(describing: self)): do not trigger new sync loop")
-        workerQueue.async {
-            self.backgroundQueue.waitUntilAllOperationsAreFinished()
-            self.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: self)
+     /// Stops all queued operations, syncs all local changes with server and informs delegate
+     /// when done.
+    public func syncLocalChangesWithServerAndStop() {
+        cancelled = true
+
+        workerQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+
+            me.backgroundQueue.cancelAllOperations()
+            //IOS-958: debug
+//            var counter = 0
+//            while me.backgroundQueue.operations.count > 0 {
+//                counter += 1
+//                print("\(counter)OPS (#\(me.backgroundQueue.operations.count): \(me.backgroundQueue.operations)")
+//                sleep(1)
+//            }
+            //END IOS-958
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+
+            let connectInfos = ServiceUtil.gatherConnectInfos(context: me.context,
+                                                              accounts: me.fetchAccounts())
+            let operationLines =
+                me.buildSyncLocalChangesOperationLines(accountConnectInfos: connectInfos)
+            for operartionLine in operationLines {
+                me.backgroundQueue.addOperations(operartionLine.operations,
+                                                   waitUntilFinished: false)
+            }
+            me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            me.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: me)
         }
     }
     
@@ -224,14 +242,14 @@ open class NetworkServiceWorker {
         let sendOp = EncryptAndSendOperation(
             parentName: serviceConfig.parentName, smtpSendData: smtpSendData,
             errorContainer: errorContainer)
-        opSmtpFinished.addDependency(sendOp)
         sendOp.addDependency(loginOp)
+        opSmtpFinished.addDependency(sendOp)
         operations.append(sendOp)
-
+        
         return (sendOp, operations)
     }
 
-    func buildSendOperations(
+    func buildAppendSendAndDraftOperations(
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
 
@@ -269,7 +287,7 @@ open class NetworkServiceWorker {
         return (lastOp, trashOps)
     }
 
-    private func buildUidExpungeOperations(imapSyncData: ImapSyncData,
+    private func buildUidMoveMailsToTrashOperations(imapSyncData: ImapSyncData,
                                            errorContainer: ServiceErrorProtocol,
                                            opImapFinished: Operation,
                                            previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
@@ -381,6 +399,35 @@ open class NetworkServiceWorker {
         return (theLastImapOp, operations)
     }
 
+    func syncFlagsToServerOperations(
+        folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
+        imapSyncData: ImapSyncData,
+        lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
+        var theLastImapOp = lastImapOp
+        var operations: [Operation] = []
+        for fi in folderInfos {
+            if let folderID = fi.folderID, let firstUID = fi.firstUID,
+                let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
+                firstUID <= lastUID {
+                if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
+                                                                errorContainer: errorContainer,
+                                                                imapSyncData: imapSyncData,
+                                                                folderID: folderID) {
+                    syncFlagsOp.addDependency(theLastImapOp)
+                    operations.append(syncFlagsOp)
+                    opImapFinished.addDependency(syncFlagsOp)
+                    theLastImapOp = syncFlagsOp
+                }
+            }
+        }
+        return (theLastImapOp, operations)
+    }
+
+    /// Builds a line of opertations to completely sync one e-mail account.
+    /// Use this operation line when going into background.
+    ///
+    /// - Parameter accountInfo: Account info for account to sync
+    /// - Returns:  Operation line contaning all operations required to sync one account
     func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
 
         let errorContainer = ReportingErrorContainer(delegate: self)
@@ -440,8 +487,6 @@ open class NetworkServiceWorker {
             opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
         operations.append(contentsOf: smtpOperations)
 
-
-
         if let imapCI = accountInfo.imapConnectInfo {
             let imapSyncData = ServiceUtil.cachedImapSync(
                 imapConnectionDataCache: imapConnectionDataCache, connectInfo: imapCI)
@@ -479,7 +524,7 @@ open class NetworkServiceWorker {
             operations.append(opRequiredFolders)
 
             // 3.c Client-to-server synchronization (IMAP)
-            let (lastSendOp, sendOperations) = buildSendOperations(
+            let (lastSendOp, sendOperations) = buildAppendSendAndDraftOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
                 opImapFinished: opImapFinished, previousOp: opRequiredFolders)
             operations.append(contentsOf: sendOperations)
@@ -491,7 +536,7 @@ open class NetworkServiceWorker {
 
             // UidExpunge
             let (lastUidExpungeOp, uidExpungeOperations) =
-                buildUidExpungeOperations(imapSyncData: imapSyncData,
+                buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
                                           errorContainer: errorContainer,
                                           opImapFinished: opImapFinished,
                                           previousOp: lastTrashOp ?? lastSendOp ?? opRequiredFolders)
@@ -537,6 +582,134 @@ open class NetworkServiceWorker {
                 imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
             lastImapOp = lastOp
             operations.append(contentsOf: syncOperations)
+
+            let logoutImapOp = BlockOperation() {
+                imapSyncData.sync?.close()
+            }
+            logoutImapOp.addDependency(lastOp)
+            opImapFinished.addDependency(logoutImapOp)
+            lastImapOp = logoutImapOp
+            operations.append(logoutImapOp)
+        }
+
+        operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
+
+        return OperationLine(accountInfo: accountInfo, operations: operations,
+                             finalOperation: opAllFinished, errorContainer: errorContainer)
+    }
+
+    /// Builds a line of opertations that do just enough to make sure all user actions (sent,
+    /// deleted, flagged) are synced with the server for one e-mail account.
+    /// Use this operation line when going into background.
+    ///
+    /// - Parameter accountInfo: Account info for account to process user actions for.
+    /// - Returns:  Operation line contaning all operations required to sync user actions
+    ///             for one account.
+    func buildSyncLocalChangesOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
+        let errorContainer = ReportingErrorContainer(delegate: self)
+
+        // Operation depending on all SMTP operations for this account
+        let opSmtpFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                Log.info(component: #function, content: "SMTP sync finished")
+            }
+        }
+        // Operation depending on all IMAP operations for this account
+        let opImapFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                Log.info(component: #function, content: "IMAP sync finished")
+            }
+        }
+        opImapFinished.addDependency(opSmtpFinished)
+        #if DEBUG
+            var startTime = Date()
+        #endif
+
+        // Operation depending on all IMAP and SMTP operations
+        let opAllFinished = BlockOperation { [weak self] in
+            self?.workerQueue.async {
+                #if DEBUG
+                    Log.info(component: #function,
+                             content: "sync finished in \(-startTime.timeIntervalSinceNow) seconds")
+                #else
+                    Log.info(component: #function, content: "sync finished")
+                #endif
+            }
+        }
+        opAllFinished.addDependency(opSmtpFinished)
+        opAllFinished.addDependency(opImapFinished)
+
+
+        var operations = [Operation]()
+
+        #if DEBUG
+            let debugTimerOp = BlockOperation() {
+                startTime = Date()
+            }
+            opAllFinished.addDependency(debugTimerOp)
+            operations.append(debugTimerOp)
+        #endif
+
+        // SMTP
+        // send
+        let (_, smtpOperations) =
+            buildSmtpOperations(accountInfo: accountInfo,
+                                errorContainer: ReportingErrorContainer(delegate: self),
+                                opSmtpFinished: opSmtpFinished,
+                                lastOperation: nil)
+        operations.append(contentsOf: smtpOperations)
+
+        // IMAP
+        if let imapCI = accountInfo.imapConnectInfo {
+            let imapSyncData = ServiceUtil.cachedImapSync(
+                imapConnectionDataCache: imapConnectionDataCache, connectInfo: imapCI)
+
+            // login
+            let opImapLogin = LoginImapOperation(
+                parentName: description, errorContainer: errorContainer,
+                imapSyncData: imapSyncData)
+            opImapFinished.addDependency(opImapLogin)
+            operations.append(opImapLogin)
+
+            // append sent
+            let (lastSendOp, sendOperations) = buildAppendSendAndDraftOperations(
+                imapSyncData: imapSyncData, errorContainer: errorContainer,
+                opImapFinished: opImapFinished, previousOp: opImapLogin)
+            operations.append(contentsOf: sendOperations)
+
+            // append trash
+            let (lastTrashOp, trashOperations) =
+                buildTrashOperations(imapSyncData: imapSyncData,
+                                     errorContainer: errorContainer,
+                                     opImapFinished: opImapFinished,
+                                     previousOp: lastSendOp ?? opImapLogin)
+            operations.append(contentsOf: trashOperations)
+            let (lastUidExpungeOp, uidExpungeOperations) =
+                buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
+                                          errorContainer: errorContainer,
+                                          opImapFinished: opImapFinished,
+                                          previousOp: lastTrashOp ?? lastSendOp ?? opImapLogin)
+            operations.append(contentsOf: uidExpungeOperations)
+
+            // sync flags
+            let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
+            let (lastSyncFlagsOp, syncFlagsOps) =
+                syncFlagsToServerOperations(folderInfos: folderInfos,
+                                            errorContainer: errorContainer,
+                                            imapSyncData: imapSyncData,
+                                            lastImapOp: lastUidExpungeOp
+                                                ?? lastTrashOp
+                                                ?? lastSendOp
+                                                ?? opImapLogin,
+                                            opImapFinished: opImapFinished)
+            operations.append(contentsOf: syncFlagsOps)
+
+            let logoutImapOp = BlockOperation() {
+                imapSyncData.sync?.close()
+            }
+            logoutImapOp.addDependency(lastSyncFlagsOp)
+            opImapFinished.addDependency(logoutImapOp)
+            operations.append(logoutImapOp)
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
@@ -557,8 +730,14 @@ open class NetworkServiceWorker {
         }
     }
 
-    func scheduleOperationLineInternal(
-        operationLine: OperationLine, completionBlock: (() -> Void)?) {
+    func buildSyncLocalChangesOperationLines(accountConnectInfos: [AccountConnectInfo]) -> [OperationLine] {
+        return accountConnectInfos.map {
+            return buildSyncLocalChangesOperationLine(accountInfo: $0)
+        }
+    }
+
+    func scheduleOperationLine(
+        operationLine: OperationLine, completionBlock: (() -> Void)? = nil) {
         if cancelled {
             return
         }
@@ -579,22 +758,30 @@ open class NetworkServiceWorker {
     }
 
     func processOperationLines(operationLines: [OperationLine]) {
-        if !cancelled {
-            workerQueue.async {
-                self.processOperationLinesInternal(operationLines: operationLines)
+        if cancelled {
+            return
+        }
+        workerQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
             }
+            if me.cancelled {
+                return
+            }
+            me.processOperationLinesInternal(operationLines: operationLines)
         }
     }
 
     func processOperationLinesInternal(operationLines: [OperationLine], repeatProcess: Bool = true) {
         let theComp = "\(#function) processOperationLinesInternal"
-        if !self.cancelled && !stopped {
+        if !self.cancelled {
             var myLines = operationLines
             Log.verbose(component: theComp,
                         content: "\(operationLines.count) left, repeat? \(repeatProcess)")
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
-                scheduleOperationLineInternal(operationLine: ol, completionBlock: {
+                scheduleOperationLine(operationLine: ol, completionBlock: {
                     [weak self, weak ol] in
                     Log.verbose(component: theComp,
                                 content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")
@@ -615,7 +802,7 @@ open class NetworkServiceWorker {
                         guard let strongSelf = self else {
                             return
                         }
-                        if repeatProcess && !strongSelf.cancelled && !strongSelf.stopped {
+                        if repeatProcess && !strongSelf.cancelled{
                             strongSelf.processAllInternal()
                         }
                 }
