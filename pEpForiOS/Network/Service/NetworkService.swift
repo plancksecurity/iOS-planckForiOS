@@ -140,7 +140,7 @@ public class NetworkService {
         }
         //476.SOI
         lastConnectionDataCache = currentWorker?.imapConnectionDataCache
-        currentWorker?.cancel(networkService: self)
+        currentWorker?.cancel()
         currentWorker = nil
 
         // Only to make sure. Should not be required.

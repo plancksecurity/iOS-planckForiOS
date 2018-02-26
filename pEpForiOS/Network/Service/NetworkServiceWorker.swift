@@ -122,7 +122,7 @@ open class NetworkServiceWorker {
     /**
      Cancel all background operations, finish main loop.
      */
-    public func cancel(networkService: NetworkService) { //BUFF: unused arg
+    public func cancel() {
         //476.SOI
         let myComp = #function
 
@@ -151,7 +151,7 @@ open class NetworkServiceWorker {
      /// Stops all queued operations, syncs all local changes with server and informs delegate
      /// when done.
     public func syncLocalChangesWithServerAndStop() {
-        cancelled = true //BUFF:
+        cancelled = true
 
         workerQueue.async { [weak self] in
             guard let me = self else {
@@ -403,7 +403,6 @@ open class NetworkServiceWorker {
         return (theLastImapOp, operations)
     }
 
-    //BUFF:
     func syncFlagsToServerOperations(
         folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
         imapSyncData: ImapSyncData,
@@ -590,7 +589,6 @@ open class NetworkServiceWorker {
             lastImapOp = lastOp
             operations.append(contentsOf: syncOperations)
 
-            //BUFF: test
             let logoutImapOp = BlockOperation() {
                 imapSyncData.sync?.close()
             }
@@ -598,7 +596,6 @@ open class NetworkServiceWorker {
             opImapFinished.addDependency(logoutImapOp)
             lastImapOp = logoutImapOp
             operations.append(logoutImapOp)
-            //FFUB
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
@@ -607,7 +604,6 @@ open class NetworkServiceWorker {
                              finalOperation: opAllFinished, errorContainer: errorContainer)
     }
 
-    //BUFF:
     /// Builds a line of opertations that do just enough to make sure all user actions (sent,
     /// deleted, flagged) are synced with the server for one e-mail account.
     /// Use this operation line when going into background.
@@ -615,7 +611,7 @@ open class NetworkServiceWorker {
     /// - Parameter accountInfo: Account info for account to process user actions for.
     /// - Returns:  Operation line contaning all operations required to sync user actions
     ///             for one account.
-    func buildProcessUserActionsOperationLine(accountInfo: AccountConnectInfo) -> OperationLine { //BUFF: rename
+    func buildSyncLocalChangesOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
         let errorContainer = ReportingErrorContainer(delegate: self)
 
         // Operation depending on all SMTP operations for this account
@@ -714,14 +710,12 @@ open class NetworkServiceWorker {
                                             opImapFinished: opImapFinished)
             operations.append(contentsOf: syncFlagsOps)
 
-            //BUFF: test
             let logoutImapOp = BlockOperation() {
                 imapSyncData.sync?.close()
             }
             logoutImapOp.addDependency(lastSyncFlagsOp)
             opImapFinished.addDependency(logoutImapOp)
             operations.append(logoutImapOp)
-            //FFUB
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
@@ -744,7 +738,7 @@ open class NetworkServiceWorker {
 
     func buildSyncLocalChangesOperationLines(accountConnectInfos: [AccountConnectInfo]) -> [OperationLine] {
         return accountConnectInfos.map {
-            return buildProcessUserActionsOperationLine(accountInfo: $0) //BUFF: rename
+            return buildSyncLocalChangesOperationLine(accountInfo: $0)
         }
     }
 
