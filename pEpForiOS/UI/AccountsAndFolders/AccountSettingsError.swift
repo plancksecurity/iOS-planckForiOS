@@ -30,3 +30,16 @@ enum AccountSettingsError: Error {
         }
     }
 }
+
+extension AccountSettingsError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .timeOut:
+            return NSLocalizedString("Account detection timed out",
+                                     comment: "Error description detecting account settings")
+        case .notFound, .illegalValue:
+            return NSLocalizedString("Could not find servers",
+                                     comment: "Error description detecting account settings")
+        }
+    }
+}
