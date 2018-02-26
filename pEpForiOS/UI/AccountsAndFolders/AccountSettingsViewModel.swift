@@ -10,7 +10,6 @@ import Foundation
 import MessageModel
 
 public class AccountSettingsViewModel {
-
     public struct ServerViewModel {
         var address: String?
         var port: String?
@@ -43,9 +42,11 @@ public class AccountSettingsViewModel {
     private var controlWord = "noRealPassword"
 
     public let svm = SecurityViewModel()
+    public let isOAuth2: Bool
 
     public init(account: Account) {
         self.account = account
+        isOAuth2 = account.server(with: .imap)?.authMethod == AuthMethod.saslXoauth2.rawValue
     }
 
     var email: String {
