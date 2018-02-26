@@ -82,8 +82,6 @@ open class NetworkServiceWorker {
 
     public weak var delegate: NetworkServiceWorkerDelegate?
 
-    private var stopped = false
-    
     var serviceConfig: NetworkService.ServiceConfig
 
     var cancelled = false
@@ -111,7 +109,6 @@ open class NetworkServiceWorker {
     public func start() {
         Log.info(component: #function, content: "\(String(describing: self))")
         cancelled = false
-        stopped = false
         self.process()
     }
 
@@ -125,7 +122,7 @@ open class NetworkServiceWorker {
     /**
      Cancel all background operations, finish main loop.
      */
-    public func cancel(networkService: NetworkService) {
+    public func cancel(networkService: NetworkService) { //BUFF: unused arg
         //476.SOI
         let myComp = #function
 
@@ -154,7 +151,6 @@ open class NetworkServiceWorker {
      /// Stops all queued operations, syncs all local changes with server and informs delegate
      /// when done.
     public func syncLocalChangesWithServerAndStop() {
-        stopped = true //BUFF: I think cancled should be enough. Tripple check
         cancelled = true //BUFF:
 
         workerQueue.async { [weak self] in
@@ -164,14 +160,14 @@ open class NetworkServiceWorker {
             }
 
             me.backgroundQueue.cancelAllOperations()
-            //BUFF: debug
+            //IOS-958: debug
             var counter = 0
             while me.backgroundQueue.operations.count > 0 {
                 counter += 1
                 print("\(counter)OPS (#\(me.backgroundQueue.operations.count): \(me.backgroundQueue.operations)")
                 sleep(1)
             }
-            //FFUB
+            //END IOS-958
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
 
             let connectInfos = ServiceUtil.gatherConnectInfos(context: me.context,
@@ -774,16 +770,24 @@ open class NetworkServiceWorker {
     }
 
     func processOperationLines(operationLines: [OperationLine]) {
-        if !cancelled {
-            workerQueue.async {
-                self.processOperationLinesInternal(operationLines: operationLines)
+        if cancelled {
+            return
+        }
+        workerQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
             }
+            if me.cancelled {
+                return
+            }
+            me.processOperationLinesInternal(operationLines: operationLines)
         }
     }
 
     func processOperationLinesInternal(operationLines: [OperationLine], repeatProcess: Bool = true) {
         let theComp = "\(#function) processOperationLinesInternal"
-        if !self.cancelled && !stopped {
+        if !self.cancelled {
             var myLines = operationLines
             Log.verbose(component: theComp,
                         content: "\(operationLines.count) left, repeat? \(repeatProcess)")
@@ -810,7 +814,7 @@ open class NetworkServiceWorker {
                         guard let strongSelf = self else {
                             return
                         }
-                        if repeatProcess && !strongSelf.cancelled && !strongSelf.stopped {
+                        if repeatProcess && !strongSelf.cancelled{
                             strongSelf.processAllInternal()
                         }
                 }
