@@ -64,7 +64,7 @@ public class FetchFoldersOperation: ImapSyncOperation {
 
         if onlyUpdateIfNecessary {
             // Check if the local folder list is fairly complete
-            privateMOC.perform({
+            privateMOC.perform() {
                 guard let account = self.privateMOC.object(
                     with: self.imapSyncData.connectInfo.accountObjectID)
                     as? CdAccount else {
@@ -86,7 +86,7 @@ public class FetchFoldersOperation: ImapSyncOperation {
                 } else {
                     self.markAsFinished()
                 }
-            })
+            }
         } else {
             startSync()
         }

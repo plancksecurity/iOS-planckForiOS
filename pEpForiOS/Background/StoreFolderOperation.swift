@@ -44,9 +44,9 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
         }
         Log.verbose(component: comp, content: "main \(folderInfo.name)")
         let privateMOC = Record.Context.background
-        privateMOC.perform({
+        privateMOC.perform() {
             self.process(context: privateMOC)
-        })
+        }
     }
 
     func process(context: NSManagedObjectContext) {
