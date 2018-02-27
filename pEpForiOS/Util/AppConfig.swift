@@ -12,12 +12,10 @@ import MessageModel
  Some cross cutting concerns, like core data access, networking, etc.
  */
 class AppConfig {
-    let coreDataUtil: CoreDataUtil = CoreDataUtil()
-
     let messageSyncService: MessageSyncServiceProtocol
 
     let errorPropagator : ErrorPropagator
-    
+
     /**
      The UI can request key generation.
      */
