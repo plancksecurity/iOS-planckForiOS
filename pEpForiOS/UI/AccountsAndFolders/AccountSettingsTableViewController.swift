@@ -198,10 +198,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
     // MARK: - UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let ind = oauth2ReauthIndexPath, ind == indexPath {
+        if let ind = oauth2ReauthIndexPath, ind == indexPath, let address = viewModel?.email {
             oauth2ActivityIndicator.startAnimating()
-            oauthViewModel.reOAuth2(
+            oauthViewModel.delegate = self
+            oauthViewModel.authorize(
                 authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
+                emailAddress: address,
                 viewController: self)
         }
     }
@@ -303,5 +305,21 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
                 self.handleLoginError(error: LoginTableViewControllerError.noConnectData)
             }
         }
+    }
+}
+
+extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
+    func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
+        oauth2ActivityIndicator.stopAnimating()
+
+        if let err = oauth2Error {
+            self.handleLoginError(error: err)
+            return
+        }
+        guard let token = accessToken else {
+            self.handleLoginError(error: OAuth2InternalError.noToken)
+            return
+        }
+        print("token: \(token)")
     }
 }
