@@ -92,7 +92,7 @@ class LoginViewModel {
         var theAuth = oauth2Authorizer
         theAuth.delegate = self
 
-        if let theConfig = oauth2Configuration(email: emailAddress)?.oauth2Type.oauth2Config() {
+        if let theConfig = OAuth2Configuration.from(emailAddress: emailAddress) {
             currentOauth2Authorizer = oauth2Authorizer
             theAuth.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
@@ -192,16 +192,6 @@ class LoginViewModel {
      */
     func isOAuth2Possible(email: String?) -> Bool {
         return AccountSettings.quickLookUp(emailAddress: email)?.supportsOAuth2 ?? false
-    }
-
-    /**
-     Determines `OAuth2ConfigurationProtocol` for a given email address.
-     Only uses fast local lookups.
-     - Returns The oauth2 configuration the given email.
-     */
-    func oauth2Configuration(email: String?) -> OAuth2ConfigurationProtocol? {
-        return OAuth2Type(
-            accountSettings: AccountSettings.quickLookUp(emailAddress: email))?.oauth2Config()
     }
 }
 
