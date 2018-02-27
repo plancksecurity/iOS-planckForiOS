@@ -216,6 +216,12 @@ open class NetworkServiceWorker {
                              errorContainer: ServiceErrorProtocol,
                              opSmtpFinished: Operation,
                              lastOperation: Operation?) -> (BaseOperation?, [Operation]) {
+        // Do not bother with SMTP server if we have nothing to send
+        if !EncryptAndSendOperation.outgoingMailsExist(in: Record.Context.background,
+                                                      forAccountWith: accountInfo.accountID) {
+            return (nil, [])
+        }
+
         guard let smtpCI = accountInfo.smtpConnectInfo else {
             return (nil, [])
         }
@@ -429,7 +435,6 @@ open class NetworkServiceWorker {
     /// - Parameter accountInfo: Account info for account to sync
     /// - Returns:  Operation line contaning all operations required to sync one account
     func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
-
         let errorContainer = ReportingErrorContainer(delegate: self)
 
         // Operation depending on all IMAP operations for this account

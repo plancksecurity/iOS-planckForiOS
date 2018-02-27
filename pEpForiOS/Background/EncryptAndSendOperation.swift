@@ -62,6 +62,21 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         let p = predicateOutgoingMails(cdAccount: cdAccount)
         return CdMessage.all(predicate: p, in: context) as? [CdMessage] ?? []
     }
+    
+    static func outgoingMailsExist(in context: NSManagedObjectContext,
+                                   forAccountWith cdAccountObjectId: NSManagedObjectID) -> Bool {
+        var outgoingMsgs = [CdMessage]()
+        Record.Context.background.performAndWait {
+            guard let cdAccount = context.object(with: cdAccountObjectId) as? CdAccount else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "No NSManagedObject for NSManagedObjectID")
+                outgoingMsgs = []
+                return
+            }
+            outgoingMsgs = outgoingMails(context: context, cdAccount: cdAccount)
+        }
+        return outgoingMsgs.count > 0
+    }
 
     public static func retrieveNextMessage(
         context: NSManagedObjectContext,
