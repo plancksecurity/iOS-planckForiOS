@@ -37,7 +37,7 @@ protocol OAuth2AuthViewModelDelegate: class {
 }
 
 /**
- Handles OAuth2 re-authorization.
+ Handles OAuth2 authorization, including re-authorization.
  */
 class OAuth2AuthViewModel {
     weak var delegate: OAuth2AuthViewModelDelegate?
