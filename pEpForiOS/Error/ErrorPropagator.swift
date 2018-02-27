@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol ErrorPropagatorSubscriber: class {
-    func error(propagator: ErrorPropagator, error:Error)
+    func error(propagator: ErrorPropagator, error: Error)
 }
 
 public class ErrorPropagator {
