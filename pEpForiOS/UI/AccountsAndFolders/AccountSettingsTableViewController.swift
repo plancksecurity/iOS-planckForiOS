@@ -24,6 +24,8 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var smtpPortTextfield: UITextField!
     @IBOutlet weak var smtpSecurityTextfield: UITextField!
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
+    @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
+    @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
 
     var securityPicker: UIPickerView?
 
@@ -166,18 +168,20 @@ UIPickerViewDataSource, UITextFieldDelegate {
         return 50
     }
 
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let origCount = super.tableView(tableView, numberOfRowsInSection: section)
+        if section == 0 {
+            return origCount - 1
+        } else {
+            return origCount
+        }
+    }
+
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
-            let oauth2CellIdentifier = "oauth2CellIdentifier"
-            tableView.register(UITableViewCell.self, forCellReuseIdentifier: oauth2CellIdentifier)
-            let theCell = tableView.dequeueReusableCell(withIdentifier: oauth2CellIdentifier,
-                                                        for: indexPath)
-            theCell.accessoryType = .disclosureIndicator
-            theCell.textLabel?.text = NSLocalizedString(
-                "OAuth2 Reauthorization", comment: "Account settings, action for OAuth2 re-auth")
-            return theCell
+            return oauth2TableViewCell
         } else {
             return cell
         }
