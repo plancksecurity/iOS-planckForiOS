@@ -198,7 +198,11 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let ind = oauth2ReauthIndexPath, ind == indexPath {
-            print("oauth2")
+            if let vm = viewModel {
+                oauth2ActivityIndicator.startAnimating()
+                let oauthAuthorizer = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
+                vm.reOAuth2(authorizer: oauthAuthorizer)
+            }
         }
     }
 

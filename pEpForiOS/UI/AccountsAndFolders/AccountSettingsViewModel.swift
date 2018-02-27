@@ -183,6 +183,10 @@ public class AccountSettingsViewModel {
     func cleanClonedAccount() {
         //account.update(to: clonedAccount)
     }
+
+    func reOAuth2(authorizer: OAuth2AuthorizationProtocol) {
+        print("oauth2")
+    }
 }
 
 extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
