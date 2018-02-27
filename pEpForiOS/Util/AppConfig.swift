@@ -17,11 +17,7 @@ class AppConfig {
     let messageSyncService: MessageSyncServiceProtocol
 
     let errorPropagator : ErrorPropagator
-    /**
-     As soon as the UI has at least one account that is in use, this is set here.
-     */
-    var currentAccount: Account? = nil
-
+    
     /**
      The UI can request key generation.
      */
