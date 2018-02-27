@@ -34,6 +34,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
     var viewModel: AccountSettingsViewModel? = nil
 
     var current: UITextField?
+
+    /**
+     When dealing with an OAuth2 account, this is the index path of the cell that
+     should trigger the reauthorization.
+     */
+    var oauth2ReauthIndexPath: IndexPath?
     
      override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,7 +158,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
                     loginName: loginName)
     }
 
-    // MARK: - UItableViewDataSource
+    // MARK: - UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.count ?? 0
@@ -181,9 +187,18 @@ UIPickerViewDataSource, UITextFieldDelegate {
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         if (viewModel?.isOAuth2 ?? false) && cell == passwordTableViewCell {
+            oauth2ReauthIndexPath = indexPath
             return oauth2TableViewCell
         } else {
             return cell
+        }
+    }
+
+    // MARK: - UITableViewDelegate
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let ind = oauth2ReauthIndexPath, ind == indexPath {
+            print("oauth2")
         }
     }
 
