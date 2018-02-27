@@ -185,10 +185,13 @@ public class AccountSettingsViewModel {
     }
 
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
-        guard let imapServer = account.imapServer else {
-            return
+        guard let imapServer = account.imapServer,
+            let smtpServer = account.smtpServer else {
+                return
         }
-        imapServer.credentials.password = accessToken.persistBase64Encoded()
+        let password = accessToken.persistBase64Encoded()
+        imapServer.credentials.password = password
+        smtpServer.credentials.password = password
         imapServer.credentials.save()
     }
 }
