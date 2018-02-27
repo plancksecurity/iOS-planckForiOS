@@ -10,7 +10,7 @@ import MessageModel
 import UIKit
 
 class PreviewMessage: Equatable {
-    private let uid: UInt
+    let uid: UInt
     private let uuid: MessageID
     private let address: String
     private let parentFolderName: String

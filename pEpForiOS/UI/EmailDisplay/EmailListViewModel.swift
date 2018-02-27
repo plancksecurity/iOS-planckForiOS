@@ -70,6 +70,10 @@ class EmailListViewModel {
             return .orderedAscending
         } else if pvMsg1.dateSent < pvMsg2.dateSent {
             return .orderedDescending
+        } else if pvMsg1.uid > pvMsg2.uid {
+            return .orderedAscending
+        } else if pvMsg1.uid < pvMsg2.uid {
+            return .orderedDescending
         } else {
             return .orderedSame
         }
