@@ -93,6 +93,14 @@ public extension CdFolder {
                         }
                         folder.selectable = selectable
                     }
+                    // This is a dirty workaround for IOS-941.
+                    if parentFolder != nil {
+                        // Avoid crashes when using a folder that belongs to an account the
+                        // user just deleted.
+                        guard parentFolder?.managedObjectContext != nil else {
+                            return
+                        }
+                    }
                     folder.parent = parentFolder
                     let scalars = separator.unicodeScalars
                     if let first = scalars.first {
