@@ -13,5 +13,4 @@ protocol LoginViewModelOAuth2ErrorDelegate: class {
      Called to signal an OAuth2 error.
      */
     func handle(oauth2Error: Error)
-
 }

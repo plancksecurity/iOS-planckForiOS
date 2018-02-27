@@ -32,6 +32,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     var passWordChanged: Bool = false
 
     var viewModel: AccountSettingsViewModel? = nil
+    let oauthViewModel = OAuth2ReAuthViewModel()
 
     var current: UITextField?
 
@@ -198,11 +199,10 @@ UIPickerViewDataSource, UITextFieldDelegate {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let ind = oauth2ReauthIndexPath, ind == indexPath {
-            if let vm = viewModel {
-                oauth2ActivityIndicator.startAnimating()
-                let oauthAuthorizer = appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer()
-                vm.reOAuth2(authorizer: oauthAuthorizer)
-            }
+            oauth2ActivityIndicator.startAnimating()
+            oauthViewModel.reOAuth2(
+                authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
+                viewController: self)
         }
     }
 
