@@ -9,13 +9,13 @@
 import Foundation
 
 public protocol ErrorPropagatorSubscriber: class {
-    func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error:Error)
+    func error(propagator: ErrorPropagator, error:Error)
 }
 
 public class ErrorPropagator {
     public weak var subscriber: ErrorPropagatorSubscriber?
 
     public func report(error: Error) {
-        subscriber?.errorPropagator(self, errorHasBeenReported: error)
+        subscriber?.error(propagator: self, error: error)
     }
 }

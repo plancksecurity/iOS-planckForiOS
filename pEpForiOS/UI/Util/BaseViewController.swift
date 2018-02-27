@@ -30,7 +30,7 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
 
     // MARK: - ErrorPropagatorSubscriber
 
-    func errorPropagator(_ propagator: ErrorPropagator, errorHasBeenReported error: Error) {
+    func error(propagator: ErrorPropagator, error: Error) {
         UIUtils.show(error: error, inViewController: self)
     }
 }
