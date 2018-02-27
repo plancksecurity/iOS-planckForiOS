@@ -48,7 +48,7 @@ struct DisplayUserError: LocalizedError {
             type = DisplayUserError.type(forError: smtpError)
         } else if let imapError = error as? ImapSyncError {
             type = DisplayUserError.type(forError: imapError)
-        } else if let oauthInternalError = error as? OAuth2InternalError {
+        } else if let oauthInternalError = error as? OAuth2AuthViewModelError {
             type = DisplayUserError.type(forError: oauthInternalError)
         } else if let oauthError = error as? OAuth2AuthorizationError {
             type = DisplayUserError.type(forError: oauthError)
@@ -185,7 +185,7 @@ struct DisplayUserError: LocalizedError {
 
     // MARK: OAuth2InternalError
 
-    static private func type(forError error: OAuth2InternalError) -> ErrorType {
+    static private func type(forError error: OAuth2AuthViewModelError) -> ErrorType {
         // All OAuth2InternalErrors are internal errors.
         switch error {
         default:

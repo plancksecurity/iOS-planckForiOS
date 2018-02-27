@@ -9,27 +9,6 @@
 import Foundation
 import MessageModel
 
-/**
- Errors that are not directly reported by the used OAuth2 lib, but detected internally.
- */
-enum OAuth2InternalError: Error {
-    /**
-     No configuration available for running the oauth2 request.
-     */
-    case noConfiguration
-
-    /**
-     The OAuth2 call yielded no token, but there was no error condition
-     */
-    case noToken
-
-    /**
-     The OAuth2 authorization was successful, but we lack the `lastOAuth2Parameters`
-     for continuing login.
-     */
-    case noParametersForVerification
-}
-
 enum LoginCellType {
     case Text, Button
 }
@@ -97,7 +76,7 @@ class LoginViewModel {
             theAuth.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
         } else {
-            authorizationRequestFinished(error: OAuth2InternalError.noConfiguration,
+            authorizationRequestFinished(error: OAuth2AuthViewModelError.noConfiguration,
                                          accessToken: nil)
         }
     }
@@ -224,13 +203,14 @@ extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
                 Log.shared.info(component: #function, content: "received token \(token)")
                 guard let oauth2Params = lastOAuth2Parameters else {
                     loginViewModelOAuth2ErrorDelegate?.handle(
-                        oauth2Error: OAuth2InternalError.noParametersForVerification)
+                        oauth2Error: OAuth2AuthViewModelError.noParametersForVerification)
                     return
                 }
                 login(accountName: oauth2Params.emailAddress, userName: oauth2Params.userName,
                       accessToken: accessToken, mySelfer: oauth2Params.mySelfer)
             } else {
-                loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: OAuth2InternalError.noToken)
+                loginViewModelOAuth2ErrorDelegate?.handle(
+                    oauth2Error: OAuth2AuthViewModelError.noToken)
             }
         }
         lastOAuth2Parameters = nil

@@ -8,6 +8,27 @@
 
 import Foundation
 
+/**
+ Errors that are not directly reported by the used OAuth2 lib, but detected internally.
+ */
+enum OAuth2AuthViewModelError: Error {
+    /**
+     No configuration available for running the oauth2 request.
+     */
+    case noConfiguration
+
+    /**
+     The OAuth2 call yielded no token, but there was no error condition
+     */
+    case noToken
+
+    /**
+     The OAuth2 authorization was successful, but we lack the `lastOAuth2Parameters`
+     for continuing login.
+     */
+    case noParametersForVerification
+}
+
 protocol OAuth2AuthViewModelDelegate: class {
     /**
      Called to signal an OAuth2 error.
@@ -29,7 +50,7 @@ class OAuth2AuthViewModel {
             theAuthorizer.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
         } else {
-            delegate?.didAuthorize(oauth2Error: OAuth2InternalError.noConfiguration,
+            delegate?.didAuthorize(oauth2Error: OAuth2AuthViewModelError.noConfiguration,
                                    accessToken: nil)
         }
     }

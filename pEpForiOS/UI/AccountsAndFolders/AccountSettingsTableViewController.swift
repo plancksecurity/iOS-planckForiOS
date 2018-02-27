@@ -317,7 +317,7 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
             return
         }
         guard let token = accessToken else {
-            self.handleLoginError(error: OAuth2InternalError.noToken)
+            self.handleLoginError(error: OAuth2AuthViewModelError.noToken)
             return
         }
         print("token: \(token)")
