@@ -32,7 +32,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     var passWordChanged: Bool = false
 
     var viewModel: AccountSettingsViewModel? = nil
-    let oauthViewModel = OAuth2ReAuthViewModel()
+    let oauthViewModel = OAuth2AuthViewModel()
 
     var current: UITextField?
 

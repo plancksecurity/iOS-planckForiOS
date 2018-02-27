@@ -1,5 +1,5 @@
 //
-//  OAuth2ReAuthViewModel.swift
+//  OAuth2AuthViewModel.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 26.02.18.
@@ -18,7 +18,7 @@ protocol OAuth2ReAuthViewModelErrorDelegate: class {
 /**
  Handles OAuth2 re-authorization.
  */
-class OAuth2ReAuthViewModel {
+class OAuth2AuthViewModel {
     /**
      Must be set by the client to be able to 
      */
@@ -38,7 +38,7 @@ class OAuth2ReAuthViewModel {
     }
 }
 
-extension OAuth2ReAuthViewModel: OAuth2AuthorizationDelegateProtocol {
+extension OAuth2AuthViewModel: OAuth2AuthorizationDelegateProtocol {
     func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         if let err = error {
             delegate?.handle(oauth2Error: err)
