@@ -200,6 +200,10 @@ UIPickerViewDataSource, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let ind = oauth2ReauthIndexPath, ind == indexPath, let address = viewModel?.email {
             oauth2ActivityIndicator.startAnimating()
+
+            // don't accept errors form other places
+            shouldHandleErrors = false
+
             oauthViewModel.delegate = self
             oauthViewModel.authorize(
                 authorizer: appConfig.oauth2AuthorizationFactory.createOAuth2Authorizer(),
@@ -313,6 +317,8 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
 extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
+
+        shouldHandleErrors = true
 
         if let err = oauth2Error {
             self.handleLoginError(error: err)

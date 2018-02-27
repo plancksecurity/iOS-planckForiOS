@@ -30,7 +30,11 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
 
     // MARK: - ErrorPropagatorSubscriber
 
+    var shouldHandleErrors: Bool = true
+
     func error(propagator: ErrorPropagator, error: Error) {
-        UIUtils.show(error: error, inViewController: self)
+        if shouldHandleErrors {
+            UIUtils.show(error: error, inViewController: self)
+        }
     }
 }

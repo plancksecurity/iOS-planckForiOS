@@ -9,6 +9,12 @@
 import Foundation
 
 public protocol ErrorPropagatorSubscriber: class {
+    /**
+     Should the error currently handled/displayed?
+     There are situations where this leads to glitches.
+     */
+    var shouldHandleErrors: Bool { get set }
+
     func error(propagator: ErrorPropagator, error: Error)
 }
 
