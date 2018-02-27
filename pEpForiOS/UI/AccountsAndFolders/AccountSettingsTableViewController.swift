@@ -320,6 +320,6 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
             self.handleLoginError(error: OAuth2AuthViewModelError.noToken)
             return
         }
-        print("token: \(token)")
+        viewModel?.updateToken(accessToken: token)
     }
 }

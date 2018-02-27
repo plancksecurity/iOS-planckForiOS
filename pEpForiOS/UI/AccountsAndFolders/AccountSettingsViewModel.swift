@@ -183,6 +183,14 @@ public class AccountSettingsViewModel {
     func cleanClonedAccount() {
         //account.update(to: clonedAccount)
     }
+
+    func updateToken(accessToken: OAuth2AccessTokenProtocol) {
+        guard let imapServer = account.imapServer else {
+            return
+        }
+        imapServer.credentials.password = accessToken.persistBase64Encoded()
+        imapServer.credentials.save()
+    }
 }
 
 extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
