@@ -46,6 +46,11 @@ class LoginViewModel {
      */
     var accountInVerification: AccountUserInput?
 
+    /**
+     Helper model to handle most of the OAuth2 authorization.
+     */
+    var oauth2Model = OAuth2AuthViewModel()
+
     init(messageSyncService: MessageSyncServiceProtocol? = nil) {
         self.messageSyncService = messageSyncService
     }
@@ -68,17 +73,9 @@ class LoginViewModel {
         lastOAuth2Parameters = OAuth2Parameters(
             emailAddress: emailAddress, userName: userName, mySelfer: mySelfer)
 
-        var theAuth = oauth2Authorizer
-        theAuth.delegate = self
-
-        if let theConfig = OAuth2Configuration.from(emailAddress: emailAddress) {
-            currentOauth2Authorizer = oauth2Authorizer
-            theAuth.startAuthorizationRequest(
-                viewController: viewController, oauth2Configuration: theConfig)
-        } else {
-            authorizationRequestFinished(error: OAuth2AuthViewModelError.noConfiguration,
-                                         accessToken: nil)
-        }
+        oauth2Model.delegate = self
+        oauth2Model.authorize(authorizer: oauth2Authorizer, emailAddress: emailAddress,
+                              viewController: viewController)
     }
 
     /**
@@ -192,11 +189,11 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
     }
 }
 
-// MARK: - OAuth2AuthorizationDelegateProtocol
+// MARK: - OAuth2AuthViewModelDelegate
 
-extension LoginViewModel: OAuth2AuthorizationDelegateProtocol {
-    func authorizationRequestFinished(error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
-        if let err = error {
+extension LoginViewModel: OAuth2AuthViewModelDelegate {
+    func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
+        if let err = oauth2Error {
             loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
         } else {
             if let token = accessToken {

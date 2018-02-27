@@ -308,6 +308,8 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
     }
 }
 
+// MARK: - OAuth2AuthViewModelDelegate
+
 extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
     func didAuthorize(oauth2Error: Error?, accessToken: OAuth2AccessTokenProtocol?) {
         oauth2ActivityIndicator.stopAnimating()
