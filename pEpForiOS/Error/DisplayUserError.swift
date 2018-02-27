@@ -23,16 +23,29 @@ struct DisplayUserError: LocalizedError {
     enum ErrorType {
         /// We could not login for some reason
         case authenticationFailed
-        /// We could not send a mesage for some reason
+        /// We could not send a message for some reason
         case messageNotSent
         /// Somthing went wrong internally. Do not bother the user with technical details.
-        /// It has to be decided if we want to show internal errors to the user at all.
         case internalError
         /// Any issue comunicating with the server
         case brokenServerConnection
         /// Use this only for errors that are not known to DisplayUserError yet and thus can not
         /// be categorized
         case unknownError
+
+        /// Whether or not an error of this type is supposed to be shown to the user.
+        var shouldBeShownToUser: Bool {
+            switch self {
+            case .internalError:
+                #if DEBUG
+                    return true
+                #else
+                    return false
+                #endif
+            case .authenticationFailed, .brokenServerConnection, .messageNotSent, .unknownError:
+                return true
+            }
+        }
     }
     /// Description taken over from errors we do not know and thus can not classify
     private var foreignDescription: String?
@@ -41,7 +54,13 @@ struct DisplayUserError: LocalizedError {
     /// errors differentelly or even ignore certain types.
     let type:ErrorType
 
-    init(withError error: Error) {
+    /// Creates a user friendly error to present in an alert or such. I case the error type is not
+    /// suitable to display to the user (should fail silently), nil is returned.
+    ///
+    /// - Parameter error: error to create a DisplayUserError for
+    /// - Returns:  nil if you should not bother the user with this kind of error,
+    ///             user friendly error otherwize.
+    init?(withError error: Error) {
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError
         } else if let smtpError = error as? SmtpSendError {
@@ -58,9 +77,13 @@ struct DisplayUserError: LocalizedError {
             foreignDescription = error.localizedDescription
             type = .unknownError
         }
+
+        if !type.shouldBeShownToUser {
+            return nil
+        }
     }
 
-    // MARK: - Cluster Errors
+    // MARK: - CLUSTER ERRORS
 
     // MARK: SmtpSendError
 
@@ -202,7 +225,7 @@ struct DisplayUserError: LocalizedError {
         }
     }
 
-    // MARK: - Title & Message
+    // MARK: - TITLE & MESSAGE
 
     public var title: String? {
         switch type {

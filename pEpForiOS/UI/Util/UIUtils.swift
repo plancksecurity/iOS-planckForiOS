@@ -17,7 +17,10 @@ struct UIUtils {
     ///   - vc: ViewController to present the error on
     static func show(error: Error, inViewController vc: UIViewController) {
         Log.shared.errorComponent(#function, message: "Will display error to user: \(error)")
-        let displayError = DisplayUserError(withError: error)
+        guard let displayError = DisplayUserError(withError: error) else {
+            // Do nothing. The error type is not suitable to bother the user with.
+            return
+        }
         showAlertWithOnlyPositiveButton(title: displayError.title,
                                         message: displayError.errorDescription,
                                         inViewController: vc)

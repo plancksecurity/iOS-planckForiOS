@@ -148,8 +148,11 @@
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
         Log.shared.error(component: #function, error: error)
-        let error = DisplayUserError(withError: error)
         self.isCurrentlyVerifying = false
+        guard let error = DisplayUserError(withError: error) else {
+            // Do nothing. The error type is not suitable to bother the user with.
+            return
+        }
         let alertView = UIAlertController(title: error.title,
                                           message:error.localizedDescription,
                                           preferredStyle: .alert)
