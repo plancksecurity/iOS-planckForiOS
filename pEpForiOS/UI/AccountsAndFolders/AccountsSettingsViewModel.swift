@@ -10,7 +10,6 @@ import Foundation
 import MessageModel
 
 class AccountsSettingsViewModel {
-
     var sections = [AccountsSettingsSectionViewModel]()
 
     init() {
@@ -49,6 +48,4 @@ class AccountsSettingsViewModel {
             return sections[section]
         }
     }
-
 }
-
