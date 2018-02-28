@@ -44,7 +44,9 @@ public class FolderSectionViewModel {
         } else {
             DispatchQueue.global().async {
                 let contactImage = self.contactImageTool.identityImage(for: self.account.user)
-                callback(contactImage)
+                DispatchQueue.main.async {
+                    callback(contactImage)
+                }
             }
         }
     }
