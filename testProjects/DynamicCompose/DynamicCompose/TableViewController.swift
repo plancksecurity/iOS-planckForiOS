@@ -17,6 +17,7 @@ class TableViewController: UITableViewController {
     }
 
     public final func updateSize() {
+        print("\(#function)")
         UIView.performWithoutAnimation {
             tableView.beginUpdates()
             tableView.endUpdates()
