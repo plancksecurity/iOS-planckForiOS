@@ -16,18 +16,8 @@ open class ComposeTextView: UITextView {
     fileprivate final var textBottomMargin: CGFloat = 25.0
     fileprivate final var imageFieldHeight: CGFloat = 66.0
 
-    fileprivate let newLinePaddingRegEx: NSRegularExpression?
-
-    required public init?(coder aDecoder: NSCoder) {
-        do {
-            newLinePaddingRegEx = try NSRegularExpression(
-                pattern: ".*[^\n]+(\n){2,}$", options: [])
-        } catch let err {
-            Log.shared.errorAndCrash(component: #function, error: err)
-            newLinePaddingRegEx = nil
-        }
-        super.init(coder: aDecoder)
-    }
+    fileprivate let newLinePaddingRegEx = try! NSRegularExpression(
+        pattern: ".*[^\n]+(\n){2,}$", options: [])
 
     public final var fieldHeight: CGFloat {
         get {
@@ -47,7 +37,8 @@ open class ComposeTextView: UITextView {
         contentOffset = .zero
     }
         
-    public final func insertImage(_ identity: Identity, _ hasName: Bool = false, maxWidth: CGFloat = 0.0) {
+    public final func insertImage(_ identity: Identity, _ hasName: Bool = false,
+                                  maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         
         let string = identity.userName ?? identity.address.trim
@@ -116,8 +107,8 @@ open class ComposeTextView: UITextView {
             return
         }
         func paddedByDoubleNewline(pureText: NSAttributedString) -> Bool {
-            let numMatches = newLinePaddingRegEx?.numberOfMatches(
-                in: pureText.string, options: [], range: pureText.wholeRange()) ?? 1
+            let numMatches = newLinePaddingRegEx.numberOfMatches(
+                in: pureText.string, options: [], range: pureText.wholeRange())
             return numMatches > 0
         }
 
