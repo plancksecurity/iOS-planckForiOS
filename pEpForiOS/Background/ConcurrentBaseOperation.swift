@@ -25,6 +25,15 @@ public class ConcurrentBaseOperation: BaseOperation {
         return queue
     }()
 
+    public override init(parentName: String = #function,
+                         errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+        super.init(parentName: parentName, errorContainer: errorContainer)
+
+        self.addObserver(self, forKeyPath: isCancelledKeyPath,
+                         options: [.initial, .new],
+                         context: nil)
+    }
+
     /** Do we observe the `operationCount` of `backgroundQueue`? */
     var operationCountObserverAdded = false
 
@@ -84,10 +93,8 @@ public class ConcurrentBaseOperation: BaseOperation {
                 backgroundQueue.addObserver(self, forKeyPath: operationCountKeyPath,
                                             options: [.initial, .new],
                                             context: nil)
-                self.addObserver(self, forKeyPath: isCancelledKeyPath,
-                                 options: [.initial, .new],
-                                 context: nil)
                 operationCountObserverAdded = true
+                backgroundQueue.waitUntilAllOperationsAreFinished()
             }
         }
         internalQueue.async {
@@ -135,9 +142,9 @@ public class ConcurrentBaseOperation: BaseOperation {
                     return
                 }
                 if cancelled {
-                    for op in backgroundQueue.operations {
-                        op.cancel()
-                    }
+                    backgroundQueue.cancelAllOperations()
+                    backgroundQueue.waitUntilAllOperationsAreFinished()
+                    markAsFinished()
                 }
             } else {
                 super.observeValue(forKeyPath: keyPath, of: object, change: change,
