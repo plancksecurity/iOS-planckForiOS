@@ -247,7 +247,7 @@
                                             <rect key="frame" x="76" y="10" width="289" height="39"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                             <connections>
                                                 <outlet property="delegate" destination="BXJ-Ko-ZUm" id="j3k-Xu-6uH"/>
                                             </connections>
