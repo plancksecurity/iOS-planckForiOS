@@ -7,19 +7,20 @@
 //
 
 import UIKit
+
 import MessageModel
 
 open class ComposeTextView: UITextView {
     public var fieldModel: ComposeFieldModel?
     
     fileprivate final var fontDescender: CGFloat = -7.0
-    fileprivate final var textBottomMargin: CGFloat = 25.0
+    final var textBottomMargin: CGFloat = 25.0
     fileprivate final var imageFieldHeight: CGFloat = 66.0
 
     fileprivate let newLinePaddingRegEx = try! NSRegularExpression(
         pattern: ".*[^\n]+(\n){2,}$", options: [])
 
-    public final var fieldHeight: CGFloat {
+    public var fieldHeight: CGFloat {
         get {
             let size = sizeThatFits(CGSize(width: frame.size.width,
                                            height: CGFloat(Float.greatestFiniteMagnitude)))
@@ -27,18 +28,18 @@ open class ComposeTextView: UITextView {
         }
     }
     
-    public final func scrollToBottom() {
+    public func scrollToBottom() {
         if fieldHeight >= imageFieldHeight {
             setContentOffset(CGPoint(x: 0.0, y: fieldHeight - imageFieldHeight), animated: true)
         }
     }
     
-    public final func scrollToTop() {
+    public func scrollToTop() {
         contentOffset = .zero
     }
         
-    public final func insertImage(_ identity: Identity, _ hasName: Bool = false,
-                                  maxWidth: CGFloat = 0.0) {
+    public func insertImage(_ identity: Identity, _ hasName: Bool = false,
+                            maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         
         let string = identity.userName ?? identity.address.trim
@@ -56,7 +57,7 @@ open class ComposeTextView: UITextView {
         attributedText = attrText
     }
 
-    public final func textAttachments(range: NSRange? = nil) -> [TextAttachment] {
+    public func textAttachments(range: NSRange? = nil) -> [TextAttachment] {
         let theRange = range ?? NSMakeRange(0, attributedText.length)
         var allAttachments = [TextAttachment]()
         if theRange.location != NSNotFound {
@@ -73,11 +74,11 @@ open class ComposeTextView: UITextView {
         return allAttachments
     }
 
-    public final func textAttachments(string: String) -> [TextAttachment] {
+    public func textAttachments(string: String) -> [TextAttachment] {
         return textAttachments(range: NSMakeRange(0, string.count))
     }
     
-    public final func removePlainText() {
+    public func removePlainText() {
         let attachments = textAttachments()
         if attachments.count > 0  {
             let new = NSMutableAttributedString()
@@ -101,37 +102,8 @@ open class ComposeTextView: UITextView {
     /**
      Makes sure that the text has at least two newlines appended, so all content
      is always visible.
+     Should only affect the actual message content, if at all.
      */
     public func addNewlinePadding() {
-        if fieldModel?.type != .content {
-            return
-        }
-        func paddedByDoubleNewline(pureText: NSAttributedString) -> Bool {
-            let numMatches = newLinePaddingRegEx.numberOfMatches(
-                in: pureText.string, options: [], range: pureText.wholeRange())
-            return numMatches > 0
-        }
-
-        if text.isEmpty {
-            return
-        }
-        var changed = false
-        let theText = NSMutableAttributedString(attributedString: attributedText)
-        let theRange = selectedRange
-        //the text always must end with two \n
-        while (!theText.string.endsWith("\n\n")) {
-            let appendedString = NSMutableAttributedString(string: "\n")
-            appendedString.addAttribute(NSAttributedStringKey.font,
-                                        value: UIFont.pEpInput,
-                                        range: appendedString.wholeRange()
-            )
-
-            theText.append(appendedString)
-            changed = true
-        }
-        if changed {
-            attributedText = theText
-            selectedRange = theRange
-        }
     }
 }
