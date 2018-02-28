@@ -10,21 +10,13 @@ import UIKit
 
 class MyTextView: UITextView {
     override var frame: CGRect {
-        get {
-            return super.frame
-        }
-
-        set {
+        didSet {
             print("frame.size: \(frame.size)")
         }
     }
 
     override var bounds: CGRect {
-        get {
-            return super.bounds
-        }
-
-        set {
+        didSet {
             print("bounds.size: \(bounds.size)")
         }
     }
