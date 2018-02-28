@@ -14,7 +14,7 @@ public class FolderSectionViewModel {
     private var account: Account
     private var items = [FolderCellViewModel]()
     private var help = [FolderCellViewModel]()
-    let imageProvider = IdentityImageProvider()
+    let contactImageTool = IdentityImageTool()
 
     public init(account acc: Account) {
         self.account = acc
@@ -38,8 +38,15 @@ public class FolderSectionViewModel {
         }
     }
 
-    func getImage(callback: @escaping ImageReadyFunc) {
-        imageProvider.image(forIdentity: account.user, callback: callback)
+    func getImage(callback: @escaping (UIImage?)-> Void) {
+        if let cachedContactImage = contactImageTool.cachedIdentityImage(forIdentity: account.user) {
+            callback(cachedContactImage)
+        } else {
+            DispatchQueue.global().async {
+                let contactImage = self.contactImageTool.identityImage(for: self.account.user)
+                callback(contactImage)
+            }
+        }
     }
 
     public var type: String {

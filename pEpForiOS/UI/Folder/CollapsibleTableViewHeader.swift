@@ -73,7 +73,7 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         self.accountName.text = viewModel.userName
         self.accountType.text = viewModel.type
         self.userAddress.text = viewModel.userAddress
-        viewModel.getImage { (imageProfile, ident) in
+        viewModel.getImage { (imageProfile) in
             self.profileImage.image = imageProfile
         }
         self.arrowImageView.image = UIImage(named:"chevron-icon")
