@@ -144,8 +144,8 @@ open class NetworkServiceWorker {
         }
     }
 
-     /// Stops all queued operations, syncs all local changes with server and informs delegate
-     /// when done.
+     /// Stops all queued operations, syncs all local changes with the server and informs the
+    /// delegate when done.
     public func syncLocalChangesWithServerAndStop() {
         cancelled = true
 
@@ -154,27 +154,22 @@ open class NetworkServiceWorker {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-
+            // Cancel the current sync loop ...
             me.backgroundQueue.cancelAllOperations()
-            //IOS-958: debug
-//            var counter = 0
-//            while me.backgroundQueue.operations.count > 0 {
-//                counter += 1
-//                print("\(counter)OPS (#\(me.backgroundQueue.operations.count): \(me.backgroundQueue.operations)")
-//                sleep(1)
-//            }
-            //END IOS-958
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
 
+            // ... and run a minimized sync loop that assures all local changes are
+            //      synced to the server.
             let connectInfos = ServiceUtil.gatherConnectInfos(context: me.context,
                                                               accounts: me.fetchAccounts())
             let operationLines =
                 me.buildSyncLocalChangesOperationLines(accountConnectInfos: connectInfos)
             for operartionLine in operationLines {
                 me.backgroundQueue.addOperations(operartionLine.operations,
-                                                   waitUntilFinished: false)
+                                                 waitUntilFinished: false)
             }
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
+            // Inform delegate that we are done.
             me.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: me)
         }
     }
@@ -741,19 +736,19 @@ open class NetworkServiceWorker {
         }
     }
 
-    func scheduleOperationLine(
-        operationLine: OperationLine, completionBlock: (() -> Void)? = nil) {
-        if cancelled {
+    func scheduleOperationLine(operationLine: OperationLine, completionBlock: (() -> Void)? = nil) {
+        if cancelled{
             return
         }
-        let bgID = serviceConfig.backgrounder?.beginBackgroundTask()
+        var bgID: BackgroundTaskID? = nil
+        bgID = serviceConfig.backgrounder?.beginBackgroundTask()
         operationLine.finalOperation.completionBlock = { [weak self, weak operationLine] in
             operationLine?.finalOperation.completionBlock = nil
             self?.serviceConfig.backgrounder?.endBackgroundTask(bgID)
             completionBlock?()
         }
         for op in operationLine.operations {
-            if cancelled {
+            if cancelled{
                 //476.SOI
                 backgroundQueue.cancelAllOperations()
                 return

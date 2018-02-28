@@ -100,8 +100,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 return
             }
             Log.shared.warn(component: #function, content: "BackgroundTrask with ID \(id) expired.")
-            // We should call some emergency shutdown on NetworkService here that brutally
-            // shuts down everything.
+            // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
+            // that brutally shuts down everything.
             UIApplication.shared.endBackgroundTask(id)
         })
         networkService?.processAllUserActionsAndstop()
