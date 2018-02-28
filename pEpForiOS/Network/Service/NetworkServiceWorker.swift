@@ -126,7 +126,7 @@ open class NetworkServiceWorker {
                                              context: nil)
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
             self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
-            self.unitTestDelegate?.networkServicWorkerDidCancel(worker: self)
+            self.unitTestDelegate?.networkServiceWorkerDidCancel(worker: self)
         }
     }
 
@@ -784,9 +784,9 @@ open class NetworkServiceWorker {
                              content: "didSync")
                     // UNIT TEST ONLY
                     me.unitTestDelegate?
-                        .networkServicWorkerDidSync(worker: me,
-                                                    accountInfo: theOl.accountInfo,
-                                                    errorProtocol: theOl.errorContainer)
+                        .networkServiceWorkerDidSync(worker: me,
+                                                     accountInfo: theOl.accountInfo,
+                                                     errorProtocol: theOl.errorContainer)
                     // Process the rest
                     me.processOperationLines(operationLines: myLines)
                 })
@@ -831,10 +831,10 @@ protocol NetworkServiceWorkerUnitTestDelegate: class {
     /// Called after all operations have been canceled
     /// - Parameters:
     ///   - worker: sender
-    func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
+    func networkServiceWorkerDidCancel(worker: NetworkServiceWorker)
 
     /** Called after each account sync */
-   func networkServicWorkerDidSync(worker: NetworkServiceWorker,
+   func networkServiceWorkerDidSync(worker: NetworkServiceWorker,
                                    accountInfo: AccountConnectInfo,
                                    errorProtocol: ServiceErrorProtocol)
 

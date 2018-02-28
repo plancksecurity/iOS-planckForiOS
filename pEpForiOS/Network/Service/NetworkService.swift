@@ -201,13 +201,13 @@ public protocol NetworkServiceUnitTestDelegate: class {
 // MARK: NetworkServiceWorkerUnitTestDelegate
 
 extension NetworkService: NetworkServiceWorkerUnitTestDelegate {
-    public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) { //FIXME: naming
+    public func networkServiceWorkerDidCancel(worker: NetworkServiceWorker) {
         self.unitTestDelegate?.networkServiveDidCancel(service: self)
     }
-
-    public func networkServicWorkerDidSync(worker: NetworkServiceWorker,
-                                           accountInfo: AccountConnectInfo,
-                                           errorProtocol: ServiceErrorProtocol) {
+    
+    public func networkServiceWorkerDidSync(worker: NetworkServiceWorker,
+                                            accountInfo: AccountConnectInfo,
+                                            errorProtocol: ServiceErrorProtocol) {
         self.unitTestDelegate?.networkServiceDidSync(service: self,
                                                      accountInfo: accountInfo,
                                                      errorProtocol: errorProtocol)
