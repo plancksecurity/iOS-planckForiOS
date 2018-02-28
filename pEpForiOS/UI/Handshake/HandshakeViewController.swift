@@ -22,7 +22,6 @@ class HandshakeViewController: BaseTableViewController {
     }
 
     var partners = [Identity]()
-    let imageProvider = IdentityImageProvider()
     let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
 
     var indexPathRequestingLanguage: IndexPath?
@@ -84,8 +83,7 @@ class HandshakeViewController: BaseTableViewController {
             let vm = HandshakePartnerTableViewCellViewModel(
                 ownIdentity: selfIdentity,
                 partner: partnerIdentity,
-                session: session,
-                imageProvider: imageProvider)
+                session: session)
             identityViewModelCache.setObject(vm, forKey: partnerIdentity)
             return vm
         }

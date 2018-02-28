@@ -11,14 +11,6 @@ import XCTest
 @testable import MessageModel
 @testable import pEpForiOS
 
-class ImageProvider: IdentityImageProviderProtocol {
-    var identitiesRequested = Set<Identity>()
-
-    func image(forIdentity identity: Identity, callback: @escaping ImageReadyFunc) {
-        identitiesRequested.insert(identity)
-    }
-}
-
 class DecryptionDelegate: DecryptionAttemptCounterDelegate {
     var decryptedMessageDict: NSDictionary?
 
@@ -167,20 +159,18 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                     return
         }
 
-        let imageProvider = ImageProvider()
-        let vm = HandshakePartnerTableViewCellViewModel(
-            ownIdentity: mySelfID, partner: partnerID,
-            session: session, imageProvider: imageProvider)
-        XCTAssertEqual(imageProvider.identitiesRequested.count, 1)
-        XCTAssertEqual(imageProvider.identitiesRequested.first, partnerID)
-
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
+                                                        partner: partnerID,
+                                                        session: session)
+        // There are no expetations (asserts) here. Does not test anything afaics.
         vm.confirmTrust()
         vm.resetTrust()
-
+        //Should test pepRating here?
         vm.denyTrust()
         vm.resetTrust()
-
+        //Should test pepRating here?
         vm.confirmTrust()
         vm.resetTrust()
+        //Should test pepRating here?
     }
 }

@@ -70,8 +70,9 @@ class HandshakePartnerTableViewCellViewModel {
      */
     var pEpPartner: PEPIdentity
 
-    init(ownIdentity: Identity, partner: Identity, session: PEPSession,
-         imageProvider: IdentityImageProviderProtocol) {
+    lazy var contactImageTool = IdentityImageTool()
+
+    init(ownIdentity: Identity, partner: Identity, session: PEPSession) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
         self.ownIdentity = ownIdentity
@@ -84,13 +85,21 @@ class HandshakePartnerTableViewCellViewModel {
 
         isPartnerpEpUser = session.isPEPUser(pEpPartner)
 
-        imageProvider.image(forIdentity: partner) { [weak self] img, ident in
-            if partner == ident {
-                self?.partnerImage.value = img
-            }
-        }
+        setPartnerImage(for: partner)
 
         updateTrustwords(session: session)
+    }
+
+    private func setPartnerImage(`for` partnerIdentity: Identity) {
+        if let cachedContactImage =
+            contactImageTool.cachedIdentityImage(forIdentity: partnerIdentity) {
+            partnerImage.value = cachedContactImage
+        } else {
+            DispatchQueue.global().async {
+                let contactImage = self.contactImageTool.identityImage(for: partnerIdentity)
+                self.partnerImage.value = contactImage
+            }
+        }
     }
 
     func updateTrustwords(session: PEPSession = PEPSession()) {
