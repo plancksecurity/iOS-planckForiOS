@@ -146,7 +146,6 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
                 XCTFail("No messages?")
                 return
             }
-
             let msgCountAfter = CdMessage.all()?.count
             // no mail should no have been dupliccated
             XCTAssertEqual(msgCountBefore, msgCountAfter)
