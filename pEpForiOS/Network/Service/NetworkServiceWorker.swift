@@ -12,21 +12,12 @@ import CoreData
 import MessageModel
 
 public protocol NetworkServiceWorkerDelegate: class {
-    /** Called after each account sync */
-    func networkServicWorkerDidSync(worker: NetworkServiceWorker, accountInfo: AccountConnectInfo,
-                 errorProtocol: ServiceErrorProtocol)
-
     /// Called finishing the last sync loop.
     /// No further sync loop will be triggered after this call.
     /// All operations finished before this call.
     /// - Parameters:
     ///   - worker: sender
     func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker)
-
-    /// Called after all operations have been canceled
-    /// - Parameters:
-    ///   - worker: sender
-    func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
 
     /// Used to report errors in operation line.
     /// - Parameters:
@@ -81,6 +72,8 @@ open class NetworkServiceWorker {
     }
 
     public weak var delegate: NetworkServiceWorkerDelegate?
+    // UNIT TEST ONLY
+    weak var unitTestDelegate: NetworkServiceWorkerUnitTestDelegate?
 
     var serviceConfig: NetworkService.ServiceConfig
 
@@ -112,13 +105,6 @@ open class NetworkServiceWorker {
         self.process()
     }
 
-    /// Stops synchronizing after all local changes are synced to server.
-    /// Calls delegate networkServicWorkerDidFinishLastSyncLoop when done.
-    public func stop() {
-        Log.info(component: #function, content: "\(String(describing: self))")
-        syncLocalChangesWithServerAndStop()
-    }
-
     /**
      Cancel all background operations, finish main loop.
      */
@@ -131,7 +117,7 @@ open class NetworkServiceWorker {
         Log.info(component: myComp,
                  content: "\(String(describing: self)): all operations cancelled")
 
-        workerQueue.async { // Looks suspiciouly like a potential retain cycle
+        workerQueue.async {
             let observer = ObjectObserver(
                 backgroundQueue: self.backgroundQueue,
                 operationCountKeyPath: self.operationCountKeyPath, myComp: myComp)
@@ -140,15 +126,21 @@ open class NetworkServiceWorker {
                                              context: nil)
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
             self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
-            self.delegate?.networkServicWorkerDidCancel(worker: self)
+            self.unitTestDelegate?.networkServicWorkerDidCancel(worker: self)
         }
+    }
+
+    /// Makes sure all local changes are synced to the server and then stops.
+    /// Calls delegate networkServicWorkerDidFinishLastSyncLoop when done.
+    public func stop() {
+        Log.info(component: #function, content: "\(String(describing: self))")
+        syncLocalChangesWithServerAndStop()
     }
 
      /// Stops all queued operations, syncs all local changes with the server and informs the
     /// delegate when done.
     public func syncLocalChangesWithServerAndStop() {
         cancelled = true
-
         workerQueue.async { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
@@ -790,9 +782,11 @@ open class NetworkServiceWorker {
                     }
                     Log.info(component: theComp,
                              content: "didSync")
-                    me.delegate?.networkServicWorkerDidSync(worker: me,
-                                                            accountInfo: theOl.accountInfo,
-                                                            errorProtocol: theOl.errorContainer)
+                    // UNIT TEST ONLY
+                    me.unitTestDelegate?
+                        .networkServicWorkerDidSync(worker: me,
+                                                    accountInfo: theOl.accountInfo,
+                                                    errorProtocol: theOl.errorContainer)
                     // Process the rest
                     me.processOperationLines(operationLines: myLines)
                 })
@@ -829,4 +823,24 @@ extension NetworkServiceWorker: CustomStringConvertible {
         let ref = unsafeBitCast(self, to: UnsafeRawPointer.self)
         return "NetworkServiceWorker \(ref) (\(parentDescription))"
     }
+}
+
+// MARK: - UNIT TEST ONLY
+
+protocol NetworkServiceWorkerUnitTestDelegate: class {
+    /// Called after all operations have been canceled
+    /// - Parameters:
+    ///   - worker: sender
+    func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
+
+    /** Called after each account sync */
+   func networkServicWorkerDidSync(worker: NetworkServiceWorker,
+                                   accountInfo: AccountConnectInfo,
+                                   errorProtocol: ServiceErrorProtocol)
+
+    /// Used to report errors in operation line.
+    /// - Parameters:
+    ///   - worker: sender
+    ///   - error: error reported by an operation in operation line
+    func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error)
 }

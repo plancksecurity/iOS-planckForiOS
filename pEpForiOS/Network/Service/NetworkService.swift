@@ -65,6 +65,7 @@ public class NetworkService {
     public private(set) var currentWorker: NetworkServiceWorker?
     var newMailsService: FetchNumberOfNewMailsService?
     public weak var delegate: NetworkServiceDelegate?
+    // UNIT TEST ONLY
     public weak var unitTestDelegate: NetworkServiceUnitTestDelegate?
 
     /**
@@ -113,6 +114,7 @@ public class NetworkService {
     public func start() {
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
         currentWorker?.delegate = self
+        currentWorker?.unitTestDelegate = self
         state = .running
         currentWorker?.start()
     }
@@ -183,19 +185,6 @@ extension NetworkService: NetworkServiceWorkerDelegate {
             self.serviceConfig.errorPropagator?.report(error: error)
         }
     }
-
-    // UNIT TEST ONLY
-    public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) {
-        self.unitTestDelegate?.networkServiveDidCancel(service: self)
-    }
-
-    public func networkServicWorkerDidSync(worker: NetworkServiceWorker,
-                                           accountInfo: AccountConnectInfo,
-                                           errorProtocol: ServiceErrorProtocol) {
-        self.unitTestDelegate?.networkServiceDidSync(service: self,
-                                             accountInfo: accountInfo,
-                                             errorProtocol: errorProtocol)
-    }
 }
 
  // MARK: - UNIT TEST ONLY
@@ -207,4 +196,20 @@ public protocol NetworkServiceUnitTestDelegate: class {
 
     /** Called after all operations have been canceled */
     func networkServiveDidCancel(service: NetworkService)
+}
+
+// MARK: NetworkServiceWorkerUnitTestDelegate
+
+extension NetworkService: NetworkServiceWorkerUnitTestDelegate {
+    public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) { //FIXME: naming
+        self.unitTestDelegate?.networkServiveDidCancel(service: self)
+    }
+
+    public func networkServicWorkerDidSync(worker: NetworkServiceWorker,
+                                           accountInfo: AccountConnectInfo,
+                                           errorProtocol: ServiceErrorProtocol) {
+        self.unitTestDelegate?.networkServiceDidSync(service: self,
+                                                     accountInfo: accountInfo,
+                                                     errorProtocol: errorProtocol)
+    }
 }
