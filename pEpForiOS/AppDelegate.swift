@@ -352,16 +352,6 @@ extension AppDelegate: KickOffMySelfProtocol {
 // MARK: - NetworkServiceDelegate
 
 extension AppDelegate: NetworkServiceDelegate {
-    func networkServiceDidSync(service: NetworkService,
-                               accountInfo: AccountConnectInfo,
-                               errorProtocol: ServiceErrorProtocol) {
-        // do nothing
-    }
-
-    func networkServiveDidCancel(service: NetworkService) {
-        // do nothing
-    }
-
     func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
         // Cleanup sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")

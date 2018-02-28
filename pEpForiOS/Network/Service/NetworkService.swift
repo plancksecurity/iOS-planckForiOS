@@ -11,17 +11,10 @@ import Foundation
 import MessageModel
 
 public protocol NetworkServiceDelegate: class {
-    /** Called after each account sync */
-    func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
-                 errorProtocol: ServiceErrorProtocol)
-
     /// Called finishing the last sync loop.
     /// No further sync loop will be triggered after this call.
     /// All operations finished before this call.
     func networkServiceDidFinishLastSyncLoop(service:NetworkService)
-
-    /** Called after all operations have been canceled */
-    func networkServiveDidCancel(service: NetworkService)
 }
 
 /**
@@ -72,6 +65,7 @@ public class NetworkService {
     public private(set) var currentWorker: NetworkServiceWorker?
     var newMailsService: FetchNumberOfNewMailsService?
     public weak var delegate: NetworkServiceDelegate?
+    public weak var unitTestDelegate: NetworkServiceUnitTestDelegate?
 
     /**
      Amount of time to "sleep" between complete syncs of all accounts.
@@ -179,21 +173,9 @@ extension NetworkService: SendLayerProtocol {
 // MARK: - NetworkServiceWorkerDelegate
 
 extension NetworkService: NetworkServiceWorkerDelegate {
-    public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) {
-        self.delegate?.networkServiveDidCancel(service: self)
-    }
-
     public func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker) {
         state = .stopped
         self.delegate?.networkServiceDidFinishLastSyncLoop(service: self)
-    }
-
-    public func networkServicWorkerDidSync(worker: NetworkServiceWorker,
-                                           accountInfo: AccountConnectInfo,
-                                           errorProtocol: ServiceErrorProtocol) {
-        self.delegate?.networkServiceDidSync(service: self,
-                                             accountInfo: accountInfo,
-                                             errorProtocol: errorProtocol)
     }
 
     public func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error) {
@@ -201,4 +183,28 @@ extension NetworkService: NetworkServiceWorkerDelegate {
             self.serviceConfig.errorPropagator?.report(error: error)
         }
     }
+
+    // UNIT TEST ONLY
+    public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) {
+        self.unitTestDelegate?.networkServiveDidCancel(service: self)
+    }
+
+    public func networkServicWorkerDidSync(worker: NetworkServiceWorker,
+                                           accountInfo: AccountConnectInfo,
+                                           errorProtocol: ServiceErrorProtocol) {
+        self.unitTestDelegate?.networkServiceDidSync(service: self,
+                                             accountInfo: accountInfo,
+                                             errorProtocol: errorProtocol)
+    }
+}
+
+ // MARK: - UNIT TEST ONLY
+
+public protocol NetworkServiceUnitTestDelegate: class {
+    /** Called after each account sync */
+    func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
+                               errorProtocol: ServiceErrorProtocol)
+
+    /** Called after all operations have been canceled */
+    func networkServiveDidCancel(service: NetworkService)
 }

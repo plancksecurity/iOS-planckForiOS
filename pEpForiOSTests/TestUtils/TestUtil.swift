@@ -320,12 +320,12 @@ class TestUtil {
         networkService.sleepTimeInSeconds = 0.1
 
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
-        // A temp variable is necassary, since the networkServiceDelegate is weak
+        // A temp variable is necassary, since the networkServiceUnitTestDelegate is weak
         let del = NetworkServiceObserver(numAccountsToSync: numAccountsToSync,
                                          expAccountsSynced: expAccountsSynced,
                                          failOnError: true)
 
-        networkService.delegate = del
+        networkService.unitTestDelegate = del
         networkService.sendLayerDelegate = sendLayerDelegate
 
         if skipValidation {
@@ -347,7 +347,7 @@ class TestUtil {
     static public func cancelNetworkService(networkService: NetworkService, testCase: XCTestCase) {
         let del = NetworkServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
-        networkService.delegate = del
+        networkService.unitTestDelegate = del
         networkService.cancel()
 
         // Wait for cancellation

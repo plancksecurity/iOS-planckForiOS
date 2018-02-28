@@ -12,7 +12,7 @@ import MessageModel
 
 import CoreData
 
-class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertible {
+class NetworkServiceObserver: NetworkServiceUnitTestDelegate, CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?
     var accountInfo: AccountConnectInfo?
@@ -33,7 +33,7 @@ class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertib
         self.failOnError = failOnError
     }
 
-    // MARK: - NetworkServiceDelegate
+    // MARK: - NetworkServiceUnitTestDelegate
 
     func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol) {
@@ -54,10 +54,6 @@ class NetworkServiceObserver: NetworkServiceDelegate, CustomDebugStringConvertib
     
     func networkServiveDidCancel(service: NetworkService) {
         expCanceled?.fulfill()
-    }
-
-    func networkServiceDidFinishLastSyncLoop(service:NetworkService) {
-        Log.shared.errorAndCrash(component: #function, errorString: "Should not be called")
     }
 }
 

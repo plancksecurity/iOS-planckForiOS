@@ -110,7 +110,7 @@ class NetworkServiceTests: XCTestCase {
 
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
-        networkService.delegate = del
+        networkService.unitTestDelegate = del
 
         networkService.sendLayerDelegate = sendLayerDelegate
 
@@ -244,13 +244,13 @@ class NetworkServiceTests: XCTestCase {
         let networkService = NetworkService(parentName: #function)
         networkService.sleepTimeInSeconds = 2
 
-        // A temp variable is necassary, since the networkServiceDelegate is weak
+        // A temp variable is necassary, since the networkServiceUnitTestDelegate is weak
         let expAccountsSynced = expectation(description: "expSingleAccountSynced1")
         var del = NetworkServiceObserver(
             expAccountsSynced: expAccountsSynced,
             failOnError: useCorrectSmtpAccount)
 
-        networkService.delegate = del
+        networkService.unitTestDelegate = del
         networkService.sendLayerDelegate = sendLayerDelegate
 
         let cdAccount = useCorrectSmtpAccount ? TestData().createWorkingCdAccount() :
@@ -296,7 +296,7 @@ class NetworkServiceTests: XCTestCase {
         let expAccountsSynced2 = expectation(description: "expSingleAccountSynced2")
         del = NetworkServiceObserver(
             expAccountsSynced: expAccountsSynced2)
-        networkService.delegate = del
+        networkService.unitTestDelegate = del
 
         // Wait for next sync, to verify outgoing mails
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
@@ -348,7 +348,7 @@ class NetworkServiceTests: XCTestCase {
 
         del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced3"))
-        networkService.delegate = del
+        networkService.unitTestDelegate = del
         
         // Wait for next sync
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
