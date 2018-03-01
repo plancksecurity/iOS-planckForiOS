@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 public class ComposeFieldModel {
-    
     public enum FieldType: String {
         case to, cc, bcc, from, subject, content, mailingList, none
 

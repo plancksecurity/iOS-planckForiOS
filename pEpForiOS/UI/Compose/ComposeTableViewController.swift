@@ -983,9 +983,13 @@ extension ComposeTableViewController: ComposeCellDelegate {
         guard indexPath.section == composeSection else {
             return
         }
-        let fModel = composeData?.getVisibleRows().filter{ $0.type == textView.fieldModel?.type }
-        fModel?.first?.value = textView.attributedText
-        let suggestContacts = fModel?.first?.contactSuggestion ?? false
+
+        let models = composeData?.getVisibleRows().filter {
+            $0.type == textView.fieldModel?.type
+        }
+        let modelFirst = models?.first
+        modelFirst?.value = textView.attributedText
+        let suggestContacts = modelFirst?.contactSuggestion ?? false
 
         currentCell = indexPath
         guard let cell = tableView.cellForRow(at: currentCell) as? ComposeCell else {
