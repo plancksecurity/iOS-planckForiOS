@@ -7,7 +7,6 @@
 //
 
 struct GCD {
-
     /**
      Since you will do this all the time in UI callbacks.
      */
