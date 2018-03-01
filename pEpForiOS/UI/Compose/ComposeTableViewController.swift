@@ -291,7 +291,8 @@ class ComposeTableViewController: BaseTableViewController {
             tableDict = NSDictionary(contentsOfFile: path)
         }
 
-        if let dict = tableDict as? [String: Any], let dictRows = dict["Rows"] as? [[String: Any]]{
+        if let dict = tableDict as? [String: Any],
+            let dictRows = dict["Rows"] as? [[String: Any]] {
             composeData = ComposeDataSource(with: dictRows)
         }
     }
@@ -304,8 +305,9 @@ class ComposeTableViewController: BaseTableViewController {
             return // Nothing to do.
         }
         guard let om = originalMessage else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString:
+            Log.shared.errorAndCrash(
+                component: #function,
+                errorString:
                 "We must take over attachments from original message, but original message is nil.")
             return
         }
@@ -345,8 +347,9 @@ class ComposeTableViewController: BaseTableViewController {
             let fromCell = fromCells.first,
             let fromAddress = (fromCell as? AccountCell)?.textView.text,
             let account = Account.by(address: fromAddress) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "We have a problem here getting the senders account.")
+                Log.shared.errorAndCrash(
+                    component: #function,
+                    errorString: "We have a problem here getting the senders account.")
                 return nil
         }
         guard let f = Folder.by(account: account, folderType: .sent) else {
@@ -437,14 +440,17 @@ class ComposeTableViewController: BaseTableViewController {
                                                           bcc: self.destinyBcc,
                                                           session: session)
                 self.rating = session.string(from: ratingValue)
-                if let b = self.showPepRating(pEpRating: ratingValue, pEpProtection: self.pEpProtection) {
+                if let b = self.showPepRating(pEpRating: ratingValue,
+                                              pEpProtection: self.pEpProtection) {
                     if ratingValue == PEP_rating_reliable || ratingValue == PEP_rating_trusted {
                         // disable protection only for certain ratings
-                        let long = UILongPressGestureRecognizer(target: self,
-                                                                action: #selector(self.toggleProtection))
+                        let long = UILongPressGestureRecognizer(
+                            target: self,
+                            action: #selector(self.toggleProtection))
                         b.addGestureRecognizer(long)
                     }
-                    let tap = UITapGestureRecognizer(target: self, action: #selector(self.handshakeView))
+                    let tap = UITapGestureRecognizer(target: self,
+                                                     action: #selector(self.handshakeView))
                     b.addGestureRecognizer(tap)
                 }
             }
@@ -455,7 +461,8 @@ class ComposeTableViewController: BaseTableViewController {
 
     @objc fileprivate final func addMediaToCell() {
         let media = Capability.media
-        media.requestAndInformUserInErrorCase(viewController: self)  { (permissionsGranted: Bool, error: Capability.AccessError?) in
+        media.requestAndInformUserInErrorCase(viewController: self)  {
+            (permissionsGranted: Bool, error: Capability.AccessError?) in
             guard permissionsGranted else {
                 return
             }
@@ -688,7 +695,8 @@ class ComposeTableViewController: BaseTableViewController {
                 cell = c
             } else {
                 guard
-                let c = tableView.dequeueReusableCell(withIdentifier: row.identifier, for: indexPath) as? ComposeCell
+                let c = tableView.dequeueReusableCell(withIdentifier: row.identifier,
+                                                      for: indexPath) as? ComposeCell
                     else {
                         Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell")
                         return UITableViewCell()
@@ -761,8 +769,9 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView is SuggestTableView {
-            guard let cell = self.tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
-                return
+            guard let cell = self.tableView.cellForRow(
+                at: currentCellIndexPath) as? RecipientCell else {
+                    return
             }
             if let identity = suggestTableView.didSelectIdentity(index: indexPath) {
                 cell.addIdentity(identity)
@@ -930,7 +939,8 @@ ComposeTableView: Label of swipe left. Removing of attachment.
 // MARK: - ComposeCellDelegate
 
 extension ComposeTableViewController: ComposeCellDelegate {
-    func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String], forFieldType type: ComposeFieldModel.FieldType) {
+    func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
+                     forFieldType type: ComposeFieldModel.FieldType) {
         let identities = changedAddresses.map { Identity(address: $0) }
         switch type {
         case .to:
@@ -1035,8 +1045,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {
-
-
     }
 
     func messageCanBeSend(value: Bool) {
@@ -1087,10 +1095,10 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
 // MARK: - UIDocumentPickerDelegate
 
 extension ComposeTableViewController: UIDocumentPickerDelegate {
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    func documentPicker(_ controller: UIDocumentPickerViewController,
+                        didPickDocumentsAt urls: [URL]) {
         for url in urls {
             createAttachment(forSecurityScopedResource: url) { (attachment: Attachment?) in
-
                 guard let safeAttachment = attachment else {
                     Log.shared.errorAndCrash(component: #function,
                                              errorString: "No attachment")
@@ -1142,7 +1150,8 @@ extension ComposeTableViewController: SegueHandlerType {
 
 extension ComposeTableViewController: SwipeTableViewCellDelegate {
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard indexPath.section == attachmentSection else {
             return nil
         }
