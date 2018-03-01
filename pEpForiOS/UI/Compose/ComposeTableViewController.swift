@@ -1033,8 +1033,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
         if let uiRange = textView.selectedTextRange, uiRange.isEmpty {
             let selectedRect = textView.caretRect(for: uiRange.end)
             let tvRect = tableView.convert(selectedRect, from: textView)
-            print("selectedRect: \(selectedRect)")
-            print("tvRect: \(tvRect)")
             tableView.scrollRectToVisible(tvRect, animated: false)
         }
     }
