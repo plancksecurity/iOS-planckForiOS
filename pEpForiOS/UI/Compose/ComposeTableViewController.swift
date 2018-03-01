@@ -1018,22 +1018,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
                 tableView.updateSize()
             }
         } else {
-            tableView.updateSize()
-            if let composeTextView = textView as? ComposeMessageBodyTextView {
-                scrollCaretToVisible(textView: composeTextView, containingTableView: tableView)
-            }
-        }
-    }
-
-    /**
-     Makes sure that the given text view's cursor (if any) is visible, given that it is
-     contained in the given table view.
-     */
-    func scrollCaretToVisible(textView: UITextView, containingTableView: UITableView) {
-        if let uiRange = textView.selectedTextRange, uiRange.isEmpty {
-            let selectedRect = textView.caretRect(for: uiRange.end)
-            let tvRect = tableView.convert(selectedRect, from: textView)
-            tableView.scrollRectToVisible(tvRect, animated: false)
+            textView.layoutAfterTextDidChange(tableView: tableView)
         }
     }
 

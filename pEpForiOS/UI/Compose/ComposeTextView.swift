@@ -98,4 +98,11 @@ open class ComposeTextView: UITextView {
     public func toMarkdown() -> (String, [Attachment]) {
         return attributedText.convertToMarkDown()
     }
+
+    /**
+     Invoke any actions needed after the text has changed, i.e. forcing the table to
+     pick up the new size and scrolling to the current cursor position.
+     */
+    public func layoutAfterTextDidChange(tableView: UITableView) {
+    }
 }
