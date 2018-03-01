@@ -992,18 +992,19 @@ extension ComposeTableViewController: ComposeCellDelegate {
         let suggestContacts = modelFirst?.contactSuggestion ?? false
 
         currentCellIndexPath = indexPath
-        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? ComposeCell else {
+        let cell = tableView.cellForRow(at: currentCellIndexPath)
+        guard let composeCell = cell as? ComposeCell else {
             tableView.updateSize()
             return
         }
 
         if suggestContacts {
             if suggestTableView.updateContacts(textView.text) {
-                tableView.scrollToTopOf(cell)
-                cell.textView.scrollToBottom()
+                tableView.scrollToTopOf(composeCell)
+                composeCell.textView.scrollToBottom()
                 updateSuggestTable(CGFloat(indexPath.row))
             } else {
-                cell.textView.scrollToTop()
+                composeCell.textView.scrollToTop()
                 tableView.updateSize()
             }
         } else {
