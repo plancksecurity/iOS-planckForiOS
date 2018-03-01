@@ -98,12 +98,4 @@ open class ComposeTextView: UITextView {
     public func toMarkdown() -> (String, [Attachment]) {
         return attributedText.convertToMarkDown()
     }
-
-    /**
-     Makes sure that the text has at least two newlines appended, so all content
-     is always visible.
-     Should only affect the actual message content, if at all.
-     */
-    public func addNewlinePadding() {
-    }
 }

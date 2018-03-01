@@ -52,7 +52,6 @@ extension ComposeCell: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         guard let cmTextview = textView as? ComposeTextView else { return }
         fieldModel?.value = cmTextview.attributedText
-        cmTextview.addNewlinePadding()
         delegate?.textdidChange(at: index, textView: cmTextview)
     }
     
@@ -61,7 +60,8 @@ extension ComposeCell: UITextViewDelegate {
         delegate?.textDidEndEditing(at: index, textView: cmTextview)
     }
 
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
+                         replacementText text: String) -> Bool {
         if fieldModel?.type == .subject && text == "\n" {
             textView.resignFirstResponder()
             return false
