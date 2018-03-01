@@ -974,13 +974,6 @@
 			name = AttachmentCell;
 			sourceTree = "<group>";
 		};
-		1572B9C71F3474880048BCF5 /* UI */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = UI;
-			sourceTree = "<group>";
-		};
 		15A75CE7202DE65700C0DA28 /* VirtualMailbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1454,7 +1447,6 @@
 				15BBBC691FD0522E00B9DCC8 /* Error */,
 				15B483DF1F290B14000FB2CF /* Background */,
 				4918EBF91E783C70006207FC /* Models */,
-				1572B9C71F3474880048BCF5 /* UI */,
 				151F7202202A06D30057C74D /* Util */,
 				15F82A072006552B0084F9EA /* Tests from MessageModel in Exile due to Apple Bug */,
 				43980E401CBD0BCA00A7FC3C /* Info.plist */,
