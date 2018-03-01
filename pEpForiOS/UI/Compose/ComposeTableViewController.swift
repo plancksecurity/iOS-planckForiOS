@@ -38,7 +38,7 @@ class ComposeTableViewController: BaseTableViewController {
     private var tableDict: NSDictionary?
     private var composeData: ComposeDataSource? = nil
     private var nonInlinedAttachmentData = ComposeDataSource.AttachmentDataSource()
-    private var currentCell: IndexPath!
+    private var currentCellIndexPath: IndexPath!
     private var allCells = MutableOrderedSet<ComposeCell>()
     private var cells = [ComposeFieldModel.FieldType:ComposeCell]()
     private var ccEnabled = false
@@ -557,7 +557,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     fileprivate func inline(image: UIImage, forMediaWithInfo info: [String: Any]) {
-        guard let cell = tableView.cellForRow(at: currentCell) as? MessageBodyCell,
+        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? MessageBodyCell,
             let url = info[UIImagePickerControllerReferenceURL] as? URL
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
@@ -761,7 +761,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView is SuggestTableView {
-            guard let cell = self.tableView.cellForRow(at: currentCell) as? RecipientCell else {
+            guard let cell = self.tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
                 return
             }
             if let identity = suggestTableView.didSelectIdentity(index: indexPath) {
@@ -991,8 +991,8 @@ extension ComposeTableViewController: ComposeCellDelegate {
         modelFirst?.value = textView.attributedText
         let suggestContacts = modelFirst?.contactSuggestion ?? false
 
-        currentCell = indexPath
-        guard let cell = tableView.cellForRow(at: currentCell) as? ComposeCell else {
+        currentCellIndexPath = indexPath
+        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? ComposeCell else {
             tableView.updateSize()
             return
         }
@@ -1032,7 +1032,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
 extension ComposeTableViewController: MessageBodyCellDelegate {
     func didStartEditing(at indexPath: IndexPath) {
         self.edited = true
-        currentCell = indexPath
+        currentCellIndexPath = indexPath
         let media = UIMenuItem(
             title: NSLocalizedString("Attach media",
                                      comment: "Attach photo/video (message text context menu)"),
