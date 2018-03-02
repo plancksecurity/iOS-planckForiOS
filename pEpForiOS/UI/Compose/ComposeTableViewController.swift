@@ -70,6 +70,11 @@ class ComposeTableViewController: BaseTableViewController {
      */
     private var pEpProtection = true
 
+    /**
+     Set to true once the first text view to receive the focus (keyboard) has been chosen.
+     */
+    private var haveChosenFirstResponder = false
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -81,6 +86,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        haveChosenFirstResponder = false
         composeData?.filterRows(message: nil)
         setEmailDisplayDefaultNavigationBarStyle()
         takeOverAttachmentsIfRequired()
@@ -114,36 +120,41 @@ class ComposeTableViewController: BaseTableViewController {
      if this is a suitable `ComposeMode`.
      */
     private func updateInitialContent(recipientCell: RecipientCell) {
-        if let fm = recipientCell.fieldModel, let om = originalMessage {
-            switch fm.type {
-            case .to:
-                if composeMode == .replyFrom, let from = om.from {
-                    recipientCell.addIdentity(from)
-                } else if composeMode == .replyAll, let from = om.from {
-                    let to = om.to
-                    for identity in to {
-                        recipientCell.addIdentity(identity)
+        if let fm = recipientCell.fieldModel {
+            if let om = originalMessage {
+                switch fm.type {
+                case .to:
+                    if composeMode == .replyFrom, let from = om.from {
+                        recipientCell.addIdentity(from)
+                    } else if composeMode == .replyAll, let from = om.from {
+                        let to = om.to
+                        for identity in to {
+                            recipientCell.addIdentity(identity)
+                        }
+                        recipientCell.addIdentity(from)
+                    } else if composeMode == .draft {
+                        for ident in om.to {
+                            recipientCell.addIdentity(ident)
+                        }
                     }
-                    recipientCell.addIdentity(from)
-                } else if composeMode == .draft {
-                    for ident in om.to {
-                        recipientCell.addIdentity(ident)
+                case .cc:
+                    if composeMode == .replyAll || composeMode == .draft {
+                        for ident in om.cc {
+                            recipientCell.addIdentity(ident)
+                        }
                     }
+                case .bcc:
+                    if composeMode == .replyAll  || composeMode == .draft {
+                        for ident in om.bcc {
+                            recipientCell.addIdentity(ident)
+                        }
+                    }
+                default:
+                    break
                 }
-            case .cc:
-                if composeMode == .replyAll || composeMode == .draft {
-                    for ident in om.cc {
-                        recipientCell.addIdentity(ident)
-                    }
-                }
-            case .bcc:
-                if composeMode == .replyAll  || composeMode == .draft {
-                    for ident in om.bcc {
-                        recipientCell.addIdentity(ident)
-                    }
-                }
-            default:
-                break
+            } else if composeMode == .normal && !haveChosenFirstResponder {
+                recipientCell.makeFirstResponder()
+                haveChosenFirstResponder = true
             }
         }
     }
