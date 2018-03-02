@@ -19,7 +19,7 @@ class ComposeMessageBodyTextView: ComposeTextView {
     override func layoutAfterTextDidChange(tableView: UITableView) {
         tableView.updateSize() { [weak self] in
             if let theSelf = self {
-                Timer.scheduledTimer(timeInterval: 0.1,
+                Timer.scheduledTimer(timeInterval: 0.01,
                                      target: theSelf,
                                      selector: #selector(theSelf.timerScroll),
                                      userInfo: MyUserInfo(textView: theSelf, tableView: tableView),
