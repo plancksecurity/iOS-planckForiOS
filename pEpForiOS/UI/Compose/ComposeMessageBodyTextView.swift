@@ -11,11 +11,27 @@ import Foundation
 import MessageModel
 
 class ComposeMessageBodyTextView: ComposeTextView {
+    private struct MyUserInfo {
+        let textView: UITextView
+        let tableView: UITableView
+    }
+
     override func layoutAfterTextDidChange(tableView: UITableView) {
         tableView.updateSize() { [weak self] in
             if let theSelf = self {
-                theSelf.scrollCaretToVisible(textView: theSelf, containingTableView: tableView)
+                Timer.scheduledTimer(timeInterval: 0.1,
+                                     target: theSelf,
+                                     selector: #selector(theSelf.timerScroll),
+                                     userInfo: MyUserInfo(textView: theSelf, tableView: tableView),
+                                     repeats: false)
             }
+        }
+    }
+
+    @objc func timerScroll(_ timer: Timer) {
+        if let info = timer.userInfo as? MyUserInfo {
+            self.scrollCaretToVisible(textView: info.textView,
+                                      containingTableView: info.tableView)
         }
     }
 
