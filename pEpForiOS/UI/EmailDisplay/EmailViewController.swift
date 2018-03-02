@@ -180,7 +180,7 @@ class EmailViewController: BaseTableViewController {
         alertViewWithoutTitle.view.tintColor = .pEpGreen
 
         if let popoverPresentationController = alertViewWithoutTitle.popoverPresentationController {
-            popoverPresentationController.sourceView = view
+            popoverPresentationController.barButtonItem = sender
         }
 
         let alertActionReply = UIAlertAction(
