@@ -21,7 +21,6 @@ class RecipientCell: ComposeCell {
     
     override open func awakeFromNib() {
         selectionStyle = .none
-
     }
     
     public func addIdentity(_ identity: Identity) {
