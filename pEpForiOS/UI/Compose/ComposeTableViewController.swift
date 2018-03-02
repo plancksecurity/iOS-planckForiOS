@@ -238,6 +238,10 @@ class ComposeTableViewController: BaseTableViewController {
                 return
             }
         }
+        if !haveChosenFirstResponder {
+            messageBodyCell.makeBecomeFirstResponder()
+            haveChosenFirstResponder = true
+        }
     }
 
     private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell,
