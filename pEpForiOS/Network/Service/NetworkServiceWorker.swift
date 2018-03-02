@@ -416,32 +416,31 @@ open class NetworkServiceWorker {
         return (theLastImapOp, operations)
     }
 
-    /// Builds a line of opertations to completely sync one e-mail account.
-    /// Use this operation line when going into background.
+    /// Builds a line of opertations to sync one e-mail account.
     ///
-    /// - Parameter accountInfo: Account info for account to sync
-    /// - Returns:  Operation line contaning all operations required to sync one account
-    func buildOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
+    /// - Parameters:
+    ///   - accountInfo: Account info for account to sync
+    ///   - onlySyncChangesTriggeredByUser: if true, the opeartion line is build to do just enough to make sure all user actions (sent,
+    ///                                     deleted, flagged) are synced with the server.
+    ///                                     Otherwize changes on server side are synced also.
+    /// - Returns: Operation line contaning all operations required to sync one account
+    func buildOperationLine(accountInfo: AccountConnectInfo, onlySyncChangesTriggeredByUser: Bool = false) -> OperationLine {
         let errorContainer = ReportingErrorContainer(delegate: self)
-
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation { [weak self] in
             self?.workerQueue.async {
                 Log.info(component: #function, content: "IMAP sync finished")
             }
         }
-
         // Operation depending on all SMTP operations for this account
         let opSmtpFinished = BlockOperation { [weak self] in
             self?.workerQueue.async {
                 Log.info(component: #function, content: "SMTP sync finished")
             }
         }
-
         #if DEBUG
             var startTime = Date()
         #endif
-
         // Operation depending on all IMAP and SMTP operations
         let opAllFinished = BlockOperation { [weak self] in
             self?.workerQueue.async {
@@ -452,12 +451,10 @@ open class NetworkServiceWorker {
                 #endif
             }
         }
-
-        var operations = [Operation]()
-
         opAllFinished.addDependency(opImapFinished)
         opAllFinished.addDependency(opSmtpFinished)
 
+        var operations = [Operation]()
         #if DEBUG
             let debugTimerOp = BlockOperation() {
                 startTime = Date()
@@ -491,32 +488,33 @@ open class NetworkServiceWorker {
 
             var lastImapOp: Operation = opImapLogin
 
-            // Fetch current list of interesting mailboxes
-            let opFetchFolders = FetchFoldersOperation(
-                parentName: description, errorContainer: errorContainer,
-                imapSyncData: imapSyncData)
-            opFetchFolders.completionBlock = { [weak self] in
-                opFetchFolders.completionBlock = nil
-                if let me = self {
-                    me.workerQueue.async {
-                        Log.info(component: #function, content: "opFetchFolders finished")
+            if !onlySyncChangesTriggeredByUser {
+                // Fetch current list of interesting mailboxes
+                let opFetchFolders = FetchFoldersOperation(
+                    parentName: description, errorContainer: errorContainer,
+                    imapSyncData: imapSyncData)
+                opFetchFolders.completionBlock = { [weak self] in
+                    opFetchFolders.completionBlock = nil
+                    if let me = self {
+                        me.workerQueue.async {
+                            Log.info(component: #function, content: "opFetchFolders finished")
+                        }
                     }
                 }
+                opFetchFolders.addDependency(lastImapOp)
+                lastImapOp = opFetchFolders
+                opImapFinished.addDependency(opFetchFolders)
+                operations.append(opFetchFolders)
             }
-
-            opFetchFolders.addDependency(lastImapOp)
-            lastImapOp = opFetchFolders
-            opImapFinished.addDependency(opFetchFolders)
-            operations.append(opFetchFolders)
-
-            let opRequiredFolders = CreateRequiredFoldersOperation(
-                parentName: description, errorContainer: errorContainer,
-                imapSyncData: imapSyncData)
-            opRequiredFolders.addDependency(lastImapOp)
-            lastImapOp = opRequiredFolders
-            opImapFinished.addDependency(opRequiredFolders)
-            operations.append(opRequiredFolders)
-
+            if !onlySyncChangesTriggeredByUser {
+                let opRequiredFolders = CreateRequiredFoldersOperation(
+                    parentName: description, errorContainer: errorContainer,
+                    imapSyncData: imapSyncData)
+                opRequiredFolders.addDependency(lastImapOp)
+                lastImapOp = opRequiredFolders
+                opImapFinished.addDependency(opRequiredFolders)
+                operations.append(opRequiredFolders)
+            }
             // Client-to-server synchronization (IMAP)
             let (lastAppendSendAndDraftOp, appendSendAndDraftOperations) = buildAppendSendAndDraftOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
@@ -529,7 +527,6 @@ open class NetworkServiceWorker {
                 opImapFinished: opImapFinished, previousOp: lastImapOp)
             lastImapOp = lastAppendTrashOp ?? lastImapOp
             operations.append(contentsOf: appendTrashOperations)
-
             // UidExpunge
             let (lastUidExpungeOp, uidExpungeOperations) =
                 buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
@@ -539,165 +536,60 @@ open class NetworkServiceWorker {
             lastImapOp = lastUidExpungeOp ?? lastImapOp
             operations.append(contentsOf: uidExpungeOperations)
 
-            // Server-to-client synchronization (IMAP)
-
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
-            // sync new messages
-            for fi in folderInfos {
-                let fetchMessagesOp = FetchMessagesOperation(
-                    parentName: description, errorContainer: errorContainer,
-                    imapSyncData: imapSyncData, folderName: fi.name) {
-                        [weak self] message in self?.messageFetched(cdMessage: message)
+            // sync flags
+            let (lastSyncFlagsOp, syncFlagsOps) =
+                syncFlagsToServerOperations(folderInfos: folderInfos,
+                                            errorContainer: errorContainer,
+                                            imapSyncData: imapSyncData,
+                                            lastImapOp: lastImapOp,
+                                            opImapFinished: opImapFinished)
+            lastImapOp = lastSyncFlagsOp
+            operations.append(contentsOf: syncFlagsOps)
+
+            // Server-to-client synchronization (IMAP)
+            if !onlySyncChangesTriggeredByUser {
+                // sync new messages
+                for fi in folderInfos {
+                    let fetchMessagesOp = FetchMessagesOperation(
+                        parentName: description, errorContainer: errorContainer,
+                        imapSyncData: imapSyncData, folderName: fi.name) {
+                            [weak self] message in self?.messageFetched(cdMessage: message)
+                    }
+                    self.workerQueue.async {
+                        Log.info(component: #function, content: "fetchMessagesOp finished")
+                    }
+                    fetchMessagesOp.addDependency(lastImapOp)
+                    lastImapOp = fetchMessagesOp
+                    operations.append(fetchMessagesOp)
+                    opImapFinished.addDependency(fetchMessagesOp)
                 }
-                self.workerQueue.async {
-                    Log.info(component: #function, content: "fetchMessagesOp finished")
-                }
-                fetchMessagesOp.addDependency(lastImapOp)
-                lastImapOp = fetchMessagesOp
-                operations.append(fetchMessagesOp)
-                opImapFinished.addDependency(fetchMessagesOp)
             }
 
-            let opDecrypt = DecryptMessagesOperation(parentName: description,
-                                                     errorContainer: ErrorContainer())
-            opDecrypt.addDependency(lastImapOp)
-             lastImapOp = opDecrypt
-            opImapFinished.addDependency(opDecrypt)
-            operations.append(opDecrypt)
+            if !onlySyncChangesTriggeredByUser {
+                let opDecrypt = DecryptMessagesOperation(parentName: description,
+                                                         errorContainer: ErrorContainer())
+                opDecrypt.addDependency(lastImapOp)
+                lastImapOp = opDecrypt
+                opImapFinished.addDependency(opDecrypt)
+                operations.append(opDecrypt)
+            }
 
-            // sync existing messages
-            let (lastSyncOp, syncOperations) = syncExistingMessages(
-                folderInfos: folderInfos, errorContainer: errorContainer,
-                imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
-            lastImapOp = lastSyncOp
-            operations.append(contentsOf: syncOperations)
+            if !onlySyncChangesTriggeredByUser {
+                // sync existing messages
+                let (lastSyncOp, syncOperations) = syncExistingMessages(
+                    folderInfos: folderInfos, errorContainer: errorContainer,
+                    imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
+                lastImapOp = lastSyncOp
+                operations.append(contentsOf: syncOperations)
+            }
 
             let logoutImapOp = BlockOperation() {
                 imapSyncData.sync?.close()
             }
             logoutImapOp.addDependency(lastImapOp)
             lastImapOp = logoutImapOp
-            opImapFinished.addDependency(logoutImapOp)
-            operations.append(logoutImapOp)
-        }
-
-        operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
-
-        return OperationLine(accountInfo: accountInfo, operations: operations,
-                             finalOperation: opAllFinished, errorContainer: errorContainer)
-    }
-
-    /// Builds a line of opertations that do just enough to make sure all user actions (sent,
-    /// deleted, flagged) are synced with the server for one e-mail account.
-    /// Use this operation line when going into background.
-    ///
-    /// - Parameter accountInfo: Account info for account to process user actions for.
-    /// - Returns:  Operation line contaning all operations required to sync user actions
-    ///             for one account.
-    func buildSyncLocalChangesOperationLine(accountInfo: AccountConnectInfo) -> OperationLine {
-        let errorContainer = ReportingErrorContainer(delegate: self)
-
-        // Operation depending on all SMTP operations for this account
-        let opSmtpFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                Log.info(component: #function, content: "SMTP sync finished")
-            }
-        }
-        // Operation depending on all IMAP operations for this account
-        let opImapFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                Log.info(component: #function, content: "IMAP sync finished")
-            }
-        }
-        opImapFinished.addDependency(opSmtpFinished)
-        #if DEBUG
-            var startTime = Date()
-        #endif
-
-        // Operation depending on all IMAP and SMTP operations
-        let opAllFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                #if DEBUG
-                    Log.info(component: #function,
-                             content: "sync finished in \(-startTime.timeIntervalSinceNow) seconds")
-                #else
-                    Log.info(component: #function, content: "sync finished")
-                #endif
-            }
-        }
-        opAllFinished.addDependency(opSmtpFinished)
-        opAllFinished.addDependency(opImapFinished)
-
-
-        var operations = [Operation]()
-
-        #if DEBUG
-            let debugTimerOp = BlockOperation() {
-                startTime = Date()
-            }
-            opAllFinished.addDependency(debugTimerOp)
-            operations.append(debugTimerOp)
-        #endif
-
-        // SMTP
-        // send
-        let (_, smtpOperations) =
-            buildSmtpOperations(accountInfo: accountInfo,
-                                errorContainer: ReportingErrorContainer(delegate: self),
-                                opSmtpFinished: opSmtpFinished,
-                                lastOperation: nil)
-        operations.append(contentsOf: smtpOperations)
-
-        // IMAP
-        if let imapCI = accountInfo.imapConnectInfo {
-            let imapSyncData = ServiceUtil.cachedImapSync(
-                imapConnectionDataCache: imapConnectionDataCache, connectInfo: imapCI)
-
-            // login
-            let opImapLogin = LoginImapOperation(
-                parentName: description, errorContainer: errorContainer,
-                imapSyncData: imapSyncData)
-            opImapFinished.addDependency(opImapLogin)
-            operations.append(opImapLogin)
-
-            // append sent
-            let (lastSendOp, sendOperations) = buildAppendSendAndDraftOperations(
-                imapSyncData: imapSyncData, errorContainer: errorContainer,
-                opImapFinished: opImapFinished, previousOp: opImapLogin)
-            operations.append(contentsOf: sendOperations)
-
-            // append trash
-            let (lastTrashOp, trashOperations) =
-                buildAppendTrashOperations(imapSyncData: imapSyncData,
-                                     errorContainer: errorContainer,
-                                     opImapFinished: opImapFinished,
-                                     previousOp: lastSendOp ?? opImapLogin)
-            operations.append(contentsOf: trashOperations)
-            let (lastUidExpungeOp, uidExpungeOperations) =
-                buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
-                                          errorContainer: errorContainer,
-                                          opImapFinished: opImapFinished,
-                                          previousOp: lastTrashOp ?? lastSendOp ?? opImapLogin)
-            operations.append(contentsOf: uidExpungeOperations)
-
-            // sync flags
-            let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
-            let (lastSyncFlagsOp, syncFlagsOps) =
-                syncFlagsToServerOperations(folderInfos: folderInfos,
-                                            errorContainer: errorContainer,
-                                            imapSyncData: imapSyncData,
-                                            lastImapOp: lastUidExpungeOp
-                                                ?? lastTrashOp
-                                                ?? lastSendOp
-                                                ?? opImapLogin,
-                                            opImapFinished: opImapFinished)
-            operations.append(contentsOf: syncFlagsOps)
-
-            let logoutImapOp = BlockOperation() {
-                imapSyncData.sync?.close()
-            }
-            logoutImapOp.addDependency(lastSyncFlagsOp)
             opImapFinished.addDependency(logoutImapOp)
             operations.append(logoutImapOp)
         }
@@ -722,7 +614,7 @@ open class NetworkServiceWorker {
 
     func buildSyncLocalChangesOperationLines(accountConnectInfos: [AccountConnectInfo]) -> [OperationLine] {
         return accountConnectInfos.map {
-            return buildSyncLocalChangesOperationLine(accountInfo: $0)
+            return buildOperationLine(accountInfo: $0, onlySyncChangesTriggeredByUser: true)
         }
     }
 
