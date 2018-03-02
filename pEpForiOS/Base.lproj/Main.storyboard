@@ -275,7 +275,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bVM-o9-45O" customClass="ComposeMessageBodyTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="4" y="8" width="361" height="231"/>
+                                            <rect key="frame" x="20" y="20" width="335" height="219"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -285,10 +285,10 @@
                                         </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="bVM-o9-45O" secondAttribute="trailing" constant="10" id="Qhb-Yx-WWx"/>
-                                        <constraint firstItem="bVM-o9-45O" firstAttribute="leading" secondItem="doY-9c-uKA" secondAttribute="leading" constant="4" id="jca-Yq-kxx"/>
-                                        <constraint firstItem="bVM-o9-45O" firstAttribute="top" secondItem="doY-9c-uKA" secondAttribute="top" constant="8" id="l5n-HY-3V8"/>
-                                        <constraint firstAttribute="bottom" secondItem="bVM-o9-45O" secondAttribute="bottom" constant="20" id="vap-jQ-CJ7"/>
+                                        <constraint firstAttribute="trailing" secondItem="bVM-o9-45O" secondAttribute="trailing" constant="20" symbolic="YES" id="Qhb-Yx-WWx"/>
+                                        <constraint firstItem="bVM-o9-45O" firstAttribute="leading" secondItem="doY-9c-uKA" secondAttribute="leading" constant="20" symbolic="YES" id="jca-Yq-kxx"/>
+                                        <constraint firstItem="bVM-o9-45O" firstAttribute="top" secondItem="doY-9c-uKA" secondAttribute="top" constant="20" symbolic="YES" id="l5n-HY-3V8"/>
+                                        <constraint firstAttribute="bottom" secondItem="bVM-o9-45O" secondAttribute="bottom" constant="20" symbolic="YES" id="vap-jQ-CJ7"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
