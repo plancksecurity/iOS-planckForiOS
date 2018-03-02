@@ -42,7 +42,11 @@ class ComposeMessageBodyTextView: ComposeTextView {
     func scrollCaretToVisible(textView: UITextView, containingTableView: UITableView) {
         if let uiRange = textView.selectedTextRange, uiRange.isEmpty {
             let selectedRect = textView.caretRect(for: uiRange.end)
-            let tvRect = containingTableView.convert(selectedRect, from: textView)
+            var tvRect = containingTableView.convert(selectedRect, from: textView)
+
+            // move the rect a little further, to give space below
+            tvRect.origin.y += tvRect.size.height
+
             containingTableView.scrollRectToVisible(tvRect, animated: false)
         }
     }
