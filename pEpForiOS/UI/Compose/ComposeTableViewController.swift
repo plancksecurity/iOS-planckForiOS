@@ -887,16 +887,17 @@ ComposeTableView: Label of swipe left. Removing of attachment.
         return action
     }
 
-    private func showAlertControllerWithOptionsForCanceling() {
+    private func showAlertControllerWithOptionsForCanceling(sender: Any) {
         let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertCtrl.view.tintColor = .pEpGreen
         if let popoverPresentationController = alertCtrl.popoverPresentationController {
-            popoverPresentationController.sourceView = view
+            popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
         }
-        alertCtrl.addAction(alertCtrl.action(NSLocalizedString("Cancel",
-                                                               comment: "compose email cancel"),
-                                             .cancel,
-                                             {}))
+        alertCtrl.addAction(
+            alertCtrl.action(
+                NSLocalizedString("Cancel",
+                                  comment: "compose email cancel"),
+                .cancel))
         alertCtrl.addAction(deleteAction(forAlertController: alertCtrl))
         alertCtrl.addAction(saveAction(forAlertController: alertCtrl))
 
@@ -905,15 +906,15 @@ ComposeTableView: Label of swipe left. Removing of attachment.
 
     // MARK: - IBActions
 
-    @IBAction func cancel() {
+    @IBAction func cancel(_ sender: Any) {
         if edited {
-            showAlertControllerWithOptionsForCanceling()
+            showAlertControllerWithOptionsForCanceling(sender: sender)
         } else {
-            self.dismiss()
+            dismiss()
         }
     }
 
-    @IBAction func dismiss() {
+    func dismiss() {
         dismiss(animated: true, completion: nil)
     }
 

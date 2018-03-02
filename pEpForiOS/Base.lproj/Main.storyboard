@@ -355,7 +355,7 @@
                     <navigationItem key="navigationItem" title="New Email" id="VPF-Wy-8RY">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="RnR-fE-Pxv">
                             <connections>
-                                <action selector="cancel" destination="8bt-7R-jDE" id="G86-1m-bjq"/>
+                                <action selector="cancel:" destination="8bt-7R-jDE" id="XyE-fv-1O1"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Send" id="whn-9f-Amb">
