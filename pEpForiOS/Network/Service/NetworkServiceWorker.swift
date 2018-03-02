@@ -244,7 +244,7 @@ open class NetworkServiceWorker {
 
     func buildAppendSendAndDraftOperations(
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
-        opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
+        opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
 
         let opAppend = AppendSendMailsOperation(
             parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
@@ -261,9 +261,9 @@ open class NetworkServiceWorker {
         return (opDrafts, [opAppend, opDrafts])
     }
 
-    func buildTrashOperations(
+    func buildAppendTrashOperations(
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
-        opImapFinished: Operation, previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
+        opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
         var lastOp = previousOp
         var trashOps = [AppendTrashMailsOperation]()
         let folders = AppendTrashMailsOperation.foldersWithTrashedMessages(context: context)
@@ -283,7 +283,7 @@ open class NetworkServiceWorker {
     private func buildUidMoveMailsToTrashOperations(imapSyncData: ImapSyncData,
                                            errorContainer: ServiceErrorProtocol,
                                            opImapFinished: Operation,
-                                           previousOp: BaseOperation) -> (BaseOperation?, [Operation]) {
+                                           previousOp: Operation) -> (Operation?, [Operation]) {
         var lastOp = previousOp
         var createdOps = [UidMoveMailsToTrashOperation]()
         MessageModel.performAndWait {
@@ -466,8 +466,6 @@ open class NetworkServiceWorker {
             operations.append(debugTimerOp)
         #endif
 
-        // If we need to report errors while fixing attachmnets, use
-        // ReportingErrorContainer(delegate: self) here instead of ErrorContainer()
         let fixAttachmentsOp = FixAttachmentsOperation(parentName: description,
                                                        errorContainer: ErrorContainer())
         operations.append(fixAttachmentsOp)
@@ -491,6 +489,8 @@ open class NetworkServiceWorker {
             opImapFinished.addDependency(opImapLogin)
             operations.append(opImapLogin)
 
+            var lastImapOp: Operation = opImapLogin
+
             // Fetch current list of interesting mailboxes
             let opFetchFolders = FetchFoldersOperation(
                 parentName: description, errorContainer: errorContainer,
@@ -504,34 +504,39 @@ open class NetworkServiceWorker {
                 }
             }
 
-            opFetchFolders.addDependency(opImapLogin)
+            opFetchFolders.addDependency(lastImapOp)
+            lastImapOp = opFetchFolders
             opImapFinished.addDependency(opFetchFolders)
             operations.append(opFetchFolders)
 
             let opRequiredFolders = CreateRequiredFoldersOperation(
                 parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
-            opRequiredFolders.addDependency(opFetchFolders)
+            opRequiredFolders.addDependency(lastImapOp)
+            lastImapOp = opRequiredFolders
             opImapFinished.addDependency(opRequiredFolders)
             operations.append(opRequiredFolders)
 
             // Client-to-server synchronization (IMAP)
-            let (lastSendOp, sendOperations) = buildAppendSendAndDraftOperations(
+            let (lastAppendSendAndDraftOp, appendSendAndDraftOperations) = buildAppendSendAndDraftOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
-                opImapFinished: opImapFinished, previousOp: opRequiredFolders)
-            operations.append(contentsOf: sendOperations)
+                opImapFinished: opImapFinished, previousOp: lastImapOp)
+            lastImapOp = lastAppendSendAndDraftOp ?? lastImapOp
+            operations.append(contentsOf: appendSendAndDraftOperations)
 
-            let (lastTrashOp, trashOperations) = buildTrashOperations(
+            let (lastAppendTrashOp, appendTrashOperations) = buildAppendTrashOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
-                opImapFinished: opImapFinished, previousOp: lastSendOp ?? opRequiredFolders)
-            operations.append(contentsOf: trashOperations)
+                opImapFinished: opImapFinished, previousOp: lastImapOp)
+            lastImapOp = lastAppendTrashOp ?? lastImapOp
+            operations.append(contentsOf: appendTrashOperations)
 
             // UidExpunge
             let (lastUidExpungeOp, uidExpungeOperations) =
                 buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
                                           errorContainer: errorContainer,
                                           opImapFinished: opImapFinished,
-                                          previousOp: lastTrashOp ?? lastSendOp ?? opRequiredFolders)
+                                          previousOp: lastImapOp)
+            lastImapOp = lastUidExpungeOp ?? lastImapOp
             operations.append(contentsOf: uidExpungeOperations)
 
             // Server-to-client synchronization (IMAP)
@@ -539,7 +544,6 @@ open class NetworkServiceWorker {
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
             // sync new messages
-            var lastImapOp: Operation = (lastUidExpungeOp ?? lastSendOp) ?? opRequiredFolders
             for fi in folderInfos {
                 let fetchMessagesOp = FetchMessagesOperation(
                     parentName: description, errorContainer: errorContainer,
@@ -549,38 +553,32 @@ open class NetworkServiceWorker {
                 self.workerQueue.async {
                     Log.info(component: #function, content: "fetchMessagesOp finished")
                 }
-                operations.append(fetchMessagesOp)
                 fetchMessagesOp.addDependency(lastImapOp)
-                opImapFinished.addDependency(fetchMessagesOp)
                 lastImapOp = fetchMessagesOp
+                operations.append(fetchMessagesOp)
+                opImapFinished.addDependency(fetchMessagesOp)
             }
 
-            // If we need to report errors while decrypting, use
-            // ReportingErrorContainer(delegate: self) here instead of ErrorContainer()
             let opDecrypt = DecryptMessagesOperation(parentName: description,
                                                      errorContainer: ErrorContainer())
-
             opDecrypt.addDependency(lastImapOp)
+             lastImapOp = opDecrypt
             opImapFinished.addDependency(opDecrypt)
             operations.append(opDecrypt)
-            opAllFinished.addDependency(opDecrypt)
-
-            //comment to fullfil comment
-            lastImapOp = opDecrypt // Don't sync messages after all messages got decrypted
 
             // sync existing messages
-            let (lastOp, syncOperations) = syncExistingMessages(
+            let (lastSyncOp, syncOperations) = syncExistingMessages(
                 folderInfos: folderInfos, errorContainer: errorContainer,
                 imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
-            lastImapOp = lastOp
+            lastImapOp = lastSyncOp
             operations.append(contentsOf: syncOperations)
 
             let logoutImapOp = BlockOperation() {
                 imapSyncData.sync?.close()
             }
-            logoutImapOp.addDependency(lastOp)
-            opImapFinished.addDependency(logoutImapOp)
+            logoutImapOp.addDependency(lastImapOp)
             lastImapOp = logoutImapOp
+            opImapFinished.addDependency(logoutImapOp)
             operations.append(logoutImapOp)
         }
 
@@ -671,7 +669,7 @@ open class NetworkServiceWorker {
 
             // append trash
             let (lastTrashOp, trashOperations) =
-                buildTrashOperations(imapSyncData: imapSyncData,
+                buildAppendTrashOperations(imapSyncData: imapSyncData,
                                      errorContainer: errorContainer,
                                      opImapFinished: opImapFinished,
                                      previousOp: lastSendOp ?? opImapLogin)
