@@ -33,8 +33,9 @@ class ComposeTableViewController: BaseTableViewController {
     private var suggestTableView: SuggestTableView!
     private let composeSection = 0
     private let attachmentSection = 1
-    lazy private var attachmentFileIOQueue = DispatchQueue(label: "net.pep-security.ComposeTableViewController.attachmentFileIOQueue",
-                                                           qos: .userInitiated)
+    lazy private var attachmentFileIOQueue = DispatchQueue(
+        label: "net.pep-security.ComposeTableViewController.attachmentFileIOQueue",
+        qos: .userInitiated)
     private var tableDict: NSDictionary?
     private var composeData: ComposeDataSource? = nil
     private var nonInlinedAttachmentData = ComposeDataSource.AttachmentDataSource()
@@ -61,7 +62,6 @@ class ComposeTableViewController: BaseTableViewController {
 
     private let attachmentCounter = AttachmentCounter()
     private let mimeTypeUtil = MimeTypeUtil()
-
 
     private var edited = false
 
@@ -221,11 +221,9 @@ class ComposeTableViewController: BaseTableViewController {
         case .normal: fallthrough// do nothing.
         default:
             guard composeMode == .normal else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString:
-                    """
-.normal is the only compose mode that is intentionally ignored here
-""")
+                Log.shared.errorAndCrash(
+                    component: #function,
+                    errorString: ".normal is the only compose mode that is intentionally ignored here")
                 return
             }
         }
