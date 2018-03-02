@@ -54,7 +54,7 @@ extension RecipientCell {
         delegate?.textDidStartEditing(at: index, textView: cTextview)
     }
     
-    public override func textViewDidChange(_ textView: UITextView) {
+    override public func textViewDidChange(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
         
         recipients.removeAll()

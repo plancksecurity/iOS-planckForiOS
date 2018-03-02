@@ -996,10 +996,11 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textDidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
-        self.edited = true
     }
 
     func textDidChange(at indexPath: IndexPath, textView: ComposeTextView) {
+        edited = true
+
         guard indexPath.section == composeSection else {
             return
         }
@@ -1049,7 +1050,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
 
 extension ComposeTableViewController: MessageBodyCellDelegate {
     func didStartEditing(at indexPath: IndexPath) {
-        self.edited = true
         currentCellIndexPath = indexPath
         let media = UIMenuItem(
             title: NSLocalizedString("Attach media",
