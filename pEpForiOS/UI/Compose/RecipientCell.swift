@@ -130,12 +130,13 @@ extension RecipientCell {
             cTextview.removePlainText()
             mail =  true
         }
-        let text = cTextview.attributedText.string.cleanAttachments
 
         delegate?.textDidEndEditing(at: index, textView: cTextview)
+
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
+
         return mail
     }
 
