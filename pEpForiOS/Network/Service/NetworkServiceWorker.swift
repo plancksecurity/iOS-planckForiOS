@@ -90,7 +90,7 @@ open class NetworkServiceWorker {
 
     let context = Record.Context.background
 
-    var imapConnectionDataCache = [EmailConnectInfo: ImapSyncData]()
+    var imapConnectionDataCache = ImapConnectionDataCache()
 
     init(serviceConfig: NetworkService.ServiceConfig) {
         self.serviceConfig = serviceConfig
@@ -476,8 +476,7 @@ open class NetworkServiceWorker {
         operations.append(contentsOf: smtpOperations)
 
         if let imapCI = accountInfo.imapConnectInfo {
-            let imapSyncData = ServiceUtil.cachedImapSync(
-                imapConnectionDataCache: imapConnectionDataCache, connectInfo: imapCI)
+            let imapSyncData = imapConnectionDataCache.imapConnectionData(for: imapCI)
 
             // login IMAP
             let opImapLogin = LoginImapOperation(
@@ -585,14 +584,6 @@ open class NetworkServiceWorker {
                 lastImapOp = lastSyncOp
                 operations.append(contentsOf: syncOperations)
             }
-
-            let logoutImapOp = BlockOperation() {
-                imapSyncData.sync?.close()
-            }
-            logoutImapOp.addDependency(lastImapOp)
-            lastImapOp = logoutImapOp
-            opImapFinished.addDependency(logoutImapOp)
-            operations.append(logoutImapOp)
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])

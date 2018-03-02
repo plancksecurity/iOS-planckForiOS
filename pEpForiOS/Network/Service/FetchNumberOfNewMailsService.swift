@@ -13,16 +13,16 @@ import MessageModel
 
 /// Figures out the number of new (to us) messages in Inbox, taking all verified accounts
 /// into account.
-open class FetchNumberOfNewMailsService {
-    private var imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]
+class FetchNumberOfNewMailsService {
+    private var imapConnectionDataCache: ImapConnectionDataCache
     private let context = Record.Context.background
     private let workerQueue = DispatchQueue(
         label: "NetworkService", qos: .utility, target: nil)
     private let backgroundQueue = OperationQueue()
     private var errorContainer: ErrorContainer?
 
-    public init(imapConnectionDataCache: [EmailConnectInfo: ImapSyncData]? = nil) {
-        self.imapConnectionDataCache = imapConnectionDataCache ?? [EmailConnectInfo: ImapSyncData]()
+    init(imapConnectionDataCache: ImapConnectionDataCache? = nil) {
+        self.imapConnectionDataCache = imapConnectionDataCache ?? ImapConnectionDataCache()
     }
 
     /// Starts the service
@@ -56,7 +56,7 @@ open class FetchNumberOfNewMailsService {
     private func gatherConnectInfos() -> [EmailConnectInfo] {
         var connectInfos = [EmailConnectInfo]()
         if !imapConnectionDataCache.isEmpty {
-            for ci in imapConnectionDataCache.keys {
+            for ci in imapConnectionDataCache.emailConnectInfos {
                 connectInfos.append(ci)
             }
         }
@@ -78,8 +78,7 @@ open class FetchNumberOfNewMailsService {
         let cis = gatherConnectInfos()
         var result = 0
         for connectInfo in cis {
-            let imapSyncData = ServiceUtil.cachedImapSync(
-                imapConnectionDataCache: imapConnectionDataCache, connectInfo: connectInfo)
+            let imapSyncData = imapConnectionDataCache.imapConnectionData(for: connectInfo)
             let loginOp = LoginImapOperation(
                 parentName: #function, errorContainer: theErrorContainer,
                 imapSyncData: imapSyncData)

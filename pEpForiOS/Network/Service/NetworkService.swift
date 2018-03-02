@@ -83,7 +83,7 @@ public class NetworkService {
     /**
      The connection cache from the last service worker, in case we go to the background.
      */
-    var lastConnectionDataCache: [EmailConnectInfo: ImapSyncData]?
+    var lastConnectionDataCache: ImapConnectionDataCache?
 
     public var timeIntervalForInterestingFolders: TimeInterval {
         get {
