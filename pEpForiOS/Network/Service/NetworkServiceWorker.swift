@@ -473,7 +473,7 @@ open class NetworkServiceWorker {
         operations.append(fixAttachmentsOp)
         opAllFinished.addDependency(fixAttachmentsOp)
 
-        // 3.a Items not associated with any mailbox (e.g., SMTP send)
+        // Items not associated with any mailbox (e.g., SMTP send)
         let (_, smtpOperations) = buildSmtpOperations(
             accountInfo: accountInfo, errorContainer: ReportingErrorContainer(delegate: self),
             opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
@@ -491,7 +491,7 @@ open class NetworkServiceWorker {
             opImapFinished.addDependency(opImapLogin)
             operations.append(opImapLogin)
 
-            // 3.b Fetch current list of interesting mailboxes
+            // Fetch current list of interesting mailboxes
             let opFetchFolders = FetchFoldersOperation(
                 parentName: description, errorContainer: errorContainer,
                 imapSyncData: imapSyncData)
@@ -515,7 +515,7 @@ open class NetworkServiceWorker {
             opImapFinished.addDependency(opRequiredFolders)
             operations.append(opRequiredFolders)
 
-            // 3.c Client-to-server synchronization (IMAP)
+            // Client-to-server synchronization (IMAP)
             let (lastSendOp, sendOperations) = buildAppendSendAndDraftOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
                 opImapFinished: opImapFinished, previousOp: opRequiredFolders)
@@ -534,7 +534,7 @@ open class NetworkServiceWorker {
                                           previousOp: lastTrashOp ?? lastSendOp ?? opRequiredFolders)
             operations.append(contentsOf: uidExpungeOperations)
 
-            // 3.d Server-to-client synchronization (IMAP)
+            // Server-to-client synchronization (IMAP)
 
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
