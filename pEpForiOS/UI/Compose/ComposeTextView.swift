@@ -99,10 +99,15 @@ open class ComposeTextView: UITextView {
         return attributedText.convertToMarkDown()
     }
 
+    public func addNewlinePadding() {
+        // Does nothing for recipient text views.
+    }
+
     /**
      Invoke any actions needed after the text has changed, i.e. forcing the table to
      pick up the new size and scrolling to the current cursor position.
      */
     public func layoutAfterTextDidChange(tableView: UITableView) {
+        // Does nothing for recipient text views.
     }
 }
