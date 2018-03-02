@@ -41,6 +41,13 @@ open class ComposeCell: UITableViewCell, CellProtocol {
             titleLabel?.text = fieldModel?.title
         }
     }
+
+    /**
+     Makes the contained text view the first responder.
+     */
+    public func makeFirstResponder() {
+        textView.becomeFirstResponder()
+    }
 }
 
 extension ComposeCell: UITextViewDelegate {
