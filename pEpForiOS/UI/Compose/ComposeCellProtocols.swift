@@ -15,12 +15,16 @@ public protocol CellProtocol {
 }
 
 public protocol ComposeCellDelegate: class {
-    func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView)
-    func textdidChange(at indexPath: IndexPath, textView: ComposeTextView)
+    func textDidStartEditing(at indexPath: IndexPath, textView: ComposeTextView)
+    func textDidChange(at indexPath: IndexPath, textView: ComposeTextView)
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView)
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView)
-    func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String], forFieldType type: ComposeFieldModel.FieldType)
-    func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel) //remove after refactoring all cells to not know Identity
+    func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
+                     forFieldType type: ComposeFieldModel.FieldType)
+
+    // remove after refactoring all cells to not know Identity
+    func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel)
+
     func messageCanBeSend(value: Bool)
 }
 

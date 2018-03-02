@@ -53,14 +53,14 @@ open class ComposeCell: UITableViewCell, CellProtocol {
 extension ComposeCell: UITextViewDelegate {
     public func textViewDidBeginEditing(_ textView: UITextView) {
         guard let cmTextview = textView as? ComposeTextView else { return }
-        delegate?.textdidStartEditing(at: index, textView: cmTextview)
+        delegate?.textDidStartEditing(at: index, textView: cmTextview)
     }
     
     public func textViewDidChange(_ textView: UITextView) {
         guard let cmTextview = textView as? ComposeTextView else { return }
         fieldModel?.value = cmTextview.attributedText
         cmTextview.addNewlinePadding()
-        delegate?.textdidChange(at: index, textView: cmTextview)
+        delegate?.textDidChange(at: index, textView: cmTextview)
     }
     
     public func textViewDidEndEditing(_ textView: UITextView) {

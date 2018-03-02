@@ -995,11 +995,11 @@ extension ComposeTableViewController: ComposeCellDelegate {
         self.performSegue(withIdentifier: "segueHandshake", sender: nil)
     }
 
-    func textdidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
+    func textDidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
         self.edited = true
     }
 
-    func textdidChange(at indexPath: IndexPath, textView: ComposeTextView) {
+    func textDidChange(at indexPath: IndexPath, textView: ComposeTextView) {
         guard indexPath.section == composeSection else {
             return
         }
