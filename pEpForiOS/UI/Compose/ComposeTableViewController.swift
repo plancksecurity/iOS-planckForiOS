@@ -153,7 +153,7 @@ class ComposeTableViewController: BaseTableViewController {
                     break
                 }
             } else if composeMode == .normal && !haveChosenFirstResponder {
-                recipientCell.makeFirstResponder()
+                recipientCell.makeBecomeFirstResponder()
                 haveChosenFirstResponder = true
             }
         }

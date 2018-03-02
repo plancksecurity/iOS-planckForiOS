@@ -45,7 +45,7 @@ open class ComposeCell: UITableViewCell, CellProtocol {
     /**
      Makes the contained text view the first responder.
      */
-    public func makeFirstResponder() {
+    public func makeBecomeFirstResponder() {
         textView.becomeFirstResponder()
     }
 }
