@@ -384,7 +384,8 @@ extension ImapSync: CWServiceClient {
         if connectInfo.connectionTransport == ConnectionTransport.startTLS
             && !imapState.hasStartedTLS {
             startTLS()
-        } else if let authMethod = connectInfo.authMethod,
+        } else if
+            let authMethod = connectInfo.authMethod,
             authMethod == .saslXoauth2,
             let loginName = connectInfo.loginName,
             let token = connectInfo.accessToken {

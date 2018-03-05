@@ -107,14 +107,20 @@ public class EmailConnectInfo: ConnectInfo {
      There is either the `loginPassword`, or this, but there should never exist both.
      If non-nil, the `authMethod` is expected to be `AuthMethod.saslXoauth2`.
      */
-    public let accessToken: OAuth2AccessTokenProtocol?
+    public var accessToken: OAuth2AccessTokenProtocol? {
+        guard authMethod == .saslXoauth2,
+            let key = loginPasswordKeyChainKey,
+            let token = KeyChain.serverPassword(forKey: key) else {
+                return nil
+        }
+        return OAuth2AccessToken.from(base64Encoded: token) as? OAuth2AccessTokenProtocol
+    }
 
     public init(accountObjectID: NSManagedObjectID,
                 serverObjectID: NSManagedObjectID,
                 credentialsObjectID: NSManagedObjectID,
                 loginName: String? = nil,
-                loginPassword: String? = nil,
-                accessToken: OAuth2AccessTokenProtocol? = nil,
+                loginPasswordKeyChainKey: String? = nil,
                 networkAddress: String,
                 networkPort: UInt16,
                 networkAddressType: NetworkAddressType? = nil,
@@ -127,13 +133,12 @@ public class EmailConnectInfo: ConnectInfo {
         self.connectionTransport = connectionTransport
         self.authMethod = authMethod
         self.trusted = trusted
-        self.accessToken = accessToken
 
         super.init(accountObjectID: accountObjectID,
                    serverObjectID: serverObjectID,
                    credentialsObjectID: credentialsObjectID,
                    loginName: loginName,
-                   loginPassword: loginPassword,
+                   loginPasswordKeyChainKey: loginPasswordKeyChainKey,
                    networkAddress: networkAddress,
                    networkPort: networkPort,
                    networkAddressType: networkAddressType,
