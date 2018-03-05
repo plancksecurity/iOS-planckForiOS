@@ -339,6 +339,14 @@ public extension String {
         }
         return (self, nil)
     }
+
+    /**
+     Transforms the typical Window/DOS line endings into UNIX ones.
+     - Returns: A new string with all newlines being UNIX ones (just "\n").
+     */
+    public func applyingDos2Unix() -> String {
+        return replacingOccurrences(of: "\r\n", with: "\n")
+    }
 }
 
 public extension NSAttributedString {
