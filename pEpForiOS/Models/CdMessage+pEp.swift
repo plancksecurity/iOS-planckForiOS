@@ -34,9 +34,10 @@ extension CdMessage {
 
         bodyFetched = true
 
-        shortMessage = pEpMessageDict[kPepShortMessage] as? String
-        longMessage = pEpMessageDict[kPepLongMessage] as? String
-        longMessageFormatted = pEpMessageDict[kPepLongMessageFormatted] as? String
+        shortMessage = (pEpMessageDict[kPepShortMessage] as? String)?.applyingDos2Unix()
+        longMessage = (pEpMessageDict[kPepLongMessage] as? String)?.applyingDos2Unix()
+        longMessageFormatted = (pEpMessageDict[kPepLongMessageFormatted]
+            as? String)?.applyingDos2Unix()
 
         if let testsent = pEpMessageDict[kPepSent] as? Date {
             sent = testsent
