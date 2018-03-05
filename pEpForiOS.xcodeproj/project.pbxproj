@@ -974,13 +974,6 @@
 			name = AttachmentCell;
 			sourceTree = "<group>";
 		};
-		1587D1612049BE4E002C2157 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Util;
-			sourceTree = "<group>";
-		};
 		15A75CE7202DE65700C0DA28 /* VirtualMailbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1114,7 +1107,6 @@
 		431144A61CC0CB0A0007639D /* Background */ = {
 			isa = PBXGroup;
 			children = (
-				1587D1612049BE4E002C2157 /* Util */,
 				15BBBC611FD0461000B9DCC8 /* Error */,
 				43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */,
 				1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */,
