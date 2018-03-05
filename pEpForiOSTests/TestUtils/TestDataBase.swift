@@ -119,14 +119,16 @@ class TestDataBase {
         func account() -> Account {
             let id = Identity.create(address: idAddress, userName: idUserName, isMySelf: true)
 
-            let credSmtp = ServerCredentials.create(loginName: id.address, password: password)
+            let credSmtp = ServerCredentials.create(loginName: id.address)
+            credSmtp.password = password
             let smtp = Server.create(serverType: .smtp,
                                      port: smtpServerPort,
                                      address: smtpServerAddress ?? "",
                                      transport: smtpServerTransport,
                                      credentials:credSmtp)
 
-            let credImap = ServerCredentials.create(loginName: id.address, password: password)
+            let credImap = ServerCredentials.create(loginName: id.address)
+            credImap.password = password
             let imap = Server.create(serverType: .imap,
                                      port: imapServerPort,
                                      address: imapServerAddress ?? "",
