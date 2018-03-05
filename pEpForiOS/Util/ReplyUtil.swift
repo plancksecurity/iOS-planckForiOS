@@ -18,10 +18,8 @@ public struct ReplyUtil {
     public static func quotedMessageText(message: Message, replyAll: Bool) -> String {
         if let text = message.longMessage {
             let quotedText = quoteText(text)
-            let citation: String? = citationHeaderForMessage(message, replyAll: replyAll)
-            if let c = citation {
-                return "\n\n\(footer())\n\n\(c)\n\n\(quotedText)"
-            }
+            let citation = citationHeaderForMessage(message, replyAll: replyAll)
+            return "\n\n\(footer())\n\n\(citation)\n\n\(quotedText)"
         }
         return "\n\n\(footer())"
     }
