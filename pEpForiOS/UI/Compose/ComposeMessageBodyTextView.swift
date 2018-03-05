@@ -44,8 +44,10 @@ class ComposeMessageBodyTextView: ComposeTextView {
             let selectedRect = textView.caretRect(for: uiRange.end)
             var tvRect = containingTableView.convert(selectedRect, from: textView)
 
-            // move the rect a little further, to give space below
-            tvRect.origin.y += tvRect.size.height
+            // Extend the rectangle in both directions vertically,
+            // to both include 1 line above and below.
+            tvRect.origin.y -= tvRect.size.height
+            tvRect.size.height *= 3
 
             containingTableView.scrollRectToVisible(tvRect, animated: false)
         }
