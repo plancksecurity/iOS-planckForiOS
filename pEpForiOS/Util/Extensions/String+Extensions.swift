@@ -347,6 +347,19 @@ public extension String {
     public func applyingDos2Unix() -> String {
         return replacingOccurrences(of: "\r\n", with: "\n")
     }
+
+    /**
+     Equivalent to the drop functions. Returns a substring that comprises the first maxCount
+     characters.
+     */
+    public func take(maxCount: Int) -> String {
+        let theLength = count
+        if maxCount >= theLength {
+            return self
+        } else {
+            return String(dropLast(theLength - maxCount))
+        }
+    }
 }
 
 public extension NSAttributedString {
