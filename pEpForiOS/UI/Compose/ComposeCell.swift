@@ -45,9 +45,10 @@ open class ComposeCell: UITableViewCell, CellProtocol {
     /**
      Makes the contained text view the first responder and sets the cursor at the top.
      */
-    public func makeBecomeFirstResponder() {
+    public func makeBecomeFirstResponder(inTableView: UITableView) {
         textView.becomeFirstResponder()
         textView.selectedRange = NSRange(location: 0, length: 0)
+        textView.scrollCaretToVisible(containingTableView: inTableView)
     }
 }
 

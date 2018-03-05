@@ -37,7 +37,25 @@ open class ComposeTextView: UITextView {
     public func scrollToTop() {
         contentOffset = .zero
     }
-        
+
+    /**
+     Makes sure that the given text view's cursor (if any) is visible, given that it is
+     contained in the given table view.
+     */
+    public func scrollCaretToVisible(containingTableView: UITableView) {
+        if let uiRange = selectedTextRange, uiRange.isEmpty {
+            let selectedRect = caretRect(for: uiRange.end)
+            var tvRect = containingTableView.convert(selectedRect, from: self)
+
+            // Extend the rectangle in both directions vertically,
+            // to both include 1 line above and below.
+            tvRect.origin.y -= tvRect.size.height
+            tvRect.size.height *= 3
+
+            containingTableView.scrollRectToVisible(tvRect, animated: false)
+        }
+    }
+
     public func insertImage(_ identity: Identity, _ hasName: Bool = false,
                             maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
