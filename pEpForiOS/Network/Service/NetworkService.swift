@@ -113,6 +113,9 @@ public class NetworkService {
      */
     public func start() {
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
+        if let connectionCache = lastConnectionDataCache {
+            currentWorker?.imapConnectionDataCache = connectionCache
+        }
         currentWorker?.delegate = self
         currentWorker?.unitTestDelegate = self
         state = .running
@@ -123,6 +126,7 @@ public class NetworkService {
     /// user with server.
     /// Calls NetworkServiceDelegate networkServiceDidFinishLastSyncLoop() when done.
     public func processAllUserActionsAndstop() {
+        lastConnectionDataCache = currentWorker?.imapConnectionDataCache
         currentWorker?.stop()
     }
 
@@ -144,7 +148,8 @@ public class NetworkService {
     }
 
     public func checkForNewMails(completionHandler: @escaping (_ numNewMails: Int?) -> ()) {
-        newMailsService = FetchNumberOfNewMailsService(imapConnectionDataCache: nil)
+        newMailsService =
+            FetchNumberOfNewMailsService(imapConnectionDataCache: lastConnectionDataCache)
         newMailsService?.start(completionBlock: completionHandler)
     }
 
