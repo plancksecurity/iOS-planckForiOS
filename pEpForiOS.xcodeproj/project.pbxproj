@@ -58,6 +58,7 @@
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */; };
 		1587D1632049BE7D002C2157 /* ImapConnectionDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D1622049BE7D002C2157 /* ImapConnectionDataCache.swift */; };
+		1587D165204D66E4002C2157 /* SettingUnecryptedSubjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D164204D66E4002C2157 /* SettingUnecryptedSubjectViewController.swift */; };
 		15A75CE1202B57BF00C0DA28 /* Folder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */; };
 		15A75CEA202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */; };
 		15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */; };
@@ -496,6 +497,7 @@
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+pEp.swift"; sourceTree = "<group>"; };
 		1587D1622049BE7D002C2157 /* ImapConnectionDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapConnectionDataCache.swift; sourceTree = "<group>"; };
+		1587D164204D66E4002C2157 /* SettingUnecryptedSubjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingUnecryptedSubjectViewController.swift; sourceTree = "<group>"; };
 		15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+VirtualMailbox.swift"; sourceTree = "<group>"; };
 		15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSpecificInformationProtocol.swift; sourceTree = "<group>"; };
 		15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmailSpecificInformation.swift; sourceTree = "<group>"; };
@@ -1039,6 +1041,7 @@
 				15EE5A72203B15660041F076 /* SettingBaseViewController.swift */,
 				15EE5A71203B15660041F076 /* SettingSyncTrashViewController.swift */,
 				15EE5A73203B15660041F076 /* LogViewController.swift */,
+				1587D164204D66E4002C2157 /* SettingUnecryptedSubjectViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2385,6 +2388,7 @@
 				8B77BD691E0C1D930060F11F /* AccountSettingsTableViewController.swift in Sources */,
 				431F987D1F6FCD5000A1E4D2 /* CWInternetAddress+Extensions.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
+				1587D165204D66E4002C2157 /* SettingUnecryptedSubjectViewController.swift in Sources */,
 				4351C2DA1F4441190053381F /* scanners.c in Sources */,
 				4351C2D91F4441190053381F /* render.c in Sources */,
 				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,

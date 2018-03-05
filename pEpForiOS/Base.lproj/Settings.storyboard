@@ -166,6 +166,7 @@
                         <segue destination="9LH-QE-79O" kind="show" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
                         <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindAccountAddedWithSegue:" id="dbj-Gx-Exo"/>
                         <segue destination="EOv-Ee-Waq" kind="show" identifier="segueShowSettingSyncTrash" id="W4o-Ei-uzM"/>
+                        <segue destination="FFF-lc-Mu5" kind="show" identifier="segueShowSettingUnecryptedSubject" id="yJT-PJ-mmN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -566,7 +567,7 @@
                 <viewControllerPlaceholder storyboardName="AccountCreation" id="Rly-af-89k" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5880" y="-721"/>
+            <point key="canvasLocation" x="6912" y="-436"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="oQR-4y-gfE">
@@ -638,7 +639,61 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgT-NF-o3r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6500" y="-248"/>
+            <point key="canvasLocation" x="6468" y="-242"/>
+        </scene>
+        <!--Setting Unecrypted Subject View Controller-->
+        <scene sceneID="m5y-Up-gOb">
+            <objects>
+                <viewController id="FFF-lc-Mu5" customClass="SettingUnecryptedSubjectViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AIM-1c-R9H"/>
+                        <viewControllerLayoutGuide type="bottom" id="Og6-28-8BZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5jG-bR-qgt">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bqd-aG-YIs">
+                                <rect key="frame" x="290" y="30" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchChanged:" destination="FFF-lc-Mu5" eventType="valueChanged" id="9bw-h9-Anc"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Protected Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZK3-BJ-fs0">
+                                <rect key="frame" x="16" y="35" width="194" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="If enabled, message subjects are also protected." translatesAutoresizingMaskIntoConstraints="NO" id="1zc-SP-iqW">
+                                <rect key="frame" x="16" y="81" width="343" height="566"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1zc-SP-iqW" firstAttribute="top" secondItem="Bqd-aG-YIs" secondAttribute="bottom" constant="20" id="18R-aJ-MIg"/>
+                            <constraint firstItem="Og6-28-8BZ" firstAttribute="top" secondItem="1zc-SP-iqW" secondAttribute="bottom" constant="20" id="2q3-gP-16D"/>
+                            <constraint firstItem="ZK3-BJ-fs0" firstAttribute="centerY" secondItem="Bqd-aG-YIs" secondAttribute="centerY" id="5xN-a8-7xP"/>
+                            <constraint firstItem="ZK3-BJ-fs0" firstAttribute="top" secondItem="AIM-1c-R9H" secondAttribute="bottom" constant="15" id="EbP-RE-gbS"/>
+                            <constraint firstItem="1zc-SP-iqW" firstAttribute="leading" secondItem="5jG-bR-qgt" secondAttribute="leadingMargin" id="Jp4-QC-ivv"/>
+                            <constraint firstItem="ZK3-BJ-fs0" firstAttribute="leading" secondItem="5jG-bR-qgt" secondAttribute="leadingMargin" id="Wmu-ex-viJ"/>
+                            <constraint firstItem="Bqd-aG-YIs" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZK3-BJ-fs0" secondAttribute="trailing" constant="15" id="jbt-4q-NSs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Bqd-aG-YIs" secondAttribute="trailing" constant="20" id="q8X-V9-dod"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1zc-SP-iqW" secondAttribute="trailing" id="wNP-3f-WJ3"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="longDescription" destination="1zc-SP-iqW" id="A4R-8A-oLs"/>
+                        <outlet property="switch" destination="Bqd-aG-YIs" id="Dff-bt-YbU"/>
+                        <outlet property="switchDescription" destination="ZK3-BJ-fs0" id="k8Q-L1-gmr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mvg-FE-aZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5762" y="-748"/>
         </scene>
     </scenes>
 </document>

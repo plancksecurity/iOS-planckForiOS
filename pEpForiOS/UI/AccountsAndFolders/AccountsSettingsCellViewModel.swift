@@ -42,6 +42,9 @@ public class AccountsSettingsCellViewModel {
                 case .syncTrash:
                     return NSLocalizedString("Sync Trash Folder", comment:
                         "AccountsSettings: Cell (button) title to view syncing trashed setting")
+                case .unecryptedSubject:
+                    return NSLocalizedString("Subject Protection", comment:
+                        "AccountsSettings: Cell (button) title to view unencrypted subject setting")
                 }
             }
             return nil
@@ -59,9 +62,9 @@ public class AccountsSettingsCellViewModel {
                 case .credits:
                     return nil
                 case .syncTrash:
-                    return AppSettings().shouldSyncImapTrashWithServer
-                    ? NSLocalizedString("On", comment: "On/Off status of synTrash setting")
-                    : NSLocalizedString("Off", comment: "On/Off status of synTrash setting")
+                    return onOffStateString(forState: AppSettings().shouldSyncImapTrashWithServer)
+                case .unecryptedSubject:
+                    return onOffStateString(forState: !AppSettings().unecryptedSubjectEnabled)
                 }
             }
             return nil
@@ -70,5 +73,11 @@ public class AccountsSettingsCellViewModel {
 
     public func delete() {
         self.account?.delete()
+    }
+
+    private func onOffStateString(forState enabled: Bool) -> String {
+        return enabled
+        ? NSLocalizedString("On", comment: "On/Off status of setting")
+        : NSLocalizedString("Off", comment: "On/Off status of setting")
     }
 }
