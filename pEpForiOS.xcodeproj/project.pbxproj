@@ -57,6 +57,7 @@
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */; };
+		1587D1632049BE7D002C2157 /* ImapConnectionDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1587D1622049BE7D002C2157 /* ImapConnectionDataCache.swift */; };
 		15A75CE1202B57BF00C0DA28 /* Folder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */; };
 		15A75CEA202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */; };
 		15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */; };
@@ -494,6 +495,7 @@
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+pEp.swift"; sourceTree = "<group>"; };
+		1587D1622049BE7D002C2157 /* ImapConnectionDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapConnectionDataCache.swift; sourceTree = "<group>"; };
 		15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+VirtualMailbox.swift"; sourceTree = "<group>"; };
 		15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSpecificInformationProtocol.swift; sourceTree = "<group>"; };
 		15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmailSpecificInformation.swift; sourceTree = "<group>"; };
@@ -972,6 +974,13 @@
 			name = AttachmentCell;
 			sourceTree = "<group>";
 		};
+		1587D1612049BE4E002C2157 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		15A75CE7202DE65700C0DA28 /* VirtualMailbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1105,6 +1114,7 @@
 		431144A61CC0CB0A0007639D /* Background */ = {
 			isa = PBXGroup;
 			children = (
+				1587D1612049BE4E002C2157 /* Util */,
 				15BBBC611FD0461000B9DCC8 /* Error */,
 				43F6DFD61DEEC752006B526F /* FetchMessagesOperation.swift */,
 				1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */,
@@ -1162,6 +1172,7 @@
 			children = (
 				432DA7421EE01E1000B30BAA /* MessageSyncService */,
 				431E58F41ED57F4D00EFA77F /* AccountVerificationService */,
+				1587D1622049BE7D002C2157 /* ImapConnectionDataCache.swift */,
 				432142651E8FD6A400FBE987 /* ServiceUtil.swift */,
 				43122B3B1DF5B75000610253 /* NetworkService.swift */,
 				4381D0FE1E51A124002743C3 /* NetworkServiceWorker.swift */,
@@ -2225,6 +2236,7 @@
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
 				4362399C1EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift in Sources */,
 				43C322091EA90192005073FB /* PEP+UI.swift in Sources */,
+				1587D1632049BE7D002C2157 /* ImapConnectionDataCache.swift in Sources */,
 				43549A8E1E48B54100210D86 /* AppendTrashMailsOperation.swift in Sources */,
 				15EE5A76203B15670041F076 /* LogViewController.swift in Sources */,
 				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,

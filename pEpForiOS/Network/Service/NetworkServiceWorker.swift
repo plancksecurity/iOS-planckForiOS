@@ -90,7 +90,7 @@ open class NetworkServiceWorker {
 
     let context = Record.Context.background
 
-    var imapConnectionDataCache = [EmailConnectInfo: ImapSyncData]()
+    var imapConnectionDataCache = ImapConnectionDataCache()
 
     init(serviceConfig: NetworkService.ServiceConfig) {
         self.serviceConfig = serviceConfig
@@ -420,8 +420,9 @@ open class NetworkServiceWorker {
     ///
     /// - Parameters:
     ///   - accountInfo: Account info for account to sync
-    ///   - onlySyncChangesTriggeredByUser: if true, the opeartion line is build to do just enough to make sure all user actions (sent,
-    ///                                     deleted, flagged) are synced with the server.
+    ///   - onlySyncChangesTriggeredByUser: if true, the operation line is build to do just enough
+    ///                                     to make sure all user actions (sent, deleted, flagged)
+    ///                                     are synced with the server.
     ///                                     Otherwize changes on server side are synced also.
     /// - Returns: Operation line contaning all operations required to sync one account
     func buildOperationLine(accountInfo: AccountConnectInfo, onlySyncChangesTriggeredByUser: Bool = false) -> OperationLine {
@@ -475,8 +476,7 @@ open class NetworkServiceWorker {
         operations.append(contentsOf: smtpOperations)
 
         if let imapCI = accountInfo.imapConnectInfo {
-            let imapSyncData = ServiceUtil.cachedImapSync(
-                imapConnectionDataCache: imapConnectionDataCache, connectInfo: imapCI)
+            let imapSyncData = imapConnectionDataCache.imapConnectionData(for: imapCI)
 
             // login IMAP
             let opImapLogin = LoginImapOperation(
@@ -584,14 +584,6 @@ open class NetworkServiceWorker {
                 lastImapOp = lastSyncOp
                 operations.append(contentsOf: syncOperations)
             }
-
-            let logoutImapOp = BlockOperation() {
-                imapSyncData.sync?.close()
-            }
-            logoutImapOp.addDependency(lastImapOp)
-            lastImapOp = logoutImapOp
-            opImapFinished.addDependency(logoutImapOp)
-            operations.append(logoutImapOp)
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])

@@ -290,15 +290,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         networkService.checkForNewMails() { (numMails: Int?) in
             guard let numMails = numMails else {
-                completionHandler(.failed)
+                self.cleanupAndCall(completionHandler: completionHandler, result: .failed)
                 return
             }
             switch numMails {
             case 0:
-                completionHandler(.noData)
+                self.cleanupAndCall(completionHandler: completionHandler, result: .noData)
             default:
                 self.informUser(numNewMails: numMails) {
-                    completionHandler(.newData)
+                    self.cleanupAndCall(completionHandler: completionHandler, result: .newData)
                 }
             }
         }
@@ -318,6 +318,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
         }
         return false
+    }
+
+    // MARK: - HELPER
+
+    private func cleanupAndCall(completionHandler:(UIBackgroundFetchResult) -> Void,
+                                result:UIBackgroundFetchResult) {
+        PEPSession.cleanup()
+        completionHandler(result)
     }
 }
 

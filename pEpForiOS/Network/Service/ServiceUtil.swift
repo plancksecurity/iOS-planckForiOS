@@ -28,15 +28,4 @@ open class ServiceUtil {
         }
         return connectInfos
     }
-
-    public static func cachedImapSync(imapConnectionDataCache: [EmailConnectInfo: ImapSyncData],
-                                      connectInfo: EmailConnectInfo) -> ImapSyncData {
-        var imapConnectionDataCache = imapConnectionDataCache
-        if let syncData = imapConnectionDataCache[connectInfo] {
-            return syncData
-        }
-        let imapSyncData = ImapSyncData(connectInfo: connectInfo)
-        imapConnectionDataCache[connectInfo] = imapSyncData
-        return imapSyncData
-    }
 }
