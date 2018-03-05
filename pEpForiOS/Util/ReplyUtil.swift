@@ -18,10 +18,8 @@ public struct ReplyUtil {
     public static func quotedMessageText(message: Message, replyAll: Bool) -> String {
         if let text = message.longMessage {
             let quotedText = quoteText(text)
-            let citation: String? = citationHeaderForMessage(message, replyAll: replyAll)
-            if let c = citation {
-                return "\n\n\(footer())\n\n\(c)\n\n\(quotedText)"
-            }
+            let citation = citationHeaderForMessage(message, replyAll: replyAll)
+            return "\n\n\(footer())\n\n\(citation)\n\n\(quotedText)"
         }
         return "\n\n\(footer())"
     }
@@ -77,14 +75,16 @@ public struct ReplyUtil {
         }
     }
 
-    public static func replyNameFromIdentity(_ identity: Identity) -> String {
+    // MARK: - Private
+
+    static func replyNameFromIdentity(_ identity: Identity) -> String {
         if let name = identity.userName {
             return name
         }
         return identity.address
     }
 
-    public static func quoteText(_ text: String) -> String {
+    static func quoteText(_ text: String) -> String {
         let newLineCS = CharacterSet.init(charactersIn: newline)
         let lines = text.components(separatedBy: newLineCS)
         let quoted = lines.map() {
@@ -94,7 +94,7 @@ public struct ReplyUtil {
         return quotedText
     }
 
-    public static func citationHeaderForMessage(_ message: Message, replyAll: Bool) -> String {
+    static func citationHeaderForMessage(_ message: Message, replyAll: Bool) -> String {
         let dateFormatter = DateFormatter.init()
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.timeStyle = DateFormatter.Style.long
@@ -151,7 +151,7 @@ public struct ReplyUtil {
         }
     }
 
-    public static func footer() -> String {
+    static func footer() -> String {
         return NSLocalizedString("Sent with p≡p",
                                  comment: "Message footer/default text")
     }
