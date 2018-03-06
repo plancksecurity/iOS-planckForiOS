@@ -76,10 +76,9 @@ class ComposeTableViewController: BaseTableViewController {
     private var haveChosenFirstResponder = false
 
     /**
-     The text view that currently owns the focus.
-     Currently, only the message body text view is tracked here.
+     The `ComposeTextView`, if it currently owns the focus.
      */
-    var firstResponderTextView: UITextView?
+    var composeTextViewFirstResponder: ComposeTextView?
 
     // MARK: - Lifecycle
 
@@ -988,6 +987,10 @@ ComposeTableView: Label of swipe left. Removing of attachment.
     func keyboardDidShow(notification: Notification) {
         print("\(#function)")
     }
+
+    func scrollToMessageBodyCaret(composeTextView: ComposeTextView) {
+        composeTextView.scrollCaretToVisible(containingTableView: tableView)
+    }
 }
 
 // MARK: - ComposeCellDelegate
@@ -1104,10 +1107,13 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
                                      comment: "Insert document in message text context menu"),
             action: #selector(addAttachment))
         menuController.menuItems = [media, attachment]
+
+        composeTextViewFirstResponder = textView
     }
 
     func didEndEditing(at indexPath: IndexPath, textView: ComposeMessageBodyTextView) {
         menuController.menuItems?.removeAll()
+        composeTextViewFirstResponder = nil
     }
 }
 
