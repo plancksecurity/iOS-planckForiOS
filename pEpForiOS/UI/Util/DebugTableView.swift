@@ -16,23 +16,23 @@ class DebugTableView: UITableView {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        addObservers()
+        addKeyboardObservers()
     }
 
     deinit {
-        removeObservers()
+        removeKeyboardObservers()
     }
 
     override func willMove(toWindow newWindow: UIWindow?) {
         super.willMove(toWindow: newWindow)
         if newWindow == nil {
-            removeObservers()
+            removeKeyboardObservers()
         } else {
-            addObservers()
+            addKeyboardObservers()
         }
     }
 
-    func addObservers() {
+    func addKeyboardObservers() {
         if keyboardObserver == nil {
             keyboardObserver = NotificationCenter.default.addObserver(
                 forName: NSNotification.Name.UIKeyboardDidShow, object: nil,
@@ -42,7 +42,7 @@ class DebugTableView: UITableView {
         }
     }
 
-    func removeObservers() {
+    func removeKeyboardObservers() {
         if let kObs = keyboardObserver {
             NotificationCenter.default.removeObserver(kObs)
             keyboardObserver = nil
