@@ -80,11 +80,6 @@ public class NetworkService {
         }
     }
 
-    /**
-     The connection cache from the last service worker, in case we go to the background.
-     */
-    var lastConnectionDataCache: ImapConnectionDataCache?
-
     public var timeIntervalForInterestingFolders: TimeInterval {
         get {
             return serviceConfig.timeIntervalForInterestingFolders
@@ -112,12 +107,11 @@ public class NetworkService {
      Start endlessly synchronizing in the background.
      */
     public func start() {
-        currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
-        if let connectionCache = lastConnectionDataCache {
-            currentWorker?.imapConnectionDataCache = connectionCache
+        if currentWorker == nil {
+            currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
+            currentWorker?.delegate = self
+            currentWorker?.unitTestDelegate = self
         }
-        currentWorker?.delegate = self
-        currentWorker?.unitTestDelegate = self
         state = .running
         currentWorker?.start()
     }
@@ -126,7 +120,6 @@ public class NetworkService {
     /// user with server.
     /// Calls NetworkServiceDelegate networkServiceDidFinishLastSyncLoop() when done.
     public func processAllUserActionsAndstop() {
-        lastConnectionDataCache = currentWorker?.imapConnectionDataCache
         currentWorker?.stop()
     }
 
@@ -138,8 +131,6 @@ public class NetworkService {
         if let config = currentWorker?.serviceConfig {
             serviceConfig = config
         }
-        //476.SOI
-        lastConnectionDataCache = currentWorker?.imapConnectionDataCache
         currentWorker?.cancel()
         currentWorker = nil
 
@@ -149,7 +140,7 @@ public class NetworkService {
 
     public func checkForNewMails(completionHandler: @escaping (_ numNewMails: Int?) -> ()) {
         newMailsService =
-            FetchNumberOfNewMailsService(imapConnectionDataCache: lastConnectionDataCache)
+            FetchNumberOfNewMailsService(imapConnectionDataCache: nil)
         newMailsService?.start(completionBlock: completionHandler)
     }
 

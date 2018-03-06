@@ -109,7 +109,6 @@ open class NetworkServiceWorker {
      Cancel all background operations, finish main loop.
      */
     public func cancel() {
-        //476.SOI
         let myComp = #function
 
         self.cancelled = true
@@ -623,7 +622,6 @@ open class NetworkServiceWorker {
         }
         for op in operationLine.operations {
             if cancelled{
-                //476.SOI
                 backgroundQueue.cancelAllOperations()
                 return
             }
