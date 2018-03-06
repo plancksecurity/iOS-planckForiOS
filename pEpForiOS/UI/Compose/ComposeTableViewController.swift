@@ -77,6 +77,10 @@ class ComposeTableViewController: BaseTableViewController {
 
     // MARK: - Lifecycle
 
+    deinit {
+        removeKeyboardObservers()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         registerXibs()
@@ -91,6 +95,11 @@ class ComposeTableViewController: BaseTableViewController {
         setEmailDisplayDefaultNavigationBarStyle()
         takeOverAttachmentsIfRequired()
         setInitialSendButtonStatus()
+        addKeyboardObservers()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        removeKeyboardObservers()
     }
 
     // MARK: - Setup & Configuration
@@ -948,6 +957,31 @@ ComposeTableView: Label of swipe left. Removing of attachment.
         }
 
     }
+
+    // MARK: - KeyboardObserver
+
+    var keyboardObserver: Any?
+
+    func addKeyboardObservers() {
+        if keyboardObserver == nil {
+            keyboardObserver = NotificationCenter.default.addObserver(
+                forName: NSNotification.Name.UIKeyboardDidShow, object: nil,
+                queue: OperationQueue.main) { [weak self] notification in
+                    self?.keyboardDidShow(notification: notification)
+            }
+        }
+    }
+
+    func removeKeyboardObservers() {
+        if let kObs = keyboardObserver {
+            NotificationCenter.default.removeObserver(kObs)
+            keyboardObserver = nil
+        }
+    }
+
+    func keyboardDidShow(notification: Notification) {
+        print("\(#function)")
+    }
 }
 
 // MARK: - ComposeCellDelegate
@@ -1085,8 +1119,6 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
             attachVideo(forMediaWithInfo: info)
         }
     }
-
-
 }
 
 // MARK: - UIDocumentPickerDelegate
