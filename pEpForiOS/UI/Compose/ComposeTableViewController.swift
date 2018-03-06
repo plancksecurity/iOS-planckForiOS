@@ -986,7 +986,7 @@ ComposeTableView: Label of swipe left. Removing of attachment.
 
     func keyboardDidShow(notification: Notification) {
         if let composeView = composeTextViewFirstResponder {
-            Timer.scheduledTimer(timeInterval: 0.01,
+            Timer.scheduledTimer(timeInterval: 0.1,
                                  target: self,
                                  selector: #selector(self.scrollToMessageBodyCaretOnTimer),
                                  userInfo: composeView,
