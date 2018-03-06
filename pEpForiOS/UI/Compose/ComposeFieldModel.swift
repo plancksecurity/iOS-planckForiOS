@@ -65,3 +65,9 @@ public class ComposeFieldModel {
         }
     }
 }
+
+extension ComposeFieldModel: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return "<ComposeFieldModel \(type) \(display) \(height) \(expanded) \(identifier) \(title)>"
+    }
+}
