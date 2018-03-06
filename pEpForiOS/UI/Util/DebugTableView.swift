@@ -8,13 +8,13 @@
 
 import UIKit
 
+/**
+ Meant for debugging layout problems involving table views.
+ */
 class DebugTableView: UITableView {
     override var contentOffset: CGPoint {
         didSet {
             print("contentOffset: \(contentOffset)")
-            if contentOffset.y == 245 {
-                print("Why?")
-            }
         }
     }
 }
