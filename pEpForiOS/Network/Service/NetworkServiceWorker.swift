@@ -361,9 +361,8 @@ open class NetworkServiceWorker {
         var theLastImapOp = lastImapOp
         var operations: [Operation] = []
         for fi in folderInfos {
-            if let folderID = fi.folderID, let firstUID = fi.firstUID,
-                let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
-                firstUID <= lastUID {
+            if let firstUID = fi.firstUID, let lastUID = fi.lastUID,
+            firstUID != 0, lastUID != 0, firstUID <= lastUID {
                 let syncMessagesOp = SyncMessagesOperation(
                     parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderName: fi.name,
@@ -376,16 +375,6 @@ open class NetworkServiceWorker {
                 operations.append(syncMessagesOp)
                 opImapFinished.addDependency(syncMessagesOp)
                 theLastImapOp = syncMessagesOp
-
-                if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
-                                                                errorContainer: errorContainer,
-                                                                imapSyncData: imapSyncData,
-                                                                folderID: folderID) {
-                    syncFlagsOp.addDependency(theLastImapOp)
-                    operations.append(syncFlagsOp)
-                    opImapFinished.addDependency(syncFlagsOp)
-                    theLastImapOp = syncFlagsOp
-                }
             }
         }
         return (theLastImapOp, operations)
