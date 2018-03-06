@@ -1096,7 +1096,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
 // MARK: - MessageBodyCellDelegate
 
 extension ComposeTableViewController: MessageBodyCellDelegate {
-    func didStartEditing(at indexPath: IndexPath, textView: ComposeMessageBodyTextView) {
+    func didStartEditing(at indexPath: IndexPath, composeTextView: ComposeMessageBodyTextView) {
         currentCellIndexPath = indexPath
         let media = UIMenuItem(
             title: NSLocalizedString("Attach media",
@@ -1108,10 +1108,10 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
             action: #selector(addAttachment))
         menuController.menuItems = [media, attachment]
 
-        composeTextViewFirstResponder = textView
+        composeTextViewFirstResponder = composeTextView
     }
 
-    func didEndEditing(at indexPath: IndexPath, textView: ComposeMessageBodyTextView) {
+    func didEndEditing(at indexPath: IndexPath, composeTextView: ComposeMessageBodyTextView) {
         menuController.menuItems?.removeAll()
         composeTextViewFirstResponder = nil
     }

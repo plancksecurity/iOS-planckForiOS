@@ -29,6 +29,6 @@ public protocol ComposeCellDelegate: class {
 }
 
 protocol MessageBodyCellDelegate: ComposeCellDelegate {
-    func didStartEditing(at indexPath: IndexPath, textView: ComposeMessageBodyTextView)
-    func didEndEditing(at indexPath: IndexPath, textView: ComposeMessageBodyTextView)
+    func didStartEditing(at indexPath: IndexPath, composeTextView: ComposeMessageBodyTextView)
+    func didEndEditing(at indexPath: IndexPath, composeTextView: ComposeMessageBodyTextView)
 }

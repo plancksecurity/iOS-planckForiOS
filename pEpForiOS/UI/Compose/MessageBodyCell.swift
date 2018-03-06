@@ -29,7 +29,7 @@ class MessageBodyCell: ComposeCell {
                 return
         }
 
-        delegate.didStartEditing(at: index, textView: theTextView)
+        delegate.didStartEditing(at: index, composeTextView: theTextView)
     }
     
     override func textViewDidEndEditing(_ textView: UITextView) {
@@ -40,7 +40,7 @@ class MessageBodyCell: ComposeCell {
                 return
         }
 
-        delegate.didEndEditing(at: index, textView: theTextView)
+        delegate.didEndEditing(at: index, composeTextView: theTextView)
     }
 }
 
