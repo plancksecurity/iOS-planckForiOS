@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import MessageModel
 
 public enum NetworkAddressType: String {
     case ipv4 = "IPv4"
@@ -29,7 +30,13 @@ public class ConnectInfo: Hashable {
     public let credentialsObjectID: NSManagedObjectID
 
     public let loginName: String?
-    public let loginPassword: String?
+    public let loginPasswordKeyChainKey: String?
+    public var loginPassword: String? {
+        guard let key = loginPasswordKeyChainKey else {
+            return nil
+        }
+        return KeyChain.serverPassword(forKey: key)
+    }
     public let networkAddress: String
     public let networkPort: UInt16
     public let networkAddressType: NetworkAddressType?
@@ -39,7 +46,7 @@ public class ConnectInfo: Hashable {
                 serverObjectID: NSManagedObjectID,
                 credentialsObjectID: NSManagedObjectID,
                 loginName: String? = nil,
-                loginPassword: String? = nil,
+                loginPasswordKeyChainKey: String? = nil,
                 networkAddress: String,
                 networkPort: UInt16,
                 networkAddressType: NetworkAddressType? = nil,
@@ -48,7 +55,7 @@ public class ConnectInfo: Hashable {
         self.serverObjectID = serverObjectID
         self.credentialsObjectID = credentialsObjectID
         self.loginName = loginName
-        self.loginPassword = loginPassword
+        self.loginPasswordKeyChainKey = loginPasswordKeyChainKey
         self.networkAddress = networkAddress
         self.networkPort = networkPort
         self.networkAddressType = networkAddressType
@@ -66,7 +73,6 @@ public class ConnectInfo: Hashable {
             serverObjectID.hashValue &+
             credentialsObjectID.hashValue &+
             MiscUtil.optionalHashValue(loginName) &+
-            MiscUtil.optionalHashValue(loginPassword) &+
             MiscUtil.optionalHashValue(networkAddress) &+
             MiscUtil.optionalHashValue(networkPort) &+
             MiscUtil.optionalHashValue(networkAddressType) &+
@@ -79,7 +85,6 @@ extension ConnectInfo: Equatable {}
 public func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
     return l.accountObjectID == r.accountObjectID
         && l.loginName == r.loginName
-        && l.loginPassword == r.loginPassword
         && l.networkPort == r.networkPort
         && l.networkAddress == r.networkAddress
         && l.networkAddressType == r.networkAddressType

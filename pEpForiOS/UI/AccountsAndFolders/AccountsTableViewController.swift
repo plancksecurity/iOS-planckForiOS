@@ -121,19 +121,23 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // This is bad. We should get the type of Section/Row from the ViewModel.
         let accountsSection = 0
         let settingsSection = 1
-        let settingSyncTrash = 0
-        let settingsRowEnableThreading = 1
-        let settingsRowCredits = 2
-        let settingsRowLogging = 3
+        let settingRowUnprotectedSubject = 0
+        let settingRowSyncTrash = 1
+        let settingsRowEnableThreading = 2
+        let settingsRowCredits = 3
+        let settingsRowLogging = 4
 
         if indexPath.section == accountsSection {
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         } else if indexPath.section == settingsSection {
             switch indexPath.row {
-            case settingSyncTrash:
+            case settingRowUnprotectedSubject:
+                performSegue(withIdentifier: .segueShowSettingUnecryptedSubject, sender: self)
+            case settingRowSyncTrash:
                 performSegue(withIdentifier: .segueShowSettingSyncTrash, sender: self)
             case settingsRowLogging:
                 performSegue(withIdentifier: .segueShowLog, sender: self)
@@ -159,6 +163,7 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueEditAccount
         case segueShowLog
         case segueShowSettingSyncTrash
+        case segueShowSettingUnecryptedSubject
         case sequeShowCredits
         case noAccounts
         case noSegue
@@ -180,9 +185,10 @@ extension AccountsTableViewController: SegueHandlerType {
                 }
             }
             break
-        case .noAccounts: fallthrough
-        case .segueShowSettingSyncTrash: fallthrough
-        case .segueAddNewAccount:
+        case .noAccounts,
+             .segueShowSettingUnecryptedSubject,
+             .segueShowSettingSyncTrash,
+             .segueAddNewAccount:
             guard
                 let destination = segue.destination as? BaseViewController
                 else {

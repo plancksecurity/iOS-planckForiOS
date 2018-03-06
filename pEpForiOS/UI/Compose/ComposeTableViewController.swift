@@ -153,7 +153,7 @@ class ComposeTableViewController: BaseTableViewController {
                     break
                 }
             } else if composeMode == .normal && !haveChosenFirstResponder {
-                recipientCell.makeBecomeFirstResponder()
+                recipientCell.makeBecomeFirstResponder(inTableView: tableView)
                 haveChosenFirstResponder = true
             }
         }
@@ -239,7 +239,7 @@ class ComposeTableViewController: BaseTableViewController {
             }
         }
         if !haveChosenFirstResponder {
-            messageBodyCell.makeBecomeFirstResponder()
+            messageBodyCell.makeBecomeFirstResponder(inTableView: tableView)
             haveChosenFirstResponder = true
         }
     }

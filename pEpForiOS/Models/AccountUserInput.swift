@@ -107,12 +107,11 @@ public struct AccountUserInput {
         }
 
         let thePassword = accessToken?.persistBase64Encoded() ?? password
-
         // The key is created upfront, in case of SASL XOAUTH2, where we want to link
         // the token to the same key
         let credentialsImap = ServerCredentials.create(loginName: logIn,
-                                                       password: thePassword,
                                                        key: accessToken?.keyChainID)
+        credentialsImap.password = thePassword
         credentialsImap.needsVerification = true
 
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
@@ -121,10 +120,14 @@ public struct AccountUserInput {
                                        credentials: credentialsImap)
         imapServer.needsVerification = true
 
-        // In case of SASL XOAUTH2, there will be only 1 credential, with our created key
-        let credentialsSmtp = authMethod == .saslXoauth2 ? credentialsImap :
-            ServerCredentials.create(loginName: logIn, password: thePassword,
-                                     key: accessToken?.keyChainID)
+        let credentialsSmtp: ServerCredentials
+        if authMethod == .saslXoauth2 {
+            // In case of SASL XOAUTH2, there will be only 1 credential, with our created key
+            credentialsSmtp = credentialsImap
+        } else {
+            credentialsSmtp = ServerCredentials.create(loginName: logIn, key: accessToken?.keyChainID)
+            credentialsSmtp.password = thePassword
+        }
         credentialsSmtp.needsVerification = true
 
         let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
