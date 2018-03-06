@@ -22,13 +22,25 @@ class MessageBodyCell: ComposeCell {
     }
 
     override func textViewDidBeginEditing(_ textView: UITextView) {
-        guard let delegate = delegate as? MessageBodyCellDelegate else { return }
-        delegate.didStartEditing(at: index)
+        assert(textView is ComposeMessageBodyTextView)
+
+        guard let delegate = delegate as? MessageBodyCellDelegate,
+            let theTextView = textView as? ComposeMessageBodyTextView else {
+                return
+        }
+
+        delegate.didStartEditing(at: index, textView: theTextView)
     }
     
     override func textViewDidEndEditing(_ textView: UITextView) {
-        guard let delegate = delegate as? MessageBodyCellDelegate else { return }
-        delegate.didEndEditing(at: index)
+        assert(textView is ComposeMessageBodyTextView)
+
+        guard let delegate = delegate as? MessageBodyCellDelegate,
+            let theTextView = textView as? ComposeMessageBodyTextView else {
+                return
+        }
+
+        delegate.didEndEditing(at: index, textView: theTextView)
     }
 }
 

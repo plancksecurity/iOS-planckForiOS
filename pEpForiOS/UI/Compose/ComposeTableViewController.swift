@@ -75,6 +75,12 @@ class ComposeTableViewController: BaseTableViewController {
      */
     private var haveChosenFirstResponder = false
 
+    /**
+     The text view that currently owns the focus.
+     Currently, only the message body text view is tracked here.
+     */
+    var firstResponderTextView: UITextView?
+
     // MARK: - Lifecycle
 
     deinit {
@@ -1087,7 +1093,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
 // MARK: - MessageBodyCellDelegate
 
 extension ComposeTableViewController: MessageBodyCellDelegate {
-    func didStartEditing(at indexPath: IndexPath) {
+    func didStartEditing(at indexPath: IndexPath, textView: ComposeMessageBodyTextView) {
         currentCellIndexPath = indexPath
         let media = UIMenuItem(
             title: NSLocalizedString("Attach media",
@@ -1100,7 +1106,7 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
         menuController.menuItems = [media, attachment]
     }
 
-    func didEndEditing(at indexPath: IndexPath) {
+    func didEndEditing(at indexPath: IndexPath, textView: ComposeMessageBodyTextView) {
         menuController.menuItems?.removeAll()
     }
 }
