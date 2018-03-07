@@ -40,9 +40,11 @@ public class NetworkService {
         let mySelfer: KickOffMySelfProtocol?
         let backgrounder: BackgroundTaskProtocol?
         var errorPropagator: ErrorPropagator?
+        let syncTrashWithServer: Bool
 
         init(sleepTimeInSeconds: Double,
              parentName: String,
+             syncTrashWithServer: Bool,
              mySelfer: KickOffMySelfProtocol?,
              backgrounder: BackgroundTaskProtocol?,
              errorPropagator: ErrorPropagator?) {
@@ -51,6 +53,7 @@ public class NetworkService {
             self.mySelfer = mySelfer
             self.backgrounder = backgrounder
             self.errorPropagator = errorPropagator
+            self.syncTrashWithServer = syncTrashWithServer
         }
     }
 
@@ -91,11 +94,13 @@ public class NetworkService {
 
     public init(sleepTimeInSeconds: Double = 5.0,
                 parentName: String = #function,
+                syncTrashWithServer: Bool,
                 backgrounder: BackgroundTaskProtocol? = nil,
                 mySelfer: KickOffMySelfProtocol? = nil,
                 errorPropagator: ErrorPropagator? = nil) {
         serviceConfig = ServiceConfig(sleepTimeInSeconds: sleepTimeInSeconds,
                                       parentName: parentName,
+                                      syncTrashWithServer: syncTrashWithServer,
                                       mySelfer: mySelfer ??
                                         DefaultMySelfer( parentName: parentName,
                                                          backgrounder: backgrounder),

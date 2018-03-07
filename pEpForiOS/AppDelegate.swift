@@ -182,6 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loadCoreDataStack()
 
         networkService = NetworkService(parentName: #function,
+                                        syncTrashWithServer: AppSettings().shouldSyncImapTrashWithServer,
                                         backgrounder: self,
                                         mySelfer: self,
                                         errorPropagator: errorPropagator)
