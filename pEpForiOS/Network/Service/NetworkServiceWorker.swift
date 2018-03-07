@@ -409,8 +409,8 @@ open class NetworkServiceWorker {
     ///   - accountInfo: Account info for account to sync
     ///   - onlySyncChangesTriggeredByUser: if true, the operation line is build to do just enough
     ///                                     to make sure all user actions (sent, deleted, flagged)
-    ///                                     are synced with the server.
-    ///                                     Otherwize changes on server side are synced also.
+    ///                                     are synced to the server.
+    ///                                     If false, changes on server side are synced also.
     /// - Returns: Operation line contaning all operations required to sync one account
     func buildOperationLine(accountInfo: AccountConnectInfo, onlySyncChangesTriggeredByUser: Bool = false) -> OperationLine {
         let errorContainer = ReportingErrorContainer(delegate: self)
