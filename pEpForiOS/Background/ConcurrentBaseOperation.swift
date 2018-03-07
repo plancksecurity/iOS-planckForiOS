@@ -25,23 +25,11 @@ public class ConcurrentBaseOperation: BaseOperation {
         return queue
     }()
 
-    public override init(parentName: String = #function,
-                         errorContainer: ServiceErrorProtocol = ErrorContainer()) {
-        super.init(parentName: parentName, errorContainer: errorContainer)
-
-        self.addObserver(self, forKeyPath: isCancelledKeyPath,
-                         options: [.initial, .new],
-                         context: nil)
-    }
-
     /** Do we observe the `operationCount` of `backgroundQueue`? */
     var operationCountObserverAdded = false
 
     /** Constant for observing the background queue */
     let operationCountKeyPath = "operationCount"
-
-    /** Keypath for `OperationQueue.isCancelled` */
-    let isCancelledKeyPath = "isCancelled"
 
     var privateMOC: NSManagedObjectContext {
         return Record.Context.background
@@ -62,6 +50,11 @@ public class ConcurrentBaseOperation: BaseOperation {
 
     public override var isFinished: Bool {
         return myFinished && backgroundQueue.operationCount == 0
+    }
+
+    public override func cancel() {
+        super.cancel()
+        reactOnCancel()
     }
 
     deinit {
@@ -107,7 +100,6 @@ public class ConcurrentBaseOperation: BaseOperation {
             if operationCountObserverAdded {
                 backgroundQueue.removeObserver(self, forKeyPath: operationCountKeyPath,
                                                context: nil)
-                removeObserver(self, forKeyPath: isCancelledKeyPath, context: nil)
                 operationCountObserverAdded = false
             }
         }
@@ -135,20 +127,22 @@ public class ConcurrentBaseOperation: BaseOperation {
                 if let c = opCount, c == 0 {
                     markAsFinished()
                 }
-            } else if keyPath == isCancelledKeyPath {
-                guard let cancelled = (newValue as? NSNumber)?.boolValue else {
-                    super.observeValue(forKeyPath: keyPath, of: object, change: change,
-                                       context: context)
-                    return
-                }
-                if cancelled {
-                    backgroundQueue.cancelAllOperations()
-                    backgroundQueue.waitUntilAllOperationsAreFinished()
-                    markAsFinished()
-                }
             } else {
                 super.observeValue(forKeyPath: keyPath, of: object, change: change,
                                    context: context)
+            }
+        }
+        internalQueue.async {
+            f()
+        }
+    }
+
+    func reactOnCancel() {
+        func f() {
+            if isCancelled {
+                backgroundQueue.cancelAllOperations()
+                backgroundQueue.waitUntilAllOperationsAreFinished()
+                markAsFinished()
             }
         }
         internalQueue.async {
