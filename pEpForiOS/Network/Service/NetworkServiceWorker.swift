@@ -361,7 +361,20 @@ open class NetworkServiceWorker {
         var theLastImapOp = lastImapOp
         var operations: [Operation] = []
         for fi in folderInfos {
-            if let folderID = fi.folderID, let firstUID = fi.firstUID,
+            if !fi.folderType.shouldBeSyncedWithServer {
+                let cleanUnsyncedFolderOp = CleanUnsyncedFolderOperation(
+                    cdAccountObejctId: imapSyncData.connectInfo.accountObjectID,
+                    folderName: fi.name)
+                cleanUnsyncedFolderOp.completionBlock = {
+                    cleanUnsyncedFolderOp.completionBlock = nil
+                    Log.info(component: #function, content: "cleanUnsyncedFolderOp finished")
+                }
+                cleanUnsyncedFolderOp.addDependency(theLastImapOp)
+                operations.append(cleanUnsyncedFolderOp)
+                opImapFinished.addDependency(cleanUnsyncedFolderOp)
+                theLastImapOp = cleanUnsyncedFolderOp
+                //IOS-968: remove
+            } else if let folderID = fi.folderID, let firstUID = fi.firstUID,
                 let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
                 firstUID <= lastUID {
                 let syncMessagesOp = SyncMessagesOperation(
@@ -391,29 +404,30 @@ open class NetworkServiceWorker {
         return (theLastImapOp, operations)
     }
 
-    func syncFlagsToServerOperations(
-        folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
-        imapSyncData: ImapSyncData,
-        lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
-        var theLastImapOp = lastImapOp
-        var operations: [Operation] = []
-        for fi in folderInfos {
-            if let folderID = fi.folderID, let firstUID = fi.firstUID,
-                let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
-                firstUID <= lastUID {
-                if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
-                                                                errorContainer: errorContainer,
-                                                                imapSyncData: imapSyncData,
-                                                                folderID: folderID) {
-                    syncFlagsOp.addDependency(theLastImapOp)
-                    operations.append(syncFlagsOp)
-                    opImapFinished.addDependency(syncFlagsOp)
-                    theLastImapOp = syncFlagsOp
-                }
-            }
-        }
-        return (theLastImapOp, operations)
-    }
+    //IOS-968:
+//    func syncFlagsToServerOperations( //IOS-968: remove
+//        folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
+//        imapSyncData: ImapSyncData,
+//        lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
+//        var theLastImapOp = lastImapOp
+//        var operations: [Operation] = []
+//        for fi in folderInfos {
+//            if let folderID = fi.folderID, let firstUID = fi.firstUID,
+//                let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
+//                firstUID <= lastUID {
+//                if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
+//                                                                errorContainer: errorContainer,
+//                                                                imapSyncData: imapSyncData,
+//                                                                folderID: folderID) {
+//                    syncFlagsOp.addDependency(theLastImapOp)
+//                    operations.append(syncFlagsOp)
+//                    opImapFinished.addDependency(syncFlagsOp)
+//                    theLastImapOp = syncFlagsOp
+//                }
+//            }
+//        }
+//        return (theLastImapOp, operations)
+//    }
 
     /// Builds a line of opertations to sync one e-mail account.
     ///
@@ -537,15 +551,16 @@ open class NetworkServiceWorker {
 
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
-            // sync flags
-            let (lastSyncFlagsOp, syncFlagsOps) =
-                syncFlagsToServerOperations(folderInfos: folderInfos,
-                                            errorContainer: errorContainer,
-                                            imapSyncData: imapSyncData,
-                                            lastImapOp: lastImapOp,
-                                            opImapFinished: opImapFinished)
-            lastImapOp = lastSyncFlagsOp
-            operations.append(contentsOf: syncFlagsOps)
+            //IOS-968:
+//            // sync flags
+//            let (lastSyncFlagsOp, syncFlagsOps) =
+//                syncFlagsToServerOperations(folderInfos: folderInfos,
+//                                            errorContainer: errorContainer,
+//                                            imapSyncData: imapSyncData,
+//                                            lastImapOp: lastImapOp,
+//                                            opImapFinished: opImapFinished)
+//            lastImapOp = lastSyncFlagsOp
+//            operations.append(contentsOf: syncFlagsOps)
 
             // Server-to-client synchronization (IMAP)
             if !onlySyncChangesTriggeredByUser {
