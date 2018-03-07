@@ -260,7 +260,7 @@ open class NetworkServiceWorker {
         return (opDrafts, [opAppend, opDrafts])
     }
 
-    func buildAppendTrashOperations(
+    func buildHandleMessagesMarkedAsShouldBeTrashedOperations(
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
         var lastOp = previousOp
@@ -503,17 +503,19 @@ open class NetworkServiceWorker {
                 operations.append(opRequiredFolders)
             }
             // Client-to-server synchronization (IMAP)
-            let (lastAppendSendAndDraftOp, appendSendAndDraftOperations) = buildAppendSendAndDraftOperations(
+            let (lastAppendSendAndDraftOp, appendSendAndDraftOperations) =
+                buildAppendSendAndDraftOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
                 opImapFinished: opImapFinished, previousOp: lastImapOp)
             lastImapOp = lastAppendSendAndDraftOp ?? lastImapOp
             operations.append(contentsOf: appendSendAndDraftOperations)
 
-            let (lastAppendTrashOp, appendTrashOperations) = buildAppendTrashOperations(
+            let (lastHandleTrashedOp, handleTrashedOperations) =
+                buildHandleMessagesMarkedAsShouldBeTrashedOperations(
                 imapSyncData: imapSyncData, errorContainer: errorContainer,
                 opImapFinished: opImapFinished, previousOp: lastImapOp)
-            lastImapOp = lastAppendTrashOp ?? lastImapOp
-            operations.append(contentsOf: appendTrashOperations)
+            lastImapOp = lastHandleTrashedOp ?? lastImapOp
+            operations.append(contentsOf: handleTrashedOperations)
             // UidExpunge
             let (lastUidMoveOp, uidMoveOperations) =
                 buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
