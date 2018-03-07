@@ -275,12 +275,13 @@ extension PersistentImapFolder: CWIMAPCache {
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
         privateMOC.performAndWait() {
-            if self.folder.uidValidity != Int32(theUIDValidity) {
+            if self.folder.uidValidity != Int32(theUIDValidity)
+                && self.folder.folderType.shouldBeSyncedWithServer { // Ignore uidValidity for folders that are not synced with the server
                 Log.warn(
                     component: self.functionName(#function),
                     content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")
-                // For some reason messages are not deleted when removing it from folder 
-                // (even cascade is the delete rule). This couses crashes saving the context, 
+                // For some reason messages are not deleted when removing it from folder
+                // (even cascade is the delete rule). This causes crashes saving the context,
                 // as it holds invalid messages that have no parent folder.
                 // That is why we are deleting the messages manually.
                 if let messages =  self.folder.messages?.allObjects as? [CdMessage] {

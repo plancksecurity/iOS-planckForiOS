@@ -48,7 +48,6 @@ open class ComposeCell: UITableViewCell, CellProtocol {
     public func makeBecomeFirstResponder(inTableView: UITableView) {
         textView.becomeFirstResponder()
         textView.selectedRange = NSRange(location: 0, length: 0)
-        textView.scrollCaretToVisible(containingTableView: inTableView)
     }
 }
 

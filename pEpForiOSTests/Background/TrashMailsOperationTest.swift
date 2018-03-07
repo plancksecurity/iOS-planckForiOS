@@ -77,7 +77,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
         Record.saveAndWait()
 
-        let foldersWithTrashedMessages = AppendTrashMailsOperation.foldersWithTrashedMessages(
+        let foldersWithTrashedMessages = HandleMessagesMarkedAsShouldBeTrashedOperation.foldersWithTrashedMessages(
             context: Record.Context.main)
         XCTAssertEqual(foldersWithTrashedMessages.count, 2)
         if inboxFolder.name ?? "" < draftsFolder.name ?? "" {
@@ -102,11 +102,11 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
 
         let expTrashed = expectation(description: "expTrashed")
-        let trashMailsOpInbox = AppendTrashMailsOperation(
+        let trashMailsOpInbox = HandleMessagesMarkedAsShouldBeTrashedOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder,
             syncTrashWithServer: syncTrashWithServer)
-        let trashMailsOpDrafts = AppendTrashMailsOperation(
+        let trashMailsOpDrafts = HandleMessagesMarkedAsShouldBeTrashedOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder,
             syncTrashWithServer: syncTrashWithServer)
@@ -234,7 +234,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
         Record.saveAndWait()
 
-        let foldersWithTrashedMessages = AppendTrashMailsOperation.foldersWithTrashedMessages(
+        let foldersWithTrashedMessages = HandleMessagesMarkedAsShouldBeTrashedOperation.foldersWithTrashedMessages(
             context: Record.Context.main)
         XCTAssertEqual(foldersWithTrashedMessages.count, 2)
         if inboxFolder.name ?? "" < draftsFolder.name ?? "" {
@@ -259,11 +259,11 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
 
         let expTrashed = expectation(description: "expTrashed")
-        let trashMailsOpInbox = AppendTrashMailsOperation(
+        let trashMailsOpInbox = HandleMessagesMarkedAsShouldBeTrashedOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: inboxFolder,
             syncTrashWithServer: syncTrashWithServer)
-        let trashMailsOpDrafts = AppendTrashMailsOperation(
+        let trashMailsOpDrafts = HandleMessagesMarkedAsShouldBeTrashedOperation(
             parentName: #function,
             imapSyncData: imapSyncData, errorContainer: errorContainer, folder: draftsFolder,
             syncTrashWithServer: syncTrashWithServer)

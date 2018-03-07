@@ -75,7 +75,16 @@ class ComposeTableViewController: BaseTableViewController {
      */
     private var haveChosenFirstResponder = false
 
+    /**
+     The `ComposeTextView`, if it currently owns the focus.
+     */
+    var composeTextViewFirstResponder: ComposeTextView?
+
     // MARK: - Lifecycle
+
+    deinit {
+        removeKeyboardObservers()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,6 +100,11 @@ class ComposeTableViewController: BaseTableViewController {
         setEmailDisplayDefaultNavigationBarStyle()
         takeOverAttachmentsIfRequired()
         setInitialSendButtonStatus()
+        addKeyboardObservers()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        removeKeyboardObservers()
     }
 
     // MARK: - Setup & Configuration
@@ -948,6 +962,47 @@ ComposeTableView: Label of swipe left. Removing of attachment.
         }
 
     }
+
+    // MARK: - KeyboardObserver
+
+    var keyboardObserver: Any?
+
+    func addKeyboardObservers() {
+        if keyboardObserver == nil {
+            keyboardObserver = NotificationCenter.default.addObserver(
+                forName: NSNotification.Name.UIKeyboardDidShow, object: nil,
+                queue: OperationQueue.main) { [weak self] notification in
+                    self?.keyboardDidShow(notification: notification)
+            }
+        }
+    }
+
+    func removeKeyboardObservers() {
+        if let kObs = keyboardObserver {
+            NotificationCenter.default.removeObserver(kObs)
+            keyboardObserver = nil
+        }
+    }
+
+    func keyboardDidShow(notification: Notification) {
+        if let composeView = composeTextViewFirstResponder {
+            Timer.scheduledTimer(timeInterval: 0.1,
+                                 target: self,
+                                 selector: #selector(self.scrollToMessageBodyCaretOnTimer),
+                                 userInfo: composeView,
+                                 repeats: false)
+            scrollToMessageBodyCaret(composeTextView: composeView)
+        }
+    }
+
+    @objc func scrollToMessageBodyCaretOnTimer(_ timer: Timer) {
+        if let composeView = timer.userInfo as? ComposeTextView {
+            self.scrollToMessageBodyCaret(composeTextView: composeView)
+        }
+    }
+    func scrollToMessageBodyCaret(composeTextView: ComposeTextView) {
+        composeTextView.scrollCaretToVisible(containingTableView: tableView)
+    }
 }
 
 // MARK: - ComposeCellDelegate
@@ -1053,7 +1108,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
 // MARK: - MessageBodyCellDelegate
 
 extension ComposeTableViewController: MessageBodyCellDelegate {
-    func didStartEditing(at indexPath: IndexPath) {
+    func didStartEditing(at indexPath: IndexPath, composeTextView: ComposeMessageBodyTextView) {
         currentCellIndexPath = indexPath
         let media = UIMenuItem(
             title: NSLocalizedString("Attach media",
@@ -1064,10 +1119,13 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
                                      comment: "Insert document in message text context menu"),
             action: #selector(addAttachment))
         menuController.menuItems = [media, attachment]
+
+        composeTextViewFirstResponder = composeTextView
     }
 
-    func didEndEditing(at indexPath: IndexPath) {
+    func didEndEditing(at indexPath: IndexPath, composeTextView: ComposeMessageBodyTextView) {
         menuController.menuItems?.removeAll()
+        composeTextViewFirstResponder = nil
     }
 }
 
@@ -1085,8 +1143,6 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
             attachVideo(forMediaWithInfo: info)
         }
     }
-
-
 }
 
 // MARK: - UIDocumentPickerDelegate
