@@ -264,10 +264,10 @@ open class NetworkServiceWorker {
         imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
         opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
         var lastOp = previousOp
-        var trashOps = [AppendTrashMailsOperation]()
-        let folders = AppendTrashMailsOperation.foldersWithTrashedMessages(context: context)
+        var trashOps = [HandleMessagesMarkedAsShouldBeTrashedOperation]()
+        let folders = HandleMessagesMarkedAsShouldBeTrashedOperation.foldersWithTrashedMessages(context: context)
         for cdF in folders {
-            let op = AppendTrashMailsOperation(
+            let op = HandleMessagesMarkedAsShouldBeTrashedOperation(
                 parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
                 errorContainer: errorContainer, folder: cdF,
                 syncTrashWithServer: FolderType.trash.shouldBeSyncedWithServer)
