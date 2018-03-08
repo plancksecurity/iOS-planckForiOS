@@ -114,7 +114,7 @@ class NetworkServiceTests: XCTestCase {
 
         networkService.sendLayerDelegate = sendLayerDelegate
 
-        _ = TestData().createWorkingCdAccount()
+        _ = SecretTestData().createWorkingCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
 
@@ -194,7 +194,7 @@ class NetworkServiceTests: XCTestCase {
 
         let networkService = NetworkService(parentName: #function)
 
-        _ = TestData().createWorkingCdAccount()
+        _ = SecretTestData().createWorkingCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
 
@@ -253,8 +253,8 @@ class NetworkServiceTests: XCTestCase {
         networkService.unitTestDelegate = del
         networkService.sendLayerDelegate = sendLayerDelegate
 
-        let cdAccount = useCorrectSmtpAccount ? TestData().createWorkingCdAccount() :
-            TestData().createSmtpTimeOutCdAccount()
+        let cdAccount = useCorrectSmtpAccount ? SecretTestData().createWorkingCdAccount() :
+            SecretTestData().createSmtpTimeOutCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
 

@@ -645,7 +645,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(myself.fingerPrint)
 
         let id = Identity.from(pEpIdentity: myself)
-        let account = TestData().createWorkingAccount()
+        let account = SecretTestData().createWorkingAccount()
         account.user = id
         account.save()
 
@@ -659,8 +659,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMessageColor() {
-        let identity = TestData().createWorkingAccount().user
-        let account = TestData().createWorkingAccount()
+        let identity = SecretTestData().createWorkingAccount().user
+        let account = SecretTestData().createWorkingAccount()
         account.user = identity
         account.save()
         self.measure {
@@ -676,7 +676,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
         let id = Identity.from(pEpIdentity: identity)
-        let account = TestData().createWorkingAccount()
+        let account = SecretTestData().createWorkingAccount()
         account.user = id
         account.save()
         self.measure {

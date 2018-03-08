@@ -125,7 +125,7 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func testInitialAccountSetup() {
-        let account = UITestData.workingAccount1
+        let account = SecretUITestData.workingAccount1
         newAccountSetup(account: account)
         waitForever()
     }
@@ -135,20 +135,20 @@ class NewAccountSetupUITest: XCTestCase {
         theApp.navigationBars["Inbox"].buttons["Folders"].tap()
         theApp.tables.buttons["add account"].tap()
 
-        let account = UITestData.workingAccount2
+        let account = SecretUITestData.workingAccount2
         newAccountSetup(account: account)
         waitForever()
     }
 
     func testTwoInitialAccounts() {
-        let account1 = UITestData.workingAccount1
+        let account1 = SecretUITestData.workingAccount1
         newAccountSetup(account: account1)
 
         let theApp = app()
         theApp.navigationBars["Inbox"].buttons["Folders"].tap()
         theApp.tables.buttons["add account"].tap()
 
-        let account2 = UITestData.workingAccount2
+        let account2 = SecretUITestData.workingAccount2
         newAccountSetup(account: account2)
         waitForever()
     }
@@ -157,7 +157,7 @@ class NewAccountSetupUITest: XCTestCase {
     /// wait for alert and click OK manually
     func testNewAccountSetupManuallyAccountThatDoesNotWorkAutomatically() {
         let theApp = app()
-        let account = UITestData.manualAccount
+        let account = SecretUITestData.manualAccount
         newAccountSetup(account: account)
 
         //wait until manual setup button appaers
@@ -174,19 +174,19 @@ class NewAccountSetupUITest: XCTestCase {
     // Note: A working accound must exist already.
     func testAddYahooAccount() {
         openAddAccountManualConfiguration()
-        let account = UITestData.workingYahooAccount
+        let account = SecretUITestData.workingYahooAccount
         manualNewAccountSetup(account)
         waitForever()
     }
 
     func testTriggerGmailOauth2() {
-        let account = UITestData.gmailOAuth2Account
+        let account = SecretUITestData.gmailOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
     }
 
     func testTriggerYahooOauth2() {
-        let account = UITestData.yahooOAuth2Account
+        let account = SecretUITestData.yahooOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
     }

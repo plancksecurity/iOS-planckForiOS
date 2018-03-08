@@ -5,10 +5,10 @@ Pods/.*
 \.orig$
 \.git/
 \.gitkeep
-scripts/config.ini$
 .*~.storyboard$
 pEpTrustWords\.bundle/system\.db
-.*secret.*\.xcconfig$
-.*TestData\.swift$
+.*secret.*
+.*Secret.*
+.*SECRET.*
 
 glob

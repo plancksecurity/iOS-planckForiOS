@@ -32,7 +32,7 @@ class PEPSessionTest: XCTestCase {
 
     func testPEPConversion() {
         Log.info(component: "testPEPConversion", content: "test")
-        let account = TestData().createWorkingAccount()
+        let account = SecretTestData().createWorkingAccount()
         account.save()
 
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
@@ -64,7 +64,7 @@ class PEPSessionTest: XCTestCase {
         let pepmessage = cdmessage1.pEpMessageDict()
 
         session.encryptMessageDict(pepmessage, extra: nil, encFormat: PEP_enc_PEP, dest: nil)
-        session.decryptMessageDict(pepmessage, dest: nil, keys: nil)
+        try! session.decryptMessageDict(pepmessage, dest: nil, rating: nil, keys: nil)
         cdmessage2.update(pEpMessageDict: pepmessage)
         XCTAssertEqual(cdmessage2,cdmessage1)
 
@@ -73,7 +73,7 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testMessageIDAndReferencesAfterEncrypt() {
-        let testData = TestData()
+        let testData = SecretTestData()
         let myself = testData.createWorkingIdentity(number: 0)
         let mySubject = "Some Subject"
         let myMessageID = "myID"
@@ -125,7 +125,7 @@ class PEPSessionTest: XCTestCase {
     func testParseMessageHeapBufferOverflow() {
         CWLogger.setLogger(Log.shared)
 
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount
@@ -147,7 +147,7 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testDecryptMessageHeapBufferOverflow() {
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount
@@ -165,8 +165,8 @@ class PEPSessionTest: XCTestCase {
         let session = PEPSession()
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
-        let _ = session.decryptMessageDict(
-            pEpMessage, dest: &pepDecryptedMessage, keys: &keys)
+        try! session.decryptMessageDict(
+            pEpMessage, dest: &pepDecryptedMessage, rating: nil, keys: &keys)
         XCTAssertNotNil(pepDecryptedMessage?[kPepLongMessage])
     }
 
@@ -174,7 +174,7 @@ class PEPSessionTest: XCTestCase {
     func testAttachmentsDoNotGetDuplilcated() {
         CWLogger.setLogger(Log.shared)
 
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount
@@ -199,7 +199,7 @@ class PEPSessionTest: XCTestCase {
         session: PEPSession = PEPSession()) {
         var pepDecryptedMessage: PEPMessage? = nil
         var keys: NSArray?
-        let _ = session.decryptMessage(message, dest: &pepDecryptedMessage, keys: &keys)
+        try! session.decryptMessage(message, dest: &pepDecryptedMessage, rating: nil, keys: &keys)
         if let decMsg = pepDecryptedMessage {
             XCTAssertEqual(decMsg.messageID, myID)
             // check that original references are restored (ENGINE-290)

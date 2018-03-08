@@ -70,7 +70,7 @@ class MessagePantomimeTests: XCTestCase {
     }
 
     func testReferences() {
-        let testData = TestData()
+        let testData = SecretTestData()
         let refs = ["ref1", "ref2", "ref3"]
         let inReplyTo = "ref4"
         var allRefs = refs

@@ -22,7 +22,7 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
 
-        let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"
@@ -79,7 +79,11 @@ class HandshakeTests: XCTestCase {
 
         var pEpDecryptedMessage: PEPMessage? = nil
         var keys: NSArray?
-        let rating = session.decryptMessage(pEpMessage, dest: &pEpDecryptedMessage, keys: &keys)
+        var rating = PEP_rating_undefined
+        try! session.decryptMessage(pEpMessage,
+                                    dest: &pEpDecryptedMessage,
+                                    rating: &rating,
+                                    keys: &keys)
         XCTAssertEqual(rating, PEP_rating_unencrypted)
 
         guard let theMessage = pEpDecryptedMessage else {

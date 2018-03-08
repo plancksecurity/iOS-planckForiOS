@@ -145,11 +145,12 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
 
         // Get uuids of messages in trash folder
         let trashed = trashFolder.allMessages()
-        let decryptedTrashUUIDs = trashed.map { (cdEncrypredMessage: CdMessage) -> String in
+        let decryptedTrashUUIDs = trashed.map { (cdEncryptedMessage: CdMessage) -> String in
             var decrypted: PEPMessage? = nil
-            PEPSession().decryptMessage(cdEncrypredMessage.pEpMessage(),
-                                        dest: &decrypted,
-                                        keys: nil)
+            try! PEPSession().decryptMessage(cdEncryptedMessage.pEpMessage(),
+                                             dest: &decrypted,
+                                             rating: nil,
+                                             keys: nil)
             return  decrypted!.messageID!
         }
 

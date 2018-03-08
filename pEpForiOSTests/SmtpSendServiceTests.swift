@@ -29,12 +29,12 @@ class SmtpSendServiceTests: XCTestCase {
         super.setUp()
         persistentSetup = PersistentSetup()
 
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
         self.cdAccount = cdAccount
 
-        let cdDisfunctionalAccount = TestData().createDisfunctionalCdAccount()
+        let cdDisfunctionalAccount = SecretTestData().createDisfunctionalCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
         self.cdAccountDisfunctional = cdDisfunctionalAccount

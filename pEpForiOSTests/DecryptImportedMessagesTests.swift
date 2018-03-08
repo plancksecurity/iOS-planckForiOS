@@ -38,7 +38,7 @@ class DecryptImportedMessagesTests: XCTestCase {
 
     func createLocalAccount(ownUserName: String, ownUserID: String,
                             ownEmailAddress: String) -> CdAccount {
-        let cdOwnAccount = TestData().createWorkingCdAccount(number: 0)
+        let cdOwnAccount = SecretTestData().createWorkingCdAccount(number: 0)
         cdOwnAccount.identity?.userName = ownUserName
         cdOwnAccount.identity?.userID = ownUserID
         cdOwnAccount.identity?.address = ownEmailAddress

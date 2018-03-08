@@ -49,52 +49,64 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 Log.info(component: self.comp,
                          content: "Will decrypt \(cdMessage.logString())")
                 let session = PEPSession()
-                let rating = session.decryptMessageDict(
-                    pepMessage, dest: &pEpDecryptedMessage, keys: &keys)
-                Log.info(component: self.comp,
-                         content: "Decrypted message \(cdMessage.logString()) with color \(rating)")
 
-                let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
-
-                self.delegate?.decrypted(
-                    originalCdMessage: cdMessage, decryptedMessageDict: pEpDecryptedMessage,
-                    rating: rating, keys: theKeys) // Only used in Tests. Maybe refactor out.
-
-                switch rating {
-                case PEP_rating_undefined,
-                     PEP_rating_cannot_decrypt,
-                     PEP_rating_have_no_key,
-                     PEP_rating_b0rken:
-                    // Do nothing, try to decrypt again later though
-                    break
-                case PEP_rating_unencrypted,
-                     PEP_rating_unencrypted_for_some,
-                     PEP_rating_unreliable,
-                     PEP_rating_mistrust,
-                     PEP_rating_reliable,
-                     PEP_rating_reliable,
-                     PEP_rating_trusted,
-                     PEP_rating_trusted,
-                     PEP_rating_trusted_and_anonymized,
-                     PEP_rating_fully_anonymous:
-                    self.updateWholeMessage(
-                        pEpDecryptedMessage: pEpDecryptedMessage,
-                        pEpColorRating: rating, cdMessage: cdMessage,
-                        keys: theKeys, underAttack: false, context: context)
-                    break
-                case PEP_rating_under_attack:
-                    self.updateWholeMessage(
-                        pEpDecryptedMessage: pEpDecryptedMessage,
-                        pEpColorRating: rating, cdMessage: cdMessage,
-                        keys: theKeys, underAttack: true, context: context)
-                default:
-                    Log.warn(
-                        component: self.comp,
-                        content: "No default action for decrypted message \(cdMessage.logString())")
-                    break
+                var rating = PEP_rating_undefined
+                do {
+                    try session.decryptMessageDict(
+                        pepMessage, dest: &pEpDecryptedMessage, rating: &rating, keys: &keys)
+                    handleDecryptionSuccess(cdMessage: cdMessage,
+                                            pEpDecryptedMessage: pEpDecryptedMessage,
+                                            rating: rating,
+                                            keys: keys)
+                } catch let error as NSError {
+                    // log, and try again next time
+                    Log.error(component: #function, error: error)
                 }
             }
             self.markAsFinished()
+        }
+
+        func handleDecryptionSuccess(cdMessage: CdMessage, pEpDecryptedMessage: NSDictionary?,
+                                     rating: PEP_rating, keys: NSArray?) {
+            let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
+
+            self.delegate?.decrypted(
+                originalCdMessage: cdMessage, decryptedMessageDict: pEpDecryptedMessage,
+                rating: rating, keys: theKeys) // Only used in Tests. Maybe refactor out.
+
+            switch rating {
+            case PEP_rating_undefined,
+                 PEP_rating_cannot_decrypt,
+                 PEP_rating_have_no_key,
+                 PEP_rating_b0rken:
+                // Do nothing, try to decrypt again later though
+                break
+            case PEP_rating_unencrypted,
+                 PEP_rating_unencrypted_for_some,
+                 PEP_rating_unreliable,
+                 PEP_rating_mistrust,
+                 PEP_rating_reliable,
+                 PEP_rating_reliable,
+                 PEP_rating_trusted,
+                 PEP_rating_trusted,
+                 PEP_rating_trusted_and_anonymized,
+                 PEP_rating_fully_anonymous:
+                self.updateWholeMessage(
+                    pEpDecryptedMessage: pEpDecryptedMessage,
+                    pEpColorRating: rating, cdMessage: cdMessage,
+                    keys: theKeys, underAttack: false, context: context)
+                break
+            case PEP_rating_under_attack:
+                self.updateWholeMessage(
+                    pEpDecryptedMessage: pEpDecryptedMessage,
+                    pEpColorRating: rating, cdMessage: cdMessage,
+                    keys: theKeys, underAttack: true, context: context)
+            default:
+                Log.warn(
+                    component: self.comp,
+                    content: "No default action for decrypted message \(cdMessage.logString())")
+                break
+            }
         }
     }
 

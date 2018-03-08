@@ -26,7 +26,7 @@ class MessageModelTests: XCTestCase {
     }
 
     func testSaveMessageForSending() {
-        let testData = TestData()
+        let testData = SecretTestData()
         let cdAccount = testData.createWorkingCdAccount()
         let account = cdAccount.account()
         account.save()
