@@ -102,6 +102,7 @@ open class NetworkServiceWorker {
     public func start() {
         Log.info(component: #function, content: "\(String(describing: self))")
         cancelled = false
+        imapConnectionDataCache.reset()
         self.process()
     }
 
@@ -380,10 +381,6 @@ open class NetworkServiceWorker {
                     parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderName: fi.name,
                     firstUID: firstUID, lastUID: lastUID)
-                syncMessagesOp.completionBlock = {
-                    syncMessagesOp.completionBlock = nil
-                    Log.info(component: #function, content: "syncMessagesOp finished")
-                }
                 syncMessagesOp.addDependency(theLastImapOp)
                 operations.append(syncMessagesOp)
                 opImapFinished.addDependency(syncMessagesOp)
@@ -451,15 +448,17 @@ open class NetworkServiceWorker {
             operations.append(debugTimerOp)
         #endif
 
-        let fixAttachmentsOp = FixAttachmentsOperation(parentName: description,
-                                                       errorContainer: ErrorContainer())
-        operations.append(fixAttachmentsOp)
-        opAllFinished.addDependency(fixAttachmentsOp)
+        if !onlySyncChangesTriggeredByUser {
+            let fixAttachmentsOp = FixAttachmentsOperation(parentName: description,
+                                                           errorContainer: ErrorContainer())
+            operations.append(fixAttachmentsOp)
+            opAllFinished.addDependency(fixAttachmentsOp)
+        }
 
         // Items not associated with any mailbox (e.g., SMTP send)
         let (_, smtpOperations) = buildSmtpOperations(
             accountInfo: accountInfo, errorContainer: ReportingErrorContainer(delegate: self),
-            opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
+            opSmtpFinished: opSmtpFinished, lastOperation: nil)
         operations.append(contentsOf: smtpOperations)
 
         if let imapCI = accountInfo.imapConnectInfo {

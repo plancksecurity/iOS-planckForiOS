@@ -11,12 +11,12 @@ import Foundation
 struct ImapConnectionDataCache {
     private var imapConnectionDataCache = [EmailConnectInfo: ImapSyncData]()
 
-    var isEmpty: Bool {
-        return imapConnectionDataCache.count == 0
-    }
-
     var emailConnectInfos: [EmailConnectInfo] {
         return Array(imapConnectionDataCache.keys)
+    }
+
+    mutating func reset() {
+        imapConnectionDataCache = [EmailConnectInfo: ImapSyncData]()
     }
 
     mutating func imapConnectionData(for connectInfo: EmailConnectInfo) -> ImapSyncData {

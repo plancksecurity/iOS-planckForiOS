@@ -55,10 +55,8 @@ class FetchNumberOfNewMailsService {
 
     private func gatherConnectInfos() -> [EmailConnectInfo] {
         var connectInfos = [EmailConnectInfo]()
-        if !imapConnectionDataCache.isEmpty {
-            for ci in imapConnectionDataCache.emailConnectInfos {
-                connectInfos.append(ci)
-            }
+        for ci in imapConnectionDataCache.emailConnectInfos {
+            connectInfos.append(ci)
         }
         if connectInfos.isEmpty {
             let accountCIs = ServiceUtil.gatherConnectInfos(
