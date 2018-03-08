@@ -64,7 +64,7 @@ class PEPSessionTest: XCTestCase {
         let pepmessage = cdmessage1.pEpMessageDict()
 
         session.encryptMessageDict(pepmessage, extra: nil, encFormat: PEP_enc_PEP, dest: nil)
-        session.decryptMessageDict(pepmessage, dest: nil, keys: nil)
+        try! session.decryptMessageDict(pepmessage, dest: nil, rating: nil, keys: nil)
         cdmessage2.update(pEpMessageDict: pepmessage)
         XCTAssertEqual(cdmessage2,cdmessage1)
 
@@ -165,8 +165,8 @@ class PEPSessionTest: XCTestCase {
         let session = PEPSession()
         var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
-        let _ = session.decryptMessageDict(
-            pEpMessage, dest: &pepDecryptedMessage, keys: &keys)
+        try! session.decryptMessageDict(
+            pEpMessage, dest: &pepDecryptedMessage, rating: nil, keys: &keys)
         XCTAssertNotNil(pepDecryptedMessage?[kPepLongMessage])
     }
 
@@ -199,7 +199,7 @@ class PEPSessionTest: XCTestCase {
         session: PEPSession = PEPSession()) {
         var pepDecryptedMessage: PEPMessage? = nil
         var keys: NSArray?
-        let _ = session.decryptMessage(message, dest: &pepDecryptedMessage, keys: &keys)
+        try! session.decryptMessage(message, dest: &pepDecryptedMessage, rating: nil, keys: &keys)
         if let decMsg = pepDecryptedMessage {
             XCTAssertEqual(decMsg.messageID, myID)
             // check that original references are restored (ENGINE-290)
