@@ -64,7 +64,7 @@ class PEPSessionTest: XCTestCase {
         let pepmessage = cdmessage1.pEpMessageDict()
 
         session.encryptMessageDict(pepmessage, extra: nil, encFormat: PEP_enc_PEP, dest: nil)
-        try! session.decryptMessageDict(pepmessage, dest: nil, rating: nil, keys: nil)
+        try! session.decryptMessageDict(pepmessage, rating: nil, keys: nil)
         cdmessage2.update(pEpMessageDict: pepmessage)
         XCTAssertEqual(cdmessage2,cdmessage1)
 
@@ -163,11 +163,10 @@ class PEPSessionTest: XCTestCase {
 
         let pEpMessage = cdMessage.pEpMessageDict(outgoing: false)
         let session = PEPSession()
-        var pepDecryptedMessage: NSDictionary? = nil
         var keys: NSArray?
-        try! session.decryptMessageDict(
-            pEpMessage, dest: &pepDecryptedMessage, rating: nil, keys: &keys)
-        XCTAssertNotNil(pepDecryptedMessage?[kPepLongMessage])
+        let pepDecryptedMessage = try! session.decryptMessageDict(
+            pEpMessage, rating: nil, keys: &keys)
+        XCTAssertNotNil(pepDecryptedMessage[kPepLongMessage])
     }
 
     // IOS-211
@@ -196,16 +195,10 @@ class PEPSessionTest: XCTestCase {
 
     func tryDecryptMessage(
         message: PEPMessage, myID: String, references: [String],
-        session: PEPSession = PEPSession()) {
-        var pepDecryptedMessage: PEPMessage? = nil
-        var keys: NSArray?
-        try! session.decryptMessage(message, dest: &pepDecryptedMessage, rating: nil, keys: &keys)
-        if let decMsg = pepDecryptedMessage {
-            XCTAssertEqual(decMsg.messageID, myID)
-            // check that original references are restored (ENGINE-290)
-            XCTAssertEqual(decMsg.references ?? [], references)
-        } else {
-            XCTFail()
-        }
+        session: PEPSession = PEPSession()) {        var keys: NSArray?
+        let pepDecryptedMessage = try! session.decryptMessage(message, rating: nil, keys: &keys)
+        XCTAssertEqual(pepDecryptedMessage.messageID, myID)
+        // check that original references are restored (ENGINE-290)
+        XCTAssertEqual(pepDecryptedMessage.references ?? [], references)
     }
 }
