@@ -15,6 +15,10 @@ struct ImapConnectionDataCache {
         return Array(imapConnectionDataCache.keys)
     }
 
+    mutating func reset() {
+        imapConnectionDataCache = [EmailConnectInfo: ImapSyncData]()
+    }
+
     mutating func imapConnectionData(for connectInfo: EmailConnectInfo) -> ImapSyncData {
         if let cachedData = imapConnectionDataCache[connectInfo] {
             return cachedData

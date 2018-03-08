@@ -102,6 +102,7 @@ open class NetworkServiceWorker {
     public func start() {
         Log.info(component: #function, content: "\(String(describing: self))")
         cancelled = false
+        imapConnectionDataCache.reset()
         self.process()
     }
 
