@@ -34,25 +34,30 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
         }
         let theContext = Record.Context.background
         theContext.perform {
-            self.reevaluate(context: theContext)
+            self.reEvaluate(context: theContext)
             self.markAsFinished()
         }
     }
 
-    func reevaluate(context: NSManagedObjectContext) {
+    func reEvaluate(context: NSManagedObjectContext) {
         guard let cdMsg = CdMessage.search(message: message) else {
             addError(ReevaluationError.noMessageFound)
             return
         }
         let theSession = PEPSession()
         let pepMessage = cdMsg.pEpMessageDict()
-        let newRating = theSession.reEvaluateMessageRating(pepMessage)
+        do {
+            var newRating = PEP_rating_undefined
+            try theSession.reEvaluateMessageRating(pepMessage, rating: &newRating)
 
-        context.updateAndSave(object: cdMsg) {
-            cdMsg.pEpRating = Int16(newRating.rawValue)
+            context.updateAndSave(object: cdMsg) {
+                cdMsg.pEpRating = Int16(newRating.rawValue)
+            }
+
+            context.saveAndLogErrors()
+            message.pEpRatingInt = Int(newRating.rawValue)
+        } catch let error as NSError {
+            Log.error(component: #function, error: error)
         }
-
-        context.saveAndLogErrors()
-        message.pEpRatingInt = Int(newRating.rawValue)
     }
 }
