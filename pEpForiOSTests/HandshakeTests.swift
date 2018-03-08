@@ -22,7 +22,7 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
 
-        let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
         cdMyAccount.identity?.userName = "iOS Test 002"
         cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
         cdMyAccount.identity?.address = "iostest002@peptest.ch"

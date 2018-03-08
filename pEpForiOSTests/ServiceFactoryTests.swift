@@ -21,7 +21,7 @@ class ServiceFactoryTests: XCTestCase {
         super.setUp()
         persistentSetup = PersistentSetup()
 
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
 
         TestUtil.skipValidation()
         Record.saveAndWait()

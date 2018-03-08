@@ -9,7 +9,7 @@ verboseLogging = False
 def open_connection():
     # Read the config file
     config = configparser.ConfigParser()
-    config.read([os.path.expanduser('config.ini')])
+    config.read([os.path.expanduser('secret.ini')])
 
     # Connect to the server
     hostname = config.get('server', 'hostname')

@@ -140,7 +140,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
     }
 
     func testInsertOrUpdatePantomimeMessage() {
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount

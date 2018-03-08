@@ -93,7 +93,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
     /// in TestData.createWorkingAccountSettings == Accountsettingsadapter recommended server settings.
     /// Otherwize the test always succeeds.
     func testBasic() {
-        let td = TestData()
+        let td = SecretTestData()
         let accountSettings = td.createWorkingAccountSettings()
         guard let passw = accountSettings.password else {
             XCTFail("expecting password for account")

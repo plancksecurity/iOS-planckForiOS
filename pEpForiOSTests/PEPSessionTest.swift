@@ -32,7 +32,7 @@ class PEPSessionTest: XCTestCase {
 
     func testPEPConversion() {
         Log.info(component: "testPEPConversion", content: "test")
-        let account = TestData().createWorkingAccount()
+        let account = SecretTestData().createWorkingAccount()
         account.save()
 
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
@@ -73,7 +73,7 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testMessageIDAndReferencesAfterEncrypt() {
-        let testData = TestData()
+        let testData = SecretTestData()
         let myself = testData.createWorkingIdentity(number: 0)
         let mySubject = "Some Subject"
         let myMessageID = "myID"
@@ -125,7 +125,7 @@ class PEPSessionTest: XCTestCase {
     func testParseMessageHeapBufferOverflow() {
         CWLogger.setLogger(Log.shared)
 
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount
@@ -147,7 +147,7 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testDecryptMessageHeapBufferOverflow() {
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount
@@ -174,7 +174,7 @@ class PEPSessionTest: XCTestCase {
     func testAttachmentsDoNotGetDuplilcated() {
         CWLogger.setLogger(Log.shared)
 
-        let cdAccount = TestData().createWorkingCdAccount()
+        let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
         folder.account = cdAccount

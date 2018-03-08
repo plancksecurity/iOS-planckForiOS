@@ -40,14 +40,14 @@ class AccountVerificationServiceTests: XCTestCase {
     }
 
     func testDirectlySuccess() {
-        testVerification(account: TestData().createWorkingAccount(),
+        testVerification(account: SecretTestData().createWorkingAccount(),
                          expectedResult: AccountVerificationResult.ok,
                          testDirectly: true)
     }
 
     func testDirectlyImapFailure() {
         testVerification(
-            account: TestData().createImapTimeOutAccount(),
+            account: SecretTestData().createImapTimeOutAccount(),
             expectedResult: AccountVerificationResult.imapError(
                 .connectionTimedOut("connectionTimedOut(_:notification:)")),
             testDirectly: true)
@@ -55,21 +55,21 @@ class AccountVerificationServiceTests: XCTestCase {
 
     func testDirectlySmtpFailure() {
         testVerification(
-            account: TestData().createSmtpTimeOutAccount(),
+            account: SecretTestData().createSmtpTimeOutAccount(),
             expectedResult: AccountVerificationResult.smtpError(
                 .connectionTimedOut("connectionTimedOut(_:theNotification:)")),
             testDirectly: true)
     }
 
     func testMessageSyncServiceSuccess() {
-        testVerification(account: TestData().createWorkingAccount(),
+        testVerification(account: SecretTestData().createWorkingAccount(),
                          expectedResult: AccountVerificationResult.ok,
                          testDirectly: false)
     }
 
     func testMessageSyncServiceImapFailures() {
         testVerification(
-            account: TestData().createImapTimeOutAccount(),
+            account: SecretTestData().createImapTimeOutAccount(),
             expectedResult: AccountVerificationResult.imapError(
                 .connectionTimedOut("connectionTimedOut(_:notification:)")),
             testDirectly: false)
@@ -77,7 +77,7 @@ class AccountVerificationServiceTests: XCTestCase {
 
     func testMessageSyncServiceSmtpFailures() {
         testVerification(
-            account: TestData().createSmtpTimeOutAccount(),
+            account: SecretTestData().createSmtpTimeOutAccount(),
             expectedResult: AccountVerificationResult.smtpError(
                 .connectionTimedOut("connectionTimedOut(_:theNotification:)")),
             testDirectly: false)

@@ -35,13 +35,13 @@ class DecryptionTestsInternal: XCTestCase {
 
         persistentSetup = PersistentSetup()
 
-        let cdMyAccount = TestData().createWorkingCdAccount(number: 0)
+        let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
         guard let myPepIdentity = pEpIdentity(cdAccount: cdMyAccount) else {
             fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
         }
         pEpOwnIdentity = myPepIdentity
 
-        let cdSenderAccount = TestData().createWorkingCdAccount(number: 1)
+        let cdSenderAccount = SecretTestData().createWorkingCdAccount(number: 1)
         guard let senderPepIdentity = cdSenderAccount.identity?.pEpIdentity() else {
             fatalError("Error PEPIdentity") //XCTFail() does can not be used here, sorry.
         }
