@@ -77,19 +77,12 @@ class HandshakeTests: XCTestCase {
         }
         XCTAssertTrue(foundXpEpVersion)
 
-        var pEpDecryptedMessage: PEPMessage? = nil
         var keys: NSArray?
         var rating = PEP_rating_undefined
-        try! session.decryptMessage(pEpMessage,
-                                    dest: &pEpDecryptedMessage,
-                                    rating: &rating,
-                                    keys: &keys)
+        let theMessage = try! session.decryptMessage(pEpMessage,
+                                                              rating: &rating,
+                                                              keys: &keys)
         XCTAssertEqual(rating, PEP_rating_unencrypted)
-
-        guard let theMessage = pEpDecryptedMessage else {
-            XCTFail("expected message decrypt to work")
-            return
-        }
 
         guard let pEpFrom = theMessage.from else {
             XCTFail("expected from in message")
