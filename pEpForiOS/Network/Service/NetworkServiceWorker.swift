@@ -380,10 +380,6 @@ open class NetworkServiceWorker {
                     parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData, folderName: fi.name,
                     firstUID: firstUID, lastUID: lastUID)
-                syncMessagesOp.completionBlock = {
-                    syncMessagesOp.completionBlock = nil
-                    Log.info(component: #function, content: "syncMessagesOp finished")
-                }
                 syncMessagesOp.addDependency(theLastImapOp)
                 operations.append(syncMessagesOp)
                 opImapFinished.addDependency(syncMessagesOp)
