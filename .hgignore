@@ -9,6 +9,6 @@ scripts/config.ini$
 .*~.storyboard$
 pEpTrustWords\.bundle/system\.db
 .*secret.*\.xcconfig$
-.*TestData\.swift$
+.*TestData.*\.swift$
 
 glob
