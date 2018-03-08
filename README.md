@@ -67,7 +67,7 @@ Open pEpForiOS.xcworkspace and build schema "pEp".
 
 ### Unit Tests
 
-The non-existing file referenced in the unit test project, ./pEpForiOSTests/Util/TestData.swift, must be
+The non-existing file referenced in the unit test project, ./pEpForiOSTests/TestUtil/TestData.swift, must be
 created, with a class named TestData, derived from TestDataBase. Override populateAccounts().
 
 The tests will not compile without a syntactically correct TestData.swift that inherits from TestDataBase.
