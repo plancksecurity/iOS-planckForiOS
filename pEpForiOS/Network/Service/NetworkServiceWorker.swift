@@ -447,15 +447,17 @@ open class NetworkServiceWorker {
             operations.append(debugTimerOp)
         #endif
 
-        let fixAttachmentsOp = FixAttachmentsOperation(parentName: description,
-                                                       errorContainer: ErrorContainer())
-        operations.append(fixAttachmentsOp)
-        opAllFinished.addDependency(fixAttachmentsOp)
+        if !onlySyncChangesTriggeredByUser {
+            let fixAttachmentsOp = FixAttachmentsOperation(parentName: description,
+                                                           errorContainer: ErrorContainer())
+            operations.append(fixAttachmentsOp)
+            opAllFinished.addDependency(fixAttachmentsOp)
+        }
 
         // Items not associated with any mailbox (e.g., SMTP send)
         let (_, smtpOperations) = buildSmtpOperations(
             accountInfo: accountInfo, errorContainer: ReportingErrorContainer(delegate: self),
-            opSmtpFinished: opSmtpFinished, lastOperation: fixAttachmentsOp)
+            opSmtpFinished: opSmtpFinished, lastOperation: nil)
         operations.append(contentsOf: smtpOperations)
 
         if let imapCI = accountInfo.imapConnectInfo {
