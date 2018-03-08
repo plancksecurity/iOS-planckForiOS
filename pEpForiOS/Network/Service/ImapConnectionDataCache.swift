@@ -11,10 +11,6 @@ import Foundation
 struct ImapConnectionDataCache {
     private var imapConnectionDataCache = [EmailConnectInfo: ImapSyncData]()
 
-    var isEmpty: Bool {
-        return imapConnectionDataCache.count == 0
-    }
-
     var emailConnectInfos: [EmailConnectInfo] {
         return Array(imapConnectionDataCache.keys)
     }
