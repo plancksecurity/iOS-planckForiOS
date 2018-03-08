@@ -8,9 +8,7 @@ Pods/.*
 scripts/config.ini$
 .*~.storyboard$
 pEpTrustWords\.bundle/system\.db
-secret\.xcconfig$
+.*secret.*\.xcconfig$
+.*TestData\.swift$
 
 glob
-pEpForiOSTests/Util/TestData.swift
-pEpForiOSUITests/UITestData.swift
-pEpForiOS/Util/OAuth2/OAuth2GmailConfig.swift
