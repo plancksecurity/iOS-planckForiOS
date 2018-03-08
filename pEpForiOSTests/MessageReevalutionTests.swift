@@ -174,7 +174,7 @@ class MessageReevalutionTests: XCTestCase {
         } else {
             let reevalOp = ReevaluateMessageRatingOperation(
                 parentName: #function, message: message)
-            reevalOp.reevaluate(context: Record.Context.default)
+            reevalOp.reEvaluate(context: Record.Context.default)
         }
     }
 
