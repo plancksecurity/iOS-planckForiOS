@@ -107,11 +107,9 @@ public class NetworkService {
      Start endlessly synchronizing in the background.
      */
     public func start() {
-        if currentWorker == nil {
-            currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
-            currentWorker?.delegate = self
-            currentWorker?.unitTestDelegate = self
-        }
+        currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
+        currentWorker?.delegate = self
+        currentWorker?.unitTestDelegate = self
         state = .running
         currentWorker?.start()
     }
@@ -139,8 +137,7 @@ public class NetworkService {
     }
 
     public func checkForNewMails(completionHandler: @escaping (_ numNewMails: Int?) -> ()) {
-        newMailsService =
-            FetchNumberOfNewMailsService(imapConnectionDataCache: nil)
+        newMailsService = FetchNumberOfNewMailsService(imapConnectionDataCache: nil)
         newMailsService?.start(completionBlock: completionHandler)
     }
 
