@@ -173,6 +173,73 @@ class EmailViewController: BaseTableViewController {
 
     }
 
+    //IOS-836:
+    fileprivate var bodyViewController: SecureWebViewController?
+
+    fileprivate func setup(contentCell: MessageContentCell) {
+        let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
+        guard let vc =
+            storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
+                as? SecureWebViewController
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
+                return
+        }
+        bodyViewController = vc
+        contentCell.contentView.addSubview(vc.view)
+        vc.view.fullSizeInSuperView()
+
+        //IOS-836:
+        contentCell.contentView.backgroundColor = UIColor.yellow
+        vc.view.backgroundColor = UIColor.green
+
+        guard let m = message else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No msg.")
+            return
+        }
+        vc.display(htmlString:/* m.longMessageFormatted ?? m.longMessage ?? */html()) //IOS-836: use correct data
+        tableView.updateSize()
+    }
+
+    //IOS-836: remove!!!
+    private func html() -> String {
+        let appVersion = InfoPlist.versionDisplayString() ?? "666"
+        let backgroundColor = UIColor.hexPEpLightBackground
+        let fontColor = UIColor.hexPEpGray
+        let fontSize = "28"
+        let fontFamily = "Helvetica Neue"
+        let fontWeight = "500"
+        let styleP = "p {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
+        let styleBody = "body {background-color: \(backgroundColor);}"
+        let styleA = "a {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
+        let styleColumn = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 25%;}.right {width: 75%;}.row:after {content: \"\";display: table;clear: both;}"
+        let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)</style>"
+        let result = """
+        <html> <head> \(style)
+
+        </head>
+        <body>
+        <blockquote>
+        <p>&nbsp;</p>
+        <p>p&equiv;p for iOS<br/> \(appVersion)</p>
+        <p>Credits:<br />
+        Xavier Algarra Torello, Volker Birk, Simon Witts, Sibu Kurian, Sandro K&ouml;chle, Sabrina Schleifer, Robert Goldmann, Rena Tangens, Patricia Bednar, Patrick Meier, padeluun, Nana Karlstetter, Meinhard Starostik, Mathijs de Haan, Martin Vojcik, Markus Schaber, Leonard Marquitan, Leon Schumacher, Lars Rohwedder, Krista Bennet, Kinga Prettenhoffer, Hussein Kasem, Hern&acirc;ni Marques, Edouard Tisserant, Dol&ccedil;a Moreno, Dirk Zimmermann, Dietz Proepper, Detlev Sieber, Dean, Daniel Sosa, be, Berna Alp, Bart Polot, Arturo Jim&eacute;nez, Andy Weber, Andreas Buff, Ana Rebolledo
+        </p>
+        <p>&nbsp;</p>
+        <p>Thanks to:
+        </p>
+
+        <p>&nbsp;</p>
+        <p>Acknowlegdements:
+        </p>
+
+        </blockquote>
+        </body>
+        </html>
+        """
+        return result
+    }
+
     // MARK: - IBActions
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
@@ -272,7 +339,11 @@ extension EmailViewController {
             let m = message else {
                     return UITableViewCell()
         }
-        cell.updateCell(model: row, message: m, indexPath: indexPath)
+        if let contentCell = cell as? MessageContentCell {
+            setup(contentCell: contentCell)
+        } else {
+            cell.updateCell(model: row, message: m, indexPath: indexPath)
+        }
         cell.delegate = self
         return cell
     }

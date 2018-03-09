@@ -11,14 +11,14 @@ import WebKit
 import MessageModel
 
 open class MessageContentCell: MessageCell {
-    @IBOutlet weak var contentView: WKWebView!
-
+    //    @IBOutlet weak var contentLabel: UILabel! //IOS-836:
+    
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {
         super.updateCell(model: model, message: message, indexPath: indexPath)
 
         let finalText = NSMutableAttributedString()
-        if message.underAttack {
+        if message.underAttack { //IOS-836: this is never shown to the user afaics.
             let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
             finalText.bold("\n" + status.title + "\n\n" + status.explanation + "\n\n" + status.suggestion
                 + "\n\n" + NSLocalizedString("Attachments are disabled.", comment: "Disabled attachments") + "\n\n")
@@ -32,6 +32,6 @@ open class MessageContentCell: MessageCell {
                 finalText.normal(text)
             }
         }
-        contentLabel.attributedText = finalText
+//        contentLabel.attributedText = finalText //IOS-836:
     }
 }

@@ -9,30 +9,50 @@
 import WebKit
 
 class SecureWebViewController: UIViewController {
+    static let storyboardId = "SecureWebViewController"
+    private var webView: WKWebView!
 
-    @IBOutlet weak var webView: WKWebView!
+    // MARK: - Life Cycle
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        guard !webView.configuration.preferences.javaScriptEnabled else {
-            Log.shared.errorAndCrash(component: #function, errorString: "JS must be disabled")
+    // Due to an Apple bug (https://bugs.webkit.org/show_bug.cgi?id=137160),
+    // WKWebView has to be created programatically when supporting iOS versions < iOS11.
+    // This implementation is taken over from the Apple docs:
+    // https://developer.apple.com/documentation/webkit/wkwebview#2560973
+    override func loadView() {
+        let webConfiguration = WKWebViewConfiguration()
+        let prefs = WKPreferences()
+        prefs.javaScriptEnabled = false
+        webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        webView.navigationDelegate = self
+        view = webView
+    }
+
+    // MARK: - API
+
+    func display(htmlString: String) {
+        webView.loadHTMLString(htmlString, baseURL: nil) //IOS-836: trick: wrong base url?
+    }
+}
+
+extension SecureWebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .other:
+            // We are initially loading our own HTML
+            decisionHandler(.allow)
+            return
+        case .linkActivated:
+            // Open clicked links in external apps
+            guard let newURL = navigationAction.request.url, UIApplication.shared.canOpenURL(newURL)
+                else {
+                    break
+
+            }
+            UIApplication.shared.openURL(newURL)
+        case .backForward, .formResubmitted, .formSubmitted, .reload:
+            // ignore
+            break
         }
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.configuration = configJSDisabled()
-    }
-
-    private func preferencesJSDisabled() -> WKPreferences {
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = false
-    }
-
-    private func configJSDisabled() -> WKWebViewConfiguration {
-        let config = WKWebViewConfiguration()
-        config.preferences = preferencesJSDisabled()
-
-        return config
+        decisionHandler(.cancel)
     }
 }
