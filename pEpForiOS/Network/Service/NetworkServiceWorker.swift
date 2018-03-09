@@ -137,7 +137,7 @@ open class NetworkServiceWorker {
         syncLocalChangesWithServerAndStop()
     }
 
-     /// Stops all queued operations, syncs all local changes with the server and informs the
+    /// Stops all queued operations, syncs all local changes with the server and informs the
     /// delegate when done.
     public func syncLocalChangesWithServerAndStop() {
         cancelled = true
@@ -165,7 +165,7 @@ open class NetworkServiceWorker {
             me.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: me)
         }
     }
-    
+
     /**
      Start endlessly synchronizing in the background.
      */
@@ -205,7 +205,7 @@ open class NetworkServiceWorker {
                              lastOperation: Operation?) -> (BaseOperation?, [Operation]) {
         // Do not bother with SMTP server if we have nothing to send
         if !EncryptAndSendOperation.outgoingMailsExist(in: Record.Context.background,
-                                                      forAccountWith: accountInfo.accountID) {
+                                                       forAccountWith: accountInfo.accountID) {
             return (nil, [])
         }
 
@@ -238,7 +238,7 @@ open class NetworkServiceWorker {
         sendOp.addDependency(loginOp)
         opSmtpFinished.addDependency(sendOp)
         operations.append(sendOp)
-        
+
         return (sendOp, operations)
     }
 
@@ -281,9 +281,9 @@ open class NetworkServiceWorker {
     }
 
     private func buildUidMoveMailsToTrashOperations(imapSyncData: ImapSyncData,
-                                           errorContainer: ServiceErrorProtocol,
-                                           opImapFinished: Operation,
-                                           previousOp: Operation) -> (Operation?, [Operation]) {
+                                                    errorContainer: ServiceErrorProtocol,
+                                                    opImapFinished: Operation,
+                                                    previousOp: Operation) -> (Operation?, [Operation]) {
         var lastOp = previousOp
         var createdOps = [UidMoveMailsToTrashOperation]()
         MessageModel.performAndWait {
@@ -358,34 +358,38 @@ open class NetworkServiceWorker {
     func syncExistingMessages(
         folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
         imapSyncData: ImapSyncData,
+        onlySyncChangesTriggeredByUser: Bool,
         lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
         var theLastImapOp = lastImapOp
         var operations: [Operation] = []
         for fi in folderInfos {
             if !fi.folderType.shouldBeSyncedWithServer {
-                let cleanUnsyncedFolderOp = CleanUnsyncedFolderOperation(
-                    cdAccountObejctId: imapSyncData.connectInfo.accountObjectID,
-                    folderName: fi.name)
-                cleanUnsyncedFolderOp.completionBlock = {
-                    cleanUnsyncedFolderOp.completionBlock = nil
-                    Log.info(component: #function, content: "cleanUnsyncedFolderOp finished")
+                if !onlySyncChangesTriggeredByUser {
+                    let cleanUnsyncedFolderOp = CleanUnsyncedFolderOperation(
+                        cdAccountObejctId: imapSyncData.connectInfo.accountObjectID,
+                        folderName: fi.name)
+                    cleanUnsyncedFolderOp.completionBlock = {
+                        cleanUnsyncedFolderOp.completionBlock = nil
+                        Log.info(component: #function, content: "cleanUnsyncedFolderOp finished")
+                    }
+                    cleanUnsyncedFolderOp.addDependency(theLastImapOp)
+                    operations.append(cleanUnsyncedFolderOp)
+                    opImapFinished.addDependency(cleanUnsyncedFolderOp)
+                    theLastImapOp = cleanUnsyncedFolderOp
                 }
-                cleanUnsyncedFolderOp.addDependency(theLastImapOp)
-                operations.append(cleanUnsyncedFolderOp)
-                opImapFinished.addDependency(cleanUnsyncedFolderOp)
-                theLastImapOp = cleanUnsyncedFolderOp
             } else if let folderID = fi.folderID, let firstUID = fi.firstUID,
                 let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
                 firstUID <= lastUID {
-                let syncMessagesOp = SyncMessagesOperation(
-                    parentName: description, errorContainer: errorContainer,
-                    imapSyncData: imapSyncData, folderName: fi.name,
-                    firstUID: firstUID, lastUID: lastUID)
-                syncMessagesOp.addDependency(theLastImapOp)
-                operations.append(syncMessagesOp)
-                opImapFinished.addDependency(syncMessagesOp)
-                theLastImapOp = syncMessagesOp
-
+                if !onlySyncChangesTriggeredByUser {
+                    let syncMessagesOp = SyncMessagesOperation(
+                        parentName: description, errorContainer: errorContainer,
+                        imapSyncData: imapSyncData, folderName: fi.name,
+                        firstUID: firstUID, lastUID: lastUID)
+                    syncMessagesOp.addDependency(theLastImapOp)
+                    operations.append(syncMessagesOp)
+                    opImapFinished.addDependency(syncMessagesOp)
+                    theLastImapOp = syncMessagesOp
+                }
                 if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
                                                                 errorContainer: errorContainer,
                                                                 imapSyncData: imapSyncData,
@@ -504,23 +508,23 @@ open class NetworkServiceWorker {
             // Client-to-server synchronization (IMAP)
             let (lastAppendSendAndDraftOp, appendSendAndDraftOperations) =
                 buildAppendSendAndDraftOperations(
-                imapSyncData: imapSyncData, errorContainer: errorContainer,
-                opImapFinished: opImapFinished, previousOp: lastImapOp)
+                    imapSyncData: imapSyncData, errorContainer: errorContainer,
+                    opImapFinished: opImapFinished, previousOp: lastImapOp)
             lastImapOp = lastAppendSendAndDraftOp ?? lastImapOp
             operations.append(contentsOf: appendSendAndDraftOperations)
 
             let (lastHandleTrashedOp, handleTrashedOperations) =
                 buildHandleMessagesMarkedAsShouldBeTrashedOperations(
-                imapSyncData: imapSyncData, errorContainer: errorContainer,
-                opImapFinished: opImapFinished, previousOp: lastImapOp)
+                    imapSyncData: imapSyncData, errorContainer: errorContainer,
+                    opImapFinished: opImapFinished, previousOp: lastImapOp)
             lastImapOp = lastHandleTrashedOp ?? lastImapOp
             operations.append(contentsOf: handleTrashedOperations)
             // UidExpunge
             let (lastUidMoveOp, uidMoveOperations) =
                 buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
-                                          errorContainer: errorContainer,
-                                          opImapFinished: opImapFinished,
-                                          previousOp: lastImapOp)
+                                                   errorContainer: errorContainer,
+                                                   opImapFinished: opImapFinished,
+                                                   previousOp: lastImapOp)
             lastImapOp = lastUidMoveOp ?? lastImapOp
             operations.append(contentsOf: uidMoveOperations)
 
@@ -557,14 +561,16 @@ open class NetworkServiceWorker {
                 operations.append(opDecrypt)
             }
 
-            if !onlySyncChangesTriggeredByUser {
-                // sync existing messages
-                let (lastSyncOp, syncOperations) = syncExistingMessages(
-                    folderInfos: folderInfos, errorContainer: errorContainer,
-                    imapSyncData: imapSyncData, lastImapOp: lastImapOp, opImapFinished: opImapFinished)
-                lastImapOp = lastSyncOp
-                operations.append(contentsOf: syncOperations)
-            }
+            // sync existing messages
+            let (lastSyncOp, syncOperations) =
+                syncExistingMessages(folderInfos: folderInfos,
+                                     errorContainer: errorContainer,
+                                     imapSyncData: imapSyncData,
+                                     onlySyncChangesTriggeredByUser: onlySyncChangesTriggeredByUser,
+                                     lastImapOp: lastImapOp,
+                                     opImapFinished: opImapFinished)
+            lastImapOp = lastSyncOp
+            operations.append(contentsOf: syncOperations)
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
@@ -696,9 +702,9 @@ protocol NetworkServiceWorkerUnitTestDelegate: class {
     func networkServiceWorkerDidCancel(worker: NetworkServiceWorker)
 
     /** Called after each account sync */
-   func networkServiceWorkerDidSync(worker: NetworkServiceWorker,
-                                   accountInfo: AccountConnectInfo,
-                                   errorProtocol: ServiceErrorProtocol)
+    func networkServiceWorkerDidSync(worker: NetworkServiceWorker,
+                                     accountInfo: AccountConnectInfo,
+                                     errorProtocol: ServiceErrorProtocol)
 
     /// Used to report errors in operation line.
     /// - Parameters:
@@ -706,3 +712,4 @@ protocol NetworkServiceWorkerUnitTestDelegate: class {
     ///   - error: error reported by an operation in operation line
     func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error)
 }
+
