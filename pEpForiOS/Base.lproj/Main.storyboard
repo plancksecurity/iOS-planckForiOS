@@ -628,22 +628,24 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMw-Ye-VBO" customClass="CopyLabel" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="24" y="11" width="327" height="178"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XTE-UM-m4K">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                            <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <wkWebViewConfiguration key="configuration">
+                                                <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                                <wkPreferences key="preferences"/>
+                                            </wkWebViewConfiguration>
+                                        </wkWebView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="KMw-Ye-VBO" secondAttribute="trailing" constant="8" id="8zC-Fp-pWR"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="KMw-Ye-VBO" secondAttribute="bottom" id="9Et-xi-ntN"/>
-                                        <constraint firstItem="KMw-Ye-VBO" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="topMargin" id="Bcr-bl-Hga"/>
-                                        <constraint firstItem="KMw-Ye-VBO" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leadingMargin" constant="8" id="dLJ-GE-YqU"/>
+                                        <constraint firstAttribute="bottom" secondItem="XTE-UM-m4K" secondAttribute="bottom" id="7qy-jN-gAf"/>
+                                        <constraint firstAttribute="trailing" secondItem="XTE-UM-m4K" secondAttribute="trailing" id="Low-29-3wc"/>
+                                        <constraint firstItem="XTE-UM-m4K" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leading" id="Xyc-Gc-uah"/>
+                                        <constraint firstItem="XTE-UM-m4K" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="top" id="jAF-Pn-8Cv"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="contentLabel" destination="KMw-Ye-VBO" id="veW-kW-JgW"/>
+                                    <outlet property="contentView" destination="XTE-UM-m4K" id="egP-6l-4g4"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
@@ -734,6 +736,43 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5327" y="-860"/>
+        </scene>
+        <!--Secure Web View Controller-->
+        <scene sceneID="RQH-eD-TFY">
+            <objects>
+                <viewController id="h3o-dk-r87" customClass="SecureWebViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="yIe-nf-SIR"/>
+                        <viewControllerLayoutGuide type="bottom" id="AiA-T7-P1H"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pS2-O8-zGb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jqf-WJ-Of6">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" allowsPictureInPictureMediaPlayback="NO">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences" javaScriptEnabled="NO"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Jqf-WJ-Of6" firstAttribute="top" secondItem="yIe-nf-SIR" secondAttribute="bottom" id="Kh4-CJ-CBs"/>
+                            <constraint firstItem="AiA-T7-P1H" firstAttribute="top" secondItem="Jqf-WJ-Of6" secondAttribute="bottom" id="bNT-Dm-mwj"/>
+                            <constraint firstItem="Jqf-WJ-Of6" firstAttribute="leading" secondItem="pS2-O8-zGb" secondAttribute="leading" id="jbP-qb-Muc"/>
+                            <constraint firstAttribute="trailing" secondItem="Jqf-WJ-Of6" secondAttribute="trailing" id="qox-Jv-R2k"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="Jqf-WJ-Of6" id="rWd-u1-duo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sdH-lU-fVQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6039" y="-861"/>
         </scene>
         <!--Fingerprint Table View Controller-->
         <scene sceneID="BlL-i8-qNY">
@@ -1027,7 +1066,7 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oPc-EL-W2c"/>
+        <segue reference="QeL-n1-BY9"/>
         <segue reference="70T-Gu-VTr"/>
     </inferredMetricsTieBreakers>
 </document>

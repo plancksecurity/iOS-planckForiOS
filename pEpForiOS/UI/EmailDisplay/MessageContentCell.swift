@@ -11,7 +11,7 @@ import WebKit
 import MessageModel
 
 open class MessageContentCell: MessageCell {
-    @IBOutlet weak var contentLabel: UILabel!
+    @IBOutlet weak var contentView: WKWebView!
 
     public override func updateCell(model: ComposeFieldModel, message: Message,
                                     indexPath: IndexPath) {

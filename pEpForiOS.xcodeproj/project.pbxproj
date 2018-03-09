@@ -14,6 +14,7 @@
 		150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */; };
 		150B8EB31FCEB93D00374438 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
 		150DF6CE204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CD204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift */; };
+		150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */; };
 		1516EDCF202F526200203D61 /* UidMoveMailsToTrashOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1516EDCE202F526200203D61 /* UidMoveMailsToTrashOperation.swift */; };
 		151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E01FC5D3E200CDC273 /* Settings.storyboard */; };
 		151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E31FC5D3FA00CDC273 /* Handshake.storyboard */; };
@@ -453,6 +454,7 @@
 		150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsUserInputError.swift; sourceTree = "<group>"; };
 		150B8EB21FCEB93D00374438 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		150DF6CD204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanUnsyncedFolderOperation.swift; sourceTree = "<group>"; };
+		150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewController.swift; sourceTree = "<group>"; };
 		1516EDCE202F526200203D61 /* UidMoveMailsToTrashOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UidMoveMailsToTrashOperation.swift; sourceTree = "<group>"; };
 		151DE7DF1FC5D3E200CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		151DE7E21FC5D3FA00CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Handshake.storyboard; sourceTree = "<group>"; };
@@ -925,6 +927,14 @@
 				152130531FD00B7A00688DF2 /* DisplayUserError.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		150DF6D12052A99800A9DCF7 /* SecureWebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */,
+			);
+			path = SecureWebViewController;
 			sourceTree = "<group>";
 		};
 		151F71D02029F9F80057C74D /* IMAP */ = {
@@ -1579,6 +1589,7 @@
 		43AA82511E9B925000ABD5A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
 				43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */,
 				43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */,
 				43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */,
@@ -2125,6 +2136,7 @@
 				43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */,
 				43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */,
 				4315E4C120120F1600F68763 /* NSSecureCoding+Extension.swift in Sources */,
+				150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */,
 				4351C2D71F4441190053381F /* node.c in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
 				5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */,
