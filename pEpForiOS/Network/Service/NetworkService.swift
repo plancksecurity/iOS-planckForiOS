@@ -65,7 +65,6 @@ public class NetworkService {
     public private(set) var currentWorker: NetworkServiceWorker?
     var newMailsService: FetchNumberOfNewMailsService?
     public weak var delegate: NetworkServiceDelegate?
-    private var lastConnectionCache: ImapConnectionDataCache?
     // UNIT TEST ONLY
     public weak var unitTestDelegate: NetworkServiceUnitTestDelegate?
 
@@ -109,9 +108,6 @@ public class NetworkService {
      */
     public func start() {
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
-        if let cache = lastConnectionCache {
-            currentWorker?.imapConnectionDataCache = cache
-        }
         currentWorker?.delegate = self
         currentWorker?.unitTestDelegate = self
         state = .running
@@ -122,7 +118,6 @@ public class NetworkService {
     /// user with server.
     /// Calls NetworkServiceDelegate networkServiceDidFinishLastSyncLoop() when done.
     public func processAllUserActionsAndstop() {
-        lastConnectionCache = currentWorker?.imapConnectionDataCache
         currentWorker?.stop()
     }
 
