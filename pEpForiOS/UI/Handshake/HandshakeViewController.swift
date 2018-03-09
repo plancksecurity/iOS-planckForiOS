@@ -38,21 +38,6 @@ class HandshakeViewController: BaseTableViewController {
         }
     }
 
-    override func viewDidLayoutSubviews() {
-        let cells = tableView.visibleCells
-        for cell in cells {
-            if let c = cell as? HandshakePartnerTableViewCell, c.sizeHelper == false {
-                c.sizeHelper = true
-                let size = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-                if cell.frame.size.height != size.height {
-                cell.frame.size.height = size.height
-                cell.layoutIfNeeded()
-                }
-            }
-        }
-        tableView.layoutIfNeeded()
-    }
-
     func back(sender: UIBarButtonItem) {
         self.navigationController?.popViewController(animated: true)
     }
