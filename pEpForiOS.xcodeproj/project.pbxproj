@@ -15,6 +15,7 @@
 		150B8EB31FCEB93D00374438 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
 		150DF6CE204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CD204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift */; };
 		150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */; };
+		150DF6D32052ED4800A9DCF7 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */; };
 		1516EDCF202F526200203D61 /* UidMoveMailsToTrashOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1516EDCE202F526200203D61 /* UidMoveMailsToTrashOperation.swift */; };
 		151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E01FC5D3E200CDC273 /* Settings.storyboard */; };
 		151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E31FC5D3FA00CDC273 /* Handshake.storyboard */; };
@@ -455,6 +456,7 @@
 		150B8EB21FCEB93D00374438 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		150DF6CD204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanUnsyncedFolderOperation.swift; sourceTree = "<group>"; };
 		150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewController.swift; sourceTree = "<group>"; };
+		150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		1516EDCE202F526200203D61 /* UidMoveMailsToTrashOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UidMoveMailsToTrashOperation.swift; sourceTree = "<group>"; };
 		151DE7DF1FC5D3E200CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		151DE7E21FC5D3FA00CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Handshake.storyboard; sourceTree = "<group>"; };
@@ -1610,6 +1612,7 @@
 				15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */,
 				150B8EB21FCEB93D00374438 /* UIUtils.swift */,
 				43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */,
+				150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2340,6 +2343,7 @@
 				432A3E3F1F0E6B3700834749 /* SyncExistingMessagesService.swift in Sources */,
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
+				150DF6D32052ED4800A9DCF7 /* UIView+Autolayout.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
 				4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
