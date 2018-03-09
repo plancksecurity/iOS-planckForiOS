@@ -25,6 +25,8 @@ class CreditsViewController: UIViewController {
     // https://developer.apple.com/documentation/webkit/wkwebview#2560973
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
+        let prefs = WKPreferences()
+        prefs.javaScriptEnabled = false
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.navigationDelegate = self
         view = webView
