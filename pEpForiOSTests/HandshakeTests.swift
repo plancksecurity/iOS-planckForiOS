@@ -37,7 +37,7 @@ class HandshakeTests: XCTestCase {
 
         cdOwnAccount = cdMyAccount
 
-        decryptedMessageSetup()
+        decryptedMessageSetup(pEpMySelfIdentity: cdMyAccount.pEpIdentity())
     }
 
     override func tearDown() {
@@ -45,12 +45,10 @@ class HandshakeTests: XCTestCase {
         super.tearDown()
     }
 
-    func decryptedMessageSetup() {
-        let me = PEPIdentity(address: "iostest002@peptest.ch", userID: "userID",
-                             userName: "User Name", isOwn:true)
+    func decryptedMessageSetup(pEpMySelfIdentity: PEPIdentity) {
         let session = PEPSession()
-        session.update(me)
-        XCTAssertNotNil(me.fingerPrint)
+        session.mySelf(pEpMySelfIdentity)
+        XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "HandshakeTests_mail_001.txt",
