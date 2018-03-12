@@ -47,7 +47,6 @@ class PEPSessionTest: XCTestCase {
         message.from = account.user
         message.to = [account.user]
         message.cc = [account.user]
-        message.bcc = [account.user]
         message.parent = folder
         message.sent = Date()
         message.received = Date()
