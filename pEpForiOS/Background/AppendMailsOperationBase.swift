@@ -29,13 +29,13 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         case encryptAsOutgoing
 
         public func encrypt(session: PEPSession, pEpMessageDict: PEPMessageDict,
-                            forIdentity: PEPIdentity? = nil) -> (PEP_STATUS, NSDictionary?) {
+                            forIdentity: PEPIdentity? = nil) throws -> NSDictionary? {
             switch self {
             case .encryptToMySelf:
-                return session.encrypt(
+                return try session.encrypt(
                     pEpMessageDict: pEpMessageDict, forIdentity: forIdentity)
             case .encryptAsOutgoing:
-                return session.encrypt(pEpMessageDict: pEpMessageDict)
+                return try session.encrypt(pEpMessageDict: pEpMessageDict)
             }
         }
     }
@@ -199,12 +199,12 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         lastHandledMessageObjectID = objID
         determineTargetFolder(msgID: objID)
         let session = PEPSession()
-        let (status, encMsg) = encryptMode.encrypt(session: session, pEpMessageDict: msg,
-                                                   forIdentity: ident)
-        if let err = PEPUtil.check(status: status, encryptedMessage: encMsg, comp: comp) {
-            handleError(err, message: "Cannot encrypt message")
-        } else {
+        do {
+            let encMsg = try encryptMode.encrypt(session: session, pEpMessageDict: msg,
+                                                 forIdentity: ident)
             appendMessage(pEpMessageDict: encMsg as? PEPMessageDict)
+        } catch let err as NSError {
+            handleError(err, message: "Cannot encrypt message")
         }
     }
 
