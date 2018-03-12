@@ -12,7 +12,18 @@ protocol SecureWebViewControllerDelegate {
     func secureWebViewController(_ webViewController: SecureWebViewController, sizeChangedTo size: CGSize)
 }
 
+/// Webview that does not:
+/// - excecute JS
+/// - load any remote content
+/// Note: It is insecure to use this class on iOS < 11. Thus it will intentionally take the
+/// emergency exit and crash when trying to use it running iOS < 11.
 class SecureWebViewController: UIViewController {
+    static var isSaveToUseWebView: Bool {
+        if #available(iOS 11.0, *) {
+            return true
+        }
+        return false
+    }
     static let storyboardId = "SecureWebViewController"
     private var webView: WKWebView!
     private var _scrollingEnabled: Bool = true

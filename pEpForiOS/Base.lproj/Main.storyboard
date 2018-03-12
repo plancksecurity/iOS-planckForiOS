@@ -627,7 +627,25 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="emX-Ao-r5Q" id="Tft-DN-iZy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LXa-xU-y0U">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                            <color key="backgroundColor" red="0.074344279847816774" green="1" blue="0.10423133547080654" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="LXa-xU-y0U" secondAttribute="bottom" id="0J6-eu-WdG"/>
+                                        <constraint firstAttribute="trailing" secondItem="LXa-xU-y0U" secondAttribute="trailing" id="IEb-el-c8r"/>
+                                        <constraint firstItem="LXa-xU-y0U" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="top" id="d6t-6n-36d"/>
+                                        <constraint firstItem="LXa-xU-y0U" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leading" id="hPs-65-Z3s"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="contentLabel" destination="LXa-xU-y0U" id="15s-to-GEJ"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="466" width="375" height="44"/>

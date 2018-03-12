@@ -173,7 +173,8 @@ class EmailViewController: BaseTableViewController {
 
     }
 
-    //IOS-836:
+    // MARK: - BODY HANDLING (long message)
+
     lazy fileprivate var bodyViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
@@ -187,25 +188,25 @@ class EmailViewController: BaseTableViewController {
         vc.delegate = self
         return vc
     }()
-
     fileprivate var bodyView: UIView {
         return bodyViewController.view
     }
 
-    fileprivate func setup(contentCell: MessageContentCell, rawData: ComposeFieldModel) {
+    fileprivate func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
             Log.shared.errorAndCrash(component: #function, errorString: "No msg.")
             return
         }
-        if #available(iOS 11.0, *), let htmlBody = m.longMessageFormatted, !htmlBody.isEmpty {
-            // if iOS >= 11 && formatted text
+        if SecureWebViewController.isSaveToUseWebView,
+            let htmlBody = m.longMessageFormatted,
+            !htmlBody.isEmpty {
+            // Its fine to use a webview (iOS>=11) and we do have HTML content.
             contentCell.contentView.addSubview(bodyView)
             bodyView.fullSizeInSuperView()
-
             bodyViewController.display(htmlString: htmlBody)
         } else {
-            //else //IOS-836: strip html usw.
-//            cell.updateCell(model: rawData, message: m, indexPath: indexPath)
+            // We are not allowed to use a webview (iOS<11) or do not have HTML content.
+            contentCell.updateCell(model: rowData, message: m)
         }
     }
 
@@ -309,7 +310,7 @@ extension EmailViewController {
                     return UITableViewCell()
         }
         if let contentCell = cell as? MessageContentCell {
-            setup(contentCell: contentCell, rawData: row)
+            setup(contentCell: contentCell, rowData: row)
         } else {
             cell.updateCell(model: row, message: m)
         }
@@ -325,7 +326,7 @@ extension EmailViewController {
                 return tableView.estimatedRowHeight
         }
 
-        if row.type == .content {
+        if SecureWebViewController.isSaveToUseWebView, row.type == .content {
             return bodyView.frame.size.height
         } else {
             return tableView.rowHeight
