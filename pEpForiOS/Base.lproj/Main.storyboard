@@ -628,23 +628,22 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LXa-xU-y0U">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
-                                            <color key="backgroundColor" red="0.074344279847816774" green="1" blue="0.10423133547080654" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpX-kl-VfB" customClass="CopyLabel" customModule="pEpForiOS" customModuleProvider="target">
+                                            <rect key="frame" x="24" y="11" width="327" height="178"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="LXa-xU-y0U" secondAttribute="bottom" id="0J6-eu-WdG"/>
-                                        <constraint firstAttribute="trailing" secondItem="LXa-xU-y0U" secondAttribute="trailing" id="IEb-el-c8r"/>
-                                        <constraint firstItem="LXa-xU-y0U" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="top" id="d6t-6n-36d"/>
-                                        <constraint firstItem="LXa-xU-y0U" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leading" id="hPs-65-Z3s"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="FpX-kl-VfB" secondAttribute="trailing" constant="8" id="QmW-WB-0M8"/>
+                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leadingMargin" constant="8" id="aaq-io-ebw"/>
+                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="topMargin" id="iZ0-s3-aDH"/>
+                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="bottom" secondItem="Tft-DN-iZy" secondAttribute="bottomMargin" id="pJc-jD-5YJ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="contentLabel" destination="LXa-xU-y0U" id="15s-to-GEJ"/>
+                                    <outlet property="contentLabel" destination="FpX-kl-VfB" id="gSi-9v-STb"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">

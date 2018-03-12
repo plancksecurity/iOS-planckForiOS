@@ -11,7 +11,7 @@ import WebKit
 import MessageModel
 
 open class MessageContentCell: MessageCell {
-        @IBOutlet weak var contentLabel: UILabel! //IOS-836:
+        @IBOutlet weak var contentLabel: UILabel!
 
     public override func updateCell(model: ComposeFieldModel, message: Message) {
         super.updateCell(model: model, message: message)
@@ -24,24 +24,14 @@ open class MessageContentCell: MessageCell {
             //if there will be attachmetns show warning
         }
 
-//        if let text = message.longMessage?.trimmedWhiteSpace() {
-//            finalText.normal(text)
-//        } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
-//            finalText.normal(text)
-//        } else {
-//            // Empty body
-//            finalText.normal("")
-//        }
-
-        finalText.normal("Buff\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n1")
-
-//        if let longmessage = message.longMessage?.trimmedWhiteSpace() {
-//            finalText.normal(longmessage)
-//        } elseif let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
-//                finalText.normal(text)
-//            }
-//        }
+        if let text = message.longMessage?.trimmedWhiteSpace() {
+            finalText.normal(text)
+        } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
+            finalText.normal(text)
+        } else {
+            // Empty body
+            finalText.normal("")
+        }
         contentLabel.attributedText = finalText //IOS-836:
-//        (delegate as? MessageContentCellDelegate)?.didUpdate(cell: self, height: 0)   
     }
 }
