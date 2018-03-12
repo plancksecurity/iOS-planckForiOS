@@ -52,7 +52,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 var rating = PEP_rating_undefined
                 do {
                     let pEpDecryptedMessage = try session.decryptMessageDict(
-                        pepMessage, rating: &rating, keys: &keys) as NSDictionary
+                        pepMessage, rating: &rating, extraKeys: &keys) as NSDictionary
                     handleDecryptionSuccess(cdMessage: cdMessage,
                                             pEpDecryptedMessage: pEpDecryptedMessage,
                                             rating: rating,
