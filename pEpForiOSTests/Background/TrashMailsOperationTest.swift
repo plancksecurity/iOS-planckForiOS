@@ -149,7 +149,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
             let decrypted = try! PEPSession().decryptMessage(
                 cdEncryptedMessage.pEpMessage(),
                 rating: nil,
-                keys: nil)
+                extraKeys: nil)
             return  decrypted.messageID!
         }
 

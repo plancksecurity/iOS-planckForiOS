@@ -54,9 +54,7 @@ class PepAdapterTests: XCTestCase {
 
         var keys: NSArray?
         var rating = PEP_rating_undefined
-        try! pEpSession.decryptMessage(pEpMessage,
-                                       rating: &rating,
-                                       keys: &keys)
+        try! pEpSession.decryptMessage(pEpMessage, rating: &rating, extraKeys: &keys)
         XCTAssertEqual(rating, PEP_rating_unencrypted)
     }
 
