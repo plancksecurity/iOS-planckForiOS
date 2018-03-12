@@ -24,7 +24,6 @@ class EmailViewController: BaseTableViewController {
     var tableData: ComposeDataSource?
     var folderShow : Folder?
     var messageId = 0
-    var otherCellsHeight: CGFloat = 0.0 //IOS-836: remove, dead code
     var ratingReEvaluator: RatingReEvaluator?
 
     lazy var backgroundQueue = OperationQueue()

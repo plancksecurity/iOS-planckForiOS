@@ -32,6 +32,6 @@ open class MessageContentCell: MessageCell {
             // Empty body
             finalText.normal("")
         }
-        contentLabel.attributedText = finalText //IOS-836:
+        contentLabel.attributedText = finalText
     }
 }
