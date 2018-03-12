@@ -44,10 +44,10 @@ public class ComposeFieldModel {
     var type: FieldType = .to
     var display: FieldDisplayType = .always
     var height: CGFloat = defaultCellHeight
-    var expanded: CGFloat = 0 //IOS-836: used?
+    var expanded: CGFloat = 0
     var identifier = "recipientCell"
     var title = String()
-    var expandedTitle: String?//IOS-836: used?
+    var expandedTitle: String?
     var value = NSAttributedString()
     var contactSuggestion = false
     
