@@ -22,7 +22,7 @@
 			<key>identifier</key>
 			<string>senderCell</string>
 			<key>type</key>
-			<string>content</string>
+			<string>from</string>
 			<key>value</key>
 			<string></string>
 			<key>visible</key>
@@ -34,7 +34,7 @@
 			<key>identifier</key>
 			<string>senderSubjectCell</string>
 			<key>type</key>
-			<string>content</string>
+			<string>subject</string>
 			<key>value</key>
 			<string></string>
 			<key>visible</key>
@@ -58,7 +58,7 @@
 			<key>identifier</key>
 			<string>attachmentsCell</string>
 			<key>type</key>
-			<string>content</string>
+			<string>attachment</string>
 			<key>value</key>
 			<string></string>
 			<key>visible</key>

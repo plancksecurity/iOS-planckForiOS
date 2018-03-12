@@ -10,7 +10,7 @@ import UIKit
 
 public class ComposeFieldModel {
     public enum FieldType: String {
-        case to, cc, bcc, from, subject, content, mailingList, none
+        case to, cc, bcc, from, subject, content, mailingList, none, attachment
 
         func translatedTitle(expanded: Bool = false) -> String {
             switch self {
@@ -44,10 +44,10 @@ public class ComposeFieldModel {
     var type: FieldType = .to
     var display: FieldDisplayType = .always
     var height: CGFloat = defaultCellHeight
-    var expanded: CGFloat = 0
+    var expanded: CGFloat = 0 //IOS-836: used?
     var identifier = "recipientCell"
     var title = String()
-    var expandedTitle: String?
+    var expandedTitle: String?//IOS-836: used?
     var value = NSAttributedString()
     var contactSuggestion = false
     

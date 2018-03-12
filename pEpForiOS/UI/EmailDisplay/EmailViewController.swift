@@ -24,7 +24,7 @@ class EmailViewController: BaseTableViewController {
     var tableData: ComposeDataSource?
     var folderShow : Folder?
     var messageId = 0
-    var otherCellsHeight: CGFloat = 0.0
+    var otherCellsHeight: CGFloat = 0.0 //IOS-836: remove, dead code
     var ratingReEvaluator: RatingReEvaluator?
 
     lazy var backgroundQueue = OperationQueue()
@@ -174,70 +174,39 @@ class EmailViewController: BaseTableViewController {
     }
 
     //IOS-836:
-    fileprivate var bodyViewController: SecureWebViewController?
-
-    fileprivate func setup(contentCell: MessageContentCell) {
+    lazy fileprivate var bodyViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
                 as? SecureWebViewController
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
-                return
+                return SecureWebViewController()
         }
-        bodyViewController = vc
-        contentCell.contentView.addSubview(vc.view)
-        vc.view.fullSizeInSuperView()
+        vc.scrollingEnabled = false
+        vc.delegate = self
+        return vc
+    }()
 
-        //IOS-836:
-        contentCell.contentView.backgroundColor = UIColor.yellow
-        vc.view.backgroundColor = UIColor.green
+    fileprivate var bodyView: UIView {
+        return bodyViewController.view
+    }
 
+    fileprivate func setup(contentCell: MessageContentCell, rawData: ComposeFieldModel) {
         guard let m = message else {
             Log.shared.errorAndCrash(component: #function, errorString: "No msg.")
             return
         }
-        vc.display(htmlString:/* m.longMessageFormatted ?? m.longMessage ?? */html()) //IOS-836: use correct data
-        tableView.updateSize()
-    }
+        if #available(iOS 11.0, *), let htmlBody = m.longMessageFormatted, !htmlBody.isEmpty {
+            // if iOS >= 11 && formatted text
+            contentCell.contentView.addSubview(bodyView)
+            bodyView.fullSizeInSuperView()
 
-    //IOS-836: remove!!!
-    private func html() -> String {
-        let appVersion = InfoPlist.versionDisplayString() ?? "666"
-        let backgroundColor = UIColor.hexPEpLightBackground
-        let fontColor = UIColor.hexPEpGray
-        let fontSize = "28"
-        let fontFamily = "Helvetica Neue"
-        let fontWeight = "500"
-        let styleP = "p {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
-        let styleBody = "body {background-color: \(backgroundColor);}"
-        let styleA = "a {color: \(fontColor);font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}"
-        let styleColumn = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 25%;}.right {width: 75%;}.row:after {content: \"\";display: table;clear: both;}"
-        let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)</style>"
-        let result = """
-        <html> <head> \(style)
-
-        </head>
-        <body>
-        <blockquote>
-        <p>&nbsp;</p>
-        <p>p&equiv;p for iOS<br/> \(appVersion)</p>
-        <p>Credits:<br />
-        Xavier Algarra Torello, Volker Birk, Simon Witts, Sibu Kurian, Sandro K&ouml;chle, Sabrina Schleifer, Robert Goldmann, Rena Tangens, Patricia Bednar, Patrick Meier, padeluun, Nana Karlstetter, Meinhard Starostik, Mathijs de Haan, Martin Vojcik, Markus Schaber, Leonard Marquitan, Leon Schumacher, Lars Rohwedder, Krista Bennet, Kinga Prettenhoffer, Hussein Kasem, Hern&acirc;ni Marques, Edouard Tisserant, Dol&ccedil;a Moreno, Dirk Zimmermann, Dietz Proepper, Detlev Sieber, Dean, Daniel Sosa, be, Berna Alp, Bart Polot, Arturo Jim&eacute;nez, Andy Weber, Andreas Buff, Ana Rebolledo
-        </p>
-        <p>&nbsp;</p>
-        <p>Thanks to:
-        </p>
-
-        <p>&nbsp;</p>
-        <p>Acknowlegdements:
-        </p>
-
-        </blockquote>
-        </body>
-        </html>
-        """
-        return result
+            bodyViewController.display(htmlString: htmlBody)
+        } else {
+            //else //IOS-836: strip html usw.
+//            cell.updateCell(model: rawData, message: m, indexPath: indexPath)
+        }
     }
 
     // MARK: - IBActions
@@ -340,12 +309,27 @@ extension EmailViewController {
                     return UITableViewCell()
         }
         if let contentCell = cell as? MessageContentCell {
-            setup(contentCell: contentCell)
+            setup(contentCell: contentCell, rawData: row)
         } else {
-            cell.updateCell(model: row, message: m, indexPath: indexPath)
+            cell.updateCell(model: row, message: m)
         }
         cell.delegate = self
         return cell
+    }
+
+    override func tableView(
+        _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard
+            let row = tableData?.getRow(at: indexPath.row) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+                return tableView.estimatedRowHeight
+        }
+
+        if row.type == .content {
+            return bodyView.frame.size.height
+        } else {
+            return tableView.rowHeight
+        }
     }
 }
 
@@ -462,7 +446,6 @@ extension EmailViewController: MessageAttachmentDelegate {
 // MARK: - Title View Extension
 
 extension EmailViewController {
-
     func saveTitleView() {
         self.originalTitleView = self.title
     }
@@ -473,4 +456,13 @@ extension EmailViewController {
         self.title = self.originalTitleView
     }
 
+}
+
+// MARK: - SecureWebViewControllerDelegate
+
+extension EmailViewController: SecureWebViewControllerDelegate {
+    func secureWebViewController(_ webViewController: SecureWebViewController,
+                                 sizeChangedTo size: CGSize) {
+        tableView.updateSize()
+    }
 }
