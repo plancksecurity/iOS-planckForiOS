@@ -12,10 +12,9 @@ import MessageModel
 
 open class MessageContentCell: MessageCell {
     //    @IBOutlet weak var contentLabel: UILabel! //IOS-836:
-    
-    public override func updateCell(model: ComposeFieldModel, message: Message,
-                                    indexPath: IndexPath) {
-        super.updateCell(model: model, message: message, indexPath: indexPath)
+
+    public override func updateCell(model: ComposeFieldModel, message: Message) {
+        super.updateCell(model: model, message: message)
 
         let finalText = NSMutableAttributedString()
         if message.underAttack { //IOS-836: this is never shown to the user afaics.
