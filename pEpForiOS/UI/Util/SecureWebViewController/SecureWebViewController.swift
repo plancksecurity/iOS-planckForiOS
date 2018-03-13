@@ -83,16 +83,98 @@ class SecureWebViewController: UIViewController {
         webView.navigationDelegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
         view = webView
+        //IOS-836: we need to get access to inlined attachments (WKURLSchemeHandler)
     }
 
     // MARK: - API
 
     func display(htmlString: String) {
         let scaledHtml = dirtyHackInsertedForPageScaleToFit(inHtml: htmlString)
-        webView.loadHTMLString(scaledHtml, baseURL: nil) //IOS-836: trick: wrong base url?
+        setupBlocklist() {
+            self.webView.loadHTMLString(scaledHtml, baseURL: nil) //IOS-836: trick: wrong base url?
+        }
     }
 
     // MARK: - UTIL
+
+    private func setupBlocklist(completion: @escaping () -> Void) {
+        guard #available(iOS 11.0, *) else {
+            return
+        }
+
+        let listID = "pep.security.SecureWebViewController.block_all_external_content"
+        var compiledBlockList: WKContentRuleList?
+
+        let setBlocklist = {
+            if compiledBlockList != nil {
+                DispatchQueue.main.async {
+                    let configuration = self.webView.configuration
+                    configuration.userContentController.add(compiledBlockList!)
+                    completion()
+                }
+            }
+        }
+
+        let loadGroup = DispatchGroup()
+        loadGroup.enter()
+
+        WKContentRuleListStore.default().lookUpContentRuleList(forIdentifier: listID) {
+            (loadedRuleList, error) in
+            if let error = error {
+                Log.shared.errorAndCrash(component: #function, errorString: "Problem: \(error)")
+                return
+            }
+            compiledBlockList = loadedRuleList
+            loadGroup.leave()
+        }
+        loadGroup.notify(queue: DispatchQueue.main) {
+            if compiledBlockList != nil {
+                // We have it, set it.
+                setBlocklist()
+                return
+            }
+
+            // No previous blocklist exists. Compile a new one.
+            let blockRules = self.blockRulesJson
+
+            WKContentRuleListStore.default().compileContentRuleList(
+                forIdentifier: "pep.security.SecureWebViewController.block_all_external_content",
+                encodedContentRuleList: blockRules) { (contentRuleList, error) in
+                    if let error = error {
+                        Log.shared.errorAndCrash(component: #function,
+                                                 errorString: "Compile error: \(error)")
+                        return
+                    }
+                    compiledBlockList = contentRuleList
+                    guard let _ = compiledBlockList else {
+                        Log.shared.errorAndCrash(component: #function,
+                                                 errorString:
+                            "Emergency exit. External content not blocked.")
+                        completion()
+                        return
+
+                    }
+                    // We have it, set it.
+                    setBlocklist()
+            }
+        }
+    }
+
+    // Type is Any as WKContentRuleList is available in iOS>=11
+    private var blockRulesJson: String {
+        // This rule blocks all content.
+        //IOS-836: add exception for inbedded images
+        return """
+         [{
+             "trigger": {
+                 "url-filter": ".*"
+             },
+             "action": {
+                 "type": "block"
+             }
+         }]
+      """
+    }
 
     private func informDelegateAfterLoadingFinished() {
         let handler = { (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
