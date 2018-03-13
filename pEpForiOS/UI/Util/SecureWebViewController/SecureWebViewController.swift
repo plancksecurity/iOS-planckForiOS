@@ -18,6 +18,12 @@ protocol SecureWebViewControllerDelegate {
 /// Note: It is insecure to use this class on iOS < 11. Thus it will intentionally take the
 /// emergency exit and crash when trying to use it running iOS < 11.
 class SecureWebViewController: UIViewController {
+    private var webView: WKWebView!
+    private var sizeChangeObserver: NSKeyValueObservation?
+    private var hasFinishedLoading: Bool {
+        return contentSize != nil
+    }
+
     static var isSaveToUseWebView: Bool {
         if #available(iOS 11.0, *) {
             return true
@@ -25,8 +31,7 @@ class SecureWebViewController: UIViewController {
         return false
     }
     static let storyboardId = "SecureWebViewController"
-    private var webView: WKWebView!
-    private var sizeChangeObserver: NSKeyValueObservation?
+    var contentSize: CGSize?
     private var _scrollingEnabled: Bool = true
     var scrollingEnabled: Bool {
         get {
@@ -43,29 +48,11 @@ class SecureWebViewController: UIViewController {
 
     // MARK: - Life Cycle
 
-    var hasCompletelyLoadedAndSetup = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.scrollView.isScrollEnabled = scrollingEnabled
-
-        let handler = { (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
-            if self.hasCompletelyLoadedAndSetup {
-                return
-            }
-            if let contentSize = change.newValue {
-                print("contentSize:", contentSize)
-                if contentSize.width == 0.0 {
-                    return
-                }
-                self.webView.frame.size = contentSize
-                self.hasCompletelyLoadedAndSetup = true
-                self.delegate?.secureWebViewController(self, sizeChangedTo: contentSize)
-
-            }
-        }
-        sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
-                                                        options: [NSKeyValueObservingOptions.new],
-                                                        changeHandler: handler)
+        informDelegateAfterLoadingFinished()
     }
 
     // Due to an Apple bug (https://bugs.webkit.org/show_bug.cgi?id=137160),
@@ -94,6 +81,30 @@ class SecureWebViewController: UIViewController {
 
     func display(htmlString: String) {
         webView.loadHTMLString(htmlString, baseURL: nil) //IOS-836: trick: wrong base url?
+    }
+
+    // MARK: - UTIL
+
+    private func informDelegateAfterLoadingFinished() {
+        let handler = { (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
+            if self.hasFinishedLoading {
+                return
+            }
+            if let contentSize = change.newValue {
+                print("contentSize:", contentSize) //IOS-836:
+                if contentSize.width == 0.0 {
+                    return
+                }
+                //
+//                let targetWidth = self.webView.superview
+                //
+                self.contentSize = contentSize
+                self.delegate?.secureWebViewController(self, sizeChangedTo: contentSize)
+            }
+        }
+        sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
+                                                        options: [NSKeyValueObservingOptions.new],
+                                                        changeHandler: handler)
     }
 }
 

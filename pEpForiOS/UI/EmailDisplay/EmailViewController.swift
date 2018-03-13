@@ -326,7 +326,7 @@ extension EmailViewController {
         }
 
         if SecureWebViewController.isSaveToUseWebView, row.type == .content {
-            return bodyView.frame.size.height
+            return bodyViewController.contentSize?.height ?? tableView.rowHeight
         } else {
             return tableView.rowHeight
         }
