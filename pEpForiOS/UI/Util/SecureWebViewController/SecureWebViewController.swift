@@ -59,11 +59,12 @@ class SecureWebViewController: UIViewController {
             // Emergency exit.
             fatalError()
         }
-        let webConfiguration = WKWebViewConfiguration()
+        let config = WKWebViewConfiguration()
         let prefs = WKPreferences()
         //IOS-836: add rule list
         prefs.javaScriptEnabled = false
-        webView = WKWebView(frame: .zero, configuration: webConfiguration)
+        config.preferences = prefs
+        webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
         view = webView
@@ -75,6 +76,8 @@ class SecureWebViewController: UIViewController {
         webView.loadHTMLString(htmlString, baseURL: nil) //IOS-836: trick: wrong base url?
     }
 }
+
+// MARK: - WKNavigationDelegate
 
 extension SecureWebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
@@ -97,19 +100,5 @@ extension SecureWebViewController: WKNavigationDelegate {
             break
         }
         decisionHandler(.cancel)
-    }
-
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript("document.body.scrollHeight") { (response, error) in
-            guard let value = response as? Float else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
-                    return
-            }
-            var frame = webView.frame
-            let height = CGFloat(value)
-            frame.size.height = height
-            webView.frame = frame
-            self.delegate?.secureWebViewController(self, sizeChangedTo: frame.size)
-        }
     }
 }
