@@ -26,6 +26,7 @@ class SecureWebViewController: UIViewController {
     }
     static let storyboardId = "SecureWebViewController"
     private var webView: WKWebView!
+    private var sizeChangeObserver: NSKeyValueObservation?
     private var _scrollingEnabled: Bool = true
     var scrollingEnabled: Bool {
         get {
@@ -38,14 +39,33 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
-
     var delegate: SecureWebViewControllerDelegate?
 
     // MARK: - Life Cycle
 
+    var hasCompletelyLoadedAndSetup = false
     override func viewDidLoad() {
         super.viewDidLoad()
         webView.scrollView.isScrollEnabled = scrollingEnabled
+
+        let handler = { (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
+            if self.hasCompletelyLoadedAndSetup {
+                return
+            }
+            if let contentSize = change.newValue {
+                print("contentSize:", contentSize)
+                if contentSize.width == 0.0 {
+                    return
+                }
+                self.webView.frame.size = contentSize
+                self.hasCompletelyLoadedAndSetup = true
+                self.delegate?.secureWebViewController(self, sizeChangedTo: contentSize)
+
+            }
+        }
+        sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
+                                                        options: [NSKeyValueObservingOptions.new],
+                                                        changeHandler: handler)
     }
 
     // Due to an Apple bug (https://bugs.webkit.org/show_bug.cgi?id=137160),
