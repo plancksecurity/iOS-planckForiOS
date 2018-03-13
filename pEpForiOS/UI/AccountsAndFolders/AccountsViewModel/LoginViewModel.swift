@@ -69,7 +69,6 @@ class LoginViewModel {
         userName: String,
         mySelfer: KickOffMySelfProtocol,
         oauth2Authorizer: OAuth2AuthorizationProtocol) {
-
         lastOAuth2Parameters = OAuth2Parameters(
             emailAddress: emailAddress, userName: userName, mySelfer: mySelfer)
 
