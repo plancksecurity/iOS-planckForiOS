@@ -24,7 +24,7 @@ protocol SecureWebViewControllerDelegate {
 class SecureWebViewController: UIViewController {
     private var webView: WKWebView!
     private var sizeChangeObserver: NSKeyValueObservation?
-    private var hasFinishedLoading: Bool {
+    private var hasBeenLayoutedAlready: Bool {
         return contentSize != nil
     }
 
@@ -96,12 +96,15 @@ class SecureWebViewController: UIViewController {
 
     private func informDelegateAfterLoadingFinished() {
         let handler = { (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
-            if self.hasFinishedLoading {
+            // The contentSize is set multiple times, e.g. whenever the superview is layouting
+            // supviews.
+            if self.hasBeenLayoutedAlready {
+                // We ignore all calls after we have finished our layout.
                 return
             }
             if let contentSize = change.newValue {
-                print("contentSize:", contentSize) //IOS-836:
                 if contentSize.width == 0.0 {
+                    // Also we ignore calls before html content has been loaded.
                     return
                 }
                 self.contentSize = contentSize
