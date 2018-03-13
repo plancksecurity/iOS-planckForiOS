@@ -9,6 +9,10 @@
 import WebKit
 
 protocol SecureWebViewControllerDelegate {
+    /// Called after the webview has finished loadding and layouting its subviews.
+    /// - Parameters:
+    ///   - webViewController: calling view controller
+    ///   - size: webview.scrollview.contentSize after loading html content and layouting
     func secureWebViewController(_ webViewController: SecureWebViewController, sizeChangedTo size: CGSize)
 }
 
@@ -31,7 +35,9 @@ class SecureWebViewController: UIViewController {
         return false
     }
     static let storyboardId = "SecureWebViewController"
-    var contentSize: CGSize?
+    /// webview.scrollView.contentSize after html has finished loading and layouting
+    private(set) var contentSize: CGSize?
+
     private var _scrollingEnabled: Bool = true
     var scrollingEnabled: Bool {
         get {
@@ -47,7 +53,6 @@ class SecureWebViewController: UIViewController {
     var delegate: SecureWebViewControllerDelegate?
 
     // MARK: - Life Cycle
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,6 +71,9 @@ class SecureWebViewController: UIViewController {
             // Emergency exit.
             fatalError()
         }
+        if webView != nil {
+            return
+        }
         let config = WKWebViewConfiguration()
         let prefs = WKPreferences()
         //IOS-836: add rule list
@@ -80,7 +88,8 @@ class SecureWebViewController: UIViewController {
     // MARK: - API
 
     func display(htmlString: String) {
-        webView.loadHTMLString(htmlString, baseURL: nil) //IOS-836: trick: wrong base url?
+        let scaledHtml = dirtyHackInsertedForPageScaleToFit(inHtml: htmlString)
+        webView.loadHTMLString(scaledHtml, baseURL: nil) //IOS-836: trick: wrong base url?
     }
 
     // MARK: - UTIL
@@ -95,9 +104,6 @@ class SecureWebViewController: UIViewController {
                 if contentSize.width == 0.0 {
                     return
                 }
-                //
-//                let targetWidth = self.webView.superview
-                //
                 self.contentSize = contentSize
                 self.delegate?.secureWebViewController(self, sizeChangedTo: contentSize)
             }
@@ -105,6 +111,34 @@ class SecureWebViewController: UIViewController {
         sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
                                                         options: [NSKeyValueObservingOptions.new],
                                                         changeHandler: handler)
+    }
+
+    /// Returns a modified version the html, adjusted to simulate "PageScaleToFit" layout by
+    /// inserting "<meta name="viewport" content="width=device-width, initial-scale=1.0"/>".
+    private func dirtyHackInsertedForPageScaleToFit(inHtml html: String) -> String {
+        var result = html
+        if html.contains(find: "initial-scale=1.0") {
+            // scale factor already set. Nothing to do.
+            return result
+        }
+
+        if html.contains(find: "<head>") {
+            result = html.replacingOccurrences(of: "<head>", with:
+                """
+        <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        """)
+        } else if html.contains(find: "<html>") {
+            result = html.replacingOccurrences(of: "<html>", with:
+                """
+        <html>
+        <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        </head>
+        """
+            )
+        }
+        return result
     }
 }
 
