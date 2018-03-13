@@ -152,7 +152,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             lastSentMessageObjectID = objID
             let session = PEPSession()
             do {
-                let encMsg = try session.encrypt(
+                let (_, encMsg) = try session.encrypt(
                     pEpMessageDict: msg, encryptionFormat: protected ? PEP_enc_PEP : PEP_enc_none)
                 send(pEpMessageDict: encMsg as? PEPMessageDict)
             } catch let err as NSError {

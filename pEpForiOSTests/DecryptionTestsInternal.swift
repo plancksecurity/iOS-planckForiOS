@@ -109,7 +109,7 @@ class DecryptionTestsInternal: XCTestCase {
 
         if shouldEncrypt {
             do {
-                let encryptedDictOpt = try session.encrypt(pEpMessageDict: pEpMsg)
+                let (_, encryptedDictOpt) = try session.encrypt(pEpMessageDict: pEpMsg)
                 guard
                     let theEncryptedDict = encryptedDictOpt as? PEPMessageDict,
                     let theAttachments = theEncryptedDict[kPepAttachments] as? NSArray else {

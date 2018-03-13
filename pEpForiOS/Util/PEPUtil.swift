@@ -571,34 +571,38 @@ open class PEPUtil {
     open static func encrypt(
         pEpMessageDict: PEPMessageDict, encryptionFormat: PEP_enc_format = PEP_enc_PEP,
         forIdentity: PEPIdentity? = nil,
-        session: PEPSession = PEPSession()) throws -> NSDictionary? {
+        session: PEPSession = PEPSession()) throws -> (PEP_STATUS, NSDictionary?) {
 
         if let ident = forIdentity {
             var encryptedMessage: NSDictionary? = nil
-            let _ = session.encryptMessageDict(
-                pEpMessageDict, identity: ident,
-                dest: &encryptedMessage)
-            return encryptedMessage
+            let status = session.encryptMessageDict(
+                pEpMessageDict, identity: ident, dest: &encryptedMessage)
+            return (status, encryptedMessage)
         } else {
-            return try session.encryptMessageDict(pEpMessageDict,
-                                                  extraKeys: nil,
-                                                  encFormat: encryptionFormat) as NSDictionary
+            var status = PEP_UNKNOWN_ERROR
+            let encMessage = try session.encryptMessageDict(pEpMessageDict,
+                                                            extraKeys: nil,
+                                                            encFormat: encryptionFormat,
+                                                            status: &status) as NSDictionary
+            return (status, encMessage)
         }
     }
 
     open static func encrypt(
         pEpMessage: PEPMessage, forIdentity: PEPIdentity? = nil,
-        session: PEPSession = PEPSession()) throws -> PEPMessage? {
+        session: PEPSession = PEPSession()) throws -> (PEP_STATUS, PEPMessage?) {
 
         if let ident = forIdentity {
             var encryptedMessage: PEPMessage? = nil
-            let _ = session.encryptMessage(
+            let status = session.encryptMessage(
                 pEpMessage, identity: ident,
                 dest: &encryptedMessage)
-            return encryptedMessage
+            return (status, encryptedMessage)
         } else {
-            return try session.encryptMessage(
-                pEpMessage, extraKeys: nil)
+            var status = PEP_UNKNOWN_ERROR
+            let encMessage = try session.encryptMessage(
+                pEpMessage, extraKeys: nil, status: &status)
+            return (status, encMessage)
         }
     }
 

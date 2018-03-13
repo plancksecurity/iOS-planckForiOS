@@ -84,14 +84,14 @@ open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
 public extension PEPSession {
     public func encrypt(pEpMessageDict: PEPMessageDict,
                         encryptionFormat: PEP_enc_format = PEP_enc_PEP,
-                        forIdentity: PEPIdentity? = nil) throws -> NSDictionary? {
+                        forIdentity: PEPIdentity? = nil) throws -> (PEP_STATUS, NSDictionary?) {
         return try PEPUtil.encrypt(
             pEpMessageDict: pEpMessageDict, encryptionFormat: encryptionFormat,
             forIdentity: forIdentity, session: self)
     }
 
     public func encrypt(pEpMessage: PEPMessage,
-                        forIdentity: PEPIdentity? = nil) throws -> PEPMessage? {
+                        forIdentity: PEPIdentity? = nil) throws -> (PEP_STATUS, PEPMessage?) {
         return try PEPUtil.encrypt(
             pEpMessage: pEpMessage, forIdentity: forIdentity, session: self)
     }
