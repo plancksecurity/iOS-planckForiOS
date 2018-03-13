@@ -174,7 +174,7 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - BODY HANDLING (long message)
 
-    lazy fileprivate var bodyViewController: SecureWebViewController = {
+    lazy fileprivate var htmlviewerViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
@@ -187,8 +187,9 @@ class EmailViewController: BaseTableViewController {
         vc.delegate = self
         return vc
     }()
-    fileprivate var bodyView: UIView {
-        return bodyViewController.view
+
+    fileprivate var htmlView: UIView {
+        return htmlviewerViewController.view
     }
 
     fileprivate func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
@@ -200,9 +201,9 @@ class EmailViewController: BaseTableViewController {
             let htmlBody = m.longMessageFormatted,
             !htmlBody.isEmpty {
             // Its fine to use a webview (iOS>=11) and we do have HTML content.
-            contentCell.contentView.addSubview(bodyView)
-            bodyView.fullSizeInSuperView()
-            bodyViewController.display(htmlString: htmlBody)
+            contentCell.contentView.addSubview(htmlView)
+            htmlView.fullSizeInSuperView()
+            htmlviewerViewController.display(htmlString: htmlBody)
         } else {
             // We are not allowed to use a webview (iOS<11) or do not have HTML content.
             contentCell.updateCell(model: rowData, message: m)
@@ -326,7 +327,7 @@ extension EmailViewController {
         }
 
         if SecureWebViewController.isSaveToUseWebView, row.type == .content {
-            return bodyViewController.contentSize?.height ?? tableView.rowHeight
+            return htmlviewerViewController.contentSize?.height ?? tableView.rowHeight
         } else {
             return tableView.rowHeight
         }
