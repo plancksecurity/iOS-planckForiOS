@@ -105,6 +105,7 @@ class SecureWebViewController: UIViewController {
         let listID = "pep.security.SecureWebViewController.block_all_external_content"
         var compiledBlockList: WKContentRuleList?
 
+        // Function to set the compiled block list
         let setBlocklist = {
             if compiledBlockList != nil {
                 DispatchQueue.main.async {
