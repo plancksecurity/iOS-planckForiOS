@@ -461,11 +461,11 @@ class ComposeTableViewController: BaseTableViewController {
         DispatchQueue.main.async {
             if let from = self.origin {
                 let session = PEPSession()
-                let ratingValue = PEPUtil.outgoingMessageColor(from: from,
-                                                          to: self.destinyTo,
-                                                          cc: self.destinyCc,
-                                                          bcc: self.destinyBcc,
-                                                          session: session)
+                let ratingValue = PEPUtil.outgoingMessageRating(from: from,
+                                                                to: self.destinyTo,
+                                                                cc: self.destinyCc,
+                                                                bcc: self.destinyBcc,
+                                                                session: session)
                 self.rating = session.string(from: ratingValue)
                 if let b = self.showPepRating(pEpRating: ratingValue,
                                               pEpProtection: self.pEpProtection) {
