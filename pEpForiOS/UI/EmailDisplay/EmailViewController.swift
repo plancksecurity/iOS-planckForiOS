@@ -19,15 +19,16 @@ class EmailViewController: BaseTableViewController {
     @IBOutlet weak var nextMessage: UIBarButtonItem!
 
     var message: Message?
-
-    var partnerIdentity: Identity?
-    var tableData: ComposeDataSource?
     var folderShow : Folder?
     var messageId = 0
-    var ratingReEvaluator: RatingReEvaluator?
 
-    lazy var backgroundQueue = OperationQueue()
-    lazy var documentInteractionController = UIDocumentInteractionController()
+    private var partnerIdentity: Identity?
+    private var tableData: ComposeDataSource?
+    private var ratingReEvaluator: RatingReEvaluator?
+    lazy private var backgroundQueue = OperationQueue()
+    lazy private var documentInteractionController = UIDocumentInteractionController()
+
+    // MARK: - LIFE CYCLE
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,26 +48,6 @@ class EmailViewController: BaseTableViewController {
         saveTitleView()
     }
 
-    @IBAction func next(_ sender: Any) {
-        messageId += 1
-        if let m = folderShow?.messageAt(index: messageId) {
-            message = m
-        }
-        //message =
-        self.tableView.reloadData()
-        configureView()
-
-    }
-
-    @IBAction func previous(_ sender: Any) {
-        messageId -= 1
-        if let m = folderShow?.messageAt(index: messageId) {
-            message = m
-        }
-        self.tableView.reloadData()
-        configureView()
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureView()
@@ -77,7 +58,58 @@ class EmailViewController: BaseTableViewController {
         setNoColor()
     }
 
-    func configureView() {
+    // MARK: - UTIL
+
+    private func updateFlaggedStatus() {
+        if message?.imapFlags?.flagged ?? false {
+            flagButton.image = UIImage.init(named: "icon-flagged")
+        } else {
+            flagButton.image = UIImage.init(named: "icon-unflagged")
+        }
+    }
+
+    private func checkMessageReEvaluation() {
+        if let m = message, ratingReEvaluator?.message != m {
+            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: m)
+            ratingReEvaluator?.delegate = self
+        }
+    }
+
+    private func showPepRating() {
+        let session = PEPSession()
+        let _ = showPepRating(pEpRating: message?.pEpRating(session: session))
+        var allOwnKeysGenerated = true
+        var atLeastOneHandshakableIdentityFound = false
+        if let m = message {
+            for id in m.allIdentities {
+                if id.isMySelf {
+                    // if we encounter an own identity, make sure it already has a key
+                    if id.fingerPrint(session: session) == nil {
+                        allOwnKeysGenerated = false
+                        break
+                    }
+                } else {
+                    if id.canHandshakeOn(session: session) {
+                        atLeastOneHandshakableIdentityFound = true
+                        break
+                    }
+                }
+            }
+        }
+        handShakeButton.isEnabled = allOwnKeysGenerated && atLeastOneHandshakableIdentityFound
+    }
+
+
+    fileprivate final func loadDatasource(_ file: String) {        if let path = Bundle.main.path(forResource: file, ofType: "plist") {
+            if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
+                tableData = ComposeDataSource(with: dict["Rows"] as! [[String: Any]])
+            }
+        }
+    }
+
+    // MARK: - SETUP
+
+    private func configureView() {
         setupDestructiveButtonIcon()
 
         tableData?.filterRows(message: message)
@@ -105,55 +137,6 @@ class EmailViewController: BaseTableViewController {
         updateFlaggedStatus()
     }
 
-    func updateFlaggedStatus() {
-        if message?.imapFlags?.flagged ?? false {
-            flagButton.image = UIImage.init(named: "icon-flagged")
-        } else {
-            flagButton.image = UIImage.init(named: "icon-unflagged")
-        }
-    }
-
-    func checkMessageReEvaluation() {
-        if let m = message, ratingReEvaluator?.message != m {
-            ratingReEvaluator = RatingReEvaluator(parentName: #function, message: m)
-            ratingReEvaluator?.delegate = self
-        }
-    }
-
-    func showPepRating() {
-        let session = PEPSession()
-        let _ = showPepRating(pEpRating: message?.pEpRating(session: session))
-        var allOwnKeysGenerated = true
-        var atLeastOneHandshakableIdentityFound = false
-        if let m = message {
-            for id in m.allIdentities {
-                if id.isMySelf {
-                    // if we encounter an own identity, make sure it already has a key
-                    if id.fingerPrint(session: session) == nil {
-                        allOwnKeysGenerated = false
-                        break
-                    }
-                } else {
-                    if id.canHandshakeOn(session: session) {
-                        atLeastOneHandshakableIdentityFound = true
-                        break
-                    }
-                }
-            }
-        }
-        handShakeButton.isEnabled = allOwnKeysGenerated && atLeastOneHandshakableIdentityFound
-    }
-
-    fileprivate final func loadDatasource(_ file: String) {
-        if let path = Bundle.main.path(forResource: file, ofType: "plist") {
-            if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
-                tableData = ComposeDataSource(with: dict["Rows"] as! [[String: Any]])
-            }
-        }
-    }
-
-    // MARK: - SETUP
-
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
     private func setupDestructiveButtonIcon() {
         guard let msg = message else {
@@ -172,9 +155,9 @@ class EmailViewController: BaseTableViewController {
 
     }
 
-    // MARK: - BODY HANDLING (long message)
+    // MARK: - EMAIL-BODY HANDLING - SECURE HTML
 
-    lazy fileprivate var htmlviewerViewController: SecureWebViewController = {
+    lazy fileprivate var htmlViewerViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
@@ -188,10 +171,6 @@ class EmailViewController: BaseTableViewController {
         return vc
     }()
 
-    fileprivate var htmlView: UIView {
-        return htmlviewerViewController.view
-    }
-
     fileprivate func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
             Log.shared.errorAndCrash(component: #function, errorString: "No msg.")
@@ -201,9 +180,9 @@ class EmailViewController: BaseTableViewController {
             let htmlBody = m.longMessageFormatted,
             !htmlBody.isEmpty {
             // Its fine to use a webview (iOS>=11) and we do have HTML content.
-            contentCell.contentView.addSubview(htmlView)
-            htmlView.fullSizeInSuperView()
-            htmlviewerViewController.display(htmlString: htmlBody)
+            contentCell.contentView.addSubview(htmlViewerViewController.view)
+            htmlViewerViewController.view.fullSizeInSuperView()
+            htmlViewerViewController.display(htmlString: htmlBody)
         } else {
             // We are not allowed to use a webview (iOS<11) or do not have HTML content.
             contentCell.updateCell(model: rowData, message: m)
@@ -211,6 +190,26 @@ class EmailViewController: BaseTableViewController {
     }
 
     // MARK: - IBActions
+
+    @IBAction func next(_ sender: Any) {
+        messageId += 1
+        if let m = folderShow?.messageAt(index: messageId) {
+            message = m
+        }
+        //message =
+        self.tableView.reloadData()
+        configureView()
+
+    }
+
+    @IBAction func previous(_ sender: Any) {
+        messageId -= 1
+        if let m = folderShow?.messageAt(index: messageId) {
+            message = m
+        }
+        self.tableView.reloadData()
+        configureView()
+    }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
         let alertViewWithoutTitle = UIAlertController()
@@ -287,12 +286,26 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
-    func decryptAgain() {
+    private func decryptAgain() {
         ratingReEvaluator?.reevaluateRating()
     }
 }
 
-// MARK: UITableViewDataSource
+// MARK: - Title View Extension
+
+extension EmailViewController {
+    func saveTitleView() {
+        self.originalTitleView = self.title
+    }
+
+    func recoveryInitialTitle() {
+        self.navigationItem.titleView = nil
+        self.navigationItem.title = self.originalTitleView
+        self.title = self.originalTitleView
+    }
+}
+
+// MARK: - UITableViewDataSource
 
 extension EmailViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -327,7 +340,7 @@ extension EmailViewController {
         }
 
         if SecureWebViewController.isSaveToUseWebView, row.type == .content {
-            return htmlviewerViewController.contentSize?.height ?? tableView.rowHeight
+            return htmlViewerViewController.contentSize?.height ?? tableView.rowHeight
         } else {
             return tableView.rowHeight
         }
@@ -442,21 +455,6 @@ extension EmailViewController: MessageAttachmentDelegate {
         }
         backgroundQueue.addOperation(attachmentOp)
     }
-}
-
-// MARK: - Title View Extension
-
-extension EmailViewController {
-    func saveTitleView() {
-        self.originalTitleView = self.title
-    }
-
-    func recoveryInitialTitle() {
-        self.navigationItem.titleView = nil
-        self.navigationItem.title = self.originalTitleView
-        self.title = self.originalTitleView
-    }
-
 }
 
 // MARK: - SecureWebViewControllerDelegate
