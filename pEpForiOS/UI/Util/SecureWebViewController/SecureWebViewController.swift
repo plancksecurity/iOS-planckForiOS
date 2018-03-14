@@ -274,3 +274,19 @@ extension SecureWebViewController: WKNavigationDelegate {
         decisionHandler(.cancel)
     }
 }
+
+// MARK: - WKURLSchemeHandler
+
+@available(iOS, introduced: 11.0)
+/// WKURLSchemeHandler subclass to handle cid: URLs (images inlined in mails).
+/// Provides content from MessageModel for a certain content ID.
+class SchemeHandlerCid : NSObject, WKURLSchemeHandler {
+
+    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+
+    }
+
+    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
+
+    }
+}
