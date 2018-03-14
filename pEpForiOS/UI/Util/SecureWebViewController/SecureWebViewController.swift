@@ -24,9 +24,6 @@ protocol SecureWebViewControllerDelegate {
 class SecureWebViewController: UIViewController {
     private var webView: WKWebView!
     private var sizeChangeObserver: NSKeyValueObservation?
-    private var hasBeenLayoutedAlready: Bool {
-        return contentSize != nil
-    }
 
     static var isSaveToUseWebView: Bool {
         if #available(iOS 11.0, *) {
@@ -178,25 +175,32 @@ class SecureWebViewController: UIViewController {
     }
 
     private func informDelegateAfterLoadingFinished() {
+        // code to run whenever the content(size) changes
         let handler = { (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
-            // The contentSize is set multiple times, e.g. whenever the superview is layouting
-            // supviews.
-            if self.hasBeenLayoutedAlready {
-                // We ignore all calls after we have finished our layout.
-                return
-            }
-            if let contentSize = change.newValue {
-                if contentSize.width == 0.0 {
-                    // Also we ignore calls before html content has been loaded.
+            guard
+                let contentSize = change.newValue,
+                !self.shouldIgnoreContentSizeChange(newSize: contentSize) else {
                     return
-                }
-                self.contentSize = contentSize
-                self.delegate?.secureWebViewController(self, sizeChangedTo: contentSize)
             }
+            self.contentSize = contentSize
+            self.delegate?.secureWebViewController(self, sizeChangedTo: contentSize)
         }
         sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
                                                         options: [NSKeyValueObservingOptions.new],
                                                         changeHandler: handler)
+    }
+
+    // We ignore calls before html content has been loaded (zero size).
+    // Also we do not want to bother the delegate if the size did not change (to
+    // improve performance and to avoid endless loops inform delegate -> delegate
+    // triggers layout of subviews -> contentSize is set but did not change ->
+    // inform delegate ...)
+    ///
+    /// - Parameter newSize: new contentSize to figure out whether or not to ignore the change for
+    /// - Returns:  true: if we should not trigger any actions for the change in content size
+    ///             false: otherwize
+    private func shouldIgnoreContentSizeChange(newSize: CGSize) -> Bool {
+        return newSize.width == 0.0 || newSize == self.contentSize
     }
 
     /// Returns a modified version the html, adjusted to simulate "PageScaleToFit" layout by
