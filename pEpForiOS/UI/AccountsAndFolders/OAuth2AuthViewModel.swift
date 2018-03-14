@@ -42,12 +42,17 @@ protocol OAuth2AuthViewModelDelegate: class {
 class OAuth2AuthViewModel {
     weak var delegate: OAuth2AuthViewModelDelegate?
 
+    /**
+     A strong reference is needed in order to guarantee the delegate will be called.
+     */
+    var currentAuthorizer: OAuth2AuthorizationProtocol?
+
     func authorize(authorizer: OAuth2AuthorizationProtocol, emailAddress: String,
                    viewController: UIViewController) {
-        var theAuthorizer = authorizer
+        currentAuthorizer = authorizer
         if let theConfig = OAuth2Configuration.from(emailAddress: emailAddress) {
-            theAuthorizer.delegate = self
-            theAuthorizer.startAuthorizationRequest(
+            currentAuthorizer?.delegate = self
+            currentAuthorizer?.startAuthorizationRequest(
                 viewController: viewController, oauth2Configuration: theConfig)
         } else {
             delegate?.didAuthorize(oauth2Error: OAuth2AuthViewModelError.noConfiguration,

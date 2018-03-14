@@ -47,7 +47,6 @@ class PEPSessionTest: XCTestCase {
         message.from = account.user
         message.to = [account.user]
         message.cc = [account.user]
-        message.bcc = [account.user]
         message.parent = folder
         message.sent = Date()
         message.received = Date()
@@ -63,10 +62,13 @@ class PEPSessionTest: XCTestCase {
         let cdmessage2 = cdmessage1
         let pepmessage = cdmessage1.pEpMessageDict()
 
-        session.encryptMessageDict(pepmessage, extra: nil, encFormat: PEP_enc_PEP, dest: nil)
-        try! session.decryptMessageDict(pepmessage, rating: nil, keys: nil)
+        try! session.encryptMessageDict(pepmessage,
+                                        extraKeys: nil,
+                                        encFormat: PEP_enc_PEP,
+                                        status: nil)
+        try! session.decryptMessageDict(pepmessage, rating: nil, extraKeys: nil, status: nil)
         cdmessage2.update(pEpMessageDict: pepmessage)
-        XCTAssertEqual(cdmessage2,cdmessage1)
+        XCTAssertEqual(cdmessage2, cdmessage1)
 
         Log.verbose(component: "testPEPConversion", content: "test")
         Log.error(component: "testPEPConversion", errorString: "test")
@@ -92,8 +94,7 @@ class PEPSessionTest: XCTestCase {
 
         session.mySelf(myself)
 
-        let (status1, encMsg1) = session.encrypt(pEpMessage: pEpMessage, forIdentity: myself)
-        XCTAssertEqual(status1, PEP_STATUS_OK)
+        let (_, encMsg1) = try! session.encrypt(pEpMessage: pEpMessage, forIdentity: myself)
         if let theEncMsg = encMsg1 {
             // expecting that sensitive data gets hidden (ENGINE-287)
             XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
@@ -106,9 +107,7 @@ class PEPSessionTest: XCTestCase {
             XCTFail()
         }
 
-        let (status2, encMsg2) = session.encrypt(
-            pEpMessage: pEpMessage)
-        XCTAssertEqual(status2, PEP_STATUS_OK)
+        let (_, encMsg2) = try! session.encrypt(pEpMessage: pEpMessage)
         if let theEncMsg = encMsg2 {
             // expecting that message ID gets hidden (ENGINE-288)
             XCTAssertNotEqual(theEncMsg.messageID, myMessageID)
@@ -165,7 +164,7 @@ class PEPSessionTest: XCTestCase {
         let session = PEPSession()
         var keys: NSArray?
         let pepDecryptedMessage = try! session.decryptMessageDict(
-            pEpMessage, rating: nil, keys: &keys)
+            pEpMessage, rating: nil, extraKeys: &keys, status: nil)
         XCTAssertNotNil(pepDecryptedMessage[kPepLongMessage])
     }
 
@@ -196,7 +195,8 @@ class PEPSessionTest: XCTestCase {
     func tryDecryptMessage(
         message: PEPMessage, myID: String, references: [String],
         session: PEPSession = PEPSession()) {        var keys: NSArray?
-        let pepDecryptedMessage = try! session.decryptMessage(message, rating: nil, keys: &keys)
+        let pepDecryptedMessage = try! session.decryptMessage(
+            message, rating: nil, extraKeys: &keys, status: nil)
         XCTAssertEqual(pepDecryptedMessage.messageID, myID)
         // check that original references are restored (ENGINE-290)
         XCTAssertEqual(pepDecryptedMessage.references ?? [], references)

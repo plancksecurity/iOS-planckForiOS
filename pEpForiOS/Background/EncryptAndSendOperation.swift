@@ -151,12 +151,12 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             context: context, cdAccount: cdAccount) {
             lastSentMessageObjectID = objID
             let session = PEPSession()
-            let (status, encMsg) = session.encrypt(
-                pEpMessageDict: msg, encryptionFormat: protected ? PEP_enc_PEP : PEP_enc_none)
-            if let err = PEPUtil.check(status: status, encryptedMessage: encMsg, comp: comp) {
-                handleError(err)
-            } else {
+            do {
+                let (_, encMsg) = try session.encrypt(
+                    pEpMessageDict: msg, encryptionFormat: protected ? PEP_enc_PEP : PEP_enc_none)
                 send(pEpMessageDict: encMsg as? PEPMessageDict)
+            } catch let err as NSError {
+                handleError(err)
             }
         } else {
             markAsFinished()

@@ -108,43 +108,45 @@ class DecryptionTestsInternal: XCTestCase {
         var encryptedOrNotMailDict = PEPMessageDict()
 
         if shouldEncrypt {
-            let (status, encryptedDictOpt) = session.encrypt(pEpMessageDict: pEpMsg)
-            XCTAssertEqual(status, PEP_STATUS_OK)
-
-            guard
-                let theEncryptedDict = encryptedDictOpt as? PEPMessageDict,
-                let theAttachments = theEncryptedDict[kPepAttachments] as? NSArray else {
-                    XCTFail("No attachments")
-                    return
-            }
-            XCTAssertEqual(theAttachments.count, 2)
-            XCTAssertNotNil(theEncryptedDict[kPepOptFields])
-            guard let optFields = theEncryptedDict[kPepOptFields] as? NSArray else {
-                XCTFail()
-                return
-            }
-            XCTAssertTrue(optFields.count > 0)
-            var pEpVersionFound = false
-            for item in optFields {
-                if let headerfield = item as? NSArray {
-                    guard let name = headerfield[0] as? String else {
-                        XCTFail()
-                        continue
-                    }
-                    if name == kXpEpVersion {
-                        pEpVersionFound = true
-                    }
-                    XCTAssertNotNil(headerfield[1] as? String)
+            do {
+                let (_, encryptedDictOpt) = try session.encrypt(pEpMessageDict: pEpMsg)
+                guard
+                    let theEncryptedDict = encryptedDictOpt as? PEPMessageDict,
+                    let theAttachments = theEncryptedDict[kPepAttachments] as? NSArray else {
+                        XCTFail("No attachments")
+                        return
                 }
+                XCTAssertEqual(theAttachments.count, 2)
+                XCTAssertNotNil(theEncryptedDict[kPepOptFields])
+                guard let optFields = theEncryptedDict[kPepOptFields] as? NSArray else {
+                    XCTFail()
+                    return
+                }
+                XCTAssertTrue(optFields.count > 0)
+                var pEpVersionFound = false
+                for item in optFields {
+                    if let headerfield = item as? NSArray {
+                        guard let name = headerfield[0] as? String else {
+                            XCTFail()
+                            continue
+                        }
+                        if name == kXpEpVersion {
+                            pEpVersionFound = true
+                        }
+                        XCTAssertNotNil(headerfield[1] as? String)
+                    }
+                }
+                XCTAssertTrue(pEpVersionFound)
+
+                XCTAssertNotEqual(theEncryptedDict[kPepID] as? String, messageID)
+                XCTAssertNotEqual(theEncryptedDict[kPepShortMessage] as? String, msgShortMessage)
+                XCTAssertNotEqual(theEncryptedDict[kPepLongMessage] as? String, msgLongMessage)
+                XCTAssertNotEqual(theEncryptedDict[kPepReferences] as? [String] ?? [], references)
+
+                encryptedOrNotMailDict = theEncryptedDict
+            } catch {
+                XCTFail()
             }
-            XCTAssertTrue(pEpVersionFound)
-
-            XCTAssertNotEqual(theEncryptedDict[kPepID] as? String, messageID)
-            XCTAssertNotEqual(theEncryptedDict[kPepShortMessage] as? String, msgShortMessage)
-            XCTAssertNotEqual(theEncryptedDict[kPepLongMessage] as? String, msgLongMessage)
-            XCTAssertNotEqual(theEncryptedDict[kPepReferences] as? [String] ?? [], references)
-
-            encryptedOrNotMailDict = theEncryptedDict
         } else {
             encryptedOrNotMailDict = pEpMsg
         }
