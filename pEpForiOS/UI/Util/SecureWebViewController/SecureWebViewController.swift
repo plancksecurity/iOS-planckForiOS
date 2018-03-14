@@ -73,9 +73,9 @@ class SecureWebViewController: UIViewController {
         }
         let config = WKWebViewConfiguration()
         let prefs = WKPreferences()
-        //IOS-836: add rule list
         prefs.javaScriptEnabled = false
         config.preferences = prefs
+        CidHandler.setup(config: config)
         webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
@@ -83,19 +83,19 @@ class SecureWebViewController: UIViewController {
         //IOS-836: we need to get access to inlined attachments (WKURLSchemeHandler)
     }
 
-    // MARK: - WKURLSchemeHandler (load local resources)
-
-    private func setupSchemeHandler() {
-        let inlinedImagesScheme = "security.pep.SecureWebViewController.setupSchemeHandler"
-    }
+//    // MARK: - WKURLSchemeHandler (load local resources)
+//
+//    @available(iOS, introduced: 11.0)
+//    private func setupSchemeHandler() {
+//        let cidSchemeID = "security.pep.SecureWebViewController.setupSchemeHandler"
+//        let config = webView.configuration
+//        config.setURLSchemeHandler(SchemeHandlerCid(), forURLScheme: cidSchemeID)
+//    }
 
     // MARK: - WKContentRuleList (block loading of all remote content)
 
+    @available(iOS, introduced: 11.0)
     private func setupBlocklist(completion: @escaping () -> Void) {
-        guard #available(iOS 11.0, *) else {
-            return
-        }
-
         let listID = "pep.security.SecureWebViewController.block_all_external_content"
         var compiledBlockList: WKContentRuleList?
 
@@ -242,6 +242,9 @@ class SecureWebViewController: UIViewController {
     // MARK: - API
 
     func display(htmlString: String) {
+        guard #available(iOS 11.0, *) else {
+            return
+        }
         let scaledHtml = dirtyHackInsertedForPageScaleToFit(inHtml: htmlString)
         setupBlocklist() {
             self.webView.loadHTMLString(scaledHtml, baseURL: nil) //IOS-836: trick: wrong base url?
@@ -272,21 +275,5 @@ extension SecureWebViewController: WKNavigationDelegate {
             break
         }
         decisionHandler(.cancel)
-    }
-}
-
-// MARK: - WKURLSchemeHandler
-
-@available(iOS, introduced: 11.0)
-/// WKURLSchemeHandler subclass to handle cid: URLs (images inlined in mails).
-/// Provides content from MessageModel for a certain content ID.
-class SchemeHandlerCid : NSObject, WKURLSchemeHandler {
-
-    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-
-    }
-
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-
     }
 }
