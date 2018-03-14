@@ -651,9 +651,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         self.measure {
             for _ in [1...1000] {
-                let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
-                                                     cc: [id], bcc: [id],
-                                                     session: self.session)
+                let _ = PEPUtil.outgoingMessageRating(from: id, to: [id],
+                                                      cc: [id], bcc: [id],
+                                                      session: self.session)
             }
         }
     }
@@ -665,9 +665,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         account.save()
         self.measure {
             for _ in [1...1000] {
-                let _ = PEPUtil.outgoingMessageColor(from: identity, to: [identity],
-                                                     cc: [identity], bcc: [identity],
-                                                     session: self.session)
+                let _ = PEPUtil.outgoingMessageRating(from: identity, to: [identity],
+                                                      cc: [identity], bcc: [identity],
+                                                      session: self.session)
             }
         }
     }
@@ -681,9 +681,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         account.save()
         self.measure {
             for _ in [1...1000] {
-                let _ = PEPUtil.outgoingMessageColor(from: id, to: [id],
-                                                     cc: [id], bcc: [id],
-                                                     session: self.session)
+                let _ = PEPUtil.outgoingMessageRating(from: id, to: [id],
+                                                      cc: [id], bcc: [id],
+                                                      session: self.session)
             }
         }
     }
