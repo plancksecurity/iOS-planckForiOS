@@ -573,13 +573,13 @@ open class PEPUtil {
         forIdentity: PEPIdentity? = nil,
         session: PEPSession = PEPSession()) throws -> (PEP_STATUS, NSDictionary?) {
 
+        var status = PEP_UNKNOWN_ERROR
         if let ident = forIdentity {
-            var encryptedMessage: NSDictionary? = nil
-            let status = session.encryptMessageDict(
-                pEpMessageDict, identity: ident, dest: &encryptedMessage)
+            let encryptedMessage = try session.encryptMessageDict(pEpMessageDict,
+                                                                  identity: ident,
+                                                                  status: &status)  as NSDictionary
             return (status, encryptedMessage)
         } else {
-            var status = PEP_UNKNOWN_ERROR
             let encMessage = try session.encryptMessageDict(pEpMessageDict,
                                                             extraKeys: nil,
                                                             encFormat: encryptionFormat,
@@ -592,16 +592,16 @@ open class PEPUtil {
         pEpMessage: PEPMessage, forIdentity: PEPIdentity? = nil,
         session: PEPSession = PEPSession()) throws -> (PEP_STATUS, PEPMessage?) {
 
+        var status = PEP_UNKNOWN_ERROR
         if let ident = forIdentity {
-            var encryptedMessage: PEPMessage? = nil
-            let status = session.encryptMessage(
-                pEpMessage, identity: ident,
-                dest: &encryptedMessage)
+            let encryptedMessage = try session.encryptMessage(pEpMessage,
+                                                              identity: ident,
+                                                              status: &status)
             return (status, encryptedMessage)
         } else {
-            var status = PEP_UNKNOWN_ERROR
-            let encMessage = try session.encryptMessage(
-                pEpMessage, extraKeys: nil, status: &status)
+            let encMessage = try session.encryptMessage(pEpMessage,
+                                                        extraKeys: nil,
+                                                        status: &status)
             return (status, encMessage)
         }
     }
