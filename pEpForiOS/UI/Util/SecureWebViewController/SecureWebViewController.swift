@@ -83,16 +83,13 @@ class SecureWebViewController: UIViewController {
         //IOS-836: we need to get access to inlined attachments (WKURLSchemeHandler)
     }
 
-    // MARK: - API
+    // MARK: - WKURLSchemeHandler (load local resources)
 
-    func display(htmlString: String) {
-        let scaledHtml = dirtyHackInsertedForPageScaleToFit(inHtml: htmlString)
-        setupBlocklist() {
-            self.webView.loadHTMLString(scaledHtml, baseURL: nil) //IOS-836: trick: wrong base url?
-        }
+    private func setupSchemeHandler() {
+        let inlinedImagesScheme = "security.pep.SecureWebViewController.setupSchemeHandler"
     }
 
-    // MARK: - UTIL
+    // MARK: - WKContentRuleList (block loading of all remote content)
 
     private func setupBlocklist(completion: @escaping () -> Void) {
         guard #available(iOS 11.0, *) else {
@@ -170,9 +167,20 @@ class SecureWebViewController: UIViewController {
              "action": {
                  "type": "block"
              }
-         }]
+        },
+        {
+            "trigger": {
+                "url-filter": ".cid*"
+        },
+            "action": {
+                "type": "ignore-previous-rules"
+        }
+        }]
       """
     }
+    //IOS-836: double check if cid is required, i.e. how block rules play together with WKURLSchemeHandler
+
+    // MARK: - Handle Content Size Changes
 
     private func informDelegateAfterLoadingFinished() {
         // code to run whenever the content(size) changes
@@ -229,6 +237,15 @@ class SecureWebViewController: UIViewController {
             )
         }
         return result
+    }
+
+    // MARK: - API
+
+    func display(htmlString: String) {
+        let scaledHtml = dirtyHackInsertedForPageScaleToFit(inHtml: htmlString)
+        setupBlocklist() {
+            self.webView.loadHTMLString(scaledHtml, baseURL: nil) //IOS-836: trick: wrong base url?
+        }
     }
 }
 
