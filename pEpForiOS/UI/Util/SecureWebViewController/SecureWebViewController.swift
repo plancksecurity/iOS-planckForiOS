@@ -75,22 +75,13 @@ class SecureWebViewController: UIViewController {
         let prefs = WKPreferences()
         prefs.javaScriptEnabled = false
         config.preferences = prefs
+        // This handler provides local content for cid: URLs
         CidHandler.setup(config: config)
         webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
         view = webView
-        //IOS-836: we need to get access to inlined attachments (WKURLSchemeHandler)
     }
-
-//    // MARK: - WKURLSchemeHandler (load local resources)
-//
-//    @available(iOS, introduced: 11.0)
-//    private func setupSchemeHandler() {
-//        let cidSchemeID = "security.pep.SecureWebViewController.setupSchemeHandler"
-//        let config = webView.configuration
-//        config.setURLSchemeHandler(SchemeHandlerCid(), forURLScheme: cidSchemeID)
-//    }
 
     // MARK: - WKContentRuleList (block loading of all remote content)
 
@@ -115,8 +106,9 @@ class SecureWebViewController: UIViewController {
 
         WKContentRuleListStore.default().lookUpContentRuleList(forIdentifier: listID) {
             (loadedRuleList, error) in
-            if let error = error {
-                Log.shared.errorAndCrash(component: #function, errorString: "Problem: \(error)")
+            if let _ = error {
+                // Not finding a list is reported as an error for some reason.
+                // We ignore it.
                 return
             }
             compiledBlockList = loadedRuleList
@@ -129,7 +121,7 @@ class SecureWebViewController: UIViewController {
                 return
             }
 
-            // No previous blocklist exists. Compile a new one.
+            // No previous blocklist found. Compile a new one.
             let blockRules = self.blockRulesJson
 
             WKContentRuleListStore.default().compileContentRuleList(
@@ -155,10 +147,11 @@ class SecureWebViewController: UIViewController {
         }
     }
 
-    // Type is Any as WKContentRuleList is available in iOS>=11
+    /// Blocklist that:
+    /// - blocks loading of every content. Local and remote.
+    /// - only non-blockt URL type are content ids (images inlined in e-mails), which are handled
+    ///     and loaded locally by CidHandler.
     private var blockRulesJson: String {
-        // This rule blocks all content.
-        //IOS-836: add exception for inbedded images
         return """
          [{
              "trigger": {
@@ -170,7 +163,7 @@ class SecureWebViewController: UIViewController {
         },
         {
             "trigger": {
-                "url-filter": ".cid*"
+                "url-filter": "cid"
         },
             "action": {
                 "type": "ignore-previous-rules"
@@ -178,7 +171,6 @@ class SecureWebViewController: UIViewController {
         }]
       """
     }
-    //IOS-836: double check if cid is required, i.e. how block rules play together with WKURLSchemeHandler
 
     // MARK: - Handle Content Size Changes
 
@@ -196,6 +188,8 @@ class SecureWebViewController: UIViewController {
         sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
                                                         options: [NSKeyValueObservingOptions.new],
                                                         changeHandler: handler)
+        // IOS-872: make sure resizeing still works when asynchronous loading of inlined image is
+        // full implemented.
     }
 
     // We ignore calls before html content has been loaded (zero size).
@@ -247,7 +241,7 @@ class SecureWebViewController: UIViewController {
         }
         let scaledHtml = dirtyHackInsertedForPageScaleToFit(inHtml: htmlString)
         setupBlocklist() {
-            self.webView.loadHTMLString(scaledHtml, baseURL: nil) //IOS-836: trick: wrong base url?
+            self.webView.loadHTMLString(scaledHtml, baseURL: nil)
         }
     }
 }
