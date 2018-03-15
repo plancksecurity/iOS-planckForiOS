@@ -549,7 +549,7 @@ open class PEPUtil {
     open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
         try session.update(pEpID)
-        session.keyMistrusted(pEpID)
+        try session.keyMistrusted(pEpID)
     }
 
     /**

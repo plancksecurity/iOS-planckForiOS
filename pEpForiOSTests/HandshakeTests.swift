@@ -116,7 +116,7 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
         let fromIdentCopy = PEPIdentity(identity: fromIdent)
-        session.keyMistrusted(fromIdent)
+        try! session.keyMistrusted(fromIdent)
         try! session.update(fromIdent)
         XCTAssertNil(fromIdent.fingerPrint)
         XCTAssertTrue(session.isPEPUser(fromIdent))

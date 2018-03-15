@@ -128,7 +128,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        session.keyMistrusted(partnerIdent)
+        try! session.keyMistrusted(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 

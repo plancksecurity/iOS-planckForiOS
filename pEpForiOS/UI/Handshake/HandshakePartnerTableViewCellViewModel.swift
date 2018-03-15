@@ -152,7 +152,11 @@ class HandshakePartnerTableViewCellViewModel {
 
     public func denyTrust() {
         invokeTrustAction() { thePartner in
-            session.keyMistrusted(thePartner)
+            do {
+                try session.keyMistrusted(thePartner)
+            } catch let error as NSError {
+                assertionFailure("\(error)")
+            }
         }
     }
 
