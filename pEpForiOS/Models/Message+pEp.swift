@@ -40,17 +40,6 @@ extension Message {
         return self.parent.folderType == FolderType.trash
     }
 
-    static func calculateOutgoingColorFromMessage(message: Message,
-                                                  session: PEPSession = PEPSession())
-        -> PEP_rating? {
-            if let from = message.from {
-                return session.outgoingMessageRating(from: from, to: message.to,
-                                                     cc: message.cc,
-                                                     bcc: message.bcc)
-            }
-            return nil
-    }
-
     /**
      - Returns: An array of identities you can make a handshake on.
      */
