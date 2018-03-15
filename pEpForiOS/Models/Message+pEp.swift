@@ -44,10 +44,9 @@ extension Message {
                                                   session: PEPSession = PEPSession())
         -> PEP_rating? {
             if let from = message.from {
-                return PEPUtil.outgoingMessageRating(from: from, to: message.to,
+                return session.outgoingMessageRating(from: from, to: message.to,
                                                      cc: message.cc,
-                                                     bcc: message.bcc,
-                                                     session: session)
+                                                     bcc: message.bcc)
             }
             return nil
     }

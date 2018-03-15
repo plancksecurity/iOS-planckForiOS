@@ -497,33 +497,6 @@ open class PEPUtil {
         return rating
     }
 
-    /**
-     Calculates the outgoing message rating for a hypothetical mail.
-     - Returns: The message rating, or PEP_rating_undefined in case of any error.
-     */
-    open static func outgoingMessageRating(from: Identity, to: [Identity],
-                                           cc: [Identity], bcc: [Identity],
-                                           session: PEPSession = PEPSession()) -> PEP_rating {
-        let msg = PEPMessage()
-        msg.direction = PEP_dir_outgoing
-        msg.from = from.pEpIdentity()
-        let mapper: (Identity) -> PEPIdentity = { ident in
-            return ident.pEpIdentity()
-        }
-        msg.to = to.map(mapper)
-        msg.cc = cc.map(mapper)
-        msg.bcc = bcc.map(mapper)
-        msg.shortMessage = "short"
-        msg.longMessage = "long"
-        var rating = PEP_rating_undefined
-        do {
-            try session.outgoingRating(&rating, for: msg)
-        } catch let error as NSError {
-            assertionFailure("\(error)")
-        }
-        return rating
-    }
-
     open static func pEpColor(identity: Identity,
                               session: PEPSession = PEPSession()) -> PEP_color {
         return pEpColor(pEpRating: pEpRating(identity: identity, session: session))
