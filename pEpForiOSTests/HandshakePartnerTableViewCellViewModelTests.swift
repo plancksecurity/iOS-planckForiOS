@@ -57,8 +57,8 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             let meIdent = mySelfID.pEpIdentity()
             let partnerIdent = partnerID.pEpIdentity()
 
-            session.mySelf(meIdent)
-            session.update(partnerIdent)
+            try! session.mySelf(meIdent)
+            try! session.update(partnerIdent)
 
             XCTAssertNotNil(meIdent.fingerPrint)
             XCTAssertNotNil(partnerIdent.fingerPrint)
@@ -83,15 +83,15 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         }
 
         let partnerIdent = partnerID.pEpIdentity()
-        session.update(partnerIdent)
+        try! session.update(partnerIdent)
 
         session.trustPersonalKey(partnerIdent)
-        session.update(partnerIdent)
+        try! session.update(partnerIdent)
         XCTAssertTrue(partnerIdent.isPEPUser(session))
 
         session.keyResetTrust(partnerIdent)
         session.trustPersonalKey(partnerIdent)
-        session.update(partnerIdent)
+        try! session.update(partnerIdent)
         XCTAssertTrue(partnerIdent.isPEPUser(session))
     }
 
@@ -111,37 +111,37 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
         let meIdent = mySelfID.pEpIdentity()
         var partnerIdent = partnerID.pEpIdentity()
-        session.mySelf(meIdent)
-        session.update(partnerIdent)
+        try! session.mySelf(meIdent)
+        try! session.update(partnerIdent)
 
         // back up the original
         let partnerIdentOrig = PEPIdentity(identity: partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdentOrig))
 
         session.trustPersonalKey(partnerIdent)
-        session.update(partnerIdent)
+        try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         session.keyResetTrust(partnerIdent)
-        session.update(partnerIdent)
+        try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         session.keyMistrusted(partnerIdent)
-        session.update(partnerIdent)
+        try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         session.keyResetTrust(partnerIdent)
-        session.update(partnerIdent)
+        try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         // The partner (restored from the backup) is still a pEp user
         XCTAssertTrue(session.isPEPUser(partnerIdent))
         session.trustPersonalKey(partnerIdent)
-        session.update(partnerIdent)
+        try! session.update(partnerIdent)
 
         XCTAssertTrue(session.isPEPUser(partnerIdent))
     }

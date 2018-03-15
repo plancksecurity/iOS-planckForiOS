@@ -205,7 +205,7 @@ class MessageReevalutionTests: XCTestCase {
                 expectedRating: PEP_rating_mistrust,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after mistrust")
-            session.update(senderIdent)
+            try! session.update(senderIdent)
             XCTAssertFalse(senderIdent.isConfirmed)
 
             session.keyResetTrust(senderIdentCopy)

@@ -520,34 +520,35 @@ open class PEPUtil {
         return PEP_rating(Int32(theInt))
     }
 
-    open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
-        let pEpID = pEp(identity: identity)
-        session.update(pEpID)
-        return pEpID.fingerPrint
+    open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) throws
+        -> String? {
+            let pEpID = pEp(identity: identity)
+            try session.update(pEpID)
+            return pEpID.fingerPrint
     }
 
     open static func fingerPrint(cdIdentity: CdIdentity,
                                  session: PEPSession = PEPSession()) -> String? {
         let pEpID = pEpDict(cdIdentity: cdIdentity)
-        session.update(pEpID)
+        try? session.update(pEpID)
         return pEpID.fingerPrint
     }
 
     /**
      Trust that contact (yellow to green).
      */
-    open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func trust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
-        session.update(pEpID)
+        try session.update(pEpID)
         session.trustPersonalKey(pEpID)
     }
 
     /**
      Mistrust the identity (yellow to red)
      */
-    open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
-        session.update(pEpID)
+        try session.update(pEpID)
         session.keyMistrusted(pEpID)
     }
 
@@ -555,9 +556,9 @@ open class PEPUtil {
      Resets the trust for the given `Identity`. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
-    open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
-        session.update(pEpID)
+        try session.update(pEpID)
         session.keyResetTrust(pEpID)
     }
 

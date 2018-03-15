@@ -632,7 +632,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
      */
     func testSimpleOutgoingMailColor() {
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        session.mySelf(myself)
+        try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
         var rating = PEP_rating_undefined
@@ -642,7 +642,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     func testOutgoingMailColorPerformanceWithMySelf() {
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        session.mySelf(myself)
+        try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
         let id = Identity.from(pEpIdentity: myself)
@@ -706,7 +706,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        XCTAssertNotNil(theIdent.fingerPrint(session: session))
+        XCTAssertNotNil(try! theIdent.fingerPrint(session: session))
 
         let identDict = theIdent.updatedIdentity(session: session)
         XCTAssertNotNil(identDict.fingerPrint)

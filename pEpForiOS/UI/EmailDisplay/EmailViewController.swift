@@ -130,7 +130,7 @@ class EmailViewController: BaseTableViewController {
             for id in m.allIdentities {
                 if id.isMySelf {
                     // if we encounter an own identity, make sure it already has a key
-                    if id.fingerPrint(session: session) == nil {
+                    if (try? id.fingerPrint(session: session)) == nil {
                         allOwnKeysGenerated = false
                         break
                     }
@@ -234,7 +234,11 @@ class EmailViewController: BaseTableViewController {
     @IBAction func segueUnwindTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
             let session = PEPSession()
-            PEPUtil.trust(identity: p, session: session)
+            do {
+                try PEPUtil.trust(identity: p, session: session)
+            } catch let error as NSError {
+                assertionFailure("\(error)")
+            }
             decryptAgain()
         }
     }
@@ -245,7 +249,11 @@ class EmailViewController: BaseTableViewController {
     @IBAction func segueUnwindUnTrusted(segue: UIStoryboardSegue) {
         if let p = partnerIdentity {
             let session = PEPSession()
-            PEPUtil.mistrust(identity: p, session: session)
+            do {
+                try PEPUtil.mistrust(identity: p, session: session)
+            } catch let error as NSError {
+                assertionFailure("\(error)")
+            }
             decryptAgain()
         }
     }

@@ -84,9 +84,7 @@ class HandshakePartnerTableViewCellViewModel {
         pEpPartner = partner.updatedIdentity(session: session)
 
         isPartnerpEpUser = session.isPEPUser(pEpPartner)
-
         setPartnerImage(for: partner)
-
         updateTrustwords(session: session)
     }
 

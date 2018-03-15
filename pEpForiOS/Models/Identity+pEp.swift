@@ -37,8 +37,8 @@ extension Identity {
         return PEPUtil.pEp(identity: self)
     }
     
-    open func fingerPrint(session: PEPSession = PEPSession()) -> String? {
-        return PEPUtil.fingerPrint(identity: self, session: session)
+    open func fingerPrint(session: PEPSession = PEPSession()) throws -> String? {
+        return try PEPUtil.fingerPrint(identity: self, session: session)
     }
 
     public func canHandshakeOn(session: PEPSession = PEPSession()) -> Bool {
@@ -71,10 +71,14 @@ extension Identity {
      */
     public func updatedIdentity(session: PEPSession = PEPSession()) -> PEPIdentity {
         let md = pEpIdentity()
-        if md.isOwn {
-            session.mySelf(md)
-        } else {
-            session.update(md)
+        do {
+            if md.isOwn {
+                try session.mySelf(md)
+            } else {
+                try session.update(md)
+            }
+        } catch let error as NSError {
+            assertionFailure("\(error)")
         }
         return md
     }

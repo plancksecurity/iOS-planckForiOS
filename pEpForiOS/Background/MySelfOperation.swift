@@ -62,10 +62,11 @@ open class MySelfOperation: BaseOperation {
                                          errorString:
                     "We are about to call mySelf() on a identity with userID other than pEpOwnUserID.")
             }
-            session.mySelf(pEpIdent)
-            Log.shared.info(
-                component: #function,
-                content: "\(pEpIdent) -> done")
+            do {
+                try session.mySelf(pEpIdent)
+            } catch let error as NSError {
+                assertionFailure("\(error)")
+            }
             backgrounder?.endBackgroundTask(taskID)
         }
         backgrounder?.endBackgroundTask(wholeOperationTaskID)
