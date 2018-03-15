@@ -540,7 +540,7 @@ open class PEPUtil {
     open static func trust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
         try session.update(pEpID)
-        session.trustPersonalKey(pEpID)
+        try session.trustPersonalKey(pEpID)
     }
 
     /**

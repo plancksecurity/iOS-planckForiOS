@@ -142,7 +142,11 @@ class HandshakePartnerTableViewCellViewModel {
 
     public func confirmTrust() {
         invokeTrustAction() { thePartner in
-            session.trustPersonalKey(thePartner)
+            do {
+                try session.trustPersonalKey(thePartner)
+            } catch let error as NSError {
+                assertionFailure("\(error)")
+            }
         }
     }
 

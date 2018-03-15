@@ -96,13 +96,13 @@ class HandshakeTests: XCTestCase {
         XCTAssertNotNil(fromIdent.fingerPrint)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
-        session.trustPersonalKey(fromIdent)
+        try! session.trustPersonalKey(fromIdent)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
         session.keyResetTrust(fromIdent)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
-        session.trustPersonalKey(fromIdent)
+        try! session.trustPersonalKey(fromIdent)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
         session.keyResetTrust(fromIdent)

@@ -85,12 +85,12 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         let partnerIdent = partnerID.pEpIdentity()
         try! session.update(partnerIdent)
 
-        session.trustPersonalKey(partnerIdent)
+        try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(partnerIdent.isPEPUser(session))
 
         session.keyResetTrust(partnerIdent)
-        session.trustPersonalKey(partnerIdent)
+        try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(partnerIdent.isPEPUser(session))
     }
@@ -118,7 +118,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         let partnerIdentOrig = PEPIdentity(identity: partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdentOrig))
 
-        session.trustPersonalKey(partnerIdent)
+        try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
@@ -140,7 +140,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         // The partner (restored from the backup) is still a pEp user
         XCTAssertTrue(session.isPEPUser(partnerIdent))
-        session.trustPersonalKey(partnerIdent)
+        try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
 
         XCTAssertTrue(session.isPEPUser(partnerIdent))
