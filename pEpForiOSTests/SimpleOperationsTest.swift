@@ -635,8 +635,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
-        let color = session.identityRating(myself)
-        XCTAssertGreaterThanOrEqual(color.rawValue, PEP_rating_reliable.rawValue)
+        var rating = PEP_rating_undefined
+        try! session.rating(&rating, for: myself)
+        XCTAssertGreaterThanOrEqual(rating.rawValue, PEP_rating_reliable.rawValue)
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {

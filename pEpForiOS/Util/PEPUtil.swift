@@ -471,7 +471,12 @@ open class PEPUtil {
     open static func pEpRating(cdIdentity: CdIdentity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEpDict(cdIdentity: cdIdentity)
-        let rating = session.identityRating(pepC)
+        var rating = PEP_rating_undefined
+        do {
+            try session.rating(&rating, for: pepC)
+        } catch let error as NSError {
+            assertionFailure("\(error)")
+        }
         return rating
     }
 
@@ -483,7 +488,12 @@ open class PEPUtil {
     open static func pEpRating(identity: Identity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(identity: identity)
-        let rating = session.identityRating(pepC)
+        var rating = PEP_rating_undefined
+        do {
+            try session.rating(&rating, for: pepC)
+        } catch let error as NSError {
+            assertionFailure("\(error)")
+        }
         return rating
     }
 
