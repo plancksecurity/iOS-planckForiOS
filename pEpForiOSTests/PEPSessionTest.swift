@@ -92,7 +92,7 @@ class PEPSessionTest: XCTestCase {
 
         let session = PEPSession()
 
-        session.mySelf(myself)
+        try! session.mySelf(myself)
 
         let (_, encMsg1) = try! session.encrypt(pEpMessage: pEpMessage, forIdentity: myself)
         if let theEncMsg = encMsg1 {

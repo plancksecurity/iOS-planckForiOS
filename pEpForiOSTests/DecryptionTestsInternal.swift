@@ -49,7 +49,7 @@ class DecryptionTestsInternal: XCTestCase {
         self.cdSenderAccount = cdSenderAccount
 
         pEpSenderIdentity = senderPepIdentity
-        session.mySelf(senderPepIdentity)
+        try! session.mySelf(senderPepIdentity)
 
         cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
@@ -76,7 +76,7 @@ class DecryptionTestsInternal: XCTestCase {
                 return nil
         }
         let identity = cdIdentity.pEpIdentity()
-        session.mySelf(identity)
+        try! session.mySelf(identity)
         return identity
     }
 

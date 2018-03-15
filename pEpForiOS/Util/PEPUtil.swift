@@ -471,7 +471,12 @@ open class PEPUtil {
     open static func pEpRating(cdIdentity: CdIdentity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEpDict(cdIdentity: cdIdentity)
-        let rating = session.identityRating(pepC)
+        var rating = PEP_rating_undefined
+        do {
+            try session.rating(&rating, for: pepC)
+        } catch let error as NSError {
+            assertionFailure("\(error)")
+        }
         return rating
     }
 
@@ -483,31 +488,9 @@ open class PEPUtil {
     open static func pEpRating(identity: Identity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(identity: identity)
-        let rating = session.identityRating(pepC)
-        return rating
-    }
-
-    /**
-     Calculates the outgoing message rating for a hypothetical mail.
-     - Returns: The message rating, or PEP_rating_undefined in case of any error.
-     */
-    open static func outgoingMessageRating(from: Identity, to: [Identity],
-                                           cc: [Identity], bcc: [Identity],
-                                           session: PEPSession = PEPSession()) -> PEP_rating {
-        let msg = PEPMessage()
-        msg.direction = PEP_dir_outgoing
-        msg.from = from.pEpIdentity()
-        let mapper: (Identity) -> PEPIdentity = { ident in
-            return ident.pEpIdentity()
-        }
-        msg.to = to.map(mapper)
-        msg.cc = cc.map(mapper)
-        msg.bcc = bcc.map(mapper)
-        msg.shortMessage = "short"
-        msg.longMessage = "long"
         var rating = PEP_rating_undefined
         do {
-            try session.outgoingRating(&rating, for: msg)
+            try session.rating(&rating, for: pepC)
         } catch let error as NSError {
             assertionFailure("\(error)")
         }
@@ -537,44 +520,45 @@ open class PEPUtil {
         return PEP_rating(Int32(theInt))
     }
 
-    open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) -> String? {
-        let pEpID = pEp(identity: identity)
-        session.update(pEpID)
-        return pEpID.fingerPrint
+    open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) throws
+        -> String? {
+            let pEpID = pEp(identity: identity)
+            try session.update(pEpID)
+            return pEpID.fingerPrint
     }
 
     open static func fingerPrint(cdIdentity: CdIdentity,
                                  session: PEPSession = PEPSession()) -> String? {
         let pEpID = pEpDict(cdIdentity: cdIdentity)
-        session.update(pEpID)
+        try? session.update(pEpID)
         return pEpID.fingerPrint
     }
 
     /**
      Trust that contact (yellow to green).
      */
-    open static func trust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func trust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
-        session.update(pEpID)
-        session.trustPersonalKey(pEpID)
+        try session.update(pEpID)
+        try session.trustPersonalKey(pEpID)
     }
 
     /**
      Mistrust the identity (yellow to red)
      */
-    open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func mistrust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
-        session.update(pEpID)
-        session.keyMistrusted(pEpID)
+        try session.update(pEpID)
+        try session.keyMistrusted(pEpID)
     }
 
     /**
      Resets the trust for the given `Identity`. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
-    open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) {
+    open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
-        session.update(pEpID)
+        try session.update(pEpID)
         session.keyResetTrust(pEpID)
     }
 

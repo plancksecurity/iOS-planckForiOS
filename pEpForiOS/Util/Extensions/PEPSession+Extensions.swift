@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import MessageModel
+
 /**
  - Note: If you move this to be inside of PEPSession, the debugger will have a hard time
  dealing with those. So I chose to rather pollute the namespace and have a working debugger.
@@ -78,8 +80,7 @@ open class PEPRecipient: Hashable, Equatable, CustomStringConvertible {
 }
 
 /**
- Useful extensions for PEPSession, should move to the iOS Adapter if they prove usable
- across apps.
+ Useful extensions for PEPSession
  */
 public extension PEPSession {
     public func encrypt(pEpMessageDict: PEPMessageDict,
@@ -94,6 +95,32 @@ public extension PEPSession {
                         forIdentity: PEPIdentity? = nil) throws -> (PEP_STATUS, PEPMessage?) {
         return try PEPUtil.encrypt(
             pEpMessage: pEpMessage, forIdentity: forIdentity, session: self)
+    }
+
+    /**
+     Calculates the outgoing message rating for a hypothetical mail.
+     - Returns: The message rating, or PEP_rating_undefined in case of any error.
+     */
+    public func outgoingMessageRating(from: Identity, to: [Identity],
+                                      cc: [Identity], bcc: [Identity]) -> PEP_rating {
+        let msg = PEPMessage()
+        msg.direction = PEP_dir_outgoing
+        msg.from = from.pEpIdentity()
+        let mapper: (Identity) -> PEPIdentity = { ident in
+            return ident.pEpIdentity()
+        }
+        msg.to = to.map(mapper)
+        msg.cc = cc.map(mapper)
+        msg.bcc = bcc.map(mapper)
+        msg.shortMessage = "short"
+        msg.longMessage = "long"
+        var rating = PEP_rating_undefined
+        do {
+            try outgoingRating(&rating, for: msg)
+        } catch let error as NSError {
+            assertionFailure("\(error)")
+        }
+        return rating
     }
 }
 

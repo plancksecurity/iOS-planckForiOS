@@ -632,16 +632,17 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
      */
     func testSimpleOutgoingMailColor() {
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        session.mySelf(myself)
+        try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
-        let color = session.identityRating(myself)
-        XCTAssertGreaterThanOrEqual(color.rawValue, PEP_rating_reliable.rawValue)
+        var rating = PEP_rating_undefined
+        try! session.rating(&rating, for: myself)
+        XCTAssertGreaterThanOrEqual(rating.rawValue, PEP_rating_reliable.rawValue)
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {
         let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
-        session.mySelf(myself)
+        try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
         let id = Identity.from(pEpIdentity: myself)
@@ -651,9 +652,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         self.measure {
             for _ in [1...1000] {
-                let _ = PEPUtil.outgoingMessageRating(from: id, to: [id],
-                                                      cc: [id], bcc: [id],
-                                                      session: self.session)
+                let _ = self.session.outgoingMessageRating(from: id, to: [id], cc: [id], bcc: [id])
             }
         }
     }
@@ -665,9 +664,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         account.save()
         self.measure {
             for _ in [1...1000] {
-                let _ = PEPUtil.outgoingMessageRating(from: identity, to: [identity],
-                                                      cc: [identity], bcc: [identity],
-                                                      session: self.session)
+                let _ = self.session.outgoingMessageRating(from: identity, to: [identity],
+                                                           cc: [identity], bcc: [identity])
             }
         }
     }
@@ -681,9 +679,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         account.save()
         self.measure {
             for _ in [1...1000] {
-                let _ = PEPUtil.outgoingMessageRating(from: id, to: [id],
-                                                      cc: [id], bcc: [id],
-                                                      session: self.session)
+                let _ = self.session.outgoingMessageRating(from: id, to: [id], cc: [id], bcc: [id])
             }
         }
     }
@@ -710,7 +706,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        XCTAssertNotNil(theIdent.fingerPrint(session: session))
+        XCTAssertNotNil(try! theIdent.fingerPrint(session: session))
 
         let identDict = theIdent.updatedIdentity(session: session)
         XCTAssertNotNil(identDict.fingerPrint)

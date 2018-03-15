@@ -84,9 +84,7 @@ class HandshakePartnerTableViewCellViewModel {
         pEpPartner = partner.updatedIdentity(session: session)
 
         isPartnerpEpUser = session.isPEPUser(pEpPartner)
-
         setPartnerImage(for: partner)
-
         updateTrustwords(session: session)
     }
 
@@ -144,13 +142,21 @@ class HandshakePartnerTableViewCellViewModel {
 
     public func confirmTrust() {
         invokeTrustAction() { thePartner in
-            session.trustPersonalKey(thePartner)
+            do {
+                try session.trustPersonalKey(thePartner)
+            } catch let error as NSError {
+                assertionFailure("\(error)")
+            }
         }
     }
 
     public func denyTrust() {
         invokeTrustAction() { thePartner in
-            session.keyMistrusted(thePartner)
+            do {
+                try session.keyMistrusted(thePartner)
+            } catch let error as NSError {
+                assertionFailure("\(error)")
+            }
         }
     }
 

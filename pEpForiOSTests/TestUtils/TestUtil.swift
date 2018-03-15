@@ -537,7 +537,7 @@ class TestUtil {
 
             let session = PEPSession()
             let mySelfIdentity = mySelfID.pEpIdentity()
-            session.mySelf(mySelfIdentity)
+            try! session.mySelf(mySelfIdentity)
             XCTAssertNotNil(mySelfIdentity.fingerPrint)
             XCTAssertTrue(mySelfIdentity.isPEPUser(session))
 

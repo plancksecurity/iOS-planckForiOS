@@ -142,7 +142,7 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertFalse(senderIdent.isPEPUser(session))
         XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
 
-        session.keyMistrusted(senderIdent)
+        try! session.keyMistrusted(senderIdent)
 
         let senderDict2 = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(senderDict2.isPEPUser(session))
@@ -190,7 +190,7 @@ class MessageReevalutionTests: XCTestCase {
             infoMessage: "in the beginning")
 
         for _ in 0..<1 {
-            session.trustPersonalKey(senderIdent)
+            try! session.trustPersonalKey(senderIdent)
             XCTAssertTrue(senderIdent.isConfirmed)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_trusted)
             reevaluateMessage(
@@ -199,13 +199,13 @@ class MessageReevalutionTests: XCTestCase {
                 infoMessage: "after trust")
 
             let senderIdentCopy = PEPIdentity(identity: senderIdent)
-            session.keyMistrusted(senderIdent)
+            try! session.keyMistrusted(senderIdent)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_have_no_key)
             reevaluateMessage(
                 expectedRating: PEP_rating_mistrust,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after mistrust")
-            session.update(senderIdent)
+            try! session.update(senderIdent)
             XCTAssertFalse(senderIdent.isConfirmed)
 
             session.keyResetTrust(senderIdentCopy)
