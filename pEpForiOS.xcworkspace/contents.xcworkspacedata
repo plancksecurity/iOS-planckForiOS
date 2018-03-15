@@ -5,15 +5,24 @@
       location = "group:pEpForiOS.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../MessageModel/MessageModel/MessageModel.xcodeproj">
+      location = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
+      location = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../pantomime-iOS/Pantomime.xcodeproj">
+      location = "container:../pantomime-iOS/Pantomime.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+      location = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../SwipeCellKit/SwipeCellKit.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:../AppAuth-iOS/AppAuth.xcodeproj">
    </FileRef>
 </Workspace>
