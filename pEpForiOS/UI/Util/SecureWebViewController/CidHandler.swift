@@ -12,7 +12,7 @@ import MessageModel
 @available(iOS, introduced: 11.0)
 
 /// WKURLSchemeHandler subclass to handle cid: URLs (images inlined in mails).
-/// Provides content from MessageModel for a content IDs requested by a WKWebview instance.
+/// Provides content from the store for a content IDs requested by a WKWebview instance.
 class CidHandler : NSObject {
     static let urlScheme = "cid"
 
@@ -31,30 +31,31 @@ extension CidHandler: WKURLSchemeHandler {
 
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         defer {
+            // Let WkWebview know we are done
             urlSchemeTask.didFinish()
         }
-        //Check that the url path is of interest for you, etc...
         guard let url = urlSchemeTask.request.url else {
             Log.shared.errorAndCrash(component: #function, errorString: "No URL?")
             return
         }
 
         let urlResponse = URLResponse(url: url,
-                                      mimeType: "image/*", //IOS-872: confirm wirldcard mimiType is working
+                                      mimeType: "image/*",
                                       expectedContentLength: -1,
                                       textEncodingName: nil)
+        // Let WkWebview know we have started
         urlSchemeTask.didReceive(urlResponse)
 
-        // Get data
+        // Get the requested data from the store
         guard let cid = url.absoluteString.extractCid() else {
             return
         }
-        //TODO: change implementation to never use filename after IOS-872: is done
-        /*
-         - Get Attachment by CID
-         - Create/get data of attachment
-         - call urlSchemeTask.didReceive(data)
-         */
+        let attachment = Attachment.by(cid: cid)
+        guard let data = attachment?.data else {
+            return
+        }
+        // Pass the requested data to WkWebview
+        urlSchemeTask.didReceive(data)
     }
 
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {

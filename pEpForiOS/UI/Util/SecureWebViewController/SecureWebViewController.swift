@@ -106,13 +106,15 @@ class SecureWebViewController: UIViewController {
 
         WKContentRuleListStore.default().lookUpContentRuleList(forIdentifier: listID) {
             (loadedRuleList, error) in
+            defer {
+                loadGroup.leave()
+            }
             if let _ = error {
                 // Not finding a list is reported as an error for some reason.
                 // We ignore it.
                 return
             }
-            compiledBlockList = loadedRuleList
-            loadGroup.leave()
+            compiledBlockList = loadedRuleList  
         }
         loadGroup.notify(queue: DispatchQueue.main) {
             if compiledBlockList != nil {
