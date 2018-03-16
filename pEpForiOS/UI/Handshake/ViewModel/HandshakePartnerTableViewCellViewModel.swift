@@ -24,12 +24,27 @@ class HandshakePartnerTableViewCellViewModel {
 
     /** Do we show the trustwords for this identity? */
     var showTrustwords: Bool {
-        return partnerColor == PEP_color_yellow
+        switch partnerRating {
+        case PEP_rating_have_no_key,
+             PEP_rating_reliable,
+             PEP_rating_trusted,
+             PEP_rating_trusted_and_anonymized:
+            return true
+        default:
+            return false
+        }
     }
 
     /** Show the button for start/stop trusting? */
     var showStopStartTrustButton: Bool {
-        return partnerColor == PEP_color_red || partnerColor == PEP_color_green
+        switch partnerRating {
+        case PEP_rating_have_no_key,
+             PEP_rating_trusted,
+             PEP_rating_trusted_and_anonymized:
+            return true
+        default:
+            return false
+        }
     }
 
     var expandedState: ExpandedState
@@ -86,8 +101,8 @@ class HandshakePartnerTableViewCellViewModel {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
         self.session = session
-        self.partnerColor = partner.pEpColor(session: session)
         self.partnerRating = PEPUtil.pEpRating(identity: partner, session: session)
+        self.partnerColor = partner.pEpColor(session: session)
         self.ownIdentity = ownIdentity
 
         pEpSelf = ownIdentity.updatedIdentity(session: session)
