@@ -663,7 +663,7 @@ extension CdMessage {
     /**
      Adds pantomime attachments to a `CdMessage`.
      */
-    static func addAttachmentsFromPantomimePart(
+    static func addAttachmentsFromPantomimePart( //IOS-872: CID unaware
         _ part: CWPart, targetMail: CdMessage, level: Int) {
         Log.info(component: #function, content: "Parsing level \(level) \(part)")
         guard let content = part.content() else {
@@ -692,8 +692,10 @@ extension CdMessage {
                 MiscUtil.isEmptyString(part.filename()) {
                 targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
             } else {
-                let attachment = insertAttachment(
-                    contentType: part.contentType(), filename: part.filename(), data: data)
+                let attachment = insertAttachment(contentType: part.contentType(),
+                                                  filename: part.filename(),
+                                                  contentID: part.contentID(),
+                                                  data: data)
                 targetMail.addAttachment(cdAttachment: attachment)
             }
         }
