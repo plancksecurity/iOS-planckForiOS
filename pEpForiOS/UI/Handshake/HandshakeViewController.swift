@@ -125,7 +125,6 @@ class HandshakeViewController: BaseTableViewController {
             cell.needsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
 
-
             return cell
         }
 
