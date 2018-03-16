@@ -133,7 +133,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        try! session.keyResetTrust(partnerIdent)
+        session.undoLastMistrust()
         try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
@@ -162,15 +162,11 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
                                                         partner: partnerID,
                                                         session: session)
-        // There are no expetations (asserts) here. Does not test anything afaics.
         vm.confirmTrust()
         vm.resetTrust()
-        //Should test pepRating here?
         vm.denyTrust()
         vm.resetTrust()
-        //Should test pepRating here?
         vm.confirmTrust()
         vm.resetTrust()
-        //Should test pepRating here?
     }
 }
