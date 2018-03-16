@@ -23,9 +23,8 @@ class MessageAttachmentsCell: MessageCell {
         selectionStyle = .none
     }
 
-    public override func updateCell(model: ComposeFieldModel, message: Message,
-                                    indexPath: IndexPath) {
-        super.updateCell(model: model, message: message, indexPath: indexPath)
+    public override func updateCell(model: ComposeFieldModel, message: Message) {
+        super.updateCell(model: model, message: message)
         guard message.underAttack == false else {
             return
         }

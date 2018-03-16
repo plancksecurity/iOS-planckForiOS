@@ -33,18 +33,16 @@ open class MessageCell: UITableViewCell {
     /**
      The current `IndexPath`, as last indicated via a call to `updateCell`.
      */
-    public var indexPath: IndexPath?
-    
+
     override open func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
     }
     
-    public func updateCell(model: ComposeFieldModel, message: Message, indexPath: IndexPath) {
+    public func updateCell(model: ComposeFieldModel, message: Message) {
         fieldModel = model
         if titleLabel != nil {
             titleLabel?.text = fieldModel?.title
         }
-        self.indexPath = indexPath
     }
 }

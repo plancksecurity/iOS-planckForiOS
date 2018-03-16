@@ -628,7 +628,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMw-Ye-VBO" customClass="CopyLabel" customModule="pEpForiOS" customModuleProvider="target">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpX-kl-VfB" customClass="CopyLabel" customModule="pEpForiOS" customModuleProvider="target">
                                             <rect key="frame" x="24" y="11" width="327" height="178"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -636,14 +636,14 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="KMw-Ye-VBO" secondAttribute="trailing" constant="8" id="8zC-Fp-pWR"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="KMw-Ye-VBO" secondAttribute="bottom" id="9Et-xi-ntN"/>
-                                        <constraint firstItem="KMw-Ye-VBO" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="topMargin" id="Bcr-bl-Hga"/>
-                                        <constraint firstItem="KMw-Ye-VBO" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leadingMargin" constant="8" id="dLJ-GE-YqU"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="FpX-kl-VfB" secondAttribute="trailing" constant="8" id="QmW-WB-0M8"/>
+                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leadingMargin" constant="8" id="aaq-io-ebw"/>
+                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="topMargin" id="iZ0-s3-aDH"/>
+                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="bottom" secondItem="Tft-DN-iZy" secondAttribute="bottomMargin" id="pJc-jD-5YJ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="contentLabel" destination="KMw-Ye-VBO" id="veW-kW-JgW"/>
+                                    <outlet property="contentLabel" destination="FpX-kl-VfB" id="gSi-9v-STb"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">
@@ -1027,7 +1027,7 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oPc-EL-W2c"/>
+        <segue reference="QeL-n1-BY9"/>
         <segue reference="70T-Gu-VTr"/>
     </inferredMetricsTieBreakers>
 </document>

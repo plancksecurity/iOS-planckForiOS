@@ -25,6 +25,8 @@ class CreditsViewController: UIViewController {
     // https://developer.apple.com/documentation/webkit/wkwebview#2560973
     override func loadView() {
         let webConfiguration = WKWebViewConfiguration()
+        let prefs = WKPreferences()
+        prefs.javaScriptEnabled = false
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.navigationDelegate = self
         view = webView
@@ -632,7 +634,9 @@ private func licencesRows() -> String {
 // MARK: - WKUIDelegate
 
 extension CreditsViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         switch navigationAction.navigationType {
         case .other:
             // We are initially loading our own HTML
