@@ -112,7 +112,7 @@ extension CdMessage {
         attachment.data = data
         attachment.length = Int64(data.count)
         attachment.mimeType = contentType?.lowercased()
-        // We mimic the Engines behaviour: cid has higher prio. 
+        // We mimic the Engines behaviour to set filename *or* CID in field `filename`. CID has higher prio.
         if let cid = contentID {
             // We never saw the IMAP layer returning a CID that is prefixed with `cid:`,
             // but you never know ...
