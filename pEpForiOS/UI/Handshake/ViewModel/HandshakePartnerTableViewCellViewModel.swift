@@ -144,7 +144,9 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func invokeTrustAction(action: (PEPIdentity) -> ()) {
+        let theBackup = PEPIdentity(identity: pEpPartner)
         action(pEpPartner)
+        pEpPartner = theBackup
 
         do {
             try session.rating(&partnerRating, for: pEpPartner)
