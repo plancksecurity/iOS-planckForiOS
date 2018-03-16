@@ -663,7 +663,7 @@ extension CdMessage {
     /**
      Adds pantomime attachments to a `CdMessage`.
      */
-    static func addAttachmentsFromPantomimePart( //IOS-872: CID unaware
+    static func addAttachmentsFromPantomimePart(
         _ part: CWPart, targetMail: CdMessage, level: Int) {
         Log.info(component: #function, content: "Parsing level \(level) \(part)")
         guard let content = part.content() else {

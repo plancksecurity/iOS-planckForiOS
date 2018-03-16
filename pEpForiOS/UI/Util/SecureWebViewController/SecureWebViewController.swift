@@ -190,8 +190,6 @@ class SecureWebViewController: UIViewController {
         sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
                                                         options: [NSKeyValueObservingOptions.new],
                                                         changeHandler: handler)
-        // IOS-872: make sure resizeing still works when asynchronous loading of inlined image is
-        // full implemented.
     }
 
     // We ignore calls before html content has been loaded (zero size).

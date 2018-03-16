@@ -106,7 +106,7 @@ extension CdMessage {
         return objs?.count ?? 0
     }
 
-    static func insertAttachment( //IOS-872: CID unaware
+    static func insertAttachment(
         contentType: String?, filename: String?,contentID: String?, data: Data) -> CdAttachment {
         let attachment = CdAttachment.create()
         attachment.data = data
