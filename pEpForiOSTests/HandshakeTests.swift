@@ -99,13 +99,13 @@ class HandshakeTests: XCTestCase {
         try! session.trustPersonalKey(fromIdent)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
-        session.keyResetTrust(fromIdent)
+        try! session.keyResetTrust(fromIdent)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
         try! session.trustPersonalKey(fromIdent)
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
-        session.keyResetTrust(fromIdent)
+        try! session.keyResetTrust(fromIdent)
         XCTAssertTrue(session.isPEPUser(fromIdent))
     }
 
@@ -122,7 +122,7 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(session.isPEPUser(fromIdent))
 
         // After mistrust, the engine now still remebers pEp status. See ENGINE-254.
-        session.keyResetTrust(fromIdentCopy)
+        session.undoLastMistrust()
         try! session.update(fromIdentCopy)
         XCTAssertTrue(session.isPEPUser(fromIdentCopy))
     }

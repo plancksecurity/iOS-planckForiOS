@@ -17,15 +17,19 @@ extension Message {
         return PEPUtil.pEpDict(message: self)
     }
 
-    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating? {
-        if belongToSentFolder()  || belongToDraftFolder () || belongToTrashFolder() {
+    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
+        if belongToSentFolder() || belongToDraftFolder () || belongToTrashFolder() {
             if let original = self.optionalFields[Headers.originalRating.rawValue] {
                 return session.rating(from: original)
             }
             return PEP_rating_undefined
         } else {
-            return PEPUtil.pEpRatingFromInt(pEpRatingInt)
+            return PEPUtil.pEpRatingFromInt(pEpRatingInt) ?? PEP_rating_undefined
         }
+    }
+
+    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
+        return pEpRating(session: session).pepColor()
     }
 
     func belongToSentFolder() -> Bool {
