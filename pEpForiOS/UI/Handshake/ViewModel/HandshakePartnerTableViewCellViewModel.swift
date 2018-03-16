@@ -169,4 +169,10 @@ class HandshakePartnerTableViewCellViewModel {
             }
         }
     }
+
+    public func undoLastMistrust() {
+        invokeTrustAction() { _ in
+            session.undoLastMistrust()
+        }
+    }
 }

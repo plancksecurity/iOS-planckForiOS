@@ -165,7 +165,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         vm.confirmTrust()
         vm.resetTrust()
         vm.denyTrust()
-        vm.resetTrust()
+        vm.undoLastMistrust()
         vm.confirmTrust()
         vm.resetTrust()
     }
