@@ -597,7 +597,7 @@ class ComposeTableViewController: BaseTableViewController {
                 return
         }
 
-        let attachment = createAttachment(forAssetWithUrl: url, image: image) 
+        let attachment = createAttachment(forAssetWithUrl: url, image: image)
         cell.inline(attachment: attachment)
         self.tableView.updateSize()
     }

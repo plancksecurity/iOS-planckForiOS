@@ -559,7 +559,7 @@ open class PEPUtil {
     open static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
         try session.update(pEpID)
-        session.keyResetTrust(pEpID)
+        try session.keyResetTrust(pEpID)
     }
 
     open static func encrypt(

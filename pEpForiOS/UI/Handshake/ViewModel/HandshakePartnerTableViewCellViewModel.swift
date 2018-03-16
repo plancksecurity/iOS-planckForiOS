@@ -24,30 +24,50 @@ class HandshakePartnerTableViewCellViewModel {
 
     /** Do we show the trustwords for this identity? */
     var showTrustwords: Bool {
-        return identityColor == PEP_color_yellow
+        switch partnerRating {
+        case PEP_rating_have_no_key,
+             PEP_rating_reliable,
+             PEP_rating_trusted,
+             PEP_rating_trusted_and_anonymized:
+            return true
+        default:
+            return false
+        }
     }
 
     /** Show the button for start/stop trusting? */
     var showStopStartTrustButton: Bool {
-        return identityColor == PEP_color_red || identityColor == PEP_color_green
+        switch partnerRating {
+        case PEP_rating_have_no_key,
+             PEP_rating_trusted,
+             PEP_rating_trusted_and_anonymized:
+            return true
+        default:
+            return false
+        }
     }
 
     var expandedState: ExpandedState
-    var identityColor: PEP_color
+
+    /**
+     The rating of the partner.
+     */
+    var partnerRating: PEP_rating
+
+    /**
+     The color of the partner.
+     */
+    var partnerColor: PEP_color
+
     var trustwordsLanguage: String
     var trustwordsFull = false
 
-    /**
-     The own identity that is concerned with the trust.
-     */
-    let ownIdentity: Identity
+    var ownName: String {
+        return pEpSelf.userName ?? pEpSelf.address
+    }
 
-    /**
-     The partner identity that we want to trust (or not).
-     */
-    let partnerIdentity: Identity
-    var partnerName: String? {
-        return partnerIdentity.userName ?? partnerIdentity.address
+    var partnerName: String {
+        return pEpPartner.userName ?? pEpPartner.address
     }
 
     var partnerImage = ObservableValue<UIImage>()
@@ -59,6 +79,11 @@ class HandshakePartnerTableViewCellViewModel {
     let session: PEPSession
 
     var isPartnerpEpUser = false
+
+    /**
+     Have to store this for some future access from the owning VC.
+     */
+    let ownIdentity: Identity
 
     /**
      Cache the updated own identity.
@@ -75,10 +100,10 @@ class HandshakePartnerTableViewCellViewModel {
     init(ownIdentity: Identity, partner: Identity, session: PEPSession) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
-        self.ownIdentity = ownIdentity
-        self.partnerIdentity = partner
         self.session = session
-        self.identityColor = partner.pEpColor(session: session)
+        self.partnerRating = PEPUtil.pEpRating(identity: partner, session: session)
+        self.partnerColor = partner.pEpColor(session: session)
+        self.ownIdentity = ownIdentity
 
         pEpSelf = ownIdentity.updatedIdentity(session: session)
         pEpPartner = partner.updatedIdentity(session: session)
@@ -107,8 +132,7 @@ class HandshakePartnerTableViewCellViewModel {
             let fprPrettySelf = fprSelf.prettyFingerPrint()
             let fprPrettyPartner = fprPartner.prettyFingerPrint()
             self.trustwords =
-                "\(partnerIdentity.userName ?? partnerIdentity.address):\n\(fprPrettyPartner)\n\n" +
-            "\(ownIdentity.userName ?? ownIdentity.address):\n\(fprPrettySelf)"
+                "\(partnerName):\n\(fprPrettyPartner)\n\n" + "\(ownName):\n\(fprPrettySelf)"
         } else {
             self.trustwords = determineTrustwords(identitySelf: pEpSelf,
                                                   identityPartner: pEpPartner)
@@ -135,8 +159,17 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func invokeTrustAction(action: (PEPIdentity) -> ()) {
+        let theBackup = PEPIdentity(identity: pEpPartner)
         action(pEpPartner)
-        identityColor = partnerIdentity.pEpColor(session: session)
+        pEpPartner = theBackup
+
+        do {
+            try session.rating(&partnerRating, for: pEpPartner)
+            partnerColor = PEPUtil.pEpColor(pEpRating: partnerRating)
+        } catch let error as NSError {
+            assertionFailure("\(error)")
+        }
+
         updateTrustwords(session: session)
     }
 
@@ -160,9 +193,25 @@ class HandshakePartnerTableViewCellViewModel {
         }
     }
 
-    public func resetTrust() {
+    /**
+     Used for undoing a trust.
+     */
+    public func resetTrustOrUndoMistrust() {
         invokeTrustAction() { thePartner in
-            session.keyResetTrust(thePartner)
+            do {
+                switch partnerRating {
+                case PEP_rating_trusted, PEP_rating_trusted_and_anonymized:
+                    try session.keyResetTrust(thePartner)
+                case PEP_rating_have_no_key:
+                    session.undoLastMistrust()
+                default:
+                    assertionFailure("Can't decide whether to reset/undo trust or mistrust")
+                }
+            } catch let error as NSError {
+                if error.code != PEP_OUT_OF_MEMORY.rawValue {
+                    assertionFailure("\(error)")
+                }
+            }
         }
     }
 }

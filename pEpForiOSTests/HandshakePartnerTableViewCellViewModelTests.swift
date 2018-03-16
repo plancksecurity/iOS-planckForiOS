@@ -89,7 +89,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         try! session.update(partnerIdent)
         XCTAssertTrue(partnerIdent.isPEPUser(session))
 
-        session.keyResetTrust(partnerIdent)
+        try! session.keyResetTrust(partnerIdent)
         try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(partnerIdent.isPEPUser(session))
@@ -123,7 +123,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        session.keyResetTrust(partnerIdent)
+        try! session.keyResetTrust(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
@@ -133,7 +133,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        session.keyResetTrust(partnerIdent)
+        session.undoLastMistrust()
         try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
@@ -162,15 +162,57 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
                                                         partner: partnerID,
                                                         session: session)
-        // There are no expetations (asserts) here. Does not test anything afaics.
+
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+
         vm.confirmTrust()
-        vm.resetTrust()
-        //Should test pepRating here?
+        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+
+        vm.resetTrustOrUndoMistrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+
         vm.denyTrust()
-        vm.resetTrust()
-        //Should test pepRating here?
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
+
+        vm.resetTrustOrUndoMistrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+
         vm.confirmTrust()
-        vm.resetTrust()
-        //Should test pepRating here?
+        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+
+        vm.resetTrustOrUndoMistrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
+    }
+
+    /**
+     Test mistrust/reset cycle using view model.
+     */
+    func testViewModelMistrustResetTrustCycle() {
+        let session = PEPSession()
+
+        guard
+            let (message: _, mySelfID: mySelfID,
+                 partnerID: partnerID) = importMail(session: session) else {
+                    XCTFail()
+                    return
+        }
+
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
+                                                        partner: partnerID,
+                                                        session: session)
+
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+
+        vm.denyTrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
+
+        vm.resetTrustOrUndoMistrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+
+        vm.confirmTrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+
+        vm.resetTrustOrUndoMistrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
     }
 }

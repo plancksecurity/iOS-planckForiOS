@@ -48,14 +48,13 @@ class AttachmentsViewHelper {
                 switch c {
                 case .imageAttachment(let attachment, let image):
                     return AttachmentViewContainer(view: UIImageView(image: image),
-                                                   attachment: attachment, isInlineImage: true)
+                                                   attachment: attachment)
                 case .docAttachment(let attachment):
                     let dic = UIDocumentInteractionController()
                     dic.name = attachment.fileName
                     let theView = AttachmentSummaryView(attachment: attachment,
                                                         iconImage: dic.icons.first)
-                    return AttachmentViewContainer(view: theView, attachment: attachment,
-                                                   isInlineImage: false)
+                    return AttachmentViewContainer(view: theView, attachment: attachment)
                 }
             }
             imageView.attachmentViewContainers = viewContainers

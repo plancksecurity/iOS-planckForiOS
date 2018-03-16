@@ -29,4 +29,9 @@ extension Attachment {
         }
         return fn.extractCid()
     }
+
+    /// Considers an attachment as inlined if it has a content id.
+    var isInlined: Bool {
+        return contentID != nil
+    }
 }

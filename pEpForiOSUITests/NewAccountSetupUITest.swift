@@ -124,8 +124,14 @@ class NewAccountSetupUITest: XCTestCase {
         theApp.tables.cells.buttons["Sign In"].tap()
     }
 
-    func testInitialAccountSetup() {
+    func testInitialAccountSetup1() {
         let account = SecretUITestData.workingAccount1
+        newAccountSetup(account: account)
+        waitForever()
+    }
+
+    func testInitialAccountSetup2() {
+        let account = SecretUITestData.workingAccount2
         newAccountSetup(account: account)
         waitForever()
     }

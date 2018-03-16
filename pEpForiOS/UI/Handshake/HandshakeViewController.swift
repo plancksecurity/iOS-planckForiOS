@@ -125,7 +125,6 @@ class HandshakeViewController: BaseTableViewController {
             cell.needsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
 
-
             return cell
         }
 
@@ -169,10 +168,12 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         tableView.reloadRows(at: paths, with: .automatic)
     }
 
-    func resetTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
-                    indexPath: IndexPath,
-                    viewModel: HandshakePartnerTableViewCellViewModel?) {
-        invokeTrustAction(cell: cell, indexPath: indexPath) { viewModel?.resetTrust() }
+    func resetTrustOrUndoMistrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
+                                  indexPath: IndexPath,
+                                  viewModel: HandshakePartnerTableViewCellViewModel?) {
+        invokeTrustAction(cell: cell, indexPath: indexPath) {
+            viewModel?.resetTrustOrUndoMistrust()
+        }
     }
 
     func confirmTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,

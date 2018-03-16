@@ -100,7 +100,8 @@ class EmailViewController: BaseTableViewController {
     }
 
 
-    fileprivate final func loadDatasource(_ file: String) {        if let path = Bundle.main.path(forResource: file, ofType: "plist") {
+    fileprivate final func loadDatasource(_ file: String) {
+        if let path = Bundle.main.path(forResource: file, ofType: "plist") {
             if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
                 tableData = ComposeDataSource(with: dict["Rows"] as! [[String: Any]])
             }
