@@ -28,6 +28,10 @@ extension Message {
         }
     }
 
+    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
+        return pEpRating(session: session).pepColor()
+    }
+
     func belongToSentFolder() -> Bool {
         return self.parent.folderType == FolderType.sent
     }
