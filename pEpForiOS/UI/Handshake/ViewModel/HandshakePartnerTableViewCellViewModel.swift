@@ -24,12 +24,12 @@ class HandshakePartnerTableViewCellViewModel {
 
     /** Do we show the trustwords for this identity? */
     var showTrustwords: Bool {
-        return identityColor == PEP_color_yellow
+        return partnerColor == PEP_color_yellow
     }
 
     /** Show the button for start/stop trusting? */
     var showStopStartTrustButton: Bool {
-        return identityColor == PEP_color_red || identityColor == PEP_color_green
+        return partnerColor == PEP_color_red || partnerColor == PEP_color_green
     }
 
     var expandedState: ExpandedState
@@ -37,12 +37,12 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      The rating of the partner.
      */
-    var identityRating: PEP_rating
+    var partnerRating: PEP_rating
 
     /**
      The color of the partner.
      */
-    var identityColor: PEP_color
+    var partnerColor: PEP_color
 
     var trustwordsLanguage: String
     var trustwordsFull = false
@@ -86,8 +86,8 @@ class HandshakePartnerTableViewCellViewModel {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
         self.session = session
-        self.identityColor = partner.pEpColor(session: session)
-        self.identityRating = PEPUtil.pEpRating(identity: partner, session: session)
+        self.partnerColor = partner.pEpColor(session: session)
+        self.partnerRating = PEPUtil.pEpRating(identity: partner, session: session)
         self.ownIdentity = ownIdentity
 
         pEpSelf = ownIdentity.updatedIdentity(session: session)
@@ -147,8 +147,8 @@ class HandshakePartnerTableViewCellViewModel {
         action(pEpPartner)
 
         do {
-            try session.rating(&identityRating, for: pEpPartner)
-            identityColor = PEPUtil.pEpColor(pEpRating: identityRating)
+            try session.rating(&partnerRating, for: pEpPartner)
+            partnerColor = PEPUtil.pEpColor(pEpRating: partnerRating)
         } catch let error as NSError {
             assertionFailure("\(error)")
         }

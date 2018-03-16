@@ -163,19 +163,19 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                                                         partner: partnerID,
                                                         session: session)
 
-        XCTAssertEqual(vm.identityRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
         vm.confirmTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
         vm.resetTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
         vm.denyTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_have_no_key)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
         vm.resetTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_have_no_key)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
         vm.confirmTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
         vm.resetTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_have_no_key)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
     }
 
     /**
@@ -195,14 +195,14 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                                                         partner: partnerID,
                                                         session: session)
 
-        XCTAssertEqual(vm.identityRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
         vm.denyTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_have_no_key)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
         vm.resetTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_have_no_key)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
         vm.confirmTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
         vm.resetTrust()
-        XCTAssertEqual(vm.identityRating, PEP_rating_have_no_key)
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
     }
 }
