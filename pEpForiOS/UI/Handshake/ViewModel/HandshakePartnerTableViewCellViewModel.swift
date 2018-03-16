@@ -178,21 +178,25 @@ class HandshakePartnerTableViewCellViewModel {
         }
     }
 
-    public func resetTrust() {
+    /**
+     Used for undoing a trust.
+     */
+    public func resetTrustOrUndoMistrust() {
         invokeTrustAction() { thePartner in
             do {
-                try session.keyResetTrust(thePartner)
+                switch partnerRating {
+                case PEP_rating_trusted, PEP_rating_trusted_and_anonymized:
+                    try session.keyResetTrust(thePartner)
+                case PEP_rating_have_no_key:
+                    session.undoLastMistrust()
+                default:
+                    assertionFailure("Can't decide whether to reset/undo trust or mistrust")
+                }
             } catch let error as NSError {
                 if error.code != PEP_OUT_OF_MEMORY.rawValue {
                     assertionFailure("\(error)")
                 }
             }
-        }
-    }
-
-    public func undoLastMistrust() {
-        invokeTrustAction() { _ in
-            session.undoLastMistrust()
         }
     }
 }
