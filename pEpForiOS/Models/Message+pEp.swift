@@ -18,7 +18,7 @@ extension Message {
     }
 
     public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating? {
-        if belongToSentFolder()  || belongToDraftFolder () || belongToTrashFolder() {
+        if belongToSentFolder() || belongToDraftFolder () || belongToTrashFolder() {
             if let original = self.optionalFields[Headers.originalRating.rawValue] {
                 return session.rating(from: original)
             }
