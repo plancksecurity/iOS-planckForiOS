@@ -13,7 +13,4 @@ import MessageModel
 struct AttachmentViewContainer {
     let view: UIView
     let attachment: Attachment
-
-    /** Should this be displayed as an image inline (that is, is the view an `UIImageView`)? */
-    let isInlineImage: Bool
 }
