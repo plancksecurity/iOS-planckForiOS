@@ -162,10 +162,39 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
                                                         partner: partnerID,
                                                         session: session)
+        XCTAssertEqual(vm.identityColor, PEP_color_yellow)
         vm.confirmTrust()
+        XCTAssertEqual(vm.identityColor, PEP_color_green)
         vm.resetTrust()
+        XCTAssertEqual(vm.identityColor, PEP_color_yellow)
         vm.denyTrust()
-        vm.undoLastMistrust()
+        XCTAssertEqual(vm.identityColor, PEP_color_red)
+        vm.resetTrust()
+        XCTAssertEqual(vm.identityColor, PEP_color_yellow)
+        vm.confirmTrust()
+        XCTAssertEqual(vm.identityColor, PEP_color_green)
+        vm.resetTrust()
+        XCTAssertEqual(vm.identityColor, PEP_color_yellow)
+    }
+
+    /**
+     Test mistrust/reset cycle using view model.
+     */
+    func testViewModelMistrustResetTrustCycle() {
+        let session = PEPSession()
+
+        guard
+            let (message: _, mySelfID: mySelfID,
+                 partnerID: partnerID) = importMail(session: session) else {
+                    XCTFail()
+                    return
+        }
+
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
+                                                        partner: partnerID,
+                                                        session: session)
+        vm.denyTrust()
+        vm.resetTrust()
         vm.confirmTrust()
         vm.resetTrust()
     }
