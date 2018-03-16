@@ -47,7 +47,11 @@ public class handshakeButton: UIButton {
 
     public override var intrinsicContentSize: CGSize {
         if let titleContentSize = self.titleLabel?.intrinsicContentSize {
-            return titleContentSize
+            if titleContentSize.height <= 25.0 {
+                return CGSize(width: titleContentSize.width, height: 35.0)
+            } else {
+                return titleContentSize
+            }
         } else {
             return super.intrinsicContentSize
         }
@@ -56,7 +60,7 @@ public class handshakeButton: UIButton {
     public override func layoutSubviews() {
         super.layoutSubviews()
         if let titleWidth = self.titleLabel?.frame.size.width {
-            self.titleLabel?.preferredMaxLayoutWidth = titleWidth + 2.0
+            self.titleLabel?.preferredMaxLayoutWidth = titleWidth + 10.0
             super.layoutSubviews()
         }
     }
