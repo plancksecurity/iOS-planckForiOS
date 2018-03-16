@@ -33,21 +33,26 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     var expandedState: ExpandedState
+
+    /**
+     The rating of the partner.
+     */
+    var identityRating: PEP_rating
+
+    /**
+     The color of the partner.
+     */
     var identityColor: PEP_color
+
     var trustwordsLanguage: String
     var trustwordsFull = false
 
-    /**
-     The own identity that is concerned with the trust.
-     */
-    let ownIdentity: Identity
+    var ownName: String {
+        return pEpSelf.userName ?? pEpSelf.address
+    }
 
-    /**
-     The partner identity that we want to trust (or not).
-     */
-    let partnerIdentity: Identity
-    var partnerName: String? {
-        return partnerIdentity.userName ?? partnerIdentity.address
+    var partnerName: String {
+        return pEpPartner.userName ?? pEpPartner.address
     }
 
     var partnerImage = ObservableValue<UIImage>()
@@ -59,6 +64,11 @@ class HandshakePartnerTableViewCellViewModel {
     let session: PEPSession
 
     var isPartnerpEpUser = false
+
+    /**
+     Have to store this for some future access from the owning VC.
+     */
+    let ownIdentity: Identity
 
     /**
      Cache the updated own identity.
@@ -75,10 +85,10 @@ class HandshakePartnerTableViewCellViewModel {
     init(ownIdentity: Identity, partner: Identity, session: PEPSession) {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
-        self.ownIdentity = ownIdentity
-        self.partnerIdentity = partner
         self.session = session
         self.identityColor = partner.pEpColor(session: session)
+        self.identityRating = PEPUtil.pEpRating(identity: partner, session: session)
+        self.ownIdentity = ownIdentity
 
         pEpSelf = ownIdentity.updatedIdentity(session: session)
         pEpPartner = partner.updatedIdentity(session: session)
@@ -107,8 +117,7 @@ class HandshakePartnerTableViewCellViewModel {
             let fprPrettySelf = fprSelf.prettyFingerPrint()
             let fprPrettyPartner = fprPartner.prettyFingerPrint()
             self.trustwords =
-                "\(partnerIdentity.userName ?? partnerIdentity.address):\n\(fprPrettyPartner)\n\n" +
-            "\(ownIdentity.userName ?? ownIdentity.address):\n\(fprPrettySelf)"
+                "\(partnerName):\n\(fprPrettyPartner)\n\n" + "\(ownName):\n\(fprPrettySelf)"
         } else {
             self.trustwords = determineTrustwords(identitySelf: pEpSelf,
                                                   identityPartner: pEpPartner)
@@ -136,7 +145,14 @@ class HandshakePartnerTableViewCellViewModel {
 
     func invokeTrustAction(action: (PEPIdentity) -> ()) {
         action(pEpPartner)
-        identityColor = partnerIdentity.pEpColor(session: session)
+
+        do {
+            try session.rating(&identityRating, for: pEpPartner)
+            identityColor = PEPUtil.pEpColor(pEpRating: identityRating)
+        } catch let error as NSError {
+            assertionFailure("\(error)")
+        }
+
         updateTrustwords(session: session)
     }
 
@@ -165,7 +181,9 @@ class HandshakePartnerTableViewCellViewModel {
             do {
                 try session.keyResetTrust(thePartner)
             } catch let error as NSError {
-                assertionFailure("\(error)")
+                if error.code != PEP_OUT_OF_MEMORY.rawValue {
+                    assertionFailure("\(error)")
+                }
             }
         }
     }
