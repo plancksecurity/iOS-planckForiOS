@@ -162,7 +162,11 @@ class HandshakePartnerTableViewCellViewModel {
 
     public func resetTrust() {
         invokeTrustAction() { thePartner in
-            session.keyResetTrust(thePartner)
+            do {
+                try session.keyResetTrust(thePartner)
+            } catch let error as NSError {
+                assertionFailure("\(error)")
+            }
         }
     }
 }

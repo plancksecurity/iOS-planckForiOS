@@ -89,7 +89,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         try! session.update(partnerIdent)
         XCTAssertTrue(partnerIdent.isPEPUser(session))
 
-        session.keyResetTrust(partnerIdent)
+        try! session.keyResetTrust(partnerIdent)
         try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(partnerIdent.isPEPUser(session))
@@ -123,7 +123,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        session.keyResetTrust(partnerIdent)
+        try! session.keyResetTrust(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
@@ -133,7 +133,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        session.keyResetTrust(partnerIdent)
+        try! session.keyResetTrust(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(session.isPEPUser(partnerIdent))
 

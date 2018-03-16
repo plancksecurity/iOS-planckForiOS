@@ -182,7 +182,7 @@ class MessageReevalutionTests: XCTestCase {
         let runReevaluationInBackground = false
         let senderIdent = senderIdentity.updatedIdentity(session: session)
 
-        session.keyResetTrust(senderIdent)
+        try! session.keyResetTrust(senderIdent)
         XCTAssertFalse(senderIdent.isConfirmed)
         reevaluateMessage(
             expectedRating: PEP_rating_reliable,
@@ -208,7 +208,7 @@ class MessageReevalutionTests: XCTestCase {
             try! session.update(senderIdent)
             XCTAssertFalse(senderIdent.isConfirmed)
 
-            session.keyResetTrust(senderIdentCopy)
+            try! session.keyResetTrust(senderIdentCopy)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_have_no_key)
             reevaluateMessage(
                 expectedRating: PEP_rating_reliable,
