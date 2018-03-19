@@ -114,9 +114,7 @@ extension CdMessage {
         attachment.mimeType = contentType?.lowercased()
         // We mimic the Engines behaviour to set filename *or* CID in field `filename`. CID has higher prio.
         if let cid = contentID {
-            // We never saw the IMAP layer returning a CID that is prefixed with `cid:`,
-            // but you never know ...
-            attachment.fileName = cid.contains(find: "cid:") ? cid : "cid:" + cid
+            attachment.fileName = "cid://" + cid
         } else {
             attachment.fileName = filename
         }
