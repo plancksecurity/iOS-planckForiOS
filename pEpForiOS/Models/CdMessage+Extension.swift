@@ -114,7 +114,7 @@ extension CdMessage {
         attachment.mimeType = contentType?.lowercased()
         // We mimic the Engines behaviour to set filename *or* CID in field `filename`. CID has higher prio.
         if let cid = contentID {
-            attachment.fileName = "cid://" + cid
+            attachment.fileName = Attachment.contentIdUrlScheme + "://" + cid
         } else {
             attachment.fileName = filename
         }
