@@ -245,7 +245,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, content: "applicationDidEnterBackground")
         self.application = application
-        kickOffMySelf() //is this still required? Call in applicationDidBecomeActive might be enough.
+
+        // generate keys in the background
+        kickOffMySelf()
+
         stopUsingPepSession()
     }
 
