@@ -46,6 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var backgroundTaskId: BackgroundTaskID? = nil
 
+    /**
+     Set to true whever the app goes into background, so the main session gets cleaned up.
+     */
+    var shouldDestroySession = false
+
     func applicationDirectory() -> URL? {
         let fm = FileManager.default
         let dirs = fm.urls(for: .libraryDirectory, in: .userDomainMask)
@@ -109,11 +114,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.shared.pause()
     }
 
+    func cleanupPEPSessionIfNeeded() {
+        if shouldDestroySession {
+            PEPSession.cleanup()
+        }
+    }
+
     func kickOffMySelf() {
         let op = MySelfOperation(parentName: #function, backgrounder: self)
-        op.completionBlock = {
+        op.completionBlock = { [weak self] in
             // We might be the last service that finishes, so we have to cleanup.
-            PEPSession.cleanup()
+            self?.cleanupPEPSessionIfNeeded()
         }
         mySelfQueue.addOperation(op)
     }
@@ -246,6 +257,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Log.info(component: comp, content: "applicationDidEnterBackground")
         self.application = application
 
+        shouldDestroySession = true
+
         // generate keys in the background
         kickOffMySelf()
 
@@ -269,6 +282,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Do nothing if unit tests are running
             return
         }
+
+        shouldDestroySession = false
+
         startServices()
         kickOffMySelf()
         UserNotificationTool.resetApplicationIconBadgeNumber()
@@ -278,6 +294,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+        shouldDestroySession = true
 
         // Just in case, last chance to clean up. Should not be necessary though.
         PEPSession.cleanup()
