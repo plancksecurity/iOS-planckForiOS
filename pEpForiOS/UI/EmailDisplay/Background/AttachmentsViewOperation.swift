@@ -41,6 +41,10 @@ class AttachmentsViewOperation: Operation {
     override func main() {
         let attachments = message.viewableAttachments()
         for att in attachments {
+            if att.isInlined {
+                // Ignore attachments that are already shown inlined in the message body.
+                continue
+            }
             if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
                 let imgData = att.data, let img = UIImage(data: imgData) {
                 attachmentContainers.append(.imageAttachment(att, img))

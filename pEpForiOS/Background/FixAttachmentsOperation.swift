@@ -13,7 +13,8 @@ import Photos
 import MessageModel
 
 /**
- Downloads attachment content with nil data, also fixes nil sizes.
+ When getting an image from the device, we might get no data but a URL to the data.
+ Use this operation to (down)load attachment content before sending such an image attachment.
  */
 public class FixAttachmentsOperation: ConcurrentBaseOperation {
     let pInvalidLength = NSPredicate(format: "length = 0 and data != nil")

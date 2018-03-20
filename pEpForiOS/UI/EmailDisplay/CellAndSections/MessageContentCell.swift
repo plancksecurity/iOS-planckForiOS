@@ -11,11 +11,10 @@ import WebKit
 import MessageModel
 
 open class MessageContentCell: MessageCell {
-    @IBOutlet weak var contentLabel: UILabel!
+        @IBOutlet weak var contentLabel: UILabel!
 
-    public override func updateCell(model: ComposeFieldModel, message: Message,
-                                    indexPath: IndexPath) {
-        super.updateCell(model: model, message: message, indexPath: indexPath)
+    public override func updateCell(model: ComposeFieldModel, message: Message) {
+        super.updateCell(model: model, message: message)
 
         let finalText = NSMutableAttributedString()
         if message.underAttack {
@@ -25,12 +24,13 @@ open class MessageContentCell: MessageCell {
             //if there will be attachmetns show warning
         }
 
-        if let longmessage = message.longMessage?.trimmedWhiteSpace() {
-            finalText.normal(longmessage)
+        if let text = message.longMessage?.trimmedWhiteSpace() {
+            finalText.normal(text)
+        } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
+            finalText.normal(text)
         } else {
-            if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
-                finalText.normal(text)
-            }
+            // Empty body
+            finalText.normal("")
         }
         contentLabel.attributedText = finalText
     }

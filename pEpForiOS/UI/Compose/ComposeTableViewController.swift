@@ -1223,7 +1223,7 @@ extension ComposeTableViewController: HtmlToAttributedTextSaxParserAttachmentDel
             return nil
         }
         for attachment in origAttachments {
-            if attachment.fileName?.extractCid() == src?.extractCid() {
+            if attachment.contentID == src?.extractCid() {
                 // The attachment is inlined.
                 assertImage(inAttachment: attachment)
                 // Remove from non-inlined attachments if contained.

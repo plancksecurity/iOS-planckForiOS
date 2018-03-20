@@ -107,12 +107,17 @@ extension CdMessage {
     }
 
     static func insertAttachment(
-        contentType: String?, filename: String?, data: Data) -> CdAttachment {
+        contentType: String?, filename: String?,contentID: String?, data: Data) -> CdAttachment {
         let attachment = CdAttachment.create()
         attachment.data = data
         attachment.length = Int64(data.count)
         attachment.mimeType = contentType?.lowercased()
-        attachment.fileName = filename
+        // We mimic the Engines behaviour to set filename *or* CID in field `filename`. CID has higher prio.
+        if let cid = contentID {
+            attachment.fileName = Attachment.contentIdUrlScheme + "://" + cid
+        } else {
+            attachment.fileName = filename
+        }
         return attachment
     }
 }

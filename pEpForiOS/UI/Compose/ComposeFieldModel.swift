@@ -10,7 +10,7 @@ import UIKit
 
 public class ComposeFieldModel {
     public enum FieldType: String {
-        case to, cc, bcc, from, subject, content, mailingList, none
+        case to, cc, bcc, from, subject, content, mailingList, none, attachment
 
         func translatedTitle(expanded: Bool = false) -> String {
             switch self {

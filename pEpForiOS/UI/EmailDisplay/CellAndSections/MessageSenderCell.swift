@@ -11,9 +11,8 @@ import MessageModel
 
 open class MessageSenderCell: MessageCell {
     
-    public override func updateCell(model: ComposeFieldModel, message: Message,
-                                    indexPath: IndexPath) {
-        super.updateCell(model: model, message: message, indexPath: indexPath)
+    public override func updateCell(model: ComposeFieldModel, message: Message) {
+        super.updateCell(model: model, message: message)
         titleLabel?.text = message.from?.displayString
         
         let attributed = NSMutableAttributedString(
