@@ -73,7 +73,7 @@ class HandshakeViewController: BaseTableViewController {
             return vm
         }
     }
-
+    
     /**
      Adjusts the background color of the given view model depending on its position in the list,
      and the color of the previous one.

@@ -48,7 +48,7 @@ public class handshakeButton: UIButton {
     public override var intrinsicContentSize: CGSize {
         if let titleContentSize = self.titleLabel?.intrinsicContentSize {
             if titleContentSize.height <= 25.0 {
-                return CGSize(width: titleContentSize.width, height: 35.0)
+                return CGSize(width: titleContentSize.width, height: 40.0)
             } else {
                 return titleContentSize
             }
