@@ -208,7 +208,9 @@ class SecureWebViewController: UIViewController {
     /// Returns a modified version the html, adjusted to simulate "PageScaleToFit" layout by
     /// inserting "<meta name="viewport" content="width=device-width, initial-scale=1.0"/>".
     private func dirtyHackInsertedForPageScaleToFit(inHtml html: String) -> String {
+        let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=device-heigth, initial-scale=1.0\"/>"
         var result = html
+
         if html.contains(find: "initial-scale=1.0") {
             // scale factor already set. Nothing to do.
             return result
@@ -218,14 +220,14 @@ class SecureWebViewController: UIViewController {
             result = html.replacingOccurrences(of: "<head>", with:
                 """
         <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        \(scaleToFitHtml)
         """)
         } else if html.contains(find: "<html>") {
             result = html.replacingOccurrences(of: "<html>", with:
                 """
         <html>
         <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        \(scaleToFitHtml)
         </head>
         """
             )
