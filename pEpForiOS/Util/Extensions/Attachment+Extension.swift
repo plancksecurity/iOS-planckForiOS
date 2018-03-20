@@ -14,7 +14,7 @@ extension Attachment {
     /**
      Can this attachment be shown in the app?
      */
-    public func isViewable() -> Bool {
+    public func isViewable() -> Bool {  
         if data == nil || AttachmentFilter.unviewableMimeTypes.contains(mimeType.lowercased()) {
             return false
         }
@@ -30,8 +30,10 @@ extension Attachment {
         return fn.extractCid()
     }
 
-    /// Considers an attachment as inlined if it has a content id.
+    /// Wheter or not the attachment is inlined in a HTML mail body.
     var isInlined: Bool {
-        return contentID != nil
+        let htmlMailBodyExists = message?.longMessageFormatted != nil
+        let attachmentIsInlined = contentID != nil
+        return htmlMailBodyExists && attachmentIsInlined
     }
 }

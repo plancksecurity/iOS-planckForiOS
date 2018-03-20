@@ -58,7 +58,13 @@ extension Message {
      - Returns: An array of attachments that can be viewed.
      */
     public func viewableAttachments() -> [Attachment] {
-        return attachments.filter() { return $0.isViewable() }
+        let viewable = attachments.filter() { return $0.isViewable() }
+        let parentMessageAssured = viewable.map { attachment -> (Attachment) in
+            attachment.message = self
+            return attachment
+        }
+        
+        return parentMessageAssured
     }
 }
 
