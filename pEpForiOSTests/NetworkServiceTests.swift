@@ -171,7 +171,6 @@ class NetworkServiceTests: XCTestCase {
         for msg in modelDelegate.messages {
             let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
             XCTAssertTrue(!msgIsFlaggedDeleted)
-            XCTAssertTrue(sendLayerDelegate.messageIDs.contains(msg.messageID))
             XCTAssertTrue(inbox.contains(message: msg))
             if !unifiedInbox.contains(message: msg) {
                 XCTFail()
