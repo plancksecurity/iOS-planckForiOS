@@ -107,7 +107,7 @@
                                                         <action selector="startStopTrustingAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="XzM-B3-yD3"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="OUTDISTANCE BLAH BLAH2" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHS-sc-yWR" userLabel="TrustWordsLabel">
                                                     <rect key="frame" x="0.0" y="236.5" width="280" height="20.5"/>
                                                     <accessibility key="accessibilityConfiguration" label="trustWordsLabel"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
