@@ -64,14 +64,14 @@ class MessageReevalutionTests: XCTestCase {
         self.cdSenderIdentity =  sender
 
         // Test Keys
-        TestUtil.importKeyByFileName(
+        try! TestUtil.importKeyByFileName(
             session, fileName: "CommunicationTypeTests_test001@peptest.ch_sec.asc")
-        TestUtil.importKeyByFileName(
+        try! TestUtil.importKeyByFileName(
             session, fileName: "CommunicationTypeTests_test001@peptest.ch.asc")
 
-        TestUtil.importKeyByFileName(
+        try! TestUtil.importKeyByFileName(
             session, fileName: "CommunicationTypeTests_test002@peptest.ch_sec.asc")
-        TestUtil.importKeyByFileName(
+        try! TestUtil.importKeyByFileName(
             session, fileName: "CommunicationTypeTests_test002@peptest.ch.asc")
 
         self.backgroundQueue = OperationQueue()

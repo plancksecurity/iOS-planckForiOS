@@ -297,7 +297,7 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
     func sendMessages(ms: MessageSyncService) {
         let numberOfOutgoingMessagesToCreate = 3
         let numberOfOutgoingMessagesToSendImmediately = numberOfOutgoingMessagesToCreate
-        let outgoingCdMsgs = TestUtil.createOutgoingMails(
+        let outgoingCdMsgs = try! TestUtil.createOutgoingMails(
             cdAccount: cdAccount, testCase: self,
             numberOfMails: numberOfOutgoingMessagesToCreate)
 
@@ -424,7 +424,7 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
                                 numberOfOutgoingMessagesToSendImmediately: Int,
                                 numberOfOutgoingMessagesToSendLater: Int,
                                 expectedNumberOfSyncs: Int) {
-        let outgoingCdMsgs = TestUtil.createOutgoingMails(
+        let outgoingCdMsgs = try! TestUtil.createOutgoingMails(
             cdAccount: theCdAccount, testCase: self,
             numberOfMails: numberOfOutgoingMessagesToCreate)
 
@@ -452,7 +452,7 @@ class MessageSyncServiceTests: CoreDataDrivenTestBase {
             return
         }
 
-        let outgoingCdMsgs2 = TestUtil.createOutgoingMails(
+        let outgoingCdMsgs2 = try! TestUtil.createOutgoingMails(
             cdAccount: theCdAccount, testCase: self,
             numberOfMails: numberOfOutgoingMessagesToSendLater)
         if outgoingCdMsgs2.count < numberOfOutgoingMessagesToSendLater {

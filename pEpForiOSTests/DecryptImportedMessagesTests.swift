@@ -106,13 +106,13 @@ class DecryptImportedMessagesTests: XCTestCase {
                                               ownEmailAddress: "iostest002@peptest.ch")
 
         // own keys
-        TestUtil.importKeyByFileName(
+        try! TestUtil.importKeyByFileName(
             session, fileName: "IOS-884_001_iostest002@peptest.ch.pub.key")
-        TestUtil.importKeyByFileName(
+        try! TestUtil.importKeyByFileName(
             session, fileName: "IOS-884_001_iostest002@peptest.ch.sec.key")
 
         // partner
-        TestUtil.importKeyByFileName(
+        try! TestUtil.importKeyByFileName(
             session, fileName: "IOS-884_001_test010@peptest.ch.pub.key")
 
         self.backgroundQueue = OperationQueue()

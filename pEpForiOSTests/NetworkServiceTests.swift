@@ -274,8 +274,9 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
 
         let numMails = 1
-        let outgoingMails = TestUtil.createOutgoingMails(cdAccount: cdAccount,
-                                                         testCase: self, numberOfMails: numMails)
+        let outgoingMails = try! TestUtil.createOutgoingMails(
+            cdAccount: cdAccount,
+            testCase: self, numberOfMails: numMails)
         let outgoingMessageIDs: [String] = outgoingMails
             .map() { $0.messageID ?? "" }
             .filter() { $0 != "" }

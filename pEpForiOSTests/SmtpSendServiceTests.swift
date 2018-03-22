@@ -56,7 +56,7 @@ class SmtpSendServiceTests: XCTestCase {
             return
         }
 
-        let outgoingMailsToSend = TestUtil.createOutgoingMails(
+        let outgoingMailsToSend = try! TestUtil.createOutgoingMails(
             cdAccount: theCdAccount, testCase: self, numberOfMails: 3)
         XCTAssertGreaterThan(outgoingMailsToSend.count, 0)
 

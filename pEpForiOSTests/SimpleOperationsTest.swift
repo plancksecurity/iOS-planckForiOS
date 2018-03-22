@@ -407,7 +407,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     // MARK: - EncryptAndSendOperation
 
     func testEncryptAndSendOperation() {
-        let _ = TestUtil.createOutgoingMails(cdAccount: cdAccount, testCase: self, numberOfMails: 3)
+        let _ = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
+                                                  testCase: self,
+                                                  numberOfMails: 3)
 
         let expMailsSent = expectation(description: "expMailsSent")
 

@@ -104,10 +104,11 @@ class TestUtil {
      - Parameter session: The pEp session to import the key into.
      - Parameter fileName: The file name of the key (complete with extension)
      */
-    static func importKeyByFileName(_ session: PEPSession = PEPSession(), fileName: String) {
-        if let content = loadString(fileName: fileName) {
-            session.importKey(content as String)
-        }
+    static func importKeyByFileName(_ session: PEPSession = PEPSession(), fileName: String)
+        throws {
+            if let content = loadString(fileName: fileName) {
+                try session.importKey(content as String)
+            }
     }
 
     static func setupSomeIdentities(_ session: PEPSession = PEPSession())
@@ -336,9 +337,9 @@ class TestUtil {
         networkService.start()
 
         let canTakeSomeTimeFactor = 3.0
-        testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor, handler: { error in
+        testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor) { error in
             XCTAssertNil(error)
-        })
+        }
 
         TestUtil.cancelNetworkService(networkService: networkService, testCase: testCase)
     }
@@ -362,7 +363,7 @@ class TestUtil {
                                     testCase: XCTestCase,
                                     numberOfMails: Int,
                                     withAttachments: Bool = true,
-                                    encrypt: Bool = true) -> [CdMessage] {
+                                    encrypt: Bool = true) throws -> [CdMessage] {
         testCase.continueAfterFailure = false
 
         if numberOfMails == 0 {
@@ -395,7 +396,7 @@ class TestUtil {
 
         if encrypt {
             let session = PEPSession()
-            TestUtil.importKeyByFileName(
+            try TestUtil.importKeyByFileName(
                 session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
         }
 
