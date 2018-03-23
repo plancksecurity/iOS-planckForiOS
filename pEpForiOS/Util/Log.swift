@@ -34,8 +34,13 @@ import MessageModel
         if !MiscUtil.isUnitTest() {
             loggingQueue.addOperation() {
                 if self.logEnabled && !self.paused {
-                    self.session.logTitle(
-                        self.title, entity: entity, description: description, comment: comment)
+                    do {
+                        try self.session.logTitle(
+                            self.title, entity: entity, description: description, comment: comment)
+                    } catch {
+                        // Ignore. In debug mode we have already logged,
+                        // otherwise there's no point of logging "cannot log".
+                    }
                 }
             }
         }
