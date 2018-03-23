@@ -26,10 +26,14 @@ import MessageModel
         return instance
     }()
 
+    let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
+
     private func saveLog(entity: String, description: String, comment: String) {
         #if DEBUG_LOGGING
-            // If running in the debugger, dump to the console right away
-            print("\(entity): \(description)")
+            if allowedEntities.contains(entity) {
+                // If running in the debugger, dump to the console right away
+                print("\(entity): \(description)")
+            }
         #endif
     }
 
