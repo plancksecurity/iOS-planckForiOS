@@ -38,7 +38,7 @@ extension AccountSettingsError: LocalizedError {
             return NSLocalizedString("Account detection timed out",
                                      comment: "Error description detecting account settings")
         case .notFound, .illegalValue:
-            return NSLocalizedString("Could not find servers",
+            return NSLocalizedString("Could not find servers. Please enter manually",
                                      comment: "Error description detecting account settings")
         }
     }
