@@ -70,12 +70,12 @@ import MessageModel
     }
 
     static open func checklog(_ block: ((String?) -> ())?) {
-        if !MiscUtil.isUnitTest() {
-            Log.shared.loggingQueue.addOperation() {
-                block?(PEPSession().getLog())
+        Log.shared.loggingQueue.addOperation() {
+            if let logString = try? PEPSession().getLog() {
+                block?(logString)
+            } else {
+                block?("")
             }
-        } else {
-            block?("")
         }
     }
 
