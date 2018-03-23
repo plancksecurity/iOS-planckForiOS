@@ -31,6 +31,14 @@ import MessageModel
             // If running in the debugger, dump to the console right away
             print("\(entity): \(description)")
         #endif
+        if !MiscUtil.isUnitTest() {
+            loggingQueue.addOperation() {
+                if self.logEnabled && !self.paused {
+                    self.session.logTitle(
+                        self.title, entity: entity, description: description, comment: comment)
+                }
+            }
+        }
     }
 
     func resume() {
