@@ -192,23 +192,14 @@ class HandshakePartnerTableViewCellViewModel {
      Used for undoing a trust or mistrust.
 
      - Note: Since undoLastMistrust is currently not
-     implemented with all consequences, it is not used, so the current status is:
-     Can only reset trust.
+     implemented with all consequences, it is not used.
      */
     public func resetTrustOrUndoMistrust() {
         invokeTrustAction() { thePartner in
             do {
-                switch partnerColor {
-                case PEP_color_green, PEP_color_red:
-                    try session.keyResetTrust(thePartner)
-                default:
-                    assertionFailure("Can't decide whether to reset/undo trust or mistrust")
-                }
+                try session.keyResetTrust(thePartner)
             } catch let error as NSError {
-                // ignore ENGINE-409
-                if error.code != PEP_OUT_OF_MEMORY.rawValue {
-                    assertionFailure("\(error)")
-                }
+                assertionFailure("\(error)")
             }
         }
     }
