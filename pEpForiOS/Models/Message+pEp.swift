@@ -45,16 +45,6 @@ extension Message {
     }
 
     /**
-     - Returns: An array of identities you can make a handshake on.
-     */
-    public func identitiesEligibleForHandshake(session: PEPSession = PEPSession()) -> [Identity] {
-        let myselfIdentity = PEPUtil.ownIdentity(message: self)
-        return Array(allIdentities).filter {
-            return $0 != myselfIdentity && $0.canHandshakeOn(session: session)
-        }
-    }
-
-    /**
      - Returns: An array of attachments that can be viewed.
      */
     public func viewableAttachments() -> [Attachment] {
@@ -71,7 +61,6 @@ extension Message {
 // MARK: - Fetching
 
 extension Message {
-
     /// - Returns: all messages marked for UidMoveToTrash
     static public func allMessagesMarkedForUidExpunge() -> [Message] {
         let predicateMarkedUidExpunge = CdMessage.PredicateFactory.markedForUidMoveToTrash()
@@ -86,5 +75,19 @@ extension Message {
             result.append(message)
         }
         return result
+    }
+}
+
+// MARK: - Handshake
+
+extension Message {
+    /**
+     - Returns: An array of identities you can make a handshake on.
+     */
+    public func identitiesEligibleForHandshake(session: PEPSession = PEPSession()) -> [Identity] {
+        let myselfIdentity = PEPUtil.ownIdentity(message: self)
+        return Array(allIdentities).filter {
+            return $0 != myselfIdentity && $0.canHandshakeOn(session: session)
+        }
     }
 }
