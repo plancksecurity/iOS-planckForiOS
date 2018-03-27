@@ -77,26 +77,8 @@ class EmailViewController: BaseTableViewController {
 
     private func showPepRating() {
         let session = PEPSession()
-        let _ = showPepRating(pEpRating: message?.pEpRating(session: session))
-        var allOwnKeysGenerated = true
-        var atLeastOneHandshakableIdentityFound = false
-        if let m = message {
-            for id in m.allIdentities {
-                if id.isMySelf {
-                    // if we encounter an own identity, make sure it already has a key
-                    if (try? id.fingerPrint(session: session)) == nil {
-                        allOwnKeysGenerated = false
-                        break
-                    }
-                } else {
-                    if id.canHandshakeOn(session: session) {
-                        atLeastOneHandshakableIdentityFound = true
-                        break
-                    }
-                }
-            }
-        }
-        handShakeButton.isEnabled = allOwnKeysGenerated && atLeastOneHandshakableIdentityFound
+        let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
+        handShakeButton.isEnabled = !handshakeCombos.isEmpty
     }
 
 
