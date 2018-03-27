@@ -185,8 +185,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     func updateTrustwordsExpansionVisibility() {
-        trustWordsLabel.isHidden = showStopStartTrustButton
-        trustMistrustButtonsStackView.isHidden = showStopStartTrustButton
+        trustWordsLabel.isHidden = !showTrustwords
+        trustMistrustButtonsStackView.isHidden = !showTrustwords
     }
 
     func updateStopTrustingButtonTitle() {
