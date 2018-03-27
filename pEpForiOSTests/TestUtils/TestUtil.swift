@@ -315,8 +315,6 @@ class TestUtil {
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase, skipValidation: Bool) {
-        let sendLayerDelegate = SendLayerObserver()
-
         let networkService = NetworkService()
         networkService.sleepTimeInSeconds = 0.1
 
@@ -327,7 +325,6 @@ class TestUtil {
                                          failOnError: true)
 
         networkService.unitTestDelegate = del
-        networkService.sendLayerDelegate = sendLayerDelegate
 
         if skipValidation {
             TestUtil.skipValidation()

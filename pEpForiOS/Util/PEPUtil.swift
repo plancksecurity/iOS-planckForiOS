@@ -523,6 +523,11 @@ open class PEPUtil {
     open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) throws
         -> String? {
             let pEpID = pEp(identity: identity)
+            if pEpID.isOwn {
+                // If we have an own identity, avoid a call to myself by nulling userID
+                pEpID.userID = nil
+                pEpID.isOwn = false
+            }
             try session.update(pEpID)
             return pEpID.fingerPrint
     }

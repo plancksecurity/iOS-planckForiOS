@@ -24,11 +24,8 @@ class HandshakePartnerTableViewCellViewModel {
 
     /** Do we show the trustwords for this identity? */
     var showTrustwords: Bool {
-        switch partnerRating {
-        case PEP_rating_have_no_key,
-             PEP_rating_reliable,
-             PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized:
+        switch partnerColor {
+        case PEP_color_yellow:
             return true
         default:
             return false
@@ -37,10 +34,8 @@ class HandshakePartnerTableViewCellViewModel {
 
     /** Show the button for start/stop trusting? */
     var showStopStartTrustButton: Bool {
-        switch partnerRating {
-        case PEP_rating_have_no_key,
-             PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized:
+        switch partnerColor {
+        case PEP_color_green, PEP_color_red:
             return true
         default:
             return false
@@ -102,7 +97,7 @@ class HandshakePartnerTableViewCellViewModel {
         self.trustwordsLanguage = "en"
         self.session = session
         self.partnerRating = PEPUtil.pEpRating(identity: partner, session: session)
-        self.partnerColor = partner.pEpColor(session: session)
+        self.partnerColor = partnerRating.pepColor()
         self.ownIdentity = ownIdentity
 
         pEpSelf = ownIdentity.updatedIdentity(session: session)
@@ -194,23 +189,16 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     /**
-     Used for undoing a trust.
+     Used for undoing a trust or mistrust.
+     - Note: Since undoLastMistrust is currently not implemented with all consequences,
+     it is not used.
      */
-    public func resetTrustOrUndoMistrust() {
+    public func resetOrUndoTrustOrMistrust() {
         invokeTrustAction() { thePartner in
             do {
-                switch partnerRating {
-                case PEP_rating_trusted, PEP_rating_trusted_and_anonymized:
-                    try session.keyResetTrust(thePartner)
-                case PEP_rating_have_no_key:
-                    session.undoLastMistrust()
-                default:
-                    assertionFailure("Can't decide whether to reset/undo trust or mistrust")
-                }
+                try session.keyResetTrust(thePartner)
             } catch let error as NSError {
-                if error.code != PEP_OUT_OF_MEMORY.rawValue {
-                    assertionFailure("\(error)")
-                }
+                assertionFailure("\(error)")
             }
         }
     }

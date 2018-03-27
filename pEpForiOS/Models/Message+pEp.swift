@@ -45,16 +45,6 @@ extension Message {
     }
 
     /**
-     - Returns: An array of identities you can make a handshake on.
-     */
-    public func identitiesEligibleForHandshake(session: PEPSession = PEPSession()) -> [Identity] {
-        let myselfIdentity = PEPUtil.ownIdentity(message: self)
-        return Array(allIdentities).filter {
-            return $0 != myselfIdentity && $0.canHandshakeOn(session: session)
-        }
-    }
-
-    /**
      - Returns: An array of attachments that can be viewed.
      */
     public func viewableAttachments() -> [Attachment] {
@@ -71,7 +61,6 @@ extension Message {
 // MARK: - Fetching
 
 extension Message {
-
     /// - Returns: all messages marked for UidMoveToTrash
     static public func allMessagesMarkedForUidExpunge() -> [Message] {
         let predicateMarkedUidExpunge = CdMessage.PredicateFactory.markedForUidMoveToTrash()
@@ -86,5 +75,52 @@ extension Message {
             result.append(message)
         }
         return result
+    }
+}
+
+// MARK: - Handshake
+
+/**
+ Represents a combination of own identity and partner, on which the user can do
+ a handshake action like:
+ * trust
+ * mistrust
+ * ...
+ */
+public struct HandshakeCombination {
+    let ownIdentity: Identity
+    let partnerIdentity: Identity
+}
+
+extension Message {
+    /**
+     Determines all possible handshake combinations that the identies referenced in a message
+     represent.
+     */
+    public func handshakeActionCombinations(
+        session: PEPSession = PEPSession()) -> [HandshakeCombination] {
+        let potentialIdentities = allIdentities
+
+        let ownIdentities = potentialIdentities.filter() {
+            $0.isMySelf
+        }
+
+        let ownIdentitiesWithKeys = ownIdentities.filter() {
+            (try? $0.fingerPrint(session: session)) != nil
+        }
+
+        let partnerIdenties = potentialIdentities.filter() {
+            $0.canInvokeHandshakeAction(session: session)
+        }
+
+        var handshakable = [HandshakeCombination]()
+        for ownId in ownIdentitiesWithKeys {
+            for partnerId in partnerIdenties {
+                handshakable.append(HandshakeCombination(
+                    ownIdentity: ownId, partnerIdentity: partnerId))
+            }
+        }
+
+        return handshakable
     }
 }

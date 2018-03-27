@@ -16,12 +16,11 @@ class HandshakeViewController: BaseTableViewController {
 
     var message: Message? {
         didSet {
-            let session = PEPSession()
-            partners = message?.identitiesEligibleForHandshake(session: session) ?? []
+            handshakeCombinations = message?.handshakeActionCombinations() ?? []
         }
     }
 
-    var partners = [Identity]()
+    var handshakeCombinations = [HandshakeCombination]()
     let identityViewModelCache = NSCache<Identity, HandshakePartnerTableViewCellViewModel>()
 
     var indexPathRequestingLanguage: IndexPath?
@@ -30,12 +29,6 @@ class HandshakeViewController: BaseTableViewController {
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableViewAutomaticDimension
-    }
-
-    override func viewDidLoad() {
-        partners = partners.filter { (identity) -> Bool in
-            return !identity.isMySelf
-        }
     }
 
     func back(sender: UIBarButtonItem) {
@@ -53,7 +46,7 @@ class HandshakeViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return partners.count
+        return handshakeCombinations.count
     }
 
     /**
@@ -84,9 +77,9 @@ class HandshakeViewController: BaseTableViewController {
             viewModel.backgroundColorDark = true
         } else {
             let prevRow = indexPath.row - 1
-            let partnerId = partners[prevRow]
-            let prevViewModel = createViewModel(partnerIdentity: partnerId,
-                                                selfIdentity: viewModel.ownIdentity)
+            let handshakeCombo = handshakeCombinations[prevRow]
+            let prevViewModel = createViewModel(partnerIdentity: handshakeCombo.partnerIdentity,
+                                                selfIdentity: handshakeCombo.ownIdentity)
             if prevViewModel.showTrustwords {
                 viewModel.backgroundColorDark = true
             } else {
@@ -106,18 +99,9 @@ class HandshakeViewController: BaseTableViewController {
             for: indexPath) as? HandshakePartnerTableViewCell {
             cell.delegate = self
 
-            guard let m = message else {
-                return cell
-            }
-
-            guard let selfId = message?.parent.account.user else {
-                Log.error( component: #function,
-                           errorString: "Could not deduce account from message: \(m)")
-                return cell
-            }
-
-            let theId = partners[indexPath.row]
-            let viewModel = createViewModel(partnerIdentity: theId, selfIdentity: selfId)
+            let handshakeCombo = handshakeCombinations[indexPath.row]
+            let viewModel = createViewModel(partnerIdentity: handshakeCombo.partnerIdentity,
+                                            selfIdentity: handshakeCombo.ownIdentity)
             adjustBackgroundColor(viewModel: viewModel, indexPath: indexPath)
             cell.viewModel = viewModel
             cell.indexPath = indexPath
@@ -159,7 +143,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         // reload cells after that one, to ensure the alternating colors are upheld
         var paths = [IndexPath]()
         let i1 = indexPath.row + 1
-        let i2 = partners.count
+        let i2 = handshakeCombinations.count
         if i1 < i2 {
             for i in i1..<i2 {
                 paths.append(IndexPath(row: i, section: indexPath.section))
@@ -172,7 +156,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                                   indexPath: IndexPath,
                                   viewModel: HandshakePartnerTableViewCellViewModel?) {
         invokeTrustAction(cell: cell, indexPath: indexPath) {
-            viewModel?.resetTrustOrUndoMistrust()
+            viewModel?.resetOrUndoTrustOrMistrust()
         }
     }
 

@@ -41,12 +41,18 @@ extension Identity {
         return try PEPUtil.fingerPrint(identity: self, session: session)
     }
 
-    public func canHandshakeOn(session: PEPSession = PEPSession()) -> Bool {
+    /**
+     Can a meaningful handshake action be invoked on this identity?
+     Like trust, mistrust, or reset?
+     Currently, you can't reset/undo a mistrust, so it's not included.
+     See ENGINE-409, ENGINE-355.
+     */
+    public func canInvokeHandshakeAction(session: PEPSession = PEPSession()) -> Bool {
         if isMySelf {
             return false
         }
-        let rating = pEpRating(session: session)
-        return rating == PEP_rating_reliable
+        let color = pEpColor(session: session)
+        return color == PEP_color_yellow || color == PEP_color_green
     }
 
     public func canResetTrust(session: PEPSession = PEPSession()) -> Bool {
