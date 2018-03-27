@@ -59,11 +59,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeInactive), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+    }
+
     @objc func didBecomeActive() {
 
         if tableView.tableHeaderView == nil {
             tableView.tableHeaderView = searchController.searchBar
-            tableView.setContentOffset(CGPoint(x: 0.0, y: searchController.searchBar.frame.size.height), animated: false)
+            //tableView.setContentOffset(CGPoint(x: 0.0, y: searchController.searchBar.frame.size.height), animated: false)
 
         }
     }
