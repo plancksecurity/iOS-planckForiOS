@@ -190,11 +190,10 @@ class HandshakePartnerTableViewCellViewModel {
 
     /**
      Used for undoing a trust or mistrust.
-
-     - Note: Since undoLastMistrust is currently not
-     implemented with all consequences, it is not used.
+     - Note: Since undoLastMistrust is currently not implemented with all consequences,
+     it is not used.
      */
-    public func resetTrustOrUndoMistrust() {
+    public func resetOrUndoTrustOrMistrust() {
         invokeTrustAction() { thePartner in
             do {
                 try session.keyResetTrust(thePartner)

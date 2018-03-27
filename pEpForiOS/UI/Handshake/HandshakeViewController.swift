@@ -156,7 +156,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                                   indexPath: IndexPath,
                                   viewModel: HandshakePartnerTableViewCellViewModel?) {
         invokeTrustAction(cell: cell, indexPath: indexPath) {
-            viewModel?.resetTrustOrUndoMistrust()
+            viewModel?.resetOrUndoTrustOrMistrust()
         }
     }
 
