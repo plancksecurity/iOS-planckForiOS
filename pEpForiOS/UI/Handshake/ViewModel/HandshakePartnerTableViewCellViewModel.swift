@@ -24,11 +24,8 @@ class HandshakePartnerTableViewCellViewModel {
 
     /** Do we show the trustwords for this identity? */
     var showTrustwords: Bool {
-        switch partnerRating {
-        case PEP_rating_have_no_key,
-             PEP_rating_reliable,
-             PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized:
+        switch partnerColor {
+        case PEP_color_green, PEP_color_red:
             return true
         default:
             return false
@@ -37,10 +34,8 @@ class HandshakePartnerTableViewCellViewModel {
 
     /** Show the button for start/stop trusting? */
     var showStopStartTrustButton: Bool {
-        switch partnerRating {
-        case PEP_rating_have_no_key,
-             PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized:
+        switch partnerColor {
+        case PEP_color_green, PEP_color_red:
             return true
         default:
             return false
@@ -194,20 +189,23 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     /**
-     Used for undoing a trust.
+     Used for undoing a trust or mistrust.
+
+     - Note: Since undoLastMistrust is currently not
+     implemented with all consequences, it is not used, so the current status is:
+     Can only reset trust.
      */
     public func resetTrustOrUndoMistrust() {
         invokeTrustAction() { thePartner in
             do {
-                switch partnerRating {
-                case PEP_rating_trusted, PEP_rating_trusted_and_anonymized:
+                switch partnerColor {
+                case PEP_color_green, PEP_color_red:
                     try session.keyResetTrust(thePartner)
-                case PEP_rating_have_no_key:
-                    session.undoLastMistrust()
                 default:
                     assertionFailure("Can't decide whether to reset/undo trust or mistrust")
                 }
             } catch let error as NSError {
+                // ignore ENGINE-409
                 if error.code != PEP_OUT_OF_MEMORY.rawValue {
                     assertionFailure("\(error)")
                 }
