@@ -110,7 +110,7 @@ extension Message {
         }
 
         let partnerIdenties = potentialIdentities.filter() {
-            $0.canHandshakeOn(session: session)
+            $0.canInvokeHandshakeAction(session: session)
         }
 
         var handshakable = [HandshakeCombination]()
