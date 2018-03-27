@@ -26,24 +26,15 @@ import MessageModel
         return instance
     }()
 
+    let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
+
     private func saveLog(entity: String, description: String, comment: String) {
         #if DEBUG_LOGGING
-            // If running in the debugger, dump to the console right away
-            print("\(entity): \(description)")
-        #endif
-        if !MiscUtil.isUnitTest() {
-            loggingQueue.addOperation() {
-                if self.logEnabled && !self.paused {
-                    do {
-                        try self.session.logTitle(
-                            self.title, entity: entity, description: description, comment: comment)
-                    } catch {
-                        // Ignore. In debug mode we have already logged,
-                        // otherwise there's no point of logging "cannot log".
-                    }
-                }
+            if allowedEntities.contains(entity) {
+                // If running in the debugger, dump to the console right away
+                print("\(entity): \(description)")
             }
-        }
+        #endif
     }
 
     func resume() {
