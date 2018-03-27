@@ -55,26 +55,25 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         UIHelper.emailListTableHeight(self.tableView)
         self.textFilterButton.isEnabled = false
         addSearchBar()
+
+        //some notifications to control when the app enter and recover from backgroud
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeInactive), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
     }
 
+    //observer clean
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
     }
 
     @objc func didBecomeActive() {
-
         if tableView.tableHeaderView == nil {
             tableView.tableHeaderView = searchController.searchBar
-            //tableView.setContentOffset(CGPoint(x: 0.0, y: searchController.searchBar.frame.size.height), animated: false)
-
         }
     }
 
     @objc func didBecomeInactive() {
-
         tableView.tableHeaderView = nil
     }
     
