@@ -158,6 +158,7 @@
                                     <outlet property="privacyStatusDescription" destination="eaF-0u-kGb" id="VWh-tP-wgG"/>
                                     <outlet property="privacyStatusTitle" destination="5RJ-Gx-qBT" id="0qJ-kY-o93"/>
                                     <outlet property="startStopTrustingButton" destination="Y4f-BW-EI0" id="MXW-Ms-cMz"/>
+                                    <outlet property="trustMistrustButtonsStackView" destination="O51-e1-VQJ" id="BVf-gU-GaJ"/>
                                     <outlet property="trustWordsLabel" destination="lHS-sc-yWR" id="9rC-fg-eDL"/>
                                     <outlet property="wrongButton" destination="dbO-2K-SpB" id="Noy-9E-GaM"/>
                                 </connections>

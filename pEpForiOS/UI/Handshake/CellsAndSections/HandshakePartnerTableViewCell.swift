@@ -49,7 +49,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var trustWordsView: UIView!
     @IBOutlet weak var languageSelectorImageView: UIImageView!
-    @IBOutlet weak var outerStackView: UIStackView!
+    @IBOutlet weak var trustMistrustButtonsStackView: UIStackView!
 
     var sizeHelper = false
 
@@ -186,6 +186,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
 
     func updateTrustwordsExpansionVisibility() {
         trustWordsLabel.isHidden = showStopStartTrustButton
+        trustMistrustButtonsStackView.isHidden = showStopStartTrustButton
     }
 
     func updateStopTrustingButtonTitle() {
