@@ -186,10 +186,13 @@ open class ImapSync: Service {
      Opens the given mailbox (by name). If already open, do nothing.
      - Returns: true if the mailbox had to opened, false if it already was open.
      */
-    @discardableResult open func openMailBox(name: String) -> Bool {
+    @discardableResult open func openMailBox(name: String,
+                                             updateExistsCount: Bool = false) -> Bool {
         if let currentFolderName = imapState.currentFolderName,
             currentFolderName.isSameAs(otherFolderName: name) {
-            imapState.currentFolder = imapStore.folder(forName: name) as? CWIMAPFolder
+            imapState.currentFolder =
+                imapStore.folder(forName: name,
+                                 updateExistsCount: updateExistsCount) as? CWIMAPFolder
             return false
         } else {
             imapState.currentFolderName = nil
@@ -197,7 +200,8 @@ open class ImapSync: Service {
             // Note: If you open a folder with PantomimeReadOnlyMode,
             // all messages will be fetched by default,
             // independent of the fetch parameter.
-            let fol = imapStore.folder(forName: name, mode: PantomimeReadWriteMode)
+            let fol = imapStore.folder(forName: name,
+                                       updateExistsCount: updateExistsCount) as? CWIMAPFolder
             imapState.currentFolder = fol
             if let folder = fol {
                 Log.info(component: comp, content: "openMailBox have to open \(folder.name())")
@@ -207,12 +211,14 @@ open class ImapSync: Service {
         }
     }
 
-    func openFolder() throws -> CWIMAPFolder {
+    private func openFolder(updateExistsCount: Bool) throws -> CWIMAPFolder {
         guard let folderName = imapState.currentFolderName else {
             throw BackgroundError.GeneralError.illegalState(info: #function)
         }
-        guard let folder = imapStore.folder(forName: imapState.currentFolderName) else {
-            throw BackgroundError.GeneralError.illegalState(info: "\(comp)- no folder: \(folderName)")
+        guard let folder = imapStore.folder(forName: imapState.currentFolderName,
+                                            updateExistsCount: updateExistsCount) else {
+            throw BackgroundError
+                .GeneralError.illegalState(info: "\(comp)- no folder: \(folderName)")
         }
         return folder as! CWIMAPFolder
     }
@@ -225,22 +231,22 @@ open class ImapSync: Service {
     // MARK: - FETCH
 
     open func fetchMessages() throws {
-        let folder = try openFolder()
+        let folder = try openFolder(updateExistsCount: true)
         folder.fetch()
     }
 
     open func fetchOlderMessages() throws {
-        let folder = try openFolder()
+        let folder = try openFolder(updateExistsCount: true)
         folder.fetchOlder()
     }
 
     open func fetchUidsForNewMessages() throws {
-        let folder = try openFolder()
+        let folder = try openFolder(updateExistsCount: false)
         folder.fetchUidsForNewMails()
     }
 
     open func syncMessages(firstUID: UInt, lastUID: UInt) throws {
-        let folder = try openFolder()
+        let folder = try openFolder(updateExistsCount: false)
         folder.syncExistingFirstUID(firstUID, lastUID: lastUID)
     }
 

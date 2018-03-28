@@ -20,11 +20,10 @@ struct ImapConnectionDataCache {
     }
 
     mutating func imapConnectionData(for connectInfo: EmailConnectInfo) -> ImapSyncData {
-        /* avoid IOS-986
         if let cachedData = imapConnectionDataCache[connectInfo] {
             return cachedData
         }
-         */
+
         let newData = ImapSyncData(connectInfo: connectInfo)
         imapConnectionDataCache[connectInfo] = newData
         return newData
