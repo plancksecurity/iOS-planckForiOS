@@ -10,6 +10,13 @@ import MessageModel
 
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
+    enum Severity {
+        case verbose
+        case info
+        case warning
+        case error
+    }
+
     private let title = "pEpForiOS"
     private var logEnabled = true
     private var paused = false
@@ -27,10 +34,19 @@ import MessageModel
     }()
 
     let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
+    let allowedSeverities = Set<Severity>([.error, .info])
 
-    private func saveLog(entity: String, description: String, comment: String) {
+    /**
+     Prints or saves a log entry.
+     - Note: For a log to be printed, the entity must be contained in `allowedEntities`,
+     or the severity must be noted in `allowedSeverities`.
+     */
+    private func saveLog(severity: Severity,
+                         entity: String,
+                         description: String,
+                         comment: String) {
         #if DEBUG_LOGGING
-            if allowedEntities.contains(entity) {
+            if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
                 // If running in the debugger, dump to the console right away
                 print("\(entity): \(description)")
             }
@@ -76,32 +92,37 @@ import MessageModel
     }
 
     static open func verbose(component: String, content: String) {
-        Log.shared.saveLog(entity: component, description: content, comment: "verbose")
+        Log.shared.saveLog(severity:.verbose,
+                           entity: component, description: content, comment: "verbose")
     }
 
     /** Somewhat verbose */
     static open func info(component: String, content: String) {
-        Log.shared.saveLog(entity: component, description: content, comment: "info")
+        Log.shared.saveLog(severity:.info,
+                           entity: component, description: content, comment: "info")
     }
 
     /** More important */
     static open func warn(component: String, content: String) {
-        Log.shared.saveLog(entity: component, description: content, comment: "warn")
+        Log.shared.saveLog(severity:.warning,
+                           entity: component, description: content, comment: "warn")
     }
 
     static open func error(component: String, error: Error?) {
         if let err = error {
-            Log.shared.saveLog(entity: component, description: " \(err)", comment: "error")
+            Log.shared.saveLog(severity:.error,
+                               entity: component, description: " \(err)", comment: "error")
         }
     }
 
     static open func error(component: String, errorString: String, error: Error) {
-        Log.shared.saveLog(
+        Log.shared.saveLog(severity:.error,
             entity: component, description: "\(errorString) \(error)", comment: "error")
     }
 
     static open func error(component: String, errorString: String) {
-        Log.shared.saveLog(entity: component, description: errorString, comment: "error")
+        Log.shared.saveLog(severity:.error,
+                           entity: component, description: errorString, comment: "error")
     }
 
     static func log(comp: String, mySelf: AnyObject, functionName: String) {
