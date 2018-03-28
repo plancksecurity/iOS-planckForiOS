@@ -32,10 +32,6 @@ class EmailViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let m = message else{
-            Log.shared.errorAndCrash(component: #function, errorString: "no message to show")
-            return
-        }
 
         loadDatasource("MessageData")
 
@@ -44,7 +40,7 @@ class EmailViewController: BaseTableViewController {
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
 
-        self.title = m.shortMessage
+        setTitleView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -90,10 +86,24 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
+    private func setTitleView() {
+
+        guard let m = message else{
+            Log.shared.errorAndCrash(component: #function, errorString: "no message to show")
+            return
+        }
+
+        self.title = m.shortMessage
+
+        saveTitleView()
+    }
+
     // MARK: - SETUP
 
     private func configureView() {
         setupDestructiveButtonIcon()
+
+        setTitleView()
 
         tableData?.filterRows(message: message)
 
