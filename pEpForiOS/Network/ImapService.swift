@@ -112,7 +112,6 @@ open class ImapSync: Service {
     let nonExistantMailboxName = MessageID.generate()
 
     weak open var delegate: ImapSyncDelegate?
-    //476-SOI
 
     open var maxFetchCount: UInt = 20
 
@@ -170,10 +169,13 @@ open class ImapSync: Service {
         super.close()
     }
 
-    /**
-     Opens the given mailbox (by name). If already open, do nothing.
-     - Returns: true if the mailbox had to opened, false if it already was open.
-     */
+    /// Opens the given mailbox (by name).  If already open and exists count does not matter,
+    /// do nothing.
+    ///
+    /// - Parameters:
+    ///   - name: name of mailbox to open
+    ///   - updateExistsCount: if true, exists count of the mailbox is updated
+    /// - Returns: true if the mailbox had to be opened, false if it already was open.
     @discardableResult open func openMailBox(name: String,
                                              updateExistsCount: Bool = false) -> Bool {
         if let currentFolderName = imapState.currentFolderName,
