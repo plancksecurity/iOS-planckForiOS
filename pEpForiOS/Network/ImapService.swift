@@ -228,7 +228,7 @@ open class ImapSync: Service {
         imapStore.startTLS()
     }
 
-    // MARK: - FETCH
+    // MARK: - FETCH & SYNC
 
     open func fetchMessages() throws {
         let folder = try openFolder(updateExistsCount: true)
@@ -250,6 +250,8 @@ open class ImapSync: Service {
         folder.syncExistingFirstUID(firstUID, lastUID: lastUID)
     }
 
+    // MARK: - FOLDERS
+
     open func createFolderWithName(_ folderName: String) {
         // The only relevant parameter here is folderName, all others are
         // ignored by pantomime.
@@ -260,6 +262,8 @@ open class ImapSync: Service {
     open func deleteFolderWithName(_ folderName: String) {
         imapStore.deleteFolder(withName: folderName)
     }
+
+    // MARK: - IDLE
 
     /**
      Sends the IDLE command to the server, and enters thas state.
@@ -276,7 +280,9 @@ open class ImapSync: Service {
         imapStore.exitIDLE()
     }
 
-    func runOnDelegate(logName: String = #function, block: (ImapSyncDelegate) -> ()) {
+    // MARK: - HELPER
+
+    private func runOnDelegate(logName: String = #function, block: (ImapSyncDelegate) -> ()) {
         if let del = delegate {
             block(del)
         } else {
