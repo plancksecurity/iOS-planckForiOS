@@ -149,18 +149,6 @@ open class ImapSync: Service {
         }
     }
 
-    func isAlreadySelected(folderName: String) -> Bool {
-        if let currentFolderName = imapState.currentFolder?.name() {
-            if currentFolderName.isInboxFolderName() && folderName.isInboxFolderName() {
-                return true
-            }
-            if currentFolderName == folderName {
-                return true
-            }
-        }
-        return false
-    }
-
     override func createService() -> CWService {
         return CWIMAPStore(name: connectInfo.networkAddress,
                            port: UInt32(connectInfo.networkPort),
