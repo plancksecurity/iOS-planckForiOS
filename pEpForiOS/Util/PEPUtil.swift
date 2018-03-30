@@ -533,10 +533,12 @@ open class PEPUtil {
     }
 
     open static func fingerPrint(cdIdentity: CdIdentity,
-                                 session: PEPSession = PEPSession()) -> String? {
-        let pEpID = pEpDict(cdIdentity: cdIdentity)
-        try? session.update(pEpID)
-        return pEpID.fingerPrint
+                                 session: PEPSession = PEPSession()) throws -> String? {
+        if let theID = cdIdentity.identity() {
+            return try fingerPrint(identity: theID, session: session)
+        } else {
+            return nil
+        }
     }
 
     /**
