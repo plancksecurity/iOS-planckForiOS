@@ -37,6 +37,18 @@ class HandshakeViewController: BaseTableViewController {
         identityViewModelCache.removeAllObjects()
     }
 
+    // MARK: - Layout
+
+    override func viewDidLayoutSubviews() {
+        let cells = tableView.visibleCells
+        for cell in cells {
+            if let c = cell as? HandshakePartnerTableViewCell {
+                let width = c.trustWordsLabel.frame.size.width
+                c.trustWordsLabel.preferredMaxLayoutWidth = width
+            }
+        }
+    }
+
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
