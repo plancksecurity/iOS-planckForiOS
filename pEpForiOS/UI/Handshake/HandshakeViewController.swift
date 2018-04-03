@@ -26,6 +26,8 @@ class HandshakeViewController: BaseTableViewController {
     var indexPathRequestingLanguage: IndexPath?
     var onlyonce = true
 
+    // MARK: - Live cycle
+
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableViewAutomaticDimension
