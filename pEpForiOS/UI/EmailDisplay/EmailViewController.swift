@@ -77,6 +77,7 @@ class EmailViewController: BaseTableViewController {
 
     private func showPepRating() {
         let session = PEPSession()
+        let _ = showPepRating(pEpRating: message?.pEpRating(session: session))
         let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
         handShakeButton.isEnabled = !handshakeCombos.isEmpty
     }
