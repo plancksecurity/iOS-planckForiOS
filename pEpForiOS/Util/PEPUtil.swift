@@ -520,6 +520,10 @@ open class PEPUtil {
         return PEP_rating(Int32(theInt))
     }
 
+    /**
+     Uses the adapter's update to determine the fingerprint of the given identity.
+     - Note: Also works for own identities without triggering key generation.
+     */
     open static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) throws
         -> String? {
             let pEpID = pEp(identity: identity)
