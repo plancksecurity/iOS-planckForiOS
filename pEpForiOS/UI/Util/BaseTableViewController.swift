@@ -11,8 +11,6 @@ import UIKit
 class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
 
-    var originalTitleView: String?
-
     var appConfig: AppConfig {
         get {
             guard let safeConfig = _appConfig else {

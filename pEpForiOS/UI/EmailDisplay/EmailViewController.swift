@@ -45,7 +45,6 @@ class EmailViewController: BaseTableViewController {
         tableView.layoutIfNeeded()
 
         self.title = m.shortMessage
-        saveTitleView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -97,8 +96,6 @@ class EmailViewController: BaseTableViewController {
         setupDestructiveButtonIcon()
 
         tableData?.filterRows(message: message)
-
-        recoveryInitialTitle()
 
         if messageId <= 0 {
             self.previousMessage.isEnabled = false
@@ -280,20 +277,6 @@ class EmailViewController: BaseTableViewController {
 
     private func decryptAgain() {
         ratingReEvaluator?.reevaluateRating()
-    }
-}
-
-// MARK: - Title View Extension
-
-extension EmailViewController {
-    func saveTitleView() {
-        self.originalTitleView = self.title
-    }
-
-    func recoveryInitialTitle() {
-        self.navigationItem.titleView = nil
-        self.navigationItem.title = self.originalTitleView
-        self.title = self.originalTitleView
     }
 }
 
