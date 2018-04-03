@@ -40,12 +40,21 @@ class HandshakeViewController: BaseTableViewController {
     // MARK: - Layout
 
     override func viewDidLayoutSubviews() {
+        var changedPreferredMaxLayoutWidth = false
+
         let cells = tableView.visibleCells
         for cell in cells {
             if let c = cell as? HandshakePartnerTableViewCell {
                 let width = c.trustWordsLabel.frame.size.width
-                c.trustWordsLabel.preferredMaxLayoutWidth = width
+                if width != c.trustWordsLabel.preferredMaxLayoutWidth {
+                    c.trustWordsLabel.preferredMaxLayoutWidth = width
+                    changedPreferredMaxLayoutWidth = true
+                }
             }
+        }
+
+        if changedPreferredMaxLayoutWidth {
+            tableView.updateSize()
         }
     }
 
