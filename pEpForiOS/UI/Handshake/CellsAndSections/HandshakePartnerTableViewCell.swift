@@ -97,10 +97,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         return viewModel?.trustwordsFull ?? false
     }
 
-    let boundsWidthKeyPath = "bounds"
-
-    var buttonsFitWidth = [(Tuple<UIButton, CGFloat>): Bool]()
-
     override func awakeFromNib() {
         updateConfirmDistrustButtonsTitle()
         trustWordsLabel.preferredMaxLayoutWidth = self.bounds.width
@@ -108,9 +104,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
                                                textColor: .black)
         confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
-
-        //layoutIfNeeded()
-        //setNeedsLayout()
     }
 
     func updateView() {
