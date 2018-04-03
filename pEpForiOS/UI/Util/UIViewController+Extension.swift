@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 extension UIViewController {
-
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
         setEmailDisplayDefaultNavigationBarStyle()
         // icon
