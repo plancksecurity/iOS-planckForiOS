@@ -31,10 +31,6 @@ class HandshakeViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
     }
 
-    func back(sender: UIBarButtonItem) {
-        self.navigationController?.popViewController(animated: true)
-    }
-
     override func didReceiveMemoryWarning() {
         identityViewModelCache.removeAllObjects()
     }
