@@ -103,9 +103,10 @@ class EmailViewController: BaseTableViewController {
             self.previousMessage.isEnabled = true
         }
 
+        self.showPepRating()
+
         DispatchQueue.main.async {
             self.checkMessageReEvaluation()
-            self.showPepRating()
 
             self.message?.markAsSeen()
 
