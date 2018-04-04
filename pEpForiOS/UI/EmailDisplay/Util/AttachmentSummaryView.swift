@@ -8,9 +8,15 @@
 
 import Foundation
 
-import MessageModel
-
 class AttachmentSummaryView: UIView {
+    /**
+     Gives information about the attachment, without introducing a dependency.
+     */
+    struct AttachmentInfo {
+        let filename: String
+        let theExtension: String?
+    }
+
     /**
      The gap between labels.
      */
@@ -26,7 +32,7 @@ class AttachmentSummaryView: UIView {
      */
     let marginHorizontal: CGFloat = 8
 
-    let attachment: Attachment
+    let attachmentInfo: AttachmentInfo
     let iconImage: UIImage?
 
     /**
@@ -43,8 +49,8 @@ class AttachmentSummaryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(attachment: Attachment, iconImage: UIImage?) {
-        self.attachment = attachment
+    init(attachmentInfo: AttachmentInfo, iconImage: UIImage?) {
+        self.attachmentInfo = attachmentInfo
         self.iconImage = iconImage
         super.init(frame: CGRect.zero)
 
@@ -113,14 +119,11 @@ class AttachmentSummaryView: UIView {
     }
 
     func createLabels() -> (UILabel, UILabel?) {
-        let (name, ext) =
-            attachment.fileName?.splitFileExtension() ?? (Constants.defaultFileName, nil)
-
         let nameLabel = createLabel()
         nameLabel.numberOfLines = 0
-        nameLabel.text = name
+        nameLabel.text = attachmentInfo.filename
 
-        if let theExt = ext {
+        if let theExt = attachmentInfo.theExtension {
             let extLabel = createLabel()
             extLabel.numberOfLines = 1
             extLabel.text = theExt.uppercased()

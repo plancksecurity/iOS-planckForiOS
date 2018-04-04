@@ -41,6 +41,14 @@ class AttachmentsViewHelper {
         self.init(delegate: nil)
     }
 
+    func attachmentInfo(attachment: Attachment) -> AttachmentSummaryView.AttachmentInfo {
+        let (name, ext) =
+            attachment.fileName?.splitFileExtension() ??
+                (Constants.defaultFileName, nil)
+        return AttachmentSummaryView.AttachmentInfo(
+            filename: name.extractFileNameOrCid(), theExtension: ext)
+    }
+
     func opFinished(theBuildOp: AttachmentsViewOperation) {
         if let imageView = attachmentsImageView {
             let viewContainers = theBuildOp.attachmentContainers.map {
@@ -52,8 +60,12 @@ class AttachmentsViewHelper {
                 case .docAttachment(let attachment):
                     let dic = UIDocumentInteractionController()
                     dic.name = attachment.fileName
-                    let theView = AttachmentSummaryView(attachment: attachment,
-                                                        iconImage: dic.icons.first)
+
+                    let theAttachmentInfo = attachmentInfo(attachment: attachment)
+
+                    let theView = AttachmentSummaryView(
+                        attachmentInfo: theAttachmentInfo,
+                        iconImage: dic.icons.first)
                     return AttachmentViewContainer(view: theView, attachment: attachment)
                 }
             }
