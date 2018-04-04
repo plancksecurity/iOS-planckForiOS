@@ -139,6 +139,12 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - EMAIL-BODY HANDLING - SECURE HTML
 
+    /**
+     Indicate that the htmlViewerViewController already exists, to avoid
+     instantiation just to check if it has been instantiated.
+     */
+    var htmlViewerViewControllerExists = false
+
     lazy fileprivate var htmlViewerViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
@@ -150,6 +156,9 @@ class EmailViewController: BaseTableViewController {
         }
         vc.scrollingEnabled = false
         vc.delegate = self
+
+        htmlViewerViewControllerExists = true
+
         return vc
     }()
 
@@ -167,6 +176,13 @@ class EmailViewController: BaseTableViewController {
             htmlViewerViewController.display(htmlString: htmlBody)
         } else {
             // We are not allowed to use a webview (iOS<11) or do not have HTML content.
+
+            // Remove the HTML view if we just stepped from an HTML mail to one without
+            if htmlViewerViewControllerExists &&
+                htmlViewerViewController.view.superview == contentCell.contentView {
+                htmlViewerViewController.view.removeFromSuperview()
+            }
+
             contentCell.updateCell(model: rowData, message: m)
         }
     }
