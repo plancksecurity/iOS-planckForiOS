@@ -178,7 +178,6 @@ class EmailViewController: BaseTableViewController {
         if let m = folderShow?.messageAt(index: messageId) {
             message = m
         }
-        //message =
         self.tableView.reloadData()
         configureView()
 
