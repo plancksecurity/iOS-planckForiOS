@@ -31,8 +31,6 @@ class AttachmentsView: UIView {
      */
     var margin: CGFloat = 10
 
-    var lastConstraints = [NSLayoutConstraint]()
-
     var gestureRecognizersToAttachments = [UITapGestureRecognizer:AttachmentViewContainer]()
 
     func setupConstraints() {
@@ -41,9 +39,6 @@ class AttachmentsView: UIView {
         for sub in subs {
             sub.removeFromSuperview()
         }
-
-        // rm all previously set up constraints
-        NSLayoutConstraint.deactivate(lastConstraints)
 
         if attachmentViewContainers.count <= 0 {
             return
@@ -92,9 +87,6 @@ class AttachmentsView: UIView {
             }
             lastView = ac.view
         }
-        
-        // store so they can be removed later
-        lastConstraints = constraints
     }
 
     func setUpActions() {
