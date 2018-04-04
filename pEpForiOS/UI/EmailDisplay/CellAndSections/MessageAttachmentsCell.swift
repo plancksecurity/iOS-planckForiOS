@@ -26,14 +26,16 @@ class MessageAttachmentsCell: MessageCell {
     public override func updateCell(model: ComposeFieldModel, message: Message) {
         super.updateCell(model: model, message: message)
 
-        guard message.underAttack == false else {
+        if message.underAttack {
             return
         }
-        if let m = lastMessage, m == message {
+
+        if message == lastMessage {
             // Avoid processing the same message over and over again, unless
             // the attachment count changes, which is considered by `==`.
             return
         }
+
         attachmentsViewHelper.message = message
         lastMessage = message
 
