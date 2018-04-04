@@ -68,7 +68,14 @@ class PreviewMessage: Equatable {
         if let text = msg.longMessage {
             body = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
         } else if let html = msg.longMessageFormatted {
-            body = html.extractTextFromHTML()
+            // Limit the size of HTML to parse
+            // That might result in a messy preview but valid messages use to offer a plaintext
+            // version while certain spam mails have thousands of lines of invalid HTML, causing
+            // the parser to take minutes to parse one message.
+            let factorHtmlTags = 3
+            let numChars = maxBodyPreviewCharacters * factorHtmlTags
+            let truncatedHtml = html.prefix(ofLength: numChars)
+            body = truncatedHtml.extractTextFromHTML()
             body = body?.replaceNewLinesWith(" ").trimmedWhiteSpace()
         }
         guard let saveBody = body else {
