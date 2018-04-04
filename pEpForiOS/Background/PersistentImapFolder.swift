@@ -312,7 +312,7 @@ extension PersistentImapFolder: CWIMAPCache {
         // "finish" before all messages have been stored.
         opStore.waitUntilFinished()
 
-        Log.warn(component: functionName(#function),
+        Log.info(component: functionName(#function),
                  content: "Wrote message \(message) for \(opID)")
     }
 }
