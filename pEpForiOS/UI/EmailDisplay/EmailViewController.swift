@@ -94,8 +94,6 @@ class EmailViewController: BaseTableViewController {
         }
 
         self.title = m.shortMessage
-
-        saveTitleView()
     }
 
     // MARK: - SETUP
