@@ -170,14 +170,31 @@ class EmailViewController: BaseTableViewController {
         return vc
     }()
 
+    /**
+     Yields the HTML message body if:
+     * we can show it in a secure way
+     * we have non-empty HTML content at all
+     - Returns: The HTML message body or nil
+     */
+    fileprivate func htmlBody(message: Message?) ->  String? {
+        guard
+            SecureWebViewController.isSaveToUseWebView,
+            let m = message,
+            let htmlBody = m.longMessageFormatted,
+            !htmlBody.isEmpty else {
+                return nil
+        }
+
+        return htmlBody
+    }
+
     fileprivate func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
             Log.shared.errorAndCrash(component: #function, errorString: "No msg.")
             return
         }
-        if SecureWebViewController.isSaveToUseWebView,
-            let htmlBody = m.longMessageFormatted,
-            !htmlBody.isEmpty {
+
+        if let htmlBody = htmlBody(message: m) {
             // Its fine to use a webview (iOS>=11) and we do have HTML content.
             contentCell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
@@ -338,7 +355,7 @@ extension EmailViewController {
                 return tableView.estimatedRowHeight
         }
 
-        if SecureWebViewController.isSaveToUseWebView, row.type == .content {
+        if row.type == .content, htmlBody(message: message) != nil {
             return htmlViewerViewController.contentSize?.height ?? tableView.rowHeight
         } else {
             return tableView.rowHeight
