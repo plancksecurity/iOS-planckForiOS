@@ -98,9 +98,7 @@ class PreviewMessage: Equatable {
                                    folderName: parentFolderName,
                                    accountAddress: address)
             else {
-                Log.shared.errorAndCrash(
-                    component: #function,
-                    errorString: "A we must always have a corresponding message")
+                // The model has changed.
                 return nil
         }
         return msg

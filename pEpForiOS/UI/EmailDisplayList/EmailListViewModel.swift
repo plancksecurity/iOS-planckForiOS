@@ -170,19 +170,25 @@ class EmailListViewModel {
     }
     
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
-        guard let previewMessage = messages?.object(at: indexPath.row) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "InconsistencyviewModel vs. model")
+        guard
+            let msgs = messages,
+            indexPath.row < msgs.count,
+            let previewMessage = messages?.object(at: indexPath.row)
+            else {
+            // The model has been updated.
             return nil
         }
         return contactImageTool.cachedIdentityImage(forIdentity: previewMessage.from)
     }
     
     func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
-        guard let previewMessage = messages?.object(at: indexPath.row),
-            let message = previewMessage.message() else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "InconsistencyviewModel vs. model")
+        guard
+            let msgs = messages,
+            indexPath.row < msgs.count,
+            let previewMessage = messages?.object(at: indexPath.row),
+            let message = previewMessage.message()
+            else {
+                // The model has been updated.
                 return nil
         }
         let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
@@ -446,10 +452,12 @@ extension EmailListViewModel: MessageFolderDelegate {
             Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
             return
         }
-        pvMsgs.removeObject(at: indexExisting)
-        let indexPath = IndexPath(row: indexExisting, section: 0)
-        DispatchQueue.main.async {
-            self.delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+        DispatchQueue.main.async { [weak self] in
+            if let me = self {
+                pvMsgs.removeObject(at: indexExisting)
+                let indexPath = IndexPath(row: indexExisting, section: 0)
+                me.delegate?.emailListViewModel(viewModel: me, didRemoveDataAt: indexPath)
+            }
         }
     }
     
@@ -468,8 +476,8 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
 
         if indexOfPreviewMessage(forMessage: message) == nil {
-            // We do not have this updated message in our model yet. It might have been updated in a way,
-            // that fulfills the current filters now but did not before the update.
+            // We do not have this updated message in our model yet. It might have been updated in
+            // a way, that fulfills the current filters now but did not before the update.
             // Or it has just been decrypted.
             // Forward to didCreateInternal to figure out if we want to display it.
             self.didCreateInternal(messageFolder: messageFolder)
@@ -492,33 +500,33 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
         
         let indexToRemove = pvMsgs.index(of: existingMessage)
-        pvMsgs.removeObject(at: indexToRemove)
+        DispatchQueue.main.async { [weak self] in
+            if let me = self {
+                pvMsgs.removeObject(at: indexToRemove)
 
-        if let filter = folderToShow?.filter,
-            !filter.fulfilsFilter(message: message) {
-            // The message was included in the model, but does not fulfil the filter criteria
-            // anymore after it has been updated.
-            // Remove it.
-            let indexPath = IndexPath(row: indexToRemove, section: 0)
-            DispatchQueue.main.async {
-                self.delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
-            }
-            return
-        }
-        // The updated message has to be shown. Add it to the model ...
-        let indexInserted = pvMsgs.insert(object: previewMessage)
-        if indexToRemove != indexInserted  {Log.shared.warn(component: #function,
-                                                            content:
-            """
+                if let filter = me.folderToShow?.filter,
+                    !filter.fulfilsFilter(message: message) {
+                    // The message was included in the model, but does not fulfil the filter criteria
+                    // anymore after it has been updated.
+                    // Remove it.
+                    let indexPath = IndexPath(row: indexToRemove, section: 0)
+                    me.delegate?.emailListViewModel(viewModel: me, didRemoveDataAt: indexPath)
+                    return
+                }
+                // The updated message has to be shown. Add it to the model ...
+                let indexInserted = pvMsgs.insert(object: previewMessage)
+                if indexToRemove != indexInserted  {Log.shared.warn(component: #function,
+                                                                    content:
+                    """
 When updating a message, the the new index of the message must be the same as the old index.
 Something is fishy here.
 """
-            )
-        }
-        // ...  and inform the delegate.
-        let indexPath = IndexPath(row: indexInserted, section: 0)
-        DispatchQueue.main.async {
-            self.delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+                    )
+                }
+                // ...  and inform the delegate.
+                let indexPath = IndexPath(row: indexInserted, section: 0)
+                me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+            }
         }
     }
 

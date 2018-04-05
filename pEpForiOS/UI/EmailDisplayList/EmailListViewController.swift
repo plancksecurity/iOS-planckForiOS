@@ -234,12 +234,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                     // View is gone, nothing to do.
                     return
                 }
-                
-                var senderImage: UIImage?
+
                 if row.senderContactImage == nil {
                     // image for identity has not been cached yet
                     // Get (and cache) it here in the background ...
-                    senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
+                    let senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
                     
                     // ... and set it on the main queue
                     DispatchQueue.main.async {
@@ -249,14 +248,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                     }
                 }
                 
-                let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath)
+                guard let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath) else {
+                    return
+                }
                 
                 // In theory we want to set all data in *one* async call. But as pEpRatingColorImage takes
-                // very long, we are setting the sender image seperatelly.
+                // very long, we are setting the sender image seperatelly. //IOS-999: after Engine rewrite and not logging to Engine anymore computing the peprating is way more performant. Try if moving this up in image setting block.
                 DispatchQueue.main.async {
-                    if pEpRatingImage != nil {
-                        cell.setPepRatingImage(image: pEpRatingImage)
-                    }
+                    cell.setPepRatingImage(image: pEpRatingImage)
                 }
             }
         }
