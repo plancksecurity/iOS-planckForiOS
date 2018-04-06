@@ -576,13 +576,16 @@ open class PEPUtil {
     open static func encrypt(
         pEpMessageDict: PEPMessageDict, encryptionFormat: PEP_enc_format = PEP_enc_PEP,
         forIdentity: PEPIdentity? = nil,
+        extraKeys: [String]? = nil,
         session: PEPSession = PEPSession()) throws -> (PEP_STATUS, NSDictionary?) {
 
         var status = PEP_UNKNOWN_ERROR
         if let ident = forIdentity {
-            let encryptedMessage = try session.encryptMessageDict(pEpMessageDict,
-                                                                  identity: ident,
-                                                                  status: &status)  as NSDictionary
+            let encryptedMessage = try session.encryptMessageDict(
+                pEpMessageDict,
+                identity: ident,
+                extraKeys: extraKeys,
+                status: &status)  as NSDictionary
             return (status, encryptedMessage)
         } else {
             let encMessage = try session.encryptMessageDict(pEpMessageDict,
@@ -594,14 +597,18 @@ open class PEPUtil {
     }
 
     open static func encrypt(
-        pEpMessage: PEPMessage, forIdentity: PEPIdentity? = nil,
+        pEpMessage: PEPMessage,
+        forIdentity: PEPIdentity? = nil,
+        extraKeys: [String]? = nil,
         session: PEPSession = PEPSession()) throws -> (PEP_STATUS, PEPMessage?) {
 
         var status = PEP_UNKNOWN_ERROR
         if let ident = forIdentity {
-            let encryptedMessage = try session.encryptMessage(pEpMessage,
-                                                              identity: ident,
-                                                              status: &status)
+            let encryptedMessage = try session.encryptMessage(
+                pEpMessage,
+                identity: ident,
+                extraKeys: extraKeys,
+                status: &status)
             return (status, encryptedMessage)
         } else {
             let encMessage = try session.encryptMessage(pEpMessage,
