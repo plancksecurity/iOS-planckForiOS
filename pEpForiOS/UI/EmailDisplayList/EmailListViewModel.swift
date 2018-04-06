@@ -261,7 +261,7 @@ class EmailListViewModel {
         }
     }
 
-    static let defaultFilterViewFilter = CompositeFilter<FilterBase>.DefaultFilter()
+    static let defaultFilterViewFilter = CompositeFilter<FilterBase>.defaultFilter()
     private var _filterViewFilter: CompositeFilter = defaultFilterViewFilter
     private var filterViewFilter: CompositeFilter<FilterBase> {
         get {
@@ -279,7 +279,7 @@ class EmailListViewModel {
         if isFilterEnabled {
             let folderFilter = assuredFilterOfFolderToShow()
             folderFilter.without(filters: filterViewFilter)
-            folderFilter.With(filters: filter)
+            folderFilter.with(filters: filter)
             resetViewModel()
         }
         filterViewFilter = filter
@@ -288,7 +288,7 @@ class EmailListViewModel {
     private func handleFilterEnabledSwitch() {
         let folderFilter = assuredFilterOfFolderToShow()
         if isFilterEnabled {
-            folderFilter.With(filters: filterViewFilter)
+            folderFilter.with(filters: filterViewFilter)
         } else {
             folderFilter.without(filters: filterViewFilter)
         }
@@ -319,7 +319,7 @@ class EmailListViewModel {
     private func assuredFilterOfFolderToShow() -> CompositeFilter<FilterBase> {
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
-            return CompositeFilter<FilterBase>.DefaultFilter()
+            return CompositeFilter<FilterBase>.defaultFilter()
         }
         if folder.filter == nil{
             folder.resetFilter()
@@ -328,7 +328,7 @@ class EmailListViewModel {
         guard let folderFilter = folder.filter else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We just set the filter but do not have one?")
-            return CompositeFilter<FilterBase>.DefaultFilter()
+            return CompositeFilter<FilterBase>.defaultFilter()
         }
         return folderFilter
     }
@@ -415,7 +415,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
         // Is a Message (not a Folder)
         if let filter = folderToShow?.filter,
-            !filter.fulfilsFilter(message: message) {
+            !filter.fulfillsFilter(message: message) {
             // The message does not fit in current filter criteria. Ignore- and do not show it.
             return
         }
@@ -505,7 +505,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                 pvMsgs.removeObject(at: indexToRemove)
 
                 if let filter = me.folderToShow?.filter,
-                    !filter.fulfilsFilter(message: message) {
+                    !filter.fulfillsFilter(message: message) {
                     // The message was included in the model, but does not fulfil the filter criteria
                     // anymore after it has been updated.
                     // Remove it.

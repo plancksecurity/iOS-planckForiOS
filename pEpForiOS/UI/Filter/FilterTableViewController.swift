@@ -30,7 +30,7 @@ class FilterTableViewController: BaseTableViewController {
             filters.add(filter: UnifiedFilter())
         }
         for section in sections {
-            filters.With(filters: section.getFilters())
+            filters.with(filters: section.getFilters())
             filters.without(filters: section.getInvalidFilters())
             Log.shared.info(component: #function, content: "valid filters")
             Log.shared.info(component: #function, content: "\(section.getFilters().predicates)")
