@@ -77,7 +77,8 @@ extension RecipientCell {
         }
     }
     
-    public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
+                                  replacementText text: String) -> Bool {
         if (text == .returnKey) {
             let result = generateContact(textView)
             return result
@@ -141,8 +142,6 @@ extension RecipientCell {
     }
 
     public override func textViewDidEndEditing(_ textView: UITextView) {
-
         let _ = generateContact(textView)
-
     }
 }
