@@ -831,9 +831,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
         action.title = NSLocalizedString("Remove", comment:
-            """
-ComposeTableView: Label of swipe left. Removing of attachment.
-"""
+            "ComposeTableView: Label of swipe left. Removing of attachment."
         )
         action.backgroundColor = descriptor.color
     }
