@@ -30,7 +30,7 @@ class Appearance {
         UISearchBar.appearance().tintColor = .black
     }
     
-    static func pep(_ color: UIColor = .pEpGreen) {
+    static func pEp(_ color: UIColor = .pEpGreen) {
         UINavigationBar.appearance().backgroundColor = color
         UINavigationBar.appearance().barTintColor = color
         UINavigationBar.appearance().tintColor = .white
@@ -48,5 +48,25 @@ class Appearance {
         UISearchBar.appearance().barTintColor = color
         UISearchBar.appearance().backgroundColor = color
         UISearchBar.appearance().tintColor = .white
+    }
+
+    static func pEpPale(_ color: UIColor = .pEpGreen) {
+        UINavigationBar.appearance().backgroundColor = .white
+        UINavigationBar.appearance().barTintColor = .white
+        UINavigationBar.appearance().tintColor = color
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().titleTextAttributes =
+            [NSAttributedStringKey.foregroundColor: UIColor.white]
+
+        UIToolbar.appearance().backgroundColor = .white
+        UIToolbar.appearance().barTintColor = .white
+        UIToolbar.appearance().tintColor = color
+
+        UITextView.appearance().tintColor = color
+        UITextField.appearance().tintColor = color
+
+        UISearchBar.appearance().barTintColor = .white
+        UISearchBar.appearance().backgroundColor = .white
+        UISearchBar.appearance().tintColor = color
     }
 }
