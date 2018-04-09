@@ -80,6 +80,11 @@ class ComposeTableViewController: BaseTableViewController {
      */
     var composeTextViewFirstResponder: ComposeTextView?
 
+    /**
+     Caching the last row heights, in case the cell goes out of visiblity.
+     */
+    var rowHeightCache = [IndexPath:CGFloat]()
+
     // MARK: - Lifecycle
 
     deinit {
@@ -95,12 +100,15 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         haveChosenFirstResponder = false
         composeData?.filterRows(message: nil)
         setEmailDisplayDefaultNavigationBarStyle()
         takeOverAttachmentsIfRequired()
         setInitialSendButtonStatus()
         addKeyboardObservers()
+
+        rowHeightCache.removeAll()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -658,7 +666,9 @@ class ComposeTableViewController: BaseTableViewController {
             return UITableViewAutomaticDimension
         }
         guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else {
-            return row.height
+            // The cell might have gone out of visiblity, in which case the table will
+            // not return it. Try to use a cached value then.
+            return rowHeightCache[indexPath] ?? row.height
         }
 
         let height = cell.textView.fieldHeight
@@ -686,6 +696,9 @@ class ComposeTableViewController: BaseTableViewController {
         if height < row.height {
             return row.height
         }
+
+        // cache the height
+        rowHeightCache[indexPath] = height
 
         return height
     }
