@@ -711,9 +711,9 @@ class ComposeTableViewController: BaseTableViewController {
             return suggestTableView.numberOfRows(inSection: section)
         }
         switch section {
-        case 0:
+        case composeSection:
             return composeData?.numberOfRows() ?? 0
-        case 1:
+        case attachmentSection:
             return nonInlinedAttachmentData.count()
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled section")
