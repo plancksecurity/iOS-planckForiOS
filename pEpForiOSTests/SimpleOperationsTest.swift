@@ -55,7 +55,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
             XCTAssertNotNil(m.imap)
-            XCTAssertNotNil(m.shortMessage)
             if m.sent == nil {
                 Log.warn(component: #function, content: "nil sent \(String(describing: m.shortMessage)) \(String(describing: m.uuid))")
             }
@@ -70,7 +69,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
             XCTAssertEqual(m.from?.address, normalMessage.from?.address)
             XCTAssertNotNil(normalMessage.uuid)
-            XCTAssertNotNil(normalMessage.shortMessage)
 
             guard let uuid = m.uuid else {
                 XCTFail()
