@@ -666,13 +666,17 @@ class ComposeTableViewController: BaseTableViewController {
 
         if let tempCell = cell as? AccountCell {
             if (tempCell).shouldDisplayPicker {
-                if (expandable != nil) && cell.isExpanded { return expandable! }
+                if let theExpanded = expandable, cell.isExpanded {
+                    return theExpanded
+                }
             }
         }
 
         if cell.fieldModel?.display == .conditional {
             if ccEnabled {
-                if height <= row.height { return row.height }
+                if height <= row.height {
+                    return row.height
+                }
                 return height
             } else {
                 return 0
