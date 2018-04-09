@@ -687,6 +687,9 @@ class ComposeTableViewController: BaseTableViewController {
                 if height <= row.height {
                     return row.height
                 }
+                // cache the height
+                rowHeightCache[indexPath] = height
+
                 return height
             } else {
                 return 0
