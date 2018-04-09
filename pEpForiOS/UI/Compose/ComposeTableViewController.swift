@@ -654,6 +654,41 @@ class ComposeTableViewController: BaseTableViewController {
         return row.height
     }
 
+    /**
+     For cache* functions (row height cache), checks the preconditions
+     - Returns: A height if the caller should return asap, or nil if own logic should
+     be applied.
+     */
+    func cachePreconditions(height: CGFloat, indexPath: IndexPath) -> CGFloat? {
+        assert(indexPath.section == composeSection)
+        if indexPath.section != composeSection {
+            return height
+        }
+        return nil
+    }
+
+    /**
+     Caches the given height for the given indexPath.
+     - Returns: The given height.
+     */
+    func caching(height: CGFloat, indexPath: IndexPath) -> CGFloat {
+        if let h = cachePreconditions(height: height, indexPath: indexPath) {
+            return h
+        }
+        rowHeightCache[indexPath] = height
+        return height
+    }
+
+    /**
+     - Returns: The cached height for the given indexPath, or the given one.
+     */
+    func cached(height: CGFloat, indexPath: IndexPath) -> CGFloat {
+        if let h = cachePreconditions(height: height, indexPath: indexPath) {
+            return h
+        }
+        return rowHeightCache[indexPath] ?? height
+    }
+
     override func tableView(
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView.isEqual(suggestTableView) {
@@ -668,7 +703,7 @@ class ComposeTableViewController: BaseTableViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else {
             // The cell might have gone out of visiblity, in which case the table will
             // not return it. Try to use a cached value then.
-            return rowHeightCache[indexPath] ?? row.height
+            return cached(height: row.height, indexPath: indexPath)
         }
 
         let height = cell.textView.fieldHeight
@@ -685,17 +720,11 @@ class ComposeTableViewController: BaseTableViewController {
         if cell.fieldModel?.display == .conditional {
             if ccEnabled {
                 if height <= row.height {
-                    return row.height
+                    return caching(height: row.height, indexPath: indexPath)
                 }
-                // cache the height
-                rowHeightCache[indexPath] = height
-
-                return height
+                return caching(height: height, indexPath: indexPath)
             } else {
-                // cache the height
-                rowHeightCache[indexPath] = 0
-
-                return 0
+                return caching(height: 0, indexPath: indexPath)
             }
         }
 
@@ -703,10 +732,7 @@ class ComposeTableViewController: BaseTableViewController {
             return row.height
         }
 
-        // cache the height
-        rowHeightCache[indexPath] = height
-
-        return height
+        return caching(height: height, indexPath: indexPath)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
