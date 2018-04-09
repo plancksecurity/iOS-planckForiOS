@@ -683,7 +683,7 @@ class ComposeTableViewController: BaseTableViewController {
             }
         }
 
-        if height <= row.height {
+        if height < row.height {
             return row.height
         }
 
