@@ -51,13 +51,6 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
         Log.info(component: comp, content: "\(#function)")
     }
 
-    public func shouldRun() -> Bool {
-        if isCancelled || hasErrors() {
-            return false
-        }
-        return true
-    }
-
     func logSelf(functionName: String) {
         Log.log(comp: comp, mySelf: self, functionName: functionName)
     }

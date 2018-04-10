@@ -25,16 +25,10 @@ public class DeleteFoldersOperation: ImapSyncOperation {
     }
 
     public override func main() {
-        if !shouldRun() {
-            markAsFinished()
-            return
-        }
-
         if !checkImapSync() {
             markAsFinished()
             return
         }
-
         privateMOC.perform() { [unowned self] in
             self.process()
         }

@@ -28,10 +28,6 @@ class MatchUidToMsnOperation: ConcurrentBaseOperation {
     }
 
     override func main() {
-        if !shouldRun() {
-            markAsFinished()
-            return
-        }
         privateMOC.perform {
             self.process(context: self.privateMOC)
         }

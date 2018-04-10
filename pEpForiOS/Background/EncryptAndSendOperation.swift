@@ -37,16 +37,10 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
-        if !shouldRun() {
-            markAsFinished()
-            return
-        }
-
         if !checkSmtpSend() {
             markAsFinished()
             return
         }
-
         smtpSend.delegate = self
         handleNextMessage()
     }

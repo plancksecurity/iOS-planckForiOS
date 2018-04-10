@@ -43,33 +43,20 @@ public class SyncMessagesOperation: ImapSyncOperation {
         folderID = folder.objectID
     }
 
-    public override func shouldRun() -> Bool {
-        if !super.shouldRun() {
-            return false
-        }
+    override public func main() {
         if firstUID == 0 || lastUID == 0 {
             markAsFinished()
-            return false
+            return
         }
         if firstUID > lastUID {
             handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
                         message: "firstUID should be <= lastUID?")
-            return false
-        }
-        return true
-    }
-
-    override public func main() {
-        if !shouldRun() {
-            markAsFinished()
             return
         }
-
         if !checkImapSync() {
             markAsFinished()
             return
         }
-
         let context = Record.Context.background
         context.perform() {
             self.process(context: context)

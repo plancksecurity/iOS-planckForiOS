@@ -70,16 +70,10 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     public override func main() {
-        if !shouldRun() {
-            markAsFinished()
-            return
-        }
-
         if !checkImapSync() {
             markAsFinished()
             return
         }
-
         privateMOC.perform() {
             self.startSync(context: self.privateMOC)
         }
