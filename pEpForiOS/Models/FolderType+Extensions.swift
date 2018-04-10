@@ -12,6 +12,7 @@ import MessageModel
 // MARK: - ICON
 
 extension FolderType {
+
     func getIcon() -> UIImage {
         var imageName: String?
         switch self {
@@ -36,5 +37,26 @@ extension FolderType {
             return UIImage()
         }
         return image
+    }
+}
+
+// MARK: - DEFAULT FLAGS
+
+extension FolderType {
+
+    /// Flags that should be used when appending mails to a folder of this type.
+    ///
+    /// - Returns:  If flags are defined for this type:: the flags.
+    ///             nil otherwize
+    func defaultAppendImapFlags() -> Message.ImapFlags? {
+        switch self {
+        case .sent:
+            let result = Message.ImapFlags()
+            result.seen = true
+            return result
+        case .archive, .drafts, .inbox, .normal, .trash, .spam, .all, .flagged:
+            break
+        }
+        return nil
     }
 }

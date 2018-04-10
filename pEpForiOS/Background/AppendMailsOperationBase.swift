@@ -134,7 +134,10 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             markAsFinished()
             return
         }
-        folder.appendMessage(fromRawSource: rawData, flags: nil, internalDate: nil)
+        let flags = targetFolderType.defaultAppendImapFlags()
+        folder.appendMessage(fromRawSource: rawData,
+                             flags: flags?.pantomimeFlags(),
+                             internalDate: nil)
     }
 
     func determineTargetFolder(msgID: NSManagedObjectID) {

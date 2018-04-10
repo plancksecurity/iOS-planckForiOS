@@ -69,6 +69,7 @@
 		15A75CEA202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */; };
 		15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */; };
 		15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A763D01F72D68000670313 /* KeyChainTest.swift */; };
+		15AA6016207CD71D00D57DB4 /* ImapFlags+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15AA6015207CD71D00D57DB4 /* ImapFlags+Pantomime.swift */; };
 		15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */; };
 		15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */; };
 		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
@@ -512,6 +513,7 @@
 		15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSpecificInformationProtocol.swift; sourceTree = "<group>"; };
 		15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmailSpecificInformation.swift; sourceTree = "<group>"; };
 		15A763D01F72D68000670313 /* KeyChainTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
+		15AA6015207CD71D00D57DB4 /* ImapFlags+Pantomime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImapFlags+Pantomime.swift"; sourceTree = "<group>"; };
 		15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPlist.swift; sourceTree = "<group>"; };
 		15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoPlist+pEpStrings.swift"; sourceTree = "<group>"; };
 		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
@@ -1665,6 +1667,7 @@
 				1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */,
 				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
 				15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */,
+				15AA6015207CD71D00D57DB4 /* ImapFlags+Pantomime.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2514,6 +2517,7 @@
 				43C579EB1F0A382400A8EDF0 /* FetchFoldersService.swift in Sources */,
 				4388A0E42008F8F4008CB98D /* OAuth2AccessTokenProtocol.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
+				15AA6016207CD71D00D57DB4 /* ImapFlags+Pantomime.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
 				43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */,
