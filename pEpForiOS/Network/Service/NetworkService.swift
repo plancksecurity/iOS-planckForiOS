@@ -54,13 +54,6 @@ public class NetworkService {
         }
     }
 
-    public enum State {
-        case running
-        case stopped
-    }
-
-    public private(set) var state = State.stopped
-
     var serviceConfig: ServiceConfig
     public private(set) var currentWorker: NetworkServiceWorker?
     var newMailsService: FetchNumberOfNewMailsService?
@@ -110,7 +103,6 @@ public class NetworkService {
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
         currentWorker?.delegate = self
         currentWorker?.unitTestDelegate = self
-        state = .running
         currentWorker?.start()
     }
 
@@ -169,7 +161,6 @@ extension NetworkService: SendLayerProtocol {
 
 extension NetworkService: NetworkServiceWorkerDelegate {
     public func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker) {
-        state = .stopped
         self.delegate?.networkServiceDidFinishLastSyncLoop(service: self)
     }
 
