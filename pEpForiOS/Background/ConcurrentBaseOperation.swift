@@ -67,6 +67,11 @@ public class ConcurrentBaseOperation: BaseOperation {
     func markAsFinished() {
         if isExecuting {
             state = .finished
+        } else {
+            guard let block = completionBlock else {
+                return
+            }
+            block()
         }
     }
 
