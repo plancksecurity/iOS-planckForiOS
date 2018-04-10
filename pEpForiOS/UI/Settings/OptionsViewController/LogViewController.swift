@@ -36,10 +36,6 @@ class LogViewController: BaseViewController {
     @IBAction func cancel(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
     @IBAction func copyAction(_ sender: Any) {
         Log.checklog() { logString in
