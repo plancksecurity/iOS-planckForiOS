@@ -6,51 +6,35 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import MessageModel
 
+// MARK: - ICON
+
 extension FolderType {
-    public func getIconType() -> UIImage {
+    func getIcon() -> UIImage {
+        var imageName: String?
         switch self {
         case .normal:
-            if let image = UIImage(named: "folders-icon-folder") {
-                return image
-            }
-            break
+            imageName = "folders-icon-folder"
         case .archive:
-            if let image = UIImage(named: "folders-icon-archive") {
-                return image
-            }
-            break
+            imageName = "folders-icon-archive"
         case .drafts:
-            if let image = UIImage(named: "folders-icon-draft") {
-                return image
-            }
-            break
+            imageName = "folders-icon-draft"
         case .inbox:
-            if let image = UIImage(named: "folders-icon-inbox") {
-                return image
-            }
-            break
+            imageName = "folders-icon-inbox"
         case .sent:
-            if let image = UIImage(named: "folders-icon-sent") {
-                return image
-            }
-            break
+           imageName = "folders-icon-sent"
         case .trash:
-            if let image = UIImage(named: "folders-icon-trash") {
-                return image
-            }
-            break
+            imageName = "folders-icon-trash"
         case .spam:
-            if let image = UIImage(named: "folders-icon-junk") {
-                return image
-            }
-            break
+            imageName = "folders-icon-junk"
         case .all, .flagged:
             break
         }
-        return UIImage()
+        guard let name = imageName, let image = UIImage(named: name) else {
+            return UIImage()
+        }
+        return image
     }
 }

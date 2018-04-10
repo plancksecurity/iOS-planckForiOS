@@ -11,7 +11,7 @@ import MessageModel
 
 public class FolderCellViewModel {
     public var icon: UIImage {
-        return self.folder.folderType.getIconType()
+        return self.folder.folderType.getIcon()
     }
 
     public var title : String {
