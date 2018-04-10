@@ -32,11 +32,6 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     // MARK: - Operation
 
     override public func main() {
-        if !shouldRun() {
-            markAsFinished()
-            return
-        }
-
         if !checkImapSync() {
             markAsFinished()
             return

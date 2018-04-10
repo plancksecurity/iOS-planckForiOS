@@ -40,16 +40,10 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
     var syncDelegate: CreateRequiredFoldersSyncDelegate?
 
     public override func main() {
-        if !shouldRun() {
-            markAsFinished()
-            return
-        }
-
         if !checkImapSync() {
             markAsFinished()
             return
         }
-
         privateMOC.perform {
             self.process()
         }

@@ -69,16 +69,10 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     }
 
     override public func main() {
-        if !shouldRun() {
-            markAsFinished()
-            return
-        }
-
         if !checkImapSync() {
             markAsFinished()
             return
         }
-
         syncDelegate = AppendMailsSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
 

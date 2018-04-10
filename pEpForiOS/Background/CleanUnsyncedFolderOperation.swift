@@ -29,11 +29,6 @@ class CleanUnsyncedFolderOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
-        if !shouldRun() {
-            markAsFinished()
-            return
-        }
-
         let context = Record.Context.background
         context.perform() {
             self.process(context: context)
