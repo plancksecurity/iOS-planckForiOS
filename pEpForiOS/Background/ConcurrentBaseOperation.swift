@@ -70,7 +70,7 @@ public class ConcurrentBaseOperation: BaseOperation {
         }
     }
 
-    ///If you scheduled operations on `backgroundQueue`, use this to 'wait' for them to finish and
+    /// If you scheduled operations on `backgroundQueue`, use this to 'wait' for them to finish and
     /// then signal `finished`. Although this method has 'wait' in the name, it does not block.
     func waitForBackgroundTasksToFinish() {
         internalQueue.async { [weak self] in
