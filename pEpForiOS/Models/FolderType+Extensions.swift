@@ -48,7 +48,7 @@ extension FolderType {
                 return image
             }
             break
-        default:
+        case .all, .flagged:
             break
         }
         return UIImage()
