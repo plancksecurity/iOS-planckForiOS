@@ -14,7 +14,6 @@ class LogViewController: BaseViewController {
     @IBOutlet weak var copyButton: UIButton!
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var enableLogSwitch: UISwitch!
-    @IBOutlet var showErrorButton: UIButton!
 
 
     override func viewWillAppear(_ animated: Bool) {
@@ -40,10 +39,6 @@ class LogViewController: BaseViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-
-    @IBAction func showError(_ sender: Any) {
-        UIUtils.show(error: testErrorLog.testError, inViewController: self)
     }
 
     @IBAction func copyAction(_ sender: Any) {
