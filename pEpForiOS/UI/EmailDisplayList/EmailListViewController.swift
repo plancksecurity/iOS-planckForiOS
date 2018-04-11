@@ -54,19 +54,48 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         title = NSLocalizedString("Inbox", comment: "General name for (unified) inbox")
         UIHelper.emailListTableHeight(self.tableView)
         self.textFilterButton.isEnabled = false
-        addSearchBar()
 
-        //some notifications to control when the app enter and recover from backgroud
-        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeInactive), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        configureSearchBar()
+
+        if #available(iOS 11.0, *) {
+            searchController.isActive = false
+            self.navigationItem.searchController = searchController
+            self.navigationItem.hidesSearchBarWhenScrolling = true
+        } else {
+            addSearchBar()
+
+            if tableView.tableHeaderView == nil {
+                tableView.tableHeaderView = searchController.searchBar
+            }
+
+            // some notifications to control when the app enter and recover from background
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didBecomeActive),
+                name: NSNotification.Name.UIApplicationDidBecomeActive,
+                object: nil)
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didBecomeInactive),
+                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                object: nil)
+        }
     }
 
-    //observer clean
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: NSNotification.Name.UIApplicationDidBecomeActive,
+            object: nil)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: NSNotification.Name.UIApplicationDidEnterBackground,
+            object: nil)
     }
 
+    /**
+     Showing the search controller in versions prios to iOS 11.
+     */
     @objc func didBecomeActive() {
         if tableView.tableHeaderView == nil {
             tableView.tableHeaderView = searchController.searchBar
@@ -154,14 +183,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             showFoldersNavigationBarButton()
         }
     }
-    
-    private func addSearchBar() {
+
+    private func configureSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.delegate = self
+    }
+
+    private func addSearchBar() {
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
-        tableView.setContentOffset(CGPoint(x: 0.0, y: searchController.searchBar.frame.size.height), animated: false)
+        tableView.setContentOffset(CGPoint(x: 0.0,
+                                           y: searchController.searchBar.frame.size.height),
+                                   animated: false)
     }
     
     // MARK: - Other
