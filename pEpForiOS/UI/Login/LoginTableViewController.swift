@@ -103,20 +103,17 @@
 
         self.navigationController?.navigationBar.isHidden = !loginViewModel.isThereAnAccount()
 
-        //color and spacing configurations
-        let bgView = GradientView(colors: [UIColor.pEpGreen, UIColor.pEpDarkGreen])
-        tableView.backgroundView = bgView
+        // color and spacing configurations
         self.tableView.contentInset = UIEdgeInsets(top: 30,left: 0,bottom: 0,right: 0)
-        self.tableView.backgroundColor  = UIColor.pEpGreen
 
-        //clear cell color
+        // clear cell color
         UserTableViewCell.backgroundColor = UIColor.clear
         emailTableViewCell.backgroundColor = UIColor.clear
         passwordTableViewCell.backgroundColor = UIColor.clear
         loginTableViewCell.backgroundColor = UIColor.clear
         manualConfigTableViewCell.backgroundColor = UIColor.clear
 
-        //hide extended login fields
+        // hide extended login fields
         manualConfigButton.isHidden = true
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self, action: #selector(LoginTableViewController.dismissKeyboard))

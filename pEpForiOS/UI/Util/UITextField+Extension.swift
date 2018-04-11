@@ -13,7 +13,7 @@ extension UITextField {
         // common properties
         self.delegate = delegate
         self.backgroundColor = UIColor.clear
-        self.tintColor = UIColor.white
+        self.tintColor = UIColor.pEpGreen
         self.layer.borderWidth = 1.0
         self.placeholder = placeholder
 
@@ -34,7 +34,7 @@ extension UITextField {
     }
 
     func enableOrDisableLoginField(enable: Bool) {
-        let theColor = enable ? UIColor.white : UIColor.gray
+        let theColor = enable ? UIColor.pEpGreen : UIColor.gray
         self.textColor = theColor
         self.layer.borderColor = theColor.cgColor
         if let ph = placeholder {
