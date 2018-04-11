@@ -471,6 +471,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     /// Adds some HTML to make the content look acceptable in on receiver side.
     /// - Make sure newline is not ignored
+    /// - Make sure long lines with no linebrake are wraped  instead of potentially break out of the parents container.
     private func primitiveHtmlAdded(to string: String) -> String {
         let css =
         """
