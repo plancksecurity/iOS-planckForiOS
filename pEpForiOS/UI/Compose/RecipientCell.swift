@@ -16,8 +16,8 @@ class RecipientCell: ComposeCell {
     public var identities = [Identity]()
     private var ccEnabled = false
     
-    fileprivate var recipients = [Int]()
-    fileprivate var hasSelection = false
+    private var recipients = [Int]()
+    private var hasSelection = false
     
     override open func awakeFromNib() {
         selectionStyle = .none
@@ -33,7 +33,7 @@ class RecipientCell: ComposeCell {
         }
     }
     
-    fileprivate func removeRecepients() {
+    private func removeRecepients() {
         recipients.forEach({ (recepient: Int) in
             if identities[safe: recepient] != nil {
                 identities.remove(at: recepient)

@@ -213,7 +213,7 @@ open class ImapSync: Service {
         return folder as! CWIMAPFolder
     }
 
-    fileprivate func startTLS() {
+    private func startTLS() {
         imapState.state = .startedTLS
         imapStore.startTLS()
     }

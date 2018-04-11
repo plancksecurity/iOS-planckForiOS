@@ -78,7 +78,7 @@ UITextFieldDelegate {
         navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
     }
 
-    fileprivate func showErrorMessage (_ message: String) {
+    private func showErrorMessage (_ message: String) {
         let alertView = UIAlertController(
             title: NSLocalizedString("Error",
                                      comment: "the text in the title for the error message AlerView in account settings"),

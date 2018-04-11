@@ -70,11 +70,11 @@ class ImapSmtpSyncService {
     private(set) var imapSyncData: ImapSyncData
     private(set) var smtpSendData: SmtpSendData
 
-    fileprivate var state: State = .initial
+    private var state: State = .initial
     private var sendRequested: Bool = false
     private var reSyncNecessary: Bool = false
     private var messagesEnqueuedForSend = [MessageID: Message]()
-    fileprivate var messagesEnqueuedForFlagChange = Set<Message>()
+    private var messagesEnqueuedForFlagChange = Set<Message>()
     private var currentFolderName: String = ImapSync.defaultImapInboxName
 
     var isReadyForImapAction: Bool {

@@ -193,7 +193,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
             imapConnectInfo: imapConnectInfo, smtpConnectInfo: smtpConnectInfo).cancel()
     }
 
-    fileprivate func requestVerificationInternal(account: Account,
+    private func requestVerificationInternal(account: Account,
                                              delegate: AccountVerificationServiceDelegate) {
         let service = AccountVerificationService()
         service.delegate = self
@@ -201,7 +201,7 @@ class MessageSyncService: MessageSyncServiceProtocol {
         service.verify(account: account)
     }
 
-    fileprivate func requestFetchOlderImapMessagesInternal(forFolder folder: Folder) {
+    private func requestFetchOlderImapMessagesInternal(forFolder folder: Folder) {
         fetchOlderImapMessagesService.fetchOlderMessages(inFolder: folder)
     }
 

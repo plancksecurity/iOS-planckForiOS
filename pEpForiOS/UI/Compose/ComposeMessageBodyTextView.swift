@@ -29,7 +29,7 @@ class ComposeMessageBodyTextView: ComposeTextView {
         }
     }
 
-    fileprivate let newLinePaddingRegEx = try! NSRegularExpression(
+    private let newLinePaddingRegEx = try! NSRegularExpression(
         pattern: ".*[^\n]+(\n){2,}$", options: [])
 
     public override func addNewlinePadding() {

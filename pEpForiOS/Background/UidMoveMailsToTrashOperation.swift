@@ -66,7 +66,7 @@ class UidMoveMailsToTrashOperation: ImapSyncOperation {
         return result
     }
 
-    fileprivate func deleteLastMovedMessage() {
+    private func deleteLastMovedMessage() {
         guard let toDelete = lastProcessedMessage else {
             return
         }
@@ -79,7 +79,7 @@ class UidMoveMailsToTrashOperation: ImapSyncOperation {
         lastProcessedMessage = nil
     }
 
-    fileprivate func process() {
+    private func process() {
         if let sync = imapSyncData.sync {
             if !sync.openMailBox(name: folder.name) {
                 handleNextMessage()
@@ -89,7 +89,7 @@ class UidMoveMailsToTrashOperation: ImapSyncOperation {
         }
     }
 
-    fileprivate func handleNextMessage() {
+    private func handleNextMessage() {
         deleteLastMovedMessage()
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
@@ -173,7 +173,7 @@ class UidMoveMailsToTrashOperationSyncDelegate: DefaultImapSyncDelegate {
 
     // MARK: Helper
 
-    fileprivate func handle(error: Error, on errorHandler: ImapSyncDelegateErrorHandlerProtocol?) {
+    private func handle(error: Error, on errorHandler: ImapSyncDelegateErrorHandlerProtocol?) {
         guard let handler = errorHandler as? UidMoveMailsToTrashOperation else {
             Log.shared.errorAndCrash(component: #function, errorString: "Wrong delegate called")
             return

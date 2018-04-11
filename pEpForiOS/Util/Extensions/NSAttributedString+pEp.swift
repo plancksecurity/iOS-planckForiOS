@@ -13,7 +13,7 @@ import MessageModel
 class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
     var attachments = [Attachment]()
 
-    fileprivate let mimeUtil = MimeTypeUtil()
+    private let mimeUtil = MimeTypeUtil()
 
     func stringFor(attachment: NSTextAttachment) -> String? {
         if let textAttachment = attachment as? TextAttachment,

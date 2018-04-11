@@ -18,7 +18,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     var folderID: NSManagedObjectID
     let folderName: String
 
-    fileprivate var currentlyProcessedMessage: CdMessage?
+    private var currentlyProcessedMessage: CdMessage?
     public var numberOfMessagesSynced: Int {
         return changedMessageIDs.count
     }
@@ -128,7 +128,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
         syncNextMessage(context: privateMOC)
     }
     
-    fileprivate func
+    private func
         currentMessageNeedSyncRemoveFlagsToServer(context: NSManagedObjectContext) -> Bool {
         guard let message = currentlyProcessedMessage else {
             return false
@@ -145,7 +145,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
         updateFlags(to: .add, context: context)
     }
 
-    fileprivate func updateFlags(to mode:UpdateFlagsMode, context: NSManagedObjectContext) {
+    private func updateFlags(to mode:UpdateFlagsMode, context: NSManagedObjectContext) {
         guard let message = currentlyProcessedMessage else {
             Log.shared.errorAndCrash(component:"\(#function)[\(#line)]", errorString: "No message!")
             syncNextMessage(context: context)

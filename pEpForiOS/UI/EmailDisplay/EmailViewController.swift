@@ -78,7 +78,7 @@ class EmailViewController: BaseTableViewController {
     }
 
 
-    fileprivate final func loadDatasource(_ file: String) {
+    private final func loadDatasource(_ file: String) {
         if let path = Bundle.main.path(forResource: file, ofType: "plist") {
             if let dict = NSDictionary(contentsOfFile: path) as? [String: Any] {
                 tableData = ComposeDataSource(with: dict["Rows"] as! [[String: Any]])
@@ -153,7 +153,7 @@ class EmailViewController: BaseTableViewController {
      */
     var htmlViewerViewControllerExists = false
 
-    lazy fileprivate var htmlViewerViewController: SecureWebViewController = {
+    lazy private var htmlViewerViewController: SecureWebViewController = {
         let storyboard = UIStoryboard(name: "Reusable", bundle: nil)
         guard let vc =
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
@@ -176,7 +176,7 @@ class EmailViewController: BaseTableViewController {
      * we have non-empty HTML content at all
      - Returns: The HTML message body or nil
      */
-    fileprivate func htmlBody(message: Message?) ->  String? {
+    private func htmlBody(message: Message?) ->  String? {
         guard
             SecureWebViewController.isSaveToUseWebView,
             let m = message,
@@ -188,7 +188,7 @@ class EmailViewController: BaseTableViewController {
         return htmlBody
     }
 
-    fileprivate func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
+    private func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
             Log.shared.errorAndCrash(component: #function, errorString: "No msg.")
             return

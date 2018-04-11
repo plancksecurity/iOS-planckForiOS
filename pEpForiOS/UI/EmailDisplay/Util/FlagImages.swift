@@ -22,7 +22,7 @@ class FlagImages {
         }
     }
 
-    fileprivate static var sharedDict: [NSValue:FlagImages] = {
+    private static var sharedDict: [NSValue:FlagImages] = {
         let instance = [NSValue:FlagImages]()
         return instance
     }()
@@ -35,7 +35,7 @@ class FlagImages {
     public private(set) var toMeImage: UIImage?
     public private(set) var toMeCcImage: UIImage?
 
-    fileprivate init(imageSize: CGSize) {
+    private init(imageSize: CGSize) {
         self.imageSize = imageSize
         createImages()
     }

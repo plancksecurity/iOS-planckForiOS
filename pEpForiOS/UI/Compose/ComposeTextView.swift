@@ -13,11 +13,11 @@ import MessageModel
 open class ComposeTextView: UITextView {
     public var fieldModel: ComposeFieldModel?
     
-    fileprivate final var fontDescender: CGFloat = -7.0
+    private final var fontDescender: CGFloat = -7.0
     final var textBottomMargin: CGFloat = 25.0
-    fileprivate final var imageFieldHeight: CGFloat = 66.0
+    private final var imageFieldHeight: CGFloat = 66.0
 
-    fileprivate let newLinePaddingRegEx = try! NSRegularExpression(
+    private let newLinePaddingRegEx = try! NSRegularExpression(
         pattern: ".*[^\n]+(\n){2,}$", options: [])
 
     public var fieldHeight: CGFloat {

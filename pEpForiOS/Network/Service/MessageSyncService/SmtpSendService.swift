@@ -17,7 +17,7 @@ protocol SmtpSendServiceDelegate: class {
 class SmtpSendService: BackgroundOperationImapService {
     weak var delegate: SmtpSendServiceDelegate?
 
-    fileprivate let smtpSendData: SmtpSendData
+    private let smtpSendData: SmtpSendData
 
     init(parentName: String, backgrounder: BackgroundTaskProtocol? = nil,
          imapSyncData: ImapSyncData, smtpSendData: SmtpSendData) {
@@ -25,7 +25,7 @@ class SmtpSendService: BackgroundOperationImapService {
         super.init(parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
     }
 
-    fileprivate func haveMailsToEncrypt(smtpSendData: SmtpSendData,
+    private func haveMailsToEncrypt(smtpSendData: SmtpSendData,
                                         imapSyncData: ImapSyncData,
                                         bgID: BackgroundTaskID?,
                                         handler: ServiceFinishedHandler? = nil) {

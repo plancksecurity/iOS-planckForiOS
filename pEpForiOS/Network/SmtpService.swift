@@ -57,7 +57,7 @@ struct SmtpStatus {
 open class SmtpSend: Service {
     open override var comp: String { get { return "SmtpSend" } }
 
-    fileprivate var smtpStatus: SmtpStatus = SmtpStatus.init()
+    private var smtpStatus: SmtpStatus = SmtpStatus.init()
     weak open var delegate: SmtpSendDelegate?
 
     var smtp: CWSMTP {

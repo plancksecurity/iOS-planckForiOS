@@ -358,7 +358,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     // MARK: - Address Suggstions
 
-    fileprivate final func addContactSuggestTable() {
+    private final func addContactSuggestTable() {
         suggestTableView = storyboard?.instantiateViewController(
             withIdentifier: "contactSuggestionTable").view as! SuggestTableView
         suggestTableView.delegate = self
@@ -369,14 +369,14 @@ class ComposeTableViewController: BaseTableViewController {
 
     // MARK: - Composing Mail
 
-    fileprivate final func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
+    private final func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
         var pos = position
         if pos < defaultCellHeight && !start { pos = defaultCellHeight * (position + 1) + 2 }
         suggestTableView.frame.origin.y = pos
         suggestTableView.frame.size.height = tableView.bounds.size.height - pos + 2
     }
 
-    fileprivate final func populateMessageFromUserInput() -> Message? {
+    private final func populateMessageFromUserInput() -> Message? {
         let fromCells = allCells.filter { $0.fieldModel?.type == .from }
         guard fromCells.count == 1,
             let fromCell = fromCells.first,
@@ -465,7 +465,7 @@ class ComposeTableViewController: BaseTableViewController {
         return message
     }
 
-    fileprivate func calculateComposeColor() {
+    private func calculateComposeColor() {
         DispatchQueue.main.async {
             if let from = self.origin {
                 let session = PEPSession()
@@ -493,7 +493,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     // MARK: - Attachments
 
-    @objc fileprivate final func addMediaToCell() {
+    @objc private final func addMediaToCell() {
         let media = Capability.media
         media.requestAndInformUserInErrorCase(viewController: self)  {
             (permissionsGranted: Bool, error: Capability.AccessError?) in
@@ -513,7 +513,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     @objc // required for using it in #selector()
-    fileprivate final func addAttachment() {
+    private final func addAttachment() {
         let documentPicker = UIDocumentPickerViewController(
             documentTypes: ["public.data"], in: .import)
         documentPicker.delegate = self
@@ -526,7 +526,7 @@ class ComposeTableViewController: BaseTableViewController {
     ///   - assetUrl: URL of the asset
     ///   - image: image to create attachment for
     /// - Returns: attachment for given image
-    fileprivate final func createAttachment(forAssetWithUrl assetUrl: URL,
+    private final func createAttachment(forAssetWithUrl assetUrl: URL,
                                             image: UIImage) -> Attachment {
         let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
         let attachment = Attachment.createFromAsset(mimeType: mimeType,
@@ -541,7 +541,7 @@ class ComposeTableViewController: BaseTableViewController {
     /// - Parameters:
     ///   - resourceUrl: URL of the resource to create an attachment for
     /// - Returns: attachment for given resource
-    fileprivate final func createAttachment(forResource resourceUrl: URL,
+    private final func createAttachment(forResource resourceUrl: URL,
                                             completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async {
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
@@ -576,7 +576,7 @@ class ComposeTableViewController: BaseTableViewController {
     /// - Parameters:
     ///   - resourceUrl: URL of the resource to create an attachment for
     /// - Returns: attachment for given resource
-    fileprivate final func createAttachment(forSecurityScopedResource resourceUrl: URL,
+    private final func createAttachment(forSecurityScopedResource resourceUrl: URL,
                                             completion: @escaping (Attachment?) -> Void) {
         let cfUrl = resourceUrl as CFURL
 
@@ -597,7 +597,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    fileprivate func inline(image: UIImage, forMediaWithInfo info: [String: Any]) {
+    private func inline(image: UIImage, forMediaWithInfo info: [String: Any]) {
         guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? MessageBodyCell,
             let url = info[UIImagePickerControllerReferenceURL] as? URL
             else {
@@ -610,7 +610,7 @@ class ComposeTableViewController: BaseTableViewController {
         self.tableView.updateSize()
     }
 
-    fileprivate func attachVideo(forMediaWithInfo info: [String: Any]) {
+    private func attachVideo(forMediaWithInfo info: [String: Any]) {
         guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
             Log.shared.errorAndCrash(component: #function, errorString: "Please check.")
             return

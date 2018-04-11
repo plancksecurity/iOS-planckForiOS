@@ -30,7 +30,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }()
     private var operations = [IndexPath:Operation]()
     public static let storyboardId = "EmailListViewController"
-    fileprivate var lastSelectedIndexPath: IndexPath?
+    private var lastSelectedIndexPath: IndexPath?
     
     let searchController = UISearchController(searchResultsController: nil)
 

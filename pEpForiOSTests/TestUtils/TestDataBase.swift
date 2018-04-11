@@ -147,7 +147,7 @@ class TestDataBase {
         }
     }
 
-    fileprivate var testAccounts = [AccountSettings]()
+    private var testAccounts = [AccountSettings]()
 
     func append(accountSettings: AccountSettings) {
         testAccounts.append(accountSettings)
