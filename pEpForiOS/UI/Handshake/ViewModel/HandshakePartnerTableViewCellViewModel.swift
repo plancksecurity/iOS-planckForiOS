@@ -131,12 +131,16 @@ class HandshakePartnerTableViewCellViewModel {
     }
 
     func determineTrustwords(identitySelf: PEPIdentity, identityPartner: PEPIdentity) -> String? {
-        let trustwordsResult = session.getTrustwordsIdentity1(
-            identitySelf,
-            identity2: identityPartner,
-            language: trustwordsLanguage,
-            full: trustwordsFull)
-        return trustwordsResult
+        do {
+            return try session.getTrustwordsIdentity1(
+                identitySelf,
+                identity2: identityPartner,
+                language: trustwordsLanguage,
+                full: trustwordsFull)
+        } catch let err as NSError {
+            Log.shared.error(component: #function, error: err)
+            return nil
+        }
     }
 
     func toggleTrustwordsLength() {
