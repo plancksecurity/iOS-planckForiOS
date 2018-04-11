@@ -111,7 +111,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         }
     }
 
-    private func fetchUids(_ sync: ImapSync) {
+    fileprivate func fetchUids(_ sync: ImapSync) {
         do {
             try sync.fetchUidsForNewMessages()
         } catch {
@@ -120,7 +120,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
         }
     }
     
-    private func handleResult(uids: [Int]?) {
+    fileprivate func handleResult(uids: [Int]?) {
         let uids = validateResult(uids: uids)
         numNewMailsFetchedBlock?(uids?.count)
         waitForBackgroundTasksToFinish()

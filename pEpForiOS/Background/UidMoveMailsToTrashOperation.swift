@@ -89,7 +89,7 @@ class UidMoveMailsToTrashOperation: ImapSyncOperation {
         }
     }
 
-    private func handleNextMessage() {
+    fileprivate func handleNextMessage() {
         deleteLastMovedMessage()
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
