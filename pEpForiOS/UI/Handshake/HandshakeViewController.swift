@@ -240,6 +240,11 @@ extension HandshakeViewController: SegueHandlerType {
 
     func prepare(destination: LanguageListViewController) {
         let theSession = PEPSession()
-        destination.languages = theSession.languageList()
+        do {
+            destination.languages = try theSession.languageList()
+        } catch let err as NSError {
+            Log.shared.error(component: #function, error: err)
+            destination.languages = []
+        }
     }
 }
