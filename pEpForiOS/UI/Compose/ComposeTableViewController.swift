@@ -431,7 +431,11 @@ class ComposeTableViewController: BaseTableViewController {
                     // instead of the movie itself.
                     let (markdownText, attachments) = cell.textView.toMarkdown()
                     message.longMessage = markdownText
-                    message.longMessageFormatted = markdownText.markdownToHtml()
+                    var longMessageFormatted = markdownText.markdownToHtml()
+                    if let safeHtml = longMessageFormatted {
+                        longMessageFormatted = primitiveHtmlAdded(to: safeHtml)
+                    }
+                    message.longMessageFormatted = longMessageFormatted
                     message.attachments = message.attachments + attachments
                 } else {
                     message.longMessage = cell.textView.text
@@ -463,6 +467,30 @@ class ComposeTableViewController: BaseTableViewController {
         message.pEpProtected = pEpProtection
 
         return message
+    }
+
+    /// Adds some HTML to make the content look acceptable in on receiver side.
+    /// - Make sure newline is not ignored
+    private func primitiveHtmlAdded(to string: String) -> String {
+        let css =
+        """
+        div {
+            white-space: pre-wrap;
+        }
+        """
+        let prefixHtml =
+        """
+            <html>
+            <body>
+            <div>
+        """
+        let postfixHtml =
+        """
+            </div>
+            </body>
+            </html>
+        """
+        return css + prefixHtml + string + postfixHtml
     }
 
     private func calculateComposeColor() {
