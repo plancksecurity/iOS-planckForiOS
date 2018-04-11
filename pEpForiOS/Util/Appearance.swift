@@ -56,7 +56,7 @@ class Appearance {
         UINavigationBar.appearance().tintColor = color
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().titleTextAttributes =
-            [NSAttributedStringKey.foregroundColor: UIColor.white]
+            [NSAttributedStringKey.foregroundColor: color]
 
         UIToolbar.appearance().backgroundColor = .white
         UIToolbar.appearance().barTintColor = .white
