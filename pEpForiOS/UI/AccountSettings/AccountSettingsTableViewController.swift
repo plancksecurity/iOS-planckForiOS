@@ -26,6 +26,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
     @IBOutlet weak var passwordTableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2TableViewCell: UITableViewCell!
     @IBOutlet weak var oauth2ActivityIndicator: UIActivityIndicatorView!
+    private let spinner: UIActivityIndicatorView = {
+        let createe = UIActivityIndicatorView()
+        createe.hidesWhenStopped = true
+        createe.activityIndicatorViewStyle = .gray
+        return createe
+    }()
 
     var securityPicker: UIPickerView?
 
@@ -52,7 +58,9 @@ UIPickerViewDataSource, UITextFieldDelegate {
         passwordTextfield.delegate = self
     }
 
-    func configureView() {
+    private func configureView() {
+        tableView.addSubview(spinner)
+
         self.nameTextfield.text = viewModel?.name
         self.emailTextfield.text = viewModel?.email
         self.usernameTextfield.text = viewModel?.loginName
@@ -237,6 +245,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
                 password = nil
             }
 
+            showSpinner()
             viewModel?.update(loginName: validated.loginName, name: validated.accountName,
                               password: password, imap: imap, smtp: smtp)
 
@@ -298,6 +307,7 @@ extension AccountSettingsTableViewController {
 extension AccountSettingsTableViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
         GCD.onMain() {
+            self.hideSpinner()
             switch result {
             case .ok:
                 self.navigationController?.popViewController(animated: true)
@@ -329,5 +339,25 @@ extension AccountSettingsTableViewController: OAuth2AuthViewModelDelegate {
             return
         }
         viewModel?.updateToken(accessToken: token)
+    }
+}
+
+// MARK: - SPINNER
+
+extension AccountSettingsTableViewController {
+    private func showSpinner() {
+        spinner.center =
+            CGPoint(x: tableView.frame.width / 2,
+                    y:
+                (tableView.frame.height / 2) - (navigationController?.navigationBar.frame.height
+                    ?? 0.0))
+        spinner.superview?.bringSubview(toFront: spinner)
+        tableView.isUserInteractionEnabled = false
+        spinner.startAnimating()
+    }
+
+    private func hideSpinner() {
+        tableView.isUserInteractionEnabled = true
+        spinner.stopAnimating()
     }
 }
