@@ -433,7 +433,7 @@ class ComposeTableViewController: BaseTableViewController {
                     message.longMessage = markdownText
                     var longMessageFormatted = markdownText.markdownToHtml()
                     if let safeHtml = longMessageFormatted {
-                        longMessageFormatted = primitiveHtmlAdded(to: safeHtml)
+                        longMessageFormatted = wrappedInHtmlStyle(toWrap: safeHtml)
                     }
                     message.longMessageFormatted = longMessageFormatted
                     message.attachments = message.attachments + attachments
@@ -469,29 +469,42 @@ class ComposeTableViewController: BaseTableViewController {
         return message
     }
 
-    /// Adds some HTML to make the content look acceptable in on receiver side.
-    /// - Make sure newline is not ignored
-    /// - Make sure long lines with no linebrake are wraped  instead of potentially break out of the parents container.
-    private func primitiveHtmlAdded(to string: String) -> String {
-        let css =
+    /// Wraps a given string in simple HTML to make the content look acceptable in on receiver side.
+    /// Approached behavior:
+    /// - newlines are not ignored
+    /// - long lines with no linebrake are wraped instead of potentially break out of the parents container.
+    /// - mimik responsive "scale to fit" behaviour for inlined images
+    /// - Parameter toWrap: content to wrap
+    /// - Returns: wrapped content
+    private func wrappedInHtmlStyle(toWrap: String) -> String {
+        let style =
         """
-        div {
-            white-space: pre-wrap;
-        }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            div {
+                white-space: pre-wrap;
+            }
         """
         let prefixHtml =
         """
             <html>
-            <body>
-            <div>
+                <head>
+                    <style>
+                        \(style)
+                    </style>
+                </head>
+                <body>
+                    <div>
         """
         let postfixHtml =
         """
-            </div>
-            </body>
+                    </div>
+                </body>
             </html>
         """
-        return css + prefixHtml + string + postfixHtml
+        return prefixHtml + toWrap + postfixHtml
     }
 
     private func calculateComposeColor() {
