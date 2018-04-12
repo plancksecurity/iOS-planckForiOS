@@ -1034,6 +1034,10 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     @IBAction func send() {
+        if let invalidRecipients = invalidReceipients() {
+            informUser(invalidRecipients: invalidRecipients)
+            return
+        }
         defer {
             dismiss(animated: true, completion: nil)
         }
@@ -1048,7 +1052,6 @@ class ComposeTableViewController: BaseTableViewController {
             // delete the original, previously drafted one.
             deleteOriginalMessage()
         }
-
     }
 
     // MARK: - KeyboardObserver
@@ -1338,5 +1341,57 @@ extension ComposeTableViewController: HtmlToAttributedTextSaxParserAttachmentDel
         }
         // ... and adjust its size.
         attachment.image = attachment.image?.resized(newWidth: tableView.contentSize.width)
+    }
+}
+
+// MARK: - Address Validation
+
+extension ComposeTableViewController {
+
+    /// Checks all recipients addresses for validity and returns invalid ones.
+    ///
+    /// - Returns:  if any: all recipients with invalid e-mail addresses
+    ///             nil otherwize
+    private func invalidReceipients() -> [Identity]? {
+        var invalidReceipients = [Identity]()
+        for cell in allCells {
+            if let tempCell = cell as? RecipientCell, let fm = cell.fieldModel {
+                tempCell.generateContact(tempCell.textView)
+                let addresses = (tempCell).identities
+                switch fm.type {
+                case .to, .cc, .bcc:
+                    addresses.forEach({ (recipient) in
+                        if !recipient.address.isProbablyValidEmail() {
+                            invalidReceipients.append(recipient)
+                        }
+                    })
+                default:
+                    break
+                }
+            }
+        }
+        return invalidReceipients.count > 0 ? invalidReceipients : nil
+    }
+
+    /// Inform user: He entered invalid email addresses.
+    ///
+    /// - Parameter invalidRecipients: recipients with invalid email address
+    private func informUser(invalidRecipients: [Identity]) {
+        let title = NSLocalizedString("Invalid Address",
+                                      comment:
+            "Compose view-invalid email address - Alert Title for invalid recipient address(es)")
+        let addressesString = invalidRecipients.reduce("") { (result, recipient) -> String in
+            if result == "" {
+                return recipient.address
+            } else {
+                return result + ", " + recipient.address
+            }
+        }
+        let message = NSLocalizedString(
+            "\(invalidRecipients.count == 1 ? "This address is" : "Those addresses are") not valid: \n\(addressesString)",
+            comment: "Compose view-invalid email address - Alert body for invalid recipient address(es)")
+        UIUtils.showAlertWithOnlyPositiveButton(title: title,
+                                                message: message,
+                                                inViewController: self)
     }
 }
