@@ -537,7 +537,7 @@ class TestUtil {
             let mySelfIdentity = mySelfID.pEpIdentity()
             try! session.mySelf(mySelfIdentity)
             XCTAssertNotNil(mySelfIdentity.fingerPrint)
-            XCTAssertTrue(mySelfIdentity.isPEPUser(session))
+            XCTAssertTrue(try! mySelfIdentity.isPEPUser(session).boolValue)
 
             guard let cdMessage = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantomimeMail, account: cdMyAccount,

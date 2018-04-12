@@ -61,6 +61,6 @@ class PepAdapterTests: XCTestCase {
     func testIsPEPUser() {
         let ident = PEPIdentity()
         ident.userID = "some_fake_userid"
-        XCTAssertFalse(pEpSession.isPEPUser(ident))
+        XCTAssertThrowsError(try self.pEpSession.isPEPUser(ident))
     }
 }

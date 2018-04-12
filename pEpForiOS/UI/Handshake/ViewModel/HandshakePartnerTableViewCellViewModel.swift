@@ -99,7 +99,12 @@ class HandshakePartnerTableViewCellViewModel {
         pEpSelf = ownIdentity.updatedIdentity(session: session)
         pEpPartner = partner.updatedIdentity(session: session)
 
-        isPartnerpEpUser = session.isPEPUser(pEpPartner)
+        do {
+            isPartnerpEpUser = try session.isPEPUser(pEpPartner).boolValue
+        } catch let err as NSError {
+            Log.shared.error(component: #function, error: err)
+            isPartnerpEpUser = false
+        }
         setPartnerImage(for: partner)
         updateTrustwords(session: session)
     }

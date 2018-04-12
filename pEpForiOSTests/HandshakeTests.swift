@@ -94,36 +94,36 @@ class HandshakeTests: XCTestCase {
         let session = PEPSession()
         try! session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
-        XCTAssertTrue(session.isPEPUser(fromIdent))
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         try! session.trustPersonalKey(fromIdent)
-        XCTAssertTrue(session.isPEPUser(fromIdent))
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         try! session.keyResetTrust(fromIdent)
-        XCTAssertTrue(session.isPEPUser(fromIdent))
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         try! session.trustPersonalKey(fromIdent)
-        XCTAssertTrue(session.isPEPUser(fromIdent))
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         try! session.keyResetTrust(fromIdent)
-        XCTAssertTrue(session.isPEPUser(fromIdent))
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
     }
 
     func testNegativeTrustResetCycle() {
         let session = PEPSession()
         try! session.update(fromIdent)
         XCTAssertNotNil(fromIdent.fingerPrint)
-        XCTAssertTrue(session.isPEPUser(fromIdent))
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         let fromIdentCopy = PEPIdentity(identity: fromIdent)
         try! session.keyMistrusted(fromIdent)
         try! session.update(fromIdent)
         XCTAssertNil(fromIdent.fingerPrint)
-        XCTAssertTrue(session.isPEPUser(fromIdent))
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         // After mistrust, the engine now still remebers pEp status. See ENGINE-254.
         try! session.undoLastMistrust()
         try! session.update(fromIdentCopy)
-        XCTAssertTrue(session.isPEPUser(fromIdentCopy))
+        XCTAssertTrue(try! session.isPEPUser(fromIdentCopy).boolValue)
     }
 }

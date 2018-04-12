@@ -62,7 +62,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
             XCTAssertNotNil(meIdent.fingerPrint)
             XCTAssertNotNil(partnerIdent.fingerPrint)
-            XCTAssertTrue(partnerIdent.isPEPUser(session))
+            XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
 
             XCTAssertEqual(partnerIdent.fingerPrint, "365AA0E985C912DAA867B1A77C6016EE84C971BF")
 
@@ -87,12 +87,12 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
         try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
-        XCTAssertTrue(partnerIdent.isPEPUser(session))
+        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
 
         try! session.keyResetTrust(partnerIdent)
         try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
-        XCTAssertTrue(partnerIdent.isPEPUser(session))
+        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
     }
 
     /**
@@ -116,34 +116,34 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
 
         // back up the original
         let partnerIdentOrig = PEPIdentity(identity: partnerIdent)
-        XCTAssertTrue(session.isPEPUser(partnerIdentOrig))
+        XCTAssertTrue(try! session.isPEPUser(partnerIdentOrig).boolValue)
 
         try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
-        XCTAssertTrue(session.isPEPUser(partnerIdent))
+        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         try! session.keyResetTrust(partnerIdent)
         try! session.update(partnerIdent)
-        XCTAssertTrue(session.isPEPUser(partnerIdent))
+        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         try! session.keyMistrusted(partnerIdent)
         try! session.update(partnerIdent)
-        XCTAssertTrue(session.isPEPUser(partnerIdent))
+        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         try! session.undoLastMistrust()
         try! session.update(partnerIdent)
-        XCTAssertTrue(session.isPEPUser(partnerIdent))
+        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
 
         partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
         // The partner (restored from the backup) is still a pEp user
-        XCTAssertTrue(session.isPEPUser(partnerIdent))
+        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
         try! session.trustPersonalKey(partnerIdent)
         try! session.update(partnerIdent)
 
-        XCTAssertTrue(session.isPEPUser(partnerIdent))
+        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
     }
 
     /**
