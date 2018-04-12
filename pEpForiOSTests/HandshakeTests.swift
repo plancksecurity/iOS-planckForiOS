@@ -126,4 +126,21 @@ class HandshakeTests: XCTestCase {
         try! session.update(fromIdentCopy)
         XCTAssertTrue(try! session.isPEPUser(fromIdentCopy).boolValue)
     }
+
+    func testRestTruestOnYellowIdentity() {
+        let session = PEPSession()
+        try! session.update(fromIdent)
+        XCTAssertNotNil(fromIdent.fingerPrint)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        var rating = PEP_rating_b0rken
+        try! session.rating(&rating, for: fromIdent)
+        XCTAssertEqual(rating, PEP_rating_reliable)
+
+        try! session.keyResetTrust(fromIdent)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        try! session.rating(&rating, for: fromIdent)
+        XCTAssertEqual(rating, PEP_rating_reliable)
+    }
 }
