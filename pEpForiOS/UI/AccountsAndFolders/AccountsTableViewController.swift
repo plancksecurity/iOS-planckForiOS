@@ -121,35 +121,22 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // This is bad. We should get the type of Section/Row from the ViewModel.
-        let accountsSection = 0
-        let settingsSection = 1
-        let settingRowUnprotectedSubject = 0
-        let settingRowSyncTrash = 1
-        let settingsRowEnableThreading = 2
-        let settingsRowCredits = 3
-        let settingsRowLogging = 4
+        let rowType = viewModel.rowType(for: indexPath)
 
-        if indexPath.section == accountsSection {
+        switch rowType {
+        case .account:
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
-        } else if indexPath.section == settingsSection {
-            switch indexPath.row {
-            case settingRowUnprotectedSubject:
-                performSegue(withIdentifier: .segueShowSettingUnecryptedSubject, sender: self)
-            case settingRowSyncTrash:
-                performSegue(withIdentifier: .segueShowSettingSyncTrash, sender: self)
-            case settingsRowLogging:
-                performSegue(withIdentifier: .segueShowLog, sender: self)
-            case settingsRowEnableThreading:
-            break // We currenty do nothing
-            case settingsRowCredits:
-                performSegue(withIdentifier: .sequeShowCredits, sender: self)
-            default:
-                Log.shared.errorAndCrash(component: #function, errorString: "Unhadled row")
-            }
-        } else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled section")
+        case .unecryptedSubject:
+            performSegue(withIdentifier: .segueShowSettingUnecryptedSubject, sender: self)
+        case .syncTrash:
+            performSegue(withIdentifier: .segueShowSettingSyncTrash, sender: self)
+        case .showLog:
+            performSegue(withIdentifier: .segueShowLog, sender: self)
+        case .organizedByThread:
+        break // We currenty do nothing
+        case .credits:
+            performSegue(withIdentifier: .sequeShowCredits, sender: self)
         }
     }
 }

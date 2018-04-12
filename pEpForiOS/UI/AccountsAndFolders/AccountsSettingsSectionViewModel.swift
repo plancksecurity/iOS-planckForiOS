@@ -9,32 +9,30 @@
 import Foundation
 import MessageModel
 
-public enum SettingsSection {
-    case accounts
-    case settings
-}
-
-public enum SettingsCell {
-    case showLog
-    case organizedByThread
-    case credits
-    case syncTrash
-    case unecryptedSubject
-}
-
 public class AccountsSettingsSectionViewModel {
+
+    public enum SectionType {
+        case accounts
+        case glogalSettings
+        case pgpCompatibilitySettings
+    }
 
     var cells = [AccountsSettingsCellViewModel]()
     var title: String?
+    let type: SectionType
     
-    init(type: SettingsSection) {
+    init(type: SectionType) {
+        self.type = type
         switch type {
         case .accounts:
             generateAccountCells()
-            title = NSLocalizedString("Accounts", comment: "Table header")
-        case .settings:
-            generateSettingsCells()
-            title = NSLocalizedString("Settings", comment: "Table header")
+            title = NSLocalizedString("Accounts", comment: "Tableview section  header")
+        case .glogalSettings:
+            generateGlobalSettingsCells()
+            title = NSLocalizedString("Global Settings", comment: "Tableview section header")
+        case .pgpCompatibilitySettings:
+            generatePgpCompatibilitySettingsCells()
+            title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
         }
     }
 
@@ -44,12 +42,15 @@ public class AccountsSettingsSectionViewModel {
         }
     }
 
-    func generateSettingsCells() {
-        self.cells.append(AccountsSettingsCellViewModel(type: .unecryptedSubject))
+    func generateGlobalSettingsCells() {
         self.cells.append(AccountsSettingsCellViewModel(type: .syncTrash))
         self.cells.append(AccountsSettingsCellViewModel(type: .organizedByThread))
         self.cells.append(AccountsSettingsCellViewModel(type: .credits))
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
+    }
+
+    func generatePgpCompatibilitySettingsCells() {
+        self.cells.append(AccountsSettingsCellViewModel(type: .unecryptedSubject))
     }
 
     func delete(cell: Int) {
@@ -73,5 +74,4 @@ public class AccountsSettingsSectionViewModel {
             return cells[cell]
         }
     }
-
 }

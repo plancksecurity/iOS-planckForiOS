@@ -16,12 +16,13 @@ class AccountsSettingsViewModel {
         generateSections()
     }
 
-    func generateSections() {
+    private func generateSections() {
         sections.append(AccountsSettingsSectionViewModel(type: .accounts))
-        sections.append(AccountsSettingsSectionViewModel(type: .settings))
+        sections.append(AccountsSettingsSectionViewModel(type: .glogalSettings))
+        sections.append(AccountsSettingsSectionViewModel(type: .pgpCompatibilitySettings))
     }
 
-    func sectionIsValid(section: Int) -> Bool {
+    private func sectionIsValid(section: Int) -> Bool {
         return section >= 0 && section <= sections.count
     }
 
@@ -30,6 +31,10 @@ class AccountsSettingsViewModel {
         if section == accountsSection {
             sections[section].delete(cell: cell)
         }
+    }
+
+    func rowType(for indexPath: IndexPath) -> AccountsSettingsCellViewModel.SettingType {
+        return self[indexPath.section][indexPath.row].type
     }
 
     func noAccounts() -> Bool {

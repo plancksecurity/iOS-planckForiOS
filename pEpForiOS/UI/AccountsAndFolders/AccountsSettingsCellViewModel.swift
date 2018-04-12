@@ -10,16 +10,25 @@ import Foundation
 import MessageModel
 
 public class AccountsSettingsCellViewModel {
+    public enum SettingType {
+        case account
+        case showLog
+        case organizedByThread
+        case credits
+        case syncTrash
+        case unecryptedSubject
+    }
 
     var account: Account?
-    var type: SettingsCell?
+    let type: SettingType
     var status: Bool?
 
     init(account: Account) {
+        self.type = .account
         self.account = account
     }
 
-    init(type: SettingsCell) {
+    init(type: SettingType) {
         self.type = type
         if type == .organizedByThread {
             status = false
@@ -28,46 +37,45 @@ public class AccountsSettingsCellViewModel {
 
     public var title : String? {
         get {
-            if let acc = account {
-                return acc.user.address
-            } else if let type = self.type {
-                switch type {
-                case .showLog:
-                    return NSLocalizedString("Logging", comment: "")
-                case .organizedByThread:
-                    return NSLocalizedString("Enable Threading", comment: "")
-                case .credits:
-                    return NSLocalizedString("Credits", comment:
-                        "AccountsSettings: Cell (button) title to view app credits")
-                case .syncTrash:
-                    return NSLocalizedString("Sync Trash Folder", comment:
-                        "AccountsSettings: Cell (button) title to view syncing trashed setting")
-                case .unecryptedSubject:
-                    return NSLocalizedString("Subject Protection", comment:
-                        "AccountsSettings: Cell (button) title to view unencrypted subject setting")
+            switch self.type {
+            case .showLog:
+                return NSLocalizedString("Logging", comment: "")
+            case .organizedByThread:
+                return NSLocalizedString("Enable Threading", comment: "")
+            case .credits:
+                return NSLocalizedString("Credits", comment:
+                    "AccountsSettings: Cell (button) title to view app credits")
+            case .syncTrash:
+                return NSLocalizedString("Sync Trash Folder", comment:
+                    "AccountsSettings: Cell (button) title to view syncing trashed setting")
+            case .unecryptedSubject:
+                return NSLocalizedString("Subject Protection", comment:
+                    "AccountsSettings: Cell (button) title to view unencrypted subject setting")
+            case .account:
+                guard let acc = account else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "Should never be reached")
+                    return nil
                 }
+                return acc.user.address
             }
-            return nil
         }
     }
 
     public var value : String? {
         get {
-           if let type = self.type {
-                switch type {
-                case .showLog:
-                    return nil
-                case .organizedByThread:
-                    return nil // Feature unimplemented
-                case .credits:
-                    return nil
-                case .syncTrash:
-                    return onOffStateString(forState: AppSettings().shouldSyncImapTrashWithServer)
-                case .unecryptedSubject:
-                    return onOffStateString(forState: !AppSettings().unecryptedSubjectEnabled)
-                }
+            switch self.type {
+            case .showLog, .account, .credits:
+                // Have no value.
+                return nil
+            case .organizedByThread:
+                // Feature unimplemented
+                return nil
+            case .syncTrash:
+                return onOffStateString(forState: AppSettings().shouldSyncImapTrashWithServer)
+            case .unecryptedSubject:
+                return onOffStateString(forState: !AppSettings().unecryptedSubjectEnabled)
             }
-            return nil
         }
     }
 
@@ -77,7 +85,7 @@ public class AccountsSettingsCellViewModel {
 
     private func onOffStateString(forState enabled: Bool) -> String {
         return enabled
-        ? NSLocalizedString("On", comment: "On/Off status of setting")
-        : NSLocalizedString("Off", comment: "On/Off status of setting")
+            ? NSLocalizedString("On", comment: "On/Off status of setting")
+            : NSLocalizedString("Off", comment: "On/Off status of setting")
     }
 }
