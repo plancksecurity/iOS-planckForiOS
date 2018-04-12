@@ -209,6 +209,13 @@ class SecureWebViewController: UIViewController {
     /// inserting "<meta name="viewport" content="width=device-width, initial-scale=1.0"/>".
     private func dirtyHackInsertedForPageScaleToFit(inHtml html: String) -> String {
         let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=device-heigth, initial-scale=1.0\"/>"
+        let style =
+        """
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        """
         var result = html
 
         if html.contains(find: "initial-scale=1.0") {
@@ -220,15 +227,21 @@ class SecureWebViewController: UIViewController {
             result = html.replacingOccurrences(of: "<head>", with:
                 """
         <head>
-        \(scaleToFitHtml)
+            \(scaleToFitHtml)
+            <style>
+                \(style)
+            </style>
         """)
         } else if html.contains(find: "<html>") {
             result = html.replacingOccurrences(of: "<html>", with:
                 """
         <html>
-        <head>
-        \(scaleToFitHtml)
-        </head>
+                <head>
+                    \(scaleToFitHtml)
+                    <style>
+                        \(style)
+                    </style>
+                </head>
         """
             )
         }
