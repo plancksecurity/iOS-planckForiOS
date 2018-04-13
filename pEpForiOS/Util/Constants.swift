@@ -51,7 +51,7 @@ open class Constants {
      */
     open static let attachedEmailMimeType = "message/rfc822"
 
-    static let defaultFileName = NSLocalizedString("unknown",
+    static let defaultFileName = NSLocalizedString("unnamed",
                                                    comment:
         "file name used for unnamed attachments")
 }
