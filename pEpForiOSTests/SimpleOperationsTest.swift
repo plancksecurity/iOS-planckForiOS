@@ -635,8 +635,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
-        var rating = PEP_rating_undefined
-        try! session.rating(&rating, for: myself)
+        let rating = try! session.rating(for: myself).pEpRating
         XCTAssertGreaterThanOrEqual(rating.rawValue, PEP_rating_reliable.rawValue)
     }
 

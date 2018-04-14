@@ -471,13 +471,12 @@ open class PEPUtil {
     open static func pEpRating(cdIdentity: CdIdentity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEpDict(cdIdentity: cdIdentity)
-        var rating = PEP_rating_undefined
         do {
-            try session.rating(&rating, for: pepC)
+            return try session.rating(for: pepC).pEpRating
         } catch let error as NSError {
             assertionFailure("\(error)")
+            return PEP_rating_undefined
         }
-        return rating
     }
 
     open static func pEpColor(cdIdentity: CdIdentity,
@@ -488,13 +487,12 @@ open class PEPUtil {
     open static func pEpRating(identity: Identity,
                                session: PEPSession = PEPSession()) -> PEP_rating {
         let pepC = pEp(identity: identity)
-        var rating = PEP_rating_undefined
         do {
-            try session.rating(&rating, for: pepC)
+            return try session.rating(for: pepC).pEpRating
         } catch let error as NSError {
             assertionFailure("\(error)")
+            return PEP_rating_undefined
         }
-        return rating
     }
 
     open static func pEpColor(identity: Identity,

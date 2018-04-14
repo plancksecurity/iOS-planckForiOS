@@ -133,14 +133,13 @@ class HandshakeTests: XCTestCase {
         XCTAssertNotNil(fromIdent.fingerPrint)
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
-        var rating = PEP_rating_b0rken
-        try! session.rating(&rating, for: fromIdent)
+        var rating = try! session.rating(for: fromIdent).pEpRating
         XCTAssertEqual(rating, PEP_rating_reliable)
 
         try! session.keyResetTrust(fromIdent)
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
-        try! session.rating(&rating, for: fromIdent)
+        rating = try! session.rating(for: fromIdent).pEpRating
         XCTAssertEqual(rating, PEP_rating_reliable)
     }
 }

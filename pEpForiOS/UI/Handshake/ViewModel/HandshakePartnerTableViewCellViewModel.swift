@@ -159,7 +159,7 @@ class HandshakePartnerTableViewCellViewModel {
         pEpPartner = theBackup
 
         do {
-            try session.rating(&partnerRating, for: pEpPartner)
+            partnerRating = try session.rating(for: pEpPartner).pEpRating
             partnerColor = PEPUtil.pEpColor(pEpRating: partnerRating)
         } catch let error as NSError {
             assertionFailure("\(error)")
