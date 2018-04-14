@@ -114,13 +114,12 @@ public extension PEPSession {
         msg.bcc = bcc.map(mapper)
         msg.shortMessage = "short"
         msg.longMessage = "long"
-        var rating = PEP_rating_undefined
         do {
-            try outgoingRating(&rating, for: msg)
+            return try outgoingRating(for: msg).pEpRating
         } catch let error as NSError {
             assertionFailure("\(error)")
+            return PEP_rating_undefined
         }
-        return rating
     }
 }
 
