@@ -131,8 +131,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func loadCoreDataStack() {
         let objectModel = MessageModelData.MessageModelData()
+        let options = [NSMigratePersistentStoresAutomaticallyOption: true,
+                       NSInferMappingModelAutomaticallyOption: true]
         do {
-            try Record.loadCoreDataStack(managedObjectModel: objectModel, storeURL: nil)
+            try Record.loadCoreDataStack(managedObjectModel: objectModel,
+                                         storeURL: nil,
+                                         options: options)
         } catch {
             Log.shared.errorAndCrash(component: comp, errorString: "Error while Loading DataStack")
         }
