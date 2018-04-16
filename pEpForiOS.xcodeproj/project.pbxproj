@@ -332,7 +332,6 @@
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
 		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
 		43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */; };
-		43CE63CF1DE8845E00FAC505 /* CdAttachment+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */; };
 		43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63D01DE8866C00FAC505 /* Message+pEp.swift */; };
 		43D2C2681F13847700C97235 /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2C2671F13847700C97235 /* ServiceFactory.swift */; };
 		43D2C26A1F1385CF00C97235 /* ServiceFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D2C2691F1385CF00C97235 /* ServiceFactoryTests.swift */; };
@@ -802,7 +801,6 @@
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
 		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
-		43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+pEp.swift"; sourceTree = "<group>"; };
 		43CE63D01DE8866C00FAC505 /* Message+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+pEp.swift"; sourceTree = "<group>"; };
 		43D2C2671F13847700C97235 /* ServiceFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
 		43D2C2691F1385CF00C97235 /* ServiceFactoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceFactoryTests.swift; sourceTree = "<group>"; };
@@ -1650,7 +1648,6 @@
 				15F835231F34BE1300FCE887 /* AccountUserInput.swift */,
 				43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */,
 				431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */,
-				43CE63CE1DE8845E00FAC505 /* CdAttachment+pEp.swift */,
 				434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */,
 				431B04791DE5772000E40CD3 /* CdMessage+pEp.swift */,
 				431B047F1DE5774800E40CD3 /* CdMessage+Pantomime.swift */,
@@ -2380,7 +2377,6 @@
 				436239931EAE08F400BD2EB9 /* PEPSession+Extensions.swift in Sources */,
 				222B35861DF97A44007A1F82 /* ComposeDataSource.swift in Sources */,
 				4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */,
-				43CE63CF1DE8845E00FAC505 /* CdAttachment+pEp.swift in Sources */,
 				43AAC22B1F7A5AEE00F435F4 /* BaseViewController.swift in Sources */,
 				43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */,
 				4362399C1EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift in Sources */,

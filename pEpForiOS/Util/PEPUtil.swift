@@ -120,35 +120,30 @@ open class PEPUtil {
     }
 
     open static func pEpAttachment(
-        fileName: String?, mimeType: String?, data: Data?) -> [String: AnyObject] {
-        var dict: [String: AnyObject] = [:]
-        if let fn = fileName {
-            dict[kPepMimeFilename] = fn as NSString
-        }
-        if let mt = mimeType {
-            dict[kPepMimeType] = mt as NSString
-        }
-        if let d = data {
-            dict[kPepMimeData] = d as NSData
-        }
-        return dict
+        fileName: String?, mimeType: String?, data: Data?) -> PEPAttachment {
+        let attachment = PEPAttachment()
+        attachment.filename = fileName
+        attachment.mimeType = mimeType
+        attachment.data = data
+        return attachment
     }
 
     /**
-     Converts a `CdAttachment` into a pEp attachment.
+     Converts a `CdAttachment` into a PEPAttachment.
      */
-    open static func pEpDict(cdAttachment: CdAttachment) -> [String: AnyObject] {
+    open static func pEpAttachment(cdAttachment: CdAttachment) -> PEPAttachment {
         return pEpAttachment(
             fileName: cdAttachment.fileName, mimeType: cdAttachment.mimeType,
             data: cdAttachment.data as Data?)
     }
 
     /**
-     Converts an `Attachment` into a pEp attachment.
+     Converts a `Attachment` into a PEPAttachment.
      */
-    open static func pEpDict(attachment: Attachment) -> [String: AnyObject] {
+    open static func pEpAttachment(attachment: Attachment) -> PEPAttachment {
         return pEpAttachment(
-            fileName: attachment.fileName, mimeType: attachment.mimeType, data: attachment.data)
+            fileName: attachment.fileName, mimeType: attachment.mimeType,
+            data: attachment.data as Data?)
     }
 
     open static func pEpDict(message: Message, outgoing: Bool = true) -> PEPMessageDict {
@@ -167,7 +162,7 @@ open class PEPUtil {
         dict[kPepOutgoing] = outgoing as AnyObject?
 
         dict[kPepAttachments] = NSArray(array: message.attachments.map() {
-            return pEpDict(attachment: $0)
+            return pEpAttachment(attachment: $0)
         })
 
         dict[kPepReferences] = message.references as AnyObject
@@ -214,7 +209,7 @@ open class PEPUtil {
 
         dict[kPepAttachments] = NSArray(
             array: (cdMessage.attachments?.array as? [CdAttachment] ?? []).map() {
-                return pEpDict(cdAttachment: $0)
+                return pEpAttachment(cdAttachment: $0)
         })
 
         var refs = [String]()
@@ -287,7 +282,7 @@ open class PEPUtil {
 
         if let cdAttachments = cdMessage.attachments?.array as? [CdAttachment] {
             pEpMessage.attachments = cdAttachments.map {
-                return pEpDict(cdAttachment: $0)
+                return pEpAttachment(cdAttachment: $0)
             }
         }
 
@@ -340,10 +335,10 @@ open class PEPUtil {
 
         var foundAttachmentPGPEncrypted = false
         for atch in attachments {
-            guard let at = atch as? NSDictionary else {
+            guard let at = atch as? PEPAttachment else {
                 continue
             }
-            guard let filename = at[kPepMimeType] as? String else {
+            guard let filename = at.mimeType else {
                 continue
             }
             if filename.lowercased() == Constants.contentTypePGPEncrypted {

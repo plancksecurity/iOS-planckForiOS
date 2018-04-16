@@ -93,19 +93,17 @@ extension CWIMAPMessage {
             }
             self.setContent(multiPart)
 
-            if let attachmentDicts = attachmentDictsOpt {
-                for attachmentDict in attachmentDicts {
-                    guard let at = attachmentDict as? [String: NSObject] else {
+            if let attachmentObjs = attachmentDictsOpt {
+                for attachmentObj in attachmentObjs {
+                    guard let at = attachmentObj as? PEPAttachment else {
                         continue
                     }
                     let part = CWPart()
-                    part.setContentType(at[kPepMimeType] as? String)
-                    if let theData = at[kPepMimeData] as? NSData {
-                        part.setContent(theData)
-                        part.setSize(theData.length)
-                    }
+                    part.setContentType(at.mimeType)
+                    part.setContent(at.data as NSObject)
+                    part.setSize(at.data.count)
 
-                    if let fileName = at[kPepMimeFilename] as? String {
+                    if let fileName = at.filename {
                         if let cid = fileName.extractCid() {
                             part.setContentID("<\(cid)>")
                             part.setContentDisposition(PantomimeInlineDisposition)

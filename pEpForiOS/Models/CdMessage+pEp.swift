@@ -67,23 +67,16 @@ extension CdMessage {
         Log.info(component: #function, content: "after deleting orphans")
 
         var attachments = [CdAttachment]()
-        if let attachmentDicts = pEpMessageDict[kPepAttachments] as? NSArray {
-            for atDict in attachmentDicts {
-                guard let at = atDict as? NSDictionary else {
-                    continue
-                }
-                guard let data = at[kPepMimeData] as? Data else {
+        if let attachmentObjects = pEpMessageDict[kPepAttachments] as? NSArray {
+            for atDict in attachmentObjects {
+                guard let at = atDict as? PEPAttachment else {
                     continue
                 }
                 let attach = CdAttachment.create()
-                attach.data = data
-                attach.length = Int64(data.count)
-                if let mt = at[kPepMimeType] as? String {
-                    attach.mimeType = mt.lowercased()
-                }
-                if let fn = at[kPepMimeFilename] as? String {
-                    attach.fileName = fn
-                }
+                attach.data = at.data
+                attach.length = Int64(at.data.count)
+                attach.mimeType = at.mimeType?.lowercased()
+                attach.fileName = at.filename
                 attachments.append(attach)
             }
         }
