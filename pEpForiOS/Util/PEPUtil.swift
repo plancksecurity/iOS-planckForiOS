@@ -121,10 +121,9 @@ open class PEPUtil {
 
     open static func pEpAttachment(
         fileName: String?, mimeType: String?, data: Data?) -> PEPAttachment {
-        let attachment = PEPAttachment()
+        let attachment = PEPAttachment(data: data ?? Data())
         attachment.filename = fileName
         attachment.mimeType = mimeType
-        attachment.data = data
         return attachment
     }
 
