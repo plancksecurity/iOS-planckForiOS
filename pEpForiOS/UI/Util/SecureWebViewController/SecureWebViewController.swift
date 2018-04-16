@@ -205,9 +205,9 @@ class SecureWebViewController: UIViewController {
         return newSize.width == 0.0 || newSize == self.contentSize
     }
 
-    /// Returns a modified version the html, adjusted to:
+    /// Returns a modified version of the given html, adjusted to:
     /// - simulate "PageScaleToFit" layout behaviour
-    /// - responsive images
+    /// - responsive image size
     /// - set default link color to pEp color
     ///
     /// - Parameter html: html string that should be tweaked for nicer display
