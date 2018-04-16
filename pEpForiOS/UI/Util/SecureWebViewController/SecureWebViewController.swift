@@ -205,16 +205,33 @@ class SecureWebViewController: UIViewController {
         return newSize.width == 0.0 || newSize == self.contentSize
     }
 
-    /// Returns a modified version the html, adjusted to simulate "PageScaleToFit" layout by
-    /// inserting "<meta name="viewport" content="width=device-width, initial-scale=1.0"/>".
-    private func dirtyHackInsertedForPageScaleToFit(inHtml html: String) -> String {
+    /// Returns a modified version the html, adjusted to:
+    /// - simulate "PageScaleToFit" layout behaviour
+    /// - responsive images
+    /// - set default link color to pEp color
+    ///
+    /// - Parameter html: html string that should be tweaked for nicer display
+    /// - Returns: tweaked html
+    private func tweakedHtml(inHtml html: String) -> String {
         let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=device-heigth, initial-scale=1.0\"/>"
-        let style =
-        """
+        let styleResponsiveImageSize = """
             img {
                 max-width: 100%;
                 height: auto;
             }
+        """
+        let styleLinkStyle = """
+            a:link {
+                color:\(UIColor.hexPEpDarkGreen);
+                text-decoration: underline;
+            }
+        """
+        let tweak = """
+            \(scaleToFitHtml)
+            <style>
+                \(styleResponsiveImageSize)
+                \(styleLinkStyle)
+            </style>
         """
         var result = html
 
@@ -227,20 +244,14 @@ class SecureWebViewController: UIViewController {
             result = html.replacingOccurrences(of: "<head>", with:
                 """
         <head>
-            \(scaleToFitHtml)
-            <style>
-                \(style)
-            </style>
+            \(tweak)
         """)
         } else if html.contains(find: "<html>") {
             result = html.replacingOccurrences(of: "<html>", with:
                 """
         <html>
                 <head>
-                    \(scaleToFitHtml)
-                    <style>
-                        \(style)
-                    </style>
+                    \(tweak)
                 </head>
         """
             )
@@ -254,9 +265,9 @@ class SecureWebViewController: UIViewController {
         guard #available(iOS 11.0, *) else {
             return
         }
-        let scaledHtml = dirtyHackInsertedForPageScaleToFit(inHtml: htmlString)
+        let tweaked = tweakedHtml(inHtml: htmlString)
         setupBlocklist() {
-            self.webView.loadHTMLString(scaledHtml, baseURL: nil)
+            self.webView.loadHTMLString(tweaked, baseURL: nil)
         }
     }
 }
