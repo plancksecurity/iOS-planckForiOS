@@ -75,6 +75,7 @@ public class HandleMessagesMarkedAsShouldBeTrashedOperation: AppendMailsOperatio
             newTrashMsg.sent = orig.sent
             newTrashMsg.shortMessage = orig.shortMessage
             newTrashMsg.to = orig.to
+            newTrashMsg.imapFlags = orig.imapFlags
             newTrashMsg.save()
 
             msg.imap?.trashedStatus = .trashed
