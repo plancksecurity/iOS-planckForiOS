@@ -120,10 +120,12 @@ open class PEPUtil {
     }
 
     open static func pEpAttachment(
-        fileName: String?, mimeType: String?, data: Data?) -> PEPAttachment {
+        fileName: String?, mimeType: String?, data: Data?,
+        contentDispositionType: content_disposition_type) -> PEPAttachment {
         let attachment = PEPAttachment(data: data ?? Data())
         attachment.filename = fileName
         attachment.mimeType = mimeType
+        attachment.contentDisposition = contentDispositionType
         return attachment
     }
 
@@ -131,18 +133,22 @@ open class PEPUtil {
      Converts a `CdAttachment` into a PEPAttachment.
      */
     open static func pEpAttachment(cdAttachment: CdAttachment) -> PEPAttachment {
-        return pEpAttachment(
-            fileName: cdAttachment.fileName, mimeType: cdAttachment.mimeType,
-            data: cdAttachment.data as Data?)
+        return pEpAttachment(fileName: cdAttachment.fileName,
+                             mimeType: cdAttachment.mimeType,
+                             data: cdAttachment.data as Data?,
+                             contentDispositionType: content_disposition_type(rawValue:
+                                Int32(cdAttachment.contentDispositionRawValue)))
     }
 
     /**
      Converts a `Attachment` into a PEPAttachment.
      */
     open static func pEpAttachment(attachment: Attachment) -> PEPAttachment {
-        return pEpAttachment(
-            fileName: attachment.fileName, mimeType: attachment.mimeType,
-            data: attachment.data as Data?)
+        return pEpAttachment(fileName: attachment.fileName,
+                             mimeType: attachment.mimeType,
+                             data: attachment.data as Data?,
+                             contentDispositionType: content_disposition_type(rawValue:
+                                Int32(attachment.contentDisposition.rawValue)))
     }
 
     open static func pEpDict(message: Message, outgoing: Bool = true) -> PEPMessageDict {

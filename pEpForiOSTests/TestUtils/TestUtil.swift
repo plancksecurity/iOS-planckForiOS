@@ -439,7 +439,7 @@ class TestUtil {
                 if i == numberOfMails || i == numberOfMails - 1 {
                     let attachment = Attachment.create(
                         data: imageData, mimeType: MimeTypeUtil.jpegMimeType,
-                        fileName: imageFileName)
+                        fileName: imageFileName, contentDisposition: .attachment)
                     let cdAttachment = CdAttachment.create(attachment: attachment)
                      message.addAttachment(cdAttachment: cdAttachment)
                 }

@@ -106,8 +106,11 @@ extension CdMessage {
         return objs?.count ?? 0
     }
 
-    static func insertAttachment(
-        contentType: String?, filename: String?,contentID: String?, data: Data) -> CdAttachment {
+    static func insertAttachment(contentType: String?,
+                                 filename: String?,
+                                 contentID: String?,
+                                 data: Data,
+                                 contentDispositionRawValue: Int16) -> CdAttachment {
         let attachment = CdAttachment.create()
         attachment.data = data
         attachment.length = Int64(data.count)
@@ -118,6 +121,7 @@ extension CdMessage {
         } else {
             attachment.fileName = filename
         }
+        attachment.contentDispositionRawValue = contentDispositionRawValue
         return attachment
     }
 }

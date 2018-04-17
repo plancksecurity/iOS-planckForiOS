@@ -557,7 +557,7 @@ extension CdMessage {
 
         imap.contentType = pantomimeMessage.contentType()
 
-        // If the mail contains attachments already, it is not a new- but an updated mail that
+        // If the cdMessage contains attachments already, it is not a new- but an updated mail that
         // accidentally made its way until here.
         // Do *not* add the attachments again.
         if !containsAttachments(cdMessage: mail) {
@@ -570,6 +570,7 @@ extension CdMessage {
 
         store(headerFieldNames: ["X-pEp-Version", "X-EncStatus", "X-KeyList"],
               pantomimeMessage: pantomimeMessage, cdMessage: mail)
+
 
         Record.saveAndWait()
         if mail.pEpRating != PEPUtil.pEpRatingNone,
@@ -680,6 +681,7 @@ extension CdMessage {
         } else if let data = content as? Data {
             contentData = data
         }
+
         if let data = contentData {
             if level == 0 && !isText && !isHtml && targetMail.longMessage == nil &&
                 MiscUtil.isEmptyString(part.filename()) {
@@ -692,14 +694,17 @@ extension CdMessage {
                 MiscUtil.isEmptyString(part.filename()) {
                 targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
             } else {
+                let contentDispRawValue =
+                    CdAttachment.contentDispositionRawValue(from: part.contentDisposition())
                 let attachment = insertAttachment(contentType: part.contentType(),
                                                   filename: part.filename(),
                                                   contentID: part.contentID(),
-                                                  data: data)
+                                                  data: data,
+                                                  contentDispositionRawValue: contentDispRawValue)
                 targetMail.addAttachment(cdAttachment: attachment)
             }
         }
-        
+
         if let multiPart = content as? CWMIMEMultipart {
             for i in 0..<multiPart.count() {
                 let subPart = multiPart.part(at: UInt(i))

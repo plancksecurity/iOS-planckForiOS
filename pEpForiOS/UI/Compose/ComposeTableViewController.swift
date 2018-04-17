@@ -573,7 +573,8 @@ class ComposeTableViewController: BaseTableViewController {
         let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
         let attachment = Attachment.createFromAsset(mimeType: mimeType,
                                                     assetUrl: assetUrl,
-                                                    image: image)
+                                                    image: image,
+                                                    contentDisposition: .inline)
         return attachment
     }
 
@@ -592,12 +593,12 @@ class ComposeTableViewController: BaseTableViewController {
                 completion(nil)
                 return
             }
-
             let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
             let filename = self.fileName(forVideoAt: resourceUrl)
             let attachment =  Attachment.create(data: resourceData,
                                                 mimeType: mimeType,
-                                                fileName: filename)
+                                                fileName: filename,
+                                                contentDisposition: .attachment)
             completion(attachment)
         }
     }
@@ -621,7 +622,6 @@ class ComposeTableViewController: BaseTableViewController {
     private final func createAttachment(forSecurityScopedResource resourceUrl: URL,
                                             completion: @escaping (Attachment?) -> Void) {
         let cfUrl = resourceUrl as CFURL
-
         attachmentFileIOQueue.async {
             CFURLStartAccessingSecurityScopedResource(cfUrl)
             defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
@@ -634,7 +634,8 @@ class ComposeTableViewController: BaseTableViewController {
             let filename = resourceUrl.fileName(includingExtension: true)
             let attachment = Attachment.create(data: resourceData,
                                                mimeType: mimeType,
-                                               fileName: filename)
+                                               fileName: filename,
+                                               contentDisposition: .attachment)
             completion(attachment)
         }
     }
