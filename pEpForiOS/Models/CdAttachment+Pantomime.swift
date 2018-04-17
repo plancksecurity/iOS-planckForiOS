@@ -15,12 +15,12 @@ extension CdAttachment {
         pantomimeContentDisposition: PantomimeContentDisposition) -> Int16 {
         switch pantomimeContentDisposition {
         case PantomimeAttachmentDisposition:
-            return Attachment.ContentDisposition.attachment.rawValue
+            return Attachment.ContentDispositionType.attachment.rawValue
         case PantomimeInlineDisposition:
-            return Attachment.ContentDisposition.inline.rawValue
+            return Attachment.ContentDispositionType.inline.rawValue
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled case")
-            return Attachment.ContentDisposition.attachment.rawValue
+            return Attachment.ContentDispositionType.attachment.rawValue
         }
     }
 }

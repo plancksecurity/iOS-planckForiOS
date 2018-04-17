@@ -121,7 +121,7 @@ extension CdMessage {
         } else {
             attachment.fileName = filename
         }
-        attachment.contentDispositionRawValue = contentDispositionRawValue
+        attachment.contentDispositionTypeRawValue = contentDispositionRawValue
         return attachment
     }
 }

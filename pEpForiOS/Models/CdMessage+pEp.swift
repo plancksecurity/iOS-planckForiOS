@@ -77,7 +77,7 @@ extension CdMessage {
                 attach.length = Int64(at.data.count)
                 attach.mimeType = at.mimeType?.lowercased()
                 attach.fileName = at.filename
-                attach.contentDispositionRawValue = Int16(at.contentDisposition.rawValue)
+                attach.contentDispositionTypeRawValue = Int16(at.contentDisposition.rawValue)
                 attachments.append(attach)
             }
         }

@@ -137,7 +137,7 @@ open class PEPUtil {
                              mimeType: cdAttachment.mimeType,
                              data: cdAttachment.data as Data?,
                              contentDispositionType: content_disposition_type(rawValue:
-                                Int32(cdAttachment.contentDispositionRawValue)))
+                                Int32(cdAttachment.contentDispositionTypeRawValue)))
     }
 
     /**
