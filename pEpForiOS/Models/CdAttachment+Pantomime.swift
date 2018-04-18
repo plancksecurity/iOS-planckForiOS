@@ -13,14 +13,7 @@ import MessageModel
 extension CdAttachment {
     static func contentDispositionRawValue(from
         pantomimeContentDisposition: PantomimeContentDisposition) -> Int16 {
-        switch pantomimeContentDisposition {
-        case PantomimeAttachmentDisposition:
-            return Attachment.ContentDispositionType.attachment.rawValue
-        case PantomimeInlineDisposition:
-            return Attachment.ContentDispositionType.inline.rawValue
-        default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled case")
-            return Attachment.ContentDispositionType.attachment.rawValue
-        }
+        
+        return Attachment.ContentDispositionType(with: pantomimeContentDisposition).rawValue
     }
 }
