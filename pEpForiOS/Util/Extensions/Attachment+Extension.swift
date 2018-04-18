@@ -21,6 +21,10 @@ extension Attachment {
         return true
     }
 
+    var isInlinedPlainText: Bool {
+        return mimeType == "text/plain" && isInlined
+    }
+
     /// Trys to extract the contentID of the attachment from the `filename` field.
     /// Returns the CID (without `cid:` or `cid://`) if `filename` contains it. Otherwize returns `nil`.
     var contentID: String? {
@@ -32,8 +36,6 @@ extension Attachment {
 
     /// Wheter or not the attachment is inlined in a HTML mail body.
     var isInlined: Bool {
-        let htmlMailBodyExists = message?.longMessageFormatted != nil
-        let attachmentIsInlined = contentID != nil
-        return htmlMailBodyExists && attachmentIsInlined
+        return contentDisposition == .inline
     }
 }
