@@ -68,6 +68,7 @@ extension MessageBodyCell {
         var mailAttachments = [Attachment]()
         attachments.forEach { (attachment) in
             if let attch = attachment.attachment {
+                attch.contentDisposition = .inline
                 mailAttachments.append(attch)
             }
         }
