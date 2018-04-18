@@ -360,6 +360,7 @@ class TestUtil {
                                     testCase: XCTestCase,
                                     numberOfMails: Int,
                                     withAttachments: Bool = true,
+                                    attachmentsInlined: Bool = false,
                                     encrypt: Bool = true) throws -> [CdMessage] {
         testCase.continueAfterFailure = false
 
@@ -434,15 +435,16 @@ class TestUtil {
             message.sent = Date().addingTimeInterval(sentTimeOffset)
             message.addTo(cdIdentity: toWithKey)
 
-            // add attachment to last and previous-to-last mail, if desired
+            // add attachments
             if withAttachments {
-                if i == numberOfMails || i == numberOfMails - 1 {
-                    let attachment = Attachment.create(
-                        data: imageData, mimeType: MimeTypeUtil.jpegMimeType,
-                        fileName: imageFileName, contentDisposition: .attachment)
-                    let cdAttachment = CdAttachment.create(attachment: attachment)
-                     message.addAttachment(cdAttachment: cdAttachment)
-                }
+                let contentDisposition =
+                    attachmentsInlined ? Attachment.ContentDispositionType.inline : .attachment
+                let attachment = Attachment.create(data: imageData,
+                                                   mimeType: MimeTypeUtil.jpegMimeType,
+                                                   fileName: imageFileName,
+                                                   contentDisposition: contentDisposition)
+                let cdAttachment = CdAttachment.create(attachment: attachment)
+                message.addAttachment(cdAttachment: cdAttachment)
             }
 
             messagesInTheQueue.append(message)
