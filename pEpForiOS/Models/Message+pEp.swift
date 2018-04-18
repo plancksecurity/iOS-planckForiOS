@@ -56,6 +56,14 @@ extension Message {
         
         return parentMessageAssured
     }
+
+    /// - Returns: all attachments with mimeType "text/plain" and contentDisposition "inlined"
+    func inlinedTextAttachments() -> [Attachment] {
+        let result = attachments.filter() {
+            return $0.isInlinedPlainText
+        }
+        return result
+    }
 }
 
 // MARK: - Fetching
