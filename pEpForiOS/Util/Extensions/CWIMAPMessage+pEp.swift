@@ -6,6 +6,8 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
+import MessageModel
+
 extension CWIMAPMessage {
     /**
      Creates a `CWIMAPMessage` from a given `PEPMessage`.
@@ -93,20 +95,20 @@ extension CWIMAPMessage {
             }
             self.setContent(multiPart)
 
-            if let attachmentObjs = attachmentDictsOpt {
+            if let attachmentObjs = attachmentDictsOpt as? [PEPAttachment] {
                 for attachmentObj in attachmentObjs {
-                    guard let at = attachmentObj as? PEPAttachment else {
-                        continue
-                    }
                     let part = CWPart()
-                    part.setContentType(at.mimeType)
-                    part.setContent(at.data as NSObject)
-                    part.setSize(at.data.count)
+                    part.setContentType(attachmentObj.mimeType)
+                    part.setContent(attachmentObj.data as NSObject)
+                    part.setSize(attachmentObj.data.count)
 
-                    if let fileName = at.filename {
+                    let pantomimeContentDisposition =
+                        attachmentObj.contentDisposition.pantomimeContentDisposition
+                    part.setContentDisposition(pantomimeContentDisposition)
+                    
+                    if let fileName = attachmentObj.filename {
                         if let cid = fileName.extractCid() {
                             part.setContentID("<\(cid)>")
-                            part.setContentDisposition(PantomimeInlineDisposition)
                         } else {
                             let theFilePart = fileName.extractFileName() ?? fileName
                             part.setFilename(theFilePart)
