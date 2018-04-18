@@ -205,6 +205,19 @@ class SecureWebViewController: UIViewController {
         return newSize.width == 0.0 || newSize == self.contentSize
     }
 
+    // MARK: - HTML TWEAKS
+
+    /// Prepares the html string for displaying.
+    ///
+    /// - Parameter html: html to prepare
+    /// - Returns: html ready for diplaying
+    private func preprocess(html: String) -> String {
+        var result = html
+        result = htmlTagsAssured(html: result)
+        result = tweakedHtml(inHtml: result)
+        return result
+    }
+
     /// Returns a modified version of the given html, adjusted to:
     /// - simulate "PageScaleToFit" layout behaviour
     /// - responsive image size
@@ -259,15 +272,30 @@ class SecureWebViewController: UIViewController {
         return result
     }
 
+
+    /// Assures a given string is wrapped in html tags (<html> givenString </html>).
+    ///
+    /// - Parameter html: string to assure its wrapped in html tags
+    /// - Returns: wrapped string
+    private func htmlTagsAssured(html: String) -> String {
+        let startHtml = "<html>"
+        let endHtml = "</html>"
+        var result = html
+        if !html.contains(find: startHtml) {
+            result = startHtml + html + endHtml
+        }
+        return result
+    }
+
     // MARK: - API
 
     func display(htmlString: String) {
         guard #available(iOS 11.0, *) else {
             return
         }
-        let tweaked = tweakedHtml(inHtml: htmlString)
+        let displayHtml = preprocess(html: htmlString)
         setupBlocklist() {
-            self.webView.loadHTMLString(tweaked, baseURL: nil)
+            self.webView.loadHTMLString(displayHtml, baseURL: nil)
         }
     }
 }

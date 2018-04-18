@@ -145,7 +145,7 @@ class EmailViewController: BaseTableViewController {
 
     }
 
-    // MARK: - EMAIL-BODY HANDLING - SECURE HTML
+    // MARK: - EMAIL BODY
 
     /**
      Indicate that the htmlViewerViewController already exists, to avoid
@@ -193,23 +193,46 @@ class EmailViewController: BaseTableViewController {
             Log.shared.errorAndCrash(component: #function, errorString: "No msg.")
             return
         }
-
         if let htmlBody = htmlBody(message: m) {
             // Its fine to use a webview (iOS>=11) and we do have HTML content.
             contentCell.contentView.addSubview(htmlViewerViewController.view)
             htmlViewerViewController.view.fullSizeInSuperView()
-            htmlViewerViewController.display(htmlString: htmlBody)
+            let displayHtml = appendInlinedPlainText(fromAttachmentsIn: m, to: htmlBody)
+            htmlViewerViewController.display(htmlString: displayHtml)
         } else {
             // We are not allowed to use a webview (iOS<11) or do not have HTML content.
-
             // Remove the HTML view if we just stepped from an HTML mail to one without
             if htmlViewerViewControllerExists &&
                 htmlViewerViewController.view.superview == contentCell.contentView {
                 htmlViewerViewController.view.removeFromSuperview()
             }
-
             contentCell.updateCell(model: rowData, message: m)
         }
+    }
+
+    private func appendInlinedPlainText(fromAttachmentsIn message: Message, to text: String) -> String {
+        var result = text
+        let inlinedText = message.inlinedTextAttachments()
+        for inlinedTextAttachment in inlinedText {
+            guard
+                let data = inlinedTextAttachment.data,
+                let inlinedText = String(data: data, encoding: .utf8) else {
+                    continue
+            }
+            result = append(appendText: inlinedText, to: result)
+        }
+        return result
+    }
+
+    private func append(appendText: String, to body: String) -> String {
+        var result = body
+        let replacee = result.contains(find: "</body>") ? "</body>" : "</html>"
+        if result.contains(find: replacee) {
+            result = result.replacingOccurrences(of: replacee, with: appendText + replacee)
+        } else {
+            result += "\n" + appendText
+        }
+        return result
     }
 
     // MARK: - IBActions
@@ -221,7 +244,6 @@ class EmailViewController: BaseTableViewController {
         }
         self.tableView.reloadData()
         configureView()
-
     }
 
     @IBAction func previous(_ sender: Any) {
