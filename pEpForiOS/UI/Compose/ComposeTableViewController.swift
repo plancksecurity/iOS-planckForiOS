@@ -71,11 +71,6 @@ class ComposeTableViewController: BaseTableViewController {
     private var pEpProtection = true
 
     /**
-     Set to true once the first text view to receive the focus (keyboard) has been chosen.
-     */
-    private var haveChosenFirstResponder = false
-
-    /**
      The `ComposeTextView`, if it currently owns the focus.
      */
     var composeTextViewFirstResponder: ComposeTextView?
@@ -100,15 +95,18 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        haveChosenFirstResponder = false
         composeData?.filterRows(message: nil)
         setEmailDisplayDefaultNavigationBarStyle()
         takeOverAttachmentsIfRequired()
         setInitialSendButtonStatus()
         addKeyboardObservers()
-
         rowHeightCache.removeAll()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setFirstResponder()
+        calculateComposeColor()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -142,42 +140,68 @@ class ComposeTableViewController: BaseTableViewController {
      if this is a suitable `ComposeMode`.
      */
     private func updateInitialContent(recipientCell: RecipientCell) {
-        if let fm = recipientCell.fieldModel {
-            if let om = originalMessage {
-                switch fm.type {
-                case .to:
-                    if composeMode == .replyFrom, let from = om.from {
-                        recipientCell.addIdentity(from)
-                    } else if composeMode == .replyAll, let from = om.from {
-                        let to = om.to
-                        for identity in to {
-                            recipientCell.addIdentity(identity)
-                        }
-                        recipientCell.addIdentity(from)
-                    } else if composeMode == .draft {
-                        for ident in om.to {
-                            recipientCell.addIdentity(ident)
-                        }
-                    }
-                case .cc:
-                    if composeMode == .replyAll || composeMode == .draft {
-                        for ident in om.cc {
-                            recipientCell.addIdentity(ident)
-                        }
-                    }
-                case .bcc:
-                    if composeMode == .replyAll  || composeMode == .draft {
-                        for ident in om.bcc {
-                            recipientCell.addIdentity(ident)
-                        }
-                    }
-                default:
-                    break
+        guard let fm = recipientCell.fieldModel else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Is it OK to have no model?")
+            return
+        }
+
+        guard let om = originalMessage else {
+            // There is no original message in `normal`compose mode. It's OK.
+            return
+        }
+        switch fm.type {
+        case .to:
+            if composeMode == .replyFrom, let from = om.from {
+                recipientCell.addIdentity(from)
+            } else if composeMode == .replyAll, let from = om.from {
+                let to = om.to
+                for identity in to {
+                    recipientCell.addIdentity(identity)
                 }
-            } else if composeMode == .normal && !haveChosenFirstResponder {
-                recipientCell.makeBecomeFirstResponder(inTableView: tableView)
-                haveChosenFirstResponder = true
+                recipientCell.addIdentity(from)
+            } else if composeMode == .draft {
+                for ident in om.to {
+                    recipientCell.addIdentity(ident)
+                }
             }
+        case .cc:
+            if composeMode == .replyAll || composeMode == .draft {
+                for ident in om.cc {
+                    recipientCell.addIdentity(ident)
+                }
+            }
+        case .bcc:
+            if composeMode == .replyAll  || composeMode == .draft {
+                for ident in om.bcc {
+                    recipientCell.addIdentity(ident)
+                }
+            }
+        default:
+            break
+        }
+    }
+
+    private func setFirstResponder() {
+        var toCell: RecipientCell?
+        var bodyCell: MessageBodyCell?
+        for cell in tableView.visibleCells {
+            if let safeCell = cell as? RecipientCell,
+                let model = safeCell.fieldModel,
+                model.type == .to {
+                toCell = safeCell
+            } else if let safeCell = cell as? MessageBodyCell {
+                bodyCell = safeCell
+            } else {
+                continue
+            }
+        }
+
+        if toCell != nil
+            && (composeMode == .normal || composeMode == .forward){
+            toCell?.makeBecomeFirstResponder(inTableView: tableView)
+        } else if bodyCell != nil {
+            bodyCell?.makeBecomeFirstResponder(inTableView: tableView)
         }
     }
 
@@ -251,18 +275,9 @@ class ComposeTableViewController: BaseTableViewController {
             setBodyText(forMessage: om, to: messageBodyCell, composeMode: .forward)
         case .draft:
             setBodyText(forMessage: om, to: messageBodyCell, composeMode: .draft)
-        case .normal: fallthrough// do nothing.
-        default:
-            guard composeMode == .normal else {
-                Log.shared.errorAndCrash(
-                    component: #function,
-                    errorString: ".normal is the only compose mode that is intentionally ignored here")
-                return
-            }
-        }
-        if !haveChosenFirstResponder {
-            messageBodyCell.makeBecomeFirstResponder(inTableView: tableView)
-            haveChosenFirstResponder = true
+        case .normal:
+            // do nothing.
+            break
         }
     }
 
@@ -855,32 +870,7 @@ class ComposeTableViewController: BaseTableViewController {
             returnee = UITableViewCell()
         }
 
-        if isRepresentingLastRow(indexpath: indexPath) {
-            // Calculate color only once.
-            calculateComposeColor()
-        }
-
         return returnee
-    }
-
-    private func isRepresentingLastRow(indexpath: IndexPath) -> Bool {
-        guard let numComposeRows = composeData?.numberOfRows() else {
-            return false
-        }
-        let numAttachmentRows = nonInlinedAttachmentData.count()
-        switch indexpath.section {
-        case composeSection:
-            if numAttachmentRows > 0 {
-                // We have more rows in attachments section
-                return false
-            }
-            return indexpath.row == max(0, numComposeRows - 1)
-        case attachmentSection:
-            return indexpath.row == max(0, numAttachmentRows - 1)
-        default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled section")
-            return true
-        }
     }
 
     // MARK: - TableViewDelegate
