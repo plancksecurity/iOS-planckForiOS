@@ -142,9 +142,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
             return nil
         }
         guard let theOneAndOnlyUid = uids?.first else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString:
-                "We should have exactly one UID at this point, but have nothing.")
+            // There are zero mails on server.
             return nil
         }
         let messageForUidPredicate = NSPredicate(format: "parent=%@ AND uid=%d", cdFolderToOpen,
