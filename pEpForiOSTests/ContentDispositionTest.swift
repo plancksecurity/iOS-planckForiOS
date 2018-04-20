@@ -49,7 +49,7 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         let msgsBeforeId2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1)
 
         // Create mails from ID1 to ID2 with attachments (inlined or not)
-        let dateBeforeSend = Date().addingTimeInterval(-0.5)
+        let dateBeforeSend = Date().addingTimeInterval(-1.0)
         let numMailsToSend = 1
         let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
                                                             testCase: self,
