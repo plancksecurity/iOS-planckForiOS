@@ -208,8 +208,14 @@ class EmailListViewModel {
         guard let previewMessage = messages?.object(at: indexPath.row) else {
             return
         }
-        previewMessage.isSeen = true
-        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            previewMessage.isSeen = true
+            me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+        }
     }
     
     func delete(forIndexPath indexPath: IndexPath) {
