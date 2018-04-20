@@ -35,7 +35,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BvI-Zi-zU6">
-                                            <rect key="frame" x="72" y="59" width="73" height="20.5"/>
+                                            <rect key="frame" x="72" y="59" width="275" height="20.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -104,10 +104,10 @@
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="YqR-ga-Tf9" secondAttribute="top" id="DW6-Nq-mt1"/>
                                         <constraint firstItem="Wkg-wf-Dbd" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="5" id="Dj5-aw-LdQ"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="YqR-ga-Tf9" secondAttribute="trailing" constant="8" id="FRQ-af-oqS"/>
-                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BvI-Zi-zU6" secondAttribute="trailing" constant="8" id="FY1-EO-FXk"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="6.5" id="Hex-Vv-UnE"/>
                                         <constraint firstItem="MDV-jl-oqJ" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="8" id="IKh-eg-DS7"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="trailing" secondItem="Wkg-wf-Dbd" secondAttribute="trailing" id="M9W-59-CVo"/>
+                                        <constraint firstItem="Wkg-wf-Dbd" firstAttribute="trailing" secondItem="BvI-Zi-zU6" secondAttribute="trailing" id="Tx2-fK-W1D"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="leading" id="Wva-Nq-D3D"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="5" id="Xp7-Lw-Lqg"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" id="acU-9j-7hJ"/>
