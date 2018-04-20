@@ -20,16 +20,12 @@ class EmailListViewCell: SwipeTableViewCell {
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 
-    /**
-     Used for \Flagged, contrary to the name.
-     */
+    /** Used for \Flagged, contrary to the name. */
     @IBOutlet weak var flaggedImageView: UIImageView!
-
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
 
-    @IBOutlet weak var accessoryDisclosureIndicator: UIImageView!
     var isFlagged:Bool = false {
         didSet {
             if isFlagged {

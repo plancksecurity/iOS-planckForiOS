@@ -227,18 +227,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return row.to
         }
     }
-
-    private func shouldShowAccessoryDisclosureIndicator() -> Bool {
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
-            return true
-        }
-        if folder.folderType == .drafts {
-            // Mails in drafts folder can only be opened in compose mode, which is shown modally.
-            return false
-        }
-        return true
-    }
     
     private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {
         // Configure lightweight stuff on main thread ...
@@ -249,8 +237,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
             return
         }
-        // Mails in drafts folder can only be opened in compose mode, which is shown modally.
-        cell.accessoryDisclosureIndicator.isHidden = shouldShowAccessoryDisclosureIndicator()
         cell.addressLabel.text = address(forRowAt: indexPath)
         cell.subjectLabel.text = row.subject
         cell.summaryLabel.text = row.bodyPeek
