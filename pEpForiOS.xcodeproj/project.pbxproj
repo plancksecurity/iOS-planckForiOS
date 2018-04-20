@@ -204,6 +204,7 @@
 		433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D11E66CB9C00272E19 /* CreateRequiredFoldersOperation.swift */; };
 		4340F5F91D363BE6006A5C82 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4340F5F81D363BE6006A5C82 /* ContactCell.swift */; };
 		4341EBCF2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */; };
+		4341EBD1208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */; };
 		43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */; };
 		43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */; };
 		43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */; };
@@ -650,6 +651,7 @@
 		433C51D11E66CB9C00272E19 /* CreateRequiredFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRequiredFoldersOperation.swift; sourceTree = "<group>"; };
 		4340F5F81D363BE6006A5C82 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
+		4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceProtocol.swift; sourceTree = "<group>"; };
 		43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ProviderProtocol.swift; sourceTree = "<group>"; };
 		43425EDC1FE3DF3B004A2728 /* OAuth2Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Provider.swift; sourceTree = "<group>"; };
 		43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ProviderFactory.swift; sourceTree = "<group>"; };
@@ -1197,6 +1199,7 @@
 				4307C46F1ED81F3100A276A4 /* DefaultImapSyncDelegate.swift */,
 				1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */,
 				4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */,
+				4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -2546,6 +2549,7 @@
 				4380528B1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift in Sources */,
 				B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */,
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
+				4341EBD1208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift in Sources */,
 				4351C2D81F4441190053381F /* references.c in Sources */,
 				432645811F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift in Sources */,
 				4351C2CB1F4441190053381F /* cmark.c in Sources */,
