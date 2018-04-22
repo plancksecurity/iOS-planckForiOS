@@ -99,6 +99,8 @@ class EmailViewController: BaseTableViewController {
     // MARK: - SETUP
 
     private func configureView() {
+        // Make sure the NavigationBar is shown, even the previous view has hidden it.
+        navigationController?.setNavigationBarHidden(false, animated: false)
         setupDestructiveButtonIcon()
 
         setTitleView()
