@@ -307,7 +307,7 @@ class EmailListViewModel {
         } else {
             let folderFilter = assuredFilterOfFolderToShow()
             folderFilter.removeSearchFilter()
-            let searchFilter = SearchFilter(subject: txt)
+            let searchFilter = SearchFilter(searchTerm: txt)
             folderFilter.add(filter: searchFilter)
         }
         resetViewModel()
