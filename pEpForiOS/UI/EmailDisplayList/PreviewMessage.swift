@@ -27,40 +27,20 @@ class PreviewMessage: Equatable {
     var maxBodyPreviewCharacters = 120
 
     init(withMessage msg: Message) {
-        if let rating = msg.pEpRatingInt, let sent = msg.sent, let saveFrom = msg.from {
-            uuid = msg.uuid
-            uid = msg.uid
-            address = msg.parent.account.user.address
-            parentFolderName = msg.parent.name
-            pEpRating = rating
-            hasAttachments = msg.attachments.count > 0
-            from = saveFrom
-            to = msg.to.first?.userNameOrAddress ?? ""
-            subject = msg.shortMessage ?? ""
-            isFlagged = msg.imapFlags?.flagged ?? false
-            isSeen = msg.imapFlags?.seen ?? false
-            dateSent = sent
-            bodyPeek = ""
-            bodyPeek = displayBody(fromMessage: msg)
-        } else {
-            //this block is only to avoid returning an Optional (init?)
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We should have those values here")
-            // Required field are missing. Should never happen. Return dummy data
-            uuid = msg.uuid
-            uid = 0
-            address = msg.parent.account.user.address
-            parentFolderName = msg.parent.name
-            pEpRating = 0
-            hasAttachments = msg.attachments.count > 0
-            from = Identity(address: "")
-            to = msg.to.first?.userNameOrAddress ?? ""
-            subject = msg.shortMessage ?? ""
-            bodyPeek = msg.longMessageFormatted ?? msg.longMessage ?? ""
-            isFlagged = msg.imapFlags?.flagged ?? false
-            isSeen = msg.imapFlags?.seen ?? false
-            dateSent = Date()
-        }
+        uuid = msg.uuid
+        uid = msg.uid
+        address = msg.parent.account.user.address
+        parentFolderName = msg.parent.name
+        pEpRating = msg.pEpRatingInt ?? 0
+        hasAttachments = msg.attachments.count > 0
+        from =  msg.from ?? Identity(address: "unknown@unknown.com")
+        to = msg.to.first?.userNameOrAddress ?? ""
+        subject = msg.shortMessage ?? ""
+        isFlagged = msg.imapFlags?.flagged ?? false
+        isSeen = msg.imapFlags?.seen ?? false
+        dateSent = msg.sent ?? Date()
+        bodyPeek = ""
+        bodyPeek = displayBody(fromMessage: msg)
     }
 
     private func displayBody(fromMessage msg: Message) -> String {
