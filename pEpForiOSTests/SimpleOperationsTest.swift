@@ -756,15 +756,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
     }
 
-    func isLocalServer(serverName: String) -> Bool? {
     // MARK: - QualifyServerIsLocalOperation
-    func testQualifyServerOperation(serverName: String, expectedResult: Bool) {
 
     func testQualifyServerOperation() {
-        qualifyServerOperation(serverName: "localhost", expectedResult: true)
+        XCTAssertEqual(isLocalServer(serverName: "localhost"), true)
+        XCTAssertEqual(isLocalServer(serverName: "peptest.ch"), false)
     }
 
-    func qualifyServerOperation(serverName: String, expectedResult: Bool) {
+    func isLocalServer(serverName: String) -> Bool? {
         let expServerQualified = expectation(description: "expServerQualified")
         let op = QualifyServerIsLocalOperation(serverName: serverName)
         op.completionBlock = {
@@ -778,7 +777,4 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         })
         return op.isLocal
     }
-        XCTAssertEqual(isLocalServer(serverName: "localhost"), true)
-        testQualifyServerOperation(serverName: "localhost", expectedResult: true)
-        XCTAssertEqual(isLocalServer(serverName: "peptest.ch"), false)
 }
