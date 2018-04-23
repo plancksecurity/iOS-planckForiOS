@@ -755,4 +755,27 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertGreaterThan(cdAttach.length, 0)
         }
     }
+
+    func testQualifyServerOperation(serverName: String, expectedResult: Bool) {
+        let expServerQualified = expectation(description: "expServerQualified")
+        let op = QualifyServerIsLocalOperation(serverName: serverName)
+        op.completionBlock = {
+            expServerQualified.fulfill()
+        }
+        let queue = OperationQueue()
+        queue.addOperation(op)
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(op.hasErrors())
+        })
+        guard let result = op.isLocal else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(result, expectedResult)
+    }
+
+    func testQualifyServerOperation() {
+        testQualifyServerOperation(serverName: "localhost", expectedResult: true)
+    }
 }
