@@ -22,7 +22,7 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
      Flag indicating whether the server is local, or not.
      - Note: The value is only valid after running the operation.
      */
-    public var isLocal = false
+    public var isLocal: Bool?
 
     init(parentName: String = #function,
          errorContainer: ServiceErrorProtocol = ErrorContainer(),
