@@ -56,11 +56,24 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
         return ipAddresses
     }
 
+    func isLocal(ipAddress: String) -> Bool {
+        return false
+    }
+
+    func isRemote(ipAddress: String) -> Bool {
+        return !isLocal(ipAddress: ipAddress)
+    }
+
     override func main() {
         let queue = DispatchQueue.global()
         queue.async { [weak self] in
             if let theSelf = self {
-                let _ = theSelf.lookupAddresses(serverName: theSelf.serverName)
+                let ipAddress = theSelf.lookupAddresses(serverName: theSelf.serverName)
+                if !ipAddress.isEmpty {
+                    theSelf.isLocal = !ipAddress.contains { theSelf.isRemote(ipAddress: $0) }
+                } else {
+                    theSelf.isLocal = nil
+                }
             }
             self?.markAsFinished()
         }
