@@ -87,12 +87,10 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func setTitleView() {
-
         guard let m = message else{
             Log.shared.errorAndCrash(component: #function, errorString: "no message to show")
             return
         }
-
         self.title = m.shortMessage
     }
 
