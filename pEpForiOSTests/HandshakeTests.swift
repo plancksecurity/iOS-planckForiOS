@@ -78,6 +78,7 @@ class HandshakeTests: XCTestCase {
         var keys: NSArray?
         var rating = PEP_rating_undefined
         let theMessage = try! session.decryptMessage(pEpMessage,
+                                                     flags: nil,
                                                      rating: &rating,
                                                      extraKeys: &keys,
                                                      status: nil)
