@@ -51,7 +51,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Inbox", comment: "General name for (unified) inbox")
+        
         UIHelper.emailListTableHeight(self.tableView)
         self.textFilterButton.isEnabled = false
 
@@ -165,7 +165,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             resetModel()
         }
 
-        self.title = realNameOfFolderToShow()
+        title = folderToShow?.locatizedName
     }
 
     private func weCameBackFromAPushedView() -> Bool {
@@ -199,10 +199,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     // MARK: - Other
-    
-    private func realNameOfFolderToShow() -> String? {
-        return folderToShow?.realName
-    }
 
     private func address(forRowAt indexPath: IndexPath) -> String {
         guard

@@ -35,7 +35,7 @@ public class FolderCellViewModel {
     }
 
     private var name: String {
-        return self.folder.realName
+        return self.folder.locatizedName
     }
 
     var leftPadding: Int {
