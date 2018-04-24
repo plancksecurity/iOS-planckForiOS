@@ -29,4 +29,57 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
          serverName: String) {
         self.serverName = serverName
     }
+
+    /**
+     Looks up the given server name.
+     - Returns: An array of IP addresses.
+     */
+    func lookupAddresses(serverName: String) -> [String] {
+        var ipAddresses = [String]()
+        let host = CFHostCreateWithName(
+            nil, serverName as CFString).takeRetainedValue()
+        CFHostStartInfoResolution(host, .addresses, nil)
+        var success: DarwinBoolean = false
+        if let addresses = CFHostGetAddressing(host, &success)?.takeUnretainedValue()
+            as NSArray?, success.boolValue {
+            for case let theAddress as NSData in addresses {
+                var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+                if getnameinfo(theAddress.bytes.assumingMemoryBound(to: sockaddr.self),
+                               socklen_t(theAddress.length),
+                               &hostname, socklen_t(hostname.count),
+                               nil,
+                               0, NI_NUMERICHOST) == 0 {
+                    ipAddresses.append(String(cString: hostname))
+                }
+            }
+        }
+        return ipAddresses
+    }
+
+    func isLocal(ipAddress: String) -> Bool {
+        let parser = IPAddressParser()
+        if let octetsIPv4 = parser.octetsIPv4(ipAddress: ipAddress) {
+            print("octetsIPv4: \(octetsIPv4)")
+        }
+        return false
+    }
+
+    func isRemote(ipAddress: String) -> Bool {
+        return !isLocal(ipAddress: ipAddress)
+    }
+
+    override func main() {
+        let queue = DispatchQueue.global()
+        queue.async { [weak self] in
+            if let theSelf = self {
+                let ipAddress = theSelf.lookupAddresses(serverName: theSelf.serverName)
+                if !ipAddress.isEmpty {
+                    theSelf.isLocal = !ipAddress.contains { theSelf.isRemote(ipAddress: $0) }
+                } else {
+                    theSelf.isLocal = nil
+                }
+            }
+            self?.markAsFinished()
+        }
+    }
 }
