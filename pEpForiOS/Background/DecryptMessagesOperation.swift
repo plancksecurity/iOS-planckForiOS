@@ -43,7 +43,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     outgoing = folderType.isOutgoing()
                 }
 
-                let pepMessage = PEPUtil.pEpDict(cdMessage: cdMessage, outgoing: outgoing)
+                let pepMessage = PEPUtil.pEpDict(
+                    cdMessage: cdMessage, outgoing: outgoing).mutableDictionary()
                 var keys: NSArray?
                 Log.info(component: self.comp,
                          content: "Will decrypt \(cdMessage.logString())")

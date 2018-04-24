@@ -66,7 +66,7 @@ class PEPSessionTest: XCTestCase {
                                         extraKeys: nil,
                                         encFormat: PEP_enc_PEP,
                                         status: nil)
-        try! session.decryptMessageDict(pepmessage,
+        try! session.decryptMessageDict(pepmessage.mutableDictionary(),
                                         flags: nil,
                                         rating: nil,
                                         extraKeys: nil,
@@ -168,7 +168,7 @@ class PEPSessionTest: XCTestCase {
         let session = PEPSession()
         var keys: NSArray?
         let pepDecryptedMessage = try! session.decryptMessageDict(
-            pEpMessage, flags: nil, rating: nil, extraKeys: &keys, status: nil)
+            pEpMessage.mutableDictionary(), flags: nil, rating: nil, extraKeys: &keys, status: nil)
         XCTAssertNotNil(pepDecryptedMessage[kPepLongMessage])
     }
 
