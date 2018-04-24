@@ -83,7 +83,7 @@ class ComposeTableViewController: BaseTableViewController {
     // MARK: - Lifecycle
 
     deinit {
-        removeKeyboardObservers()
+        removeObservers()
     }
 
     override func viewDidLoad() {
@@ -91,6 +91,7 @@ class ComposeTableViewController: BaseTableViewController {
         registerXibs()
         addContactSuggestTable()
         prepareFields()
+        addKeyboardObservers()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -99,7 +100,6 @@ class ComposeTableViewController: BaseTableViewController {
         setEmailDisplayDefaultNavigationBarStyle()
         takeOverAttachmentsIfRequired()
         setInitialSendButtonStatus()
-        addKeyboardObservers()
         rowHeightCache.removeAll()
     }
 
@@ -107,10 +107,6 @@ class ComposeTableViewController: BaseTableViewController {
         super.viewDidAppear(animated)
         setFirstResponder()
         calculateComposeColor()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        removeKeyboardObservers()
     }
 
     // MARK: - Setup & Configuration
@@ -1046,27 +1042,28 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     // MARK: - KeyboardObserver
-
-    var keyboardObserver: Any?
-
-    func addKeyboardObservers() {
-        if keyboardObserver == nil {
-            keyboardObserver = NotificationCenter.default.addObserver(
-                forName: NSNotification.Name.UIKeyboardDidShow, object: nil,
-                queue: OperationQueue.main) { [weak self] notification in
-                    self?.keyboardDidShow(notification: notification)
-            }
+    
+    private func addKeyboardObservers() {
+        // Show Keyboard Observer
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name.UIKeyboardDidShow, object: nil,
+            queue: OperationQueue.main) { [weak self] notification in
+                self?.keyboardDidShow(notification: notification)
+        }
+        // Hide Keyboard Observer
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillHide,
+                                               object: nil,
+                                               queue: OperationQueue.main) {
+                                                [weak self] notification in
+                                                self?.keyboardDidHide()
         }
     }
-
-    func removeKeyboardObservers() {
-        if let kObs = keyboardObserver {
-            NotificationCenter.default.removeObserver(kObs)
-            keyboardObserver = nil
-        }
+    
+    func removeObservers() {
+        NotificationCenter.default.removeObserver(self)
     }
-
-    func keyboardDidShow(notification: Notification) {
+    
+    private func keyboardDidShow(notification: Notification) {
         if let composeView = composeTextViewFirstResponder {
             Timer.scheduledTimer(timeInterval: 0.1,
                                  target: self,
@@ -1075,8 +1072,34 @@ class ComposeTableViewController: BaseTableViewController {
                                  repeats: false)
             scrollToMessageBodyCaret(composeTextView: composeView)
         }
+        
+        // Suggestion Tableview
+        if let keyboardSize =
+            (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? CGRect)?.size {
+            assureSuggestionsAreNotHiddenBehindKeyboard(keyboardSize: keyboardSize)
+        }
     }
-
+    
+    private func keyboardDidHide() {
+        resetSuggestionsKeyboardOffset()
+    }
+    
+    private func assureSuggestionsAreNotHiddenBehindKeyboard(keyboardSize: CGSize) {
+        let searchfieldHeight = defaultCellHeight
+        let contentInset = UIEdgeInsets(top: 0,
+                                        left: 0,
+                                        bottom: keyboardSize.height + searchfieldHeight,
+                                        right: 0)
+        suggestTableView.contentInset = contentInset
+        suggestTableView.scrollIndicatorInsets = contentInset
+    }
+    
+    private func resetSuggestionsKeyboardOffset() {
+        let zeroOffset = UIEdgeInsets()
+        suggestTableView.contentInset = zeroOffset
+        suggestTableView.scrollIndicatorInsets = zeroOffset
+    }
+    
     @objc func scrollToMessageBodyCaretOnTimer(_ timer: Timer) {
         if let composeView = timer.userInfo as? ComposeTextView {
             self.scrollToMessageBodyCaret(composeTextView: composeView)
