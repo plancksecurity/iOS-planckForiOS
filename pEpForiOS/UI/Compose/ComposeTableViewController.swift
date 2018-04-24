@@ -82,10 +82,6 @@ class ComposeTableViewController: BaseTableViewController {
 
     // MARK: - Lifecycle
 
-    deinit {
-        removeObservers()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         registerXibs()
@@ -107,6 +103,10 @@ class ComposeTableViewController: BaseTableViewController {
         super.viewDidAppear(animated)
         setFirstResponder()
         calculateComposeColor()
+    }
+
+    deinit {
+        removeObservers()
     }
 
     // MARK: - Setup & Configuration
