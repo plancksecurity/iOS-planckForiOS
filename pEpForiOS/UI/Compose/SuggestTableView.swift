@@ -9,30 +9,21 @@ import Foundation
 import UIKit
 import MessageModel
 
-open class SuggestTableView: UITableView, UITableViewDataSource {
+open class SuggestTableView: UITableView {
 
-    var identities = [Identity]()
-    
+    private var identities = [Identity]()
+
+
+    // MARK: - LIFE CYCLE
+
     open override func awakeFromNib() {
         super.awakeFromNib()
         
         self.dataSource = self
     }
-    
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return identities.count
-    }
-    
-    public func tableView(
-        _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = dequeueReusableCell(
-            withIdentifier: "contactCell", for: indexPath) as! ContactCell
-        
-        cell.updateCell(identities[indexPath.row])
-        
-        return cell
-    }
-    
+
+    // MARK: - API
+
     public func updateContacts(_ string: String) -> Bool {
         hide()
         identities.removeAll()
@@ -60,5 +51,24 @@ open class SuggestTableView: UITableView, UITableViewDataSource {
     public func didSelectIdentity(index: IndexPath) -> Identity?  {
         hide()
         return identities[index.row]
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension SuggestTableView: UITableViewDataSource {
+
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return identities.count
+    }
+
+    public func tableView(
+        _ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = dequeueReusableCell(
+            withIdentifier: "contactCell", for: indexPath) as! ContactCell
+
+        cell.updateCell(identities[indexPath.row])
+
+        return cell
     }
 }
