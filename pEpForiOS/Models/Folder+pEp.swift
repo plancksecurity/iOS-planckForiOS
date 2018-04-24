@@ -10,7 +10,7 @@ import MessageModel
 
 extension Folder{
 
-    var locatizedName: String {
+    var localizedName: String {
         switch realName.lowercased() {
         case ImapSync.defaultImapInboxName.lowercased():
              return NSLocalizedString("Inbox", comment: "Name of INBOX mailbox (of one account)")

@@ -165,7 +165,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             resetModel()
         }
 
-        title = folderToShow?.locatizedName
+        title = folderToShow?.localizedName
     }
 
     private func weCameBackFromAPushedView() -> Bool {
