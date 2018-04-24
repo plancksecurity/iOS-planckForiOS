@@ -11,9 +11,16 @@ import MessageModel
 extension Folder{
 
     var locatizedName: String {
-        return (realName.lowercased() == ImapSync.defaultImapInboxName.lowercased()) ?
-            NSLocalizedString("Inbox", comment: "Name of main (INBOX) mailbox") :
-            self.realName
+        switch realName.lowercased() {
+        case ImapSync.defaultImapInboxName.lowercased():
+             return NSLocalizedString("Inbox", comment: "Name of INBOX mailbox (of one account)")
+        case UnifiedInbox.defaultUnifiedInboxName.lowercased():
+            return NSLocalizedString("All",
+                                     comment:
+                "Name of unified inbox (showing messages of all accoounts")
+        default:
+            return realName
+        }
     }
 
     /// Returns the first message found in this folder, that is marked for uidExpunge
