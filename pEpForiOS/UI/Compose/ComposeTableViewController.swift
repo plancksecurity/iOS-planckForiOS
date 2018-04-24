@@ -378,6 +378,22 @@ class ComposeTableViewController: BaseTableViewController {
         tableView.addSubview(suggestTableView)
     }
 
+    private func assureSuggestionsAreNotHiddenBehindKeyboard(keyboardSize: CGSize) {
+        let searchfieldHeight = defaultCellHeight
+        let contentInset = UIEdgeInsets(top: 0,
+                                        left: 0,
+                                        bottom: keyboardSize.height + searchfieldHeight,
+                                        right: 0)
+        suggestTableView.contentInset = contentInset
+        suggestTableView.scrollIndicatorInsets = contentInset
+    }
+
+    private func resetSuggestionsKeyboardOffset() {
+        let zeroOffset = UIEdgeInsets()
+        suggestTableView.contentInset = zeroOffset
+        suggestTableView.scrollIndicatorInsets = zeroOffset
+    }
+
     // MARK: - Composing Mail
 
     private final func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
@@ -1042,7 +1058,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     // MARK: - KeyboardObserver
-    
+
     private func addKeyboardObservers() {
         // Show Keyboard Observer
         NotificationCenter.default.addObserver(
@@ -1058,11 +1074,11 @@ class ComposeTableViewController: BaseTableViewController {
                                                 self?.keyboardDidHide()
         }
     }
-    
+
     func removeObservers() {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     private func keyboardDidShow(notification: Notification) {
         if let composeView = composeTextViewFirstResponder {
             Timer.scheduledTimer(timeInterval: 0.1,
@@ -1072,34 +1088,18 @@ class ComposeTableViewController: BaseTableViewController {
                                  repeats: false)
             scrollToMessageBodyCaret(composeTextView: composeView)
         }
-        
+
         // Suggestion Tableview
         if let keyboardSize =
             (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? CGRect)?.size {
             assureSuggestionsAreNotHiddenBehindKeyboard(keyboardSize: keyboardSize)
         }
     }
-    
+
     private func keyboardDidHide() {
         resetSuggestionsKeyboardOffset()
     }
-    
-    private func assureSuggestionsAreNotHiddenBehindKeyboard(keyboardSize: CGSize) {
-        let searchfieldHeight = defaultCellHeight
-        let contentInset = UIEdgeInsets(top: 0,
-                                        left: 0,
-                                        bottom: keyboardSize.height + searchfieldHeight,
-                                        right: 0)
-        suggestTableView.contentInset = contentInset
-        suggestTableView.scrollIndicatorInsets = contentInset
-    }
-    
-    private func resetSuggestionsKeyboardOffset() {
-        let zeroOffset = UIEdgeInsets()
-        suggestTableView.contentInset = zeroOffset
-        suggestTableView.scrollIndicatorInsets = zeroOffset
-    }
-    
+
     @objc func scrollToMessageBodyCaretOnTimer(_ timer: Timer) {
         if let composeView = timer.userInfo as? ComposeTextView {
             self.scrollToMessageBodyCaret(composeTextView: composeView)
