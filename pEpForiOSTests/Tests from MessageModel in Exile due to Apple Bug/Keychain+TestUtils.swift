@@ -40,7 +40,7 @@ extension KeyChain {
                 SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
             }
             guard lastResultCode == noErr else {
-                // We get an error for very SecClass we never used. That's OK.
+                // We get an error for every SecClass we never used. That's OK.
                 continue
             }
             guard let array = result as? Array<Dictionary<String, Any>> else {
