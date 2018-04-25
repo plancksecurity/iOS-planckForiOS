@@ -20,8 +20,16 @@ class KeyChainTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        numItemsBefore = KeyChain.numKeychainItems(testCase: self)
+        numItemsBefore = KeyChain.numKeychainItems()
         numAdded = 0
+    }
+
+    // MARK: - TESTS
+
+    override func tearDown() {
+        // Clean keychain to avoid issues on test devices. See IOS-768 for details.
+        KeyChain.deleteAllKeychainItems()
+        super.tearDown()
     }
 
     func testStore() {
@@ -43,8 +51,7 @@ class KeyChainTest: XCTestCase {
         let newpass = "0002"
         XCTAssertTrue(KeyChain.updateCreateOrDelete(password: newpass, forKey: key))
         // Assure it has been updates
-        XCTAssertEqual(newpass, KeyChain.password(key: key),
-                       "Password has been updated")
+        XCTAssertEqual(newpass, KeyChain.password(key: key), "Password has been updated")
         XCTAssertTrue(isCorrectTotalNumberOfKeychainItems())
     }
 
@@ -63,9 +70,11 @@ class KeyChainTest: XCTestCase {
         XCTAssertTrue(isCorrectTotalNumberOfKeychainItems())
     }
 
+    // MARK: - HELPER
+
     private func isCorrectTotalNumberOfKeychainItems() -> Bool {
         let expected = numItemsBefore + numAdded
-        let actual = KeyChain.numKeychainItems(testCase: self)
+        let actual = KeyChain.numKeychainItems()
         return actual == expected
     }
 }
