@@ -14,33 +14,37 @@ import XCTest
  See: IOS-733
  */
 class KeyChainTest: XCTestCase {
+    let pass = "0001"
 
     func testStore() {
-        let pass = "0001"
         let key = UUID().uuidString
-        let server = "1"
-        XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
-        XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))
+        XCTAssertTrue(KeyChain.updateCreateOrDelete(password: pass, forKey: key))
+        XCTAssertEqual(pass, KeyChain.password(key: key))
     }
 
     func testUpdate() {
-        let pass = "0001"
         let key = UUID().uuidString
-        let server = "1"
-        XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
-        XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))
+        // Save password
+        XCTAssertTrue(KeyChain.updateCreateOrDelete(password: pass, forKey: key))
+        // Assure it has been saved
+        XCTAssertEqual(pass, KeyChain.password(key: key))
+        // Update password
         let newpass = "0002"
-        XCTAssertTrue(KeyChain.update(key: key, newPassword: newpass))
-        XCTAssertEqual(newpass, KeyChain.password(key: key, serverType: server))
+        XCTAssertTrue(KeyChain.updateCreateOrDelete(password: newpass, forKey: key))
+        // Assure it has been updates
+        XCTAssertEqual(newpass, KeyChain.password(key: key),
+                       "Password has been updated")
     }
 
     func testDelete() {
-        let pass = "0001"
         let key = UUID().uuidString
-        let server = "1"
-        XCTAssertTrue(KeyChain.add(key: key, serverType: server , password: pass))
-        XCTAssertEqual(pass, KeyChain.password(key: key, serverType: server))
-        XCTAssertTrue(KeyChain.delete(key: key))
-        XCTAssertNil(KeyChain.password(key: key, serverType: server))
+        // Save password
+        XCTAssertTrue(KeyChain.updateCreateOrDelete(password: pass, forKey: key))
+        // Assure it has been saved
+        XCTAssertEqual(pass, KeyChain.password(key: key))
+        // Delete Pasword
+        XCTAssertTrue(KeyChain.updateCreateOrDelete(password: nil, forKey: key))
+        // Assure it has been deleted
+        XCTAssertNil(KeyChain.password(key: key))
     }
 }
