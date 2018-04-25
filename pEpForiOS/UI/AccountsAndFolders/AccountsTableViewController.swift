@@ -88,16 +88,40 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         return cell
     }
 
+    private func deleteRowAt(_ indexPath: IndexPath) {
+        self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+        if self.viewModel.noAccounts() {
+            self.performSegue(withIdentifier: "noAccounts", sender: nil)
+        }
+    }
+
+    private func showAlertBeforeDelete(_ indexPath: IndexPath) {
+        let alertController = UIAlertController(title: nil, message: NSLocalizedString("Are you sure you want to delete the account?", comment:
+            "delete account message"), preferredStyle: .actionSheet)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
+        }
+        alertController.addAction(cancelAction)
+
+        let destroyAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            self.deleteRowAt(indexPath)
+            self.tableView.beginUpdates()
+            self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
+            self.tableView.endUpdates()
+        }
+        alertController.addAction(destroyAction)
+
+        self.present(alertController, animated: true) {
+        }
+    }
+
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         if indexPath.section == 0 {
             let deleteAction = SwipeAction(style: .destructive,
                                            title: "Delete") { action, indexPath in
-                self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
-                if self.viewModel.noAccounts() {
-                    self.performSegue(withIdentifier: "noAccounts", sender: nil)
-                }
+                                            self.showAlertBeforeDelete(indexPath)
             }
             return (orientation == .left ?   [deleteAction] : nil)
         }
@@ -109,7 +133,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                    editActionsOptionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         var options = SwipeTableOptions()
-        options.expansionStyle = .destructive
+        options.expansionStyle = .none
         options.transitionStyle = .border
         return options
     }
