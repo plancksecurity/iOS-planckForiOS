@@ -40,7 +40,6 @@ class EmailViewController: BaseTableViewController {
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
 
-        setTitleView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -86,22 +85,12 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
-    private func setTitleView() {
-        guard let m = message else{
-            Log.shared.errorAndCrash(component: #function, errorString: "no message to show")
-            return
-        }
-        self.title = m.shortMessage
-    }
-
     // MARK: - SETUP
 
     private func configureView() {
         // Make sure the NavigationBar is shown, even the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false)
         setupDestructiveButtonIcon()
-
-        setTitleView()
 
         tableData?.filterRows(message: message)
 
