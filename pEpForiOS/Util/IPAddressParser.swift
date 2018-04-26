@@ -22,8 +22,8 @@ struct IPAddressParser {
      - Note: Since a regex is involved, the `inputString` is cast to a `NSString`.
      The first match is ignored, as this is usually the whole string.
      */
-    func parseOctets(regex: NSRegularExpression, inputString: String) -> [Int] {
-        var octets = [Int]()
+    func parseOctets(regex: NSRegularExpression, inputString: String) -> [UInt8] {
+        var octets = [UInt8]()
         let nsString = inputString as NSString
         regex.enumerateMatches(
             in: inputString,
@@ -34,7 +34,7 @@ struct IPAddressParser {
                     for i in 1..<theResult.numberOfRanges {
                         let range = theResult.range(at: i)
                         let string = nsString.substring(with: range)
-                        if let num = Int(string) {
+                        if let num = UInt8(string) {
                             octets.append(num)
                         }
                     }
@@ -108,7 +108,7 @@ struct IPAddressParser {
     /**
      - Returns: The 4 IPv4 octets, if given a valid IPv4 address, or nil.
      */
-    func octetsIPv4(ipAddress: String) -> [Int]? {
+    func octetsIPv4(ipAddress: String) -> [UInt8]? {
         let octets = parseOctets(regex: IPAddressParser.regexIPv4, inputString: ipAddress)
         if octets.isEmpty {
             return nil
