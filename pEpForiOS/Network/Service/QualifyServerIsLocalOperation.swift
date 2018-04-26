@@ -77,9 +77,9 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
         let queue = DispatchQueue.global()
         queue.async { [weak self] in
             if let theSelf = self {
-                let ipAddress = theSelf.lookupAddresses(serverName: theSelf.serverName)
-                if !ipAddress.isEmpty {
-                    theSelf.isLocal = !ipAddress.contains { theSelf.isRemote(ipAddress: $0) }
+                let ipAddresses = theSelf.lookupAddresses(serverName: theSelf.serverName)
+                if !ipAddresses.isEmpty {
+                    theSelf.isLocal = !ipAddresses.contains { theSelf.isRemote(ipAddress: $0) }
                 } else {
                     theSelf.isLocal = nil
                 }
