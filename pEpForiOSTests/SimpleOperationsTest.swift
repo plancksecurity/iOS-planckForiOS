@@ -759,7 +759,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     // MARK: - QualifyServerIsLocalOperation
 
     func testQualifyServerOperation() {
-        XCTAssertEqual(isLocalServer(serverName: "localhost"), true)
         XCTAssertEqual(isLocalServer(serverName: "peptest.ch"), false)
     }
 
