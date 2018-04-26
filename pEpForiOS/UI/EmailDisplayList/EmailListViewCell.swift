@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MessageModel
 import SwipeCellKit
 
 class EmailListViewCell: SwipeTableViewCell {
