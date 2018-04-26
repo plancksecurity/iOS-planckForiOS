@@ -78,10 +78,10 @@ struct IPAddressParser {
     }
 
     /**
-     Checks the given `octets` for being contained in all `ranges`.
+     Checks the given `octets` for being contained in _all_ `ranges`.
      Basically calls `check(octets:ranges)` on every element of `ranges`.
      */
-    func check<T>(octets: [T], listOfRanges: [[CountableClosedRange<T>]]) -> [T]? {
+    func checkAll<T>(octets: [T], listOfRanges: [[CountableClosedRange<T>]]) -> [T]? {
         for range in listOfRanges {
             let someOctets = check(octets: octets, ranges: range)
             if someOctets == nil {
@@ -89,6 +89,20 @@ struct IPAddressParser {
             }
         }
         return octets
+    }
+
+    /**
+     Checks the given `octets` for being contained in at least one of `ranges`.
+     Basically calls `check(octets:ranges)` on every element of `ranges`.
+     */
+    func checkSome<T>(octets: [T], listOfRanges: [[CountableClosedRange<T>]]) -> [T]? {
+        for ranges in listOfRanges {
+            let someOctets = check(octets: octets, ranges: ranges)
+            if someOctets != nil {
+                return octets
+            }
+        }
+        return nil
     }
 
     /**

@@ -59,10 +59,13 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
     func isLocal(ipAddress: String) -> Bool {
         let parser = IPAddressParser()
         if let octetsIP4 = parser.octetsIPv4(ipAddress: ipAddress) {
-            let prefix_10_18 = [10...10, 0...255, 0...255, 0...255]
-            let checkedOctets = parser.check(
+            let localhost = [127...127, 0...0, 0...0, 1...1]
+            let prefix10 = [10...10, 0...255, 0...255, 0...255]
+            let prefix172 = [172...172, 16...31, 0...255, 0...255]
+            let prefix192 = [192...192, 168...168, 0...255, 0...255]
+            let checkedOctets = parser.checkSome(
                 octets: octetsIP4,
-                listOfRanges: [prefix_10_18])
+                listOfRanges: [localhost, prefix10, prefix172, prefix192])
             return checkedOctets != nil
         } else {
             return false
