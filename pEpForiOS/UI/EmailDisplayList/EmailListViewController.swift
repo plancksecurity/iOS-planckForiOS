@@ -82,6 +82,24 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(false, animated: true)
+        if MiscUtil.isUnitTest() {
+            return
+        }
+
+        setDefaultColors()
+        setup()
+
+        // Mark this folder as having been looked at by the user
+        updateLastLookAt()
+        setupFoldersBarButton()
+        if model != nil {
+            updateFilterButtonView()
+        }
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(
             self,
@@ -104,24 +122,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @objc func didBecomeInactive() {
         tableView.tableHeaderView = nil
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.setToolbarHidden(false, animated: true)
-        if MiscUtil.isUnitTest() {
-            return
-        }
-
-        setDefaultColors()
-        setup()
-        
-        // Mark this folder as having been looked at by the user
-        updateLastLookAt()
-        setupFoldersBarButton()
-        if model != nil {
-            updateFilterButtonView()
-        }
     }
     
     // MARK: - NavigationBar
