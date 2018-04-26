@@ -110,6 +110,10 @@ struct IPAddressParser {
      */
     func octetsIPv4(ipAddress: String) -> [Int]? {
         let octets = parseOctets(regex: IPAddressParser.regexIPv4, inputString: ipAddress)
-        return check(octets: octets, range: 0...255)
+        if octets.isEmpty {
+            return nil
+        } else {
+            return check(octets: octets, range: 0...255)
+        }
     }
 }
