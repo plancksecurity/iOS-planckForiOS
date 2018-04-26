@@ -57,6 +57,41 @@ struct IPAddressParser {
     }
 
     /**
+     Checks the given `octets` for being contained in `ranges`.
+     - Returns: The original `octets` if all were in their corresponding range (from `ranges`),
+     or nil, if at least one wasn't, or if `octets` and `ranges` are not of the same length.
+     */
+    func check<T>(octets: [T], ranges: [CountableClosedRange<T>]) -> [T]? {
+        if octets.count != ranges.count {
+            return nil
+        }
+
+        for index in 0..<octets.count {
+            let element = octets[index]
+            let range = ranges[index]
+            if !range.contains(element) {
+                return nil
+            }
+        }
+
+        return octets
+    }
+
+    /**
+     Checks the given `octets` for being contained in all `ranges`.
+     Basically calls `check(octets:ranges)` on every element of `ranges`.
+     */
+    func check<T>(octets: [T], listOfRanges: [[CountableClosedRange<T>]]) -> [T]? {
+        for range in listOfRanges {
+            let someOctets = check(octets: octets, ranges: range)
+            if someOctets == nil {
+                return nil
+            }
+        }
+        return octets
+    }
+
+    /**
      - Returns: The 4 IPv4 octets, if given a valid IPv4 address, or nil.
      */
     func octetsIPv4(ipAddress: String) -> [Int]? {

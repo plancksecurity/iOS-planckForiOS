@@ -58,8 +58,15 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
 
     func isLocal(ipAddress: String) -> Bool {
         let parser = IPAddressParser()
-        let octets = parser.octetsIPv4(ipAddress: ipAddress)
-        return false
+        if let octetsIP4 = parser.octetsIPv4(ipAddress: ipAddress) {
+            let prefix_10_18 = [10...10, 0...255, 0...255, 0...255]
+            let checkedOctets = parser.check(
+                octets: octetsIP4,
+                listOfRanges: [prefix_10_18])
+            return checkedOctets != nil
+        } else {
+            return false
+        }
     }
 
     func isRemote(ipAddress: String) -> Bool {
