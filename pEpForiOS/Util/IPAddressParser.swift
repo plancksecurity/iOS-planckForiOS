@@ -44,9 +44,23 @@ struct IPAddressParser {
     }
 
     /**
+     Checks the given `octets` for being contained in `range`.
+     - Returns: The original `octets` if all were an `range`, or nil, if at least one wasn't.
+     */
+    func check<T>(octets: [T], range: ClosedRange<T>) -> [T]? {
+        for oct in octets {
+            if !range.contains(oct) {
+                return nil
+            }
+        }
+        return octets
+    }
+
+    /**
      - Returns: The 4 IPv4 octets, if given a valid IPv4 address, or nil.
      */
-    func octetsIPv4(ipAddress: String) -> [Int] {
-        return parseOctets(regex: IPAddressParser.regexIPv4, inputString: ipAddress)
+    func octetsIPv4(ipAddress: String) -> [Int]? {
+        let octets = parseOctets(regex: IPAddressParser.regexIPv4, inputString: ipAddress)
+        return check(octets: octets, range: 0...255)
     }
 }

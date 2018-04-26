@@ -58,7 +58,7 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
 
     func isLocal(ipAddress: String) -> Bool {
         let parser = IPAddressParser()
-        let _ = parser.octetsIPv4(ipAddress: ipAddress)
+        let octets = parser.octetsIPv4(ipAddress: ipAddress)
         return false
     }
 
