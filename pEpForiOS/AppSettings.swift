@@ -37,7 +37,7 @@ class AppSettings {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyUnecryptedSubjectEnabled)
-            PEPObjCAdapter.setUnecryptedSubjectEnabled(newValue)
+            PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
         }
     }
 
@@ -47,7 +47,7 @@ class AppSettings {
     }
 
     private func setup() {
-        PEPObjCAdapter.setUnecryptedSubjectEnabled(unecryptedSubjectEnabled)
+        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unecryptedSubjectEnabled)
     }
 
     private func registerDefaults() {

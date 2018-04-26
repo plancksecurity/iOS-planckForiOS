@@ -88,7 +88,6 @@ class FolderTableViewController: BaseTableViewController {
             return cell
         }
         let fcvm = vm[indexPath.section][indexPath.item]
-        cell.detailTextLabel?.text = "\(fcvm.number)"
         cell.textLabel?.text = fcvm.title
         cell.accessoryType = .disclosureIndicator
         cell.indentationWidth = 20.0
