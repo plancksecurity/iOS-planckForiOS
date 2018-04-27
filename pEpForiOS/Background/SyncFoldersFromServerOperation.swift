@@ -108,7 +108,12 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
     }
 
     func readFolderNamesFromImapSync(_ sync: ImapSync?) {
-        let _ = sync?.folderNames
+        // We currently fetch folders only if we are missing required folders.
+        // The actual LIST command is sent by ImapSync.
+        if let _ = sync?.folderNames {
+            // Required folders exist, do nothing.
+            markAsFinished()
+        }
     }
 
     override func markAsFinished() {
@@ -155,7 +160,6 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
 
     fileprivate func handleFolderListCompleted(_ sync: ImapSync?) {
         backgroundQueue.waitUntilAllOperationsAreFinished()
-        readFolderNamesFromImapSync(sync)
         deleteLocalFoldersThatDoNotExistOnServerAnyMore()
         markAsFinished()
     }
