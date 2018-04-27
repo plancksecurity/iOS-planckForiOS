@@ -35,6 +35,12 @@ public class FetchFoldersOperation: ImapSyncOperation {
 
     weak var delegate: FetchFoldersOperationOperationDelegate?
 
+    /// Collection of the names of all folders that exist on server.
+    /// Used to sync local folders (might have been deleted/moved on server side)
+    var folderNamesExistingOnServer = [String]()
+
+    // MARK: - LIFE CYCLE
+
     public init(parentName: String = #function,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
@@ -48,6 +54,8 @@ public class FetchFoldersOperation: ImapSyncOperation {
             backgroundQueue: backgroundQueue, messageFetchedBlock: nil)
     }
 
+    // MARK: - PROCESS
+
     public override func main() {
         if !checkImapSync() {
             markAsFinished()
@@ -59,12 +67,17 @@ public class FetchFoldersOperation: ImapSyncOperation {
 
         if onlyUpdateIfNecessary {
             // Check if the local folder list is fairly complete
-            privateMOC.perform() {
-                guard let account = self.privateMOC.object(
-                    with: self.imapSyncData.connectInfo.accountObjectID)
+            privateMOC.perform() { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "Lost myselft")
+                    return
+                }
+                guard let account = me.privateMOC.object(
+                    with: me.imapSyncData.connectInfo.accountObjectID)
                     as? CdAccount else {
-                        self.addError(BackgroundError.CoreDataError.couldNotFindAccount(info: self.comp))
-                        self.markAsFinished()
+                        me.handleSeriousError(error:
+                            BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
                         return
                 }
 
@@ -77,9 +90,9 @@ public class FetchFoldersOperation: ImapSyncOperation {
                     }
                 }
                 if needSync {
-                    self.startSync()
+                    me.startSync()
                 } else {
-                    self.markAsFinished()
+                    me.markAsFinished()
                 }
             }
         } else {
@@ -95,10 +108,7 @@ public class FetchFoldersOperation: ImapSyncOperation {
     }
 
     func readFolderNamesFromImapSync(_ sync: ImapSync?) {
-        if let _ = sync?.folderNames {
-            waitForBackgroundTasksToFinish()
-        }
-        //IOS-919: should always wait!
+        let _ = sync?.folderNames
     }
 
     override func markAsFinished() {
@@ -106,14 +116,48 @@ public class FetchFoldersOperation: ImapSyncOperation {
         super.markAsFinished()
     }
 
-    /// Collection of the folder names of all folders that exist on server.
-    /// Used to figure out if our folders has been deleted on server side
-    var folderNamesExistingOnServer = [String]() //IOS-919
+    /// Deletes all local folders that do not exist on server any more (have been moved/deleted by
+    /// another client).
+    private func deleteLocalFoldersThatDoNotExistOnServerAnyMore() {
+        privateMOC.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            // Get all local folders
+            guard let cdAaccount =
+                me.privateMOC.object(with: me.imapSyncData.connectInfo.accountObjectID)
+                    as? CdAccount else {
+                        handleSeriousError(error:
+                            BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
+                        return
+            }
+            let account = cdAaccount.account()
+            let localFolders = Folder.allFolders(inAccount: account)
+            // Filter local folders that do not exist on server any more ...
+            let foldersToDelete = localFolders.filter {
+                !folderNamesExistingOnServer.contains($0.name)
+            }
+            // ... and delete them
+            for deletee: Folder in foldersToDelete {
+                deletee.delete()
+            }
+        }
+    }
+
+    private func handleSeriousError(error: Error) {
+        self.addError(error)
+        backgroundQueue.cancelAllOperations()
+        waitForBackgroundTasksToFinish()
+    }
+
+    // MARK: - HANDLERS FOR FetchFoldersSyncDelegate
 
     fileprivate func handleFolderListCompleted(_ sync: ImapSync?) {
+        backgroundQueue.waitUntilAllOperationsAreFinished()
         readFolderNamesFromImapSync(sync)
-        //IOS-919: remove non existing
-
+        deleteLocalFoldersThatDoNotExistOnServerAnyMore()
+        markAsFinished()
     }
 
     fileprivate func handleFolderNameParsed(syncOp: FetchFoldersOperation, folderName: String,
@@ -133,6 +177,8 @@ public class FetchFoldersOperation: ImapSyncOperation {
         syncOp.backgroundQueue.addOperation(storeFolderOp)
     }
 }
+
+// MARK: - FetchFoldersSyncDelegate
 
 class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
 
@@ -187,6 +233,8 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
                                                                          selectable: isSelectable)
     }
 }
+
+// MARK: - StoreFolderOperationDelegate
 
 extension FetchFoldersOperation: StoreFolderOperationDelegate {
     func didCreate(cdFolder: CdFolder) {
