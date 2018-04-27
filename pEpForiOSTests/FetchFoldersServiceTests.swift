@@ -40,7 +40,7 @@ class SyncFoldersFromServerServiceTests: XCTestCase {
         self.cdAccountDisfunctional = cdDisfunctionalAccount
     }
 
-    func runPrimitiveFetchFolders(shouldSucceed: Bool) {
+    func runPrimitiveSyncFolders(shouldSucceed: Bool) {
         let foldersCount1 = (CdFolder.all() ?? []).count
         XCTAssertEqual(foldersCount1, 0)
         let expectationServiceRan = expectation(description: "expectationServiceRan")
@@ -55,12 +55,12 @@ class SyncFoldersFromServerServiceTests: XCTestCase {
             return
         }
 
-        let fetchService = SyncFoldersFromServerService(
+        let syncService = SyncFoldersFromServerService(
             parentName: #function, backgrounder: mbg, imapSyncData: imapSyncData)
-        let fetchDelegate = SyncFoldersFromServerServiceTestDelegate()
-        fetchService.delegate = fetchDelegate
+        let syncDelegate = SyncFoldersFromServerServiceTestDelegate()
+        syncService.delegate = syncDelegate
 
-        fetchService.execute() { error in
+        syncService.execute() { error in
             if shouldSucceed {
                 XCTAssertNil(error)
             } else {
@@ -74,19 +74,19 @@ class SyncFoldersFromServerServiceTests: XCTestCase {
 
         let foldersCount2 = (CdFolder.all() ?? []).count
         if shouldSucceed {
-            XCTAssertGreaterThan(fetchDelegate.createdFoldersCount, 0)
+            XCTAssertGreaterThan(syncDelegate.createdFoldersCount, 0)
             XCTAssertGreaterThan(foldersCount2, foldersCount1)
         } else {
-            XCTAssertEqual(fetchDelegate.createdFoldersCount, 0)
+            XCTAssertEqual(syncDelegate.createdFoldersCount, 0)
             XCTAssertEqual(foldersCount1, foldersCount1)
         }
     }
 
-    func testPrimitiveFetchFoldersOK() {
-        runPrimitiveFetchFolders(shouldSucceed: true)
+    func testPrimitiveSyncFoldersOK() {
+        runPrimitiveSyncFolders(shouldSucceed: true)
     }
 
-    func testPrimitiveFetchFoldersError() {
-        runPrimitiveFetchFolders(shouldSucceed: false)
+    func testPrimitiveSyncFoldersError() {
+        runPrimitiveSyncFolders(shouldSucceed: false)
     }
 }

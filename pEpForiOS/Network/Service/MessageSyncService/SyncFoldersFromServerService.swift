@@ -32,16 +32,16 @@ extension SyncFoldersFromServerService: ServiceExecutionProtocol {
         let bgID = backgrounder?.beginBackgroundTask(taskName: "SyncFoldersFromServerService")
         let imapLoginOp = LoginImapOperation(parentName: parentName, errorContainer: self,
                                              imapSyncData: imapSyncData)
-        let fetchFoldersOp = SyncFoldersFromServerOperation(
+        let syncFoldersOp = SyncFoldersFromServerOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
             onlyUpdateIfNecessary: false)
-        fetchFoldersOp.delegate = self
-        fetchFoldersOp.addDependency(imapLoginOp)
-        fetchFoldersOp.completionBlock = { [weak self] in
-            fetchFoldersOp.completionBlock = nil
+        syncFoldersOp.delegate = self
+        syncFoldersOp.addDependency(imapLoginOp)
+        syncFoldersOp.completionBlock = { [weak self] in
+            syncFoldersOp.completionBlock = nil
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
-        backgroundQueue.addOperations([imapLoginOp, fetchFoldersOp], waitUntilFinished: false)
+        backgroundQueue.addOperations([imapLoginOp, syncFoldersOp], waitUntilFinished: false)
     }
 }

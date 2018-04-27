@@ -44,22 +44,22 @@ extension CdAccount {
             parentName: #function, imapSyncData: imapSyncData)
 
         let expFoldersFetched = testCase.expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = SyncFoldersFromServerOperation(
+        let syncFoldersOp = SyncFoldersFromServerOperation(
             parentName: #function, imapSyncData: imapSyncData)
-        fetchFoldersOp.addDependency(imapLogin)
-        fetchFoldersOp.completionBlock = {
-            fetchFoldersOp.completionBlock = nil
+        syncFoldersOp.addDependency(imapLogin)
+        syncFoldersOp.completionBlock = {
+            syncFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
         let backgroundQueue = OperationQueue()
         backgroundQueue.addOperation(imapLogin)
-        backgroundQueue.addOperation(fetchFoldersOp)
+        backgroundQueue.addOperation(syncFoldersOp)
 
         testCase.waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(fetchFoldersOp.hasErrors())
+            XCTAssertFalse(syncFoldersOp.hasErrors())
         })
 
         let expCreated1 = testCase.expectation(description: "expCreated")

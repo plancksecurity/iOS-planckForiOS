@@ -87,11 +87,11 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
+        let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
                                                    imapSyncData: imapSyncData)
-        fetchFoldersOp.addDependency(imapLogin)
-        fetchFoldersOp.completionBlock = {
-            fetchFoldersOp.completionBlock = nil
+        syncFoldersOp.addDependency(imapLogin)
+        syncFoldersOp.completionBlock = {
+            syncFoldersOp.completionBlock = nil
             guard let _ = CdFolder.all() as? [CdFolder] else {
                 XCTFail("No folders?")
                 return
@@ -102,7 +102,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         let expFoldersCreated = expectation(description: "expFoldersCreated")
         let createRequiredFoldersOp = CreateRequiredFoldersOperation(parentName: #function,
                                                                      imapSyncData: imapSyncData)
-        createRequiredFoldersOp.addDependency(fetchFoldersOp)
+        createRequiredFoldersOp.addDependency(syncFoldersOp)
         createRequiredFoldersOp.completionBlock = {
             guard let _ = CdFolder.all() as? [CdFolder] else {
                 XCTFail("No folders?")
@@ -113,13 +113,13 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
 
         let queue = OperationQueue()
         queue.addOperation(imapLogin)
-        queue.addOperation(fetchFoldersOp)
+        queue.addOperation(syncFoldersOp)
         queue.addOperation(createRequiredFoldersOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(fetchFoldersOp.hasErrors())
+            XCTAssertFalse(syncFoldersOp.hasErrors())
             XCTAssertFalse(createRequiredFoldersOp.hasErrors())
         })
 

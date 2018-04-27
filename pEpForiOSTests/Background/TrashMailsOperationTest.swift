@@ -315,21 +315,21 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = SyncFoldersFromServerOperation(
+        let syncFoldersOp = SyncFoldersFromServerOperation(
             parentName: #function, imapSyncData: imapSyncData)
-        fetchFoldersOp.addDependency(imapLogin)
-        fetchFoldersOp.completionBlock = {
-            fetchFoldersOp.completionBlock = nil
+        syncFoldersOp.addDependency(imapLogin)
+        syncFoldersOp.completionBlock = {
+            syncFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
         queue.addOperation(imapLogin)
-        queue.addOperation(fetchFoldersOp)
+        queue.addOperation(syncFoldersOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(fetchFoldersOp.hasErrors())
+            XCTAssertFalse(syncFoldersOp.hasErrors())
         })
     }
 }
