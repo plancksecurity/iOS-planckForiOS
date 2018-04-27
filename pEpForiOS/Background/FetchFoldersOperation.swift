@@ -98,6 +98,7 @@ public class FetchFoldersOperation: ImapSyncOperation {
         if let _ = sync?.folderNames {
             waitForBackgroundTasksToFinish()
         }
+        //IOS-919: should always wait!
     }
 
     override func markAsFinished() {
@@ -105,10 +106,22 @@ public class FetchFoldersOperation: ImapSyncOperation {
         super.markAsFinished()
     }
 
-    func folderNameParsed(syncOp: FetchFoldersOperation, folderName: String,
+    /// Collection of the folder names of all folders that exist on server.
+    /// Used to figure out if our folders has been deleted on server side
+    var folderNamesExistingOnServer = [String]() //IOS-919
+
+    fileprivate func handleFolderListCompleted(_ sync: ImapSync?) {
+        readFolderNamesFromImapSync(sync)
+        //IOS-919: remove non existing
+
+    }
+
+    fileprivate func handleFolderNameParsed(syncOp: FetchFoldersOperation, folderName: String,
                           folderSeparator: String?,
                           folderType: FolderType?,
                           selectable: Bool = false) {
+        folderNamesExistingOnServer.append(folderName)
+
         let folderInfo = StoreFolderOperation.FolderInfo(name: folderName,
                                                          separator: folderSeparator,
                                                          folderType: folderType,
@@ -122,8 +135,9 @@ public class FetchFoldersOperation: ImapSyncOperation {
 }
 
 class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
+
     public override func folderListCompleted(_ sync: ImapSync, notification: Notification?) {
-        (errorHandler as? FetchFoldersOperation)?.readFolderNamesFromImapSync(sync)
+        (errorHandler as? FetchFoldersOperation)?.handleFolderListCompleted(sync)
     }
 
     public override func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
@@ -166,11 +180,11 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
             isSelectable = folderFlags.isSelectable
         }
 
-        (errorHandler as? FetchFoldersOperation)?.folderNameParsed(syncOp: syncOp,
-                                                                   folderName: folderName,
-                                                                   folderSeparator: folderSeparator,
-                                                                   folderType:folderType,
-                                                                   selectable: isSelectable)
+        (errorHandler as? FetchFoldersOperation)?.handleFolderNameParsed(syncOp: syncOp,
+                                                                         folderName: folderName,
+                                                                         folderSeparator: folderSeparator,
+                                                                         folderType:folderType,
+                                                                         selectable: isSelectable)
     }
 }
 
