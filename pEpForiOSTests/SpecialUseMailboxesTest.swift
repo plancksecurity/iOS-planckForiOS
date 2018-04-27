@@ -20,14 +20,17 @@ class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
 
-        let imapLogin = LoginImapOperation(parentName: #function, errorContainer: errorContainer, imapSyncData: imapSyncData)
+        let imapLogin = LoginImapOperation(parentName: #function,
+                                           errorContainer: errorContainer,
+                                           imapSyncData: imapSyncData)
         imapLogin.completionBlock = {
             imapLogin.completionBlock = nil
             XCTAssertNotNil(imapSyncData.sync)
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
+        let fetchFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
+                                                            imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {
             fetchFoldersOp.completionBlock = nil

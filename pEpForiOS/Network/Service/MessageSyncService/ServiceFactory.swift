@@ -16,7 +16,7 @@ class ServiceFactory {
         imapSyncData: ImapSyncData, smtpSendData: SmtpSendData,
         smtpSendServiceDelegate: SmtpSendServiceDelegate?,
         syncFlagsToServerServiceDelegate: SyncFlagsToServerServiceDelegate?) -> ServiceExecutionProtocol {
-        let fetchFoldersService = FetchFoldersService(
+        let fetchFoldersService = SyncFoldersFromServerService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
 
         let smtpService = SmtpSendService(

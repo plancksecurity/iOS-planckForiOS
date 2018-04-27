@@ -315,7 +315,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(
+        let fetchFoldersOp = SyncFoldersFromServerOperation(
             parentName: #function, imapSyncData: imapSyncData)
         fetchFoldersOp.addDependency(imapLogin)
         fetchFoldersOp.completionBlock = {

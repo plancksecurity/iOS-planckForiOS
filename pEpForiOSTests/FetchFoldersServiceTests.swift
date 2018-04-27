@@ -1,5 +1,5 @@
 //
-//  FetchFoldersServiceTests.swift
+//  SyncFoldersFromServerServiceTests.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 03.07.17.
@@ -11,8 +11,8 @@ import XCTest
 @testable import MessageModel
 @testable import pEpForiOS
 
-class FetchFoldersServiceTests: XCTestCase {
-    class FetchFoldersServiceTestDelegate: FetchFoldersServiceDelegate {
+class SyncFoldersFromServerServiceTests: XCTestCase {
+    class SyncFoldersFromServerServiceTestDelegate: SyncFoldersFromServerServiceDelegate {
         var createdFoldersCount = 0
 
         func didCreate(folder: Folder) {
@@ -55,9 +55,9 @@ class FetchFoldersServiceTests: XCTestCase {
             return
         }
 
-        let fetchService = FetchFoldersService(
+        let fetchService = SyncFoldersFromServerService(
             parentName: #function, backgrounder: mbg, imapSyncData: imapSyncData)
-        let fetchDelegate = FetchFoldersServiceTestDelegate()
+        let fetchDelegate = SyncFoldersFromServerServiceTestDelegate()
         fetchService.delegate = fetchDelegate
 
         fetchService.execute() { error in

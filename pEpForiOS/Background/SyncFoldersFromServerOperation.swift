@@ -1,5 +1,5 @@
 //
-//  FetchFoldersOperation.swift
+//  SyncFoldersFromServerOperation.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 03/05/16.
@@ -10,7 +10,7 @@ import CoreData
 
 import MessageModel
 
-protocol FetchFoldersOperationOperationDelegate: class {
+protocol SyncFoldersFromServerOperationDelegate: class {
     /**
      Called if the folder was unknown before, and therefore newly created.
      */
@@ -22,7 +22,7 @@ protocol FetchFoldersOperationOperationDelegate: class {
  It runs asynchronously, but mainly driven by the main runloop through the use of NSStream.
  Therefore it behaves as a concurrent operation, handling the state itself.
  */
-public class FetchFoldersOperation: ImapSyncOperation {
+public class SyncFoldersFromServerOperation: ImapSyncOperation {
     var folderBuilder: ImapFolderBuilder!
 
     /**
@@ -31,9 +31,9 @@ public class FetchFoldersOperation: ImapSyncOperation {
      */
     let onlyUpdateIfNecessary: Bool
 
-    var syncDelegate: FetchFoldersSyncDelegate?
+    var syncDelegate: SyncFoldersFromServerSyncDelegate?
 
-    weak var delegate: FetchFoldersOperationOperationDelegate?
+    weak var delegate: SyncFoldersFromServerOperationDelegate?
 
     /// Collection of the names of all folders that exist on server.
     /// Used to sync local folders (might have been deleted/moved on server side)
@@ -101,7 +101,7 @@ public class FetchFoldersOperation: ImapSyncOperation {
     }
 
     func startSync() {
-        syncDelegate = FetchFoldersSyncDelegate(errorHandler: self)
+        syncDelegate = SyncFoldersFromServerSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
         imapSyncData.sync?.folderBuilder = folderBuilder
         readFolderNamesFromImapSync(imapSyncData.sync)
@@ -151,7 +151,7 @@ public class FetchFoldersOperation: ImapSyncOperation {
         waitForBackgroundTasksToFinish()
     }
 
-    // MARK: - HANDLERS FOR FetchFoldersSyncDelegate
+    // MARK: - HANDLERS FOR SyncFoldersFromServerSyncDelegate
 
     fileprivate func handleFolderListCompleted(_ sync: ImapSync?) {
         backgroundQueue.waitUntilAllOperationsAreFinished()
@@ -160,10 +160,11 @@ public class FetchFoldersOperation: ImapSyncOperation {
         markAsFinished()
     }
 
-    fileprivate func handleFolderNameParsed(syncOp: FetchFoldersOperation, folderName: String,
-                          folderSeparator: String?,
-                          folderType: FolderType?,
-                          selectable: Bool = false) {
+    fileprivate func handleFolderNameParsed(syncOp: SyncFoldersFromServerOperation,
+                                            folderName: String,
+                                            folderSeparator: String?,
+                                            folderType: FolderType?,
+                                            selectable: Bool = false) {
         folderNamesExistingOnServer.append(folderName)
 
         let folderInfo = StoreFolderOperation.FolderInfo(name: folderName,
@@ -178,12 +179,12 @@ public class FetchFoldersOperation: ImapSyncOperation {
     }
 }
 
-// MARK: - FetchFoldersSyncDelegate
+// MARK: - SyncFoldersFromServerSyncDelegate
 
-class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
+class SyncFoldersFromServerSyncDelegate: DefaultImapSyncDelegate {
 
     public override func folderListCompleted(_ sync: ImapSync, notification: Notification?) {
-        (errorHandler as? FetchFoldersOperation)?.handleFolderListCompleted(sync)
+        (errorHandler as? SyncFoldersFromServerOperation)?.handleFolderListCompleted(sync)
     }
 
     public override func folderNameParsed(_ sync: ImapSync, notification: Notification?) {
@@ -196,7 +197,7 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
         guard let folderName = folderInfoDict[PantomimeFolderNameKey] as? String else {
             return
         }
-        guard let syncOp = errorHandler as? FetchFoldersOperation else {
+        guard let syncOp = errorHandler as? SyncFoldersFromServerOperation else {
             return
         }
 
@@ -226,7 +227,7 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
             isSelectable = folderFlags.isSelectable
         }
 
-        (errorHandler as? FetchFoldersOperation)?.handleFolderNameParsed(syncOp: syncOp,
+        (errorHandler as? SyncFoldersFromServerOperation)?.handleFolderNameParsed(syncOp: syncOp,
                                                                          folderName: folderName,
                                                                          folderSeparator: folderSeparator,
                                                                          folderType:folderType,
@@ -236,7 +237,7 @@ class FetchFoldersSyncDelegate: DefaultImapSyncDelegate {
 
 // MARK: - StoreFolderOperationDelegate
 
-extension FetchFoldersOperation: StoreFolderOperationDelegate {
+extension SyncFoldersFromServerOperation: StoreFolderOperationDelegate {
     func didCreate(cdFolder: CdFolder) {
         delegate?.didCreate(cdFolder: cdFolder)
     }

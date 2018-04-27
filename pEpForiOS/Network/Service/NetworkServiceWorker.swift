@@ -480,7 +480,7 @@ open class NetworkServiceWorker {
 
             if !onlySyncChangesTriggeredByUser {
                 // Fetch current list of interesting mailboxes
-                let opFetchFolders = FetchFoldersOperation(
+                let opFetchFolders = SyncFoldersFromServerOperation(
                     parentName: description, errorContainer: errorContainer,
                     imapSyncData: imapSyncData)
                 opFetchFolders.completionBlock = { [weak self] in

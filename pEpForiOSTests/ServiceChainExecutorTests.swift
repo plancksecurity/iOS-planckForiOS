@@ -59,7 +59,7 @@ class ServiceChainExecutorTests: XCTestCase {
             imapSyncData: imapSyncData, smtpSendData: smtpSendData)
         smtpService.delegate = smtpSentDelegate
 
-        let fetchFoldersService = FetchFoldersService(
+        let fetchFoldersService = SyncFoldersFromServerService(
             parentName: #function, backgrounder: backgrounder, imapSyncData: imapSyncData)
 
         let fetchMessagesService = FetchMessagesService(
