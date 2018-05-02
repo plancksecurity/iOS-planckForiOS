@@ -70,8 +70,6 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
      */
     public var isLocal: Bool?
 
-    let ipParser = IPAddressParser()
-
     init(parentName: String = #function,
          errorContainer: ServiceErrorProtocol = ErrorContainer(),
          serverName: String) {
@@ -100,26 +98,11 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
                     ipAddresses.append(.ipv6(oct1, oct2, oct3, oct4, oct5, oct6, oct7, oct8,
                                              oct9, oct10, oct11, oct12, oct13, oct14, oct15, oct16))
                 } else if sockAddr.pointee.sa_family == AF_INET {
-                    var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-                    if getnameinfo(theAddress.bytes.assumingMemoryBound(to: sockaddr.self),
-                                   socklen_t(theAddress.length),
-                                   &hostname, socklen_t(hostname.count),
-                                   nil,
-                                   0, NI_NUMERICHOST) == 0 {
-                        if let ip4Octets = ipParser.octetsIPv4(
-                            ipAddress: String(cString: hostname)),
-                            ip4Octets.count == 4 {
-                            ipAddresses.append(.ipv4(ip4Octets[0], ip4Octets[1], ip4Octets[2],
-                                                     ip4Octets[3]))
-                        } else {
-                            Log.shared.errorAndCrash(
-                                component: #function,
-                                errorString: "could not parse result from getnameinfo into IPv4 address parts")
-                        }
-                    } else {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString: "getnameinfo didn't work")
-                    }
+                    let sockAddrIn = theAddress.bytes.assumingMemoryBound(to: sockaddr_in.self)
+                    let addr = in_addr_t(bigEndian: sockAddrIn.pointee.sin_addr.s_addr)
+                    let ip4Address = IPAddress.ipv4(UInt8(addr >> 24), UInt8(addr >> 16 & 255),
+                                                    UInt8(addr >> 8 & 255), UInt8(addr & 255))
+                    ipAddresses.append(ip4Address)
                 } else {
                     Log.shared.errorAndCrash(component: #function,
                                              errorString: "unknown address family")
