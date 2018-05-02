@@ -42,7 +42,21 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
             }
         }
 
+        static let localhostIPv4: IPAddress = .ipv4(127, 0, 0, 1)
         static let localhostIPv6: IPAddress = .ipv6(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
+
+        func isLocal() -> Bool {
+            switch self {
+            case let .ipv4(u1, u2, _, _):
+                return self == IPAddress.localhostIPv4
+                    || u1 == 10
+                    || u1 == 172 && u2 >= 16 && u2 <= 31
+                    || u1 == 192 && u2 == 168
+            case let .ipv6(u1, u2, _, _, _, _, _, _, _, _, _, _, _, _, _, _):
+                return self == IPAddress.localhostIPv6 || u1 == 0xfc || u1 == 0xfd ||
+                    (u1 == 0xfe && u2 == 0x80)
+            }
+        }
     }
 
     /**
@@ -77,15 +91,15 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
         if let addresses = CFHostGetAddressing(host, &success)?.takeUnretainedValue()
             as NSArray?, success.boolValue {
             for case let theAddress as NSData in addresses {
-                let sockAdr = theAddress.bytes.assumingMemoryBound(to: sockaddr.self)
-                if sockAdr.pointee.sa_family == AF_INET6 {
+                let sockAddr = theAddress.bytes.assumingMemoryBound(to: sockaddr.self)
+                if sockAddr.pointee.sa_family == AF_INET6 {
                     let sockAddrIn6 = theAddress.bytes.assumingMemoryBound(to: sockaddr_in6.self)
                     let (oct1, oct2, oct3, oct4, oct5, oct6, oct7, oct8, oct9,
                         oct10, oct11, oct12, oct13, oct14, oct15, oct16) =
                             sockAddrIn6.pointee.sin6_addr.__u6_addr.__u6_addr8
                     ipAddresses.append(.ipv6(oct1, oct2, oct3, oct4, oct5, oct6, oct7, oct8,
                                              oct9, oct10, oct11, oct12, oct13, oct14, oct15, oct16))
-                } else if sockAdr.pointee.sa_family == AF_INET {
+                } else if sockAddr.pointee.sa_family == AF_INET {
                     var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
                     if getnameinfo(theAddress.bytes.assumingMemoryBound(to: sockaddr.self),
                                    socklen_t(theAddress.length),
@@ -116,20 +130,7 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
     }
 
     func isLocal(ipAddress: IPAddress) -> Bool {
-        switch ipAddress {
-        case let .ipv4(u1, u2, u3, u4):
-            let localhost: [CountableClosedRange<UInt8>] = [127...127, 0...0, 0...0, 1...1]
-            let prefix10: [CountableClosedRange<UInt8>] = [10...10, 0...255, 0...255, 0...255]
-            let prefix172: [CountableClosedRange<UInt8>] = [172...172, 16...31, 0...255, 0...255]
-            let prefix192: [CountableClosedRange<UInt8>] = [192...192, 168...168, 0...255, 0...255]
-            let checkedOctets = ipParser.checkSome(
-                octets: [u1, u2, u3, u4],
-                listOfRanges: [localhost, prefix10, prefix172, prefix192])
-            return checkedOctets != nil
-        case let .ipv6(u1, u2, _, _, _, _, _, _, _, _, _, _, _, _, _, _):
-            return ipAddress == IPAddress.localhostIPv6 || u1 == 0xfc || u1 == 0xfd ||
-                (u1 == 0xfe && u2 == 0x80)
-        }
+        return ipAddress.isLocal()
     }
 
     func isRemote(ipAddress: IPAddress) -> Bool {
