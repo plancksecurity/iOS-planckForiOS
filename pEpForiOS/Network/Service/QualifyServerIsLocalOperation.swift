@@ -17,6 +17,32 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
         case ipv4(UInt8, UInt8, UInt8, UInt8)
         case ipv6(UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
             UInt8, UInt8, UInt8, UInt8, UInt8)
+
+        static func ==(lhs: IPAddress, rhs: IPAddress) -> Bool {
+            switch lhs {
+            case let .ipv4(a1, a2, a3, a4):
+                switch rhs {
+                case let .ipv4(b1, b2, b3, b4):
+                    return a1 == b1 && a2 == b2 && a3 == b3 && a4 == b4
+                case .ipv6:
+                    return false
+                }
+            case let .ipv6(a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11,
+                           a12, a13, a14, a15, a16):
+                switch rhs {
+                case .ipv4:
+                    return false
+                case let .ipv6(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11,
+                               b12, b13, b14, b15, b16):
+                    return a1 == b1 && a2 == b2 && a3 == b3 && a4 == b4 &&
+                        a5 == b5 && a6 == b6 && a7 == b7 && a8 == b8 &&
+                        a9 == b9 && a10 == b10 && a11 == b11 && a12 == b12 &&
+                        a13 == b13 && a14 == b14 && a15 == b15 && a16 == b16
+                }
+            }
+        }
+
+        static let localhostIPv6: IPAddress = .ipv6(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
     }
 
     /**
@@ -102,7 +128,7 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
             return checkedOctets != nil
         case let .ipv6(u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12, u13, u14, u15, u16):
             print("ipv6")
-            return false
+            return ipAddress == IPAddress.localhostIPv6
         }
     }
 
