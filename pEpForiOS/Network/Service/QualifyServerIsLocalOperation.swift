@@ -126,9 +126,9 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
                 octets: [u1, u2, u3, u4],
                 listOfRanges: [localhost, prefix10, prefix172, prefix192])
             return checkedOctets != nil
-        case let .ipv6(u1, u2, u3, u4, u5, u6, u7, u8, u9, u10, u11, u12, u13, u14, u15, u16):
-            print("ipv6")
-            return ipAddress == IPAddress.localhostIPv6
+        case let .ipv6(u1, u2, _, _, _, _, _, _, _, _, _, _, _, _, _, _):
+            return ipAddress == IPAddress.localhostIPv6 || u1 == 0xfc || u1 == 0xfd ||
+                (u1 == 0xfe && u2 == 0x80)
         }
     }
 
