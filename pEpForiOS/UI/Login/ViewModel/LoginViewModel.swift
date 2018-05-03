@@ -238,7 +238,7 @@ extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         if let err = error {
             GCD.onMain { [weak self] in
-                self?.loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
+                self?.loginViewModelLoginErrorDelegate?.handle(loginError: err)
             }
         }
         self.accountHasBeenQualified(trusted: isLocal ?? false)
