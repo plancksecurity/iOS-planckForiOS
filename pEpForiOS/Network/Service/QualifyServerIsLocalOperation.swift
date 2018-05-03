@@ -52,6 +52,7 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
                     || u1 == 10
                     || u1 == 172 && u2 >= 16 && u2 <= 31
                     || u1 == 192 && u2 == 168
+                    || u1 == 169 && u2 == 254
             case let .ipv6(u1, u2, _, _, _, _, _, _, _, _, _, _, _, _, _, _):
                 return self == IPAddress.localhostIPv6 || u1 == 0xfc || u1 == 0xfd ||
                     (u1 == 0xfe && u2 == 0x80)
