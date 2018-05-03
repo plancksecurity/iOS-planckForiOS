@@ -380,6 +380,8 @@
 		43FC24231F04F43000C32110 /* ImapSmtpConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24221F04F43000C32110 /* ImapSmtpConnection.swift */; };
 		43FC24251F04FC6E00C32110 /* MessageSyncServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */; };
 		43FC24271F04FDDF00C32110 /* SmtpSendServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */; };
+		43FE802E209992B800E97AB3 /* QualifyServerIsLocalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */; };
+		43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */; };
 		4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */; };
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
 		49D521541E73E1C20097987B /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; };
@@ -857,6 +859,8 @@
 		43FC24221F04F43000C32110 /* ImapSmtpConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSmtpConnection.swift; sourceTree = "<group>"; };
 		43FC24241F04FC6E00C32110 /* MessageSyncServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSyncServiceTests.swift; sourceTree = "<group>"; };
 		43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSendServiceTests.swift; sourceTree = "<group>"; };
+		43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalService.swift; sourceTree = "<group>"; };
+		43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
 		4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		495560851E7150ED0016579E /* libPantomimeStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPantomimeStatic.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libPantomimeStatic.a"; sourceTree = "<group>"; };
 		495560871E71517F0016579E /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
@@ -1203,6 +1207,7 @@
 				1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */,
 				4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */,
 				4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */,
+				43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1464,6 +1469,7 @@
 		43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */,
 				151F71EB202A06750057C74D /* TestUtils */,
 				43B2C3151D2280ED00A08557 /* Resources */,
 				15BBBC691FD0522E00B9DCC8 /* Error */,
@@ -2370,6 +2376,7 @@
 				43A26FBA1E0408FB00AF0B84 /* ServiceErrorProtocol.swift in Sources */,
 				43C3220C1EA915C6005073FB /* CGRect+Util.swift in Sources */,
 				B714C4851ED437A7000BC84D /* LoginTableViewController.swift in Sources */,
+				43FE802E209992B800E97AB3 /* QualifyServerIsLocalService.swift in Sources */,
 				4351C2D41F4441190053381F /* iterator.c in Sources */,
 				43AA825B1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift in Sources */,
 				4326D3FF1EFBC8DB0016AB0D /* FolderInfoOperation.swift in Sources */,
@@ -2629,6 +2636,7 @@
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
+				43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */,
 				1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */,
 				43D2C26A1F1385CF00C97235 /* ServiceFactoryTests.swift in Sources */,
 				43200D9F1F0CD81300FFDE56 /* FetchMessagesServiceTests.swift in Sources */,
