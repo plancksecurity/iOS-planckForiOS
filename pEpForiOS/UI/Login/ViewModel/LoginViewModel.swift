@@ -51,6 +51,8 @@ class LoginViewModel {
      */
     var oauth2Model = OAuth2AuthViewModel()
 
+    let qualifyServerService = QualifyServerIsLocalService()
+
     init(messageSyncService: MessageSyncServiceProtocol? = nil) {
         self.messageSyncService = messageSyncService
     }
@@ -145,19 +147,37 @@ class LoginViewModel {
     /// - Parameter model: account data
     /// - Throws: AccountVerificationError
     func verifyAccount(model: AccountUserInput) throws {
+        do {
+            let account = try model.account()
+            loginAccount = account // have to store that for callback use
+
+            if let imapServer = account.imapServer?.address {
+                qualifyServerService.delegate = self
+                qualifyServerService.qualify(serverName: imapServer)
+            } else {
+                accountHasBeenQualified(trusted: false)
+            }
+        } catch {
+            throw error
+        }
+    }
+
+    func accountHasBeenQualified(trusted: Bool) {
         guard let ms = messageSyncService else {
             Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
             return
         }
-        do {
-            let account = try model.account()
-            loginAccount = account
-            account.needsVerification = true
-            account.save()
-            ms.requestVerification(account: account, delegate: self)
-        } catch {
-            throw error
+
+        guard let account = loginAccount else {
+            Log.shared.errorAndCrash(component: #function, errorString: "have lost loginAccount")
+            return
         }
+
+        account.imapServer?.trusted = trusted
+
+        account.needsVerification = true
+        account.save()
+        ms.requestVerification(account: account, delegate: self)
     }
 
     /**
@@ -211,5 +231,16 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
         }
         lastOAuth2Parameters = nil
         currentOauth2Authorizer = nil
+    }
+}
+
+extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
+    func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
+        if let err = error {
+            GCD.onMain { [weak self] in
+                self?.loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
+            }
+        }
+        self.accountHasBeenQualified(trusted: isLocal ?? false)
     }
 }
