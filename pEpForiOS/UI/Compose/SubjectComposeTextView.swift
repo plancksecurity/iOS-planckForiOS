@@ -9,8 +9,21 @@
 import Foundation
 
 class SubjectComposeTextView: ComposeTextView {
-    public override func layoutAfterTextDidChange(tableView: UITableView) {
-        tableView.updateSize()
-        scrollCaretToVisible(containingTableView: tableView)
+    override func layoutAfterTextDidChange(tableView: UITableView) {
+        tableView.updateSize() { [weak self] in
+            if let theSelf = self {
+                Timer.scheduledTimer(timeInterval: 0.01,
+                                     target: theSelf,
+                                     selector: #selector(theSelf.timerScroll),
+                                     userInfo: tableView,
+                                     repeats: false)
+            }
+        }
+    }
+
+    @objc func timerScroll(_ timer: Timer) {
+        if let tableView = timer.userInfo as? UITableView {
+            self.scrollCaretToVisible(containingTableView: tableView)
+        }
     }
 }
