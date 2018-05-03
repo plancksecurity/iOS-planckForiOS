@@ -11,5 +11,6 @@ import Foundation
 class SubjectComposeTextView: ComposeTextView {
     public override func layoutAfterTextDidChange(tableView: UITableView) {
         tableView.updateSize()
+        scrollCaretToVisible(containingTableView: tableView)
     }
 }
