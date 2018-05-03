@@ -43,7 +43,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     outgoing = folderType.isOutgoing()
                 }
 
-                let pepMessage = PEPUtil.pEpDict(cdMessage: cdMessage, outgoing: outgoing)
+                let pepMessage = PEPUtil.pEpDict(
+                    cdMessage: cdMessage, outgoing: outgoing).mutableDictionary()
                 var keys: NSArray?
                 Log.info(component: self.comp,
                          content: "Will decrypt \(cdMessage.logString())")
@@ -52,7 +53,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 var rating = PEP_rating_undefined
                 do {
                     let pEpDecryptedMessage = try session.decryptMessageDict(
-                        pepMessage, rating: &rating, extraKeys: &keys, status: nil)
+                        pepMessage, flags: nil, rating: &rating, extraKeys: &keys, status: nil)
                         as NSDictionary
                     handleDecryptionSuccess(cdMessage: cdMessage,
                                             pEpDecryptedMessage: pEpDecryptedMessage,

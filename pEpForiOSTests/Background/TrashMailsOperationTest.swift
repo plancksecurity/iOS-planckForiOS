@@ -148,6 +148,7 @@ class TrashMailsOperationTest: CoreDataDrivenTestBase {
         let decryptedTrashUUIDs = trashed.map { (cdEncryptedMessage: CdMessage) -> String in
             let decrypted = try! PEPSession().decryptMessage(
                 cdEncryptedMessage.pEpMessage(),
+                flags: nil,
                 rating: nil,
                 extraKeys: nil,
                 status: nil)
