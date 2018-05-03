@@ -9,15 +9,17 @@
 import Foundation
 
 class QualifyServerIsLocalService: QualifyServerIsLocalServiceProtocol {
-    enum QualifyServerIsLocalServiceError: Error {
-        case notImplemented
-    }
+    let opQueue = OperationQueue()
 
     weak var delegate: QualifyServerIsLocalServiceDelegate?
 
     func qualify(serverName: String) {
-        delegate?.didQualify(serverName: serverName,
-                             isLocal: nil,
-                             error: QualifyServerIsLocalServiceError.notImplemented)
+        let op = QualifyServerIsLocalOperation(serverName: serverName)
+        op.completionBlock = { [weak self] in
+            self?.delegate?.didQualify(serverName: serverName,
+                                       isLocal: op.isLocal,
+                                       error: op.error)
+        }
+        opQueue.addOperation(op)
     }
 }
