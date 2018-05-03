@@ -16,7 +16,7 @@ class ServiceFactory {
         imapSyncData: ImapSyncData, smtpSendData: SmtpSendData,
         smtpSendServiceDelegate: SmtpSendServiceDelegate?,
         syncFlagsToServerServiceDelegate: SyncFlagsToServerServiceDelegate?) -> ServiceExecutionProtocol {
-        let fetchFoldersService = FetchFoldersService(
+        let syncFoldersService = SyncFoldersFromServerService(
             parentName: parentName, backgrounder: backgrounder, imapSyncData: imapSyncData)
 
         let smtpService = SmtpSendService(
@@ -36,7 +36,7 @@ class ServiceFactory {
         uploadFlagsService.delegate = syncFlagsToServerServiceDelegate
 
         let chainedService = ServiceChainExecutor()
-        chainedService.add(services: [fetchFoldersService, smtpService,
+        chainedService.add(services: [syncFoldersService, smtpService,
                                       fetchMessagesService, syncMessagesService,
                                       uploadFlagsService])
 

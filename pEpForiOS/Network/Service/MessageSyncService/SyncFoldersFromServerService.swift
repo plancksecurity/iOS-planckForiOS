@@ -1,5 +1,5 @@
 //
-//  FetchFoldersService.swift
+//  SyncFoldersFromServerService.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 03.07.17.
@@ -10,38 +10,38 @@ import Foundation
 
 import MessageModel
 
-protocol FetchFoldersServiceDelegate: class {
+protocol SyncFoldersFromServerServiceDelegate: class {
     /**
      Called if the fetched folder was unknown before, and therefore newly created.
      */
     func didCreate(folder: Folder)
 }
 
-class FetchFoldersService: BackgroundOperationImapService {
-    weak var delegate: FetchFoldersServiceDelegate?
+class SyncFoldersFromServerService: BackgroundOperationImapService {
+    weak var delegate: SyncFoldersFromServerServiceDelegate?
 }
 
-extension FetchFoldersService: FetchFoldersOperationOperationDelegate {
+extension SyncFoldersFromServerService: SyncFoldersFromServerOperationDelegate {
     func didCreate(cdFolder: CdFolder) {
         delegate?.didCreate(folder: cdFolder.folder())
     }
 }
 
-extension FetchFoldersService: ServiceExecutionProtocol {
+extension SyncFoldersFromServerService: ServiceExecutionProtocol {
     func execute(handler: ServiceFinishedHandler? = nil) {
-        let bgID = backgrounder?.beginBackgroundTask(taskName: "FetchFoldersService")
+        let bgID = backgrounder?.beginBackgroundTask(taskName: "SyncFoldersFromServerService")
         let imapLoginOp = LoginImapOperation(parentName: parentName, errorContainer: self,
                                              imapSyncData: imapSyncData)
-        let fetchFoldersOp = FetchFoldersOperation(
+        let syncFoldersOp = SyncFoldersFromServerOperation(
             parentName: parentName, errorContainer: self, imapSyncData: imapSyncData,
             onlyUpdateIfNecessary: false)
-        fetchFoldersOp.delegate = self
-        fetchFoldersOp.addDependency(imapLoginOp)
-        fetchFoldersOp.completionBlock = { [weak self] in
-            fetchFoldersOp.completionBlock = nil
+        syncFoldersOp.delegate = self
+        syncFoldersOp.addDependency(imapLoginOp)
+        syncFoldersOp.completionBlock = { [weak self] in
+            syncFoldersOp.completionBlock = nil
             self?.backgrounder?.endBackgroundTask(bgID)
             handler?(self?.error)
         }
-        backgroundQueue.addOperations([imapLoginOp, fetchFoldersOp], waitUntilFinished: false)
+        backgroundQueue.addOperations([imapLoginOp, syncFoldersOp], waitUntilFinished: false)
     }
 }

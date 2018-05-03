@@ -265,8 +265,8 @@ class ComposeTableViewController: BaseTableViewController {
             messageBodyCell.setInitial(text: ReplyUtil.quotedMessageText(message: om,
                                                                          replyAll: false))
         case .replyAll:
-            messageBodyCell.setInitial(
-                text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
+            messageBodyCell.setInitial(text: ReplyUtil.quotedMessageText(message: om,
+                                                                         replyAll: true))
         case .forward:
             setBodyText(forMessage: om, to: messageBodyCell, composeMode: .forward)
         case .draft:
@@ -1106,7 +1106,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
     func scrollToMessageBodyCaret(composeTextView: ComposeTextView) {
-        composeTextView.scrollCaretToVisible(containingTableView: tableView)
+        composeTextView.scrollCaretToVisible(tableView: tableView)
     }
 }
 

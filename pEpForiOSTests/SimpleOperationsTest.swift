@@ -14,8 +14,8 @@ import MessageModel
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testComp() {
-        let f = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
-        XCTAssertTrue(f.comp.contains("FetchFoldersOperation"))
+        let f = SyncFoldersFromServerOperation(parentName: #function, imapSyncData: imapSyncData)
+        XCTAssertTrue(f.comp.contains("SyncFoldersFromServerOperation"))
         XCTAssertTrue(f.comp.contains(#function))
     }
 
@@ -164,7 +164,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testSyncMessagesFailedOperation() {
-        testFetchFoldersOperation()
+        testSyncFoldersFromServerOperation()
 
         guard
             let folder = CdFolder.by(folderType: .inbox, account: cdAccount),
@@ -190,11 +190,11 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         })
     }
 
-    func testFetchFoldersOperation() {
+    func testSyncFoldersFromServerOperation() {
         let expFoldersFetched = expectation(description: "expFoldersFetched")
 
         let opLogin = LoginImapOperation(parentName: #function, imapSyncData: imapSyncData)
-        let op = FetchFoldersOperation(parentName: #function, imapSyncData: imapSyncData)
+        let op = SyncFoldersFromServerOperation(parentName: #function, imapSyncData: imapSyncData)
         op.completionBlock = {
             op.completionBlock = nil
             expFoldersFetched.fulfill()
@@ -307,22 +307,22 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             parentName: #function, imapSyncData: imapSyncData)
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(
+        let syncFoldersOp = SyncFoldersFromServerOperation(
             parentName: #function, imapSyncData: imapSyncData)
-        fetchFoldersOp.addDependency(imapLogin)
-        fetchFoldersOp.completionBlock = {
-            fetchFoldersOp.completionBlock = nil
+        syncFoldersOp.addDependency(imapLogin)
+        syncFoldersOp.completionBlock = {
+            syncFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
         let backgroundQueue = OperationQueue()
         backgroundQueue.addOperation(imapLogin)
-        backgroundQueue.addOperation(fetchFoldersOp)
+        backgroundQueue.addOperation(syncFoldersOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(fetchFoldersOp.hasErrors())
+            XCTAssertFalse(syncFoldersOp.hasErrors())
         })
 
         let expCreated1 = expectation(description: "expCreated")
@@ -466,22 +466,22 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(
+        let syncFoldersOp = SyncFoldersFromServerOperation(
             parentName: #function, imapSyncData: imapSyncData)
-        fetchFoldersOp.addDependency(imapLogin)
-        fetchFoldersOp.completionBlock = {
-            fetchFoldersOp.completionBlock = nil
+        syncFoldersOp.addDependency(imapLogin)
+        syncFoldersOp.completionBlock = {
+            syncFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
         let queue = OperationQueue()
         queue.addOperation(imapLogin)
-        queue.addOperation(fetchFoldersOp)
+        queue.addOperation(syncFoldersOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(fetchFoldersOp.hasErrors())
+            XCTAssertFalse(syncFoldersOp.hasErrors())
         })
 
         guard let from = cdAccount.identity else {
@@ -554,22 +554,22 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let fetchFoldersOp = FetchFoldersOperation(
+        let syncFoldersOp = SyncFoldersFromServerOperation(
             parentName: #function, imapSyncData: imapSyncData)
-        fetchFoldersOp.addDependency(imapLogin)
-        fetchFoldersOp.completionBlock = {
-            fetchFoldersOp.completionBlock = nil
+        syncFoldersOp.addDependency(imapLogin)
+        syncFoldersOp.completionBlock = {
+            syncFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
         let queue = OperationQueue()
         queue.addOperation(imapLogin)
-        queue.addOperation(fetchFoldersOp)
+        queue.addOperation(syncFoldersOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(imapLogin.hasErrors())
-            XCTAssertFalse(fetchFoldersOp.hasErrors())
+            XCTAssertFalse(syncFoldersOp.hasErrors())
         })
 
         let from = CdIdentity.create()
@@ -759,6 +759,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     // MARK: - QualifyServerIsLocalOperation
 
     func testQualifyServerOperation() {
+        XCTAssertEqual(isLocalServer(serverName: "localhost"), true)
         XCTAssertEqual(isLocalServer(serverName: "peptest.ch"), false)
     }
 

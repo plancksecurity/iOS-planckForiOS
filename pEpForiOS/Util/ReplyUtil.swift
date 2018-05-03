@@ -9,19 +9,19 @@
 import MessageModel
 
 public struct ReplyUtil {
-    static let nameSeparator = ", "
-    static let newline = "\n"
+    private static let nameSeparator = ", "
+    private static let newline = "\n"
 
     /**
      Gets the quoted message body for the given `Message`.
      */
     public static func quotedMessageText(message: Message, replyAll: Bool) -> String {
-        if let text = message.longMessage {
-            let quotedText = quoteText(text)
-            let citation = citationHeaderForMessage(message, replyAll: replyAll)
-            return "\n\n\(footer())\n\n\(citation)\n\n\(quotedText)"
+        guard let quotedText = quotedText(for: message) else {
+            return "\n\n\(footer())"
         }
-        return "\n\n\(footer())"
+        let citation = citationHeaderForMessage(message, replyAll: replyAll)
+
+        return "\n\n\(footer())\n\n\(citation)\n\n\(quotedText)"
     }
 
     /// Adds citation header with data of a given message to a given text.
@@ -30,7 +30,7 @@ public struct ReplyUtil {
     ///   - textToCite: text to cite
     ///   - msg: message to take data (sender, date sent ...) from
     /// - Returns: text with citation header and "send by pEp" footer
-    public static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
+     static func citedMessageText(textToCite: String, fromMessage msg: Message) -> String {
         let citation = citationHeaderForMessage(msg, replyAll: false)
         return "\n\n\(footer())\n\n\(citation)\n\n\(textToCite)"
     }
@@ -67,9 +67,9 @@ public struct ReplyUtil {
 
     public static func forwardSubject(message: Message) -> String {
         if let subject = message.shortMessage {
-            let re = NSLocalizedString(
+            let fwd = NSLocalizedString(
                 "Fwd: ", comment: "The 'Fwd:' that gets appended to the subject line")
-            return "\(re) \(subject)"
+            return "\(fwd) \(subject)"
         } else {
             return ""
         }
@@ -77,14 +77,42 @@ public struct ReplyUtil {
 
     // MARK: - Private
 
-    static func replyNameFromIdentity(_ identity: Identity) -> String {
+    /// Extracts the text that should be used for quoting (in reply/forwarding) from a given message and returns it in quoted form.
+    /// - Parameter message: message to extract text from
+    /// - Returns:  If longMessageFormatted exists: formatted message with HTML striped, in quoted form
+    ///             else if longMessage exists: longMessage in quoted form
+    ///             nil otherwize
+    static private func quotedText(for message: Message) -> String? {
+        guard let text = extractMessageTextToQuote(from: message) else {
+            return nil
+        }
+        return quoteText(text)
+    }
+
+    /// Extracts the text that should be used for quoting (in reply/forwarding) from a given message.
+    ///
+    /// - Parameter message: message to extract text from
+    /// - Returns:  If longMessageFormatted exists: formatted message with HTML tags are striped
+    ///             else if longMessage exists: longMessage
+    ///             nil otherwize
+    static private func extractMessageTextToQuote(from message: Message) -> String? {
+        var textToQuote = message.longMessage ?? nil
+        guard let formatted = message.longMessageFormatted else {
+            return textToQuote
+        }
+        textToQuote = formatted.extractTextFromHTML()
+
+        return textToQuote //message.longMessage
+    }
+
+    static private func replyNameFromIdentity(_ identity: Identity) -> String {
         if let name = identity.userName {
             return name
         }
         return identity.address
     }
 
-    static func quoteText(_ text: String) -> String {
+    static private func quoteText(_ text: String) -> String {
         let newLineCS = CharacterSet.init(charactersIn: newline)
         let lines = text.components(separatedBy: newLineCS)
         let quoted = lines.map() {
@@ -94,7 +122,7 @@ public struct ReplyUtil {
         return quotedText
     }
 
-    static func citationHeaderForMessage(_ message: Message, replyAll: Bool) -> String {
+    static private func citationHeaderForMessage(_ message: Message, replyAll: Bool) -> String {
         let dateFormatter = DateFormatter.init()
         dateFormatter.dateStyle = DateFormatter.Style.long
         dateFormatter.timeStyle = DateFormatter.Style.long
@@ -151,7 +179,7 @@ public struct ReplyUtil {
         }
     }
 
-    static func footer() -> String {
+    static private func footer() -> String {
         return NSLocalizedString("Sent with p≡p",
                                  comment: "Message footer/default text")
     }

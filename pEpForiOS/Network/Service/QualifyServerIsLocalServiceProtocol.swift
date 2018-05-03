@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol QualifyServerIsLocalServiceDelegate: class {
-    func didQualify(serverName: String, isLocal: Bool)
+    func didQualify(serverName: String, isLocal: Bool?, error: Error?)
 }
 
 public protocol QualifyServerIsLocalServiceProtocol {
