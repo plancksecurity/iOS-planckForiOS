@@ -1106,7 +1106,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
     func scrollToMessageBodyCaret(composeTextView: ComposeTextView) {
-        composeTextView.scrollCaretToVisible(containingTableView: tableView)
+        composeTextView.scrollCaretToVisible(tableView: tableView)
     }
 }
 
