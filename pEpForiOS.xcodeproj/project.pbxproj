@@ -550,7 +550,7 @@
 		222B35551DF962D7007A1F82 /* ComposeHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeHelpers.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
 		222B35641DF96A9C007A1F82 /* ComposeCellProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeCellProtocols.swift; sourceTree = "<group>"; };
-		222B35681DF96AFE007A1F82 /* ComposeTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTextView.swift; sourceTree = "<group>"; };
+		222B35681DF96AFE007A1F82 /* ComposeTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposeTextView.swift; path = ../Util/ComposeTextView.swift; sourceTree = "<group>"; };
 		222B356C1DF96C30007A1F82 /* ComposeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeCell.swift; sourceTree = "<group>"; };
 		222B35711DF96CC8007A1F82 /* ComposeFieldModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeFieldModel.swift; sourceTree = "<group>"; };
 		222B357D1DF97675007A1F82 /* SuggestTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestTableView.swift; sourceTree = "<group>"; };
@@ -862,7 +862,7 @@
 		43FC24261F04FDDF00C32110 /* SmtpSendServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpSendServiceTests.swift; sourceTree = "<group>"; };
 		43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalService.swift; sourceTree = "<group>"; };
 		43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
-		43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectComposeTextView.swift; sourceTree = "<group>"; };
+		43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SubjectComposeTextView.swift; path = ../Util/SubjectComposeTextView.swift; sourceTree = "<group>"; };
 		4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		495560851E7150ED0016579E /* libPantomimeStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPantomimeStatic.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libPantomimeStatic.a"; sourceTree = "<group>"; };
 		495560871E71517F0016579E /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
@@ -1927,6 +1927,8 @@
 		B70D32B4205BD4B10094A92A /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				222B35681DF96AFE007A1F82 /* ComposeTextView.swift */,
+				43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */,
 				222B35821DF97A44007A1F82 /* ComposeDataSource.swift */,
 				222B35811DF97A44007A1F82 /* ComposeData.plist */,
 				43088F732046C08000BB5149 /* ComposeMessageBodyTextView.swift */,
@@ -1941,8 +1943,6 @@
 			isa = PBXGroup;
 			children = (
 				222B357D1DF97675007A1F82 /* SuggestTableView.swift */,
-				222B35681DF96AFE007A1F82 /* ComposeTextView.swift */,
-				43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */,
 			);
 			name = ComposeViewControllers;
 			sourceTree = "<group>";
