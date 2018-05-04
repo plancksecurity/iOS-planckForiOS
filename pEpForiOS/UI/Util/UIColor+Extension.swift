@@ -80,9 +80,9 @@ extension UIColor {
 
     convenience init(intValue32: Int, alpha: CGFloat = 1.0) {
         self.init(
-            red:   CGFloat((intValue32 & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((intValue32 & 0x00FF00) >> 8)  / 255.0,
-            blue:  CGFloat((intValue32 & 0x0000FF) >> 0)  / 255.0,
+            red: CGFloat((intValue32 & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((intValue32 & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat((intValue32 & 0x0000FF) >> 0) / 255.0,
             alpha: alpha
         )
     }
