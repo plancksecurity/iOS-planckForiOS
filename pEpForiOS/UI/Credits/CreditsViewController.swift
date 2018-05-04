@@ -36,8 +36,8 @@ class CreditsViewController: UIViewController {
 
     private func html() -> String {
         let appVersion = InfoPlist.versionDisplayString() ?? "666"
-        let backgroundColor = UIColor.hexPEpLightBackground
-        let fontColor = UIColor.hexPEpGray
+        let backgroundColor = UIColor.pEpLightBackground
+        let fontColor = UIColor.pEpGray
         let fontSize = "28"
         let fontFamily = "Helvetica Neue"
         let fontWeight = "500"

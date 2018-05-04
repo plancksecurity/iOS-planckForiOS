@@ -235,7 +235,7 @@ class SecureWebViewController: UIViewController {
         """
         let styleLinkStyle = """
             a:link {
-                color:\(UIColor.hexPEpDarkGreen);
+                color:\(UIColor.pEpDarkGreen);
                 text-decoration: underline;
             }
         """
