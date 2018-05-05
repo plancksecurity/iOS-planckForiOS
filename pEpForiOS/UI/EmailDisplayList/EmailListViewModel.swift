@@ -327,7 +327,8 @@ class EmailListViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
             return CompositeFilter<FilterBase>.defaultFilter()
         }
-        if folder.filter == nil{
+
+        if folder.filter == nil {
             folder.resetFilter()
         }
 
