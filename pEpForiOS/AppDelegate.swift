@@ -72,9 +72,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Log.shared.errorAndCrash(component: #function, errorString: "No AppConfig")
             return false
         }
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
         guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UINavigationController,
-            let rootVC = initialNVC.rootViewController as? EmailListViewController
+            let rootVC = initialNVC.rootViewController as? FolderTableViewController
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem initializing UI")
                 return false
