@@ -1,6 +1,5 @@
 //
 //  UnifiedInbox.swift
-//  MessageModel
 //
 //  Created by Andreas Buff on 03.10.17.
 //  Copyright © 2017 pEp Security S.A. All rights reserved.
