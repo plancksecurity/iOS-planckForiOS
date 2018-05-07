@@ -413,6 +413,7 @@
 		B741D5031F26234A00DFD93A /* EmailAddressValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B741D5021F26234A00DFD93A /* EmailAddressValidation.swift */; };
 		B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74940021ECB3BEB001A710B /* UILabel+Extension.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
+		B7500CD62099B90400830AA9 /* EmailListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7500CD52099B90400830AA9 /* EmailListCellViewModel.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
@@ -889,6 +890,7 @@
 		B741D5021F26234A00DFD93A /* EmailAddressValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAddressValidation.swift; sourceTree = "<group>"; };
 		B74940021ECB3BEB001A710B /* UILabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B7500CD52099B90400830AA9 /* EmailListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailListCellViewModel.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
@@ -1984,6 +1986,7 @@
 			children = (
 				B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */,
 				15C5F2431F822560007DE086 /* PreviewMessage.swift */,
+				B7500CD52099B90400830AA9 /* EmailListCellViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -2350,6 +2353,7 @@
 				43ED53791CC77F95006AB156 /* UserInfoTableViewController.swift in Sources */,
 				43200D9D1F0CBC4000FFDE56 /* FetchMessagesService.swift in Sources */,
 				43C322101EA91764005073FB /* UIImage+Extension.swift in Sources */,
+				B7500CD62099B90400830AA9 /* EmailListCellViewModel.swift in Sources */,
 				15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */,
 				1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,

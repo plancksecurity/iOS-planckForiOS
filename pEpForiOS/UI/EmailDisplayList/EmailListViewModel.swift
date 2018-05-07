@@ -154,6 +154,8 @@ class EmailListViewModel {
     var rowCount: Int {
         return messages?.count ?? 0
     }
+
+    func updateLastLookAt() {}
     
     /// Returns the senders contact image to display.
     /// This is a possibly time consuming process and shold not be called from the main thread.

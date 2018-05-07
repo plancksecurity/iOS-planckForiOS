@@ -11,7 +11,8 @@ import MessageModel
 import SwipeCellKit
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
-    var folderToShow: Folder?
+    var folderToShow: Folder? //-> se ha de mover al vm
+    private var model: EmailListViewModel?
 
     func updateLastLookAt() {
         guard let saveFolder = folderToShow else {
@@ -19,8 +20,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         saveFolder.updateLastLookAt()
     }
-    
-    private var model: EmailListViewModel?
     
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -108,6 +107,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "ViewModel can not be nil!")
+            return
+        }
         self.navigationController?.setToolbarHidden(false, animated: true)
         if MiscUtil.isUnitTest() {
             return
@@ -117,7 +121,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         setup()
         
         // Mark this folder as having been looked at by the user
-        updateLastLookAt()
+        vm.updateLastLookAt()
         setupFoldersBarButton()
         if model != nil {
             updateFilterButtonView()
