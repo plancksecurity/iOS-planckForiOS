@@ -69,12 +69,14 @@ public class AccountsSettingsCellViewModel {
     public var value : String? {
         get {
             switch self.type {
-            case .showLog, .account, .credits, .defaultAccount:
+            case .showLog, .account, .credits:
                 // Have no value.
                 return nil
             case .organizedByThread:
                 // Feature unimplemented
                 return nil
+            case .defaultAccount:
+                return AppSettings().defaultAccount
             case .syncTrash:
                 return onOffStateString(forState: AppSettings().shouldSyncImapTrashWithServer)
             case .unecryptedSubject:
