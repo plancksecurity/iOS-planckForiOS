@@ -47,7 +47,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
-                                            <rect key="frame" x="72" y="32.5" width="272" height="19.5"/>
+                                            <rect key="frame" x="72" y="32.5" width="269" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -102,7 +102,7 @@
                                         <constraint firstItem="Wkg-wf-Dbd" firstAttribute="trailing" secondItem="BvI-Zi-zU6" secondAttribute="trailing" id="Tx2-fK-W1D"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="leading" id="Wva-Nq-D3D"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="5" id="Xp7-Lw-Lqg"/>
-                                        <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" id="acU-9j-7hJ"/>
+                                        <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" constant="3" id="acU-9j-7hJ"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="top" secondItem="Wkg-wf-Dbd" secondAttribute="bottom" constant="5" id="aoL-eb-2Dk"/>
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="-3" id="j3H-Iv-HG5"/>
                                         <constraint firstItem="m0u-Jn-mQU" firstAttribute="bottom" secondItem="YqR-ga-Tf9" secondAttribute="bottom" id="ubw-w6-q4y"/>
