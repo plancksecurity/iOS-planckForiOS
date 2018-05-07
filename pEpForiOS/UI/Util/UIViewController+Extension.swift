@@ -11,7 +11,6 @@ import UIKit
 
 extension UIViewController {
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
-        setEmailDisplayDefaultNavigationBarStyle()
         // icon
         if let img = pEpRating?.pepColor().statusIcon(enabled: pEpProtection) {
             let v = UIImageView(image: img)
@@ -22,36 +21,5 @@ extension UIViewController {
             navigationItem.titleView = nil
             return nil
         }
-    }
-
-    func setNoColor() {
-        navigationController?.navigationBar.barTintColor = nil
-        navigationController?.toolbar.barTintColor = nil
-        navigationController?.navigationItem.rightBarButtonItem = nil
-        navigationController?.navigationBar.backgroundColor = nil
-    }
-
-    func setEmailDisplayDefaultNavigationBarStyle() {
-        navigationItem.title = nil
-        setNoColor()
-        navigationController?.navigationBar.titleTextAttributes =
-            [NSAttributedStringKey.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.tintColor = UIColor.pEpGreen
-        navigationController?.toolbar.tintColor = UIColor.pEpGreen
-        navigationController?.toolbar.backgroundColor = nil
-    }
-
-    func setDefaultColors() {
-        navigationController?.navigationBar.barTintColor =
-            UINavigationBar.appearance().barTintColor
-        navigationController?.toolbar.barTintColor =
-            UIToolbar.appearance().barTintColor
-        navigationController?.navigationBar.backgroundColor =
-            UINavigationBar.appearance().backgroundColor
-
-        navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
-        navigationController?.navigationBar.titleTextAttributes =
-            UINavigationBar.appearance().titleTextAttributes
-        navigationController?.toolbar.tintColor = UIToolbar.appearance().tintColor
     }
 }

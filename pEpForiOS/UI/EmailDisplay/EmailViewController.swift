@@ -47,11 +47,6 @@ class EmailViewController: BaseTableViewController {
         configureView()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        setNoColor()
-    }
-
     // MARK: - UTIL
 
     private func updateFlaggedStatus() {

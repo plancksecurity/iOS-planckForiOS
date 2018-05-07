@@ -89,7 +89,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
-        setDefaultColors()
         setup()
 
         // Mark this folder as having been looked at by the user
