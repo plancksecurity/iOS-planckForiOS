@@ -45,9 +45,7 @@ class AppSettings {
     /// Address of the default account
     var defaultAccount: String? {
         get {
-            if UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress) == nil {
-                setDefaultAccount()
-            }
+            assureDefaultAccountIsSetAndExists()
             return UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress)
         }
         set {
@@ -60,9 +58,20 @@ class AppSettings {
         setup()
     }
 
-    private func setDefaultAccount() {
-        let initialDefault = Account.all().first?.user.address
-        UserDefaults.standard.set(initialDefault, forKey: AppSettings.keyDefaultAccountAddress)
+    private func assureDefaultAccountIsSetAndExists() {
+        if UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress) == nil {
+            // Default account is not set. Take the first MessageModel provides as a starting point
+            let initialDefault = Account.all().first?.user.address
+            UserDefaults.standard.set(initialDefault, forKey: AppSettings.keyDefaultAccountAddress)
+        }
+        // Assure the default account still exists. The user might have deleted it.
+        guard
+            let currentDefault = UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress),
+            let _ = Account.by(address: currentDefault)
+            else {
+                defaultAccount = nil
+                return
+        }
     }
 
     private func setup() {
