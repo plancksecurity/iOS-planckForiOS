@@ -6,12 +6,13 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
+import MessageModel
 
 class AppSettings {
     static private let keyReinitializePepOnNextStartup = "reinitializePepOnNextStartup"
     static private let keyUnecryptedSubjectEnabled = "unecryptedSubjectEnabled"
     static private let keyAppendTrashMails = "keyAppendTrashMails"
+    static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
 
     var shouldReinitializePepOnNextStartup: Bool {
         get {
@@ -41,9 +42,27 @@ class AppSettings {
         }
     }
 
+    /// Address of the default account
+    var defaultAccount: String? {
+        get {
+            if UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress) == nil {
+                setDefaultAccount()
+            }
+            return UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
+        }
+    }
+
     init() {
         registerDefaults()
         setup()
+    }
+
+    private func setDefaultAccount() {
+        let initialDefault = Account.all().first?.user.address
+        UserDefaults.standard.set(initialDefault, forKey: AppSettings.keyDefaultAccountAddress)
     }
 
     private func setup() {
