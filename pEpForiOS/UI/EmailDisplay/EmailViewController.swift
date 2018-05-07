@@ -85,6 +85,9 @@ class EmailViewController: BaseTableViewController {
     private func configureView() {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false)
+
+        self.title = NSLocalizedString("Message", comment: "Message view title")
+
         setupDestructiveButtonIcon()
 
         tableData?.filterRows(message: message)
@@ -417,7 +420,6 @@ extension EmailViewController: SegueHandlerType {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                 break
             }
-            self.title = NSLocalizedString("Message", comment: "Message view title")
             destination.appConfig = appConfig
             destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
