@@ -123,7 +123,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                                            title: "Delete") { action, indexPath in
                                             self.showAlertBeforeDelete(indexPath)
             }
-            return (orientation == .left ?   [deleteAction] : nil)
+            return (orientation == .right ?   [deleteAction] : nil)
         }
 
         return nil
