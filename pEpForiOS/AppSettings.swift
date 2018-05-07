@@ -14,6 +14,11 @@ class AppSettings {
     static private let keyAppendTrashMails = "keyAppendTrashMails"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
 
+    init() {
+        registerDefaults()
+        setup()
+    }
+
     var shouldReinitializePepOnNextStartup: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyReinitializePepOnNextStartup)
@@ -42,6 +47,8 @@ class AppSettings {
         }
     }
 
+    // MARK: - DEFAULT ACCOUNT
+
     /// Address of the default account
     var defaultAccount: String? {
         get {
@@ -51,11 +58,6 @@ class AppSettings {
         set {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
         }
-    }
-
-    init() {
-        registerDefaults()
-        setup()
     }
 
     private func assureDefaultAccountIsSetAndExists() {
@@ -73,6 +75,8 @@ class AppSettings {
                 return
         }
     }
+
+    // MARK: - SETUP
 
     private func setup() {
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(unecryptedSubjectEnabled)
