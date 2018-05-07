@@ -25,6 +25,10 @@ public class FolderViewModel {
         }
     }
 
+    public func noAccountsExist() -> Bool {
+        return Account.all().isEmpty
+    }
+
     subscript(index: Int) -> FolderSectionViewModel {
         get {
             return self.items[index]

@@ -21,15 +21,20 @@ class FolderTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(true, animated: true)
-        setupViewModel()
+        setup()
     }
 
     // MARK: - Setup
 
-    private func setupViewModel() {
+    private func setup() {
+        //ViewModel init
         DispatchQueue.main.async {
             self.folderVM =  FolderViewModel()
             self.tableView.reloadData()
+            if let vm = self.folderVM, vm.noAccountsExist() {
+                // No account exists. Show account setup.
+                self.performSegue(withIdentifier: "newAccount", sender: self)
+            }
         }
     }
     
