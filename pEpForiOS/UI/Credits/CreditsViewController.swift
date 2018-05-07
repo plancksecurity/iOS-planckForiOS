@@ -8,7 +8,7 @@
 
 import WebKit
 
-class CreditsViewController: UIViewController {
+class CreditsViewController: BaseViewController {
 
     var webView: WKWebView!
 
