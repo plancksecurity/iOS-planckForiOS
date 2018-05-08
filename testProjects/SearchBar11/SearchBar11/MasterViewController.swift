@@ -12,7 +12,7 @@ class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
     var objects = [Any]()
-
+    let searchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,8 @@ class MasterViewController: UITableViewController {
 
         objects.append(NSDate())
         objects.append(NSDate())
+
+        self.navigationItem.searchController = searchController
     }
 
     override func viewWillAppear(_ animated: Bool) {
