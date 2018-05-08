@@ -10,16 +10,20 @@ import Foundation
 import MessageModel
 
 public class FolderViewModel {
+    var items: [FolderSectionViewModel]
 
-    private var items: [FolderSectionViewModel]
-
-    public init () {
+    public init(withFordersIn accounts: [Account]? = nil) {
         items = [FolderSectionViewModel]()
-        let accounts = Account.all()
-        generateSections(accounts: accounts)
+        let accountsToUse: [Account]
+        if let safeAccounts = accounts {
+            accountsToUse = safeAccounts
+        } else {
+            accountsToUse = Account.all()
+        }
+        generateSections(accounts: accountsToUse)
     }
 
-    private func generateSections(accounts: [Account]) {
+    func generateSections(accounts: [Account]) {
         for acc in accounts {
             items.append(FolderSectionViewModel(account: acc))
         }
