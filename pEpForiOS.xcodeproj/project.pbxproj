@@ -84,6 +84,8 @@
 		15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA536D20A095410090F126 /* UnifiedInboxTest.swift */; };
 		15BA536F20A0A2750090F126 /* UnifiedInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA536B20A08D270090F126 /* UnifiedInbox.swift */; };
 		15BA537020A0A4350090F126 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43980EDF1CBD24B000A7FC3C /* Log.swift */; };
+		15BA537C20A1F5F50090F126 /* MoveToFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA537B20A1F5F50090F126 /* MoveToFolderViewController.swift */; };
+		15BA538020A2070E0090F126 /* FolderCellViewModel+MoveToFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA537F20A2070E0090F126 /* FolderCellViewModel+MoveToFolder.swift */; };
 		15BBBC631FD0496800B9DCC8 /* ReportingErrorContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC621FD0496800B9DCC8 /* ReportingErrorContainer.swift */; };
 		15BBBC681FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC671FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift */; };
 		15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */; };
@@ -541,6 +543,8 @@
 		15BA536920A08B100090F126 /* Account+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Extentions.swift"; sourceTree = "<group>"; };
 		15BA536B20A08D270090F126 /* UnifiedInbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnifiedInbox.swift; sourceTree = "<group>"; };
 		15BA536D20A095410090F126 /* UnifiedInboxTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedInboxTest.swift; sourceTree = "<group>"; };
+		15BA537B20A1F5F50090F126 /* MoveToFolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewController.swift; sourceTree = "<group>"; };
+		15BA537F20A2070E0090F126 /* FolderCellViewModel+MoveToFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderCellViewModel+MoveToFolder.swift"; sourceTree = "<group>"; };
 		15BBBC621FD0496800B9DCC8 /* ReportingErrorContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingErrorContainer.swift; sourceTree = "<group>"; };
 		15BBBC671FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingErrorContainerTest.swift; sourceTree = "<group>"; };
 		15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayUserErrorTest.swift; sourceTree = "<group>"; };
@@ -1053,6 +1057,15 @@
 				153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */,
 			);
 			path = Background;
+			sourceTree = "<group>";
+		};
+		15BA537A20A1F5CA0090F126 /* MoveToFolder */ = {
+			isa = PBXGroup;
+			children = (
+				15BA537B20A1F5F50090F126 /* MoveToFolderViewController.swift */,
+				15BA537F20A2070E0090F126 /* FolderCellViewModel+MoveToFolder.swift */,
+			);
+			path = MoveToFolder;
 			sourceTree = "<group>";
 		};
 		15BBBC611FD0461000B9DCC8 /* Error */ = {
@@ -1726,6 +1739,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				15BA537A20A1F5CA0090F126 /* MoveToFolder */,
 				B70D32B0205BCFBD0094A92A /* EmailDisplay */,
 				43ED53621CC77F95006AB156 /* EmailDisplayList */,
 				B70D32AA205BCCC70094A92A /* Login */,
@@ -2381,6 +2395,7 @@
 				43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */,
 				220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */,
 				43DB81331E2A56BE00A20902 /* AppendDraftMailsOperation.swift in Sources */,
+				15BA538020A2070E0090F126 /* FolderCellViewModel+MoveToFolder.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
 				43F848491EAA09AE00DBE460 /* Weak.swift in Sources */,
 				43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */,
@@ -2600,6 +2615,7 @@
 				43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */,
 				43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */,
 				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
+				15BA537C20A1F5F50090F126 /* MoveToFolderViewController.swift in Sources */,
 				43ED53781CC77F95006AB156 /* SMTPSettingsTableViewController.swift in Sources */,
 				43D755F61F262B37006F933A /* PantomimeError.swift in Sources */,
 			);

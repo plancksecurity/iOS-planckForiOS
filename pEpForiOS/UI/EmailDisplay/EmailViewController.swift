@@ -292,9 +292,8 @@ class EmailViewController: BaseTableViewController {
 
 
     @IBAction func moveToFolderButtonTapped(_ sender: UIBarButtonItem) {
-        //TODO:
+        performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
     }
-
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message?.imapDelete() // mark for deletion/trash
@@ -395,6 +394,7 @@ extension EmailViewController: SegueHandlerType {
         case segueForward
         case segueHandshake
         case segueCompose
+        case segueShowMoveToFolder
         case noSegue
     }
 
@@ -407,7 +407,6 @@ extension EmailViewController: SegueHandlerType {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
-
             destination.appConfig = appConfig
 
             if theId == .segueReplyFrom {
@@ -420,7 +419,16 @@ extension EmailViewController: SegueHandlerType {
                 destination.composeMode = .forward
                 destination.originalMessage = message
             } else if theId == .segueCompose {
+                destination.composeMode = .normal
             }
+        case .segueShowMoveToFolder:
+            guard  let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? MoveToFolderViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    break
+            }
+            destination.appConfig = appConfig
+            destination.message = message
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
