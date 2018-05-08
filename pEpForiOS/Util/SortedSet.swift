@@ -38,7 +38,6 @@ class SortedSet<T: Equatable> {
 
         let idx = indexOfObjectIfInserted(obj: object)
         set.insert(object, at: idx)
-        Log.shared.info(component: #function, content: "\(count)")
         return idx
     }
     
@@ -47,24 +46,27 @@ class SortedSet<T: Equatable> {
         defer { objc_sync_exit(self) }
 
         set.remove(object)
-        Log.shared.info(component: #function, content: "\(count)")
     }
     
     public func removeObject(at index: Int) {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
 
-        guard index >= 0, index < set.count else {
+        guard isValidIndex(index) else {
             Log.shared.errorAndCrash(component: #function, errorString: "Index out of range")
             return
         }
         set.removeObject(at: index)
-        Log.shared.info(component: #function, content: "\(count)")
     }
     
     public func object(at index: Int) -> T? {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
+
+        guard isValidIndex(index) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Index out of range")
+            return nil
+        }
 
         return set.object(at: index) as? T
     }
@@ -89,9 +91,7 @@ class SortedSet<T: Equatable> {
     public func removeAllObjects() {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
-        
         set.removeAllObjects()
-        Log.shared.info(component: #function, content: "\(count)")
     }
 
     // MARK: -
@@ -124,5 +124,9 @@ class SortedSet<T: Equatable> {
         }
         // we would insert as the last object
         return max(0, set.count)
+    }
+
+    private func isValidIndex(_ idx: Int) -> Bool {
+        return idx >= 0 && idx < set.count
     }
 }
