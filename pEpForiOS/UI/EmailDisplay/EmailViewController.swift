@@ -290,6 +290,12 @@ class EmailViewController: BaseTableViewController {
         updateFlaggedStatus()
     }
 
+
+    @IBAction func moveToFolderButtonTapped(_ sender: UIBarButtonItem) {
+        //TODO:
+    }
+
+
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message?.imapDelete() // mark for deletion/trash
         _ = navigationController?.popViewController(animated: true)
