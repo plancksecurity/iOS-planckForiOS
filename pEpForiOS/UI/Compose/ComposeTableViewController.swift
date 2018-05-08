@@ -49,7 +49,6 @@ class ComposeTableViewController: BaseTableViewController {
     var composeMode: ComposeMode = .normal
     private var messageToSend: Message?
     var originalMessage: Message?
-    private let operationQueue = OperationQueue()
 
     private lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
