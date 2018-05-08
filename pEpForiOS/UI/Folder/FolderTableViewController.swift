@@ -49,6 +49,8 @@ class FolderTableViewController: BaseTableViewController {
         navigationItem.rightBarButtonItem = item
     }
 
+    @IBAction func unwindToFolderView(segue:UIStoryboardSegue) { }
+
     // MARK: - Actions
 
     @objc func settingsTapped() {
