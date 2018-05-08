@@ -10,6 +10,9 @@ import Foundation
 import MessageModel
 
 public class FolderCellViewModel {
+    let folder: Folder
+    let level : Int
+
     public var icon: UIImage {
         return self.folder.folderType.getIcon()
     }
@@ -18,20 +21,8 @@ public class FolderCellViewModel {
         return self.name
     }
 
-//    public var number: Int {
-//        return 0 //fake number
-//    }
-
     public var arrow: UIImage {
         return UIImage(named: "arrow_down_icon")!
-    }
-
-    var folder: Folder
-    var level : Int
-
-    public init(folder: Folder, level: Int) {
-        self.folder = folder
-        self.level = level
     }
 
     private var name: String {
@@ -40,5 +31,10 @@ public class FolderCellViewModel {
 
     var leftPadding: Int {
         return level
+    }
+
+    public init(folder: Folder, level: Int) {
+        self.folder = folder
+        self.level = level
     }
 }
