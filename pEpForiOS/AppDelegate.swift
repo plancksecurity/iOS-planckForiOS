@@ -235,7 +235,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
-        Appearance.pEpPale()
+        Appearance.pEp()
 
         let pEpReInitialized = deleteManagementDBIfRequired()
 
