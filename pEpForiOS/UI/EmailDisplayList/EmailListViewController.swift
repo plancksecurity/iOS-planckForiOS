@@ -344,14 +344,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
-                                                       for: indexPath) as? EmailListViewCell
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell!")
-                return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: EmailListViewCell.storyboardId,
+            for: indexPath)
+
+        if let theCell = cell as? EmailListViewCell {
+            theCell.delegate = self
+            configure(cell: theCell, for: indexPath)
+        } else {
+            Log.shared.errorAndCrash(component: #function, errorString: "dequeued wrong cell")
         }
-        cell.delegate = self
-        configure(cell: cell, for: indexPath)
+
         return cell
     }
     
