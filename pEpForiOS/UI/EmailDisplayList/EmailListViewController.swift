@@ -575,13 +575,15 @@ extension EmailListViewController {
     // MARK: Action Sheet Actions
 
     private func createMoveToFolderAction() -> UIAlertAction {
-        return UIAlertAction(title: "Move to Folder", style: .default) { (action) in
+        let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
+        return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
         }
     }
     
     func createCancelAction() -> UIAlertAction {
-        return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        let title = NSLocalizedString("Cancel", comment: "EmailList action title")
+        return  UIAlertAction(title: title, style: .cancel) { (action) in
             self.tableView.beginUpdates()
             self.tableView.setEditing(false, animated: true)
             self.tableView.endUpdates()
@@ -589,19 +591,22 @@ extension EmailListViewController {
     }
     
     func createReplyAction() ->  UIAlertAction {
-        return UIAlertAction(title: "Reply", style: .default) { (action) in
+        let title = NSLocalizedString("Reply", comment: "EmailList action title")
+        return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReply, sender: self)
         }
     }
     
     func createReplyAllAction() ->  UIAlertAction {
-        return UIAlertAction(title: "Reply All", style: .default) { (action) in
+        let title = NSLocalizedString("Reply All", comment: "EmailList action title")
+        return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyAll, sender: self)
         }
     }
     
     func createForwardAction() -> UIAlertAction {
-        return UIAlertAction(title: "Forward", style: .default) { (action) in
+        let title = NSLocalizedString("Forward", comment: "EmailList action title")
+        return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueForward, sender: self)
         }
     }
