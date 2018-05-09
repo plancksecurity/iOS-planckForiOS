@@ -19,6 +19,15 @@ class MoveToFolderViewController: BaseViewController {
     private let cellId = "MoveToFolderCell"
     private let indentationWidth: CGFloat = 20.0
     private var viewModel: FolderViewModel?
+    /// We do not allow to move messages to those folders.
+    /// Drafts: It does not make sense to move a message e.g. from Inbox to Drafts.
+    ///         Who is supposed to be the sender (From) when opening the draft?
+    /// Sent:   It does not make sense to move a message e.g. from Inbox to Sent.
+    ///         Also Sent needs special handling (encrypt for self or such).
+    /// Trash:  Trash needs special handling (encrypt for self or such).
+    ///         The user should use the "Delete" feature instead of moving it to trash folder.
+    static fileprivate let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .trash, .sent]
+
     var message: Message?
 
     override func viewWillAppear(_ animated: Bool) {
@@ -87,6 +96,10 @@ extension MoveToFolderViewController: UITableViewDataSource {
         }
         let fcvm = vm[indexPath.section][indexPath.row]
         cell.textLabel?.text = fcvm.title
+        if !isSelectable(rowAt: indexPath) {
+            // Grey out unselectable folders
+            cell.textLabel?.textColor = UIColor.pEpGray
+        }
         cell.imageView?.image = fcvm.icon
         cell.indentationWidth = indentationWidth
         return cell
@@ -105,6 +118,12 @@ extension MoveToFolderViewController: UITableViewDataSource {
 
 extension MoveToFolderViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if !isSelectable(rowAt: indexPath) {
+            // We are not allowed to move messags in the folder. Do nothing.
+            let selectedCell = tableView.cellForRow(at: indexPath)
+            selectedCell?.setSelected(false, animated: false)
+            return
+        }
         guard let vm = viewModel, let msg = message else {
             Log.shared.errorAndCrash(component: #function, errorString: "missing data")
             return
@@ -112,5 +131,26 @@ extension MoveToFolderViewController: UITableViewDelegate {
         let folderCellVM = vm[indexPath.section][indexPath.row]
         folderCellVM.moveIn(message: msg)
         dismiss(animated: true)
+    }
+}
+
+// MARK: - SELECTABILITY
+
+private extension MoveToFolderViewController {
+    private func isSelectable(rowAt indexPath: IndexPath) -> Bool {
+        guard let vm = viewModel, let msg = message else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model")
+            return false
+        }
+        let fcvm = vm[indexPath.section][indexPath.row]
+        return msg.isAllowedToMoveTo(targetFolder: fcvm.folder)
+    }
+}
+
+private extension Message {
+    func isAllowedToMoveTo(targetFolder: Folder) -> Bool {
+        return
+            !MoveToFolderViewController.folderTypesNotAllowedToMoveTo.contains(targetFolder.folderType)
+                && parent != targetFolder
     }
 }
