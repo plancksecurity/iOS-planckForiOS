@@ -26,6 +26,8 @@ class MasterViewController: UITableViewController {
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
 
+        tableView.rowHeight = 100
+
         objects.append(NSDate())
         objects.append(NSDate())
 
