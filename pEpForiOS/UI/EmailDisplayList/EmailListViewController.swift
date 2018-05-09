@@ -560,10 +560,12 @@ extension EmailListViewController {
         let replyAction = createReplyAction()
         let replyAllAction = createReplyAllAction()
         let forwardAction = createForwardAction()
+        let moveToFolderAction = createMoveToFolderAction()
         alertControler.addAction(cancelAction)
         alertControler.addAction(replyAction)
         alertControler.addAction(replyAllAction)
         alertControler.addAction(forwardAction)
+        alertControler.addAction(moveToFolderAction)
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
         }
@@ -571,6 +573,12 @@ extension EmailListViewController {
     }
     
     // MARK: Action Sheet Actions
+
+    private func createMoveToFolderAction() -> UIAlertAction {
+        return UIAlertAction(title: "Move to Folder", style: .default) { (action) in
+            self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
+        }
+    }
     
     func createCancelAction() -> UIAlertAction {
         return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in
@@ -648,6 +656,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueEditDraft
         case segueFilter
         case segueFolderViews
+        case segueShowMoveToFolder
         case noSegue
     }
     
@@ -697,6 +706,17 @@ extension EmailListViewController: SegueHandlerType {
             vC.appConfig = appConfig
             vC.hidesBottomBarWhenPushed = true
             break
+        case .segueShowMoveToFolder:
+            guard  let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? MoveToFolderViewController,
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath)
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    break
+            }
+            destination.appConfig = appConfig
+            destination.message = message
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
