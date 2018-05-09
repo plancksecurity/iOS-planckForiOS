@@ -58,7 +58,7 @@ extension MoveToFolderViewController: UITableViewDataSource {
         }
         let fcvm = vm[indexPath.section][indexPath.row]
         cell.textLabel?.text = fcvm.title
-//        cell.accessoryType = .disclosureIndicator
+        cell.imageView?.image = fcvm.icon
         cell.indentationWidth = indentationWidth
         return cell
     }
