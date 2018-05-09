@@ -121,7 +121,9 @@
 
         self.navigationItem.hidesBackButton = true
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
+            title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
+            style:.plain, target:self,
+            action:#selector(self.backButton))
     }
 
     @objc func backButton() {
