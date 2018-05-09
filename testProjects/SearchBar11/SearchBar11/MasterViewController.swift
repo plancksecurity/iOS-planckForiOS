@@ -26,6 +26,8 @@ class MasterViewController: UITableViewController {
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
 
+        tableView.rowHeight = 100
+
         objects.append(NSDate())
         objects.append(NSDate())
 
@@ -77,7 +79,12 @@ class MasterViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         let object = objects[indexPath.row] as! NSDate
-        cell.textLabel!.text = object.description
+
+        if let customCell = cell as? CustomTableViewCell {
+            customCell.title = "custom \(object.description)"
+        } else {
+            cell.textLabel!.text = "stock \(object.description)"
+        }
         return cell
     }
 

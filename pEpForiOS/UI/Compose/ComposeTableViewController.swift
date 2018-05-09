@@ -921,7 +921,7 @@ class ComposeTableViewController: BaseTableViewController {
         tableView.endUpdates()
     }
 
-    private func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+    private func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
         action.title = NSLocalizedString("Remove", comment:
             "ComposeTableView: Label of swipe left. Removing of attachment."
         )
