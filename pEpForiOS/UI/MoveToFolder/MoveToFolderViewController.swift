@@ -24,9 +24,7 @@ class MoveToFolderViewController: BaseViewController {
     ///         Who is supposed to be the sender (From) when opening the draft?
     /// Sent:   It does not make sense to move a message e.g. from Inbox to Sent.
     ///         Also Sent needs special handling (encrypt for self or such).
-    /// Trash:  Trash needs special handling (encrypt for self or such).
-    ///         The user should use the "Delete" feature instead of moving it to trash folder.
-    static fileprivate let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .trash, .sent]
+    static fileprivate let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
 
     var message: Message?
 
@@ -129,7 +127,28 @@ extension MoveToFolderViewController: UITableViewDelegate {
             return
         }
         let folderCellVM = vm[indexPath.section][indexPath.row]
-        folderCellVM.moveIn(message: msg)
+//        folderCellVM.moveIn(message: msg) //IOS-663: TODO:
+
+        /*
+         Move methode:
+                *target trash: msg.imapDelete()
+                * target sent, draft: deny
+         target else: new MOVE or COPY+delete
+         */
+        let targetFolder = folderCellVM.folder
+        
+        switch targetFolder.folderType {
+        case .trash:
+            // Needs special handling to make sure not to leak data.
+            msg.imapDelete()
+        case .drafts, .sent:
+            // not allowed to move messages in. See folderTypesNotAllowedToMoveTo.
+            // do nothing
+            break
+        default:
+            //IOS-663 //TODO: new MOVE or COPY+delete
+            break
+        }
         dismiss(animated: true)
     }
 }
