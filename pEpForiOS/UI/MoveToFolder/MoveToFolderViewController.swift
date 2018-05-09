@@ -29,13 +29,27 @@ class MoveToFolderViewController: BaseViewController {
         tableview.reloadData()
     }
 
+    // MARK: - SETUP
+
     private func setupView() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title:
+            NSLocalizedString("Cancel",
+                              comment: "MoveToFolderViewController NavigationBar canel button title"),
+                                                                style:.plain,
+                                                                target:self,
+                                                                action:#selector(self.backButton))
         guard let acc = message?.parent.account else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "What are we supposed to display?")
             return
         }
         viewModel = FolderViewModel(withFordersIn: [acc])
+    }
+
+    // MARK: - ACTION
+
+    @objc func backButton() {
+        dismiss(animated: true)
     }
 }
 
