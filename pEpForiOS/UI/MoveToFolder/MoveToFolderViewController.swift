@@ -23,21 +23,36 @@ class MoveToFolderViewController: BaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableview.dataSource = self
-        tableview.delegate = self
-        setupView()
+        setup()
         tableview.reloadData()
     }
 
     // MARK: - SETUP
 
-    private func setupView() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title:
+    private func setup() {
+        setupNavigationBar()
+        setupTableView()
+        setupViewModel()
+    }
+
+    private func setupTableView() {
+        tableview.dataSource = self
+        tableview.delegate = self
+        // Add empty footer to not show empty cells (visible as dangling seperators)
+        tableview.tableFooterView = UIView(frame: .zero)
+    }
+
+    private func setupNavigationBar() {
+        title = NSLocalizedString("Move To", comment: "MoveToFolderViewController title")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title:
             NSLocalizedString("Cancel",
                               comment: "MoveToFolderViewController NavigationBar canel button title"),
-                                                                style:.plain,
-                                                                target:self,
-                                                                action:#selector(self.backButton))
+                                                           style:.plain,
+                                                           target:self,
+                                                           action:#selector(self.backButton))
+    }
+
+    private func setupViewModel() {
         guard let acc = message?.parent.account else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "What are we supposed to display?")
