@@ -393,7 +393,6 @@ extension EmailViewController: SegueHandlerType {
         case segueReplyAllForm
         case segueForward
         case segueHandshake
-        case segueCompose
         case segueShowMoveToFolder
         case noSegue
     }
@@ -401,7 +400,7 @@ extension EmailViewController: SegueHandlerType {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let theId = segueIdentifier(for: segue)
         switch theId {
-        case .segueReplyFrom, .segueReplyAllForm, .segueForward, .segueCompose:
+        case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
@@ -418,8 +417,6 @@ extension EmailViewController: SegueHandlerType {
             } else if theId == .segueForward {
                 destination.composeMode = .forward
                 destination.originalMessage = message
-            } else if theId == .segueCompose {
-                destination.composeMode = .normal
             }
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
