@@ -21,10 +21,6 @@ public class FolderCellViewModel {
         return self.name
     }
 
-    public var arrow: UIImage {
-        return UIImage(named: "arrow_down_icon")!
-    }
-
     private var name: String {
         return self.folder.localizedName
     }
