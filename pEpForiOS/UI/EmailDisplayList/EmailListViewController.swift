@@ -386,7 +386,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Delete or Archive
         let defaultIsArchive = parentFolder.defaultDestructiveActionIsArchive
         let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
-        let descriptorDestructive: ActionDescriptor = defaultIsArchive ? .archive : .trash
+        let descriptorDestructive: SwipeActionDescriptor = defaultIsArchive ? .archive : .trash
         let archiveAction =
             SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
                 self.deleteAction(forCellAt: indexPath)
@@ -423,7 +423,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return options
     }
 
-    func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
         action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
         action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
 
@@ -752,25 +752,35 @@ extension EmailListViewController: SegueHandlerType {
     }
 }
 
-//enums to simplify configurations
-
-enum ActionDescriptor {
+/**
+ Swipe configuration.
+ */
+enum SwipeActionDescriptor {
     case read, more, flag, trash, archive
 
     func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
-        guard displayMode != .imageOnly else { return nil }
+        if displayMode == .imageOnly {
+            return nil
+        }
 
         switch self {
-        case .read: return NSLocalizedString("Read", comment: "read button in slidw left menu")
-        case .more: return NSLocalizedString("More", comment: "more button in slidw left menu")
-        case .flag: return NSLocalizedString("Flag", comment: "read button in slidw left menu")
-        case .trash: return NSLocalizedString("Trash", comment: "Trash button in slidw left menu")
-        case .archive: return NSLocalizedString("Archive", comment: "Archive button in slidw left menu")
+        case .read:
+            return NSLocalizedString("Read", comment: "read button in slide-left menu")
+        case .more:
+            return NSLocalizedString("More", comment: "more button in slide-left menu")
+        case .flag:
+            return NSLocalizedString("Flag", comment: "read button in slide-left menu")
+        case .trash:
+            return NSLocalizedString("Trash", comment: "Trash button in slide-left menu")
+        case .archive:
+            return NSLocalizedString("Archive", comment: "Archive button in slide-left menu")
         }
     }
 
     func image(forStyle style: ButtonStyle, displayMode: ButtonDisplayMode) -> UIImage? {
-        guard displayMode != .titleOnly else { return nil }
+        if displayMode == .titleOnly {
+            return nil
+        }
 
         let name: String
         switch self {
