@@ -29,7 +29,7 @@ class CleanUnsyncedFolderOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
-        let context = Record.Context.background
+        let context = privateMOC
         context.perform() {
             self.process(context: context)
         }

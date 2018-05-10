@@ -27,7 +27,7 @@ class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
             markAsFinished()
             return
         }
-        let context = Record.Context.background
+        let context = privateMOC
         context.perform {
             self.process(context: context)
         }

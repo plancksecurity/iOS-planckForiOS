@@ -108,7 +108,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         let _ = CdFolder.insertOrUpdate(
             folderName: folderToCreate.folderName, folderSeparator: folderToCreate.folderSeparator,
             folderType: folderToCreate.folderType, account: folderToCreate.cdAccount)
-        Record.saveAndWait()
+        Record.saveAndWait(context: privateMOC)
 
     }
 

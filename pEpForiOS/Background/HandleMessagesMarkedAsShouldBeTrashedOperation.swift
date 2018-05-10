@@ -80,14 +80,14 @@ public class HandleMessagesMarkedAsShouldBeTrashedOperation: AppendMailsOperatio
 
             msg.imap?.trashedStatus = .trashed
         }
-        Record.saveAndWait()
+        Record.saveAndWait(context: privateMOC)
 
         handleNextMessage()
     }
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
         var result: (PEPMessageDict, PEPIdentity, NSManagedObjectID)?
-        context.performAndWait {
+        privateMOC.performAndWait {
             guard let msg = nextCdMessage(),
                 let cdIdent = msg.parent?.account?.identity else {
                     return
@@ -99,8 +99,8 @@ public class HandleMessagesMarkedAsShouldBeTrashedOperation: AppendMailsOperatio
 
     private func nextCdMessage() -> CdMessage? {
         var result: CdMessage? = nil
-        context.performAndWait {
-            guard let folder = self.context.object(with: self.folderObjectID) as? CdFolder else {
+        privateMOC.performAndWait {
+            guard let folder = self.privateMOC.object(with: self.folderObjectID) as? CdFolder else {
                 return
             }
             let p = NSPredicate(
@@ -108,23 +108,20 @@ public class HandleMessagesMarkedAsShouldBeTrashedOperation: AppendMailsOperatio
                 folder, Message.TrashedStatus.shouldBeTrashed.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
 
-            result = CdMessage.first(predicate: p, in: self.context)
+            result = CdMessage.first(predicate: p, in: self.privateMOC)
         }
         return result
     }
 
     override func markLastMessageAsFinished() {
         if let msgID = lastHandledMessageObjectID {
-            context.performAndWait {
-                if let obj = self.context.object(with: msgID) as? CdMessage {
-                    let imap = obj.imapFields(context: self.context)
+            privateMOC.performAndWait {
+                if let obj = self.privateMOC.object(with: msgID) as? CdMessage {
+                    let imap = obj.imapFields(context: self.privateMOC)
                     imap.trashedStatus = Message.TrashedStatus.trashed
                     obj.imap = imap
-                    self.context.saveAndLogErrors()
+                    self.privateMOC.saveAndLogErrors()
                 } else {
-
-
-
                     self.handleError(BackgroundError.GeneralError.invalidParameter(info:self.comp),
                                      message: "Cannot find message just stored in the sent folder")
                     return

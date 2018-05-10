@@ -13,7 +13,6 @@ import MessageModel
 class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     typealias CompletionBlock = (_ numNewMails: Int?) -> ()
 
-    private let context = Record.Context.background
     private var folderToOpen = ImapSync.defaultImapInboxName
     private var syncDelegate: FetchNumberOfNewMailsSyncDelegate?
     private var numNewMailsFetchedBlock: CompletionBlock?
@@ -37,7 +36,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
             return
         }
 
-        context.perform() { [weak self] in
+        privateMOC.perform() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "I lost me")
                 return
@@ -65,8 +64,8 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
 
     private func cdFolder() -> CdFolder? {
         var result: CdFolder?
-        context.performAndWait {
-            guard let account = context.object(
+        privateMOC.performAndWait {
+            guard let account = privateMOC.object(
                 with: imapSyncData.connectInfo.accountObjectID)
                 as? CdAccount else {
                     addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))

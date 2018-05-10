@@ -6,9 +6,7 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
 import CoreData
-
 import MessageModel
 
 /**
@@ -40,8 +38,6 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                 }
         }
     }
-
-    lazy private(set) var context = Record.Context.background
 
     var syncDelegate: AppendMailsSyncDelegate?
 
@@ -92,17 +88,17 @@ public class AppendMailsOperationBase: ImapSyncOperation {
 
     func markLastMessageAsFinished() {
         if let msgID = lastHandledMessageObjectID {
-            context.performAndWait { [weak self] in
+            privateMOC.performAndWait { [weak self] in
                 guard let theSelf = self else {
                     Log.shared.errorAndCrash(component: #function, errorString: "I got lost")
                     return
                 }
-                if let obj = theSelf.context.object(with: msgID) as? CdMessage {
+                if let obj = theSelf.privateMOC.object(with: msgID) as? CdMessage {
                     if let msgID = obj.messageID {
                         theSelf.successAppendedMessageIDs.append(msgID)
                     }
-                    theSelf.context.delete(obj)
-                    theSelf.context.saveAndLogErrors()
+                    theSelf.privateMOC.delete(obj)
+                    theSelf.privateMOC.saveAndLogErrors()
                 } else {
                     theSelf.handleError(
                         BackgroundError.GeneralError.invalidParameter(info: #function),
@@ -145,8 +141,8 @@ public class AppendMailsOperationBase: ImapSyncOperation {
             // We already know the target folder, nothing to do
             return
         }
-        context.performAndWait {
-            guard let msg = self.context.object(with: msgID) as? CdMessage else {
+        privateMOC.performAndWait {
+            guard let msg = self.privateMOC.object(with: msgID) as? CdMessage else {
                 self.handleError(BackgroundError.GeneralError.invalidParameter(info: self.comp),
                                  message:
                     "Need a valid message for determining the sent folder name")
@@ -159,7 +155,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
                 return
             }
             guard let cdFolder = self.retrieveFolderForAppend(
-                account: account, context: self.context) else {
+                account: account, context: self.privateMOC) else {
                     self.handleError(
                         BackgroundError.GeneralError.invalidParameter(info: self.comp),
                         message: "Cannot find sent folder for message to append")

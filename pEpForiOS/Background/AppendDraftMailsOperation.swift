@@ -23,12 +23,12 @@ public class AppendDraftMailsOperation: AppendMailsOperationBase {
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
         var result: (PEPMessageDict, PEPIdentity, NSManagedObjectID)? = nil
-        context.performAndWait {
+        privateMOC.performAndWait {
             let p = NSPredicate(
                 format: "uid = 0 AND parent.folderTypeRawValue = %d AND sendStatusRawValue = %d AND parent.account = %@",
                 targetFolderType.rawValue, SendStatus.none.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
-            let msg = CdMessage.first(predicate: p, in: self.context)
+            let msg = CdMessage.first(predicate: p, in: self.privateMOC)
             if let m = msg, let cdIdent = m.parent?.account?.identity {
                 result = (m.pEpMessageDict(), cdIdent.pEpIdentity(), m.objectID)
             }

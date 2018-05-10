@@ -60,7 +60,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     static func outgoingMailsExist(in context: NSManagedObjectContext,
                                    forAccountWith cdAccountObjectId: NSManagedObjectID) -> Bool {
         var outgoingMsgs = [CdMessage]()
-        Record.Context.background.performAndWait {
+        context.performAndWait {
             guard let cdAccount = context.object(with: cdAccountObjectId) as? CdAccount else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "No NSManagedObject for NSManagedObjectID")
@@ -125,7 +125,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     }
 
     func handleNextMessage() {
-        let context = Record.Context.background
+        let context = privateMOC
         context.perform { [weak self] in
             self?.handleNextMessageInternal(context: context)
         }

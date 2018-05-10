@@ -57,7 +57,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
-        let context = Record.Context.background
+        let context = privateMOC
         context.perform() {
             self.process(context: context)
         }
@@ -132,7 +132,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
         // delete locally whatever was not mentioned in our big sync
         if let folder = sync.imapState.currentFolder {
             let existingUIDs = folder.existingUIDs()
-            let context = Record.Context.background
+            let context = privateMOC
             context.performAndWait() {
                 self.deleteDeletedMails(context: context, existingUIDs:existingUIDs)
             }

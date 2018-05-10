@@ -27,7 +27,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             markAsFinished()
             return
         }
-        let context = Record.Context.background
+        let context = privateMOC
         context.perform() {
             guard let messages = CdMessage.all(
                 predicate: CdMessage.unknownToPepMessagesPredicate(),
