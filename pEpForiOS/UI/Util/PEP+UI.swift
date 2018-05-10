@@ -12,7 +12,7 @@ extension PEP_color {
     func statusIcon(enabled: Bool = true) -> UIImage? {
         switch self {
         case PEP_color_no_color:
-            return nil
+            return UIImage(named: "pEp-status-grey")
         case PEP_color_red:
             return UIImage(named: "pEp-status-red")
         case PEP_color_yellow:
