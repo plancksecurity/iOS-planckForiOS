@@ -541,18 +541,18 @@ class ComposeTableViewController: BaseTableViewController {
                                                                 cc: self.destinyCc,
                                                                 bcc: self.destinyBcc)
                 self.rating = session.string(from: ratingValue)
-                if let b = self.showPepRating(pEpRating: ratingValue,
-                                              pEpProtection: self.pEpProtection) {
+                if let view = self.showPepRating(pEpRating: ratingValue,
+                                                 pEpProtection: self.pEpProtection) {
                     if ratingValue == PEP_rating_reliable || ratingValue == PEP_rating_trusted {
                         // disable protection only for certain ratings
                         let long = UILongPressGestureRecognizer(
                             target: self,
                             action: #selector(self.toggleProtection))
-                        b.addGestureRecognizer(long)
+                        view.addGestureRecognizer(long)
                     }
                     let tap = UITapGestureRecognizer(target: self,
                                                      action: #selector(self.handshakeView))
-                    b.addGestureRecognizer(tap)
+                    view.addGestureRecognizer(tap)
                 }
             }
         }
