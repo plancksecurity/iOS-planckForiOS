@@ -192,8 +192,11 @@ class EmailListViewModel {
                 return nil
         }
         let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
-        let result = color.statusIcon()
-        return result
+        if color != PEP_color_no_color {
+            return color.statusIcon()
+        } else {
+            return nil
+        }
     }
     
     func setFlagged(forIndexPath indexPath: IndexPath) {
