@@ -434,8 +434,8 @@ extension EmailViewController: SegueHandlerType {
 
 extension EmailViewController: RatingReEvaluatorDelegate {
     func ratingChanged(message: Message) {
-        GCD.onMain {
-            self.showPepRating()
+        GCD.onMain { [weak self] in
+            self?.showPepRating()
         }
     }
 }
