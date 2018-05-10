@@ -136,7 +136,7 @@ extension MoveToFolderViewController: UITableViewDelegate {
          target else: new MOVE or COPY+delete
          */
         let targetFolder = folderCellVM.folder
-        
+
         switch targetFolder.folderType {
         case .trash:
             // Needs special handling to make sure not to leak data.
@@ -147,6 +147,7 @@ extension MoveToFolderViewController: UITableViewDelegate {
             break
         default:
             //IOS-663 //TODO: new MOVE or COPY+delete
+            msg.move(to: targetFolder)
             break
         }
         dismiss(animated: true)
