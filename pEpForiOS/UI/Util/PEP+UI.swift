@@ -14,18 +14,18 @@ extension PEP_color {
         case PEP_color_no_color:
             return nil
         case PEP_color_red:
-            return UIImage(named: "pep-status-red")
+            return UIImage(named: "pEp-status-red")
         case PEP_color_yellow:
             if enabled {
-                return UIImage(named: "pep-status-yellow")
+                return UIImage(named: "pEp-status-yellow")
             } else {
-                return UIImage(named: "pep-status-yellow-gray")
+                return UIImage(named: "pEp-status-yellow-gray")
             }
         case PEP_color_green:
             if enabled {
-                return UIImage(named: "pep-status-green")
+                return UIImage(named: "pEp-status-green")
             } else {
-                return UIImage(named: "pep-status-green-gray")
+                return UIImage(named: "pEp-status-green-gray")
             }
         default:
             return nil
