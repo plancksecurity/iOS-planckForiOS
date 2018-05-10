@@ -49,7 +49,7 @@ extension PEP_color {
 }
 
 extension PEP_rating {
-    func pepColor() -> PEP_color {
+    func pEpColor() -> PEP_color {
         return PEPUtil.pEpColor(pEpRating: self)
     }
 
@@ -58,7 +58,7 @@ extension PEP_rating {
     }
 
     func statusIcon() -> UIImage? {
-        let color = pepColor()
+        let color = pEpColor()
         return color.statusIcon()
     }
 }

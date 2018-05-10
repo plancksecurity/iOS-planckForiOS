@@ -29,7 +29,7 @@ extension Message {
     }
 
     public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
-        return pEpRating(session: session).pepColor()
+        return pEpRating(session: session).pEpColor()
     }
 
     func belongToSentFolder() -> Bool {
