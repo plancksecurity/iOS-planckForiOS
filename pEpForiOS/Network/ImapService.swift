@@ -29,6 +29,7 @@ public protocol ImapSyncDelegate: class {
     func messageStoreCompleted(_ sync: ImapSync, notification: Notification?)
     func messageStoreFailed(_ sync: ImapSync, notification: Notification?)
     func messageUidMoveCompleted(_ sync: ImapSync, notification: Notification?)
+    func messagesCopyCompleted(_ sync: ImapSync, notification: Notification?)
     func folderCreateCompleted(_ sync: ImapSync, notification: Notification?)
     func folderCreateFailed(_ sync: ImapSync, notification: Notification?)
     func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?)
@@ -377,6 +378,13 @@ extension ImapSync: CWServiceClient {
         dumpMethodName("messageUidMoveCompleted", notification: theNotification)
         runOnDelegate() { theDelegate in
             theDelegate.messageUidMoveCompleted(self, notification: theNotification)
+        }
+    }
+
+    @objc public func messagesCopyCompleted(_ theNotification: Notification?) {
+        dumpMethodName("messagesCopyCompleted", notification: theNotification)
+        runOnDelegate() { theDelegate in
+            theDelegate.messagesCopyCompleted(self, notification: theNotification)
         }
     }
 

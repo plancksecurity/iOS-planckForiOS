@@ -70,9 +70,9 @@ extension Message {
 
 extension Message {
     /// - Returns: all messages marked for UidMoveToTrash
-    static public func allMessagesMarkedForUidExpunge() -> [Message] {
-        let predicateMarkedUidExpunge = CdMessage.PredicateFactory.markedForUidMoveToTrash()
-        let cdMessages = CdMessage.all(predicate: predicateMarkedUidExpunge) as? [CdMessage] ?? []
+    static public func allMessagesMarkedForMoveToFolder() -> [Message] {
+        let predicateMarkedForMove = CdMessage.PredicateFactory.markedForMoveToFolder()
+        let cdMessages = CdMessage.all(predicate: predicateMarkedForMove) as? [CdMessage] ?? []
         var result = [Message]()
         for cdMessage in cdMessages {
             guard let message = cdMessage.message() else {

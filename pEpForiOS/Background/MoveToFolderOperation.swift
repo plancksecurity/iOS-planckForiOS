@@ -14,11 +14,17 @@ import MessageModel
 class MoveToFolderOperation: ImapSyncOperation {
 
     var syncDelegate: MoveToFolderSyncDelegate?
+    /// Folder to move messages from
     let folder: Folder
+//    /// Folder type to move messages to
+//    let targetFolder: Folder?
 
-    init(parentName: String = #function, folder: Folder, imapSyncData: ImapSyncData,
-         errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+    var lastProcessedMessage: Message?
+
+    init(parentName: String = #function, imapSyncData: ImapSyncData,
+         errorContainer: ServiceErrorProtocol = ErrorContainer(), folder: Folder) {
         self.folder = folder
+
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
@@ -28,52 +34,187 @@ class MoveToFolderOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
+
         syncDelegate = MoveToFolderSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
 
-        handleNextMessage()
+        process()
     }
 
-    func handleNextMessage() {
-        //TODO:
-        guard let nextMessage = retrieveNextMessage() else {
-            markAsFinished()
+    override func markAsFinished() {
+        syncDelegate = nil
+        super.markAsFinished()
+    }
+
+    private func retrieveNextMessage() -> Message? {
+        var result: Message? = nil
+        MessageModel.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
+                return
+            }
+            guard let msg = me.folder.firstMessageThatHasToBeMoved() else {
+                return
+            }
+            result = msg
+        }
+        return result
+    }
+
+    private func deleteLastMovedMessage() {
+        guard let toDelete = lastProcessedMessage else {
             return
+        }
+
+        MessageModel.performAndWait {
+            toDelete.delete()
+            toDelete.save()
+        }
+        lastProcessedMessage = nil
+    }
+
+    private func deleteLastCopiedMessage() {
+        guard let toDelete = lastProcessedMessage else {
+            return
+        }
+
+        MessageModel.performAndWait {
+            toDelete.targetFolder = toDelete.parent
+            toDelete.imapFlags?.deleted = true
+            toDelete.save()
+        }
+        lastProcessedMessage = nil
+    }
+
+    private func process() {
+        if let sync = imapSyncData.sync {
+            if !sync.openMailBox(name: folder.name) {
+                handleNextMessage()
+            }
+        } else {
+            handle(error: BackgroundError.GeneralError.illegalState(info: "No sync"))
         }
     }
 
-    func retrieveNextMessage() -> Message? {
-        var result: Message? = nil
-        privateMOC.performAndWait {[weak self] in
+    fileprivate func handleNextMessage() {
+        deleteLastMovedMessage()
+        MessageModel.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
+                return
+            }
+            guard let message = me.retrieveNextMessage() else {
+                me.markAsFinished()
+                return
+            }
+            if message.parent == message.targetFolder {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "I wounder why we are here then.")
+                me.handleNextMessage()
+                return
+            }
+            guard let targetFolderName = message.targetFolder?.name else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No target folder")
+                me.markAsFinished()
+                return
+            }
+            me.lastProcessedMessage = message
+            let imapFolder = CWIMAPFolder(name: me.folder.name)
+            if let sync = me.imapSyncData.sync {
+                imapFolder.setStore(sync.imapStore)
+            }
+            imapFolder.moveMessage(withUid: message.uid, toFolderNamed: targetFolderName)
+        }
+    }
+
+    /// UID MOVE is part of an IMAP extension. Not all servers support it.
+    /// In case UID MOVE fails, we mimik its behaviour:
+    /// - UID COPY the message to the target folder (is supposed to be supported by all servers)
+    /// - mark the original message as /deleted
+    fileprivate func handleUidMoveIsUnsupported() {
+        guard let toCopy = lastProcessedMessage,
+            let targetFolder = toCopy.targetFolder else {
+                return
+        }
+        let uidCopyOp = UIDCopyOperation(imapSyncData: imapSyncData,
+                                         errorContainer: errorContainer,
+                                         message: toCopy,
+                                         targetFolder: targetFolder)
+        uidCopyOp.completionBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            //TODO: move to predicate factory
-            let p = NSPredicate(format:
-                "targetFolder != nil AND parent != targetFolder AND parent.account = %@",
-                                imapSyncData.connectInfo.accountObjectID)
-            let msg = CdMessage.first(predicate: p, in: me.privateMOC)
-//            if let m = msg, let cdIdent = m.parent?.account?.identity {
-//                result = (m.pEpMessageDict(), cdIdent.pEpIdentity(), m.objectID)
-//            }
+            if let error = me.errorContainer.error {
+                me.addIMAPError(error)
+                me.markAsFinished()
+                return
+            }
+            me.deleteLastCopiedMessage()
         }
+        backgroundQueue.addOperation(uidCopyOp)
+    }
 
+    static func foldersContainingMarkedForMoveToFolder() -> [Folder] {
+        var result = [Folder]()
+        MessageModel.performAndWait {
+            let allUidMoveMessages = Message.allMessagesMarkedForMoveToFolder()
+            let foldersContainingMarkedMessages = allUidMoveMessages.map { $0.parent }
+            result = Array(Set(foldersContainingMarkedMessages))
+        }
         return result
     }
 }
 
+// MARK: - MoveToFolderSyncDelegate
+
 class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
-    public override func folderAppendCompleted(_ sync: ImapSync, notification: Notification?) {
-        //        (errorHandler as? AppendMailsOperationBase)?.handleNextMessage()
-        //TODO:
+    // MARK: Success
+
+    override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+        guard let handler = errorHandler as? MoveToFolderOperation else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            return
+        }
+        handler.handleNextMessage()
     }
 
-    public override func folderAppendFailed(_ sync: ImapSync, notification: Notification?) {
-//        (errorHandler as? AppendMailsOperationBase)?.addIMAPError(ImapSyncError.folderAppendFailed)
-//        (errorHandler as? AppendMailsOperationBase)?.markAsFinished()
-        //TODO:
+    override func messageUidMoveCompleted(_ sync: ImapSync, notification: Notification?) {
+        guard let handler = errorHandler as? MoveToFolderOperation else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            return
+        }
+        handler.handleNextMessage()
     }
-    //TODO:
+
+    // MARK: Error
+
+    override func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
+        handle(error: ImapSyncError.actionFailed, on: errorHandler)
+    }
+
+    public override func badResponse(_ sync: ImapSync, response: String?) {
+        handle(error: ImapSyncError.badResponse(response) , on: errorHandler)
+    }
+
+    public override func actionFailed(_ sync: ImapSync, response: String?) {
+        guard let handler = errorHandler as? MoveToFolderOperation else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            return
+        }
+        /// UID MOVE failed. We assume the server does not support it.
+        handler.handleUidMoveIsUnsupported()
+    }
+
+    // MARK: Helper
+
+    private func handle(error: Error, on errorHandler: ImapSyncDelegateErrorHandlerProtocol?) {
+        guard let handler = errorHandler as? MoveToFolderOperation else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Wrong delegate called")
+            return
+        }
+        handler.addIMAPError(error)
+        handler.markAsFinished()
+    }
 }
 
