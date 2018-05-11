@@ -13,13 +13,16 @@ extension UIViewController {
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
         // icon
         if let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) {
-            let v = UIImageView(image: img)
-
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
             let officialMinimumDimension: CGFloat = 44
 
-            // try to make the icon a minimum of 44x44
+            let newMinimumWidth = max(officialMinimumDimension / 2, img.size.width)
+            let img2 = img.resized(newWidth: newMinimumWidth)
+            let v = UIImageView(image: img2)
+            v.contentMode = .center // DON'T stretch the image, leave it at original size
+
+            // try to make the hit area of the icon a minimum of 44x44
             let minimumDesiredDimension: CGFloat = min(
                 officialMinimumDimension,
                 navigationController?.navigationBar.frame.size.height ?? officialMinimumDimension)
