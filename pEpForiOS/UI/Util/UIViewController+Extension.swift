@@ -15,18 +15,18 @@ extension UIViewController {
         if let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
-            let officialMinimumDimension: CGFloat = 44
+            let minimumHittestDimension: CGFloat = 44
 
-            let newMinimumWidth = max(officialMinimumDimension / 2, img.size.width)
-            let img2 = img.resized(newWidth: newMinimumWidth)
+            let minimumImageWidth = max(minimumHittestDimension / 2, img.size.width)
+            let img2 = img.resized(newWidth: minimumImageWidth)
             let v = UIImageView(image: img2)
             v.contentMode = .center // DON'T stretch the image, leave it at original size
 
             // try to make the hit area of the icon a minimum of 44x44
-            let minimumDesiredDimension: CGFloat = min(
-                officialMinimumDimension,
-                navigationController?.navigationBar.frame.size.height ?? officialMinimumDimension)
-            v.bounds.size = CGSize(width: minimumDesiredDimension, height: minimumDesiredDimension)
+            let desiredHittestDimension: CGFloat = min(
+                minimumHittestDimension,
+                navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
+            v.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
 
             navigationItem.titleView = v
             v.isUserInteractionEnabled = true
