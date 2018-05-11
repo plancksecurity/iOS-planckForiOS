@@ -127,28 +127,13 @@ extension MoveToFolderViewController: UITableViewDelegate {
             return
         }
         let folderCellVM = vm[indexPath.section][indexPath.row]
-//        folderCellVM.moveIn(message: msg) //IOS-663: TODO:
-
-        /*
-         Move methode:
-                *target trash: msg.imapDelete()
-                * target sent, draft: deny
-         target else: new MOVE or COPY+delete
-         */
         let targetFolder = folderCellVM.folder
 
-        switch targetFolder.folderType {
-        case .trash:
-            // Needs special handling to make sure not to leak data.
-            msg.imapDelete()
-        case .drafts, .sent:
-            // not allowed to move messages in. See folderTypesNotAllowedToMoveTo.
-            // do nothing
-            break
-        default:
-            //IOS-663 //TODO: new MOVE or COPY+delete
+        if msg.isAllowedToMoveTo(targetFolder: targetFolder) {
             msg.move(to: targetFolder)
-            break
+        } else {
+            // Not allowed to move messages in. See folderTypesNotAllowedToMoveTo.
+            // do nothing
         }
         dismiss(animated: true)
     }

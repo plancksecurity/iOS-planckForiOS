@@ -30,4 +30,16 @@ extension Message {
             parent.shouldUidMoveDeletedMessagesToTrash ? .shouldBeMoved : .none
         self.save()
     }
+
+    /// Marks the message for moving to the given folder.
+    ///
+    /// - Parameter targetFolder: folder to move the message to
+    func move(to targetFolder:Folder) {
+        if parent == targetFolder {
+            // the message is already in the target folder. No need to move it.
+            return
+        }
+        self.targetFolder = targetFolder
+        save()
+    }
 }
