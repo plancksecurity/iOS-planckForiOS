@@ -77,6 +77,11 @@ class ComposeTableViewController: BaseTableViewController {
      */
     var rowHeightCache = [IndexPath:CGFloat]()
 
+    /**
+     Last time something changed, this was the rating of the message currently in edit.
+     */
+    var currentRating = PEP_rating_undefined
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -530,23 +535,23 @@ class ComposeTableViewController: BaseTableViewController {
         return prefixHtml + toWrap + postfixHtml
     }
 
-    private func currentRating(session: PEPSession) -> PEP_rating {
+    private func recalculateCurrentRating(session: PEPSession) -> PEP_rating {
         if let from = self.origin {
-            let ratingValue = session.outgoingMessageRating(from: from,
-                                                            to: self.destinyTo,
-                                                            cc: self.destinyCc,
-                                                            bcc: self.destinyBcc)
-            return ratingValue
+            currentRating = session.outgoingMessageRating(from: from,
+                                                          to: self.destinyTo,
+                                                          cc: self.destinyCc,
+                                                          bcc: self.destinyBcc)
         } else {
-            return PEP_rating_undefined
+            currentRating = PEP_rating_undefined
         }
+        return currentRating
     }
 
     private func calculateComposeColor() {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 let session = PEPSession()
-                let ratingValue = theSelf.currentRating(session: session)
+                let ratingValue = theSelf.recalculateCurrentRating(session: session)
                 if let view = theSelf.showPepRating(pEpRating: ratingValue,
                                                     pEpProtection: theSelf.pEpProtection) {
                     let tapGestureRecognizer = UITapGestureRecognizer(
@@ -1158,9 +1163,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
         }
         alert.addAction(actionReply)
 
-        let session = PEPSession()
-        let outgoingRatingValue = currentRating(session: session)
-        let outgoingRatingColor = outgoingRatingValue.pEpColor()
+        let outgoingRatingColor = currentRating.pEpColor()
         if outgoingRatingColor == PEP_color_green || outgoingRatingColor == PEP_color_green {
             let originalValueOfProtection = pEpProtection
             let title = pEpProtection ?
