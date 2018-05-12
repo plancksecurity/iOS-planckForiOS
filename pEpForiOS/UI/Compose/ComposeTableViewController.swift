@@ -1148,19 +1148,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
         calculateComposeColor()
     }
 
-    /*
-    @IBAction func toggleProtection(gestureRecognizer: UILongPressGestureRecognizer) {
-        if gestureRecognizer.state == .began {
-            pEpProtection = !pEpProtection
-            calculateComposeColor()
-        }
-    }
-
-    @IBAction func handshakeView(gestureRecognizer: UITapGestureRecognizer) {
-        self.performSegue(withIdentifier: "segueHandshake", sender: nil)
-    }
-     */
-
     /**
      Shows a menu where user can choose to make a handshake, or toggle force unprotected.
      */
