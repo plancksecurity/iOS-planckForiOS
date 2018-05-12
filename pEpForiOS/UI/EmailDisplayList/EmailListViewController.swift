@@ -554,8 +554,8 @@ extension EmailListViewController: EmailListViewModelDelegate {
 extension EmailListViewController {
     func showMoreActionSheet(forRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
-        let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertControler.view.tintColor = .pEpGreen
+        let alertControler = UIAlertController.pEpAlertController(
+            title: nil, message: nil, preferredStyle: .actionSheet)
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction()
         let replyAllAction = createReplyAllAction()

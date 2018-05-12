@@ -152,10 +152,9 @@
             // Do nothing. The error type is not suitable to bother the user with.
             return
         }
-        let alertView = UIAlertController(title: error.title,
-                                          message:error.localizedDescription,
-                                          preferredStyle: .alert)
-        alertView.view.tintColor = .pEpGreen
+        let alertView = UIAlertController.pEpAlertController(title: error.title,
+                                                             message:error.localizedDescription,
+                                                             preferredStyle: .alert)
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString( "View log",
                 comment: "Button for viewing the log on error"),

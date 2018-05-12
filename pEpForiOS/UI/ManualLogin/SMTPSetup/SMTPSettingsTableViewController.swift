@@ -79,11 +79,10 @@ UITextFieldDelegate {
     }
 
     private func showErrorMessage (_ message: String) {
-        let alertView = UIAlertController(
+        let alertView = UIAlertController.pEpAlertController(
             title: NSLocalizedString("Error",
                                      comment: "the text in the title for the error message AlerView in account settings"),
             message:message, preferredStyle: .alert)
-        alertView.view.tintColor = .pEpGreen
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
                 "View log",
@@ -104,13 +103,12 @@ UITextFieldDelegate {
     }
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {
-        let alertController = UIAlertController(
+        let alertController = UIAlertController.pEpAlertController(
             title: NSLocalizedString("Transport protocol",
                                      comment: "UI alert title for transport protocol"),
             message: NSLocalizedString("Choose a Security protocol for your accont",
                                        comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
-        alertController.view.tintColor = .pEpGreen
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportSMTP = transport
             self.updateView()
@@ -172,9 +170,10 @@ UITextFieldDelegate {
     }
 
     private func informUser(about error: Error, title: String) {
-        let alert = UIAlertController(title: title,
-                                      message: error.localizedDescription,
-                                      preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController.pEpAlertController(
+            title: title,
+            message: error.localizedDescription,
+            preferredStyle: UIAlertControllerStyle.alert)
         let cancelAction = UIAlertAction(title:
             NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
                                          style: .cancel, handler: nil)

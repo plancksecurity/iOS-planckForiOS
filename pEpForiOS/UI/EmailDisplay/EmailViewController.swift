@@ -243,8 +243,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
-        let alertViewWithoutTitle = UIAlertController()
-        alertViewWithoutTitle.view.tintColor = .pEpGreen
+        let alertViewWithoutTitle = UIAlertController.pEpAlertController()
 
         if let popoverPresentationController = alertViewWithoutTitle.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender

@@ -1004,8 +1004,8 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func showAlertControllerWithOptionsForCanceling(sender: Any) {
-        let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertCtrl.view.tintColor = .pEpGreen
+        let alertCtrl = UIAlertController.pEpAlertController(
+            title: nil, message: nil, preferredStyle: .actionSheet)
         if let popoverPresentationController = alertCtrl.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
         }
