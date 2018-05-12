@@ -1164,7 +1164,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
         alert.addAction(actionReply)
 
         let outgoingRatingColor = currentRating.pEpColor()
-        if outgoingRatingColor == PEP_color_green || outgoingRatingColor == PEP_color_green {
+        if outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green {
             let originalValueOfProtection = pEpProtection
             let title = pEpProtection ?
                 NSLocalizedString("Disable Protection",
