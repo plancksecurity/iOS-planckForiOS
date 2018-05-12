@@ -532,8 +532,7 @@ class ComposeTableViewController: BaseTableViewController {
         return prefixHtml + toWrap + postfixHtml
     }
 
-    private func currentRating() -> PEP_rating {
-        let session = PEPSession()
+    private func currentRating(session: PEPSession) -> PEP_rating {
         if let from = self.origin {
             let ratingValue = session.outgoingMessageRating(from: from,
                                                             to: self.destinyTo,
@@ -549,7 +548,7 @@ class ComposeTableViewController: BaseTableViewController {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 let session = PEPSession()
-                let ratingValue = theSelf.currentRating()
+                let ratingValue = theSelf.currentRating(session: session)
                 theSelf.rating = session.string(from: ratingValue)
                 if let view = theSelf.showPepRating(pEpRating: ratingValue,
                                                     pEpProtection: theSelf.pEpProtection) {
@@ -1175,7 +1174,8 @@ extension ComposeTableViewController: ComposeCellDelegate {
         }
         alert.addAction(actionReply)
 
-        let outgoingRatingValue = currentRating()
+        let session = PEPSession()
+        let outgoingRatingValue = currentRating(session: session)
         let outgoingRatingColor = outgoingRatingValue.pEpColor()
         if outgoingRatingColor == PEP_color_green || outgoingRatingColor == PEP_color_green {
             let originalValueOfProtection = pEpProtection
