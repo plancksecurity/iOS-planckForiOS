@@ -103,7 +103,7 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setFirstResponder()
-        calculateComposeColor()
+        calculateComposeColorAndInstallTapGesture()
     }
 
     deinit {
@@ -547,7 +547,7 @@ class ComposeTableViewController: BaseTableViewController {
         return currentRating
     }
 
-    private func calculateComposeColor() {
+    private func calculateComposeColorAndInstallTapGesture() {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 let session = PEPSession()
@@ -1130,7 +1130,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
         default:
             break
         }
-        calculateComposeColor()
+        calculateComposeColorAndInstallTapGesture()
     }
 
     //remove after refactoring all Cells to not know Identity
@@ -1147,7 +1147,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
         default:
             break
         }
-        calculateComposeColor()
+        calculateComposeColorAndInstallTapGesture()
     }
 
     /**
@@ -1175,7 +1175,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
                 title: title,
                 style: .default) { [weak self] (action) in
                     self?.pEpProtection = !originalValueOfProtection
-                    self?.calculateComposeColor()
+                    self?.calculateComposeColorAndInstallTapGesture()
             }
             alert.addAction(actionToggleProtection)
         }
