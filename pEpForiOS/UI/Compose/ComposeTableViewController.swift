@@ -44,8 +44,6 @@ class ComposeTableViewController: BaseTableViewController {
     private var cells = [ComposeFieldModel.FieldType:ComposeCell]()
     private var ccEnabled = false
 
-    var rating : String = ""
-
     var composeMode: ComposeMode = .normal
     private var messageToSend: Message?
     var originalMessage: Message?
@@ -549,7 +547,6 @@ class ComposeTableViewController: BaseTableViewController {
             if let theSelf = self {
                 let session = PEPSession()
                 let ratingValue = theSelf.currentRating(session: session)
-                theSelf.rating = session.string(from: ratingValue)
                 if let view = theSelf.showPepRating(pEpRating: ratingValue,
                                                     pEpProtection: theSelf.pEpProtection) {
                     let tapGestureRecognizer = UITapGestureRecognizer(
