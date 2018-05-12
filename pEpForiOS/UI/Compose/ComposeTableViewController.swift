@@ -547,6 +547,27 @@ class ComposeTableViewController: BaseTableViewController {
         return currentRating
     }
 
+    private func handshakeActionCombinations() -> [HandshakeCombination] {
+        if let from = self.origin {
+            var allIdenties = destinyTo
+            allIdenties.append(from)
+            allIdenties.append(contentsOf: destinyCc)
+            allIdenties.append(contentsOf: destinyBcc)
+            return Message.handshakeActionCombinations(identities: allIdenties)
+        } else {
+            return []
+        }
+    }
+
+    private func canHandshake() -> Bool {
+        return !handshakeActionCombinations().isEmpty
+    }
+
+    private func canToggleProtection() -> Bool {
+        let outgoingRatingColor = currentRating.pEpColor()
+        return outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green
+    }
+
     private func calculateComposeColorAndInstallTapGesture() {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
@@ -554,10 +575,12 @@ class ComposeTableViewController: BaseTableViewController {
                 let ratingValue = theSelf.recalculateCurrentRating(session: session)
                 if let view = theSelf.showPepRating(pEpRating: ratingValue,
                                                     pEpProtection: theSelf.pEpProtection) {
-                    let tapGestureRecognizer = UITapGestureRecognizer(
-                        target: theSelf,
-                        action: #selector(theSelf.actionHandshakeOrForceUnprotected))
-                    view.addGestureRecognizer(tapGestureRecognizer)
+                    if theSelf.canHandshake() || theSelf.canToggleProtection() {
+                        let tapGestureRecognizer = UITapGestureRecognizer(
+                            target: theSelf,
+                            action: #selector(theSelf.actionHandshakeOrForceUnprotected))
+                        view.addGestureRecognizer(tapGestureRecognizer)
+                    }
                 }
             }
         }
@@ -1154,38 +1177,45 @@ extension ComposeTableViewController: ComposeCellDelegate {
      Shows a menu where user can choose to make a handshake, or toggle force unprotected.
      */
     @IBAction func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
-        let alert = UIAlertController.pEpAlertController()
+        let theCanHandshake = canHandshake()
+        let theCanToggleProtection = canToggleProtection()
 
-        let actionReply = UIAlertAction(
-            title: NSLocalizedString("Handshake", comment: "possible privacy status action"),
-            style: .default) { [weak self] (action) in
-                self?.performSegue(withIdentifier: .segueHandshake, sender: self)
-        }
-        alert.addAction(actionReply)
+        if theCanHandshake || theCanToggleProtection {
+            let alert = UIAlertController.pEpAlertController()
 
-        let outgoingRatingColor = currentRating.pEpColor()
-        if outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green {
-            let originalValueOfProtection = pEpProtection
-            let title = pEpProtection ?
-                NSLocalizedString("Disable Protection",
-                                  comment: "possible private status action") :
-                NSLocalizedString("Enable Protection",
-                                  comment: "possible private status action")
-            let actionToggleProtection = UIAlertAction(
-                title: title,
-                style: .default) { [weak self] (action) in
-                    self?.pEpProtection = !originalValueOfProtection
-                    self?.calculateComposeColorAndInstallTapGesture()
+            if theCanHandshake {
+                let actionReply = UIAlertAction(
+                    title: NSLocalizedString("Handshake",
+                                             comment: "possible privacy status action"),
+                    style: .default) { [weak self] (action) in
+                        self?.performSegue(withIdentifier: .segueHandshake, sender: self)
+                }
+                alert.addAction(actionReply)
             }
-            alert.addAction(actionToggleProtection)
+
+            if theCanToggleProtection {
+                let originalValueOfProtection = pEpProtection
+                let title = pEpProtection ?
+                    NSLocalizedString("Disable Protection",
+                                      comment: "possible private status action") :
+                    NSLocalizedString("Enable Protection",
+                                      comment: "possible private status action")
+                let actionToggleProtection = UIAlertAction(
+                    title: title,
+                    style: .default) { [weak self] (action) in
+                        self?.pEpProtection = !originalValueOfProtection
+                        self?.calculateComposeColorAndInstallTapGesture()
+                }
+                alert.addAction(actionToggleProtection)
+            }
+
+            let cancelAction = UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: "possible private status action"),
+                style: .cancel) { (action) in }
+            alert.addAction(cancelAction)
+
+            present(alert, animated: true, completion: nil)
         }
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "possible private status action"),
-            style: .cancel) { (action) in }
-        alert.addAction(cancelAction)
-
-        present(alert, animated: true, completion: nil)
     }
 
     func textDidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {

@@ -11,7 +11,6 @@ import UIKit
 
 extension UIViewController {
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
-        // icon
         if let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):
             // https://developer.apple.com/design/tips/
