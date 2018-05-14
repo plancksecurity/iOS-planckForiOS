@@ -66,9 +66,11 @@ public class UnifiedInbox: Folder {
     override open func allCdMessages(includingDeleted: Bool)  -> [CdMessage] {
         var predicates = [NSPredicate]()
         if let _ = filter {
-            predicates.append(NSPredicate(format: "parent.folderTypeRawValue= %d", FolderType.inbox.rawValue))
+            predicates.append(NSPredicate(format: "parent.folderTypeRawValue= %d",
+                                          FolderType.inbox.rawValue))
         }
-        return allCdMessages(includingDeleted: includingDeleted, takingPredicateIntoAccount: predicates)
+        return allCdMessages(includingDeleted: includingDeleted,
+                             takingPredicatesIntoAccount: predicates)
     }
 
     override open func contains(message: Message, deletedMessagesAreContained: Bool = false) -> Bool {
