@@ -66,9 +66,15 @@ class EmailViewController: BaseTableViewController {
 
     private func showPepRating() {
         let session = PEPSession()
-        let _ = showPepRating(pEpRating: message?.pEpRating(session: session))
-        let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
-        handShakeButton.isEnabled = !handshakeCombos.isEmpty
+        if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating(session: session)) {
+            let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
+            if !handshakeCombos.isEmpty {
+                let tapGestureRecognizer = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(self.showHandshakeView(gestureRecognizer:)))
+                privacyStatusIcon.addGestureRecognizer(tapGestureRecognizer)
+            }
+        }
     }
 
 
@@ -331,6 +337,10 @@ class EmailViewController: BaseTableViewController {
 
     private func decryptAgain() {
         ratingReEvaluator?.reevaluateRating()
+    }
+
+    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
+        performSegue(withIdentifier: .segueHandshake, sender: self)
     }
 }
 
