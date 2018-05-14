@@ -16,9 +16,6 @@ class MoveToFolderOperation: ImapSyncOperation {
     var syncDelegate: MoveToFolderSyncDelegate?
     /// Folder to move messages from
     let folder: Folder
-//    /// Folder type to move messages to
-//    let targetFolder: Folder?
-
     var lastProcessedMessage: Message?
 
     init(parentName: String = #function, imapSyncData: ImapSyncData,
@@ -67,9 +64,7 @@ class MoveToFolderOperation: ImapSyncOperation {
         }
 
         MessageModel.performAndWait {
-            toDelete.targetFolder = toDelete.parent
             toDelete.delete()
-            toDelete.save()
         }
         lastProcessedMessage = nil
     }
@@ -206,6 +201,8 @@ class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
         /// UID MOVE failed. We assume the server does not support it.
         handler.handleUidMoveIsUnsupported()
     }
+
+    //    override func message //IOS-663: Message Expunge needs handling?
 
     // MARK: Helper
 
