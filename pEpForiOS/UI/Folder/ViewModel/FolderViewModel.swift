@@ -20,8 +20,9 @@ public class FolderViewModel {
     }
 
     private func generateSections(accounts: [Account]) {
+        items.append(FolderSectionViewModel(account: nil, Unified: true))
         for acc in accounts {
-            items.append(FolderSectionViewModel(account: acc))
+            items.append(FolderSectionViewModel(account: acc, Unified: false))
         }
     }
 

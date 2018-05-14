@@ -18,10 +18,6 @@ public class FolderCellViewModel {
         return self.name
     }
 
-//    public var number: Int {
-//        return 0 //fake number
-//    }
-
     public var arrow: UIImage {
         return UIImage(named: "arrow_down_icon")!
     }
