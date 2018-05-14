@@ -67,6 +67,7 @@ class MoveToFolderOperation: ImapSyncOperation {
         }
 
         MessageModel.performAndWait {
+            toDelete.targetFolder = toDelete.parent
             toDelete.delete()
             toDelete.save()
         }
@@ -107,7 +108,7 @@ class MoveToFolderOperation: ImapSyncOperation {
                 me.markAsFinished()
                 return
             }
-            if message.parent == message.targetFolder {
+            if message.parent == message.targetFolder { //IOS-663 merge in guard?
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "I wounder why we are here then.")
                 me.handleNextMessage()
