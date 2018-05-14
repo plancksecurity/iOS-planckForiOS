@@ -720,6 +720,7 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="2fD-kL-Bvj"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="RTR-We-Kc1"/>
+                        <segue destination="Dbs-KG-RkX" kind="show" identifier="segueHandshake" id="8Xh-Bv-MFq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1087,6 +1088,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
+        <segue reference="8Xh-Bv-MFq"/>
         <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>
