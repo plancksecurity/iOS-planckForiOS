@@ -694,11 +694,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
-                        <barButtonItem title="p≡p" id="1oP-DI-wuJ">
-                            <connections>
-                                <segue destination="Dbs-KG-RkX" kind="show" identifier="segueHandshake" id="QeL-n1-BY9"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem title="p≡p" id="1oP-DI-wuJ"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3">
                         <rightBarButtonItems>
@@ -718,7 +714,6 @@
                     <connections>
                         <outlet property="destructiveButton" destination="Swu-yi-LdI" id="RX6-Nq-DS2"/>
                         <outlet property="flagButton" destination="bej-eI-LgY" id="Geb-Es-y6z"/>
-                        <outlet property="handShakeButton" destination="1oP-DI-wuJ" id="uQN-WO-dVS"/>
                         <outlet property="nextMessage" destination="nCS-Wg-ZJI" id="Q0q-LK-Q5C"/>
                         <outlet property="previousMessage" destination="NsK-Ye-A0p" id="tHt-Ag-IaU"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
@@ -1092,7 +1087,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
-        <segue reference="QeL-n1-BY9"/>
         <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>
