@@ -543,7 +543,7 @@ open class NetworkServiceWorker {
 //            lastImapOp = lastHandleTrashedOp ?? lastImapOp
 //            operations.append(contentsOf: handleTrashedOperations)
             let (lastMoveToFolderOp, moveToFolderOperations) =
-                buildHandleMessagesMarkedAsShouldBeTrashedOperations(
+                buildUidMoveToFolderOperations(
                     imapSyncData: imapSyncData, errorContainer: errorContainer,
                     opImapFinished: opImapFinished, previousOp: lastImapOp)
             lastImapOp = lastMoveToFolderOp ?? lastImapOp
