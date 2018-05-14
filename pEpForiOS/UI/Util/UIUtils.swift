@@ -36,10 +36,9 @@ struct UIUtils {
                 return
             #endif
         }
-        let alertView = UIAlertController(title: title,
-                                          message: message,
-                                          preferredStyle: .alert)
-        alertView.view.tintColor = .pEpGreen
+        let alertView = UIAlertController.pEpAlertController(title: title,
+                                                             message: message,
+                                                             preferredStyle: .alert)
         alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment:
             "General alert positive button"),
                                           style: .default,

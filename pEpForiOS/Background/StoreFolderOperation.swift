@@ -43,9 +43,9 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
             return
         }
         Log.verbose(component: comp, content: "main \(folderInfo.name)")
-        let privateMOC = Record.Context.background
-        privateMOC.perform() {
-            self.process(context: privateMOC)
+        let context = privateMOC
+        context.perform() {
+            self.process(context: context)
         }
     }
 
@@ -75,6 +75,6 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
             self.addError(BackgroundError.CoreDataError.couldNotStoreFolder(info: "\(comp)-\(folderInfo.name)"))
         }
 
-        Record.saveAndWait()
+        Record.saveAndWait(context: privateMOC)
     }
 }

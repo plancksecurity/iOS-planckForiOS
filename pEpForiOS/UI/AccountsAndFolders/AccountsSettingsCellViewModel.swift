@@ -17,6 +17,7 @@ public class AccountsSettingsCellViewModel {
         case credits
         case syncTrash
         case unecryptedSubject
+        case defaultAccount
     }
 
     var account: Account?
@@ -51,6 +52,9 @@ public class AccountsSettingsCellViewModel {
             case .unecryptedSubject:
                 return NSLocalizedString("Subject Protection", comment:
                     "AccountsSettings: Cell (button) title to view unencrypted subject setting")
+            case .defaultAccount:
+                return NSLocalizedString("Default Account", comment:
+                    "AccountsSettings: Cell (button) title to view default account setting")
             case .account:
                 guard let acc = account else {
                     Log.shared.errorAndCrash(component: #function,
@@ -71,6 +75,8 @@ public class AccountsSettingsCellViewModel {
             case .organizedByThread:
                 // Feature unimplemented
                 return nil
+            case .defaultAccount:
+                return AppSettings().defaultAccount
             case .syncTrash:
                 return onOffStateString(forState: AppSettings().shouldSyncImapTrashWithServer)
             case .unecryptedSubject:

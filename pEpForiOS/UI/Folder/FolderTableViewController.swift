@@ -67,7 +67,8 @@ class FolderTableViewController: BaseTableViewController {
         return folderVM?[section].count ?? 0
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView,
+                            viewForHeaderInSection section: Int) -> UIView? {
         let header :CollapsibleTableViewHeader?
         if let head = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header")
             as? CollapsibleTableViewHeader{
@@ -84,11 +85,13 @@ class FolderTableViewController: BaseTableViewController {
         return header
     }
 
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView,
+                            heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Default", for: indexPath)
         guard let vm = folderVM else {
             Log.shared.errorAndCrash(component: #function, errorString: "No model")

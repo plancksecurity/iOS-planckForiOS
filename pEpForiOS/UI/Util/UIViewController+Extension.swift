@@ -11,10 +11,22 @@ import UIKit
 
 extension UIViewController {
     func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
-        setEmailDisplayDefaultNavigationBarStyle()
-        // icon
-        if let img = pEpRating?.pepColor().statusIcon(enabled: pEpProtection) {
-            let v = UIImageView(image: img)
+        if let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) {
+            // according to apple's design guidelines ('Hit Targets'):
+            // https://developer.apple.com/design/tips/
+            let minimumHittestDimension: CGFloat = 44
+
+            let minimumImageWidth = max(minimumHittestDimension / 2, img.size.width)
+            let img2 = img.resized(newWidth: minimumImageWidth)
+            let v = UIImageView(image: img2)
+            v.contentMode = .center // DON'T stretch the image, leave it at original size
+
+            // try to make the hit area of the icon a minimum of 44x44
+            let desiredHittestDimension: CGFloat = min(
+                minimumHittestDimension,
+                navigationController?.navigationBar.frame.size.height ?? minimumHittestDimension)
+            v.bounds.size = CGSize(width: desiredHittestDimension, height: desiredHittestDimension)
+
             navigationItem.titleView = v
             v.isUserInteractionEnabled = true
             return v
@@ -22,36 +34,5 @@ extension UIViewController {
             navigationItem.titleView = nil
             return nil
         }
-    }
-
-    func setNoColor() {
-        navigationController?.navigationBar.barTintColor = nil
-        navigationController?.toolbar.barTintColor = nil
-        navigationController?.navigationItem.rightBarButtonItem = nil
-        navigationController?.navigationBar.backgroundColor = nil
-    }
-
-    func setEmailDisplayDefaultNavigationBarStyle() {
-        navigationItem.title = nil
-        setNoColor()
-        navigationController?.navigationBar.titleTextAttributes =
-            [NSAttributedStringKey.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.tintColor = UIColor.pEpGreen
-        navigationController?.toolbar.tintColor = UIColor.pEpGreen
-        navigationController?.toolbar.backgroundColor = nil
-    }
-
-    func setDefaultColors() {
-        navigationController?.navigationBar.barTintColor =
-            UINavigationBar.appearance().barTintColor
-        navigationController?.toolbar.barTintColor =
-            UIToolbar.appearance().barTintColor
-        navigationController?.navigationBar.backgroundColor =
-            UINavigationBar.appearance().backgroundColor
-
-        navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
-        navigationController?.navigationBar.titleTextAttributes =
-            UINavigationBar.appearance().titleTextAttributes
-        navigationController?.toolbar.tintColor = UIToolbar.appearance().tintColor
     }
 }

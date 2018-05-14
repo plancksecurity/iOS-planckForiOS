@@ -6,12 +6,18 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
-import UIKit
+import MessageModel
 
 class AppSettings {
     static private let keyReinitializePepOnNextStartup = "reinitializePepOnNextStartup"
     static private let keyUnecryptedSubjectEnabled = "unecryptedSubjectEnabled"
     static private let keyAppendTrashMails = "keyAppendTrashMails"
+    static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
+
+    init() {
+        registerDefaults()
+        setup()
+    }
 
     var shouldReinitializePepOnNextStartup: Bool {
         get {
@@ -41,10 +47,36 @@ class AppSettings {
         }
     }
 
-    init() {
-        registerDefaults()
-        setup()
+    // MARK: - DEFAULT ACCOUNT
+
+    /// Address of the default account
+    var defaultAccount: String? {
+        get {
+            assureDefaultAccountIsSetAndExists()
+            return UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
+        }
     }
+
+    private func assureDefaultAccountIsSetAndExists() {
+        if UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress) == nil {
+            // Default account is not set. Take the first MessageModel provides as a starting point
+            let initialDefault = Account.all().first?.user.address
+            UserDefaults.standard.set(initialDefault, forKey: AppSettings.keyDefaultAccountAddress)
+        }
+        // Assure the default account still exists. The user might have deleted it.
+        guard
+            let currentDefault = UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress),
+            let _ = Account.by(address: currentDefault)
+            else {
+                defaultAccount = nil
+                return
+        }
+    }
+
+    // MARK: - SETUP
 
     private func setup() {
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(unecryptedSubjectEnabled)

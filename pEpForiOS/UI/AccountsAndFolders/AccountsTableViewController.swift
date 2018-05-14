@@ -96,8 +96,11 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     private func showAlertBeforeDelete(_ indexPath: IndexPath) {
-        let alertController = UIAlertController(title: nil, message: NSLocalizedString("Are you sure you want to delete the account?", comment:
-            "delete account message"), preferredStyle: .actionSheet)
+        let alertController = UIAlertController.pEpAlertController(
+            title: nil,
+            message: NSLocalizedString("Are you sure you want to delete the account?",
+                                       comment:
+                "delete account message"), preferredStyle: .actionSheet)
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
         }
@@ -153,6 +156,8 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         case .unecryptedSubject:
             performSegue(withIdentifier: .segueShowSettingUnecryptedSubject, sender: self)
+        case .defaultAccount:
+            performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
         case .syncTrash:
             performSegue(withIdentifier: .segueShowSettingSyncTrash, sender: self)
         case .showLog:
@@ -172,6 +177,7 @@ extension AccountsTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case segueAddNewAccount
         case segueEditAccount
+        case segueShowSettingDefaultAccount
         case segueShowLog
         case segueShowSettingSyncTrash
         case segueShowSettingUnecryptedSubject
@@ -195,27 +201,29 @@ extension AccountsTableViewController: SegueHandlerType {
                     destination.viewModel = vm
                 }
             }
-            break
-        case .noAccounts,
-             .segueShowSettingUnecryptedSubject,
-             .segueShowSettingSyncTrash,
-             .segueAddNewAccount:
-            guard
-                let destination = segue.destination as? BaseViewController
-                else {
-                    return
+        case .noAccounts, // BaseViewControllers
+        .segueShowSettingUnecryptedSubject,
+        .segueShowSettingSyncTrash,
+        .segueAddNewAccount,
+        .sequeShowCredits:
+            guard let destination = segue.destination as? BaseViewController else {
+                return
             }
             destination.appConfig = self.appConfig
-            break
+        case .segueShowSettingDefaultAccount: // BaseTableViewControllers
+            guard let destination = segue.destination as? BaseTableViewController else {
+                return
+            }
+            destination.appConfig = self.appConfig
         case .segueShowLog:
             guard let destination = segue.destination as? UINavigationController,
                 let viewController = destination.rootViewController as? LogViewController else {
                     return
             }
             viewController.appConfig = self.appConfig
+        case .noSegue:
+            // does not need preperation
             break
-        case .sequeShowCredits: fallthrough
-        default:()
         }
     }
 }

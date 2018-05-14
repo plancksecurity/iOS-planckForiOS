@@ -9,6 +9,7 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -47,7 +48,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
-                                            <rect key="frame" x="72" y="32.5" width="272" height="19.5"/>
+                                            <rect key="frame" x="72" y="32.5" width="269" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -55,19 +56,19 @@
                                         <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillProportionally" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="MZJ-bg-Dw7">
                                             <rect key="frame" x="344" y="29.5" width="14" height="14"/>
                                             <subviews>
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment-list-icon" translatesAutoresizingMaskIntoConstraints="NO" id="3BC-6k-zL0">
+                                                    <rect key="frame" x="-14" y="0.0" width="14" height="14"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="14" id="BQW-DX-8aC"/>
+                                                        <constraint firstAttribute="width" secondItem="3BC-6k-zL0" secondAttribute="height" multiplier="1:1" id="xsh-N2-oVw"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BLq-0g-OgR" userLabel="Flagged icon">
                                                     <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="14" id="f4y-vH-ugI"/>
                                                         <constraint firstAttribute="width" secondItem="BLq-0g-OgR" secondAttribute="height" multiplier="1:1" id="uGj-dI-2ly"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment-list-icon" translatesAutoresizingMaskIntoConstraints="NO" id="3BC-6k-zL0">
-                                                    <rect key="frame" x="14" y="0.0" width="14" height="14"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="14" id="BQW-DX-8aC"/>
-                                                        <constraint firstAttribute="width" secondItem="3BC-6k-zL0" secondAttribute="height" multiplier="1:1" id="xsh-N2-oVw"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
@@ -102,7 +103,7 @@
                                         <constraint firstItem="Wkg-wf-Dbd" firstAttribute="trailing" secondItem="BvI-Zi-zU6" secondAttribute="trailing" id="Tx2-fK-W1D"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="leading" id="Wva-Nq-D3D"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="5" id="Xp7-Lw-Lqg"/>
-                                        <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" id="acU-9j-7hJ"/>
+                                        <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" constant="3" id="acU-9j-7hJ"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="top" secondItem="Wkg-wf-Dbd" secondAttribute="bottom" constant="5" id="aoL-eb-2Dk"/>
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="-3" id="j3H-Iv-HG5"/>
                                         <constraint firstItem="m0u-Jn-mQU" firstAttribute="bottom" secondItem="YqR-ga-Tf9" secondAttribute="bottom" id="ubw-w6-q4y"/>
@@ -162,6 +163,7 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReply" id="I15-Dm-oo1"/>
                         <segue destination="3bx-34-vLD" kind="show" identifier="segueShowEmail" id="CUV-ox-IiR"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueEditDraft" id="fJ0-cY-ZEb"/>
+                        <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="d5O-Wk-gjZ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -498,7 +500,7 @@
             <objects>
                 <tableViewController title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mYV-vz-wEb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -674,6 +676,12 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="NHr-Sb-8Of"/>
+                        <barButtonItem image="folders-icon-folder" id="a2r-iQ-NVT" userLabel="Move to Folder">
+                            <connections>
+                                <action selector="moveToFolderButtonTapped:" destination="3bx-34-vLD" id="Pfz-xE-sJb"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="pDp-Ex-gb9"/>
                         <barButtonItem systemItem="trash" id="Swu-yi-LdI">
                             <connections>
                                 <action selector="deleteButtonTapped:" destination="3bx-34-vLD" id="1i5-fP-wma"/>
@@ -685,18 +693,8 @@
                                 <action selector="pressReply:" destination="3bx-34-vLD" id="KDm-Or-31Y"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="eZb-1l-AhY"/>
-                        <barButtonItem systemItem="compose" id="olT-gI-RWB">
-                            <connections>
-                                <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" id="70T-Gu-VTr"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
-                        <barButtonItem title="p≡p" id="1oP-DI-wuJ">
-                            <connections>
-                                <segue destination="Dbs-KG-RkX" kind="show" identifier="segueHandshake" id="QeL-n1-BY9"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem title="p≡p" id="1oP-DI-wuJ"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3">
                         <rightBarButtonItems>
@@ -712,15 +710,17 @@
                             </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="destructiveButton" destination="Swu-yi-LdI" id="RX6-Nq-DS2"/>
                         <outlet property="flagButton" destination="bej-eI-LgY" id="Geb-Es-y6z"/>
-                        <outlet property="handShakeButton" destination="1oP-DI-wuJ" id="uQN-WO-dVS"/>
                         <outlet property="nextMessage" destination="nCS-Wg-ZJI" id="Q0q-LK-Q5C"/>
                         <outlet property="previousMessage" destination="NsK-Ye-A0p" id="tHt-Ag-IaU"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="2fD-kL-Bvj"/>
+                        <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="RTR-We-Kc1"/>
+                        <segue destination="Dbs-KG-RkX" kind="show" identifier="segueHandshake" id="8Xh-Bv-MFq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -989,6 +989,56 @@
             </objects>
             <point key="canvasLocation" x="8766" y="1182"/>
         </scene>
+        <!--Move to Folder-->
+        <scene sceneID="Rib-YI-OIO">
+            <objects>
+                <viewController storyboardIdentifier="MoveToFolderViewController" title="Move to Folder" id="EmS-3d-sKb" customClass="MoveToFolderViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QLL-SZ-j9X">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fga-m7-U8W">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MoveToFolderCell" textLabel="OLo-8A-CCo" style="IBUITableViewCellStyleDefault" id="qKM-Gd-6Wt">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qKM-Gd-6Wt" id="Lyo-r1-ZDN">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="OLo-8A-CCo">
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Jmt-gN-lth" firstAttribute="trailing" secondItem="fga-m7-U8W" secondAttribute="trailing" id="ArL-X5-O17"/>
+                            <constraint firstItem="fga-m7-U8W" firstAttribute="top" secondItem="QLL-SZ-j9X" secondAttribute="top" id="DYq-hT-S6x"/>
+                            <constraint firstItem="Jmt-gN-lth" firstAttribute="bottom" secondItem="fga-m7-U8W" secondAttribute="bottom" id="SLJ-Yq-Jmx"/>
+                            <constraint firstItem="fga-m7-U8W" firstAttribute="leading" secondItem="Jmt-gN-lth" secondAttribute="leading" id="qeU-o9-oI0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Jmt-gN-lth"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="SsE-l2-ekb"/>
+                    <connections>
+                        <outlet property="tableview" destination="fga-m7-U8W" id="AnE-g9-aAp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2U7-06-MWe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7119.1999999999998" y="-869.41529235382313"/>
+        </scene>
         <!--Handshake-->
         <scene sceneID="vNc-oF-Keh">
             <objects>
@@ -1005,6 +1055,24 @@
             </objects>
             <point key="canvasLocation" x="5134" y="-1408"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="fa0-aU-9j8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WY0-yJ-1SU" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="amn-Lt-j8w">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="EmS-3d-sKb" kind="relationship" relationship="rootViewController" id="J1C-Pp-Y5r"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r5B-yf-15o" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6180" y="-869.41529235382313"/>
+        </scene>
     </scenes>
     <resources>
         <image name="arrow-lft-active" width="10" height="18"/>
@@ -1013,12 +1081,14 @@
         <image name="button-trustwords-icon" width="21" height="21"/>
         <image name="contact-icon" width="46" height="46"/>
         <image name="empty-avatar" width="150" height="150"/>
+        <image name="folders-icon-folder" width="25" height="25"/>
         <image name="icon-unflagged" width="33" height="64"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="QeL-n1-BY9"/>
-        <segue reference="Usl-iS-7fo"/>
+        <segue reference="RTR-We-Kc1"/>
+        <segue reference="8Xh-Bv-MFq"/>
+        <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>

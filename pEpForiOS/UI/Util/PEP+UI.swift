@@ -12,20 +12,20 @@ extension PEP_color {
     func statusIcon(enabled: Bool = true) -> UIImage? {
         switch self {
         case PEP_color_no_color:
-            return nil
+            return UIImage(named: "pEp-status-grey")
         case PEP_color_red:
-            return UIImage(named: "pep-status-red")
+            return UIImage(named: "pEp-status-red")
         case PEP_color_yellow:
             if enabled {
-                return UIImage(named: "pep-status-yellow")
+                return UIImage(named: "pEp-status-yellow")
             } else {
-                return UIImage(named: "pep-status-yellow-gray")
+                return UIImage(named: "pEp-status-yellow-disabled")
             }
         case PEP_color_green:
             if enabled {
-                return UIImage(named: "pep-status-green")
+                return UIImage(named: "pEp-status-green")
             } else {
-                return UIImage(named: "pep-status-green-gray")
+                return UIImage(named: "pEp-status-green-disabled")
             }
         default:
             return nil
@@ -49,7 +49,7 @@ extension PEP_color {
 }
 
 extension PEP_rating {
-    func pepColor() -> PEP_color {
+    func pEpColor() -> PEP_color {
         return PEPUtil.pEpColor(pEpRating: self)
     }
 
@@ -58,7 +58,7 @@ extension PEP_rating {
     }
 
     func statusIcon() -> UIImage? {
-        let color = pepColor()
+        let color = pEpColor()
         return color.statusIcon()
     }
 }

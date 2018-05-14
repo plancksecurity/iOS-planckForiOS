@@ -9,14 +9,24 @@
 import Foundation
 import MessageModel
 
+/// View Model for folder hierarchy.
 public class FolderViewModel {
+    var items: [FolderSectionViewModel]
 
-    private var items: [FolderSectionViewModel]
-
-    public init () {
+    /// Instantiates a folder hierarchy model with:
+    /// One section per account
+    /// One row per folder
+    /// If no account is given, all accounts found in the store are taken into account.
+    /// - Parameter accounts: accounts to to create folder hierarchy view model for.
+    public init(withFordersIn accounts: [Account]? = nil) {
         items = [FolderSectionViewModel]()
-        let accounts = Account.all()
-        generateSections(accounts: accounts)
+        let accountsToUse: [Account]
+        if let safeAccounts = accounts {
+            accountsToUse = safeAccounts
+        } else {
+            accountsToUse = Account.all()
+        }
+        generateSections(accounts: accountsToUse)
     }
 
     private func generateSections(accounts: [Account]) {

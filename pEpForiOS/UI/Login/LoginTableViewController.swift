@@ -121,7 +121,9 @@
 
         self.navigationItem.hidesBackButton = true
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title:"Cancel", style:.plain, target:self, action:#selector(self.backButton))
+            title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
+            style:.plain, target:self,
+            action:#selector(self.backButton))
     }
 
     @objc func backButton() {
@@ -150,10 +152,9 @@
             // Do nothing. The error type is not suitable to bother the user with.
             return
         }
-        let alertView = UIAlertController(title: error.title,
-                                          message:error.localizedDescription,
-                                          preferredStyle: .alert)
-        alertView.view.tintColor = .pEpGreen
+        let alertView = UIAlertController.pEpAlertController(title: error.title,
+                                                             message:error.localizedDescription,
+                                                             preferredStyle: .alert)
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString( "View log",
                 comment: "Button for viewing the log on error"),

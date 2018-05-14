@@ -62,7 +62,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             self.navigationItem.searchController = searchController
             self.navigationItem.hidesSearchBarWhenScrolling = true
         } else {
-            addSearchBar()
+            addSearchBar10()
 
             if tableView.tableHeaderView == nil {
                 tableView.tableHeaderView = searchController.searchBar
@@ -71,12 +71,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             // some notifications to control when the app enter and recover from background
             NotificationCenter.default.addObserver(
                 self,
-                selector: #selector(didBecomeActive),
+                selector: #selector(didBecomeActiveInstallSearchBar10),
                 name: NSNotification.Name.UIApplicationDidBecomeActive,
                 object: nil)
             NotificationCenter.default.addObserver(
                 self,
-                selector: #selector(didBecomeInactive),
+                selector: #selector(didBecomeInactiveUninstallSearchbar10),
                 name: NSNotification.Name.UIApplicationDidEnterBackground,
                 object: nil)
         }
@@ -89,7 +89,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
-        setDefaultColors()
         setup()
 
         // Mark this folder as having been looked at by the user
@@ -112,15 +111,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     /**
-     Showing the search controller in versions prios to iOS 11.
+     Showing the search controller in versions iOS 10 and earlier.
      */
-    @objc func didBecomeActive() {
+    @objc func didBecomeActiveInstallSearchBar10() {
         if tableView.tableHeaderView == nil {
             tableView.tableHeaderView = searchController.searchBar
         }
     }
 
-    @objc func didBecomeInactive() {
+    /**
+     Hide/remove the search controller in versions iOS 10 and earlier.
+     */
+    @objc func didBecomeInactiveUninstallSearchbar10() {
         tableView.tableHeaderView = nil
     }
     
@@ -184,13 +186,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    /**
+     Configure the search controller, shared between iOS versions 11 and earlier.
+     */
     private func configureSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.delegate = self
     }
 
-    private func addSearchBar() {
+    /**
+     Add the search bar when running on iOS 10 or earlier.
+     */
+    private func addSearchBar10() {
         definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
         tableView.setContentOffset(CGPoint(x: 0.0,
@@ -336,14 +344,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
-                                                       for: indexPath) as? EmailListViewCell
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell!")
-                return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: EmailListViewCell.storyboardId,
+            for: indexPath)
+
+        if let theCell = cell as? EmailListViewCell {
+            theCell.delegate = self
+            configure(cell: theCell, for: indexPath)
+        } else {
+            Log.shared.errorAndCrash(component: #function, errorString: "dequeued wrong cell")
         }
-        cell.delegate = self
-        configure(cell: cell, for: indexPath)
+
         return cell
     }
     
@@ -375,7 +386,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Delete or Archive
         let defaultIsArchive = parentFolder.defaultDestructiveActionIsArchive
         let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
-        let descriptorDestructive: ActionDescriptor = defaultIsArchive ? .archive : .trash
+        let descriptorDestructive: SwipeActionDescriptor = defaultIsArchive ? .archive : .trash
         let archiveAction =
             SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
                 self.deleteAction(forCellAt: indexPath)
@@ -412,7 +423,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return options
     }
 
-    func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
         action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
         action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
 
@@ -543,16 +554,18 @@ extension EmailListViewController: EmailListViewModelDelegate {
 extension EmailListViewController {
     func showMoreActionSheet(forRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
-        let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertControler.view.tintColor = .pEpGreen
+        let alertControler = UIAlertController.pEpAlertController(
+            title: nil, message: nil, preferredStyle: .actionSheet)
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction()
         let replyAllAction = createReplyAllAction()
         let forwardAction = createForwardAction()
+        let moveToFolderAction = createMoveToFolderAction()
         alertControler.addAction(cancelAction)
         alertControler.addAction(replyAction)
         alertControler.addAction(replyAllAction)
         alertControler.addAction(forwardAction)
+        alertControler.addAction(moveToFolderAction)
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
         }
@@ -560,9 +573,17 @@ extension EmailListViewController {
     }
     
     // MARK: Action Sheet Actions
+
+    private func createMoveToFolderAction() -> UIAlertAction {
+        let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
+        return UIAlertAction(title: title, style: .default) { (action) in
+            self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
+        }
+    }
     
     func createCancelAction() -> UIAlertAction {
-        return  UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+        let title = NSLocalizedString("Cancel", comment: "EmailList action title")
+        return  UIAlertAction(title: title, style: .cancel) { (action) in
             self.tableView.beginUpdates()
             self.tableView.setEditing(false, animated: true)
             self.tableView.endUpdates()
@@ -570,19 +591,22 @@ extension EmailListViewController {
     }
     
     func createReplyAction() ->  UIAlertAction {
-        return UIAlertAction(title: "Reply", style: .default) { (action) in
+        let title = NSLocalizedString("Reply", comment: "EmailList action title")
+        return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReply, sender: self)
         }
     }
     
     func createReplyAllAction() ->  UIAlertAction {
-        return UIAlertAction(title: "Reply All", style: .default) { (action) in
+        let title = NSLocalizedString("Reply All", comment: "EmailList action title")
+        return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyAll, sender: self)
         }
     }
     
     func createForwardAction() -> UIAlertAction {
-        return UIAlertAction(title: "Forward", style: .default) { (action) in
+        let title = NSLocalizedString("Forward", comment: "EmailList action title")
+        return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueForward, sender: self)
         }
     }
@@ -637,6 +661,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueEditDraft
         case segueFilter
         case segueFolderViews
+        case segueShowMoveToFolder
         case noSegue
     }
     
@@ -686,6 +711,17 @@ extension EmailListViewController: SegueHandlerType {
             vC.appConfig = appConfig
             vC.hidesBottomBarWhenPushed = true
             break
+        case .segueShowMoveToFolder:
+            guard  let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? MoveToFolderViewController,
+                let indexPath = lastSelectedIndexPath,
+                let message = model?.message(representedByRowAt: indexPath)
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    break
+            }
+            destination.appConfig = appConfig
+            destination.message = message
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
@@ -741,25 +777,35 @@ extension EmailListViewController: SegueHandlerType {
     }
 }
 
-//enums to simplify configurations
-
-enum ActionDescriptor {
+/**
+ Swipe configuration.
+ */
+enum SwipeActionDescriptor {
     case read, more, flag, trash, archive
 
     func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
-        guard displayMode != .imageOnly else { return nil }
+        if displayMode == .imageOnly {
+            return nil
+        }
 
         switch self {
-        case .read: return NSLocalizedString("Read", comment: "read button in slidw left menu")
-        case .more: return NSLocalizedString("More", comment: "more button in slidw left menu")
-        case .flag: return NSLocalizedString("Flag", comment: "read button in slidw left menu")
-        case .trash: return NSLocalizedString("Trash", comment: "Trash button in slidw left menu")
-        case .archive: return NSLocalizedString("Archive", comment: "Archive button in slidw left menu")
+        case .read:
+            return NSLocalizedString("Read", comment: "read button in slide-left menu")
+        case .more:
+            return NSLocalizedString("More", comment: "more button in slide-left menu")
+        case .flag:
+            return NSLocalizedString("Flag", comment: "read button in slide-left menu")
+        case .trash:
+            return NSLocalizedString("Trash", comment: "Trash button in slide-left menu")
+        case .archive:
+            return NSLocalizedString("Archive", comment: "Archive button in slide-left menu")
         }
     }
 
     func image(forStyle style: ButtonStyle, displayMode: ButtonDisplayMode) -> UIImage? {
-        guard displayMode != .titleOnly else { return nil }
+        if displayMode == .titleOnly {
+            return nil
+        }
 
         let name: String
         switch self {

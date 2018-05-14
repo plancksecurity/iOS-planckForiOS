@@ -44,12 +44,9 @@ class ComposeTableViewController: BaseTableViewController {
     private var cells = [ComposeFieldModel.FieldType:ComposeCell]()
     private var ccEnabled = false
 
-    var rating : String = ""
-
     var composeMode: ComposeMode = .normal
     private var messageToSend: Message?
     var originalMessage: Message?
-    private let operationQueue = OperationQueue()
 
     private lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
@@ -80,6 +77,11 @@ class ComposeTableViewController: BaseTableViewController {
      */
     var rowHeightCache = [IndexPath:CGFloat]()
 
+    /**
+     Last time something changed, this was the rating of the message currently in edit.
+     */
+    var currentRating = PEP_rating_undefined
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -93,7 +95,6 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         composeData?.filterRows(message: nil)
-        setEmailDisplayDefaultNavigationBarStyle()
         takeOverAttachmentsIfRequired()
         setInitialSendButtonStatus()
         rowHeightCache.removeAll()
@@ -102,7 +103,7 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setFirstResponder()
-        calculateComposeColor()
+        calculateComposeColorAndInstallTapGesture()
     }
 
     deinit {
@@ -534,27 +535,52 @@ class ComposeTableViewController: BaseTableViewController {
         return prefixHtml + toWrap + postfixHtml
     }
 
-    private func calculateComposeColor() {
-        DispatchQueue.main.async {
-            if let from = self.origin {
+    private func recalculateCurrentRating(session: PEPSession) -> PEP_rating {
+        if let from = self.origin {
+            currentRating = session.outgoingMessageRating(from: from,
+                                                          to: self.destinyTo,
+                                                          cc: self.destinyCc,
+                                                          bcc: self.destinyBcc)
+        } else {
+            currentRating = PEP_rating_undefined
+        }
+        return currentRating
+    }
+
+    private func handshakeActionCombinations() -> [HandshakeCombination] {
+        if let from = self.origin {
+            var allIdenties = destinyTo
+            allIdenties.append(from)
+            allIdenties.append(contentsOf: destinyCc)
+            allIdenties.append(contentsOf: destinyBcc)
+            return Message.handshakeActionCombinations(identities: allIdenties)
+        } else {
+            return []
+        }
+    }
+
+    private func canHandshake() -> Bool {
+        return !handshakeActionCombinations().isEmpty
+    }
+
+    private func canToggleProtection() -> Bool {
+        let outgoingRatingColor = currentRating.pEpColor()
+        return outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green
+    }
+
+    private func calculateComposeColorAndInstallTapGesture() {
+        DispatchQueue.main.async { [weak self] in
+            if let theSelf = self {
                 let session = PEPSession()
-                let ratingValue = session.outgoingMessageRating(from: from,
-                                                                to: self.destinyTo,
-                                                                cc: self.destinyCc,
-                                                                bcc: self.destinyBcc)
-                self.rating = session.string(from: ratingValue)
-                if let b = self.showPepRating(pEpRating: ratingValue,
-                                              pEpProtection: self.pEpProtection) {
-                    if ratingValue == PEP_rating_reliable || ratingValue == PEP_rating_trusted {
-                        // disable protection only for certain ratings
-                        let long = UILongPressGestureRecognizer(
-                            target: self,
-                            action: #selector(self.toggleProtection))
-                        b.addGestureRecognizer(long)
+                let ratingValue = theSelf.recalculateCurrentRating(session: session)
+                if let view = theSelf.showPepRating(pEpRating: ratingValue,
+                                                    pEpProtection: theSelf.pEpProtection) {
+                    if theSelf.canHandshake() || theSelf.canToggleProtection() {
+                        let tapGestureRecognizer = UITapGestureRecognizer(
+                            target: theSelf,
+                            action: #selector(theSelf.actionHandshakeOrForceUnprotected))
+                        view.addGestureRecognizer(tapGestureRecognizer)
                     }
-                    let tap = UITapGestureRecognizer(target: self,
-                                                     action: #selector(self.handshakeView))
-                    b.addGestureRecognizer(tap)
                 }
             }
         }
@@ -923,7 +949,7 @@ class ComposeTableViewController: BaseTableViewController {
         tableView.endUpdates()
     }
 
-    private func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+    private func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
         action.title = NSLocalizedString("Remove", comment:
             "ComposeTableView: Label of swipe left. Removing of attachment."
         )
@@ -1006,8 +1032,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func showAlertControllerWithOptionsForCanceling(sender: Any) {
-        let alertCtrl = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertCtrl.view.tintColor = .pEpGreen
+        let alertCtrl = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
         if let popoverPresentationController = alertCtrl.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
         }
@@ -1128,7 +1153,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
         default:
             break
         }
-        calculateComposeColor()
+        calculateComposeColorAndInstallTapGesture()
     }
 
     //remove after refactoring all Cells to not know Identity
@@ -1145,18 +1170,52 @@ extension ComposeTableViewController: ComposeCellDelegate {
         default:
             break
         }
-        calculateComposeColor()
+        calculateComposeColorAndInstallTapGesture()
     }
 
-    @IBAction func toggleProtection(gestureRecognizer: UILongPressGestureRecognizer) {
-        if gestureRecognizer.state == .began {
-            pEpProtection = !pEpProtection
-            calculateComposeColor()
+    /**
+     Shows a menu where user can choose to make a handshake, or toggle force unprotected.
+     */
+    @IBAction func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
+        let theCanHandshake = canHandshake()
+        let theCanToggleProtection = canToggleProtection()
+
+        if theCanHandshake || theCanToggleProtection {
+            let alert = UIAlertController.pEpAlertController()
+
+            if theCanHandshake {
+                let actionReply = UIAlertAction(
+                    title: NSLocalizedString("Handshake",
+                                             comment: "possible privacy status action"),
+                    style: .default) { [weak self] (action) in
+                        self?.performSegue(withIdentifier: .segueHandshake, sender: self)
+                }
+                alert.addAction(actionReply)
+            }
+
+            if theCanToggleProtection {
+                let originalValueOfProtection = pEpProtection
+                let title = pEpProtection ?
+                    NSLocalizedString("Disable Protection",
+                                      comment: "possible private status action") :
+                    NSLocalizedString("Enable Protection",
+                                      comment: "possible private status action")
+                let actionToggleProtection = UIAlertAction(
+                    title: title,
+                    style: .default) { [weak self] (action) in
+                        self?.pEpProtection = !originalValueOfProtection
+                        self?.calculateComposeColorAndInstallTapGesture()
+                }
+                alert.addAction(actionToggleProtection)
+            }
+
+            let cancelAction = UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: "possible private status action"),
+                style: .cancel) { (action) in }
+            alert.addAction(cancelAction)
+
+            present(alert, animated: true, completion: nil)
         }
-    }
-
-    @IBAction func handshakeView(gestureRecognizer: UITapGestureRecognizer) {
-        self.performSegue(withIdentifier: "segueHandshake", sender: nil)
     }
 
     func textDidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {

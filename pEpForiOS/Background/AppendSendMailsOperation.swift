@@ -24,13 +24,13 @@ public class AppendSendMailsOperation: AppendMailsOperationBase {
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
         var result:(PEPMessageDict, PEPIdentity, NSManagedObjectID)? = nil
-        context.performAndWait {
+        privateMOC.performAndWait {
             let p = NSPredicate(
                 format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d AND parent.account = %@",
                 self.targetFolderType.rawValue, SendStatus.smtpDone.rawValue,
                 imapSyncData.connectInfo.accountObjectID)
             guard
-                let msg = CdMessage.first(predicate: p, in: self.context),
+                let msg = CdMessage.first(predicate: p, in: self.privateMOC),
                 let cdIdent = msg.parent?.account?.identity,
                 let folder = msg.parent?.folder() else {
                     result = nil
@@ -43,7 +43,7 @@ public class AppendSendMailsOperation: AppendMailsOperationBase {
                 // That should be save as the message has been send successfully
                 // (SendStatus.smtpDone) and the server is responsible for appending sent mails.
                 msg.delete()
-                Record.saveAndWait(context: context)
+                Record.saveAndWait(context: privateMOC)
                 // Recursivly get the next message.
                 result = retrieveNextMessage()
                 return

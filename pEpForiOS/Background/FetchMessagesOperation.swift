@@ -42,8 +42,8 @@ public class FetchMessagesOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
-        let context = Record.Context.background
-        context.perform() {
+        let context = privateMOC
+        privateMOC.perform() {
             self.process(context: context)
         }
     }

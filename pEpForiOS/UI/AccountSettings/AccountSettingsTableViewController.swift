@@ -89,12 +89,12 @@ UIPickerViewDataSource, UITextFieldDelegate {
     }
 
     private func informUser(about error:Error) {
-        let alert = UIAlertController(
+        let alert = UIAlertController.pEpAlertController(
             title: NSLocalizedString(
                 "Invalid Input",
                 comment: "Title of invalid accout settings user input alert"),
             message: error.localizedDescription,
-            preferredStyle: UIAlertControllerStyle.alert)
+            preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(
             title: NSLocalizedString(

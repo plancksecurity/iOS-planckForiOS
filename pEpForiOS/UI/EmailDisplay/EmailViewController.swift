@@ -12,7 +12,6 @@ import UIKit
 import MessageModel
 
 class EmailViewController: BaseTableViewController {
-    @IBOutlet weak var handShakeButton: UIBarButtonItem!
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var previousMessage: UIBarButtonItem!
@@ -47,11 +46,6 @@ class EmailViewController: BaseTableViewController {
         configureView()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        setNoColor()
-    }
-
     // MARK: - UTIL
 
     private func updateFlaggedStatus() {
@@ -71,9 +65,15 @@ class EmailViewController: BaseTableViewController {
 
     private func showPepRating() {
         let session = PEPSession()
-        let _ = showPepRating(pEpRating: message?.pEpRating(session: session))
-        let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
-        handShakeButton.isEnabled = !handshakeCombos.isEmpty
+        if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating(session: session)) {
+            let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
+            if !handshakeCombos.isEmpty {
+                let tapGestureRecognizer = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(self.showHandshakeView(gestureRecognizer:)))
+                privacyStatusIcon.addGestureRecognizer(tapGestureRecognizer)
+            }
+        }
     }
 
 
@@ -88,8 +88,11 @@ class EmailViewController: BaseTableViewController {
     // MARK: - SETUP
 
     private func configureView() {
-        // Make sure the NavigationBar is shown, even the previous view has hidden it.
+        // Make sure the NavigationBar is shown, even if the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false)
+
+        self.title = NSLocalizedString("Message", comment: "Message view title")
+
         setupDestructiveButtonIcon()
 
         tableData?.filterRows(message: message)
@@ -245,8 +248,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
-        let alertViewWithoutTitle = UIAlertController()
-        alertViewWithoutTitle.view.tintColor = .pEpGreen
+        let alertViewWithoutTitle = UIAlertController.pEpAlertController()
 
         if let popoverPresentationController = alertViewWithoutTitle.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender
@@ -292,6 +294,11 @@ class EmailViewController: BaseTableViewController {
         updateFlaggedStatus()
     }
 
+
+    @IBAction func moveToFolderButtonTapped(_ sender: UIBarButtonItem) {
+        performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
+    }
+
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message?.imapDelete() // mark for deletion/trash
         _ = navigationController?.popViewController(animated: true)
@@ -329,6 +336,10 @@ class EmailViewController: BaseTableViewController {
 
     private func decryptAgain() {
         ratingReEvaluator?.reevaluateRating()
+    }
+
+    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
+        performSegue(withIdentifier: .segueHandshake, sender: self)
     }
 }
 
@@ -390,20 +401,19 @@ extension EmailViewController: SegueHandlerType {
         case segueReplyAllForm
         case segueForward
         case segueHandshake
-        case segueCompose
+        case segueShowMoveToFolder
         case noSegue
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let theId = segueIdentifier(for: segue)
         switch theId {
-        case .segueReplyFrom, .segueReplyAllForm, .segueForward, .segueCompose:
+        case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
-
             destination.appConfig = appConfig
 
             if theId == .segueReplyFrom {
@@ -415,14 +425,20 @@ extension EmailViewController: SegueHandlerType {
             } else if theId == .segueForward {
                 destination.composeMode = .forward
                 destination.originalMessage = message
-            } else if theId == .segueCompose {
             }
+        case .segueShowMoveToFolder:
+            guard  let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? MoveToFolderViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    break
+            }
+            destination.appConfig = appConfig
+            destination.message = message
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                 break
             }
-            self.title = NSLocalizedString("Message", comment: "Message view title")
             destination.appConfig = appConfig
             destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
@@ -437,8 +453,8 @@ extension EmailViewController: SegueHandlerType {
 
 extension EmailViewController: RatingReEvaluatorDelegate {
     func ratingChanged(message: Message) {
-        GCD.onMain {
-            self.showPepRating()
+        GCD.onMain { [weak self] in
+            self?.showPepRating()
         }
     }
 }

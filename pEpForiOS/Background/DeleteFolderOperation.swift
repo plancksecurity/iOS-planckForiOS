@@ -31,26 +31,34 @@ public class DeleteFolderOperation: ImapSyncOperation {
             return
         }
 
-        privateMOC.perform() {
-            self.account = self.privateMOC.object(with: self.accountID) as? CdAccount
-            guard self.account != nil else {
-                self.addError(BackgroundError.CoreDataError.couldNotFindAccount(info: self.comp))
-                self.markAsFinished()
+        privateMOC.perform() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            self.syncDelegate = DeleteFolderSyncDelegate(errorHandler: self)
-            self.imapSyncData.sync?.delegate = self.syncDelegate
-            self.imapSyncData.sync?.deleteFolderWithName(self.folderName)
+            me.account = me.privateMOC.object(with: me.accountID) as? CdAccount
+            guard me.account != nil else {
+                me.addError(BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
+                me.markAsFinished()
+                return
+            }
+            me.syncDelegate = DeleteFolderSyncDelegate(errorHandler: me)
+            me.imapSyncData.sync?.delegate = me.syncDelegate
+            me.imapSyncData.sync?.deleteFolderWithName(me.folderName)
         }
     }
 
     func deleteLocalFolderAndFinish() {
-        privateMOC.perform {
-            if let folder = CdFolder.by(name: self.folderName, account: self.account) {
-                self.privateMOC.delete(folder)
-                Record.saveAndWait()
+        privateMOC.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
             }
-            self.markAsFinished()
+            if let folder = CdFolder.by(name: me.folderName, account: me.account) {
+                me.privateMOC.delete(folder)
+                Record.saveAndWait(context: me.privateMOC)
+            }
+            me.markAsFinished()
         }
     }
 

@@ -20,6 +20,22 @@ extension UIImage {
         return theImage
     }
 
+    /**
+     - Create a 1x1 pixel image of the given color.
+     - Note: Retina-displays are taken into account.
+     - Returns: An image that contains exactly one pixel of the given color.
+     */
+    open static func pixel(color: UIColor) -> UIImage? {
+        let pixelScale = UIScreen.main.scale
+        let pixelSize = 1 / pixelScale
+        let fillSize = CGSize(width: pixelSize, height: pixelSize)
+        return generate(size: fillSize) { context, size in
+            let fillRect = CGRect(origin: CGPoint.zero, size: size)
+            context.setFillColor(color.cgColor)
+            context.fill(fillRect)
+        }
+    }
+
     public func resized(newWidth: CGFloat) -> UIImage? {
         let scale = newWidth / self.size.width
         let newHeight = self.size.height * scale

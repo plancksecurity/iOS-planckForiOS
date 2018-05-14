@@ -41,15 +41,15 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
             markAsFinished()
             return
         }
-        let privateMOC = Record.Context.background
-        privateMOC.perform() {
+        let context = privateMOC
+        context.perform() {
             if self.isCancelled {
                 Log.shared.info(component: theComp,
                                 content: "\(selfInfo) not stored: \(canceled)")
                 self.markAsFinished()
                 return
             }
-            self.storeMessage(context: privateMOC)
+            self.storeMessage(context: context)
             Log.shared.info(component: theComp, content: "\(selfInfo) stored: \(canceled)")
             self.markAsFinished()
         }
