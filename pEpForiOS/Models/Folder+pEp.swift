@@ -23,25 +23,6 @@ extension Folder{
         }
     }
 
-    //IOS-663: remove
-//    /// Returns the first message found in this folder, that is marked for uidExpunge
-//    ///
-//    /// - Returns: the firsst message found that is marked for uidExpunge if any, nil otherwize
-//    public func firstMessageMarkedForUidExpunge() -> Message? {
-//        let predicateBelongingAccount =
-//            CdMessage.PredicateFactory.belongingToAccountWithAddress(address: account.user.address)
-//        let predicateParentFolder =
-//            CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: name)
-//        let predicateMarkedUidExpunge = CdMessage.PredicateFactory.markedForUidMoveToTrash()
-//        let predicates = [predicateBelongingAccount,
-//                          predicateParentFolder,
-//                          predicateMarkedUidExpunge]
-//        let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-//        let cdMessage = CdMessage.first(predicate: compoundPredicate)
-//
-//        return cdMessage?.message()
-//    }
-
     /// Returns the first message found in this folder, that is marked to move to another folder.
     ///
     /// - Returns: the first message found that has to be moved if any, nil otherwize
@@ -49,7 +30,7 @@ extension Folder{
         let predicateBelongingAccount =
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: account.user.address)
         let predicateParentFolder =
-            CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: name)
+            CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: name) //IOS-663: add undeleted predicate?
         let predicateMarkedForMoveToFolder = CdMessage.PredicateFactory.markedForMoveToFolder()
         let predicates = [predicateBelongingAccount,
                           predicateParentFolder,
@@ -59,5 +40,4 @@ extension Folder{
 
         return cdMessage?.message()
     }
-
 }
