@@ -12,7 +12,6 @@ import UIKit
 import MessageModel
 
 class EmailViewController: BaseTableViewController {
-    @IBOutlet weak var handShakeButton: UIBarButtonItem!
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var previousMessage: UIBarButtonItem!
