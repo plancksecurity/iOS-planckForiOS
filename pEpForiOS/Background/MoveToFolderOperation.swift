@@ -62,10 +62,9 @@ class MoveToFolderOperation: ImapSyncOperation {
         guard let toDelete = lastProcessedMessage else {
             return
         }
-
         MessageModel.performAndWait {
-            toDelete.targetFolder = toDelete.parent
             toDelete.imapFlags?.deleted = true
+            toDelete.targetFolder = toDelete.parent
             toDelete.save()
         }
         lastProcessedMessage = nil
@@ -124,19 +123,17 @@ class MoveToFolderOperation: ImapSyncOperation {
                                          errorContainer: errorContainer,
                                          message: toCopy,
                                          targetFolder: targetFolder)
-        uidCopyOp.completionBlock = { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            if let error = me.errorContainer.error {
-                me.addIMAPError(error)
-                me.markAsFinished()
-                return
-            }
-            me.deleteLastCopiedMessage()
-        }
         backgroundQueue.addOperation(uidCopyOp)
+    }
+
+    fileprivate func handleMessageCopyCompleted() {
+        if let error = errorContainer.error {
+            addIMAPError(error)
+            markAsFinished()
+            return
+        }
+        deleteLastCopiedMessage()
+        handleNextMessage()
     }
 
     static func foldersContainingMarkedForMoveToFolder() -> [Folder] {
@@ -171,6 +168,14 @@ class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
         handler.handleNextMessage()
     }
 
+    override func messagesCopyCompleted(_ sync: ImapSync, notification: Notification?) {
+        guard let handler = errorHandler as? MoveToFolderOperation else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            return
+        }
+        handler.handleMessageCopyCompleted()
+    }
+
     // MARK: Error
 
     override func folderOpenFailed(_ sync: ImapSync, notification: Notification?) {
@@ -182,15 +187,22 @@ class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
     }
 
     public override func actionFailed(_ sync: ImapSync, response: String?) {
+        handle(error: ImapSyncError.actionFailed, on: errorHandler)
+    }
+
+    override func messageUidMoveFailed(_ sync: ImapSync, notification: Notification?) {
         guard let handler = errorHandler as? MoveToFolderOperation else {
             Log.shared.errorAndCrash(component: #function, errorString: "No handler")
             return
         }
-        /// UID MOVE failed. We assume the server does not support it.
+        // UID MOVE failed. We assume the server does not support it and use UID COPY as
+        // backup plan.
         handler.handleUidMoveIsUnsupported()
     }
 
-    //    override func message //IOS-663: Message Expunge needs handling?
+    override func messagesCopyFailed(_ sync: ImapSync, notification: Notification?) {
+        handle(error: ImapSyncError.actionFailed, on: errorHandler)
+    }
 
     // MARK: Helper
 

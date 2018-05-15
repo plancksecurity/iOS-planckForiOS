@@ -34,27 +34,6 @@ class UIDCopyOperation: ImapSyncOperation {
         imapSyncData.sync?.delegate = syncDelegate
         process()
     }
-//
-//    override func markAsFinished() {
-//        syncDelegate = nil
-//        super.markAsFinished()
-//    }
-//
-//    private func retrieveNextMessage() -> Message? {
-//        var result: Message? = nil
-//        MessageModel.performAndWait { [weak self] in
-//            guard let me = self else {
-//                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
-//                return
-//            }
-//            guard let msg = me.folder.firstMessageThatHasToBeMoved() else {
-//                return
-//            }
-//            result = msg
-//        }
-//        return result
-//    }
-//
 
     private func process() {
         if let sync = imapSyncData.sync {
@@ -115,6 +94,10 @@ class UIDCopyOperationSyncDelegate: DefaultImapSyncDelegate {
         handle(error: ImapSyncError.badResponse(response) , on: errorHandler)
     }
 
+    override func messagesCopyFailed(_ sync: ImapSync, notification: Notification?) {
+        handle(error: ImapSyncError.actionFailed, on: errorHandler)
+    }
+    
     public override func actionFailed(_ sync: ImapSync, response: String?) {
         handle(error: ImapSyncError.actionFailed, on: errorHandler)
     }
