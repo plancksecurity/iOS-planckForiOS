@@ -45,6 +45,10 @@ class MoveToFolderViewController: BaseViewController {
     private func setupTableView() {
         tableview.dataSource = self
         tableview.delegate = self
+        hideSeperatorForEmptyCells()
+    }
+
+    private func hideSeperatorForEmptyCells() {
         // Add empty footer to not show empty cells (visible as dangling seperators)
         tableview.tableFooterView = UIView(frame: .zero)
     }
