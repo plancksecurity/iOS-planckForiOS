@@ -143,12 +143,12 @@ extension MoveToFolderViewController: UITableViewDelegate {
 
 private extension MoveToFolderViewController {
     private func isSelectable(rowAt indexPath: IndexPath) -> Bool {
-        guard let vm = viewModel, let msg = message else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "No model")
             return false
         }
         let fcvm = vm[indexPath.section][indexPath.row]
-        return msg.isAllowedToMoveTo(targetFolder: fcvm.folder)
+        return !MoveToFolderViewController.folderTypesNotAllowedToMoveTo.contains(fcvm.folder.folderType)
     }
 }
 
