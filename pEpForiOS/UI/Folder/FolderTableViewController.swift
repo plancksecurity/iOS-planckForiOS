@@ -10,6 +10,7 @@ import UIKit
 
 class FolderTableViewController: BaseTableViewController {
     var folderVM: FolderViewModel?
+    var showNext: Bool = true
 
     // MARK: - Life Cycle
 
@@ -22,6 +23,10 @@ class FolderTableViewController: BaseTableViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(true, animated: true)
         setup()
+        if showNext {
+            showFolder(indexPath: nil)
+            showNext = false
+        }
     }
 
     // MARK: - Setup
@@ -31,10 +36,6 @@ class FolderTableViewController: BaseTableViewController {
         DispatchQueue.main.async {
             self.folderVM =  FolderViewModel()
             self.tableView.reloadData()
-            if let vm = self.folderVM, vm.noAccountsExist() {
-                // No account exists. Show account setup.
-                self.performSegue(withIdentifier: "newAccount", sender: self)
-            }
         }
     }
     
@@ -48,8 +49,6 @@ class FolderTableViewController: BaseTableViewController {
                                    action: #selector(settingsTapped))
         navigationItem.rightBarButtonItem = item
     }
-
-    @IBAction func unwindToFolderView(segue:UIStoryboardSegue) { }
 
     // MARK: - Actions
 
@@ -116,6 +115,11 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - TableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showFolder(indexPath: indexPath)
+    }
+
+    private func showFolder(indexPath: IndexPath?) {
+
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
             let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId)
@@ -126,13 +130,12 @@ class FolderTableViewController: BaseTableViewController {
         }
 
         vc.appConfig = appConfig
-        guard let vm = folderVM else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model")
-            return
+        if let vm = folderVM, let ip = indexPath {
+            vc.folderToShow = vm[ip.section][ip.row].folder
         }
-        vc.folderToShow = vm[indexPath.section][indexPath.row].folder
         vc.hidesBottomBarWhenPushed = false
         self.navigationController?.pushViewController(vc, animated: true)
+
     }
 
     // MARK: - Segue
