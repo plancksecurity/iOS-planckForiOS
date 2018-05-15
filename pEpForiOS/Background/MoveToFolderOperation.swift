@@ -58,17 +58,6 @@ class MoveToFolderOperation: ImapSyncOperation {
         return result
     }
 
-    private func deleteLastMovedMessage() {
-        guard let toDelete = lastProcessedMessage else {
-            return
-        }
-
-        MessageModel.performAndWait {
-            toDelete.delete()
-        }
-        lastProcessedMessage = nil
-    }
-
     private func deleteLastCopiedMessage() {
         guard let toDelete = lastProcessedMessage else {
             return
@@ -93,7 +82,6 @@ class MoveToFolderOperation: ImapSyncOperation {
     }
 
     fileprivate func handleNextMessage() {
-        deleteLastMovedMessage()
         MessageModel.perform { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
