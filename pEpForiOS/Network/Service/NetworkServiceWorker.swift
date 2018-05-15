@@ -261,47 +261,47 @@ open class NetworkServiceWorker {
         return (opDrafts, [opAppend, opDrafts])
     }
 
-    //IOS-663: rm
-    func buildHandleMessagesMarkedAsShouldBeTrashedOperations(
-        imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
-        opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
-        var lastOp = previousOp
-        var trashOps = [HandleMessagesMarkedAsShouldBeTrashedOperation]()
-        let folders = HandleMessagesMarkedAsShouldBeTrashedOperation.foldersWithTrashedMessages(context: context)
-        for cdF in folders {
-            let op = HandleMessagesMarkedAsShouldBeTrashedOperation(
-                parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
-                errorContainer: errorContainer, folder: cdF,
-                syncTrashWithServer: FolderType.trash.shouldBeSyncedWithServer)
-            op.addDependency(lastOp)
-            opImapFinished.addDependency(op)
-            lastOp = op
-            trashOps.append(op)
-        }
-        return (lastOp, trashOps)
-    }
+//    //IOS-663: rm
+//    func buildHandleMessagesMarkedAsShouldBeTrashedOperations(
+//        imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
+//        opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
+//        var lastOp = previousOp
+//        var trashOps = [HandleMessagesMarkedAsShouldBeTrashedOperation]()
+//        let folders = HandleMessagesMarkedAsShouldBeTrashedOperation.foldersWithTrashedMessages(context: context)
+//        for cdF in folders {
+//            let op = HandleMessagesMarkedAsShouldBeTrashedOperation(
+//                parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
+//                errorContainer: errorContainer, folder: cdF,
+//                syncTrashWithServer: FolderType.trash.shouldBeSyncedWithServer)
+//            op.addDependency(lastOp)
+//            opImapFinished.addDependency(op)
+//            lastOp = op
+//            trashOps.append(op)
+//        }
+//        return (lastOp, trashOps)
+//    }
 
-    //IOS-663: rm
-    private func buildUidMoveMailsToTrashOperations(imapSyncData: ImapSyncData,
-                                                    errorContainer: ServiceErrorProtocol,
-                                                    opImapFinished: Operation,
-                                                    previousOp: Operation) -> (Operation?, [Operation]) {
-        var lastOp = previousOp
-        var createdOps = [UidMoveMailsToTrashOperation]()
-        MessageModel.performAndWait {
-            let folders = UidMoveMailsToTrashOperation.foldersContainingMarkedToUidMoveToTrash()
-            for folder in folders {
-                let op = UidMoveMailsToTrashOperation(imapSyncData: imapSyncData,
-                                                      errorContainer: errorContainer,
-                                                      folder: folder)
-                op.addDependency(lastOp)
-                opImapFinished.addDependency(op)
-                lastOp = op
-                createdOps.append(op)
-            }
-        }
-        return (lastOp, createdOps)
-    }
+//    //IOS-663: rm
+//    private func buildUidMoveMailsToTrashOperations(imapSyncData: ImapSyncData,
+//                                                    errorContainer: ServiceErrorProtocol,
+//                                                    opImapFinished: Operation,
+//                                                    previousOp: Operation) -> (Operation?, [Operation]) {
+//        var lastOp = previousOp
+//        var createdOps = [UidMoveMailsToTrashOperation]()
+//        MessageModel.performAndWait {
+//            let folders = UidMoveMailsToTrashOperation.foldersContainingMarkedToUidMoveToTrash()
+//            for folder in folders {
+//                let op = UidMoveMailsToTrashOperation(imapSyncData: imapSyncData,
+//                                                      errorContainer: errorContainer,
+//                                                      folder: folder)
+//                op.addDependency(lastOp)
+//                opImapFinished.addDependency(op)
+//                lastOp = op
+//                createdOps.append(op)
+//            }
+//        }
+//        return (lastOp, createdOps)
+//    }
 
     private func buildUidMoveToFolderOperations(imapSyncData: ImapSyncData,
                                                     errorContainer: ServiceErrorProtocol,
