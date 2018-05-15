@@ -54,10 +54,6 @@ extension GmailSpecificInformation: ProviderSpecificInformationProtocol {
             && folder.name.hasPrefix("[Gmail]")
     }
 
-    func deletedMailsShouldBeCopiedToTrashFrom(_ folder: Folder) -> Bool {
-        return mailboxTypesDeletedMailsShouldBeCopiedToTrashFrom.contains(folder.folderType)
-    }
-
     func shouldUidMoveMailsToTrashWhenDeleted(inFolder folder: Folder) -> Bool {
         return mailboxTypesDeletedMailsShouldBeUidMovedToTrash.contains(folder.folderType)
     }

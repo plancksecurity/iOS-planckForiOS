@@ -53,22 +53,8 @@ extension Folder {
         return !providerInfo.isOkToAppendMessages(toFolder: self)
     }
 
-    /// - Returns:  Whether or not (marked) deleted messages in this folder should also be
-    ///             copied to trash.
-    var shouldCopyDeletedMessagesToTrash: Bool {
-        // The default is to copy deleted messages to trash in all folders but trash folder itself.
-        let defaultValue = folderType == .trash ? false : true
-        guard let providerInfo = providerSpecificInfo else {
-            // There are no provider specific rules
-            // or we are supposed to use the default behaviour (not virtual mailbox)
-            return defaultValue
-        }
-        return providerInfo.deletedMailsShouldBeCopiedToTrashFrom(self)
-    }
-
-    var shouldUidMoveDeletedMessagesToTrash: Bool {
-        // We only want to expunge if the provider offers no alternative.
-        let defaultValue = false
+    var shouldUidMoveDeletedMessagesToTrash: Bool { //IOS-663: seems unusd. If it turns out we do not need it, dont forget tto rm called stuff too
+        let defaultValue = true
         guard let providerInfo = providerSpecificInfo else {
             // There are no provider specific rules
             return defaultValue
