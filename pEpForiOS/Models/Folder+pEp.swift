@@ -30,11 +30,13 @@ extension Folder{
         let predicateBelongingAccount =
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: account.user.address)
         let predicateParentFolder =
-            CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: name) //IOS-663: add undeleted predicate?
+            CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: name)
+        let predicateUndeleted = CdMessage.PredicateFactory.notMarkedDeleted()
         let predicateMarkedForMoveToFolder = CdMessage.PredicateFactory.markedForMoveToFolder()
         let predicates = [predicateBelongingAccount,
                           predicateParentFolder,
-                          predicateMarkedForMoveToFolder]
+                          predicateMarkedForMoveToFolder,
+                          predicateUndeleted]
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         let cdMessage = CdMessage.first(predicate: compoundPredicate)
 
