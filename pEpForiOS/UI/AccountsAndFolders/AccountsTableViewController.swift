@@ -170,7 +170,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 // MARK: - Navigation
 
 extension AccountsTableViewController: SegueHandlerType {
-
     enum SegueIdentifier: String {
         case segueAddNewAccount
         case segueEditAccount

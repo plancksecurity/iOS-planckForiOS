@@ -994,7 +994,7 @@ class ComposeTableViewController: BaseTableViewController {
         // Make sure the "draft" flag is not set to avoid the original msg will keep in virtual
         // mailboxes, that show all flagged messages.
         om.imapFlags?.draft = false
-        om.imapDeleteAndMarkTrashed()
+        om.imapMarkDeleted()
     }
 
     // MARK: - UIAlertController
