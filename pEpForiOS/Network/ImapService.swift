@@ -276,11 +276,11 @@ open class ImapSync: Service {
     // MARK: - HELPER
 
     private func runOnDelegate(logName: String = #function, block: (ImapSyncDelegate) -> ()) {
-        if let del = delegate {
-            block(del)
-        } else {
-            Log.shared.error(component: logName, errorString: "\(Date()): No delegate")
+        guard let del = delegate else  {
+            Log.shared.errorAndCrash(component: #function, errorString: "\(Date()): No delegate")
+            return
         }
+        block(del)
     }
 }
 
@@ -383,10 +383,24 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func messagesCopyCompleted(_ theNotification: Notification?) {
+    public func messageUidMoveFailed(_ theNotification: Notification?) {
+        dumpMethodName("messageUidMoveFailed", notification: theNotification)
+        runOnDelegate() { theDelegate in
+            theDelegate.messageUidMoveFailed(self, notification: theNotification)
+        }
+    }
+
+    @objc public func messagesCopyCompleted(_ theNotification: Notification?) { //IOS-633 eamove @objc's
         dumpMethodName("messagesCopyCompleted", notification: theNotification)
         runOnDelegate() { theDelegate in
             theDelegate.messagesCopyCompleted(self, notification: theNotification)
+        }
+    }
+
+    public func messagesCopyFailed(_ theNotification: Notification?) {
+        dumpMethodName("messagesCopyFailed", notification: theNotification)
+        runOnDelegate() { theDelegate in
+            theDelegate.messagesCopyFailed(self, notification: theNotification)
         }
     }
 
