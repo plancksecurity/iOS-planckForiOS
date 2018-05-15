@@ -20,11 +20,13 @@ extension UIImage {
         if
             let properties: NSDictionary = CGImageSourceCopyPropertiesAtIndex(
                 cgImageSource, index, nil),
-            let gifProperties = properties.object(forKey: kCGImagePropertyGIFDictionary) as? NSDictionary {
+            let gifProperties = properties.object(forKey: kCGImagePropertyGIFDictionary)
+                as? NSDictionary {
             var numOptDelay = gifProperties.object(
                 forKey: kCGImagePropertyGIFUnclampedDelayTime) as? NSNumber
             if (numOptDelay?.doubleValue ?? 0) == 0 {
-                numOptDelay = gifProperties.object(forKey: kCGImagePropertyGIFDelayTime) as? NSNumber
+                numOptDelay = gifProperties.object(forKey: kCGImagePropertyGIFDelayTime)
+                    as? NSNumber
             }
             if let numDelay = numOptDelay, numDelay.doubleValue > 0 {
                 delay = lrint(numDelay.doubleValue * 100)
