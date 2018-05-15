@@ -93,6 +93,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
+
         setupFoldersBarButton()
         if model != nil {
             updateFilterButtonView()
@@ -554,8 +555,8 @@ extension EmailListViewController: EmailListViewModelDelegate {
 extension EmailListViewController {
     func showMoreActionSheet(forRowAt indexPath: IndexPath) {
         lastSelectedIndexPath = indexPath
-        let alertControler = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertControler.view.tintColor = .pEpGreen
+        let alertControler = UIAlertController.pEpAlertController(
+            title: nil, message: nil, preferredStyle: .actionSheet)
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction()
         let replyAllAction = createReplyAllAction()

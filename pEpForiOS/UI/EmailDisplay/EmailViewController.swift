@@ -12,7 +12,6 @@ import UIKit
 import MessageModel
 
 class EmailViewController: BaseTableViewController {
-    @IBOutlet weak var handShakeButton: UIBarButtonItem!
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var previousMessage: UIBarButtonItem!
@@ -66,9 +65,15 @@ class EmailViewController: BaseTableViewController {
 
     private func showPepRating() {
         let session = PEPSession()
-        let _ = showPepRating(pEpRating: message?.pEpRating(session: session))
-        let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
-        handShakeButton.isEnabled = !handshakeCombos.isEmpty
+        if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating(session: session)) {
+            let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
+            if !handshakeCombos.isEmpty {
+                let tapGestureRecognizer = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(self.showHandshakeView(gestureRecognizer:)))
+                privacyStatusIcon.addGestureRecognizer(tapGestureRecognizer)
+            }
+        }
     }
 
 
@@ -243,8 +248,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
-        let alertViewWithoutTitle = UIAlertController()
-        alertViewWithoutTitle.view.tintColor = .pEpGreen
+        let alertViewWithoutTitle = UIAlertController.pEpAlertController()
 
         if let popoverPresentationController = alertViewWithoutTitle.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender
@@ -332,6 +336,10 @@ class EmailViewController: BaseTableViewController {
 
     private func decryptAgain() {
         ratingReEvaluator?.reevaluateRating()
+    }
+
+    @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
+        performSegue(withIdentifier: .segueHandshake, sender: self)
     }
 }
 

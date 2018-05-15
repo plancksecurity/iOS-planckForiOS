@@ -96,20 +96,22 @@ extension Message {
  * ...
  */
 public struct HandshakeCombination {
-    let ownIdentity: Identity
-    let partnerIdentity: Identity
+    public let ownIdentity: Identity
+    public let partnerIdentity: Identity
 }
 
 extension Message {
     /**
-     Determines all possible handshake combinations that the identies referenced in a message
-     represent.
+     Given a list of identities (typically those involved in a message),
+     figures out a list of own identity <-> partner identity combinations that
+     one can handshake on.
+     - Returns: A list of `HandshakeCombination`s.
      */
-    public func handshakeActionCombinations(
-        session: PEPSession = PEPSession()) -> [HandshakeCombination] {
-        let potentialIdentities = allIdentities
-
-        let ownIdentities = potentialIdentities.filter() {
+    public static func handshakeActionCombinations<T>(
+        session: PEPSession = PEPSession(),
+        identities: T) -> [HandshakeCombination]
+        where T: Collection, T.Element: Identity {
+        let ownIdentities = identities.filter() {
             $0.isMySelf
         }
 
@@ -117,7 +119,7 @@ extension Message {
             (try? $0.fingerPrint(session: session)) != nil
         }
 
-        let partnerIdenties = potentialIdentities.filter() {
+        let partnerIdenties = identities.filter() {
             $0.canInvokeHandshakeAction(session: session)
         }
 
@@ -130,5 +132,14 @@ extension Message {
         }
 
         return handshakable
+    }
+
+    /**
+     Determines all possible handshake combinations that the identies referenced in a message
+     represent.
+     */
+    public func handshakeActionCombinations(
+        session: PEPSession = PEPSession()) -> [HandshakeCombination] {
+        return Message.handshakeActionCombinations(session: session, identities: allIdentities)
     }
 }

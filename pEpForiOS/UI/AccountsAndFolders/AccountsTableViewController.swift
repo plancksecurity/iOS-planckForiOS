@@ -96,8 +96,11 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     private func showAlertBeforeDelete(_ indexPath: IndexPath) {
-        let alertController = UIAlertController(title: nil, message: NSLocalizedString("Are you sure you want to delete the account?", comment:
-            "delete account message"), preferredStyle: .actionSheet)
+        let alertController = UIAlertController.pEpAlertController(
+            title: nil,
+            message: NSLocalizedString("Are you sure you want to delete the account?",
+                                       comment:
+                "delete account message"), preferredStyle: .actionSheet)
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { action in
         }

@@ -55,7 +55,8 @@ open class MimeTypeUtil {
      */
     open func isImage(mimeType theMimeType: String) -> Bool {
         let lcMT = theMimeType.lowercased()
-        if lcMT == mimeType(fileExtension: "png") || lcMT == mimeType(fileExtension: "jpg") {
+        if lcMT == mimeType(fileExtension: "png") || lcMT == mimeType(fileExtension: "jpg") ||
+            lcMT == mimeType(fileExtension: "gif") {
             return true
         }
         return false

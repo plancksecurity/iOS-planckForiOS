@@ -65,13 +65,12 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     }
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {
-        let alertController = UIAlertController(
+        let alertController = UIAlertController.pEpAlertController(
             title: NSLocalizedString("Transport protocol",
                                      comment: "UI alert title for transport protocol"),
             message: NSLocalizedString("Choose a Security protocol for your accont",
                                        comment: "UI alert message for transport protocol"),
             preferredStyle: .actionSheet)
-        alertController.view.tintColor = .pEpGreen
         let block: (ConnectionTransport) -> () = { transport in
             self.model.transportIMAP = transport
             self.updateView()
