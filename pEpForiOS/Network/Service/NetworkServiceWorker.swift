@@ -261,26 +261,6 @@ open class NetworkServiceWorker {
         return (opDrafts, [opAppend, opDrafts])
     }
 
-//    //IOS-663: rm
-//    func buildHandleMessagesMarkedAsShouldBeTrashedOperations(
-//        imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
-//        opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
-//        var lastOp = previousOp
-//        var trashOps = [HandleMessagesMarkedAsShouldBeTrashedOperation]()
-//        let folders = HandleMessagesMarkedAsShouldBeTrashedOperation.foldersWithTrashedMessages(context: context)
-//        for cdF in folders {
-//            let op = HandleMessagesMarkedAsShouldBeTrashedOperation(
-//                parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
-//                errorContainer: errorContainer, folder: cdF,
-//                syncTrashWithServer: FolderType.trash.shouldBeSyncedWithServer)
-//            op.addDependency(lastOp)
-//            opImapFinished.addDependency(op)
-//            lastOp = op
-//            trashOps.append(op)
-//        }
-//        return (lastOp, trashOps)
-//    }
-
     private func buildUidMoveToFolderOperations(imapSyncData: ImapSyncData,
                                                     errorContainer: ServiceErrorProtocol,
                                                     opImapFinished: Operation,
@@ -514,12 +494,6 @@ open class NetworkServiceWorker {
             lastImapOp = lastAppendSendAndDraftOp ?? lastImapOp
             operations.append(contentsOf: appendSendAndDraftOperations)
 
-//            let (lastHandleTrashedOp, handleTrashedOperations) =
-//                buildHandleMessagesMarkedAsShouldBeTrashedOperations(
-//                    imapSyncData: imapSyncData, errorContainer: errorContainer,
-//                    opImapFinished: opImapFinished, previousOp: lastImapOp)
-//            lastImapOp = lastHandleTrashedOp ?? lastImapOp
-//            operations.append(contentsOf: handleTrashedOperations)
             let (lastMoveToFolderOp, moveToFolderOperations) =
                 buildUidMoveToFolderOperations(
                     imapSyncData: imapSyncData, errorContainer: errorContainer,

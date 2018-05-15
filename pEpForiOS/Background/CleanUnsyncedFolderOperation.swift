@@ -46,27 +46,8 @@ class CleanUnsyncedFolderOperation: ConcurrentBaseOperation {
 
         if cdFolder.folderType == .trash {
             deleteAllMarkedDeleted(in: cdFolder, cdAccount: cdAccount, context: context)
-        } else {
-            deleteAllTrashedStatusTrashed(in: cdFolder, cdAccount: cdAccount, context: context)
-        }
+        } 
         markAsFinished()
-    }
-
-    /// Removes all messages from the local store that have trashedStatus == trashed.
-    private func deleteAllTrashedStatusTrashed(in cdFolder: CdFolder,
-                                               cdAccount: CdAccount,
-                                               context: NSManagedObjectContext) {
-        let predicateAllTrashed =
-            NSPredicate(format:
-                "parent.account = %@ AND parent = %@ AND imap.trashedStatusRawValue = %d",
-                        cdAccount, cdFolder, Message.TrashedStatus.trashed.rawValue)
-        guard let msgToDelete = CdMessage.all(predicate: predicateAllTrashed) as? [CdMessage] else {
-            // nothing todo
-            return
-        }
-        for msg in msgToDelete {
-            msg.deleteAndInformDelegate(context: context)
-        }
     }
 
     /// Removes messages from the local store that are flagged deleted.
