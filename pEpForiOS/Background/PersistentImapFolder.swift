@@ -132,13 +132,14 @@ class PersistentImapFolder: CWIMAPFolder {
      Relying on that is dangerous and should be avoided.
      */
     override func message(at theIndex: UInt) -> CWMessage? {
-        var msg: CdMessage?
+        var result: CWMessage?
         privateMOC.performAndWait({
             let p = NSPredicate(
                 format: "parent = %@ and imap.messageNumber = %d", self.folder, theIndex)
-            msg = CdMessage.first(predicate: p)
+            let msg = CdMessage.first(predicate: p)
+            result = msg?.pantomimeQuick(folder: self)
         })
-        return msg?.pantomimeQuick(folder: self)
+        return result
     }
 
     override func count() -> UInt {
