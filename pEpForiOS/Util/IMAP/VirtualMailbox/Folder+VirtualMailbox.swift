@@ -53,8 +53,15 @@ extension Folder {
         return !providerInfo.isOkToAppendMessages(toFolder: self)
     }
 
-    var shouldUidMoveDeletedMessagesToTrash: Bool { //IOS-663: seems unusd. If it turns out we do not need it, dont forget tto rm called stuff too
-        let defaultValue = true
+    var shouldUidMoveDeletedMessagesToTrash: Bool {
+        let defaultValue: Bool
+        if folderType == .trash {
+            // We never want to move a message from trash to trash
+            defaultValue = false
+        } else {
+            defaultValue = true
+        }
+
         guard let providerInfo = providerSpecificInfo else {
             // There are no provider specific rules
             return defaultValue
