@@ -281,28 +281,6 @@ open class NetworkServiceWorker {
 //        return (lastOp, trashOps)
 //    }
 
-//    //IOS-663: rm
-//    private func buildUidMoveMailsToTrashOperations(imapSyncData: ImapSyncData,
-//                                                    errorContainer: ServiceErrorProtocol,
-//                                                    opImapFinished: Operation,
-//                                                    previousOp: Operation) -> (Operation?, [Operation]) {
-//        var lastOp = previousOp
-//        var createdOps = [UidMoveMailsToTrashOperation]()
-//        MessageModel.performAndWait {
-//            let folders = UidMoveMailsToTrashOperation.foldersContainingMarkedToUidMoveToTrash()
-//            for folder in folders {
-//                let op = UidMoveMailsToTrashOperation(imapSyncData: imapSyncData,
-//                                                      errorContainer: errorContainer,
-//                                                      folder: folder)
-//                op.addDependency(lastOp)
-//                opImapFinished.addDependency(op)
-//                lastOp = op
-//                createdOps.append(op)
-//            }
-//        }
-//        return (lastOp, createdOps)
-//    }
-
     private func buildUidMoveToFolderOperations(imapSyncData: ImapSyncData,
                                                     errorContainer: ServiceErrorProtocol,
                                                     opImapFinished: Operation,
@@ -548,15 +526,6 @@ open class NetworkServiceWorker {
                     opImapFinished: opImapFinished, previousOp: lastImapOp)
             lastImapOp = lastMoveToFolderOp ?? lastImapOp
             operations.append(contentsOf: moveToFolderOperations)
-
-            // UidExpunge
-//            let (lastUidMoveOp, uidMoveOperations) =
-//                buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
-//                                                   errorContainer: errorContainer,
-//                                                   opImapFinished: opImapFinished,
-//                                                   previousOp: lastImapOp)
-//            lastImapOp = lastUidMoveOp ?? lastImapOp
-//            operations.append(contentsOf: uidMoveOperations)
 
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 

@@ -18,7 +18,6 @@
 		150DF6CE204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CD204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift */; };
 		150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */; };
 		150DF6D32052ED4800A9DCF7 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */; };
-		1516EDCF202F526200203D61 /* UidMoveMailsToTrashOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1516EDCE202F526200203D61 /* UidMoveMailsToTrashOperation.swift */; };
 		15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175CEB205929FB00A8D9D0 /* CidHandler.swift */; };
 		151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E01FC5D3E200CDC273 /* Settings.storyboard */; };
 		151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E31FC5D3FA00CDC273 /* Handshake.storyboard */; };
@@ -479,7 +478,6 @@
 		150DF6CD204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanUnsyncedFolderOperation.swift; sourceTree = "<group>"; };
 		150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewController.swift; sourceTree = "<group>"; };
 		150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
-		1516EDCE202F526200203D61 /* UidMoveMailsToTrashOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UidMoveMailsToTrashOperation.swift; sourceTree = "<group>"; };
 		15175CEB205929FB00A8D9D0 /* CidHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CidHandler.swift; sourceTree = "<group>"; };
 		151DE7DF1FC5D3E200CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		151DE7E21FC5D3FA00CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Handshake.storyboard; sourceTree = "<group>"; };
@@ -1194,7 +1192,6 @@
 				431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */,
 				43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */,
 				154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */,
-				1516EDCE202F526200203D61 /* UidMoveMailsToTrashOperation.swift */,
 				150DF6CD204FE2F500A9DCF7 /* CleanUnsyncedFolderOperation.swift */,
 				150B84C320A44DE100D8B288 /* MoveToFolderOperation.swift */,
 				150B84C520A5DD0600D8B288 /* UIDCopyOperation.swift */,
@@ -2488,7 +2485,6 @@
 				43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */,
 				4333A2A31E5C62860025D8A5 /* AttachmentCounter.swift in Sources */,
 				222B356D1DF96C30007A1F82 /* ComposeCell.swift in Sources */,
-				1516EDCF202F526200203D61 /* UidMoveMailsToTrashOperation.swift in Sources */,
 				222B35721DF96CC8007A1F82 /* ComposeFieldModel.swift in Sources */,
 				B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */,
 				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,
