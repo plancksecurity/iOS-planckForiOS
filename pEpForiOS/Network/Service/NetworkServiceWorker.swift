@@ -344,23 +344,8 @@ open class NetworkServiceWorker {
         var theLastImapOp = lastImapOp
         var operations: [Operation] = []
         for fi in folderInfos {
-            if !fi.folderType.shouldBeSyncedWithServer {
-                if !onlySyncChangesTriggeredByUser {
-                    let cleanUnsyncedFolderOp = CleanUnsyncedFolderOperation(
-                        cdAccountObejctId: imapSyncData.connectInfo.accountObjectID,
-                        folderName: fi.name)
-                    cleanUnsyncedFolderOp.completionBlock = {
-                        cleanUnsyncedFolderOp.completionBlock = nil
-                        Log.info(component: #function, content: "cleanUnsyncedFolderOp finished")
-                    }
-                    cleanUnsyncedFolderOp.addDependency(theLastImapOp)
-                    operations.append(cleanUnsyncedFolderOp)
-                    opImapFinished.addDependency(cleanUnsyncedFolderOp)
-                    theLastImapOp = cleanUnsyncedFolderOp
-                }
-            } else if let folderID = fi.folderID, let firstUID = fi.firstUID,
-                let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
-                firstUID <= lastUID {
+            if let folderID = fi.folderID, let firstUID = fi.firstUID, let lastUID = fi.lastUID,
+                firstUID != 0, lastUID != 0, firstUID <= lastUID {
                 if !onlySyncChangesTriggeredByUser {
                     let syncMessagesOp = SyncMessagesOperation(
                         parentName: description, errorContainer: errorContainer,
@@ -507,9 +492,6 @@ open class NetworkServiceWorker {
             if !onlySyncChangesTriggeredByUser {
                 // sync new messages
                 for fi in folderInfos {
-                    if !fi.folderType.shouldBeSyncedWithServer {
-                        continue
-                    }
                     let fetchMessagesOp = FetchMessagesOperation(
                         parentName: description, errorContainer: errorContainer,
                         imapSyncData: imapSyncData, folderName: fi.name) {

@@ -276,8 +276,7 @@ extension PersistentImapFolder: CWIMAPCache {
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
         privateMOC.performAndWait() {
-            if self.folder.uidValidity != Int32(theUIDValidity)
-                && self.folder.folderType.shouldBeSyncedWithServer { // Ignore uidValidity for folders that are not synced with the server
+            if self.folder.uidValidity != Int32(theUIDValidity) {
                 Log.warn(
                     component: self.functionName(#function),
                     content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")

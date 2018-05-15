@@ -15,7 +15,6 @@ public class AccountsSettingsCellViewModel {
         case showLog
         case organizedByThread
         case credits
-        case syncTrash
         case unecryptedSubject
         case defaultAccount
     }
@@ -46,9 +45,6 @@ public class AccountsSettingsCellViewModel {
             case .credits:
                 return NSLocalizedString("Credits", comment:
                     "AccountsSettings: Cell (button) title to view app credits")
-            case .syncTrash:
-                return NSLocalizedString("Sync Trash Folder", comment:
-                    "AccountsSettings: Cell (button) title to view syncing trashed setting")
             case .unecryptedSubject:
                 return NSLocalizedString("Subject Protection", comment:
                     "AccountsSettings: Cell (button) title to view unencrypted subject setting")
@@ -77,8 +73,6 @@ public class AccountsSettingsCellViewModel {
                 return nil
             case .defaultAccount:
                 return AppSettings().defaultAccount
-            case .syncTrash:
-                return onOffStateString(forState: AppSettings().shouldSyncImapTrashWithServer)
             case .unecryptedSubject:
                 return onOffStateString(forState: !AppSettings().unecryptedSubjectEnabled)
             }
