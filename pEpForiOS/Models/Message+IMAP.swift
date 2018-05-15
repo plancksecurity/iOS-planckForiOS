@@ -12,7 +12,7 @@ extension Message {
 
     /// Sets flag "deleted".
     /// Use this method if you do not want the message to be moved to trash folder.
-    func imapMarkDeleted() {  //IOS-663: rename
+    func imapMarkDeleted() {
         let theFlags = imapFlags ?? ImapFlags()
         theFlags.deleted = true
         self.save()

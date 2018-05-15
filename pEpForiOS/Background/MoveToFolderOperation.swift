@@ -114,7 +114,7 @@ class MoveToFolderOperation: ImapSyncOperation {
                 me.markAsFinished()
                 return
             }
-            if message.parent == message.targetFolder { //IOS-663 merge in guard?
+            if message.parent == message.targetFolder {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "I wounder why we are here then.")
                 me.handleNextMessage()
