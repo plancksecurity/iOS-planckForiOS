@@ -12,6 +12,7 @@ import MessageModel
 public class FolderSectionViewModel {
     public var collapsed = false
     private var account: Account?
+    public var hidden = false
     private var items = [FolderCellViewModel]()
     private var help = [FolderCellViewModel]()
     let contactImageTool = IdentityImageTool()
@@ -19,6 +20,7 @@ public class FolderSectionViewModel {
     public init(account acc: Account?, Unified: Bool) {
         if Unified {
             let folder = UnifiedInbox()
+            hidden = true
             items.append(FolderCellViewModel(folder: folder, level: 0))
         }
         if let ac = acc {

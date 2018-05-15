@@ -80,6 +80,11 @@ class FolderTableViewController: BaseTableViewController {
             return header
         }
 
+        if vm[section].hidden {
+            return nil
+        }
+
+
         safeHeader.configure(viewModel: vm[section], section: section)
         return header
     }
