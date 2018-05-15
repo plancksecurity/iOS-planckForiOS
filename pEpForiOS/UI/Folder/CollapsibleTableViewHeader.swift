@@ -32,10 +32,10 @@ class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         profileImage.widthAnchor.constraint(equalToConstant: 48.0).isActive = true
         profileImage.heightAnchor.constraint(equalToConstant: 48.0).isActive = true
         profileImage.translatesAutoresizingMaskIntoConstraints = false
-        arrowImageView.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        //arrowImageView.heightAnchor.constraint(equalToConstant: 10).isActive = true
         rightStackView.widthAnchor.constraint(equalToConstant: 10).isActive = true
-        arrowImageView.translatesAutoresizingMaskIntoConstraints = false
-        rightStackView.addArrangedSubview(arrowImageView)
+        //arrowImageView.translatesAutoresizingMaskIntoConstraints = false
+        //rightStackView.addArrangedSubview(arrowImageView)
         arrowLabel.translatesAutoresizingMaskIntoConstraints = false
         rightStackView.addArrangedSubview(arrowLabel)
         rightStackView.axis = .vertical

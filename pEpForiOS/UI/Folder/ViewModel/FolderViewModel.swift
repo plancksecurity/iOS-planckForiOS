@@ -29,10 +29,15 @@ public class FolderViewModel {
         generateSections(accounts: accountsToUse)
     }
 
-    func generateSections(accounts: [Account]) {
+    private func generateSections(accounts: [Account]) {
+        items.append(FolderSectionViewModel(account: nil, Unified: true))
         for acc in accounts {
-            items.append(FolderSectionViewModel(account: acc))
+            items.append(FolderSectionViewModel(account: acc, Unified: false))
         }
+    }
+
+    public func noAccountsExist() -> Bool {
+        return Account.all().isEmpty
     }
 
     subscript(index: Int) -> FolderSectionViewModel {

@@ -292,6 +292,10 @@
                 vc.appConfig = appConfig
                 vc.navigationController?.navigationBar.isHidden = false
             }
+        case .backToEmailList:
+            if let vc = segue.destination as? FolderTableViewController {
+                vc.navigationController?.navigationBar.isHidden = false
+            }
         default:
             break
         }
