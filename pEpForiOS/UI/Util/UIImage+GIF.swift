@@ -11,29 +11,37 @@ import Foundation
 extension UIImage {
     struct AnimationFrame {
         let cgImg: CGImage
-        let delayInCentiSeconds: Int
+        let frameTime: Double // The time of that frame, in milliseconds
     }
 
-    static func delayInCentiSeconds(cgImageSource: CGImageSource, atIndex index: Int) -> Int {
-        var delay = 1
+    /**
+     Determines the time of a frame, in milliseconds.
+     */
+    static func frameTime(cgImageSource: CGImageSource, atIndex index: Int) -> Double {
+        var frameTimeMilliSeconds: Double = 0
 
         if
             let properties: NSDictionary = CGImageSourceCopyPropertiesAtIndex(
                 cgImageSource, index, nil),
             let gifProperties = properties.object(forKey: kCGImagePropertyGIFDictionary)
                 as? NSDictionary {
-            var numOptDelay = gifProperties.object(
-                forKey: kCGImagePropertyGIFUnclampedDelayTime) as? NSNumber
-            if (numOptDelay?.doubleValue ?? 0) == 0 {
-                numOptDelay = gifProperties.object(forKey: kCGImagePropertyGIFDelayTime)
-                    as? NSNumber
+
+            if let numDelayUnclamped = gifProperties.object(
+                forKey: kCGImagePropertyGIFUnclampedDelayTime) as? NSNumber {
+                frameTimeMilliSeconds = numDelayUnclamped.doubleValue
             }
-            if let numDelay = numOptDelay, numDelay.doubleValue > 0 {
-                delay = lrint(numDelay.doubleValue * 100)
+
+            if frameTimeMilliSeconds == 0,
+                let numDelayClamped = gifProperties.object(forKey: kCGImagePropertyGIFDelayTime)
+                    as? NSNumber {
+                frameTimeMilliSeconds = numDelayClamped.doubleValue
+                if frameTimeMilliSeconds <= 0.005 {
+                    frameTimeMilliSeconds = 100
+                }
             }
         }
 
-        return delay
+        return frameTimeMilliSeconds
     }
 
     static func createAnimationFrames(cgImageSource: CGImageSource) -> [AnimationFrame] {
@@ -41,8 +49,8 @@ extension UIImage {
         let imgCount = CGImageSourceGetCount(cgImageSource)
         for index in 0..<imgCount {
             if let cgImg = CGImageSourceCreateImageAtIndex(cgImageSource, index, nil) {
-                let delay = delayInCentiSeconds(cgImageSource: cgImageSource, atIndex: index)
-                animationFrames.append(AnimationFrame(cgImg: cgImg, delayInCentiSeconds: delay))
+                let delay = frameTime(cgImageSource: cgImageSource, atIndex: index)
+                animationFrames.append(AnimationFrame(cgImg: cgImg, frameTime: delay))
             }
         }
         return animationFrames
