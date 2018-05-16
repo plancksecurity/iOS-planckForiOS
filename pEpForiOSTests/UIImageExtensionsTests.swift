@@ -12,7 +12,13 @@ import Foundation
 @testable import pEpForiOS
 
 class UIImageExtensionsTests: XCTestCase {
-    func testSimpleLoad() {
+    func testZeroFrame() {
+        let gifData = Data()
+        let gifImg = UIImage.image(gifData: gifData)
+        XCTAssertNil(gifImg)
+    }
+
+    func testSingleFrame() {
         guard let gifData = TestUtil.loadData(fileName: "icon_001.gif") else {
             XCTFail()
             return
