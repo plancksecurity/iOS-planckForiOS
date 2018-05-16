@@ -40,10 +40,59 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
 
         // Assure deleted messages are in trash
         checkExistance(ofMessages: receivedMsgs, inFolderOfType: .trash, mustExist: true)
-
     }
 
+    func testMoveInboxToSpam() {
+        assureMoveFromInbox(toFolderOfType: .spam)
+    }
+
+    func testMoveInboxToTrash() {
+        assureMoveFromInbox(toFolderOfType: .trash)
+    }
+
+    func testMoveInboxToArchive() {
+        assureMoveFromInbox(toFolderOfType: .archive)
+    }
+    
     // MARK: - HELPER
+
+    private func assureMoveFromInbox(toFolderOfType targetFolderType: FolderType) {
+        // Setup 2 accounts
+        // the testee
+        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        Record.saveAndWait()
+        // the sender
+        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        cdAccount2.createRequiredFoldersAndWait(testCase: self)
+        Record.saveAndWait()
+
+        // Send (and receive) messages from 2nd account to 1st account
+        let receivedMsgs = sendAndReceive(numMails: 1, fromAccount: cdAccount2)
+
+        // Move messages to target folder
+        move(messages: receivedMsgs, toFolerOfType: targetFolderType)
+
+        // Sync
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+
+        // Assure messages are in target folder
+        checkExistance(ofMessages: receivedMsgs, inFolderOfType: targetFolderType, mustExist: true)
+    }
+
+    private func move(messages:[Message], toFolerOfType type: FolderType) {
+        for msg:Message in messages {
+            guard let targetFolder = msg.parent.account.folder(ofType: type) else {
+                XCTFail()
+                return
+            }
+            // For some reason the swift compiler sees this as ambigous
+//            msg.move(to: targetFolder)
+            msg.targetFolder = targetFolder
+        }
+    }
+
     private func messagesAreEqual(msg1: Message, msg2: Message) -> Bool {
         // For this test we consider messages in a folder as equal if they have the same UUID and none of the
         // comparees has been marked deleted.
