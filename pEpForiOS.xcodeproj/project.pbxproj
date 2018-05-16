@@ -39,7 +39,6 @@
 		153CA6EA1FB62195003C9629 /* IOS-211-pdfEmail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */; };
 		153D08281F56BBCB00377110 /* AppendSendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */; };
 		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
-		153EFA721F4AD51200C3432A /* TrashMailsOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */; };
 		153FC45D202A263D0053CCF1 /* FolderType+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */; };
 		153FC45F202A26B30053CCF1 /* FolderType+IMAPTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153FC45E202A26B30053CCF1 /* FolderType+IMAPTest.swift */; };
 		1541D7ED1FC81D4200D52A5D /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */; };
@@ -500,7 +499,6 @@
 		153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-pdfEmail.txt"; sourceTree = "<group>"; };
 		153D08271F56BBCB00377110 /* AppendSendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendSendMailsOperation.swift; sourceTree = "<group>"; };
 		153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
-		153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrashMailsOperationTest.swift; sourceTree = "<group>"; };
 		153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderType+IMAP.swift"; sourceTree = "<group>"; };
 		153FC45E202A26B30053CCF1 /* FolderType+IMAPTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderType+IMAPTest.swift"; sourceTree = "<group>"; };
 		1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
@@ -1053,7 +1051,6 @@
 				15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */,
 				1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */,
 				15F835271F3B497D00FCE887 /* FetchMessagesOperationTest.swift */,
-				153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */,
 				153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */,
 				154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */,
 			);
@@ -2672,7 +2669,6 @@
 				43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */,
 				151F71FE202A06760057C74D /* CdMessage+TestUtils.swift in Sources */,
 				43FC24251F04FC6E00C32110 /* MessageSyncServiceTests.swift in Sources */,
-				153EFA721F4AD51200C3432A /* TrashMailsOperationTest.swift in Sources */,
 				151F71F9202A06760057C74D /* NetworkServiceObserver.swift in Sources */,
 				153FC45F202A26B30053CCF1 /* FolderType+IMAPTest.swift in Sources */,
 				43F7F07A1F6AD44600BDF151 /* HandshakeTests.swift in Sources */,
