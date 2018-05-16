@@ -48,3 +48,9 @@ dict[key]
 
 Int16.max
 Int16.min
+
+Double.greatestFiniteMagnitude
+Int.max
+Int64.max
+
+Double.greatestFiniteMagnitude > Double(Int64.max)
