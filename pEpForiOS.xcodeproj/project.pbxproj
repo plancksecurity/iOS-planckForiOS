@@ -49,6 +49,7 @@
 		1541D7FA1FCC18E100D52A5D /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */; };
 		1541D7FC1FCC199B00D52A5D /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */; };
 		1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */; };
+		154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */; };
 		154F0A802085FC7D00C77D72 /* CdAttachment+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A7F2085FC7D00C77D72 /* CdAttachment+Pantomime.swift */; };
 		154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */; };
 		154F0A842087779200C77D72 /* ContentDispositionType + Conversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A832087779200C77D72 /* ContentDispositionType + Conversion.swift */; };
@@ -509,6 +510,7 @@
 		1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
 		1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
 		154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNumberOfNewMailsOperation.swift; sourceTree = "<group>"; };
+		154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderOperationTest.swift; sourceTree = "<group>"; };
 		154F0A7F2085FC7D00C77D72 /* CdAttachment+Pantomime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Pantomime.swift"; sourceTree = "<group>"; };
 		154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDispositionTest.swift; sourceTree = "<group>"; };
 		154F0A832087779200C77D72 /* ContentDispositionType + Conversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentDispositionType + Conversion.swift"; sourceTree = "<group>"; };
@@ -1053,6 +1055,7 @@
 				15F835271F3B497D00FCE887 /* FetchMessagesOperationTest.swift */,
 				153EFA711F4AD51200C3432A /* TrashMailsOperationTest.swift */,
 				153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */,
+				154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -2622,6 +2625,7 @@
 			files = (
 				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
 				1555361B207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift in Sources */,
+				154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */,
 				4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */,
 				151F7201202A06760057C74D /* CdAccount+TestUtils.swift in Sources */,
 				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
