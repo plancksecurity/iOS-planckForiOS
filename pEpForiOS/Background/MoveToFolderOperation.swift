@@ -58,9 +58,12 @@ class MoveToFolderOperation: ImapSyncOperation {
         return result
     }
 
-    /// When UID MOVEing a message, the server expunges the message and let us know. So Pantomime takes care to remove the expunged message.
-    /// I case we are calling UID MOVE for a message that does not exist any more (maybe it has been moved by another client already in between), the server deos not repond with an error but with OK. We have to make sure the message is removed from our store to avoid endless UID MOVE.
-    private func assureLastMovedMessageIsGone() {
+    /// When UID MOVEing a message, the server expunges the message and let us know. So Pantomime
+    /// takes care to remove the expunged message. I case we are calling UID MOVE for a message that
+    /// does not exist any more (maybe it has been moved by another client already in between), the
+    /// server deos not repond with an error but with OK. We have to make sure the message is
+    /// removed from our store to avoid endless UID MOVE.
+    private func deleteLastMovedMessage() {
         guard let toDelete = lastProcessedMessage else {
             return
         }
@@ -110,7 +113,7 @@ class MoveToFolderOperation: ImapSyncOperation {
                 // respond with an error but with OK, so the local message still exists.
                 // Thus we have to make sure the message is removed from our store to avoid endless
                 // UID MOVE -> completed -> nextMessage -> UID MOVE ...
-                me.assureLastMovedMessageIsGone()
+                me.deleteLastMovedMessage()
                 me.markAsFinished()
                 return
             }
