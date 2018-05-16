@@ -25,7 +25,6 @@ class FolderTableViewController: BaseTableViewController {
         setup()
         if showNext {
             showFolder(indexPath: nil)
-            showNext = false
         }
     }
 
@@ -124,7 +123,6 @@ class FolderTableViewController: BaseTableViewController {
     }
 
     private func showFolder(indexPath: IndexPath?) {
-
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
             let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId)
@@ -133,14 +131,20 @@ class FolderTableViewController: BaseTableViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
                 return
         }
-
         vc.appConfig = appConfig
         if let vm = folderVM, let ip = indexPath {
             vc.folderToShow = vm[ip.section][ip.row].folder
         }
         vc.hidesBottomBarWhenPushed = false
-        self.navigationController?.pushViewController(vc, animated: true)
 
+        let animated: Bool
+        if showNext {
+            animated = false
+        } else {
+            animated = true
+        }
+        showNext = false
+        self.navigationController?.pushViewController(vc, animated: animated)
     }
 
     // MARK: - Segue
