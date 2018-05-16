@@ -53,7 +53,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
     func testMoveInboxToArchive() {
         assureMoveFromInbox(toFolderOfType: .archive)
     }
-    
+
     // MARK: - HELPER
 
     private func assureMoveFromInbox(toFolderOfType targetFolderType: FolderType) {
@@ -87,9 +87,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
                 XCTFail()
                 return
             }
-            // For some reason the swift compiler sees this as ambigous
-//            msg.move(to: targetFolder)
-            msg.targetFolder = targetFolder
+            msg.move(to: targetFolder)
         }
     }
 
