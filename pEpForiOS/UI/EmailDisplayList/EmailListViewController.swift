@@ -361,6 +361,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     // MARK: - SwipeTableViewCellDelegate
 
+    fileprivate func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType != .drafts
+    }
+
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt
         indexPath: IndexPath,
@@ -396,15 +400,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         swipeActions.append(archiveAction)
 
         // Flag
-        let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
-            self.flagAction(forCellAt: indexPath)
+        if folderIsDraft(parentFolder) {
+            // Do not add "Flag" action to drafted mails.
+            let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
+                self.flagAction(forCellAt: indexPath)
+            }
+            flagAction.hidesWhenSelected = true
+            configure(action: flagAction, with: .flag)
+            swipeActions.append(flagAction)
         }
-        flagAction.hidesWhenSelected = true
-        configure(action: flagAction, with: .flag)
-        swipeActions.append(flagAction)
 
         // More (reply++)
-        if parentFolder.folderType != .drafts {
+        if folderIsDraft(parentFolder) {
             // Do not add "more" actions (reply...) to drafted mails.
             let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
                 self.moreAction(forCellAt: indexPath)
