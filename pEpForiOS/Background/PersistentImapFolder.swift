@@ -257,7 +257,7 @@ extension PersistentImapFolder: CWIMAPCache {
                             aCdMsg.imapFields().messageNumber = oldMsn - 1
                         }
                     }
-                    self.privateMOC.saveAndLogErrors()
+                    Record.saveAndWait(context: privateMOC)
                 }
             } else {
                 Log.shared.warn(component: self.functionName(#function),
