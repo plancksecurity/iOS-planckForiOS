@@ -69,7 +69,7 @@ class MoveToFolderViewController: BaseViewController {
                                      errorString: "What are we supposed to display?")
             return
         }
-        viewModel = FolderViewModel(withFordersIn: [acc])
+        viewModel = FolderViewModel(withFordersIn: [acc],  includeUnifiedInbox: false)
     }
 
     // MARK: - ACTION
