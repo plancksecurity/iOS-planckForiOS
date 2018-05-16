@@ -39,9 +39,6 @@ protocol ProviderSpecificInformationProtocol {
     /// - Returns:  Whether or not the given folder represents a virtual mailbox of the provider.
     func isVirtualMailbox(_ folder: Folder) -> Bool
 
-    /// - Returns:  Whether or not deleted messages in the given folder should also be copied to trash.
-    func deletedMailsShouldBeCopiedToTrashFrom(_ folder: Folder) -> Bool
-
     /// - Returns:  Whether or not deleted messages should be moved to trash using the UID MOVE
     ///             extension instead of copying it locally and then appending it.
     func shouldUidMoveMailsToTrashWhenDeleted(inFolder folder: Folder) -> Bool

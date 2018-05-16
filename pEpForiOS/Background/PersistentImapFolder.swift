@@ -132,13 +132,14 @@ class PersistentImapFolder: CWIMAPFolder {
      Relying on that is dangerous and should be avoided.
      */
     override func message(at theIndex: UInt) -> CWMessage? {
-        var msg: CdMessage?
+        var result: CWMessage?
         privateMOC.performAndWait({
             let p = NSPredicate(
                 format: "parent = %@ and imap.messageNumber = %d", self.folder, theIndex)
-            msg = CdMessage.first(predicate: p)
+            let msg = CdMessage.first(predicate: p)
+            result = msg?.pantomimeQuick(folder: self)
         })
-        return msg?.pantomimeQuick(folder: self)
+        return result
     }
 
     override func count() -> UInt {
@@ -256,7 +257,7 @@ extension PersistentImapFolder: CWIMAPCache {
                             aCdMsg.imapFields().messageNumber = oldMsn - 1
                         }
                     }
-                    self.privateMOC.saveAndLogErrors()
+                    Record.saveAndWait(context: privateMOC)
                 }
             } else {
                 Log.shared.warn(component: self.functionName(#function),
@@ -275,8 +276,7 @@ extension PersistentImapFolder: CWIMAPCache {
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
         privateMOC.performAndWait() {
-            if self.folder.uidValidity != Int32(theUIDValidity)
-                && self.folder.folderType.shouldBeSyncedWithServer { // Ignore uidValidity for folders that are not synced with the server
+            if self.folder.uidValidity != Int32(theUIDValidity) {
                 Log.warn(
                     component: self.functionName(#function),
                     content: "UIValidity changed, deleting all messages. Folder \(String(describing: self.folder.name))")

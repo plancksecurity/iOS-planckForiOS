@@ -261,35 +261,16 @@ open class NetworkServiceWorker {
         return (opDrafts, [opAppend, opDrafts])
     }
 
-    func buildHandleMessagesMarkedAsShouldBeTrashedOperations(
-        imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
-        opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
-        var lastOp = previousOp
-        var trashOps = [HandleMessagesMarkedAsShouldBeTrashedOperation]()
-        let folders = HandleMessagesMarkedAsShouldBeTrashedOperation.foldersWithTrashedMessages(context: context)
-        for cdF in folders {
-            let op = HandleMessagesMarkedAsShouldBeTrashedOperation(
-                parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
-                errorContainer: errorContainer, folder: cdF,
-                syncTrashWithServer: FolderType.trash.shouldBeSyncedWithServer)
-            op.addDependency(lastOp)
-            opImapFinished.addDependency(op)
-            lastOp = op
-            trashOps.append(op)
-        }
-        return (lastOp, trashOps)
-    }
-
-    private func buildUidMoveMailsToTrashOperations(imapSyncData: ImapSyncData,
+    private func buildUidMoveToFolderOperations(imapSyncData: ImapSyncData,
                                                     errorContainer: ServiceErrorProtocol,
                                                     opImapFinished: Operation,
                                                     previousOp: Operation) -> (Operation?, [Operation]) {
         var lastOp = previousOp
-        var createdOps = [UidMoveMailsToTrashOperation]()
+        var createdOps = [MoveToFolderOperation]()
         MessageModel.performAndWait {
-            let folders = UidMoveMailsToTrashOperation.foldersContainingMarkedToUidMoveToTrash()
+            let folders = MoveToFolderOperation.foldersContainingMarkedForMoveToFolder()
             for folder in folders {
-                let op = UidMoveMailsToTrashOperation(imapSyncData: imapSyncData,
+                let op = MoveToFolderOperation(imapSyncData: imapSyncData,
                                                       errorContainer: errorContainer,
                                                       folder: folder)
                 op.addDependency(lastOp)
@@ -363,23 +344,8 @@ open class NetworkServiceWorker {
         var theLastImapOp = lastImapOp
         var operations: [Operation] = []
         for fi in folderInfos {
-            if !fi.folderType.shouldBeSyncedWithServer {
-                if !onlySyncChangesTriggeredByUser {
-                    let cleanUnsyncedFolderOp = CleanUnsyncedFolderOperation(
-                        cdAccountObejctId: imapSyncData.connectInfo.accountObjectID,
-                        folderName: fi.name)
-                    cleanUnsyncedFolderOp.completionBlock = {
-                        cleanUnsyncedFolderOp.completionBlock = nil
-                        Log.info(component: #function, content: "cleanUnsyncedFolderOp finished")
-                    }
-                    cleanUnsyncedFolderOp.addDependency(theLastImapOp)
-                    operations.append(cleanUnsyncedFolderOp)
-                    opImapFinished.addDependency(cleanUnsyncedFolderOp)
-                    theLastImapOp = cleanUnsyncedFolderOp
-                }
-            } else if let folderID = fi.folderID, let firstUID = fi.firstUID,
-                let lastUID = fi.lastUID, firstUID != 0, lastUID != 0,
-                firstUID <= lastUID {
+            if let folderID = fi.folderID, let firstUID = fi.firstUID, let lastUID = fi.lastUID,
+                firstUID != 0, lastUID != 0, firstUID <= lastUID {
                 if !onlySyncChangesTriggeredByUser {
                     let syncMessagesOp = SyncMessagesOperation(
                         parentName: description, errorContainer: errorContainer,
@@ -513,20 +479,12 @@ open class NetworkServiceWorker {
             lastImapOp = lastAppendSendAndDraftOp ?? lastImapOp
             operations.append(contentsOf: appendSendAndDraftOperations)
 
-            let (lastHandleTrashedOp, handleTrashedOperations) =
-                buildHandleMessagesMarkedAsShouldBeTrashedOperations(
+            let (lastMoveToFolderOp, moveToFolderOperations) =
+                buildUidMoveToFolderOperations(
                     imapSyncData: imapSyncData, errorContainer: errorContainer,
                     opImapFinished: opImapFinished, previousOp: lastImapOp)
-            lastImapOp = lastHandleTrashedOp ?? lastImapOp
-            operations.append(contentsOf: handleTrashedOperations)
-            // UidExpunge
-            let (lastUidMoveOp, uidMoveOperations) =
-                buildUidMoveMailsToTrashOperations(imapSyncData: imapSyncData,
-                                                   errorContainer: errorContainer,
-                                                   opImapFinished: opImapFinished,
-                                                   previousOp: lastImapOp)
-            lastImapOp = lastUidMoveOp ?? lastImapOp
-            operations.append(contentsOf: uidMoveOperations)
+            lastImapOp = lastMoveToFolderOp ?? lastImapOp
+            operations.append(contentsOf: moveToFolderOperations)
 
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
@@ -534,9 +492,6 @@ open class NetworkServiceWorker {
             if !onlySyncChangesTriggeredByUser {
                 // sync new messages
                 for fi in folderInfos {
-                    if !fi.folderType.shouldBeSyncedWithServer {
-                        continue
-                    }
                     let fetchMessagesOp = FetchMessagesOperation(
                         parentName: description, errorContainer: errorContainer,
                         imapSyncData: imapSyncData, folderName: fi.name) {

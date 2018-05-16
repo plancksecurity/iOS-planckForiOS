@@ -45,6 +45,10 @@ class MoveToFolderViewController: BaseViewController {
     private func setupTableView() {
         tableview.dataSource = self
         tableview.delegate = self
+        hideSeperatorForEmptyCells()
+    }
+
+    private func hideSeperatorForEmptyCells() {
         // Add empty footer to not show empty cells (visible as dangling seperators)
         tableview.tableFooterView = UIView(frame: .zero)
     }
@@ -65,7 +69,7 @@ class MoveToFolderViewController: BaseViewController {
                                      errorString: "What are we supposed to display?")
             return
         }
-        viewModel = FolderViewModel(withFordersIn: [acc])
+        viewModel = FolderViewModel(withFordersIn: [acc],  includeUnifiedInbox: false)
     }
 
     // MARK: - ACTION
@@ -127,28 +131,13 @@ extension MoveToFolderViewController: UITableViewDelegate {
             return
         }
         let folderCellVM = vm[indexPath.section][indexPath.row]
-//        folderCellVM.moveIn(message: msg) //IOS-663: TODO:
-
-        /*
-         Move methode:
-                *target trash: msg.imapDelete()
-                * target sent, draft: deny
-         target else: new MOVE or COPY+delete
-         */
         let targetFolder = folderCellVM.folder
 
-        switch targetFolder.folderType {
-        case .trash:
-            // Needs special handling to make sure not to leak data.
-            msg.imapDelete()
-        case .drafts, .sent:
-            // not allowed to move messages in. See folderTypesNotAllowedToMoveTo.
-            // do nothing
-            break
-        default:
-            //IOS-663 //TODO: new MOVE or COPY+delete
+        if msg.isAllowedToMoveTo(targetFolder: targetFolder) {
             msg.move(to: targetFolder)
-            break
+        } else {
+            // Not allowed to move messages in. See folderTypesNotAllowedToMoveTo.
+            // do nothing
         }
         dismiss(animated: true)
     }
@@ -158,12 +147,12 @@ extension MoveToFolderViewController: UITableViewDelegate {
 
 private extension MoveToFolderViewController {
     private func isSelectable(rowAt indexPath: IndexPath) -> Bool {
-        guard let vm = viewModel, let msg = message else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "No model")
             return false
         }
         let fcvm = vm[indexPath.section][indexPath.row]
-        return msg.isAllowedToMoveTo(targetFolder: fcvm.folder)
+        return !MoveToFolderViewController.folderTypesNotAllowedToMoveTo.contains(fcvm.folder.folderType)
     }
 }
 

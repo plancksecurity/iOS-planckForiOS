@@ -23,18 +23,20 @@ extension Folder{
         }
     }
 
-    /// Returns the first message found in this folder, that is marked for uidExpunge
+    /// Returns the first message found in this folder, that is marked to move to another folder.
     ///
-    /// - Returns: the firsst message found that is marked for uidExpunge if any, nil otherwize
-    public func firstMessageMarkedForUidExpunge() -> Message? {
+    /// - Returns: the first message found that has to be moved if any, nil otherwize
+    public func firstMessageThatHasToBeMoved() -> Message? {
         let predicateBelongingAccount =
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: account.user.address)
         let predicateParentFolder =
             CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: name)
-        let predicateMarkedUidExpunge = CdMessage.PredicateFactory.markedForUidMoveToTrash()
+        let predicateUndeleted = CdMessage.PredicateFactory.notMarkedDeleted()
+        let predicateMarkedForMoveToFolder = CdMessage.PredicateFactory.markedForMoveToFolder()
         let predicates = [predicateBelongingAccount,
                           predicateParentFolder,
-                          predicateMarkedUidExpunge]
+                          predicateMarkedForMoveToFolder,
+                          predicateUndeleted]
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         let cdMessage = CdMessage.first(predicate: compoundPredicate)
 

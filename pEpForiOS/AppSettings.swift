@@ -11,7 +11,6 @@ import MessageModel
 class AppSettings {
     static private let keyReinitializePepOnNextStartup = "reinitializePepOnNextStartup"
     static private let keyUnecryptedSubjectEnabled = "unecryptedSubjectEnabled"
-    static private let keyAppendTrashMails = "keyAppendTrashMails"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
 
     init() {
@@ -25,15 +24,6 @@ class AppSettings {
         }
         set {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyReinitializePepOnNextStartup)
-        }
-    }
-
-    var shouldSyncImapTrashWithServer: Bool {
-        get {
-            return UserDefaults.standard.bool(forKey: AppSettings.keyAppendTrashMails)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: AppSettings.keyAppendTrashMails)
         }
     }
 
@@ -85,7 +75,6 @@ class AppSettings {
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
-        defaults[AppSettings.keyAppendTrashMails] = false
         defaults[AppSettings.keyUnecryptedSubjectEnabled] = true
         UserDefaults.standard.register(defaults: defaults)
     }

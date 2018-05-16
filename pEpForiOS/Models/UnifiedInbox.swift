@@ -63,26 +63,34 @@ public class UnifiedInbox: Folder {
         filter = cf
     }
 
-    override open func allCdMessages(includingDeleted: Bool)  -> [CdMessage] {
+    override open func allCdMessages(includingDeleted: Bool = false,
+                                     includingMarkedForMoveToFolder: Bool = false)  -> [CdMessage] {
         var predicates = [NSPredicate]()
         if filter != nil {
             predicates.append(NSPredicate(format: "parent.folderTypeRawValue= %d",
                                           FolderType.inbox.rawValue))
         }
         return allCdMessages(includingDeleted: includingDeleted,
-                             takingPredicateIntoAccount: predicates)
+                             includingMarkedForMoveToFolder: includingMarkedForMoveToFolder,
+                             takingPredicatesIntoAccount: predicates)
     }
 
     override open func contains(message: Message,
-                                deletedMessagesAreContained: Bool = false) -> Bool {
+                                deletedMessagesAreContained: Bool = false,
+                                markedForMoveToFolderArteContained: Bool = false) -> Bool {
         var result = false
         if filter != nil {
             let parentF = message.parent
 
-            if deletedMessagesAreContained {
+            if deletedMessagesAreContained && markedForMoveToFolderArteContained {
                 return parentF.folderType == .inbox
             }
+
             result = !message.isGhost && parentF.folderType == .inbox
+            if !markedForMoveToFolderArteContained {
+                result =
+                    result && (message.targetFolder == nil || message.targetFolder == message.parent)
+            }
         }
         return result
     }

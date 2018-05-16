@@ -29,6 +29,9 @@ public protocol ImapSyncDelegate: class {
     func messageStoreCompleted(_ sync: ImapSync, notification: Notification?)
     func messageStoreFailed(_ sync: ImapSync, notification: Notification?)
     func messageUidMoveCompleted(_ sync: ImapSync, notification: Notification?)
+    func messageUidMoveFailed(_ sync: ImapSync, notification: Notification?)
+    func messagesCopyCompleted(_ sync: ImapSync, notification: Notification?)
+    func messagesCopyFailed(_ sync: ImapSync, notification: Notification?)
     func folderCreateCompleted(_ sync: ImapSync, notification: Notification?)
     func folderCreateFailed(_ sync: ImapSync, notification: Notification?)
     func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?)
@@ -273,11 +276,11 @@ open class ImapSync: Service {
     // MARK: - HELPER
 
     private func runOnDelegate(logName: String = #function, block: (ImapSyncDelegate) -> ()) {
-        if let del = delegate {
-            block(del)
-        } else {
-            Log.shared.error(component: logName, errorString: "\(Date()): No delegate")
+        guard let del = delegate else  {
+            Log.shared.warn(component: #function, content: "\(Date()): No delegate")
+            return
         }
+        block(del)
     }
 }
 
@@ -377,6 +380,27 @@ extension ImapSync: CWServiceClient {
         dumpMethodName("messageUidMoveCompleted", notification: theNotification)
         runOnDelegate() { theDelegate in
             theDelegate.messageUidMoveCompleted(self, notification: theNotification)
+        }
+    }
+
+    public func messageUidMoveFailed(_ theNotification: Notification?) {
+        dumpMethodName("messageUidMoveFailed", notification: theNotification)
+        runOnDelegate() { theDelegate in
+            theDelegate.messageUidMoveFailed(self, notification: theNotification)
+        }
+    }
+
+    @objc public func messagesCopyCompleted(_ theNotification: Notification?) { //IOS-633 eamove @objc's
+        dumpMethodName("messagesCopyCompleted", notification: theNotification)
+        runOnDelegate() { theDelegate in
+            theDelegate.messagesCopyCompleted(self, notification: theNotification)
+        }
+    }
+
+    public func messagesCopyFailed(_ theNotification: Notification?) {
+        dumpMethodName("messagesCopyFailed", notification: theNotification)
+        runOnDelegate() { theDelegate in
+            theDelegate.messagesCopyFailed(self, notification: theNotification)
         }
     }
 

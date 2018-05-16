@@ -9,25 +9,45 @@
 import MessageModel
 
 extension Message {
-    /// Sets flag "deleted" and sets trashed status to "trashed".
-    /// Use this method if you do not want the message to be copied to trash folder.
-    func imapDeleteAndMarkTrashed() {
+    
+    /// Sets flag "deleted".
+    /// Use this method if you do not want the message to be moved to trash folder.
+    func imapMarkDeleted() {
         let theFlags = imapFlags ?? ImapFlags()
         theFlags.deleted = true
-        imapFields?.trashedStatus = .trashed
-        imapFlags = theFlags
         self.save()
     }
-
-    /// Sets flag "deleted" and marks the message to be copied to trash if appropriate.
+    
+    /// Triggers trashing of the message, taking everithing in account (provider specific constrains and such).
+    /// Always use this method to handle "user has choosen to delete an e-mail".
     func imapDelete() {
-        let theFlags = imapFlags ?? ImapFlags()
-        theFlags.deleted = true
-        imapFlags = theFlags
-        imapFields?.trashedStatus =
-            parent.shouldCopyDeletedMessagesToTrash ? .shouldBeTrashed : .trashed
-        imapFields?.uidMoveToTrashStatus =
-            parent.shouldUidMoveDeletedMessagesToTrash ? .shouldBeMoved : .none
-        self.save()
+        guard let trashFolder = parent.account.folder(ofType: .trash) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We should have a trash folder at this point")
+            return
+        }
+        
+        if parent.shouldUidMoveDeletedMessagesToTrash {
+            move(to: trashFolder)
+        } else {
+            imapMarkDeleted()
+        }
+    }
+    
+    /// Marks the message for moving to the given folder.
+    ///
+    /// Does not actually move the message but set it's target folder.
+    /// The Backgound layer has to take care of the actual move.
+    /// 
+    /// Returns immediately in case the message is in the target folder already.
+    ///
+    /// - Parameter targetFolder: folder to move the message to
+    func move(to targetFolder:Folder) {
+        if parent == targetFolder {
+            // the message is in the target folder already. No need to move it.
+            return
+        }
+        self.targetFolder = targetFolder
+        save()
     }
 }

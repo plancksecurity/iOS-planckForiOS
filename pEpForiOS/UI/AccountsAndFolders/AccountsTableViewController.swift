@@ -149,7 +149,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let rowType = viewModel.rowType(for: indexPath)
-
         switch rowType {
         case .account:
             self.ipath = indexPath
@@ -158,8 +157,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             performSegue(withIdentifier: .segueShowSettingUnecryptedSubject, sender: self)
         case .defaultAccount:
             performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
-        case .syncTrash:
-            performSegue(withIdentifier: .segueShowSettingSyncTrash, sender: self)
         case .showLog:
             performSegue(withIdentifier: .segueShowLog, sender: self)
         case .organizedByThread:
@@ -173,7 +170,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 // MARK: - Navigation
 
 extension AccountsTableViewController: SegueHandlerType {
-
     enum SegueIdentifier: String {
         case segueAddNewAccount
         case segueEditAccount
