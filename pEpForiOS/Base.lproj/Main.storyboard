@@ -439,7 +439,7 @@
         <!--Navigation Controller-->
         <scene sceneID="jm1-97-n5e">
             <objects>
-                <navigationController storyboardIdentifier="main.initial.nvc" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="lPr-gi-BrG" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="lPr-gi-BrG" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="z4A-BC-Lg4">

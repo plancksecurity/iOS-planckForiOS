@@ -10,6 +10,7 @@ import UIKit
 
 class FolderTableViewController: BaseTableViewController {
     var folderVM: FolderViewModel?
+    var showNext: Bool = true
 
     // MARK: - Life Cycle
 
@@ -21,12 +22,17 @@ class FolderTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setToolbarHidden(true, animated: true)
-        setupViewModel()
+        setup()
+        if showNext {
+            showFolder(indexPath: nil)
+            showNext = false
+        }
     }
 
     // MARK: - Setup
 
-    private func setupViewModel() {
+    private func setup() {
+        //ViewModel init
         DispatchQueue.main.async {
             self.folderVM =  FolderViewModel()
             self.tableView.reloadData()
@@ -74,6 +80,11 @@ class FolderTableViewController: BaseTableViewController {
             return header
         }
 
+        if vm[section].hidden {
+            return nil
+        }
+
+
         safeHeader.configure(viewModel: vm[section], section: section)
         return header
     }
@@ -109,6 +120,11 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - TableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        showFolder(indexPath: indexPath)
+    }
+
+    private func showFolder(indexPath: IndexPath?) {
+
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
             let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId)
@@ -119,13 +135,12 @@ class FolderTableViewController: BaseTableViewController {
         }
 
         vc.appConfig = appConfig
-        guard let vm = folderVM else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model")
-            return
+        if let vm = folderVM, let ip = indexPath {
+            vc.folderToShow = vm[ip.section][ip.row].folder
         }
-        vc.folderToShow = vm[indexPath.section][indexPath.row].folder
         vc.hidesBottomBarWhenPushed = false
         self.navigationController?.pushViewController(vc, animated: true)
+
     }
 
     // MARK: - Segue

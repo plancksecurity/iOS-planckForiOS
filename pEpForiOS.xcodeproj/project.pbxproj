@@ -209,6 +209,7 @@
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
 		433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D11E66CB9C00272E19 /* CreateRequiredFoldersOperation.swift */; };
 		4340F5F91D363BE6006A5C82 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4340F5F81D363BE6006A5C82 /* ContactCell.swift */; };
+		4341980520AB037E0062F7F6 /* CGImageSource+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */; };
 		4341EBCF2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */; };
 		4341EBD1208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */; };
 		43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */; };
@@ -666,6 +667,7 @@
 		433BCD941D5388C100DD98EF /* ReplyUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyUtil.swift; sourceTree = "<group>"; };
 		433C51D11E66CB9C00272E19 /* CreateRequiredFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRequiredFoldersOperation.swift; sourceTree = "<group>"; };
 		4340F5F81D363BE6006A5C82 /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImageSource+Extension.swift"; sourceTree = "<group>"; };
 		4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
 		4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceProtocol.swift; sourceTree = "<group>"; };
 		43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ProviderProtocol.swift; sourceTree = "<group>"; };
@@ -1647,6 +1649,7 @@
 				150B8EB21FCEB93D00374438 /* UIUtils.swift */,
 				43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */,
 				150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */,
+				4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */,
 				4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */,
 			);
 			path = Util;
@@ -2395,6 +2398,7 @@
 				43DB81331E2A56BE00A20902 /* AppendDraftMailsOperation.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
 				43F848491EAA09AE00DBE460 /* Weak.swift in Sources */,
+				4341980520AB037E0062F7F6 /* CGImageSource+Extension.swift in Sources */,
 				43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */,
 				431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */,
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
