@@ -277,7 +277,7 @@ open class ImapSync: Service {
 
     private func runOnDelegate(logName: String = #function, block: (ImapSyncDelegate) -> ()) {
         guard let del = delegate else  {
-            Log.shared.errorAndCrash(component: #function, errorString: "\(Date()): No delegate")
+            Log.shared.warn(component: #function, content: "\(Date()): No delegate")
             return
         }
         block(del)
