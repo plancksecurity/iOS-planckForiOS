@@ -10,6 +10,18 @@ import Foundation
 
 extension CGImageSource {
     /**
+     Every image contained in this source interpreted as animation frame,
+     together with its duration.
+     */
+    struct AnimationFrame {
+        /** The image representing this frame */
+        let cgImage: CGImage
+
+        /** The time of that frame, in milliseconds */
+        let frameTimeMillis: Double
+    }
+
+    /**
      Determines the time of a contained frame, in milliseconds.
      - Returns: The time the image at the given index should be shown, in milliseconds.
      - Note: The index is not checked for validity.
@@ -48,18 +60,6 @@ extension CGImageSource {
      */
     func cgImage(atIndex: Int) -> CGImage? {
         return CGImageSourceCreateImageAtIndex(self, atIndex, nil)
-    }
-
-    /**
-     Every image contained in this source interpreted as animation frame,
-     together with its duration.
-     */
-    struct AnimationFrame {
-        /** The image representing this frame */
-        let cgImage: CGImage
-
-        /** The time of that frame, in milliseconds */
-        let frameTimeMillis: Double
     }
 
     /**
