@@ -137,12 +137,7 @@ class FolderTableViewController: BaseTableViewController {
         }
         vc.hidesBottomBarWhenPushed = false
 
-        let animated: Bool
-        if showNext {
-            animated = false
-        } else {
-            animated = true
-        }
+        let animated =  showNext ? false : true
         showNext = false
         self.navigationController?.pushViewController(vc, animated: animated)
     }
