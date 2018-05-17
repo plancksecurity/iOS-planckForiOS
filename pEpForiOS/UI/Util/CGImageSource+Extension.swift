@@ -75,16 +75,6 @@ extension CGImageSource {
                 return accu + theNextDouble
             }
         }
-
-        /**
-         Total duration in deciseconds of a sequence of animation frames.
-         */
-        static func totalDurationDecis(animationFrames: [AnimationFrame]) -> Int64 {
-            let durations = animationFrames.map { return $0.durationDecis }
-            return durations.reduce(0) { accu, theNextInt64 in
-                return accu + theNextInt64
-            }
-        }
     }
 
     /**
