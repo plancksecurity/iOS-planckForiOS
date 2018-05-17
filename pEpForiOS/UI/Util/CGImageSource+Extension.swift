@@ -17,8 +17,8 @@ extension CGImageSource {
         /** The image representing this frame */
         let cgImage: CGImage
 
-        /** The duration of that frame, in milliseconds */
-        let durationMillis: Double
+        /** The duration of that frame, in seconds */
+        let durationSeconds: Double
 
         /** The duration of that frame, in deciseconds */
         let durationDecis: Int64
@@ -69,8 +69,8 @@ extension CGImageSource {
         /**
          Total duration in milliseconds of a sequence of animation frames.
          */
-        static func totalDurationMillis(animationFrames: [AnimationFrame]) -> Double {
-            let durations = animationFrames.map { return $0.durationMillis }
+        static func totalDurationSeconds(animationFrames: [AnimationFrame]) -> Double {
+            let durations = animationFrames.map { return $0.durationSeconds }
             return durations.reduce(0) { accu, theNextDouble in
                 return accu + theNextDouble
             }
@@ -88,12 +88,12 @@ extension CGImageSource {
     }
 
     /**
-     Determines the time of a contained frame, in milliseconds.
+     Determines the time of a contained frame, in seconds.
      - Returns: The time the image at the given index should be shown, in milliseconds.
      - Note: The index is not checked for validity.
      */
-    func frameTimeMillis(cgImageSource: CGImageSource, atIndex index: Int) -> Double {
-        var frameTimeMilliSeconds: Double = 0
+    func frameTimeSeconds(cgImageSource: CGImageSource, atIndex index: Int) -> Double {
+        var theFrameTimeSeconds: Double = 0
 
         if
             let properties: NSDictionary = CGImageSourceCopyPropertiesAtIndex(
@@ -103,20 +103,20 @@ extension CGImageSource {
         {
             if let numDelayUnclamped = gifProperties.object(
                 forKey: kCGImagePropertyGIFUnclampedDelayTime) as? NSNumber {
-                frameTimeMilliSeconds = numDelayUnclamped.doubleValue
+                theFrameTimeSeconds = numDelayUnclamped.doubleValue
             }
 
-            if frameTimeMilliSeconds == 0,
+            if theFrameTimeSeconds == 0,
                 let numDelayClamped = gifProperties.object(forKey: kCGImagePropertyGIFDelayTime)
                     as? NSNumber {
-                frameTimeMilliSeconds = numDelayClamped.doubleValue
-                if frameTimeMilliSeconds <= 0.005 {
-                    frameTimeMilliSeconds = 100
+                theFrameTimeSeconds = numDelayClamped.doubleValue
+                if theFrameTimeSeconds <= 0.050 { // 50 milliseconds or less?
+                    theFrameTimeSeconds = 0.1 // clamp to 100 milliseconds
                 }
             }
         }
 
-        return frameTimeMilliSeconds
+        return theFrameTimeSeconds
     }
 
     /**
@@ -137,11 +137,11 @@ extension CGImageSource {
         let imgCount = CGImageSourceGetCount(self)
         for index in 0..<imgCount {
             if let cgImg = cgImage(atIndex: index) {
-                let frameDurationMillis = frameTimeMillis(cgImageSource: self, atIndex: index)
-                let frameDurationDecis = Int64((frameDurationMillis * 100).rounded())
+                let frameDurationSeconds = frameTimeSeconds(cgImageSource: self, atIndex: index)
+                let frameDurationDecis = Int64((frameDurationSeconds * 100).rounded())
                 animationFrames.append(AnimationFrame(
                     cgImage: cgImg,
-                    durationMillis: frameDurationMillis,
+                    durationSeconds: frameDurationSeconds,
                     durationDecis: frameDurationDecis))
             }
         }
