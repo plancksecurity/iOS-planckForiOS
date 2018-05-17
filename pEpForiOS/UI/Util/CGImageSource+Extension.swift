@@ -22,6 +22,69 @@ extension CGImageSource {
 
         /** The duration of that frame, in deciseconds */
         let durationDecis: Int64
+
+        /**
+         Greatest common denominator of two `Int64`s.
+         */
+        static func gcd(int641: Int64, int642: Int64) -> Int64 {
+            if int641 < int642 {
+                return gcd(int641: int642, int642: int641)
+            }
+            var num1 = int641
+            var num2 = int642
+            while true {
+                let r = num1 % num2
+                if r == 0 {
+                    return num2
+                }
+                num1 = num2
+                num2 = r
+            }
+        }
+
+        /**
+         Greatest common denominator of an array of `Int64`s.
+         */
+        static func gcd(int64s: [Int64]) -> Int64? {
+            if int64s.isEmpty || int64s.count < 2 {
+                return nil
+            }
+
+            var theGcd = int64s[0]
+            for value in int64s {
+                theGcd = gcd(int641: value, int642: theGcd)
+            }
+
+            return theGcd
+        }
+
+        /**
+         Greatest common denominator of an array of `Int64`s.
+         */
+        static func gcd(animationFrames: [AnimationFrame]) -> Int64? {
+            let theInts = animationFrames.map { return $0.durationDecis }
+            return gcd(int64s: theInts)
+        }
+
+        /**
+         Total duration in milliseconds of a sequence of animation frames.
+         */
+        static func totalDurationMillis(animationFrames: [AnimationFrame]) -> Double {
+            let durations = animationFrames.map { return $0.durationMillis }
+            return durations.reduce(0) { accu, theNextDouble in
+                return accu + theNextDouble
+            }
+        }
+
+        /**
+         Total duration in deciseconds of a sequence of animation frames.
+         */
+        static func totalDurationDecis(animationFrames: [AnimationFrame]) -> Int64 {
+            let durations = animationFrames.map { return $0.durationDecis }
+            return durations.reduce(0) { accu, theNextInt64 in
+                return accu + theNextInt64
+            }
+        }
     }
 
     /**
