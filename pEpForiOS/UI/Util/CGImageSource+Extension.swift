@@ -17,8 +17,11 @@ extension CGImageSource {
         /** The image representing this frame */
         let cgImage: CGImage
 
-        /** The time of that frame, in milliseconds */
-        let frameTimeMillis: Double
+        /** The duration of that frame, in milliseconds */
+        let durationMillis: Double
+
+        /** The duration of that frame, in deciseconds */
+        let durationDecis: Int64
     }
 
     /**
@@ -71,8 +74,12 @@ extension CGImageSource {
         let imgCount = CGImageSourceGetCount(self)
         for index in 0..<imgCount {
             if let cgImg = cgImage(atIndex: index) {
-                let delay = frameTimeMillis(cgImageSource: self, atIndex: index)
-                animationFrames.append(AnimationFrame(cgImage: cgImg, frameTimeMillis: delay))
+                let frameDurationMillis = frameTimeMillis(cgImageSource: self, atIndex: index)
+                let frameDurationDecis = Int64((frameDurationMillis * 100).rounded())
+                animationFrames.append(AnimationFrame(
+                    cgImage: cgImg,
+                    durationMillis: frameDurationMillis,
+                    durationDecis: frameDurationDecis))
             }
         }
         return animationFrames
