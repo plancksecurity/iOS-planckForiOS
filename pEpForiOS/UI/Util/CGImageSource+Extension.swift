@@ -61,19 +61,9 @@ extension CGImageSource {
         /**
          Greatest common denominator of an array of `Int64`s.
          */
-        static func gcd(animationFrames: [AnimationFrame]) -> Int64? {
+        static func gcdDurationDecis(animationFrames: [AnimationFrame]) -> Int64? {
             let theInts = animationFrames.map { return $0.durationDecis }
             return gcd(int64s: theInts)
-        }
-
-        /**
-         Total duration in milliseconds of a sequence of animation frames.
-         */
-        static func totalDurationSeconds(animationFrames: [AnimationFrame]) -> Double {
-            let durations = animationFrames.map { return $0.durationSeconds }
-            return durations.reduce(0) { accu, theNextDouble in
-                return accu + theNextDouble
-            }
         }
     }
 
