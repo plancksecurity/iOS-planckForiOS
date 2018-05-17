@@ -27,7 +27,7 @@ extension UIImage {
 
         var images = [UIImage]()
         for iPart in 0..<parts.count {
-            let frameImage = UIImage(cgImage: animationFrames[0].cgImage)
+            let frameImage = UIImage(cgImage: animationFrames[iPart].cgImage)
             let numberOfImagesNeeded = parts[iPart]
             for _ in 0..<numberOfImagesNeeded {
                 images.append(frameImage)
