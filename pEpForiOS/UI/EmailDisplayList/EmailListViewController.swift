@@ -45,7 +45,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
     @IBOutlet weak var textFilterButton: UIBarButtonItem!
-    @IBOutlet var showFoldersButton: UIBarButtonItem!
     
     // MARK: - Life Cycle
     
@@ -94,7 +93,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
 
-        setupFoldersBarButton()
+        //setupFoldersBarButton()
         if model != nil {
             updateFilterButtonView()
         }
@@ -128,16 +127,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     // MARK: - NavigationBar
-    
-    private func hideFoldersNavigationBarButton() {
-        self.showFoldersButton.isEnabled = false
-        self.showFoldersButton.tintColor = UIColor.clear
-    }
-    
-    private func showFoldersNavigationBarButton() {
-        self.showFoldersButton.isEnabled = true
-        self.showFoldersButton.tintColor = nil
-    }
     
     private func resetModel() {
         if folderToShow != nil {
@@ -179,13 +168,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return Account.all().isEmpty
     }
     
-    private func setupFoldersBarButton() {
+    /*private func setupFoldersBarButton() {
         if let size = navigationController?.viewControllers.count, size > 1 {
             hideFoldersNavigationBarButton()
         } else {
             showFoldersNavigationBarButton()
         }
-    }
+    }*/
 
     /**
      Configure the search controller, shared between iOS versions 11 and earlier.
