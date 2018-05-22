@@ -9,6 +9,10 @@
 import UIKit
 
 class AutoWizardStepsViewController: BaseViewController {
+    @IBOutlet weak var start: UIButton!
+    @IBOutlet weak var cancel: UIButton!
+    @IBOutlet weak var stepDescription: UILabel!
+    @IBOutlet weak var loading: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +24,27 @@ class AutoWizardStepsViewController: BaseViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func onStartClicked(_ sender: Any) {
+        //hideStartButton()
+        start.isHidden = true
+        //showCancelButton()
+        cancel.isHidden = false
+        //showCurrentStep()
+        stepDescription.isHidden = false
+        loading.isHidden = false
+    }
+    
+    @IBAction func onCancelClicked(_ sender: Any) {
+        start.isHidden = false
+        cancel.isHidden = true
+        stepDescription.isHidden = true
+        loading.isHidden = true
+        //hideStartButton()
+        //showCancelButton()
+        //showCurrentStep()
+    }
+
     
 
     /*

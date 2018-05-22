@@ -24,7 +24,7 @@
                                 <rect key="frame" x="178" y="334" width="20" height="20"/>
                             </activityIndicatorView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 1: sending key import request" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X0a-u7-8tz">
-                                <rect key="frame" x="54.5" y="362" width="265.5" height="21"/>
+                                <rect key="frame" x="54.5" y="362" width="265.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -32,11 +32,23 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p7I-Vo-PmL">
                                 <rect key="frame" x="170" y="329" width="34" height="30"/>
                                 <state key="normal" title="Start"/>
+                                <connections>
+                                    <action selector="onStartClicked:" destination="CoZ-Bi-RAc" eventType="touchUpInside" id="OTy-EV-s4v"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zmd-J4-rOU">
+                                <rect key="frame" x="163.5" y="377.5" width="48" height="30"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="onCancelClicked:" destination="CoZ-Bi-RAc" eventType="touchUpInside" id="l9u-ZK-wbW"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="Zmd-J4-rOU" firstAttribute="centerX" secondItem="wHM-us-7La" secondAttribute="centerX" id="6EP-ja-7ci"/>
                             <constraint firstItem="X0a-u7-8tz" firstAttribute="centerX" secondItem="cNH-7d-hhs" secondAttribute="centerX" id="Hxh-ig-yOU"/>
+                            <constraint firstItem="Zmd-J4-rOU" firstAttribute="firstBaseline" secondItem="X0a-u7-8tz" secondAttribute="baseline" constant="20" symbolType="layoutAnchor" id="JG9-Ki-WVl"/>
                             <constraint firstItem="X0a-u7-8tz" firstAttribute="firstBaseline" secondItem="DY1-Kj-Os0" secondAttribute="baseline" constant="24.5" symbolType="layoutAnchor" id="fB0-bB-LPI"/>
                             <constraint firstItem="p7I-Vo-PmL" firstAttribute="centerX" secondItem="cNH-7d-hhs" secondAttribute="centerX" id="jiH-Ou-Vqo"/>
                             <constraint firstItem="p7I-Vo-PmL" firstAttribute="centerY" secondItem="cNH-7d-hhs" secondAttribute="centerY" id="kEI-aj-998"/>
@@ -45,6 +57,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="cNH-7d-hhs"/>
                     </view>
+                    <connections>
+                        <outlet property="cancel" destination="Zmd-J4-rOU" id="KXi-RK-8xl"/>
+                        <outlet property="loading" destination="DY1-Kj-Os0" id="luJ-qr-A0p"/>
+                        <outlet property="start" destination="p7I-Vo-PmL" id="oDc-aQ-q64"/>
+                        <outlet property="stepDescription" destination="X0a-u7-8tz" id="kDe-7b-eQ9"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9e9-H9-7mR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

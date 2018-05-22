@@ -7,6 +7,7 @@
 //
 
 import UIKit
+//Todo: Move to MVVM
 import MessageModel
 
 
