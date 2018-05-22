@@ -93,7 +93,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
 
-        //setupFoldersBarButton()
         if model != nil {
             updateFilterButtonView()
         }
@@ -167,14 +166,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private func noAccountsExist() -> Bool {
         return Account.all().isEmpty
     }
-    
-    /*private func setupFoldersBarButton() {
-        if let size = navigationController?.viewControllers.count, size > 1 {
-            hideFoldersNavigationBarButton()
-        } else {
-            showFoldersNavigationBarButton()
-        }
-    }*/
 
     /**
      Configure the search controller, shared between iOS versions 11 and earlier.
@@ -288,7 +279,36 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         vm.markRead(forIndexPath: indexPath)
     }
-    
+
+    // MARK: - Action Edit Button
+
+    private var tempToolbarItems:  [UIBarButtonItem]?
+
+    @IBAction func Edit(_ sender: Any) {
+
+        //modificar toolbar
+        //hacer aparecer check de marcado
+        //hacer la accion solicitada
+        //recuperar toolbar
+
+    }
+
+    private func showEditToolbar() {
+        tempToolbarItems = toolbarItems
+        ///var markAll = UIBarButtonItem(title: "Mark All", style: UIBarButtonItemStyle.plain, target: #selector(self.markAll(_:)), action: self)
+
+    }
+
+    func markAll(_ sender:UIBarButtonItem!)
+    {
+        print("myLeftSideBarButtonItemTapped")
+    }
+
+    private func showStandardToolbar() {
+
+        toolbarItems = tempToolbarItems
+    }
+
     // MARK: - Action Filter Button
     
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
