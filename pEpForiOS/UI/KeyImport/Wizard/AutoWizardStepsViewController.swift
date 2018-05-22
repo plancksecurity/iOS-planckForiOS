@@ -8,6 +8,7 @@
 
 import UIKit
 
+//TODO: ADD ModelView
 class AutoWizardStepsViewController: BaseViewController {
     @IBOutlet weak var start: UIButton!
     @IBOutlet weak var cancel: UIButton!
@@ -25,6 +26,8 @@ class AutoWizardStepsViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //TODO: Use just one IBAction, as start and cancel are complementary
+
     @IBAction func onStartClicked(_ sender: Any) {
         //hideStartButton()
         start.isHidden = true
