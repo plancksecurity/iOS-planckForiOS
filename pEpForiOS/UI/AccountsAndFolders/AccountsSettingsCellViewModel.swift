@@ -17,6 +17,7 @@ public class AccountsSettingsCellViewModel {
         case credits
         case unecryptedSubject
         case defaultAccount
+        case keyImport
     }
 
     var account: Account?
@@ -58,6 +59,8 @@ public class AccountsSettingsCellViewModel {
                     return nil
                 }
                 return acc.user.address
+            case .keyImport:
+                return NSLocalizedString("Key import", comment: "AccountSettings: Cell (button) title to start key import setting")
             }
         }
     }
@@ -75,6 +78,9 @@ public class AccountsSettingsCellViewModel {
                 return AppSettings().defaultAccount
             case .unecryptedSubject:
                 return onOffStateString(forState: !AppSettings().unecryptedSubjectEnabled)
+            case .keyImport:
+                //Have no value
+                return nil
             }
         }
     }

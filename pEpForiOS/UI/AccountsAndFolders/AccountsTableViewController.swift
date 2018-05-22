@@ -162,6 +162,10 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         break // We currenty do nothing
         case .credits:
             performSegue(withIdentifier: .sequeShowCredits, sender: self)
+        case .keyImport:
+            performSegue(withIdentifier: .segueShowSettingKeyImportSelectAccount, sender: self)
+            //TODO NOP
+        break
         }
     }
 }
@@ -177,6 +181,7 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueShowSettingSyncTrash
         case segueShowSettingUnecryptedSubject
         case sequeShowCredits
+        case segueShowSettingKeyImportSelectAccount
         case noAccounts
         case noSegue
     }
@@ -205,7 +210,8 @@ extension AccountsTableViewController: SegueHandlerType {
                 return
             }
             destination.appConfig = self.appConfig
-        case .segueShowSettingDefaultAccount: // BaseTableViewControllers
+        case .segueShowSettingDefaultAccount,
+             .segueShowSettingKeyImportSelectAccount: // BaseTableViewControllers
             guard let destination = segue.destination as? BaseTableViewController else {
                 return
             }

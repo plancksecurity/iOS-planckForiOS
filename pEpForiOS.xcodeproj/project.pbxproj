@@ -431,6 +431,9 @@
 		B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */; };
 		B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */; };
 		B7F19A001E5DE9FB0079A513 /* FolderType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F199FF1E5DE9FB0079A513 /* FolderType+Extensions.swift */; };
+		C457845120AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C457845020AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift */; };
+		C474D25A20B3FB9C0071F638 /* KeyImport.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C474D25820B3FB9C0071F638 /* KeyImport.storyboard */; };
+		C474D25F20B44A9E0071F638 /* AutoWizardStepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C474D25E20B44A9E0071F638 /* AutoWizardStepsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -916,6 +919,9 @@
 		B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterCellViewModel.swift; path = Filter/ViewModel/FilterCellViewModel.swift; sourceTree = "<group>"; };
 		B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollapsibleTableViewHeader.swift; path = Folder/CollapsibleTableViewHeader.swift; sourceTree = "<group>"; };
 		B7F199FF1E5DE9FB0079A513 /* FolderType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FolderType+Extensions.swift"; sourceTree = "<group>"; };
+		C457845020AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyImportSelectAccountTableViewController.swift; sourceTree = "<group>"; };
+		C474D25920B3FB9C0071F638 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/KeyImport.storyboard; sourceTree = "<group>"; };
+		C474D25E20B44A9E0071F638 /* AutoWizardStepsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoWizardStepsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1740,6 +1746,7 @@
 		43ED53611CC77F95006AB156 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				C457844920AF38A90053BF19 /* KeyImport */,
 				15BA537A20A1F5CA0090F126 /* MoveToFolder */,
 				B70D32B0205BCFBD0094A92A /* EmailDisplay */,
 				43ED53621CC77F95006AB156 /* EmailDisplayList */,
@@ -1817,6 +1824,7 @@
 				43980E321CBD0BCA00A7FC3C /* LaunchScreen.storyboard */,
 				151DE7E61FC5D41600CDC273 /* FolderViews.storyboard */,
 				155F2DA020530798001B4B1C /* Reusable.storyboard */,
+				C474D25820B3FB9C0071F638 /* KeyImport.storyboard */,
 			);
 			name = StoryboardFiles;
 			path = ..;
@@ -2054,6 +2062,31 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
+		C457844920AF38A90053BF19 /* KeyImport */ = {
+			isa = PBXGroup;
+			children = (
+				C474D25B20B437850071F638 /* Wizard */,
+				C457844A20AF38BB0053BF19 /* SelectAccount */,
+			);
+			path = KeyImport;
+			sourceTree = "<group>";
+		};
+		C457844A20AF38BB0053BF19 /* SelectAccount */ = {
+			isa = PBXGroup;
+			children = (
+				C457845020AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift */,
+			);
+			path = SelectAccount;
+			sourceTree = "<group>";
+		};
+		C474D25B20B437850071F638 /* Wizard */ = {
+			isa = PBXGroup;
+			children = (
+				C474D25E20B44A9E0071F638 /* AutoWizardStepsViewController.swift */,
+			);
+			path = Wizard;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2196,6 +2229,7 @@
 				151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */,
 				43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */,
 				151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */,
+				C474D25A20B3FB9C0071F638 /* KeyImport.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2327,6 +2361,7 @@
 				43D2C2681F13847700C97235 /* ServiceFactory.swift in Sources */,
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
+				C474D25F20B44A9E0071F638 /* AutoWizardStepsViewController.swift in Sources */,
 				43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */,
 				43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */,
 				4315E4C120120F1600F68763 /* NSSecureCoding+Extension.swift in Sources */,
@@ -2390,6 +2425,7 @@
 				43200D9D1F0CBC4000FFDE56 /* FetchMessagesService.swift in Sources */,
 				43C322101EA91764005073FB /* UIImage+Extension.swift in Sources */,
 				15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */,
+				C457845120AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift in Sources */,
 				1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43122B1B1DF5B48B00610253 /* SmtpService.swift in Sources */,
@@ -2772,6 +2808,14 @@
 				B78309C71EAA09040051A2E0 /* Base */,
 			);
 			name = AccountCreation.storyboard;
+			sourceTree = "<group>";
+		};
+		C474D25820B3FB9C0071F638 /* KeyImport.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C474D25920B3FB9C0071F638 /* Base */,
+			);
+			name = KeyImport.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
