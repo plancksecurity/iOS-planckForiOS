@@ -9,6 +9,13 @@
 import Foundation
 
 extension PEP_rating {
+    /**
+     The `PEP_rating`s that should trigger another decryption attempt later on.
+     */
+    static let retryDecriptionRatings: [PEP_rating] = [PEP_rating_undefined,
+                                                       PEP_rating_cannot_decrypt,
+                                                       PEP_rating_have_no_key]
+
     /** Does the given pEp rating mean the user is under attack? */
     func isUnderAttack() -> Bool {
         switch self {
