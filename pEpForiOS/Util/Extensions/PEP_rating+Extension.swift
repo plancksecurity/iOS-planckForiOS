@@ -89,13 +89,13 @@ extension PEP_rating {
         }
     }
 
-    /** Has the app a chance to show the message's content? */
-    func couldShowMessage() -> Bool {
+    /** Were there problems decrypting the message? */
+    func isUnDecryptable() -> Bool {
         switch self {
         case PEP_rating_undefined,
              PEP_rating_cannot_decrypt,
              PEP_rating_have_no_key:
-            return false
+            return true
 
         case PEP_rating_unencrypted,
              PEP_rating_unencrypted_for_some,
@@ -107,7 +107,7 @@ extension PEP_rating {
              PEP_rating_mistrust,
              PEP_rating_b0rken,
              PEP_rating_under_attack:
-            return true
+            return false
         default:
             Log.shared.errorAndCrash(
                 component: #function,

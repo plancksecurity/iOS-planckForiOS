@@ -25,17 +25,21 @@ open class MessageContentCell: MessageCell {
                     comment: "Disabled attachments for a message with status 'under attack'. Placeholders: title, explanation, suggestion."),
                 status.title, status.explanation, status.suggestion)
             finalText.bold(messageString)
-            //if there will be attachmetns show warning
         }
 
         if let text = message.longMessage?.trimmedWhiteSpace() {
             finalText.normal(text)
         } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
             finalText.normal(text)
+        } else if message.pEpRating().isUnDecryptable() {
+            finalText.normal(NSLocalizedString(
+                "This message could not be decrypted.",
+                comment: "content that is shown for undecryptable messages"))
         } else {
             // Empty body
             finalText.normal("")
         }
+
         contentLabel.attributedText = finalText
     }
 }
