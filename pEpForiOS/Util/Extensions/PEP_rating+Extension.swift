@@ -24,7 +24,7 @@ extension PEP_rating {
              PEP_rating_fully_anonymous,
              PEP_rating_mistrust,
              PEP_rating_b0rken:
-            return true
+            return false
         case PEP_rating_under_attack:
             return true
         default:
