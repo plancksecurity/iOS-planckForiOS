@@ -102,7 +102,13 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             updateMessage(cdMessage: cdMessage, keys: keys, context: context)
         } else {
             cdMessage.update(rating: rating)
+            saveAndNotify(cdMessage: cdMessage, context: context)
         }
+    }
+
+    func saveAndNotify(cdMessage: CdMessage, context: NSManagedObjectContext) {
+        context.saveAndLogErrors()
+        notifyDelegate(messageUpdated: cdMessage)
     }
 
     /**
@@ -110,8 +116,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
      */
     func updateMessage(cdMessage: CdMessage, keys: [String], context: NSManagedObjectContext) {
         cdMessage.updateKeyList(keys: keys)
-        context.saveAndLogErrors()
-        notifyDelegate(messageUpdated: cdMessage)
+        saveAndNotify(cdMessage: cdMessage, context: context)
     }
 
     private func notifyDelegate(messageUpdated cdMessage: CdMessage) {
