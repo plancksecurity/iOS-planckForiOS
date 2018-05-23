@@ -88,4 +88,31 @@ extension PEP_rating {
             return false
         }
     }
+
+    /** Has the app a chance to show the message's content? */
+    func couldShowMessage() -> Bool {
+        switch self {
+        case PEP_rating_undefined,
+             PEP_rating_cannot_decrypt,
+             PEP_rating_have_no_key:
+            return false
+
+        case PEP_rating_unencrypted,
+             PEP_rating_unencrypted_for_some,
+             PEP_rating_unreliable,
+             PEP_rating_reliable,
+             PEP_rating_trusted,
+             PEP_rating_trusted_and_anonymized,
+             PEP_rating_fully_anonymous,
+             PEP_rating_mistrust,
+             PEP_rating_b0rken,
+             PEP_rating_under_attack:
+            return true
+        default:
+            Log.shared.errorAndCrash(
+                component: #function,
+                errorString: "cannot decide isUnderAttack() for \(self)")
+            return false
+        }
+    }
 }
