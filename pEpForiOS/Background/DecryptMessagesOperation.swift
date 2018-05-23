@@ -67,7 +67,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             self.markAsFinished()
         }
 
-        func handleDecryptionSuccess(cdMessage: CdMessage, pEpDecryptedMessage: NSDictionary?,
+        func handleDecryptionSuccess(cdMessage: CdMessage, pEpDecryptedMessage: NSDictionary,
                                      rating: PEP_rating, keys: NSArray?) {
             let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
