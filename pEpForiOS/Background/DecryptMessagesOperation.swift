@@ -98,7 +98,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     errorString:"should update message with rating \(rating), but nil message")
                 return
             }
-            cdMessage.update(pEpMessageDict: decrypted, pEpColorRating: rating)
+            cdMessage.update(pEpMessageDict: decrypted, rating: rating)
             updateMessage(cdMessage: cdMessage, keys: keys, context: context)
         } else {
             cdMessage.update(rating: rating)
