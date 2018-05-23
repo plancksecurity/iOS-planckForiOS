@@ -75,39 +75,10 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 originalCdMessage: cdMessage, decryptedMessageDict: pEpDecryptedMessage,
                 rating: rating, keys: theKeys) // Only used in Tests. Maybe refactor out.
 
-            switch rating {
-            case PEP_rating_undefined,
-                 PEP_rating_cannot_decrypt,
-                 PEP_rating_have_no_key,
-                 PEP_rating_b0rken:
-                // Do nothing, try to decrypt again later though
-                break
-            case PEP_rating_unencrypted,
-                 PEP_rating_unencrypted_for_some,
-                 PEP_rating_unreliable,
-                 PEP_rating_mistrust,
-                 PEP_rating_reliable,
-                 PEP_rating_reliable,
-                 PEP_rating_trusted,
-                 PEP_rating_trusted,
-                 PEP_rating_trusted_and_anonymized,
-                 PEP_rating_fully_anonymous:
-                self.updateWholeMessage(
-                    pEpDecryptedMessage: pEpDecryptedMessage,
-                    pEpColorRating: rating, cdMessage: cdMessage,
-                    keys: theKeys, underAttack: false, context: context)
-                break
-            case PEP_rating_under_attack:
-                self.updateWholeMessage(
-                    pEpDecryptedMessage: pEpDecryptedMessage,
-                    pEpColorRating: rating, cdMessage: cdMessage,
-                    keys: theKeys, underAttack: true, context: context)
-            default:
-                Log.warn(
-                    component: self.comp,
-                    content: "No default action for decrypted message \(cdMessage.logString())")
-                break
-            }
+            updateWholeMessage(
+                pEpDecryptedMessage: pEpDecryptedMessage,
+                rating: rating, cdMessage: cdMessage,
+                keys: theKeys, context: context)
         }
     }
 
@@ -116,19 +87,22 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
      */
     func updateWholeMessage(
         pEpDecryptedMessage: NSDictionary?,
-        pEpColorRating: PEP_rating,
+        rating: PEP_rating,
         cdMessage: CdMessage, keys: [String],
-        underAttack: Bool,
         context: NSManagedObjectContext) {
-        guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
-            Log.shared.errorAndCrash(
-                component: #function,
-                errorString:"Decrypt with rating, but nil message")
-            return
+        cdMessage.underAttack = rating.isUnderAttack()
+        if rating.shouldUpdateMessageContent() {
+            guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
+                Log.shared.errorAndCrash(
+                    component: #function,
+                    errorString:"should update message with rating \(rating), but nil message")
+                return
+            }
+            cdMessage.update(pEpMessageDict: decrypted, pEpColorRating: rating)
+            updateMessage(cdMessage: cdMessage, keys: keys, context: context)
+        } else {
+            cdMessage.update(rating: rating)
         }
-        cdMessage.update(pEpMessageDict: decrypted, pEpColorRating: pEpColorRating)
-        cdMessage.underAttack = underAttack
-        self.updateMessage(cdMessage: cdMessage, keys: keys, context: context)
     }
 
     /**
