@@ -29,7 +29,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         }
         let context = privateMOC
         context.perform() {
-            guard let messages = CdMessage.all(
+            guard let cdMessages = CdMessage.all(
                 predicate: CdMessage.unknownToPepMessagesPredicate(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
                 in: context) as? [CdMessage] else {
@@ -37,7 +37,9 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     return
             }
 
-            for cdMessage in messages {
+            for cdMessage in cdMessages {
+                let originalRating = cdMessage.pEpRating
+
                 var outgoing = false
                 if let folderType = cdMessage.parent?.folderType {
                     outgoing = folderType.isOutgoing()
@@ -57,6 +59,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                         as NSDictionary
                     handleDecryptionSuccess(cdMessage: cdMessage,
                                             pEpDecryptedMessage: pEpDecryptedMessage,
+                                            originalRating: originalRating,
                                             rating: rating,
                                             keys: keys)
                 } catch let error as NSError {
@@ -67,8 +70,11 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             self.markAsFinished()
         }
 
-        func handleDecryptionSuccess(cdMessage: CdMessage, pEpDecryptedMessage: NSDictionary,
-                                     rating: PEP_rating, keys: NSArray?) {
+        func handleDecryptionSuccess(cdMessage: CdMessage,
+                                     pEpDecryptedMessage: NSDictionary,
+                                     originalRating: Int16,
+                                     rating: PEP_rating,
+                                     keys: NSArray?) {
             let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
             self.delegate?.decrypted(
@@ -77,8 +83,11 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
 
             updateWholeMessage(
                 pEpDecryptedMessage: pEpDecryptedMessage,
-                rating: rating, cdMessage: cdMessage,
-                keys: theKeys, context: context)
+                originalRating: originalRating,
+                rating: rating,
+                cdMessage: cdMessage,
+                keys: theKeys,
+                context: context)
         }
     }
 
@@ -87,6 +96,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
      */
     func updateWholeMessage(
         pEpDecryptedMessage: NSDictionary?,
+        originalRating: Int16,
         rating: PEP_rating,
         cdMessage: CdMessage, keys: [String],
         context: NSManagedObjectContext) {
@@ -101,8 +111,10 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             cdMessage.update(pEpMessageDict: decrypted, rating: rating)
             updateMessage(cdMessage: cdMessage, keys: keys, context: context)
         } else {
-            cdMessage.update(rating: rating)
-            saveAndNotify(cdMessage: cdMessage, context: context)
+            if rating.rawValue != originalRating {
+                cdMessage.update(rating: rating)
+                saveAndNotify(cdMessage: cdMessage, context: context)
+            }
         }
     }
 
