@@ -16,5 +16,6 @@ hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
 pushd ldns && git co IOS-749 ; popd
 pushd SwipeCellKit && git co 2.0.1 ; popd
 
+touch pEp_for_iOS/pEpForiOS/secret.xcconfig
 pushd pEp_for_iOS && xcodebuild -workspace pEpForiOS.xcworkspace/ -scheme pEp -destination "platform=iOS Simulator,OS=11.3,name=iPhone SE" ; popd
 
