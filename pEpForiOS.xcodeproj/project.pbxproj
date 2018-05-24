@@ -394,6 +394,7 @@
 		43FE80322099F62400E97AB3 /* SubjectComposeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */; };
 		4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */; };
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
+		495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */; };
 		49D521541E73E1C20097987B /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; };
 		49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
@@ -882,6 +883,7 @@
 		4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		495560851E7150ED0016579E /* libPantomimeStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPantomimeStatic.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libPantomimeStatic.a"; sourceTree = "<group>"; };
 		495560871E71517F0016579E /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
+		495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+SizeClasses.swift"; sourceTree = "<group>"; };
 		49D521531E73E1C20097987B /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D521561E73E1C70097987B /* ServerConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
@@ -1935,6 +1937,7 @@
 				4323FE871E83E502006785E1 /* Util */,
 				220DCE2D1E0AB544002FE716 /* MessageData.plist */,
 				431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */,
+				495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */,
 			);
 			path = EmailDisplay;
 			sourceTree = "<group>";
@@ -2527,6 +2530,7 @@
 				436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */,
 				434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */,
 				430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */,
+				495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */,
 				431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
@@ -2923,6 +2927,7 @@
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -2963,6 +2968,7 @@
 				CODE_SIGN_ENTITLEMENTS = pEp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = (

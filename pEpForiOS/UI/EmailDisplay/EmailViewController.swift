@@ -16,6 +16,8 @@ class EmailViewController: BaseTableViewController {
     @IBOutlet weak var destructiveButton: UIBarButtonItem!
     @IBOutlet weak var previousMessage: UIBarButtonItem!
     @IBOutlet weak var nextMessage: UIBarButtonItem!
+    
+    var barItems: [UIBarButtonItem]?
 
     var message: Message?
     var folderShow : Folder?
@@ -38,6 +40,7 @@ class EmailViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
+        saveInitialBarButtons()
         
         self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         self.navigationItem.leftItemsSupplementBackButton = true
@@ -140,6 +143,10 @@ class EmailViewController: BaseTableViewController {
 
     }
 
+    
+    func saveInitialBarButtons() {
+        barItems = toolbarItems
+    }
     // MARK: - EMAIL BODY
 
     /**
