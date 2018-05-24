@@ -513,6 +513,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView.isEditing {
+            return
+        }
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder")
             return
