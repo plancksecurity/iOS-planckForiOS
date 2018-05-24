@@ -55,7 +55,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         self.textFilterButton.isEnabled = false
 
         configureSearchBar()
-
+        tableView.allowsMultipleSelectionDuringEditing = true
+        
         if #available(iOS 11.0, *) {
             searchController.isActive = false
             self.navigationItem.searchController = searchController
@@ -288,6 +289,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     @IBAction func Edit(_ sender: Any) {
 
         showEditToolbar()
+        tableView.setEditing(true, animated: true)
 
         //modificar toolbar
         //hacer aparecer check de marcado
@@ -338,6 +340,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func cancelToolbar(_ sender:UIBarButtonItem!) {
         showStandardToolbar()
+        tableView.setEditing(false, animated: true)
     }
 
     @IBAction func markAllToolbar(_ sender:UIBarButtonItem!) {
