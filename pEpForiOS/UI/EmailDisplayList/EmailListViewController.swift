@@ -672,7 +672,8 @@ extension EmailListViewController: SegueHandlerType {
              .segueEditDraft:
             setupComposeViewController(for: segue)
         case .segueShowEmail:
-            guard let vc = segue.destination as? EmailViewController,
+            guard let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
