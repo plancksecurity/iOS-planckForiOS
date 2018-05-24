@@ -163,10 +163,15 @@ class MoveToFolderOperation: ImapSyncOperation {
         handleNextMessage()
     }
 
-    static func foldersContainingMarkedForMoveToFolder() -> [Folder] {
+    static func foldersContainingMarkedForMoveToFolder(connectInfo: EmailConnectInfo) -> [Folder] {
         var result = [Folder]()
         MessageModel.performAndWait {
-            let allUidMoveMessages = Message.allMessagesMarkedForMoveToFolder()
+            guard let cdAccount = Record.Context.background.object(with: connectInfo.accountObjectID) as? CdAccount else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No account.")
+                return
+            }
+            let account = cdAccount.account()
+            let allUidMoveMessages = Message.allMessagesMarkedForMoveToFolder(inAccount: account)
             let foldersContainingMarkedMessages = allUidMoveMessages.map { $0.parent }
             result = Array(Set(foldersContainingMarkedMessages))
         }
