@@ -69,7 +69,13 @@ extension CdMessage {
     }
 
     public static func unknownToPepMessagesPredicate() -> NSPredicate {
-        let predicateDecrypted = NSPredicate(format: "pEpRating == %d", PEPUtil.pEpRatingNone)
+        var reDecryptionRatings = PEP_rating.retryDecriptionRatings.map {
+            return $0.rawValue
+        }
+        reDecryptionRatings.append(Int32(PEPUtil.pEpRatingNone))
+
+        let predicateDecrypted = NSPredicate(format: "pEpRating in %@",
+                                             reDecryptionRatings)
         let predicateIsFromServer = NSPredicate(format: "uid > 0")
         let predicates = [existingMessagesPredicate(), predicateDecrypted, predicateIsFromServer]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)

@@ -55,7 +55,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         self.textFilterButton.isEnabled = false
 
         configureSearchBar()
-
+        tableView.allowsMultipleSelectionDuringEditing = true
+        
         if #available(iOS 11.0, *) {
             searchController.isActive = false
             self.navigationItem.searchController = searchController
@@ -93,7 +94,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
 
-        //setupFoldersBarButton()
         if model != nil {
             updateFilterButtonView()
         }
@@ -167,14 +167,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private func noAccountsExist() -> Bool {
         return Account.all().isEmpty
     }
-    
-    /*private func setupFoldersBarButton() {
-        if let size = navigationController?.viewControllers.count, size > 1 {
-            hideFoldersNavigationBarButton()
-        } else {
-            showFoldersNavigationBarButton()
-        }
-    }*/
 
     /**
      Configure the search controller, shared between iOS versions 11 and earlier.
@@ -288,7 +280,88 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         vm.markRead(forIndexPath: indexPath)
     }
-    
+
+    // MARK: - Action Edit Button
+
+    private var tempToolbarItems:  [UIBarButtonItem]?
+    private var editRightButton: UIBarButtonItem?
+
+    @IBAction func Edit(_ sender: Any) {
+
+        showEditToolbar()
+        tableView.setEditing(true, animated: true)
+
+        //modificar toolbar
+        //hacer aparecer check de marcado
+        //hacer la accion solicitada
+        //recuperar toolbar
+
+    }
+
+    private func showEditToolbar() {
+
+        tempToolbarItems = toolbarItems
+
+        let markAll = UIBarButtonItem(title: "Mark All",
+                                      style: UIBarButtonItemStyle.plain,
+                                      target: self,
+                                      action: #selector(self.markAllToolbar(_:)))
+
+        // Flexible Space separation between the buttons
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+                                                             target: nil,
+                                                             action: nil)
+
+        let move = UIBarButtonItem(title: "Move",
+                                   style: UIBarButtonItemStyle.plain,
+                                   target: self,
+                                   action: #selector(self.moveToolbar(_:)))
+        move.isEnabled = false
+
+        let delete = UIBarButtonItem(title: "Delete",
+                                     style: UIBarButtonItemStyle.plain,
+                                     target: self,
+                                     action: #selector(self.deleteToolbar(_:)))
+        delete.isEnabled = false
+
+        toolbarItems = [markAll, flexibleSpace, move, flexibleSpace, delete]
+
+
+        //right navigation button to ensure the logic
+        let cancel = UIBarButtonItem(title: "Cancel",
+                                     style: UIBarButtonItemStyle.plain,
+                                     target: self,
+                                     action: #selector(self.cancelToolbar(_:)))
+
+        editRightButton = self.navigationItem.rightBarButtonItem
+        self.navigationItem.rightBarButtonItem = cancel
+
+    }
+
+    @IBAction func cancelToolbar(_ sender:UIBarButtonItem!) {
+        showStandardToolbar()
+        tableView.setEditing(false, animated: true)
+    }
+
+    @IBAction func markAllToolbar(_ sender:UIBarButtonItem!) {
+
+    }
+
+    @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
+
+    }
+
+    @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
+
+    }
+
+    //recover the original toolbar and right button
+    private func showStandardToolbar() {
+
+        toolbarItems = tempToolbarItems
+        self.navigationItem.rightBarButtonItem = editRightButton
+    }
+
     // MARK: - Action Filter Button
     
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
@@ -440,6 +513,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView.isEditing {
+            return
+        }
         guard let folder = folderToShow else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder")
             return
