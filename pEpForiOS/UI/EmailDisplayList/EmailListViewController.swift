@@ -283,8 +283,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Action Edit Button
 
     private var tempToolbarItems:  [UIBarButtonItem]?
+    private var editRightButton: UIBarButtonItem?
 
     @IBAction func Edit(_ sender: Any) {
+
+        showEditToolbar()
 
         //modificar toolbar
         //hacer aparecer check de marcado
@@ -294,19 +297,66 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func showEditToolbar() {
+
         tempToolbarItems = toolbarItems
-        ///var markAll = UIBarButtonItem(title: "Mark All", style: UIBarButtonItemStyle.plain, target: #selector(self.markAll(_:)), action: self)
+
+        let markAll = UIBarButtonItem(title: "Mark All",
+                                      style: UIBarButtonItemStyle.plain,
+                                      target: self,
+                                      action: #selector(self.markAllToolbar(_:)))
+
+        // Flexible Space separation between the buttons
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+                                                             target: nil,
+                                                             action: nil)
+
+        let move = UIBarButtonItem(title: "Move",
+                                   style: UIBarButtonItemStyle.plain,
+                                   target: self,
+                                   action: #selector(self.moveToolbar(_:)))
+        move.isEnabled = false
+
+        let delete = UIBarButtonItem(title: "Delete",
+                                     style: UIBarButtonItemStyle.plain,
+                                     target: self,
+                                     action: #selector(self.deleteToolbar(_:)))
+        delete.isEnabled = false
+
+        toolbarItems = [markAll, flexibleSpace, move, flexibleSpace, delete]
+
+
+        //right navigation button to ensure the logic
+        let cancel = UIBarButtonItem(title: "Cancel",
+                                     style: UIBarButtonItemStyle.plain,
+                                     target: self,
+                                     action: #selector(self.cancelToolbar(_:)))
+
+        editRightButton = self.navigationItem.rightBarButtonItem
+        self.navigationItem.rightBarButtonItem = cancel
 
     }
 
-    func markAll(_ sender:UIBarButtonItem!)
-    {
-        print("myLeftSideBarButtonItemTapped")
+    @IBAction func cancelToolbar(_ sender:UIBarButtonItem!) {
+        showStandardToolbar()
     }
 
+    @IBAction func markAllToolbar(_ sender:UIBarButtonItem!) {
+
+    }
+
+    @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
+
+    }
+
+    @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
+
+    }
+
+    //recover the original toolbar and right button
     private func showStandardToolbar() {
 
         toolbarItems = tempToolbarItems
+        self.navigationItem.rightBarButtonItem = editRightButton
     }
 
     // MARK: - Action Filter Button
