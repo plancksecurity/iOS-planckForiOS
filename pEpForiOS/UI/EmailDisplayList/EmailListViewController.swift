@@ -613,6 +613,10 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .none)
         tableView.endUpdates()
+
+        if lastSelectedIndexPath == indexPath {
+            tableView.selectRow(at: lastSelectedIndexPath, animated: false, scrollPosition: .none)
+        }
     }
     
     func updateView() {
