@@ -30,6 +30,9 @@ public class FolderCellViewModel {
     }
 
     public var isSelectable: Bool {
+        if folder is UnifiedInbox {
+            return true
+        }
         return folder.selectable
     }
 
