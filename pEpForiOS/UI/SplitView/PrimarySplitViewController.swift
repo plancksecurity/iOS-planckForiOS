@@ -12,6 +12,7 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
     
     override func viewDidLoad() {
         self.delegate = self
+        preferredDisplayMode = .allVisible
     }
     
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {

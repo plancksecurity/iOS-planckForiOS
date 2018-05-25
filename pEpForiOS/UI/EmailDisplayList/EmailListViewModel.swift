@@ -453,7 +453,6 @@ extension EmailListViewModel: MessageFolderDelegate {
         if !shouldBeDisplayed(message: message){
             return
         }
-        // Is a Message (not a Folder)
         guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
             // We do not have this message in our model, so we do not have to remove it
             return
