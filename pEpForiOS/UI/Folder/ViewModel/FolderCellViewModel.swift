@@ -29,6 +29,10 @@ public class FolderCellViewModel {
         return level
     }
 
+    public var isSelectable: Bool {
+        return folder.selectable
+    }
+
     public init(folder: Folder, level: Int) {
         self.folder = folder
         self.level = level

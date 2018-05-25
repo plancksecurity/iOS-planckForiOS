@@ -102,7 +102,11 @@ class FolderTableViewController: BaseTableViewController {
         }
         let fcvm = vm[indexPath.section][indexPath.item]
         cell.textLabel?.text = fcvm.title
-        cell.accessoryType = .disclosureIndicator
+        if fcvm.isSelectable {
+            cell.accessoryType = .disclosureIndicator
+        } else {
+            cell.accessoryType = .none
+        }
         cell.indentationWidth = 20.0
         return cell
     }
@@ -119,6 +123,17 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - TableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let folderViewModel = folderVM else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model")
+            return
+        }
+        let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
+        if !cellViewModel.isSelectable {
+            // Me must not open unselectable folders. Unselectable folders are typically path
+            // components/nodes that can not hold messages.
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
         showFolder(indexPath: indexPath)
     }
 
