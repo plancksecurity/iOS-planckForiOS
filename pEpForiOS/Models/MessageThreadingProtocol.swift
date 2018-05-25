@@ -24,7 +24,7 @@ public protocol MessageThreadingProtocol {
     /**
      All previous messages in the thread that this message is the top of.
      - Note: Only lists ancestor messages, that is messages that went _before_ this one.
-     The following holds true: `threadAncestors().count + 1 == threadCount`.
+     The following holds true: `numberOfThreadAncestors().count + 1 == threadCount`.
      */
     func threadAncestors() -> [Message]
 
