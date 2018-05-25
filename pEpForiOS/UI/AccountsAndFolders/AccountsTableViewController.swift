@@ -219,8 +219,7 @@ extension AccountsTableViewController: SegueHandlerType {
             }
             destination.appConfig = self.appConfig
         case .segueShowLog:
-            guard let destination = segue.destination as? UINavigationController,
-                let viewController = destination.rootViewController as? LogViewController else {
+            guard let viewController = segue.destination as? LogViewController else {
                     return
             }
             viewController.appConfig = self.appConfig
