@@ -113,6 +113,14 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
         alertController.addAction(destroyAction)
 
+        if let popoverPresentationController = alertController.popoverPresentationController {
+
+            let cellFrame = tableView.rectForRow(at: indexPath)
+            let sourceRect = self.view.convert(cellFrame, from: tableView)
+            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.sourceView = self.view
+        }
+
         self.present(alertController, animated: true) {
         }
     }
