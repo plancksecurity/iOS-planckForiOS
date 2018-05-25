@@ -37,21 +37,13 @@ extension EmailViewController {
     }
 
     private func adaptBarButtonItemsForRegularSize() {
-        guard let items = toolbarItems,
-            let rightBarButtonItems = navigationItem.rightBarButtonItems  else {
+        guard let items = toolbarItems else {
                 return
         }
 
         barItems = items
 
         navigationItem.rightBarButtonItems = items
-        var leftBarButtonItems: [UIBarButtonItem] = []
-        if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems {
-            leftBarButtonItems.append(contentsOf: unwrappedLeftBarButtonItems)
-        }
-        leftBarButtonItems.append(contentsOf: rightBarButtonItems.reversed())
-
-        navigationItem.setLeftBarButtonItems(leftBarButtonItems, animated: true)
         self.navigationController?.setToolbarHidden(true, animated: true)
 
     }
