@@ -12,10 +12,13 @@ import UIKit
 import MessageModel
 
 class EmailViewController: BaseTableViewController {
-    @IBOutlet weak var flagButton: UIBarButtonItem!
-    @IBOutlet weak var destructiveButton: UIBarButtonItem!
-    @IBOutlet weak var previousMessage: UIBarButtonItem!
-    @IBOutlet weak var nextMessage: UIBarButtonItem!
+    @IBOutlet var flagButton: UIBarButtonItem!
+    @IBOutlet var destructiveButton: UIBarButtonItem!
+    @IBOutlet var previousMessage: UIBarButtonItem!
+    @IBOutlet var nextMessage: UIBarButtonItem!
+    @IBOutlet var moveToFolderButton: UIBarButtonItem!
+    @IBOutlet var replyButton: UIBarButtonItem!
+    @IBOutlet var pepButton: UIBarButtonItem!
     
     var barItems: [UIBarButtonItem]?
 
@@ -33,6 +36,7 @@ class EmailViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureSplitViewBackButton()
 
         loadDatasource("MessageData")
 
@@ -40,10 +44,7 @@ class EmailViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
-        saveInitialBarButtons()
-        
-        self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-        self.navigationItem.leftItemsSupplementBackButton = true
+
 
     }
 
@@ -125,6 +126,11 @@ class EmailViewController: BaseTableViewController {
         updateFlaggedStatus()
     }
 
+    private func configureSplitViewBackButton() {
+        self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+        self.navigationItem.leftItemsSupplementBackButton = true
+    }
+
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
     private func setupDestructiveButtonIcon() {
         guard let msg = message else {
@@ -143,10 +149,6 @@ class EmailViewController: BaseTableViewController {
 
     }
 
-    
-    func saveInitialBarButtons() {
-        barItems = toolbarItems
-    }
     // MARK: - EMAIL BODY
 
     /**
