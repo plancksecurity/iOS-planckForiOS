@@ -34,7 +34,7 @@
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
-                                        <segue destination="uKb-Ku-Cng" kind="show" identifier="newAccount" id="aKb-z0-Qyn"/>
+                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccount" modalPresentationStyle="formSheet" id="aKb-z0-Qyn"/>
                                     </connections>
                                 </button>
                             </subviews>

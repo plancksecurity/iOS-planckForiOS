@@ -774,7 +774,8 @@ extension EmailListViewController: SegueHandlerType {
             destiny.filterEnabled = folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
-            guard let vc = segue.destination as? LoginTableViewController  else {
+            guard let nav = segue.destination as? UINavigationController,
+            let vc = nav.rootViewController as? LoginTableViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                 return
             }
