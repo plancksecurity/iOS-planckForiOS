@@ -353,6 +353,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
 
+        if let vm = model {
+            vm.deleteSelected()
+        }
+
+        cancelToolbar(sender)
+
     }
 
     //recover the original toolbar and right button
@@ -524,7 +530,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if tableView.isEditing {
             if let vm = model {
                 vm.selectItem(indexPath: indexPath)
-
+                
             }
             return
         }

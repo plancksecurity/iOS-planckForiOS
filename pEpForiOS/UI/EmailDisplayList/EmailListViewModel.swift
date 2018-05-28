@@ -212,7 +212,9 @@ class EmailListViewModel {
     }
 
     public func markAllAsRead() {
-        //??
+        /*for row in self.row {
+            <#code#>
+        }*/
     }
 
     public func markAllAsFlagged() {
