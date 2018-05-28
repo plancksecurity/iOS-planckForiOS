@@ -85,7 +85,6 @@ public extension CdFolder {
                     let pathName = (pathsSoFar as NSArray).componentsJoined(by: separator)
                     let folder = insert(folderName: pathName, folderType: nil, account: account,
                                         context: moc)
-                    //IOS-1093:
                     // Folders that are only path components (are nodes) must not be selectable.
                     // Example: "Other Users/ana/Calendar
                     //"Other Users" and "ana" are only path components (are nodes) that never
@@ -96,8 +95,6 @@ public extension CdFolder {
                     //differently nodes vs. non-selectable folders, we have to introduce a "isNode"
                     // field in the store.
                     folder.selectable = false
-                    //
-
 
                     //if it is the actual folder (has no child folder), set its folder type
                     if p == paths.last {
