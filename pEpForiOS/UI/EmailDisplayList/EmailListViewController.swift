@@ -886,7 +886,7 @@ enum SwipeActionDescriptor {
         case .more: name = "more"
         case .flag: name = "flag"
         case .trash: name = "trash"
-        case .archive: name = "trash" //TODO: IOS-938: asset missing. change to "archive" when available.
+        case .archive: name = "archive"
         }
 
         return UIImage(named: "swipe-" + name)
