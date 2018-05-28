@@ -511,9 +511,21 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelOperation(for: indexPath)
     }
+
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView.isEditing {
+            if let vm = model {
+                vm.deselectItem(indexPath: indexPath)
+            }
+        }
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
+            if let vm = model {
+                vm.selectItem(indexPath: indexPath)
+
+            }
             return
         }
         guard let folder = folderToShow else {
