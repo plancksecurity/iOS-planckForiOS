@@ -31,7 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     var errorPropagator = ErrorPropagator()
 
-    var application = UIApplication.shared
+    var application: UIApplication {
+        return UIApplication.shared
+    }
 
     let mySelfQueue = LimitedOperationQueue()
 
@@ -44,7 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
-    var backgroundTaskId: BackgroundTaskID? = nil
+    var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
+    var mySelftaskId = UIBackgroundTaskInvalid
 
     /**
      Set to true whever the app goes into background, so the main session gets cleaned up.
@@ -101,16 +104,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// NetworkService will assure all local changes triggered by the user are synced to the server
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
-        backgroundTaskId = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-            guard let id = self.backgroundTaskId else {
-                Log.shared.error(component: #function, errorString: "No ID.")
-                return
-            }
-            Log.shared.warn(component: #function, content: "BackgroundTrask with ID \(id) expired.")
-            // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
-            // that brutally shuts down everything.
-            UIApplication.shared.endBackgroundTask(id)
-        })
+        syncUserActionsAndCleanupbackgroundTaskId =
+            application.beginBackgroundTask(expirationHandler: { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                Log.shared.warn(component: #function,
+                                content: "yncUserActionsAndCleanupbackgroundTask with ID " +
+                    "\(me.syncUserActionsAndCleanupbackgroundTaskId) expired.")
+                // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
+                // that brutally shuts down everything.
+                me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
+            })
         networkService?.processAllUserActionsAndstop()
         // Stop logging to Engine. It would create new sessions.
         Log.shared.pause()
@@ -123,10 +129,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func kickOffMySelf() {
-        let op = MySelfOperation(parentName: #function, backgrounder: self)
+        mySelftaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            Log.shared.warn(component: #function,
+                            content: "mySelftaskId with ID \(me.mySelftaskId) expired.")
+            // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
+            // that brutally shuts down everything.
+            me.application.endBackgroundTask(me.mySelftaskId)
+        })
+        let op = MySelfOperation()
         op.completionBlock = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
             // We might be the last service that finishes, so we have to cleanup.
             self?.cleanupPEPSessionIfNeeded()
+            if me.mySelftaskId == UIBackgroundTaskInvalid {
+                return
+            }
+            me.application.endBackgroundTask(me.mySelftaskId)
+            me.mySelftaskId = UIBackgroundTaskInvalid
+
         }
         mySelfQueue.addOperation(op)
     }
@@ -184,8 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Needs to be done once to inform all affected services about the current settings
         let _ = AppSettings()
 
-        let theMessageSyncService = MessageSyncService(
-            parentName: #function, backgrounder: self, mySelfer: self)
+        let theMessageSyncService = MessageSyncService(mySelfer: self)
         messageSyncService = theMessageSyncService
         let theAppConfig = AppConfig(mySelfer: self,
                                      messageSyncService: theMessageSyncService,
@@ -198,10 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         loadCoreDataStack()
 
-        networkService = NetworkService(parentName: #function,
-                                        backgrounder: self,
-                                        mySelfer: self,
-                                        errorPropagator: errorPropagator)
+        networkService = NetworkService(mySelfer: self, errorPropagator: errorPropagator)
         networkService?.sendLayerDelegate = sendLayerDelegate
         networkService?.delegate = self
         CdAccount.sendLayer = networkService
@@ -233,8 +256,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // and pretty much don't do anything.
             return false
         }
-        self.application = application
-
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
         Appearance.pEp()
@@ -254,26 +275,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        self.application = application
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         Log.info(component: comp, content: "applicationDidEnterBackground")
-        self.application = application
-
         shouldDestroySession = true
-
         // generate keys in the background
         kickOffMySelf()
-
         stopUsingPepSession()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        self.application = application
-
         DispatchQueue.global(qos: .userInitiated).async {
             MessageModel.perform {
                 AddressBook.checkAndTransfer()
@@ -283,7 +297,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        self.application = application
         if MiscUtil.isUnitTest() {
             // Do nothing if unit tests are running
             return
@@ -355,26 +368,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-// MARK: - BackgroundTaskProtocol
-
-extension AppDelegate: BackgroundTaskProtocol {
-    func beginBackgroundTask(taskName: String? = nil,
-                             expirationHandler: (() -> Void)? = nil) -> BackgroundTaskID {
-        var bgId = 0
-        bgId = application.beginBackgroundTask(withName: taskName, expirationHandler: {
-            expirationHandler?()
-            self.application.endBackgroundTask(bgId)
-        })
-        return bgId
-    }
-
-    func endBackgroundTask(_ taskID: BackgroundTaskID?) {
-        if let bID = taskID {
-            application.endBackgroundTask(bID)
-        }
-    }
-}
-
 // MARK: - KickOffMySelfProtocol
 
 extension AppDelegate: KickOffMySelfProtocol {
@@ -390,12 +383,16 @@ extension AppDelegate: NetworkServiceDelegate {
         // Cleanup sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")
         PEPSession.cleanup()
-        guard let id = self.backgroundTaskId else {
-            Log.shared.error(component: #function, errorString: "No ID.")
-            return
-        }
-        DispatchQueue.main.async {
-            UIApplication.shared.endBackgroundTask(id)
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            if me.syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskInvalid {
+                return
+            }
+            me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
+            me.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
         }
     }
 }
