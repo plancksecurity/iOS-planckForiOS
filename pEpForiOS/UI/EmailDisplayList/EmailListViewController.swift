@@ -886,7 +886,7 @@ enum SwipeActionDescriptor {
         case .more: name = "more"
         case .flag: name = "flag"
         case .trash: name = "trash"
-        case .archive: name = "trash"
+        case .archive: name = "trash" //TODO: IOS-938: asset missing. change to "archive" when available.
         }
 
         return UIImage(named: "swipe-" + name)
@@ -898,7 +898,7 @@ enum SwipeActionDescriptor {
         case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
-        case .archive: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        case .archive: return UIColor.blue
         }
     }
 }
