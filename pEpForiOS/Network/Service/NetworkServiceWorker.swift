@@ -90,10 +90,14 @@ open class NetworkServiceWorker {
 
     let context = Record.Context.background
 
-    var imapConnectionDataCache = ImapConnectionDataCache()
+    private(set) var imapConnectionDataCache = ImapConnectionDataCache()
 
-    init(serviceConfig: NetworkService.ServiceConfig) {
+    init(serviceConfig: NetworkService.ServiceConfig,
+         imapConnectionDataCache: ImapConnectionDataCache? = nil) {
         self.serviceConfig = serviceConfig
+        if let cache = imapConnectionDataCache {
+            self.imapConnectionDataCache = cache
+        }
     }
 
     /**
