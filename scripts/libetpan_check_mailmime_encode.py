@@ -4,6 +4,8 @@ from subprocess import call
 from pathlib import Path
 import sys
 
+# https://git-scm.com/docs/git-bisect
+
 # Cleans up, then invokes a build.
 def clean_xcodebuild():
     # This command is bound to fail, but it will generate include files,
