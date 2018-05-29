@@ -141,7 +141,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ypz-yH-KbI"/>
                         <barButtonItem systemItem="compose" id="u8o-KA-6lO">
                             <connections>
-                                <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" id="6vv-Jr-8Nm"/>
+                                <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" modalPresentationStyle="pageSheet" id="6vv-Jr-8Nm"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
@@ -876,6 +876,6 @@
         <segue reference="d5O-Wk-gjZ"/>
         <segue reference="8Xh-Bv-MFq"/>
         <segue reference="anx-J8-OKE"/>
-        <segue reference="YH0-dx-pSs"/>
+        <segue reference="6vv-Jr-8Nm"/>
     </inferredMetricsTieBreakers>
 </document>
