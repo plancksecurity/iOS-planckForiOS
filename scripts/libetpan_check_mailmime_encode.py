@@ -33,10 +33,14 @@ if __name__ == '__main__':
     clean_repo() # clean up repo
 
     # Check what this means for bisect.
+    # We want to find out the commit that included mailmime_encode.h in
+    # the linkfarm.
+    # Old behavior is not having mailmime_encode.h (-> exit code 0),
+    # new behavior is having it (-> exit code 1).
     the_file_name = 'include/libetpan/mailmime_encode.h'
     if check_existence(the_file_name):
-        print('good: found {filename:s}'.format(filename = the_file_name))
-        sys.exit(0)
-    else:
-        print('bad: did not find {filename:s}'.format(filename = the_file_name))
+        print('new: found {filename:s}'.format(filename = the_file_name))
         sys.exit(1)
+    else:
+        print('old: did not find {filename:s}'.format(filename = the_file_name))
+        sys.exit(0)
