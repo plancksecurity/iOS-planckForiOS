@@ -8,7 +8,7 @@ import sys
 def clean_xcodebuild():
     # This command is bound to fail, but it will generate include files,
     # which is more than sufficient.
-    base_command = ['xcodebuild', '-project', 'build-mac/libetpan.xcodeproj/']
+    base_command = ['xcodebuild', '-quiet', '-project', 'build-mac/libetpan.xcodeproj/']
 
     # The command for clean is a variation of the build command.
     clean_command = list(base_command)
