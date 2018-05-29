@@ -19,4 +19,16 @@ extension EmailListViewController: EmailDisplayDelegate {
         let indexPath = IndexPath(row: emailViewController.messageId, section: 0)
         flagAction(forCellAt: indexPath)
     }
+
+    func emailDisplayDidDeleteMessage(emailViewController: EmailViewController) {
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
+            navigationController?.popViewController(animated: true)
+        } else {
+            self.performSegue(withIdentifier: "showNoMessage", sender: nil)
+        }
+    }
 }
+

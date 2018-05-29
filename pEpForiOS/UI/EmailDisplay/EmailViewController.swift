@@ -313,7 +313,7 @@ class EmailViewController: BaseTableViewController {
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message?.imapDelete()
-        _ = navigationController?.popViewController(animated: true)
+        delegate?.emailDisplayDidDeleteMessage(emailViewController: self)
     }
 
     /**

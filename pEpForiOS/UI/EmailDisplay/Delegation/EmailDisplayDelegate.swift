@@ -11,4 +11,5 @@ import Foundation
 protocol EmailDisplayDelegate: class {
     func emailDisplayDidFlagMessage(emailViewController: EmailViewController)
     func emailDisplayDidUnflagMessage(emailViewController: EmailViewController)
+    func emailDisplayDidDeleteMessage(emailViewController: EmailViewController)
 }

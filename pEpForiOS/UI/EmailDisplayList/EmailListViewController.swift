@@ -772,6 +772,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueFilter
         case segueFolderViews
         case segueShowMoveToFolder
+        case showNoMessage
         case noSegue
     }
     
@@ -835,6 +836,10 @@ extension EmailListViewController: SegueHandlerType {
             }
             destination.appConfig = appConfig
             destination.message = message
+            break
+        case .showNoMessage:
+            //No initialization needed
+            break
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
