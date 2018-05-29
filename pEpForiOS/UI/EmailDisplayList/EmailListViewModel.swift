@@ -198,6 +198,54 @@ class EmailListViewModel {
             return nil
         }
     }
+
+    //multiple message selection handler
+
+    private var selectedItems = Set<IndexPath>()
+
+    public func selectItem(indexPath: IndexPath) {
+        selectedItems.insert(indexPath)
+    }
+
+    public func deselectItem(indexPath: IndexPath) {
+        selectedItems.remove(indexPath)
+    }
+
+    public func markAllAsRead() {
+        /*for row in self.row {
+            <#code#>
+        }*/
+    }
+
+    public func markAllAsFlagged() {
+        //??
+    }
+
+    public func deleteSelected() {
+
+        selectedItems.forEach { (ip) in
+            delete(forIndexPath: ip)
+        }
+    }
+
+    public func markSelectedAsFlagged() {
+
+        selectedItems.forEach { (ip) in
+            setFlagged(forIndexPath: ip)
+        }
+    }
+
+    public func markSelectedAsUnFlagged() {
+        selectedItems.forEach { (ip) in
+            unsetFlagged(forIndexPath: ip)
+        }
+    }
+
+    public func markSelectedAsRead() {
+        selectedItems.forEach { (ip) in
+            markRead(forIndexPath: ip)
+        }
+    }
     
     func setFlagged(forIndexPath indexPath: IndexPath) {
         setFlaggedValue(forIndexPath: indexPath, newValue: true)

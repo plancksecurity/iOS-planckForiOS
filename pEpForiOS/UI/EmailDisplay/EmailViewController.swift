@@ -140,15 +140,11 @@ class EmailViewController: BaseTableViewController {
             return
         }
 
-        //IOS-938:
-        // We currently are lacking an archive icon asset and thus show the trash bin for archiving also.
-        // After getting the icon set it using the below commented if clause.
-//        if msg.parent.defaultDestructiveActionIsArchive {
-//            destructiveButton = UIBarButtonItem(image: UIImage(named:NAME_OF_ARCHIVE_ICON_GOES_HERE), style: .plain, target: self, action: #selector(deleteButtonTapped(_:)))
-//        } else {
-//             destructiveButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonTapped(_:))
-//        }
-
+        if msg.parent.defaultDestructiveActionIsArchive {
+            // Replace the Storyboard set trash icon for providers that use "archive" rather than
+            // "delete" as default
+            destructiveButton.image = #imageLiteral(resourceName: "folders-icon-archive")
+        }
     }
 
     // MARK: - EMAIL BODY

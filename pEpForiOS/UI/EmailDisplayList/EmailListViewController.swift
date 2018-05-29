@@ -353,6 +353,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
 
+        if let vm = model {
+            vm.deleteSelected()
+        }
+
+        cancelToolbar(sender)
+
     }
 
     //recover the original toolbar and right button
@@ -528,9 +534,21 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelOperation(for: indexPath)
     }
+
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView.isEditing {
+            if let vm = model {
+                vm.deselectItem(indexPath: indexPath)
+            }
+        }
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
+            if let vm = model {
+                vm.selectItem(indexPath: indexPath)
+                
+            }
             return
         }
         guard let folder = folderToShow else {
@@ -908,7 +926,7 @@ enum SwipeActionDescriptor {
         case .more: name = "more"
         case .flag: name = "flag"
         case .trash: name = "trash"
-        case .archive: name = "trash"
+        case .archive: name = "archive"
         }
 
         return UIImage(named: "swipe-" + name)
@@ -920,7 +938,7 @@ enum SwipeActionDescriptor {
         case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
-        case .archive: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        case .archive: return UIColor.blue
         }
     }
 }

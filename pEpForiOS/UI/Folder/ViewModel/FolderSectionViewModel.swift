@@ -53,7 +53,7 @@ public class FolderSectionViewModel {
 
     func getImage(callback: @escaping (UIImage?)-> Void) {
         guard let ac = account else {
-            ///Log.shared.errorAndCrash(component: #function, errorString: "No account selected")
+            Log.shared.errorAndCrash(component: #function, errorString: "No account selected")
             return
         }
         if let cachedContactImage = contactImageTool.cachedIdentityImage(forIdentity: ac.user) {
