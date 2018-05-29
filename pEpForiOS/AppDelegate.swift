@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     return
                 }
                 Log.shared.warn(component: #function,
-                                content: "yncUserActionsAndCleanupbackgroundTask with ID " +
+                                content: "syncUserActionsAndCleanupbackgroundTask with ID " +
                     "\(me.syncUserActionsAndCleanupbackgroundTaskId) expired.")
                 // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
                 // that brutally shuts down everything.
