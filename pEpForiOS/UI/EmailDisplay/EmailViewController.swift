@@ -32,6 +32,8 @@ class EmailViewController: BaseTableViewController {
     lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
+    weak var delegate: EmailDisplayDelegate?
+
     // MARK: - LIFE CYCLE
 
     override func viewDidLoad() {
@@ -298,8 +300,10 @@ class EmailViewController: BaseTableViewController {
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
         if (message?.imapFlags?.flagged == true) {
             message?.imapFlags?.flagged = false
+            delegate?.emailDisplayDidUnflagMessage(emailViewController: self)
         } else {
             message?.imapFlags?.flagged = true
+            delegate?.emailDisplayDidFlagMessage(emailViewController: self)
         }
         message?.save()
 

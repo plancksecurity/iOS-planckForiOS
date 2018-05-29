@@ -362,6 +362,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         self.navigationItem.rightBarButtonItem = editRightButton
     }
 
+    private func resetSelectionIfNeeded(for indexPath: IndexPath) {
+        if lastSelectedIndexPath == indexPath {
+            resetSelection()
+        }
+    }
+
+    private func resetSelection() {
+        tableView.selectRow(at: lastSelectedIndexPath, animated: false, scrollPosition: .none)
+    }
+
     // MARK: - Action Filter Button
     
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
@@ -483,6 +493,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             swipeActions.append(moreAction)
         }
         return (orientation == .right ?   swipeActions : nil)
+    }
+
+    func tableView(_ tableView: UITableView, didEndEditingRowAt optionalIndexPath: IndexPath?, for orientation: SwipeActionsOrientation) {
+        guard let indexPath = optionalIndexPath else {
+            return
+        }
+        resetSelection()
     }
 
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
@@ -614,9 +631,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         tableView.reloadRows(at: [indexPath], with: .none)
         tableView.endUpdates()
 
-        if lastSelectedIndexPath == indexPath {
-            tableView.selectRow(at: lastSelectedIndexPath, animated: false, scrollPosition: .none)
-        }
+        resetSelectionIfNeeded(for: indexPath)
     }
     
     func updateView() {
@@ -763,6 +778,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.message = message
             vc.folderShow = folderToShow
             vc.messageId = indexPath.row //that looks wrong
+            vc.delegate = self
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
