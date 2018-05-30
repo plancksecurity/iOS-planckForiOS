@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import MessageModel
+
 
 protocol EmailDisplayDelegate: class {
-    func emailDisplayDidFlagMessage(emailViewController: EmailViewController)
-    func emailDisplayDidUnflagMessage(emailViewController: EmailViewController)
-    func emailDisplayDidDeleteMessage(emailViewController: EmailViewController)
+    func emailDisplayDidFlagMessage(message:Message)
+    func emailDisplayDidUnflagMessage(message:Message)
+    func emailDisplay(didDeleteMessage message:Message)
 }

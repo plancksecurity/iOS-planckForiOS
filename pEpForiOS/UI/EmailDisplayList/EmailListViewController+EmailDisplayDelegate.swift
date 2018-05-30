@@ -7,28 +7,60 @@
 //
 
 import Foundation
+import MessageModel
 
-extension EmailListViewController: EmailDisplayDelegate {
+extension EmailListViewModel: EmailDisplayDelegate {
 
-    func emailDisplayDidFlagMessage(emailViewController: EmailViewController) {
-        let indexPath = IndexPath(row: emailViewController.messageId, section: 0)
-        flagAction(forCellAt: indexPath)
+
+    func emailDisplayDidFlagMessage(message: Message) {
+        updateRow(for: message)
     }
 
-    func emailDisplayDidUnflagMessage(emailViewController: EmailViewController) {
-        let indexPath = IndexPath(row: emailViewController.messageId, section: 0)
-        flagAction(forCellAt: indexPath)
+    func emailDisplayDidUnflagMessage(message: Message) {
+        updateRow(for: message)
     }
 
-    func emailDisplayDidDeleteMessage(emailViewController: EmailViewController) {
-        guard let splitViewController = self.splitViewController else {
+    func emailDisplay(didDeleteMessage message: Message) {
+        deleteRow(for: message)
+    }
+
+    private func deleteRow(for message: Message) {
+        guard let index = self.index(of: message) else {
             return
         }
-        if splitViewController.isCollapsed {
-            navigationController?.popViewController(animated: true)
-        } else {
-            self.performSegue(withIdentifier: "showNoMessage", sender: nil)
+        messages?.removeObject(at: index)
+        informDeleteRow(at: index)
+    }
+
+    private func updateRow(for message: Message) {
+        guard let index = self.index(of: message) else {
+            return
         }
+        let previewMessage = PreviewMessage(withMessage: message)
+        messages?.removeObject(at: index)
+        _ = messages?.insert(object: previewMessage)
+
+        informUpdateRow(for: message)
+    }
+
+    private func informUpdateRow(for message: Message) {
+        guard let indexPath = self.indexPath(for: message) else {
+            return
+        }
+        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+    }
+
+    private func informDeleteRow(at index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+
+        delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+    }
+
+    private func indexPath(for message:Message) -> IndexPath? {
+        guard let row = index(of: message) else {
+            return nil
+        }
+        return IndexPath(row: row, section: 0)
     }
 }
 

@@ -294,16 +294,22 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
-        if (message?.imapFlags?.flagged == true) {
-            message?.imapFlags?.flagged = false
-            delegate?.emailDisplayDidUnflagMessage(emailViewController: self)
-        } else {
-            message?.imapFlags?.flagged = true
-            delegate?.emailDisplayDidFlagMessage(emailViewController: self)
+        defer {
+            updateFlaggedStatus()
         }
-        message?.save()
 
-        updateFlaggedStatus()
+        guard let message = message else {
+            return
+        }
+
+        if (message.imapFlags?.flagged == true) {
+            message.imapFlags?.flagged = false
+            delegate?.emailDisplayDidUnflagMessage(message: message)
+        } else {
+            message.imapFlags?.flagged = true
+            delegate?.emailDisplayDidFlagMessage(message: message)
+        }
+        message.save()
     }
 
 
@@ -313,7 +319,9 @@ class EmailViewController: BaseTableViewController {
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message?.imapDelete()
-        delegate?.emailDisplayDidDeleteMessage(emailViewController: self)
+        if let message = message {
+            delegate?.emailDisplay(didDeleteMessage: message)
+        }
     }
 
     /**

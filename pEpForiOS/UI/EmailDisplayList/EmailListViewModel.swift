@@ -55,7 +55,7 @@ class EmailListViewModel {
         }
     }
     
-    private var messages: SortedSet<PreviewMessage>?
+    internal var messages: SortedSet<PreviewMessage>?
     private let queue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInteractive
@@ -117,9 +117,9 @@ class EmailListViewModel {
         }
     }
     
-    // MARK: Internal
-    
-    private func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
+    // MARK: Public Data Access & Manipulation
+
+    func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
         guard let previewMessages = messages else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data.")
             return nil
@@ -135,8 +135,15 @@ class EmailListViewModel {
         }
         return nil
     }
-    
-    // MARK: Public Data Access & Manipulation
+
+    func index(of message:Message) -> Int? {
+        let previewMessage = PreviewMessage(withMessage: message)
+        let index = messages?.index(of: previewMessage)
+        guard index != -1 else {
+            return nil
+        }
+        return index
+    }
     
     func row(for indexPath: IndexPath) -> Row? {
         guard let previewMessage = messages?.object(at: indexPath.row) else {
@@ -286,7 +293,7 @@ class EmailListViewModel {
         contactImageTool.clearCache()
     }
     
-    private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+    internal func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
         guard let previewMessage = messages?.object(at: indexPath.row),
             let message = previewMessage.message() else {
                 return
@@ -297,6 +304,18 @@ class EmailListViewModel {
             message.save()
         }
     }
+
+//    private func setFlaggedValue(forMessage uid: UInt, newValue flagged: Bool) {
+//        guard let previewMessage = messages?.object(at: indexPath.row),
+//            let message = previewMessage.message() else {
+//                return
+//        }
+//        message.imapFlags?.flagged = flagged
+//        didUpdate(messageFolder: message)
+//        DispatchQueue.main.async {
+//            message.save()
+//        }
+//    }
 
     public func reloadData() {
         resetViewModel()

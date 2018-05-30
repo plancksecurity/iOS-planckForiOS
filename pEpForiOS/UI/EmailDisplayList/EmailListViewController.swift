@@ -282,6 +282,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         vm.markRead(forIndexPath: indexPath)
     }
 
+    private func showNotMessageSelectedIfNeeded() {
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
+            navigationController?.popViewController(animated: true)
+        } else {
+            self.performSegue(withIdentifier: "showNoMessage", sender: nil)
+        }
+    }
+
     // MARK: - Action Edit Button
 
     private var tempToolbarItems:  [UIBarButtonItem]?
@@ -502,13 +513,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return (orientation == .right ?   swipeActions : nil)
     }
 
-    func tableView(_ tableView: UITableView, didEndEditingRowAt optionalIndexPath: IndexPath?, for orientation: SwipeActionsOrientation) {
-        guard let indexPath = optionalIndexPath else {
-            return
-        }
-        resetSelection()
-    }
-
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         var options = SwipeTableOptions()
         options.expansionStyle = .destructive
@@ -632,6 +636,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 extension EmailListViewController: EmailListViewModelDelegate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.beginUpdates()
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
@@ -639,13 +644,22 @@ extension EmailListViewController: EmailListViewModelDelegate {
     
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.beginUpdates()
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
+
+        if lastSelectedIndexPath == indexPath {
+            showNotMessageSelectedIfNeeded()
+        }
+
     }
     
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
+
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow
+
         tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .none)
         tableView.endUpdates()
@@ -752,7 +766,7 @@ extension EmailListViewController {
             model?.setFlagged(forIndexPath: indexPath)
         }
     }
-    
+
     func deleteAction(forCellAt indexPath: IndexPath) {
         model?.delete(forIndexPath: indexPath)
     }
@@ -802,7 +816,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.message = message
             vc.folderShow = folderToShow
             vc.messageId = indexPath.row //that looks wrong
-            vc.delegate = self
+            vc.delegate = model
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
