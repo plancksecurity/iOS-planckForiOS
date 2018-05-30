@@ -4,7 +4,16 @@ from subprocess import call
 from pathlib import Path
 import sys
 
+#
 # https://git-scm.com/docs/git-bisect
+#
+# * `git bisect start`
+# * Checkout commit
+# * Test commit with: `python3 libetpan_check_mailmime_encode.py`
+# * After having marked at least one commit as old/good, and one as new/bad,
+#   you can use:
+#   `git bisect run python3 libetpan_check_mailmime_encode.py`
+#
 
 # Cleans up, then invokes a build.
 def clean_xcodebuild():
@@ -24,6 +33,20 @@ def clean_xcodebuild():
 def clean_repo():
     return call(['git', 'co', '.'])
 
+# Marks this run as old (good)
+def advertiseOldGood(message):
+    print('old/good: {}'.format(message))
+    sys.exit(0)
+
+# Marks this run as new (bad)
+def advertiseNewBad(message):
+    print('new/bad: {}'.format(message))
+    sys.exit(1)
+
+def advertiseAsSkip(message):
+    print('skip: {}'.format(message))
+    sys.exit(125)
+
 if __name__ == '__main__':
     clean_xcodebuild() # make the build
 
@@ -33,11 +56,8 @@ if __name__ == '__main__':
     include_directory = Path('include/libetpan')
     the_file_name = include_directory.joinpath('mailmime_encode.h')
     if not include_directory.is_dir():
-        print('no include directory at all: {dir}'.format(dir = include_directory))
-        sys.exit(125)
+        advertiseAsSkip('no include directory at all: {dir}'.format(dir = include_directory))
     elif the_file_name.is_file():
-        print('old: found {filename}'.format(filename = the_file_name))
-        sys.exit(0)
+        advertiseNewBad('new: found {filename}'.format(filename = the_file_name))
     else:
-        print('new: did not find {filename}'.format(filename = the_file_name))
-        sys.exit(1)
+        advertiseOldGood('old: did not find {filename}'.format(filename = the_file_name))
