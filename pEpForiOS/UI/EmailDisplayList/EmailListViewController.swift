@@ -158,6 +158,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         title = folderToShow?.localizedName
+        self.navigationController?.title = title
     }
 
     private func weCameBackFromAPushedView() -> Bool {
