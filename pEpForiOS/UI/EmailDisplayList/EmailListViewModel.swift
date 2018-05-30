@@ -421,12 +421,8 @@ class EmailListViewModel {
         if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
             return
         }
-        if folder is UnifiedInbox {
-            guard let unified = folder as? UnifiedInbox else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
-                return
-            }
-            requestFetchOlder(forFolders: unified.folders)
+        if let unifiedFolder = folder as? UnifiedInbox {
+            requestFetchOlder(forFolders: unifiedFolder.folders)
         } else {
             requestFetchOlder(forFolders: [folder])
         }
