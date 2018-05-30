@@ -56,8 +56,8 @@ if __name__ == '__main__':
     include_directory = Path('include/libetpan')
     the_file_name = include_directory.joinpath('mailmime_encode.h')
     if not include_directory.is_dir():
-        advertiseAsSkip('no include directory at all: {dir}'.format(dir = include_directory))
+        advertiseAsSkip('no include directory at all: {}'.format(include_directory))
     elif the_file_name.is_file():
-        advertiseNewBad('new: found {filename}'.format(filename = the_file_name))
+        advertiseOldGood('found {}'.format(the_file_name))
     else:
-        advertiseOldGood('old: did not find {filename}'.format(filename = the_file_name))
+        advertiseNewBad('did not find {}'.format(the_file_name))
