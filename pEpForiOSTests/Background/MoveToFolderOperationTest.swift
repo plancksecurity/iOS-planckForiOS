@@ -84,7 +84,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
     }
 
     private func move(messages:[Message], toFolerOfType type: FolderType) {
-        for msg:Message in messages {
+        for msg in messages {
             guard let targetFolder = msg.parent.account.folder(ofType: type) else {
                 // Can't seem to find the target folder. If this is an optional test
                 // (working on for certain accounts), ignore it.
