@@ -678,6 +678,10 @@ extension EmailListViewController {
         alertControler.addAction(moveToFolderAction)
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
+            let cellFrame = tableView.rectForRow(at: indexPath)
+            let sourceRect = self.view.convert(cellFrame, from: tableView)
+            popoverPresentationController.sourceRect = sourceRect
+
         }
         present(alertControler, animated: true, completion: nil)
     }
