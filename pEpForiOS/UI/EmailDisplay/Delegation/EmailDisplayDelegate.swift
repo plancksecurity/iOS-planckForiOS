@@ -9,9 +9,8 @@
 import Foundation
 import MessageModel
 
-
 protocol EmailDisplayDelegate: class {
-    func emailDisplayDidFlagMessage(message:Message)
-    func emailDisplayDidUnflagMessage(message:Message)
-    func emailDisplay(didDeleteMessage message:Message)
+    func emailDisplayDidFlagMessage(message: Message)
+    func emailDisplayDidUnflagMessage(message: Message)
+    func emailDisplaydidDeleteMessage(message: Message)
 }

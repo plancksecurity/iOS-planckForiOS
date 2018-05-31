@@ -20,7 +20,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
         updateRow(for: message)
     }
 
-    func emailDisplay(didDeleteMessage message: Message) {
+    func emailDisplaydidDeleteMessage(message: Message) {
         deleteRow(for: message)
     }
 
@@ -39,14 +39,11 @@ extension EmailListViewModel: EmailDisplayDelegate {
         let previewMessage = PreviewMessage(withMessage: message)
         messages?.removeObject(at: index)
         _ = messages?.insert(object: previewMessage)
-
-        informUpdateRow(for: message)
+        informUpdateRow(at: index)
     }
 
-    private func informUpdateRow(for message: Message) {
-        guard let indexPath = self.indexPath(for: message) else {
-            return
-        }
+    private func informUpdateRow(at index: Int) {
+        let indexPath = self.indexPath(for: index)
         delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
     }
 
@@ -56,11 +53,8 @@ extension EmailListViewModel: EmailDisplayDelegate {
         delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
     }
 
-    private func indexPath(for message:Message) -> IndexPath? {
-        guard let row = index(of: message) else {
-            return nil
-        }
-        return IndexPath(row: row, section: 0)
+    private func indexPath(for index: Int) -> IndexPath {
+        return IndexPath(row: index, section: 0)
     }
 }
 
