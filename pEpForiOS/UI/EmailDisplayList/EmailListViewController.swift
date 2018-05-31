@@ -303,29 +303,24 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         tempToolbarItems = toolbarItems
 
         // Flexible Space separation between the buttons
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
-                                                             target: nil,
-                                                             action: nil)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
 
         var img = UIImage(named: "icon-unflagged")
 
         let flag = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
-                                   action: #selector(self.markToolbar(_:)))
-        //flag.image = img
-        //flag.tintColor = UIColor.pEpGreen
-        //flag.isEnabled = true
+                                   action: #selector(self.flagToolbar(_:)))
 
         img = UIImage(named: "icon-unread")
 
         let unread = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
-                                   action: #selector(self.moveToolbar(_:)))
-        unread.tintColor = UIColor.pEpGreen
-        //unread.isEnabled = false
-
+                                   action: #selector(self.readToolbar(_:)))
 
         img = UIImage(named: "folders-icon-trash")
 
@@ -333,28 +328,24 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                      style: UIBarButtonItemStyle.plain,
                                      target: self,
                                      action: #selector(self.deleteToolbar(_:)))
-        delete.tintColor = UIColor.pEpGreen
-        //delete.isEnabled = false
 
         img = UIImage(named: "swipe-archive")
 
         let move = UIBarButtonItem(image: img,
                                      style: UIBarButtonItemStyle.plain,
                                      target: self,
-                                     action: #selector(self.deleteToolbar(_:)))
-        move.tintColor = UIColor.pEpGreen
-        //move.isEnabled = false
+                                     action: #selector(self.moveToolbar(_:)))
 
         img = UIImage(named: "pep-logo")
 
         let pEp = UIBarButtonItem(title: "p≡p",
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
-                                   action: #selector(self.deleteToolbar(_:)))
-        pEp.tintColor = UIColor.pEpGreen
-        //pEp.isEnabled = true
+                                   action: #selector(self.cancelToolbar (_:)))
 
-        toolbarItems = [flag, flexibleSpace, unread, flexibleSpace, delete, flexibleSpace, move, flexibleSpace, pEp]
+        toolbarItems = [flag, flexibleSpace, unread,
+                        flexibleSpace, delete, flexibleSpace,
+                        move, flexibleSpace, pEp]
 
 
         //right navigation button to ensure the logic
@@ -373,24 +364,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         tableView.setEditing(false, animated: true)
     }
 
-    @IBAction func markAllToolbar(_ sender:UIBarButtonItem!) {
-        let alertControler = UIAlertController.pEpAlertController(
-            title: nil, message: nil, preferredStyle: .actionSheet)
-        let flagAllAction = createFlagAllAction()
-        let readAllAction = createReadAllAction()
-        let cancelAction = createCancelAction()
-        alertControler.addAction(flagAllAction)
-        alertControler.addAction(readAllAction)
-        alertControler.addAction(cancelAction)
-        if let popoverPresentationController = alertControler.popoverPresentationController {
-            popoverPresentationController.sourceView = tableView
-        }
-        present(alertControler, animated: true, completion: nil)
+    @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
+        model?.markSelectedAsFlagged()
+        cancelToolbar(sender)
+    }
 
+    @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
+        model?.markSelectedAsRead()
+        cancelToolbar(sender)
     }
 
     @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
-
+        
     }
 
     @IBAction func markToolbar(_ sender:UIBarButtonItem!) {
