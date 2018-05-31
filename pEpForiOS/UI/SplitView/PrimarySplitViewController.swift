@@ -43,4 +43,16 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
             }
             return secondaryNavigationController
     }
+
+    func splitViewController(_ svc: UISplitViewController, willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+
+
+            guard let nav = viewControllers.last as? UINavigationController,
+                let emailViewController = nav.rootViewController as? EmailViewController else {
+                    return
+            }
+
+            emailViewController.splitViewController(willChangeTo: displayMode)
+
+    }
 }

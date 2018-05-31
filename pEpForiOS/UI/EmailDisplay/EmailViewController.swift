@@ -147,6 +147,30 @@ class EmailViewController: BaseTableViewController {
         }
     }
 
+    // MARK: - UISplitViewcontrollerDelegate
+
+    func splitViewController(willChangeTo displayMode: UISplitViewControllerDisplayMode) {
+        switch displayMode {
+        case .primaryHidden:
+            var leftBarButtonItems: [UIBarButtonItem] = [nextMessage, previousMessage]
+            if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems {
+                leftBarButtonItems.append(contentsOf: unwrappedLeftBarButtonItems)
+            }
+
+            navigationItem.setLeftBarButtonItems(leftBarButtonItems.reversed(), animated: true)
+            break
+        case .allVisible:
+            var leftBarButtonItems: [UIBarButtonItem] = []
+            if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
+                leftBarButtonItems.append(unwrappedLeftBarButtonItems)
+            }
+            navigationItem.setLeftBarButtonItems(leftBarButtonItems, animated: true)
+        default:
+            //do nothing
+            break
+        }
+    }
+
     // MARK: - EMAIL BODY
 
     /**
