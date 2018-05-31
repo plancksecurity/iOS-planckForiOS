@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		003C0FA720B5581A0093A987 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003C0FA620B5581A0093A987 /* SecretTestData.swift */; };
-		0080A8BE20BEB5A2007A3C6F /* EmailViewController+SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0080A8BD20BEB5A2007A3C6F /* EmailViewController+SplitView.swift */; };
 		00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */; };
 		00D3CD3E20B58976009ABBC9 /* PrimarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */; };
 		1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */; };
@@ -476,7 +475,6 @@
 
 /* Begin PBXFileReference section */
 		003C0FA620B5581A0093A987 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretTestData.swift; sourceTree = "<group>"; };
-		0080A8BD20BEB5A2007A3C6F /* EmailViewController+SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+SplitView.swift"; sourceTree = "<group>"; };
 		00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMessagesViewController.swift; sourceTree = "<group>"; };
 		00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimarySplitViewController.swift; sourceTree = "<group>"; };
 		1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+CWServiceClientNotificationParsing.swift"; sourceTree = "<group>"; };
@@ -1966,7 +1964,6 @@
 				220DCE2D1E0AB544002FE716 /* MessageData.plist */,
 				431E8F7D1CFDCF3A00C33647 /* EmailViewController.swift */,
 				495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */,
-				0080A8BD20BEB5A2007A3C6F /* EmailViewController+SplitView.swift */,
 			);
 			path = EmailDisplay;
 			sourceTree = "<group>";
@@ -2540,7 +2537,6 @@
 				436239951EAE08F400BD2EB9 /* String+pEp.swift in Sources */,
 				155050F81FEAB57F009CEAD2 /* BackgroundError.swift in Sources */,
 				43E88BE01EFA667600E0B224 /* AsyncStateMachine.swift in Sources */,
-				0080A8BE20BEB5A2007A3C6F /* EmailViewController+SplitView.swift in Sources */,
 				431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */,
 				435DF9091F2A26F2003254F7 /* BackgroundOperationImapService.swift in Sources */,
 				431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */,

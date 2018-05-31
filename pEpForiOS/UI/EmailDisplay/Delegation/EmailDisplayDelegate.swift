@@ -9,8 +9,24 @@
 import Foundation
 import MessageModel
 
+/**
+ The `EmailDisplayDelegate` protocol is adopted by an object that manages the email detail changes
+ in its model
+ */
 protocol EmailDisplayDelegate: class {
-    func emailDisplayDidFlagMessage(message: Message)
-    func emailDisplayDidUnflagMessage(message: Message)
-    func emailDisplaydidDeleteMessage(message: Message)
+
+    /**
+     The email detail flagged the indicated message
+     */
+    func emailDisplayDidFlag(message: Message)
+
+    /**
+     The email detail unFlagged the indicated message
+     */
+    func emailDisplayDidUnflag(message: Message)
+
+    /**
+     The email detail deleted the indicated message
+     */
+    func emailDisplaydidDelete(message: Message)
 }

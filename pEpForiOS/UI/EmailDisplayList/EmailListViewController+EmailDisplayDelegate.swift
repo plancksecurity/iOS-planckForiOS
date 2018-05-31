@@ -12,15 +12,15 @@ import MessageModel
 extension EmailListViewModel: EmailDisplayDelegate {
 
 
-    func emailDisplayDidFlagMessage(message: Message) {
+    func emailDisplayDidFlag(message: Message) {
         updateRow(for: message)
     }
 
-    func emailDisplayDidUnflagMessage(message: Message) {
+    func emailDisplayDidUnflag(message: Message) {
         updateRow(for: message)
     }
 
-    func emailDisplaydidDeleteMessage(message: Message) {
+    func emailDisplaydidDelete(message: Message) {
         deleteRow(for: message)
     }
 
