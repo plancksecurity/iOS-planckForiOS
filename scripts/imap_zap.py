@@ -47,18 +47,13 @@ def traverse_mailboxes(connection, fn):
                 fn(connection, mailbox_name)
 
 def delete_all_in_current_mailbox(connection):
-    r1, uids = connection.uid('search', None, 'ALL')
-    if r1 == 'OK':
-        for uid in uids[0].split():
-            print('deleting message {}'.format(uid))
-            r2, _ = connection.uid('store', uid, '+FLAGS', '\\Deleted')
-            if r2 != 'OK':
-                print('could not remove message {}'.format(uid))
-        r3, _ = connection.expunge()
-        if r3 != 'OK':
-            print('could not expunge')
+    r1, _ = connection.uid('store', '1:*', '+FLAGS', '\\Deleted')
+    if r1 != 'OK':
+        print('could not remove messages')
     else:
-        print('Cannot remove all emails')
+        r2, _ = connection.expunge()
+        if r2 != 'OK':
+            print('could not expunge')
 
 def rm_all_mailbox_content(connection, mailbox_name):
     status, data = connection.select(mailbox_name)
