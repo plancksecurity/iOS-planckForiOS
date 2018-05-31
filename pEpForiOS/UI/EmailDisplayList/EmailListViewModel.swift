@@ -13,6 +13,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
+    func toolbarOptions(Enabled: Bool)
 }
 
 // MARK: - FilterUpdateProtocol
@@ -204,17 +205,27 @@ class EmailListViewModel {
     private var selectedItems = Set<IndexPath>()
 
     public func selectItem(indexPath: IndexPath) {
+        guard let del = delegate else {
+            return
+        }
         selectedItems.insert(indexPath)
+        if selectedItems.count > 0 {
+            del.toolbarOptions(Enabled: true)
+        }
     }
 
     public func deselectItem(indexPath: IndexPath) {
+        guard let del = delegate else {
+            return
+        }
         selectedItems.remove(indexPath)
+        if selectedItems.count == 0 {
+            del.toolbarOptions(Enabled: false)
+        }
     }
 
     public func markAllAsRead() {
-        /*for row in self.row {
-            <#code#>
-        }*/
+
     }
 
     public func markAllAsFlagged() {
