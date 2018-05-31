@@ -21,7 +21,7 @@ class MoveToFolderOperation: ImapSyncOperation {
     init(parentName: String = #function, imapSyncData: ImapSyncData,
          errorContainer: ServiceErrorProtocol = ErrorContainer(), folder: Folder) {
         self.folder = folder
-        
+
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
@@ -31,10 +31,10 @@ class MoveToFolderOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
-        
+
         syncDelegate = MoveToFolderSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
-        
+
         process()
     }
 
