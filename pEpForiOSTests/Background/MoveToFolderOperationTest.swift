@@ -152,7 +152,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
                 return []
             }
             mail.from = id2
-            mail.removeTo(cdIdentities: currentReceipinets)
+            mail.removeTos(cdIdentities: currentReceipinets)
             mail.addTo(cdIdentity: id1)
         }
         Record.saveAndWait()    
