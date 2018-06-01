@@ -38,6 +38,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
     var buttonStyle: ButtonStyle = .backgroundColor
 
+    private var actionDelete : SwipeAction? = nil
+
     /// Indicates that we must not trigger reloadData.
     private var loadingBlocked = false
     
@@ -485,6 +487,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let archiveAction =
             SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
                 self.deleteAction(forCellAt: indexPath)
+                self.actionDelete = action
         }
         configure(action: archiveAction, with: descriptorDestructive)
         swipeActions.append(archiveAction)
@@ -515,9 +518,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         var options = SwipeTableOptions()
-        options.expansionStyle = .destructive
         options.transitionStyle = .border
         options.buttonSpacing = 11
+        options.expansionStyle = .destructive(automaticallyDelete: false)
         return options
     }
 
@@ -643,12 +646,17 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
     
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath) {
+        if tableView.indexPathForSelectedRow != nil {
+            lastSelectedIndexPath = tableView.indexPathForSelectedRow
+        }
+        if let actionDelete = actionDelete {
+            actionDelete.fulfill(with: .delete)
+        }else{
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
+        }
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
-        lastSelectedIndexPath = tableView.indexPathForSelectedRow
-        tableView.beginUpdates()
-        tableView.deleteRows(at: [indexPath], with: .automatic)
-        tableView.endUpdates()
-
         if lastSelectedIndexPath == indexPath {
             showNotMessageSelectedIfNeeded()
         }

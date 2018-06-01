@@ -281,8 +281,9 @@ class EmailListViewModel {
             let message = previewMessage.message() else {
                 return
         }
-        messages?.remove(object: previewMessage)
         message.imapDelete()
+        didDelete(messageFolder: message)
+
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
