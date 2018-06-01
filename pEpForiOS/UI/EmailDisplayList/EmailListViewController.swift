@@ -12,6 +12,7 @@ import SwipeCellKit
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     var folderToShow: Folder?
+    var currentDisplayedMessage: DisplayedMessage?
 
     func updateLastLookAt() {
         guard let saveFolder = folderToShow else {
@@ -859,7 +860,16 @@ extension EmailListViewController {
         } else {
             model?.setFlagged(forIndexPath: indexPath)
         }
+        if tableView.indexPathForSelectedRow == indexPath {
+            if row.isFlagged {
+                currentDisplayedMessage?.markAsUnflagged()
+            }
+            else {
+                currentDisplayedMessage?.markAsFlagged()
+            }
+        }
     }
+
 
     func deleteAction(forCellAt indexPath: IndexPath) {
         model?.delete(forIndexPath: indexPath)
@@ -911,6 +921,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.folderShow = folderToShow
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model
+            currentDisplayedMessage = vc
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")

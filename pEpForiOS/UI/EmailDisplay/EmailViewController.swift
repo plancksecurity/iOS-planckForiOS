@@ -58,9 +58,14 @@ class EmailViewController: BaseTableViewController {
     // MARK: - UTIL
 
     private func updateFlaggedStatus() {
-        if message?.imapFlags?.flagged ?? false {
+        changeFlagButtonTo(flagged: message?.imapFlags?.flagged ?? false)
+    }
+
+    internal func changeFlagButtonTo(flagged: Bool) {
+        if (flagged) {
             flagButton.image = UIImage.init(named: "icon-flagged")
-        } else {
+        }
+        else {
             flagButton.image = UIImage.init(named: "icon-unflagged")
         }
     }
