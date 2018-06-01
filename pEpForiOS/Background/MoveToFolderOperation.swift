@@ -96,6 +96,10 @@ class MoveToFolderOperation: ImapSyncOperation {
     }
 
     fileprivate func handleNextMessage() {
+        guard !isCancelled else {
+            waitForBackgroundTasksToFinish()
+            return
+        }
         MessageModel.perform { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "I am lost")

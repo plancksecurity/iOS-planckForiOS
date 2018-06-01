@@ -49,6 +49,18 @@ class FolderTableViewController: BaseTableViewController {
         navigationItem.rightBarButtonItem = item
     }
 
+    // MARK: - Cell Setup
+
+    private func setNotSelectableStyle(to cell: UITableViewCell) {
+        cell.accessoryType = .none
+        cell.textLabel?.textColor = UIColor.pEpGray
+    }
+
+    private func setSelectableStyle(to cell: UITableViewCell) {
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.textColor = UIColor.black
+    }
+
     // MARK: - Actions
 
     @objc func settingsTapped() {
@@ -103,9 +115,9 @@ class FolderTableViewController: BaseTableViewController {
         let fcvm = vm[indexPath.section][indexPath.item]
         cell.textLabel?.text = fcvm.title
         if fcvm.isSelectable {
-            cell.accessoryType = .disclosureIndicator
+            setSelectableStyle(to: cell)
         } else {
-            cell.accessoryType = .none
+            setNotSelectableStyle(to: cell)
         }
         cell.indentationWidth = 20.0
         return cell

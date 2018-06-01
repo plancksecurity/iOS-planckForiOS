@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
     var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
-    var mySelftaskId = UIBackgroundTaskInvalid
+    var mySelfTaskId = UIBackgroundTaskInvalid
 
     /**
      Set to true whever the app goes into background, so the main session gets cleaned up.
@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     return
                 }
                 Log.shared.warn(component: #function,
-                                content: "yncUserActionsAndCleanupbackgroundTask with ID " +
+                                content: "syncUserActionsAndCleanupbackgroundTask with ID " +
                     "\(me.syncUserActionsAndCleanupbackgroundTaskId) expired.")
                 // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
                 // that brutally shuts down everything.
@@ -129,16 +129,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func kickOffMySelf() {
-        mySelftaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
+        mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
             Log.shared.warn(component: #function,
-                            content: "mySelftaskId with ID \(me.mySelftaskId) expired.")
+                            content: "mySelfTaskId with ID \(me.mySelfTaskId) expired.")
             // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
             // that brutally shuts down everything.
-            me.application.endBackgroundTask(me.mySelftaskId)
+            me.application.endBackgroundTask(me.mySelfTaskId)
         })
         let op = MySelfOperation()
         op.completionBlock = { [weak self] in
@@ -148,11 +148,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             // We might be the last service that finishes, so we have to cleanup.
             self?.cleanupPEPSessionIfNeeded()
-            if me.mySelftaskId == UIBackgroundTaskInvalid {
+            if me.mySelfTaskId == UIBackgroundTaskInvalid {
                 return
             }
-            me.application.endBackgroundTask(me.mySelftaskId)
-            me.mySelftaskId = UIBackgroundTaskInvalid
+            me.application.endBackgroundTask(me.mySelfTaskId)
+            me.mySelfTaskId = UIBackgroundTaskInvalid
 
         }
         mySelfQueue.addOperation(op)

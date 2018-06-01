@@ -1,6 +1,0 @@
-[server]
-hostname = whatever
-
-[account]
-username = email
-password = somePassword

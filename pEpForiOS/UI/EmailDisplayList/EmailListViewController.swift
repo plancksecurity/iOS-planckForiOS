@@ -316,29 +316,59 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         tempToolbarItems = toolbarItems
 
-        let markAll = UIBarButtonItem(title: "Mark All",
-                                      style: UIBarButtonItemStyle.plain,
-                                      target: self,
-                                      action: #selector(self.markAllToolbar(_:)))
-
         // Flexible Space separation between the buttons
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
                                                              target: nil,
                                                              action: nil)
 
-        let move = UIBarButtonItem(title: "Move",
+        var img = UIImage(named: "icon-unflagged")
+
+        let flag = UIBarButtonItem(image: img,
+                                   style: UIBarButtonItemStyle.plain,
+                                   target: self,
+                                   action: #selector(self.markToolbar(_:)))
+        //flag.image = img
+        //flag.tintColor = UIColor.pEpGreen
+        //flag.isEnabled = true
+
+        img = UIImage(named: "icon-unread")
+
+        let unread = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.moveToolbar(_:)))
-        move.isEnabled = false
+        unread.tintColor = UIColor.pEpGreen
+        //unread.isEnabled = false
 
-        let delete = UIBarButtonItem(title: "Delete",
+
+        img = UIImage(named: "folders-icon-trash")
+
+        let delete = UIBarButtonItem(image: img,
                                      style: UIBarButtonItemStyle.plain,
                                      target: self,
                                      action: #selector(self.deleteToolbar(_:)))
-        delete.isEnabled = false
+        delete.tintColor = UIColor.pEpGreen
+        //delete.isEnabled = false
 
-        toolbarItems = [markAll, flexibleSpace, move, flexibleSpace, delete]
+        img = UIImage(named: "swipe-archive")
+
+        let move = UIBarButtonItem(image: img,
+                                     style: UIBarButtonItemStyle.plain,
+                                     target: self,
+                                     action: #selector(self.deleteToolbar(_:)))
+        move.tintColor = UIColor.pEpGreen
+        //move.isEnabled = false
+
+        img = UIImage(named: "pep-logo")
+
+        let pEp = UIBarButtonItem(title: "p≡p",
+                                   style: UIBarButtonItemStyle.plain,
+                                   target: self,
+                                   action: #selector(self.deleteToolbar(_:)))
+        pEp.tintColor = UIColor.pEpGreen
+        //pEp.isEnabled = true
+
+        toolbarItems = [flag, flexibleSpace, unread, flexibleSpace, delete, flexibleSpace, move, flexibleSpace, pEp]
 
 
         //right navigation button to ensure the logic
@@ -358,10 +388,40 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     @IBAction func markAllToolbar(_ sender:UIBarButtonItem!) {
+        let alertControler = UIAlertController.pEpAlertController(
+            title: nil, message: nil, preferredStyle: .actionSheet)
+        let flagAllAction = createFlagAllAction()
+        let readAllAction = createReadAllAction()
+        let cancelAction = createCancelAction()
+        alertControler.addAction(flagAllAction)
+        alertControler.addAction(readAllAction)
+        alertControler.addAction(cancelAction)
+        if let popoverPresentationController = alertControler.popoverPresentationController {
+            popoverPresentationController.sourceView = tableView
+        }
+        present(alertControler, animated: true, completion: nil)
 
     }
 
     @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
+
+    }
+
+    @IBAction func markToolbar(_ sender:UIBarButtonItem!) {
+
+        let alertControler = UIAlertController.pEpAlertController(
+            title: nil, message: nil, preferredStyle: .actionSheet)
+        let flagAllAction = createFlagAllAction()
+        let readAllAction = createReadAllAction()
+        let cancelAction = createCancelAction()
+        alertControler.addAction(flagAllAction)
+        alertControler.addAction(readAllAction)
+        alertControler.addAction(cancelAction)
+        if let popoverPresentationController = alertControler.popoverPresentationController {
+            popoverPresentationController.sourceView = tableView
+        }
+        present(alertControler, animated: true, completion: nil)
+
 
     }
 
@@ -637,6 +697,18 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+    func toolbarOptions(Enabled: Bool) {
+        if Enabled {
+            toolbarItems?.forEach({ (button) in
+                button.isEnabled = true
+            })
+        } else {
+            toolbarItems?.forEach({ (button) in
+                button.isEnabled = false
+            })
+        }
+    }
+
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
@@ -745,6 +817,21 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueForward, sender: self)
         }
+    }
+
+    func createFlagAllAction() -> UIAlertAction {
+        let title = NSLocalizedString("Flag All", comment: "Flag all messages title")
+        return UIAlertAction(title: title, style: .default) { (action) in
+            self.model?.markAllAsFlagged()
+        }
+    }
+
+    func createReadAllAction() -> UIAlertAction {
+        let title = NSLocalizedString("Read All", comment: "Read all messages title")
+        return UIAlertAction(title: title, style: .default) { (action) in
+            self.model?.markAllAsRead()
+        }
+
     }
 }
 

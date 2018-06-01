@@ -67,11 +67,6 @@ public class ConcurrentBaseOperation: BaseOperation {
     func markAsFinished() {
         if isExecuting {
             state = .finished
-        } else {
-            guard let block = completionBlock else {
-                return
-            }
-            block()
         }
     }
 
@@ -100,8 +95,7 @@ public class ConcurrentBaseOperation: BaseOperation {
     private func reactOnCancel() {
         func f() {
             backgroundQueue.cancelAllOperations()
-            backgroundQueue.waitUntilAllOperationsAreFinished()
-            markAsFinished()
+            waitForBackgroundTasksToFinish()
         }
         internalQueue.async {
             f()
@@ -141,7 +135,8 @@ extension ConcurrentBaseOperation {
     }
 
     public final override var isFinished: Bool {
-        return state == .finished
+        return state == .finished ||
+            (state != .executing && state != .finished && isCancelled) // Has been canceled before starting the OP.
     }
 
     public final override var isAsynchronous: Bool {

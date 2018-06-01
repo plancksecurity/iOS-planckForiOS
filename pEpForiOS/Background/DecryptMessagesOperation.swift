@@ -28,16 +28,26 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             return
         }
         let context = privateMOC
-        context.perform() {
+        context.perform() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            defer {
+                me.markAsFinished()
+            }
             guard let cdMessages = CdMessage.all(
                 predicate: CdMessage.unknownToPepMessagesPredicate(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
                 in: context) as? [CdMessage] else {
-                    self.markAsFinished()
                     return
             }
 
             for cdMessage in cdMessages {
+                if me.isCancelled {
+                    break
+                }
+                //
                 let originalRating = cdMessage.pEpRating
 
                 var outgoing = false
@@ -48,7 +58,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 let pepMessage = PEPUtil.pEpDict(
                     cdMessage: cdMessage, outgoing: outgoing).mutableDictionary()
                 var keys: NSArray?
-                Log.info(component: self.comp,
+                Log.info(component: me.comp,
                          content: "Will decrypt \(cdMessage.logString())")
                 let session = PEPSession()
 
@@ -67,7 +77,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     Log.error(component: #function, error: error)
                 }
             }
-            self.markAsFinished()
         }
 
         func handleDecryptionSuccess(cdMessage: CdMessage,
