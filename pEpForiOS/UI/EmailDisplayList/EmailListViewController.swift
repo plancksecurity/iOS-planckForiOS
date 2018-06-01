@@ -38,7 +38,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
     var buttonStyle: ButtonStyle = .backgroundColor
 
-    private var actionDelete : SwipeAction? = nil
+    private var swipeDelete : SwipeAction? = nil
 
     /// Indicates that we must not trigger reloadData.
     private var loadingBlocked = false
@@ -487,7 +487,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let archiveAction =
             SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
                 self.deleteAction(forCellAt: indexPath)
-                self.actionDelete = action
+                self.swipeDelete = action
         }
         configure(action: archiveAction, with: descriptorDestructive)
         swipeActions.append(archiveAction)
@@ -646,12 +646,11 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
     
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath) {
-        if tableView.indexPathForSelectedRow != nil {
-            lastSelectedIndexPath = tableView.indexPathForSelectedRow
-        }
-        if let actionDelete = actionDelete {
-            actionDelete.fulfill(with: .delete)
-        }else{
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow ?? lastSelectedIndexPath
+
+        if let swipeDelete = swipeDelete {
+            swipeDelete.fulfill(with: .delete)
+        } else {
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
