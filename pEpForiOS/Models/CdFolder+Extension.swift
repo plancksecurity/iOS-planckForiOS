@@ -85,16 +85,6 @@ public extension CdFolder {
                     let pathName = (pathsSoFar as NSArray).componentsJoined(by: separator)
                     let folder = insert(folderName: pathName, folderType: nil, account: account,
                                         context: moc)
-                    // Folders that are only path components (are nodes) must not be selectable.
-                    // Example: "Other Users/ana/Calendar
-                    //"Other Users" and "ana" are only path components (are nodes) that never
-                    // contain messages.
-                    // In case it turns out "Other Users/ana" is actual a folder that can hold
-                    // messages (is a leaf, is `paths.last`), selectable state will be fixed below`.
-                    // That is kind of a misuse of `selectable`. If we want to react/show
-                    //differently nodes vs. non-selectable folders, we have to introduce a "isNode"
-                    // field in the store.
-                    folder.selectable = false
 
                     //if it is the actual folder (has no child folder), set its folder type
                     if p == paths.last {
@@ -188,7 +178,6 @@ public extension CdFolder {
                 folder.folderType = FolderType.normal
             }
         }
-
         Log.verbose(component: comp, content: "insert \(folderName): \(folder.folderType)")
         return folder
     }
