@@ -15,8 +15,14 @@ import MessageModel
  Can be used in case the user has disabled threading in the settings.
  */
 class UnthreadedFolder: ThreadAwareFolderProtocol {
-    func allMessages(forFolder folder: Folder) -> [Message] {
-        return folder.allMessages()
+    let underlyingFolder: Folder
+
+    init(folder: Folder) {
+        underlyingFolder = folder
+    }
+
+    func allMessages() -> [Message] {
+        return underlyingFolder.allMessages()
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {

@@ -22,7 +22,7 @@ protocol ThreadAwareFolderProtocol {
      show threads or not, this will return a list of all messages or just
      the top messages of the threads.
      */
-    func allMessages(forFolder folder: Folder) -> [Message]
+    func allMessages() -> [Message]
 
     /**
      Assuming the given message is the tip of the thread, returns all (known) messages
