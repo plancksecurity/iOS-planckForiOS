@@ -13,7 +13,7 @@ import MessageModel
 /// Enables the user to move an IMAP message to a folder of her choice
 class MoveToFolderViewController: BaseViewController {
     let storyboardId = "MoveToFolderViewController"
-
+    weak var delegate : MoveToFolderDelegate?
     @IBOutlet var tableview: UITableView!
 
     private let cellId = "MoveToFolderCell"
@@ -135,6 +135,7 @@ extension MoveToFolderViewController: UITableViewDelegate {
 
         if msg.isAllowedToMoveTo(targetFolder: targetFolder) {
             msg.move(to: targetFolder)
+            delegate?.didMove(message: message)
         } else {
             // Not allowed to move messages in. See folderTypesNotAllowedToMoveTo.
             // do nothing

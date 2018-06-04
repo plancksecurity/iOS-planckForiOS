@@ -20,7 +20,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
         updateRow(for: message)
     }
 
-    func emailDisplaydidDelete(message: Message) {
+    func emailDisplayDidDelete(message: Message) {
         deleteRow(for: message)
     }
 

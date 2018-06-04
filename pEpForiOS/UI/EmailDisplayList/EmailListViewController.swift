@@ -82,6 +82,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 name: NSNotification.Name.UIApplicationDidEnterBackground,
                 object: nil)
         }
+        setup()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -91,7 +93,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
-        setup()
 
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
@@ -750,6 +751,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         loadingBlocked = false
         tableView.dataSource = self
         tableView.reloadData()
+        showNotMessageSelectedIfNeeded()
     }
 }
 
@@ -951,6 +953,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             destination.appConfig = appConfig
             destination.message = message
+            destination.delegate = model
             break
         case .showNoMessage:
             //No initialization needed

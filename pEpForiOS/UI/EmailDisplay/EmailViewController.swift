@@ -349,7 +349,7 @@ class EmailViewController: BaseTableViewController {
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message?.imapDelete()
         if let message = message {
-            delegate?.emailDisplaydidDelete(message: message)
+            delegate?.emailDisplayDidDelete(message: message)
         }
     }
 
@@ -483,6 +483,7 @@ extension EmailViewController: SegueHandlerType {
             }
             destination.appConfig = appConfig
             destination.message = message
+            destination.delegate = self
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
