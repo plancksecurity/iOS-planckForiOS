@@ -25,12 +25,25 @@ protocol ThreadAwareFolderProtocol {
     func allMessages(forFolder folder: Folder) -> [Message]
 
     /**
-     Removes a single message, never a whole thread.
+     Assuming the given message is the tip of the thread, returns all (known) messages
+     in the thread that went before.
+     - Note: Only downloaded, decrypted messages are considered.
      */
-    func imapDelete(message: Message)
+    func numberOfMessagesInThread(message: Message) -> Int
 
     /**
-     Assuming this message is the last one of its thread, remove it and all messages
+     - Returns: All messages belonging to the same thread, that went before.
+     - Note: Only downloaded, decrypted messages are considered.
+     */
+    func childMessagesInThread(message: Message) -> [Message]
+
+    /**
+     Removes a single message, never a whole thread.
+     */
+    func deleteSingle(message: Message)
+
+    /**
+     Assuming this message is the last one of its thread (the tip), remove it and all messages
      before it.
      */
     func deleteThread(message: Message)

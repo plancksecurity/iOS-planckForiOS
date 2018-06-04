@@ -19,11 +19,19 @@ class UnthreadedFolder: ThreadAwareFolderProtocol {
         return folder.allMessages()
     }
 
-    func imapDelete(message: Message) {
+    func numberOfMessagesInThread(message: Message) -> Int {
+        return 0
+    }
+
+    func childMessagesInThread(message: Message) -> [Message] {
+        return []
+    }
+
+    func deleteSingle(message: Message) {
         message.imapDelete()
     }
 
     func deleteThread(message: Message) {
-        imapDelete(message: message)
+        deleteSingle(message: message)
     }
 }
