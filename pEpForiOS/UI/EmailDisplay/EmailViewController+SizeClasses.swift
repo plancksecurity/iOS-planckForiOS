@@ -18,9 +18,7 @@ extension EmailViewController {
             adaptBarButtonItemsForRegularSize()
         }
         else {
-            if (previousTraitCollection != nil) {
-                adaptBarButtonItemsForAnyHeight()
-            }
+            adaptBarButtonItemsForAnyHeight()
         }
     }
 
@@ -43,6 +41,7 @@ extension EmailViewController {
 
         navigationItem.rightBarButtonItems = items
         self.navigationController?.setToolbarHidden(true, animated: true)
+        toolbarItems = nil
     }
 }
 

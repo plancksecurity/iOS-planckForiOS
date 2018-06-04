@@ -290,7 +290,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
         if splitViewController.isCollapsed {
-            navigationController?.popViewController(animated: true)
+            if self.navigationController?.topViewController != self {
+                navigationController?.popViewController(animated: true)
+            }
         } else {
             self.performSegue(withIdentifier: "showNoMessage", sender: nil)
         }
