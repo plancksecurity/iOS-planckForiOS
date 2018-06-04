@@ -7,15 +7,14 @@
 //
 
 import Foundation
+import MessageModel
+
 protocol DisplayedMessage: class {
 
-    /**
-     The email detail should mark the message as flagged
-     */
-    func markAsFlagged()
+    var messageModel: Message? {get}
 
     /**
-     The email detail should mark the message as unflagged
+     Updates the detail message with the master one. 
      */
-    func markAsUnflagged()
+    func update(forMessage message: Message)
 }

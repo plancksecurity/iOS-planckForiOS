@@ -64,6 +64,9 @@ class EmailListViewModel {
     }()
     public var delegate: EmailListViewModelDelegate?
     private var folderToShow: Folder?
+
+    public var currentDisplayedMessage: DisplayedMessage?
+
     
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
@@ -610,6 +613,10 @@ Something is fishy here.
                 // ...  and inform the delegate.
                 let indexPath = IndexPath(row: indexInserted, section: 0)
                 me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+
+                if me.currentDisplayedMessage?.messageModel == message {
+                    me.currentDisplayedMessage?.update(forMessage: message)
+                }
             }
         }
     }

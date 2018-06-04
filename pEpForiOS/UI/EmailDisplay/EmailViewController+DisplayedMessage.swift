@@ -7,15 +7,17 @@
 //
 
 import Foundation
+import MessageModel
+
 
 extension EmailViewController: DisplayedMessage {
 
-    func markAsFlagged() {
-       changeFlagButtonTo(flagged: true)
-
+    var messageModel: Message? {
+        return message
     }
 
-    func markAsUnflagged() {
-        changeFlagButtonTo(flagged: false)
+    func update(forMessage message: Message) {
+        self.message = message
+        configureView()
     }
 }
