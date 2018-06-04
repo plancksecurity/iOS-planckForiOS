@@ -104,7 +104,7 @@ class EmailListViewModel {
         self.stopListeningToChanges()
         queue.addOperation { [weak self] in
             if let theSelf = self {
-                let messagesToDisplay = FolderThreading.factory().makeThreadAware(
+                let messagesToDisplay = FolderThreading.makeThreadAware(
                     folder: theSelf.folderToShow).allMessages()
                 let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
 
