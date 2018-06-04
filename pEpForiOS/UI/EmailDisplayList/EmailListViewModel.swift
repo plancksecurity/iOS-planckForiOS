@@ -63,7 +63,7 @@ class EmailListViewModel {
         return createe
     }()
     public var delegate: EmailListViewModelDelegate?
-    private var folderToShow: Folder?
+    private var folderToShow: Folder
     
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
@@ -83,7 +83,7 @@ class EmailListViewModel {
     // MARK: Life Cycle
     
     init(delegate: EmailListViewModelDelegate? = nil, messageSyncService: MessageSyncServiceProtocol,
-         folderToShow: Folder? = nil) {
+         folderToShow: Folder) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.delegate = delegate
         self.messageSyncService = messageSyncService
@@ -100,20 +100,19 @@ class EmailListViewModel {
     }
     
     private func resetViewModel() {
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data, no cry.")
-            return
-        }
         // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
-        queue.addOperation {
-            let messagesToDisplay = folder.allMessages()
-            let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
+        queue.addOperation { [weak self] in
+            if let theSelf = self {
+                let messagesToDisplay = theSelf.folderToShow.allMessages()
+                let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
 
-            self.messages = SortedSet(array: previewMessages, sortBlock: self.sortByDateSentAscending)
-            DispatchQueue.main.async {
-                self.delegate?.updateView()
-                self.startListeningToChanges()
+                theSelf.messages = SortedSet(array: previewMessages,
+                                          sortBlock: theSelf.sortByDateSentAscending)
+                DispatchQueue.main.async {
+                    theSelf.delegate?.updateView()
+                    theSelf.startListeningToChanges()
+                }
             }
         }
     }
@@ -321,12 +320,7 @@ class EmailListViewModel {
         }
     }
     public var activeFilter : CompositeFilter<FilterBase>? {
-        get {
-            guard let folder = folderToShow else {
-                return nil
-            }
-            return folder.filter
-        }
+        return folderToShow.filter
     }
 
     static let defaultFilterViewFilter = CompositeFilter<FilterBase>.defaultFilter()
@@ -376,7 +370,7 @@ class EmailListViewModel {
     }
     
     public func removeSearchFilter() {
-        guard let filter = folderToShow?.filter else {
+        guard let filter = folderToShow.filter else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
             return
         }
@@ -385,16 +379,11 @@ class EmailListViewModel {
     }
 
     private func assuredFilterOfFolderToShow() -> CompositeFilter<FilterBase> {
-        guard let folder = folderToShow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
-            return CompositeFilter<FilterBase>.defaultFilter()
+        if folderToShow.filter == nil {
+            folderToShow.resetFilter()
         }
 
-        if folder.filter == nil {
-            folder.resetFilter()
-        }
-
-        guard let folderFilter = folder.filter else {
+        guard let folderFilter = folderToShow.filter else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We just set the filter but do not have one?")
             return CompositeFilter<FilterBase>.defaultFilter()
@@ -426,16 +415,13 @@ class EmailListViewModel {
     ///
     /// - Parameter indexPath: indexpath to check need for fetch older for
     public func fetchOlderMessagesIfRequired(forIndexPath indexPath: IndexPath) {
-        guard let folder = folderToShow else {
-            return
-        }
         if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
             return
         }
-        if let unifiedFolder = folder as? UnifiedInbox {
+        if let unifiedFolder = folderToShow as? UnifiedInbox {
             requestFetchOlder(forFolders: unifiedFolder.folders)
         } else {
-            requestFetchOlder(forFolders: [folder])
+            requestFetchOlder(forFolders: [folderToShow])
         }
     }
 
@@ -479,7 +465,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
         // Is a Message (not a Folder)
-        if let filter = folderToShow?.filter,
+        if let filter = folderToShow.filter,
             !filter.fulfillsFilter(message: message) {
             // The message does not fit in current filter criteria. Ignore- and do not show it.
             return
@@ -568,7 +554,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             if let me = self {
                 pvMsgs.removeObject(at: indexToRemove)
 
-                if let filter = me.folderToShow?.filter,
+                if let filter = me.folderToShow.filter,
                     !filter.fulfillsFilter(message: message) {
                     // The message was included in the model, but does not fulfil the filter criteria
                     // anymore after it has been updated.

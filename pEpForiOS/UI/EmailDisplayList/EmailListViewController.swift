@@ -129,10 +129,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - NavigationBar
     
     private func resetModel() {
-        if folderToShow != nil {
+        if let theFolder = folderToShow {
             model = EmailListViewModel(delegate: self,
                                        messageSyncService: appConfig.messageSyncService,
-                                       folderToShow: folderToShow)
+                                       folderToShow: theFolder)
         }
     }
     
