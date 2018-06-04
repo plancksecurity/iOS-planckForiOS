@@ -223,14 +223,6 @@ class EmailListViewModel {
         }
     }
 
-    public func markAllAsRead() {
-
-    }
-
-    public func markAllAsFlagged() {
-        //??
-    }
-
     public func deleteSelected() {
 
         selectedItems.forEach { (ip) in
@@ -255,6 +247,14 @@ class EmailListViewModel {
         selectedItems.forEach { (ip) in
             markRead(forIndexPath: ip)
         }
+    }
+
+    public func messagesToMove() -> [Message?] {
+        var messages : [Message?] = []
+        selectedItems.forEach { (ip) in
+            messages.append(self.message(representedByRowAt: ip))
+        }
+        return messages
     }
     
     func setFlagged(forIndexPath indexPath: IndexPath) {

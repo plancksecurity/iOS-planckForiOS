@@ -429,7 +429,7 @@ extension EmailViewController: SegueHandlerType {
                     break
             }
             destination.appConfig = appConfig
-            destination.message = message
+            destination.message = [message]
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")

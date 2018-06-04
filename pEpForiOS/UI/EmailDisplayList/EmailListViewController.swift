@@ -375,18 +375,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
-        
+        self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
     }
 
     @IBAction func markToolbar(_ sender:UIBarButtonItem!) {
 
         let alertControler = UIAlertController.pEpAlertController(
             title: nil, message: nil, preferredStyle: .actionSheet)
-        let flagAllAction = createFlagAllAction()
-        let readAllAction = createReadAllAction()
         let cancelAction = createCancelAction()
-        alertControler.addAction(flagAllAction)
-        alertControler.addAction(readAllAction)
         alertControler.addAction(cancelAction)
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
@@ -725,6 +721,9 @@ extension EmailListViewController {
     private func createMoveToFolderAction() -> UIAlertAction {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
+            if let ip = self.lastSelectedIndexPath {
+                self.model?.selectItem(indexPath: ip)
+            }
             self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
         }
     }
@@ -757,21 +756,6 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueForward, sender: self)
         }
-    }
-
-    func createFlagAllAction() -> UIAlertAction {
-        let title = NSLocalizedString("Flag All", comment: "Flag all messages title")
-        return UIAlertAction(title: title, style: .default) { (action) in
-            self.model?.markAllAsFlagged()
-        }
-    }
-
-    func createReadAllAction() -> UIAlertAction {
-        let title = NSLocalizedString("Read All", comment: "Read all messages title")
-        return UIAlertAction(title: title, style: .default) { (action) in
-            self.model?.markAllAsRead()
-        }
-
     }
 }
 
@@ -877,14 +861,13 @@ extension EmailListViewController: SegueHandlerType {
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToFolderViewController,
-                let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath)
+                let messages = model?.messagesToMove()
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
             destination.appConfig = appConfig
-            destination.message = message
+            destination.message = messages
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
