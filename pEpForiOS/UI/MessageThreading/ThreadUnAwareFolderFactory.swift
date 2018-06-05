@@ -10,8 +10,8 @@ import Foundation
 
 import MessageModel
 
-class ThreadUnAwareFolderFactory: ThreadAwareFolderFactoryProtocol {
-    func makeThreadAware(folder: Folder) -> ThreadAwareFolderProtocol {
+class ThreadUnAwareFolderFactory: ThreadedMessageFolderFactoryProtocol {
+    func makeThreadAware(folder: Folder) -> ThreadedMessageFolderProtocol {
         return UnthreadedFolder(folder: folder)
     }
 }

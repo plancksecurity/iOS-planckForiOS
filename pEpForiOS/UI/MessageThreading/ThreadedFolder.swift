@@ -10,7 +10,7 @@ import Foundation
 
 import MessageModel
 
-class ThreadedFolder: ThreadAwareFolderProtocol {
+class ThreadedFolder: ThreadedMessageFolderProtocol {
     let underlyingFolder: Folder
 
     init(folder: Folder) {

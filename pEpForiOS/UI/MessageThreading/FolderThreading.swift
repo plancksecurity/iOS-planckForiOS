@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 
 class FolderThreading {
-    static func factory() -> ThreadAwareFolderFactoryProtocol {
+    static func factory() -> ThreadedMessageFolderFactoryProtocol {
         return ThreadUnAwareFolderFactory()
     }
 
@@ -19,7 +19,7 @@ class FolderThreading {
      Shortcut that lets you implicitly use the factory received by calling
      `factory()`.
      */
-    static func makeThreadAware(folder: Folder) -> ThreadAwareFolderProtocol {
+    static func makeThreadAware(folder: Folder) -> ThreadedMessageFolderProtocol {
         return factory().makeThreadAware(folder: folder)
     }
 }
