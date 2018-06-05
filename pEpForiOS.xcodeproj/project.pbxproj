@@ -222,6 +222,7 @@
 		4349FDEF20B7F9C9002197CE /* MessageThreadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349FDEE20B7F9C9002197CE /* MessageThreadingProtocol.swift */; };
 		434AC3E320A450D800C11B7F /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */; };
 		434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */; };
+		434BF38D20C6742D00FCBCCA /* ThreadedFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF38C20C6742D00FCBCCA /* ThreadedFolder.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
@@ -687,6 +688,7 @@
 		4349FDEE20B7F9C9002197CE /* MessageThreadingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageThreadingProtocol.swift; sourceTree = "<group>"; };
 		434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
 		434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Extension.swift"; sourceTree = "<group>"; };
+		434BF38C20C6742D00FCBCCA /* ThreadedFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadedFolder.swift; sourceTree = "<group>"; };
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
@@ -1805,6 +1807,7 @@
 				43F8D80920C549120038ABD5 /* FolderThreading.swift */,
 				43F8D80320C538740038ABD5 /* ThreadUnAwareFolderFactory.swift */,
 				43F8D80520C538F00038ABD5 /* UnthreadedFolder.swift */,
+				434BF38C20C6742D00FCBCCA /* ThreadedFolder.swift */,
 			);
 			path = MessageThreading;
 			sourceTree = "<group>";
@@ -2618,6 +2621,7 @@
 				15AA6016207CD71D00D57DB4 /* ImapFlags+Pantomime.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
+				434BF38D20C6742D00FCBCCA /* ThreadedFolder.swift in Sources */,
 				43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */,
 				43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */,
 				15BBBC631FD0496800B9DCC8 /* ReportingErrorContainer.swift in Sources */,
