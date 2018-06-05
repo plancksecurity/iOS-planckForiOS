@@ -175,17 +175,21 @@ class SecureWebViewController: UIViewController {
     }
 
     // MARK: - Handle Content Size Changes
-
     private func informDelegateAfterLoadingFinished() {
         // code to run whenever the content(size) changes
-        let handler = { (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
+        let handler = {
+            [weak self] (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
             guard
                 let contentSize = change.newValue,
-                !self.shouldIgnoreContentSizeChange(newSize: contentSize) else {
+                !me.shouldIgnoreContentSizeChange(newSize: contentSize) else {
                     return
             }
-            self.contentSize = contentSize
-            self.delegate?.secureWebViewController(self, sizeChangedTo: contentSize)
+            me.contentSize = contentSize
+            me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
         }
         sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
                                                         options: [NSKeyValueObservingOptions.new],
