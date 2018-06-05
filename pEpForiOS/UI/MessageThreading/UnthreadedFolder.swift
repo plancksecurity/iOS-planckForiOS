@@ -22,7 +22,7 @@ class UnthreadedFolder: ThreadAwareFolderProtocol {
     }
 
     func allMessages() -> [Message] {
-        return underlyingFolder.allMessages()
+        return underlyingFolder.allMessagesNonThreaded()
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {

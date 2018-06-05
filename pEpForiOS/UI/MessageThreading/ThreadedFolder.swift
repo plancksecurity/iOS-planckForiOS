@@ -18,7 +18,7 @@ class ThreadedFolder: ThreadAwareFolderProtocol {
     }
 
     func allMessages() -> [Message] {
-        let originalMessages = underlyingFolder.allMessages()
+        let originalMessages = underlyingFolder.allMessagesNonThreaded()
 
         var topMessages = [Message]()
         var childMessagesAlreadyReferenced = Set<MessageID>()
