@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 
 /**
- Implementation of `ThreadAwareFolderProtocol` that ignores any threading.
+ Implementation of `ThreadedMessageFolderProtocol` that ignores any threading.
  Can be used in case the user has disabled threading in the settings.
  */
 class UnthreadedFolder: ThreadedMessageFolderProtocol {

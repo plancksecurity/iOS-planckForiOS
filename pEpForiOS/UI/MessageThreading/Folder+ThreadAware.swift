@@ -13,11 +13,7 @@ import MessageModel
 /**
  Some threading support.
  */
-extension Folder {
-    /**
-     - Returns: The list of messages contained in this folders. Depending on the setup,
-     this could be the tips of the threads or all messages in a flat way.
-     */
+extension Folder: ThreadAwareFolderProtocol {
     public func allMessages() -> [Message] {
         return FolderThreading.makeThreadAware(folder: self).allMessages()
     }

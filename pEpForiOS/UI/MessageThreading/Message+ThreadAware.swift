@@ -13,7 +13,7 @@ import MessageModel
 /**
  Some threading support.
  */
-extension Message {
+extension Message: ThreadAwareMessageProtocol {
     /**
      - Returns: The count of `messagesInThread(message:)`
      */
