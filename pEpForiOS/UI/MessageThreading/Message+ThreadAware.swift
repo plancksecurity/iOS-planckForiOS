@@ -14,18 +14,11 @@ import MessageModel
  Some threading support.
  */
 extension Message: ThreadAwareMessageProtocol {
-    /**
-     - Returns: The count of `messagesInThread(message:)`
-     */
     func numberOfMessagesInThread() -> Int {
         return FolderThreading.makeThreadAware(folder: parent).numberOfMessagesInThread(
             message: self)
     }
 
-    /**
-     If threading support is enabled, and the message is the tip of a thread,
-     then this delivers the messages 'below' in that thread.
-     */
     func messagesInThread() -> [Message] {
         return FolderThreading.makeThreadAware(folder: parent).messagesInThread(message: self)
     }
