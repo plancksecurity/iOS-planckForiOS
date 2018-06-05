@@ -35,7 +35,7 @@ protocol ThreadAwareFolderProtocol {
      - Returns: All messages belonging to the same thread, that went before.
      - Note: Only downloaded, decrypted messages are considered.
      */
-    func childMessagesInThread(message: Message) -> [Message]
+    func messagesInThread(message: Message) -> [Message]
 
     /**
      Removes a single message, never a whole thread.

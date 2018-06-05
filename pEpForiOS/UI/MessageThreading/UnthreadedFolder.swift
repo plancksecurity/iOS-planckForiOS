@@ -29,7 +29,7 @@ class UnthreadedFolder: ThreadAwareFolderProtocol {
         return 0
     }
 
-    func childMessagesInThread(message: Message) -> [Message] {
+    func messagesInThread(message: Message) -> [Message] {
         return []
     }
 

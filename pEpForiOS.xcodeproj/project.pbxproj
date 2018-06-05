@@ -223,6 +223,8 @@
 		434AC3E320A450D800C11B7F /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */; };
 		434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */; };
 		434BF38D20C6742D00FCBCCA /* ThreadedFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF38C20C6742D00FCBCCA /* ThreadedFolder.swift */; };
+		434BF38F20C6AFAF00FCBCCA /* Folder+Threaded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF38E20C6AFAF00FCBCCA /* Folder+Threaded.swift */; };
+		434BF39120C6B02100FCBCCA /* Message+Threaded.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF39020C6B02100FCBCCA /* Message+Threaded.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
@@ -689,6 +691,8 @@
 		434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
 		434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Extension.swift"; sourceTree = "<group>"; };
 		434BF38C20C6742D00FCBCCA /* ThreadedFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadedFolder.swift; sourceTree = "<group>"; };
+		434BF38E20C6AFAF00FCBCCA /* Folder+Threaded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+Threaded.swift"; sourceTree = "<group>"; };
+		434BF39020C6B02100FCBCCA /* Message+Threaded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Threaded.swift"; sourceTree = "<group>"; };
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
@@ -1808,6 +1812,8 @@
 				43F8D80320C538740038ABD5 /* ThreadUnAwareFolderFactory.swift */,
 				43F8D80520C538F00038ABD5 /* UnthreadedFolder.swift */,
 				434BF38C20C6742D00FCBCCA /* ThreadedFolder.swift */,
+				434BF38E20C6AFAF00FCBCCA /* Folder+Threaded.swift */,
+				434BF39020C6B02100FCBCCA /* Message+Threaded.swift */,
 			);
 			path = MessageThreading;
 			sourceTree = "<group>";
@@ -2369,6 +2375,7 @@
 				439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				153D08281F56BBCB00377110 /* AppendSendMailsOperation.swift in Sources */,
+				434BF39120C6B02100FCBCCA /* Message+Threaded.swift in Sources */,
 				439932291FEA7E7A00E92C35 /* String+Email.swift in Sources */,
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
 				43F8D80A20C549120038ABD5 /* FolderThreading.swift in Sources */,
@@ -2645,6 +2652,7 @@
 				432A5E261EB344C3007CB670 /* PEP_color+Extension.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */,
+				434BF38F20C6AFAF00FCBCCA /* Folder+Threaded.swift in Sources */,
 				8B77BD691E0C1D930060F11F /* AccountSettingsTableViewController.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
 				1587D165204D66E4002C2157 /* SettingUnecryptedSubjectViewController.swift in Sources */,

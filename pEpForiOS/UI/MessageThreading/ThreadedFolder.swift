@@ -39,10 +39,10 @@ class ThreadedFolder: ThreadAwareFolderProtocol {
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
-        return childMessagesInThread(message: message).count
+        return messagesInThread(message: message).count
     }
 
-    func childMessagesInThread(message: Message) -> [Message] {
+    func messagesInThread(message: Message) -> [Message] {
         return message.referencedMessages()
     }
 
