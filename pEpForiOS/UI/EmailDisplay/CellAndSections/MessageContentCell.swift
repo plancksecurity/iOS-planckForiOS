@@ -40,6 +40,7 @@ open class MessageContentCell: MessageCell {
             finalText.normal("")
         }
 
+        contentText.tintColor = UIColor.pEpGreen
         contentText.attributedText = finalText
     }
 }
