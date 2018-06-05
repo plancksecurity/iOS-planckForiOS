@@ -10,6 +10,9 @@ import Foundation
 
 import MessageModel
 
+/**
+ Some threading support.
+ */
 extension Message {
     func numberOfMessagesInThread(message: Message) -> Int {
         return FolderThreading.makeThreadAware(folder: parent).numberOfMessagesInThread(

@@ -11,10 +11,14 @@ import Foundation
 import MessageModel
 
 /**
- Extensions for making a `Folder` thread aware.
+ Some threading support.
  */
 extension Folder {
-    public func allMessagesNonThreaded() -> [Message] {
+    /**
+     - Returns: The list of messages contained in this folders. Depending on the setup,
+     this could be the tips of the threads or all messages in a flat way.
+     */
+    public func allMessages() -> [Message] {
         return FolderThreading.makeThreadAware(folder: self).allMessages()
     }
 }
