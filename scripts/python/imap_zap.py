@@ -1,8 +1,9 @@
 import imaplib
-import configparser
 import argparse
 from pprint import pprint
 import re
+
+from imap_ini import connect_account
 
 #
 # Account credentials are read from an .ini file:
@@ -67,14 +68,7 @@ def erase_mailboxes(connection):
 def process_all(ini, account_names):
     for account_name in account_names:
         print("processing {}".format(account_name))
-        data = account_info(ini, account_name)
-        hostname = data.get('hostname')
-        username = data.get('username')
-        password = data.get('password')
-        port = data.get('port') or 993
-        print('connecting to host: {}, port: {}'.format(hostname, port))
-        con = imaplib.IMAP4_SSL(hostname, port=port)
-        con.login(username, password)
+        con = connect_account(ini, account_name)
         erase_mailboxes(con)
 
 if __name__ == '__main__':
