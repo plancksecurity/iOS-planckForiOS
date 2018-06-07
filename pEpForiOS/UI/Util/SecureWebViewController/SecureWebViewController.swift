@@ -230,7 +230,7 @@ class SecureWebViewController: UIViewController {
     /// - Parameter html: html string that should be tweaked for nicer display
     /// - Returns: tweaked html
     private func tweakedHtml(inHtml html: String) -> String {
-        let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=device-heigth, initial-scale=1.0\"/>"
+        let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>"
         let styleResponsiveImageSize = """
             img {
                 max-width: 100%;
