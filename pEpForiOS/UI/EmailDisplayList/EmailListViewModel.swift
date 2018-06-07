@@ -13,7 +13,8 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
-    func toolbarOptions(Enabled: Bool)
+    func showUnflagButton(enabled: Bool)
+    func showUnreadButton(enabled: Bool)
 }
 
 // MARK: - FilterUpdateProtocol
@@ -79,6 +80,8 @@ class EmailListViewModel {
             return .orderedSame
         }
     }
+
+    private var selectedItems: Set<IndexPath>?
     
     // MARK: Life Cycle
     
@@ -201,57 +204,67 @@ class EmailListViewModel {
 
     //multiple message selection handler
 
-    private var selectedItems = Set<IndexPath>()
 
-    public func selectItem(indexPath: IndexPath) {
-        guard let del = delegate else {
-            return
+    private var unreadMessages = false
+    private var flaggedMessages = false
+
+    public func updatedItems(indexPaths: [IndexPath]) {
+        checkUnreadMessages(indexPaths: indexPaths)
+        checkFlaggedMessages(indexPaths: indexPaths)
+    }
+
+    public func checkFlaggedMessages(indexPaths: [IndexPath]) {
+        let flagged = indexPaths.filter { (ip) -> Bool in
+            if let flag = row(for: ip)?.isFlagged {
+                return flag
+            }
+            return false
         }
-        selectedItems.insert(indexPath)
-        if selectedItems.count > 0 {
-            del.toolbarOptions(Enabled: true)
+
+        if flagged.count == indexPaths.count {
+            delegate?.showUnflagButton(enabled: false)
+        } else {
+            delegate?.showUnflagButton(enabled: true)
         }
     }
 
-    public func deselectItem(indexPath: IndexPath) {
-        guard let del = delegate else {
-            return
+    public func checkUnreadMessages(indexPaths: [IndexPath]) {
+        let read = indexPaths.filter { (ip) -> Bool in
+            if let read = row(for: ip)?.isSeen {
+                return read
+            }
+            return false
         }
-        selectedItems.remove(indexPath)
-        if selectedItems.count == 0 {
-            del.toolbarOptions(Enabled: false)
-        }
-    }
 
-    public func deleteSelected() {
-
-        selectedItems.forEach { (ip) in
-            delete(forIndexPath: ip)
+        if read.count == indexPaths.count {
+            delegate?.showUnreadButton(enabled: true)
+        } else {
+            delegate?.showUnreadButton(enabled: false)
         }
     }
 
-    public func markSelectedAsFlagged() {
+    public func markSelectedAsFlagged(indexPaths: [IndexPath]) {
 
-        selectedItems.forEach { (ip) in
+        indexPaths.forEach { (ip) in
             setFlagged(forIndexPath: ip)
         }
     }
 
-    public func markSelectedAsUnFlagged() {
-        selectedItems.forEach { (ip) in
+    public func markSelectedAsUnFlagged(indexPaths: [IndexPath]) {
+        indexPaths.forEach { (ip) in
             unsetFlagged(forIndexPath: ip)
         }
     }
 
-    public func markSelectedAsRead() {
-        selectedItems.forEach { (ip) in
+    public func markSelectedAsRead(indexPaths: [IndexPath]) {
+        indexPaths.forEach { (ip) in
             markRead(forIndexPath: ip)
         }
     }
 
-    public func messagesToMove() -> [Message?] {
+    public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
         var messages : [Message?] = []
-        selectedItems.forEach { (ip) in
+        indexPaths.forEach { (ip) in
             messages.append(self.message(representedByRowAt: ip))
         }
         return messages
