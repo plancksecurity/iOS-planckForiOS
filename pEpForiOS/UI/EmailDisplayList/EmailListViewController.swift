@@ -232,6 +232,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         cell.dateLabel.text = row.dateText
         // Set image from cache if any
         cell.setContactImage(image: row.senderContactImage)
+        cell.messageCount = row.messageCount
 
         let op = BlockOperation() { [weak self] in
             MessageModel.performAndWait {
@@ -474,6 +475,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return parentFolder.folderType != .drafts
     }
 
+    fileprivate func showNumberOFMessagesToDelete(_ indexPath: IndexPath, _ archiveAction: SwipeAction) {
+        let messageCount = model?
+            .message(representedByRowAt: indexPath)?
+            .numberOfMessagesInThread()
+            ?? 0
+        if messageCount > 0 {
+            if let title = archiveAction.title {
+                archiveAction.title = title + "\n(" + String(messageCount) + ")"
+            }
+        }
+    }
+
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt
         indexPath: IndexPath,
@@ -506,6 +519,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 self.deleteAction(forCellAt: indexPath)
         }
         configure(action: archiveAction, with: descriptorDestructive)
+        showNumberOFMessagesToDelete(indexPath, archiveAction)
         swipeActions.append(archiveAction)
 
         // Flag

@@ -42,7 +42,8 @@ class EmailListViewModel {
         var isFlagged: Bool = false
         var isSeen: Bool = false
         var dateText: String
-        
+        var messageCount: Int
+
         init(withPreviewMessage pvmsg: PreviewMessage, senderContactImage: UIImage? = nil) {
             self.senderContactImage = senderContactImage
             showAttchmentIcon = pvmsg.hasAttachments
@@ -53,6 +54,7 @@ class EmailListViewModel {
             isFlagged = pvmsg.isFlagged
             isSeen = pvmsg.isSeen
             dateText = pvmsg.dateSent.smartString()
+            messageCount = pvmsg.numberOfMessagesInThread()
         }
     }
     
@@ -64,6 +66,8 @@ class EmailListViewModel {
     }()
     public var delegate: EmailListViewModelDelegate?
     private var folderToShow: Folder
+    private var threadedMessageFolder: ThreadedMessageFolderProtocol
+
     
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
@@ -88,6 +92,7 @@ class EmailListViewModel {
         self.delegate = delegate
         self.messageSyncService = messageSyncService
         self.folderToShow = folderToShow
+        self.threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
         resetViewModel()
     }
 
@@ -285,7 +290,7 @@ class EmailListViewModel {
                 return
         }
         messages?.remove(object: previewMessage)
-        message.imapDelete()
+        threadedMessageFolder.deleteThread(message: message)
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {

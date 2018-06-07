@@ -25,6 +25,8 @@ class EmailListViewCell: SwipeTableViewCell {
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
+    @IBOutlet weak var messageCountLabel: UILabel!
+    @IBOutlet weak var threadIndicator: UIImageView!
 
     var isFlagged:Bool = false {
         didSet {
@@ -52,6 +54,19 @@ class EmailListViewCell: SwipeTableViewCell {
                 attachmentIcon.isHidden = false
             } else {
                 attachmentIcon.isHidden = true
+            }
+        }
+    }
+
+    var messageCount:Int = 0 {
+        didSet {
+            if messageCount > 0 {
+                messageCountLabel.isHidden = false
+                threadIndicator.isHidden = false
+                messageCountLabel.text = String(messageCount)
+            } else {
+                threadIndicator.isHidden = true
+                messageCountLabel.isHidden = true
             }
         }
     }
