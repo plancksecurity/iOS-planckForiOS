@@ -64,11 +64,12 @@ public class UnifiedInbox: Folder {
         filter = cf
     }
 
-    override open func allCdMessages(includingDeleted: Bool = false,
-                                     includingMarkedForMoveToFolder: Bool = false) -> [CdMessage] {
-        return allCdMessages(includingDeleted: includingDeleted,
-                             includingMarkedForMoveToFolder: includingMarkedForMoveToFolder,
-                             takingPredicatesIntoAccount: filter?.predicates ?? [])
+    override open func allCdMessagesNonThreaded(includingDeleted: Bool = false,
+                                                includingMarkedForMoveToFolder: Bool = false)
+        -> [CdMessage] {
+            return allCdMessages(includingDeleted: includingDeleted,
+                                 includingMarkedForMoveToFolder: includingMarkedForMoveToFolder,
+                                 takingPredicatesIntoAccount: filter?.predicates ?? [])
     }
 
     override open func contains(message: Message,

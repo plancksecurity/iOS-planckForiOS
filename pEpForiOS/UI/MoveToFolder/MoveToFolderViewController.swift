@@ -26,7 +26,7 @@ class MoveToFolderViewController: BaseViewController {
     ///         Also Sent needs special handling (encrypt for self or such).
     static fileprivate let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
 
-    var message: Message?
+    var message: [Message?] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -64,12 +64,16 @@ class MoveToFolderViewController: BaseViewController {
     }
 
     private func setupViewModel() {
-        guard let acc = message?.parent.account else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "What are we supposed to display?")
-            return
+        var acc: [Account] = []
+        message.forEach { (msg) in
+            guard let account = msg?.parent.account else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "What are we supposed to display?")
+                return
+            }
+            acc.append(account)
         }
-        viewModel = FolderViewModel(withFordersIn: [acc],  includeUnifiedInbox: false)
+        viewModel = FolderViewModel(withFordersIn: acc,  includeUnifiedInbox: false)
     }
 
     // MARK: - ACTION
@@ -126,20 +130,22 @@ extension MoveToFolderViewController: UITableViewDelegate {
             selectedCell?.setSelected(false, animated: false)
             return
         }
-        guard let vm = viewModel, let msg = message else {
+        guard let vm = viewModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "missing data")
             return
         }
         let folderCellVM = vm[indexPath.section][indexPath.row]
         let targetFolder = folderCellVM.folder
 
-        if msg.isAllowedToMoveTo(targetFolder: targetFolder) {
-            msg.move(to: targetFolder)
-            delegate?.didMove(message: message)
-        } else {
-            // Not allowed to move messages in. See folderTypesNotAllowedToMoveTo.
-            // do nothing
+        let allowedToMoveMessages = message.filter { message in
+            message?.isAllowedToMoveTo(targetFolder: targetFolder) ?? false
         }
+
+        allowedToMoveMessages.forEach { message in
+            message?.move(to: targetFolder)
+        }
+        
+        delegate?.didMove(messages: allowedToMoveMessages)
         dismiss(animated: true)
     }
 }

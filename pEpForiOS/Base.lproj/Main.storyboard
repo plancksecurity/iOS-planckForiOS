@@ -668,22 +668,24 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FpX-kl-VfB" customClass="CopyLabel" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="24" y="11" width="327" height="178"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="T6H-kH-E19">
+                                            <rect key="frame" x="8" y="0.0" width="359" height="200"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES"/>
+                                        </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="FpX-kl-VfB" secondAttribute="trailing" constant="8" id="QmW-WB-0M8"/>
-                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leadingMargin" constant="8" id="aaq-io-ebw"/>
-                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="topMargin" id="iZ0-s3-aDH"/>
-                                        <constraint firstItem="FpX-kl-VfB" firstAttribute="bottom" secondItem="Tft-DN-iZy" secondAttribute="bottomMargin" id="pJc-jD-5YJ"/>
+                                        <constraint firstAttribute="trailing" secondItem="T6H-kH-E19" secondAttribute="trailing" constant="8" id="2xL-qT-ef6"/>
+                                        <constraint firstAttribute="bottom" secondItem="T6H-kH-E19" secondAttribute="bottom" id="Gw3-ct-5tN"/>
+                                        <constraint firstItem="T6H-kH-E19" firstAttribute="leading" secondItem="Tft-DN-iZy" secondAttribute="leading" constant="8" id="NC0-HE-04X"/>
+                                        <constraint firstItem="T6H-kH-E19" firstAttribute="top" secondItem="Tft-DN-iZy" secondAttribute="top" id="YdU-CJ-7xa"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="contentLabel" destination="FpX-kl-VfB" id="gSi-9v-STb"/>
+                                    <outlet property="contentText" destination="T6H-kH-E19" id="XqJ-m7-Dgu"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="attachmentsCell" id="wEk-G8-zwU" customClass="MessageAttachmentsCell" customModule="pEpForiOS" customModuleProvider="target">

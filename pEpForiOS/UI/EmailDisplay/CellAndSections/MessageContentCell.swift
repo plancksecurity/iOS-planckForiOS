@@ -11,7 +11,7 @@ import WebKit
 import MessageModel
 
 open class MessageContentCell: MessageCell {
-        @IBOutlet weak var contentLabel: UILabel!
+    @IBOutlet weak var contentText: UITextView!
 
     public override func updateCell(model: ComposeFieldModel, message: Message) {
         super.updateCell(model: model, message: message)
@@ -40,6 +40,7 @@ open class MessageContentCell: MessageCell {
             finalText.normal("")
         }
 
-        contentLabel.attributedText = finalText
+        contentText.tintColor = UIColor.pEpGreen
+        contentText.attributedText = finalText
     }
 }

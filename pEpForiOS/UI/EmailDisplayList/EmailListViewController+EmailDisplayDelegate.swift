@@ -25,17 +25,27 @@ extension EmailListViewModel: EmailDisplayDelegate {
     }
 
     private func deleteRow(for message: Message) {
+        stopListeningToChanges()
+        defer {
+            startListeningToChanges()
+        }
         guard let index = self.index(of: message) else {
             return
         }
         messages?.removeObject(at: index)
         informDeleteRow(at: index)
+        startListeningToChanges()
     }
 
     private func updateRow(for message: Message) {
+        stopListeningToChanges()
+        defer {
+            startListeningToChanges()
+        }
         guard let index = self.index(of: message) else {
             return
         }
+        
         let previewMessage = PreviewMessage(withMessage: message)
         messages?.removeObject(at: index)
         _ = messages?.insert(object: previewMessage)
