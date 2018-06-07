@@ -246,7 +246,7 @@ class SecureWebViewController: UIViewController {
         """
         let styleLinkStyle = """
             a:link {
-                color:\(UIColor.pEpDarkGreen);
+                color:\(UIColor.pEpDarkGreenHex);
                 text-decoration: underline;
             }
         """
@@ -278,7 +278,6 @@ class SecureWebViewController: UIViewController {
         }
         return result
     }
-
 
     /// Assures a given string is wrapped in html tags (<html> givenString </html>).
     ///
