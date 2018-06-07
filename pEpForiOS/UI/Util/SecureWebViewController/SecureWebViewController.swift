@@ -230,8 +230,14 @@ class SecureWebViewController: UIViewController {
     /// - Parameter html: html string that should be tweaked for nicer display
     /// - Returns: tweaked html
     private func tweakedHtml(inHtml html: String) -> String {
+        var html = html
+        // Remove existing viewport definitions that are pontentially unsupported by WKWebview.
+        html.removeRegexMatches(of: "<meta name=\\\"viewport\\\".*?>")
+        // Define viewport WKWebview can deal with
         let screenWidth = UIScreen.main.bounds.width
-        let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
+        let scaleToFitHtml =
+        "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
+        // Build HTML tweak
         let styleResponsiveImageSize = """
             img {
                 max-width: 100%;
@@ -251,6 +257,7 @@ class SecureWebViewController: UIViewController {
                 \(styleLinkStyle)
             </style>
         """
+        // Inject tweak if appropriate
         var result = html
 
         if html.contains(find: "<head>") {
