@@ -230,7 +230,8 @@ class SecureWebViewController: UIViewController {
     /// - Parameter html: html string that should be tweaked for nicer display
     /// - Returns: tweaked html
     private func tweakedHtml(inHtml html: String) -> String {
-        let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>"
+        let screenWidth = UIScreen.main.bounds.width
+        let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
         let styleResponsiveImageSize = """
             img {
                 max-width: 100%;
@@ -251,11 +252,6 @@ class SecureWebViewController: UIViewController {
             </style>
         """
         var result = html
-
-        if html.contains(find: "initial-scale=1.0") {
-            // scale factor already set. Nothing to do.
-            return result
-        }
 
         if html.contains(find: "<head>") {
             result = html.replacingOccurrences(of: "<head>", with:
