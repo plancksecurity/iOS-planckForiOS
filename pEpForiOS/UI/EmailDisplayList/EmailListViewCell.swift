@@ -145,5 +145,6 @@ class EmailListViewCell: SwipeTableViewCell {
         subjectLabel.font = font
         summaryLabel.font = font
         dateLabel.font = font
+        messageCountLabel.font = font
     }
 }

@@ -89,15 +89,15 @@
                                             </constraints>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thread-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Aoj-3y-zwL">
-                                            <rect key="frame" x="306" y="10" width="8" height="8"/>
+                                            <rect key="frame" x="309.5" y="9.5" width="11" height="11"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="8" id="1lV-0e-I18"/>
-                                                <constraint firstAttribute="height" constant="8" id="ixN-D2-nQh"/>
+                                                <constraint firstAttribute="width" constant="11" id="aif-rc-97u"/>
+                                                <constraint firstAttribute="height" secondItem="Aoj-3y-zwL" secondAttribute="width" id="qXW-Y0-Ffm"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaU-dh-sn5">
-                                            <rect key="frame" x="297" y="8" width="7.5" height="13.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaU-dh-sn5">
+                                            <rect key="frame" x="298" y="5" width="10" height="19.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                             <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -112,17 +112,18 @@
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="YqR-ga-Tf9" secondAttribute="top" id="DW6-Nq-mt1"/>
                                         <constraint firstItem="Wkg-wf-Dbd" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="5" id="Dj5-aw-LdQ"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="YqR-ga-Tf9" secondAttribute="trailing" constant="8" id="FRQ-af-oqS"/>
+                                        <constraint firstItem="DaU-dh-sn5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jgQ-nZ-h1r" secondAttribute="leading" constant="20" symbolic="YES" id="GkS-kz-mOH"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="6.5" id="Hex-Vv-UnE"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="trailing" secondItem="Wkg-wf-Dbd" secondAttribute="trailing" constant="-1" id="M9W-59-CVo"/>
                                         <constraint firstAttribute="trailing" secondItem="Wkg-wf-Dbd" secondAttribute="trailing" constant="16" id="NQs-7R-SIB"/>
+                                        <constraint firstItem="DaU-dh-sn5" firstAttribute="bottom" secondItem="Wkg-wf-Dbd" secondAttribute="bottom" id="R4X-Pa-nYP"/>
                                         <constraint firstItem="Wkg-wf-Dbd" firstAttribute="trailing" secondItem="BvI-Zi-zU6" secondAttribute="trailing" id="Tx2-fK-W1D"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="leading" id="Wva-Nq-D3D"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="5" id="Xp7-Lw-Lqg"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" constant="3" id="acU-9j-7hJ"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="top" secondItem="Wkg-wf-Dbd" secondAttribute="bottom" constant="5" id="aoL-eb-2Dk"/>
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="-3" id="j3H-Iv-HG5"/>
-                                        <constraint firstItem="DaU-dh-sn5" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="8" id="lli-47-TMf"/>
-                                        <constraint firstItem="Wkg-wf-Dbd" firstAttribute="leading" secondItem="Aoj-3y-zwL" secondAttribute="trailing" constant="10.5" id="tC6-zb-jsa"/>
+                                        <constraint firstItem="Wkg-wf-Dbd" firstAttribute="leading" secondItem="Aoj-3y-zwL" secondAttribute="trailing" constant="4" id="tC6-zb-jsa"/>
                                         <constraint firstItem="m0u-Jn-mQU" firstAttribute="bottom" secondItem="YqR-ga-Tf9" secondAttribute="bottom" id="ubw-w6-q4y"/>
                                     </constraints>
                                 </tableViewCellContentView>
