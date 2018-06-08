@@ -412,9 +412,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
-       /* if let vm = model, let selectedIndexPaths = self.tableView.indexPathsForSelectedRows {
+        if let vm = model, let selectedIndexPaths = self.tableView.indexPathsForSelectedRows {
             vm.deleteSelected(indexPaths: selectedIndexPaths)
-        }*/
+        }
         cancelToolbar(sender)
     }
 
