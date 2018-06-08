@@ -412,6 +412,8 @@
 		43FE80322099F62400E97AB3 /* SubjectComposeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */; };
 		4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */; };
 		492EF92A20C18C6C004EAE14 /* DisplayedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EF92920C18C6C004EAE14 /* DisplayedMessage.swift */; };
+		492EF92D20C6957D004EAE14 /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EF92C20C6957D004EAE14 /* ThreadViewController.swift */; };
+		492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EF92E20C699D0004EAE14 /* ThreadViewController+TableView.swift */; };
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
 		495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */; };
 		496C0EE720BC2A880009B5B9 /* EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496C0EE620BC2A880009B5B9 /* EmailDisplayDelegate.swift */; };
@@ -922,6 +924,8 @@
 		43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SubjectComposeTextView.swift; path = ../Util/SubjectComposeTextView.swift; sourceTree = "<group>"; };
 		4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		492EF92920C18C6C004EAE14 /* DisplayedMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayedMessage.swift; sourceTree = "<group>"; };
+		492EF92C20C6957D004EAE14 /* ThreadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadViewController.swift; sourceTree = "<group>"; };
+		492EF92E20C699D0004EAE14 /* ThreadViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewController+TableView.swift"; sourceTree = "<group>"; };
 		495560851E7150ED0016579E /* libPantomimeStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPantomimeStatic.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libPantomimeStatic.a"; sourceTree = "<group>"; };
 		495560871E71517F0016579E /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
 		495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+SizeClasses.swift"; sourceTree = "<group>"; };
@@ -1870,6 +1874,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		492EF92B20C69547004EAE14 /* Threading */ = {
+			isa = PBXGroup;
+			children = (
+				492EF92C20C6957D004EAE14 /* ThreadViewController.swift */,
+				492EF92E20C699D0004EAE14 /* ThreadViewController+TableView.swift */,
+			);
+			path = Threading;
+			sourceTree = "<group>";
+		};
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2010,6 +2023,7 @@
 		B70D32B0205BCFBD0094A92A /* EmailDisplay */ = {
 			isa = PBXGroup;
 			children = (
+				492EF92B20C69547004EAE14 /* Threading */,
 				496C0EE520BC2A7A0009B5B9 /* Delegation */,
 				B70D32B1205BD3E80094A92A /* CellAndSections */,
 				430D73601E9CBD0600EA6FA9 /* Background */,
@@ -2422,6 +2436,7 @@
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
 				43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */,
+				492EF92D20C6957D004EAE14 /* ThreadViewController.swift in Sources */,
 				43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */,
 				4315E4C120120F1600F68763 /* NSSecureCoding+Extension.swift in Sources */,
 				150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */,
@@ -2731,6 +2746,7 @@
 				43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */,
 				43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */,
 				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
+				492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */,
 				15BA537C20A1F5F50090F126 /* MoveToFolderViewController.swift in Sources */,
 				43ED53781CC77F95006AB156 /* SMTPSettingsTableViewController.swift in Sources */,
 				43D755F61F262B37006F933A /* PantomimeError.swift in Sources */,
