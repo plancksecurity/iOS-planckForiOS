@@ -302,6 +302,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private var tempToolbarItems:  [UIBarButtonItem]?
     private var editRightButton: UIBarButtonItem?
+    var flagToolbarButton : UIBarButtonItem?
+    var unflagToolbarButton : UIBarButtonItem?
+    var readToolbarButton : UIBarButtonItem?
+    var unreadToolbarButton : UIBarButtonItem?
 
     @IBAction func Edit(_ sender: Any) {
 
@@ -327,17 +331,31 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         var img = UIImage(named: "icon-flagged")
 
-        let flag = UIBarButtonItem(image: img,
+        flagToolbarButton = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.flagToolbar(_:)))
 
-        img = UIImage(named: "icon-unread")
+        img = UIImage(named: "icon-unflagged")
 
-        let unread = UIBarButtonItem(image: img,
+        unflagToolbarButton = UIBarButtonItem(image: img,
+                                            style: UIBarButtonItemStyle.plain,
+                                            target: self,
+                                            action: #selector(self.unflagToolbar(_:)))
+
+        img = UIImage(named: "icon-read")
+
+        readToolbarButton = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.readToolbar(_:)))
+
+        img = UIImage(named: "icon-unread")
+
+        unreadToolbarButton = UIBarButtonItem(image: img,
+                                            style: UIBarButtonItemStyle.plain,
+                                            target: self,
+                                            action: #selector(self.unreadToolbar(_:)))
 
         img = UIImage(named: "folders-icon-trash")
 
@@ -360,9 +378,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                    target: self,
                                    action: #selector(self.cancelToolbar (_:)))
 
-        toolbarItems = [flag, flexibleSpace, unread,
+        toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, delete, flexibleSpace,
-                        move, flexibleSpace, pEp]
+                        move, flexibleSpace, pEp] as? [UIBarButtonItem]
 
 
         //right navigation button to ensure the logic
@@ -388,9 +406,23 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         cancelToolbar(sender)
     }
 
+    @IBAction func unflagToolbar(_ sender:UIBarButtonItem!) {
+        if let selectedItems = self.tableView.indexPathsForSelectedRows {
+            model?.markSelectedAsUnFlagged(indexPaths: selectedItems)
+        }
+        cancelToolbar(sender)
+    }
+
     @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = self.tableView.indexPathsForSelectedRows {
             model?.markSelectedAsRead(indexPaths: selectedItems)
+        }
+        cancelToolbar(sender)
+    }
+
+    @IBAction func unreadToolbar(_ sender:UIBarButtonItem!) {
+        if let selectedItems = self.tableView.indexPathsForSelectedRows {
+            model?.markSelectedAsUnread(indexPaths: selectedItems)
         }
         cancelToolbar(sender)
     }
@@ -589,7 +621,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
             if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-                vm.checkFlaggedMessages(indexPaths: selectedIndexPaths)
+                vm.updatedItems(indexPaths: selectedIndexPaths)
             }
         }
     }
@@ -597,7 +629,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
             if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-                vm.checkFlaggedMessages(indexPaths: selectedIndexPaths)
+                vm.updatedItems(indexPaths: selectedIndexPaths)
             }
             return
         }
@@ -682,21 +714,31 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func showUnflagButton(enabled: Bool) {
         if enabled {
-            let img = UIImage(named: "icon-flagged")
-            toolbarItems![0].image = img
+
+            if let button = unflagToolbarButton {
+                toolbarItems?.remove(at: 0)
+                toolbarItems?.insert(button, at: 0)
+            }
+
         } else {
-            let img = UIImage(named: "icon-unflagged")
-            toolbarItems![0].image = img
+            if let button = flagToolbarButton {
+                toolbarItems?.remove(at: 0)
+                toolbarItems?.insert(button, at: 0)
+            }
         }
     }
 
     func showUnreadButton(enabled: Bool) {
         if enabled {
-            let img = UIImage(named: "icon-read")
-            toolbarItems![1].image = img
+            if let button = unreadToolbarButton {
+                toolbarItems?.remove(at: 2)
+                toolbarItems?.insert(button, at: 2)
+            }
         } else {
-            let img = UIImage(named: "icon-read")
-            toolbarItems![1].image = img
+            if let button = readToolbarButton {
+                toolbarItems?.remove(at: 2)
+                toolbarItems?.insert(button, at: 2)
+            }
         }
     }
 

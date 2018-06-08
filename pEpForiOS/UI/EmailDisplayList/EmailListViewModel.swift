@@ -232,9 +232,9 @@ class EmailListViewModel {
         }
 
         if flagged.count == indexPaths.count {
-            delegate?.showUnflagButton(enabled: false)
-        } else {
             delegate?.showUnflagButton(enabled: true)
+        } else {
+            delegate?.showUnflagButton(enabled: false)
         }
     }
 
@@ -272,6 +272,19 @@ class EmailListViewModel {
         }
     }
 
+    public func markSelectedAsUnread(indexPaths: [IndexPath]) {
+        indexPaths.forEach { (ip) in
+            markUnread(forIndexPath: ip)
+        }
+    }
+
+    public func deleteSelected(indexPaths: [IndexPath]) {
+        indexPaths.forEach { (ip) in
+            delete(forIndexPath: ip)
+
+        }
+    }
+
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
         var messages : [Message?] = []
         indexPaths.forEach { (ip) in
@@ -298,6 +311,20 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = true
+            me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+        }
+    }
+
+    func markUnread(forIndexPath indexPath: IndexPath) {
+        guard let previewMessage = messages?.object(at: indexPath.row) else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            previewMessage.isSeen = false
             me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
         }
     }
