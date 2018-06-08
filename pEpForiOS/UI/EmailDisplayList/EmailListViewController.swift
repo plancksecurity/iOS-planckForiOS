@@ -38,6 +38,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
     var buttonStyle: ButtonStyle = .backgroundColor
 
+    private var swipeDelete : SwipeAction? = nil
+
     /// Indicates that we must not trigger reloadData.
     private var loadingBlocked = false
     
@@ -80,6 +82,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 name: NSNotification.Name.UIApplicationDidEnterBackground,
                 object: nil)
         }
+        setup()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -89,7 +93,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
-        setup()
 
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
@@ -158,6 +161,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         title = folderToShow?.localizedName
+        self.navigationController?.title = title
     }
 
     private func weCameBackFromAPushedView() -> Bool {
@@ -282,6 +286,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         vm.markRead(forIndexPath: indexPath)
     }
 
+    private func showNotMessageSelectedIfNeeded() {
+        guard let splitViewController = self.splitViewController else {
+            return
+        }
+        if splitViewController.isCollapsed {
+            if self.navigationController?.topViewController != self {
+                navigationController?.popViewController(animated: true)
+            }
+        } else {
+            self.performSegue(withIdentifier: "showNoMessage", sender: nil)
+        }
+    }
+
     // MARK: - Action Edit Button
 
     private var tempToolbarItems:  [UIBarButtonItem]?
@@ -309,7 +326,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             target: nil,
             action: nil)
 
-        var img = UIImage(named: "icon-unflagged")
+        var img = UIImage(named: "icon-flagged")
 
         let flag = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
@@ -366,12 +383,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
-        model?.markSelectedAsFlagged()
+        if let selectedItems = self.tableView.indexPathsForSelectedRows {
+            model?.markSelectedAsFlagged(indexPaths: selectedItems)
+        }
         cancelToolbar(sender)
     }
 
     @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
-        model?.markSelectedAsRead()
+        if let selectedItems = self.tableView.indexPathsForSelectedRows {
+            model?.markSelectedAsRead(indexPaths: selectedItems)
+        }
         cancelToolbar(sender)
     }
 
@@ -389,18 +410,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             popoverPresentationController.sourceView = tableView
         }
         present(alertControler, animated: true, completion: nil)
-
-
     }
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
-
-        if let vm = model {
-            vm.deleteSelected()
-        }
-
+       /* if let vm = model, let selectedIndexPaths = self.tableView.indexPathsForSelectedRows {
+            vm.deleteSelected(indexPaths: selectedIndexPaths)
+        }*/
         cancelToolbar(sender)
-
     }
 
     //recover the original toolbar and right button
@@ -408,6 +424,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         toolbarItems = tempToolbarItems
         self.navigationItem.rightBarButtonItem = editRightButton
+    }
+
+    private func resetSelectionIfNeeded(for indexPath: IndexPath) {
+        if lastSelectedIndexPath == indexPath {
+            resetSelection()
+        }
+    }
+
+    private func resetSelection() {
+        tableView.selectRow(at: lastSelectedIndexPath, animated: false, scrollPosition: .none)
     }
 
     // MARK: - Action Filter Button
@@ -517,6 +543,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let archiveAction =
             SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
                 self.deleteAction(forCellAt: indexPath)
+                self.swipeDelete = action
         }
         configure(action: archiveAction, with: descriptorDestructive)
         showNumberOFMessagesToDelete(indexPath, archiveAction)
@@ -548,9 +575,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         var options = SwipeTableOptions()
-        options.expansionStyle = .destructive
         options.transitionStyle = .border
         options.buttonSpacing = 11
+        options.expansionStyle = .destructive(automaticallyDelete: false)
         return options
     }
 
@@ -575,17 +602,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
-            if let vm = model {
-                vm.deselectItem(indexPath: indexPath)
+            if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                vm.checkFlaggedMessages(indexPaths: selectedIndexPaths)
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
-            if let vm = model {
-                vm.selectItem(indexPath: indexPath)
-                
+            if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                vm.checkFlaggedMessages(indexPaths: selectedIndexPaths)
             }
             return
         }
@@ -667,43 +693,69 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
-    func toolbarOptions(Enabled: Bool) {
-        if Enabled {
-            toolbarItems?.forEach({ (button) in
-                button.isEnabled = true
-            })
+
+    func showUnflagButton(enabled: Bool) {
+        if enabled {
+            let img = UIImage(named: "icon-flagged")
+            toolbarItems![0].image = img
         } else {
-            toolbarItems?.forEach({ (button) in
-                button.isEnabled = false
-            })
+            let img = UIImage(named: "icon-unflagged")
+            toolbarItems![0].image = img
+        }
+    }
+
+    func showUnreadButton(enabled: Bool) {
+        if enabled {
+            let img = UIImage(named: "icon-read")
+            toolbarItems![1].image = img
+        } else {
+            let img = UIImage(named: "icon-read")
+            toolbarItems![1].image = img
         }
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.beginUpdates()
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
     
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath) {
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow ?? lastSelectedIndexPath
+
+        if let swipeDelete = swipeDelete {
+            swipeDelete.fulfill(with: .delete)
+        } else {
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
+        }
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
-        tableView.beginUpdates()
-        tableView.deleteRows(at: [indexPath], with: .automatic)
-        tableView.endUpdates()
+        if lastSelectedIndexPath == indexPath {
+            showNotMessageSelectedIfNeeded()
+        }
+
     }
     
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
+
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow
+
         tableView.beginUpdates()
         tableView.reloadRows(at: [indexPath], with: .none)
         tableView.endUpdates()
+
+        resetSelectionIfNeeded(for: indexPath)
     }
     
     func updateView() {
         loadingBlocked = false
         tableView.dataSource = self
         tableView.reloadData()
+        showNotMessageSelectedIfNeeded()
     }
 }
 
@@ -726,6 +778,10 @@ extension EmailListViewController {
         alertControler.addAction(moveToFolderAction)
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
+            let cellFrame = tableView.rectForRow(at: indexPath)
+            let sourceRect = self.view.convert(cellFrame, from: tableView)
+            popoverPresentationController.sourceRect = sourceRect
+
         }
         present(alertControler, animated: true, completion: nil)
     }
@@ -735,9 +791,9 @@ extension EmailListViewController {
     private func createMoveToFolderAction() -> UIAlertAction {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
-            if let ip = self.lastSelectedIndexPath {
+            /*if let ip = self.lastSelectedIndexPath {
                 self.model?.selectItem(indexPath: ip)
-            }
+            }*/
             self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
         }
     }
@@ -798,7 +854,8 @@ extension EmailListViewController {
             model?.setFlagged(forIndexPath: indexPath)
         }
     }
-    
+
+
     func deleteAction(forCellAt indexPath: IndexPath) {
         model?.delete(forIndexPath: indexPath)
     }
@@ -823,6 +880,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueFilter
         case segueFolderViews
         case segueShowMoveToFolder
+        case showNoMessage
         case noSegue
     }
     
@@ -836,7 +894,8 @@ extension EmailListViewController: SegueHandlerType {
              .segueEditDraft:
             setupComposeViewController(for: segue)
         case .segueShowEmail:
-            guard let vc = segue.destination as? EmailViewController,
+            guard let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -846,6 +905,8 @@ extension EmailListViewController: SegueHandlerType {
             vc.message = message
             vc.folderShow = folderToShow
             vc.messageId = indexPath.row //that looks wrong
+            vc.delegate = model
+            model?.currentDisplayedMessage = vc
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -857,7 +918,8 @@ extension EmailListViewController: SegueHandlerType {
             destiny.filterEnabled = folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
-            guard let vc = segue.destination as? LoginTableViewController  else {
+            guard let nav = segue.destination as? UINavigationController,
+            let vc = nav.rootViewController as? LoginTableViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                 return
             }
@@ -873,15 +935,28 @@ extension EmailListViewController: SegueHandlerType {
             vC.hidesBottomBarWhenPushed = true
             break
         case .segueShowMoveToFolder:
+            var selectedRows: [IndexPath] = []
+
+            if let selectedItems = self.tableView.indexPathsForSelectedRows {
+                selectedRows = selectedItems
+            } else if let last = lastSelectedIndexPath{
+                selectedRows.append(last)
+            }
+
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToFolderViewController,
-                let messages = model?.messagesToMove()
+                let messages = model?.messagesToMove(indexPaths: selectedRows)
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
             destination.appConfig = appConfig
             destination.message = messages
+            destination.delegate = model
+            break
+        case .showNoMessage:
+            //No initialization needed
+            break
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break

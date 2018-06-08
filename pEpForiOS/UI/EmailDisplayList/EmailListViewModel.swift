@@ -13,7 +13,8 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
-    func toolbarOptions(Enabled: Bool)
+    func showUnflagButton(enabled: Bool)
+    func showUnreadButton(enabled: Bool)
 }
 
 // MARK: - FilterUpdateProtocol
@@ -58,7 +59,7 @@ class EmailListViewModel {
         }
     }
     
-    private var messages: SortedSet<PreviewMessage>?
+    internal var messages: SortedSet<PreviewMessage>?
     private let queue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInteractive
@@ -67,6 +68,9 @@ class EmailListViewModel {
     public var delegate: EmailListViewModelDelegate?
     private var folderToShow: Folder
     private var threadedMessageFolder: ThreadedMessageFolderProtocol
+
+
+    public var currentDisplayedMessage: DisplayedMessage?
 
     
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
@@ -83,6 +87,8 @@ class EmailListViewModel {
             return .orderedSame
         }
     }
+
+    private var selectedItems: Set<IndexPath>?
     
     // MARK: Life Cycle
     
@@ -96,11 +102,11 @@ class EmailListViewModel {
         resetViewModel()
     }
 
-    private func startListeningToChanges() {
+    internal func startListeningToChanges() {
         MessageModelConfig.messageFolderDelegate = self
     }
 
-    private func stopListeningToChanges() {
+    internal func stopListeningToChanges() {
         MessageModelConfig.messageFolderDelegate = nil
     }
     
@@ -122,9 +128,9 @@ class EmailListViewModel {
         }
     }
     
-    // MARK: Internal
-    
-    private func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
+    // MARK: Public Data Access & Manipulation
+
+    func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
         guard let previewMessages = messages else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data.")
             return nil
@@ -140,8 +146,15 @@ class EmailListViewModel {
         }
         return nil
     }
-    
-    // MARK: Public Data Access & Manipulation
+
+    func index(of message:Message) -> Int? {
+        let previewMessage = PreviewMessage(withMessage: message)
+        let index = messages?.index(of: previewMessage)
+        guard index != -1 else {
+            return nil
+        }
+        return index
+    }
     
     func row(for indexPath: IndexPath) -> Row? {
         guard let previewMessage = messages?.object(at: indexPath.row) else {
@@ -206,57 +219,67 @@ class EmailListViewModel {
 
     //multiple message selection handler
 
-    private var selectedItems = Set<IndexPath>()
 
-    public func selectItem(indexPath: IndexPath) {
-        guard let del = delegate else {
-            return
+    private var unreadMessages = false
+    private var flaggedMessages = false
+
+    public func updatedItems(indexPaths: [IndexPath]) {
+        checkUnreadMessages(indexPaths: indexPaths)
+        checkFlaggedMessages(indexPaths: indexPaths)
+    }
+
+    public func checkFlaggedMessages(indexPaths: [IndexPath]) {
+        let flagged = indexPaths.filter { (ip) -> Bool in
+            if let flag = row(for: ip)?.isFlagged {
+                return flag
+            }
+            return false
         }
-        selectedItems.insert(indexPath)
-        if selectedItems.count > 0 {
-            del.toolbarOptions(Enabled: true)
+
+        if flagged.count == indexPaths.count {
+            delegate?.showUnflagButton(enabled: false)
+        } else {
+            delegate?.showUnflagButton(enabled: true)
         }
     }
 
-    public func deselectItem(indexPath: IndexPath) {
-        guard let del = delegate else {
-            return
+    public func checkUnreadMessages(indexPaths: [IndexPath]) {
+        let read = indexPaths.filter { (ip) -> Bool in
+            if let read = row(for: ip)?.isSeen {
+                return read
+            }
+            return false
         }
-        selectedItems.remove(indexPath)
-        if selectedItems.count == 0 {
-            del.toolbarOptions(Enabled: false)
-        }
-    }
 
-    public func deleteSelected() {
-
-        selectedItems.forEach { (ip) in
-            delete(forIndexPath: ip)
+        if read.count == indexPaths.count {
+            delegate?.showUnreadButton(enabled: true)
+        } else {
+            delegate?.showUnreadButton(enabled: false)
         }
     }
 
-    public func markSelectedAsFlagged() {
+    public func markSelectedAsFlagged(indexPaths: [IndexPath]) {
 
-        selectedItems.forEach { (ip) in
+        indexPaths.forEach { (ip) in
             setFlagged(forIndexPath: ip)
         }
     }
 
-    public func markSelectedAsUnFlagged() {
-        selectedItems.forEach { (ip) in
+    public func markSelectedAsUnFlagged(indexPaths: [IndexPath]) {
+        indexPaths.forEach { (ip) in
             unsetFlagged(forIndexPath: ip)
         }
     }
 
-    public func markSelectedAsRead() {
-        selectedItems.forEach { (ip) in
+    public func markSelectedAsRead(indexPaths: [IndexPath]) {
+        indexPaths.forEach { (ip) in
             markRead(forIndexPath: ip)
         }
     }
 
-    public func messagesToMove() -> [Message?] {
+    public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
         var messages : [Message?] = []
-        selectedItems.forEach { (ip) in
+        indexPaths.forEach { (ip) in
             messages.append(self.message(representedByRowAt: ip))
         }
         return messages
@@ -289,8 +312,9 @@ class EmailListViewModel {
             let message = previewMessage.message() else {
                 return
         }
-        messages?.remove(object: previewMessage)
         threadedMessageFolder.deleteThread(message: message)
+        didDelete(messageFolder: message)
+
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
@@ -301,7 +325,7 @@ class EmailListViewModel {
         contactImageTool.clearCache()
     }
     
-    private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+    internal func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
         guard let previewMessage = messages?.object(at: indexPath.row),
             let message = previewMessage.message() else {
                 return
@@ -581,6 +605,10 @@ Something is fishy here.
                 // ...  and inform the delegate.
                 let indexPath = IndexPath(row: indexInserted, section: 0)
                 me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+
+                if me.currentDisplayedMessage?.messageModel == message {
+                    me.currentDisplayedMessage?.update(forMessage: message)
+                }
             }
         }
     }

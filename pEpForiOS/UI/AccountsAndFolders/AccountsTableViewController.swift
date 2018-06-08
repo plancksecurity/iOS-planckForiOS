@@ -113,6 +113,14 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
         alertController.addAction(destroyAction)
 
+        if let popoverPresentationController = alertController.popoverPresentationController {
+
+            let cellFrame = tableView.rectForRow(at: indexPath)
+            let sourceRect = self.view.convert(cellFrame, from: tableView)
+            popoverPresentationController.sourceRect = sourceRect
+            popoverPresentationController.sourceView = self.view
+        }
+
         self.present(alertController, animated: true) {
         }
     }
@@ -211,8 +219,7 @@ extension AccountsTableViewController: SegueHandlerType {
             }
             destination.appConfig = self.appConfig
         case .segueShowLog:
-            guard let destination = segue.destination as? UINavigationController,
-                let viewController = destination.rootViewController as? LogViewController else {
+            guard let viewController = segue.destination as? LogViewController else {
                     return
             }
             viewController.appConfig = self.appConfig

@@ -76,9 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
-        guard let initialNVC = mainStoryboard.instantiateViewController(
-            withIdentifier: "main.initial.nvc") as? UINavigationController,
-            let rootVC = initialNVC.rootViewController as? FolderTableViewController
+        guard let initialNVC = mainStoryboard.instantiateViewController(withIdentifier: "main.initial.nvc") as? UISplitViewController,
+            let navController = initialNVC.viewControllers.first as? UINavigationController,
+            let rootVC = navController.rootViewController as? FolderTableViewController
             else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "Problem initializing UI")
