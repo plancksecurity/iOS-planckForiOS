@@ -8,7 +8,7 @@
 
 extension Data {
     public func stringEncodingFromIANACharset(_ charset: String) -> String.Encoding {
-        let enc = CFStringConvertIANACharSetNameToEncoding(charset as CFString!)
+        let enc = CFStringConvertIANACharSetNameToEncoding(charset as CFString)
         return String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(enc))
     }
 

@@ -325,7 +325,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             target: nil,
             action: nil)
 
-        var img = UIImage(named: "icon-unflagged")
+        var img = UIImage(named: "icon-flagged")
 
         let flag = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
@@ -382,12 +382,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
-        model?.markSelectedAsFlagged()
+        if let selectedItems = self.tableView.indexPathsForSelectedRows {
+            model?.markSelectedAsFlagged(indexPaths: selectedItems)
+        }
         cancelToolbar(sender)
     }
 
     @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
-        model?.markSelectedAsRead()
+        if let selectedItems = self.tableView.indexPathsForSelectedRows {
+            model?.markSelectedAsRead(indexPaths: selectedItems)
+        }
         cancelToolbar(sender)
     }
 
@@ -405,18 +409,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             popoverPresentationController.sourceView = tableView
         }
         present(alertControler, animated: true, completion: nil)
-
-
     }
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
-
-        if let vm = model {
-            vm.deleteSelected()
-        }
-
+       /* if let vm = model, let selectedIndexPaths = self.tableView.indexPathsForSelectedRows {
+            vm.deleteSelected(indexPaths: selectedIndexPaths)
+        }*/
         cancelToolbar(sender)
-
     }
 
     //recover the original toolbar and right button
@@ -589,16 +588,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
-            if let vm = model {
-                vm.deselectItem(indexPath: indexPath)
+            if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                vm.checkFlaggedMessages(indexPaths: selectedIndexPaths)
             }
         }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
-            if let vm = model {
-                vm.selectItem(indexPath: indexPath)
+            if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                vm.checkFlaggedMessages(indexPaths: selectedIndexPaths)
             }
             return
         }
@@ -680,15 +679,24 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
-    func toolbarOptions(Enabled: Bool) {
-        if Enabled {
-            toolbarItems?.forEach({ (button) in
-                button.isEnabled = true
-            })
+
+    func showUnflagButton(enabled: Bool) {
+        if enabled {
+            let img = UIImage(named: "icon-flagged")
+            toolbarItems![0].image = img
         } else {
-            toolbarItems?.forEach({ (button) in
-                button.isEnabled = false
-            })
+            let img = UIImage(named: "icon-unflagged")
+            toolbarItems![0].image = img
+        }
+    }
+
+    func showUnreadButton(enabled: Bool) {
+        if enabled {
+            let img = UIImage(named: "icon-read")
+            toolbarItems![1].image = img
+        } else {
+            let img = UIImage(named: "icon-read")
+            toolbarItems![1].image = img
         }
     }
 
@@ -769,9 +777,9 @@ extension EmailListViewController {
     private func createMoveToFolderAction() -> UIAlertAction {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
-            if let ip = self.lastSelectedIndexPath {
+            /*if let ip = self.lastSelectedIndexPath {
                 self.model?.selectItem(indexPath: ip)
-            }
+            }*/
             self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
         }
     }
@@ -913,9 +921,17 @@ extension EmailListViewController: SegueHandlerType {
             vC.hidesBottomBarWhenPushed = true
             break
         case .segueShowMoveToFolder:
+            var selectedRows: [IndexPath] = []
+
+            if let selectedItems = self.tableView.indexPathsForSelectedRows {
+                selectedRows = selectedItems
+            } else if let last = lastSelectedIndexPath{
+                selectedRows.append(last)
+            }
+
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToFolderViewController,
-                let messages = model?.messagesToMove()
+                let messages = model?.messagesToMove(indexPaths: selectedRows)
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
