@@ -57,7 +57,7 @@ class EmailListViewModel {
         }
     }
     
-    private var messages: SortedSet<PreviewMessage>?
+    internal var messages: SortedSet<PreviewMessage>?
     private let queue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInteractive
@@ -65,6 +65,9 @@ class EmailListViewModel {
     }()
     public var delegate: EmailListViewModelDelegate?
     private var folderToShow: Folder
+
+    public var currentDisplayedMessage: DisplayedMessage?
+
     
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
@@ -94,11 +97,11 @@ class EmailListViewModel {
         resetViewModel()
     }
 
-    private func startListeningToChanges() {
+    internal func startListeningToChanges() {
         MessageModelConfig.messageFolderDelegate = self
     }
 
-    private func stopListeningToChanges() {
+    internal func stopListeningToChanges() {
         MessageModelConfig.messageFolderDelegate = nil
     }
     
@@ -120,9 +123,9 @@ class EmailListViewModel {
         }
     }
     
-    // MARK: Internal
-    
-    private func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
+    // MARK: Public Data Access & Manipulation
+
+    func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
         guard let previewMessages = messages else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data.")
             return nil
@@ -138,8 +141,15 @@ class EmailListViewModel {
         }
         return nil
     }
-    
-    // MARK: Public Data Access & Manipulation
+
+    func index(of message:Message) -> Int? {
+        let previewMessage = PreviewMessage(withMessage: message)
+        let index = messages?.index(of: previewMessage)
+        guard index != -1 else {
+            return nil
+        }
+        return index
+    }
     
     func row(for indexPath: IndexPath) -> Row? {
         guard let previewMessage = messages?.object(at: indexPath.row) else {
@@ -297,8 +307,9 @@ class EmailListViewModel {
             let message = previewMessage.message() else {
                 return
         }
-        messages?.remove(object: previewMessage)
         message.imapDelete()
+        didDelete(messageFolder: message)
+
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
@@ -309,7 +320,7 @@ class EmailListViewModel {
         contactImageTool.clearCache()
     }
     
-    private func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+    internal func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
         guard let previewMessage = messages?.object(at: indexPath.row),
             let message = previewMessage.message() else {
                 return
@@ -589,6 +600,10 @@ Something is fishy here.
                 // ...  and inform the delegate.
                 let indexPath = IndexPath(row: indexInserted, section: 0)
                 me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+
+                if me.currentDisplayedMessage?.messageModel == message {
+                    me.currentDisplayedMessage?.update(forMessage: message)
+                }
             }
         }
     }
