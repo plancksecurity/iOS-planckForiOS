@@ -21,17 +21,17 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         let originalMessages = underlyingFolder.allMessagesNonThreaded()
 
         var topMessages = [Message]()
-        var childMessagesAlreadyReferenced = Set<MessageID>()
+        var messageIdsAlreadyReferenced = Set<MessageID>()
 
         for aMsg in originalMessages {
-            if !childMessagesAlreadyReferenced.contains(aMsg.messageID) {
+            if !messageIdsAlreadyReferenced.contains(aMsg.messageID) {
                 // this is a top message
                 topMessages.append(aMsg)
 
-                // note all children, in order to prevent to interpret them as
-                // top messages when they are encountered
-                for ref in aMsg.references {
-                    childMessagesAlreadyReferenced.insert(ref)
+                MessageModel.performAndWait {
+                    aMsg.referencedMessages().forEach {
+                        messageIdsAlreadyReferenced.insert($0.messageID)
+                    }
                 }
             }
         }
