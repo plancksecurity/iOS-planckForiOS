@@ -13,6 +13,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
+    func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
 }
@@ -221,6 +222,11 @@ class EmailListViewModel {
     public func updatedItems(indexPaths: [IndexPath]) {
         checkUnreadMessages(indexPaths: indexPaths)
         checkFlaggedMessages(indexPaths: indexPaths)
+        if indexPaths.count > 0 {
+            delegate?.toolbarIs(enabled: true)
+        } else {
+            delegate?.toolbarIs(enabled: false)
+        }
     }
 
     public func checkFlaggedMessages(indexPaths: [IndexPath]) {

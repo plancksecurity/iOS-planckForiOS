@@ -306,6 +306,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     var unflagToolbarButton : UIBarButtonItem?
     var readToolbarButton : UIBarButtonItem?
     var unreadToolbarButton : UIBarButtonItem?
+    var deleteToolbarButton : UIBarButtonItem?
+    var moveToolbarButton : UIBarButtonItem?
 
     @IBAction func Edit(_ sender: Any) {
 
@@ -335,6 +337,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.flagToolbar(_:)))
+        flagToolbarButton?.isEnabled = false
 
         img = UIImage(named: "icon-unflagged")
 
@@ -342,6 +345,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                             style: UIBarButtonItemStyle.plain,
                                             target: self,
                                             action: #selector(self.unflagToolbar(_:)))
+        unflagToolbarButton?.isEnabled = false
 
         img = UIImage(named: "icon-read")
 
@@ -349,6 +353,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.readToolbar(_:)))
+        readToolbarButton?.isEnabled = false
 
         img = UIImage(named: "icon-unread")
 
@@ -356,22 +361,25 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                             style: UIBarButtonItemStyle.plain,
                                             target: self,
                                             action: #selector(self.unreadToolbar(_:)))
+        unreadToolbarButton?.isEnabled = false
 
         img = UIImage(named: "folders-icon-trash")
 
-        let delete = UIBarButtonItem(image: img,
+        deleteToolbarButton = UIBarButtonItem(image: img,
                                      style: UIBarButtonItemStyle.plain,
                                      target: self,
                                      action: #selector(self.deleteToolbar(_:)))
 
+        deleteToolbarButton?.isEnabled = false
+
         img = UIImage(named: "swipe-archive")
 
-        let move = UIBarButtonItem(image: img,
+        moveToolbarButton = UIBarButtonItem(image: img,
                                      style: UIBarButtonItemStyle.plain,
                                      target: self,
                                      action: #selector(self.moveToolbar(_:)))
 
-        img = UIImage(named: "pep-logo")
+        moveToolbarButton?.isEnabled = false
 
         let pEp = UIBarButtonItem(title: "p≡p",
                                    style: UIBarButtonItemStyle.plain,
@@ -379,8 +387,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                    action: #selector(self.cancelToolbar (_:)))
 
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
-                        flexibleSpace, delete, flexibleSpace,
-                        move, flexibleSpace, pEp] as? [UIBarButtonItem]
+                        flexibleSpace, deleteToolbarButton, flexibleSpace,
+                        moveToolbarButton, flexibleSpace, pEp] as? [UIBarButtonItem]
 
 
         //right navigation button to ensure the logic
@@ -619,9 +627,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if tableView.isEditing {
-            if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+        if tableView.isEditing, let vm = model {
+            if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
                 vm.updatedItems(indexPaths: selectedIndexPaths)
+            } else {
+                vm.updatedItems(indexPaths: [])
             }
         }
     }
@@ -711,6 +721,15 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+
+    func toolbarIs(enabled: Bool) {
+        flagToolbarButton?.isEnabled = enabled
+        unflagToolbarButton?.isEnabled = enabled
+        readToolbarButton?.isEnabled = enabled
+        unreadToolbarButton?.isEnabled = enabled
+        moveToolbarButton?.isEnabled = enabled
+        deleteToolbarButton?.isEnabled = enabled
+    }
 
     func showUnflagButton(enabled: Bool) {
         if enabled {
