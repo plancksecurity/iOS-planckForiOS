@@ -13,10 +13,11 @@ class ThreadViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     var messages = ["hola", "que", "tal"]
+    var fullyDisplayedSections : [Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        fullyDisplayedSections = messages.map {_ in return false}
         // Do any additional setup after loading the view.
     }
 

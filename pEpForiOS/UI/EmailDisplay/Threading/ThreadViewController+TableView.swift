@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension ThreadViewController: UITabBarDelegate, UITableViewDataSource {
+extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
 
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -17,11 +17,46 @@ extension ThreadViewController: UITabBarDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        if fullyDisplayedSections[section] == true {
+            return 3
+        }
+        else {
+            return 1
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if fullyDisplayedSections[indexPath.section] == true {
+            return expandedCell(tableView, cellForRowAt:indexPath)
+        }
+        else {
+            return unexpandedCell(tableView, cellForRowAt:indexPath)
+        }
+    }
+
+    func unexpandedCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "unexpandedCell") as? EmailListViewCell else {
+            return UITableViewCell()
+        }
+        cell.subjectLabel.text = messages[indexPath.row]
+        return cell
+
+    }
+
+    func expandedCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+
+        }
         return UITableViewCell()
+    }
+
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if fullyDisplayedSections[indexPath.section] == false {
+            fullyDisplayedSections[indexPath.section] = true
+            let indexSet = IndexSet(integer: indexPath.section)
+            tableView.reloadSections(indexSet, with: .automatic)
+        }
     }
 
 }
