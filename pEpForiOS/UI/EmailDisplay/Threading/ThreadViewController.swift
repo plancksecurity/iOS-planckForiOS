@@ -15,10 +15,10 @@ class ThreadViewController: BaseViewController {
 
     var messages = ["hola", "que", "tal"]
     var fullyDisplayedSections : [Bool] = []
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        fullyDisplayedSections = messages.map {_ in return false}
+        fullyDisplayedSections = Array(repeating: false, count: model?.rowCount() ?? 0)
+
         // Do any additional setup after loading the view.
     }
 

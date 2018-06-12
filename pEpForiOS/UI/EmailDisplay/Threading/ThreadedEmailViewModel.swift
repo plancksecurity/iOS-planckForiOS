@@ -23,10 +23,10 @@ class ThreadedEmailViewModel {
         var isFlagged: Bool = false
         var isSeen: Bool = false
         var dateText: String
-        var messageCount: Int
         var opened: Bool = false
+        let body: String
 
-        init(withPreviewMessage pvmsg: PreviewMessage, senderContactImage: UIImage? = nil) {
+        init(withPreviewMessage pvmsg: FullyDisplayedMessage, senderContactImage: UIImage? = nil) {
             self.senderContactImage = senderContactImage
             showAttchmentIcon = pvmsg.hasAttachments
             from = pvmsg.from.userNameOrAddress
@@ -36,7 +36,7 @@ class ThreadedEmailViewModel {
             isFlagged = pvmsg.isFlagged
             isSeen = pvmsg.isSeen
             dateText = pvmsg.dateSent.smartString()
-            messageCount = pvmsg.numberOfMessagesInThread()
+            body = pvmsg.body
         }
     }
 
@@ -54,11 +54,15 @@ class ThreadedEmailViewModel {
     }
 
     func row(for index: Int) -> Row? {
-        let previewMessage = PreviewMessage(withMessage: messages[index])
+        let previewMessage = FullyDisplayedMessage(withMessage: messages[index])
         if let cachedSenderImage = contactImageTool.cachedIdentityImage(forIdentity: previewMessage.from) {
             return Row(withPreviewMessage: previewMessage, senderContactImage: cachedSenderImage)
         } else {
             return Row(withPreviewMessage: previewMessage)
         }
+    }
+
+    func rowCount() -> Int {
+        return messages.count
     }
 }

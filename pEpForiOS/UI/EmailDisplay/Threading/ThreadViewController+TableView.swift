@@ -13,7 +13,7 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
 
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return messages.count
+        return model?.rowCount() ?? 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
