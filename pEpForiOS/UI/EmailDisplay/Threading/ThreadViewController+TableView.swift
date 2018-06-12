@@ -25,6 +25,15 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if fullyDisplayedSections[indexPath.section] == true {
+            return UITableViewAutomaticDimension
+        }
+        else {
+            return 100
+        }
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if fullyDisplayedSections[indexPath.section] == true {
             return expandedCell(tableView, cellForRowAt:indexPath)
@@ -38,7 +47,12 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "unexpandedCell") as? EmailListViewCell else {
             return UITableViewCell()
         }
-        cell.subjectLabel.text = messages[indexPath.row]
+        let row = model?.row(for: indexPath.section)
+        cell.addressLabel.text = row?.from
+        cell.subjectLabel.text = row?.subject
+        cell.summaryLabel.text = row?.bodyPeek
+        cell.backgroundColor = UIColor.clear
+
         return cell
 
     }
