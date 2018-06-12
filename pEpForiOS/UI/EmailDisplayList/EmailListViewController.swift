@@ -278,11 +278,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
         guard let vm = model else {
+         //   let message = vm.message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No model.")
             return
         }
+        //if message.numberOfMessagesInThread() > 0 {
+            performSegue(withIdentifier: SegueIdentifier.segueShowThreadedEmail, sender: self)
+        //} else {
+          //  performSegue(withIdentifier: SegueIdentifier.segueShowThreadedEmail, sender: self)
+        //}
         vm.markRead(forIndexPath: indexPath)
     }
 
@@ -881,6 +886,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueFolderViews
         case segueShowMoveToFolder
         case showNoMessage
+        case segueShowThreadedEmail
         case noSegue
     }
     
@@ -907,6 +913,20 @@ extension EmailListViewController: SegueHandlerType {
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model
             model?.currentDisplayedMessage = vc
+        case .segueShowThreadedEmail:
+            guard let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? ThreadViewController,
+                let indexPath = lastSelectedIndexPath,
+                let folder = folderToShow else {
+                    return
+            }
+              /*  let message = model?.message(representedByRowAt: indexPath) else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
+            }*/
+            vc.appConfig = appConfig
+            
+            vc.model = ThreadedEmailViewModel(tip:ThreadedFolderStub.init(folder: folder).allMessages()[0], folder: folder)
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")

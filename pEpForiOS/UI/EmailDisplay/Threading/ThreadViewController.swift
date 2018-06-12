@@ -8,9 +8,10 @@
 
 import UIKit
 
-class ThreadViewController: UIViewController {
+class ThreadViewController: BaseViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    var model: ThreadedEmailViewModel? = nil
 
     var messages = ["hola", "que", "tal"]
     var fullyDisplayedSections : [Bool] = []
