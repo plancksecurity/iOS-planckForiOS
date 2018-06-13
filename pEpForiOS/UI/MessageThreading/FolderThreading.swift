@@ -12,7 +12,7 @@ import MessageModel
 
 class FolderThreading {
     static func factory() -> ThreadedMessageFolderFactoryProtocol {
-        return ThreadUnAwareFolderFactory()
+        return ThreadAwareFolderFactory()
     }
 
     /**
