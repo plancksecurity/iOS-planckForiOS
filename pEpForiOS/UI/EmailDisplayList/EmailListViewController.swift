@@ -83,7 +83,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 object: nil)
         }
         setup()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -92,7 +91,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
-
 
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
@@ -965,12 +963,14 @@ extension EmailListViewController: SegueHandlerType {
             destiny.filterEnabled = folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
-            guard let nav = segue.destination as? UINavigationController,
-            let vc = nav.rootViewController as? LoginTableViewController else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                return
+            guard
+                let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? LoginTableViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
             }
             vc.appConfig = appConfig
+            vc.delegate = self
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:
@@ -1056,6 +1056,16 @@ extension EmailListViewController: SegueHandlerType {
         default:
             return nil
         }
+    }
+}
+
+// MARK: - LoginTableViewControllerDelegate
+
+extension EmailListViewController: LoginTableViewControllerDelegate {
+    func loginTableViewControllerDidCreateNewAccount(
+        _ loginTableViewController: LoginTableViewController) {
+        // Setup model after initial account setup
+        setup()
     }
 }
 
