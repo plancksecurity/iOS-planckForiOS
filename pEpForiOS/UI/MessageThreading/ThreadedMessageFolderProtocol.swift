@@ -33,7 +33,10 @@ protocol ThreadedMessageFolderProtocol {
 
     /**
      - Returns: All messages belonging to the same thread, that went before.
-     - Note: Only downloaded, decrypted messages are considered.
+     - Note:
+       * Only downloaded, decrypted messages are considered
+         (that is to say, they exist locally in the DB in unencrypted form).
+       * They are ordered oldest to newest (if possible to determine).
      */
     func messagesInThread(message: Message) -> [Message]
 
