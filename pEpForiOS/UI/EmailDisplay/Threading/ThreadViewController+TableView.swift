@@ -53,13 +53,13 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func expandedCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "expandedCell") as? EmailListViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "expandedCell") as? FullMessageCell else {
             return UITableViewCell()
         }
         let row = model?.row(for: indexPath.section)
         cell.addressLabel.text = row?.from
         cell.subjectLabel.text = row?.subject
-        cell.summaryLabel.text = row?.bodyPeek
+        cell.bodyText.text = row?.body
         cell.backgroundColor = UIColor.clear
 
         return cell
