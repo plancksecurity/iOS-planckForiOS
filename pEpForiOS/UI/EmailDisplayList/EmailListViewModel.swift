@@ -87,7 +87,7 @@ class EmailListViewModel {
 
     private var selectedItems: Set<IndexPath>?
     
-    // MARK: Life Cycle
+    // MARK: - Life Cycle
     
     init(delegate: EmailListViewModelDelegate? = nil, messageSyncService: MessageSyncServiceProtocol,
          folderToShow: Folder) {
@@ -124,7 +124,7 @@ class EmailListViewModel {
         }
     }
     
-    // MARK: Public Data Access & Manipulation
+    // MARK: - Public Data Access & Manipulation
 
     func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
         guard let previewMessages = messages else {
@@ -369,7 +369,7 @@ class EmailListViewModel {
         resetViewModel()
     }
 
-    // MARK: Filter
+    // MARK: - Filter
     
     public var isFilterEnabled = false {
         didSet {
