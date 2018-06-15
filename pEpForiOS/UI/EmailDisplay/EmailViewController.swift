@@ -477,13 +477,13 @@ extension EmailViewController: SegueHandlerType {
             }
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToFolderViewController else {
+                let destination = nav.topViewController as? MoveToAccountViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
             destination.appConfig = appConfig
             if let msg = message {
-                destination.viewModel = MoveToFolderViewMode(messages: [msg])
+                destination.viewModel = MoveToAccountViewModel(messages: [msg])
             }
             //destination.delegate = self
         case .segueHandshake:

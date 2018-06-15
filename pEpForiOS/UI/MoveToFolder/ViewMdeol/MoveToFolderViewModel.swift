@@ -39,7 +39,6 @@ class MoveToAccountViewModel {
     var count : Int {
         return self.items.count
     }
-
 }
 
 class MoveToAccountCellViewModel {
@@ -51,8 +50,8 @@ class MoveToAccountCellViewModel {
         self.account = account
         self.title = account.user.address
     }
-    
-    public func ViewModel() -> moveToFolderViewModel {
+
+    public func viewModel() -> moveToFolderViewModel {
         return moveToFolderViewModel(account: account)
     }
 }
@@ -63,28 +62,42 @@ class moveToFolderViewModel {
     init(account: Account) {
         items = []
         self.acc = account
-
+        generateAccountCells()
     }
 
     private func generateAccountCells() {
         for folder in acc.rootFolders {
-            items.append(moveToFolderCellViewModel(folder: folder/*, level: 0*/))
-            childFolder(root: folder/*, level: 1*/)
+            items.append(moveToFolderCellViewModel(folder: folder, level: 0))
+            childFolder(root: folder, level: 1)
         }
     }
 
-    private func childFolder(root folder: Folder/*, level: Int*/) {
+    private func childFolder(root folder: Folder, level: Int) {
         for subFolder in folder.subFolders() {
-            items.append(moveToFolderCellViewModel(folder: subFolder/*, level: level*/))
-            childFolder(root: subFolder/*, level: level + 1*/)
+            items.append(moveToFolderCellViewModel(folder: subFolder, level: level))
+            childFolder(root: subFolder, level: level + 1)
         }
+    }
+
+    subscript(index: Int) -> moveToFolderCellViewModel {
+        get {
+            return self.items[index]
+        }
+    }
+
+    var count : Int {
+        return self.items.count
     }
 }
 
 class moveToFolderCellViewModel {
     var folder: Folder
+    var title: String
+    var indentationLevel: Int
 
-    init(folder: Folder) {
+    init(folder: Folder, level: Int) {
         self.folder = folder
+        self.title = folder.realName
+        self.indentationLevel = level
     }
 }

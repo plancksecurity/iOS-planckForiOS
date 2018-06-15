@@ -991,14 +991,14 @@ extension EmailListViewController: SegueHandlerType {
             }
 
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToFolderViewController,
+                let destination = nav.topViewController as? MoveToAccountViewController,
                 let messages = model?.messagesToMove(indexPaths: selectedRows)
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
             if let msgs = messages as? [Message] {
-                let destinationvm = MoveToFolderViewMode(messages: msgs)
+                let destinationvm = MoveToAccountViewModel(messages: msgs)
                 destination.viewModel = destinationvm
             }
             destination.appConfig = appConfig
