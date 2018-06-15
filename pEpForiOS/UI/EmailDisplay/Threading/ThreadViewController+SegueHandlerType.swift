@@ -17,7 +17,8 @@ extension ThreadViewController: SegueHandlerType {
         let segueId = segueIdentifier(for: segue)
         switch segueId {
         case .segueShowEmail:
-            guard let vc = segue.destination as? EmailViewController,
+            guard let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? EmailViewController,
                 let appConfig = self.appConfig,
                 let indexPath = tableView.indexPathForSelectedRow,
                 let message = model?.message(at: indexPath.section) else {

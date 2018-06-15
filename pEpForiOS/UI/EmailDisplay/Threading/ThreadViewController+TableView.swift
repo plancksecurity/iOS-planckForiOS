@@ -62,7 +62,6 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
         cell.subjectLabel.text = row?.subject
         cell.bodyText.attributedText = row?.body
         cell.bodyText.tintColor = UIColor.pEpGreen
-        print(row?.body,"holas", row?.bodyPeek)
 
         cell.backgroundColor = UIColor.clear
         //cell.setContactImage(image: row?.senderContactImage)

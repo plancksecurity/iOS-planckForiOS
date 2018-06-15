@@ -318,6 +318,7 @@
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES"/>
                                                                         </textView>
                                                                     </subviews>
                                                                     <constraints>
@@ -399,7 +400,7 @@
                     <navigationItem key="navigationItem" id="yGW-BP-EVH"/>
                     <connections>
                         <outlet property="tableView" destination="Yrb-DL-w8R" id="5xZ-00-SVq"/>
-                        <segue destination="Kkk-c0-S5g" kind="showDetail" identifier="segueShowEmail" id="Aed-9C-oac"/>
+                        <segue destination="Kkk-c0-S5g" kind="custom" identifier="segueShowEmail" customClass="DetailCellSegue" customModule="pEpForiOS" customModuleProvider="target" id="Aed-9C-oac"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HcI-4f-frN" userLabel="First Responder" sceneMemberID="firstResponder"/>
