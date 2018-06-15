@@ -27,6 +27,9 @@ class MessageViewModel {
     var dateText: String
     var messageCount: Int
     var profilePictureComposer: ProfilePictureComposer
+    var body: NSAttributedString {
+            return getBodyMessage()
+    }
     private var message: Message
 
     init(with message: Message, senderContactImage: UIImage? = nil) {
@@ -41,7 +44,7 @@ class MessageViewModel {
         dateText =  (message.sent ?? Date()).smartString()
         messageCount = message.numberOfMessagesInThread()
         profilePictureComposer = PepProfilePictureComposer()
-        bodyPeek = MessageViewModel.displayBody(fromMessage: message)
+        bodyPeek = MessageViewModel.getSummary(fromMessage: message)
         self.message = message
     }
 
@@ -64,7 +67,7 @@ class MessageViewModel {
         }
     }
 
-    private class func displayBody(fromMessage msg: Message) -> String {
+    private class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
         if let text = msg.longMessage {
             body = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
@@ -99,6 +102,34 @@ class MessageViewModel {
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
         profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+    }
+
+
+    func getBodyMessage() -> NSMutableAttributedString {
+        let finalText = NSMutableAttributedString()
+        if message.underAttack {
+            let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
+            let messageString = String(
+                format: NSLocalizedString(
+                    "\n%@\n\n%@\n\n%@\n\nAttachments are disabled.\n\n",
+                    comment: "Disabled attachments for a message with status 'under attack'. Placeholders: title, explanation, suggestion."),
+                status.title, status.explanation, status.suggestion)
+            finalText.bold(messageString)
+        }
+
+        if let text = message.longMessage?.trimmedWhiteSpace() {
+            finalText.normal(text)
+        } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
+            finalText.normal(text)
+        } else if message.pEpRating().isUnDecryptable() {
+            finalText.normal(NSLocalizedString(
+                "This message could not be decrypted.",
+                comment: "content that is shown for undecryptable messages"))
+        } else {
+            // Empty body
+            finalText.normal("")
+        }
+        return finalText
     }
 
 
