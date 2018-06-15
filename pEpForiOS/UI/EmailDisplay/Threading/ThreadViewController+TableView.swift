@@ -60,7 +60,10 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
         let row = model?.viewModel(for: indexPath.section)
         cell.addressLabel.text = row?.from
         cell.subjectLabel.text = row?.subject
-      //  cell.bodyText.text = row?.body
+        cell.bodyText.attributedText = row?.body
+        cell.bodyText.tintColor = UIColor.pEpGreen
+        print(row?.body,"holas", row?.bodyPeek)
+
         cell.backgroundColor = UIColor.clear
         //cell.setContactImage(image: row?.senderContactImage)
 
@@ -73,6 +76,9 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
             fullyDisplayedSections[indexPath.section] = true
             let indexSet = IndexSet(integer: indexPath.section)
             tableView.reloadSections(indexSet, with: .automatic)
+        }
+        else {
+            performSegue(withIdentifier: .segueShowEmail, sender: self)
         }
     }
 
