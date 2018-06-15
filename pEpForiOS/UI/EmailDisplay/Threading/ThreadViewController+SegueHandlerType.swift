@@ -19,17 +19,16 @@ extension ThreadViewController: SegueHandlerType {
         case .segueShowEmail:
             guard let vc = segue.destination as? EmailViewController,
                 let appConfig = self.appConfig,
-                let indexPath = tableView.indexPathForSelectedRow /*,
-                let message = model?.message(representedByRowAt: indexPath) */ else {
+                let indexPath = tableView.indexPathForSelectedRow,
+                let message = model?.message(at: indexPath.section) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
             vc.appConfig = appConfig
-//            vc.message = message
-//            vc.folderShow = folderToShow
-//            vc.messageId = indexPath.row //that looks wrong
-//            vc.delegate = model
-//            model?.currentDisplayedMessage = vc
+
+            vc.message = message
+            vc.folderShow = model?.displayFolder
+            vc.messageId = indexPath.row
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break
