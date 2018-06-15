@@ -13,19 +13,11 @@ class MoveToFolderViewController: BaseViewController {
     let storyboardId = "MoveToFolderViewController"
     //weak var delegate : MoveToFolderDelegate?
     @IBOutlet var tableview: UITableView!
-    var viewModel: MoveToFolderViewMode?
+    var viewModel: MoveToAccountViewModel?
     private let cellId = "AccountCell"
 
-    //private let indentationWidth: CGFloat = 20.0
     //private var viewModel: FolderViewModel?
-    /// We do not allow to move messages to those folders.
-    /// Drafts: It does not make sense to move a message e.g. from Inbox to Drafts.
-    ///         Who is supposed to be the sender (From) when opening the draft?
-    /// Sent:   It does not make sense to move a message e.g. from Inbox to Sent.
-    ///         Also Sent needs special handling (encrypt for self or such).
-    //static fileprivate let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
 
-    //var message: [Message?] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -94,42 +86,14 @@ extension MoveToFolderViewController: UITableViewDataSource {
 
 }
 
+// MARK: - UITableViewDelegate
 extension MoveToFolderViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //perform segue con el viewmodel inicializado de la siguiente vista.
     }
 }
 
-// MARK: - UITableViewDelegate
 /*
-extension MoveToFolderViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if !isSelectable(rowAt: indexPath) {
-            // We are not allowed to move messags in the folder. Do nothing.
-            let selectedCell = tableView.cellForRow(at: indexPath)
-            selectedCell?.setSelected(false, animated: false)
-            return
-        }
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "missing data")
-            return
-        }
-        let folderCellVM = vm[indexPath.section][indexPath.row]
-        let targetFolder = folderCellVM.folder
-
-        let allowedToMoveMessages = message.filter { message in
-            message?.isAllowedToMoveTo(targetFolder: targetFolder) ?? false
-        }
-
-        allowedToMoveMessages.forEach { message in
-            message?.move(to: targetFolder)
-        }
-        
-        delegate?.didMove(messages: allowedToMoveMessages)
-        dismiss(animated: true)
-    }
-}
-
 // MARK: - SELECTABILITY
 
 private extension MoveToFolderViewController {
