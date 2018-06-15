@@ -449,6 +449,7 @@
 		B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74940021ECB3BEB001A710B /* UILabel+Extension.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
+		B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
 		B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */; };
@@ -958,6 +959,7 @@
 		B74940021ECB3BEB001A710B /* UILabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
+		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
 		B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
@@ -1119,8 +1121,8 @@
 		15BA537A20A1F5CA0090F126 /* MoveToFolder */ = {
 			isa = PBXGroup;
 			children = (
+				B76CF8B420D273A4002429A8 /* ViewMdeol */,
 				15BA537B20A1F5F50090F126 /* MoveToFolderViewController.swift */,
-				001D365D20C56470002434EB /* MoveToFolderDelegate.swift */,
 			);
 			path = MoveToFolder;
 			sourceTree = "<group>";
@@ -2131,6 +2133,15 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
+		B76CF8B420D273A4002429A8 /* ViewMdeol */ = {
+			isa = PBXGroup;
+			children = (
+				B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */,
+				001D365D20C56470002434EB /* MoveToFolderDelegate.swift */,
+			);
+			path = ViewMdeol;
+			sourceTree = "<group>";
+		};
 		B78CF8261E76D70D008C1739 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -2478,6 +2489,7 @@
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,
 				43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */,
 				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
+				B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */,
 				155050F61FEAB082009CEAD2 /* ErrorContainer.swift in Sources */,
 				151F71D22029FA1B0057C74D /* PantomimeFolderAttribute+Extensions.swift in Sources */,
 				43425EDD1FE3DF3B004A2728 /* OAuth2Provider.swift in Sources */,

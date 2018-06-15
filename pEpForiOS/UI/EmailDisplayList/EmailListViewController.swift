@@ -997,9 +997,11 @@ extension EmailListViewController: SegueHandlerType {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
+            if let msgs = messages as? [Message] {
+                let destinationvm = MoveToFolderViewMode(messages: msgs)
+                destination.viewModel = destinationvm
+            }
             destination.appConfig = appConfig
-            destination.message = messages
-            destination.delegate = model
             break
         case .showNoMessage:
             //No initialization needed

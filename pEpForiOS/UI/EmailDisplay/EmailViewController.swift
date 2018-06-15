@@ -482,8 +482,10 @@ extension EmailViewController: SegueHandlerType {
                     break
             }
             destination.appConfig = appConfig
-            destination.message = [message]
-            destination.delegate = self
+            if let msg = message {
+                destination.viewModel = MoveToFolderViewMode(messages: [msg])
+            }
+            //destination.delegate = self
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")

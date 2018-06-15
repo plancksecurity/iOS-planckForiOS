@@ -8,25 +8,24 @@
 
 import UIKit
 
-import MessageModel
-
 /// Enables the user to move an IMAP message to a folder of her choice
 class MoveToFolderViewController: BaseViewController {
     let storyboardId = "MoveToFolderViewController"
-    weak var delegate : MoveToFolderDelegate?
+    //weak var delegate : MoveToFolderDelegate?
     @IBOutlet var tableview: UITableView!
+    var viewModel: MoveToFolderViewMode?
+    private let cellId = "AccountCell"
 
-    private let cellId = "MoveToFolderCell"
-    private let indentationWidth: CGFloat = 20.0
-    private var viewModel: FolderViewModel?
+    //private let indentationWidth: CGFloat = 20.0
+    //private var viewModel: FolderViewModel?
     /// We do not allow to move messages to those folders.
     /// Drafts: It does not make sense to move a message e.g. from Inbox to Drafts.
     ///         Who is supposed to be the sender (From) when opening the draft?
     /// Sent:   It does not make sense to move a message e.g. from Inbox to Sent.
     ///         Also Sent needs special handling (encrypt for self or such).
-    static fileprivate let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
+    //static fileprivate let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
 
-    var message: [Message?] = []
+    //var message: [Message?] = []
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -39,7 +38,7 @@ class MoveToFolderViewController: BaseViewController {
     private func setup() {
         setupNavigationBar()
         setupTableView()
-        setupViewModel()
+        //setupViewModel()
     }
 
     private func setupTableView() {
@@ -63,19 +62,6 @@ class MoveToFolderViewController: BaseViewController {
                                                            action:#selector(self.backButton))
     }
 
-    private func setupViewModel() {
-        var acc: [Account] = []
-        message.forEach { (msg) in
-            guard let account = msg?.parent.account else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "What are we supposed to display?")
-                return
-            }
-            acc.append(account)
-        }
-        viewModel = FolderViewModel(withFordersIn: acc,  includeUnifiedInbox: false)
-    }
-
     // MARK: - ACTION
 
     @objc func backButton() {
@@ -87,41 +73,35 @@ class MoveToFolderViewController: BaseViewController {
 
 extension MoveToFolderViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel?.count ?? 0
+        return 1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?[section].count ?? 0
+        if let vm = viewModel {
+            return vm.count
+        }
+        return 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model")
-            return cell
+        if let vm = viewModel?[indexPath.row] {
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell.textLabel?.text = vm.title
         }
-        let fcvm = vm[indexPath.section][indexPath.row]
-        cell.textLabel?.text = fcvm.title
-        if !isSelectable(rowAt: indexPath) {
-            // Grey out unselectable folders
-            cell.textLabel?.textColor = UIColor.pEpGray
-        }
-        cell.imageView?.image = fcvm.icon
-        cell.indentationWidth = indentationWidth
         return cell
     }
 
-    func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model")
-            return 0
-        }
-        return vm[indexPath.section][indexPath.row].level - 1
+}
+
+extension MoveToFolderViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //perform segue con el viewmodel inicializado de la siguiente vista.
     }
 }
 
 // MARK: - UITableViewDelegate
-
+/*
 extension MoveToFolderViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !isSelectable(rowAt: indexPath) {
@@ -169,4 +149,4 @@ private extension Message {
             !MoveToFolderViewController.folderTypesNotAllowedToMoveTo.contains(targetFolder.folderType)
                 && parent != targetFolder
     }
-}
+}*/
