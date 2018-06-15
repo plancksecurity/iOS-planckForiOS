@@ -15,10 +15,14 @@ class ThreadedEmailViewModel {
     private var messages: [Message]
     private let folder: ThreadedFolderStub
 
+    //Needed for segue
+    public let displayFolder: Folder
+
     init(tip: Message, folder: Folder) {
       //  messages = tip.messagesInThread()
         messages = folder.allMessages()
         self.folder = ThreadedFolderStub(folder: folder)
+        displayFolder = folder
     }
 
     func deleteMessage(at index: Int){
@@ -46,5 +50,12 @@ class ThreadedEmailViewModel {
 
     func rowCount() -> Int {
         return messages.count
+    }
+
+    func message(at index: Int) -> Message? {
+        guard index < messages.count && index >= 0 else {
+            return nil
+        }
+        return messages[index]
     }
 }
