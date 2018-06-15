@@ -9,12 +9,13 @@
 import UIKit
 
 /// Enables the user to move an IMAP message to a folder of her choice
-class MoveToFolderViewController: BaseViewController {
-    let storyboardId = "MoveToFolderViewController"
+class MoveToAccountViewController: BaseViewController {
+    let storyboardId = "MoveToAccountViewController"
     //weak var delegate : MoveToFolderDelegate?
     @IBOutlet var tableview: UITableView!
     var viewModel: MoveToAccountViewModel?
     private let cellId = "AccountCell"
+    private var selectedViewModel : moveToFolderViewModel?
 
     //private var viewModel: FolderViewModel?
 
@@ -30,12 +31,9 @@ class MoveToFolderViewController: BaseViewController {
     private func setup() {
         setupNavigationBar()
         setupTableView()
-        //setupViewModel()
     }
 
     private func setupTableView() {
-        tableview.dataSource = self
-        tableview.delegate = self
         hideSeperatorForEmptyCells()
     }
 
@@ -63,7 +61,7 @@ class MoveToFolderViewController: BaseViewController {
 
 // MARK: - UITableViewDataSource
 
-extension MoveToFolderViewController: UITableViewDataSource {
+extension MoveToAccountViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -87,9 +85,23 @@ extension MoveToFolderViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-extension MoveToFolderViewController: UITableViewDelegate {
+extension MoveToAccountViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //perform segue con el viewmodel inicializado de la siguiente vista.
+        self.selectedViewModel = viewModel?[indexPath.row].viewModel()
+        performSegue(withIdentifier: "showAccount", sender: self)
+    }
+}
+
+// Mark: Segue
+extension MoveToAccountViewController {
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showAccount" {
+            if let vc = segue.destination as? MoveToFolderTableViewController, let appCfg = self.appConfig, let vm = selectedViewModel {
+                vc.appConfig = appCfg
+                vc.viewModel = vm
+            }
+        }
     }
 }
 
