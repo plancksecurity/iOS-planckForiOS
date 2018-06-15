@@ -71,6 +71,31 @@ class EmailListViewCell: SwipeTableViewCell {
         }
     }
 
+
+    public func configure(for viewModel: MessageViewModel) {
+        addressLabel.text = viewModel.address
+        subjectLabel.text = viewModel.subject
+        summaryLabel.text = viewModel.bodyPeek
+        isFlagged = viewModel.isFlagged
+        isSeen = viewModel.isSeen
+        hasAttachment = viewModel.showAttchmentIcon
+        dateLabel.text = viewModel.dateText
+        messageCount = viewModel.messageCount
+        if viewModel.senderContactImage != nil {
+            setContactImage(image: viewModel.senderContactImage)
+        } else {
+            viewModel.getProfilePicture {
+                image in
+                self.setContactImage(image: image )
+            }
+        }
+        viewModel.getSecurityBadge {
+            image in
+            self.setPepRatingImage(image: image)
+        }
+
+    }
+
     func setPepRatingImage(image: UIImage?) {
         guard image != nil else {
             return

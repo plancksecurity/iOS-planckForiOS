@@ -194,85 +194,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     // MARK: - Other
 
-    private func address(forRowAt indexPath: IndexPath) -> String {
-        guard
-            let saveModel = model,
-            let row = saveModel.row(for: indexPath),
-            let folder = folderToShow
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-                return ""
-        }
-        switch folder.folderType {
-        case .all: fallthrough
-        case .archive: fallthrough
-        case .spam: fallthrough
-        case .trash: fallthrough
-        case .flagged: fallthrough
-        case .inbox: fallthrough
-        case .normal:
-            return row.from
-        case .drafts: fallthrough
-        case .sent:
-            return row.to
-        }
-    }
-    
-    private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {
-        // Configure lightweight stuff on main thread ...
-        guard let saveModel = model else {
-            return
-        }
-        guard let row = saveModel.row(for: indexPath) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
-            return
-        }
-        cell.addressLabel.text = address(forRowAt: indexPath)
-        cell.subjectLabel.text = row.subject
-        cell.summaryLabel.text = row.bodyPeek
-        cell.isFlagged = row.isFlagged
-        cell.isSeen = row.isSeen
-        cell.hasAttachment = row.showAttchmentIcon
-        cell.dateLabel.text = row.dateText
-        // Set image from cache if any
-        cell.setContactImage(image: row.senderContactImage)
-        cell.messageCount = row.messageCount
-
-        let op = BlockOperation() { [weak self] in
-            MessageModel.performAndWait {
-                // ... and expensive computations in background
-                guard let strongSelf = self else {
-                    // View is gone, nothing to do.
-                    return
-                }
-
-                if row.senderContactImage == nil {
-                    // image for identity has not been cached yet
-                    // Get (and cache) it here in the background ...
-                    let senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
-                    
-                    // ... and set it on the main queue
-                    DispatchQueue.main.async {
-                        if senderImage != nil && senderImage != cell.contactImageView.image {
-                            cell.contactImageView.image  = senderImage
-                        }
-                    }
-                }
-                
-                guard let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath) else {
-                    return
-                }
-                
-                // In theory we want to set all data in *one* async call. But as pEpRatingColorImage takes
-                // very long, we are setting the sender image seperatelly. //IOS-999: after Engine rewrite and not logging to Engine anymore computing the peprating is way more performant. Try if moving this up in image setting block.
-                DispatchQueue.main.async {
-                    cell.setPepRatingImage(image: pEpRatingImage)
-                }
-            }
-        }
-        queue(operation: op, for: indexPath)
-    }
-
     private func showComposeView() {
         self.performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
@@ -492,7 +413,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
-            configure(cell: theCell, for: indexPath)
+            guard let viewModel =  model?.viewModel(for: indexPath.row) else {
+                return cell
+            }
+            theCell.configure(for:viewModel)
         } else {
             Log.shared.errorAndCrash(component: #function, errorString: "dequeued wrong cell")
         }
@@ -849,7 +773,7 @@ extension EmailListViewController {
     }
     
     func flagAction(forCellAt indexPath: IndexPath) {
-        guard let row = model?.row(for: indexPath) else {
+        guard let row = model?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
             return
         }

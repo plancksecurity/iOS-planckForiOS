@@ -42,11 +42,12 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "unexpandedCell") as? EmailListViewCell else {
             return UITableViewCell()
         }
-        let row = model?.row(for: indexPath.section)
+        let row = model?.viewModel(for: indexPath.section)
         cell.addressLabel.text = row?.from
         cell.subjectLabel.text = row?.subject
         cell.summaryLabel.text = row?.bodyPeek
         cell.backgroundColor = UIColor.clear
+        cell.setContactImage(image: row?.senderContactImage)
 
         return cell
 
@@ -56,11 +57,12 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "expandedCell") as? FullMessageCell else {
             return UITableViewCell()
         }
-        let row = model?.row(for: indexPath.section)
+        let row = model?.viewModel(for: indexPath.section)
         cell.addressLabel.text = row?.from
         cell.subjectLabel.text = row?.subject
-        cell.bodyText.text = row?.body
+      //  cell.bodyText.text = row?.body
         cell.backgroundColor = UIColor.clear
+        //cell.setContactImage(image: row?.senderContactImage)
 
         return cell
     }
