@@ -50,4 +50,11 @@ protocol ThreadedMessageFolderProtocol {
      before it.
      */
     func deleteThread(message: Message)
+
+    /**
+     When a new message arrives, the client needs to find out if it belongs into to the
+     message list (of thread tips), or if it's a message referenced by a top message
+     (then it might have to go to the thread view).
+     */
+    func isTop(newMessage: Message) -> Bool
 }

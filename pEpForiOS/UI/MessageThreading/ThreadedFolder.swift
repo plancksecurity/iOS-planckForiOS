@@ -57,4 +57,9 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     func deleteThread(message: Message) {
         deleteSingle(message: message)
     }
+
+    func isTop(newMessage: Message) -> Bool {
+        // TODO
+        return true
+    }
 }
