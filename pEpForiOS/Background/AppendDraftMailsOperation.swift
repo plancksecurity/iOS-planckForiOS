@@ -12,13 +12,14 @@ import CoreData
 import MessageModel
 
 public class AppendDraftMailsOperation: AppendMailsOperationBase {
-    public init(
-        parentName: String = #function, imapSyncData: ImapSyncData,
-        errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+    public init(parentName: String = #function,
+                imapSyncData: ImapSyncData,
+                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         let appendFolder = FolderType.drafts
-        super.init(parentName: parentName, appendFolderType: appendFolder,
-                   imapSyncData: imapSyncData, errorContainer: errorContainer,
-                   encryptMode: .encryptToMySelf)
+        super.init(parentName: parentName,
+                   appendFolderType: appendFolder,
+                   imapSyncData: imapSyncData,
+                   errorContainer: errorContainer)
     }
 
     override func retrieveNextMessage() -> (PEPMessageDict, PEPIdentity, NSManagedObjectID)? {
@@ -33,7 +34,6 @@ public class AppendDraftMailsOperation: AppendMailsOperationBase {
                 result = (m.pEpMessageDict(), cdIdent.pEpIdentity(), m.objectID)
             }
         }
-        
         return result
     }
 }

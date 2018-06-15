@@ -19,26 +19,6 @@ import MessageModel
  For marking the message as done, you MAY overwrite `markLastMessageAsFinished`.
  */
 public class AppendMailsOperationBase: ImapSyncOperation {
-    public enum EncryptMode {
-        // Encrypt messages for myself
-        case encryptToMySelf
-
-        // Encrypt messages as if they were outgoing
-        case encryptAsOutgoing
-
-        public func encrypt(session: PEPSession, pEpMessageDict: PEPMessageDict,
-                            forSelf: PEPIdentity? = nil)
-            throws -> (PEP_STATUS, NSDictionary?) {
-                switch self {
-                case .encryptToMySelf:
-                    return try session.encrypt(
-                        pEpMessageDict: pEpMessageDict, forSelf: forSelf)
-                case .encryptAsOutgoing:
-                    return try session.encrypt(pEpMessageDict: pEpMessageDict)
-                }
-        }
-    }
-
     var syncDelegate: AppendMailsSyncDelegate?
 
     /** The object ID of the last handled message, so we can modify/delete it on success */
@@ -50,16 +30,9 @@ public class AppendMailsOperationBase: ImapSyncOperation {
     /** On finish, the messageIDs of the messages that have been sent successfully */
     private(set) var successAppendedMessageIDs = [String]()
 
-    /**
-     This changes the encryption that is used for the message to be appended.
-     */
-    private let encryptMode: EncryptMode
-
     init(parentName: String = #function, appendFolderType: FolderType, imapSyncData: ImapSyncData,
-                errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                encryptMode: EncryptMode) {
+                errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         targetFolderType = appendFolderType
-        self.encryptMode = encryptMode
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
     }
@@ -182,6 +155,11 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         }
     }
 
+    func encrypt(session: PEPSession, pEpMessageDict: PEPMessageDict, forSelf: PEPIdentity? = nil)
+        throws -> (PEP_STATUS, NSDictionary?) {
+          return try session.encrypt(pEpMessageDict: pEpMessageDict, forSelf: forSelf)
+    }
+
     func handleNextMessage() {
         markLastMessageAsFinished()
         guard !isCancelled else {
@@ -196,8 +174,7 @@ public class AppendMailsOperationBase: ImapSyncOperation {
         determineTargetFolder(msgID: objID)
         let session = PEPSession()
         do {
-            let (_, encMsg) = try encryptMode.encrypt(session: session, pEpMessageDict: msg,
-                                                      forSelf: ident)
+            let (_, encMsg) = try encrypt(session: session, pEpMessageDict: msg, forSelf: ident)
             appendMessage(pEpMessageDict: encMsg as? PEPMessageDict)
         } catch let err as NSError {
             handleError(err, message: "Cannot encrypt message")
