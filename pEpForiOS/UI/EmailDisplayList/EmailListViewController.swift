@@ -531,13 +531,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         return cell
     }
+
+    // MARK: - UITableViewDelegate
     
-    // MARK: - SwipeTableViewCellDelegate
-
-    fileprivate func folderIsDraft(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType != .drafts
-    }
-
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt
         indexPath: IndexPath,
@@ -605,35 +601,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return options
     }
 
-    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
-        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
-        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
-
-        switch buttonStyle {
-        case .backgroundColor:
-            action.backgroundColor = descriptor.color
-        case .circular:
-            action.backgroundColor = .clear
-            action.textColor = descriptor.color
-            action.font = .systemFont(ofSize: 13)
-            action.transitionDelegate = ScaleTransition.default
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelOperation(for: indexPath)
     }
 
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if tableView.isEditing, let vm = model {
-            if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-                vm.updatedItems(indexPaths: selectedIndexPaths)
-            } else {
-                vm.updatedItems(indexPaths: [])
-            }
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
             if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
@@ -655,6 +626,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView.isEditing, let vm = model {
+            if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                vm.updatedItems(indexPaths: selectedIndexPaths)
+            } else {
+                vm.updatedItems(indexPaths: [])
+            }
+        }
+    }
+
     // Implemented to get informed about the scrolling position.
     // If the user has scrolled down (almost) to the end, we need to get older emails to display.
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
@@ -664,6 +645,27 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
         vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
+    }
+
+    // MARK: - SwipeTableViewCellDelegate
+
+    fileprivate func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType != .drafts
+    }
+
+    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
+        }
     }
 
     // MARK: - Queue Handling
