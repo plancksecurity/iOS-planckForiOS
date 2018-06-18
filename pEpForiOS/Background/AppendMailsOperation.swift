@@ -13,7 +13,27 @@ import MessageModel
 
 /// Operation for storing mails in any type of IMAP folder.
 public class AppendMailsOperation: ImapSyncOperation {
-    var syncDelegate: AppendMailsSyncDelegate?
+    enum EncryptMode {
+        case forSelf
+        case unencryptedForTrustedServer
+    }
+    private var encryptMode: EncryptMode {
+        var result = EncryptMode.forSelf
+        privateMOC.performAndWait {
+            guard
+                let cdAccount = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
+                    as? CdAccount,
+                let imapServer = cdAccount.server(type: .imap)
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No account")
+                    result = .forSelf
+                    return
+            }
+            result = imapServer.trusted ? .unencryptedForTrustedServer : .forSelf
+        }
+        return result
+    }
+    private var syncDelegate: AppendMailsSyncDelegate?
 
     /** The object ID of the last handled message, so we can modify/delete it on success */
     var lastHandledMessageObjectID: NSManagedObjectID?
@@ -118,17 +138,24 @@ public class AppendMailsOperation: ImapSyncOperation {
         lastHandledMessageObjectID = objID
 
         let session = PEPSession()
-        do {
-            let (_, encMsg) = try encrypt(session: session, pEpMessageDict: msg, forSelf: ident)
-            guard let msgDict = encMsg as? PEPMessageDict else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
-                handleError(BackgroundError.GeneralError.illegalState(info: "Eror casting"),
-                            message: "Error casting")
-                return
+        if encryptMode == .unencryptedForTrustedServer {
+            // Append unencrypted for trusted server.
+            appendMessage(pEpMessageDict: msg)
+        } else {
+            // Encrypt for self ...
+            do {
+                let (_, encMsg) = try encrypt(session: session, pEpMessageDict: msg, forSelf: ident)
+                guard let msgDict = encMsg as? PEPMessageDict else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                    handleError(BackgroundError.GeneralError.illegalState(info: "Eror casting"),
+                                message: "Error casting")
+                    return
+                }
+                // ...  and append.
+                appendMessage(pEpMessageDict: msgDict)
+            } catch let err as NSError {
+                handleError(err, message: "Cannot encrypt message")
             }
-            appendMessage(pEpMessageDict: msgDict)
-        } catch let err as NSError {
-            handleError(err, message: "Cannot encrypt message")
         }
     }
 
