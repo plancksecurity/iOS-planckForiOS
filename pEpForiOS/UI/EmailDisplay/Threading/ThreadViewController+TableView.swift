@@ -31,41 +31,19 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if fullyDisplayedSections[indexPath.section] == true {
-            return expandedCell(tableView, cellForRowAt:indexPath)
+            return configureCell(identifier: "expandedCell", at: indexPath)
         }
         else {
-            return unexpandedCell(tableView, cellForRowAt:indexPath)
+            return configureCell(identifier: "unexpandedCell", at: indexPath)
         }
     }
 
-    func unexpandedCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "unexpandedCell") as? EmailListViewCell else {
-            return UITableViewCell()
+    func configureCell(identifier:String, at indexPath:IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? UITableViewCell&MessageViewModelConfigurable,
+            let viewModel = model?.viewModel(for: indexPath.section)  else {
+                return UITableViewCell()
         }
-        let row = model?.viewModel(for: indexPath.section)
-        cell.addressLabel.text = row?.from
-        cell.subjectLabel.text = row?.subject
-        cell.summaryLabel.text = row?.bodyPeek
-        cell.backgroundColor = UIColor.clear
-        cell.setContactImage(image: row?.senderContactImage)
-
-        return cell
-
-    }
-
-    func expandedCell(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "expandedCell") as? FullMessageCell else {
-            return UITableViewCell()
-        }
-        let row = model?.viewModel(for: indexPath.section)
-        cell.addressLabel.text = row?.from
-        cell.subjectLabel.text = row?.subject
-        cell.bodyText.attributedText = row?.body
-        cell.bodyText.tintColor = UIColor.pEpGreen
-
-        cell.backgroundColor = UIColor.clear
-        //cell.setContactImage(image: row?.senderContactImage)
-
+        cell.configure(for: viewModel)
         return cell
     }
 

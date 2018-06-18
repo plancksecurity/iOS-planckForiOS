@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 import SwipeCellKit
 
-class EmailListViewCell: SwipeTableViewCell {
+class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     static let storyboardId = "EmailListViewCell"
     static var flaggedImage: UIImage? = nil
     static var emptyContactImage = UIImage.init(named: "empty-avatar")

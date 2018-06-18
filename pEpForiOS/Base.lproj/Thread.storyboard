@@ -147,6 +147,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="sMr-Gx-h2F" firstAttribute="leading" secondItem="ksL-PS-4pl" secondAttribute="leading" constant="15" id="E8r-xv-SU3"/>
                                                 <constraint firstAttribute="trailing" secondItem="sMr-Gx-h2F" secondAttribute="trailing" constant="15" id="IKt-W2-zKP"/>
@@ -154,7 +155,7 @@
                                                 <constraint firstItem="sMr-Gx-h2F" firstAttribute="top" secondItem="ksL-PS-4pl" secondAttribute="top" id="hCV-cr-Wld"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.24313725489999999" green="0.59607843140000005" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="addressLabel" destination="hki-aE-Mre" id="8lk-JR-cG3"/>
                                             <outlet property="attachmentIcon" destination="vPY-v3-Cqy" id="Skd-Ea-9qD"/>

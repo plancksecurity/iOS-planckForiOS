@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FullMessageCell: UITableViewCell {
+class FullMessageCell: UITableViewCell, MessageViewModelConfigurable {
 
     @IBOutlet weak var roundedView: UIView!
     @IBOutlet weak var addressLabel: UILabel!
@@ -17,7 +17,13 @@ class FullMessageCell: UITableViewCell {
     @IBOutlet weak var subjectLabel: UILabel!
     @IBOutlet weak var bodyText: UITextView!
 
-
+    func configure(for viewModel:MessageViewModel) {
+        addressLabel.text = viewModel.from
+        subjectLabel.text = viewModel.subject
+        bodyText.attributedText = viewModel.body
+        bodyText.tintColor = UIColor.pEpGreen
+        backgroundColor = UIColor.clear
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
