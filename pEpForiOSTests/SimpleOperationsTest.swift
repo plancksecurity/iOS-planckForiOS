@@ -405,14 +405,13 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     // MARK: - EncryptAndSendOperation
 
     func testEncryptAndSendOperation() {
+        // Create mails to send ...
         let sentUUIDs = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
                                                   testCase: self,
                                                   numberOfMails: 3).map { $0.uuid! }
-        let expMailsSent = expectation(description: "expMailsSent")
-
+        // ... Login ...
         let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
         let errorContainer = ErrorContainer()
-
         let smtpLogin = LoginSmtpOperation(
             parentName: #function,
             smtpSendData: smtpSendData, errorContainer: errorContainer)
@@ -420,7 +419,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             smtpLogin.completionBlock = nil
             XCTAssertNotNil(smtpSendData.smtp)
         }
-
+        // ... and send them.
+        let expMailsSent = expectation(description: "expMailsSent")
         let sendOp = EncryptAndSendOperation(
             parentName: #function,
             smtpSendData: smtpSendData, errorContainer: errorContainer)
@@ -431,16 +431,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             sendOp.completionBlock = nil
             expMailsSent.fulfill()
         }
-
         let queue = OperationQueue()
         queue.addOperation(smtpLogin)
         queue.addOperation(sendOp)
-
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(sendOp.hasErrors())
         })
-
+        // Check sent status of all sent mails
         for sentUuid in sentUUIDs {
             let msgs = CdMessage.search(byUUID: sentUuid)
             XCTAssertEqual(msgs.count, 1)
@@ -450,7 +448,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             }
              XCTAssertEqual(msg.sendStatus, SendStatus.smtpDone)
         }
-
         smtpSendData.smtp?.close()
     }
 
