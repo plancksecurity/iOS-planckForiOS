@@ -259,59 +259,6 @@ class TestUtil {
         }
     }
 
-    class FetchMessagesServiceTestDelegate: FetchMessagesServiceDelegate {
-        var fetchedMessages = [Message]()
-
-        func didFetch(message: Message) {
-            fetchedMessages.append(message)
-        }
-    }
-
-    static func runFetchTest(parentName: String, testCase: XCTestCase, cdAccount: CdAccount,
-                             useDisfunctionalAccount: Bool,
-                             folderName: String = ImapSync.defaultImapInboxName,
-                             expectError: Bool) {
-        if useDisfunctionalAccount {
-            TestUtil.makeServersUnreachable(cdAccount: cdAccount)
-        }
-
-        guard let (imapSyncData, _) = TestUtil.syncData(cdAccount: cdAccount) else {
-            XCTFail()
-            return
-        }
-
-        let expectationServiceRan = testCase.expectation(description: "expectationServiceRan")
-        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
-
-        let service = FetchMessagesService(parentName: parentName, backgrounder: mbg,
-                                           imapSyncData: imapSyncData, folderName: folderName)
-        let testDelegate = FetchMessagesServiceTestDelegate()
-        service.delegate = testDelegate
-
-        let expServiceBlockInvoked = testCase.expectation(description: "expServiceBlockInvoked")
-        service.execute() { error in
-            expServiceBlockInvoked.fulfill()
-
-            if expectError {
-                XCTAssertNotNil(error)
-            } else {
-                XCTAssertNil(error)
-            }
-        }
-
-        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-
-        if expectError {
-            XCTAssertEqual(testDelegate.fetchedMessages.count, 0)
-        } else {
-            XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)
-        }
-
-        imapSyncData.sync?.close()
-    }
-
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase, skipValidation: Bool) {
@@ -371,20 +318,8 @@ class TestUtil {
         let existingSentFolder = CdFolder.by(folderType: .sent, account: cdAccount)
 
         if existingSentFolder == nil {
-            let expectationFoldersFetched = testCase.expectation(
-                description: "expectationFoldersFetched")
-            guard let imapCI = cdAccount.imapConnectInfo else {
-                XCTFail()
-                return []
-            }
-            let imapSyncData = ImapSyncData(connectInfo: imapCI)
-            let fs = SyncFoldersFromServerService(parentName: #function, imapSyncData: imapSyncData)
-            fs.execute() { error in
-                XCTAssertNil(error)
-                expectationFoldersFetched.fulfill()
-            }
-
-            testCase.wait(for: [expectationFoldersFetched], timeout: waitTime)
+            // Make sure folders are synced
+            syncAndWait(testCase: testCase, skipValidation: true)
         }
 
         guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {

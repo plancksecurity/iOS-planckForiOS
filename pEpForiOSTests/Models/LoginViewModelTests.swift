@@ -25,12 +25,6 @@ class ErrorHandler: LoginViewModelLoginErrorDelegate {
 
 class LoginViewModelTests: CoreDataDrivenTestBase {
     class TestMessageSyncService: MessageSyncServiceProtocol {
-        weak var errorDelegate: MessageSyncServiceErrorDelegate?
-        weak var sentDelegate: MessageSyncServiceSentDelegate?
-        weak var syncDelegate: MessageSyncServiceSyncDelegate?
-        weak var stateDelegate: MessageSyncServiceStateDelegate?
-        weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate?
-
         let accountSettings: TestDataBase.AccountSettings
         let expLookedUp: XCTestExpectation
 
