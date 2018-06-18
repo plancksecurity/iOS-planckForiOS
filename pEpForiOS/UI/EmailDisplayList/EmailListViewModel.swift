@@ -13,6 +13,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
+    func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
 }
@@ -64,7 +65,7 @@ class EmailListViewModel {
 
     private var selectedItems: Set<IndexPath>?
     
-    // MARK: Life Cycle
+    // MARK: - Life Cycle
     
     init(delegate: EmailListViewModelDelegate? = nil, messageSyncService: MessageSyncServiceProtocol,
          folderToShow: Folder) {
@@ -102,7 +103,7 @@ class EmailListViewModel {
         }
     }
     
-    // MARK: Public Data Access & Manipulation
+    // MARK: - Public Data Access & Manipulation
 
     func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
         guard let previewMessages = messages else {
@@ -197,6 +198,11 @@ class EmailListViewModel {
     public func updatedItems(indexPaths: [IndexPath]) {
         checkUnreadMessages(indexPaths: indexPaths)
         checkFlaggedMessages(indexPaths: indexPaths)
+        if indexPaths.count > 0 {
+            delegate?.toolbarIs(enabled: true)
+        } else {
+            delegate?.toolbarIs(enabled: false)
+        }
     }
 
     public func checkFlaggedMessages(indexPaths: [IndexPath]) {
@@ -208,9 +214,9 @@ class EmailListViewModel {
         }
 
         if flagged.count == indexPaths.count {
-            delegate?.showUnflagButton(enabled: false)
-        } else {
             delegate?.showUnflagButton(enabled: true)
+        } else {
+            delegate?.showUnflagButton(enabled: false)
         }
     }
 
@@ -248,6 +254,19 @@ class EmailListViewModel {
         }
     }
 
+    public func markSelectedAsUnread(indexPaths: [IndexPath]) {
+        indexPaths.forEach { (ip) in
+            markUnread(forIndexPath: ip)
+        }
+    }
+
+    public func deleteSelected(indexPaths: [IndexPath]) {
+        indexPaths.forEach { (ip) in
+            delete(forIndexPath: ip)
+
+        }
+    }
+
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
         var messages : [Message?] = []
         indexPaths.forEach { (ip) in
@@ -274,6 +293,20 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = true
+            me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+        }
+    }
+
+    func markUnread(forIndexPath indexPath: IndexPath) {
+        guard let previewMessage = messages?.object(at: indexPath.row) else {
+            return
+        }
+        DispatchQueue.main.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            previewMessage.isSeen = false
             me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
         }
     }
@@ -312,7 +345,7 @@ class EmailListViewModel {
         resetViewModel()
     }
 
-    // MARK: Filter
+    // MARK: - Filter
     
     public var isFilterEnabled = false {
         didSet {

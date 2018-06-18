@@ -239,6 +239,7 @@
 		434BF39320C6B6D300FCBCCA /* ThreadAwareFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF39220C6B6D300FCBCCA /* ThreadAwareFolderProtocol.swift */; };
 		434BF39520C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF39420C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift */; };
 		434BF39A20C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF39920C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift */; };
+		434DDC2B20D10F9A00755F44 /* EncryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
@@ -379,6 +380,8 @@
 		43DB81331E2A56BE00A20902 /* AppendDraftMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DB81321E2A56BE00A20902 /* AppendDraftMailsOperation.swift */; };
 		43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */; };
 		43E0CA2A1F4AB81600D9BB7E /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E0CA291F4AB81600D9BB7E /* Attachment+Extension.swift */; };
+		43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */; };
+		43E3C74020CE544900E58DAD /* SecretUITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E3C73F20CE544900E58DAD /* SecretUITestData.swift */; };
 		43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657D01F3C33C30014CBEC /* String+HTML.swift */; };
 		43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 43E657DD1F3C72360014CBEC /* AXHTMLParser.m */; };
 		43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E657E61F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift */; };
@@ -733,6 +736,7 @@
 		434BF39220C6B6D300FCBCCA /* ThreadAwareFolderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadAwareFolderProtocol.swift; sourceTree = "<group>"; };
 		434BF39420C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadAwareMessageProtocol.swift; sourceTree = "<group>"; };
 		434BF39920C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewMessage+ThreadAware.swift"; sourceTree = "<group>"; };
+		434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTests.swift; sourceTree = "<group>"; };
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
@@ -900,6 +904,8 @@
 		43DB81321E2A56BE00A20902 /* AppendDraftMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendDraftMailsOperation.swift; sourceTree = "<group>"; };
 		43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageHeapBufferOverflow.txt; sourceTree = "<group>"; };
 		43E0CA291F4AB81600D9BB7E /* Attachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Attachment+Extension.swift"; sourceTree = "<group>"; };
+		43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateThreadListDelegate.swift; sourceTree = "<group>"; };
+		43E3C73F20CE544900E58DAD /* SecretUITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretUITestData.swift; sourceTree = "<group>"; };
 		43E657D01F3C33C30014CBEC /* String+HTML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
 		43E657DC1F3C72360014CBEC /* AXHTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXHTMLParser.h; sourceTree = "<group>"; };
 		43E657DD1F3C72360014CBEC /* AXHTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXHTMLParser.m; sourceTree = "<group>"; };
@@ -1647,6 +1653,7 @@
 				430BA228203438A3003B041C /* CdMessagePEPMessageTests.swift */,
 				154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */,
 				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
+				434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
@@ -1654,6 +1661,7 @@
 		43980E481CBD0BCA00A7FC3C /* pEpForiOSUITests */ = {
 			isa = PBXGroup;
 			children = (
+				43E3C73F20CE544900E58DAD /* SecretUITestData.swift */,
 				43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */,
 				43B0443820067CC7007BCE3F /* UIAccount.swift */,
 				43980E4B1CBD0BCA00A7FC3C /* Info.plist */,
@@ -2185,6 +2193,7 @@
 				001D365F20C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift */,
 				B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */,
 				15C5F2431F822560007DE086 /* PreviewMessage.swift */,
+				43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -2582,6 +2591,7 @@
 				B72528331EE948B800815118 /* AccountsSettingsViewModel.swift in Sources */,
 				15EE5A75203B15670041F076 /* SettingBaseViewController.swift in Sources */,
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
+				43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */,
 				49C2750120C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift in Sources */,
 				43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
@@ -2840,6 +2850,7 @@
 				15BA536F20A0A2750090F126 /* UnifiedInbox.swift in Sources */,
 				15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
+				434DDC2B20D10F9A00755F44 /* EncryptionTests.swift in Sources */,
 				151F71FA202A06760057C74D /* DecryptionAttemptCounterDelegate.swift in Sources */,
 				431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */,
 				15F835281F3B497D00FCE887 /* FetchMessagesOperationTest.swift in Sources */,
@@ -2894,6 +2905,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43E3C74020CE544900E58DAD /* SecretUITestData.swift in Sources */,
 				43B0443920067CC7007BCE3F /* UIAccount.swift in Sources */,
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
 				431E65631EEAE65200B8BBFC /* HandshakeUITest.swift in Sources */,

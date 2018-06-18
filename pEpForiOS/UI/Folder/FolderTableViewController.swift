@@ -173,17 +173,32 @@ class FolderTableViewController: BaseTableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newAccount" {
-            if let vc = segue.destination as? LoginTableViewController {
-                vc.appConfig = self.appConfig
-                vc.hidesBottomBarWhenPushed = true
+            guard
+                let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? LoginTableViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Missing VCs")
+                    return
             }
+            vc.appConfig = self.appConfig
+            vc.hidesBottomBarWhenPushed = true
+            vc.delegate = self
+
         } else if segue.identifier == "SettingsSegue" {
             guard let dvc = segue.destination as? AccountsTableViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
-                    return
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
+                return
             }
             dvc.appConfig = self.appConfig
             dvc.hidesBottomBarWhenPushed = true
         }
+    }
+}
+
+// MARK: - LoginTableViewControllerDelegate
+
+extension FolderTableViewController: LoginTableViewControllerDelegate {
+    func loginTableViewControllerDidCreateNewAccount(
+        _ loginTableViewController: LoginTableViewController) {
+        showNext = true
     }
 }

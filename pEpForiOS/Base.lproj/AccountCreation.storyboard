@@ -711,11 +711,9 @@
                         <outlet property="passwordTableViewCell" destination="P2h-Ib-u2Z" id="hX5-6a-pXa"/>
                         <outlet property="user" destination="DeX-GP-Ixx" id="8Zf-6t-dbe"/>
                         <segue destination="kdj-h1-w8d" kind="show" identifier="viewLogSegue" id="YY2-Tz-gVa"/>
-                        <segue destination="Tgf-OP-JhX" kind="unwind" identifier="backToEmailList" unwindAction="segueUnwindAccountAddedWithSegue:" id="xqz-o7-LHm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AeT-eg-YVi" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Tgf-OP-JhX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="8172" y="348.57571214392806"/>
         </scene>

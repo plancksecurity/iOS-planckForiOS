@@ -10,6 +10,10 @@ import Foundation
 import MessageModel
 
 class ThreadedFolderStub: ThreadedMessageFolderProtocol{
+    func isTop(newMessage: Message) -> Bool {
+        return false
+    }
+
 
     let underlyingFolder: Folder
 
