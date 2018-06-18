@@ -246,23 +246,24 @@ open class NetworkServiceWorker {
         return (sendOp, operations)
     }
 
-    func buildAppendSendAndDraftOperations(
-        imapSyncData: ImapSyncData, errorContainer: ServiceErrorProtocol,
-        opImapFinished: Operation, previousOp: Operation) -> (Operation?, [Operation]) {
-
-        let opAppend = AppendSendMailsOperation(
-            parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
-            errorContainer: errorContainer)
-        opAppend.addDependency(previousOp)
-        opImapFinished.addDependency(opAppend)
-
-        let opDrafts = AppendDraftMailsOperation(
-            parentName: serviceConfig.parentName, imapSyncData: imapSyncData,
-            errorContainer: errorContainer)
-        opDrafts.addDependency(opAppend)
-        opImapFinished.addDependency(opDrafts)
-
-        return (opDrafts, [opAppend, opDrafts])
+    func buildAppendOperations(imapSyncData: ImapSyncData,
+                               errorContainer: ServiceErrorProtocol,
+                               opImapFinished: Operation,
+                               previousOp: Operation) -> (Operation?, [Operation]) {
+        var lastOp = previousOp
+        var createdOps = [AppendMailsOperation]()
+        MessageModel.performAndWait {
+            let folders = AppendMailsOperation.foldersContainingMarkedForAppend(connectInfo:
+                imapSyncData.connectInfo)
+            for folder in folders {
+                let op = AppendMailsOperation(folder: folder, imapSyncData: imapSyncData)
+                op.addDependency(lastOp)
+                opImapFinished.addDependency(op)
+                lastOp = op
+                createdOps.append(op)
+            }
+        }
+        return (lastOp, createdOps)
     }
 
     private func buildUidMoveToFolderOperations(imapSyncData: ImapSyncData,
@@ -477,12 +478,12 @@ open class NetworkServiceWorker {
                 operations.append(opRequiredFolders)
             }
             // Client-to-server synchronization (IMAP)
-            let (lastAppendSendAndDraftOp, appendSendAndDraftOperations) =
-                buildAppendSendAndDraftOperations(
+            let (lastAppendOp, appendOperations) =
+                buildAppendOperations(
                     imapSyncData: imapSyncData, errorContainer: errorContainer,
                     opImapFinished: opImapFinished, previousOp: lastImapOp)
-            lastImapOp = lastAppendSendAndDraftOp ?? lastImapOp
-            operations.append(contentsOf: appendSendAndDraftOperations)
+            lastImapOp = lastAppendOp ?? lastImapOp
+            operations.append(contentsOf: appendOperations)
 
             let (lastMoveToFolderOp, moveToFolderOperations) =
                 buildUidMoveToFolderOperations(imapSyncData: imapSyncData,

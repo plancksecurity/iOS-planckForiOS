@@ -493,8 +493,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
-        let folder = CdFolder.by(folderType: .sent, account: cdAccount)
-        XCTAssertNotNil(folder)
+        guard let folder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+            XCTFail("No folder")
+            return
+        }
 
         // Build emails
         let numMails = 5
@@ -522,10 +524,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
 
         let expSentAppended = expectation(description: "expSentAppended")
-
-        let appendOp = AppendSendMailsOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, errorContainer: errorContainer)
+        let appendOp = AppendMailsOperation(parentName: #function,
+                                            folder: folder.folder(),
+                                            imapSyncData: imapSyncData,
+                                            errorContainer: errorContainer)
         appendOp.completionBlock = {
             appendOp.completionBlock = nil
             expSentAppended.fulfill()
@@ -580,8 +582,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
-        let folder = CdFolder.by(folderType: .drafts, account: cdAccount)
-        XCTAssertNotNil(folder)
+        guard let folder = CdFolder.by(folderType: .drafts, account: cdAccount) else {
+            XCTFail("No folder")
+            return
+        }
 
         // Build emails
         let numMails = 5
@@ -609,9 +613,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expDraftsStored = expectation(description: "expDraftsStored")
 
-        let appendOp = AppendDraftMailsOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, errorContainer: errorContainer)
+        let appendOp = AppendMailsOperation(parentName: #function,
+                                            folder: folder.folder(),
+                                            imapSyncData: imapSyncData,
+                                            errorContainer: errorContainer)
         appendOp.completionBlock = {
             appendOp.completionBlock = nil
             expDraftsStored.fulfill()

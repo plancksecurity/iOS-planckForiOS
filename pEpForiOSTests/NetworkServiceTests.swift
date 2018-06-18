@@ -258,6 +258,7 @@ class NetworkServiceTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
+        networkService.unitTestDelegate = nil
 
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
@@ -297,6 +298,9 @@ class NetworkServiceTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
+        networkService.unitTestDelegate = nil
+
+        TestUtil.syncAndWait(testCase: self, skipValidation: true)
 
         // Check that the sent mails have been deleted
         Record.refreshRegisteredObjects(mergeChanges: true)
@@ -317,13 +321,13 @@ class NetworkServiceTests: XCTestCase {
             accountInfo: accountInfo) ?? []
         XCTAssertEqual(fis.count, 1) // still only inbox
 
-        var haveSentFolder = false
+        var isSentFolderInteresting = false
         for f in fis {
             if f.folderType == .sent {
-                haveSentFolder = true
+                isSentFolderInteresting = true
             }
         }
-        XCTAssertFalse(haveSentFolder)
+        XCTAssertFalse(isSentFolderInteresting)
 
         // Make sure the sent folder will be synced in the next step
         sentFolder.lastLookedAt = Date()
@@ -336,20 +340,30 @@ class NetworkServiceTests: XCTestCase {
 
         for f in fis {
             if f.folderType == .sent {
-                haveSentFolder = true
+                isSentFolderInteresting = true
             }
         }
-        XCTAssertTrue(haveSentFolder)
+        XCTAssertTrue(isSentFolderInteresting)
 
+        // sync
         del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced3"))
         networkService.unitTestDelegate = del
-        
-        // Wait for next sync
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             Log.info(component: "didSync", content: "expSingleAccountSynced3 timeout?")
             XCTAssertNil(error)
         })
+        networkService.unitTestDelegate = nil
+
+        //once more (why? //IOS-33)
+        del = NetworkServiceObserver(
+            expAccountsSynced: expectation(description: "expSingleAccountSynced17"))
+        networkService.unitTestDelegate = del
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            Log.info(component: "didSync", content: "expSingleAccountSynced17 timeout?")
+            XCTAssertNil(error)
+        })
+        networkService.unitTestDelegate = nil
 
         if useCorrectSmtpAccount {
             // those messages do not exist if we are using an incorrect account

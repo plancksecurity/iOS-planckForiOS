@@ -88,6 +88,21 @@ extension Message {
         }
         return result
     }
+
+    static public func allMessagesMarkedForAppend(inAccount account: Account) -> [Message] {
+        let p = CdMessage.PredicateFactory.needImapAppend(inAccountWithAddress: account.user.address)
+        let cdMessages = CdMessage.all(predicate: p) as? [CdMessage] ?? []
+        var result = [Message]()
+        for cdMessage in cdMessages {
+            guard let message = cdMessage.message() else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "No Message for CdMesssage")
+                continue
+            }
+            result.append(message)
+        }
+        return result
+    }
 }
 
 // MARK: - Handshake
