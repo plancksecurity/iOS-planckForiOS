@@ -9,10 +9,12 @@
 import Foundation
 import MessageModel
 
+
 class ThreadedEmailViewModel {
 
 
-    private var messages: [Message]
+    internal var messages: [Message]
+    var delegate: EmailViewModelDelegate? = nil
     private let folder: ThreadedFolderStub
 
     //Needed for segue

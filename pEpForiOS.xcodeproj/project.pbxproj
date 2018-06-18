@@ -11,6 +11,9 @@
 		001D365E20C56470002434EB /* MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001D365D20C56470002434EB /* MoveToFolderDelegate.swift */; };
 		001D366020C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001D365F20C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift */; };
 		001D366220C576BD002434EB /* EmailViewController+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001D366120C576BD002434EB /* EmailViewController+MoveToFolderDelegate.swift */; };
+		0033C07F20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033C07E20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift */; };
+		0033C08120D7F3C600224E61 /* ThreadViewController+EmailViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033C08020D7F3C600224E61 /* ThreadViewController+EmailViewDelegate.swift */; };
+		0033C08320D7F41600224E61 /* EmailViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033C08220D7F41600224E61 /* EmailViewModelDelegate.swift */; };
 		0038494A20D25576008000EA /* ProfilePictureComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0038494920D25576008000EA /* ProfilePictureComposer.swift */; };
 		0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0038494B20D2587F008000EA /* PepPictureComposer.swift */; };
 		003C0FA720B5581A0093A987 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003C0FA620B5581A0093A987 /* SecretTestData.swift */; };
@@ -510,6 +513,9 @@
 		001D365D20C56470002434EB /* MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderDelegate.swift; sourceTree = "<group>"; };
 		001D365F20C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewModel+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
 		001D366120C576BD002434EB /* EmailViewController+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
+		0033C07E20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadedEmailViewModel+UpdateThreadDelegate.swift"; sourceTree = "<group>"; };
+		0033C08020D7F3C600224E61 /* ThreadViewController+EmailViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewController+EmailViewDelegate.swift"; sourceTree = "<group>"; };
+		0033C08220D7F41600224E61 /* EmailViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewModelDelegate.swift; sourceTree = "<group>"; };
 		0038494920D25576008000EA /* ProfilePictureComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureComposer.swift; sourceTree = "<group>"; };
 		0038494B20D2587F008000EA /* PepPictureComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PepPictureComposer.swift; sourceTree = "<group>"; };
 		003C0FA620B5581A0093A987 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretTestData.swift; sourceTree = "<group>"; };
@@ -1941,6 +1947,9 @@
 				00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */,
 				49228A5220D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift */,
 				49228A5420D4035100A51E9D /* DetailCellSegue.swift */,
+				0033C07E20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift */,
+				0033C08020D7F3C600224E61 /* ThreadViewController+EmailViewDelegate.swift */,
+				0033C08220D7F41600224E61 /* EmailViewModelDelegate.swift */,
 				49691B1420D7FD0200CA9367 /* MessageViewModelConfigurable.swift */,
 			);
 			path = Threading;
@@ -2625,6 +2634,7 @@
 				15BA536620A075AE0090F126 /* SettingDefaultAccountTableViewController.swift in Sources */,
 				4362398C1EADD61B00BD2EB9 /* CGSize+Extension.swift in Sources */,
 				43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */,
+				0033C07F20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift in Sources */,
 				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
 				15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */,
 				435B42411D211E5900119048 /* MiscUtil.swift in Sources */,
@@ -2665,6 +2675,7 @@
 				15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */,
 				43F8D80620C538F00038ABD5 /* UnthreadedFolder.swift in Sources */,
 				43122B191DF5B48B00610253 /* EmailService.swift in Sources */,
+				0033C08320D7F41600224E61 /* EmailViewModelDelegate.swift in Sources */,
 				43498CDD200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */,
 				B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */,
 				001D366020C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift in Sources */,
@@ -2699,6 +2710,7 @@
 				150B84C420A44DE100D8B288 /* MoveToFolderOperation.swift in Sources */,
 				4388A0E22008F813008CB98D /* OAuth2AccessToken.swift in Sources */,
 				43C3220D1EA915C6005073FB /* UIColor+Extension.swift in Sources */,
+				0033C08120D7F3C600224E61 /* ThreadViewController+EmailViewDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
 				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
