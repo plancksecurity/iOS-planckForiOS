@@ -405,10 +405,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     // MARK: - EncryptAndSendOperation
 
     func testEncryptAndSendOperation() {
-        let _ = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
+        let sentUUIDs = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
                                                   testCase: self,
-                                                  numberOfMails: 3)
-
+                                                  numberOfMails: 3).map { $0.uuid! }
         let expMailsSent = expectation(description: "expMailsSent")
 
         let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
@@ -442,12 +441,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertFalse(sendOp.hasErrors())
         })
 
-        if let msgs = CdMessage.all() as? [CdMessage] {
-            for m in msgs {
-                XCTAssertEqual(m.sendStatus, SendStatus.smtpDone)
+        for sentUuid in sentUUIDs {
+            let msgs = CdMessage.search(byUUID: sentUuid)
+            XCTAssertEqual(msgs.count, 1)
+            guard let msg = msgs.first else {
+                XCTFail("Missing sent message")
+                return
             }
-        } else {
-            XCTFail()
+             XCTAssertEqual(msg.sendStatus, SendStatus.smtpDone)
         }
 
         smtpSendData.smtp?.close()
