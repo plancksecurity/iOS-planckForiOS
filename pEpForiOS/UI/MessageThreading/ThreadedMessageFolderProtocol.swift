@@ -33,7 +33,10 @@ protocol ThreadedMessageFolderProtocol {
 
     /**
      - Returns: All messages belonging to the same thread, that went before.
-     - Note: Only downloaded, decrypted messages are considered.
+     - Note:
+       * Only downloaded, decrypted messages are considered
+         (that is to say, they exist locally in the DB in unencrypted form).
+       * They are ordered oldest to newest (if possible to determine).
      */
     func messagesInThread(message: Message) -> [Message]
 
@@ -47,4 +50,11 @@ protocol ThreadedMessageFolderProtocol {
      before it.
      */
     func deleteThread(message: Message)
+
+    /**
+     When a new message arrives, the client needs to find out if it belongs into to the
+     message list (of thread tips), or if it's a message referenced by a top message
+     (then it might have to go to the thread view).
+     */
+    func isTop(newMessage: Message) -> Bool
 }

@@ -21,20 +21,24 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         let originalMessages = underlyingFolder.allMessagesNonThreaded()
 
         var topMessages = [Message]()
-        var messageIdsAlreadyReferenced = Set<MessageID>()
+        var messageIdsReferenced = Set<MessageID>()
 
+        // gather references
         for aMsg in originalMessages {
-            if !messageIdsAlreadyReferenced.contains(aMsg.messageID) {
-                // this is a top message
-                topMessages.append(aMsg)
-
-                MessageModel.performAndWait {
-                    aMsg.referencedMessages().forEach {
-                        messageIdsAlreadyReferenced.insert($0.messageID)
-                    }
+            MessageModel.performAndWait {
+                aMsg.referencedMessages().forEach {
+                    messageIdsReferenced.insert($0.messageID)
                 }
             }
         }
+
+        // gather top messages
+        for aMsg in originalMessages {
+            if !messageIdsReferenced.contains(aMsg.messageID) {
+                topMessages.append(aMsg)
+            }
+        }
+
         return topMessages
     }
 
@@ -52,5 +56,10 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
 
     func deleteThread(message: Message) {
         deleteSingle(message: message)
+    }
+
+    func isTop(newMessage: Message) -> Bool {
+        // TODO
+        return true
     }
 }
