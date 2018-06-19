@@ -18,20 +18,7 @@ public class AppendMailsOperation: ImapSyncOperation {
         case unencryptedForTrustedServer
     }
     private var encryptMode: EncryptMode {
-        var result = EncryptMode.forSelf
-        privateMOC.performAndWait {
-            guard
-                let cdAccount = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
-                    as? CdAccount,
-                let imapServer = cdAccount.server(type: .imap)
-                else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No account")
-                    result = .forSelf
-                    return
-            }
-            result = imapServer.trusted ? .unencryptedForTrustedServer : .forSelf
-        }
-        return result
+        return imapSyncData.connectInfo.trusted ? .unencryptedForTrustedServer : .forSelf
     }
     private var syncDelegate: AppendMailsSyncDelegate?
 
