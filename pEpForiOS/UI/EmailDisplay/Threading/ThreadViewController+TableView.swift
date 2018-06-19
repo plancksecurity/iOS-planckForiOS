@@ -21,7 +21,7 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if fullyDisplayedSections[indexPath.section] == true {
+        if model?.messageisExpanded(at: indexPath.section) == true {
             return UITableViewAutomaticDimension
         }
         else {
@@ -30,7 +30,7 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if fullyDisplayedSections[indexPath.section] == true {
+        if model?.messageisExpanded(at: indexPath.section) == true {
             return configureCell(identifier: "expandedCell", at: indexPath)
         }
         else {
@@ -49,8 +49,8 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if fullyDisplayedSections[indexPath.section] == false {
-            fullyDisplayedSections[indexPath.section] = true
+        if model?.messageisExpanded(at: indexPath.section) == false {
+            model?.messageDidExpand(at: indexPath.section)
             let indexSet = IndexSet(integer: indexPath.section)
             tableView.reloadSections(indexSet, with: .automatic)
         }

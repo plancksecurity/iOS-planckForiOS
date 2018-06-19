@@ -1942,13 +1942,13 @@
 			isa = PBXGroup;
 			children = (
 				005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */,
+				0033C07E20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift */,
 				492EF92C20C6957D004EAE14 /* ThreadViewController.swift */,
 				492EF92E20C699D0004EAE14 /* ThreadViewController+TableView.swift */,
-				00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */,
 				49228A5220D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift */,
-				49228A5420D4035100A51E9D /* DetailCellSegue.swift */,
-				0033C07E20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift */,
 				0033C08020D7F3C600224E61 /* ThreadViewController+EmailViewDelegate.swift */,
+				00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */,
+				49228A5420D4035100A51E9D /* DetailCellSegue.swift */,
 				0033C08220D7F41600224E61 /* EmailViewModelDelegate.swift */,
 				49691B1420D7FD0200CA9367 /* MessageViewModelConfigurable.swift */,
 			);

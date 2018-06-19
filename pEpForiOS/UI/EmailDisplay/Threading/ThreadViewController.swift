@@ -14,11 +14,8 @@ class ThreadViewController: BaseViewController {
     var model: ThreadedEmailViewModel? = nil
 
     var messages = ["hola", "que", "tal"]
-    var fullyDisplayedSections : [Bool] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        fullyDisplayedSections = Array(repeating: false, count: model?.rowCount() ?? 0)
-
         // Do any additional setup after loading the view.
     }
 

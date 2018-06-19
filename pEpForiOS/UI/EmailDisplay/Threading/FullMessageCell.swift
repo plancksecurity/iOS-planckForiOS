@@ -23,6 +23,8 @@ class FullMessageCell: UITableViewCell, MessageViewModelConfigurable {
         bodyText.attributedText = viewModel.body
         bodyText.tintColor = UIColor.pEpGreen
         backgroundColor = UIColor.clear
+        dateLabel.text = viewModel.dateText
+
     }
 
     override func awakeFromNib() {
