@@ -139,7 +139,7 @@ public class AppendMailsOperation: ImapSyncOperation {
 
         let session = PEPSession()
         if encryptMode == .unencryptedForTrustedServer {
-            // Append unencrypted for trusted server.
+            // Always append unencrypted for trusted server.
             appendMessage(pEpMessageDict: msg)
         } else {
             // Encrypt for self ...
