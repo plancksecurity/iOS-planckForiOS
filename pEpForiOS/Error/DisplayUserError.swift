@@ -264,7 +264,7 @@ struct DisplayUserError: LocalizedError {
                                      comment:
                 "Error message shown to the user in case a message could not be sent.")
         case .brokenServerConnection:
-            return NSLocalizedString("We could not connect to the server.)",
+            return NSLocalizedString("We could not connect to the server.",
                                      comment:
                 "Error message shown to the user in case we can not connect to the server")
         case .internalError:
