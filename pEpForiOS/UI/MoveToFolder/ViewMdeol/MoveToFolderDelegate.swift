@@ -10,6 +10,6 @@ import Foundation
 import MessageModel
 
 protocol MoveToFolderDelegate: class {
-    func didMove(messages: [Message?])
+    func didMove()
 
 }

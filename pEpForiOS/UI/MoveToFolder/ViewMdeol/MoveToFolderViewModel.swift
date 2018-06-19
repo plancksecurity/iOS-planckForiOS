@@ -9,12 +9,13 @@
 import Foundation
 import MessageModel
 
+let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
+
 class MoveToAccountViewModel {
 
     //var delegate: MoveToFolderDelegate
     var accounts = Account.all()
     var items : [MoveToAccountCellViewModel]
-    var messages: [Message]
     /// We do not allow to move messages to those folders.
     /// Drafts: It does not make sense to move a message e.g. from Inbox to Drafts.
     ///         Who is supposed to be the sender (From) when opening the draft?
@@ -23,10 +24,9 @@ class MoveToAccountViewModel {
     let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
 
     init(messages: [Message]) {
-        self.messages = messages
         items = []
         for acc in accounts {
-            items.append(MoveToAccountCellViewModel(account: acc))
+            items.append(MoveToAccountCellViewModel(account: acc, messages: messages))
         }
     }
 
@@ -45,23 +45,27 @@ class MoveToAccountCellViewModel {
 
     var account: Account
     var title: String
+    var messages: [Message]
 
-    init(account: Account) {
+    init(account: Account, messages: [Message]) {
         self.account = account
         self.title = account.user.address
+        self.messages = messages
     }
 
     public func viewModel() -> moveToFolderViewModel {
-        return moveToFolderViewModel(account: account)
+        return moveToFolderViewModel(account: account, messages: messages)
     }
 }
 
 class moveToFolderViewModel {
     var items : [moveToFolderCellViewModel]
     var acc : Account
-    init(account: Account) {
+    var messages: [Message]
+    init(account: Account, messages: [Message]) {
         items = []
         self.acc = account
+        self.messages = messages
         generateAccountCells()
     }
 
@@ -79,6 +83,18 @@ class moveToFolderViewModel {
         }
     }
 
+    func moveMessagesTo(index: Int) -> Bool {
+        let targetFolder = items[index].folder
+        var result = false
+        for msg in messages {
+            if msg.parent != targetFolder {
+                msg.move(to: items[index].folder)
+                result = true
+            }
+        }
+        return result
+    }
+
     subscript(index: Int) -> moveToFolderCellViewModel {
         get {
             return self.items[index]
@@ -94,10 +110,15 @@ class moveToFolderCellViewModel {
     var folder: Folder
     var title: String
     var indentationLevel: Int
+    var validFolder = true
 
     init(folder: Folder, level: Int) {
         self.folder = folder
         self.title = folder.realName
         self.indentationLevel = level
+        if folderTypesNotAllowedToMoveTo.contains(folder.folderType) {
+            validFolder = false
+        }
     }
+
 }

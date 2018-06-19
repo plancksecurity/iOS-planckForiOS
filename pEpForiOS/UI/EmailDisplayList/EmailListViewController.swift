@@ -437,18 +437,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
         self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
-    }
-
-    @IBAction func markToolbar(_ sender:UIBarButtonItem!) {
-
-        let alertControler = UIAlertController.pEpAlertController(
-            title: nil, message: nil, preferredStyle: .actionSheet)
-        let cancelAction = createCancelAction()
-        alertControler.addAction(cancelAction)
-        if let popoverPresentationController = alertControler.popoverPresentationController {
-            popoverPresentationController.sourceView = tableView
-        }
-        present(alertControler, animated: true, completion: nil)
+        cancelToolbar(sender)
     }
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {

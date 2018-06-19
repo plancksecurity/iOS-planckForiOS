@@ -16,6 +16,7 @@ class MoveToAccountViewController: BaseViewController {
     var viewModel: MoveToAccountViewModel?
     private let cellId = "AccountCell"
     private var selectedViewModel : moveToFolderViewModel?
+    weak var delegate : MoveToFolderDelegate?
 
     //private var viewModel: FolderViewModel?
 
@@ -100,12 +101,14 @@ extension MoveToAccountViewController {
             if let vc = segue.destination as? MoveToFolderTableViewController, let appCfg = self.appConfig, let vm = selectedViewModel {
                 vc.appConfig = appCfg
                 vc.viewModel = vm
+                vc.delegate = self.delegate
             }
         }
     }
 }
 
 /*
+
 // MARK: - SELECTABILITY
 
 private extension MoveToFolderViewController {
