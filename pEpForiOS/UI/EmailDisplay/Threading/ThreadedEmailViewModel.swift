@@ -16,6 +16,7 @@ class ThreadedEmailViewModel {
     internal var messages: [Message]
     var delegate: EmailViewModelDelegate? = nil
     private let folder: ThreadedFolderStub
+    private var expandedMessages: [Bool]
 
     //Needed for segue
     public let displayFolder: Folder
@@ -25,6 +26,9 @@ class ThreadedEmailViewModel {
         messages = folder.allMessages()
         self.folder = ThreadedFolderStub(folder: folder)
         displayFolder = folder
+        expandedMessages = Array(repeating: false, count: messages.count)
+        expandedMessages.removeLast()
+        expandedMessages.append(true)
     }
 
     func deleteMessage(at index: Int){
@@ -59,5 +63,13 @@ class ThreadedEmailViewModel {
             return nil
         }
         return messages[index]
+    }
+
+    func messageDidExpand(at index: Int){
+        expandedMessages[index] = true
+    }
+
+    func messageisExpanded(at index: Int) -> Bool{
+        return expandedMessages[index]
     }
 }
