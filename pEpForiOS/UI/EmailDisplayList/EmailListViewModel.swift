@@ -520,6 +520,8 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
     
+    // MARK: - MessageFolderDelegate (internal)
+
     private func didCreateInternal(messageFolder: MessageFolder) {
         guard let message = messageFolder as? Message else {
             // The createe is no message. Ignore.
