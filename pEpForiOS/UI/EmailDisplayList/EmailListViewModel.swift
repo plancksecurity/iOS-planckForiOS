@@ -98,8 +98,10 @@ class EmailListViewModel {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.delegate = delegate
         self.messageSyncService = messageSyncService
+
         self.folderToShow = folderToShow
         threadedMessageFolderProtocol = FolderThreading.makeThreadAware(folder: folderToShow)
+
         resetViewModel()
     }
 
