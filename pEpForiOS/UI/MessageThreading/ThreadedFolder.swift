@@ -18,8 +18,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func allMessages() -> [Message] {
-        let (topMessages, _) = gatherTopMessagesWithReferences()
-        return topMessages
+        return computeTopMessages(messages: underlyingFolder.allMessagesNonThreaded())
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
@@ -62,6 +61,31 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     // MARK - Private
+
+    /**
+     Determine which messages in the given list don't reference any other message in the list.
+     */
+    private func computeTopMessages(messages: [Message]) -> [Message] {
+        var topMessages = [Message]()
+
+        let originalMessageIds = messages.map {
+            return $0.messageID
+        }
+        let originalMessageIdSet = Set<MessageID>(originalMessageIds)
+
+        for msg in messages {
+            let refs = Set<MessageID>(msg.references)
+            let intersection = refs.intersection(originalMessageIdSet)
+            if !intersection.isEmpty {
+                print("*** child message \(msg.messageID) is child of: \(intersection)")
+            } else {
+                print("*** top message   \(msg)")
+                topMessages.append(msg)
+            }
+        }
+
+        return topMessages
+    }
 
     private func gatherTopMessagesWithReferences() -> (topMessages: [Message],
         messageIdsReferenced: Set<MessageID>) {
