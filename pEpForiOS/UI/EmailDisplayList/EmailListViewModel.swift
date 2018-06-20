@@ -67,7 +67,7 @@ class EmailListViewModel {
 
     public var delegate: EmailListViewModelDelegate?
 
-    private var folderToShow: Folder
+    private let folderToShow: Folder
     private let threadedMessageFolderProtocol: ThreadedMessageFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
