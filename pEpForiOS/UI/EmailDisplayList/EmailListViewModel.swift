@@ -68,7 +68,7 @@ class EmailListViewModel {
     public var delegate: EmailListViewModelDelegate?
 
     private let folderToShow: Folder
-    private let threadedMessageFolderProtocol: ThreadedMessageFolderProtocol
+    private let threadedMessageFolder: ThreadedMessageFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
 
@@ -100,7 +100,7 @@ class EmailListViewModel {
         self.messageSyncService = messageSyncService
 
         self.folderToShow = folderToShow
-        threadedMessageFolderProtocol = FolderThreading.makeThreadAware(folder: folderToShow)
+        threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
 
         resetViewModel()
     }
