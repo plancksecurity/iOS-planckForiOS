@@ -65,7 +65,7 @@ class EmailListViewModel {
         return createe
     }()
 
-    public var delegate: EmailListViewModelDelegate?
+    public var emailListViewModelDelegatedelegate: EmailListViewModelDelegate?
 
     private let folderToShow: Folder
     private let threadedMessageFolder: ThreadedMessageFolderProtocol
@@ -96,7 +96,7 @@ class EmailListViewModel {
     init(delegate: EmailListViewModelDelegate? = nil, messageSyncService: MessageSyncServiceProtocol,
          folderToShow: Folder) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
-        self.delegate = delegate
+        self.emailListViewModelDelegatedelegate = delegate
         self.messageSyncService = messageSyncService
 
         self.folderToShow = folderToShow
@@ -124,7 +124,7 @@ class EmailListViewModel {
                 theSelf.messages = SortedSet(array: previewMessages,
                                           sortBlock: theSelf.sortByDateSentAscending)
                 DispatchQueue.main.async {
-                    theSelf.delegate?.updateView()
+                    theSelf.emailListViewModelDelegatedelegate?.updateView()
                     theSelf.startListeningToChanges()
                 }
             }
@@ -230,9 +230,9 @@ class EmailListViewModel {
         checkUnreadMessages(indexPaths: indexPaths)
         checkFlaggedMessages(indexPaths: indexPaths)
         if indexPaths.count > 0 {
-            delegate?.toolbarIs(enabled: true)
+            emailListViewModelDelegatedelegate?.toolbarIs(enabled: true)
         } else {
-            delegate?.toolbarIs(enabled: false)
+            emailListViewModelDelegatedelegate?.toolbarIs(enabled: false)
         }
     }
 
@@ -245,9 +245,9 @@ class EmailListViewModel {
         }
 
         if flagged.count == indexPaths.count {
-            delegate?.showUnflagButton(enabled: true)
+            emailListViewModelDelegatedelegate?.showUnflagButton(enabled: true)
         } else {
-            delegate?.showUnflagButton(enabled: false)
+            emailListViewModelDelegatedelegate?.showUnflagButton(enabled: false)
         }
     }
 
@@ -260,9 +260,9 @@ class EmailListViewModel {
         }
 
         if read.count == indexPaths.count {
-            delegate?.showUnreadButton(enabled: true)
+            emailListViewModelDelegatedelegate?.showUnreadButton(enabled: true)
         } else {
-            delegate?.showUnreadButton(enabled: false)
+            emailListViewModelDelegatedelegate?.showUnreadButton(enabled: false)
         }
     }
 
@@ -324,7 +324,7 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = true
-            me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+            me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
         }
     }
 
@@ -338,7 +338,7 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = false
-            me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+            me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
         }
     }
     
@@ -549,7 +549,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                         return
                     }
                     let indexPath = IndexPath(row: index, section: 0)
-                    theSelf.delegate?.emailListViewModel(viewModel: theSelf,
+                    theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: theSelf,
                                                          didInsertDataAt: indexPath)
                 }
             }
@@ -577,7 +577,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             if let me = self {
                 pvMsgs.removeObject(at: indexExisting)
                 let indexPath = IndexPath(row: indexExisting, section: 0)
-                me.delegate?.emailListViewModel(viewModel: me, didRemoveDataAt: indexPath)
+                me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didRemoveDataAt: indexPath)
             }
         }
     }
@@ -631,7 +631,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // anymore after it has been updated.
                     // Remove it.
                     let indexPath = IndexPath(row: indexToRemove, section: 0)
-                    me.delegate?.emailListViewModel(viewModel: me, didRemoveDataAt: indexPath)
+                    me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didRemoveDataAt: indexPath)
                     return
                 }
                 // The updated message has to be shown. Add it to the model ...
@@ -646,7 +646,7 @@ Something is fishy here.
                 }
                 // ...  and inform the delegate.
                 let indexPath = IndexPath(row: indexInserted, section: 0)
-                me.delegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+                me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
 
                 if me.currentDisplayedMessage?.messageModel == message {
                     me.currentDisplayedMessage?.update(forMessage: message)

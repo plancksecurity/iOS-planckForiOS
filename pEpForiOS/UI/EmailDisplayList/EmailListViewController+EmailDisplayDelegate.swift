@@ -7,11 +7,10 @@
 //
 
 import Foundation
+
 import MessageModel
 
 extension EmailListViewModel: EmailDisplayDelegate {
-
-
     func emailDisplayDidFlag(message: Message) {
         updateRow(for: message)
     }
@@ -54,17 +53,18 @@ extension EmailListViewModel: EmailDisplayDelegate {
 
     private func informUpdateRow(at index: Int) {
         let indexPath = self.indexPath(for: index)
-        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+        emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: self,
+                                                               didUpdateDataAt: indexPath)
     }
 
     private func informDeleteRow(at index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
 
-        delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+        emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: self,
+                                                               didRemoveDataAt: indexPath)
     }
 
     private func indexPath(for index: Int) -> IndexPath {
         return IndexPath(row: index, section: 0)
     }
 }
-
