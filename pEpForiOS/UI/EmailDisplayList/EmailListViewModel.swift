@@ -134,7 +134,9 @@ class EmailListViewModel {
     // MARK: - Public Data Access & Manipulation
 
     func index(of message: Message) -> Int? {
-        return messages?.index(of: PreviewMessage(withMessage: message))
+        let idx = messages?.index(of: PreviewMessage(withMessage: message))
+        let notFound = -1
+        return idx == notFound ? nil : idx
     }
     
     func row(for indexPath: IndexPath) -> Row? {
