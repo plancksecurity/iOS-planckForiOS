@@ -55,16 +55,26 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         let originalMessageIdSet = Set<MessageID>(originalMessageIds)
 
         for msg in messages {
-            let refs = Set<MessageID>(msg.references)
-            let intersection = refs.intersection(originalMessageIdSet)
-            if !intersection.isEmpty {
-                print("*** child message \(msg.messageID) is child of: \(intersection)")
-            } else {
-                print("*** top message   \(msg)")
+            if !doesReference(message: msg, referenceSet: originalMessageIdSet) {
                 topMessages.append(msg)
             }
         }
 
         return topMessages
+    }
+
+    /**
+     Does `message` reference any message-id from `referenceSet`?
+     */
+    private func doesReference(message: Message, referenceSet:Set<MessageID>) -> Bool {
+        let refs = Set<MessageID>(message.references)
+        let intersection = refs.intersection(referenceSet)
+        if !intersection.isEmpty {
+            print("*** child message \(message.messageID) is child of: \(intersection)")
+            return true
+        } else {
+            print("*** top message   \(message)")
+            return false
+        }
     }
 }
