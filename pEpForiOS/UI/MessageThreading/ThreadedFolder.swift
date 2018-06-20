@@ -38,25 +38,6 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func isTop(newMessage: Message) -> Bool {
-        var (topMessages, messageIdsReferenced) = gatherTopMessagesWithReferences()
-        for msg in topMessages {
-            if msg == newMessage {
-                // The new message should be included in top message.
-                // Make sure its references are not taken into account.
-                for ref in msg.references {
-                    messageIdsReferenced.remove(ref)
-                }
-            } else {
-                messageIdsReferenced.insert(msg.messageID)
-            }
-        }
-
-        for ref in newMessage.references {
-            if messageIdsReferenced.contains(ref) {
-                return false
-            }
-        }
-
         return true
     }
 
