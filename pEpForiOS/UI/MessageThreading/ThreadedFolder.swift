@@ -42,7 +42,6 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
             return $0.messageID
         }
         let allCurrentMessageIdsSet = Set(allCurrentMessageIds)
-        print("*** newMessage already contained in all messages: \(allCurrentMessageIdsSet.contains(newMessage.messageID))")
         return !doesReference(message: newMessage, referenceSet: allCurrentMessageIdsSet)
     }
 
@@ -75,10 +74,8 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         let refs = Set(message.references)
         let intersection = refs.intersection(referenceSet)
         if intersection.isEmpty {
-            print("*** top message   \(message)")
             return false
         } else {
-            print("*** child message \(message.messageID) is child of: \(intersection)")
             return true
         }
     }
