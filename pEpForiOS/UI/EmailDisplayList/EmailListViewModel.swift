@@ -69,7 +69,6 @@ class EmailListViewModel {
 
     public var currentDisplayedMessage: DisplayedMessage?
 
-    
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
         if pvMsg1.dateSent > pvMsg2.dateSent {
@@ -86,6 +85,8 @@ class EmailListViewModel {
     }
 
     private var selectedItems: Set<IndexPath>?
+
+    weak var updateThreadListDelegate: UpdateThreadListDelegate?
     
     // MARK: - Life Cycle
     
