@@ -536,17 +536,22 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The message does not fit in current filter criteria. Ignore- and do not show it.
             return
         }
+
         let previewMessage = PreviewMessage(withMessage: message)
+        let isTopMessage = threadedMessageFolder.isTop(newMessage: message)
 
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
-                guard let index = theSelf.messages?.insert(object: previewMessage) else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "We should be able to insert.")
-                    return
+                if isTopMessage {
+                    guard let index = theSelf.messages?.insert(object: previewMessage) else {
+                        Log.shared.errorAndCrash(component: #function,
+                                                 errorString: "We should be able to insert.")
+                        return
+                    }
+                    let indexPath = IndexPath(row: index, section: 0)
+                    theSelf.delegate?.emailListViewModel(viewModel: theSelf,
+                                                         didInsertDataAt: indexPath)
                 }
-                let indexPath = IndexPath(row: index, section: 0)
-                theSelf.delegate?.emailListViewModel(viewModel: theSelf, didInsertDataAt: indexPath)
             }
         }
     }
