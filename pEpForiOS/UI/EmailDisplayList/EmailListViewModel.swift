@@ -133,30 +133,8 @@ class EmailListViewModel {
     
     // MARK: - Public Data Access & Manipulation
 
-    func indexOfPreviewMessage(forMessage msg:Message) -> Int? {
-        guard let previewMessages = messages else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data.")
-            return nil
-        }
-        for i in 0..<previewMessages.count {
-            guard let pvMsg = previewMessages.object(at: i) else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Inconsistant data")
-                return nil
-            }
-            if pvMsg == msg {
-                return i
-            }
-        }
-        return nil
-    }
-
-    func index(of message:Message) -> Int? {
-        let previewMessage = PreviewMessage(withMessage: message)
-        let index = messages?.index(of: previewMessage)
-        guard index != -1 else {
-            return nil
-        }
-        return index
+    func index(of message: Message) -> Int? {
+        return messages?.index(of: PreviewMessage(withMessage: message))
     }
     
     func row(for indexPath: IndexPath) -> Row? {
@@ -565,7 +543,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         if !shouldBeDisplayed(message: message){
             return
         }
-        guard let indexExisting = indexOfPreviewMessage(forMessage: message) else {
+        guard let indexExisting = index(of: message) else {
             // We do not have this message in our model, so we do not have to remove it
             return
         }
@@ -596,7 +574,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
 
-        if indexOfPreviewMessage(forMessage: message) == nil {
+        if index(of: message) == nil {
             // We do not have this updated message in our model yet. It might have been updated in
             // a way, that fulfills the current filters now but did not before the update.
             // Or it has just been decrypted.
@@ -606,7 +584,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
 
         // We do have this message in our model, so we do have to update it
-        guard let indexExisting = indexOfPreviewMessage(forMessage: message),
+        guard let indexExisting = index(of: message),
             let existingMessage = pvMsgs.object(at: indexExisting) else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "We should have the message at this point")
