@@ -38,7 +38,12 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func isTop(newMessage: Message) -> Bool {
-        return true
+        let allCurrentMessageIds = underlyingFolder.allMessagesNonThreaded().map {
+            return $0.messageID
+        }
+        let allCurrentMessageIdsSet = Set(allCurrentMessageIds)
+        print("*** newMessage already contained in all messages: \(allCurrentMessageIdsSet.contains(newMessage.messageID))")
+        return !doesReference(message: newMessage, referenceSet: allCurrentMessageIdsSet)
     }
 
     // MARK - Private
@@ -67,7 +72,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
      Does `message` reference any message-id from `referenceSet`?
      */
     private func doesReference(message: Message, referenceSet:Set<MessageID>) -> Bool {
-        let refs = Set<MessageID>(message.references)
+        let refs = Set(message.references)
         let intersection = refs.intersection(referenceSet)
         if !intersection.isEmpty {
             print("*** child message \(message.messageID) is child of: \(intersection)")
