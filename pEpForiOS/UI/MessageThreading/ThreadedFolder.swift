@@ -18,27 +18,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func allMessages() -> [Message] {
-        let originalMessages = underlyingFolder.allMessagesNonThreaded()
-
-        var topMessages = [Message]()
-        var messageIdsReferenced = Set<MessageID>()
-
-        // gather references
-        for aMsg in originalMessages {
-            MessageModel.performAndWait {
-                aMsg.referencedMessages().forEach {
-                    messageIdsReferenced.insert($0.messageID)
-                }
-            }
-        }
-
-        // gather top messages
-        for aMsg in originalMessages {
-            if !messageIdsReferenced.contains(aMsg.messageID) {
-                topMessages.append(aMsg)
-            }
-        }
-
+        let (topMessages, _) = gatherTopMessagesWithReferences()
         return topMessages
     }
 
@@ -61,5 +41,33 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     func isTop(newMessage: Message) -> Bool {
         // TODO
         return true
+    }
+
+    // MARK - Private
+
+    private func gatherTopMessagesWithReferences() -> (topMessages: [Message],
+        messageIdsReferenced: Set<MessageID>) {
+            let originalMessages = underlyingFolder.allMessagesNonThreaded()
+
+            var topMessages = [Message]()
+            var messageIdsReferenced = Set<MessageID>()
+
+            // gather references
+            for aMsg in originalMessages {
+                MessageModel.performAndWait {
+                    aMsg.referencedMessages().forEach {
+                        messageIdsReferenced.insert($0.messageID)
+                    }
+                }
+            }
+
+            // gather top messages
+            for aMsg in originalMessages {
+                if !messageIdsReferenced.contains(aMsg.messageID) {
+                    topMessages.append(aMsg)
+                }
+            }
+
+            return (topMessages: topMessages, messageIdsReferenced: messageIdsReferenced)
     }
 }
