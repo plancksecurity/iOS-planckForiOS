@@ -68,12 +68,18 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     /**
+     Which of the given `referenceSet` is referenced by `message`?
+     */
+    private func referenced(message: Message, referenceSet:Set<MessageID>) -> Set<MessageID> {
+        let refs = Set(message.references)
+        return refs.intersection(referenceSet)
+    }
+
+    /**
      Does `message` reference any message-id from `referenceSet`?
      */
     private func doesReference(message: Message, referenceSet:Set<MessageID>) -> Bool {
-        let refs = Set(message.references)
-        let intersection = refs.intersection(referenceSet)
-        if intersection.isEmpty {
+        if referenced(message: message, referenceSet: referenceSet).isEmpty {
             return false
         } else {
             return true
