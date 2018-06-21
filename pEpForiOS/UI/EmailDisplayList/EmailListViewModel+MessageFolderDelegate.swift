@@ -87,7 +87,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                 func insertAsTopMessage() {
                     let index = theSelf.messages.insert(object: previewMessage)
                     let indexPath = IndexPath(row: index, section: 0)
-                    theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(
+                    theSelf.emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theSelf, didInsertDataAt: indexPath)
                 }
 
@@ -142,7 +142,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             if let theSelf = self {
                 theSelf.messages.removeObject(at: indexExisting)
                 let indexPath = IndexPath(row: indexExisting, section: 0)
-                theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(
+                theSelf.emailListViewModelDelegate?.emailListViewModel(
                     viewModel: theSelf,
                     didRemoveDataAt: indexPath)
             }
@@ -195,7 +195,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // anymore after it has been updated.
                     // Remove it.
                     let indexPath = IndexPath(row: indexExisting, section: 0)
-                    theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(
+                    theSelf.emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theSelf, didRemoveDataAt: indexPath)
                     return
                 }
@@ -213,7 +213,7 @@ Something is fishy here.
                 }
                 // ...  and inform the delegate.
                 let indexPath = IndexPath(row: indexInserted, section: 0)
-                theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(
+                theSelf.emailListViewModelDelegate?.emailListViewModel(
                     viewModel: theSelf, didUpdateDataAt: indexPath)
 
                 if theSelf.currentDisplayedMessage?.messageModel == message {
