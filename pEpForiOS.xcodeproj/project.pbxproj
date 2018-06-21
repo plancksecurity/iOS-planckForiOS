@@ -234,6 +234,7 @@
 		434BF39A20C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF39920C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift */; };
 		434DDC2B20D10F9A00755F44 /* EncryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */; };
 		434E5A1B20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434E5A1A20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift */; };
+		434E5A1D20DB9EEB00D7F88A /* MessageFolderDelegateHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434E5A1C20DB9EEB00D7F88A /* MessageFolderDelegateHelper.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
 		434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */; };
 		4351C2C81F4441190053381F /* blocks.c in Sources */ = {isa = PBXBuildFile; fileRef = 4351C2B31F4441190053381F /* blocks.c */; };
@@ -721,6 +722,7 @@
 		434BF39920C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewMessage+ThreadAware.swift"; sourceTree = "<group>"; };
 		434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTests.swift; sourceTree = "<group>"; };
 		434E5A1A20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewModel+MessageFolderDelegate.swift"; sourceTree = "<group>"; };
+		434E5A1C20DB9EEB00D7F88A /* MessageFolderDelegateHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageFolderDelegateHelper.swift; sourceTree = "<group>"; };
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
 		434F40951EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCellViewModel.swift; sourceTree = "<group>"; };
 		4351C2A21F4441190053381F /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
@@ -2130,6 +2132,7 @@
 				001D365F20C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift */,
 				B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */,
 				434E5A1A20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift */,
+				434E5A1C20DB9EEB00D7F88A /* MessageFolderDelegateHelper.swift */,
 				15C5F2431F822560007DE086 /* PreviewMessage.swift */,
 				43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */,
 			);
@@ -2488,6 +2491,7 @@
 				5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */,
 				43257C841F50629700DDC7F0 /* HtmlToAttributedTextSaxParser.swift in Sources */,
 				1541D7F31FC8292D00D52A5D /* URL+MIME.swift in Sources */,
+				434E5A1D20DB9EEB00D7F88A /* MessageFolderDelegateHelper.swift in Sources */,
 				43D755F81F262FA0006F933A /* SyncFlagsToServerService.swift in Sources */,
 				43088F742046C08000BB5149 /* ComposeMessageBodyTextView.swift in Sources */,
 				43C579E91F0A1FEC00A8EDF0 /* AtomicImapService.swift in Sources */,

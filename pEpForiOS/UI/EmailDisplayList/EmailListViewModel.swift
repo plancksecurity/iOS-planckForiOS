@@ -91,6 +91,8 @@ class EmailListViewModel {
     private var selectedItems: Set<IndexPath>?
 
     weak var updateThreadListDelegate: UpdateThreadListDelegate?
+
+    let messageFolderDelegateHelper = MessageFolderDelegateHelper()
     
     // MARK: - Life Cycle
     
