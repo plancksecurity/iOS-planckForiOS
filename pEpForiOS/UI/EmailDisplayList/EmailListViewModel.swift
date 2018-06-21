@@ -485,7 +485,7 @@ class EmailListViewModel {
     /**
      Is the detail view currently displaying messages derived from `Message`?
      */
-    private func currentlyDisplaying(message: Message) -> Bool {
+    func currentlyDisplaying(message: Message) -> Bool {
         return currentDisplayedMessage?.messageModel == message
     }
 }

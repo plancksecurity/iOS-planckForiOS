@@ -37,23 +37,31 @@ extension EmailListViewModel: MessageFolderDelegate {
      - Returns: The lowest index (or nil) of a referenced message
      in the current list of displayed messages.
      */
-    private func referencedTopMessageIndex(referencedMessages: [Message],
-                                           messages: SortedSet<PreviewMessage>) -> Int? {
+    private func referencedTopMessageIndex(
+        referencedMessages: [Message],
+        messages: SortedSet<PreviewMessage>) -> (Int, Message)? {
         var lowestIndex: Int?
+        var topMessage: Message?
         for msg in referencedMessages {
             let preview = PreviewMessage(withMessage: msg)
             if let index = messages.index(of: preview) {
                 if let currentLow = lowestIndex {
                     if index < currentLow {
                         lowestIndex = index
+                        topMessage = msg
                     }
                 } else {
                     lowestIndex = index
+                    topMessage = msg
                 }
             }
         }
 
-        return lowestIndex
+        if let resultingIndex = lowestIndex, let resultingMessage = topMessage {
+            return (resultingIndex, resultingMessage)
+        } else {
+            return nil
+        }
     }
 
     private func didCreateInternal(messageFolder: MessageFolder) {
@@ -86,16 +94,13 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedMessages.isEmpty {
                     insertAsTopMessage()
                 } else {
-                    // (1) Find out which top message this child message belongs to.
-                    // (2) Update the top message in this list.
-                    // (3) Find out if that message's thread is displayed.
-                    // (4) Notify that thread display (if any) that a new message has entered.
-
-                    if let _ = theSelf.referencedTopMessageIndex(
+                    if let (_, topMessage) = theSelf.referencedTopMessageIndex(
                         referencedMessages: referencedMessages,
                         messages: theSelf.messages) {
-                        // Incoming message is a child of message with that index.
-                        // Inform details view, and update that top message.
+                        if theSelf.currentlyDisplaying(message: topMessage) {
+                            // (1) notify detail view
+                            // (2) update message (thread count) in master view
+                        }
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
