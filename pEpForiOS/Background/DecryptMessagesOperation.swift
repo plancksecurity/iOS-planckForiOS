@@ -44,6 +44,10 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             }
 
             for cdMessage in cdMessages {
+                guard let message = cdMessage.message() else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No message")
+                    continue
+                }
                 if me.isCancelled {
                     break
                 }
@@ -63,10 +67,27 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 let session = PEPSession()
 
                 var rating = PEP_rating_undefined
+                let pEpDecryptedMessage: NSDictionary
                 do {
-                    let pEpDecryptedMessage = try session.decryptMessageDict(
-                        pepMessage, flags: nil, rating: &rating, extraKeys: &keys, status: nil)
-                        as NSDictionary
+                    // (This nasty if clause is a workaround to what I consider as a Swift 4.1 bug,
+                    // causing an error "generic parameter "wrapped" could not be inferred".
+                    // The only difference is the `flags`parameter.)
+                    if message.isOnTrustedServer {
+                        pEpDecryptedMessage = try session.decryptMessageDict(pepMessage,
+                                                                             flags: nil,
+                                                                             rating: &rating,
+                                                                             extraKeys: &keys,
+                                                                             status: nil)
+                            as NSDictionary
+                    } else {
+                        var flags = PEP_decrypt_flag_untrusted_server
+                        pEpDecryptedMessage = try session.decryptMessageDict(pepMessage,
+                                                                             flags: &flags,
+                                                                             rating: &rating,
+                                                                             extraKeys: &keys,
+                                                                             status: nil)
+                            as NSDictionary
+                    }
                     handleDecryptionSuccess(cdMessage: cdMessage,
                                             pEpDecryptedMessage: pEpDecryptedMessage,
                                             originalRating: originalRating,
