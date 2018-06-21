@@ -11,12 +11,10 @@ import UIKit
 /// Automatically keeps containted objects sorted to the criteria of a given sort block.
 /// The implementation is completely trival and unperformant.
 /// Has to be improved if this causes performance issue in the app.
-class SortedSet<T: Equatable> {
-    typealias SortBlock = (_ first: T,_  second: T) -> ComparisonResult
-    private var set = NSMutableOrderedSet() 
-    private var sortBlock: SortBlock
-
+class SortedSet<T: Equatable>: Sequence {
     // MARK: - Public API
+
+    typealias SortBlock = (_ first: T,_  second: T) -> ComparisonResult
 
     public var count: Int {
         return set.count
@@ -94,8 +92,44 @@ class SortedSet<T: Equatable> {
         set.removeAllObjects()
     }
 
+    // MARK: - Sequence
+
+    public typealias Iterator = SortedSetIterator<T>
+
+    public func makeIterator() -> SortedSet<T>.SortedSetIterator<T> {
+        return SortedSetIterator.init(elements: set.array as! [T])
+    }
+
+    // MARK: - Iterator
+
+    public struct SortedSetIterator<T>: IteratorProtocol {
+        public typealias Element = T
+
+        private let elements: [T]
+        private var index = 0
+        private let maxIndex: Int
+
+        public init(elements: [T]) {
+            self.elements = elements
+            maxIndex = elements.count - 1
+        }
+
+        public mutating func next() -> SortedSetIterator.Element? {
+            if index > maxIndex {
+                return nil
+            } else {
+                let e = elements[index]
+                index += 1
+                return e
+            }
+        }
+    }
+
     // MARK: -
     
+    private var set = NSMutableOrderedSet()
+    private var sortBlock: SortBlock
+
     private func sort()  {
         set.sort { (first: Any, second: Any) -> ComparisonResult in
             guard let firstT = first as? T,
@@ -123,7 +157,7 @@ class SortedSet<T: Equatable> {
             }
         }
         // we would insert as the last object
-        return max(0, set.count)
+        return Swift.max(0, set.count)
     }
 
     private func isValidIndex(_ idx: Int) -> Bool {
