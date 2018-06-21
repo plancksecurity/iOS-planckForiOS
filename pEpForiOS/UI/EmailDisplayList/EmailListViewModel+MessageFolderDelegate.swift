@@ -33,6 +33,29 @@ extension EmailListViewModel: MessageFolderDelegate {
 
     // MARK: - MessageFolderDelegate (internal)
 
+    /**
+     - Returns: The lowest index (or nil) of a referenced message
+     in the current list of displayed messages.
+     */
+    private func referencedTopMessageIndex(referencedMessages: [Message],
+                                           messages: SortedSet<PreviewMessage>) -> Int? {
+        var lowestIndex: Int?
+        for msg in referencedMessages {
+            let preview = PreviewMessage(withMessage: msg)
+            if let index = messages.index(of: preview) {
+                if let currentLow = lowestIndex {
+                    if index < currentLow {
+                        lowestIndex = index
+                    }
+                } else {
+                    lowestIndex = index
+                }
+            }
+        }
+
+        return lowestIndex
+    }
+
     private func didCreateInternal(messageFolder: MessageFolder) {
         guard let message = messageFolder as? Message else {
             // The createe is no message. Ignore.
@@ -53,32 +76,31 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
-                if referencedMessages.isEmpty {
+                func insertAsTopMessage() {
                     let index = theSelf.messages.insert(object: previewMessage)
                     let indexPath = IndexPath(row: index, section: 0)
                     theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(
                         viewModel: theSelf, didInsertDataAt: indexPath)
+                }
+
+                if referencedMessages.isEmpty {
+                    insertAsTopMessage()
                 } else {
                     // (1) Find out which top message this child message belongs to.
                     // (2) Update the top message in this list.
                     // (3) Find out if that message's thread is displayed.
                     // (4) Notify that thread display (if any) that a new message has entered.
-                    var lowestIndex: Int?
-                    for msg in referencedMessages {
-                        let preview = PreviewMessage(withMessage: msg)
-                        if let index = theSelf.messages.index(of: preview) {
-                            if let currentLow = lowestIndex {
-                                if index < currentLow {
-                                    lowestIndex = index
-                                }
-                            } else {
-                                lowestIndex = index
-                            }
-                        }
-                    }
 
-                    if let _ = lowestIndex {
-
+                    if let _ = theSelf.referencedTopMessageIndex(
+                        referencedMessages: referencedMessages,
+                        messages: theSelf.messages) {
+                        // Incoming message is a child of message with that index.
+                        // Inform details view, and update that top message.
+                    } else {
+                        // Incoming message references other messages,
+                        // but none of them are displayed right now in this model.
+                        // So treat it as a top message.
+                        insertAsTopMessage()
                     }
                 }
             }
@@ -91,7 +113,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // It is not a Message (probably it is a Folder).
             return
         }
-        if !shouldBeDisplayed(message: message){
+        if !shouldBeDisplayed(message: message) {
             return
         }
         guard let indexExisting = index(of: message) else {
