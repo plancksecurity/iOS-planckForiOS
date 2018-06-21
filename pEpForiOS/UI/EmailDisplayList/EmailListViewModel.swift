@@ -93,7 +93,8 @@ class EmailListViewModel {
     
     // MARK: - Life Cycle
     
-    init(delegate: EmailListViewModelDelegate? = nil, messageSyncService: MessageSyncServiceProtocol,
+    init(delegate: EmailListViewModelDelegate? = nil,
+         messageSyncService: MessageSyncServiceProtocol,
          folderToShow: Folder) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.emailListViewModelDelegatedelegate = delegate
@@ -119,7 +120,9 @@ class EmailListViewModel {
         queue.addOperation { [weak self] in
             if let theSelf = self {
                 let messagesToDisplay = theSelf.folderToShow.allMessages()
-                let previewMessages = messagesToDisplay.map { PreviewMessage(withMessage: $0) }
+                let previewMessages = messagesToDisplay.map {
+                    PreviewMessage(withMessage: $0)
+                }
 
                 theSelf.messages = SortedSet(array: previewMessages,
                                           sortBlock: theSelf.sortByDateSentAscending)
@@ -145,7 +148,8 @@ class EmailListViewModel {
                                      errorString: "InconsistencyviewModel vs. model")
             return nil
         }
-        if let cachedSenderImage = contactImageTool.cachedIdentityImage(forIdentity: previewMessage.from) {
+        if let cachedSenderImage = contactImageTool.cachedIdentityImage(
+            forIdentity: previewMessage.from) {
             return Row(withPreviewMessage: previewMessage, senderContactImage: cachedSenderImage)
         } else {
             return Row(withPreviewMessage: previewMessage)
@@ -304,7 +308,8 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = true
-            me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+            me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me,
+                                                                      didUpdateDataAt: indexPath)
         }
     }
 
@@ -318,7 +323,8 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = false
-            me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+            me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me,
+                                                                      didUpdateDataAt: indexPath)
         }
     }
     
@@ -438,8 +444,8 @@ class EmailListViewModel {
     // MARK: - Fetch Older Messages
 
     /// The number of rows (not yet displayed to the user) before we want to fetch older messages.
-    /// A balance between good user experience (have data in time, ideally before the user has scrolled
-    /// to the last row) and memory usage has to be found.
+    /// A balance between good user experience (have data in time,
+    /// ideally before the user has scrolled to the last row) and memory usage has to be found.
     private let numRowsBeforeLastToTriggerFetchOder = 1
 
     /// Figures out whether or not fetching of older messages should be requested.
@@ -562,7 +568,9 @@ extension EmailListViewModel: MessageFolderDelegate {
             if let me = self {
                 pvMsgs.removeObject(at: indexExisting)
                 let indexPath = IndexPath(row: indexExisting, section: 0)
-                me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didRemoveDataAt: indexPath)
+                me.emailListViewModelDelegatedelegate?.emailListViewModel(
+                    viewModel: me,
+                    didRemoveDataAt: indexPath)
             }
         }
     }
@@ -600,7 +608,8 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         let previewMessage = PreviewMessage(withMessage: message)
         if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
-            // The only message properties displayed in this view that might be updated are flagged and seen.
+            // The only message properties displayed in this view that might be updated
+            // are flagged and seen.
             // We got called even the flaggs did not change. Ignore.
             return
         }
@@ -612,11 +621,13 @@ extension EmailListViewModel: MessageFolderDelegate {
 
                 if let filter = me.folderToShow.filter,
                     !filter.fulfillsFilter(message: message) {
-                    // The message was included in the model, but does not fulfil the filter criteria
+                    // The message was included in the model,
+                    // but does not fulfil the filter criteria
                     // anymore after it has been updated.
                     // Remove it.
                     let indexPath = IndexPath(row: indexToRemove, section: 0)
-                    me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didRemoveDataAt: indexPath)
+                    me.emailListViewModelDelegatedelegate?.emailListViewModel(
+                        viewModel: me, didRemoveDataAt: indexPath)
                     return
                 }
                 // The updated message has to be shown. Add it to the model ...
@@ -631,7 +642,8 @@ Something is fishy here.
                 }
                 // ...  and inform the delegate.
                 let indexPath = IndexPath(row: indexInserted, section: 0)
-                me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me, didUpdateDataAt: indexPath)
+                me.emailListViewModelDelegatedelegate?.emailListViewModel(
+                    viewModel: me, didUpdateDataAt: indexPath)
 
                 if me.currentDisplayedMessage?.messageModel == message {
                     me.currentDisplayedMessage?.update(forMessage: message)
