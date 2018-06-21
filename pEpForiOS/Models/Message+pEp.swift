@@ -76,12 +76,12 @@ extension Message {
         return optionalFields[Headers.originalRating.rawValue] = rating.asString()
     }
 
-    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
+    public func pEpRating() -> PEP_rating {
         return reEvaluatedRating
     }
 
-    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
-        return pEpRating(session: session).pEpColor()
+    public func pEpColor() -> PEP_color {
+        return pEpRating().pEpColor()
     }
 
     /**
@@ -166,39 +166,37 @@ extension Message {
      one can handshake on.
      - Returns: A list of `HandshakeCombination`s.
      */
-    public static func handshakeActionCombinations<T>(
-        session: PEPSession = PEPSession(),
-        identities: T) -> [HandshakeCombination]
+    public static func handshakeActionCombinations<T>(identities: T) -> [HandshakeCombination]
         where T: Collection, T.Element: Identity {
-        let ownIdentities = identities.filter() {
-            $0.isMySelf
-        }
-
-        let ownIdentitiesWithKeys = ownIdentities.filter() {
-            (try? $0.fingerPrint(session: session)) != nil
-        }
-
-        let partnerIdenties = identities.filter() {
-            $0.canInvokeHandshakeAction(session: session)
-        }
-
-        var handshakable = [HandshakeCombination]()
-        for ownId in ownIdentitiesWithKeys {
-            for partnerId in partnerIdenties {
-                handshakable.append(HandshakeCombination(
-                    ownIdentity: ownId, partnerIdentity: partnerId))
+            let session = PEPSession()
+            let ownIdentities = identities.filter() {
+                $0.isMySelf
             }
-        }
 
-        return handshakable
+            let ownIdentitiesWithKeys = ownIdentities.filter() {
+                (try? $0.fingerPrint(session: session)) != nil
+            }
+
+            let partnerIdenties = identities.filter() {
+                $0.canInvokeHandshakeAction(session: session)
+            }
+
+            var handshakable = [HandshakeCombination]()
+            for ownId in ownIdentitiesWithKeys {
+                for partnerId in partnerIdenties {
+                    handshakable.append(HandshakeCombination(
+                        ownIdentity: ownId, partnerIdentity: partnerId))
+                }
+            }
+
+            return handshakable
     }
 
     /**
      Determines all possible handshake combinations that the identies referenced in a message
      represent.
      */
-    public func handshakeActionCombinations(
-        session: PEPSession = PEPSession()) -> [HandshakeCombination] {
-        return Message.handshakeActionCombinations(session: session, identities: allIdentities)
+    public func handshakeActionCombinations() -> [HandshakeCombination] {
+        return Message.handshakeActionCombinations(identities: allIdentities)
     }
 }
