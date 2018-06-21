@@ -22,7 +22,7 @@ class ThreadedSwitchViewModel:SettingSwitchProtocol  {
     }
 
     func switchAction(value: Bool) {
-        //TODO: switch action
+        AppSettings.init().threadedViewEnabled = value
     }
 }
 

@@ -17,10 +17,10 @@ class UnecryptedSubjectViewModel: SettingSwitchProtocol  {
     init() {
         self.title = "Enable Protected Subject"
         self.description = "If enabled, message subjects are also protected."
-        self.switchValue = AppSettings.init().unencryptedSubjectEnabled
+        self.switchValue = !AppSettings.init().unencryptedSubjectEnabled
     }
 
     func switchAction(value: Bool) {
-        //TODO: switch action
+        AppSettings.init().unencryptedSubjectEnabled = !value
     }
 }
