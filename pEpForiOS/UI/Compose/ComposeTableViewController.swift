@@ -493,6 +493,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         message.pEpProtected = pEpProtection
+        message.setOriginalRatingHeader(rating: self.recalculateCurrentRating())
 
         return message
     }
