@@ -10,10 +10,10 @@ import UIKit
 
 class SettingUnecryptedSubjectViewController: SettingBaseViewController {
     override func handleSwitchChange() {
-        AppSettings().unecryptedSubjectEnabled = !`switch`.isOn
+        AppSettings().unencryptedSubjectEnabled = !`switch`.isOn
     }
 
     override func setSwitchValue() {
-        `switch`.isOn = !AppSettings().unecryptedSubjectEnabled
+        `switch`.isOn = !AppSettings().unencryptedSubjectEnabled
     }
 }
