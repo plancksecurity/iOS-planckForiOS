@@ -10,21 +10,22 @@ import MessageModel
 
 class AppSettings {
     // MARK: - Public
-
+    
     public init() {
         registerDefaults()
         setup()
     }
-
+    
     public var shouldReinitializePepOnNextStartup: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: AppSettings.keyReinitializePepOnNextStartup)
+            UserDefaults.standard.set(newValue,
+                                      forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
     }
-
+    
     public var unencryptedSubjectEnabled: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyUnencryptedSubjectEnabled)
@@ -34,7 +35,7 @@ class AppSettings {
             PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
         }
     }
-
+    
     /// Address of the default account
     public var defaultAccount: String? {
         get {
@@ -45,15 +46,15 @@ class AppSettings {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
         }
     }
-
+    
     // MARK: - Private
-
+    
     static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
-
+    
     // MARK: - Private - DEFAULT ACCOUNT
-
+    
     private func assureDefaultAccountIsSetAndExists() {
         if UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress) == nil {
             // Default account is not set. Take the first MessageModel provides as a starting point
@@ -62,20 +63,21 @@ class AppSettings {
         }
         // Assure the default account still exists. The user might have deleted it.
         guard
-            let currentDefault = UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress),
+            let currentDefault = UserDefaults.standard.string(
+                forKey: AppSettings.keyDefaultAccountAddress),
             let _ = Account.by(address: currentDefault)
             else {
                 defaultAccount = nil
                 return
         }
     }
-
+    
     // MARK: - Private - SETUP
-
+    
     private func setup() {
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
     }
-
+    
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
