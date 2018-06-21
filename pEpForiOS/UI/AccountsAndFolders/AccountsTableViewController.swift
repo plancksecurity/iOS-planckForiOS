@@ -160,14 +160,12 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         case .account:
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
-        case .unecryptedSubject:
-            performSegue(withIdentifier: .segueShowSettingUnecryptedSubject, sender: self)
+        case .unecryptedSubject, .organizedByThread:
+            performSegue(withIdentifier: .segueShowSetting, sender: self)
         case .defaultAccount:
             performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
         case .showLog:
             performSegue(withIdentifier: .segueShowLog, sender: self)
-        case .organizedByThread:
-        break // We currenty do nothing
         case .credits:
             performSegue(withIdentifier: .sequeShowCredits, sender: self)
         }
@@ -185,6 +183,7 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueShowSettingSyncTrash
         case segueShowSettingUnecryptedSubject
         case sequeShowCredits
+        case segueShowSetting
         case noAccounts
         case noSegue
     }
@@ -204,6 +203,11 @@ extension AccountsTableViewController: SegueHandlerType {
                     destination.viewModel = vm
                 }
             }
+        case .segueShowSetting:
+            guard let destination = segue.destination as? SettingSwitchViewController else {
+                return
+            }
+            destination.appConfig = self.appConfig
         case .noAccounts, // BaseViewControllers
         .segueShowSettingUnecryptedSubject,
         .segueShowSettingSyncTrash,

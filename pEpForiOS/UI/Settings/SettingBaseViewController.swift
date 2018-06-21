@@ -9,12 +9,14 @@
 import UIKit
 
 /// Base ViewController for settings that can be switched on/off
-class SettingBaseViewController: BaseViewController {
+class SettingSwitchViewController: BaseViewController {
     @IBOutlet weak var `switch`: UISwitch!
     /// Short description shown to the user in front of the switch.
     @IBOutlet weak var switchDescription: UILabel!
     /// Texfield with a lot of space to explain the setting.
     @IBOutlet weak var longDescription: UITextView!
+
+    var viewModel : settingsSwitchViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,3 +39,18 @@ class SettingBaseViewController: BaseViewController {
                                  errorString: "Pure virtual. Handle in subclass.")
     }
 }
+
+/*
+
+ Sync Trash Folder
+
+If enabled, messages in the Trash folder are synced with other devices.
+
+ */
+
+/*
+
+Enable Protected Subject
+
+If enabled, message subjects are also protected.
+ */
