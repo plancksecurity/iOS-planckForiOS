@@ -31,7 +31,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
         guard let index = self.index(of: message) else {
             return
         }
-        messages?.removeObject(at: index)
+        messages.removeObject(at: index)
         informDeleteRow(at: index)
         startListeningToChanges()
     }
@@ -46,8 +46,8 @@ extension EmailListViewModel: EmailDisplayDelegate {
         }
         
         let previewMessage = PreviewMessage(withMessage: message)
-        messages?.removeObject(at: index)
-        _ = messages?.insert(object: previewMessage)
+        messages.removeObject(at: index)
+        _ = messages.insert(object: previewMessage)
         informUpdateRow(at: index)
     }
 
