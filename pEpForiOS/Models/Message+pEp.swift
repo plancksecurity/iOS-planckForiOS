@@ -65,7 +65,7 @@ extension Message {
         guard let originalRatingStr = optionalFields[Headers.originalRating.rawValue] else {
             return PEP_rating_undefined
         }
-        return PEPSession().rating(from: originalRatingStr)
+        return PEP_rating.fromString(str: originalRatingStr)
     }
 
     func setOriginalRatingHeader(rating: String) {
@@ -73,7 +73,7 @@ extension Message {
     }
 
     func setOriginalRatingHeader(rating: PEP_rating) {
-        return optionalFields[Headers.originalRating.rawValue] = PEPSession().string(from: rating)
+        return optionalFields[Headers.originalRating.rawValue] = rating.asString()
     }
 
     public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
