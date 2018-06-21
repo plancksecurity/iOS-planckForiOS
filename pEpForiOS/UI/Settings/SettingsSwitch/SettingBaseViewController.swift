@@ -16,7 +16,7 @@ class SettingSwitchViewController: BaseViewController {
     /// Texfield with a lot of space to explain the setting.
     @IBOutlet weak var longDescription: UITextView!
 
-    var viewModel : settingsSwitchViewModel?
+    var viewModel : SettingSwitchProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +35,7 @@ class SettingSwitchViewController: BaseViewController {
 
     func handleSwitchChange() {
         if let vm = viewModel {
-            vm.switchAction(Value: `switch`.isOn)
+            vm.switchAction(value: `switch`.isOn)
         }
     }
 
