@@ -419,7 +419,7 @@
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
 		495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */; };
 		496C0EE720BC2A880009B5B9 /* EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496C0EE620BC2A880009B5B9 /* EmailDisplayDelegate.swift */; };
-		496C0EEB20BC4B370009B5B9 /* EmailListViewController+EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496C0EEA20BC4B360009B5B9 /* EmailListViewController+EmailDisplayDelegate.swift */; };
+		496C0EEB20BC4B370009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496C0EEA20BC4B360009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift */; };
 		49C2750120C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C2750020C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift */; };
 		49D521541E73E1C20097987B /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; };
 		49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -936,7 +936,7 @@
 		495560871E71517F0016579E /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
 		495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+SizeClasses.swift"; sourceTree = "<group>"; };
 		496C0EE620BC2A880009B5B9 /* EmailDisplayDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDisplayDelegate.swift; sourceTree = "<group>"; };
-		496C0EEA20BC4B360009B5B9 /* EmailListViewController+EmailDisplayDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewController+EmailDisplayDelegate.swift"; sourceTree = "<group>"; };
+		496C0EEA20BC4B360009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewModel+EmailDisplayDelegate.swift"; sourceTree = "<group>"; };
 		49C2750020C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+DisplayedMessage.swift"; sourceTree = "<group>"; };
 		49D521531E73E1C20097987B /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D521561E73E1C70097987B /* ServerConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1842,7 +1842,7 @@
 				B74D08BF1F013F15003D092C /* ViewModel */,
 				220DCE281E0AB4DE002FE716 /* Cells */,
 				43ED53641CC77F95006AB156 /* EmailListViewController.swift */,
-				496C0EEA20BC4B360009B5B9 /* EmailListViewController+EmailDisplayDelegate.swift */,
+				496C0EEA20BC4B360009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift */,
 			);
 			path = EmailDisplayList;
 			sourceTree = "<group>";
@@ -2444,7 +2444,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				496C0EEB20BC4B370009B5B9 /* EmailListViewController+EmailDisplayDelegate.swift in Sources */,
+				496C0EEB20BC4B370009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift in Sources */,
 				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
 				43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */,
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,

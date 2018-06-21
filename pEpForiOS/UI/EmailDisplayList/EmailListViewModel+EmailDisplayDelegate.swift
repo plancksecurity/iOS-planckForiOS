@@ -1,5 +1,5 @@
 //
-//  EmailListViewController+EmailDisplayDelegate.swift
+//  EmailListViewModel+EmailDisplayDelegate.swift
 //  pEp
 //
 //  Created by Miguel Berrocal Gómez on 28/05/2018.
