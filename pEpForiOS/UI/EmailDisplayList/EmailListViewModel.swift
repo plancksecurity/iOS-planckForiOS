@@ -529,8 +529,13 @@ extension EmailListViewModel: MessageFolderDelegate {
                         return
                     }
                     let indexPath = IndexPath(row: index, section: 0)
-                    theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: theSelf,
-                                                         didInsertDataAt: indexPath)
+                    theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(
+                        viewModel: theSelf, didInsertDataAt: indexPath)
+                } else {
+                    // (1) Find out which top message this child message belongs to.
+                    // (2) Update the top message in this list.
+                    // (3) Find out if that message's thread is displayed.
+                    // (4) Notify that thread display (if any) that a new message has entered.
                 }
             }
         }
