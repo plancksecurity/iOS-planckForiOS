@@ -74,7 +74,7 @@ public class AccountsSettingsCellViewModel {
             case .defaultAccount:
                 return AppSettings().defaultAccount
             case .unecryptedSubject:
-                return onOffStateString(forState: !AppSettings().unecryptedSubjectEnabled)
+                return onOffStateString(forState: !AppSettings().unencryptedSubjectEnabled)
             }
         }
     }
