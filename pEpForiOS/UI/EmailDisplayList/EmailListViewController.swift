@@ -131,7 +131,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     private func resetModel() {
         if let theFolder = folderToShow {
-            model = EmailListViewModel(delegate: self,
+            model = EmailListViewModel(emailListViewModelDelegate: self,
                                        messageSyncService: appConfig.messageSyncService,
                                        folderToShow: theFolder)
         }

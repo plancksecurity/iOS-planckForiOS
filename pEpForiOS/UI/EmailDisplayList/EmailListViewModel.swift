@@ -66,7 +66,7 @@ class EmailListViewModel {
         return createe
     }()
 
-    public var emailListViewModelDelegatedelegate: EmailListViewModelDelegate?
+    public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     internal let folderToShow: Folder
     internal let threadedMessageFolder: ThreadedMessageFolderProtocol
@@ -94,11 +94,11 @@ class EmailListViewModel {
     
     // MARK: - Life Cycle
     
-    init(delegate: EmailListViewModelDelegate? = nil,
+    init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
          folderToShow: Folder) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
-        self.emailListViewModelDelegatedelegate = delegate
+        self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 
         self.folderToShow = folderToShow
@@ -128,7 +128,7 @@ class EmailListViewModel {
                 theSelf.messages = SortedSet(array: previewMessages,
                                           sortBlock: theSelf.sortByDateSentAscending)
                 DispatchQueue.main.async {
-                    theSelf.emailListViewModelDelegatedelegate?.updateView()
+                    theSelf.emailListViewModelDelegate?.updateView()
                     theSelf.startListeningToChanges()
                 }
             }
@@ -211,9 +211,9 @@ class EmailListViewModel {
         checkUnreadMessages(indexPaths: indexPaths)
         checkFlaggedMessages(indexPaths: indexPaths)
         if indexPaths.count > 0 {
-            emailListViewModelDelegatedelegate?.toolbarIs(enabled: true)
+            emailListViewModelDelegate?.toolbarIs(enabled: true)
         } else {
-            emailListViewModelDelegatedelegate?.toolbarIs(enabled: false)
+            emailListViewModelDelegate?.toolbarIs(enabled: false)
         }
     }
 
@@ -226,9 +226,9 @@ class EmailListViewModel {
         }
 
         if flagged.count == indexPaths.count {
-            emailListViewModelDelegatedelegate?.showUnflagButton(enabled: true)
+            emailListViewModelDelegate?.showUnflagButton(enabled: true)
         } else {
-            emailListViewModelDelegatedelegate?.showUnflagButton(enabled: false)
+            emailListViewModelDelegate?.showUnflagButton(enabled: false)
         }
     }
 
@@ -241,9 +241,9 @@ class EmailListViewModel {
         }
 
         if read.count == indexPaths.count {
-            emailListViewModelDelegatedelegate?.showUnreadButton(enabled: true)
+            emailListViewModelDelegate?.showUnreadButton(enabled: true)
         } else {
-            emailListViewModelDelegatedelegate?.showUnreadButton(enabled: false)
+            emailListViewModelDelegate?.showUnreadButton(enabled: false)
         }
     }
 
@@ -305,7 +305,7 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = true
-            me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me,
+            me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
                                                                       didUpdateDataAt: indexPath)
         }
     }
@@ -320,7 +320,7 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = false
-            me.emailListViewModelDelegatedelegate?.emailListViewModel(viewModel: me,
+            me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
                                                                       didUpdateDataAt: indexPath)
         }
     }
@@ -485,7 +485,7 @@ class EmailListViewModel {
     /**
      Is the detail view currently displaying messages derived from `Message`?
      */
-    private func currentlyDisplaying(message: Message) -> Bool {
+    func currentlyDisplaying(message: Message) -> Bool {
         return currentDisplayedMessage?.messageModel == message
     }
 }
