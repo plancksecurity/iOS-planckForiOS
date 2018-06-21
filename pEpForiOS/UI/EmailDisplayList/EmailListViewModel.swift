@@ -535,9 +535,22 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // (2) Update the top message in this list.
                     // (3) Find out if that message's thread is displayed.
                     // (4) Notify that thread display (if any) that a new message has entered.
+                    var lowestIndex: Int?
                     for msg in referencedMessages {
                         let preview = PreviewMessage(withMessage: msg)
-                        let _ = theSelf.messages.index(of: preview)
+                        if let index = theSelf.messages.index(of: preview) {
+                            if let currentLow = lowestIndex {
+                                if index < currentLow {
+                                    lowestIndex = index
+                                }
+                            } else {
+                                lowestIndex = index
+                            }
+                        }
+                    }
+
+                    if let _ = lowestIndex {
+
                     }
                 }
             }
