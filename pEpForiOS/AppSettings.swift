@@ -92,7 +92,7 @@ class AppSettings {
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
-        defaults[AppSettings.keyUnecryptedSubjectEnabled] = true
+        defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
         defaults[AppSettings.keyThreadedViewEnabled] = true
 
         UserDefaults.standard.register(defaults: defaults)

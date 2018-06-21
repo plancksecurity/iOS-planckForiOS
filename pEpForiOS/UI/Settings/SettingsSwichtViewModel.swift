@@ -25,7 +25,7 @@ class settingsSwitchViewModel {
 
     var type : settingType
     var title : String
-    var Description : String
+    var description : String
     var switchValue : Bool
 
     init(type: settingType) {
@@ -33,12 +33,12 @@ class settingsSwitchViewModel {
         switch self.type {
         case .ThreadedViewEnabled:
             self.title = "Enable Thread Messages View"
-            self.Description = "If enabled, messages in the same thread will be displayed together"
+            self.description = "If enabled, messages in the same thread will be displayed together"
             self.switchValue = false
 
         case .UnecryptedSubjectEnabled:
             self.title = "Enable Protected Subject"
-            self.Description = "If enabled, message subjects are also protected."
+            self.description = "If enabled, message subjects are also protected."
             self.switchValue = false
         }
     }

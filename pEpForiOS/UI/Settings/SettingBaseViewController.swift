@@ -20,6 +20,7 @@ class SettingSwitchViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpView()
         setSwitchValue()
     }
 
@@ -27,16 +28,21 @@ class SettingSwitchViewController: BaseViewController {
         handleSwitchChange()
     }
 
-    /// Override to handle switch value changes triggered by the user
-    func handleSwitchChange() {
-        Log.shared.errorAndCrash(component: #function,
-                                 errorString: "Pure virtual. Handle in subclass.")
+    func setUpView() {
+        self.switchDescription.text = viewModel?.title
+        self.longDescription.text = viewModel?.description
     }
 
-    /// Overrride to set the switches initial value
+    func handleSwitchChange() {
+        if let vm = viewModel {
+            vm.switchAction(Value: `switch`.isOn)
+        }
+    }
+
     func setSwitchValue() {
-        Log.shared.errorAndCrash(component: #function,
-                                 errorString: "Pure virtual. Handle in subclass.")
+        if let vm = viewModel {
+            `switch`.setOn(vm.switchValue, animated: false)
+        }
     }
 }
 

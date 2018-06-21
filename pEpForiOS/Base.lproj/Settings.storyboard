@@ -545,10 +545,10 @@
             </objects>
             <point key="canvasLocation" x="6912" y="-436"/>
         </scene>
-        <!--Setting Base View Controller-->
+        <!--Setting Switch View Controller-->
         <scene sceneID="qJL-Xh-Gld">
             <objects>
-                <viewController id="EOv-Ee-Waq" customClass="SettingBaseViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="EOv-Ee-Waq" customClass="SettingSwitchViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Zry-xu-tEo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -556,7 +556,7 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ysl-Jw-ZPh">
                                 <rect key="frame" x="290" y="30" width="51" height="31"/>
                                 <connections>
-                                    <action selector="switchChanged:" destination="EOv-Ee-Waq" eventType="valueChanged" id="8sl-aJ-Ekv"/>
+                                    <action selector="switchChanged:" destination="EOv-Ee-Waq" eventType="valueChanged" id="e9W-Fe-B5w"/>
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkK-aU-Vvk">
@@ -587,9 +587,9 @@
                         <viewLayoutGuide key="safeArea" id="5P0-wj-geP"/>
                     </view>
                     <connections>
-                        <outlet property="longDescription" destination="boR-Zs-5NC" id="gRf-Lb-S1A"/>
-                        <outlet property="switch" destination="Ysl-Jw-ZPh" id="Yuo-rh-S40"/>
-                        <outlet property="switchDescription" destination="hkK-aU-Vvk" id="kzQ-Ya-33N"/>
+                        <outlet property="longDescription" destination="boR-Zs-5NC" id="z5h-NL-HrT"/>
+                        <outlet property="switch" destination="Ysl-Jw-ZPh" id="uvx-Aq-Xsh"/>
+                        <outlet property="switchDescription" destination="hkK-aU-Vvk" id="KqH-Cf-saA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgT-NF-o3r" userLabel="First Responder" sceneMemberID="firstResponder"/>
