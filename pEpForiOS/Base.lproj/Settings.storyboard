@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cPx-YX-3ty">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -139,7 +139,7 @@
                         <segue destination="Eri-pJ-T3J" kind="showDetail" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="9LH-QE-79O" kind="showDetail" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
                         <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindAccountAddedWithSegue:" id="dbj-Gx-Exo"/>
-                        <segue destination="EOv-Ee-Waq" kind="showDetail" identifier="segueShowSettingSyncTrash" id="W4o-Ei-uzM"/>
+                        <segue destination="EOv-Ee-Waq" kind="showDetail" identifier="segueShowSetting" id="W4o-Ei-uzM"/>
                         <segue destination="FFF-lc-Mu5" kind="showDetail" identifier="segueShowSettingUnecryptedSubject" id="yJT-PJ-mmN"/>
                         <segue destination="pQb-5p-QId" kind="showDetail" identifier="segueShowSettingDefaultAccount" id="qiY-7g-nll"/>
                         <segue destination="01V-rr-Nt1" kind="showDetail" identifier="segueShowLog" id="U6Q-tx-u4b"/>
@@ -545,10 +545,10 @@
             </objects>
             <point key="canvasLocation" x="6912" y="-436"/>
         </scene>
-        <!--Setting Sync Trash View Controller-->
+        <!--Setting Switch View Controller-->
         <scene sceneID="qJL-Xh-Gld">
             <objects>
-                <viewController id="EOv-Ee-Waq" customClass="SettingSyncTrashViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="EOv-Ee-Waq" customClass="SettingSwitchViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Zry-xu-tEo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -556,16 +556,16 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ysl-Jw-ZPh">
                                 <rect key="frame" x="290" y="30" width="51" height="31"/>
                                 <connections>
-                                    <action selector="switchChanged:" destination="EOv-Ee-Waq" eventType="valueChanged" id="8sl-aJ-Ekv"/>
+                                    <action selector="switchChanged:" destination="EOv-Ee-Waq" eventType="valueChanged" id="e9W-Fe-B5w"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sync Trash Folder" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkK-aU-Vvk">
-                                <rect key="frame" x="16" y="35" width="138" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkK-aU-Vvk">
+                                <rect key="frame" x="16" y="35" width="29" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="If enabled, messages in the Trash folder are synced with other devices." translatesAutoresizingMaskIntoConstraints="NO" id="boR-Zs-5NC">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="description" translatesAutoresizingMaskIntoConstraints="NO" id="boR-Zs-5NC">
                                 <rect key="frame" x="16" y="81" width="343" height="566"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -587,9 +587,9 @@
                         <viewLayoutGuide key="safeArea" id="5P0-wj-geP"/>
                     </view>
                     <connections>
-                        <outlet property="longDescription" destination="boR-Zs-5NC" id="KwG-PF-hv1"/>
-                        <outlet property="switch" destination="Ysl-Jw-ZPh" id="jPI-gf-cc0"/>
-                        <outlet property="switchDescription" destination="hkK-aU-Vvk" id="xBz-aI-a8Z"/>
+                        <outlet property="longDescription" destination="boR-Zs-5NC" id="z5h-NL-HrT"/>
+                        <outlet property="switch" destination="Ysl-Jw-ZPh" id="uvx-Aq-Xsh"/>
+                        <outlet property="switchDescription" destination="hkK-aU-Vvk" id="KqH-Cf-saA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgT-NF-o3r" userLabel="First Responder" sceneMemberID="firstResponder"/>

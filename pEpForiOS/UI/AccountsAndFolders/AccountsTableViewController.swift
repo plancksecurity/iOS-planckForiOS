@@ -10,6 +10,7 @@ import SwipeCellKit
 
 class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     let viewModel = AccountsSettingsViewModel()
+    var settingSwitchViewModel: SettingSwitchProtocol?
 
     /** Our vanilla table view cell */
     let accountsCellIdentifier = "accountsCell"
@@ -161,13 +162,15 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         case .unecryptedSubject:
-            performSegue(withIdentifier: .segueShowSettingUnecryptedSubject, sender: self)
+            self.settingSwitchViewModel = UnecryptedSubjectViewModel()
+            performSegue(withIdentifier: .segueShowSetting, sender: self)
+        case .organizedByThread:
+            self.settingSwitchViewModel = ThreadedSwitchViewModel()
+            performSegue(withIdentifier: .segueShowSetting, sender: self)
         case .defaultAccount:
             performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
         case .showLog:
             performSegue(withIdentifier: .segueShowLog, sender: self)
-        case .organizedByThread:
-        break // We currenty do nothing
         case .credits:
             performSegue(withIdentifier: .sequeShowCredits, sender: self)
         }
@@ -185,6 +188,7 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueShowSettingSyncTrash
         case segueShowSettingUnecryptedSubject
         case sequeShowCredits
+        case segueShowSetting
         case noAccounts
         case noSegue
     }
@@ -204,7 +208,13 @@ extension AccountsTableViewController: SegueHandlerType {
                     destination.viewModel = vm
                 }
             }
-        case .noAccounts, // BaseViewControllers
+        case .segueShowSetting:
+            guard let destination = segue.destination as? SettingSwitchViewController else {
+                return
+            }
+            destination.viewModel = self.settingSwitchViewModel
+            destination.appConfig = self.appConfig
+        case .noAccounts,
         .segueShowSettingUnecryptedSubject,
         .segueShowSettingSyncTrash,
         .segueAddNewAccount,
