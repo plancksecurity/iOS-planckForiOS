@@ -524,11 +524,11 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
 
         let previewMessage = PreviewMessage(withMessage: message)
-        let isTopMessage = threadedMessageFolder.isTop(newMessage: message)
+        let referencedMessages = threadedMessageFolder.referencedTopMessages(newMessage: message)
 
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
-                if isTopMessage {
+                if referencedMessages.isEmpty {
                     guard let index = theSelf.messages?.insert(object: previewMessage) else {
                         Log.shared.errorAndCrash(component: #function,
                                                  errorString: "We should be able to insert.")
