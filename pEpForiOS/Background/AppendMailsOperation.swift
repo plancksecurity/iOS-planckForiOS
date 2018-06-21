@@ -124,13 +124,12 @@ public class AppendMailsOperation: ImapSyncOperation {
         }
         lastHandledMessageObjectID = objID
 
-        let session = PEPSession()
         if encryptMode == .unencryptedForTrustedServer {
             // Always append unencrypted for trusted server.
             appendMessage(pEpMessageDict: msg)
-        } else {
-            // Encrypt for self ...
+        } else if encryptMode == .forSelf {
             do {
+                let session = PEPSession()
                 let (_, encMsg) = try encrypt(session: session, pEpMessageDict: msg, forSelf: ident)
                 guard let msgDict = encMsg as? PEPMessageDict else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
