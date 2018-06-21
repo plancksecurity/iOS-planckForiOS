@@ -98,8 +98,10 @@ extension EmailListViewModel: MessageFolderDelegate {
                         referencedMessages: referencedMessages,
                         messages: theSelf.messages) {
                         if theSelf.currentlyDisplaying(message: topMessage) {
-                            // (1) notify detail view
-                            // (2) update message (thread count) in master view
+                            // notify detail view
+                            theSelf.updateThreadListDelegate?.added(message: message)
+
+                            // TODO: update message (thread count) in master view
                         }
                     } else {
                         // Incoming message references other messages,
@@ -129,9 +131,12 @@ extension EmailListViewModel: MessageFolderDelegate {
             if !referencedMessages.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     if let theSelf = self {
-                        if let _ = theSelf.referencedTopMessageIndex(
+                        if let (_, topMessage) = theSelf.referencedTopMessageIndex(
                             referencedMessages: referencedMessages,
                             messages: theSelf.messages) {
+                            if theSelf.currentlyDisplaying(message: topMessage) {
+                                theSelf.updateThreadListDelegate?.deleted(message: message)
+                            }
                         }
                     }
                 }
