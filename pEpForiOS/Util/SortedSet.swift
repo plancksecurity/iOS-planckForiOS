@@ -68,22 +68,36 @@ class SortedSet<T: Equatable>: Sequence {
 
         return set.object(at: index) as? T
     }
-    
-    public func index(of object: T) -> Int {
+
+    /**
+     - Returns: The index of `object` or nil.
+     */
+    public func index(of object: T) -> Int? {
+        let idx = indexOrNotFound(of: object)
+        if idx != NSNotFound {
+            return idx
+        } else {
+            return nil
+        }
+    }
+
+    /**
+     - Returns: The index of `object` or NSNotFound.
+     */
+    public func indexOrNotFound(of object: T) -> Int {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
 
-        let notFound = -1
         for i in 0..<set.count {
             guard let testee = set.object(at: i) as? T else {
                 Log.shared.errorAndCrash(component: #function, errorString: "error casting")
-                return notFound
+                return NSNotFound
             }
             if testee == object {
                 return i
             }
         }
-        return notFound
+        return NSNotFound
     }
     
     public func removeAllObjects() {

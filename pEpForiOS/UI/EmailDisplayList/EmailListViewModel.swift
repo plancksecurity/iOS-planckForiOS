@@ -534,6 +534,10 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // (2) Update the top message in this list.
                     // (3) Find out if that message's thread is displayed.
                     // (4) Notify that thread display (if any) that a new message has entered.
+                    for msg in referencedMessages {
+                        let preview = PreviewMessage(withMessage: msg)
+                        let _ = theSelf.messages.index(of: preview)
+                    }
                 }
             }
         }
@@ -598,10 +602,9 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
         
-        let indexToRemove = messages.index(of: existingMessage)
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
-                theSelf.messages.removeObject(at: indexToRemove)
+                theSelf.messages.removeObject(at: indexExisting)
 
                 if let filter = theSelf.folderToShow.filter,
                     !filter.fulfillsFilter(message: message) {
@@ -609,16 +612,18 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // but does not fulfil the filter criteria
                     // anymore after it has been updated.
                     // Remove it.
-                    let indexPath = IndexPath(row: indexToRemove, section: 0)
+                    let indexPath = IndexPath(row: indexExisting, section: 0)
                     theSelf.emailListViewModelDelegatedelegate?.emailListViewModel(
                         viewModel: theSelf, didRemoveDataAt: indexPath)
                     return
                 }
                 // The updated message has to be shown. Add it to the model ...
                 let indexInserted = theSelf.messages.insert(object: previewMessage)
-                if indexToRemove != indexInserted  {Log.shared.warn(component: #function,
-                                                                    content:
-                    """
+                if indexExisting != indexInserted {
+                    Log.shared.warn(
+                        component: #function,
+                        content:
+                        """
 When updating a message, the the new index of the message must be the same as the old index.
 Something is fishy here.
 """
