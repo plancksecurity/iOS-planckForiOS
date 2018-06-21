@@ -9,6 +9,15 @@
 import Foundation
 
 extension PEP_rating {
+
+    static func fromString(str: String) -> PEP_rating {
+        return PEPSession().rating(from:str)
+    }
+
+    func asString() -> String {
+         return PEPSession().string(from: self)
+    }
+    
     /**
      The `PEP_rating`s that should trigger another decryption attempt later on.
      */

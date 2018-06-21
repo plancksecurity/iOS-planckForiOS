@@ -13,35 +13,75 @@ extension Message {
         return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_undefined
     }
 
+//    public var wasSentUnencrypted: Bool {
+//        return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_unencrypted
+//    }
+//
+//    public var couldNotBeDecrypted: Bool {
+//        return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_cannot_decrypt ||
+//            PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_have_no_key
+//    }
+
+    private var reEvaluatedRating: PEP_rating {
+        guard let cdMessage = cdMessage() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No cd message")
+            return PEP_rating_undefined
+        }
+        guard let originalRatingString = optionalFields[Headers.originalRating.rawValue] else {
+            return PEPUtil.pEpRatingFromInt(pEpRatingInt) ?? PEP_rating_undefined
+        }
+
+        let session = PEPSession()
+        var inOutRating = session.rating(from:originalRatingString)
+        var outStatus = PEP_UNKNOWN_ERROR
+        do {
+            try session.reEvaluateMessage(cdMessage.pEpMessage(),
+                                          rating: &inOutRating,
+                                          status: &outStatus)
+        } catch {
+            Log.shared.errorAndCrash(component:#function, errorString:"Problem...")
+            return PEP_rating_undefined
+        }
+        return PEP_rating_undefined
+    }
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
         return PEPUtil.pEpDict(message: self)
     }
 
-    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
-        if belongToSentFolder() || belongToDraftFolder () || belongToTrashFolder() {
-            if let original = self.optionalFields[Headers.originalRating.rawValue] {
-                return session.rating(from: original)
-            }
+    func outgoingMessageRating() -> PEP_rating {
+        guard let sender = from else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "No sender for outgoing message?")
             return PEP_rating_undefined
-        } else {
-            return PEPUtil.pEpRatingFromInt(pEpRatingInt) ?? PEP_rating_undefined
         }
+        return PEPSession().outgoingMessageRating(from:sender, to:to, cc:cc, bcc:bcc)
+    }
+
+    func getOriginalRatingHeader() -> String? {
+            return optionalFields[Headers.originalRating.rawValue]
+    }
+
+    func getOriginalRatingHeader() -> PEP_rating? {
+        guard let originalRatingStr = optionalFields[Headers.originalRating.rawValue] else {
+            return PEP_rating_undefined
+        }
+        return PEPSession().rating(from: originalRatingStr)
+    }
+
+    func setOriginalRatingHeader(rating: String) {
+        return optionalFields[Headers.originalRating.rawValue] = rating
+    }
+
+    func setOriginalRatingHeader(rating: PEP_rating) {
+        return optionalFields[Headers.originalRating.rawValue] = PEPSession().string(from: rating)
+    }
+
+    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
+        return reEvaluatedRating
     }
 
     public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
         return pEpRating(session: session).pEpColor()
-    }
-
-    func belongToSentFolder() -> Bool {
-        return self.parent.folderType == FolderType.sent
-    }
-    
-    func belongToDraftFolder() -> Bool {
-        return self.parent.folderType == FolderType.drafts
-    }
-
-    func belongToTrashFolder() -> Bool {
-        return self.parent.folderType == FolderType.trash
     }
 
     /**
