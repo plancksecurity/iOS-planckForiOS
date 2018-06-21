@@ -10,9 +10,9 @@ import Foundation
 
 import MessageModel
 
-// MARK: - MessageFolderDelegate
-
 extension EmailListViewModel: MessageFolderDelegate {
+    // MARK: - MessageFolderDelegate (public)
+
     func didCreate(messageFolder: MessageFolder) {
         messageFolderDelegateHandlingQueue.async {
             self.didCreateInternal(messageFolder: messageFolder)
