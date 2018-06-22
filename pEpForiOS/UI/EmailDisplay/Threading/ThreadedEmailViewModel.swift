@@ -38,12 +38,17 @@ class ThreadedEmailViewModel {
         messages.remove(at: index)
     }
 
-    func changeFlagStatus(at index: Int){
-        guard index < messages.count && index >= 0,
-            let flagged = messages[index].imapFlags?.flagged else {
-            return
+    func setFlag(forMessageAt index: Int, to status: Bool){
+        guard index < messages.count && index >= 0 else {
+                return
         }
-        messages[index].imapFlags?.flagged = !flagged
+        messages[index].imapFlags?.flagged = status
+    }
+
+    func setFlag(to status: Bool){
+        for message in messages {
+            message.imapFlags?.flagged = status
+        }
     }
 
     func viewModel(for index: Int) -> MessageViewModel? {
