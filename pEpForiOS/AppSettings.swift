@@ -34,6 +34,16 @@ class AppSettings {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyUnencryptedSubjectEnabled)
             PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
         }
+
+    }
+
+    var threadedViewEnabled: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: AppSettings.keyThreadedViewEnabled)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyThreadedViewEnabled)
+        }
     }
     
     /// Address of the default account
@@ -52,6 +62,7 @@ class AppSettings {
     static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
+    static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     
     // MARK: - Private - DEFAULT ACCOUNT
     
@@ -82,6 +93,8 @@ class AppSettings {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
+        defaults[AppSettings.keyThreadedViewEnabled] = true
+
         UserDefaults.standard.register(defaults: defaults)
     }
 }

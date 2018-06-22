@@ -56,5 +56,5 @@ protocol ThreadedMessageFolderProtocol {
      message list (of thread tips), or if it's a message referenced by a top message
      (then it might have to go to the thread view).
      */
-    func referencedTopMessages(newMessage: Message) -> [Message]
+    func referencedTopMessages(message: Message) -> [Message]
 }
