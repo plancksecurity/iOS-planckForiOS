@@ -165,8 +165,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     private func setOriginalRatingHeader(toMessageWithObjId objId: NSManagedObjectID,
                                          inContext moc: NSManagedObjectContext) {
-        guard let unencryptedMessage = CdMessage.message(withObjectID: objId)
-            else {
+        guard let unencryptedMessage = CdMessage.message(withObjectID: objId) else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No Message")
                 handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
                 return
