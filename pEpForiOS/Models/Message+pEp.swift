@@ -61,7 +61,7 @@ extension Message {
             return optionalFields[Headers.originalRating.rawValue]
     }
 
-    func getOriginalRatingHeader() -> PEP_rating? {
+    func getOriginalRatingHeaderRating() -> PEP_rating? {
         guard let originalRatingStr = optionalFields[Headers.originalRating.rawValue] else {
             return PEP_rating_undefined
         }
