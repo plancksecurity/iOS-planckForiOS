@@ -24,6 +24,8 @@ class FullMessageCell: UITableViewCell,
     @IBOutlet weak var bodyText: UITextView!
     @IBOutlet weak var body: UIView!
     @IBOutlet weak var stackView: UIStackView!
+    @IBOutlet weak var profilePicture: UIImageView!
+    @IBOutlet weak var badgePicture: UIImageView!
 
     var tableView: UITableView!
 
@@ -33,6 +35,12 @@ class FullMessageCell: UITableViewCell,
         subjectLabel.text = viewModel.subject
         backgroundColor = UIColor.clear
         dateLabel.text = viewModel.dateText
+        viewModel.getProfilePicture { image in
+            self.profilePicture.image = image
+        }
+        viewModel.getSecurityBadge { image in
+            self.badgePicture.image = image
+        }
         if let htmlBody = htmlBody(message: viewModel.message) {
             // Its fine to use a webview (iOS>=11) and we do have HTML content.
             bodyText.isHidden = true

@@ -392,10 +392,12 @@
                                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                         <connections>
                                             <outlet property="addressLabel" destination="1c8-rl-2Ng" id="Gn1-9X-Dzm"/>
+                                            <outlet property="badgePicture" destination="ivx-PK-RPE" id="c9U-XQ-CKD"/>
                                             <outlet property="body" destination="pSt-yP-2WX" id="dBM-jQ-ziX"/>
                                             <outlet property="bodyText" destination="SlN-yR-Ifs" id="WoT-jZ-zNz"/>
                                             <outlet property="contentHeightConstraint" destination="KmB-0P-GzL" id="L50-nb-s2L"/>
                                             <outlet property="dateLabel" destination="bz8-dZ-9kk" id="bXh-4X-Qlw"/>
+                                            <outlet property="profilePicture" destination="Fte-Eh-jpP" id="hTG-cv-MhG"/>
                                             <outlet property="stackView" destination="Hab-5Z-1cx" id="rsF-cc-ewt"/>
                                             <outlet property="subjectLabel" destination="Ux9-Hj-FDE" id="nVa-Ho-nU3"/>
                                             <outlet property="view" destination="O4D-I4-BRy" id="ak1-1y-T8P"/>
