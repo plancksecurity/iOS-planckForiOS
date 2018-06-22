@@ -164,7 +164,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
 
-        if index(of: message) == nil {
+        guard let indexExisting = index(of: message) else {
             // We do not have this updated message in our model yet. It might have been updated in
             // a way, that fulfills the current filters now but did not before the update.
             // Or it has just been decrypted.
@@ -174,11 +174,10 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
 
         // We do have this message in our model, so we do have to update it
-        guard let indexExisting = index(of: message),
-            let existingMessage = messages.object(at: indexExisting) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "We should have the message at this point")
-                return
+        guard let existingMessage = messages.object(at: indexExisting) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We should have the message at this point")
+            return
         }
 
         let previewMessage = PreviewMessage(withMessage: message)
