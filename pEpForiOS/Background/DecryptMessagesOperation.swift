@@ -52,7 +52,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     break
                 }
                 //
-                let originalRating = cdMessage.pEpRating
+                let ratingBeforeEngine = cdMessage.pEpRating
 
                 var outgoing = false
                 if let folderType = cdMessage.parent?.folderType {
@@ -90,7 +90,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     }
                     handleDecryptionSuccess(cdMessage: cdMessage,
                                             pEpDecryptedMessage: pEpDecryptedMessage,
-                                            originalRating: originalRating,
+                                            ratingBeforeEngine: ratingBeforeEngine,
                                             rating: rating,
                                             keys: keys)
                 } catch let error as NSError {
@@ -102,22 +102,23 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
 
         func handleDecryptionSuccess(cdMessage: CdMessage,
                                      pEpDecryptedMessage: NSDictionary,
-                                     originalRating: Int16,
+                                     ratingBeforeEngine: Int16,
                                      rating: PEP_rating,
                                      keys: NSArray?) {
             let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
-            self.delegate?.decrypted(
-                originalCdMessage: cdMessage, decryptedMessageDict: pEpDecryptedMessage,
-                rating: rating, keys: theKeys) // Only used in Tests. Maybe refactor out.
+            // Only used in Tests. Maybe refactor out.
+            self.delegate?.decrypted(originalCdMessage: cdMessage,
+                                     decryptedMessageDict: pEpDecryptedMessage,
+                                     rating: rating,
+                                     keys: theKeys)
 
-            updateWholeMessage(
-                pEpDecryptedMessage: pEpDecryptedMessage,
-                originalRating: originalRating,
-                rating: rating,
-                cdMessage: cdMessage,
-                keys: theKeys,
-                context: context)
+            updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
+                               ratingBeforeEngine: ratingBeforeEngine,
+                               rating: rating,
+                               cdMessage: cdMessage,
+                               keys: theKeys,
+                               context: context)
         }
     }
 
@@ -126,7 +127,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
      */
     func updateWholeMessage(
         pEpDecryptedMessage: NSDictionary?,
-        originalRating: Int16,
+        ratingBeforeEngine: Int16,
         rating: PEP_rating,
         cdMessage: CdMessage, keys: [String],
         context: NSManagedObjectContext) {
@@ -139,13 +140,32 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 return
             }
             cdMessage.update(pEpMessageDict: decrypted, rating: rating)
+            setOriginalRatingHeader(rating: rating,
+                                    toMessageWithObjId: cdMessage.objectID,
+                                    inContext: context)
             updateMessage(cdMessage: cdMessage, keys: keys, context: context)
         } else {
-            if rating.rawValue != originalRating {
+            if rating.rawValue != ratingBeforeEngine {
                 cdMessage.update(rating: rating)
                 saveAndNotify(cdMessage: cdMessage, context: context)
             }
         }
+    }
+
+    private func setOriginalRatingHeader(rating: PEP_rating,
+                                         toMessageWithObjId objId: NSManagedObjectID,
+                                         inContext moc: NSManagedObjectContext) {
+        guard let message = CdMessage.message(withObjectID: objId) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No Message")
+            handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
+            return
+        }
+        guard message.getOriginalRatingHeader() == nil else {
+            // We never override the original header.
+            return
+        }
+        message.setOriginalRatingHeader(rating: rating)
+        message.save()
     }
 
     func saveAndNotify(cdMessage: CdMessage, context: NSManagedObjectContext) {
@@ -157,7 +177,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
      Updates the given key list for the message and notifies delegates.
      */
     func updateMessage(cdMessage: CdMessage, keys: [String], context: NSManagedObjectContext) {
-        cdMessage.updateKeyList(keys: keys)
+        cdMessage.updateKeyList(keys: keys) //IOS-33: Why extra keys inout? Afaics we set those output keys to CdMessage and never use it anywhere (we do not set it to any optional header or such)
         saveAndNotify(cdMessage: cdMessage, context: context)
     }
 
