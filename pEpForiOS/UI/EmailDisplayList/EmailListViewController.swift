@@ -197,16 +197,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
-        guard let vm = model else {
-         //   let message = vm.message(representedByRowAt: indexPath) else {
+        guard let vm = model,
+            let message = vm.message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No model.")
             return
         }
-        //if message.numberOfMessagesInThread() > 0 {
+        if message.numberOfMessagesInThread() > 0 {
             performSegue(withIdentifier: SegueIdentifier.segueShowThreadedEmail, sender: self)
-        //} else {
-          //  performSegue(withIdentifier: SegueIdentifier.segueShowThreadedEmail, sender: self)
-        //}
+        } else {
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
+        }
         vm.markRead(forIndexPath: indexPath)
     }
 
@@ -892,13 +892,12 @@ extension EmailListViewController: SegueHandlerType {
                 let folder = folderToShow else {
                     return
             }
-              /*  let message = model?.message(representedByRowAt: indexPath) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                    return
-            }*/
+            guard let message = model?.message(representedByRowAt: indexPath) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                return
+            }
             vc.appConfig = appConfig
-            
-            vc.model = ThreadedEmailViewModel(tip:ThreadedFolderStub.init(folder: folder).allMessages()[0], folder: folder)
+            vc.model = ThreadedEmailViewModel(tip:message, folder: folder)
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")

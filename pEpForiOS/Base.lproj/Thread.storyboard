@@ -314,6 +314,18 @@
                                                                 <view clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="pSt-yP-2WX" userLabel="body">
                                                                     <rect key="frame" x="0.0" y="75.5" width="345" height="166.5"/>
                                                                     <subviews>
+                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O4D-I4-BRy">
+                                                                            <rect key="frame" x="8" y="0.0" width="329" height="166.5"/>
+                                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="200" id="KmB-0P-GzL"/>
+                                                                            </constraints>
+                                                                            <variation key="default">
+                                                                                <mask key="constraints">
+                                                                                    <exclude reference="KmB-0P-GzL"/>
+                                                                                </mask>
+                                                                            </variation>
+                                                                        </view>
                                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do " textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="SlN-yR-Ifs">
                                                                             <rect key="frame" x="8" y="0.0" width="329" height="166.5"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -324,9 +336,13 @@
                                                                     </subviews>
                                                                     <constraints>
                                                                         <constraint firstItem="SlN-yR-Ifs" firstAttribute="leading" secondItem="pSt-yP-2WX" secondAttribute="leading" constant="8" id="DDZ-wz-cRa"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="O4D-I4-BRy" secondAttribute="bottom" id="G2u-jN-QcC"/>
                                                                         <constraint firstItem="SlN-yR-Ifs" firstAttribute="top" secondItem="pSt-yP-2WX" secondAttribute="top" id="Q4M-rd-JZl"/>
                                                                         <constraint firstAttribute="trailing" secondItem="SlN-yR-Ifs" secondAttribute="trailing" constant="8" id="Zid-dZ-dsc"/>
                                                                         <constraint firstAttribute="bottom" secondItem="SlN-yR-Ifs" secondAttribute="bottom" id="aAn-AK-bPw"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="O4D-I4-BRy" secondAttribute="trailing" constant="8" id="edl-36-8wC"/>
+                                                                        <constraint firstItem="O4D-I4-BRy" firstAttribute="leading" secondItem="pSt-yP-2WX" secondAttribute="leading" constant="8" id="kKx-q7-813"/>
+                                                                        <constraint firstItem="O4D-I4-BRy" firstAttribute="top" secondItem="pSt-yP-2WX" secondAttribute="top" id="rI1-P5-Uzs"/>
                                                                     </constraints>
                                                                 </view>
                                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vLW-X5-5fD">
@@ -376,9 +392,13 @@
                                         <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                         <connections>
                                             <outlet property="addressLabel" destination="1c8-rl-2Ng" id="Gn1-9X-Dzm"/>
+                                            <outlet property="body" destination="pSt-yP-2WX" id="dBM-jQ-ziX"/>
                                             <outlet property="bodyText" destination="SlN-yR-Ifs" id="WoT-jZ-zNz"/>
+                                            <outlet property="contentHeightConstraint" destination="KmB-0P-GzL" id="L50-nb-s2L"/>
                                             <outlet property="dateLabel" destination="bz8-dZ-9kk" id="bXh-4X-Qlw"/>
+                                            <outlet property="stackView" destination="Hab-5Z-1cx" id="rsF-cc-ewt"/>
                                             <outlet property="subjectLabel" destination="Ux9-Hj-FDE" id="nVa-Ho-nU3"/>
+                                            <outlet property="view" destination="O4D-I4-BRy" id="ak1-1y-T8P"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

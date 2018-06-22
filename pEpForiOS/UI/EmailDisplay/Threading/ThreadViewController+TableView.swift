@@ -39,14 +39,18 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func configureCell(identifier:String, at indexPath:IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? UITableViewCell&MessageViewModelConfigurable,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier)
+                as? UITableViewCell & MessageViewModelConfigurable,
             let viewModel = model?.viewModel(for: indexPath.section)  else {
                 return UITableViewCell()
         }
+        if var refreshableCell = cell as? NeedsRefreshDelegate {
+            refreshableCell.requestsReload = { self.tableView.updateSize() }
+        }
+
         cell.configure(for: viewModel)
         return cell
     }
-
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if model?.messageisExpanded(at: indexPath.section) == false {

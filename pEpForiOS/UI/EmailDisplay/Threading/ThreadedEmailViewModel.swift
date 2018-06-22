@@ -22,8 +22,7 @@ class ThreadedEmailViewModel {
     public let displayFolder: Folder
 
     init(tip: Message, folder: Folder) {
-      //  messages = tip.messagesInThread()
-        messages = folder.allMessages()
+        messages = tip.messagesInThread()
         self.folder = ThreadedFolderStub(folder: folder)
         displayFolder = folder
         expandedMessages = Array(repeating: false, count: messages.count)

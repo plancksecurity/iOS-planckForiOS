@@ -30,10 +30,9 @@ class MessageViewModel {
     var body: NSAttributedString {
             return getBodyMessage()
     }
-    private var message: Message
+    var message: Message
 
-    init(with message: Message, senderContactImage: UIImage? = nil) {
-        self.senderContactImage = senderContactImage
+    init(with message: Message) {
         showAttchmentIcon = message.attachments.count > 0
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         address =  MessageViewModel.address(at: message.parent, from: message)

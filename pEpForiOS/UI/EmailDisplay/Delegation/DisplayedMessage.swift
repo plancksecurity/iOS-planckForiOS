@@ -11,6 +11,9 @@ import MessageModel
 
 protocol DisplayedMessage: class {
 
+    /**
+     Represented message or top message of the thread.
+ */
     var messageModel: Message? {get}
 
     /**
