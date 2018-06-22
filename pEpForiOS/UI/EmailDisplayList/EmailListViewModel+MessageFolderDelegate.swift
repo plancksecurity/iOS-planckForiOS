@@ -80,7 +80,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
 
         let previewMessage = PreviewMessage(withMessage: message)
-        let referencedMessages = threadedMessageFolder.referencedTopMessages(newMessage: message)
+        let referencedMessages = threadedMessageFolder.referencedTopMessages(message: message)
 
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
@@ -126,8 +126,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         guard let indexExisting = index(of: message) else {
             // We do not have this message in our model, so we do not have to remove it,
             // but it might belong to a thread.
-            let referencedMessages = threadedMessageFolder.referencedTopMessages(
-                newMessage: message)
+            let referencedMessages = threadedMessageFolder.referencedTopMessages(message: message)
             if !referencedMessages.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     if let theSelf = self {

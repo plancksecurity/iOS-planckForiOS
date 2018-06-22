@@ -37,13 +37,13 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         deleteSingle(message: message)
     }
 
-    func referencedTopMessages(newMessage: Message) -> [Message] {
+    func referencedTopMessages(message: Message) -> [Message] {
         let allCurrentMessageIds = underlyingFolder.allMessagesNonThreaded().map {
             return $0.messageID
         }
         let allCurrentMessageIdsSet = Set(allCurrentMessageIds)
 
-        let topRefs = referenced(message: newMessage, referenceSet: allCurrentMessageIdsSet)
+        let topRefs = referenced(message: message, referenceSet: allCurrentMessageIdsSet)
 
         var result = [Message]()
         for ref in topRefs {
@@ -52,10 +52,6 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         }
 
         return result
-    }
-
-    func isTop(newMessage: Message) -> Bool {
-        return referencedTopMessages(newMessage: newMessage).isEmpty
     }
 
     // MARK - Private
