@@ -131,7 +131,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     private func resetModel() {
         if let theFolder = folderToShow {
-            model = EmailListViewModel(delegate: self,
+            model = EmailListViewModel(emailListViewModelDelegate: self,
                                        messageSyncService: appConfig.messageSyncService,
                                        folderToShow: theFolder)
         }
@@ -362,18 +362,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
         self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
-    }
-
-    @IBAction func markToolbar(_ sender:UIBarButtonItem!) {
-
-        let alertControler = UIAlertController.pEpAlertController(
-            title: nil, message: nil, preferredStyle: .actionSheet)
-        let cancelAction = createCancelAction()
-        alertControler.addAction(cancelAction)
-        if let popoverPresentationController = alertControler.popoverPresentationController {
-            popoverPresentationController.sourceView = tableView
-        }
-        present(alertControler, animated: true, completion: nil)
+        cancelToolbar(sender)
     }
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
@@ -937,15 +926,17 @@ extension EmailListViewController: SegueHandlerType {
             }
 
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToFolderViewController,
+                let destination = nav.topViewController as? MoveToAccountViewController,
                 let messages = model?.messagesToMove(indexPaths: selectedRows)
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
+            if let msgs = messages as? [Message] {
+                let destinationvm = MoveToAccountViewModel(messages: msgs)
+                destination.viewModel = destinationvm
+            }
             destination.appConfig = appConfig
-            destination.message = messages
-            destination.delegate = model
             break
         case .showNoMessage:
             //No initialization needed

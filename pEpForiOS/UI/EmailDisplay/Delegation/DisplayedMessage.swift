@@ -9,6 +9,9 @@
 import Foundation
 import MessageModel
 
+/**
+ Indicates changes from the master list of emails to the detail view.
+ */
 protocol DisplayedMessage: class {
 
     /**

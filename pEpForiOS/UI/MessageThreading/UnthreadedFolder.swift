@@ -41,8 +41,7 @@ class UnthreadedFolder: ThreadedMessageFolderProtocol {
         deleteSingle(message: message)
     }
 
-    func isTop(newMessage: Message) -> Bool {
-        // all messages are in a flat list, so it's always a "top" message
-        return true
+    func referencedTopMessages(message: Message) -> [Message] {
+        return [] // make it seem this is a top message
     }
 }

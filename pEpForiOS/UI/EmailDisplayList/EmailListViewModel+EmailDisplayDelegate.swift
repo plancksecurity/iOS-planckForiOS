@@ -1,5 +1,5 @@
 //
-//  EmailListViewController+EmailDisplayDelegate.swift
+//  EmailListViewModel+EmailDisplayDelegate.swift
 //  pEp
 //
 //  Created by Miguel Berrocal Gómez on 28/05/2018.
@@ -7,11 +7,10 @@
 //
 
 import Foundation
+
 import MessageModel
 
 extension EmailListViewModel: EmailDisplayDelegate {
-
-
     func emailDisplayDidFlag(message: Message) {
         updateRow(for: message)
     }
@@ -32,7 +31,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
         guard let index = self.index(of: message) else {
             return
         }
-        messages?.removeObject(at: index)
+        messages.removeObject(at: index)
         informDeleteRow(at: index)
         startListeningToChanges()
     }
@@ -47,24 +46,25 @@ extension EmailListViewModel: EmailDisplayDelegate {
         }
         
         let previewMessage = PreviewMessage(withMessage: message)
-        messages?.removeObject(at: index)
-        _ = messages?.insert(object: previewMessage)
+        messages.removeObject(at: index)
+        _ = messages.insert(object: previewMessage)
         informUpdateRow(at: index)
     }
 
     private func informUpdateRow(at index: Int) {
         let indexPath = self.indexPath(for: index)
-        delegate?.emailListViewModel(viewModel: self, didUpdateDataAt: indexPath)
+        emailListViewModelDelegate?.emailListViewModel(viewModel: self,
+                                                       didUpdateDataAt: indexPath)
     }
 
     private func informDeleteRow(at index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
 
-        delegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPath)
+        emailListViewModelDelegate?.emailListViewModel(viewModel: self,
+                                                       didRemoveDataAt: indexPath)
     }
 
     private func indexPath(for index: Int) -> IndexPath {
         return IndexPath(row: index, section: 0)
     }
 }
-

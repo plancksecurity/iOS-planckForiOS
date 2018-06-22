@@ -10,7 +10,7 @@ import Foundation
 import MessageModel
 
 extension EmailListViewModel: MoveToFolderDelegate {
-    func didMove(messages: [Message?]) {
+    func didMove() {
         reloadData()
     }
 

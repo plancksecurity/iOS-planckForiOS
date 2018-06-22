@@ -30,9 +30,6 @@ public class AccountsSettingsCellViewModel {
 
     init(type: SettingType) {
         self.type = type
-        if type == .organizedByThread {
-            status = false
-        }
     }
 
     public var title : String? {
@@ -41,10 +38,13 @@ public class AccountsSettingsCellViewModel {
             case .showLog:
                 return NSLocalizedString("Logging", comment: "")
             case .organizedByThread:
-                return NSLocalizedString("Enable Threading", comment: "")
+                return NSLocalizedString(
+                    "Enable Threading Messages",
+                    comment: "AccountsSettings: Cell (button) title to view threads messages together")
             case .credits:
-                return NSLocalizedString("Credits", comment:
-                    "AccountsSettings: Cell (button) title to view app credits")
+                return NSLocalizedString(
+                    "Credits",
+                    comment: "AccountsSettings: Cell (button) title to view app credits")
             case .unecryptedSubject:
                 return NSLocalizedString("Subject Protection", comment:
                     "AccountsSettings: Cell (button) title to view unencrypted subject setting")
@@ -69,12 +69,11 @@ public class AccountsSettingsCellViewModel {
                 // Have no value.
                 return nil
             case .organizedByThread:
-                // Feature unimplemented
-                return nil
+                return onOffStateString(forState: AppSettings().threadedViewEnabled)
             case .defaultAccount:
                 return AppSettings().defaultAccount
             case .unecryptedSubject:
-                return onOffStateString(forState: !AppSettings().unecryptedSubjectEnabled)
+                return onOffStateString(forState: !AppSettings().unencryptedSubjectEnabled)
             }
         }
     }

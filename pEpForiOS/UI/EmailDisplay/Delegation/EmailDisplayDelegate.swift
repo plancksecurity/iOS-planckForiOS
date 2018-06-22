@@ -7,11 +7,11 @@
 //
 
 import Foundation
+
 import MessageModel
 
 /**
- The `EmailDisplayDelegate` protocol is adopted by an object that manages the email detail changes
- in its model
+ Indicates changes in the details view of a message to the master list of messages.
  */
 protocol EmailDisplayDelegate: class {
 
