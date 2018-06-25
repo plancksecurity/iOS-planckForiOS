@@ -479,13 +479,4 @@ class EmailListViewModel {
             }
         }
     }
-
-    // MARK - Misc
-
-    /**
-     Is the detail view currently displaying messages derived from `Message`?
-     */
-    func currentlyDisplaying(message: Message) -> Bool {
-        return currentDisplayedMessage?.messageModel == message
-    }
 }

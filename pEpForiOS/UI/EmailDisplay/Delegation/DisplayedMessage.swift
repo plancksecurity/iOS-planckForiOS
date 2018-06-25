@@ -13,11 +13,14 @@ import MessageModel
  Indicates changes from the master list of emails to the detail view.
  */
 protocol DisplayedMessage: class {
-
-    var messageModel: Message? {get}
+    /**
+     Set by the detail view whenever it is to show a message, so the
+     model always knows what's the currently displayed one.
+     */
+    var messageModel: Message? { get }
 
     /**
-     Updates the detail message with the master one. 
+     Updates the detail message with the master one.
      */
     func update(forMessage message: Message)
 }
