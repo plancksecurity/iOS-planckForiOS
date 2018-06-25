@@ -13,18 +13,13 @@ extension Message {
         return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_undefined
     }
 
-    public var wasSentUnencrypted: Bool {
+    public var wasAlreadyUnencrypted: Bool {
         return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_unencrypted
     }
 
     public var isOnTrustedServer: Bool {
         return parent.account.server(with: .imap)?.trusted ?? false
     }
-    //IOS-33:
-//    public var couldNotBeDecrypted: Bool {
-//        return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_cannot_decrypt ||
-//            PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_have_no_key
-//    }
 
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
         return PEPUtil.pEpDict(message: self)
@@ -45,7 +40,7 @@ extension Message {
 
     func getOriginalRatingHeaderRating() -> PEP_rating? {
         guard let originalRatingStr = optionalFields[Headers.originalRating.rawValue] else {
-            return PEP_rating_undefined
+            return nil
         }
         return PEP_rating.fromString(str: originalRatingStr)
     }
