@@ -21,6 +21,7 @@ public protocol DecryptMessagesOperationDelegateProtocol: class {
 
 public class DecryptMessagesOperation: ConcurrentBaseOperation {
     public weak var delegate: DecryptMessagesOperationDelegateProtocol?// Only used in Tests. Maybe refactor out.
+    private(set) var didMarkMessagesForReUpload = false
 
     public override func main() {
         if isCancelled {
@@ -88,97 +89,139 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                                                              status: nil)
                             as NSDictionary
                     }
-                    handleDecryptionSuccess(cdMessage: cdMessage,
-                                            pEpDecryptedMessage: pEpDecryptedMessage,
-                                            ratingBeforeEngine: ratingBeforeEngine,
-                                            rating: rating,
-                                            keys: keys)
+                    me.handleDecryptionSuccess(cdMessage: cdMessage,
+                                               pEpDecryptedMessage: pEpDecryptedMessage,
+                                               ratingBeforeEngine: ratingBeforeEngine,
+                                               rating: rating,
+                                               keys: keys)
                 } catch let error as NSError {
                     // log, and try again next time
                     Log.error(component: #function, error: error)
                 }
             }
         }
+    }
 
-        func handleDecryptionSuccess(cdMessage: CdMessage,
-                                     pEpDecryptedMessage: NSDictionary,
-                                     ratingBeforeEngine: Int16,
-                                     rating: PEP_rating,
-                                     keys: NSArray?) {
-            let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
+    private func handleDecryptionSuccess(cdMessage: CdMessage,
+                                         pEpDecryptedMessage: NSDictionary,
+                                         ratingBeforeEngine: Int16,
+                                         rating: PEP_rating,
+                                         keys: NSArray?) {
+        let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
-            // Only used in Tests. Maybe refactor out.
-            self.delegate?.decrypted(originalCdMessage: cdMessage,
-                                     decryptedMessageDict: pEpDecryptedMessage,
-                                     rating: rating,
-                                     keys: theKeys)
+        // Only used in Tests. Maybe refactor out.
+        self.delegate?.decrypted(originalCdMessage: cdMessage,
+                                 decryptedMessageDict: pEpDecryptedMessage,
+                                 rating: rating,
+                                 keys: theKeys)
 
-            updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
-                               ratingBeforeEngine: ratingBeforeEngine,
-                               rating: rating,
-                               cdMessage: cdMessage,
-                               keys: theKeys,
-                               context: context)
-        }
+        updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
+                           ratingBeforeEngine: ratingBeforeEngine,
+                           rating: rating,
+                           cdMessage: cdMessage,
+                           keys: theKeys)
+        handleReUploadAndNotify(cdMessage: cdMessage, rating: rating)
     }
 
     /**
      Updates message bodies (after decryption), then calls `updateMessage`.
      */
-    func updateWholeMessage(
-        pEpDecryptedMessage: NSDictionary?,
-        ratingBeforeEngine: Int16,
-        rating: PEP_rating,
-        cdMessage: CdMessage, keys: [String],
-        context: NSManagedObjectContext) {
-        cdMessage.underAttack = rating.isUnderAttack()
-        if rating.shouldUpdateMessageContent() {
-            guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
-                Log.shared.errorAndCrash(
-                    component: #function,
-                    errorString:"should update message with rating \(rating), but nil message")
-                return
-            }
-            cdMessage.update(pEpMessageDict: decrypted, rating: rating)
-            setOriginalRatingHeader(rating: rating,
-                                    toMessageWithObjId: cdMessage.objectID,
-                                    inContext: context)
-            updateMessage(cdMessage: cdMessage, keys: keys, context: context)
-        } else {
+    private func updateWholeMessage(pEpDecryptedMessage: NSDictionary?,
+                                    ratingBeforeEngine: Int16,
+                                    rating: PEP_rating,
+                                    cdMessage: CdMessage,
+                                    keys: [String]) {
+        guard rating.shouldUpdateMessageContent() else {
             if rating.rawValue != ratingBeforeEngine {
                 cdMessage.update(rating: rating)
-                saveAndNotify(cdMessage: cdMessage, context: context)
+                saveAndNotify(cdMessage: cdMessage)
             }
+            return
+        }
+
+        cdMessage.underAttack = rating.isUnderAttack()
+        guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
+            Log.shared.errorAndCrash(
+                component: #function,
+                errorString:"should update message with rating \(rating), but nil message")
+            return
+        }
+        updateMessage(cdMessage: cdMessage, keys: keys, pEpMessageDict: decrypted, rating: rating)
+    }
+
+    private func handleReUploadAndNotify(cdMessage: CdMessage, rating: PEP_rating) {
+        do {
+            let needsReUpload = try handleReUploadIfRequired(cdMessage: cdMessage, rating: rating)
+            if needsReUpload {
+                didMarkMessagesForReUpload = true
+                Record.saveAndWait()
+                privateMOC.saveAndLogErrors()
+                // Don't notify. Delegate will be notified after the re-uploaded message is fetched.
+            } else {
+                setOriginalRatingHeader(rating: rating, toMessage: cdMessage)
+                saveAndNotify(cdMessage: cdMessage)
+            }
+        } catch {
+            handleError(error)
         }
     }
 
+    private func handleReUploadIfRequired(cdMessage: CdMessage,
+                                          rating: PEP_rating) throws -> Bool {
+        guard let message = cdMessage.message() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No Message")
+            throw BackgroundError.GeneralError.illegalState(info: "No Message")
+        }
+        if !message.isOnTrustedServer ||    // The only currently supported case for re-upload is trusted server.
+            message.wasSentUnencrypted ||   // If the message was not encrypted, there is no reason to re-upload it.
+            message.getOriginalRatingHeader() != nil { //Fetched message is a previously uploaded one
+            return false
+        }
+        //IOS-33: TODO: Set X-KeyList header (keysFromDecryption is already set, but make sure it is actually written to X-KeyList
+        let messageCopyForReupload = Message(message: message)
+        setOriginalRatingHeader(rating: rating, toMessage: messageCopyForReupload)
+        messageCopyForReupload.save()
+        message.imapMarkDeleted()
+        return true
+    }
+
     private func setOriginalRatingHeader(rating: PEP_rating,
-                                         toMessageWithObjId objId: NSManagedObjectID,
-                                         inContext moc: NSManagedObjectContext) {
-        guard let message = CdMessage.message(withObjectID: objId) else {
+                                         toMessage cdMessage: CdMessage) {
+        guard let message = cdMessage.message() else {
             Log.shared.errorAndCrash(component: #function, errorString: "No Message")
             handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
             return
         }
-        guard message.getOriginalRatingHeader() == nil else {
+        setOriginalRatingHeader(rating: rating, toMessage: message)
+    }
+
+    private func setOriginalRatingHeader(rating: PEP_rating, toMessage msg: Message) {
+        guard msg.getOriginalRatingHeader() == nil else {
             // We never override the original header.
             return
         }
-        message.setOriginalRatingHeader(rating: rating)
-        message.save()
+        msg.setOriginalRatingHeader(rating: rating)
+        msg.save()
     }
 
-    func saveAndNotify(cdMessage: CdMessage, context: NSManagedObjectContext) {
-        context.saveAndLogErrors()
+    private func saveAndNotify(cdMessage: CdMessage) {
+        privateMOC.saveAndLogErrors()
         notifyDelegate(messageUpdated: cdMessage)
     }
 
-    /**
-     Updates the given key list for the message and notifies delegates.
-     */
-    func updateMessage(cdMessage: CdMessage, keys: [String], context: NSManagedObjectContext) {
+    /// Updates a message with the given data.
+    ///
+    /// - Parameters:
+    ///   - cdMessage: message to update
+    ///   - keys: keys the message has been signed with
+    ///   - pEpMessageDict: decrypted message
+    ///   - rating: rating to set
+    private func updateMessage(cdMessage: CdMessage,
+                               keys: [String],
+                               pEpMessageDict: PEPMessageDict,
+                               rating: PEP_rating) {
+        cdMessage.update(pEpMessageDict: pEpMessageDict, rating: rating)
         cdMessage.updateKeyList(keys: keys) //IOS-33: Why extra keys inout? Afaics we set those output keys to CdMessage and never use it anywhere (we do not set it to any optional header or such)
-        saveAndNotify(cdMessage: cdMessage, context: context)
     }
 
     private func notifyDelegate(messageUpdated cdMessage: CdMessage) {
