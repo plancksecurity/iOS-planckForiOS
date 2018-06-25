@@ -159,7 +159,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // It is not a Message (probably it is a Folder).
             return
         }
-        if !shouldBeDisplayed(message: message){
+        if !shouldBeDisplayed(message: message) {
             return
         }
 
