@@ -16,6 +16,10 @@ extension Message {
     public var wasSentUnencrypted: Bool {
         return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_unencrypted
     }
+
+    public var isOnTrustedServer: Bool {
+        return parent.account.server(with: .imap)?.trusted ?? false
+    }
     //IOS-33:
 //    public var couldNotBeDecrypted: Bool {
 //        return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_cannot_decrypt ||
