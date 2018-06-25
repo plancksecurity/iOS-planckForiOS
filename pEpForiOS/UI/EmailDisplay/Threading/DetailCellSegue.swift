@@ -35,7 +35,6 @@ class DetailCellSegue: UIStoryboardSegue {
         }) { (completed) in
             threadViewController.showDetailViewController(self.destination, sender: threadViewController)
             view.removeFromSuperview()
-
         }
     }
 }

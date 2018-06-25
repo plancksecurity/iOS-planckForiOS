@@ -17,6 +17,10 @@ class ThreadViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
+        guard let model = model else {
+            return
+        }
+        self.navigationItem.title = String(model.rowCount())  + " messages"
     }
 
     override func didReceiveMemoryWarning() {

@@ -33,37 +33,6 @@ extension EmailListViewModel: MessageFolderDelegate {
 
     // MARK: - MessageFolderDelegate (internal)
 
-    /**
-     - Returns: The lowest index (or nil) of a referenced message
-     in the current list of displayed messages.
-     */
-    private func referencedTopMessageIndex(
-        referencedMessages: [Message],
-        messages: SortedSet<PreviewMessage>) -> (Int, Message)? {
-        var lowestIndex: Int?
-        var topMessage: Message?
-        for msg in referencedMessages {
-            let preview = PreviewMessage(withMessage: msg)
-            if let index = messages.index(of: preview) {
-                if let currentLow = lowestIndex {
-                    if index < currentLow {
-                        lowestIndex = index
-                        topMessage = msg
-                    }
-                } else {
-                    lowestIndex = index
-                    topMessage = msg
-                }
-            }
-        }
-
-        if let resultingIndex = lowestIndex, let resultingMessage = topMessage {
-            return (resultingIndex, resultingMessage)
-        } else {
-            return nil
-        }
-    }
-
     private func didCreateInternal(messageFolder: MessageFolder) {
         guard let message = messageFolder as? Message else {
             // The createe is no message. Ignore.
@@ -94,15 +63,8 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedMessages.isEmpty {
                     insertAsTopMessage()
                 } else {
-                    if let (_, topMessage) = theSelf.referencedTopMessageIndex(
-                        referencedMessages: referencedMessages,
-                        messages: theSelf.messages) {
-                        if theSelf.currentlyDisplaying(message: topMessage) {
-                            // notify detail view
-                            theSelf.updateThreadListDelegate?.added(message: message)
-
-                            // TODO: update message (thread count) in master view
-                        }
+                    if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
+                        theSelf.updateThreadListDelegate?.added(message: message)
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
@@ -130,12 +92,8 @@ extension EmailListViewModel: MessageFolderDelegate {
             if !referencedMessages.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     if let theSelf = self {
-                        if let (_, topMessage) = theSelf.referencedTopMessageIndex(
-                            referencedMessages: referencedMessages,
-                            messages: theSelf.messages) {
-                            if theSelf.currentlyDisplaying(message: topMessage) {
-                                theSelf.updateThreadListDelegate?.deleted(message: message)
-                            }
+                        if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
+                            theSelf.updateThreadListDelegate?.deleted(message: message)
                         }
                     }
                 }
@@ -159,17 +117,25 @@ extension EmailListViewModel: MessageFolderDelegate {
             // It is not a Message (probably it is a Folder).
             return
         }
-        if !shouldBeDisplayed(message: message){
+        if !shouldBeDisplayed(message: message) {
             return
         }
+
+        let referencedMessages = threadedMessageFolder.referencedTopMessages(message: message)
 
         guard let indexExisting = index(of: message) else {
             // We do not have this updated message in our model yet. It might have been updated in
             // a way, that fulfills the current filters now but did not before the update.
             // Or it has just been decrypted.
-            // Forward to didCreateInternal to figure out if we want to display it.
-            self.didCreateInternal(messageFolder: messageFolder)
-            return
+            // Forward to didCreateInternal to figure out if we want to display it,
+            // but only if we're not currently displaying it in the details view.
+            if isCurrentlyDisplaying(oneOf: referencedMessages) {
+                updateThreadListDelegate?.updated(message: message)
+                return
+            } else {
+                self.didCreateInternal(messageFolder: messageFolder)
+                return
+            }
         }
 
         // We do have this message in our model, so we do have to update it
@@ -243,6 +209,26 @@ Something is fishy here.
             }
         } else {
             return message.parent == folderToShow
+        }
+        return false
+    }
+
+    /**
+     Is the detail view currently displaying messages derived from `Message`?
+     I.e., is the given message currently selected in the master view?
+     */
+    func isCurrentlyDisplaying(message: Message) -> Bool {
+        return currentDisplayedMessage?.messageModel == message
+    }
+
+    /**
+     Like `currentlyDisplaying(message: Message)`, but checks a list of messages.
+     */
+    func isCurrentlyDisplaying(oneOf messages: [Message]) -> Bool {
+        for msg in messages {
+            if isCurrentlyDisplaying(message: msg) {
+                return true
+            }
         }
         return false
     }
