@@ -185,8 +185,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         return true
     }
 
-    private func setOriginalRatingHeader(rating: PEP_rating,
-                                         toMessage cdMessage: CdMessage) {
+    private func setOriginalRatingHeader(rating: PEP_rating, toMessage cdMessage: CdMessage) {
         guard let message = cdMessage.message() else {
             Log.shared.errorAndCrash(component: #function, errorString: "No Message")
             handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
