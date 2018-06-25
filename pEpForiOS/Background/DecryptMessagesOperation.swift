@@ -172,12 +172,11 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             Log.shared.errorAndCrash(component: #function, errorString: "No Message")
             throw BackgroundError.GeneralError.illegalState(info: "No Message")
         }
-        if !message.isOnTrustedServer ||    // The only currently supported case for re-upload is trusted server.
-            message.wasSentUnencrypted ||   // If the message was not encrypted, there is no reason to re-upload it.
-            message.getOriginalRatingHeader() != nil { //Fetched message is a previously uploaded one
+        if !message.isOnTrustedServer || // The only currently supported case for re-upload is trusted server.
+            message.wasAlreadyUnencrypted { // If the message was not encrypted, there is no reason to re-upload it.
             return false
         }
-        //IOS-33: TODO: Set X-KeyList header (keysFromDecryption is already set, but make sure it is actually written to X-KeyList
+        //IOS-33: TODO: Double check X-KeyList header handling is correct.
         let messageCopyForReupload = Message(message: message)
         setOriginalRatingHeader(rating: rating, toMessage: messageCopyForReupload)
         messageCopyForReupload.save()
