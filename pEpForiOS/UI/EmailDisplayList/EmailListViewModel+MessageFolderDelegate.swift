@@ -33,37 +33,6 @@ extension EmailListViewModel: MessageFolderDelegate {
 
     // MARK: - MessageFolderDelegate (internal)
 
-    /**
-     - Returns: The lowest index (or nil) of a referenced message
-     in the current list of displayed messages.
-     */
-    private func referencedTopMessageIndex(
-        referencedMessages: [Message],
-        messages: SortedSet<PreviewMessage>) -> (Int, Message)? {
-        var lowestIndex: Int?
-        var topMessage: Message?
-        for msg in referencedMessages {
-            let preview = PreviewMessage(withMessage: msg)
-            if let index = messages.index(of: preview) {
-                if let currentLow = lowestIndex {
-                    if index < currentLow {
-                        lowestIndex = index
-                        topMessage = msg
-                    }
-                } else {
-                    lowestIndex = index
-                    topMessage = msg
-                }
-            }
-        }
-
-        if let resultingIndex = lowestIndex, let resultingMessage = topMessage {
-            return (resultingIndex, resultingMessage)
-        } else {
-            return nil
-        }
-    }
-
     private func didCreateInternal(messageFolder: MessageFolder) {
         guard let message = messageFolder as? Message else {
             // The createe is no message. Ignore.
