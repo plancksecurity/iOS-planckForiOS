@@ -94,15 +94,8 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedMessages.isEmpty {
                     insertAsTopMessage()
                 } else {
-                    if let (_, topMessage) = theSelf.referencedTopMessageIndex(
-                        referencedMessages: referencedMessages,
-                        messages: theSelf.messages) {
-                        if theSelf.currentlyDisplaying(message: topMessage) {
-                            // notify detail view
-                            theSelf.updateThreadListDelegate?.added(message: message)
-
-                            // TODO: update message (thread count) in master view
-                        }
+                    if theSelf.currentlyDisplaying(oneOf: referencedMessages) {
+                        theSelf.updateThreadListDelegate?.added(message: message)
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
@@ -130,12 +123,8 @@ extension EmailListViewModel: MessageFolderDelegate {
             if !referencedMessages.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     if let theSelf = self {
-                        if let (_, topMessage) = theSelf.referencedTopMessageIndex(
-                            referencedMessages: referencedMessages,
-                            messages: theSelf.messages) {
-                            if theSelf.currentlyDisplaying(message: topMessage) {
-                                theSelf.updateThreadListDelegate?.deleted(message: message)
-                            }
+                        if theSelf.currentlyDisplaying(oneOf: referencedMessages) {
+                            theSelf.updateThreadListDelegate?.deleted(message: message)
                         }
                     }
                 }

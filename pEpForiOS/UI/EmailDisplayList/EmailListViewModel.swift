@@ -484,8 +484,21 @@ class EmailListViewModel {
 
     /**
      Is the detail view currently displaying messages derived from `Message`?
+     I.e., is the given message currently selected in the master view?
      */
     func currentlyDisplaying(message: Message) -> Bool {
         return currentDisplayedMessage?.messageModel == message
+    }
+
+    /**
+     Like `currentlyDisplaying(message: Message)`, but checks a list of messages.
+     */
+    func currentlyDisplaying(oneOf messages: [Message]) -> Bool {
+        for msg in messages {
+            if currentlyDisplaying(message: msg) {
+                return true
+            }
+        }
+        return false
     }
 }
