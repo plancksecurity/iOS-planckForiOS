@@ -9,7 +9,7 @@
 import UIKit
 import MessageModel
 
-class FullMessageCell: UITableViewCell,
+class FullMessageCell: SwipeTableViewCell,
     MessageViewModelConfigurable,
     NeedsRefreshDelegate {
     

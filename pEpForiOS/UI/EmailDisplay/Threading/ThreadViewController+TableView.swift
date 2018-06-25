@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwipeCellKit
 import UIKit
 
 extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
@@ -49,8 +50,18 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         cell.configure(for: viewModel)
+        configureSwipeCell(cell: cell)
         return cell
     }
+
+    func configureSwipeCell(cell: UITableViewCell) {
+        guard let cell = cell as? SwipeTableViewCell else {
+            return
+        }
+
+        cell.delegate = self
+    }
+
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if model?.messageisExpanded(at: indexPath.section) == false {

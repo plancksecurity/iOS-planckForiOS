@@ -434,6 +434,7 @@
 		492EF92D20C6957D004EAE14 /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EF92C20C6957D004EAE14 /* ThreadViewController.swift */; };
 		492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EF92E20C699D0004EAE14 /* ThreadViewController+TableView.swift */; };
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
+		495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D69BE20DBAEE900986007 /* ThreadViewController+SwipeCell.swift */; };
 		495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */; };
 		49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49691B1420D7FD0200CA9367 /* MessageViewModelConfigurable.swift */; };
 		496C0EE720BC2A880009B5B9 /* EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496C0EE620BC2A880009B5B9 /* EmailDisplayDelegate.swift */; };
@@ -972,6 +973,7 @@
 		492EF92E20C699D0004EAE14 /* ThreadViewController+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewController+TableView.swift"; sourceTree = "<group>"; };
 		495560851E7150ED0016579E /* libPantomimeStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPantomimeStatic.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libPantomimeStatic.a"; sourceTree = "<group>"; };
 		495560871E71517F0016579E /* libpEpiOSAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpEpiOSAdapter.a; path = "../../Library/Developer/Xcode/DerivedData/pEpForiOS-cryqwhejxdsfocdwswvsgjrywqhr/Build/Products/Debug-iphonesimulator/libpEpiOSAdapter.a"; sourceTree = "<group>"; };
+		495D69BE20DBAEE900986007 /* ThreadViewController+SwipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewController+SwipeCell.swift"; sourceTree = "<group>"; };
 		495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+SizeClasses.swift"; sourceTree = "<group>"; };
 		49691B1420D7FD0200CA9367 /* MessageViewModelConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModelConfigurable.swift; sourceTree = "<group>"; };
 		496C0EE620BC2A880009B5B9 /* EmailDisplayDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDisplayDelegate.swift; sourceTree = "<group>"; };
@@ -1963,6 +1965,7 @@
 				0033C07E20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift */,
 				492EF92C20C6957D004EAE14 /* ThreadViewController.swift */,
 				492EF92E20C699D0004EAE14 /* ThreadViewController+TableView.swift */,
+				495D69BE20DBAEE900986007 /* ThreadViewController+SwipeCell.swift */,
 				49228A5220D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift */,
 				0033C08020D7F3C600224E61 /* ThreadViewController+EmailViewDelegate.swift */,
 				00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */,
@@ -2769,6 +2772,7 @@
 				0033C08120D7F3C600224E61 /* ThreadViewController+EmailViewDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
+				495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */,
 				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
 				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
 				15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */,

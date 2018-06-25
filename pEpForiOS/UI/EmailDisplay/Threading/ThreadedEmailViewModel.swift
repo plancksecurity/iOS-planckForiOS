@@ -36,6 +36,7 @@ class ThreadedEmailViewModel {
         }
         folder.deleteSingle(message: messages[index])
         messages.remove(at: index)
+        expandedMessages.remove(at: index)
     }
 
     func setFlag(forMessageAt index: Int, to status: Bool){

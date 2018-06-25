@@ -1045,7 +1045,7 @@ enum SwipeActionDescriptor {
         case .archive: name = "archive"
         }
 
-        return UIImage(named: "swipe-" + name)
+        return UIImage(named: "swipe-" + name + (style == .backgroundColor ? "" : "-circle"))
     }
 
     var color: UIColor {
