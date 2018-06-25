@@ -63,7 +63,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedMessages.isEmpty {
                     insertAsTopMessage()
                 } else {
-                    if theSelf.currentlyDisplaying(oneOf: referencedMessages) {
+                    if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
                         theSelf.updateThreadListDelegate?.added(message: message)
                     } else {
                         // Incoming message references other messages,
@@ -92,7 +92,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             if !referencedMessages.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     if let theSelf = self {
-                        if theSelf.currentlyDisplaying(oneOf: referencedMessages) {
+                        if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
                             theSelf.updateThreadListDelegate?.deleted(message: message)
                         }
                     }
@@ -209,16 +209,16 @@ Something is fishy here.
      Is the detail view currently displaying messages derived from `Message`?
      I.e., is the given message currently selected in the master view?
      */
-    func currentlyDisplaying(message: Message) -> Bool {
+    func isCurrentlyDisplaying(message: Message) -> Bool {
         return currentDisplayedMessage?.messageModel == message
     }
 
     /**
      Like `currentlyDisplaying(message: Message)`, but checks a list of messages.
      */
-    func currentlyDisplaying(oneOf messages: [Message]) -> Bool {
+    func isCurrentlyDisplaying(oneOf messages: [Message]) -> Bool {
         for msg in messages {
-            if currentlyDisplaying(message: msg) {
+            if isCurrentlyDisplaying(message: msg) {
                 return true
             }
         }
