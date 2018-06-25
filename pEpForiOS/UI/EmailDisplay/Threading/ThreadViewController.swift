@@ -16,7 +16,7 @@ class ThreadViewController: BaseViewController {
     var messages = ["hola", "que", "tal"]
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        configureSplitViewBackButton()
     }
 
     override func didReceiveMemoryWarning() {
@@ -35,4 +35,8 @@ class ThreadViewController: BaseViewController {
     }
     */
 
+    private func configureSplitViewBackButton() {
+        self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+        self.navigationItem.leftItemsSupplementBackButton = true
+    }
 }
