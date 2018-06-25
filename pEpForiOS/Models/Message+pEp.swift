@@ -13,37 +13,15 @@ extension Message {
         return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_undefined
     }
 
-//    public var wasSentUnencrypted: Bool {
-//        return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_unencrypted
-//    }
-//
+    public var wasSentUnencrypted: Bool {
+        return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_unencrypted
+    }
+    //IOS-33:
 //    public var couldNotBeDecrypted: Bool {
 //        return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_cannot_decrypt ||
 //            PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_have_no_key
 //    }
 
-    private var reEvaluatedRating: PEP_rating {
-        guard let cdMessage = cdMessage() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No cd message")
-            return PEP_rating_undefined
-        }
-        guard let originalRatingString = optionalFields[Headers.originalRating.rawValue] else {
-            return PEPUtil.pEpRatingFromInt(pEpRatingInt) ?? PEP_rating_undefined
-        }
-
-        let session = PEPSession()
-        var inOutRating = session.rating(from:originalRatingString)
-        var outStatus = PEP_UNKNOWN_ERROR
-        do {
-            try session.reEvaluateMessage(cdMessage.pEpMessage(),
-                                          rating: &inOutRating,
-                                          status: &outStatus)
-        } catch {
-            Log.shared.errorAndCrash(component:#function, errorString:"Problem...")
-            return PEP_rating_undefined
-        }
-        return PEP_rating_undefined
-    }
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
         return PEPUtil.pEpDict(message: self)
     }
@@ -77,7 +55,21 @@ extension Message {
     }
 
     public func pEpRating() -> PEP_rating {
-        return reEvaluatedRating
+        //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors
+        if let originalRatingString = optionalFields[Headers.originalRating.rawValue] {
+            switch parent.folderType {
+            case .sent, .trash, .drafts:
+                return PEP_rating.fromString(str: originalRatingString)
+            case .all, .archive, .inbox, .normal, .spam, .flagged:
+                if isOnTrustedServer {
+                    return PEP_rating.fromString(str: originalRatingString)
+                } else {
+                    return PEPUtil.pEpRatingFromInt(pEpRatingInt) ?? PEP_rating_undefined
+                }
+            }
+        } else {
+            return PEPUtil.pEpRatingFromInt(pEpRatingInt) ?? PEP_rating_undefined
+        }
     }
 
     public func pEpColor() -> PEP_color {
