@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageModel
+import SwipeCellKit
 
 class FullMessageCell: SwipeTableViewCell,
     MessageViewModelConfigurable,
