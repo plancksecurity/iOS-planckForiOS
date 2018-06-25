@@ -121,13 +121,21 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
 
+        let referencedMessages = threadedMessageFolder.referencedTopMessages(message: message)
+
         guard let indexExisting = index(of: message) else {
             // We do not have this updated message in our model yet. It might have been updated in
             // a way, that fulfills the current filters now but did not before the update.
             // Or it has just been decrypted.
-            // Forward to didCreateInternal to figure out if we want to display it.
-            self.didCreateInternal(messageFolder: messageFolder)
-            return
+            // Forward to didCreateInternal to figure out if we want to display it,
+            // but only if we're not currently displaying it in the details view.
+            if isCurrentlyDisplaying(oneOf: referencedMessages) {
+                updateThreadListDelegate?.updated(message: message)
+                return
+            } else {
+                self.didCreateInternal(messageFolder: messageFolder)
+                return
+            }
         }
 
         // We do have this message in our model, so we do have to update it
