@@ -44,16 +44,36 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
     func testIncomingUnthreaded() {
         emailListViewModelDelegate.expectationViewUpdated = expectation(description: "wait")
+
         waitForExpectations(timeout: TestUtil.waitTime) { err in
             XCTAssertNil(err)
         }
+
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         XCTAssertNil(emailListViewModel.currentDisplayedMessage)
 
         XCTAssertNil(emailListViewModel.currentDisplayedMessage?.messageModel)
+        emailListViewModel.currentDisplayedMessage = displayedMessage
+
+        displayedMessage.messageModel = topMessage(byUID: 3)
+
+        let incoming = createMessage(number: topMessages.count + 1)
+        emailListViewModelDelegate.expectationInserted = ExpectationInserted(
+            expectationInserted: expectation(
+                description: "expectationInserted"),
+            indexPath: IndexPath(row: 0, section: 0))
+        emailListViewModel.didCreate(messageFolder: incoming)
+
+        waitForExpectations(timeout: TestUtil.waitTime) { err in
+            XCTAssertNil(err)
+        }
     }
 
     // MARK - Internal - Helpers
+
+    func topMessage(byUID uid: Int) -> Message {
+        return topMessages[uid-1]
+    }
 
     func createMessage(number: Int) -> Message {
         let msg = Message.init(uuid: "\(number)", parentFolder: inbox)
@@ -63,6 +83,16 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     // MARK - Internal - Delegates
+
+    class ExpectationInserted {
+        let expectationInserted: XCTestExpectation
+        let indexPath: IndexPath
+
+        init(expectationInserted: XCTestExpectation, indexPath: IndexPath) {
+            self.expectationInserted = expectationInserted
+            self.indexPath = indexPath
+        }
+    }
 
     class MyDisplayedMessage: DisplayedMessage {
         var messageModel: Message?
@@ -106,9 +136,14 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
     class MyEmailListViewModelDelegate: EmailListViewModelDelegate {
         var expectationViewUpdated: XCTestExpectation?
+        var expectationInserted: ExpectationInserted?
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didInsertDataAt indexPath: IndexPath) {
+            if let exp = expectationInserted {
+                XCTAssertEqual(indexPath, exp.indexPath)
+                exp.expectationInserted.fulfill()
+            }
         }
 
         func emailListViewModel(viewModel: EmailListViewModel,
