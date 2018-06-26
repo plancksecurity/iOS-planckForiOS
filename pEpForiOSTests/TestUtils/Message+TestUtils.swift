@@ -24,3 +24,27 @@ extension Message {
         return Message(uuid: uuid, parentFolder: fakeFolder)
     }
 }
+
+// MARK: - Force true isOnTrustedServer
+
+extension Message {
+    @objc private var swizzledIsOnTrustedServer: Bool {
+        return true
+    }
+
+    static private var originalMethod: Method {
+        return class_getInstanceMethod(self, #selector(getter: isOnTrustedServer))!
+    }
+
+    static private var swizzledMethod: Method {
+        return class_getInstanceMethod(self, #selector(getter: swizzledIsOnTrustedServer))!
+    }
+    
+    public static func swizzleIsTrustedServerToAlwaysTrue() {
+        method_exchangeImplementations(originalMethod, swizzledMethod)
+    }
+
+    public static func unswizzleIsTrustedServerToDefault() {
+        method_exchangeImplementations(swizzledMethod, originalMethod)
+    }
+}
