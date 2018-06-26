@@ -63,7 +63,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedMessages.isEmpty {
                     insertAsTopMessage()
                 } else {
-                    if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
+                    if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                         theSelf.updateThreadListDelegate?.added(message: message)
                     } else if let (index, message) = theSelf.referencedTopMessageIndex(
                         messages: referencedMessages) {
@@ -96,7 +96,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             if !referencedMessages.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     if let theSelf = self {
-                        if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
+                        if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                             theSelf.updateThreadListDelegate?.deleted(message: message)
                         }
                     }
@@ -133,7 +133,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // Or it has just been decrypted.
             // Forward to didCreateInternal to figure out if we want to display it,
             // but only if we're not currently displaying it in the details view.
-            if isCurrentlyDisplaying(oneOf: referencedMessages) {
+            if isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                 updateThreadListDelegate?.updated(message: message)
                 return
             } else {
@@ -231,16 +231,16 @@ Something is fishy here.
      Is the detail view currently displaying messages derived from `Message`?
      I.e., is the given message currently selected in the master view?
      */
-    func isCurrentlyDisplaying(message: Message) -> Bool {
+    func isCurrentlyDisplayingDetailsOf(message: Message) -> Bool {
         return currentDisplayedMessage?.messageModel == message
     }
 
     /**
      Like `currentlyDisplaying(message: Message)`, but checks a list of messages.
      */
-    func isCurrentlyDisplaying(oneOf messages: [Message]) -> Bool {
+    func isCurrentlyDisplayingDetailsOf(oneOf messages: [Message]) -> Bool {
         for msg in messages {
-            if isCurrentlyDisplaying(message: msg) {
+            if isCurrentlyDisplayingDetailsOf(message: msg) {
                 return true
             }
         }
