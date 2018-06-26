@@ -10,17 +10,18 @@ import Foundation
 import MessageModel
 
 /**
- Indicates changes from the master list of emails to the detail view.
+ Protocol between master and detail view controller for displaying messages.
  */
 protocol DisplayedMessage: class {
     /**
-     Set by the detail view whenever it is to show a message, so the
+     Supposed to be set by the detail view controller  whenever it is to show a message, so the
      model always knows what's the currently displayed one.
      */
     var messageModel: Message? { get }
 
     /**
-     Updates the detail message with the master one.
+     Supposed to be called when the master view controller detects a change in `messageModel`,
+     so the detail view controller is informed about changes.
      */
     func update(forMessage message: Message)
 }

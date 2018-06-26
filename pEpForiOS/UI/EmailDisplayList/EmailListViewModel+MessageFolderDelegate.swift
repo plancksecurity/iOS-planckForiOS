@@ -65,10 +65,14 @@ extension EmailListViewModel: MessageFolderDelegate {
                 } else {
                     if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
                         theSelf.updateThreadListDelegate?.added(message: message)
+                    } else if let (index, message) = theSelf.referencedTopMessageIndex(
+                        messages: referencedMessages) {
+                        // TODO: update this message
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
-                        // So treat it as a top message.
+                        // Not in the master view, not in the detail view.
+                        // So treat it as a top message even though strictly speaking it's not.
                         insertAsTopMessage()
                     }
                 }
@@ -152,7 +156,17 @@ extension EmailListViewModel: MessageFolderDelegate {
             // We got called even the flaggs did not change. Ignore.
             return
         }
+        update(message: message, previewMessage: previewMessage, atIndex: indexExisting)
+    }
 
+    /**
+     Updates the given `message` at the given `atIndex`.
+     - Note:
+       * The message might get deleted if it doesn't fit the filter anymore.
+       * The `previewMessage` might seem redundant, but in some cases it has already
+     been computed.
+     */
+    func update(message: Message, previewMessage: PreviewMessage, atIndex indexExisting: Int) {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 theSelf.messages.removeObject(at: indexExisting)
@@ -231,5 +245,19 @@ Something is fishy here.
             }
         }
         return false
+    }
+
+    /*
+     - Returns: The index (or nil) of the first message from `messages`
+     that is currently displayed as a top message.
+     */
+    private func referencedTopMessageIndex(messages: [Message]) -> (Int, Message)? {
+        for msg in messages {
+            let preview = PreviewMessage(withMessage: msg)
+            if let index = self.messages.index(of: preview) {
+                return (index, msg)
+            }
+        }
+        return nil
     }
 }
