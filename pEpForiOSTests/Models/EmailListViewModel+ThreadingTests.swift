@@ -109,6 +109,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let msg = Message.init(uuid: "\(number)", parentFolder: inbox)
         msg.imapFlags?.uid = Int32(number)
         msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.received = Date.init(timeIntervalSince1970: Double(number))
+        msg.sent = msg.received
         return msg
     }
 
