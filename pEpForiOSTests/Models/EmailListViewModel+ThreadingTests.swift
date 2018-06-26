@@ -29,6 +29,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         for i in 1...5 {
             let msg = Message.init(uuid: "\(i)", parentFolder: inbox)
+            msg.imapFlags?.uid = Int32(i)
+            msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+            topMessages.append(msg)
             msg.save()
         }
 
@@ -39,7 +42,11 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     func testIncomingUnthreaded() {
-        XCTAssertTrue(true)
+        emailListViewModelDelegate.expectationViewUpdated = expectation(description: "wait")
+        waitForExpectations(timeout: TestUtil.waitTime) { err in
+            XCTAssertNil(err)
+        }
+        XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
     }
 
     // MARK - Internal
@@ -77,6 +84,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     class MyEmailListViewModelDelegate: EmailListViewModelDelegate {
+        var expectationViewUpdated: XCTestExpectation?
+
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didInsertDataAt indexPath: IndexPath) {
         }
@@ -99,6 +108,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
 
         func updateView() {
+            expectationViewUpdated?.fulfill()
         }
     }
 }
