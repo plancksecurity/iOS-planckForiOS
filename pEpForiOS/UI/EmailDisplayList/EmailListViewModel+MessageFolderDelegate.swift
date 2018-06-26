@@ -156,7 +156,17 @@ extension EmailListViewModel: MessageFolderDelegate {
             // We got called even the flaggs did not change. Ignore.
             return
         }
+        update(message: message, previewMessage: previewMessage, atIndex: indexExisting)
+    }
 
+    /**
+     Updates the given `message` at the given `atIndex`.
+     - Note:
+       * The message might get deleted if it doesn't fit the filter anymore.
+       * The `previewMessage` might seem redundant, but in some cases it has already
+     been computed.
+     */
+    func update(message: Message, previewMessage: PreviewMessage, atIndex indexExisting: Int) {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 theSelf.messages.removeObject(at: indexExisting)
