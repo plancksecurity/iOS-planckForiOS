@@ -29,11 +29,13 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         incomingMessage(references: [])
     }
 
+    /*
     func testThreadedIncomingChildMessageToUndisplayedParent() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpMessages()
         incomingMessage(references: [topMessages[0]])
     }
+     */
 
     // MARK - Internal - Helpers
 
