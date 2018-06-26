@@ -19,7 +19,7 @@ class TrustedServerTest: CoreDataDrivenTestBase {
     }
 
     override func tearDown() {
-        Message.unswizzleIsTrustedServerToDefault()
+        Message.unswizzleIsTrustedServer()
         super.tearDown()
     }
     

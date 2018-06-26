@@ -39,12 +39,12 @@ extension Message {
     static private var swizzledMethod: Method {
         return class_getInstanceMethod(self, #selector(getter: swizzledIsOnTrustedServer))!
     }
-    
+
     public static func swizzleIsTrustedServerToAlwaysTrue() {
         method_exchangeImplementations(originalMethod, swizzledMethod)
     }
 
-    public static func unswizzleIsTrustedServerToDefault() {
+    public static func unswizzleIsTrustedServer() {
         method_exchangeImplementations(swizzledMethod, originalMethod)
     }
 }
