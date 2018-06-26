@@ -171,7 +171,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             Log.shared.errorAndCrash(component: #function, errorString: "No Message")
             throw BackgroundError.GeneralError.illegalState(info: "No Message")
         }
-        if !message.isOnTrustedServer || // The only currently supported case for re-upload is trusted server.
+        if !message.isOnTrustedServer ||    // The only currently supported case for re-upload is trusted server.
             message.wasAlreadyUnencrypted { // If the message was not encrypted, there is no reason to re-upload it.
             return false
         }
@@ -218,7 +218,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                pEpMessageDict: PEPMessageDict,
                                rating: PEP_rating) {
         cdMessage.update(pEpMessageDict: pEpMessageDict, rating: rating)
-        cdMessage.updateKeyList(keys: keys) //IOS-33: Why extra keys inout? Afaics we set those output keys to CdMessage and never use it anywhere (we do not set it to any optional header or such)
+        cdMessage.updateKeyList(keys: keys)
     }
 
     private func notifyDelegate(messageUpdated cdMessage: CdMessage) {
