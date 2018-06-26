@@ -67,7 +67,7 @@ class TrustedServerTest: CoreDataDrivenTestBase {
             .map { $0.message()! }
         let mailsToSendInSentFolder =
             msgsInSentAccount1After[
-                (msgsInSentAccount1After.count - numMailsToSend)...(msgsInSentAccount1After.count)]
+                (msgsInSentAccount1After.count - numMailsToSend)...(msgsInSentAccount1After.count - 1)]
 //        let msgsInInboxAccount2After = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1)
 
         XCTAssertEqual(msgsInSentAccount1After.count,
