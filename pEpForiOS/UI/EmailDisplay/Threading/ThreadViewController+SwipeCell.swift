@@ -21,7 +21,7 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
         let draftFolder = false
         if !draftFolder {
         swipeActions.append(flagAction())
-        swipeActions.append(moreAction())
+        swipeActions.append(replyAction())
         }
 
         return (orientation == .right ?   swipeActions : nil)
@@ -74,13 +74,13 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
         return flagAction
     }
 
-    private func moreAction() -> SwipeAction {
-        // Do not add "more" actions (reply...) to drafted mails.
-        let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
-
+    private func replyAction() -> SwipeAction {
+        // Do not add reply action to drafted mails.
+        let moreAction = SwipeAction(style: .default, title: "Reply") { action, indexPath in
+            
         }
         moreAction.hidesWhenSelected = true
-        configure(action: moreAction, with: .more)
+        configure(action: moreAction, with: .reply)
         return moreAction
     }
 

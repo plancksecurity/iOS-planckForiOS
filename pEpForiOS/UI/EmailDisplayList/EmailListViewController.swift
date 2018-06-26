@@ -1010,7 +1010,7 @@ extension EmailListViewController: LoginTableViewControllerDelegate {
  Swipe configuration.
  */
 enum SwipeActionDescriptor {
-    case read, more, flag, trash, archive
+    case read, reply, more, flag, unflag, trash, archive
 
     func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
         if displayMode == .imageOnly {
@@ -1020,10 +1020,14 @@ enum SwipeActionDescriptor {
         switch self {
         case .read:
             return NSLocalizedString("Read", comment: "read button in slide-left menu")
+        case .reply:
+            return NSLocalizedString("Reply", comment: "read button in slide-left menu")
         case .more:
             return NSLocalizedString("More", comment: "more button in slide-left menu")
         case .flag:
             return NSLocalizedString("Flag", comment: "read button in slide-left menu")
+        case .unflag:
+            return NSLocalizedString("Unflag", comment: "read button in slide-left menu")
         case .trash:
             return NSLocalizedString("Trash", comment: "Trash button in slide-left menu")
         case .archive:
@@ -1039,8 +1043,10 @@ enum SwipeActionDescriptor {
         let name: String
         switch self {
         case .read: name = "read"
+        case .reply: name = "reply"
         case .more: name = "more"
         case .flag: name = "flag"
+        case .unflag: name = "unflag"
         case .trash: name = "trash"
         case .archive: name = "archive"
         }
@@ -1051,8 +1057,10 @@ enum SwipeActionDescriptor {
     var color: UIColor {
         switch self {
         case .read: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        case .reply: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
         case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
+        case .unflag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
         case .archive: return UIColor.blue
         }
