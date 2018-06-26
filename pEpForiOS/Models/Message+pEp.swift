@@ -56,13 +56,13 @@ extension Message {
 
     public func pEpRating() -> PEP_rating {
         //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors
-        if let originalRatingString = optionalFields[Headers.originalRating.rawValue] {
+        if let originalRatingString = getOriginalRatingHeaderRating() {
             switch parent.folderType {
             case .sent, .trash, .drafts:
-                return PEP_rating.fromString(str: originalRatingString)
+                return originalRatingString
             case .all, .archive, .inbox, .normal, .spam, .flagged:
                 if isOnTrustedServer {
-                    return PEP_rating.fromString(str: originalRatingString)
+                    return originalRatingString
                 } else {
                     return PEPUtil.pEpRatingFromInt(pEpRatingInt) ?? PEP_rating_undefined
                 }
