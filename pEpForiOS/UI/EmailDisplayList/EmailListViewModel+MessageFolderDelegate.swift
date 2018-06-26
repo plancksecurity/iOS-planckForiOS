@@ -65,12 +65,11 @@ extension EmailListViewModel: MessageFolderDelegate {
                 } else {
                     if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                         theSelf.updateThreadListDelegate?.added(message: message)
-                    } else if let (index, message) = theSelf.referencedTopMessageIndex(
+                    } else if let (index, _) = theSelf.referencedTopMessageIndex(
                         messages: referencedMessages) {
                         // The thread count might need to be updated
-                        theSelf.update(message: message,
-                                       previewMessage: previewMessage,
-                                       atIndex: index)
+                        theSelf.emailListViewModelDelegate?.emailListViewModel(
+                            viewModel: theSelf, didUpdateDataAt: IndexPath(row: index, section: 0))
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
@@ -166,8 +165,7 @@ extension EmailListViewModel: MessageFolderDelegate {
      Updates the given `message` at the given `atIndex`.
      - Note:
        * The message might get deleted if it doesn't fit the filter anymore.
-       * The `previewMessage` might seem redundant, but in some cases it has already
-     been computed.
+       * The `previewMessage` might seem redundant, but it has already been computed.
      */
     func update(message: Message, previewMessage: PreviewMessage, atIndex indexExisting: Int) {
         DispatchQueue.main.async { [weak self] in
