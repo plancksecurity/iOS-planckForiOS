@@ -21,9 +21,23 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     var displayedMessage = MyDisplayedMessage()
     var updateThreadListDelegate = MyUpdateThreadListDelegate()
 
-    override func setUp() {
-        super.setUp()
+    // MARK - Tests
 
+    func testIncomingTopMessage() {
+        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
+        setUpMessages()
+        incomingMessage(references: [])
+    }
+
+    func testIncomingChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpMessages()
+        incomingMessage(references: [topMessages[0]])
+    }
+
+    // MARK - Internal - Helpers
+
+    func setUpMessages() {
         account = cdAccount.account()
         inbox = Folder.init(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
@@ -42,18 +56,6 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         emailListViewModel.updateThreadListDelegate = updateThreadListDelegate
     }
-
-    // MARK - Tests
-
-    func testIncomingTopMessage() {
-        incomingMessage(references: [])
-    }
-
-    func testIncomingChildMessage() {
-        incomingMessage(references: [topMessages[0]])
-    }
-
-    // MARK - Internal - Helpers
 
     func incomingMessage(references: [Message]) {
         emailListViewModelDelegate.expectationViewUpdated = expectation(description: "wait")
