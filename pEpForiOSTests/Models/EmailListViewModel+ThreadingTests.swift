@@ -39,6 +39,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
             folderToShow: inbox)
     }
 
+    // MARK - Tests
+
     func testIncomingUnthreaded() {
         emailListViewModelDelegate.expectationViewUpdated = expectation(description: "wait")
         waitForExpectations(timeout: TestUtil.waitTime) { err in
