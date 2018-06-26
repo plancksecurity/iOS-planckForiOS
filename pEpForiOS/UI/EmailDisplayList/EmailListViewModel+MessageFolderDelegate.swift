@@ -65,10 +65,14 @@ extension EmailListViewModel: MessageFolderDelegate {
                 } else {
                     if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
                         theSelf.updateThreadListDelegate?.added(message: message)
+                    } else if let (index, message) = theSelf.referencedTopMessageIndex(
+                        messages: referencedMessages) {
+                        // TODO: update this message
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
-                        // So treat it as a top message.
+                        // Not in the master view, not in the detail view.
+                        // So treat it as a top message even though strictly speaking it's not.
                         insertAsTopMessage()
                     }
                 }
