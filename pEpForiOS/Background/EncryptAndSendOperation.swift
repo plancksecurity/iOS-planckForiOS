@@ -153,7 +153,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                 let (_, encryptedMessageToSend) = try session.encrypt(
                     pEpMessageDict: msg, encryptionFormat: protected ? PEP_enc_PEP : PEP_enc_none)
 
-                setOriginalRatingHeader(toMessageWithObjId: cdMessageObjID, inContext: context)
+                setOriginalRatingHeader(toMessageWithObjId: cdMessageObjID, inContext: context)//IOS-33: remove all messing with optional headers after ENGINE-442 is done
                 send(pEpMessageDict: encryptedMessageToSend as? PEPMessageDict)
             } catch let err as NSError {
                 handleError(err)
