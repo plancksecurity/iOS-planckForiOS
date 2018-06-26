@@ -11,8 +11,17 @@ import Foundation
 import MessageModel
 
 class FolderThreading {
+    // MARK - Public
+
+    /**
+     Makes `factory` the `ThreadedMessageFolderFactoryProtocol` to use.
+     */
+    static func override(factory: ThreadedMessageFolderFactoryProtocol) {
+        theFactory = factory
+    }
+
     static func factory() -> ThreadedMessageFolderFactoryProtocol {
-        return ThreadUnAwareFolderFactory()
+        return theFactory ?? ThreadUnAwareFolderFactory()
     }
 
     /**
@@ -22,4 +31,8 @@ class FolderThreading {
     static func makeThreadAware(folder: Folder) -> ThreadedMessageFolderProtocol {
         return factory().makeThreadAware(folder: folder)
     }
+
+    // MARK - Private
+
+    private static var theFactory: ThreadedMessageFolderFactoryProtocol?
 }
