@@ -26,14 +26,31 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     func testUnthreadedIncomingTopMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
         setUpMessages()
-        testIncomingMessage(references: [], indexPathUpdated: nil)
+        testIncomingMessage(waitForInitialUpdate: true, references: [], indexPathUpdated: nil)
     }
 
-    func testThreadedIncomingChildMessageToUndisplayedParent() {
+    func testThreadedIncomingChildMessageToSingleUndisplayedParent() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpMessages()
-        testIncomingMessage(references: [topMessages[0]],
+
+        // topMessages[0] is the oldest, so it's last in the list
+        testIncomingMessage(waitForInitialUpdate: true,
+                            references: [topMessages[1]],
+                            indexPathUpdated: IndexPath(row: 3, section: 0))
+        testIncomingMessage(waitForInitialUpdate: false,
+                            references: [topMessages[0]],
                             indexPathUpdated: IndexPath(row: 4, section: 0))
+    }
+
+    func testThreadedIncomingChildMessageToUndisplayedParents() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpMessages()
+
+        // Will update the first (newest) message it finds,
+        // which is topMessages[1] with row 3.
+        testIncomingMessage(waitForInitialUpdate: true,
+                            references: [topMessages[0], topMessages[1]],
+                            indexPathUpdated: IndexPath(row: 3, section: 0))
     }
 
     // MARK - Internal - Helpers
@@ -58,18 +75,22 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         emailListViewModel.updateThreadListDelegate = updateThreadListDelegate
     }
 
-    func testIncomingMessage(references: [Message], indexPathUpdated: IndexPath?) {
-        emailListViewModelDelegate.expectationViewUpdated = expectation(
-            description: "expectationViewUpdated")
+    func testIncomingMessage(waitForInitialUpdate: Bool,
+                             references: [Message],
+                             indexPathUpdated: IndexPath?) {
+        if waitForInitialUpdate {
+            emailListViewModelDelegate.expectationViewUpdated = expectation(
+                description: "expectationViewUpdated")
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
-            XCTAssertNil(err)
+            waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
+                XCTAssertNil(err)
+            }
+
+            XCTAssertNil(emailListViewModel.currentDisplayedMessage)
+            XCTAssertNil(emailListViewModel.currentDisplayedMessage?.messageModel)
         }
 
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
-        XCTAssertNil(emailListViewModel.currentDisplayedMessage)
-
-        XCTAssertNil(emailListViewModel.currentDisplayedMessage?.messageModel)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
         displayedMessage.messageModel = topMessage(byUID: 3)
