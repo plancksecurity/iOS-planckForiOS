@@ -303,7 +303,28 @@ class TestUtil {
 
     // MARK: Messages
 
+    /// Creates outgoing messages
+    ///
+    /// - Parameters:
+    ///   - cdAccount: account to send from
+    ///   - fromIdentity: identity used as sender
+    ///   - toIdentity: identity used as recipient
+    ///   - setSentTimeOffsetForManualOrdering: Add some time difference to date sent tp be
+    ///                                         recognised by Date().sort. That makes it easier to
+    ///                                         misuse thoses mails for manual debugging.
+    //
+    ///   - testCase: the one to make fail
+    ///   - numberOfMails: num mails to create
+    ///   - withAttachments: Whether or not messages should contain attachments
+    ///   - attachmentsInlined: Whether or not the attachments should be inlined
+    ///   - encrypt: Whether or not to import a k`ey for the receipient. Is ignored if `toIdentity`
+    ///              is not nil
+    /// - Returns: created mails
+    /// - Throws: error importing key
     static func createOutgoingMails(cdAccount: CdAccount,
+                                    fromIdentity: CdIdentity? = nil,
+                                    toIdentity: CdIdentity? = nil,
+                                    setSentTimeOffsetForManualOrdering: Bool = false,
                                     testCase: XCTestCase,
                                     numberOfMails: Int,
                                     withAttachments: Bool = true,
@@ -327,27 +348,34 @@ class TestUtil {
             return []
         }
 
-        if encrypt {
-            let session = PEPSession()
-            try TestUtil.importKeyByFileName(
-                session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
-        }
+        let from: CdIdentity
+        if let fromIdentity = fromIdentity {
+            from = fromIdentity
+        } else {
 
-        let from = CdIdentity.create()
-        from.userName = cdAccount.identity?.userName ?? "Unit 004"
-        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+            from = CdIdentity.create()
+            from.userName = cdAccount.identity?.userName ?? "Unit 004"
+            from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
+        }
         guard let fromUserId = cdAccount.identity?.userID else {
             fatalError("No userId")
         }
         from.userID = fromUserId
 
-        let toWithKey = CdIdentity.create()
-        toWithKey.userName = "Unit 001"
-        toWithKey.address = "unittest.ios.1@peptest.ch"
-
-        let toWithoutKey = CdIdentity.create()
-        toWithoutKey.userName = "Unit 002"
-        toWithoutKey.address = "unittest.ios.2@peptest.ch"
+        let to: CdIdentity
+        if let toIdentity = toIdentity {
+            to = toIdentity
+        } else {
+            if encrypt {
+                let session = PEPSession()
+                try TestUtil.importKeyByFileName(
+                    session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
+            }
+            let toWithKey = CdIdentity.create()
+            toWithKey.userName = "Unit 001"
+            toWithKey.address = "unittest.ios.1@peptest.ch"
+            to = toWithKey
+        }
 
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
@@ -364,11 +392,13 @@ class TestUtil {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            // Add some time difference recognised by Date().sort.
-            // That makes it easier to misuse thoses mails for manual debugging.
-            let sentTimeOffset = Double(i) - 1
-            message.sent = Date().addingTimeInterval(sentTimeOffset)
-            message.addTo(cdIdentity: toWithKey)
+            if setSentTimeOffsetForManualOrdering {
+                // Add some time difference recognised by Date().sort.
+                // That makes it easier to misuse thoses mails for manual debugging.
+                let sentTimeOffset = Double(i) - 1
+                message.sent = Date().addingTimeInterval(sentTimeOffset)
+            }
+            message.addTo(cdIdentity: to)
 
             // add attachments
             if withAttachments {
