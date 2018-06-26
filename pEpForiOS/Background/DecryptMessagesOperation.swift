@@ -197,10 +197,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
     }
 
     private func setOriginalRatingHeader(rating: PEP_rating, toMessage msg: Message) {
-        guard msg.getOriginalRatingHeader() == nil else {
-            // We never override the original header.
-            return
-        }
         msg.setOriginalRatingHeader(rating: rating)
         msg.save()
     }

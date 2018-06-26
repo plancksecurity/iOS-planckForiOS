@@ -40,18 +40,18 @@ extension Message {
     }
 
     func getOriginalRatingHeaderRating() -> PEP_rating? {
-        guard let originalRatingStr = optionalFields[Headers.originalRating.rawValue] else {
+        guard let originalRatingStr = getOriginalRatingHeader() else {
             return nil
         }
         return PEP_rating.fromString(str: originalRatingStr)
     }
 
-    func setOriginalRatingHeader(rating: String) {
+    private func setOriginalRatingHeader(rating: String) {
         return optionalFields[Headers.originalRating.rawValue] = rating
     }
 
     func setOriginalRatingHeader(rating: PEP_rating) {
-        return optionalFields[Headers.originalRating.rawValue] = rating.asString()
+        return setOriginalRatingHeader(rating: rating.asString())
     }
 
     public func pEpRating() -> PEP_rating {
