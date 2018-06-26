@@ -134,7 +134,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         guard rating.shouldUpdateMessageContent() else {
             if rating.rawValue != ratingBeforeEngine {
                 cdMessage.update(rating: rating)
-                saveAndNotify(cdMessage: cdMessage)
             }
             return
         }
