@@ -59,18 +59,25 @@ class TrustedServerTest: CoreDataDrivenTestBase {
         // ... and send them.
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
 
-
-
         // Now let's see what we got.
         let msgsInSentAccount1After = cdAccount.allMessages(inFolderOfType: .sent, sendFrom: id1)
             .sorted { (msg1: CdMessage, msg2: CdMessage) -> Bool in
                 return msg1.sent! < msg2.sent!
-        }
-        let sentMails = msgsInSentAccount1After[(msgsInSentAccount1After.count - numMailsToSend)...(msgsInSentAccount1After.count)]
+            }
+            .map { $0.message()! }
+        let mailsToSendInSentFolder =
+            msgsInSentAccount1After[
+                (msgsInSentAccount1After.count - numMailsToSend)...(msgsInSentAccount1After.count)]
 //        let msgsInInboxAccount2After = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1)
 
         XCTAssertEqual(msgsInSentAccount1After.count,
-                       msgsInSentAccount1Before.count + numMailsToSend)
+                       msgsInSentAccount1Before.count + numMailsToSend,
+                       "Send mails are in sent folder")
+
+        for msg in mailsToSendInSentFolder {
+            let originalRating = msg.getOriginalRatingHeaderRating()
+            let rating = msg.pEpRating()
+        }
 //        XCTAssertEqual(msgsAfter2.count, msgsBefore2.count + numMailsToSend)
     }
 }
