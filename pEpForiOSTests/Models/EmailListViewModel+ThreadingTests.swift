@@ -18,6 +18,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     let emailListViewModelDelegate = MyEmailListViewModelDelegate()
     let messageSyncServiceProtocol = MyMessageSyncServiceProtocol()
     var emailListViewModel: EmailListViewModel!
+    var displayedMessage = MyDisplayedMessage()
 
     override func setUp() {
         super.setUp()
@@ -47,15 +48,28 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
             XCTAssertNil(err)
         }
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
+        XCTAssertNil(emailListViewModel.currentDisplayedMessage)
+
+        XCTAssertNil(emailListViewModel.currentDisplayedMessage?.messageModel)
     }
 
-    // MARK - Internal
+    // MARK - Internal - Helpers
 
     func createMessage(number: Int) -> Message {
         let msg = Message.init(uuid: "\(number)", parentFolder: inbox)
         msg.imapFlags?.uid = Int32(number)
         msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         return msg
+    }
+
+    // MARK - Internal - Delegates
+
+    class MyDisplayedMessage: DisplayedMessage {
+        var messageModel: Message?
+
+        func update(forMessage message: Message) {
+            print("\(#function) message: \(message)")
+        }
     }
 
     class MyMessageSyncServiceProtocol: MessageSyncServiceProtocol {
