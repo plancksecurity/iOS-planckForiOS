@@ -169,7 +169,7 @@
                                             <outlet property="threadIndicator" destination="Q7P-Ou-vEr" id="eli-Ci-7gs"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="expandedCell" rowHeight="314" id="p1L-xk-0V2" userLabel="expandedCell" customClass="FullMessageCell" customModule="pEpForiOS" customModuleProvider="target">
+                                    <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="expandedCell" rowHeight="314" id="p1L-xk-0V2" userLabel="expandedCell" customClass="FullMessageCell" customModule="pEpForiOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="155.5" width="375" height="314"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p1L-xk-0V2" id="c72-Rx-2vq">
@@ -423,7 +423,8 @@
                     <navigationItem key="navigationItem" id="yGW-BP-EVH"/>
                     <connections>
                         <outlet property="tableView" destination="Yrb-DL-w8R" id="5xZ-00-SVq"/>
-                        <segue destination="Kkk-c0-S5g" kind="custom" identifier="segueShowEmail" customClass="DetailCellSegue" customModule="pEpForiOS" customModuleProvider="target" id="Aed-9C-oac"/>
+                        <segue destination="Kkk-c0-S5g" kind="custom" identifier="SegueShowEmailExpanding" customClass="DetailCellSegue" customModule="pEpForiOS" customModuleProvider="target" id="Aed-9C-oac"/>
+                        <segue destination="Kkk-c0-S5g" kind="showDetail" identifier="SegueShowEmail" id="CjJ-ut-CZU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HcI-4f-frN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -459,4 +460,7 @@
         <image name="empty-avatar" width="150" height="150"/>
         <image name="thread-icon" width="13" height="13"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="CjJ-ut-CZU"/>
+    </inferredMetricsTieBreakers>
 </document>

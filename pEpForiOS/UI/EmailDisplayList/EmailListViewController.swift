@@ -202,7 +202,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             Log.shared.errorAndCrash(component: #function, errorString: "No model.")
             return
         }
-        if message.numberOfMessagesInThread() > 0 {
+        if message.numberOfMessagesInThread() == 0 {
             performSegue(withIdentifier: SegueIdentifier.segueShowThreadedEmail, sender: self)
         } else {
             performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
