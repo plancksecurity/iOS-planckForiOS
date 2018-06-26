@@ -67,7 +67,10 @@ extension EmailListViewModel: MessageFolderDelegate {
                         theSelf.updateThreadListDelegate?.added(message: message)
                     } else if let (index, message) = theSelf.referencedTopMessageIndex(
                         messages: referencedMessages) {
-                        // TODO: update this message
+                        // The thread count might need to be updated
+                        theSelf.update(message: message,
+                                       previewMessage: previewMessage,
+                                       atIndex: index)
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
