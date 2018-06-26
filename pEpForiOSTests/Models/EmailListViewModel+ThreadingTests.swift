@@ -58,7 +58,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     func incomingMessage(references: [Message]) {
         emailListViewModelDelegate.expectationViewUpdated = expectation(description: "wait")
 
-        waitForExpectations(timeout: TestUtil.waitTime) { err in
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
 
@@ -88,7 +88,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
         emailListViewModel.didCreate(messageFolder: incoming)
 
-        waitForExpectations(timeout: TestUtil.waitTime) { err in
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
     }
