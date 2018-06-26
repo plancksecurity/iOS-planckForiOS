@@ -232,4 +232,18 @@ Something is fishy here.
         }
         return false
     }
+
+    /*
+     - Returns: The index (or nil) of the first message from `messages`
+     that is currently displayed as a top message.
+     */
+    private func referencedTopMessageIndex(messages: [Message]) -> (Int, Message)? {
+        for msg in messages {
+            let preview = PreviewMessage(withMessage: msg)
+            if let index = self.messages.index(of: preview) {
+                return (index, msg)
+            }
+        }
+        return nil
+    }
 }
