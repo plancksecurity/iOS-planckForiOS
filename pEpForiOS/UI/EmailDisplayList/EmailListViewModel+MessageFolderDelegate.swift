@@ -63,7 +63,6 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedMessages.isEmpty {
                     insertAsTopMessage()
                 } else {
-                    print("*** displaying \(String(describing: theSelf.currentDisplayedMessage?.messageModel))")
                     if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                         theSelf.updateThreadListDelegate?.added(message: message)
                     } else if let (index, _) = theSelf.referencedTopMessageIndex(

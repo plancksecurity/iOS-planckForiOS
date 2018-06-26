@@ -186,14 +186,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     class MyDisplayedMessage: DisplayedMessage {
-        var messageModel: Message? {
-            didSet {
-                print("\(#function) message: \(messageModel)")
-            }
-        }
+        var messageModel: Message?
 
         func update(forMessage message: Message) {
-            print("\(#function) message: \(message)")
         }
     }
 
