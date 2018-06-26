@@ -28,9 +28,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         topMessages.removeAll()
 
         for i in 1...5 {
-            let msg = Message.init(uuid: "\(i)", parentFolder: inbox)
-            msg.imapFlags?.uid = Int32(i)
-            msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+            let msg = createMessage(number: i)
             topMessages.append(msg)
             msg.save()
         }
@@ -50,6 +48,13 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     // MARK - Internal
+
+    func createMessage(number: Int) -> Message {
+        let msg = Message.init(uuid: "\(number)", parentFolder: inbox)
+        msg.imapFlags?.uid = Int32(number)
+        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        return msg
+    }
 
     class MyMessageSyncServiceProtocol: MessageSyncServiceProtocol {
         weak var errorDelegate: MessageSyncServiceErrorDelegate?
