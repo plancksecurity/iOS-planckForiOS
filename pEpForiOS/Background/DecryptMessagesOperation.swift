@@ -158,7 +158,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 privateMOC.saveAndLogErrors()
                 // Don't notify. Delegate will be notified after the re-uploaded message is fetched.
             } else {
-                setOriginalRatingHeader(rating: rating, toMessage: cdMessage)
                 saveAndNotify(cdMessage: cdMessage)
             }
         } catch {
@@ -176,7 +175,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             message.wasAlreadyUnencrypted { // If the message was not encrypted, there is no reason to re-upload it.
             return false
         }
-        //IOS-33: TODO: Double check X-KeyList header handling is correct.
         let messageCopyForReupload = Message(message: message)
         setOriginalRatingHeader(rating: rating, toMessage: messageCopyForReupload)
         messageCopyForReupload.save()
@@ -190,7 +188,12 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
             return
         }
-        setOriginalRatingHeader(rating: rating, toMessage: message)
+        if message.parent.folderType == .drafts {
+            let outgoingRating = message.outgoingMessageRating()
+            setOriginalRatingHeader(rating: outgoingRating, toMessage: message)
+        } else {
+            setOriginalRatingHeader(rating: rating, toMessage: message)
+        }
     }
 
     private func setOriginalRatingHeader(rating: PEP_rating, toMessage msg: Message) {
