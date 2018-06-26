@@ -17,7 +17,8 @@ extension Message {
         return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_unencrypted
     }
 
-    public var isOnTrustedServer: Bool {
+    // @objc to make it swizzle-able in tests
+    @objc public var isOnTrustedServer: Bool {
         return parent.account.server(with: .imap)?.trusted ?? false
     }
 
