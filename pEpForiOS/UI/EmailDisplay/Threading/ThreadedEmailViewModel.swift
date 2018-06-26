@@ -14,7 +14,7 @@ class ThreadedEmailViewModel {
 
 
     internal var messages: [Message]
-    var delegate: EmailViewModelDelegate? = nil
+    var delegate: EmailViewModelDelegate! = nil
     private let folder: ThreadedFolderStub
     private var expandedMessages: [Bool]
 
@@ -39,17 +39,33 @@ class ThreadedEmailViewModel {
         expandedMessages.remove(at: index)
     }
 
+    func deleteAllMessages(){
+        folder.deleteThread(message: messages[0])
+    }
+
     func setFlag(forMessageAt index: Int, to status: Bool){
         guard index < messages.count && index >= 0 else {
                 return
         }
         messages[index].imapFlags?.flagged = status
+        messages[index].save()
+
     }
 
     func setFlag(to status: Bool){
         for message in messages {
             message.imapFlags?.flagged = status
+            message.save()
         }
+    }
+
+    func allMessagesFlagged() -> Bool {
+        for message in messages {
+            if message.imapFlags?.flagged == false {
+                return false
+            }
+        }
+        return true
     }
 
     func viewModel(for index: Int) -> MessageViewModel? {

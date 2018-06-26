@@ -420,8 +420,37 @@
                         <viewLayoutGuide key="safeArea" id="nDU-oZ-8oS"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <toolbarItems>
+                        <barButtonItem image="icon-unflagged" id="tQg-CY-2hQ" userLabel="Flag">
+                            <connections>
+                                <action selector="flagButtonTapped:" destination="8tS-ie-Ovo" id="tIQ-gU-It0"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="u0K-nN-7MO"/>
+                        <barButtonItem image="folders-icon-folder" id="TYk-3G-tQU" userLabel="Move to Folder">
+                            <connections>
+                                <action selector="moveToFolderTapped:" destination="8tS-ie-Ovo" id="zZb-sV-I7Q"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="L6g-yz-7bz"/>
+                        <barButtonItem image="folders-icon-trash" id="zJi-bJ-ZIV" userLabel="Destructive Button">
+                            <connections>
+                                <action selector="destructiveButtonTapped:" destination="8tS-ie-Ovo" id="b1f-ye-mQH"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="0OE-2V-PxY"/>
+                        <barButtonItem systemItem="reply" id="wu8-Rw-KTi">
+                            <connections>
+                                <action selector="replyButtonTapped:" destination="8tS-ie-Ovo" id="6eg-Mm-ndp"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="H4N-VB-ffA"/>
+                        <barButtonItem title="p≡p" id="Kqn-gH-dsv"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="yGW-BP-EVH"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="flagButton" destination="tQg-CY-2hQ" id="nna-Mr-LeK"/>
                         <outlet property="tableView" destination="Yrb-DL-w8R" id="5xZ-00-SVq"/>
                         <segue destination="Kkk-c0-S5g" kind="custom" identifier="SegueShowEmailExpanding" customClass="DetailCellSegue" customModule="pEpForiOS" customModuleProvider="target" id="Aed-9C-oac"/>
                         <segue destination="Kkk-c0-S5g" kind="showDetail" identifier="SegueShowEmail" id="CjJ-ut-CZU"/>
@@ -447,7 +476,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
-                        <segue destination="8tS-ie-Ovo" kind="relationship" relationship="rootViewController" id="Xkm-T0-3La"/>
+                        <segue destination="8tS-ie-Ovo" kind="relationship" relationship="rootViewController" id="M5C-HG-Qrm"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zjB-eY-3Pv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -458,6 +487,9 @@
     <resources>
         <image name="attachment-list-icon" width="14" height="15"/>
         <image name="empty-avatar" width="150" height="150"/>
+        <image name="folders-icon-folder" width="25" height="25"/>
+        <image name="folders-icon-trash" width="25" height="25"/>
+        <image name="icon-unflagged" width="33" height="64"/>
         <image name="thread-icon" width="13" height="13"/>
     </resources>
     <inferredMetricsTieBreakers>
