@@ -53,6 +53,19 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                             indexPathUpdated: IndexPath(row: 3, section: 0))
     }
 
+    func testThreadedIncomingChildMessageToSingleDisplayedParent() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        // topMessages[0] is the oldest, so it's last in the list
+        testIncomingMessage(waitForInitialUpdate: true,
+                            references: [theDisplayedMessage],
+                            indexPathUpdated: nil)
+    }
+
     // MARK - Internal - Helpers
 
     func setUpMessages() {
@@ -92,8 +105,6 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
-
-        displayedMessage.messageModel = topMessage(byUID: 3)
 
         let incoming = createMessage(number: topMessages.count + 1)
         incoming.references = references.map {
@@ -175,7 +186,11 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     class MyDisplayedMessage: DisplayedMessage {
-        var messageModel: Message?
+        var messageModel: Message? {
+            didSet {
+                print("\(#function) message: \(messageModel)")
+            }
+        }
 
         func update(forMessage message: Message) {
             print("\(#function) message: \(message)")
