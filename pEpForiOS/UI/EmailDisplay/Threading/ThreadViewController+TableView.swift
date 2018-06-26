@@ -75,15 +75,15 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     private func showEmail() {
-        guard let splitViewController = self.splitViewController else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We must have a splitViewController here")
-            return
-        }
-        if splitViewController.isCollapsed {
+//        guard let splitViewController = self.splitViewController else {
+//            Log.shared.errorAndCrash(component: #function,
+//                                     errorString: "We must have a splitViewController here")
+//            return
+//        }
+//        if splitViewController.isCollapsed {
             performSegue(withIdentifier: .SegueShowEmail, sender: self)
-        } else {
-            performSegue(withIdentifier: .SegueShowEmailExpanding, sender: self)
-        }
+//        } else {
+//            performSegue(withIdentifier: .SegueShowEmailExpanding, sender: self)
+//        }
     }
 }

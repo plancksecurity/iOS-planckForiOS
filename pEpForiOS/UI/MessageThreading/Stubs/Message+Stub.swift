@@ -13,7 +13,7 @@ extension Message {
     // Duplicates fakeMessage in pEp4IOSTests
     static public func fakeMessage(uuid: MessageID, uid: UInt = 0, folder: Folder) -> Message {
      //   let message:Message = DispatchQueue.main.sync {
-            let account = Account.by(address: "iostest010@peptest.ch")!
+            let account = Account.by(address: "iostest006@peptest.ch")!
             let message = Message(uuid: uuid, uid: uid, parentFolder: folder)
             message.comments = "comment"
             message.shortMessage = "short message"

@@ -22,7 +22,12 @@ class DetailCellSegue: UIStoryboardSegue {
             return
         }
 
-        let view:UIView = cell
+
+        // create an NSData object from myView
+        let archive = NSKeyedArchiver.archivedData(withRootObject: cell.contentView)
+
+        // create a clone by unarchiving the NSData
+        let view = NSKeyedUnarchiver.unarchiveObject(with: archive) as! UIView
 
         let originalFrame = destinationView.frame
 
