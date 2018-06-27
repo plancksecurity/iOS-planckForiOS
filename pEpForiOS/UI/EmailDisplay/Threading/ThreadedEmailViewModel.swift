@@ -23,7 +23,7 @@ class ThreadedEmailViewModel {
 
     init(tip: Message, folder: Folder) {
         self.folder = ThreadedFolderStub(folder: folder)
-        messages = self.folder.allMessages()
+        messages = tip.messagesInThread()
         displayFolder = folder
         expandedMessages = Array(repeating: false, count: messages.count)
         expandedMessages.removeLast()

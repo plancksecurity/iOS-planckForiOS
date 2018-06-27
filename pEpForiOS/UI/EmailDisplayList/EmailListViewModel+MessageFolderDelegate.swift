@@ -63,11 +63,13 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedMessages.isEmpty {
                     insertAsTopMessage()
                 } else {
-                    if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
+                    if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                         theSelf.updateThreadListDelegate?.added(message: message)
-                    } else if let (index, message) = theSelf.referencedTopMessageIndex(
+                    } else if let (index, _) = theSelf.referencedTopMessageIndex(
                         messages: referencedMessages) {
-                        // TODO: update this message
+                        // The thread count might need to be updated
+                        theSelf.emailListViewModelDelegate?.emailListViewModel(
+                            viewModel: theSelf, didUpdateDataAt: IndexPath(row: index, section: 0))
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
@@ -96,7 +98,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             if !referencedMessages.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     if let theSelf = self {
-                        if theSelf.isCurrentlyDisplaying(oneOf: referencedMessages) {
+                        if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                             theSelf.updateThreadListDelegate?.deleted(message: message)
                         }
                     }
@@ -133,7 +135,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // Or it has just been decrypted.
             // Forward to didCreateInternal to figure out if we want to display it,
             // but only if we're not currently displaying it in the details view.
-            if isCurrentlyDisplaying(oneOf: referencedMessages) {
+            if isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                 updateThreadListDelegate?.updated(message: message)
                 return
             } else {
@@ -163,8 +165,7 @@ extension EmailListViewModel: MessageFolderDelegate {
      Updates the given `message` at the given `atIndex`.
      - Note:
        * The message might get deleted if it doesn't fit the filter anymore.
-       * The `previewMessage` might seem redundant, but in some cases it has already
-     been computed.
+       * The `previewMessage` might seem redundant, but it has already been computed.
      */
     func update(message: Message, previewMessage: PreviewMessage, atIndex indexExisting: Int) {
         DispatchQueue.main.async { [weak self] in
@@ -231,16 +232,16 @@ Something is fishy here.
      Is the detail view currently displaying messages derived from `Message`?
      I.e., is the given message currently selected in the master view?
      */
-    func isCurrentlyDisplaying(message: Message) -> Bool {
+    func isCurrentlyDisplayingDetailsOf(message: Message) -> Bool {
         return currentDisplayedMessage?.messageModel == message
     }
 
     /**
      Like `currentlyDisplaying(message: Message)`, but checks a list of messages.
      */
-    func isCurrentlyDisplaying(oneOf messages: [Message]) -> Bool {
+    func isCurrentlyDisplayingDetailsOf(oneOf messages: [Message]) -> Bool {
         for msg in messages {
-            if isCurrentlyDisplaying(message: msg) {
+            if isCurrentlyDisplayingDetailsOf(message: msg) {
                 return true
             }
         }
