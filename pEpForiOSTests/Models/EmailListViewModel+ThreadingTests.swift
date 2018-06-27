@@ -99,8 +99,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         incomingMessage.imapFlags?.flagged = true
         XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
 
-        updateThreadListDelegate.expectationUpdated = expectation(
-            description: "expectationUpdated")
+        updateThreadListDelegate.expectationUpdated = ExpectationChildMessageUpdated(
+            expectedMessage: incomingMessage,
+            expectationUpdated: expectation(description: "expectationUpdated"))
 
         emailListViewModel.didUpdate(messageFolder: incomingMessage)
 
@@ -227,6 +228,19 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    /**
+     UpdateThreadListDelegate update of a child message.
+     */
+    class ExpectationChildMessageUpdated {
+        let expectationUpdated: XCTestExpectation
+        let expectedMessage: Message
+
+        init(expectedMessage: Message, expectationUpdated: XCTestExpectation) {
+            self.expectedMessage = expectedMessage
+            self.expectationUpdated = expectationUpdated
+        }
+    }
+
     class MyDisplayedMessage: DisplayedMessage {
         var messageModel: Message?
 
@@ -307,14 +321,15 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
     class MyUpdateThreadListDelegate: UpdateThreadListDelegate {
         var expectationAdded: ExpectationChildMessageAdded?
-        var expectationUpdated: XCTestExpectation?
+        var expectationUpdated: ExpectationChildMessageUpdated?
 
         func deleted(message: Message) {
         }
 
         func updated(message: Message) {
             if let exp = expectationUpdated {
-                exp.fulfill()
+                XCTAssertEqual(exp.expectedMessage, message)
+                exp.expectationUpdated.fulfill()
             }
         }
 
