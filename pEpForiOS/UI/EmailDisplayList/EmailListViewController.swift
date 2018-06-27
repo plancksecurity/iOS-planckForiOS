@@ -972,7 +972,7 @@ extension EmailListViewController: SegueHandlerType {
         composeVc.origin = folderToShow?.account.user
         if composeMode != .normal {
             // This is not a simple compose (but reply, forward or such),
-            // thus we have to pass the original meaasge.
+            // thus we have to pass the original message.
             guard
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {

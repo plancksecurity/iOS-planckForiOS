@@ -453,8 +453,8 @@
                     <connections>
                         <outlet property="flagButton" destination="tQg-CY-2hQ" id="nna-Mr-LeK"/>
                         <outlet property="tableView" destination="Yrb-DL-w8R" id="5xZ-00-SVq"/>
-                        <segue destination="Kkk-c0-S5g" kind="custom" identifier="SegueShowEmailExpanding" customClass="DetailCellSegue" customModule="pEpForiOS" customModuleProvider="target" id="Aed-9C-oac"/>
-                        <segue destination="Kkk-c0-S5g" kind="showDetail" identifier="SegueShowEmail" id="CjJ-ut-CZU"/>
+                        <segue destination="Kkk-c0-S5g" kind="custom" identifier="segueShowEmailExpanding" customClass="DetailCellSegue" customModule="pEpForiOS" customModuleProvider="target" id="Aed-9C-oac"/>
+                        <segue destination="Kkk-c0-S5g" kind="show" identifier="segueShowEmail" id="CjJ-ut-CZU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HcI-4f-frN" userLabel="First Responder" sceneMemberID="firstResponder"/>

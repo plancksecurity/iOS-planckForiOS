@@ -32,6 +32,10 @@ class ThreadViewController: BaseViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func segueUnwindEmailDisplayDone(segue:UIStoryboardSegue) {
+        //do nothing
+    }
+
     func setUpFlaggedStatus(){
         let allFlagged =  model?.allMessagesFlagged() ?? false
 

@@ -81,7 +81,7 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
 //            return
 //        }
 //        if splitViewController.isCollapsed {
-            performSegue(withIdentifier: .SegueShowEmail, sender: self)
+            performSegue(withIdentifier: .segueShowEmail, sender: self)
 //        } else {
 //            performSegue(withIdentifier: .SegueShowEmailExpanding, sender: self)
 //        }

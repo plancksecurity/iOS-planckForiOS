@@ -26,6 +26,8 @@ class EmailViewController: BaseTableViewController {
     var folderShow : Folder?
     var messageId = 0
 
+    var shouldShowOKButton: Bool = true
+
     private var partnerIdentity: Identity?
     private var tableData: ComposeDataSource?
     private var ratingReEvaluator: RatingReEvaluator?
@@ -39,6 +41,7 @@ class EmailViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
+        configureOKButton()
 
         loadDatasource("MessageData")
 
@@ -136,6 +139,18 @@ class EmailViewController: BaseTableViewController {
     private func configureSplitViewBackButton() {
         self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         self.navigationItem.leftItemsSupplementBackButton = true
+    }
+
+    private func configureOKButton() {
+        if (shouldShowOKButton) {
+            let okButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: .okButtonPressed)
+            self.navigationItem.leftBarButtonItems? = [okButton]
+            self.navigationItem.hidesBackButton = true
+        }
+    }
+
+    @objc internal func okButtonPressed(sender: UIBarButtonItem) {
+        performSegue(withIdentifier: .unwindToThread, sender: self)
     }
 
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
@@ -451,6 +466,7 @@ extension EmailViewController: SegueHandlerType {
         case segueForward
         case segueHandshake
         case segueShowMoveToFolder
+        case unwindToThread
         case noSegue
     }
 
@@ -495,7 +511,7 @@ extension EmailViewController: SegueHandlerType {
             destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
             break
-        case .noSegue:
+        case .noSegue, .unwindToThread:
             break
         }
     }
@@ -559,4 +575,8 @@ extension EmailViewController: SecureWebViewControllerDelegate {
                                  sizeChangedTo size: CGSize) {
         tableView.updateSize()
     }
+}
+
+fileprivate extension Selector {
+    static let okButtonPressed = #selector(EmailViewController.okButtonPressed(sender:))
 }

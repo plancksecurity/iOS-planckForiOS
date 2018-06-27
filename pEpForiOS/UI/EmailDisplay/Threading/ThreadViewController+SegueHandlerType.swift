@@ -10,17 +10,17 @@ import Foundation
 extension ThreadViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
-        case SegueShowEmail
-        case SegueShowEmailExpanding
         case segueShowMoveToFolder
+        case segueShowEmail
+        case segueShowEmailExpanding
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let segueId = segueIdentifier(for: segue)
         switch segueId {
-        case .SegueShowEmail, .SegueShowEmailExpanding:
-            guard let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? EmailViewController,
+        case .segueShowEmail, .segueShowEmailExpanding:
+//            guard let nav = segue.destination as? UINavigationController,
+                guard let vc = segue.destination as? EmailViewController,
                 let appConfig = self.appConfig,
                 let indexPath = tableView.indexPathForSelectedRow,
                 let message = model?.message(at: indexPath.section) else {
