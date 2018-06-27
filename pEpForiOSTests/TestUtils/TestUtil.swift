@@ -322,7 +322,7 @@ class TestUtil {
     ///   - numberOfMails: num mails to create
     ///   - withAttachments: Whether or not messages should contain attachments
     ///   - attachmentsInlined: Whether or not the attachments should be inlined
-    ///   - encrypt: Whether or not to import a k`ey for the receipient. Is ignored if `toIdentity`
+    ///   - encrypt: Whether or not to import a key for the receipient. Is ignored if `toIdentity`
     ///              is not nil
     /// - Returns: created mails
     /// - Throws: error importing key
