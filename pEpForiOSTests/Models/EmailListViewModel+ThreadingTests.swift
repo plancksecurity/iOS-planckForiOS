@@ -62,6 +62,30 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                                     indexPathUpdated: nil)
     }
 
+    func testUpdateTopMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        let _ = testIncomingMessage(references: [theDisplayedMessage],
+                                    indexPathUpdated: nil)
+
+        topMessages[0].imapFlags?.flagged = true
+        XCTAssertTrue(topMessages[0].imapFlags?.flagged ?? false)
+
+        emailListViewModelDelegate.expectationUpdated = ExpectationUpdated(
+            expectationUpdated: expectation(description: "expectationUpdated"),
+            indexPath: IndexPath(row: 4, section: 0))
+
+        emailListViewModel.didUpdate(messageFolder: topMessages[0])
+
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
+            XCTAssertNil(err)
+        }
+    }
+
     // MARK - Internal - Helpers
 
     func setUpTopMessages() {
