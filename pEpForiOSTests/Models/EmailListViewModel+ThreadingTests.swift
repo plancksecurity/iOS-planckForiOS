@@ -110,6 +110,31 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testUpdateUnDisplayedChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let unDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = topMessages[0]
+
+        let incomingMessage = testIncomingMessage(references: [unDisplayedMessage],
+                                                  indexPathUpdated: IndexPath(row: 3, section: 0))
+        incomingMessage.imapFlags?.flagged = true
+        XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
+
+        emailListViewModelDelegate.expectationUndiplayedMessageUpdated =
+            ExpectationUndiplayedMessageUpdated(
+                message: incomingMessage,
+                expectationUpdated: expectation(
+                    description: "expectationUndiplayedMessageUpdated"))
+
+        emailListViewModel.didUpdate(messageFolder: incomingMessage)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
     // MARK - Internal - Helpers
 
     func setUpTopMessages() {
@@ -218,6 +243,19 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     /**
+     EmailListViewModelDelegate update of an undisplayed (child) message.
+     */
+    class ExpectationUndiplayedMessageUpdated {
+        let expectationUpdated: XCTestExpectation
+        let message: Message
+
+        init(message: Message, expectationUpdated: XCTestExpectation) {
+            self.message = message
+            self.expectationUpdated = expectationUpdated
+        }
+    }
+
+    /**
      UpdateThreadListDelegate insertion of a child message.
      */
     class ExpectationChildMessageAdded {
@@ -284,6 +322,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         var expectationViewUpdated: XCTestExpectation?
         var expectationUpdated: ExpectationTopMessageUpdated?
         var expectationInserted: ExpectationTopMessageInserted?
+        var expectationUndiplayedMessageUpdated: ExpectationUndiplayedMessageUpdated?
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didInsertDataAt indexPath: IndexPath) {
@@ -303,6 +342,14 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didRemoveDataAt indexPath: IndexPath) {
+        }
+
+        func emailListViewModel(viewModel: EmailListViewModel,
+                                didUpdateUndisplayedMessage message: Message) {
+            if let exp = expectationUndiplayedMessageUpdated {
+                XCTAssertEqual(message, exp.message)
+                exp.expectationUpdated.fulfill()
+            }
         }
 
         func toolbarIs(enabled: Bool) {
