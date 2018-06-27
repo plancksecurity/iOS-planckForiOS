@@ -12,6 +12,7 @@ extension ThreadViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case SegueShowEmail
         case SegueShowEmailExpanding
+        case segueShowMoveToFolder
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -31,6 +32,17 @@ extension ThreadViewController: SegueHandlerType {
             vc.message = message
             vc.folderShow = model?.displayFolder
             vc.messageId = indexPath.row
+        case .segueShowMoveToFolder:
+            guard  let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? MoveToAccountViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    break
+            }
+            destination.appConfig = appConfig
+            if let messages = model?.messages {
+                destination.viewModel = MoveToAccountViewModel(messages: messages)
+            }
+            destination.delegate = model
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break

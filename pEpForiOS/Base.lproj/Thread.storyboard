@@ -18,7 +18,7 @@
                 <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="emailDetail" id="Kkk-c0-S5g" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RVi-sQ-VYD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8072" y="-526"/>
+            <point key="canvasLocation" x="8734" y="-488"/>
         </scene>
         <!--Thread View Controller-->
         <scene sceneID="jOA-ic-7D6">
@@ -401,6 +401,7 @@
                                             <outlet property="stackView" destination="Hab-5Z-1cx" id="rsF-cc-ewt"/>
                                             <outlet property="subjectLabel" destination="Ux9-Hj-FDE" id="nVa-Ho-nU3"/>
                                             <outlet property="view" destination="O4D-I4-BRy" id="ak1-1y-T8P"/>
+                                            <segue destination="9cW-MW-m1g" kind="presentation" identifier="segueShowMoveToFolder" id="c6Z-D6-Bf8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -459,6 +460,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HcI-4f-frN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7856.8000000000002" y="-9.4452773613193415"/>
+        </scene>
+        <!--MoveToFolderNavigation-->
+        <scene sceneID="XSC-Ht-X2v">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="MoveToFolderNavigation" id="9cW-MW-m1g" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ygh-Rv-csL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8647" y="103"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sAh-92-Gbn">

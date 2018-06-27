@@ -9,11 +9,11 @@
 import UIKit
 
 class ThreadViewController: BaseViewController {
-    weak var delegate: EmailDisplayDelegate?
+    var barItems: [UIBarButtonItem]?
 
     @IBOutlet weak var flagButton: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
-    var model: ThreadedEmailViewModel? = nil
+    var model: ThreadedEmailViewModel!
 
     var messages = ["hola", "que", "tal"]
     override func viewDidLoad() {
@@ -22,6 +22,7 @@ class ThreadViewController: BaseViewController {
         guard let model = model else {
             return
         }
+        model.delegate = self
         self.navigationItem.title = String(model.rowCount())  + " messages"
         setUpFlaggedStatus()
     }
@@ -41,17 +42,6 @@ class ThreadViewController: BaseViewController {
         }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
     private func configureSplitViewBackButton() {
         self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         self.navigationItem.leftItemsSupplementBackButton = true
@@ -66,10 +56,10 @@ class ThreadViewController: BaseViewController {
         model.setFlag(to: !model.allMessagesFlagged())
         setUpFlaggedStatus()
         tableView.reloadData()
-        delegate?.emailDisplayDidFlag(message: model.message(at: 0)!)
     }
 
     @IBAction func moveToFolderTapped(_ sender: Any) {
+        performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
     }
 
     @IBAction func destructiveButtonTapped(_ sender: Any) {
@@ -78,4 +68,5 @@ class ThreadViewController: BaseViewController {
     
     @IBAction func replyButtonTapped(_ sender: Any) {
     }
+
 }

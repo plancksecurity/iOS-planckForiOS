@@ -889,9 +889,10 @@ extension EmailListViewController: SegueHandlerType {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                 return
             }
-            vc.delegate = model
             vc.appConfig = appConfig
-            vc.model = ThreadedEmailViewModel(tip:message, folder: folder)
+            let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
+            viewModel.emailDisplayDelegate = self.model
+            vc.model = viewModel
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")

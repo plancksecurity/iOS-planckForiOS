@@ -14,15 +14,16 @@ class ThreadedEmailViewModel {
 
 
     internal var messages: [Message]
-    var delegate: EmailViewModelDelegate! = nil
-    private let folder: ThreadedFolderStub
+    weak var emailDisplayDelegate: EmailDisplayDelegate!
+    weak var delegate: EmailViewModelDelegate!
+    private let folder: ThreadedFolder
     private var expandedMessages: [Bool]
 
     //Needed for segue
     public let displayFolder: Folder
 
     init(tip: Message, folder: Folder) {
-        self.folder = ThreadedFolderStub(folder: folder)
+        self.folder = ThreadedFolder(folder: folder)
         messages = tip.messagesInThread()
         displayFolder = folder
         expandedMessages = Array(repeating: false, count: messages.count)
@@ -49,6 +50,7 @@ class ThreadedEmailViewModel {
         }
         messages[index].imapFlags?.flagged = status
         messages[index].save()
+        emailDisplayDelegate.emailDisplayDidFlag(message: messages[0])
 
     }
 
