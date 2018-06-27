@@ -214,70 +214,48 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         return msg
     }
 
-    // MARK - Internal - Delegates
+    // MARK - Internal - Delegate parameters
 
     /**
      EmailListViewModelDelegate insertion of a top message.
      */
-    class ExpectationTopMessageInserted {
-        let expectationInserted: XCTestExpectation
+    struct ExpectationTopMessageInserted {
         let indexPath: IndexPath
-
-        init(indexPath: IndexPath, expectationInserted: XCTestExpectation) {
-            self.indexPath = indexPath
-            self.expectationInserted = expectationInserted
-        }
+        let expectationInserted: XCTestExpectation
     }
 
     /**
      EmailListViewModelDelegate update of a top message.
      */
-    class ExpectationTopMessageUpdated {
-        let expectationUpdated: XCTestExpectation
+    struct ExpectationTopMessageUpdated {
         let indexPath: IndexPath
-
-        init(indexPath: IndexPath, expectationUpdated: XCTestExpectation) {
-            self.indexPath = indexPath
-            self.expectationUpdated = expectationUpdated
-        }
+        let expectationUpdated: XCTestExpectation
     }
 
     /**
      EmailListViewModelDelegate update of an undisplayed (child) message.
      */
-    class ExpectationUndiplayedMessageUpdated {
-        let expectationUpdated: XCTestExpectation
+    struct ExpectationUndiplayedMessageUpdated {
         let message: Message
-
-        init(message: Message, expectationUpdated: XCTestExpectation) {
-            self.message = message
-            self.expectationUpdated = expectationUpdated
-        }
+        let expectationUpdated: XCTestExpectation
     }
 
     /**
      UpdateThreadListDelegate insertion of a child message.
      */
-    class ExpectationChildMessageAdded {
+    struct ExpectationChildMessageAdded {
         let expectationAdded: XCTestExpectation
-
-        init(expectationAdded: XCTestExpectation) {
-            self.expectationAdded = expectationAdded
-        }
     }
 
     /**
      UpdateThreadListDelegate update of a child message.
      */
-    class ExpectationChildMessageUpdated {
-        let expectationUpdated: XCTestExpectation
+    struct ExpectationChildMessageUpdated {
         let expectedMessage: Message
-
-        init(expectedMessage: Message, expectationUpdated: XCTestExpectation) {
-            self.expectedMessage = expectedMessage
-            self.expectationUpdated = expectationUpdated
-        }
+        let expectationUpdated: XCTestExpectation
     }
+
+    // MARK - Internal - Delegates
 
     class MyDisplayedMessage: DisplayedMessage {
         var messageModel: Message?
