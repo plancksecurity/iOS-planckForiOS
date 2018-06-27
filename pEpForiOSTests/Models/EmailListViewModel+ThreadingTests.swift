@@ -75,7 +75,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         topMessages[0].imapFlags?.flagged = true
         XCTAssertTrue(topMessages[0].imapFlags?.flagged ?? false)
 
-        emailListViewModelDelegate.expectationUpdated = ExpectationUpdated(
+        emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
             expectationUpdated: expectation(description: "expectationUpdated"),
             indexPath: IndexPath(row: 4, section: 0))
 
@@ -153,17 +153,17 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         if references.isEmpty {
             // expect top message
-            emailListViewModelDelegate.expectationInserted = ExpectationInserted(
+            emailListViewModelDelegate.expectationInserted = ExpectationTopMessageInserted(
                 expectationInserted: expectation(
                     description: "expectationInserted"),
                 indexPath: IndexPath(row: 0, section: 0))
         } else if let indexPath = indexPathUpdated {
-            emailListViewModelDelegate.expectationUpdated = ExpectationUpdated(
+            emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
                 expectationUpdated: expectation(description: "expectationUpdated"),
                 indexPath: indexPath)
         } else {
             // expect child message
-            updateThreadListDelegate.expectationAdded = ExpectationAdded(
+            updateThreadListDelegate.expectationAdded = ExpectationChildMessageAdded(
                 expectationAdded: expectation(description: "expectationAdded"))
         }
         emailListViewModel.didCreate(messageFolder: incomingMessage)
@@ -193,7 +193,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     /**
      EmailListViewModelDelegate insertion of a top message.
      */
-    class ExpectationInserted {
+    class ExpectationTopMessageInserted {
         let expectationInserted: XCTestExpectation
         let indexPath: IndexPath
 
@@ -204,9 +204,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     /**
-     EmailListViewModelDelegate insertion of a top message.
+     EmailListViewModelDelegate update of a top message.
      */
-    class ExpectationUpdated {
+    class ExpectationTopMessageUpdated {
         let expectationUpdated: XCTestExpectation
         let indexPath: IndexPath
 
@@ -219,7 +219,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     /**
      UpdateThreadListDelegate insertion of a child message.
      */
-    class ExpectationAdded {
+    class ExpectationChildMessageAdded {
         let expectationAdded: XCTestExpectation
 
         init(expectationAdded: XCTestExpectation) {
@@ -268,8 +268,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
     class MyEmailListViewModelDelegate: EmailListViewModelDelegate {
         var expectationViewUpdated: XCTestExpectation?
-        var expectationUpdated: ExpectationUpdated?
-        var expectationInserted: ExpectationInserted?
+        var expectationUpdated: ExpectationTopMessageUpdated?
+        var expectationInserted: ExpectationTopMessageInserted?
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didInsertDataAt indexPath: IndexPath) {
@@ -306,7 +306,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     class MyUpdateThreadListDelegate: UpdateThreadListDelegate {
-        var expectationAdded: ExpectationAdded?
+        var expectationAdded: ExpectationChildMessageAdded?
         var expectationUpdated: XCTestExpectation?
 
         func deleted(message: Message) {
