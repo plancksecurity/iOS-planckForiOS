@@ -28,7 +28,7 @@ extension ThreadViewController: SegueHandlerType {
                     return
             }
             vc.appConfig = appConfig
-
+            vc.shouldShowOKButton = !isSplitViewControllerCollapsed()
             vc.message = message
             vc.folderShow = model?.displayFolder
             vc.messageId = indexPath.row

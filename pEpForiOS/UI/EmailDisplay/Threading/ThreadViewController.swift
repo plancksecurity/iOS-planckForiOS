@@ -51,6 +51,14 @@ class ThreadViewController: BaseViewController {
         self.navigationItem.leftItemsSupplementBackButton = true
     }
 
+    internal func isSplitViewControllerCollapsed() -> Bool! {
+        guard let splitViewController = self.splitViewController else {
+            Log.shared.errorAndCrash(component: #function, errorString: "We need a splitViewController here")
+            return nil
+        }
+        return splitViewController.isCollapsed
+    }
+
     // MARK: Actions
     
     @IBAction func flagButtonTapped(_ sender: Any) {
