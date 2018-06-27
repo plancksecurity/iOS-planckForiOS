@@ -86,6 +86,29 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testUpdateDisplayedChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        let incomingMessage = testIncomingMessage(references: [theDisplayedMessage],
+                                                  indexPathUpdated: nil)
+
+        incomingMessage.imapFlags?.flagged = true
+        XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
+
+        updateThreadListDelegate.expectationUpdated = expectation(
+            description: "expectationUpdated")
+
+        emailListViewModel.didUpdate(messageFolder: incomingMessage)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
     // MARK - Internal - Helpers
 
     func setUpTopMessages() {
@@ -284,11 +307,15 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
     class MyUpdateThreadListDelegate: UpdateThreadListDelegate {
         var expectationAdded: ExpectationAdded?
+        var expectationUpdated: XCTestExpectation?
 
         func deleted(message: Message) {
         }
 
         func updated(message: Message) {
+            if let exp = expectationUpdated {
+                exp.fulfill()
+            }
         }
 
         func added(message: Message) {
