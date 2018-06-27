@@ -14,6 +14,7 @@ class ThreadedEmailViewModel {
 
 
     internal var messages: [Message]
+    internal var tip: Message
     weak var emailDisplayDelegate: EmailDisplayDelegate!
     weak var delegate: EmailViewModelDelegate!
     private let folder: ThreadedFolder
@@ -25,6 +26,7 @@ class ThreadedEmailViewModel {
     init(tip: Message, folder: Folder) {
         self.folder = ThreadedFolder(folder: folder)
         messages = tip.messagesInThread()
+        self.tip = tip
         displayFolder = folder
         expandedMessages = Array(repeating: false, count: messages.count)
         expandedMessages.removeLast()
@@ -35,13 +37,27 @@ class ThreadedEmailViewModel {
         guard index < messages.count && index >= 0 else {
             return
         }
+        if messages[index] == tip {
+            emailDisplayDelegate.emailDisplayDidDelete(message: tip)
+        }
         folder.deleteSingle(message: messages[index])
         messages.remove(at: index)
         expandedMessages.remove(at: index)
+        delegate.emailViewModel(viewModel: self, didRemoveDataAt: index)
+
     }
 
     func deleteAllMessages(){
-        folder.deleteThread(message: messages[0])
+        folder.deleteThread(message: tip)
+        emailDisplayDelegate.emailDisplayDidDelete(message: tip)
+    }
+
+    fileprivate func notifyFlag(_ status: Bool) {
+        if status {
+            emailDisplayDelegate.emailDisplayDidFlag(message: tip)
+        } else {
+            emailDisplayDelegate.emailDisplayDidUnflag(message: tip)
+        }
     }
 
     func setFlag(forMessageAt index: Int, to status: Bool){
@@ -50,8 +66,9 @@ class ThreadedEmailViewModel {
         }
         messages[index].imapFlags?.flagged = status
         messages[index].save()
-        emailDisplayDelegate.emailDisplayDidFlag(message: messages[0])
-
+        if messages[index] == tip {
+            notifyFlag(status)
+        }
     }
 
     func setFlag(to status: Bool){
@@ -59,6 +76,7 @@ class ThreadedEmailViewModel {
             message.imapFlags?.flagged = status
             message.save()
         }
+        notifyFlag(status)
     }
 
     func allMessagesFlagged() -> Bool {
