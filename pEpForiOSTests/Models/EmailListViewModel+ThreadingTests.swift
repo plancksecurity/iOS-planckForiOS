@@ -81,7 +81,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         emailListViewModel.didUpdate(messageFolder: topMessages[0])
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
     }
@@ -110,7 +110,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         emailListViewModel.updateThreadListDelegate = updateThreadListDelegate
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
 
@@ -145,7 +145,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
         emailListViewModel.didCreate(messageFolder: incomingMessage)
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
 
