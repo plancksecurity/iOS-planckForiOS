@@ -26,7 +26,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     func testUnthreadedIncomingTopMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
         setUpTopMessages()
-        testIncomingMessage(references: [], indexPathUpdated: nil)
+        let _ = testIncomingMessage(references: [], indexPathUpdated: nil)
     }
 
     func testThreadedIncomingChildMessageToSingleUndisplayedParent() {
@@ -34,10 +34,10 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         setUpTopMessages()
 
         // topMessages[0] is the oldest, so it's last in the list
-        testIncomingMessage(references: [topMessages[1]],
-                            indexPathUpdated: IndexPath(row: 3, section: 0))
-        testIncomingMessage(references: [topMessages[0]],
-                            indexPathUpdated: IndexPath(row: 4, section: 0))
+        let _ = testIncomingMessage(references: [topMessages[1]],
+                                    indexPathUpdated: IndexPath(row: 3, section: 0))
+        let _ = testIncomingMessage(references: [topMessages[0]],
+                                    indexPathUpdated: IndexPath(row: 4, section: 0))
     }
 
     func testThreadedIncomingChildMessageToUndisplayedParents() {
@@ -46,8 +46,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         // Will update the first (newest) message it finds,
         // which is topMessages[1] with row 3.
-        testIncomingMessage(references: [topMessages[0], topMessages[1]],
-                            indexPathUpdated: IndexPath(row: 3, section: 0))
+        let _ = testIncomingMessage(references: [topMessages[0], topMessages[1]],
+                                    indexPathUpdated: IndexPath(row: 3, section: 0))
     }
 
     func testThreadedIncomingChildMessageToSingleDisplayedParent() {
@@ -58,8 +58,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         // topMessages[0] is the oldest, so it's last in the list
-        testIncomingMessage(references: [theDisplayedMessage],
-                            indexPathUpdated: nil)
+        let _ = testIncomingMessage(references: [theDisplayedMessage],
+                                    indexPathUpdated: nil)
     }
 
     // MARK - Internal - Helpers
@@ -95,12 +95,12 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     func testIncomingMessage(references: [Message],
-                             indexPathUpdated: IndexPath?) {
+                             indexPathUpdated: IndexPath?) -> Message {
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
-        let incoming = createMessage(number: topMessages.count + 1)
-        incoming.references = references.map {
+        let incomingMessage = createMessage(number: topMessages.count + 1)
+        incomingMessage.references = references.map {
             return $0.messageID
         }
 
@@ -119,11 +119,13 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
             updateThreadListDelegate.expectationAdded = ExpectationAdded(
                 expectationAdded: expectation(description: "expectationAdded"))
         }
-        emailListViewModel.didCreate(messageFolder: incoming)
+        emailListViewModel.didCreate(messageFolder: incomingMessage)
 
         waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
             XCTAssertNil(err)
         }
+
+        return incomingMessage
     }
 
     func topMessage(byUID uid: Int) -> Message {
