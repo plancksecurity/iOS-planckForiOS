@@ -135,6 +135,28 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testDeleteDisplayedChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        let incomingMessage = testIncomingMessage(references: [theDisplayedMessage],
+                                                  indexPathUpdated: nil)
+
+        updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
+            expectedMessage: incomingMessage,
+            expectation: expectation(description: "expectationChildMessageDeleted"))
+
+        incomingMessage.delete()
+        emailListViewModel.didDelete(messageFolder: incomingMessage)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
     // MARK - Internal - Helpers
 
     func setUpTopMessages() {
@@ -255,6 +277,14 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let expectationUpdated: XCTestExpectation
     }
 
+    /**
+     UpdateThreadListDelegate deletion of a child message.
+     */
+    struct ExpectationChildMessageDeleted {
+        let expectedMessage: Message
+        let expectation: XCTestExpectation
+    }
+
     // MARK - Internal - Delegates
 
     class MyDisplayedMessage: DisplayedMessage {
@@ -347,8 +377,13 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     class MyUpdateThreadListDelegate: UpdateThreadListDelegate {
         var expectationAdded: ExpectationChildMessageAdded?
         var expectationUpdated: ExpectationChildMessageUpdated?
+        var expectationChildMessageDeleted: ExpectationChildMessageDeleted?
 
         func deleted(message: Message) {
+            if let exp = expectationChildMessageDeleted {
+                XCTAssertEqual(message, exp.expectedMessage)
+                exp.expectation.fulfill()
+            }
         }
 
         func updated(message: Message) {
