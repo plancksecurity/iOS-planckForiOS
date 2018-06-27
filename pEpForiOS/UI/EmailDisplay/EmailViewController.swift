@@ -26,7 +26,7 @@ class EmailViewController: BaseTableViewController {
     var folderShow : Folder?
     var messageId = 0
 
-    var shouldShowOKButton: Bool = true
+    var shouldShowOKButton: Bool = false
 
     private var partnerIdentity: Identity?
     private var tableData: ComposeDataSource?
