@@ -76,8 +76,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         XCTAssertTrue(topMessages[0].imapFlags?.flagged ?? false)
 
         emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
-            expectationUpdated: expectation(description: "expectationUpdated"),
-            indexPath: IndexPath(row: 4, section: 0))
+            indexPath: IndexPath(row: 4, section: 0),
+            expectationUpdated: expectation(description: "expectationUpdated"))
 
         emailListViewModel.didUpdate(messageFolder: topMessages[0])
 
@@ -155,13 +155,13 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         if references.isEmpty {
             // expect top message
             emailListViewModelDelegate.expectationInserted = ExpectationTopMessageInserted(
+                indexPath: IndexPath(row: 0, section: 0),
                 expectationInserted: expectation(
-                    description: "expectationInserted"),
-                indexPath: IndexPath(row: 0, section: 0))
+                    description: "expectationInserted"))
         } else if let indexPath = indexPathUpdated {
             emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
-                expectationUpdated: expectation(description: "expectationUpdated"),
-                indexPath: indexPath)
+                indexPath: indexPath,
+                expectationUpdated: expectation(description: "expectationUpdated"))
         } else {
             // expect child message
             updateThreadListDelegate.expectationAdded = ExpectationChildMessageAdded(
@@ -198,9 +198,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let expectationInserted: XCTestExpectation
         let indexPath: IndexPath
 
-        init(expectationInserted: XCTestExpectation, indexPath: IndexPath) {
-            self.expectationInserted = expectationInserted
+        init(indexPath: IndexPath, expectationInserted: XCTestExpectation) {
             self.indexPath = indexPath
+            self.expectationInserted = expectationInserted
         }
     }
 
@@ -211,9 +211,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let expectationUpdated: XCTestExpectation
         let indexPath: IndexPath
 
-        init(expectationUpdated: XCTestExpectation, indexPath: IndexPath) {
-            self.expectationUpdated = expectationUpdated
+        init(indexPath: IndexPath, expectationUpdated: XCTestExpectation) {
             self.indexPath = indexPath
+            self.expectationUpdated = expectationUpdated
         }
     }
 
