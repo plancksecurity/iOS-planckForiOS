@@ -133,13 +133,20 @@ extension EmailListViewModel: MessageFolderDelegate {
             // We do not have this updated message in our model yet. It might have been updated in
             // a way, that fulfills the current filters now but did not before the update.
             // Or it has just been decrypted.
-            // Forward to didCreateInternal to figure out if we want to display it,
-            // but only if we're not currently displaying it in the details view.
             if isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                 updateThreadListDelegate?.updated(message: message)
                 return
             } else {
-                self.didCreateInternal(messageFolder: messageFolder)
+                if referencedMessages.isEmpty {
+                    // Forward to didCreateInternal to figure out if we want to display it,
+                    // in case it's a top message that now fulfills some filters
+                    // it did not before.
+                    self.didCreateInternal(messageFolder: messageFolder)
+                } else {
+                    emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: self,
+                        didUpdateUndisplayedMessage: message)
+                }
                 return
             }
         }
