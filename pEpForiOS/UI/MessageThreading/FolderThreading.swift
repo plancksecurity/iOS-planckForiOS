@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 
 class FolderThreading {
-    // MARK - Public
+    // MARK: - Public
 
     /**
      Makes `factory` the `ThreadedMessageFolderFactoryProtocol` to use.
@@ -32,7 +32,7 @@ class FolderThreading {
         return factory().makeThreadAware(folder: folder)
     }
 
-    // MARK - Private
+    // MARK: - Private
 
     private static var theFactory: ThreadedMessageFolderFactoryProtocol?
 }

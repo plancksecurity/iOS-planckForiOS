@@ -21,7 +21,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     var displayedMessage = MyDisplayedMessage()
     var updateThreadListDelegate = MyUpdateThreadListDelegate()
 
-    // MARK - Tests
+    // MARK: - Tests
 
     func testUnthreadedIncomingTopMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
@@ -62,7 +62,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                                     indexPathUpdated: nil)
     }
 
-    func testUpdateTopMessage() {
+    func testThreadedUpdateTopMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
@@ -86,7 +86,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    func testUpdateDisplayedChildMessage() {
+    func testThreadedUpdateDisplayedChildMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
@@ -110,7 +110,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    func testUpdateUnDisplayedChildMessage() {
+    func testThreadedUpdateUnDisplayedChildMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
@@ -134,7 +134,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    func testDeleteDisplayedChildMessage() {
+    func testThreadedDeleteDisplayedChildMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
@@ -156,7 +156,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    // MARK - Internal - Helpers
+    // MARK: - Internal - Helpers
 
     func setUpTopMessages() {
         account = cdAccount.account()
@@ -234,7 +234,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         return msg
     }
 
-    // MARK - Internal - Delegate parameters
+    // MARK: - Internal - Delegate parameters
 
     /**
      EmailListViewModelDelegate insertion of a top message.
@@ -283,7 +283,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let expectation: XCTestExpectation
     }
 
-    // MARK - Internal - Delegates
+    // MARK: - Internal - Delegates
 
     class MyDisplayedMessage: DisplayedMessage {
         var messageModel: Message?
