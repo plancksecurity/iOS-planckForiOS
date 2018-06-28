@@ -22,7 +22,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
-        return message.referencedMessages().count
+        return messagesInThread(message: message).count
     }
 
     func messagesInThread(message: Message) -> [Message] {
