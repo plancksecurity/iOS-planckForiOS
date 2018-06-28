@@ -26,7 +26,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        return message.referencedMessages()
+        return message.referencingMessages()
     }
 
     func deleteSingle(message: Message) {
@@ -54,7 +54,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         return result
     }
 
-    // MARK - Private
+    // MARK: - Private
 
     /**
      Determine which messages in the given list don't reference any other message in the list.

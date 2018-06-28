@@ -21,7 +21,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     var displayedMessage = MyDisplayedMessage()
     var updateThreadListDelegate = MyUpdateThreadListDelegate()
 
-    // MARK - Tests
+    // MARK: - Tests
 
     func testUnthreadedIncomingTopMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
@@ -156,7 +156,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    // MARK - Internal - Helpers
+    // MARK: - Internal - Helpers
 
     func setUpTopMessages() {
         account = cdAccount.account()
@@ -234,7 +234,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         return msg
     }
 
-    // MARK - Internal - Delegate parameters
+    // MARK: - Internal - Delegate parameters
 
     /**
      EmailListViewModelDelegate insertion of a top message.
@@ -283,7 +283,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let expectation: XCTestExpectation
     }
 
-    // MARK - Internal - Delegates
+    // MARK: - Internal - Delegates
 
     class MyDisplayedMessage: DisplayedMessage {
         var messageModel: Message?
