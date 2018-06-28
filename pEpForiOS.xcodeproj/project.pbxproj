@@ -90,6 +90,8 @@
 		15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152130531FD00B7A00688DF2 /* DisplayUserError.swift */; };
 		15C5F2441F822560007DE086 /* PreviewMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2431F822560007DE086 /* PreviewMessage.swift */; };
 		15C5F2461F823752007DE086 /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2451F823752007DE086 /* SortedSet.swift */; };
+		15EBE44C20E5401B00268859 /* KeyImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE44B20E5401B00268859 /* KeyImportService.swift */; };
+		15EBE44E20E5405D00268859 /* KeyImortWizzard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE44D20E5405D00268859 /* KeyImortWizzard.swift */; };
 		15EE5A75203B15670041F076 /* SettingBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A72203B15660041F076 /* SettingBaseViewController.swift */; };
 		15EE5A76203B15670041F076 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A73203B15660041F076 /* LogViewController.swift */; };
 		15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835231F34BE1300FCE887 /* AccountUserInput.swift */; };
@@ -551,6 +553,8 @@
 		15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayUserErrorTest.swift; sourceTree = "<group>"; };
 		15C5F2431F822560007DE086 /* PreviewMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewMessage.swift; sourceTree = "<group>"; };
 		15C5F2451F823752007DE086 /* SortedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
+		15EBE44B20E5401B00268859 /* KeyImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportService.swift; sourceTree = "<group>"; };
+		15EBE44D20E5405D00268859 /* KeyImortWizzard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImortWizzard.swift; sourceTree = "<group>"; };
 		15EE5A72203B15660041F076 /* SettingBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingBaseViewController.swift; sourceTree = "<group>"; };
 		15EE5A73203B15660041F076 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		15F835231F34BE1300FCE887 /* AccountUserInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUserInput.swift; sourceTree = "<group>"; };
@@ -1101,6 +1105,15 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
+		15EBE44420E53EEA00268859 /* KeyImport */ = {
+			isa = PBXGroup;
+			children = (
+				15EBE44B20E5401B00268859 /* KeyImportService.swift */,
+				15EBE44D20E5405D00268859 /* KeyImortWizzard.swift */,
+			);
+			path = KeyImport;
+			sourceTree = "<group>";
+		};
 		15EE5A70203B15660041F076 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -1573,6 +1586,7 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				15EBE44420E53EEA00268859 /* KeyImport */,
 				151F71D02029F9F80057C74D /* IMAP */,
 				4362398D1EAE08F400BD2EB9 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
@@ -2361,6 +2375,7 @@
 				43D2C2681F13847700C97235 /* ServiceFactory.swift in Sources */,
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
+				15EBE44C20E5401B00268859 /* KeyImportService.swift in Sources */,
 				C474D25F20B44A9E0071F638 /* AutoWizardStepsViewController.swift in Sources */,
 				43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */,
 				43257C821F50179800DDC7F0 /* BasicSaxParser.swift in Sources */,
@@ -2587,6 +2602,7 @@
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
 				15A75CEA202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift in Sources */,
 				155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */,
+				15EBE44E20E5405D00268859 /* KeyImortWizzard.swift in Sources */,
 				430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */,
 				4351C2D21F4441190053381F /* html.c in Sources */,
 				4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */,
