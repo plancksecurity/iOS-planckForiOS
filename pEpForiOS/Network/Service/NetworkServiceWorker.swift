@@ -504,9 +504,6 @@ open class NetworkServiceWorker {
                         imapSyncData: imapSyncData, folderName: fi.name) {
                             [weak self] message in self?.messageFetched(cdMessage: message)
                     }
-                    self.workerQueue.async {
-                        Log.info(component: #function, content: "fetchMessagesOp finished")
-                    }
                     fetchMessagesOp.addDependency(lastImapOp)
                     lastImapOp = fetchMessagesOp
                     operations.append(fetchMessagesOp)
@@ -521,6 +518,62 @@ open class NetworkServiceWorker {
                 lastImapOp = opDecrypt
                 opImapFinished.addDependency(opDecrypt)
                 operations.append(opDecrypt)
+                //IOS-33:
+                // In case messages need to be re-uploaded (e.g. for trusted server or extra
+                // keys), we might want do append, fetch and decrypt them in the same sync cycle.
+                let opAppendAndFetchReUploaded = BlockOperation() {[weak self, weak opDecrypt] in
+                    guard let me = self, let decryptOp = opDecrypt else {
+                        Log.shared.errorAndCrash(component: #function,
+                                                 errorString: "Lost...")
+                        return
+                    }
+                    if !decryptOp.didMarkMessagesForReUpload {
+                        // Nothing to do.
+                        return
+                    }
+
+                    let reUploadQueue = OperationQueue()
+                    var reUploadOperations = [Operation]()
+                    let dummyLastOp = Operation()
+                    var lastOp = dummyLastOp
+                    reUploadOperations.append(lastOp)
+                    // Append ...
+                    let (lastAppendOp, appendOperations) =
+                        me.buildAppendOperations(imapSyncData: imapSyncData,
+                                                 errorContainer: errorContainer,
+                                                 opImapFinished: opImapFinished,
+                                                 previousOp: lastOp)
+                    lastOp = lastAppendOp ?? lastOp
+                    reUploadOperations.append(contentsOf: appendOperations)
+
+                    // ... fetch ...
+                    for fi in folderInfos {
+                        let fetchMessagesOp = FetchMessagesOperation(
+                            parentName: me.description, errorContainer: errorContainer,
+                            imapSyncData: imapSyncData, folderName: fi.name) {
+                                [weak self] message in self?.messageFetched(cdMessage: message)
+                        }
+                        fetchMessagesOp.addDependency(lastOp)
+                        lastOp = fetchMessagesOp
+                        reUploadOperations.append(fetchMessagesOp)
+                    }
+
+                    // ... and decrypt
+                    let opDecrypt = DecryptMessagesOperation(parentName: me.description,
+                                                             errorContainer: ErrorContainer())
+                    opDecrypt.addDependency(lastOp)
+                    lastOp = opDecrypt
+                    reUploadOperations.append(opDecrypt)
+
+                    reUploadQueue.name = "security.pep.networkServiceWorker.ReUploadQueue"
+                    reUploadQueue.addOperations(reUploadOperations, waitUntilFinished: true)
+                    reUploadQueue.waitUntilAllOperationsAreFinished()
+                }
+                opAppendAndFetchReUploaded.addDependency(lastImapOp)
+                lastImapOp = opAppendAndFetchReUploaded
+                opImapFinished.addDependency(opAppendAndFetchReUploaded)
+                operations.append(opAppendAndFetchReUploaded)
+                //IOS-33 ^^
             }
 
             // sync existing messages
