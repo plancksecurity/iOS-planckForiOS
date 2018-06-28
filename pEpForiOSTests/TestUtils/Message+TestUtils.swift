@@ -44,7 +44,8 @@ extension Message {
         method_exchangeImplementations(originalMethod, swizzledMethod)
     }
 
-    public static func unswizzleIsTrustedServer() {
-        method_exchangeImplementations(swizzledMethod, originalMethod)
-    }
+    //IOS-33: rethink if required.
+//    public static func unswizzleIsTrustedServer() {
+//        method_exchangeImplementations(swizzledMethod, originalMethod)
+//    }
 }
