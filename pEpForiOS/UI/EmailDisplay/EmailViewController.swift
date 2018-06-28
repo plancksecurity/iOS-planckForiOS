@@ -302,39 +302,21 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
-        let alertViewWithoutTitle = UIAlertController.pEpAlertController()
+        let alert = ReplyAlertCreator()
+            .withReplyOption { action in
+                self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
+            }.withReplyAllOption { action in
+                self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+            }.withFordwardOption { action in
+                self.performSegue(withIdentifier: .segueForward , sender: self)
+            }.withCancelOption()
+            .build()
 
-        if let popoverPresentationController = alertViewWithoutTitle.popoverPresentationController {
+        if let popoverPresentationController = alert.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender
         }
 
-        let alertActionReply = UIAlertAction(
-            title: NSLocalizedString("Reply", comment: "Message actions"),
-            style: .default) { (action) in
-                self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-        }
-        alertViewWithoutTitle.addAction(alertActionReply)
-
-        let alertActionReplyAll = UIAlertAction(
-            title: NSLocalizedString("Reply All", comment: "Message actions"),
-            style: .default) { (action) in
-                self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
-        }
-        alertViewWithoutTitle.addAction(alertActionReplyAll)
-
-        let alertActionForward = UIAlertAction(
-            title: NSLocalizedString("Forward", comment: "Message actions"),
-            style: .default) { (action) in
-                self.performSegue(withIdentifier: .segueForward , sender: self)
-        }
-        alertViewWithoutTitle.addAction(alertActionForward)
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "Message actions"),
-            style: .cancel) { (action) in }
-        alertViewWithoutTitle.addAction(cancelAction)
-
-        present(alertViewWithoutTitle, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {

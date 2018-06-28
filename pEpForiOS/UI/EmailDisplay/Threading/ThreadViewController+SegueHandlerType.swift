@@ -11,6 +11,9 @@ extension ThreadViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {
         case segueShowMoveToFolder
+        case segueReplyFrom
+        case segueReplyAllForm
+        case segueForward
         case segueShowEmail
         case segueShowEmailExpanding
     }
@@ -32,6 +35,7 @@ extension ThreadViewController: SegueHandlerType {
             vc.message = message
             vc.folderShow = model?.displayFolder
             vc.messageId = indexPath.row
+            break
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController else {
@@ -43,6 +47,29 @@ extension ThreadViewController: SegueHandlerType {
                 destination.viewModel = MoveToAccountViewModel(messages: messages)
             }
             destination.delegate = model
+            break
+        case .segueReplyFrom, .segueReplyAllForm, .segueForward:
+            guard  let nav = segue.destination as? UINavigationController,
+                let destination = nav.topViewController as? ComposeTableViewController,
+                let appConfig = appConfig else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    break
+            }
+
+
+            destination.appConfig = appConfig
+
+            if segueId == .segueReplyFrom {
+                destination.composeMode = .replyFrom
+                destination.originalMessage = model.messages.last
+            } else if segueId == .segueReplyAllForm {
+                destination.composeMode = .replyAll
+                destination.originalMessage =  model.messages.last
+            } else if segueId == .segueForward {
+                destination.composeMode = .forward
+                destination.originalMessage =  model.messages.last
+            }
+            break
         default:
             Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
             break

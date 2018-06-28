@@ -402,7 +402,7 @@
         <!--Navigation Controller-->
         <scene sceneID="pH2-0g-XGV">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="NY2-HI-4ou" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ReplyNavigation" automaticallyAdjustsScrollViewInsets="NO" id="NY2-HI-4ou" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="e88-09-apM">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -575,7 +575,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="emailDetail" title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mYV-vz-wEb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -950,6 +950,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
         <segue reference="8Xh-Bv-MFq"/>
+        <segue reference="anx-J8-OKE"/>
+        <segue reference="Usl-iS-7fo"/>
         <segue reference="ber-OQ-S16"/>
         <segue reference="2fD-kL-Bvj"/>
     </inferredMetricsTieBreakers>

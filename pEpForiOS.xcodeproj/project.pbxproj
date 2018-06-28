@@ -29,6 +29,7 @@
 		00E305B020CEB8D3005D696F /* Message+Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E305AF20CEB8D3005D696F /* Message+Stub.swift */; };
 		00EB89AB20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */; };
 		00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */; };
+		00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */; };
 		1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */; };
 		1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */; };
 		1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1508AEA91F862C85001D5230 /* SortedSetTest.swift */; };
@@ -542,6 +543,7 @@
 		00E305AF20CEB8D3005D696F /* Message+Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Stub.swift"; sourceTree = "<group>"; };
 		00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewcontroller+SizeClasses.swift"; sourceTree = "<group>"; };
 		00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadedEmailViewModel+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
+		00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAlertCreator.swift; sourceTree = "<group>"; };
 		1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+CWServiceClientNotificationParsing.swift"; sourceTree = "<group>"; };
 		1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperationTest.swift; sourceTree = "<group>"; };
 		1508AEA91F862C85001D5230 /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
@@ -1983,6 +1985,7 @@
 				49691B1420D7FD0200CA9367 /* MessageViewModelConfigurable.swift */,
 				00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */,
 				00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */,
+				00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */,
 			);
 			path = Threading;
 			sourceTree = "<group>";
@@ -2694,6 +2697,7 @@
 				43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */,
 				43257C801F50064100DDC7F0 /* HtmlToTextSaxParser.swift in Sources */,
 				431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */,
+				00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				15BA536620A075AE0090F126 /* SettingDefaultAccountTableViewController.swift in Sources */,

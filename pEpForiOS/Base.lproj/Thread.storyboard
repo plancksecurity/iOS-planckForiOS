@@ -401,7 +401,6 @@
                                             <outlet property="stackView" destination="Hab-5Z-1cx" id="rsF-cc-ewt"/>
                                             <outlet property="subjectLabel" destination="Ux9-Hj-FDE" id="nVa-Ho-nU3"/>
                                             <outlet property="view" destination="O4D-I4-BRy" id="ak1-1y-T8P"/>
-                                            <segue destination="9cW-MW-m1g" kind="presentation" identifier="segueShowMoveToFolder" id="c6Z-D6-Bf8"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -453,6 +452,10 @@
                     <connections>
                         <outlet property="flagButton" destination="tQg-CY-2hQ" id="nna-Mr-LeK"/>
                         <outlet property="tableView" destination="Yrb-DL-w8R" id="5xZ-00-SVq"/>
+                        <segue destination="9cW-MW-m1g" kind="presentation" identifier="segueShowMoveToFolder" id="vyC-7F-dvr"/>
+                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueForward" id="cp7-4f-MV0"/>
+                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueReplyAllForm" id="8Hz-kz-DNR"/>
+                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueReplyFrom" id="Dhz-Ep-xy2"/>
                         <segue destination="Kkk-c0-S5g" kind="custom" identifier="segueShowEmailExpanding" customClass="DetailCellSegue" customModule="pEpForiOS" customModuleProvider="target" id="Aed-9C-oac"/>
                         <segue destination="Kkk-c0-S5g" kind="show" identifier="segueShowEmail" id="CjJ-ut-CZU"/>
                     </connections>
@@ -467,7 +470,15 @@
                 <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="MoveToFolderNavigation" id="9cW-MW-m1g" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ygh-Rv-csL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8647" y="103"/>
+            <point key="canvasLocation" x="8798" y="-10"/>
+        </scene>
+        <!--ReplyNavigation-->
+        <scene sceneID="rtj-Nh-YHl">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="ReplyNavigation" id="fei-Fq-Kfx" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="S2U-cp-5mp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8606" y="278"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sAh-92-Gbn">
@@ -502,6 +513,7 @@
         <image name="thread-icon" width="13" height="13"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="cp7-4f-MV0"/>
         <segue reference="CjJ-ut-CZU"/>
     </inferredMetricsTieBreakers>
 </document>
