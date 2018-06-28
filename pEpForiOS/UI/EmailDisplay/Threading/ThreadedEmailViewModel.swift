@@ -17,14 +17,14 @@ class ThreadedEmailViewModel {
     internal var tip: Message
     weak var emailDisplayDelegate: EmailDisplayDelegate!
     weak var delegate: EmailViewModelDelegate!
-    private let folder: ThreadedFolder
+    private let folder: ThreadedFolderWithTop
     private var expandedMessages: [Bool]
 
     //Needed for segue
     public let displayFolder: Folder
 
     init(tip: Message, folder: Folder) {
-        self.folder = ThreadedFolder(folder: folder)
+        self.folder = ThreadedFolderWithTop(folder: folder)
         messages = tip.messagesInThread()
         self.tip = tip
         displayFolder = folder
