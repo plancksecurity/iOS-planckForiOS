@@ -62,7 +62,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                                     indexPathUpdated: nil)
     }
 
-    func testUpdateTopMessage() {
+    func testThreadedUpdateTopMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
@@ -86,7 +86,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    func testUpdateDisplayedChildMessage() {
+    func testThreadedUpdateDisplayedChildMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
@@ -110,7 +110,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    func testUpdateUnDisplayedChildMessage() {
+    func testThreadedUpdateUnDisplayedChildMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
@@ -134,7 +134,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    func testDeleteDisplayedChildMessage() {
+    func testThreadedDeleteDisplayedChildMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
