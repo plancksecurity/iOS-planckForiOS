@@ -178,7 +178,7 @@ class NetworkServiceTests: XCTestCase {
         }
         XCTAssertFalse(modelDelegate.hasChangedMessages)
 
-        TestUtil.cancelNetworkService(networkService: networkService, testCase: self)
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
     }
 
     func testCancelSyncImmediately() {
@@ -194,7 +194,7 @@ class NetworkServiceTests: XCTestCase {
 
         for _ in 0...10 {
             networkService.start()
-            TestUtil.cancelNetworkService(networkService: networkService, testCase: self)
+            TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
         }
 
         XCTAssertNil(CdFolder.all())
@@ -369,6 +369,6 @@ class NetworkServiceTests: XCTestCase {
             // those messages do not exist if we are using an incorrect account
             TestUtil.checkForExistanceAndUniqueness(uuids: outgoingMessageIDs)
         }
-        TestUtil.cancelNetworkService(networkService: networkService, testCase: self)
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
     }
 }
