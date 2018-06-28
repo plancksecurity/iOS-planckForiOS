@@ -290,11 +290,11 @@ class TestUtil {
             XCTAssertNil(error)
         }
 
-        TestUtil.cancelNetworkService(networkService: networkService, testCase: testCase)
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: testCase)
     }
 
     // MARK: - NetworkService
-    static public func cancelNetworkService(networkService: NetworkService, testCase: XCTestCase) {
+    static public func cancelNetworkServiceAndWait(networkService: NetworkService, testCase: XCTestCase) {
         let del = NetworkServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
         networkService.unitTestDelegate = del
