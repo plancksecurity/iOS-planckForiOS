@@ -61,12 +61,13 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     var messageCount:Int = 0 {
         didSet {
             if messageCount > 0 {
+                messageCountLabel.text = String(messageCount)
                 messageCountLabel.isHidden = false
                 threadIndicator.isHidden = false
-                messageCountLabel.text = String(messageCount)
             } else {
                 threadIndicator.isHidden = true
                 messageCountLabel.isHidden = true
+                messageCountLabel.text = nil
             }
         }
     }
@@ -93,7 +94,6 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
             image in
             self.setPepRatingImage(image: image)
         }
-
     }
 
     func setPepRatingImage(image: UIImage?) {
