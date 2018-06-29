@@ -148,7 +148,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
             message: incomingMessage,
             expectation: expectation(description: "expectationChildMessageDeleted"))
 
-        incomingMessage.delete()
+        incomingMessage.imapDelete()
         emailListViewModel.didDelete(messageFolder: incomingMessage)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
@@ -160,8 +160,13 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
     func setUpTopMessages() {
         account = cdAccount.account()
+
         inbox = Folder.init(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
+
+        let trash = Folder.init(name: "Trash", parent: nil, account: account, folderType: .trash)
+        trash.save()
+
         topMessages.removeAll()
 
         for i in 1...5 {
