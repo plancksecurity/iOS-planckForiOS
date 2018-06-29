@@ -47,6 +47,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
             return
         }
         appConfig.errorPropagator.subscriber = self
+        self.navigationController?.title = title
     }
 
     // MARK: - ErrorPropagatorSubscriber

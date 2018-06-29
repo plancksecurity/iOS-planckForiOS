@@ -31,7 +31,7 @@ extension Folder{
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: account.user.address)
         let predicateParentFolder =
             CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: name)
-        let predicateUndeleted = CdMessage.PredicateFactory.notMarkedDeleted()
+        let predicateUndeleted = CdMessage.PredicateFactory.undeleted()
         let predicateMarkedForMoveToFolder = CdMessage.PredicateFactory.markedForMoveToFolder()
         let predicates = [predicateBelongingAccount,
                           predicateParentFolder,

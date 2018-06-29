@@ -115,12 +115,20 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     func syncNextMessage(context: NSManagedObjectContext) {
-        context.performAndWait() {
-            guard let m = self.nextMessageToBeSynced(context: context) else {
-                self.waitForBackgroundTasksToFinish()
+        guard !isCancelled else {
+            waitForBackgroundTasksToFinish()
+            return
+        }
+        context.performAndWait() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            self.updateFlags(message: m, context: context)
+            guard let m = me.nextMessageToBeSynced(context: context) else {
+                me.waitForBackgroundTasksToFinish()
+                return
+            }
+            me.updateFlags(message: m, context: context)
         }
     }
 

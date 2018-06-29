@@ -54,7 +54,7 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
         XCTAssertEqual(uf.messageCount(), numMailsTotal)
         var uid: Int32 = 0
 
-        let cdMessages = uf.allCdMessages()
+        let cdMessages = uf.allCdMessagesNonThreaded()
         for cdM in cdMessages {
             cdM.uid = uid
             uid += 1
@@ -62,7 +62,7 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
         XCTAssertEqual(uid, Int32(numMailsTotal))
         Record.saveAndWait()
 
-        let allTheCdMessages = uf.allCdMessages()
+        let allTheCdMessages = uf.allCdMessagesNonThreaded()
         for uidRun in 0..<uid {
             let msg = uf.messageAt(index: Int(uidRun))
             let cdMsg = allTheCdMessages[Int(uidRun)]

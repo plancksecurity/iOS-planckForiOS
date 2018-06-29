@@ -14,6 +14,11 @@ import XCTest
 
 class TestUtil {
     /**
+     The maximum time for tests that don't consume any remote service.
+     */
+    static let waitTimeLocal: TimeInterval = 3
+
+    /**
      The maximum time most tests are allowed to run.
      */
     static let waitTime: TimeInterval = 30

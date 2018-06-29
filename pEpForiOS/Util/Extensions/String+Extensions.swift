@@ -203,6 +203,33 @@ public extension String {
         return result
     }
 
+    /// Replaces all matches of the given regex pattern with a given string.
+    ///
+    /// - Parameters:
+    ///   - pattern: pattern to match
+    ///   - replacee: string to raplace matches with
+    mutating func replaceRegexMatches(of pattern: String, with replacee: String) {
+        do {
+            let regex =
+                try NSRegularExpression(pattern: pattern,
+                                        options: NSRegularExpression.Options.caseInsensitive)
+            let range = NSMakeRange(0, self.count)
+            self = regex.stringByReplacingMatches(in: self,
+                                                  options: [],
+                                                  range: range,
+                                                  withTemplate: replacee)
+        } catch {
+            return
+        }
+    }
+
+    /// Removes all matches of the given regex pattern.
+    ///
+    /// - Parameter pattern: regex patterns whichs matches should be removed
+    mutating func removeRegexMatches(of pattern: String) {
+        replaceRegexMatches(of: pattern, with: "")
+    }
+
     /**
      Does this String match the given regex pattern? Without any options.
      - Parameter pattern: The pattern to match.

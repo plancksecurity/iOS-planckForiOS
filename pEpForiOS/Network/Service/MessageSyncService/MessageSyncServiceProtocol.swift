@@ -64,11 +64,11 @@ protocol MessageSyncFlagsUploadDelegate: class {
  have full control over the scheduling.
  */
 protocol MessageSyncServiceProtocol {
-    weak var errorDelegate: MessageSyncServiceErrorDelegate? { get set }
-    weak var sentDelegate: MessageSyncServiceSentDelegate? { get set }
-    weak var syncDelegate: MessageSyncServiceSyncDelegate? { get set }
-    weak var stateDelegate: MessageSyncServiceStateDelegate? { get set }
-    weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate? { get set }
+    var errorDelegate: MessageSyncServiceErrorDelegate? { get set }
+    var sentDelegate: MessageSyncServiceSentDelegate? { get set }
+    var syncDelegate: MessageSyncServiceSyncDelegate? { get set }
+    var stateDelegate: MessageSyncServiceStateDelegate? { get set }
+    var flagsUploadDelegate: MessageSyncFlagsUploadDelegate? { get set }
 
     /**
      Request account verification, receiving news via the delegate.

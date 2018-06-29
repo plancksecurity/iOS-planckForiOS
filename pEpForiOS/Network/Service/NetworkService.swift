@@ -58,6 +58,7 @@ public class NetworkService {
     public private(set) var currentWorker: NetworkServiceWorker?
     var newMailsService: FetchNumberOfNewMailsService?
     public weak var delegate: NetworkServiceDelegate?
+    private var imapConnectionDataCache: ImapConnectionDataCache?
     // UNIT TEST ONLY
     public weak var unitTestDelegate: NetworkServiceUnitTestDelegate?
 
@@ -100,7 +101,8 @@ public class NetworkService {
      Start endlessly synchronizing in the background.
      */
     public func start() {
-        currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
+        currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig,
+                                             imapConnectionDataCache: imapConnectionDataCache)
         currentWorker?.delegate = self
         currentWorker?.unitTestDelegate = self
         currentWorker?.start()
@@ -110,6 +112,7 @@ public class NetworkService {
     /// user with server.
     /// Calls NetworkServiceDelegate networkServiceDidFinishLastSyncLoop() when done.
     public func processAllUserActionsAndstop() {
+        saveCurrentWorkersConfigAndImapConnectionCache()
         currentWorker?.stop()
     }
 
@@ -117,13 +120,9 @@ public class NetworkService {
      Cancel worker and services.
      */
     public func cancel() {
-        // Keep the current config
-        if let config = currentWorker?.serviceConfig {
-            serviceConfig = config
-        }
+        saveCurrentWorkersConfigAndImapConnectionCache()
         currentWorker?.cancel()
         currentWorker = nil
-
         // Only to make sure. Should not be required.
         newMailsService?.stop()
     }
@@ -137,6 +136,17 @@ public class NetworkService {
         cancel() // cancel the current worker
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
         currentWorker?.start()
+    }
+
+    // MARK: -
+
+    private func saveCurrentWorkersConfigAndImapConnectionCache() {
+        if let cache = currentWorker?.imapConnectionDataCache {
+            imapConnectionDataCache = cache
+        }
+        if let config = currentWorker?.serviceConfig {
+            serviceConfig = config
+        }
     }
 }
 
