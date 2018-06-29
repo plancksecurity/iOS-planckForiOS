@@ -113,6 +113,9 @@ extension EmailListViewModel: MessageFolderDelegate {
                 theSelf.emailListViewModelDelegate?.emailListViewModel(
                     viewModel: theSelf,
                     didRemoveDataAt: indexPath)
+                if theSelf.isCurrentlyDisplayingDetailsOf(message: message) {
+                    theSelf.updateThreadListDelegate?.deleted(topMessage: message)
+                }
             }
         }
     }
