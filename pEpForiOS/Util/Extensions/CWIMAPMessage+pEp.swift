@@ -49,18 +49,18 @@ extension CWIMAPMessage {
         // Go over all references and inReplyTo, and add all the uniques
         // as references, with the inReplyTo last
         // (https://cr.yp.to/immhf/thread.html)
-        var allRefsToAdd = [String]()
+        let allRefsAdded = NSMutableOrderedSet()
         if let refs = pEpMessageDict[kPepReferences] as? [AnyObject] {
-            for case let ref as String in refs {
-                allRefsToAdd.append(ref)
+            for ref in refs {
+                allRefsAdded.add(ref)
             }
         }
         if let inReplyTos = pEpMessageDict[kPepInReplyTo] as? [AnyObject] {
-            for case let inReplyTo as String in inReplyTos {
-                allRefsToAdd.append(inReplyTo)
+            for inReplyTo in inReplyTos {
+                allRefsAdded.add(inReplyTo)
             }
         }
-        self.setReferences(allRefsToAdd)
+        self.setReferences(allRefsAdded.array)
 
         if let optFields = pEpMessageDict[kPepOptFields] as? NSArray {
             for item in optFields {

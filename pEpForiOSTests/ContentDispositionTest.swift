@@ -64,7 +64,7 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
                 return
             }
             mail.from = id1
-            mail.removeTos(cdIdentities: currentReceipinets)
+            mail.removeTo(cdIdentities: currentReceipinets)
             mail.addTo(cdIdentity: id2)
             mail.pEpProtected = false // force unencrypted
             mail.sent = Date()

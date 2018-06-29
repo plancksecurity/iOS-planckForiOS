@@ -31,7 +31,7 @@ class AtomicImapService: ServiceErrorProtocol {
         handler?(error)
     }
 
-    // MARK: - ServiceErrorProtocol
+    // MARK - ServiceErrorProtocol
 
     private(set) public var error: Error?
 

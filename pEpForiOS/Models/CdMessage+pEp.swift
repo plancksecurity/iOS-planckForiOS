@@ -24,19 +24,12 @@ extension CdMessage {
     }
 
     /**
-     Updates the message to the given color rating.
-     */
-    public func update(rating: PEP_rating) {
-        self.pEpRating = Int16(rating.rawValue)
-    }
-
-    /**
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
      */
-    public func update(pEpMessageDict: PEPMessageDict, rating: PEP_rating? = nil) {
-        if let theRating = rating {
-            update(rating: theRating)
+    public func update(pEpMessageDict: PEPMessageDict, pEpColorRating: PEP_rating? = nil) {
+        if let color = pEpColorRating {
+            pEpRating = Int16(color.rawValue)
         }
 
         bodyFetched = true

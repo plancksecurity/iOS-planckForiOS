@@ -12,15 +12,10 @@ import UIKit
 import MessageModel
 
 class EmailViewController: BaseTableViewController {
-    @IBOutlet var flagButton: UIBarButtonItem!
-    @IBOutlet var destructiveButton: UIBarButtonItem!
-    @IBOutlet var previousMessage: UIBarButtonItem!
-    @IBOutlet var nextMessage: UIBarButtonItem!
-    @IBOutlet var moveToFolderButton: UIBarButtonItem!
-    @IBOutlet var replyButton: UIBarButtonItem!
-    @IBOutlet var pepButton: UIBarButtonItem!
-    
-    var barItems: [UIBarButtonItem]?
+    @IBOutlet weak var flagButton: UIBarButtonItem!
+    @IBOutlet weak var destructiveButton: UIBarButtonItem!
+    @IBOutlet weak var previousMessage: UIBarButtonItem!
+    @IBOutlet weak var nextMessage: UIBarButtonItem!
 
     var message: Message?
     var folderShow : Folder?
@@ -32,13 +27,10 @@ class EmailViewController: BaseTableViewController {
     lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
-    weak var delegate: EmailDisplayDelegate?
-
     // MARK: - LIFE CYCLE
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureSplitViewBackButton()
 
         loadDatasource("MessageData")
 
@@ -46,7 +38,6 @@ class EmailViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
-
 
     }
 
@@ -58,14 +49,9 @@ class EmailViewController: BaseTableViewController {
     // MARK: - UTIL
 
     private func updateFlaggedStatus() {
-        changeFlagButtonTo(flagged: message?.imapFlags?.flagged ?? false)
-    }
-
-    internal func changeFlagButtonTo(flagged: Bool) {
-        if (flagged) {
+        if message?.imapFlags?.flagged ?? false {
             flagButton.image = UIImage.init(named: "icon-flagged")
-        }
-        else {
+        } else {
             flagButton.image = UIImage.init(named: "icon-unflagged")
         }
     }
@@ -101,7 +87,7 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - SETUP
 
-    internal func configureView() {
+    private func configureView() {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false)
 
@@ -133,11 +119,6 @@ class EmailViewController: BaseTableViewController {
         updateFlaggedStatus()
     }
 
-    private func configureSplitViewBackButton() {
-        self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-        self.navigationItem.leftItemsSupplementBackButton = true
-    }
-
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
     private func setupDestructiveButtonIcon() {
         guard let msg = message else {
@@ -145,35 +126,15 @@ class EmailViewController: BaseTableViewController {
             return
         }
 
-        if msg.parent.defaultDestructiveActionIsArchive {
-            // Replace the Storyboard set trash icon for providers that use "archive" rather than
-            // "delete" as default
-            destructiveButton.image = #imageLiteral(resourceName: "folders-icon-archive")
-        }
-    }
+        //IOS-938:
+        // We currently are lacking an archive icon asset and thus show the trash bin for archiving also.
+        // After getting the icon set it using the below commented if clause.
+//        if msg.parent.defaultDestructiveActionIsArchive {
+//            destructiveButton = UIBarButtonItem(image: UIImage(named:NAME_OF_ARCHIVE_ICON_GOES_HERE), style: .plain, target: self, action: #selector(deleteButtonTapped(_:)))
+//        } else {
+//             destructiveButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonTapped(_:))
+//        }
 
-    // MARK: - UISplitViewcontrollerDelegate
-
-    func splitViewController(willChangeTo displayMode: UISplitViewControllerDisplayMode) {
-        switch displayMode {
-        case .primaryHidden:
-            var leftBarButtonItems: [UIBarButtonItem] = [nextMessage, previousMessage]
-            if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems {
-                leftBarButtonItems.append(contentsOf: unwrappedLeftBarButtonItems)
-            }
-
-            navigationItem.setLeftBarButtonItems(leftBarButtonItems.reversed(), animated: true)
-            break
-        case .allVisible:
-            var leftBarButtonItems: [UIBarButtonItem] = []
-            if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
-                leftBarButtonItems.append(unwrappedLeftBarButtonItems)
-            }
-            navigationItem.setLeftBarButtonItems(leftBarButtonItems, animated: true)
-        default:
-            //do nothing
-            break
-        }
     }
 
     // MARK: - EMAIL BODY
@@ -323,22 +284,14 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
-        defer {
-            updateFlaggedStatus()
-        }
-
-        guard let message = message else {
-            return
-        }
-
-        if (message.imapFlags?.flagged == true) {
-            message.imapFlags?.flagged = false
-            delegate?.emailDisplayDidUnflag(message: message)
+        if (message?.imapFlags?.flagged == true) {
+            message?.imapFlags?.flagged = false
         } else {
-            message.imapFlags?.flagged = true
-            delegate?.emailDisplayDidFlag(message: message)
+            message?.imapFlags?.flagged = true
         }
-        message.save()
+        message?.save()
+
+        updateFlaggedStatus()
     }
 
 
@@ -348,9 +301,7 @@ class EmailViewController: BaseTableViewController {
 
     @IBAction func deleteButtonTapped(_ sender: UIBarButtonItem) {
         message?.imapDelete()
-        if let message = message {
-            delegate?.emailDisplayDidDelete(message: message)
-        }
+        _ = navigationController?.popViewController(animated: true)
     }
 
     /**
@@ -477,15 +428,12 @@ extension EmailViewController: SegueHandlerType {
             }
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToAccountViewController else {
+                let destination = nav.topViewController as? MoveToFolderViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
             destination.appConfig = appConfig
-            if let msg = message {
-                destination.viewModel = MoveToAccountViewModel(messages: [msg])
-            }
-            destination.delegate = self
+            destination.message = message
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")

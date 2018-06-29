@@ -70,13 +70,9 @@ extension Message {
 
 extension Message {
     /// - Returns: all messages marked for UidMoveToTrash
-    static public func allMessagesMarkedForMoveToFolder(inAccount account: Account) -> [Message] {
-        let predicateInAccount =
-            CdMessage.PredicateFactory.belongingToAccountWithAddress(address: account.user.address)
+    static public func allMessagesMarkedForMoveToFolder() -> [Message] {
         let predicateMarkedForMove = CdMessage.PredicateFactory.markedForMoveToFolder()
-        let predicates = NSCompoundPredicate(andPredicateWithSubpredicates: [predicateInAccount,
-                                                                             predicateMarkedForMove])
-        let cdMessages = CdMessage.all(predicate: predicates) as? [CdMessage] ?? []
+        let cdMessages = CdMessage.all(predicate: predicateMarkedForMove) as? [CdMessage] ?? []
         var result = [Message]()
         for cdMessage in cdMessages {
             guard let message = cdMessage.message() else {

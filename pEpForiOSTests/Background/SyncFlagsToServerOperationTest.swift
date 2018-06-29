@@ -17,7 +17,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
 
     // MARK: - SyncFlagsToServerOperation
 
-    func testEmpty() {
+    func testSyncFlagsToServerOperationEmpty() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -124,7 +124,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
 
-    func testAddFlags_changeAllFlagsExceptDelete() {
+    func testSyncFlagsToServerOperationAddFlags_changeAllFlagsExceptDelete() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -195,7 +195,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(op.numberOfMessagesSynced, messages.count)
     }
 
-    func testAddFlags_allFlagsAlreadySetOnServer() {
+    func testSyncFlagsToServerOperationAddFlags_allFlagsAlreadySetOnServer() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -269,7 +269,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "no messages have been synced as all flag were already set before")
     }
 
-    func testAddFlags_someFlagsAlreadySetOnServer() {
+    func testSyncFlagsToServerOperationAddFlags_someFlagsAlreadySetOnServer() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -353,7 +353,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "flagDeleted changes, so all messages should be updated")
     }
 
-    func testAddFlags_addFlagAnswered() {
+    func testSyncFlagsToServerOperationAddFlags_addFlagAnswered() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -433,7 +433,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "all messages have been processed")
     }
 
-    func testAddFlags_addFlagDraft() {
+    func testSyncFlagsToServerOperationAddFlags_addFlagDraft() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -513,7 +513,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "all messages have been processed")
     }
 
-    func testAddFlags_addFlagFlagged() {
+    func testSyncFlagsToServerOperationAddFlags_addFlagFlagged() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -593,7 +593,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "all messages have been processed")
     }
 
-    func testAddFlags_addFlagSeen() {
+    func testSyncFlagsToServerOperationAddFlags_addFlagSeen() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -674,7 +674,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "all messages have been processed")
     }
 
-    func testRemoveFlags_allFlagsAlreadySetOnServer() {
+    func testSyncFlagsToServerOperationRemoveFlags_allFlagsAlreadySetOnServer() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -745,7 +745,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(op.numberOfMessagesSynced, 0, "no message has been synced")
     }
 
-    func testRemoveFlags_noChanges() {
+    func testSyncFlagsToServerOperationRemoveFlags_noChanges() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -823,7 +823,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "no message has been processed")
     }
 
-    func testRemoveFlags_removeFlagAnswered() {
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagAnswered() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -903,7 +903,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "all messages have been processed")
     }
 
-    func testRemoveFlags_removeFlagDraft() {
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagDraft() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -981,7 +981,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "all messages have been processed")
     }
 
-    func testRemoveFlags_removeFlagFlagged() {
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagFlagged() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -1061,7 +1061,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "all messages have been processed")
     }
 
-    func testRemoveFlags_removeFlagSeen() {
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagSeen() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {
@@ -1139,7 +1139,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
                        "all messages have been processed")
     }
 
-    func testRemoveFlags_removeFlagDeleted() {
+    func testSyncFlagsToServerOperationRemoveFlags_removeFlagDeleted() {
         fetchMessages(parentName: #function)
 
         guard let inbox = CdFolder.by(folderType: .inbox, account: cdAccount) else {

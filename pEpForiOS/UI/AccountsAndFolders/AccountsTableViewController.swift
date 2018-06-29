@@ -10,7 +10,6 @@ import SwipeCellKit
 
 class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     let viewModel = AccountsSettingsViewModel()
-    var settingSwitchViewModel: SettingSwitchProtocol?
 
     /** Our vanilla table view cell */
     let accountsCellIdentifier = "accountsCell"
@@ -114,14 +113,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         }
         alertController.addAction(destroyAction)
 
-        if let popoverPresentationController = alertController.popoverPresentationController {
-
-            let cellFrame = tableView.rectForRow(at: indexPath)
-            let sourceRect = self.view.convert(cellFrame, from: tableView)
-            popoverPresentationController.sourceRect = sourceRect
-            popoverPresentationController.sourceView = self.view
-        }
-
         self.present(alertController, animated: true) {
         }
     }
@@ -162,15 +153,13 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         case .unecryptedSubject:
-            self.settingSwitchViewModel = UnecryptedSubjectViewModel()
-            performSegue(withIdentifier: .segueShowSetting, sender: self)
-        case .organizedByThread:
-            self.settingSwitchViewModel = ThreadedSwitchViewModel()
-            performSegue(withIdentifier: .segueShowSetting, sender: self)
+            performSegue(withIdentifier: .segueShowSettingUnecryptedSubject, sender: self)
         case .defaultAccount:
             performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
         case .showLog:
             performSegue(withIdentifier: .segueShowLog, sender: self)
+        case .organizedByThread:
+        break // We currenty do nothing
         case .credits:
             performSegue(withIdentifier: .sequeShowCredits, sender: self)
         case .keyImport:
@@ -193,7 +182,6 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueShowSettingUnecryptedSubject
         case sequeShowCredits
         case segueShowSettingKeyImportSelectAccount
-        case segueShowSetting
         case noAccounts
         case noSegue
     }
@@ -213,13 +201,7 @@ extension AccountsTableViewController: SegueHandlerType {
                     destination.viewModel = vm
                 }
             }
-        case .segueShowSetting:
-            guard let destination = segue.destination as? SettingSwitchViewController else {
-                return
-            }
-            destination.viewModel = self.settingSwitchViewModel
-            destination.appConfig = self.appConfig
-        case .noAccounts,
+        case .noAccounts, // BaseViewControllers
         .segueShowSettingUnecryptedSubject,
         .segueShowSettingSyncTrash,
         .segueAddNewAccount,
@@ -235,7 +217,8 @@ extension AccountsTableViewController: SegueHandlerType {
             }
             destination.appConfig = self.appConfig
         case .segueShowLog:
-            guard let viewController = segue.destination as? LogViewController else {
+            guard let destination = segue.destination as? UINavigationController,
+                let viewController = destination.rootViewController as? LogViewController else {
                     return
             }
             viewController.appConfig = self.appConfig

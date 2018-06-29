@@ -49,18 +49,6 @@ class FolderTableViewController: BaseTableViewController {
         navigationItem.rightBarButtonItem = item
     }
 
-    // MARK: - Cell Setup
-
-    private func setNotSelectableStyle(to cell: UITableViewCell) {
-        cell.accessoryType = .none
-        cell.textLabel?.textColor = UIColor.pEpGray
-    }
-
-    private func setSelectableStyle(to cell: UITableViewCell) {
-        cell.accessoryType = .disclosureIndicator
-        cell.textLabel?.textColor = UIColor.black
-    }
-
     // MARK: - Actions
 
     @objc func settingsTapped() {
@@ -114,11 +102,7 @@ class FolderTableViewController: BaseTableViewController {
         }
         let fcvm = vm[indexPath.section][indexPath.item]
         cell.textLabel?.text = fcvm.title
-        if fcvm.isSelectable {
-            setSelectableStyle(to: cell)
-        } else {
-            setNotSelectableStyle(to: cell)
-        }
+        cell.accessoryType = .disclosureIndicator
         cell.indentationWidth = 20.0
         return cell
     }
@@ -135,17 +119,6 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - TableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let folderViewModel = folderVM else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model")
-            return
-        }
-        let cellViewModel = folderViewModel[indexPath.section][indexPath.row]
-        if !cellViewModel.isSelectable {
-            // Me must not open unselectable folders. Unselectable folders are typically path
-            // components/nodes that can not hold messages.
-            tableView.deselectRow(at: indexPath, animated: true)
-            return
-        }
         showFolder(indexPath: indexPath)
     }
 
@@ -173,32 +146,17 @@ class FolderTableViewController: BaseTableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newAccount" {
-            guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginTableViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Missing VCs")
-                    return
+            if let vc = segue.destination as? LoginTableViewController {
+                vc.appConfig = self.appConfig
+                vc.hidesBottomBarWhenPushed = true
             }
-            vc.appConfig = self.appConfig
-            vc.hidesBottomBarWhenPushed = true
-            vc.delegate = self
-
         } else if segue.identifier == "SettingsSegue" {
             guard let dvc = segue.destination as? AccountsTableViewController else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
-                return
+                    Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
+                    return
             }
             dvc.appConfig = self.appConfig
             dvc.hidesBottomBarWhenPushed = true
         }
-    }
-}
-
-// MARK: - LoginTableViewControllerDelegate
-
-extension FolderTableViewController: LoginTableViewControllerDelegate {
-    func loginTableViewControllerDidCreateNewAccount(
-        _ loginTableViewController: LoginTableViewController) {
-        showNext = true
     }
 }

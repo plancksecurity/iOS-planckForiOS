@@ -28,28 +28,16 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             return
         }
         let context = privateMOC
-        context.perform() { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            defer {
-                me.markAsFinished()
-            }
-            guard let cdMessages = CdMessage.all(
+        context.perform() {
+            guard let messages = CdMessage.all(
                 predicate: CdMessage.unknownToPepMessagesPredicate(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
                 in: context) as? [CdMessage] else {
+                    self.markAsFinished()
                     return
             }
 
-            for cdMessage in cdMessages {
-                if me.isCancelled {
-                    break
-                }
-                //
-                let originalRating = cdMessage.pEpRating
-
+            for cdMessage in messages {
                 var outgoing = false
                 if let folderType = cdMessage.parent?.folderType {
                     outgoing = folderType.isOutgoing()
@@ -58,7 +46,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 let pepMessage = PEPUtil.pEpDict(
                     cdMessage: cdMessage, outgoing: outgoing).mutableDictionary()
                 var keys: NSArray?
-                Log.info(component: me.comp,
+                Log.info(component: self.comp,
                          content: "Will decrypt \(cdMessage.logString())")
                 let session = PEPSession()
 
@@ -69,7 +57,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                         as NSDictionary
                     handleDecryptionSuccess(cdMessage: cdMessage,
                                             pEpDecryptedMessage: pEpDecryptedMessage,
-                                            originalRating: originalRating,
                                             rating: rating,
                                             keys: keys)
                 } catch let error as NSError {
@@ -77,26 +64,50 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     Log.error(component: #function, error: error)
                 }
             }
+            self.markAsFinished()
         }
 
-        func handleDecryptionSuccess(cdMessage: CdMessage,
-                                     pEpDecryptedMessage: NSDictionary,
-                                     originalRating: Int16,
-                                     rating: PEP_rating,
-                                     keys: NSArray?) {
+        func handleDecryptionSuccess(cdMessage: CdMessage, pEpDecryptedMessage: NSDictionary?,
+                                     rating: PEP_rating, keys: NSArray?) {
             let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
             self.delegate?.decrypted(
                 originalCdMessage: cdMessage, decryptedMessageDict: pEpDecryptedMessage,
                 rating: rating, keys: theKeys) // Only used in Tests. Maybe refactor out.
 
-            updateWholeMessage(
-                pEpDecryptedMessage: pEpDecryptedMessage,
-                originalRating: originalRating,
-                rating: rating,
-                cdMessage: cdMessage,
-                keys: theKeys,
-                context: context)
+            switch rating {
+            case PEP_rating_undefined,
+                 PEP_rating_cannot_decrypt,
+                 PEP_rating_have_no_key,
+                 PEP_rating_b0rken:
+                // Do nothing, try to decrypt again later though
+                break
+            case PEP_rating_unencrypted,
+                 PEP_rating_unencrypted_for_some,
+                 PEP_rating_unreliable,
+                 PEP_rating_mistrust,
+                 PEP_rating_reliable,
+                 PEP_rating_reliable,
+                 PEP_rating_trusted,
+                 PEP_rating_trusted,
+                 PEP_rating_trusted_and_anonymized,
+                 PEP_rating_fully_anonymous:
+                self.updateWholeMessage(
+                    pEpDecryptedMessage: pEpDecryptedMessage,
+                    pEpColorRating: rating, cdMessage: cdMessage,
+                    keys: theKeys, underAttack: false, context: context)
+                break
+            case PEP_rating_under_attack:
+                self.updateWholeMessage(
+                    pEpDecryptedMessage: pEpDecryptedMessage,
+                    pEpColorRating: rating, cdMessage: cdMessage,
+                    keys: theKeys, underAttack: true, context: context)
+            default:
+                Log.warn(
+                    component: self.comp,
+                    content: "No default action for decrypted message \(cdMessage.logString())")
+                break
+            }
         }
     }
 
@@ -105,31 +116,19 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
      */
     func updateWholeMessage(
         pEpDecryptedMessage: NSDictionary?,
-        originalRating: Int16,
-        rating: PEP_rating,
+        pEpColorRating: PEP_rating,
         cdMessage: CdMessage, keys: [String],
+        underAttack: Bool,
         context: NSManagedObjectContext) {
-        cdMessage.underAttack = rating.isUnderAttack()
-        if rating.shouldUpdateMessageContent() {
-            guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
-                Log.shared.errorAndCrash(
-                    component: #function,
-                    errorString:"should update message with rating \(rating), but nil message")
-                return
-            }
-            cdMessage.update(pEpMessageDict: decrypted, rating: rating)
-            updateMessage(cdMessage: cdMessage, keys: keys, context: context)
-        } else {
-            if rating.rawValue != originalRating {
-                cdMessage.update(rating: rating)
-                saveAndNotify(cdMessage: cdMessage, context: context)
-            }
+        guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
+            Log.shared.errorAndCrash(
+                component: #function,
+                errorString:"Decrypt with rating, but nil message")
+            return
         }
-    }
-
-    func saveAndNotify(cdMessage: CdMessage, context: NSManagedObjectContext) {
-        context.saveAndLogErrors()
-        notifyDelegate(messageUpdated: cdMessage)
+        cdMessage.update(pEpMessageDict: decrypted, pEpColorRating: pEpColorRating)
+        cdMessage.underAttack = underAttack
+        self.updateMessage(cdMessage: cdMessage, keys: keys, context: context)
     }
 
     /**
@@ -137,7 +136,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
      */
     func updateMessage(cdMessage: CdMessage, keys: [String], context: NSManagedObjectContext) {
         cdMessage.updateKeyList(keys: keys)
-        saveAndNotify(cdMessage: cdMessage, context: context)
+        context.saveAndLogErrors()
+        notifyDelegate(messageUpdated: cdMessage)
     }
 
     private func notifyDelegate(messageUpdated cdMessage: CdMessage) {

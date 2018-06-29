@@ -33,9 +33,9 @@ class LogViewController: BaseViewController {
         }
     }
 
-//    @IBAction func cancel(_ sender: Any) {
-//        self.dismiss(animated: true, completion: nil)
-//    }
+    @IBAction func cancel(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
 
     @IBAction func copyAction(_ sender: Any) {
         Log.checklog() { logString in

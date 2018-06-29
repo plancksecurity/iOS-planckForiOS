@@ -37,7 +37,9 @@ public class FolderSectionViewModel {
             return
         }
         for folder in ac.rootFolders {
-            items.append(FolderCellViewModel(folder: folder, level: 0))
+            if folder.selectable {
+                items.append(FolderCellViewModel(folder: folder, level: 0))
+            }
             childFolder(root: folder, level: 1)
         }
     }
@@ -51,7 +53,7 @@ public class FolderSectionViewModel {
 
     func getImage(callback: @escaping (UIImage?)-> Void) {
         guard let ac = account else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No account selected")
+            ///Log.shared.errorAndCrash(component: #function, errorString: "No account selected")
             return
         }
         if let cachedContactImage = contactImageTool.cachedIdentityImage(forIdentity: ac.user) {

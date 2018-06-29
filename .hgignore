@@ -8,11 +8,8 @@ Pods/.*
 .*~.storyboard$
 pEpTrustWords\.bundle/system\.db
 build/.*
-
 .*secret.*
 .*Secret.*
 .*SECRET.*
-
-^.*\.pyc$
 
 glob

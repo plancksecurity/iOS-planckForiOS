@@ -41,14 +41,9 @@
     }
  }
 
- protocol LoginTableViewControllerDelegate {
-    func loginTableViewControllerDidCreateNewAccount(_ loginTableViewController: LoginTableViewController)
- }
-
  class LoginTableViewController: BaseTableViewController {
     var loginViewModel = LoginViewModel()
     var offerManualSetup = false
-    var delegate: LoginTableViewControllerDelegate?
 
     @IBOutlet var emailAddress: UITextField!
     @IBOutlet var password: UITextField!
@@ -132,7 +127,7 @@
     }
 
     @objc func backButton() {
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -253,8 +248,6 @@
     }
  }
 
- // MARK: - UITextFieldDelegate
-
  extension LoginTableViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == self.user {
@@ -268,12 +261,11 @@
     }
  }
 
- // MARK: - SegueHandlerType
-
  extension LoginTableViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
         case viewLogSegue
+        case backToEmailList
         case manualConfigSegue
     }
 
@@ -300,50 +292,43 @@
                 vc.appConfig = appConfig
                 vc.navigationController?.navigationBar.isHidden = false
             }
+        case .backToEmailList:
+            if let vc = segue.destination as? FolderTableViewController {
+                vc.navigationController?.navigationBar.isHidden = false
+            }
         default:
             break
         }
     }
  }
 
- // MARK: - AccountVerificationResultDelegate
-
  extension LoginTableViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
-            GCD.onMain() { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            me.lastAccountInput = nil
+        GCD.onMain() { [weak self] in
+            self?.lastAccountInput = nil
             switch result {
-            case .ok:
-                me.delegate?.loginTableViewControllerDidCreateNewAccount(me)
-                me.navigationController?.dismiss(animated: true)
+            case .ok: // unwind back to INBOX on success
+                self?.performSegue(withIdentifier: .backToEmailList, sender: self)
             case .imapError(let err):
-                me.lastAccountInput = accountInput
-                me.handleLoginError(error: err, offerManualSetup: true)
+                self?.lastAccountInput = accountInput
+                self?.handleLoginError(error: err, offerManualSetup: true)
             case .smtpError(let err):
-                me.lastAccountInput = accountInput
-                me.handleLoginError(error: err, offerManualSetup: true)
+                self?.lastAccountInput = accountInput
+                self?.handleLoginError(error: err, offerManualSetup: true)
             case .noImapConnectData, .noSmtpConnectData:
-                me.lastAccountInput = accountInput
-                me.handleLoginError(error: LoginTableViewControllerError.noConnectData,
+                self?.lastAccountInput = accountInput
+                self?.handleLoginError(error: LoginTableViewControllerError.noConnectData,
                                        offerManualSetup: true)
             }
         }
     }
  }
 
- // MARK: - LoginViewModelLoginErrorDelegate
-
  extension LoginTableViewController: LoginViewModelLoginErrorDelegate {
     func handle(loginError: Error) {
         self.handleLoginError(error: loginError, offerManualSetup: true)
     }
  }
-
- // MARK: - LoginViewModelOAuth2ErrorDelegate
 
  extension LoginTableViewController: LoginViewModelOAuth2ErrorDelegate {
     func handle(oauth2Error: Error) {

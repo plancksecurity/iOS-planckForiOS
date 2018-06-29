@@ -82,10 +82,10 @@ public extension CdFolder {
                 let paths = folderName.components(separatedBy: separator)
                 for p in paths {
                     pathsSoFar.append(p)
-                    let pathName = (pathsSoFar as NSArray).componentsJoined(by: separator)
+                    let pathName = (pathsSoFar as NSArray).componentsJoined(
+                        by: separator)
                     let folder = insert(folderName: pathName, folderType: nil, account: account,
                                         context: moc)
-
                     //if it is the actual folder (has no child folder), set its folder type
                     if p == paths.last {
                         if let type = folderType {
@@ -132,6 +132,7 @@ public extension CdFolder {
         folderName: String, folderType: FolderType?, account: CdAccount,
         context: NSManagedObjectContext) -> CdFolder {
         Log.verbose(component: comp, content: "insert \(folderName)")
+
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account, context: context) {
             if let type = folderType {
@@ -140,6 +141,7 @@ public extension CdFolder {
             let _ = reactivate(folder: folder)
             return folder
         }
+
         let folder = CdFolder.create(context: context)
         folder.name = folderName
         folder.account = account
@@ -147,53 +149,38 @@ public extension CdFolder {
         if let type = folderType {
             folder.folderType = type
         }
+
         if folder.folderType != FolderType.normal || folderType != nil {
             // The folder has already a non-normal folder type set 
             // OR the folderType to use is explicitly given.
             // No need to do heuristics by folder name to find its purpose.
             return folder
         }
-        folder.folderType = guessFolderType(for: folder) ?? FolderType.normal
 
-        Log.verbose(component: comp, content: "insert \(folderName): \(folder.folderType)")
-        return folder
-    }
-
-    /// Makes the best possible guess for the type of a given folder.
-    /// The only thingaccording to its name.
-    ///
-    /// - Parameter folder: folder to guess its type
-    /// - Returns: guessed type
-    static private func guessFolderType(for folder: CdFolder) -> FolderType? {
-        guard let folderName = folder.name else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We need the name to guess the type")
-            return nil
-        }
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {
-            return FolderType.inbox
-        }
-        var testee = folderName
-        // If possible (i.e. if we have a separator), we evaluate only the last path component.
-        // Otherwize we might get multiple folder of one folderType.
-        // Examples:
-        // Trash                    -> should be of type .trash
-        // Inbox.Trash              -> should be of type .trash
-        // Inbox.Trash.Subfolder    -> should be of type .normal, *not* .trash
-        if let account = folder.account,
-            let separator = CdFolder.folderSeparatorAsString(cdAccount: account) {
-            let pathComponents = folderName.components(separatedBy: separator)
-            testee = pathComponents.last ?? folderName
-        }
-        for type in FolderType.allValuesToCheckFromServer {
-            for theName in type.folderNames() {
-                if testee.matchesPattern("\(theName)", reOptions: [.caseInsensitive]) {
-                    return type
+            folder.folderType = FolderType.inbox
+        } else {
+            var foundMatch = false
+            for ty in FolderType.allValuesToCheckFromServer {
+                for theName in ty.folderNames() {
+                    if folderName.matchesPattern("\(theName)",
+                        reOptions: [.caseInsensitive]) {
+                        foundMatch = true
+                        folder.folderType = ty
+                        break
+                    }
                 }
+                if foundMatch {
+                    break
+                }
+            }
+            if !foundMatch {
+                folder.folderType = FolderType.normal
             }
         }
 
-        return FolderType.normal
+        Log.verbose(component: comp, content: "insert \(folderName): \(folder.folderType)")
+        return folder
     }
 
     /**
@@ -202,7 +189,7 @@ public extension CdFolder {
      */
     public func allMessagesPredicate() -> NSPredicate {
         let p1 = allMessagesIncludingDeletedPredicate()
-        let p2 = CdMessage.PredicateFactory.undeleted()
+        let p2 = NSPredicate(format: "imap.localFlags.flagDeleted = false")
         return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
     }
 

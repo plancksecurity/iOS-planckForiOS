@@ -125,10 +125,6 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     }
 
     func handleNextMessage() {
-        guard !isCancelled else {
-            waitForBackgroundTasksToFinish()
-            return
-        }
         let context = privateMOC
         context.perform { [weak self] in
             self?.handleNextMessageInternal(context: context)

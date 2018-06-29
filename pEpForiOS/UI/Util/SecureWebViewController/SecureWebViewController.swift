@@ -175,21 +175,17 @@ class SecureWebViewController: UIViewController {
     }
 
     // MARK: - Handle Content Size Changes
+
     private func informDelegateAfterLoadingFinished() {
         // code to run whenever the content(size) changes
-        let handler = {
-            [weak self] (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
+        let handler = { (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
             guard
                 let contentSize = change.newValue,
-                !me.shouldIgnoreContentSizeChange(newSize: contentSize) else {
+                !self.shouldIgnoreContentSizeChange(newSize: contentSize) else {
                     return
             }
-            me.contentSize = contentSize
-            me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
+            self.contentSize = contentSize
+            self.delegate?.secureWebViewController(self, sizeChangedTo: contentSize)
         }
         sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
                                                         options: [NSKeyValueObservingOptions.new],
@@ -230,14 +226,7 @@ class SecureWebViewController: UIViewController {
     /// - Parameter html: html string that should be tweaked for nicer display
     /// - Returns: tweaked html
     private func tweakedHtml(inHtml html: String) -> String {
-        var html = html
-        // Remove existing viewport definitions that are pontentially unsupported by WKWebview.
-        html.removeRegexMatches(of: "<meta name=\\\"viewport\\\".*?>")
-        // Define viewport WKWebview can deal with
-        let screenWidth = UIScreen.main.bounds.width
-        let scaleToFitHtml =
-        "<meta name=\"viewport\" content=\"width=\(screenWidth), shrink-to-fit=YES\"/>"
-        // Build HTML tweak
+        let scaleToFitHtml = "<meta name=\"viewport\" content=\"width=device-heigth, initial-scale=1.0\"/>"
         let styleResponsiveImageSize = """
             img {
                 max-width: 100%;
@@ -246,7 +235,7 @@ class SecureWebViewController: UIViewController {
         """
         let styleLinkStyle = """
             a:link {
-                color:\(UIColor.pEpDarkGreenHex);
+                color:\(UIColor.pEpDarkGreen);
                 text-decoration: underline;
             }
         """
@@ -257,8 +246,12 @@ class SecureWebViewController: UIViewController {
                 \(styleLinkStyle)
             </style>
         """
-        // Inject tweak if appropriate
         var result = html
+
+        if html.contains(find: "initial-scale=1.0") {
+            // scale factor already set. Nothing to do.
+            return result
+        }
 
         if html.contains(find: "<head>") {
             result = html.replacingOccurrences(of: "<head>", with:
@@ -278,6 +271,7 @@ class SecureWebViewController: UIViewController {
         }
         return result
     }
+
 
     /// Assures a given string is wrapped in html tags (<html> givenString </html>).
     ///

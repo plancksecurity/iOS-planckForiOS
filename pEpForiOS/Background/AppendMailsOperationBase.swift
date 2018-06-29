@@ -184,14 +184,12 @@ public class AppendMailsOperationBase: ImapSyncOperation {
 
     func handleNextMessage() {
         markLastMessageAsFinished()
-        guard !isCancelled else {
-            waitForBackgroundTasksToFinish()
-            return
-        }
+
         guard let (msg, ident, objID) = retrieveNextMessage() else {
             markAsFinished()
             return
         }
+
         lastHandledMessageObjectID = objID
         determineTargetFolder(msgID: objID)
         let session = PEPSession()

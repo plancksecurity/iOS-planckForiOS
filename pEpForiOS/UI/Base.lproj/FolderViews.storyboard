@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="N0y-5z-66z">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4LY-Yo-aRV">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -34,7 +34,7 @@
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
-                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccount" modalPresentationStyle="formSheet" id="aKb-z0-Qyn"/>
+                                        <segue destination="uKb-Ku-Cng" kind="show" identifier="newAccount" id="aKb-z0-Qyn"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -85,44 +85,23 @@
             </objects>
             <point key="canvasLocation" x="10612.799999999999" y="-1142.4287856071965"/>
         </scene>
-        <!--Main-->
-        <scene sceneID="eeX-Fr-Vs1">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Main" id="jlA-KV-xmZ" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="C0u-m3-NYA"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nrT-r1-KyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="10091" y="-423"/>
-        </scene>
         <!--Navigation Controller-->
-        <scene sceneID="7fi-4c-XJX">
+        <scene sceneID="i0i-OM-Pbn">
             <objects>
-                <navigationController id="vQa-F1-CvY" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9sq-1a-bXm">
+                <navigationController storyboardIdentifier="main.initial.nvc" automaticallyAdjustsScrollViewInsets="NO" id="4LY-Yo-aRV" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="YcN-Zw-xen">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="6ra-tc-Aiv" kind="relationship" relationship="rootViewController" id="DdA-8g-fEw"/>
+                        <segue destination="6ra-tc-Aiv" kind="relationship" relationship="rootViewController" id="3yw-ir-pJW"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="79P-lr-Jjm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u3Q-Xi-vjZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9094" y="-1164"/>
-        </scene>
-        <!--Primary Split View Controller-->
-        <scene sceneID="cmc-6v-uzh">
-            <objects>
-                <splitViewController storyboardIdentifier="main.initial.nvc" id="N0y-5z-66z" customClass="PrimarySplitViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <connections>
-                        <segue destination="vQa-F1-CvY" kind="relationship" relationship="masterViewController" id="LaJ-Ow-wD4"/>
-                        <segue destination="jlA-KV-xmZ" kind="relationship" relationship="detailViewController" id="b81-as-g9K"/>
-                    </connections>
-                </splitViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d4z-SE-fTT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="8334" y="-418"/>
+            <point key="canvasLocation" x="8944.7999999999993" y="-1164.4677661169417"/>
         </scene>
     </scenes>
     <resources>

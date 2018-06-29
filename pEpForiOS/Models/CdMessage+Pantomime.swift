@@ -551,6 +551,8 @@ extension CdMessage {
 
         mail.replace(referenceStrings: referenceStrings.array)
 
+        mail.dumpReferences()
+
         let imap = mail.imapFields()
 
         imap.contentType = pantomimeMessage.contentType()

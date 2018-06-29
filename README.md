@@ -84,10 +84,6 @@ The UI tests will not compile without it.
 Create secret.xcconfig @ pEpForiOS/secret.xcconfig, with those contents:
 
 ```
-OAUTH2_GMAIL_CLIENT_ID = some_content
-OAUTH2_GMAIL_REDIRECT_URL_SCHEME = some_content
-
-OAUTH2_YAHOO_CLIENT_ID = some_content
-OAUTH2_YAHOO_CLIENT_SECRET = some_content
-
+GMAIL_CLIENT_ID = <your client ID here>
+GMAIL_REDIRECT_URL = <your redirect URL here>
 ```

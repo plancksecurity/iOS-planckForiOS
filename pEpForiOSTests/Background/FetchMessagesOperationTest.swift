@@ -51,7 +51,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
                     return
             }
             mail.from = id2
-            mail.removeTos(cdIdentities: currentReceipinets)
+            mail.removeTo(cdIdentities: currentReceipinets)
             mail.addTo(cdIdentity: id1)
             mail.addTo(cdIdentity: id2)
 			mail.pEpProtected = false // force unencrypted

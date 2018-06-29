@@ -33,16 +33,11 @@ class MessageReevalutionTests: XCTestCase {
 
         persistentSetup = PersistentSetup()
 
-        let ownIdentity = PEPIdentity(address: "iostest002@peptest.ch",
-                                      userID: "iostest002@peptest.ch_ID",
-                                      userName: "iOS Test 002",
-                                      isOwn: true)
-
         // Account
         let cdMyAccount = SecretTestData().createWorkingCdAccount(number: 0)
-        cdMyAccount.identity?.userName = ownIdentity.userName
-        cdMyAccount.identity?.userID = ownIdentity.userID
-        cdMyAccount.identity?.address = ownIdentity.address
+        cdMyAccount.identity?.userName = "iOS Test 002"
+        cdMyAccount.identity?.userID = "iostest002@peptest.ch_ID"
+        cdMyAccount.identity?.address = "iostest002@peptest.ch"
 
         // Inbox
         cdInbox = CdFolder.create()
@@ -68,18 +63,16 @@ class MessageReevalutionTests: XCTestCase {
         Record.saveAndWait()
         self.cdSenderIdentity =  sender
 
-        // sender pubkey
+        // Test Keys
         try! TestUtil.importKeyByFileName(
             session, fileName: "CommunicationTypeTests_test001@peptest.ch_sec.asc")
+        try! TestUtil.importKeyByFileName(
+            session, fileName: "CommunicationTypeTests_test001@peptest.ch.asc")
 
-        // own identity, fingerprint 2CAC9CE95910FBEDB539BDE49AB835A954F5BBF6
         try! TestUtil.importKeyByFileName(
             session, fileName: "CommunicationTypeTests_test002@peptest.ch_sec.asc")
         try! TestUtil.importKeyByFileName(
             session, fileName: "CommunicationTypeTests_test002@peptest.ch.asc")
-
-        try! session.setOwnKey(ownIdentity,
-                               fingerprint: "2CAC9CE95910FBEDB539BDE49AB835A954F5BBF6")
 
         self.backgroundQueue = OperationQueue()
         decryptTheMessage()

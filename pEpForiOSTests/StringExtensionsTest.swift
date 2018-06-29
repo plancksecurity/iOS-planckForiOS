@@ -110,6 +110,13 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("".components(separatedBy: ","), [""])
     }
 
+    func testRemoveAngleBrackets() {
+        XCTAssertEqual("messageid".removeAngleBrackets(), "messageid")
+        XCTAssertEqual("<messageid@someserver>".removeAngleBrackets(), "messageid@someserver")
+        XCTAssertEqual("  <messageid@someserver>  ".removeAngleBrackets(),
+                       "messageid@someserver")
+    }
+
     func testIsGmailAddress() {
         XCTAssertFalse("blah@googlemail.com".isGmailAddress)
         XCTAssertFalse("blah@nogmail.com".isGmailAddress)

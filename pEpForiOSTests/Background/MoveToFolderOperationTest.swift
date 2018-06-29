@@ -49,12 +49,13 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
     }
 
     func testMoveInboxToArchive() {
-        assureMoveFromInbox(toFolderOfType: .archive)
+        assureMoveFromInbox(toFolderOfType: .archive, isMandatory: false)
     }
 
     // MARK: - HELPER
 
-    private func assureMoveFromInbox(toFolderOfType targetFolderType: FolderType) {
+    private func assureMoveFromInbox(toFolderOfType targetFolderType: FolderType,
+                                     isMandatory: Bool = true) {
         // Setup 2 accounts
         // the testee
         cdAccount.createRequiredFoldersAndWait(testCase: self)
@@ -70,7 +71,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         let receivedMsgs = sendAndReceive(numMails: 1, fromAccount: cdAccount2)
 
         // Move messages to target folder
-        move(messages: receivedMsgs, toFolerOfType: targetFolderType)
+        move(messages: receivedMsgs, toFolerOfType: targetFolderType, isMandatory: isMandatory)
 
         // Sync
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
@@ -79,16 +80,13 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         checkExistance(ofMessages: receivedMsgs, inFolderOfType: targetFolderType, mustExist: true)
     }
 
-    private func isMandatoryFolderType(type: FolderType) -> Bool {
-        return FolderType.requiredTypes.contains(type)
-    }
-
-    private func move(messages:[Message], toFolerOfType type: FolderType) {
-        for msg in messages {
+    private func move(messages:[Message], toFolerOfType type: FolderType,
+                      isMandatory: Bool = true) {
+        for msg:Message in messages {
             guard let targetFolder = msg.parent.account.folder(ofType: type) else {
                 // Can't seem to find the target folder. If this is an optional test
                 // (working on for certain accounts), ignore it.
-                if isMandatoryFolderType(type: type) {
+                if isMandatory {
                     XCTFail()
                 }
                 return
@@ -152,7 +150,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
                 return []
             }
             mail.from = id2
-            mail.removeTos(cdIdentities: currentReceipinets)
+            mail.removeTo(cdIdentities: currentReceipinets)
             mail.addTo(cdIdentity: id1)
         }
         Record.saveAndWait()    
