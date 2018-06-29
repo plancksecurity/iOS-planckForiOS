@@ -34,7 +34,11 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func deleteThread(message: Message) {
-        deleteSingle(message: message)
+        let children = message.referencingMessages()
+        for msgChild in children {
+            msgChild.imapDelete()
+        }
+        message.imapDelete()
     }
 
     func referencedTopMessages(message: Message) -> [Message] {
