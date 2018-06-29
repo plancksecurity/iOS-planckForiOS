@@ -1,0 +1,9 @@
+[imap_account_001]
+username = imap_account_001_username
+password = imap_account_001_password
+hostname = imap_account_001_server_hostname
+
+[imap_account_002]
+username = imap_account_002_username
+password = imap_account_002_password
+hostname = imap_account_002_server_hostname

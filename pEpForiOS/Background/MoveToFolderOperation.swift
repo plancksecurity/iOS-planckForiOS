@@ -78,7 +78,7 @@ class MoveToFolderOperation: ImapSyncOperation {
             return
         }
         MessageModel.performAndWait {
-            toDelete.imapFlags?.deleted = true
+            toDelete.imapMarkDeleted()
             toDelete.targetFolder = toDelete.parent
             toDelete.save()
         }
@@ -96,6 +96,10 @@ class MoveToFolderOperation: ImapSyncOperation {
     }
 
     fileprivate func handleNextMessage() {
+        guard !isCancelled else {
+            waitForBackgroundTasksToFinish()
+            return
+        }
         MessageModel.perform { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
@@ -107,14 +111,15 @@ class MoveToFolderOperation: ImapSyncOperation {
             }
             if message == me.lastProcessedMessage {
                 // When UID MOVEing a message, the server expunges the message and let us know.
-                // So Pantomime takes care to remove the expunged message in general. BUT:
+                // Pantomime takes care to remove the expunged message in general.
+                // BUT:
                 // In case we are calling UID MOVE for a message that does not exist any more (maybe
                 // it has been moved by another client already in between), the server does not
                 // respond with an error but with OK, so the local message still exists.
                 // Thus we have to make sure the message is removed from our store to avoid endless
                 // UID MOVE -> completed -> nextMessage -> UID MOVE ...
                 me.deleteLastMovedMessage()
-                me.markAsFinished()
+                me.handleNextMessage()
                 return
             }
             if message.parent == message.targetFolder {
@@ -163,10 +168,15 @@ class MoveToFolderOperation: ImapSyncOperation {
         handleNextMessage()
     }
 
-    static func foldersContainingMarkedForMoveToFolder() -> [Folder] {
+    static func foldersContainingMarkedForMoveToFolder(connectInfo: EmailConnectInfo) -> [Folder] {
         var result = [Folder]()
         MessageModel.performAndWait {
-            let allUidMoveMessages = Message.allMessagesMarkedForMoveToFolder()
+            guard let cdAccount = Record.Context.background.object(with: connectInfo.accountObjectID) as? CdAccount else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No account.")
+                return
+            }
+            let account = cdAccount.account()
+            let allUidMoveMessages = Message.allMessagesMarkedForMoveToFolder(inAccount: account)
             let foldersContainingMarkedMessages = allUidMoveMessages.map { $0.parent }
             result = Array(Set(foldersContainingMarkedMessages))
         }

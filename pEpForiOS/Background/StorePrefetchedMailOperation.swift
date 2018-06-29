@@ -80,7 +80,8 @@ We could not store the message. This can happen if the belonging account just ha
     }
 
     func insertOrUpdate(pantomimeMessage: CWIMAPMessage, account: CdAccount) -> CdMessage? {
-        return CdMessage.insertOrUpdate(
-            pantomimeMessage: self.message, account: account, messageUpdate: messageUpdate)
+        return CdMessage.insertOrUpdate(pantomimeMessage: message,
+                                        account: account,
+                                        messageUpdate: messageUpdate)
     }
 }

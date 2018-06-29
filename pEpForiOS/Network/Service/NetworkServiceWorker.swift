@@ -90,10 +90,14 @@ open class NetworkServiceWorker {
 
     let context = Record.Context.background
 
-    var imapConnectionDataCache = ImapConnectionDataCache()
+    private(set) var imapConnectionDataCache = ImapConnectionDataCache()
 
-    init(serviceConfig: NetworkService.ServiceConfig) {
+    init(serviceConfig: NetworkService.ServiceConfig,
+         imapConnectionDataCache: ImapConnectionDataCache? = nil) {
         self.serviceConfig = serviceConfig
+        if let cache = imapConnectionDataCache {
+            self.imapConnectionDataCache = cache
+        }
     }
 
     /**
@@ -101,6 +105,7 @@ open class NetworkServiceWorker {
      */
     public func start() {
         Log.info(component: #function, content: "\(String(describing: self))")
+
         cancelled = false
         imapConnectionDataCache.reset()
         self.process()
@@ -149,9 +154,8 @@ open class NetworkServiceWorker {
             // Cancel the current sync loop ...
             me.backgroundQueue.cancelAllOperations()
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
-
-            // ... and run a minimized sync loop that assures all local changes are
-            //      synced to the server.
+            // ... and run a minimized sync loop that assures all local changes are synced to
+            //     the server.
             let connectInfos = ServiceUtil.gatherConnectInfos(context: me.context,
                                                               accounts: me.fetchAccounts())
             let operationLines =
@@ -268,7 +272,8 @@ open class NetworkServiceWorker {
         var lastOp = previousOp
         var createdOps = [MoveToFolderOperation]()
         MessageModel.performAndWait {
-            let folders = MoveToFolderOperation.foldersContainingMarkedForMoveToFolder()
+            let folders = MoveToFolderOperation.foldersContainingMarkedForMoveToFolder(connectInfo:
+                imapSyncData.connectInfo)
             for folder in folders {
                 let op = MoveToFolderOperation(imapSyncData: imapSyncData,
                                                       errorContainer: errorContainer,
@@ -480,9 +485,10 @@ open class NetworkServiceWorker {
             operations.append(contentsOf: appendSendAndDraftOperations)
 
             let (lastMoveToFolderOp, moveToFolderOperations) =
-                buildUidMoveToFolderOperations(
-                    imapSyncData: imapSyncData, errorContainer: errorContainer,
-                    opImapFinished: opImapFinished, previousOp: lastImapOp)
+                buildUidMoveToFolderOperations(imapSyncData: imapSyncData,
+                                               errorContainer: errorContainer,
+                                               opImapFinished: opImapFinished,
+                                               previousOp: lastImapOp)
             lastImapOp = lastMoveToFolderOp ?? lastImapOp
             operations.append(contentsOf: moveToFolderOperations)
 
@@ -590,6 +596,7 @@ open class NetworkServiceWorker {
 
     func processOperationLinesInternal(operationLines: [OperationLine], repeatProcess: Bool = true) {
         let theComp = "\(#function) processOperationLinesInternal"
+
         if !self.cancelled {
             var myLines = operationLines
             Log.verbose(component: theComp,
@@ -603,8 +610,7 @@ open class NetworkServiceWorker {
                     guard let me = self, let theOl = ol else {
                         return
                     }
-                    Log.info(component: theComp,
-                             content: "didSync")
+                    Log.info(component: theComp, content: "didSync")
                     // UNIT TEST ONLY
                     me.unitTestDelegate?
                         .networkServiceWorkerDidSync(worker: me,

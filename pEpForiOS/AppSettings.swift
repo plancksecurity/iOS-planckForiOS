@@ -9,38 +9,45 @@
 import MessageModel
 
 class AppSettings {
-    static private let keyReinitializePepOnNextStartup = "reinitializePepOnNextStartup"
-    static private let keyUnecryptedSubjectEnabled = "unecryptedSubjectEnabled"
-    static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
-
-    init() {
+    // MARK: - Public
+    
+    public init() {
         registerDefaults()
         setup()
     }
-
-    var shouldReinitializePepOnNextStartup: Bool {
+    
+    public var shouldReinitializePepOnNextStartup: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: AppSettings.keyReinitializePepOnNextStartup)
+            UserDefaults.standard.set(newValue,
+                                      forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
     }
-
-    var unecryptedSubjectEnabled: Bool {
+    
+    public var unencryptedSubjectEnabled: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: AppSettings.keyUnecryptedSubjectEnabled)
+            return UserDefaults.standard.bool(forKey: AppSettings.keyUnencryptedSubjectEnabled)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: AppSettings.keyUnecryptedSubjectEnabled)
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyUnencryptedSubjectEnabled)
             PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
         }
+
     }
 
-    // MARK: - DEFAULT ACCOUNT
-
+    var threadedViewEnabled: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: AppSettings.keyThreadedViewEnabled)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyThreadedViewEnabled)
+        }
+    }
+    
     /// Address of the default account
-    var defaultAccount: String? {
+    public var defaultAccount: String? {
         get {
             assureDefaultAccountIsSetAndExists()
             return UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress)
@@ -49,7 +56,16 @@ class AppSettings {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
         }
     }
-
+    
+    // MARK: - Private
+    
+    static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
+    static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
+    static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
+    static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
+    
+    // MARK: - Private - DEFAULT ACCOUNT
+    
     private func assureDefaultAccountIsSetAndExists() {
         if UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress) == nil {
             // Default account is not set. Take the first MessageModel provides as a starting point
@@ -58,24 +74,27 @@ class AppSettings {
         }
         // Assure the default account still exists. The user might have deleted it.
         guard
-            let currentDefault = UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress),
+            let currentDefault = UserDefaults.standard.string(
+                forKey: AppSettings.keyDefaultAccountAddress),
             let _ = Account.by(address: currentDefault)
             else {
                 defaultAccount = nil
                 return
         }
     }
-
-    // MARK: - SETUP
-
+    
+    // MARK: - Private - SETUP
+    
     private func setup() {
-        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unecryptedSubjectEnabled)
+        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
     }
-
+    
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
-        defaults[AppSettings.keyUnecryptedSubjectEnabled] = true
+        defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
+        defaults[AppSettings.keyThreadedViewEnabled] = true
+
         UserDefaults.standard.register(defaults: defaults)
     }
 }

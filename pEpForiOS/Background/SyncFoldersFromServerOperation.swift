@@ -141,7 +141,7 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
             let localFolders = Folder.allFolders(inAccount: account)
             // Filter local folders that do not exist on server any more ...
             let foldersToDelete = localFolders.filter {
-                !folderNamesExistingOnServer.contains($0.name)
+                !folderNamesExistingOnServer.contains($0.name) && $0.subFolders().count == 0
             }
             // ... and delete them
             for deletee: Folder in foldersToDelete {
@@ -156,7 +156,7 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
         waitForBackgroundTasksToFinish()
     }
 
-    // MARK: - HANDLERS FOR SyncFoldersFromServerSyncDelegate
+    // MARK: - HANDLERS for SyncFoldersFromServerSyncDelegate
 
     fileprivate func handleFolderListCompleted(_ sync: ImapSync?) {
         backgroundQueue.waitUntilAllOperationsAreFinished()

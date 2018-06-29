@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="0x8-ea-YBj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n6h-PU-h88">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -711,13 +711,11 @@
                         <outlet property="passwordTableViewCell" destination="P2h-Ib-u2Z" id="hX5-6a-pXa"/>
                         <outlet property="user" destination="DeX-GP-Ixx" id="8Zf-6t-dbe"/>
                         <segue destination="kdj-h1-w8d" kind="show" identifier="viewLogSegue" id="YY2-Tz-gVa"/>
-                        <segue destination="Tgf-OP-JhX" kind="unwind" identifier="backToEmailList" unwindAction="segueUnwindAccountAddedWithSegue:" id="xqz-o7-LHm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AeT-eg-YVi" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="Tgf-OP-JhX" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="7233" y="349"/>
+            <point key="canvasLocation" x="8172" y="348.57571214392806"/>
         </scene>
         <!--UIViewController-01V-rr-Nt1-->
         <scene sceneID="Ib2-kl-E5M">
@@ -725,7 +723,25 @@
                 <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="UIViewController-01V-rr-Nt1" id="6yd-9e-jF0" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3c0-E0-VNt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11389.6" y="90.854572713643179"/>
+            <point key="canvasLocation" x="12328" y="90.854572713643179"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="aJL-6s-3px">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="n6h-PU-h88" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xOX-61-BbZ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="0x8-ea-YBj" kind="relationship" relationship="rootViewController" id="ZPY-i6-k3I"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D07-Xf-86Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7232.8000000000002" y="348.57571214392806"/>
         </scene>
     </scenes>
 </document>
