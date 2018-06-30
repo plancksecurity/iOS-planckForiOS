@@ -118,8 +118,8 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                     content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
                 context.saveAndLogErrors()
             } else {
-                Log.error(
-                    component: self.comp, errorString: "Could not access sent message by ID")
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Could not access sent message by ID")
             }
         }
     }
