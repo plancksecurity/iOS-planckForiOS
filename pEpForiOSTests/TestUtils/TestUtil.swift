@@ -311,7 +311,7 @@ class TestUtil {
     /// Creates outgoing messages
     ///
     /// - Parameters:
-    ///   - cdAccount: account to send from
+    ///   - cdAccount: account to send from. Is ignored if fromIdentity is not nil 
     ///   - fromIdentity: identity used as sender
     ///   - toIdentity: identity used as recipient
     ///   - setSentTimeOffsetForManualOrdering: Add some time difference to date sent tp be
@@ -335,6 +335,7 @@ class TestUtil {
                                     withAttachments: Bool = true,
                                     attachmentsInlined: Bool = false,
                                     encrypt: Bool = true) throws -> [CdMessage] {
+        let cdAccount = fromIdentity?.accounts?.allObjects.first as? CdAccount ?? cdAccount 
         testCase.continueAfterFailure = false
 
         if numberOfMails == 0 {
