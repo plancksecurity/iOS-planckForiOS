@@ -6,47 +6,47 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import MessageModel
+import XCTest
 
-extension Server {
-    @objc private var swizzledIsOnTrustedServer: Bool {
-        return true
+@testable import MessageModel
+@testable import pEpForiOS
+
+struct TrustedServerTestUtils {
+
+//    static func swizzleIsTrustedServerToAlwaysTrue() {
+//        Server.swizzleIsTrustedServerToAlwaysTrue()
+//    }
+
+    /**
+     Validates all servers and their credentials without actually validating them.
+     */
+    static func setServersTrusted(forAccount account: Account, testCase: XCTestCase) {
+        guard let servers = account.cdAccount()?.servers?.allObjects as? [CdServer] else {
+            XCTFail("No Servers")
+            return
+        }
+        for server in servers {
+            server.trusted = true
+        }
     }
 
-    static private var originalMethod: Method {
-        return class_getInstanceMethod(self, #selector(getter: trusted))!
-    }
-
-    static private var swizzledMethod: Method {
-        return class_getInstanceMethod(self, #selector(getter: swizzledIsOnTrustedServer))!
-    }
-
-    public static func swizzleIsTrustedServerToAlwaysTrue() {
-        method_exchangeImplementations(originalMethod, swizzledMethod)
-    }
-
-    //IOS-33: rethink if required.
-    //    public static func unswizzleIsTrustedServer() {
-    //        method_exchangeImplementations(swizzledMethod, originalMethod)
-    //    }
 }
+//IOS-33: if obsolete, remove @objc's !!
 
-//// MARK: - Force true isOnTrustedServer
-////IOS-33: should be obsolete. Swizzel Server now.
-//extension Message {
+//fileprivate extension Server {
 //    @objc private var swizzledIsOnTrustedServer: Bool {
 //        return true
 //    }
 //
 //    static private var originalMethod: Method {
-//        return class_getInstanceMethod(self, #selector(getter: isOnTrustedServer))!
+//        return class_getInstanceMethod(self, #selector(getter: trusted))!
 //    }
 //
 //    static private var swizzledMethod: Method {
 //        return class_getInstanceMethod(self, #selector(getter: swizzledIsOnTrustedServer))!
 //    }
 //
-//    public static func swizzleIsTrustedServerToAlwaysTrue() {
+//    fileprivate static func swizzleIsTrustedServerToAlwaysTrue() {
 //        method_exchangeImplementations(originalMethod, swizzledMethod)
 //    }
 //

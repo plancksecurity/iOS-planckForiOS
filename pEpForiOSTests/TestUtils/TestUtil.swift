@@ -306,7 +306,55 @@ class TestUtil {
         })
     }
 
-    // MARK: Messages
+    // MARK: - Messages
+
+    /// Creates outgoing messages
+    ///
+    /// - Parameters:
+    ///   - cdAccount: account to send from. Is ignored if fromIdentity is not nil
+    ///   - fromIdentity: identity used as sender
+    ///   - toIdentity: identity used as recipient
+    ///   - setSentTimeOffsetForManualOrdering: Add some time difference to date sent tp be
+    ///                                         recognised by Date().sort. That makes it easier to
+    ///                                         misuse thoses mails for manual debugging.
+    //
+    ///   - testCase: the one to make fail
+    ///   - numberOfMails: num mails to create
+    ///   - withAttachments: Whether or not messages should contain attachments
+    ///   - attachmentsInlined: Whether or not the attachments should be inlined
+    ///   - encrypt: Whether or not to import a key for the receipient. Is ignored if `toIdentity`
+    ///              is not nil
+    /// - Returns: created mails
+    /// - Throws: error importing key
+    static func createOutgoingMails(account: Account,
+                                    fromIdentity: Identity? = nil,
+                                    toIdentity: Identity? = nil,
+                                    setSentTimeOffsetForManualOrdering: Bool = false,
+                                    testCase: XCTestCase,
+                                    numberOfMails: Int,
+                                    withAttachments: Bool = true,
+                                    attachmentsInlined: Bool = false,
+                                    encrypt: Bool = true) throws -> [Message] {
+        guard
+            let cdAccount = account.cdAccount(),
+            let cdFromIdentity = fromIdentity?.cdIdentity(),
+            let cdToIdentity = toIdentity?.cdIdentity()
+            else {
+                XCTFail("No account.")
+                return []
+        }
+
+        let cdMessages = try createOutgoingMails(cdAccount: cdAccount,
+                                                 fromIdentity: cdFromIdentity,
+                                                 toIdentity: cdToIdentity,
+                                                 setSentTimeOffsetForManualOrdering: setSentTimeOffsetForManualOrdering,
+                                                 testCase: testCase,
+                                                 numberOfMails: numberOfMails,
+                                                 withAttachments: withAttachments,
+                                                 attachmentsInlined: attachmentsInlined,
+                                                 encrypt: encrypt)
+        return cdMessages.map { $0.message()! }
+    }
 
     /// Creates outgoing messages
     ///
