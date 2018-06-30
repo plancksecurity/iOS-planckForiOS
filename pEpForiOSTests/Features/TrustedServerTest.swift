@@ -22,19 +22,27 @@ class TrustedServerTest: CoreDataDrivenTestBase {
         cdAccount.identity?.userName = "unittest.ios.3"
         cdAccount.identity?.userID = "unittest.ios.3_ID"
         cdAccount.identity?.address = "unittest.ios.3@peptest.ch"
-        try! TestUtil.importKeyByFileName(session, fileName: "unittest_ios_3_peptest_ch_sec.asc")
-        try! TestUtil.importKeyByFileName(session, fileName: "unittest_ios_3_peptest_ch_pub.asc")
-//        try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
-//                               fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
+        try! TestUtil.importKeyByFileName(session,
+                                          fileName:
+            "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc")
+        try! TestUtil.importKeyByFileName(session,
+                                          fileName:
+            "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc")
+        try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
+                               fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
         // Account 2
         cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
         cdAccount2.identity?.userName = "unittest.ios.4"
         cdAccount2.identity?.userID = "unittest.ios.4_ID"
         cdAccount2.identity?.address = "unittest.ios.4@peptest.ch"
-        try! TestUtil.importKeyByFileName(session, fileName: "unittest_ios_4_peptest_ch_sec.asc")
-        try! TestUtil.importKeyByFileName(session, fileName: "unittest_ios_4_peptest_ch_pub.asc")
-//        try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
-//                               fingerprint: "66AF 5804 A879 1E01 B407 125A CAF0 D838 1542 49C4")
+        try! TestUtil.importKeyByFileName(session,
+                                          fileName:
+            "unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc")
+        try! TestUtil.importKeyByFileName(session,
+                                          fileName:
+            "unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc")
+        try! session.setOwnKey(cdAccount2.identity!.pEpIdentity(),
+                               fingerprint: "66AF 5804 A879 1E01 B407 125A CAF0 D838 1542 49C4")
 
         TestUtil.skipValidation()
         Record.saveAndWait()
@@ -64,6 +72,15 @@ class TrustedServerTest: CoreDataDrivenTestBase {
 
         // Create mail(s) from cdAccount to cdAccount2 ...
         let numMailsToSend = 1
+        let sendKey = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
+                                                        fromIdentity: id2,
+                                                        toIdentity: id1,
+                                                        testCase: self,
+                                                        numberOfMails: numMailsToSend,
+                                                        withAttachments: false)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+
+        //
         let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
                                                             fromIdentity: id1,
                                                             toIdentity: id2,
@@ -76,7 +93,6 @@ class TrustedServerTest: CoreDataDrivenTestBase {
         // ... send them.
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
 
-//        // Now let's see what we got.
 
 
     }
