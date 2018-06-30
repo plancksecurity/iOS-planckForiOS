@@ -115,12 +115,19 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                  rating: rating,
                                  keys: theKeys)
 
-        updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
-                           ratingBeforeEngine: ratingBeforeEngine,
-                           rating: rating,
-                           cdMessage: cdMessage,
-                           keys: theKeys)
-        handleReUploadAndNotify(cdMessage: cdMessage, rating: rating)
+        if rating.shouldUpdateMessageContent() {
+            updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
+                               ratingBeforeEngine: ratingBeforeEngine,
+                               rating: rating,
+                               cdMessage: cdMessage,
+                               keys: theKeys)
+            handleReUploadAndNotify(cdMessage: cdMessage, rating: rating)
+        } else {
+            if rating.rawValue != ratingBeforeEngine {
+                cdMessage.update(rating: rating)
+                saveAndNotify(cdMessage: cdMessage  )
+            }
+        }
     }
 
     /**
@@ -131,13 +138,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                     rating: PEP_rating,
                                     cdMessage: CdMessage,
                                     keys: [String]) {
-        guard rating.shouldUpdateMessageContent() else {
-            if rating.rawValue != ratingBeforeEngine {
-                cdMessage.update(rating: rating)
-            }
-            return
-        }
-
         cdMessage.underAttack = rating.isUnderAttack()
         guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
             Log.shared.errorAndCrash(
@@ -164,6 +164,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         }
     }
 
+    //IOS-33: extract to Helper
     private func handleReUploadIfRequired(cdMessage: CdMessage,
                                           rating: PEP_rating) throws -> Bool {
         guard let message = cdMessage.message() else {
