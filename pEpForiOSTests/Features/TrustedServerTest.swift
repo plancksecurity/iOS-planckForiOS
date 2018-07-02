@@ -13,32 +13,6 @@ import CoreData
 @testable import pEpForiOS
 
 /*
- 1) Send unencrypted
- - Send unencrypted mail
- Check: Is msg in Sent folder unencrypted (*not* encrypted for self)
-
- 2) Receive unencrypted
- - Receive unencrypted mail from TB
- - Mail is in Inbox unencrypted (*not* encrypted for self)
- - Is msg in Inbox is grey
-
- 3) Answer enrcypted
- - Send encrypted mail
- Check:
- - Answer is sent encrypted
- - Is msg in Sent folder unencrypted (*not* encrypted for self)
- - Is msg in Sent folder yelow (*not* grey)
-
- 4) Receive encrypted (decryptable)
- - Receive encrypted mail from TB
- - Mail is in Inbox unencrypted
- - msg color is yelow (*not* grey)
-
- 4) Receive encrypted (un-decryptable)
- - Receive encrypted mail from TB
- - Mail is  displayed in Inbox (as un-decryptable)
- - Mail is not Re-uploaded
-
 
  UNTRUSTED SERVER
 
@@ -63,15 +37,20 @@ import CoreData
  - Mail is in Inbox (on server) encrypted (not reuploaded unencrypted)
  - msg color is yellow (not grey)
 
- 4) Receive encrypted (un-decryptable)
- - Receive encrypted mail from TB
- - Mail is  displayed in Inbox (as un-decryptable)
- - Mail is not Re-uploaded
  */
 class TrustedServerTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
+        // Setup soley mark all mails on server deleted.
+        setupSenderAccount()
+        markAllMessagesOnServerDeleted()
+        // And start from scratch
+        super.tearDown()
+        super.setUp()
+        setupSenderAccount()
+    }
 
+    private func setupSenderAccount() {
         // // Account on trusted server (sender)
         cdAccount.identity?.userName = "unittest.ios.3"
         cdAccount.identity?.userID = "unittest.ios.3_ID"
@@ -95,22 +74,78 @@ class TrustedServerTest: CoreDataDrivenTestBase {
         try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
                                fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
         TestUtil.skipValidation()
+        Record.saveAndWait()
         cdAccount.createRequiredFoldersAndWait(testCase: self)
     }
 
+    // MARK: - Trusted
+
     /*
-     1) Send unencrypted
+    Send unencrypted
      - Send unencrypted mail
      Check: Is msg in Sent folder unencrypted (*not* encrypted for self)
      */
-    func testMailSendUnencrypted_senderTrusted_receiverUntrusted() {
+    func testSendUnencrypted_trustedServer() {
         assert(senderTrusted: true,
                receiverTrusted: false,
-               expectedSenderRatingOnServer: PEP_rating_unencrypted,
-               expectedSenderRatingToDisplay: PEP_rating_unencrypted,
-               expectedReceiverRatingOnServer: PEP_rating_unencrypted,
-               expectedReceiverRatingToDisplay: PEP_rating_unencrypted)
+               sendEncrypted: false,
+               expectedSenderRatingOnServerEncrypted: false,
+               expectedSenderRatingToDisplayEncrypted: false,
+               expectedReceiverRatingOnServerEncrypted: false,
+               expectedReceiverRatingToDisplayEncrypted: false)
     }
+
+    /*
+     Receive unencrypted
+     - Receive unencrypted mail
+     - Mail is in Inbox unencrypted (*not* encrypted for self)
+     - Is msg in Inbox is grey
+     */
+    func testReceiveUnencrypted_trustedServer() {
+        assert(senderTrusted: false,
+               receiverTrusted: true,
+               sendEncrypted: false,
+               expectedSenderRatingOnServerEncrypted: false,
+               expectedSenderRatingToDisplayEncrypted: false,
+               expectedReceiverRatingOnServerEncrypted: false,
+               expectedReceiverRatingToDisplayEncrypted: false)
+    }
+
+    /*
+     Send enrcypted
+     - Send encrypted mail
+     Check:
+     - Message is sent encrypted (Inbox receiver)
+     - msg in Sent folder is unencrypted (*not* encrypted for self)
+     - msg in Sent folder is yelow (*not* grey)
+     */
+    func testSendEncrypted_trustedServer() {
+        assert(senderTrusted: true,
+               receiverTrusted: false,
+               sendEncrypted: true,
+               expectedSenderRatingOnServerEncrypted: false,
+               expectedSenderRatingToDisplayEncrypted: true,
+               expectedReceiverRatingOnServerEncrypted: true,
+               expectedReceiverRatingToDisplayEncrypted: true)
+    }
+
+    /*
+     Receive encrypted
+     - Receive encrypted mail
+     - Mail is in Inbox unencrypted (*not* encrypted for self)
+     - msg in Inbox is yellow
+     */
+    func testReceiveEncrypted_trustedServer() {
+        assert(senderTrusted: false,
+               receiverTrusted: true,
+               sendEncrypted: true,
+               expectedSenderRatingOnServerEncrypted: true,
+               expectedSenderRatingToDisplayEncrypted: true,
+               expectedReceiverRatingOnServerEncrypted: false,
+               expectedReceiverRatingToDisplayEncrypted: true)
+    }
+
+    // MARK: - Untrusted
 
     // MARK: - HELPER
 
@@ -118,19 +153,33 @@ class TrustedServerTest: CoreDataDrivenTestBase {
 
     func assert(senderTrusted: Bool,
                 receiverTrusted: Bool,
-                expectedSenderRatingOnServer: PEP_rating,
-                expectedSenderRatingToDisplay: PEP_rating,
-                expectedReceiverRatingOnServer: PEP_rating,
-                expectedReceiverRatingToDisplay: PEP_rating) {
+                sendEncrypted: Bool,
+                expectedSenderRatingOnServerEncrypted: Bool,
+                expectedSenderRatingToDisplayEncrypted: Bool,
+                expectedReceiverRatingOnServerEncrypted: Bool,
+                expectedReceiverRatingToDisplayEncrypted: Bool) {
         if senderTrusted {
             TestUtil.setServersTrusted(forCdAccount: cdAccount, testCase: self)
         }
 
-        guard
-            let sender = cdAccount.identity,
-            let receiver = createForeignReceiverIdentityNoKnownKey().cdIdentity() else {
-                XCTFail("No identities")
+        guard let sender = cdAccount.identity else {
+                XCTFail("No identity")
                 return
+        }
+
+        let receiver: CdIdentity
+        if sendEncrypted {
+            guard let tmpReceiver = createForeignReceiverIdentityKnownKey().cdIdentity() else {
+                XCTFail("No identity")
+                return
+            }
+            receiver = tmpReceiver
+        } else {
+            guard let tmpReceiver = createForeignReceiverIdentityNoKnownKey().cdIdentity() else {
+                XCTFail("No identity")
+                return
+            }
+            receiver = tmpReceiver
         }
 
         // Send mail and sync
@@ -169,20 +218,35 @@ class TrustedServerTest: CoreDataDrivenTestBase {
                 return
         }
 
-        let senderRatingOnServer = PEPUtil.pEpRatingFromInt(msg.pEpRatingInt)
-        XCTAssertEqual(senderRatingOnServer, expectedSenderRatingOnServer,
-                       "assumed) stored rating on sever")
-        let senderRatingToDisplay = msg.pEpRating()
-        XCTAssertEqual(senderRatingToDisplay, expectedSenderRatingToDisplay,
-                       "Color to display to user is correct")
+        XCTAssertTrue(msg.uid > 0, "We fetched the message from server")
 
-        // Fine.
+        let senderRatingOnServer = PEPUtil.pEpRatingFromInt(msg.pEpRatingInt)
+        if expectedSenderRatingOnServerEncrypted {
+            XCTAssertFalse(senderRatingOnServer == PEP_rating_unencrypted,
+                           "assumed stored rating on sever")
+        } else {
+            XCTAssertTrue(senderRatingOnServer == PEP_rating_unencrypted,
+                           "assumed stored rating on sever")
+        }
+
+        let senderRatingToDisplay = msg.pEpRating()
+        if expectedSenderRatingToDisplayEncrypted {
+            XCTAssertFalse(senderRatingToDisplay == PEP_rating_unencrypted,
+                           "Color to display to user is correct")
+        } else {
+            XCTAssertTrue(senderRatingToDisplay == PEP_rating_unencrypted,
+                          "Color to display to user is correct")
+        }
+
+        // Give the mail server some time to do its job.
+        sleep(2)
 
         // Now lets see on receiver side.
-        guard let cdAccountReceiver = createAccountOfReceiverWithKeys().cdAccount() else {
+        guard let cdAccountReceiver = createAccountOfReceiver().cdAccount() else {
             XCTFail("No account")
             return
         }
+
         if receiverTrusted {
             TestUtil.setServersTrusted(forCdAccount: cdAccountReceiver, testCase: self)
         }
@@ -199,18 +263,36 @@ class TrustedServerTest: CoreDataDrivenTestBase {
             let cdReceivedMsg = CdMessage.search(uid: nil,
                                                  uuid: sentUuid,
                                                  folderName: inboxFolderName,
-                                                 inAccount: cdAccountReceiver),
+                                                 inAccount: cdAccountReceiver,
+                                                 includingDeleted: false),
             let receivedMsg = cdReceivedMsg.message()
             else {
                 XCTFail("Message not found")
                 return
         }
-        let receiverRatingOnServer = PEPUtil.pEpRatingFromInt(receivedMsg.pEpRatingInt)
-        XCTAssertEqual(receiverRatingOnServer, expectedReceiverRatingOnServer,
-                       "assumed) stored rating on sever")
+
+        XCTAssertTrue(receivedMsg.uid > 0, "We fetched the message from server")
+
+        guard let receiverRatingOnServer = PEPUtil.pEpRatingFromInt(receivedMsg.pEpRatingInt) else {
+            XCTFail("No rating.")
+            return
+        }
+        if expectedReceiverRatingOnServerEncrypted {
+            XCTAssertFalse(receiverRatingOnServer == PEP_rating_unencrypted,
+                           "rating on sever")
+        } else {
+            XCTAssertTrue(receiverRatingOnServer == PEP_rating_unencrypted,
+                          "rating on sever")
+        }
+
         let receiverRatingToDisplay = receivedMsg.pEpRating()
-        XCTAssertEqual(receiverRatingToDisplay, expectedReceiverRatingToDisplay,
-                       "Color to display to user is correct")
+        if expectedReceiverRatingToDisplayEncrypted {
+            XCTAssertFalse(receiverRatingToDisplay == PEP_rating_unencrypted,
+                           "Color to display to user is correct")
+        } else {
+            XCTAssertTrue(receiverRatingToDisplay == PEP_rating_unencrypted,
+                          "Color to display to user is correct")
+        }
     }
 
     // MARK: Account / Identity 2 (receiver)
@@ -256,79 +338,73 @@ class TrustedServerTest: CoreDataDrivenTestBase {
         return createe
     }
 
-    private func createAccountOfReceiverWithKeys() -> Account {
+    private func createAccountOfReceiver(withKeys: Bool = true) -> Account {
         let receiver = createOwnIdentityReceiverWithKeys()
-        let cdAccount = SecretTestData().createWorkingCdAccount(number: 1)
+        // Get account from test data. We use it soley to take over server data.
+        let tmpCdAccount = SecretTestData().createWorkingCdAccount(number: 1)
         guard
-            let cdServerImap = cdAccount.server(type: .imap),
+            let cdServerImap = tmpCdAccount.server(type: .imap),
             let imapCredentials = cdServerImap.credentials,
-            let cdServerSmtp = cdAccount.server(type: .smtp),
+            let cdServerSmtp = tmpCdAccount.server(type: .smtp),
             let smtpCredentials = cdServerSmtp.credentials else {
                fatalError()
         }
         imapCredentials.loginName = receiver.address
         smtpCredentials.loginName = receiver.address
 
-        let createe = cdAccount.account()
+        let createe = tmpCdAccount.account()
         createe.user = receiver
+        // Delete tmp account
+        tmpCdAccount.identity?.delete()
+        tmpCdAccount.delete()
+        Record.saveAndWait()
+        // Save new acount
         createe.save()
         TestUtil.skipValidation()
-        createe.cdAccount()?.createRequiredFoldersAndWait(testCase: self)
+        guard let cdAccount = createe.cdAccount() else {
+            XCTFail("No Accoount")
+            return createe
+        }
+        cdAccount.createRequiredFoldersAndWait(testCase: self)
         return createe
     }
 
-    //IOS-1141
-    //    func testAnonymizedRating() {
-    //        // Setup 2 accounts
-    //        cdAccount.createRequiredFoldersAndWait(testCase: self)
-    //        Record.saveAndWait()
-    //
-    //        let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-    //        TestUtil.skipValidation()
-    //        Record.saveAndWait()
-    //        cdAccount2.createRequiredFoldersAndWait(testCase: self)
-    //        Record.saveAndWait()
-    //
-    //        guard let id1 = cdAccount.identity, let id2 = cdAccount2.identity else {
-    //            XCTFail("We all loose identity ...")
-    //            return
-    //        }
-    //
-    //        // Sync both acocunts and remember what we got before starting the actual test
-    //        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
-    //        let msgsInSentAccount1Before = cdAccount.allMessages(inFolderOfType: .sent, sendFrom: id1)
-    //
-    //        // Create mail(s) from cdAccount to cdAccount2 ...
-    //        let numMailsToSend = 1
-    //        let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
-    //                                                            fromIdentity: id1,
-    //                                                            toIdentity: id2,
-    //                                                            testCase: self,
-    //                                                            numberOfMails: numMailsToSend,
-    //                                                            withAttachments: false)
-    //        XCTAssertEqual(mailsToSend.count, numMailsToSend)
-    //        Record.saveAndWait()
-    //
-    //        // ... and send them.
-    //        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
-    //
-    //        // Now let's see what we got.
-    //        let msgsInSentAccount1After = cdAccount.allMessages(inFolderOfType: .sent, sendFrom: id1)
-    //            .sorted { (msg1: CdMessage, msg2: CdMessage) -> Bool in
-    //                return msg1.sent! < msg2.sent!
-    //            }
-    //            .map { $0.message()! }
-    //        let newMailsStartIdx = msgsInSentAccount1After.count - numMailsToSend
-    //        let newMailsEndIdx = msgsInSentAccount1After.count - 1
-    //        let mailsToSendInSentFolder = msgsInSentAccount1After[newMailsStartIdx...newMailsEndIdx]
-    //        XCTAssertEqual(msgsInSentAccount1After.count,
-    //                       msgsInSentAccount1Before.count + numMailsToSend,
-    //                       "Send mails are in sent folder")
-    //        for msg in mailsToSendInSentFolder {
-    //            let originalRating = msg.getOriginalRatingHeaderRating()
-    //            let rating = msg.pEpRating()
-    //            XCTAssertTrue(originalRating != PEP_rating_trusted_and_anonymized)
-    //            XCTAssertTrue(rating != PEP_rating_trusted_and_anonymized)
-    //        }
-    //    }
+    private func markAllMessagesDeleted(inCdAccount cdAccount: CdAccount) {
+        var allMessages = [CdMessage]()
+        allMessages.append(contentsOf: cdAccount.allMessages(inFolderOfType: .inbox))
+        allMessages.append(contentsOf: cdAccount.allMessages(inFolderOfType: .sent))
+        for cdMsg in allMessages {
+            let msg = cdMsg.message()
+            msg?.imapMarkDeleted()
+        }
+    }
+
+    private func makeFoldersInteresting(inCdAccount cdAccount: CdAccount) {
+        TestUtil.makeFolderInteresting(folderType: .inbox, cdAccount: cdAccount)
+        TestUtil.makeFolderInteresting(folderType: .sent, cdAccount: cdAccount)
+    }
+
+    /// As we are using the same servers as trusted and untrusted depending on the test case, we
+    /// must not fetch messages from previous tests.
+    private func markAllMessagesOnServerDeleted() {
+        // Create receiver account temporarly to be able to delete all messages.
+        // Without keys so the engine does not know it.
+        guard let cdAccountReceiver = createAccountOfReceiver(withKeys: false).cdAccount() else {
+            XCTFail("No account")
+            return
+        }
+        makeFoldersInteresting(inCdAccount: cdAccountReceiver)
+        makeFoldersInteresting(inCdAccount: cdAccount)
+        // Fetch all messages.
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        // Mark all messages deleted ...
+        markAllMessagesDeleted(inCdAccount: cdAccountReceiver)
+        markAllMessagesDeleted(inCdAccount: cdAccount)
+        // ... and propagate the changes to the servers
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        // Delete receiver account. Has to be freshly crated in tests.
+        cdAccountReceiver.delete()
+        Record.saveAndWait()
+
+    }
 }
