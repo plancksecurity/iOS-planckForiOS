@@ -278,7 +278,8 @@ open class NetworkServiceWorker {
             var lastOp = Operation()
             operations.append(lastOp)
             MessageModel.performAndWait {
-                let folders = MoveToFolderOperation.foldersContainingMarkedForMoveToFolder(connectInfo:
+                let folders =
+                    MoveToFolderOperation.foldersContainingMarkedForMoveToFolder(connectInfo:
                     imapSyncData.connectInfo)
                 for folder in folders {
                     let op = MoveToFolderOperation(imapSyncData: imapSyncData,
