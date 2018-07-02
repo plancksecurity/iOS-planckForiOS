@@ -104,7 +104,7 @@ class TrustedServerTest: CoreDataDrivenTestBase {
      Check: Is msg in Sent folder unencrypted (*not* encrypted for self)
      */
     func testMailSendUnencrypted_senderTrusted_receiverUntrusted() {
-        TrustedServerTestUtils.setServersTrusted(forCdAccount: cdAccount, testCase: self)
+        TestUtil.setServersTrusted(forCdAccount: cdAccount, testCase: self)
         guard
             let sender = cdAccount.identity,
             let receiver = createForeignReceiverIdentityNoKnownKey().cdIdentity() else {
