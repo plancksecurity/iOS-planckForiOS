@@ -308,9 +308,11 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         return topMessages[uid-1]
     }
 
-    func createMessage(number: Int) -> Message {
-        let msg = Message.init(uuid: "\(number)", parentFolder: inbox)
-        msg.imapFlags?.uid = Int32(number)
+    func createMessage(number: Int, inFolder folder: Folder? = nil) -> Message {
+        let msg = Message.init(uuid: "\(number)",
+            uid: UInt(number),
+            parentFolder: folder ?? inbox)
+        XCTAssertEqual(msg.uid, UInt(number))
         msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg.received = Date.init(timeIntervalSince1970: Double(number))
         msg.sent = msg.received
