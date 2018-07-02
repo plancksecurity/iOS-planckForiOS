@@ -260,11 +260,16 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         let nextUid = Int(topMessages.last?.uid ?? 999) + 1
         XCTAssertGreaterThan(nextUid, topMessages.count)
-        let sentMesage = createMessage(number: nextUid, inFolder: sentFolder)
+        let sentMessage = createMessage(number: nextUid, inFolder: sentFolder)
+        sentMessage.save()
 
-        topMessages[0].references.append(sentMesage.messageID)
+        let topMessageReferencingSentMessage = topMessages[0]
+        topMessageReferencingSentMessage.references.append(sentMessage.messageID)
+        topMessageReferencingSentMessage.save()
 
-        let _ = testIncomingMessage(references: [sentMesage],
+        XCTAssertFalse(topMessageReferencingSentMessage.referencedMessages().isEmpty)
+
+        let _ = testIncomingMessage(references: [sentMessage],
                                     indexPathUpdated: indexOfTopMessage0)
     }
 
