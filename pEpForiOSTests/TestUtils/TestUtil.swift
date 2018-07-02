@@ -461,8 +461,9 @@ class TestUtil {
 
         if let cdOutgoingMsgs = sentFolder.messages?.sortedArray(
             using: [NSSortDescriptor.init(key: "uid", ascending: true)]) as? [CdMessage] {
-            XCTAssertEqual(cdOutgoingMsgs.count, numberOfMails)
-            for m in cdOutgoingMsgs {
+            let unsent = cdOutgoingMsgs.filter { $0.uid == 0 }
+            XCTAssertEqual(unsent.count, numberOfMails)
+            for m in unsent {
                 XCTAssertEqual(m.parent?.folderType, FolderType.sent)
                 XCTAssertEqual(m.uid, Int32(0))
                 XCTAssertEqual(m.sendStatus, SendStatus.none)
