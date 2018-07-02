@@ -177,8 +177,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         }
         let messageCopyForReupload = Message(message: message)
         setOriginalRatingHeader(rating: rating, toMessage: messageCopyForReupload)
-        messageCopyForReupload.save()
         message.imapMarkDeleted()
+
         return true
     }
 
