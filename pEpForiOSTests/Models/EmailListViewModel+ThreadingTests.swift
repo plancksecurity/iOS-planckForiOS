@@ -188,11 +188,6 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                 indexPath: indexPath,
                 expectation: expectation(description: "expectationTopMessageDeleted"))
 
-        updateThreadListDelegate.expectationTopMessageDeleted =
-            ExpectationUpdateThreadListDelegateTopMessageDeleted(
-                message: messageToBeDeleted,
-                expectation: expectation(description: "expectationTopMessageDeleted"))
-
         emailListViewModel.delete(forIndexPath: indexPath)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
@@ -440,14 +435,6 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         var expectationAdded: ExpectationChildMessageAdded?
         var expectationUpdated: ExpectationChildMessageUpdated?
         var expectationChildMessageDeleted: ExpectationChildMessageDeleted?
-        var expectationTopMessageDeleted: ExpectationUpdateThreadListDelegateTopMessageDeleted?
-
-        func deleted(topMessage: Message) {
-            if let exp = expectationTopMessageDeleted {
-                XCTAssertEqual(topMessage, exp.message)
-                exp.expectation.fulfill()
-            }
-        }
 
         func deleted(message: Message) {
             if let exp = expectationChildMessageDeleted {
