@@ -21,6 +21,23 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     var displayedMessage = MyDisplayedMessage()
     var updateThreadListDelegate = MyUpdateThreadListDelegate()
 
+    static let numberOfTopMessages = 5
+
+    /**
+     The index of `topMessages[0]`, that is, the oldest one.
+     */
+    let indexOfTopMessage0 = IndexPath(row: numberOfTopMessages - 1, section: 0)
+
+    /**
+     The index of `topMessages[1]`, that is, the second oldest one.
+     */
+    let indexOfTopMessage1 = IndexPath(row: numberOfTopMessages - 2, section: 0)
+
+    /**
+     The index of `topMessages.last`, that is, the newest one.
+     */
+    let indexOfTopMessageNewest = IndexPath(row: 0, section: 0)
+
     // MARK: - Tests
 
     func testUnthreadedIncomingTopMessage() {
@@ -35,9 +52,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         // topMessages[0] is the oldest, so it's last in the list
         let _ = testIncomingMessage(references: [topMessages[1]],
-                                    indexPathUpdated: IndexPath(row: 3, section: 0))
+                                    indexPathUpdated: indexOfTopMessage1)
         let _ = testIncomingMessage(references: [topMessages[0]],
-                                    indexPathUpdated: IndexPath(row: 4, section: 0))
+                                    indexPathUpdated: indexOfTopMessage0)
     }
 
     func testThreadedIncomingChildMessageToUndisplayedParents() {
@@ -47,7 +64,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         // Will update the first (newest) message it finds,
         // which is topMessages[1] with row 3.
         let _ = testIncomingMessage(references: [topMessages[0], topMessages[1]],
-                                    indexPathUpdated: IndexPath(row: 3, section: 0))
+                                    indexPathUpdated: indexOfTopMessage1)
     }
 
     func testThreadedIncomingChildMessageToSingleDisplayedParent() {
@@ -76,7 +93,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         XCTAssertTrue(topMessages[0].imapFlags?.flagged ?? false)
 
         emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
-            indexPath: IndexPath(row: 4, section: 0),
+            indexPath: indexOfTopMessage0,
             expectation: expectation(description: "expectationUpdated"))
 
         emailListViewModel.didUpdate(messageFolder: topMessages[0])
@@ -118,7 +135,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         displayedMessage.messageModel = topMessages[0]
 
         let incomingMessage = testIncomingMessage(references: [unDisplayedMessage],
-                                                  indexPathUpdated: IndexPath(row: 3, section: 0))
+                                                  indexPathUpdated: indexOfTopMessage1)
         incomingMessage.imapFlags?.flagged = true
         XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
 
@@ -156,17 +173,38 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testThreadedDeleteUnDisplayedChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        let incomingMessage = testIncomingMessage(references: [topMessages[0]],
+                                                  indexPathUpdated: indexOfTopMessage0)
+
+        emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
+            indexPath: indexOfTopMessage0,
+            expectation: expectation(description: "expectationUpdated"))
+
+        incomingMessage.imapDelete()
+        emailListViewModel.didDelete(messageFolder: incomingMessage)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
     func testUnThreadedUserDeleteUndisplayedMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
         setUpTopMessages()
 
-        let indexPath = IndexPath(row: 0, section: 0)
         emailListViewModelDelegate.expectationTopMessageDeleted =
             ExpectationViewModelDelegateTopMessageDeleted(
-                indexPath: indexPath,
+                indexPath: indexOfTopMessageNewest,
                 expectation: expectation(description: "expectationTopMessageDeleted"))
 
-        emailListViewModel.delete(forIndexPath: indexPath)
+        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
@@ -182,13 +220,12 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let messageToBeDeleted = topMessages.last!
         displayedMessage.messageModel = messageToBeDeleted
 
-        let indexPath = IndexPath(row: 0, section: 0)
         emailListViewModelDelegate.expectationTopMessageDeleted =
             ExpectationViewModelDelegateTopMessageDeleted(
-                indexPath: indexPath,
+                indexPath: indexOfTopMessageNewest,
                 expectation: expectation(description: "expectationTopMessageDeleted"))
 
-        emailListViewModel.delete(forIndexPath: indexPath)
+        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
@@ -199,13 +236,12 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
-        let indexPath = IndexPath(row: 0, section: 0)
         emailListViewModelDelegate.expectationTopMessageDeleted =
             ExpectationViewModelDelegateTopMessageDeleted(
-                indexPath: indexPath,
+                indexPath: indexOfTopMessageNewest,
                 expectation: expectation(description: "expectationTopMessageDeleted"))
 
-        emailListViewModel.delete(forIndexPath: indexPath)
+        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
@@ -225,7 +261,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         topMessages.removeAll()
 
-        for i in 1...5 {
+        for i in 1...EmailListViewModel_ThreadingTests.numberOfTopMessages {
             let msg = createMessage(number: i)
             topMessages.append(msg)
             msg.save()
@@ -262,7 +298,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         if references.isEmpty {
             // expect top message
             emailListViewModelDelegate.expectationInserted = ExpectationTopMessageInserted(
-                indexPath: IndexPath(row: 0, section: 0),
+                indexPath: indexOfTopMessageNewest,
                 expectation: expectation(description: "expectationInserted"))
         } else if let indexPath = indexPathUpdated {
             emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
@@ -286,9 +322,11 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         return topMessages[uid-1]
     }
 
-    func createMessage(number: Int) -> Message {
-        let msg = Message.init(uuid: "\(number)", parentFolder: inbox)
-        msg.imapFlags?.uid = Int32(number)
+    func createMessage(number: Int, inFolder folder: Folder? = nil) -> Message {
+        let msg = Message.init(uuid: "\(number)",
+            uid: UInt(number),
+            parentFolder: folder ?? inbox)
+        XCTAssertEqual(msg.uid, UInt(number))
         msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg.received = Date.init(timeIntervalSince1970: Double(number))
         msg.sent = msg.received
