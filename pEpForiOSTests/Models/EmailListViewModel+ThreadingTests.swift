@@ -173,7 +173,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         incomingMessage.imapDelete()
         emailListViewModel.didDelete(messageFolder: incomingMessage)
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
     }
