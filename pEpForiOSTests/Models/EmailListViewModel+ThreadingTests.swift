@@ -248,6 +248,26 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testThreadedReferencesSentMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let sentFolder = Folder.init(name: "Sent",
+                                     parent: nil,
+                                     account: account,
+                                     folderType: .sent)
+        sentFolder.save()
+
+        let nextUid = Int(topMessages.last?.uid ?? 999) + 1
+        XCTAssertGreaterThan(nextUid, topMessages.count)
+        let sentMesage = createMessage(number: nextUid, inFolder: sentFolder)
+
+        topMessages[0].references.append(sentMesage.messageID)
+
+        let _ = testIncomingMessage(references: [sentMesage],
+                                    indexPathUpdated: indexOfTopMessage0)
+    }
+
     // MARK: - Internal - Helpers
 
     func setUpTopMessages() {
