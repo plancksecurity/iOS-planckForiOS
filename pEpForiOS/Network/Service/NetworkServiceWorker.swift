@@ -246,46 +246,53 @@ open class NetworkServiceWorker {
         return (sendOp, operations)
     }
 
-    func buildAppendOperations(imapSyncData: ImapSyncData,
-                               errorContainer: ServiceErrorProtocol,
-                               opImapFinished: Operation,
-                               previousOp: Operation) -> (Operation?, [Operation]) {
-        var lastOp = previousOp
-        var createdOps = [AppendMailsOperation]()
-        MessageModel.performAndWait {
-            let folders = AppendMailsOperation.foldersContainingMarkedForAppend(connectInfo:
-                imapSyncData.connectInfo)
-            for folder in folders {
-                let op = AppendMailsOperation(folder: folder, imapSyncData: imapSyncData)
-                op.addDependency(lastOp)
-                opImapFinished.addDependency(op)
-                lastOp = op
-                createdOps.append(op)
+    func buildAppendOperation(imapSyncData: ImapSyncData,
+                              errorContainer: ServiceErrorProtocol) -> Operation {
+        let resultOp = BlockOperation {
+            let queue = OperationQueue()
+            var operations = [Operation]()
+            var lastOp = Operation()
+            operations.append(lastOp)
+
+            MessageModel.performAndWait {
+                let folders = AppendMailsOperation.foldersContainingMarkedForAppend(connectInfo:
+                    imapSyncData.connectInfo)
+                for folder in folders {
+                    let op = AppendMailsOperation(folder: folder, imapSyncData: imapSyncData)
+                    op.addDependency(lastOp)
+                    lastOp = op
+                    operations.append(op)
+                }
             }
+            queue.addOperations(operations, waitUntilFinished: false)
+            queue.waitUntilAllOperationsAreFinished()
         }
-        return (lastOp, createdOps)
+        return resultOp
     }
 
-    private func buildUidMoveToFolderOperations(imapSyncData: ImapSyncData,
-                                                    errorContainer: ServiceErrorProtocol,
-                                                    opImapFinished: Operation,
-                                                    previousOp: Operation) -> (Operation?, [Operation]) {
-        var lastOp = previousOp
-        var createdOps = [MoveToFolderOperation]()
-        MessageModel.performAndWait {
-            let folders = MoveToFolderOperation.foldersContainingMarkedForMoveToFolder(connectInfo:
-                imapSyncData.connectInfo)
-            for folder in folders {
-                let op = MoveToFolderOperation(imapSyncData: imapSyncData,
-                                                      errorContainer: errorContainer,
-                                                      folder: folder)
-                op.addDependency(lastOp)
-                opImapFinished.addDependency(op)
-                lastOp = op
-                createdOps.append(op)
+    func buildUidMoveToFolderOperation(imapSyncData: ImapSyncData,
+                                       errorContainer: ServiceErrorProtocol) -> Operation {
+        let resultOp = BlockOperation {
+            let queue = OperationQueue()
+            var operations = [Operation]()
+            var lastOp = Operation()
+            operations.append(lastOp)
+            MessageModel.performAndWait {
+                let folders = MoveToFolderOperation.foldersContainingMarkedForMoveToFolder(connectInfo:
+                    imapSyncData.connectInfo)
+                for folder in folders {
+                    let op = MoveToFolderOperation(imapSyncData: imapSyncData,
+                                                   errorContainer: errorContainer,
+                                                   folder: folder)
+                    op.addDependency(lastOp)
+                    lastOp = op
+                    operations.append(op)
+                }
             }
+            queue.addOperations(operations, waitUntilFinished: false)
+            queue.waitUntilAllOperationsAreFinished()
         }
-        return (lastOp, createdOps)
+        return resultOp
     }
 
     /**
@@ -342,38 +349,53 @@ open class NetworkServiceWorker {
         return folderInfos
     }
 
-    func syncExistingMessages(
-        folderInfos: [FolderInfo], errorContainer: ServiceErrorProtocol,
-        imapSyncData: ImapSyncData,
-        onlySyncChangesTriggeredByUser: Bool,
-        lastImapOp: Operation, opImapFinished: Operation) -> (lastImapOp: Operation, [Operation]) {
-        var theLastImapOp = lastImapOp
-        var operations: [Operation] = []
-        for fi in folderInfos {
-            if let folderID = fi.folderID, let firstUID = fi.firstUID, let lastUID = fi.lastUID,
-                firstUID != 0, lastUID != 0, firstUID <= lastUID {
-                if !onlySyncChangesTriggeredByUser {
-                    let syncMessagesOp = SyncMessagesOperation(
-                        parentName: description, errorContainer: errorContainer,
-                        imapSyncData: imapSyncData, folderName: fi.name,
-                        firstUID: firstUID, lastUID: lastUID)
-                    syncMessagesOp.addDependency(theLastImapOp)
-                    operations.append(syncMessagesOp)
-                    opImapFinished.addDependency(syncMessagesOp)
-                    theLastImapOp = syncMessagesOp
-                }
-                if let syncFlagsOp = SyncFlagsToServerOperation(parentName: description,
-                                                                errorContainer: errorContainer,
-                                                                imapSyncData: imapSyncData,
-                                                                folderID: folderID) {
-                    syncFlagsOp.addDependency(theLastImapOp)
-                    operations.append(syncFlagsOp)
-                    opImapFinished.addDependency(syncFlagsOp)
-                    theLastImapOp = syncFlagsOp
+    func syncExistingMessagesOperation(folderInfos: [FolderInfo],
+                                       errorContainer: ServiceErrorProtocol,
+                                       imapSyncData: ImapSyncData,
+                                       onlySyncChangesTriggeredByUser: Bool) -> Operation {
+        let resultOp = BlockOperation {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            let queue = OperationQueue()
+            var operations = [Operation]()
+            var lastOp = Operation()
+            operations.append(lastOp)
+            MessageModel.performAndWait {
+                for fi in folderInfos {
+                    if let folderID = fi.folderID,
+                        let firstUID = fi.firstUID,
+                        let lastUID = fi.lastUID,
+                        firstUID != 0, lastUID != 0, firstUID <= lastUID {
+                        if !onlySyncChangesTriggeredByUser {
+                            let syncMessagesOp =
+                                SyncMessagesOperation(parentName: me.description,
+                                                      errorContainer: errorContainer,
+                                                      imapSyncData: imapSyncData,
+                                                      folderName: fi.name,
+                                                      firstUID: firstUID,
+                                                      lastUID: lastUID)
+                            syncMessagesOp.addDependency(lastOp)
+                            lastOp = syncMessagesOp
+                            operations.append(syncMessagesOp)
+                        }
+                        if let syncFlagsOp =
+                            SyncFlagsToServerOperation(parentName: me.description,
+                                                       errorContainer: errorContainer,
+                                                       imapSyncData: imapSyncData,
+                                                       folderID: folderID) {
+                            syncFlagsOp.addDependency(lastOp)
+                            lastOp = syncFlagsOp
+                            operations.append(syncFlagsOp)
+                        }
+                    }
                 }
             }
+            queue.addOperations(operations, waitUntilFinished: false)
+            queue.waitUntilAllOperationsAreFinished()
         }
-        return (theLastImapOp, operations)
+        return resultOp
     }
 
     /// Builds a line of opertations to sync one e-mail account.
@@ -412,8 +434,8 @@ open class NetworkServiceWorker {
                 #endif
             }
         }
-        opAllFinished.addDependency(opImapFinished)
         opAllFinished.addDependency(opSmtpFinished)
+        opAllFinished.addDependency(opImapFinished)
 
         var operations = [Operation]()
         #if DEBUG
@@ -478,20 +500,20 @@ open class NetworkServiceWorker {
                 operations.append(opRequiredFolders)
             }
             // Client-to-server synchronization (IMAP)
-            let (lastAppendOp, appendOperations) =
-                buildAppendOperations(
-                    imapSyncData: imapSyncData, errorContainer: errorContainer,
-                    opImapFinished: opImapFinished, previousOp: lastImapOp)
-            lastImapOp = lastAppendOp ?? lastImapOp
-            operations.append(contentsOf: appendOperations)
+            let appendOp = buildAppendOperation(imapSyncData: imapSyncData,
+                                                errorContainer: errorContainer)
+            appendOp.addDependency(lastImapOp)
+            lastImapOp = appendOp
+            opImapFinished.addDependency(appendOp)
+            operations.append(appendOp)
 
-            let (lastMoveToFolderOp, moveToFolderOperations) =
-                buildUidMoveToFolderOperations(imapSyncData: imapSyncData,
-                                               errorContainer: errorContainer,
-                                               opImapFinished: opImapFinished,
-                                               previousOp: lastImapOp)
-            lastImapOp = lastMoveToFolderOp ?? lastImapOp
-            operations.append(contentsOf: moveToFolderOperations)
+
+            let moveToFolderOp = buildUidMoveToFolderOperation(imapSyncData: imapSyncData,
+                                                               errorContainer: errorContainer)
+            moveToFolderOp.addDependency(lastImapOp)
+            lastImapOp = moveToFolderOp
+            opImapFinished.addDependency(moveToFolderOp)
+            operations.append(moveToFolderOp)
 
             let folderInfos = determineInterestingFolders(accountInfo: accountInfo)
 
@@ -518,9 +540,8 @@ open class NetworkServiceWorker {
                 lastImapOp = opDecrypt
                 opImapFinished.addDependency(opDecrypt)
                 operations.append(opDecrypt)
-                //IOS-33:
                 // In case messages need to be re-uploaded (e.g. for trusted server or extra
-                // keys), we might want do append, fetch and decrypt them in the same sync cycle.
+                // keys), we want do append, fetch and decrypt them in the same sync cycle.
                 let opAppendAndFetchReUploaded = BlockOperation() {[weak self, weak opDecrypt] in
                     guard let me = self, let decryptOp = opDecrypt else {
                         Log.shared.errorAndCrash(component: #function,
@@ -533,19 +554,16 @@ open class NetworkServiceWorker {
                     }
 
                     let reUploadQueue = OperationQueue()
+                    reUploadQueue.name = "security.pep.networkServiceWorker.ReUploadQueue"
                     var reUploadOperations = [Operation]()
-                    let dummyLastOp = Operation()
-                    var lastOp = dummyLastOp
+                    var lastOp = Operation()
                     reUploadOperations.append(lastOp)
                     // Append ...
-                    let (lastAppendOp, appendOperations) =
-                        me.buildAppendOperations(imapSyncData: imapSyncData,
-                                                 errorContainer: errorContainer,
-                                                 opImapFinished: opImapFinished,
-                                                 previousOp: lastOp)
-                    lastOp = lastAppendOp ?? lastOp
-                    reUploadOperations.append(contentsOf: appendOperations)
-
+                    let appendOp = me.buildAppendOperation(imapSyncData: imapSyncData,
+                                                        errorContainer: errorContainer)
+                    appendOp.addDependency(lastOp)
+                    lastOp = appendOp
+                    reUploadOperations.append(appendOp)
                     // ... fetch ...
                     for fi in folderInfos {
                         let fetchMessagesOp = FetchMessagesOperation(
@@ -565,27 +583,26 @@ open class NetworkServiceWorker {
                     lastOp = opDecrypt
                     reUploadOperations.append(opDecrypt)
 
-                    reUploadQueue.name = "security.pep.networkServiceWorker.ReUploadQueue"
-                    reUploadQueue.addOperations(reUploadOperations, waitUntilFinished: true)
+                    reUploadQueue.addOperations(reUploadOperations, waitUntilFinished: false)
                     reUploadQueue.waitUntilAllOperationsAreFinished()
                 }
                 opAppendAndFetchReUploaded.addDependency(lastImapOp)
                 lastImapOp = opAppendAndFetchReUploaded
                 opImapFinished.addDependency(opAppendAndFetchReUploaded)
                 operations.append(opAppendAndFetchReUploaded)
-                //IOS-33 ^^
             }
 
             // sync existing messages
-            let (lastSyncOp, syncOperations) =
-                syncExistingMessages(folderInfos: folderInfos,
-                                     errorContainer: errorContainer,
-                                     imapSyncData: imapSyncData,
-                                     onlySyncChangesTriggeredByUser: onlySyncChangesTriggeredByUser,
-                                     lastImapOp: lastImapOp,
-                                     opImapFinished: opImapFinished)
-            lastImapOp = lastSyncOp
-            operations.append(contentsOf: syncOperations)
+            let syncExistingMessagesOP =
+                syncExistingMessagesOperation(folderInfos: folderInfos,
+                                              errorContainer: errorContainer,
+                                              imapSyncData: imapSyncData,
+                                              onlySyncChangesTriggeredByUser:
+                    onlySyncChangesTriggeredByUser)
+            syncExistingMessagesOP.addDependency(lastImapOp)
+            lastImapOp = syncExistingMessagesOP
+            opImapFinished.addDependency(syncExistingMessagesOP)
+            operations.append(syncExistingMessagesOP)
         }
 
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
