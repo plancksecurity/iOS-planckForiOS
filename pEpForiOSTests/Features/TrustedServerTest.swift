@@ -104,7 +104,28 @@ class TrustedServerTest: CoreDataDrivenTestBase {
      Check: Is msg in Sent folder unencrypted (*not* encrypted for self)
      */
     func testMailSendUnencrypted_senderTrusted_receiverUntrusted() {
-        TestUtil.setServersTrusted(forCdAccount: cdAccount, testCase: self)
+        assert(senderTrusted: true,
+               receiverTrusted: false,
+               expectedSenderRatingOnServer: PEP_rating_unencrypted,
+               expectedSenderRatingToDisplay: PEP_rating_unencrypted,
+               expectedReceiverRatingOnServer: PEP_rating_unencrypted,
+               expectedReceiverRatingToDisplay: PEP_rating_unencrypted)
+    }
+
+    // MARK: - HELPER
+
+    // MARK: The actual test
+
+    func assert(senderTrusted: Bool,
+                receiverTrusted: Bool,
+                expectedSenderRatingOnServer: PEP_rating,
+                expectedSenderRatingToDisplay: PEP_rating,
+                expectedReceiverRatingOnServer: PEP_rating,
+                expectedReceiverRatingToDisplay: PEP_rating) {
+        if senderTrusted {
+            TestUtil.setServersTrusted(forCdAccount: cdAccount, testCase: self)
+        }
+
         guard
             let sender = cdAccount.identity,
             let receiver = createForeignReceiverIdentityNoKnownKey().cdIdentity() else {
@@ -136,7 +157,7 @@ class TrustedServerTest: CoreDataDrivenTestBase {
             return
         }
 
-        // Everything as expected?
+        // Everything as expected on sender side?
         guard
             let cdMsg = CdMessage.search(uid: nil,
                                          uuid: sentUuid,
@@ -149,16 +170,21 @@ class TrustedServerTest: CoreDataDrivenTestBase {
         }
 
         let senderRatingOnServer = PEPUtil.pEpRatingFromInt(msg.pEpRatingInt)
-        XCTAssertEqual(senderRatingOnServer, PEP_rating_unencrypted,
+        XCTAssertEqual(senderRatingOnServer, expectedSenderRatingOnServer,
                        "assumed) stored rating on sever")
         let senderRatingToDisplay = msg.pEpRating()
-        XCTAssertEqual(senderRatingToDisplay, PEP_rating_unencrypted,
+        XCTAssertEqual(senderRatingToDisplay, expectedSenderRatingToDisplay,
                        "Color to display to user is correct")
+
+        // Fine.
 
         // Now lets see on receiver side.
         guard let cdAccountReceiver = createAccountOfReceiverWithKeys().cdAccount() else {
             XCTFail("No account")
             return
+        }
+        if receiverTrusted {
+            TestUtil.setServersTrusted(forCdAccount: cdAccountReceiver, testCase: self)
         }
         // Fetch, maybe re-upload and fetch again.
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
@@ -180,14 +206,12 @@ class TrustedServerTest: CoreDataDrivenTestBase {
                 return
         }
         let receiverRatingOnServer = PEPUtil.pEpRatingFromInt(receivedMsg.pEpRatingInt)
-        XCTAssertEqual(receiverRatingOnServer, PEP_rating_unencrypted,
+        XCTAssertEqual(receiverRatingOnServer, expectedReceiverRatingOnServer,
                        "assumed) stored rating on sever")
         let receiverRatingToDisplay = receivedMsg.pEpRating()
-        XCTAssertEqual(receiverRatingToDisplay, PEP_rating_unencrypted,
+        XCTAssertEqual(receiverRatingToDisplay, expectedReceiverRatingToDisplay,
                        "Color to display to user is correct")
     }
-
-    // MARK: - HELPER
 
     // MARK: Account / Identity 2 (receiver)
 
