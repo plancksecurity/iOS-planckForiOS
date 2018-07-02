@@ -267,7 +267,12 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         topMessageReferencingSentMessage.references.append(sentMessage.messageID)
         topMessageReferencingSentMessage.save()
 
-        XCTAssertFalse(topMessageReferencingSentMessage.referencedMessages().isEmpty)
+        guard let referencedSentMessage =
+            topMessageReferencingSentMessage.referencedMessages().first else {
+                XCTFail()
+                return
+        }
+        XCTAssertEqual(referencedSentMessage.messageID, sentMessage.messageID)
 
         let _ = testIncomingMessage(references: [sentMessage],
                                     indexPathUpdated: indexOfTopMessage0)
