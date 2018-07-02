@@ -303,9 +303,12 @@ class EmailListViewModel {
             let message = previewMessage.message() else {
                 return
         }
-        threadedMessageFolder.deleteThread(message: message)
-        didDelete(messageFolder: message)
 
+        // The message to delete might be a single, unthreaded message,
+        // or the tip of a thread. `threadedMessageFolder` will figure it out.
+        threadedMessageFolder.deleteThread(message: message)
+
+        didDelete(messageFolder: message)
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {

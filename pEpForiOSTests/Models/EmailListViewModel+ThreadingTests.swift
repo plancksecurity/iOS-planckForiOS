@@ -148,8 +148,64 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
             message: incomingMessage,
             expectation: expectation(description: "expectationChildMessageDeleted"))
 
-        incomingMessage.delete()
+        incomingMessage.imapDelete()
         emailListViewModel.didDelete(messageFolder: incomingMessage)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
+    func testUnThreadedUserDeleteUndisplayedMessage() {
+        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
+        setUpTopMessages()
+
+        let indexPath = IndexPath(row: 0, section: 0)
+        emailListViewModelDelegate.expectationTopMessageDeleted =
+            ExpectationViewModelDelegateTopMessageDeleted(
+                indexPath: indexPath,
+                expectation: expectation(description: "expectationTopMessageDeleted"))
+
+        emailListViewModel.delete(forIndexPath: indexPath)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
+    func testUnThreadedUserDeleteDisplayedMessage() {
+        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
+        setUpTopMessages()
+
+        emailListViewModel.currentDisplayedMessage = displayedMessage
+
+        let messageToBeDeleted = topMessages.last!
+        displayedMessage.messageModel = messageToBeDeleted
+
+        let indexPath = IndexPath(row: 0, section: 0)
+        emailListViewModelDelegate.expectationTopMessageDeleted =
+            ExpectationViewModelDelegateTopMessageDeleted(
+                indexPath: indexPath,
+                expectation: expectation(description: "expectationTopMessageDeleted"))
+
+        emailListViewModel.delete(forIndexPath: indexPath)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
+    func testThreadedUserDeleteMessageWithoutChild() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let indexPath = IndexPath(row: 0, section: 0)
+        emailListViewModelDelegate.expectationTopMessageDeleted =
+            ExpectationViewModelDelegateTopMessageDeleted(
+                indexPath: indexPath,
+                expectation: expectation(description: "expectationTopMessageDeleted"))
+
+        emailListViewModel.delete(forIndexPath: indexPath)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
@@ -160,8 +216,13 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
     func setUpTopMessages() {
         account = cdAccount.account()
+
         inbox = Folder.init(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
+
+        let trash = Folder.init(name: "Trash", parent: nil, account: account, folderType: .trash)
+        trash.save()
+
         topMessages.removeAll()
 
         for i in 1...5 {
@@ -283,6 +344,23 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let expectation: XCTestExpectation
     }
 
+    /**
+     UpdateThreadListDelegate deletion of a top message.
+     */
+    struct ExpectationUpdateThreadListDelegateTopMessageDeleted {
+        let message: Message
+        let expectation: XCTestExpectation
+    }
+
+    /**
+     EmailListViewModelDelegate user-deletion of a top message
+     (both unthreaded and threaded).
+     */
+    struct ExpectationViewModelDelegateTopMessageDeleted {
+        let indexPath: IndexPath
+        let expectation: XCTestExpectation
+    }
+
     // MARK: - Internal - Delegates
 
     class MyDisplayedMessage: DisplayedMessage {
@@ -329,6 +407,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         var expectationUpdated: ExpectationTopMessageUpdated?
         var expectationInserted: ExpectationTopMessageInserted?
         var expectationUndiplayedMessageUpdated: ExpectationUndiplayedMessageUpdated?
+        var expectationTopMessageDeleted: ExpectationViewModelDelegateTopMessageDeleted?
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didInsertDataAt indexPath: IndexPath) {
@@ -348,6 +427,10 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didRemoveDataAt indexPath: IndexPath) {
+            if let exp = expectationTopMessageDeleted {
+                XCTAssertEqual(indexPath, exp.indexPath)
+                exp.expectation.fulfill()
+            }
         }
 
         func emailListViewModel(viewModel: EmailListViewModel,
