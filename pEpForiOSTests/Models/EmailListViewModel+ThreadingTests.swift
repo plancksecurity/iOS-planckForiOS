@@ -164,16 +164,16 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let incomingMessage = testIncomingMessage(references: [topMessages[0]],
-                                                  indexPathUpdated: nil)
+                                                  indexPathUpdated: IndexPath(row: 4, section: 0))
 
-        updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
-            message: incomingMessage,
-            expectation: expectation(description: "expectationChildMessageDeleted"))
+        emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
+            indexPath: IndexPath(row: 4, section: 0),
+            expectation: expectation(description: "expectationUpdated"))
 
         incomingMessage.imapDelete()
         emailListViewModel.didDelete(messageFolder: incomingMessage)
 
-        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+        waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
             XCTAssertNil(err)
         }
     }
