@@ -21,15 +21,6 @@ protocol UpdateThreadListDelegate: class {
     func deleted(message: Message)
 
     /**
-     A thread-tip message, or in an unthreaded setting, any message
-     got deleted that currently has details displayed.
-     In any case, this message was
-     * part of the master view of messages
-     * currently displayed in the detail view
-     */
-    func deleted(topMessage: Message)
-
-    /**
      A child-message that belongs to a thread got updated.
      */
     func updated(message: Message)
