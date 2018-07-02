@@ -12,7 +12,7 @@ import MessageModel
 extension ThreadedEmailViewModel: DisplayedMessage {
 
     var messageModel: Message? {
-       return messages[0]
+       return messages.last
     }
 
     func update(forMessage message: Message) {

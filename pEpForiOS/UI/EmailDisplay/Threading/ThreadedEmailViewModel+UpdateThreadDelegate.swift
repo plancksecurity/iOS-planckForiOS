@@ -11,7 +11,11 @@ import MessageModel
 
 extension ThreadedEmailViewModel: UpdateThreadListDelegate {
 
-    func deleted(message: Message) {
+    func deleted(message: Message){
+        deleted(topMessage: message)
+    }
+
+    func deleted(topMessage message: Message) {
         guard let index = indexOfMessage(message: message) else {
             return
         }
@@ -28,8 +32,8 @@ extension ThreadedEmailViewModel: UpdateThreadListDelegate {
     }
 
     func added(message: Message) {
-        messages.append(message)
-        delegate?.emailViewModel(viewModel: self, didInsertDataAt: (messages.count - 1))
+        let index = addMessage(message: message)
+        delegate?.emailViewModel(viewModel: self, didInsertDataAt: index)
     }
 
     internal func indexOfMessage(message: Message)-> Int? {

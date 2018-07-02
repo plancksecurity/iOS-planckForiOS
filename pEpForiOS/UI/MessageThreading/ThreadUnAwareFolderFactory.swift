@@ -12,6 +12,6 @@ import MessageModel
 
 class ThreadUnAwareFolderFactory: ThreadedMessageFolderFactoryProtocol {
     func makeThreadAware(folder: Folder) -> ThreadedMessageFolderProtocol {
-        return ThreadedFolder(folder: folder)
+        return ThreadedFolderWithTop(folder: folder)
     }
 }

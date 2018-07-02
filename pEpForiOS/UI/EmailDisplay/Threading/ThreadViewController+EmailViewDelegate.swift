@@ -11,7 +11,7 @@ extension ThreadViewController: EmailViewModelDelegate {
 
     func emailViewModel(viewModel: ThreadedEmailViewModel, didInsertDataAt index: Int) {
         updateTableView {
-            tableView.insertRows(at: [IndexPath(row: 0, section: index)], with: .automatic)
+            tableView.insertSections(IndexSet([index]), with: .automatic)
         }
     }
 

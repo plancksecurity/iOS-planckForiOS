@@ -52,6 +52,12 @@ class ThreadedEmailViewModel {
         emailDisplayDelegate.emailDisplayDidDelete(message: tip)
     }
 
+    func addMessage(message: Message) -> Int{
+        messages.append(message)
+        expandedMessages.append(true)
+        return messages.count - 1
+    }
+
     fileprivate func notifyFlag(_ status: Bool) {
         if status {
             emailDisplayDelegate.emailDisplayDidFlag(message: tip)

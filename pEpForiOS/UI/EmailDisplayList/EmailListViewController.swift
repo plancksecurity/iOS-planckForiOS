@@ -893,6 +893,8 @@ extension EmailListViewController: SegueHandlerType {
             let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
             viewModel.emailDisplayDelegate = self.model
             vc.model = viewModel
+            model?.currentDisplayedMessage = viewModel
+            model?.updateThreadListDelegate = viewModel
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")

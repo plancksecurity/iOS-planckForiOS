@@ -63,13 +63,14 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedMessages.isEmpty {
                     insertAsTopMessage()
                 } else {
-                    if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
-                        theSelf.updateThreadListDelegate?.added(message: message)
-                    } else if let (index, _) = theSelf.referencedTopMessageIndex(
+                    if let (index, _) = theSelf.referencedTopMessageIndex(
                         messages: referencedMessages) {
                         // The thread count might need to be updated
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf, didUpdateDataAt: IndexPath(row: index, section: 0))
+                        if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
+                            theSelf.updateThreadListDelegate?.added(message: message)
+                        }
                     } else {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
