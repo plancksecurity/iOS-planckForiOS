@@ -156,6 +156,28 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testThreadedDeleteUnDisplayedChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        let incomingMessage = testIncomingMessage(references: [topMessages[0]],
+                                                  indexPathUpdated: nil)
+
+        updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
+            message: incomingMessage,
+            expectation: expectation(description: "expectationChildMessageDeleted"))
+
+        incomingMessage.imapDelete()
+        emailListViewModel.didDelete(messageFolder: incomingMessage)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
     func testUnThreadedUserDeleteUndisplayedMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
         setUpTopMessages()
