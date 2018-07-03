@@ -294,6 +294,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         incomingMessage.references = references.map {
             return $0.messageID
         }
+        incomingMessage.save()
 
         if references.isEmpty {
             // expect top message
