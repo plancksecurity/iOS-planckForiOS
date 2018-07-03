@@ -78,9 +78,8 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func showPepRating() {
-        let session = PEPSession()
-        if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating(session: session)) {
-            let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
+        if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating()) {
+            let handshakeCombos = message?.handshakeActionCombinations() ?? []
             if !handshakeCombos.isEmpty {
                 let tapGestureRecognizer = UITapGestureRecognizer(
                     target: self,

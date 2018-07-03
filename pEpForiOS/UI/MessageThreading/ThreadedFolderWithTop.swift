@@ -25,7 +25,12 @@ class ThreadedFolderWithTop: ThreadedMessageFolderProtocol {
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
-        return underlyingThreadedFolder.numberOfMessagesInThread(message: message) + 1
+        let baseCount = underlyingThreadedFolder.numberOfMessagesInThread(message: message)
+        if baseCount > 0 {
+            return baseCount + 1
+        } else {
+            return baseCount
+        }
     }
 
     func messagesInThread(message: Message) -> [Message] {
