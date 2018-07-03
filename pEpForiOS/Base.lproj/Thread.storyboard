@@ -398,6 +398,7 @@
                                             <outlet property="contentHeightConstraint" destination="KmB-0P-GzL" id="L50-nb-s2L"/>
                                             <outlet property="dateLabel" destination="bz8-dZ-9kk" id="bXh-4X-Qlw"/>
                                             <outlet property="profilePicture" destination="Fte-Eh-jpP" id="hTG-cv-MhG"/>
+                                            <outlet property="roundedView" destination="u7a-uF-y9m" id="GJx-Bn-RQ4"/>
                                             <outlet property="stackView" destination="Hab-5Z-1cx" id="rsF-cc-ewt"/>
                                             <outlet property="subjectLabel" destination="Ux9-Hj-FDE" id="nVa-Ho-nU3"/>
                                             <outlet property="view" destination="O4D-I4-BRy" id="ak1-1y-T8P"/>
@@ -496,10 +497,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
+                        <outlet property="delegate" destination="612-xO-I3z" id="34M-HB-GZi"/>
                         <segue destination="8tS-ie-Ovo" kind="relationship" relationship="rootViewController" id="M5C-HG-Qrm"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zjB-eY-3Pv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <customObject id="612-xO-I3z" customClass="ThreadNavigationDelegate" customModule="pEpForiOS" customModuleProvider="target"/>
             </objects>
             <point key="canvasLocation" x="6917.6000000000004" y="-9.4452773613193415"/>
         </scene>
