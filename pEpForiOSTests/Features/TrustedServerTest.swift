@@ -244,7 +244,6 @@ class TrustedServerTest: CoreDataDrivenTestBase {
             XCTFail("Problem")
             return
         }
-
         // Everything as expected on sender side?
         guard
             let cdMsg = CdMessage.search(uid: nil,
@@ -256,7 +255,6 @@ class TrustedServerTest: CoreDataDrivenTestBase {
                 XCTFail("Message not found")
                 return
         }
-
         XCTAssertTrue(msg.uid > 0, "We fetched the message from server")
 
         let senderRatingOnServer = PEPUtil.pEpRatingFromInt(msg.pEpRatingInt)
@@ -291,9 +289,6 @@ class TrustedServerTest: CoreDataDrivenTestBase {
             XCTAssertTrue(senderRatingToDisplay == PEP_rating_unencrypted,
                           "Color to display to user is correct")
         }
-
-        // Give the mail server some time to do its job.
-        sleep(2)
 
         // Now lets see on receiver side.
         guard let cdAccountReceiver = createAccountOfReceiver().cdAccount() else {
@@ -459,6 +454,5 @@ class TrustedServerTest: CoreDataDrivenTestBase {
         // Delete receiver account. Has to be freshly crated in tests.
         cdAccountReceiver.delete()
         Record.saveAndWait()
-
     }
 }
