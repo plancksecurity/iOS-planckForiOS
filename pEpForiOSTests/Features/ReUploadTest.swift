@@ -28,35 +28,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
         setupSenderAccount()
     }
 
-    private func setupSenderAccount() {
-        // // Account on trusted server (sender)
-        cdAccount.identity?.userName = "unittest.ios.3"
-        cdAccount.identity?.userID = "unittest.ios.3_ID"
-        cdAccount.identity?.address = "unittest.ios.3@peptest.ch"
-        guard
-            let cdServerImap = cdAccount.server(type: .imap),
-            let imapCredentials = cdServerImap.credentials,
-            let cdServerSmtp = cdAccount.server(type: .smtp),
-            let smtpCredentials = cdServerSmtp.credentials else {
-                XCTFail("Problem in setup")
-                return
-        }
-        imapCredentials.loginName = "unittest.ios.3@peptest.ch"
-        smtpCredentials.loginName = "unittest.ios.3@peptest.ch"
-        try! TestUtil.importKeyByFileName(session,
-                                          fileName:
-            "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc")
-        try! TestUtil.importKeyByFileName(session,
-                                          fileName:
-            "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc")
-        try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
-                               fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
-    }
-
-    // MARK: - Trusted
+    // MARK: - Trusted Server
 
     /*
     Send unencrypted
@@ -123,7 +95,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
                expectedReceiverRatingToDisplayEncrypted: true)
     }
 
-    // MARK: - Untrusted
+    // MARK: - Untrusted Server
 
     /*
      Send unencrypted
@@ -333,6 +305,36 @@ class ReUploadTest: CoreDataDrivenTestBase {
             XCTAssertTrue(receiverRatingToDisplay == PEP_rating_unencrypted,
                           "Color to display to user is correct")
         }
+    }
+
+    // MARK: - Account / Identity 1 (sender)
+
+    private func setupSenderAccount() {
+        // // Account on trusted server (sender)
+        cdAccount.identity?.userName = "unittest.ios.3"
+        cdAccount.identity?.userID = "unittest.ios.3_ID"
+        cdAccount.identity?.address = "unittest.ios.3@peptest.ch"
+        guard
+            let cdServerImap = cdAccount.server(type: .imap),
+            let imapCredentials = cdServerImap.credentials,
+            let cdServerSmtp = cdAccount.server(type: .smtp),
+            let smtpCredentials = cdServerSmtp.credentials else {
+                XCTFail("Problem in setup")
+                return
+        }
+        imapCredentials.loginName = "unittest.ios.3@peptest.ch"
+        smtpCredentials.loginName = "unittest.ios.3@peptest.ch"
+        try! TestUtil.importKeyByFileName(session,
+                                          fileName:
+            "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc")
+        try! TestUtil.importKeyByFileName(session,
+                                          fileName:
+            "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc")
+        try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
+                               fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        cdAccount.createRequiredFoldersAndWait(testCase: self)
     }
 
     // MARK: Account / Identity 2 (receiver)
