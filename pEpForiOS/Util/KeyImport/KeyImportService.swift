@@ -66,7 +66,10 @@ extension KeyImportService {
     }
 
     func setNewDefaultKey(for identity: Identity, fpr: String) {
-        //TODO: Tell the engine to please use the given key from now on.
-        fatalError("Unimplemented stub")
+        do {
+            try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
+        } catch {
+            Log.shared.errorAndCrash(component: #function, errorString: "Problem with key.")
+        }
     }
 }
