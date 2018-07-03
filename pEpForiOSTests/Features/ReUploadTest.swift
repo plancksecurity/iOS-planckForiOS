@@ -12,7 +12,9 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
-class TrustedServerTest: CoreDataDrivenTestBase {
+/// Test suite for re-uploading (or not) messages.
+/// Find details here: https://dev.pep.security/Common%20App%20Documentation/Trusted_Untrusted_Server_Demystified
+class ReUploadTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         // Setup soley mark all mails on server deleted.

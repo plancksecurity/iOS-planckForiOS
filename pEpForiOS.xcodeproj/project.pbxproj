@@ -66,7 +66,7 @@
 		1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */; };
 		1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */; };
 		1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */; };
-		1569AEA520E14DC3002102A0 /* TrustedServerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569AEA420E14DC2002102A0 /* TrustedServerTest.swift */; };
+		1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569AEA420E14DC2002102A0 /* ReUploadTest.swift */; };
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */; };
@@ -545,7 +545,7 @@
 		1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesOperation.swift; sourceTree = "<group>"; };
 		1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesService.swift; sourceTree = "<group>"; };
 		1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
-		1569AEA420E14DC2002102A0 /* TrustedServerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustedServerTest.swift; sourceTree = "<group>"; };
+		1569AEA420E14DC2002102A0 /* ReUploadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReUploadTest.swift; sourceTree = "<group>"; };
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+pEp.swift"; sourceTree = "<group>"; };
@@ -1067,7 +1067,7 @@
 		1569AEA320E14DC2002102A0 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				1569AEA420E14DC2002102A0 /* TrustedServerTest.swift */,
+				1569AEA420E14DC2002102A0 /* ReUploadTest.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -2806,7 +2806,7 @@
 				151F71F9202A06760057C74D /* NetworkServiceObserver.swift in Sources */,
 				153FC45F202A26B30053CCF1 /* FolderType+IMAPTest.swift in Sources */,
 				43F7F07A1F6AD44600BDF151 /* HandshakeTests.swift in Sources */,
-				1569AEA520E14DC3002102A0 /* TrustedServerTest.swift in Sources */,
+				1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */,
 				B70DE6881F2773BF00C0A50A /* EmailValidatiorTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
