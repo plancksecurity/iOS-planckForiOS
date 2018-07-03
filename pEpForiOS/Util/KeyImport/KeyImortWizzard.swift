@@ -6,8 +6,25 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import MessageModel
 
-//class KeyImortWizzard: KeyImportServiceDelegate {
-// let keyImportService: KeyImportServiceProtocol
-//}
+class KeyImortWizzard {
+     let keyImportService: KeyImportServiceProtocol
+    //??? We probably need a KeyImportWizzardDelegate to inform the client (i.e. AutoWizardStepsViewController)
+
+    init(keyImportService: KeyImportServiceProtocol) {
+        self.keyImportService = keyImportService
+    }
+}
+
+// MARK: - KeyImportServiceDelegate
+
+extension KeyImortWizzard: KeyImportServiceDelegate {
+    func newKeyImportMessageArrived(message: Message) {
+        fatalError("Unimplemented stub")
+    }
+
+    func receivedPrivateKey(forAccount account: Account) {
+        fatalError("Unimplemented stub")
+    }
+}
