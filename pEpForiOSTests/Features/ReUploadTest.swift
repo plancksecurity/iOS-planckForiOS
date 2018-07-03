@@ -324,7 +324,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
         }
     }
 
-    // MARK: - Account / Identity 1 (sender)
+    // MARK: Account / Identity 1 (sender)
 
     private func setupSenderAccount() {
         // // Account on trusted server (sender)
@@ -428,6 +428,8 @@ class ReUploadTest: CoreDataDrivenTestBase {
         return createe
     }
 
+    // MARK: Prepare Messages on Server
+
     private func markAllMessagesDeleted(inCdAccount cdAccount: CdAccount) {
         var allMessages = [CdMessage]()
         for type in folderTypesEvaluatedByTests {
@@ -436,12 +438,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
         for cdMsg in allMessages {
             let msg = cdMsg.message()
             msg?.imapMarkDeleted()
-        }
-    }
-
-    private func makeFoldersInteresting(inCdAccount cdAccount: CdAccount) {
-        for type in folderTypesEvaluatedByTests {
-            TestUtil.makeFolderInteresting(folderType: type, cdAccount: cdAccount)
         }
     }
 
@@ -466,5 +462,13 @@ class ReUploadTest: CoreDataDrivenTestBase {
         // Delete receiver account. Has to be freshly crated in tests.
         cdAccountReceiver.delete()
         Record.saveAndWait()
+    }
+
+    // MARK: Other
+
+    private func makeFoldersInteresting(inCdAccount cdAccount: CdAccount) {
+        for type in folderTypesEvaluatedByTests {
+            TestUtil.makeFolderInteresting(folderType: type, cdAccount: cdAccount)
+        }
     }
 }
