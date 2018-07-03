@@ -9,4 +9,5 @@
 import Foundation
 
 //class KeyImortWizzard: KeyImportServiceDelegate {
+// let keyImportService: KeyImportServiceProtocol
 //}

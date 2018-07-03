@@ -8,6 +8,23 @@
 
 import MessageModel
 
+protocol KeyImportServiceProtocol: class {
+    var delegate: KeyImportServiceDelegate? { get set }
+
+    /// Call after successfull handshake.
+    /// Sends the private key without appending to "Sent" folder.
+    func sendOwnPrivateKey(inAnswerToRequestMessage msg: Message)
+
+    /// Call to inform the other device that we would love to start a Key Import session
+    func sendInitKeyImportMessage(forAccount acccount: Account)
+
+    /// Call after a newKeyImportMessage arrived to let the other device know
+    /// we are ready for handshake.
+    func sendHandshakeRequest(forAccount acccount: Account)
+
+    func setNewDefaultKey(for identity: Identity, fpr: String) throws
+}
+
 /// Called by background operation or NetworkService[Worker].
 protocol KeyImportListenerProtocol {
     /// Will be triggered when “p≡p-key-import” detected, for p≡p key import.
@@ -28,19 +45,10 @@ protocol KeyImportServiceDelegate: class, KeyImportListenerProtocol {
 
 /// Instantiate in AppDelegate, keep in AppConfig (maybe in renamed MessageSyncService, not sure
 /// yet), KeyImportListener will probably end up in NetworkService/ServiceConfig
-class KeyImportService: KeyImportListenerProtocol {
+class KeyImportService: KeyImportServiceProtocol {
     weak var delegate: KeyImportServiceDelegate?
-}
 
-// MARK: - KeyImportListener
-
-extension KeyImportService {
-
-    func newKeyImportMessageArrived(message: Message) {
-        //HUSS: Do I have to do anything with the key in the "pEp-key-import: partner_fpr" header?
-        //Answer: no.
-        delegate?.newKeyImportMessageArrived(message: message)
-    }
+    // MARK: - KeyImportServiceProtocol
 
     /// Call after successfull handshake.
     /// Sends the private key without appending to "Sent" folder.
@@ -61,15 +69,21 @@ extension KeyImportService {
         fatalError("Unimplemented stub")
     }
 
-    func receivedPrivateKey(forAccount account: Account) {
-        delegate?.receivedPrivateKey(forAccount: account)
+    func setNewDefaultKey(for identity: Identity, fpr: String) throws {
+        try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
+    }
+}
+
+// MARK: - KeyImportListenerProtocol
+
+extension KeyImportService: KeyImportListenerProtocol {
+
+    func newKeyImportMessageArrived(message: Message) {
+        //We can ignore the key in the "pEp-key-import: partner_fpr" header. Simply forward
+        delegate?.newKeyImportMessageArrived(message: message)
     }
 
-    func setNewDefaultKey(for identity: Identity, fpr: String) {
-        do {
-            try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
-        } catch {
-            Log.shared.errorAndCrash(component: #function, errorString: "Problem with key.")
-        }
+    func receivedPrivateKey(forAccount account: Account) {
+        delegate?.receivedPrivateKey(forAccount: account)
     }
 }
