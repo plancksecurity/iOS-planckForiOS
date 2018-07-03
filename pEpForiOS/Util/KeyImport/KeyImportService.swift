@@ -72,6 +72,8 @@ class KeyImportService: KeyImportServiceProtocol {
     func setNewDefaultKey(for identity: Identity, fpr: String) throws {
         try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
     }
+
+    // MARK: - OTHER
 }
 
 // MARK: - KeyImportListenerProtocol
@@ -79,7 +81,6 @@ class KeyImportService: KeyImportServiceProtocol {
 extension KeyImportService: KeyImportListenerProtocol {
 
     func newKeyImportMessageArrived(message: Message) {
-        //We can ignore the key in the "pEp-key-import: partner_fpr" header. Simply forward
         delegate?.newKeyImportMessageArrived(message: message)
     }
 
