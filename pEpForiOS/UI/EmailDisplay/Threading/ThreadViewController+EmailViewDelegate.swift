@@ -17,13 +17,13 @@ extension ThreadViewController: EmailViewModelDelegate {
 
     func emailViewModel(viewModel: ThreadedEmailViewModel, didUpdateDataAt index: Int) {
         updateTableView {
-            tableView.reloadRows(at: [IndexPath(row: 0, section: index)], with: .none)
+            tableView.reloadSections(IndexSet([index]), with: .none)
         }
     }
 
     func emailViewModel(viewModel: ThreadedEmailViewModel, didRemoveDataAt index: Int) {
         updateTableView {
-            tableView.deleteRows(at: [IndexPath(row: 0, section: index)], with: .automatic)
+            tableView.deleteSections(IndexSet([index]), with: .none)
         }
     }
 

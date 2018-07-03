@@ -37,9 +37,7 @@ class ThreadedEmailViewModel {
         guard index < messages.count && index >= 0 else {
             return
         }
-        if messages[index] == tip {
-            emailDisplayDelegate.emailDisplayDidDelete(message: tip)
-        }
+        emailDisplayDelegate.emailDisplayDidDelete(message: messages[index])
         folder.deleteSingle(message: messages[index])
         messages.remove(at: index)
         expandedMessages.remove(at: index)

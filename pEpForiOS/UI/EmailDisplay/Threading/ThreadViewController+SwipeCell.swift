@@ -57,7 +57,6 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
                 self.tableView.beginUpdates()
                 self.model?.deleteMessage(at: indexPath.section)
                 action.fulfill(with: .delete)
-                self.tableView.deleteSections(IndexSet(integer: indexPath.section), with: .automatic)
                 self.tableView.endUpdates()
         }
         configure(action: archiveAction, with: descriptorDestructive)
