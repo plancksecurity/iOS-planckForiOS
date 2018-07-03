@@ -15,6 +15,8 @@ import CoreData
 /// Test suite for re-uploading (or not) messages.
 /// Find details here: https://dev.pep.security/Common%20App%20Documentation/Trusted_Untrusted_Server_Demystified
 class ReUploadTest: CoreDataDrivenTestBase {
+    let folderTypesEvaluatedByTests = [FolderType.inbox, .sent]
+
     override func setUp() {
         super.setUp()
         // Setup soley mark all mails on server deleted.
@@ -409,8 +411,9 @@ class ReUploadTest: CoreDataDrivenTestBase {
 
     private func markAllMessagesDeleted(inCdAccount cdAccount: CdAccount) {
         var allMessages = [CdMessage]()
-        allMessages.append(contentsOf: cdAccount.allMessages(inFolderOfType: .inbox))
-        allMessages.append(contentsOf: cdAccount.allMessages(inFolderOfType: .sent))
+        for type in folderTypesEvaluatedByTests {
+            allMessages.append(contentsOf: cdAccount.allMessages(inFolderOfType: type))
+        }
         for cdMsg in allMessages {
             let msg = cdMsg.message()
             msg?.imapMarkDeleted()
@@ -418,8 +421,9 @@ class ReUploadTest: CoreDataDrivenTestBase {
     }
 
     private func makeFoldersInteresting(inCdAccount cdAccount: CdAccount) {
-        TestUtil.makeFolderInteresting(folderType: .inbox, cdAccount: cdAccount)
-        TestUtil.makeFolderInteresting(folderType: .sent, cdAccount: cdAccount)
+        for type in folderTypesEvaluatedByTests {
+            TestUtil.makeFolderInteresting(folderType: type, cdAccount: cdAccount)
+        }
     }
 
     /// As we are using the same servers as trusted and untrusted depending on the test case, we
