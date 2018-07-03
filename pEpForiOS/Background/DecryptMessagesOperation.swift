@@ -164,7 +164,38 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         }
     }
 
-    //IOS-33: extract to Helper
+    private func saveAndNotify(cdMessage: CdMessage) {
+        privateMOC.saveAndLogErrors()
+        notifyDelegate(messageUpdated: cdMessage)
+    }
+
+    /// Updates a message with the given data.
+    ///
+    /// - Parameters:
+    ///   - cdMessage: message to update
+    ///   - keys: keys the message has been signed with
+    ///   - pEpMessageDict: decrypted message
+    ///   - rating: rating to set
+    private func updateMessage(cdMessage: CdMessage,
+                               keys: [String],
+                               pEpMessageDict: PEPMessageDict,
+                               rating: PEP_rating) {
+        cdMessage.update(pEpMessageDict: pEpMessageDict, rating: rating)
+        cdMessage.updateKeyList(keys: keys)
+    }
+
+    private func notifyDelegate(messageUpdated cdMessage: CdMessage) {
+        guard let message = cdMessage.message() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Error converting CDMesage")
+            return
+        }
+        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
+    }
+}
+
+// MARK: - Re-Upload - Trusted Server
+
+extension DecryptMessagesOperation {
     private func handleReUploadIfRequired(cdMessage: CdMessage,
                                           rating: PEP_rating) throws -> Bool {
         guard let message = cdMessage.message() else {
@@ -199,33 +230,5 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
     private func setOriginalRatingHeader(rating: PEP_rating, toMessage msg: Message) {
         msg.setOriginalRatingHeader(rating: rating)
         msg.save()
-    }
-
-    private func saveAndNotify(cdMessage: CdMessage) {
-        privateMOC.saveAndLogErrors()
-        notifyDelegate(messageUpdated: cdMessage)
-    }
-
-    /// Updates a message with the given data.
-    ///
-    /// - Parameters:
-    ///   - cdMessage: message to update
-    ///   - keys: keys the message has been signed with
-    ///   - pEpMessageDict: decrypted message
-    ///   - rating: rating to set
-    private func updateMessage(cdMessage: CdMessage,
-                               keys: [String],
-                               pEpMessageDict: PEPMessageDict,
-                               rating: PEP_rating) {
-        cdMessage.update(pEpMessageDict: pEpMessageDict, rating: rating)
-        cdMessage.updateKeyList(keys: keys)
-    }
-
-    private func notifyDelegate(messageUpdated cdMessage: CdMessage) {
-        guard let message = cdMessage.message() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Error converting CDMesage")
-            return
-        }
-        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
     }
 }
