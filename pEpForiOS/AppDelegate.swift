@@ -22,11 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var networkService: NetworkService?
 
     /**
-     UI triggerable actions for syncing messages.
-     */
-    var messageSyncService: MessageSyncService?
-
-    /**
      Error Handler to connect backend with UI
      */
     var errorPropagator = ErrorPropagator()
@@ -208,17 +203,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        // Needs to be done once to inform all affected services about the current settings
+        // Needs to be done once to set defaults. Calling it more than once does not do any harm.
         let _ = AppSettings()
 
-        let theMessageSyncService = MessageSyncService()
-        messageSyncService = theMessageSyncService
-        let theAppConfig = AppConfig(mySelfer: self,
-                                     messageSyncService: theMessageSyncService,
-                                     errorPropagator: errorPropagator,
-                                     oauth2AuthorizationFactory: oauth2Provider)
-        appConfig = theAppConfig
-
+        // Setup AppConfig
+        let messageSyncService = MessageSyncService()
+        let keyImportService = KeyImportService()
+        appConfig = AppConfig(mySelfer: self,
+                              messageSyncService: messageSyncService,
+                              errorPropagator: errorPropagator,
+                              keyImportService: keyImportService,
+                              oauth2AuthorizationFactory: oauth2Provider)
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
 

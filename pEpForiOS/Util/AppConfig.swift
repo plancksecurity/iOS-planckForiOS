@@ -16,6 +16,8 @@ class AppConfig {
 
     let errorPropagator : ErrorPropagator
 
+    let keyImportService: KeyImportServiceProtocol
+
     /**
      The UI can request key generation.
      */
@@ -29,10 +31,12 @@ class AppConfig {
     init(mySelfer: KickOffMySelfProtocol,
          messageSyncService: MessageSyncServiceProtocol,
          errorPropagator: ErrorPropagator,
+         keyImportService: KeyImportServiceProtocol,
          oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
         self.messageSyncService = messageSyncService
         self.mySelfer = mySelfer
         self.errorPropagator = errorPropagator
+        self.keyImportService = keyImportService
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
     }
 }
