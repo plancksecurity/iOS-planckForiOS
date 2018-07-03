@@ -239,7 +239,7 @@ class NetworkServiceTests: XCTestCase {
         TestUtil.skipValidation()
         Record.saveAndWait()
 
-        TestUtil.syncAndWait(testCase: self, skipValidation: true) //IOS-33
+        TestUtil.syncAndWait(testCase: self, skipValidation: true)
 
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
@@ -306,7 +306,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertTrue(isSentFolderInteresting)
 
         // sync
-        TestUtil.syncAndWait(testCase: self, skipValidation: true) //IOS-33
+        TestUtil.syncAndWait(testCase: self, skipValidation: true)
 
         if useCorrectSmtpAccount {
             // those messages do not exist if we are using an incorrect account
