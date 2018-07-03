@@ -258,9 +258,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                                      folderType: .sent)
         sentFolder.save()
 
-        let nextUid = Int(topMessages.last?.uid ?? 999) + 1
-        XCTAssertGreaterThan(nextUid, topMessages.count)
-        let sentMessage = createMessage(number: nextUid, inFolder: sentFolder)
+        let sentMessage = createMessage(number: nextUid(), inFolder: sentFolder)
         sentMessage.save()
 
         let topMessageReferencingSentMessage = topMessages[0]
@@ -322,12 +320,28 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         XCTAssertNil(emailListViewModel.currentDisplayedMessage?.messageModel)
     }
 
+    func latestUid() -> Int {
+        var highestUid: Int32 = 0
+        if let allCdMessages = CdMessage.all() as? [CdMessage] {
+            for cdMsg in allCdMessages {
+                if cdMsg.uid > highestUid {
+                    highestUid = cdMsg.uid
+                }
+            }
+        }
+        return Int(highestUid)
+    }
+
+    func nextUid() -> Int {
+        return latestUid() + 1
+    }
+
     func testIncomingMessage(references: [Message],
                              indexPathUpdated: IndexPath?) -> Message {
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
-        let incomingMessage = createMessage(number: topMessages.count + 1)
+        let incomingMessage = createMessage(number: nextUid())
         incomingMessage.references = references.map {
             return $0.messageID
         }
