@@ -17,6 +17,10 @@ UINavigationControllerDelegate {
         to toVC: UIViewController
         ) -> UIViewControllerAnimatedTransitioning? {
 
+        guard let splitView = navigationController.splitViewController,
+        !splitView.isCollapsed else {
+            return nil
+        }
         if toVC is EmailViewController {
             return CellDetailTransition(duration: 0.5)
         }
