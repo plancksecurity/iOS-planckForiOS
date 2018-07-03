@@ -10,6 +10,9 @@ import Foundation
 
 extension ThreadedEmailViewModel: MoveToFolderDelegate{
     func didMove() {
-        emailDisplayDelegate.emailDisplayDidDelete(message: messages[0])
+        guard let lastMessage = messages.last else {
+            return
+        }
+        emailDisplayDelegate.emailDisplayDidDelete(message: lastMessage)
     }
 }

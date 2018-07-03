@@ -70,6 +70,7 @@ class ThreadedEmailViewModel {
         }
         messages[index].imapFlags?.flagged = status
         messages[index].save()
+        updated(message: messages[index])
         if messages[index] == tip {
             notifyFlag(status)
         }

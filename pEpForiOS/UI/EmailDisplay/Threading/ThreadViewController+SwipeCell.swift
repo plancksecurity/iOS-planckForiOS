@@ -20,8 +20,8 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
         //Get from model
         let draftFolder = false
         if !draftFolder {
-        swipeActions.append(flagAction())
-        swipeActions.append(replyAction())
+            swipeActions.append(flagAction())
+            swipeActions.append(replyAction())
         }
 
         return (orientation == .right ?   swipeActions : nil)
@@ -66,7 +66,8 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
     private func flagAction() -> SwipeAction {
         // Do not add "Flag" action to drafted mails.
         let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
-
+            let flagged =  self.model.message(at: indexPath.section)?.imapFlags?.flagged
+            self.model.setFlag(forMessageAt: indexPath.section, to: !(flagged ?? true))
         }
         flagAction.hidesWhenSelected = true
         configure(action: flagAction, with: .flag)

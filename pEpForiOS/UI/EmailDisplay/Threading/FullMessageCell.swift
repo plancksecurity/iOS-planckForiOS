@@ -13,7 +13,9 @@ import SwipeCellKit
 class FullMessageCell: SwipeTableViewCell,
     MessageViewModelConfigurable,
     NeedsRefreshDelegate {
-    
+
+    static var flaggedImage: UIImage? = nil
+
     var requestsReload: (() -> Void)?
 
     @IBOutlet weak var contentHeightConstraint: NSLayoutConstraint!
@@ -27,11 +29,25 @@ class FullMessageCell: SwipeTableViewCell,
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var badgePicture: UIImageView!
+    @IBOutlet weak var attachmentIcon: UIImageView!
+    @IBOutlet weak var flaggedIcon: UIImageView!
 
     var tableView: UITableView!
 
+    var isFlagged:Bool = false {
+        didSet {
+            if isFlagged {
+                setFlagged()
+            } else {
+                unsetFlagged()
+            }
+        }
+    }
+
+
     @IBOutlet weak var view: UIView!
     func configure(for viewModel:MessageViewModel) {
+        isFlagged = viewModel.isFlagged
         addressLabel.text = viewModel.from
         subjectLabel.text = viewModel.subject
         backgroundColor = UIColor.clear
@@ -146,6 +162,23 @@ class FullMessageCell: SwipeTableViewCell,
             result += "\n" + appendText
         }
         return result
+    }
+
+    private func setFlagged() {
+        if FullMessageCell.flaggedImage == nil {
+            FullMessageCell.flaggedImage =
+                FlagImages.create(imageSize: flaggedIcon.frame.size).flaggedImage
+        }
+        guard let saveImg = FullMessageCell.flaggedImage else {
+            return
+        }
+        self.flaggedIcon.isHidden = false
+        self.flaggedIcon.image = saveImg
+    }
+
+    private func unsetFlagged() {
+        self.flaggedIcon.isHidden = true
+        self.flaggedIcon.image = nil
     }
 
 
