@@ -12,32 +12,6 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
-/*
-
- UNTRUSTED SERVER
-
- 1) Send unencrypted
- - Send unencrypted mail
- Check: Is msg in Sent folder encrypted for self
-
- 2) Receive unencrypted
- - Receive unencrypted mail from TB
- - Mail is in Inbox unencrypted (*not* encrypted for self)
- - Is msg in Inbox is grey
-
- 3) Answer enrcypted
- - Send encrypted mail
- Check:
- - Answer is sent encrypted
- - Is msg in Sent folder encrypted for self
- - Is msg in Sent folder yellow (not grey)
-
- 4) Receive encrypted (decryptable)
- - Receive encrypted mail from TB
- - Mail is in Inbox (on server) encrypted (not reuploaded unencrypted)
- - msg color is yellow (not grey)
-
- */
 class TrustedServerTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
@@ -147,6 +121,71 @@ class TrustedServerTest: CoreDataDrivenTestBase {
 
     // MARK: - Untrusted
 
+    /*
+     Send unencrypted
+     - Send unencrypted mail
+     Check: Message in Sent folder is encrypted (for self)
+     */
+    func testSendUnencrypted_untrustedServer() {
+        assert(senderTrusted: false,
+               receiverTrusted: false,
+               sendEncrypted: false,
+               expectedSenderRatingOnServerEncrypted: true,
+               expectedSenderRatingToDisplayEncrypted: false,
+               expectedReceiverRatingOnServerEncrypted: false,
+               expectedReceiverRatingToDisplayEncrypted: false)
+    }
+
+    /*
+     Receive unencrypted
+     - Receive unencrypted mail
+     - Mail is in Inbox unencrypted (*not* encrypted for self)
+     - Is msg in Inbox is grey
+     */
+    func testReceiveUnencrypted_untrustedServer() {
+        assert(senderTrusted: false,
+               receiverTrusted: false,
+               sendEncrypted: false,
+               expectedSenderRatingOnServerEncrypted: true,
+               expectedSenderRatingToDisplayEncrypted: false,
+               expectedReceiverRatingOnServerEncrypted: false,
+               expectedReceiverRatingToDisplayEncrypted: false)
+    }
+
+    /*
+     Send enrcypted
+     - Send encrypted mail
+     Check:
+     - Message is sent encrypted
+     - Is msg in Sent folder encrypted (for self)
+     - Is msg in Sent folder yellow (not grey)
+     */
+    func testSendEncrypted_untrustedServer() {
+        assert(senderTrusted: false,
+               receiverTrusted: false,
+               sendEncrypted: true,
+               expectedSenderRatingOnServerEncrypted: true,
+               expectedSenderRatingToDisplayEncrypted: true,
+               expectedReceiverRatingOnServerEncrypted: true,
+               expectedReceiverRatingToDisplayEncrypted: true)
+    }
+
+    /*
+     Receive encrypted (decryptable)
+     - Receive encrypted mail
+     - Mail is in Inbox (on server) encrypted (not reuploaded unencrypted)
+     - msg color is yellow (not grey)
+     */
+    func testReceiveEncrypted_untrustedServer() {
+        assert(senderTrusted: false,
+               receiverTrusted: false,
+               sendEncrypted: true,
+               expectedSenderRatingOnServerEncrypted: true,
+               expectedSenderRatingToDisplayEncrypted: true,
+               expectedReceiverRatingOnServerEncrypted: true,
+               expectedReceiverRatingToDisplayEncrypted: true)
+    }
+
     // MARK: - HELPER
 
     // MARK: The actual test
@@ -228,6 +267,21 @@ class TrustedServerTest: CoreDataDrivenTestBase {
             XCTAssertTrue(senderRatingOnServer == PEP_rating_unencrypted,
                            "assumed stored rating on sever")
         }
+
+        /*
+         Trusted 2)
+         (lldb) po msg.pEpColor()
+         ▿ _PEP_color
+         - rawValue : 0
+
+         (lldb) po msg.pEpRating()
+         ▿ _PEP_rating
+         - rawValue : 3
+
+         (lldb) po msg.pEpRatingInt
+         ▿ Optional<Int>
+         - some : 8
+         */
 
         let senderRatingToDisplay = msg.pEpRating()
         if expectedSenderRatingToDisplayEncrypted {
@@ -385,7 +439,7 @@ class TrustedServerTest: CoreDataDrivenTestBase {
     }
 
     /// As we are using the same servers as trusted and untrusted depending on the test case, we
-    /// must not fetch messages from previous tests.
+    /// must not fetch messages that already existed (from previous tests).
     private func markAllMessagesOnServerDeleted() {
         // Create receiver account temporarly to be able to delete all messages.
         // Without keys so the engine does not know it.
