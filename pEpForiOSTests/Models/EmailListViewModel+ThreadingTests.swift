@@ -248,6 +248,43 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testThreadedReferencesSentMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let sentFolder = Folder.init(name: "Sent",
+                                     parent: nil,
+                                     account: account,
+                                     folderType: .sent)
+        sentFolder.save()
+
+        let nextUid = Int(topMessages.last?.uid ?? 999) + 1
+        XCTAssertGreaterThan(nextUid, topMessages.count)
+        let sentMessage = createMessage(number: nextUid, inFolder: sentFolder)
+        sentMessage.save()
+
+        let topMessageReferencingSentMessage = topMessages[0]
+        topMessageReferencingSentMessage.references.append(sentMessage.messageID)
+        topMessageReferencingSentMessage.save()
+
+        guard let referencedSentMessageOrig =
+            topMessageReferencingSentMessage.referencedMessages().first else {
+                XCTFail()
+                return
+        }
+        XCTAssertEqual(referencedSentMessageOrig.messageID, sentMessage.messageID)
+
+        let incomingMessage = testIncomingMessage(references: [sentMessage],
+                                                  indexPathUpdated: indexOfTopMessage0)
+
+        let incomingMessageReferencedMessages = incomingMessage.referencedMessages()
+        guard let referencedSentMessageIncoming = incomingMessageReferencedMessages.first else {
+                XCTFail()
+                return
+        }
+        XCTAssertEqual(referencedSentMessageIncoming.messageID, sentMessage.messageID)
+    }
+
     // MARK: - Internal - Helpers
 
     func setUpTopMessages() {
