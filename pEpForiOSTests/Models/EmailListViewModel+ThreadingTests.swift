@@ -410,34 +410,10 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     class MyMessageSyncServiceProtocol: MessageSyncServiceProtocol {
-        weak var errorDelegate: MessageSyncServiceErrorDelegate?
-        weak var sentDelegate: MessageSyncServiceSentDelegate?
-        weak var syncDelegate: MessageSyncServiceSyncDelegate?
-        weak var stateDelegate: MessageSyncServiceStateDelegate?
-        weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate?
-
         func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
         }
 
         func requestFetchOlderMessages(inFolder folder: Folder) {
-        }
-
-        func requestDraft(message: Message) {
-        }
-
-        func requestSend(message: Message) {
-        }
-
-        func requestFlagChange(message: Message) {
-        }
-
-        func requestMessageSync(folder: Folder) {
-        }
-
-        func start(account: Account) {
-        }
-
-        func cancel(account: Account) {
         }
     }
 

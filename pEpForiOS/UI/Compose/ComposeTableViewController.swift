@@ -493,6 +493,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         message.pEpProtected = pEpProtection
+        message.setOriginalRatingHeader(rating: self.recalculateCurrentRating())
 
         return message
     }
@@ -535,7 +536,8 @@ class ComposeTableViewController: BaseTableViewController {
         return prefixHtml + toWrap + postfixHtml
     }
 
-    private func recalculateCurrentRating(session: PEPSession) -> PEP_rating {
+    private func recalculateCurrentRating() -> PEP_rating {
+        let session = PEPSession()
         if let from = self.origin {
             currentRating = session.outgoingMessageRating(from: from,
                                                           to: self.destinyTo,
@@ -571,8 +573,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func calculateComposeColorAndInstallTapGesture() {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
-                let session = PEPSession()
-                let ratingValue = theSelf.recalculateCurrentRating(session: session)
+                let ratingValue = theSelf.recalculateCurrentRating()
                 if let view = theSelf.showPepRating(pEpRating: ratingValue,
                                                     pEpProtection: theSelf.pEpProtection) {
                     if theSelf.canHandshake() || theSelf.canToggleProtection() {
