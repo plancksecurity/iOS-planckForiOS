@@ -219,9 +219,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         loadCoreDataStack()
 
-        networkService = NetworkService(mySelfer: self, errorPropagator: errorPropagator)
+        networkService = NetworkService(mySelfer: self,
+                                        errorPropagator: errorPropagator,
+                                        keyImportService: keyImportService)
         networkService?.sendLayerDelegate = sendLayerDelegate
         networkService?.delegate = self
+        // MessageModel must not know about the send layer.
+        // Is used for unit test only. Maybe refactor out.
         CdAccount.sendLayer = networkService
     }
 

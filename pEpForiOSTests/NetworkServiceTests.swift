@@ -107,7 +107,7 @@ class NetworkServiceTests: XCTestCase {
 
         let sendLayerDelegate = SendLayerObserver()
 
-        let networkService = NetworkService(parentName: #function)
+        let networkService = NetworkService(keyImportService: KeyImportService())
 
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
@@ -187,7 +187,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertNil(CdFolder.all())
         XCTAssertNil(CdMessage.all())
 
-        let networkService = NetworkService(parentName: #function)
+        let networkService = NetworkService(keyImportService: KeyImportService())
 
         _ = SecretTestData().createWorkingCdAccount()
         TestUtil.skipValidation()

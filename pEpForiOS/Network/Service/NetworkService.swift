@@ -40,17 +40,20 @@ public class NetworkService {
         let mySelfer: KickOffMySelfProtocol?
         let backgrounder: BackgroundTaskProtocol?
         var errorPropagator: ErrorPropagator?
+        let keyImportService: KeyImportServiceProtocol
 
         init(sleepTimeInSeconds: Double,
              parentName: String,
              mySelfer: KickOffMySelfProtocol?,
              backgrounder: BackgroundTaskProtocol?,
-             errorPropagator: ErrorPropagator?) {
+             errorPropagator: ErrorPropagator?,
+             keyImportService: KeyImportServiceProtocol) {
             self.sleepTimeInSeconds = sleepTimeInSeconds
             self.parentName = parentName
             self.mySelfer = mySelfer
             self.backgrounder = backgrounder
             self.errorPropagator = errorPropagator
+            self.keyImportService = keyImportService
         }
     }
 
@@ -87,14 +90,16 @@ public class NetworkService {
                 parentName: String = #function,
                 backgrounder: BackgroundTaskProtocol? = nil,
                 mySelfer: KickOffMySelfProtocol? = nil,
-                errorPropagator: ErrorPropagator? = nil) {
+                errorPropagator: ErrorPropagator? = nil,
+                keyImportService: KeyImportServiceProtocol) {
         serviceConfig = ServiceConfig(sleepTimeInSeconds: sleepTimeInSeconds,
                                       parentName: parentName,
                                       mySelfer: mySelfer ??
                                         DefaultMySelfer( parentName: parentName,
                                                          backgrounder: backgrounder),
                                       backgrounder: backgrounder,
-                                      errorPropagator: errorPropagator)
+                                      errorPropagator: errorPropagator,
+                                      keyImportService: keyImportService)
     }
 
     /**

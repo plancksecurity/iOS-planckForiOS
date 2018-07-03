@@ -266,8 +266,10 @@ class TestUtil {
 
     // MARK: - Sync Loop
 
-    static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase, skipValidation: Bool) {
-        let networkService = NetworkService()
+    static public func syncAndWait(numAccountsToSync: Int = 1,
+                                   testCase: XCTestCase,
+                                   skipValidation: Bool) {
+        let networkService = NetworkService(keyImportService: KeyImportService())
         networkService.sleepTimeInSeconds = 0.1
 
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
@@ -486,7 +488,8 @@ class TestUtil {
             DefaultMySelfer(parentName: #function,
                             backgrounder: nil),
                                                        backgrounder: nil,
-                                                       errorPropagator: nil)
+                                                       errorPropagator: nil,
+                                                       keyImportService: KeyImportService())
         let networkServiceWorker = NetworkServiceWorker(serviceConfig: dummyConfig,
                                                         imapConnectionDataCache: nil)
         return networkServiceWorker.determineInterestingFolders(accountInfo: accountInfo)
