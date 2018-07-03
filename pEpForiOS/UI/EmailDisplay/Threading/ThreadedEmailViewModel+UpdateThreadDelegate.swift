@@ -24,11 +24,7 @@ extension ThreadedEmailViewModel: UpdateThreadListDelegate {
     }
 
     func updated(message: Message) {
-        guard let index = indexOfMessage(message: message) else {
-            return
-        }
-        messages[index] = message
-        delegate?.emailViewModel(viewModel: self, didUpdateDataAt: index)
+        updateInternal(message: message)
     }
 
     func added(message: Message) {

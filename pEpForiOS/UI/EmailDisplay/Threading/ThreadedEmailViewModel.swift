@@ -57,11 +57,33 @@ class ThreadedEmailViewModel {
         return messages.count - 1
     }
 
+    func updateInternal(message: Message) {
+        guard let index = indexOfMessage(message: message) else {
+            return
+        }
+        messages[index] = message
+        delegate?.emailViewModel(viewModel: self, didUpdateDataAt: index)
+    }
+
     fileprivate func notifyFlag(_ status: Bool) {
         if status {
             emailDisplayDelegate.emailDisplayDidFlag(message: tip)
         } else {
             emailDisplayDelegate.emailDisplayDidUnflag(message: tip)
+        }
+    }
+
+    //Should only be called from view as it will handle its own update
+    func switchFlag(forMessageAt index:Int) {
+        guard index < messages.count && index >= 0 else {
+            return
+        }
+
+        let flagStatus = (messages[index].imapFlags?.flagged ?? false)
+
+        messages[index].imapFlags?.flagged = !flagStatus
+        if messages[index] == tip {
+            notifyFlag(!flagStatus)
         }
     }
 
@@ -105,7 +127,7 @@ class ThreadedEmailViewModel {
         return messages.count
     }
 
-    func message(at index: Int) -> Message? {
+    internal func message(at index: Int) -> Message? {
         guard index < messages.count && index >= 0 else {
             return nil
         }

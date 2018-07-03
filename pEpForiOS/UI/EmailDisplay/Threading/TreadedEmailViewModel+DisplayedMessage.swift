@@ -16,10 +16,7 @@ extension ThreadedEmailViewModel: DisplayedMessage {
     }
 
     func update(forMessage message: Message) {
-        guard let index = indexOfMessage(message: message) else {
-            return
-        }
-        messages[index] = message
+        updateInternal(message: message)
     }
 
 }
