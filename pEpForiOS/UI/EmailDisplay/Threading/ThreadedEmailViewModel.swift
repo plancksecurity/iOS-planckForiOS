@@ -19,6 +19,7 @@ class ThreadedEmailViewModel {
     weak var delegate: EmailViewModelDelegate!
     private let folder: ThreadedFolderWithTop
     private var expandedMessages: [Bool]
+    private var messageToReply: Message?
 
     //Needed for segue
     public let displayFolder: Folder
@@ -117,5 +118,19 @@ class ThreadedEmailViewModel {
 
     func messageisExpanded(at index: Int) -> Bool{
         return expandedMessages[index]
+    }
+
+    func replyToMessage(at index: Int){
+        guard index < messages.count && index >= 0 else {
+            return
+        }
+        self.messageToReply = messages[index]
+    }
+
+    func getMessageToReply() -> Message? {
+        guard let message = messageToReply else {
+            return messages.last
+        }
+        return message
     }
 }

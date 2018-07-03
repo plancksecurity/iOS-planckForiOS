@@ -61,13 +61,13 @@ extension ThreadViewController: SegueHandlerType {
 
             if segueId == .segueReplyFrom {
                 destination.composeMode = .replyFrom
-                destination.originalMessage = model.messages.last
+                destination.originalMessage = model.getMessageToReply()
             } else if segueId == .segueReplyAllForm {
                 destination.composeMode = .replyAll
-                destination.originalMessage =  model.messages.last
+                destination.originalMessage =  model.getMessageToReply()
             } else if segueId == .segueForward {
                 destination.composeMode = .forward
-                destination.originalMessage =  model.messages.last
+                destination.originalMessage =  model.getMessageToReply()
             }
             break
         default:

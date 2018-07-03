@@ -77,7 +77,8 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
     private func replyAction() -> SwipeAction {
         // Do not add reply action to drafted mails.
         let moreAction = SwipeAction(style: .default, title: "Reply") { action, indexPath in
-            
+            self.model.replyToMessage(at: indexPath.section)
+            self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
         }
         moreAction.hidesWhenSelected = true
         configure(action: moreAction, with: .reply)
