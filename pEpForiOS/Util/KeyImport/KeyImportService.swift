@@ -8,7 +8,7 @@
 
 import MessageModel
 
-protocol KeyImportServiceProtocol: class {
+public protocol KeyImportServiceProtocol: class {
     var delegate: KeyImportServiceDelegate? { get set }
 
     /// Call after successfull handshake.
@@ -26,7 +26,7 @@ protocol KeyImportServiceProtocol: class {
 }
 
 /// Called by background operation or NetworkService[Worker].
-protocol KeyImportListenerProtocol {
+public protocol KeyImportListenerProtocol {
     /// Will be triggered when “p≡p-key-import” detected, for p≡p key import.
     /// It informs the receiver about:
     /// 1) Another device wants to start a Key Import session with me (wants to import my key)
@@ -40,36 +40,36 @@ protocol KeyImportListenerProtocol {
     func receivedPrivateKey(forAccount account: Account)
 }
 
-protocol KeyImportServiceDelegate: class, KeyImportListenerProtocol {
+public protocol KeyImportServiceDelegate: class, KeyImportListenerProtocol {
 }
 
 /// Instantiate in AppDelegate, keep in AppConfig (maybe in renamed MessageSyncService, not sure
 /// yet), KeyImportListener will probably end up in NetworkService/ServiceConfig
-class KeyImportService: KeyImportServiceProtocol {
-    weak var delegate: KeyImportServiceDelegate?
+public class KeyImportService: KeyImportServiceProtocol {
+    public weak var delegate: KeyImportServiceDelegate?
 
     // MARK: - KeyImportServiceProtocol
 
     /// Call after successfull handshake.
-    /// Sends the private key without appending to "Sent" folder.
-    func sendOwnPrivateKey(inAnswerToRequestMessage msg: Message) {
+    public func sendOwnPrivateKey(inAnswerToRequestMessage msg: Message) {
+        /// TODO: Send the private key without appending to "Sent" folder.
         fatalError("Unimplemented stub")
     }
 
     /// Call to inform the other device that we would love to start a Key Import session
-    func sendInitKeyImportMessage(forAccount acccount: Account) {
-        //TODO: send unencrypted message to myself with header: "pEp-key-import: myPubKey_fpr"
+    public func sendInitKeyImportMessage(forAccount acccount: Account) {
+        //TODO: send unencrypted message to myself with header: "pEp-key-import: myPubKey_fpr" (assume: without appending to sent folder)
         fatalError("Unimplemented stub")
     }
 
     /// Call after a newKeyImportMessage arrived to let the other device know
     /// we are ready for handshake.
-    func sendHandshakeRequest(forAccount account: Account) {
+    public func sendHandshakeRequest(forAccount account: Account) {
         //TODO: send encrypted message to myself with header: "pEp-key-import: myPubKey_fpr"
         fatalError("Unimplemented stub")
     }
 
-    func setNewDefaultKey(for identity: Identity, fpr: String) throws {
+    public func setNewDefaultKey(for identity: Identity, fpr: String) throws {
         try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
     }
 
@@ -80,11 +80,11 @@ class KeyImportService: KeyImportServiceProtocol {
 
 extension KeyImportService: KeyImportListenerProtocol {
 
-    func newKeyImportMessageArrived(message: Message) {
+    public func newKeyImportMessageArrived(message: Message) {
         delegate?.newKeyImportMessageArrived(message: message)
     }
 
-    func receivedPrivateKey(forAccount account: Account) {
+    public func receivedPrivateKey(forAccount account: Account) {
         delegate?.receivedPrivateKey(forAccount: account)
     }
 }
