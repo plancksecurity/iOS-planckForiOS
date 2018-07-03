@@ -101,6 +101,14 @@ extension EmailListViewModel: MessageFolderDelegate {
                     if let theSelf = self {
                         if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                             theSelf.updateThreadListDelegate?.deleted(message: message)
+                        } else {
+                            if let (index, _) = theSelf.referencedTopMessageIndex(
+                                messages: referencedMessages) {
+                                // The thread count might need to be updated
+                                theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                    viewModel: theSelf,
+                                    didUpdateDataAt: IndexPath(row: index, section: 0))
+                            }
                         }
                     }
                 }
