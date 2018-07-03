@@ -79,7 +79,7 @@ class TrustedServerTest: CoreDataDrivenTestBase {
         assert(senderTrusted: false,
                receiverTrusted: true,
                sendEncrypted: false,
-               expectedSenderRatingOnServerEncrypted: false,
+               expectedSenderRatingOnServerEncrypted: true,
                expectedSenderRatingToDisplayEncrypted: false,
                expectedReceiverRatingOnServerEncrypted: false,
                expectedReceiverRatingToDisplayEncrypted: false)
@@ -266,21 +266,6 @@ class TrustedServerTest: CoreDataDrivenTestBase {
                            "assumed stored rating on sever")
         }
 
-        /*
-         Trusted 2)
-         (lldb) po msg.pEpColor()
-         ▿ _PEP_color
-         - rawValue : 0
-
-         (lldb) po msg.pEpRating()
-         ▿ _PEP_rating
-         - rawValue : 3
-
-         (lldb) po msg.pEpRatingInt
-         ▿ Optional<Int>
-         - some : 8
-         */
-
         let senderRatingToDisplay = msg.pEpRating()
         if expectedSenderRatingToDisplayEncrypted {
             XCTAssertFalse(senderRatingToDisplay == PEP_rating_unencrypted,
@@ -289,6 +274,8 @@ class TrustedServerTest: CoreDataDrivenTestBase {
             XCTAssertTrue(senderRatingToDisplay == PEP_rating_unencrypted,
                           "Color to display to user is correct")
         }
+
+        // Fine.
 
         // Now lets see on receiver side.
         guard let cdAccountReceiver = createAccountOfReceiver().cdAccount() else {
