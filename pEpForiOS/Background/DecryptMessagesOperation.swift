@@ -22,11 +22,11 @@ public protocol DecryptMessagesOperationDelegateProtocol: class {
 public class DecryptMessagesOperation: ConcurrentBaseOperation {
     public weak var delegate: DecryptMessagesOperationDelegateProtocol?// Only used in Tests. Maybe refactor out.
     private(set) var didMarkMessagesForReUpload = false
-    private let keyImportService: KeyImportServiceProtocol?
+    private let keyImportService: KeyImportListenerProtocol?
 
     public init(parentName: String = #function,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                keyImportService: KeyImportServiceProtocol? = nil) {
+                keyImportService: KeyImportListenerProtocol? = nil) {
         self.keyImportService = keyImportService
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
@@ -116,6 +116,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                          rating: PEP_rating,
                                          keys: NSArray?) {
         let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
+
+//        let isKeyImportMessage = keyImportService.
 
         // Only used in Tests. Maybe refactor out.
         self.delegate?.decrypted(originalCdMessage: cdMessage,

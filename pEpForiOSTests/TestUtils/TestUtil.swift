@@ -269,7 +269,7 @@ class TestUtil {
     static public func syncAndWait(numAccountsToSync: Int = 1,
                                    testCase: XCTestCase,
                                    skipValidation: Bool) {
-        let networkService = NetworkService(keyImportService: KeyImportService())
+        let networkService = NetworkService(keyImportListener: KeyImportService())
         networkService.sleepTimeInSeconds = 0.1
 
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
@@ -489,7 +489,7 @@ class TestUtil {
                             backgrounder: nil),
                                                        backgrounder: nil,
                                                        errorPropagator: nil,
-                                                       keyImportService: KeyImportService())
+                                                       keyImportListener: KeyImportService())
         let networkServiceWorker = NetworkServiceWorker(serviceConfig: dummyConfig,
                                                         imapConnectionDataCache: nil)
         return networkServiceWorker.determineInterestingFolders(accountInfo: accountInfo)

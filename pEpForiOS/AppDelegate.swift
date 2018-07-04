@@ -221,7 +221,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         networkService = NetworkService(mySelfer: self,
                                         errorPropagator: errorPropagator,
-                                        keyImportService: keyImportService)
+                                        keyImportListener: keyImportService)
         networkService?.sendLayerDelegate = sendLayerDelegate
         networkService?.delegate = self
         // MessageModel must not know about the send layer.
