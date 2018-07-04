@@ -36,7 +36,7 @@ public protocol KeyImportListenerProtocol {
     /// - Parameter msg: message to evaluate
     /// - Returns:  true if the message is part of the Key Import protocol.
     ///             false otherwize
-    func handleKeyImport(forMessage msg: Message) -> Bool
+    func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool
 }
 
 public protocol KeyImportServiceDelegate: class {
@@ -68,8 +68,8 @@ public class KeyImportService {
         return message.optionalFields[Header.pEpKeyImport.rawValue] != nil
     }
 
-    private func isPrivateKeyMessage(message: Message) -> Bool {
-        fatalError("unimplemented stub")
+    private func isPrivateKeyMessage(message: Message, flags: PEP_decrypt_flags) -> Bool {
+        return flags.rawValue & PEP_decrypt_flag_own_private_key.rawValue == 1
     }
 }
 
@@ -103,12 +103,12 @@ extension KeyImportService: KeyImportServiceProtocol {
 // MARK: - KeyImportListenerProtocol
 
 extension KeyImportService: KeyImportListenerProtocol {
-    public func handleKeyImport(forMessage msg: Message) -> Bool {
+    public func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool {
         var weTakeOver = false
         if isKeyImportMessage(message: msg) {
             delegate?.newKeyImportMessageArrived(message: msg)
             weTakeOver = true
-        } else if isPrivateKeyMessage(message: msg) {
+        } else if isPrivateKeyMessage(message: msg, flags: flags) {
             delegate?.receivedPrivateKey(forAccount: msg.parent.account)
             weTakeOver = true
         }
