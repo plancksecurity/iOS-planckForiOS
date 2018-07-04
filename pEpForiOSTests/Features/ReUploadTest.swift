@@ -28,6 +28,12 @@ class ReUploadTest: CoreDataDrivenTestBase {
         setupSenderAccount()
     }
 
+    override func tearDown() {
+        PEPSession.cleanup()
+        persistentSetup = nil
+        super.tearDown()
+    }
+
     // MARK: - Trusted Server
 
     /*
