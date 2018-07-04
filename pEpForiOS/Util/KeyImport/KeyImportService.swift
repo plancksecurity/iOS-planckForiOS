@@ -104,14 +104,14 @@ extension KeyImportService: KeyImportServiceProtocol {
 
 extension KeyImportService: KeyImportListenerProtocol {
     public func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool {
-        var weTakeOver = false
+        var hasBeenHandled = false
         if isKeyImportMessage(message: msg) {
             delegate?.newKeyImportMessageArrived(message: msg)
-            weTakeOver = true
+            hasBeenHandled = true
         } else if isPrivateKeyMessage(message: msg, flags: flags) {
             delegate?.receivedPrivateKey(forAccount: msg.parent.account)
-            weTakeOver = true
+            hasBeenHandled = true
         }
-        return weTakeOver
+        return hasBeenHandled
     }
 }
