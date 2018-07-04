@@ -576,7 +576,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="emailDetail" title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mYV-vz-wEb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -796,10 +796,10 @@
                         <outlet property="nextMessage" destination="nCS-Wg-ZJI" id="Q0q-LK-Q5C"/>
                         <outlet property="previousMessage" destination="NsK-Ye-A0p" id="tHt-Ag-IaU"/>
                         <outlet property="replyButton" destination="qxE-Vd-QoS" id="cwp-Ig-BVT"/>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" id="Usl-iS-7fo"/>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" id="1zD-EW-3fN"/>
-                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" id="2fD-kL-Bvj"/>
-                        <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" id="RTR-We-Kc1"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyFrom" modalPresentationStyle="pageSheet" id="Usl-iS-7fo"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueReplyAllForm" modalPresentationStyle="pageSheet" id="1zD-EW-3fN"/>
+                        <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" modalPresentationStyle="pageSheet" id="2fD-kL-Bvj"/>
+                        <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" modalPresentationStyle="pageSheet" id="RTR-We-Kc1"/>
                         <segue destination="Dbs-KG-RkX" kind="show" identifier="segueHandshake" id="8Xh-Bv-MFq"/>
                         <segue destination="Adk-MD-apd" kind="unwind" identifier="unwindToThread" unwindAction="segueUnwindEmailDisplayDoneWithSegue:" id="eRi-pR-kLP"/>
                     </connections>
@@ -949,11 +949,9 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="d5O-Wk-gjZ"/>
+        <segue reference="RTR-We-Kc1"/>
         <segue reference="8Xh-Bv-MFq"/>
-        <segue reference="anx-J8-OKE"/>
-        <segue reference="Usl-iS-7fo"/>
         <segue reference="ber-OQ-S16"/>
-        <segue reference="xmi-xn-p8T"/>
+        <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>

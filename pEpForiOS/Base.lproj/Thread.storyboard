@@ -455,10 +455,10 @@
                     <connections>
                         <outlet property="flagButton" destination="tQg-CY-2hQ" id="nna-Mr-LeK"/>
                         <outlet property="tableView" destination="Yrb-DL-w8R" id="5xZ-00-SVq"/>
-                        <segue destination="9cW-MW-m1g" kind="presentation" identifier="segueShowMoveToFolder" id="vyC-7F-dvr"/>
-                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueForward" id="cp7-4f-MV0"/>
-                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueReplyAllForm" id="8Hz-kz-DNR"/>
-                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueReplyFrom" id="Dhz-Ep-xy2"/>
+                        <segue destination="9cW-MW-m1g" kind="presentation" identifier="segueShowMoveToFolder" modalPresentationStyle="pageSheet" id="vyC-7F-dvr"/>
+                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueForward" modalPresentationStyle="pageSheet" id="cp7-4f-MV0"/>
+                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueReplyAllForm" modalPresentationStyle="pageSheet" id="8Hz-kz-DNR"/>
+                        <segue destination="fei-Fq-Kfx" kind="presentation" identifier="segueReplyFrom" modalPresentationStyle="pageSheet" id="Dhz-Ep-xy2"/>
                         <segue destination="Kkk-c0-S5g" kind="custom" identifier="segueShowEmailExpanding" customClass="DetailCellSegue" customModule="pEpForiOS" customModuleProvider="target" id="Aed-9C-oac"/>
                         <segue destination="Kkk-c0-S5g" kind="show" identifier="segueShowEmail" id="CjJ-ut-CZU"/>
                     </connections>
@@ -518,7 +518,7 @@
         <image name="thread-icon" width="13" height="13"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cp7-4f-MV0"/>
-        <segue reference="CjJ-ut-CZU"/>
+        <segue reference="Dhz-Ep-xy2"/>
+        <segue reference="Aed-9C-oac"/>
     </inferredMetricsTieBreakers>
 </document>
