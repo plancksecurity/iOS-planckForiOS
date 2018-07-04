@@ -107,12 +107,6 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                          flags: PEP_decrypt_flags) {
         let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
-        //IOS-1028 we might need the unencrypted (after cdMessage update) message (not sure if message 2.0 hides the headers)
-        let isHandledByKeyImporter = handleKeyImportMessage(cdMessage: cdMessage, flags: flags)
-        if isHandledByKeyImporter {
-            return
-        }
-
         // Only used in Tests. Maybe refactor out.
         self.delegate?.decrypted(originalCdMessage: cdMessage,
                                  decryptedMessageDict: pEpDecryptedMessage,
@@ -125,6 +119,12 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                rating: rating,
                                cdMessage: cdMessage,
                                keys: theKeys)
+
+            let isHandledByKeyImporter = handleKeyImportMessage(cdMessage: cdMessage, flags: flags)
+            if isHandledByKeyImporter {
+                return
+            }
+
             handleReUploadAndNotify(cdMessage: cdMessage, rating: rating)
         } else {
             if rating.rawValue != ratingBeforeEngine {
