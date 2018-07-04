@@ -23,7 +23,7 @@ extension ThreadViewController: EmailViewModelDelegate {
 
     func emailViewModel(viewModel: ThreadedEmailViewModel, didRemoveDataAt index: Int) {
         updateTableView {
-            tableView.deleteSections(IndexSet([index]), with: .none)
+            tableView.deleteSections(IndexSet([index]), with: .automatic)
         }
     }
 
