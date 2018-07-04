@@ -106,18 +106,10 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                          keys: NSArray?,
                                          flags: PEP_decrypt_flags) {
         let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
-        guard
-            let message = cdMessage.message(),
-            let keyImportListener = keyImportListener else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-                handleError(BackgroundError.GeneralError.illegalState(info:
-                    "Missing data in handleDecryptionSuccess"))
-                return
-        }
-        let isKeyImportMessage = keyImportListener.handleKeyImport(forMessage: message,
-                                                                   flags: flags)
-        if isKeyImportMessage {
-            // KeyImportListener is fully responsible.
+
+        //IOS-1028 we might need the unencrypted (after cdMessage update) message (not sure if message 2.0 hides the headers)
+        let isHandledByKeyImporter = handleKeyImportMessage(cdMessage: cdMessage, flags: flags)
+        if isHandledByKeyImporter {
             return
         }
 
@@ -140,6 +132,19 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 saveAndNotify(cdMessage: cdMessage  )
             }
         }
+    }
+
+    private func handleKeyImportMessage(cdMessage: CdMessage, flags: PEP_decrypt_flags) -> Bool {
+        var isKeyImportMessage = false
+        guard let message = cdMessage.message() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No message")
+            return isKeyImportMessage
+        }
+        if let keyImportListener = keyImportListener {
+            isKeyImportMessage = keyImportListener.handleKeyImport(forMessage: message,
+                                                                       flags: flags)
+        }
+        return isKeyImportMessage
     }
 
     /**
