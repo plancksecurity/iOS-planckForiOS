@@ -27,7 +27,20 @@ public protocol KeyImportServiceProtocol: class {
 
 /// Called by background operation or NetworkService[Worker].
 public protocol KeyImportListenerProtocol {
-    /// Will be triggered when “p≡p-key-import” detected, for p≡p key import.
+    /// Figures out wheter or not the given message has been sent as part of the KeyImport protocol.
+    /// This is:
+    /// - An initial "I want to import your key" message from another device
+    /// - A handshake request for a running key import session
+    /// - A private key to import has been send by the other device
+    ///
+    /// - Parameter msg: message to evaluate
+    /// - Returns:  true if the message is part of the Key Import protocol.
+    ///             false otherwize
+    func handleKeyImport(forMessage msg: Message) -> Bool
+}
+
+public protocol KeyImportServiceDelegate: class {
+    /// Will be triggered when “pEp-key-import” detected, for p≡p key import.
     /// It informs the receiver about:
     /// 1) Another device wants to start a Key Import session with me (wants to import my key)
     /// 2) We received a handshake request
@@ -40,15 +53,15 @@ public protocol KeyImportListenerProtocol {
     func receivedPrivateKey(forAccount account: Account)
 }
 
-public protocol KeyImportServiceDelegate: class, KeyImportListenerProtocol {
-}
-
 /// Instantiate in AppDelegate, keep in AppConfig (maybe in renamed MessageSyncService, not sure
 /// yet), KeyImportListener will probably end up in NetworkService/ServiceConfig
-public class KeyImportService: KeyImportServiceProtocol {
+public class KeyImportService {
     public weak var delegate: KeyImportServiceDelegate?
+}
 
-    // MARK: - KeyImportServiceProtocol
+// MARK: - KeyImportServiceProtocol
+
+extension KeyImportService: KeyImportServiceProtocol {
 
     /// Call after successfull handshake.
     public func sendOwnPrivateKey(inAnswerToRequestMessage msg: Message) {
@@ -72,19 +85,11 @@ public class KeyImportService: KeyImportServiceProtocol {
     public func setNewDefaultKey(for identity: Identity, fpr: String) throws {
         try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
     }
-
-    // MARK: - OTHER
 }
 
 // MARK: - KeyImportListenerProtocol
-
 extension KeyImportService: KeyImportListenerProtocol {
-
-    public func newKeyImportMessageArrived(message: Message) {
-        delegate?.newKeyImportMessageArrived(message: message)
-    }
-
-    public func receivedPrivateKey(forAccount account: Account) {
-        delegate?.receivedPrivateKey(forAccount: account)
+    public func handleKeyImport(forMessage msg: Message) -> Bool {
+        fatalError("unimplemented stub")
     }
 }
