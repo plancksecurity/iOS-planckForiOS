@@ -8,14 +8,20 @@
 
 import UIKit
 
+/*
 //TODO: ADD ModelView
+ Has to go to Model:
+ private var keyImportWizzard: KeyImortWizzard
+ init(keyImortService: KeyImortServiceProtocol) {
+    self.keyImortWizzard = KeyImortWizzard(keyImportService: keyImortService)
+    super.init()
+ }
+ */
 class AutoWizardStepsViewController: BaseViewController {
     @IBOutlet weak var start: UIButton!
     @IBOutlet weak var cancel: UIButton!
     @IBOutlet weak var stepDescription: UILabel!
     @IBOutlet weak var loading: UIActivityIndicatorView!
-
-    private var keyImportWizzard: KeyImortWizzard?
 
     // MARK: - Life Cycle
 
@@ -31,7 +37,8 @@ class AutoWizardStepsViewController: BaseViewController {
             Log.shared.errorAndCrash(component: #function, errorString: "No config")
             return
         }
-        keyImportWizzard = KeyImortWizzard(keyImportService: appConfig.keyImportService)
+        //TODO: setup model passing import service
+//        model = Model(keyImportService: appConfig.keyImportService)
     }
 
     // MARK: - Actions

@@ -10,7 +10,7 @@ import MessageModel
 
 class KeyImortWizzard {
      let keyImportService: KeyImportServiceProtocol
-    //??? We probably need a KeyImportWizzardDelegate to inform the client (i.e. AutoWizardStepsViewController)
+    //??? We probably needs a KeyImportWizzardDelegate to inform the client (i.e. AutoWizardStepsViewModel)
 
     init(keyImportService: KeyImportServiceProtocol) {
         self.keyImportService = keyImportService
