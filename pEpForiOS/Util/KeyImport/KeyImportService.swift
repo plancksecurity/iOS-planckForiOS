@@ -57,6 +57,16 @@ public protocol KeyImportServiceDelegate: class {
 /// yet), KeyImportListener will probably end up in NetworkService/ServiceConfig
 public class KeyImportService {
     public weak var delegate: KeyImportServiceDelegate?
+
+    // MARK: - Working bees
+
+    private func isKeyImportMessage(message: Message) -> Bool {
+        fatalError("unimplemented stub")
+    }
+
+    private func isPrivateKeyMessage(message: Message) -> Bool {
+        fatalError("unimplemented stub")
+    }
 }
 
 // MARK: - KeyImportServiceProtocol
@@ -88,8 +98,17 @@ extension KeyImportService: KeyImportServiceProtocol {
 }
 
 // MARK: - KeyImportListenerProtocol
+
 extension KeyImportService: KeyImportListenerProtocol {
     public func handleKeyImport(forMessage msg: Message) -> Bool {
-        fatalError("unimplemented stub")
+        var weTakeOver = false
+        if isKeyImportMessage(message: msg) {
+            delegate?.newKeyImportMessageArrived(message: msg)
+            weTakeOver = true
+        } else if isPrivateKeyMessage(message: msg) {
+            delegate?.receivedPrivateKey(forAccount: msg.parent.account)
+            weTakeOver = true
+        }
+        return weTakeOver
     }
 }
