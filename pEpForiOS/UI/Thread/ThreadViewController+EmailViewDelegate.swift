@@ -7,7 +7,7 @@
 //
 
 import Foundation
-extension ThreadViewController: EmailViewModelDelegate {
+extension ThreadViewController: ThreadedEmailViewModelDelegate {
 
     func emailViewModel(viewModel: ThreadedEmailViewModel, didInsertDataAt index: Int) {
         updateTableView {

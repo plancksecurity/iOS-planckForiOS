@@ -16,7 +16,7 @@ class ThreadedEmailViewModel {
     internal var messages: [Message]
     internal var tip: Message
     weak var emailDisplayDelegate: EmailDisplayDelegate!
-    weak var delegate: EmailViewModelDelegate!
+    weak var delegate: ThreadedEmailViewModelDelegate!
     private let folder: ThreadedFolderWithTop
     private var expandedMessages: [Bool]
     private var messageToReply: Message?
