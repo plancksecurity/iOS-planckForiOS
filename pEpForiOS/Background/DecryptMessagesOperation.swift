@@ -7,7 +7,6 @@
 //
 
 import MessageModel
-
 import CoreData
 
 // Only used in Tests. Maybe refactor out.
@@ -22,12 +21,12 @@ public protocol DecryptMessagesOperationDelegateProtocol: class {
 public class DecryptMessagesOperation: ConcurrentBaseOperation {
     public weak var delegate: DecryptMessagesOperationDelegateProtocol?// Only used in Tests. Maybe refactor out.
     private(set) var didMarkMessagesForReUpload = false
-    private let keyImportService: KeyImportListenerProtocol?
+    private let keyImportListener: KeyImportListenerProtocol?
 
     public init(parentName: String = #function,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                keyImportService: KeyImportListenerProtocol? = nil) {
-        self.keyImportService = keyImportService
+                keyImportListener: KeyImportListenerProtocol? = nil) {
+        self.keyImportListener = keyImportListener
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
@@ -116,8 +115,19 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                          rating: PEP_rating,
                                          keys: NSArray?) {
         let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
-
-//        let isKeyImportMessage = keyImportService.
+        guard
+            let message = cdMessage.message(),
+            let keyImportListener = keyImportListener else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                handleError(BackgroundError.GeneralError.illegalState(info:
+                    "Missing data in handleDecryptionSuccess"))
+                return
+        }
+        let isKeyImportMessage = keyImportListener.handleKeyImport(forMessage: message)
+        if isKeyImportMessage {
+            // KeyImportListener is fully responsible.
+            return
+        }
 
         // Only used in Tests. Maybe refactor out.
         self.delegate?.decrypted(originalCdMessage: cdMessage,
