@@ -60,8 +60,12 @@ public class KeyImportService {
 
     // MARK: - Working bees
 
+    enum Header: String {
+        case pEpKeyImport = "pEp-key-import"
+    }
+
     private func isKeyImportMessage(message: Message) -> Bool {
-        fatalError("unimplemented stub")
+        return message.optionalFields[Header.pEpKeyImport.rawValue] != nil
     }
 
     private func isPrivateKeyMessage(message: Message) -> Bool {
@@ -72,7 +76,6 @@ public class KeyImportService {
 // MARK: - KeyImportServiceProtocol
 
 extension KeyImportService: KeyImportServiceProtocol {
-
     /// Call after successfull handshake.
     public func sendOwnPrivateKey(inAnswerToRequestMessage msg: Message) {
         /// TODO: Send the private key without appending to "Sent" folder.
