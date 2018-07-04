@@ -51,30 +51,24 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         // Create mails from ID1 to ID2 with attachments (inlined or not)
         let dateBeforeSend = Date().addingTimeInterval(-1.0)
         let numMailsToSend = 1
-        let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
-                                                            testCase: self,
-                                                            numberOfMails: numMailsToSend,
-                                                            withAttachments: true,
-                                                            attachmentsInlined: attachmentsInlined,
-                                                            encrypt: false)
+        let mailsToSend = try!
+            TestUtil.createOutgoingMails(cdAccount: cdAccount,
+                                         fromIdentity: id1,
+                                         toIdentity: id2,
+                                         setSentTimeOffsetForManualOrdering: false,
+                                         testCase: self,
+                                         numberOfMails: numMailsToSend,
+                                         withAttachments: true,
+                                         attachmentsInlined: attachmentsInlined,
+                                         encrypt: false,
+                                         forceUnencrypted: true)
         XCTAssertEqual(mailsToSend.count, numMailsToSend)
-        for mail in mailsToSend {
-            guard let currentReceipinets = mail.to?.array as? [CdIdentity] else {
-                XCTFail("Should have receipients")
-                return
-            }
-            mail.from = id1
-            mail.removeTos(cdIdentities: currentReceipinets)
-            mail.addTo(cdIdentity: id2)
-            mail.pEpProtected = false // force unencrypted
-            mail.sent = Date()
-        }
-        Record.saveAndWait()
 
         // ... and send them.
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
 
-        // Sync once again to make sure we mirror the servers state (i.e. receive the sent mails)
+        // Sync once again. Just to make sure we mirror the servers state (i.e. receive the
+        // sent mails)
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
 
         // Now let's see what we got.

@@ -248,6 +248,41 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testThreadedReferencesSentMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let sentFolder = Folder.init(name: "Sent",
+                                     parent: nil,
+                                     account: account,
+                                     folderType: .sent)
+        sentFolder.save()
+
+        let sentMessage = createMessage(number: nextUid(), inFolder: sentFolder)
+        sentMessage.save()
+
+        let topMessageReferencingSentMessage = topMessages[0]
+        topMessageReferencingSentMessage.references.append(sentMessage.messageID)
+        topMessageReferencingSentMessage.save()
+
+        guard let referencedSentMessageOrig =
+            topMessageReferencingSentMessage.referencedMessages().first else {
+                XCTFail()
+                return
+        }
+        XCTAssertEqual(referencedSentMessageOrig.messageID, sentMessage.messageID)
+
+        let incomingMessage = testIncomingMessage(references: [sentMessage],
+                                                  indexPathUpdated: indexOfTopMessage0)
+
+        let incomingMessageReferencedMessages = incomingMessage.referencedMessages()
+        guard let referencedSentMessageIncoming = incomingMessageReferencedMessages.first else {
+                XCTFail()
+                return
+        }
+        XCTAssertEqual(referencedSentMessageIncoming.messageID, sentMessage.messageID)
+    }
+
     // MARK: - Internal - Helpers
 
     func setUpTopMessages() {
@@ -285,12 +320,28 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         XCTAssertNil(emailListViewModel.currentDisplayedMessage?.messageModel)
     }
 
+    func latestUid() -> Int {
+        var highestUid: Int32 = 0
+        if let allCdMessages = CdMessage.all() as? [CdMessage] {
+            for cdMsg in allCdMessages {
+                if cdMsg.uid > highestUid {
+                    highestUid = cdMsg.uid
+                }
+            }
+        }
+        return Int(highestUid)
+    }
+
+    func nextUid() -> Int {
+        return latestUid() + 1
+    }
+
     func testIncomingMessage(references: [Message],
                              indexPathUpdated: IndexPath?) -> Message {
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
-        let incomingMessage = createMessage(number: topMessages.count + 1)
+        let incomingMessage = createMessage(number: nextUid())
         incomingMessage.references = references.map {
             return $0.messageID
         }
@@ -410,34 +461,10 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     class MyMessageSyncServiceProtocol: MessageSyncServiceProtocol {
-        weak var errorDelegate: MessageSyncServiceErrorDelegate?
-        weak var sentDelegate: MessageSyncServiceSentDelegate?
-        weak var syncDelegate: MessageSyncServiceSyncDelegate?
-        weak var stateDelegate: MessageSyncServiceStateDelegate?
-        weak var flagsUploadDelegate: MessageSyncFlagsUploadDelegate?
-
         func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
         }
 
         func requestFetchOlderMessages(inFolder folder: Folder) {
-        }
-
-        func requestDraft(message: Message) {
-        }
-
-        func requestSend(message: Message) {
-        }
-
-        func requestFlagChange(message: Message) {
-        }
-
-        func requestMessageSync(folder: Folder) {
-        }
-
-        func start(account: Account) {
-        }
-
-        func cancel(account: Account) {
         }
     }
 
