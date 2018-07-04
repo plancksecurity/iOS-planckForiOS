@@ -59,48 +59,38 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 if me.isCancelled {
                     break
                 }
-                //
                 let ratingBeforeEngine = cdMessage.pEpRating
 
                 var outgoing = false
                 if let folderType = cdMessage.parent?.folderType {
                     outgoing = folderType.isOutgoing()
                 }
-
                 let pepMessage = PEPUtil.pEpDict(
                     cdMessage: cdMessage, outgoing: outgoing).mutableDictionary()
-                var keys: NSArray?
+
                 Log.info(component: me.comp,
                          content: "Will decrypt \(cdMessage.logString())")
                 let session = PEPSession()
 
+                var keys: NSArray?
                 var rating = PEP_rating_undefined
+                var flags = message.isOnTrustedServer ? PEP_decrypt_flag_none :
+                PEP_decrypt_flag_untrusted_server
+
                 let pEpDecryptedMessage: NSDictionary
                 do {
-                    // (This nasty if clause is a workaround to what I consider as a Swift 4.1 bug,
-                    // causing an error "generic parameter "wrapped" could not be inferred".
-                    // The only difference is the `flags`parameter.)
-                    if message.isOnTrustedServer {
-                        pEpDecryptedMessage = try session.decryptMessageDict(pepMessage,
-                                                                             flags: nil,
-                                                                             rating: &rating,
-                                                                             extraKeys: &keys,
-                                                                             status: nil)
-                            as NSDictionary
-                    } else {
-                        var flags = PEP_decrypt_flag_untrusted_server
-                        pEpDecryptedMessage = try session.decryptMessageDict(pepMessage,
-                                                                             flags: &flags,
-                                                                             rating: &rating,
-                                                                             extraKeys: &keys,
-                                                                             status: nil)
-                            as NSDictionary
-                    }
+                    pEpDecryptedMessage = try session.decryptMessageDict(pepMessage,
+                                                                         flags: &flags,
+                                                                         rating: &rating,
+                                                                         extraKeys: &keys,
+                                                                         status: nil)
+                        as NSDictionary
                     me.handleDecryptionSuccess(cdMessage: cdMessage,
                                                pEpDecryptedMessage: pEpDecryptedMessage,
                                                ratingBeforeEngine: ratingBeforeEngine,
                                                rating: rating,
-                                               keys: keys)
+                                               keys: keys,
+                                               flags: flags)
                 } catch let error as NSError {
                     // log, and try again next time
                     Log.error(component: #function, error: error)
@@ -113,7 +103,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                          pEpDecryptedMessage: NSDictionary,
                                          ratingBeforeEngine: Int16,
                                          rating: PEP_rating,
-                                         keys: NSArray?) {
+                                         keys: NSArray?,
+                                         flags: PEP_decrypt_flags) {
         let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
         guard
             let message = cdMessage.message(),
@@ -123,7 +114,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                     "Missing data in handleDecryptionSuccess"))
                 return
         }
-        let isKeyImportMessage = keyImportListener.handleKeyImport(forMessage: message)
+        let isKeyImportMessage = keyImportListener.handleKeyImport(forMessage: message,
+                                                                   flags: flags)
         if isKeyImportMessage {
             // KeyImportListener is fully responsible.
             return
