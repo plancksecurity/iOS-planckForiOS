@@ -15,7 +15,6 @@ class ThreadViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
     var model: ThreadedEmailViewModel!
 
-    var messages = ["hola", "que", "tal"]
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
@@ -67,6 +66,7 @@ class ThreadViewController: BaseViewController {
         }
         model.setFlag(to: !model.allMessagesFlagged())
         setUpFlaggedStatus()
+        
         tableView.reloadData()
     }
 

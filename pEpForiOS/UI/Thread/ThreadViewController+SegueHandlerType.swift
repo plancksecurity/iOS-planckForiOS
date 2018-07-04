@@ -47,6 +47,7 @@ extension ThreadViewController: SegueHandlerType {
                 destination.viewModel = MoveToAccountViewModel(messages: messages)
             }
             destination.delegate = model
+            model.didMove()
             break
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
