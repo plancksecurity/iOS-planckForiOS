@@ -535,8 +535,10 @@ open class NetworkServiceWorker {
             }
 
             if !onlySyncChangesTriggeredByUser {
-                let opDecrypt = DecryptMessagesOperation(parentName: description,
-                                                         errorContainer: ErrorContainer())
+                let opDecrypt =
+                    DecryptMessagesOperation(parentName: description,
+                                             errorContainer: ErrorContainer(),
+                                             keyImportListener:serviceConfig.keyImportListener)
                 opDecrypt.addDependency(lastImapOp)
                 lastImapOp = opDecrypt
                 opImapFinished.addDependency(opDecrypt)
@@ -578,8 +580,10 @@ open class NetworkServiceWorker {
                     }
 
                     // ... and decrypt
+                    let listener = me.serviceConfig.keyImportListener
                     let opDecrypt = DecryptMessagesOperation(parentName: me.description,
-                                                             errorContainer: ErrorContainer())
+                                                             errorContainer: ErrorContainer(),
+                                                             keyImportListener: listener)
                     opDecrypt.addDependency(lastOp)
                     lastOp = opDecrypt
                     reUploadOperations.append(opDecrypt)
