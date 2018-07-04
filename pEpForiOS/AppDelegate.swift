@@ -246,11 +246,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - UIApplicationDelegate
 
-    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.warn(component: "UIApplicationDelegate",
-                        content: "applicationDidReceiveMemoryWarning")
-    }
-
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -361,6 +356,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
         }
         return false
+    }
+
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        Log.shared.warn(component: "UIApplicationDelegate",
+                        content: "applicationDidReceiveMemoryWarning")
     }
 
     // MARK: - HELPER
