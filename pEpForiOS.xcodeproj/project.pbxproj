@@ -216,8 +216,6 @@
 		4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 4348EF141E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */; };
 		43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */; };
 		43498CDD200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */; };
-		4349FDED20B7F925002197CE /* FolderThreadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349FDEC20B7F925002197CE /* FolderThreadingProtocol.swift */; };
-		4349FDEF20B7F9C9002197CE /* MessageThreadingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4349FDEE20B7F9C9002197CE /* MessageThreadingProtocol.swift */; };
 		434AC3E320A450D800C11B7F /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */; };
 		434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */; };
 		434BF38D20C6742D00FCBCCA /* ThreadedFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF38C20C6742D00FCBCCA /* ThreadedFolder.swift */; };
@@ -692,8 +690,6 @@
 		4348EF141E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc"; sourceTree = "<group>"; };
 		43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelLoginErrorDelegate.swift; sourceTree = "<group>"; };
 		43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelOAuth2ErrorDelegate.swift; sourceTree = "<group>"; };
-		4349FDEC20B7F925002197CE /* FolderThreadingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderThreadingProtocol.swift; sourceTree = "<group>"; };
-		4349FDEE20B7F9C9002197CE /* MessageThreadingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageThreadingProtocol.swift; sourceTree = "<group>"; };
 		434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
 		434B5D181DDF67E400BEDEF0 /* CdMessage+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+Extension.swift"; sourceTree = "<group>"; };
 		434BF38C20C6742D00FCBCCA /* ThreadedFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadedFolder.swift; sourceTree = "<group>"; };
@@ -1759,8 +1755,6 @@
 				1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */,
 				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
 				15BA536B20A08D270090F126 /* UnifiedInbox.swift */,
-				4349FDEC20B7F925002197CE /* FolderThreadingProtocol.swift */,
-				4349FDEE20B7F9C9002197CE /* MessageThreadingProtocol.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2507,7 +2501,6 @@
 				43C322101EA91764005073FB /* UIImage+Extension.swift in Sources */,
 				15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */,
 				1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */,
-				4349FDEF20B7F9C9002197CE /* MessageThreadingProtocol.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43122B1B1DF5B48B00610253 /* SmtpService.swift in Sources */,
 				43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */,
@@ -2724,7 +2717,6 @@
 				4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */,
 				433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */,
 				4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */,
-				4349FDED20B7F925002197CE /* FolderThreadingProtocol.swift in Sources */,
 				B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */,
 				4380528B1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift in Sources */,
 				B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */,
