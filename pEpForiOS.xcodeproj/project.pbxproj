@@ -102,6 +102,7 @@
 		15EBE44E20E5405D00268859 /* KeyImortWizzard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE44D20E5405D00268859 /* KeyImortWizzard.swift */; };
 		15EBE45220ECF10600268859 /* KeyImportContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45120ECF10600268859 /* KeyImportContract.swift */; };
 		15EBE45520ECF2E800268859 /* KeyImportServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45420ECF2E800268859 /* KeyImportServiceTest.swift */; };
+		15EBE45720EE157900268859 /* SMTPSendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45620EE157900268859 /* SMTPSendOperation.swift */; };
 		15EE5A75203B15670041F076 /* SettingBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A72203B15660041F076 /* SettingBaseViewController.swift */; };
 		15EE5A76203B15670041F076 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A73203B15660041F076 /* LogViewController.swift */; };
 		15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835231F34BE1300FCE887 /* AccountUserInput.swift */; };
@@ -583,6 +584,7 @@
 		15EBE44D20E5405D00268859 /* KeyImortWizzard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImortWizzard.swift; sourceTree = "<group>"; };
 		15EBE45120ECF10600268859 /* KeyImportContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportContract.swift; sourceTree = "<group>"; };
 		15EBE45420ECF2E800268859 /* KeyImportServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportServiceTest.swift; sourceTree = "<group>"; };
+		15EBE45620EE157900268859 /* SMTPSendOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSendOperation.swift; sourceTree = "<group>"; };
 		15EE5A72203B15660041F076 /* SettingBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingBaseViewController.swift; sourceTree = "<group>"; };
 		15EE5A73203B15660041F076 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		15F835231F34BE1300FCE887 /* AccountUserInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUserInput.swift; sourceTree = "<group>"; };
@@ -1275,6 +1277,7 @@
 				154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */,
 				150B84C320A44DE100D8B288 /* MoveToFolderOperation.swift */,
 				150B84C520A5DD0600D8B288 /* UIDCopyOperation.swift */,
+				15EBE45620EE157900268859 /* SMTPSendOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -2724,6 +2727,7 @@
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				434BF39520C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
+				15EBE45720EE157900268859 /* SMTPSendOperation.swift in Sources */,
 				150DF6D32052ED4800A9DCF7 /* UIView+Autolayout.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
 				4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */,
