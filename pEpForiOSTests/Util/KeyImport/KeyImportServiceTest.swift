@@ -113,6 +113,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     ///                      PEP_decrypt_flag_own_private_key when decrypting the test message
     ///   - pepColorGreen:  if true, the test message's pepRating represents PEP_color_green.
     ///                     else the test message's pepRating represents PEP_color_none.
+    ///   - newImportMessageTimedOut: if true, the test message is too old to fulfil TTL
     ///   - expectDelegateNewImportMessageArrivedCalled: if true we assert the
     ///                     KeyImportServiceDelegates `newImportMessageArrived`method is called.
     ///                     If false we assert it is *not* called.
@@ -179,9 +180,12 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     ///   - pEpKeyImportHeaderSet: whether or not to set a dummy FPR to "pEp-key-import" header
     ///   - pEpColor:   pEpColor to set PE_rating for.
     ///                 If given pEpColor is not in [green], grey is set
+    ///   - newImportMessageTimedOut: if true `received` date of the message is before valid TTL,
+    ///                 otherwize `received` date is now
     /// - Returns: test message
     private func createMessage(pEpKeyImportHeaderSet: Bool = false,
-                               pEpColor: PEP_color = PEP_color_no_color, timedOut: Bool = false) -> Message {
+                               pEpColor: PEP_color = PEP_color_no_color,
+                               timedOut: Bool = false) -> Message {
         guard let inbox = cdAccount.account().folder(ofType: .inbox) else {
             XCTFail("No inbox")
             fatalError("Sorry for crashing. " +
