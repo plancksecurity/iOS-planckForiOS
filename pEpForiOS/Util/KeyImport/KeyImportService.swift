@@ -11,6 +11,9 @@ import MessageModel
 public class KeyImportService {
     public weak var delegate: KeyImportServiceDelegate?
 
+    /// Specifies the time to live for key import messages
+    let timeoutInterval: TimeInterval = 5 * 60 //IOS-1028: timeout value specs?
+
     // MARK: - Working bees
 
     enum Header: String {
@@ -62,13 +65,23 @@ extension KeyImportService: KeyImportListenerProtocol {
         var hasBeenHandled = false
         if isKeyImportMessage(message: msg) {
             msg.imapMarkDeleted()
-            delegate?.newKeyImportMessageArrived(message: msg)
             hasBeenHandled = true
+            if !timedOut(keyImportMessage: msg) {
+                delegate?.newKeyImportMessageArrived(message: msg)
+            }
         } else if isPrivateKeyMessage(message: msg, flags: flags) {
             msg.imapMarkDeleted()
-            delegate?.receivedPrivateKey(forAccount: msg.parent.account)
             hasBeenHandled = true
+            delegate?.receivedPrivateKey(forAccount: msg.parent.account) //IOS-1028: needs timeout too?
         }
         return hasBeenHandled
+    }
+
+    private func timedOut(keyImportMessage message: Message) -> Bool {
+        guard let age = message.received?.timeIntervalSinceNow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No received date.")
+            return true
+        }
+        return age < -timeoutInterval
     }
 }
