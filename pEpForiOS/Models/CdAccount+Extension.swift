@@ -33,14 +33,14 @@ extension CdAccount {
     }
 
     /**
-     - Returns: The first found IMAP connect info. Used by some tests.
+     - Returns: The first found IMAP connect info.
      */
     open var imapConnectInfo: EmailConnectInfo? {
         return emailConnectInfos().filter { return $0.0.emailProtocol == .imap }.first?.0
     }
 
     /**
-     - Returns: The first found SMTP connect info. Used by some tests.
+     - Returns: The first found SMTP connect info.
      */
     open var smtpConnectInfo: EmailConnectInfo? {
         return emailConnectInfos().filter { return $0.0.emailProtocol == .smtp }.first?.0
