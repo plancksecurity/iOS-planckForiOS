@@ -8,11 +8,13 @@
 
 import MessageModel
 
-/// Does exactly one thing: Sending a given message.
-/// Does not create, modify or delete messages.
+/// Does exactly one thing: Send a given message.
+/// Does not create, modify, delete nor save messages.
 /// Use for sending messages that should not be stored locally (i.e. exist in memory only).
 class SMTPSendOperation: ConcurrentBaseOperation {
+    /// Message to send
     private let message: Message
+    private var smtpSend: SmtpSend?
 
     init(parentName: String = #function, errorContainer: ServiceErrorProtocol,
          messageToSend: Message) {
@@ -21,18 +23,51 @@ class SMTPSendOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
-        fatalError("unimplemented stub")
+        send()
     }
 
-    func send(pEpMessageDict: PEPMessageDict) {
-//        let pantMail = PEPUtil.pantomime(pEpMessageDict: msg)
-//        smtpSend.smtp.setRecipients(nil)
-//        smtpSend.smtp.setMessageData(nil)
-//        smtpSend.smtp.setMessage(pantMail)
-//        smtpSend.smtp.sendMessage()
+    private func setup() {
+        guard let cdAcount = CdAccount.search(account: message.parent.account) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No Account")
+            return
+        }
+        privateMOC.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            let accountInfos = ServiceUtil.gatherConnectInfos(context: privateMOC,
+                                                            accounts: [cdAcount])
+            guard let accountInfo = accountInfos.first else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No Account infos")
+                return
+            }
+            guard let smtpCI = accountInfo.smtpConnectInfo else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
+                return
+            }
+            guard let smtpSend = SmtpSendData(connectInfo: smtpCI).smtp else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
+                return
+            }
+            me.smtpSend = smtpSend
+        }
+        smtpSend?.delegate = self
     }
 
-    //TODO: Message2PEPMessageDict
+    private func send() {
+        let pepDict = message.pEpMessageDict()
+        let pantMail = PEPUtil.pantomime(pEpMessageDict: pepDict)
+        guard let smtpSend = smtpSend else {
+            Log.shared.errorAndCrash(component: #function, errorString: "So smtpSend")
+            handleError(BackgroundError.GeneralError.illegalState(info: "No smtpSend"))
+            return
+        }
+        smtpSend.smtp.setRecipients(nil)
+        smtpSend.smtp.setMessageData(nil)
+        smtpSend.smtp.setMessage(pantMail)
+        smtpSend.smtp.sendMessage()
+    }
 }
 
 extension SMTPSendOperation: SmtpSendDelegate {
