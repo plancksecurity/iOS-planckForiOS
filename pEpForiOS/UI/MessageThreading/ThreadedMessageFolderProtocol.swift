@@ -16,7 +16,7 @@ import MessageModel
  - Note: Objects implmenting this protocol can choose to ignore threading
  completely, which is transparent to the client.
  */
-protocol ThreadedMessageFolderProtocol {
+public protocol ThreadedMessageFolderProtocol {
     /**
      Depending on whether the underlying implmentation is configured to
      show threads or not, this will return a list of all messages or just

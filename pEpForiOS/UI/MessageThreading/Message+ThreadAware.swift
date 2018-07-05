@@ -14,12 +14,16 @@ import MessageModel
  Some threading support.
  */
 extension Message: ThreadAwareMessageProtocol {
+    func threadAware() -> ThreadedMessageFolderProtocol {
+        return FolderThreading.makeThreadAware(folder: parent)
+    }
+
     func numberOfMessagesInThread() -> Int {
-        return FolderThreading.makeThreadAware(folder: parent).numberOfMessagesInThread(
+        return threadAware().numberOfMessagesInThread(
             message: self)
     }
 
     func messagesInThread() -> [Message] {
-        return FolderThreading.makeThreadAware(folder: parent).messagesInThread(message: self)
+        return threadAware().messagesInThread(message: self)
     }
 }
