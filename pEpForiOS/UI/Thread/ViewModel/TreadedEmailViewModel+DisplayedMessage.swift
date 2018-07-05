@@ -17,6 +17,9 @@ extension ThreadedEmailViewModel: DisplayedMessage {
 
     func update(forMessage message: Message) {
         updateInternal(message: message)
+        if message == currentDisplayedMessage?.messageModel {
+            currentDisplayedMessage?.update(forMessage: message)
+        }
     }
 
 }

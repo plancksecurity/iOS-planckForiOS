@@ -150,6 +150,7 @@ class EmailViewController: BaseTableViewController {
 
     @objc internal func okButtonPressed(sender: UIBarButtonItem) {
         performSegue(withIdentifier: .unwindToThread, sender: self)
+        print("what")
     }
 
     // Sets the destructive bottom bar item accordint to the message (trash/archive)

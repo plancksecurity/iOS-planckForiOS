@@ -21,6 +21,8 @@ class ThreadedEmailViewModel {
     private var expandedMessages: [Bool]
     private var messageToReply: Message?
 
+    public var currentDisplayedMessage: DisplayedMessage?
+
     //Needed for segue
     public let displayFolder: Folder
 
@@ -35,15 +37,25 @@ class ThreadedEmailViewModel {
     }
 
     func deleteMessage(at index: Int){
+        deleteMessage(at: index)
+        emailDisplayDelegate.emailDisplayDidDelete(message: messages[index])
+    }
+
+    internal func deleteInternal(at index:Int) {
         guard index < messages.count && index >= 0 else {
             return
         }
-        emailDisplayDelegate.emailDisplayDidDelete(message: messages[index])
         folder.deleteSingle(message: messages[index])
         messages.remove(at: index)
         expandedMessages.remove(at: index)
         delegate.emailViewModel(viewModel: self, didRemoveDataAt: index)
+    }
 
+    internal func deleteInternal(message: Message) {
+        guard let index = indexOfMessage(message: message) else {
+            return
+        }
+        deleteMessage(at: index)
     }
 
     func deleteAllMessages(){
@@ -65,7 +77,16 @@ class ThreadedEmailViewModel {
         delegate?.emailViewModel(viewModel: self, didUpdateDataAt: index)
     }
 
-    fileprivate func notifyFlag(_ status: Bool) {
+    internal func indexOfMessage(message: Message)-> Int? {
+        for  i in 0...messages.count {
+            if messages[i] == message{
+                return i
+            }
+        }
+        return nil
+    }
+
+    internal func notifyFlag(_ status: Bool) {
         if status {
             emailDisplayDelegate.emailDisplayDidFlag(message: tip)
         } else {
@@ -84,18 +105,6 @@ class ThreadedEmailViewModel {
         messages[index].imapFlags?.flagged = !flagStatus
         if messages[index] == tip {
             notifyFlag(!flagStatus)
-        }
-    }
-
-    func setFlag(forMessageAt index: Int, to status: Bool){
-        guard index < messages.count && index >= 0 else {
-                return
-        }
-        messages[index].imapFlags?.flagged = status
-        messages[index].save()
-        updated(message: messages[index])
-        if messages[index] == tip {
-            notifyFlag(status)
         }
     }
 

@@ -35,6 +35,8 @@ extension ThreadViewController: SegueHandlerType {
             vc.message = message
             vc.folderShow = model?.displayFolder
             vc.messageId = indexPath.row
+            vc.delegate = model
+            model.currentDisplayedMessage = vc
             break
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
