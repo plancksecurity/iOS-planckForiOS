@@ -39,15 +39,37 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         assert(keyImportHeaderSet: true,
                ownPrivateKeyFlagReceived: false,
                pepColorGreen: false,
+               newImportMessageTimedOut: false,
                expectDelegateNewImportMessageArrivedCalled: true,
                expectDelegateReceivedPrivateKeyCalled: false,
                expectMessageHandledByKeyImportService: true)
+    }
+
+    func testNewKeyImportMessageArrived_headerSet_messageTimedOut() {
+        assert(keyImportHeaderSet: false,
+               ownPrivateKeyFlagReceived: false,
+               pepColorGreen: false,
+               newImportMessageTimedOut: true,
+               expectDelegateNewImportMessageArrivedCalled: false,
+               expectDelegateReceivedPrivateKeyCalled: false,
+               expectMessageHandledByKeyImportService: false)
     }
 
     func testNewKeyImportMessageArrived_headerNotSet() {
         assert(keyImportHeaderSet: false,
                ownPrivateKeyFlagReceived: false,
                pepColorGreen: false,
+               newImportMessageTimedOut: false,
+               expectDelegateNewImportMessageArrivedCalled: false,
+               expectDelegateReceivedPrivateKeyCalled: false,
+               expectMessageHandledByKeyImportService: false)
+    }
+
+    func testNewKeyImportMessageArrived_headerNotSet_messageTimedOut() {
+        assert(keyImportHeaderSet: false,
+               ownPrivateKeyFlagReceived: false,
+               pepColorGreen: false,
+               newImportMessageTimedOut: true,
                expectDelegateNewImportMessageArrivedCalled: false,
                expectDelegateReceivedPrivateKeyCalled: false,
                expectMessageHandledByKeyImportService: false)
@@ -102,6 +124,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     func assert(keyImportHeaderSet: Bool,
                 ownPrivateKeyFlagReceived: Bool,
                 pepColorGreen: Bool,
+                newImportMessageTimedOut: Bool = false,
                 expectDelegateNewImportMessageArrivedCalled: Bool,
                 expectDelegateReceivedPrivateKeyCalled: Bool,
                 expectMessageHandledByKeyImportService: Bool) {
@@ -121,7 +144,9 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
                       expReceivedPrivateKey: expReceivedPrivateKeyCalled)
 
         // We received a message ...
-        let msg = createMessage(pEpKeyImportHeaderSet: keyImportHeaderSet, pEpColor: pepColor)
+        let msg = createMessage(pEpKeyImportHeaderSet: keyImportHeaderSet,
+                                pEpColor: pepColor,
+                                timedOut: newImportMessageTimedOut)
         // ... and inform the listener.
         let isHandledByKeyImporter = keyImportListener.handleKeyImport(forMessage: msg,
                                                                        flags: flagReturnedByEngine)
@@ -156,7 +181,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     ///                 If given pEpColor is not in [green], grey is set
     /// - Returns: test message
     private func createMessage(pEpKeyImportHeaderSet: Bool = false,
-                               pEpColor: PEP_color = PEP_color_no_color) -> Message {
+                               pEpColor: PEP_color = PEP_color_no_color, timedOut: Bool = false) -> Message {
         guard let inbox = cdAccount.account().folder(ofType: .inbox) else {
             XCTFail("No inbox")
             fatalError("Sorry for crashing. " +
@@ -164,6 +189,8 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         }
         let msg = Message(uuid: "KeyImportServiceTestMessage_" + UUID().uuidString,
                           parentFolder: inbox)
+        msg.received = timedOut ? Date() - KeyImportService.ttlKeyImportMessages - 1 : Date()
+
         if pEpKeyImportHeaderSet {
             let dummyFpr = "666F 666F 666F 666F 666F 666F 666F 666F 666F 666F"
             msg.optionalFields[KeyImportService.Header.pEpKeyImport.rawValue] = dummyFpr
