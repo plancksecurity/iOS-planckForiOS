@@ -12,7 +12,7 @@ public class KeyImportService {
     public weak var delegate: KeyImportServiceDelegate?
 
     /// Specifies how long a key import message is valid
-    static let ttlKeyImportMessages: TimeInterval = 5 * 60 //IOS-1028: timeout value specs?
+    static let ttlKeyImportMessages: TimeInterval = 4 * 60 * 60
 
     // MARK: - Working bees
 
