@@ -23,7 +23,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     /// Holds a strong reference. KeyImportService.delegate is weak.
     var observer: TestKeyImportServiceObserver?
 
-        override func setUp() {
+    override func setUp() {
         super.setUp()
         cdAccount.createRequiredFoldersAndWait(testCase: self)
         _keyImportService = KeyImportService()
