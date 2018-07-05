@@ -111,8 +111,8 @@ class ThreadedEmailViewModel {
         for message in messages {
             message.imapFlags?.flagged = status
             message.save()
+            notifyFlag(status, message: message)
         }
-        notifyFlag(status, message: tip)
     }
 
     func allMessagesFlagged() -> Bool {
