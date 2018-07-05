@@ -69,23 +69,22 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let accountsSection = 0
-        if indexPath.section == accountsSection {
-            let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier,
-                                                     for: indexPath) as? SwipeTableViewCell
-            cell?.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
+        if let vm = viewModel[indexPath.section][indexPath.row] as? AccountsSettingsCellViewModel, vm.settingCellType == AccountSettingsCellType.accountsCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier:
+                vm.settingCellType.rawValue, for: indexPath) as? SwipeTableViewCell
+            cell?.textLabel?.text = vm.title
             cell?.detailTextLabel?.text = nil
             cell?.delegate = self
             return cell!
+        } else {
+            let vm = viewModel[indexPath.section][indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier:
+                vm.settingCellType.rawValue, for: indexPath) as? SettingSwitchTableViewCell
+            cell?.viewModel = vm as! SettingSwitchProtocol
+            cell?.setUpView()
+            cell?.selectionStyle = .none
+            return cell!
         }
-        // Settings Section
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: accountsCellIdentifier,
-                                                 for: indexPath)
-        cell.textLabel?.text = viewModel[indexPath.section][indexPath.item].title
-        cell.detailTextLabel?.text = viewModel[indexPath.section][indexPath.item].value
-        cell.accessoryType = .disclosureIndicator
-        return cell
     }
 
     private func deleteRowAt(_ indexPath: IndexPath) {
@@ -162,11 +161,9 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
         case .unecryptedSubject:
-            self.settingSwitchViewModel = UnecryptedSubjectViewModel()
-            performSegue(withIdentifier: .segueShowSetting, sender: self)
+            break
         case .organizedByThread:
-            self.settingSwitchViewModel = ThreadedSwitchViewModel()
-            performSegue(withIdentifier: .segueShowSetting, sender: self)
+            break
         case .defaultAccount:
             performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
         case .showLog:
@@ -193,7 +190,6 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueShowSettingUnecryptedSubject
         case sequeShowCredits
         case segueShowSettingKeyImportSelectAccount
-        case segueShowSetting
         case noAccounts
         case noSegue
     }
@@ -207,18 +203,12 @@ extension AccountsTableViewController: SegueHandlerType {
                     return
             }
             destination.appConfig = self.appConfig
-            if let path = ipath {
-                if let acc = viewModel[path.section][path.row].account {
+            if let path = ipath ,
+                let vm = viewModel[path.section][path.row] as? AccountsSettingsCellViewModel,
+                let acc = vm.account  {
                     let vm = AccountSettingsViewModel(account: acc)
                     destination.viewModel = vm
-                }
             }
-        case .segueShowSetting:
-            guard let destination = segue.destination as? SettingSwitchViewController else {
-                return
-            }
-            destination.viewModel = self.settingSwitchViewModel
-            destination.appConfig = self.appConfig
         case .noAccounts,
         .segueShowSettingUnecryptedSubject,
         .segueShowSettingSyncTrash,

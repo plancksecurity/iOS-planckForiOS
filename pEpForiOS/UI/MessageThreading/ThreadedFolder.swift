@@ -26,7 +26,14 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        return message.referencingMessages()
+        var messageIdSet = message.referencedMessageIdSet()
+        messageIdSet.insert(message.messageID)
+        let messageIdSetReferencing = message.referencingMessageIdSet()
+        messageIdSet.formUnion(messageIdSetReferencing)
+        let messageIdsReferencing = Message.messageIdsReferencing(messageIdSet: messageIdSet)
+        messageIdSet.formUnion(messageIdsReferencing)
+        messageIdSet.remove(message.messageID)
+        return Message.messages(byMessageIdSet: messageIdSet)
     }
 
     func deleteSingle(message: Message) {

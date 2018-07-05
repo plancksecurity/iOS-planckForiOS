@@ -122,7 +122,7 @@ extension KeyImportService: KeyImportServiceProtocol {
             Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
             return
         }
-        let sendOp = SMTPSendOperation(errorrContainer: errorContainer,
+        let sendOp = SMTPSendOperation(errorContainer: errorContainer,
                                        messageToSend: msg,
                                        smtpSend: smtpSend)
         // Go!

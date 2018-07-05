@@ -17,7 +17,7 @@ public class AccountsSettingsSectionViewModel {
         case pgpCompatibilitySettings
     }
 
-    var cells = [AccountsSettingsCellViewModel]()
+    var cells = [SettingsCellViewModel]()
     var title: String?
     let type: SectionType
     
@@ -44,19 +44,23 @@ public class AccountsSettingsSectionViewModel {
 
     func generateGlobalSettingsCells() {
         self.cells.append(AccountsSettingsCellViewModel(type: .defaultAccount))
-        self.cells.append(AccountsSettingsCellViewModel(type: .organizedByThread))
+        self.cells.append(ThreadedSwitchViewModel(type: .organizedByThread))
+        //self.cells.append(AccountsSettingsCellViewModel(type: .organizedByThread))
         self.cells.append(AccountsSettingsCellViewModel(type: .credits))
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
         self.cells.append(AccountsSettingsCellViewModel(type: .keyImport))
     }
 
     func generatePgpCompatibilitySettingsCells() {
-        self.cells.append(AccountsSettingsCellViewModel(type: .unecryptedSubject))
+        self.cells.append(UnecryptedSubjectViewModel(type: .unecryptedSubject))
+        //self.cells.append(AccountsSettingsCellViewModel(type: .unecryptedSubject))
     }
 
     func delete(cell: Int) {
-        cells[cell].delete()
-        cells.remove(at: cell)
+        if let remove = cells[cell] as? AccountsSettingsCellViewModel {
+            remove.delete()
+            cells.remove(at: cell)
+        }
     }
 
     func cellIsValid(cell: Int) -> Bool {
@@ -69,7 +73,7 @@ public class AccountsSettingsSectionViewModel {
         }
     }
 
-    subscript(cell: Int) -> AccountsSettingsCellViewModel {
+    subscript(cell: Int) -> SettingsCellViewModel {
         get {
             assert(cellIsValid(cell: cell), "Cell out of range")
             return cells[cell]

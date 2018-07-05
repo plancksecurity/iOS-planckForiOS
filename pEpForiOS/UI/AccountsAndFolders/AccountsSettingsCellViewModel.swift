@@ -9,28 +9,42 @@
 import Foundation
 import MessageModel
 
-public class AccountsSettingsCellViewModel {
-    public enum SettingType {
-        case account
-        case showLog
-        case organizedByThread
-        case credits
-        case unecryptedSubject
-        case defaultAccount
-        case keyImport
-    }
 
+public enum AccountSettingsCellType: String {
+    case accountsCell = "accountsCell"
+    case switchOptionCell = "switchOptionCell"
+}
+public enum SettingType {
+    case account
+    case showLog
+    case organizedByThread
+    case credits
+    case unecryptedSubject
+    case defaultAccount
+	case keyImport
+}
+
+public class AccountsSettingsCellViewModel: SettingsCellViewModel {
+
+    var settingCellType: AccountSettingsCellType
+    var type: SettingType
     var account: Account?
-    let type: SettingType
     var status: Bool?
 
     init(account: Account) {
         self.type = .account
         self.account = account
+        self.settingCellType = .accountsCell
     }
 
     init(type: SettingType) {
         self.type = type
+        switch self.type {
+        case .account, .credits, .defaultAccount, .showLog, .keyImport:
+            self.settingCellType = AccountSettingsCellType.accountsCell
+        case .organizedByThread, .unecryptedSubject:
+            self.settingCellType = AccountSettingsCellType.switchOptionCell
+        }
     }
 
     public var title : String? {

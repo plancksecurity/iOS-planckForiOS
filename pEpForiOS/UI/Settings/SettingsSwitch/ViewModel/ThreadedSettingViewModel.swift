@@ -9,13 +9,17 @@
 import Foundation
 
 
-class ThreadedSwitchViewModel:SettingSwitchProtocol  {
+class ThreadedSwitchViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
 
+    var settingCellType: AccountSettingsCellType
+    var type: SettingType
     var title : String
     var description : String
     var switchValue : Bool
 
-    init() {
+    init(type: SettingType) {
+        self.type = type
+        self.settingCellType = .switchOptionCell
         self.title = "Enable Thread Messages View"
         self.description = "If enabled, messages in the same thread will be displayed together"
         self.switchValue = AppSettings.init().threadedViewEnabled
