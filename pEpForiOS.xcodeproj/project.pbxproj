@@ -455,6 +455,9 @@
 		C457845120AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C457845020AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift */; };
 		C474D25A20B3FB9C0071F638 /* KeyImport.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C474D25820B3FB9C0071F638 /* KeyImport.storyboard */; };
 		C474D25F20B44A9E0071F638 /* AutoWizardStepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C474D25E20B44A9E0071F638 /* AutoWizardStepsViewController.swift */; };
+		C483EBE320EB624300C319D1 /* AutoWizardStepsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483EBE220EB624300C319D1 /* AutoWizardStepsViewModel.swift */; };
+		C483EBE820EB82B400C319D1 /* SettingsKeyImportSelectAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483EBE720EB82B400C319D1 /* SettingsKeyImportSelectAccountViewModel.swift */; };
+		C483EBEB20EE91F200C319D1 /* KeyImportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C483EBEA20EE91F200C319D1 /* KeyImportCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -964,6 +967,9 @@
 		C457845020AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyImportSelectAccountTableViewController.swift; sourceTree = "<group>"; };
 		C474D25920B3FB9C0071F638 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/KeyImport.storyboard; sourceTree = "<group>"; };
 		C474D25E20B44A9E0071F638 /* AutoWizardStepsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoWizardStepsViewController.swift; sourceTree = "<group>"; };
+		C483EBE220EB624300C319D1 /* AutoWizardStepsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoWizardStepsViewModel.swift; sourceTree = "<group>"; };
+		C483EBE720EB82B400C319D1 /* SettingsKeyImportSelectAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyImportSelectAccountViewModel.swift; sourceTree = "<group>"; };
+		C483EBEA20EE91F200C319D1 /* KeyImportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2209,6 +2215,7 @@
 		C457844A20AF38BB0053BF19 /* SelectAccount */ = {
 			isa = PBXGroup;
 			children = (
+				C483EBE620EB7C5000C319D1 /* ViewModel */,
 				C457845020AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift */,
 			);
 			path = SelectAccount;
@@ -2217,9 +2224,35 @@
 		C474D25B20B437850071F638 /* Wizard */ = {
 			isa = PBXGroup;
 			children = (
+				C483EBE120EB620D00C319D1 /* ViewModel */,
 				C474D25E20B44A9E0071F638 /* AutoWizardStepsViewController.swift */,
 			);
 			path = Wizard;
+			sourceTree = "<group>";
+		};
+		C483EBE120EB620D00C319D1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C483EBE220EB624300C319D1 /* AutoWizardStepsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C483EBE620EB7C5000C319D1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C483EBE920EE91C100C319D1 /* Cell */,
+				C483EBE720EB82B400C319D1 /* SettingsKeyImportSelectAccountViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C483EBE920EE91C100C319D1 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C483EBEA20EE91F200C319D1 /* KeyImportCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2491,6 +2524,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				496C0EEB20BC4B370009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift in Sources */,
+				C483EBEB20EE91F200C319D1 /* KeyImportCell.swift in Sources */,
 				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
 				43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */,
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
@@ -2705,6 +2739,7 @@
 				434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */,
 				430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */,
 				495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */,
+				C483EBE320EB624300C319D1 /* AutoWizardStepsViewModel.swift in Sources */,
 				431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
@@ -2786,6 +2821,7 @@
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
 				157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */,
 				4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */,
+				C483EBE820EB82B400C319D1 /* SettingsKeyImportSelectAccountViewModel.swift in Sources */,
 				433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */,
 				4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */,
 				B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */,

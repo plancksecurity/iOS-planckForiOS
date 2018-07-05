@@ -8,16 +8,11 @@
 
 import UIKit
 
-/*
-//TODO: ADD ModelView
- Has to go to Model:
- private var keyImportWizzard: KeyImortWizzard
- init(keyImortService: KeyImortServiceProtocol) {
-    self.keyImortWizzard = KeyImortWizzard(keyImportService: keyImortService)
-    super.init()
- }
- */
 class AutoWizardStepsViewController: BaseViewController {
+    
+    var viewModel: AutoWizardStepsViewModel?
+    
+    
     @IBOutlet weak var start: UIButton!
     @IBOutlet weak var cancel: UIButton!
     @IBOutlet weak var stepDescription: UILabel!
@@ -27,23 +22,12 @@ class AutoWizardStepsViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
-    }
-
-    // MARK: - Setup
-
-    private func setup() {
-        guard let appConfig = appConfig else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No config")
-            return
-        }
-        //TODO: setup model passing import service
-//        model = Model(keyImportService: appConfig.keyImportService)
     }
 
     // MARK: - Actions
 
     //TODO: Use just one IBAction, as start and cancel are complementary
+    //TODO: Use viewModel.
 
     @IBAction func onStartClicked(_ sender: Any) {
         //hideStartButton()
