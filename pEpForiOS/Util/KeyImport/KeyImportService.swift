@@ -11,8 +11,8 @@ import MessageModel
 public class KeyImportService {
     public weak var delegate: KeyImportServiceDelegate?
 
-    /// Specifies the time to live for key import messages
-    let timeoutInterval: TimeInterval = 5 * 60 //IOS-1028: timeout value specs?
+    /// Specifies how long a key import message is valid
+    static let ttlKeyImportMessages: TimeInterval = 5 * 60 //IOS-1028: timeout value specs?
 
     // MARK: - Working bees
 
@@ -28,6 +28,25 @@ public class KeyImportService {
         let hasOwnPrivateKey = flags.rawValue & PEP_decrypt_flag_own_private_key.rawValue == 1
         let isGreen = message.pEpColor() == PEP_color_green
         return isGreen && hasOwnPrivateKey
+    }
+
+    private func timedOut(keyImportMessage message: Message) -> Bool {
+        guard let age = message.received?.timeIntervalSinceNow else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No received date.")
+            return true
+        }
+        return age < -KeyImportService.ttlKeyImportMessages
+    }
+
+    private func informDelegateNewKeyImportMessageArrived(message: Message) {
+        if !timedOut(keyImportMessage: message) {
+            // Don't bother the delegate with invalid messages.
+            delegate?.newKeyImportMessageArrived(message: message)
+        }
+    }
+
+    private func informDelegateReceivedPrivateKey(message: Message) {
+        delegate?.receivedPrivateKey(forAccount: message.parent.account) //IOS-1028: needs timeout too?
     }
 }
 
@@ -64,24 +83,14 @@ extension KeyImportService: KeyImportListenerProtocol {
     public func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool {
         var hasBeenHandled = false
         if isKeyImportMessage(message: msg) {
-            msg.imapMarkDeleted()
             hasBeenHandled = true
-            if !timedOut(keyImportMessage: msg) {
-                delegate?.newKeyImportMessageArrived(message: msg)
-            }
+            msg.imapMarkDeleted()
+            informDelegateNewKeyImportMessageArrived(message: msg)
         } else if isPrivateKeyMessage(message: msg, flags: flags) {
-            msg.imapMarkDeleted()
             hasBeenHandled = true
-            delegate?.receivedPrivateKey(forAccount: msg.parent.account) //IOS-1028: needs timeout too?
+            msg.imapMarkDeleted()
+            informDelegateReceivedPrivateKey(message: msg)
         }
         return hasBeenHandled
-    }
-
-    private func timedOut(keyImportMessage message: Message) -> Bool {
-        guard let age = message.received?.timeIntervalSinceNow else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No received date.")
-            return true
-        }
-        return age < -timeoutInterval
     }
 }
