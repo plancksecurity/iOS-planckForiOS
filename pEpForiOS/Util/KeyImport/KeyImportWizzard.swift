@@ -9,7 +9,7 @@
 import MessageModel
 
 
-class KeyImortWizzard {
+class KeyImportWizzard {
     enum WizardState {
         case INIT
         case BEACON_SENT
@@ -62,7 +62,7 @@ class KeyImortWizzard {
 
 // MARK: - KeyImportServiceDelegate
 
-extension KeyImortWizzard: KeyImportServiceDelegate {
+extension KeyImportWizzard: KeyImportServiceDelegate {
     func newKeyImportMessageArrived(message: Message) {
         fatalError("Unimplemented stub")
     }

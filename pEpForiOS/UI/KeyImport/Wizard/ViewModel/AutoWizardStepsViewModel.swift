@@ -13,14 +13,14 @@ import MessageModel
 class AutoWizardStepsViewModel {
     private let keyImportService: KeyImportServiceProtocol
     private let account: Account
-    private var keyImportWizzard: KeyImortWizzard
+    private var keyImportWizzard: KeyImportWizzard
 
     
     init(account: Account, keyImportService: KeyImportServiceProtocol) {
         self.keyImportService = keyImportService
         self.account = account
-        self.keyImortWizzard = KeyImortWizzard(keyImportService: keyImortService)
-        super.init() //TODO: Is really needed???
+        self.keyImportWizzard = KeyImportWizzard(keyImportService: keyImportService,
+                                                account: account)
     }
     
 }

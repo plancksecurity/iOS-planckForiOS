@@ -99,7 +99,7 @@
 		15EBE44220E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */; };
 		15EBE44320E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE44120E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc */; };
 		15EBE44C20E5401B00268859 /* KeyImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE44B20E5401B00268859 /* KeyImportService.swift */; };
-		15EBE44E20E5405D00268859 /* KeyImortWizzard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE44D20E5405D00268859 /* KeyImortWizzard.swift */; };
+		15EBE44E20E5405D00268859 /* KeyImportWizzard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE44D20E5405D00268859 /* KeyImportWizzard.swift */; };
 		15EBE45220ECF10600268859 /* KeyImportContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45120ECF10600268859 /* KeyImportContract.swift */; };
 		15EBE45520ECF2E800268859 /* KeyImportServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45420ECF2E800268859 /* KeyImportServiceTest.swift */; };
 		15EBE45720EE157900268859 /* SMTPSendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45620EE157900268859 /* SMTPSendOperation.swift */; };
@@ -584,7 +584,7 @@
 		15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc; sourceTree = "<group>"; };
 		15EBE44120E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc; sourceTree = "<group>"; };
 		15EBE44B20E5401B00268859 /* KeyImportService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportService.swift; sourceTree = "<group>"; };
-		15EBE44D20E5405D00268859 /* KeyImortWizzard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImortWizzard.swift; sourceTree = "<group>"; };
+		15EBE44D20E5405D00268859 /* KeyImportWizzard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportWizzard.swift; sourceTree = "<group>"; };
 		15EBE45120ECF10600268859 /* KeyImportContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportContract.swift; sourceTree = "<group>"; };
 		15EBE45420ECF2E800268859 /* KeyImportServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportServiceTest.swift; sourceTree = "<group>"; };
 		15EBE45620EE157900268859 /* SMTPSendOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSendOperation.swift; sourceTree = "<group>"; };
@@ -1173,7 +1173,7 @@
 			isa = PBXGroup;
 			children = (
 				15EBE44B20E5401B00268859 /* KeyImportService.swift */,
-				15EBE44D20E5405D00268859 /* KeyImortWizzard.swift */,
+				15EBE44D20E5405D00268859 /* KeyImportWizzard.swift */,
 				15EBE45120ECF10600268859 /* KeyImportContract.swift */,
 			);
 			path = KeyImport;
@@ -2775,7 +2775,7 @@
 				15A75CEA202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift in Sources */,
 				43F8D80820C53DBB0038ABD5 /* ThreadedMessageFolderFactoryProtocol.swift in Sources */,
 				155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */,
-				15EBE44E20E5405D00268859 /* KeyImortWizzard.swift in Sources */,
+				15EBE44E20E5405D00268859 /* KeyImportWizzard.swift in Sources */,
 				430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */,
 				4351C2D21F4441190053381F /* html.c in Sources */,
 				4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */,
