@@ -93,12 +93,13 @@ public class ConcurrentBaseOperation: BaseOperation {
     }
 
     private func reactOnCancel() {
-        func f() {
-            backgroundQueue.cancelAllOperations()
-            waitForBackgroundTasksToFinish()
-        }
-        internalQueue.async {
-            f()
+        internalQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.backgroundQueue.cancelAllOperations()
+            me.waitForBackgroundTasksToFinish()
         }
     }
 }
