@@ -252,19 +252,21 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
 
+        // create a sent message
         let sentFolder = Folder.init(name: "Sent",
                                      parent: nil,
                                      account: account,
                                      folderType: .sent)
         sentFolder.save()
-
         let sentMessage = createMessage(number: nextUid(), inFolder: sentFolder)
         sentMessage.save()
 
+        // let a top message reference that message (i.e., someone answered to our sent message)
         let topMessageReferencingSentMessage = topMessages[0]
         topMessageReferencingSentMessage.references.append(sentMessage.messageID)
         topMessageReferencingSentMessage.save()
 
+        // check if it's indeed referenced
         guard let referencedSentMessageOrig =
             topMessageReferencingSentMessage.referencedMessages().first else {
                 XCTFail()
@@ -272,9 +274,11 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
         XCTAssertEqual(referencedSentMessageOrig.messageID, sentMessage.messageID)
 
+        // receive another reply to our top message
         let incomingMessage = testIncomingMessage(references: [sentMessage],
                                                   indexPathUpdated: indexOfTopMessage0)
 
+        // check that the incoming message indeed references our sent message
         let incomingMessageReferencedMessages = incomingMessage.referencedMessages()
         guard let referencedSentMessageIncoming = incomingMessageReferencedMessages.first else {
                 XCTFail()
