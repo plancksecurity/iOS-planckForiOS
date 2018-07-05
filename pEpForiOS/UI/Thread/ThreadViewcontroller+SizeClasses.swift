@@ -25,7 +25,7 @@ extension ThreadViewController {
         barItems = items
 
         navigationItem.rightBarButtonItems = items
-        self.navigationController?.setToolbarHidden(true, animated: true)
+        self.navigationController?.setToolbarHidden(true, animated: false)
         toolbarItems = nil
     }
 }
