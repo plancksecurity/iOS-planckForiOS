@@ -46,7 +46,10 @@ public class KeyImportService {
     }
 
     private func informDelegateReceivedPrivateKey(message: Message) {
-        delegate?.receivedPrivateKey(forAccount: message.parent.account) //IOS-1028: needs timeout too?
+        if !timedOut(keyImportMessage: message) {
+            // Don't bother the delegate with invalid messages.
+            delegate?.receivedPrivateKey(forAccount: message.parent.account)
+        }
     }
 }
 
