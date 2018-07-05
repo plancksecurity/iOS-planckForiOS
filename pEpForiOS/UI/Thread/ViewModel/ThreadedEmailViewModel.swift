@@ -86,11 +86,11 @@ class ThreadedEmailViewModel {
         return nil
     }
 
-    internal func notifyFlag(_ status: Bool) {
+    internal func notifyFlag(_ status: Bool, message: Message) {
         if status {
-            emailDisplayDelegate.emailDisplayDidFlag(message: tip)
+            emailDisplayDelegate.emailDisplayDidFlag(message: message)
         } else {
-            emailDisplayDelegate.emailDisplayDidUnflag(message: tip)
+            emailDisplayDelegate.emailDisplayDidUnflag(message: message)
         }
     }
 
@@ -103,9 +103,8 @@ class ThreadedEmailViewModel {
         let flagStatus = (messages[index].imapFlags?.flagged ?? false)
 
         messages[index].imapFlags?.flagged = !flagStatus
-        if messages[index] == tip {
-            notifyFlag(!flagStatus)
-        }
+        notifyFlag(!flagStatus, message: messages[index])
+
     }
 
     func setFlag(to status: Bool){
@@ -113,7 +112,7 @@ class ThreadedEmailViewModel {
             message.imapFlags?.flagged = status
             message.save()
         }
-        notifyFlag(status)
+        notifyFlag(status, message: tip)
     }
 
     func allMessagesFlagged() -> Bool {
