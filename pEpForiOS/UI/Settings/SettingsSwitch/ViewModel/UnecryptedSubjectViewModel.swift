@@ -8,13 +8,17 @@
 
 import Foundation
 
-class UnecryptedSubjectViewModel: SettingSwitchProtocol  {
-
+class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModel  {
+    
+    var settingCellType: AccountSettingsCellType
+    var type: SettingType
     var title : String
     var description : String
     var switchValue : Bool
 
-    init() {
+    init(type: SettingType) {
+        self.settingCellType = AccountSettingsCellType.switchOptionCell
+        self.type = type
         self.title = "Enable Protected Subject"
         self.description = "If enabled, message subjects are also protected."
         self.switchValue = !AppSettings.init().unencryptedSubjectEnabled

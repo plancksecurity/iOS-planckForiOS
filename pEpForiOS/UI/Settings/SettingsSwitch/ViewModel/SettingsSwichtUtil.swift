@@ -14,3 +14,8 @@ protocol SettingSwitchProtocol {
     var switchValue: Bool { get set }
     func switchAction(value: Bool)
 }
+
+protocol SettingsCellViewModel {
+    var type : SettingType { get set }
+    var settingCellType : AccountSettingsCellType { get set }
+}
