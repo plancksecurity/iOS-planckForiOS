@@ -285,6 +285,20 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                 return
         }
         XCTAssertEqual(referencedSentMessageIncoming.messageID, sentMessage.messageID)
+
+        // Will the thread be displayed correctly?
+        var referencingSentMessage = false
+        var referencingIncomingMessage = false
+        let threadMessages = topMessageReferencingSentMessage.messagesInThread()
+        for msg in threadMessages {
+            if msg.messageID == sentMessage.messageID {
+                referencingSentMessage = true
+            } else if msg.messageID == incomingMessage.messageID {
+                referencingIncomingMessage = true
+            }
+        }
+        XCTAssertTrue(referencingSentMessage)
+        XCTAssertTrue(referencingIncomingMessage)
     }
 
     // MARK: - Internal - Helpers
