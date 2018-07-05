@@ -61,9 +61,11 @@ extension KeyImportService: KeyImportListenerProtocol {
     public func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool {
         var hasBeenHandled = false
         if isKeyImportMessage(message: msg) {
+            msg.imapMarkDeleted()
             delegate?.newKeyImportMessageArrived(message: msg)
             hasBeenHandled = true
         } else if isPrivateKeyMessage(message: msg, flags: flags) {
+            msg.imapMarkDeleted()
             delegate?.receivedPrivateKey(forAccount: msg.parent.account)
             hasBeenHandled = true
         }
