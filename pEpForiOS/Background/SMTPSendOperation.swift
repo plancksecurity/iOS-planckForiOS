@@ -14,12 +14,16 @@ import MessageModel
 class SMTPSendOperation: ConcurrentBaseOperation {
     /// Message to send
     private let message: Message
-    private var smtpSend: SmtpSend?
+    private var smtpSend: SmtpSend
 
-    init(parentName: String = #function, errorContainer: ServiceErrorProtocol,
-         messageToSend: Message) {
+    init(parentName: String = #function,
+         errorContainer: ServiceErrorProtocol,
+         messageToSend: Message,
+         smtpSend: SmtpSend) {
         self.message = messageToSend
+        self.smtpSend = smtpSend
         super.init(parentName: parentName, errorContainer: errorContainer)
+        setup()
     }
 
     override public func main() {
@@ -27,42 +31,12 @@ class SMTPSendOperation: ConcurrentBaseOperation {
     }
 
     private func setup() {
-        guard let cdAcount = CdAccount.search(account: message.parent.account) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No Account")
-            return
-        }
-        privateMOC.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            let accountInfos = ServiceUtil.gatherConnectInfos(context: privateMOC,
-                                                            accounts: [cdAcount])
-            guard let accountInfo = accountInfos.first else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No Account infos")
-                return
-            }
-            guard let smtpCI = accountInfo.smtpConnectInfo else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
-                return
-            }
-            guard let smtpSend = SmtpSendData(connectInfo: smtpCI).smtp else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
-                return
-            }
-            me.smtpSend = smtpSend
-        }
-        smtpSend?.delegate = self
+        smtpSend.delegate = self
     }
 
     private func send() {
         let pepDict = message.pEpMessageDict()
         let pantMail = PEPUtil.pantomime(pEpMessageDict: pepDict)
-        guard let smtpSend = smtpSend else {
-            Log.shared.errorAndCrash(component: #function, errorString: "So smtpSend")
-            handleError(BackgroundError.GeneralError.illegalState(info: "No smtpSend"))
-            return
-        }
         smtpSend.smtp.setRecipients(nil)
         smtpSend.smtp.setMessageData(nil)
         smtpSend.smtp.setMessage(pantMail)
