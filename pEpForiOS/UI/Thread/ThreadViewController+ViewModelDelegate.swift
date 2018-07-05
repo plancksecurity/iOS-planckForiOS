@@ -16,9 +16,11 @@ extension ThreadViewController: ThreadedEmailViewModelDelegate {
     }
 
     func emailViewModel(viewModel: ThreadedEmailViewModel, didUpdateDataAt index: Int) {
+        let selectedIndexPath = tableView.indexPathForSelectedRow
         updateTableView {
             tableView.reloadSections(IndexSet([index]), with: .none)
         }
+        tableView.selectRow(at: selectedIndexPath, animated: false, scrollPosition: .none)
     }
 
     func emailViewModel(viewModel: ThreadedEmailViewModel, didRemoveDataAt index: Int) {
