@@ -68,7 +68,7 @@ extension KeyImportService: KeyImportServiceProtocol {
     /// Call after a newKeyImportMessage arrived to let the other device know
     /// we are ready for handshake.
     public func sendHandshakeRequest(forAccount account: Account) {
-        //TODO: send encrypted message to myself with header: "pEp-key-import: myPubKey_fpr"
+        //TODO: send encrypted message to myself with header: "pEp-key-import: myPubKey_fpr" (assume: without appending to sent folder)
         fatalError("Unimplemented stub")
     }
 
