@@ -157,21 +157,29 @@ open class PEPUtil {
         if let subject = message.shortMessage {
             dict[kPepShortMessage] = subject as NSString
         }
-
-        dict[kPepTo] = NSArray(array: message.to.map() { return pEp(identity: $0) })
-        dict[kPepCC] = NSArray(array: message.cc.map() { return pEp(identity: $0) })
-        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEp(identity: $0) })
-
+        if let longMessage = message.longMessage {
+            dict[kPepLongMessage] = longMessage as AnyObject
+        }
+        if let longMessageFormatted = message.longMessageFormatted {
+            dict[kPepLongMessageFormatted] = longMessageFormatted as AnyObject
+        }
         dict[kPepFrom]  = pEpOptional(identity: message.from) as AnyObject
+        dict[kPepTo] = NSArray(array: message.to.map() { pEp(identity: $0) })
+        dict[kPepCC] = NSArray(array: message.cc.map() { pEp(identity: $0) })
+        dict[kPepBCC] = NSArray(array: message.bcc.map() { pEp(identity: $0) })
+        dict[kPepReplyTo] = NSArray(array: message.replyTo.map() { pEp(identity: $0) })
         dict[kPepID] = message.messageID as AnyObject
         dict[kPepOutgoing] = outgoing as AnyObject?
-
-        dict[kPepAttachments] = NSArray(array: message.attachments.map() {
-            return pEpAttachment(attachment: $0)
-        })
-
+        dict[kPepAttachments] = NSArray(array: message.attachments
+            .map() { pEpAttachment(attachment: $0) })
         dict[kPepReferences] = message.references as AnyObject
-
+        if let sent = message.sent {
+            dict[kPepSent] = sent as NSDate
+        }
+        if !message.optionalFields.isEmpty {
+            dict[kPepOptFields] = NSArray(array: message.optionalFields
+                .map() { NSArray(array: [$0.0, $0.1]) })
+        }
         return dict
     }
 
