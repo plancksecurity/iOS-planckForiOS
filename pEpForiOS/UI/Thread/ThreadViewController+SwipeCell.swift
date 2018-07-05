@@ -67,14 +67,24 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
         // Do not add "Flag" action to drafted mails.
         let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
             self.model.switchFlag(forMessageAt: indexPath.section)
-            guard let cell = self.tableView.cellForRow(at: indexPath) as? FullMessageCell else {
+
+            guard let cell = self.tableView.cellForRow(at: indexPath) else {
                 return
             }
-            cell.isFlagged = !cell.isFlagged
+            self.flagCell(cell: cell)
         }
         flagAction.hidesWhenSelected = true
         configure(action: flagAction, with: .flag)
         return flagAction
+    }
+
+    private func flagCell(cell: UITableViewCell) {
+        if let cell = cell as? EmailListViewCell {
+            cell.isFlagged = !cell.isFlagged
+        }
+        else if let cell = cell as? FullMessageCell {
+            cell.isFlagged = !cell.isFlagged
+        }
     }
 
     private func replyAction() -> SwipeAction {
