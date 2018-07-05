@@ -211,7 +211,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Needs to be done once to inform all affected services about the current settings
         let _ = AppSettings()
 
-        let theMessageSyncService = MessageSyncService(mySelfer: self)
+        let theMessageSyncService = MessageSyncService()
         messageSyncService = theMessageSyncService
         let theAppConfig = AppConfig(mySelfer: self,
                                      messageSyncService: theMessageSyncService,
@@ -246,6 +246,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: - UIApplicationDelegate
+
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        Log.shared.warn(component: "UIApplicationDelegate",
+                        content: "applicationDidReceiveMemoryWarning")
+    }
 
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions

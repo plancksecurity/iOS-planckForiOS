@@ -33,7 +33,7 @@ class AccountsSettingsViewModel {
         }
     }
 
-    func rowType(for indexPath: IndexPath) -> AccountsSettingsCellViewModel.SettingType {
+    func rowType(for indexPath: IndexPath) -> SettingType {
         return self[indexPath.section][indexPath.row].type
     }
 

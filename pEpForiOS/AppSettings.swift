@@ -62,7 +62,7 @@ class AppSettings {
     static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
-    static private let keyThreadedViewEnabled = "threadedViewEnabled"
+    static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     
     // MARK: - Private - DEFAULT ACCOUNT
     

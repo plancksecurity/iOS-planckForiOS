@@ -26,7 +26,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        return message.referencedMessages()
+        return message.referencingMessages()
     }
 
     func deleteSingle(message: Message) {
@@ -34,31 +34,50 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func deleteThread(message: Message) {
-        deleteSingle(message: message)
+        let children = message.referencingMessages()
+        for msgChild in children {
+            msgChild.imapDelete()
+        }
+        message.imapDelete()
     }
 
-    func referencedTopMessages(newMessage: Message) -> [Message] {
-        let allCurrentMessageIds = underlyingFolder.allMessagesNonThreaded().map {
-            return $0.messageID
-        }
-        let allCurrentMessageIdsSet = Set(allCurrentMessageIds)
-
-        let topRefs = referenced(message: newMessage, referenceSet: allCurrentMessageIdsSet)
-
+    func referencedTopMessages(message: Message) -> [Message] {
+        let topMessages = underlyingFolder.allMessagesNonThreaded()
         var result = [Message]()
-        for ref in topRefs {
-            let messages = Message.by(messageID: ref)
-            result.append(contentsOf: messages)
+
+        MessageModel.performAndWait {
+            let referenceSet = Set(message.referencedMessages().map {
+                return $0.messageID
+            })
+
+            // test for direct references
+
+            for aTopMsg in topMessages {
+                if referenceSet.contains(aTopMsg.messageID) {
+                    result.append(aTopMsg)
+                }
+            }
+
+            if !result.isEmpty {
+                return
+            }
+
+            // if no direct references could be found, check for indirects
+
+            for aTopMsg in topMessages {
+                let topReferenceSet = Set(aTopMsg.referencedMessages().map {
+                    return $0.messageID
+                })
+                if !topReferenceSet.intersection(referenceSet).isEmpty {
+                    result.append(aTopMsg)
+                }
+            }
         }
 
         return result
     }
 
-    func isTop(newMessage: Message) -> Bool {
-        return referencedTopMessages(newMessage: newMessage).isEmpty
-    }
-
-    // MARK - Private
+    // MARK: - Private
 
     /**
      Determine which messages in the given list don't reference any other message in the list.

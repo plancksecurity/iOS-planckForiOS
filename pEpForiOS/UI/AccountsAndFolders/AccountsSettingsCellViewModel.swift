@@ -9,30 +9,40 @@
 import Foundation
 import MessageModel
 
-public class AccountsSettingsCellViewModel {
-    public enum SettingType {
-        case account
-        case showLog
-        case organizedByThread
-        case credits
-        case unecryptedSubject
-        case defaultAccount
-    }
+public enum AccountSettingsCellType: String {
+    case accountsCell = "accountsCell"
+    case switchOptionCell = "switchOptionCell"
+}
+public enum SettingType {
+    case account
+    case showLog
+    case organizedByThread
+    case credits
+    case unecryptedSubject
+    case defaultAccount
+}
 
+public class AccountsSettingsCellViewModel: SettingsCellViewModel {
+
+    var settingCellType: AccountSettingsCellType
+    var type: SettingType
     var account: Account?
-    let type: SettingType
     var status: Bool?
 
     init(account: Account) {
         self.type = .account
         self.account = account
+        self.settingCellType = .accountsCell
     }
 
     init(type: SettingType) {
         self.type = type
-/*        if type == .organizedByThread {
-            status = false
-        }*/
+        switch self.type {
+        case .account, .credits, .defaultAccount, .showLog:
+            self.settingCellType = AccountSettingsCellType.accountsCell
+        case .organizedByThread, .unecryptedSubject:
+            self.settingCellType = AccountSettingsCellType.switchOptionCell
+        }
     }
 
     public var title : String? {
@@ -41,10 +51,13 @@ public class AccountsSettingsCellViewModel {
             case .showLog:
                 return NSLocalizedString("Logging", comment: "")
             case .organizedByThread:
-                return NSLocalizedString("Enable Threading Messages", comment: "AccountsSettings: Cell (button) title to view threads messages together")
+                return NSLocalizedString(
+                    "Enable Threading Messages",
+                    comment: "AccountsSettings: Cell (button) title to view threads messages together")
             case .credits:
-                return NSLocalizedString("Credits", comment:
-                    "AccountsSettings: Cell (button) title to view app credits")
+                return NSLocalizedString(
+                    "Credits",
+                    comment: "AccountsSettings: Cell (button) title to view app credits")
             case .unecryptedSubject:
                 return NSLocalizedString("Subject Protection", comment:
                     "AccountsSettings: Cell (button) title to view unencrypted subject setting")

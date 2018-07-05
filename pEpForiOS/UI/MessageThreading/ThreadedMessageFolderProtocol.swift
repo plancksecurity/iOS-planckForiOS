@@ -16,7 +16,7 @@ import MessageModel
  - Note: Objects implmenting this protocol can choose to ignore threading
  completely, which is transparent to the client.
  */
-protocol ThreadedMessageFolderProtocol {
+public protocol ThreadedMessageFolderProtocol {
     /**
      Depending on whether the underlying implmentation is configured to
      show threads or not, this will return a list of all messages or just
@@ -56,5 +56,5 @@ protocol ThreadedMessageFolderProtocol {
      message list (of thread tips), or if it's a message referenced by a top message
      (then it might have to go to the thread view).
      */
-    func referencedTopMessages(newMessage: Message) -> [Message]
+    func referencedTopMessages(message: Message) -> [Message]
 }

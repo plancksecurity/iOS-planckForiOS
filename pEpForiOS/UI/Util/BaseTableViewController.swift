@@ -19,9 +19,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 // We have no config. Return nonsense.
                 return AppConfig(
                     mySelfer: self,
-                    messageSyncService: MessageSyncService(sleepTimeInSeconds: 2,
-                                                           backgrounder: nil,
-                                                           mySelfer: nil),
+                    messageSyncService: MessageSyncService(),
                     errorPropagator: ErrorPropagator(),
                     oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
             }

@@ -405,15 +405,13 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     // MARK: - EncryptAndSendOperation
 
     func testEncryptAndSendOperation() {
-        let _ = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
+        // Create mails to send ...
+        let sentUUIDs = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
                                                   testCase: self,
-                                                  numberOfMails: 3)
-
-        let expMailsSent = expectation(description: "expMailsSent")
-
+                                                  numberOfMails: 3).map { $0.uuid! }
+        // ... Login ...
         let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
         let errorContainer = ErrorContainer()
-
         let smtpLogin = LoginSmtpOperation(
             parentName: #function,
             smtpSendData: smtpSendData, errorContainer: errorContainer)
@@ -421,7 +419,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             smtpLogin.completionBlock = nil
             XCTAssertNotNil(smtpSendData.smtp)
         }
-
+        // ... and send them.
+        let expMailsSent = expectation(description: "expMailsSent")
         let sendOp = EncryptAndSendOperation(
             parentName: #function,
             smtpSendData: smtpSendData, errorContainer: errorContainer)
@@ -432,24 +431,23 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             sendOp.completionBlock = nil
             expMailsSent.fulfill()
         }
-
         let queue = OperationQueue()
         queue.addOperation(smtpLogin)
         queue.addOperation(sendOp)
-
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
             XCTAssertFalse(sendOp.hasErrors())
         })
-
-        if let msgs = CdMessage.all() as? [CdMessage] {
-            for m in msgs {
-                XCTAssertEqual(m.sendStatus, SendStatus.smtpDone)
+        // Check sent status of all sent mails
+        for sentUuid in sentUUIDs {
+            let msgs = CdMessage.search(byUUID: sentUuid)
+            XCTAssertEqual(msgs.count, 1)
+            guard let msg = msgs.first else {
+                XCTFail("Missing sent message")
+                return
             }
-        } else {
-            XCTFail()
+             XCTAssertEqual(msg.sendStatus, SendStatus.smtpDone)
         }
-
         smtpSendData.smtp?.close()
     }
 
@@ -493,8 +491,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
-        let folder = CdFolder.by(folderType: .sent, account: cdAccount)
-        XCTAssertNotNil(folder)
+        guard let folder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+            XCTFail("No folder")
+            return
+        }
 
         // Build emails
         let numMails = 5
@@ -522,10 +522,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
 
         let expSentAppended = expectation(description: "expSentAppended")
-
-        let appendOp = AppendSendMailsOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, errorContainer: errorContainer)
+        let appendOp = AppendMailsOperation(parentName: #function,
+                                            folder: folder.folder(),
+                                            imapSyncData: imapSyncData,
+                                            errorContainer: errorContainer)
         appendOp.completionBlock = {
             appendOp.completionBlock = nil
             expSentAppended.fulfill()
@@ -580,8 +580,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         to.userName = "Unit 001"
         to.address = "unittest.ios.1@peptest.ch"
 
-        let folder = CdFolder.by(folderType: .drafts, account: cdAccount)
-        XCTAssertNotNil(folder)
+        guard let folder = CdFolder.by(folderType: .drafts, account: cdAccount) else {
+            XCTFail("No folder")
+            return
+        }
 
         // Build emails
         let numMails = 5
@@ -609,9 +611,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
         let expDraftsStored = expectation(description: "expDraftsStored")
 
-        let appendOp = AppendDraftMailsOperation(
-            parentName: #function,
-            imapSyncData: imapSyncData, errorContainer: errorContainer)
+        let appendOp = AppendMailsOperation(parentName: #function,
+                                            folder: folder.folder(),
+                                            imapSyncData: imapSyncData,
+                                            errorContainer: errorContainer)
         appendOp.completionBlock = {
             appendOp.completionBlock = nil
             expDraftsStored.fulfill()

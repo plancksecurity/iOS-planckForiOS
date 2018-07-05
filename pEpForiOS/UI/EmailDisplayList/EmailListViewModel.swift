@@ -14,6 +14,8 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
+    func emailListViewModel(viewModel: EmailListViewModel,
+                            didUpdateUndisplayedMessage message: Message)
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
@@ -330,9 +332,12 @@ class EmailListViewModel {
             let message = previewMessage.message() else {
                 return
         }
-        message.imapDelete()
-        didDelete(messageFolder: message)
 
+        // The message to delete might be a single, unthreaded message,
+        // or the tip of a thread. `threadedMessageFolder` will figure it out.
+        threadedMessageFolder.deleteThread(message: message)
+
+        didDelete(messageFolder: message)
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
@@ -478,14 +483,5 @@ class EmailListViewModel {
                 self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
             }
         }
-    }
-
-    // MARK - Misc
-
-    /**
-     Is the detail view currently displaying messages derived from `Message`?
-     */
-    func currentlyDisplaying(message: Message) -> Bool {
-        return currentDisplayedMessage?.messageModel == message
     }
 }
