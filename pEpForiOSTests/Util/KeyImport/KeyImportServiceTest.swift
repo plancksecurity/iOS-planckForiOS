@@ -12,6 +12,7 @@ import MessageModel
 @testable import pEpForiOS
 
 class KeyImportServiceTest: CoreDataDrivenTestBase {
+    var account: Account!
     var keyImportService: KeyImportService!
 
     /// KeyImportService *is* the KeyImportListener. But we want semantical seperation.
@@ -24,11 +25,13 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         cdAccount.createRequiredFoldersAndWait(testCase: self)
+        account = cdAccount.account()
         keyImportService = KeyImportService()
     }
 
     override func tearDown() {
         keyImportService = nil
+        account = nil
         observer = nil
         super.tearDown()
     }
@@ -110,8 +113,25 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 
     // MARK: sendInitKeyImportMessage
 
-    func sendInitKeyImportMessage() {
+    func testSendInitKeyImportMessage() {
 
+        // Setup
+        let expNewImportMessageArrivedCalled =
+            expectation(description: "expNewImportMessageArrivedCalled")
+//        let expectedColor = PEP_color_no_color
+//        setupObserver(expNewImportMessageArrived: expNewImportMessageArrivedCalled,
+//                      expectedImportMessagePepColor: expectedColor)
+//        // Send message
+//        keyImportService.sendInitKeyImportMessage(forAccount: account)
+//
+//        sleep(3)
+//
+//        // Does it arrive and trigger?
+        TestUtil.syncAndWait()
+//        expNewImportMessageArrivedCalled.fulfill()
+//        waitForExpectations(timeout: TestUtil.waitTime) { (error) in
+//            XCTAssertNil(error)
+//        }
     }
 
     // MARK: - HELPER
@@ -181,10 +201,13 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     private func setupObserver(expNewImportMessageArrived: XCTestExpectation? = nil,
-                               expReceivedPrivateKey: XCTestExpectation? = nil) {
+                               expReceivedPrivateKey: XCTestExpectation? = nil,
+                               expectedImportMessagePepColor: PEP_color? = nil) {
         observer =
             TestKeyImportServiceObserver(expNewImportMessageArrived: expNewImportMessageArrived,
-                                         expReceivedPrivateKey: expReceivedPrivateKey)
+                                         expReceivedPrivateKey: expReceivedPrivateKey,
+                                         expectedImportMessagePepColor:
+                expectedImportMessagePepColor)
         keyImportService.delegate = observer
     }
 
@@ -223,17 +246,23 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 class TestKeyImportServiceObserver: KeyImportServiceDelegate {
     let expNewImportMessageArrived: XCTestExpectation?
     let expReceivedPrivateKey: XCTestExpectation?
+    let expectedImportMessagePepColor: PEP_color?
 
     /// Init observer with what to expect.
     /// If no expectation is passed for a method, we expect that method must not be called.
     init(expNewImportMessageArrived: XCTestExpectation? = nil,
-         expReceivedPrivateKey: XCTestExpectation? = nil) {
+         expReceivedPrivateKey: XCTestExpectation? = nil,
+         expectedImportMessagePepColor: PEP_color? = nil) {
         self.expNewImportMessageArrived = expNewImportMessageArrived
         self.expReceivedPrivateKey = expReceivedPrivateKey
+        self.expectedImportMessagePepColor = expectedImportMessagePepColor
     }
 
     func newKeyImportMessageArrived(message: Message) {
         if let exp = expNewImportMessageArrived {
+            if let expectedColor = expectedImportMessagePepColor {
+                XCTAssertEqual(message.pEpColor(), expectedColor)
+            }
             exp.fulfill()
         } else {
             XCTFail("method called unexpectedly.")
@@ -246,5 +275,9 @@ class TestKeyImportServiceObserver: KeyImportServiceDelegate {
         } else {
             XCTFail("method called unexpectedly.")
         }
+    }
+
+    func errorOccurred(error: Error) {
+        XCTFail("We don't expect errors.")
     }
 }
