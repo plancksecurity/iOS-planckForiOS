@@ -9,11 +9,7 @@
 import XCTest
 
 class NewAccountSetupUITest: XCTestCase {
-    func app() -> XCUIApplication {
-        let app = XCUIApplication()
-        app.launchEnvironment = ["ASAN_OPTIONS": "detect_odr_violation=0"]
-        return app
-    }
+    // MARK: - Setup
 
     override func setUp() {
         super.setUp()
@@ -24,6 +20,89 @@ class NewAccountSetupUITest: XCTestCase {
         app().launch()
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    }
+
+    // MARK: - Tests
+
+    func testInitialAccountSetup1() {
+        let account = SecretUITestData.workingAccount1
+        newAccountSetup(account: account)
+        waitForever()
+    }
+
+    func testInitialAccountSetup2() {
+        let account = SecretUITestData.workingAccount2
+        newAccountSetup(account: account)
+        waitForever()
+    }
+
+    func testAdditionalAccount() {
+        let theApp = app()
+        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
+        theApp.tables.buttons["add account"].tap()
+
+        let account = SecretUITestData.workingAccount2
+        newAccountSetup(account: account)
+        waitForever()
+    }
+
+    func testTwoInitialAccounts() {
+        let account1 = SecretUITestData.workingAccount1
+        newAccountSetup(account: account1)
+
+        let theApp = app()
+        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
+        theApp.tables.buttons["add account"].tap()
+
+        let account2 = SecretUITestData.workingAccount2
+        newAccountSetup(account: account2)
+        waitForever()
+    }
+
+    /// Start app, accept contact permissions manually, start test,
+    /// wait for alert and click OK manually
+    func testNewAccountSetupManuallyAccountThatDoesNotWorkAutomatically() {
+        let theApp = app()
+        let account = SecretUITestData.manualAccount
+        newAccountSetup(account: account)
+
+        //wait until manual setup button appaers
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(80), execute: {
+            theApp.buttons["Manual configuration"].tap()
+            self.manualNewAccountSetup(account)
+        })
+
+
+        waitForever()
+    }
+
+    // Adds Yahoo account
+    // Note: A working accound must exist already.
+    func testAddYahooAccount() {
+        openAddAccountManualConfiguration()
+        let account = SecretUITestData.workingYahooAccount
+        manualNewAccountSetup(account)
+        waitForever()
+    }
+
+    func testTriggerGmailOauth2() {
+        let account = SecretUITestData.gmailOAuth2Account
+        newAccountSetup(account: account, enterPassword: false)
+        waitForever()
+    }
+
+    func testTriggerYahooOauth2() {
+        let account = SecretUITestData.yahooOAuth2Account
+        newAccountSetup(account: account, enterPassword: false)
+        waitForever()
+    }
+
+    // MARK: - Helpers
+
+    func app() -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchEnvironment = ["ASAN_OPTIONS": "detect_odr_violation=0"]
+        return app
     }
 
     /*
@@ -123,81 +202,6 @@ class NewAccountSetupUITest: XCTestCase {
 
         theApp.tables.cells.buttons["Sign In"].tap()
     }
-
-    func testInitialAccountSetup1() {
-        let account = SecretUITestData.workingAccount1
-        newAccountSetup(account: account)
-        waitForever()
-    }
-
-    func testInitialAccountSetup2() {
-        let account = SecretUITestData.workingAccount2
-        newAccountSetup(account: account)
-        waitForever()
-    }
-
-    func testAdditionalAccount() {
-        let theApp = app()
-        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
-        theApp.tables.buttons["add account"].tap()
-
-        let account = SecretUITestData.workingAccount2
-        newAccountSetup(account: account)
-        waitForever()
-    }
-
-    func testTwoInitialAccounts() {
-        let account1 = SecretUITestData.workingAccount1
-        newAccountSetup(account: account1)
-
-        let theApp = app()
-        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
-        theApp.tables.buttons["add account"].tap()
-
-        let account2 = SecretUITestData.workingAccount2
-        newAccountSetup(account: account2)
-        waitForever()
-    }
-
-    /// Start app, accept contact permissions manually, start test,
-    /// wait for alert and click OK manually
-    func testNewAccountSetupManuallyAccountThatDoesNotWorkAutomatically() {
-        let theApp = app()
-        let account = SecretUITestData.manualAccount
-        newAccountSetup(account: account)
-
-        //wait until manual setup button appaers
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(80), execute: {
-            theApp.buttons["Manual configuration"].tap()
-            self.manualNewAccountSetup(account)
-        })
-
-
-        waitForever()
-    }
-
-    // Adds Yahoo account
-    // Note: A working accound must exist already.
-    func testAddYahooAccount() {
-        openAddAccountManualConfiguration()
-        let account = SecretUITestData.workingYahooAccount
-        manualNewAccountSetup(account)
-        waitForever()
-    }
-
-    func testTriggerGmailOauth2() {
-        let account = SecretUITestData.gmailOAuth2Account
-        newAccountSetup(account: account, enterPassword: false)
-        waitForever()
-    }
-
-    func testTriggerYahooOauth2() {
-        let account = SecretUITestData.yahooOAuth2Account
-        newAccountSetup(account: account, enterPassword: false)
-        waitForever()
-    }
-
-    // Mark: DEBUG ONLY HELPER
 
     // Opens the "add account" setting in manual configuration mode.
     // Note: A working accound must exist already.
