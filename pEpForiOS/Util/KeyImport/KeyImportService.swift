@@ -14,23 +14,25 @@ public enum KeyImportServiceError: Error {
 }
 
 public class KeyImportService {
+    enum Header: String {
+        case pEpKeyImport = "pEp-key-import"
+    }
+
     public weak var delegate: KeyImportServiceDelegate?
+
     /// Specifies how long a key import message is valid
     static let ttlKeyImportMessages: TimeInterval = 4 * 60 * 60
     /// Work queue
     let queue: OperationQueue
 
     // MARK: - Life Cycle
+
     init() {
         queue = OperationQueue()
         queue.name = "pep.security.KeyImportService"
     }
 
     // MARK: - Working bees
-
-    enum Header: String {
-        case pEpKeyImport = "pEp-key-import"
-    }
 
     private func isKeyNewInitKeyImportMessage(message: Message) -> Bool {
         return isKeyImportMessage(message: message, pepColorIs: PEP_color_no_color)
