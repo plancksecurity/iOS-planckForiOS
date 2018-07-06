@@ -34,15 +34,16 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         }
 
         // Sync both acocunts and remember what we got before starting the actual test
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
         let msgsBefore1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
         let msgsBefore2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
 
         // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2)
         let numMailsToSend = 2
-        let mailsToSend = try! TestUtil.createOutgoingMails(
-            cdAccount: cdAccount2, testCase: self, numberOfMails: numMailsToSend,
-            withAttachments: false, encrypt: false)
+        let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: cdAccount2,
+                                                            numberOfMails:numMailsToSend,
+                                                            withAttachments: false,
+                                                            encrypt: false)
         XCTAssertEqual(mailsToSend.count, numMailsToSend)
 
         for mail in mailsToSend {
@@ -59,10 +60,10 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
 
         // ... and send them.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Sync once again to make sure we mirror the servers state (i.e. receive the sent mails)
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Now let's see what we got.
         let msgsAfter1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)

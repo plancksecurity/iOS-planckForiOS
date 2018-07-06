@@ -45,7 +45,7 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         }
 
         // Sync both acocunts and remember what we got before starting the actual test
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
         let msgsBeforeId2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1)
 
         // Create mails from ID1 to ID2 with attachments (inlined or not)
@@ -56,7 +56,6 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
                                          fromIdentity: id1,
                                          toIdentity: id2,
                                          setSentTimeOffsetForManualOrdering: false,
-                                         testCase: self,
                                          numberOfMails: numMailsToSend,
                                          withAttachments: true,
                                          attachmentsInlined: attachmentsInlined,
@@ -65,11 +64,11 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         XCTAssertEqual(mailsToSend.count, numMailsToSend)
 
         // ... and send them.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Sync once again. Just to make sure we mirror the servers state (i.e. receive the
         // sent mails)
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Now let's see what we got.
         let msgsAfterId2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id1)

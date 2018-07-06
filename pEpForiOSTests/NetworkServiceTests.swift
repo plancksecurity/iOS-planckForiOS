@@ -179,7 +179,7 @@ class NetworkServiceTests: XCTestCase {
         }
         XCTAssertFalse(modelDelegate.hasChangedMessages)
 
-        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService)
     }
 
     func testCancelSyncImmediately() {
@@ -195,7 +195,7 @@ class NetworkServiceTests: XCTestCase {
 
         for _ in 0...10 {
             networkService.start()
-            TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: self)
+            TestUtil.cancelNetworkServiceAndWait(networkService: networkService)
         }
 
         XCTAssertNil(CdFolder.all())
@@ -239,7 +239,7 @@ class NetworkServiceTests: XCTestCase {
         TestUtil.skipValidation()
         Record.saveAndWait()
 
-        TestUtil.syncAndWait(testCase: self, skipValidation: true)
+        TestUtil.syncAndWait()
 
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
@@ -256,9 +256,8 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertEqual((sentFolder.messages ?? NSSet()).count, 0)
 
         let numMails = 1
-        let outgoingMails = try! TestUtil.createOutgoingMails(
-            cdAccount: cdAccount,
-            testCase: self, numberOfMails: numMails)
+        let outgoingMails = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
+                                                              numberOfMails: numMails)
         let outgoingMessageIDs: [String] = outgoingMails
             .map() { $0.messageID ?? "" }
             .filter() { $0 != "" }
@@ -270,7 +269,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertEqual(m.sendStatus, SendStatus.none)
         }
 
-        TestUtil.syncAndWait(testCase: self, skipValidation: true)
+        TestUtil.syncAndWait()
 
         // Check that the sent mails have been deleted
         Record.refreshRegisteredObjects(mergeChanges: true)
@@ -306,7 +305,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertTrue(isSentFolderInteresting)
 
         // sync
-        TestUtil.syncAndWait(testCase: self, skipValidation: true)
+        TestUtil.syncAndWait()
 
         if useCorrectSmtpAccount {
             // those messages do not exist if we are using an incorrect account

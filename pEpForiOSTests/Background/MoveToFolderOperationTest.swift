@@ -34,7 +34,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         }
 
         // Sync
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Assure deleted messages are in trash
         checkExistance(ofMessages: receivedMsgs, inFolderOfType: .trash, mustExist: true)
@@ -73,7 +73,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         move(messages: receivedMsgs, toFolerOfType: targetFolderType)
 
         // Sync
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Assure messages are in target folder
         checkExistance(ofMessages: receivedMsgs, inFolderOfType: targetFolderType, mustExist: true)
@@ -137,13 +137,14 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         }
 
         // Sync both acocunts and remember what we got before starting the actual test
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
         let msgsBefore = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
 
         // Create mails from cdAccount2 to cdAccount ...
-        let mailsToSend = try! TestUtil.createOutgoingMails(
-            cdAccount: sender, testCase: self, numberOfMails: num,
-            withAttachments: false, encrypt: false)
+        let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: sender,
+                                                            numberOfMails: num,
+                                                            withAttachments: false,
+                                                            encrypt: false)
         XCTAssertEqual(mailsToSend.count, num)
 
         for mail in mailsToSend {
@@ -158,10 +159,10 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()    
 
         // ... and send them.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Sync once again to make sure we mirror the servers state (i.e. receive the sent mails)
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Assure the messages have been received
         let msgsAfter = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)

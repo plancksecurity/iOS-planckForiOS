@@ -266,9 +266,8 @@ class TestUtil {
 
     // MARK: - Sync Loop
 
-    static public func syncAndWait(numAccountsToSync: Int = 1,
-                                   testCase: XCTestCase,
-                                   skipValidation: Bool) {
+    static public func syncAndWait(numAccountsToSync: Int = 1, skipValidation: Bool = true) {
+        let testCase = XCTestCase()
         let networkService = NetworkService(keyImportListener: KeyImportService())
         networkService.sleepTimeInSeconds = 0.1
 
@@ -288,15 +287,17 @@ class TestUtil {
         networkService.start()
 
         let canTakeSomeTimeFactor = 3.0
+
         testCase.waitForExpectations(timeout: TestUtil.waitTime * canTakeSomeTimeFactor) { error in
             XCTAssertNil(error)
         }
 
-        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: testCase)
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService)
     }
 
     // MARK: - NetworkService
-    static public func cancelNetworkServiceAndWait(networkService: NetworkService, testCase: XCTestCase) {
+    static public func cancelNetworkServiceAndWait(networkService: NetworkService) {
+        let testCase = XCTestCase()
         let del = NetworkServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
         networkService.unitTestDelegate = del
@@ -315,7 +316,6 @@ class TestUtil {
                                     fromIdentity: Identity? = nil,
                                     toIdentity: Identity? = nil,
                                     setSentTimeOffsetForManualOrdering: Bool = false,
-                                    testCase: XCTestCase,
                                     numberOfMails: Int,
                                     withAttachments: Bool = true,
                                     attachmentsInlined: Bool = false,
@@ -334,7 +334,6 @@ class TestUtil {
                                                  fromIdentity: cdFromIdentity,
                                                  toIdentity: cdToIdentity,
                                                  setSentTimeOffsetForManualOrdering: setSentTimeOffsetForManualOrdering,
-                                                 testCase: testCase,
                                                  numberOfMails: numberOfMails,
                                                  withAttachments: withAttachments,
                                                  attachmentsInlined: attachmentsInlined,
@@ -366,14 +365,12 @@ class TestUtil {
                                     fromIdentity: CdIdentity? = nil,
                                     toIdentity: CdIdentity? = nil,
                                     setSentTimeOffsetForManualOrdering: Bool = false,
-                                    testCase: XCTestCase,
                                     numberOfMails: Int,
                                     withAttachments: Bool = true,
                                     attachmentsInlined: Bool = false,
                                     encrypt: Bool = true,
                                     forceUnencrypted: Bool = false) throws -> [CdMessage] {
-        let cdAccount = fromIdentity?.accounts?.allObjects.first as? CdAccount ?? cdAccount 
-        testCase.continueAfterFailure = false
+        let cdAccount = fromIdentity?.accounts?.allObjects.first as? CdAccount ?? cdAccount
 
         if numberOfMails == 0 {
             return []
@@ -383,7 +380,7 @@ class TestUtil {
 
         if existingSentFolder == nil {
             // Make sure folders are synced
-            syncAndWait(testCase: testCase, skipValidation: true)
+            syncAndWait()
         }
 
         guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
@@ -542,7 +539,7 @@ class TestUtil {
 
     // MARK: - SERVER
 
-    static func setServersTrusted(forCdAccount cdAccount: CdAccount, testCase: XCTestCase) {
+    static func setServersTrusted(forCdAccount cdAccount: CdAccount) {
         guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
             XCTFail("No Servers")
             return

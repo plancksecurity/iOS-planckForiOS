@@ -406,9 +406,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     func testEncryptAndSendOperation() {
         // Create mails to send ...
-        let sentUUIDs = try! TestUtil.createOutgoingMails(cdAccount: cdAccount,
-                                                  testCase: self,
-                                                  numberOfMails: 3).map { $0.uuid! }
+        let sentUUIDs = try! TestUtil.createOutgoingMails(cdAccount: cdAccount, numberOfMails: 3)
+            .map { $0.uuid! }
         // ... Login ...
         let smtpSendData = SmtpSendData(connectInfo: smtpConnectInfo)
         let errorContainer = ErrorContainer()

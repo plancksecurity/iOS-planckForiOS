@@ -191,7 +191,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
                 expectedReceiverRatingOnServerEncrypted: Bool,
                 expectedReceiverRatingToDisplayEncrypted: Bool) {
         if senderTrusted {
-            TestUtil.setServersTrusted(forCdAccount: cdAccount, testCase: self)
+            TestUtil.setServersTrusted(forCdAccount: cdAccount)
         }
 
         guard let sender = cdAccount.identity else {
@@ -219,7 +219,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
                                                           fromIdentity: sender,
                                                           toIdentity: receiver,
                                                           setSentTimeOffsetForManualOrdering: false,
-                                                          testCase: self,
                                                           numberOfMails: 1,
                                                           withAttachments: false,
                                                           attachmentsInlined: false,
@@ -230,7 +229,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
             return
         }
         TestUtil.makeFolderInteresting(folderType: .sent, cdAccount: cdAccount)
-        TestUtil.syncAndWait(numAccountsToSync: 1, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait()
 
         let sentFolder = TestUtil.cdFolder(ofType: .sent, in: cdAccount)
         guard let sentFolderName = sentFolder.name else {
@@ -277,10 +276,10 @@ class ReUploadTest: CoreDataDrivenTestBase {
         }
 
         if receiverTrusted {
-            TestUtil.setServersTrusted(forCdAccount: cdAccountReceiver, testCase: self)
+            TestUtil.setServersTrusted(forCdAccount: cdAccountReceiver)
         }
         // Fetch, maybe re-upload and fetch again.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
 
         // Check inbox for the received message
         let inbox = TestUtil.cdFolder(ofType: .inbox, in: cdAccountReceiver)
@@ -453,12 +452,12 @@ class ReUploadTest: CoreDataDrivenTestBase {
         makeFoldersInteresting(inCdAccount: cdAccountReceiver)
         makeFoldersInteresting(inCdAccount: cdAccount)
         // Fetch all messages.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
         // Mark all messages deleted ...
         markAllMessagesDeleted(inCdAccount: cdAccountReceiver)
         markAllMessagesDeleted(inCdAccount: cdAccount)
         // ... and propagate the changes to the servers
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2)
         // Delete receiver account. Has to be freshly crated in tests.
         cdAccountReceiver.delete()
         Record.saveAndWait()
