@@ -80,6 +80,7 @@
         <!--Credits View Controller-->
         <scene sceneID="T9v-3i-MfR">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mXj-Sq-nBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="9LH-QE-79O" customClass="CreditsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QiT-Mr-baO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -88,7 +89,6 @@
                         <viewLayoutGuide key="safeArea" id="Fub-z0-3HP"/>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mXj-Sq-nBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2471" y="56"/>
         </scene>
@@ -637,7 +637,7 @@
                 <viewControllerPlaceholder storyboardName="KeyImport" id="7dA-2A-x4F" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="haX-Vu-dOf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3434" y="-725"/>
+            <point key="canvasLocation" x="1609" y="505"/>
         </scene>
         <!--Settings Key Import Select Account Table View Controller-->
         <scene sceneID="EV7-7z-Nav">
@@ -664,9 +664,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="7dA-2A-x4F" kind="show" identifier="segueToStartKeyImport" id="q86-NZ-htJ"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -674,10 +671,13 @@
                             <outlet property="delegate" destination="SAI-o2-mn1" id="nDP-lP-fPA"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <segue destination="7dA-2A-x4F" kind="show" identifier="segueToStartKeyImport" id="b35-xl-6Nd"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HcN-ao-xst" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4264.8000000000002" y="-736.28185907046486"/>
+            <point key="canvasLocation" x="1609" y="57"/>
         </scene>
         <!--Setting Default Account Table View Controller-->
         <scene sceneID="26G-EO-g0Z">

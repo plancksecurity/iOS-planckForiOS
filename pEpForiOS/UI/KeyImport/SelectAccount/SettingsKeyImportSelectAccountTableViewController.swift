@@ -63,6 +63,8 @@ class SettingsKeyImportSelectAccountTableViewController: BaseTableViewController
     // MARK: - UITableviewDelegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedItem = indexPath
+        self.performSegue(withIdentifier: "segueToStartKeyImport", sender: self)
+
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
