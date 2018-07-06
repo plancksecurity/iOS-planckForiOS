@@ -320,6 +320,7 @@
 		43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA82521E9B925C00ABD5A8 /* UIView+Util.swift */; };
 		43AA825B1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA825A1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift */; };
 		43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */; };
+		43AABD3920EF3DE400FBD5D0 /* ThreadingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AABD3820EF3DE400FBD5D0 /* ThreadingTests.swift */; };
 		43AAC22A1F7A5AEE00F435F4 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */; };
 		43AAC22B1F7A5AEE00F435F4 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */; };
 		43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE48E61EEFC93900B92BB6 /* DebugMergePolicy.swift */; };
@@ -821,6 +822,7 @@
 		43AA82521E9B925C00ABD5A8 /* UIView+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Util.swift"; sourceTree = "<group>"; };
 		43AA825A1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentViewContainer.swift; sourceTree = "<group>"; };
 		43AA825C1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewDelegate.swift; sourceTree = "<group>"; };
+		43AABD3820EF3DE400FBD5D0 /* ThreadingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadingTests.swift; sourceTree = "<group>"; };
 		43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		43AE48E61EEFC93900B92BB6 /* DebugMergePolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMergePolicy.swift; sourceTree = "<group>"; };
@@ -1048,6 +1050,7 @@
 			isa = PBXGroup;
 			children = (
 				151F7203202A06E20057C74D /* IMAP */,
+				43AABD3820EF3DE400FBD5D0 /* ThreadingTests.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2777,6 +2780,7 @@
 				15BA537020A0A4350090F126 /* Log.swift in Sources */,
 				15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
+				43AABD3920EF3DE400FBD5D0 /* ThreadingTests.swift in Sources */,
 				154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */,
 				151F71FC202A06760057C74D /* CoreDataDrivenTestBase.swift in Sources */,
 				151F71FF202A06760057C74D /* Message+TestUtils.swift in Sources */,
