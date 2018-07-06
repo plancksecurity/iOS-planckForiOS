@@ -142,7 +142,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         }
         if let keyImportListener = keyImportListener {
             isKeyImportMessage = keyImportListener.handleKeyImport(forMessage: message,
-                                                                       flags: flags)
+                                                                   flags: flags)
         }
         return isKeyImportMessage
     }
