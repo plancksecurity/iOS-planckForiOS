@@ -22,7 +22,7 @@ public protocol KeyImportServiceProtocol: class {
     /// we are ready for handshake.
     func sendHandshakeRequest(forAccount acccount: Account)
 
-    func setNewDefaultKey(for identity: Identity, fpr: String) throws
+    func setNewDefaultKey(for identity: Identity, fpr: String)
 }
 
 /// Called by background operation or NetworkService[Worker].

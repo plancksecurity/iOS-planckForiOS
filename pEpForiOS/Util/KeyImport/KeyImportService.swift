@@ -8,6 +8,11 @@
 
 import MessageModel
 
+public enum KeyImportServiceError: Error {
+    case smtpError
+    case engineError
+}
+
 public class KeyImportService {
     public weak var delegate: KeyImportServiceDelegate?
     /// Specifies how long a key import message is valid
@@ -94,8 +99,10 @@ extension KeyImportService: KeyImportServiceProtocol {
     }
 
     /// Call to inform the other device that we would love to start a Key Import session
+    /// Sends an unencrypted message with header: "pEp-key-import: myPubKey_fpr" to myself (without
+    /// appending the message to "Sent" folder)
     public func sendInitKeyImportMessage(forAccount account: Account) {
-        //send unencrypted message to myself with header: "pEp-key-import: myPubKey_fpr" (assume: without appending to sent folder)
+
         guard let dummyFolder = account.folder(ofType: .sent) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder")
             return
@@ -111,10 +118,10 @@ extension KeyImportService: KeyImportServiceProtocol {
 
         // Login OP
         guard let sendData = smtpSendData(for: account) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No send data")
+            Log.shared.errorAndCrash(component: #function, errorString: "No send data") 
             return
         }
-        let errorContainer = ErrorContainer()
+        let errorContainer = ErrorContainer() //IOS-1028: make property
         let loginOp = LoginSmtpOperation(smtpSendData: sendData, errorContainer: errorContainer)
 
         // send OP
@@ -136,8 +143,12 @@ extension KeyImportService: KeyImportServiceProtocol {
         fatalError("Unimplemented stub")
     }
 
-    public func setNewDefaultKey(for identity: Identity, fpr: String) throws {
-        try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
+    public func setNewDefaultKey(for identity: Identity, fpr: String) {
+        do {
+            try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
+        } catch {
+            //TODO: handle error
+        }
     }
 }
 
