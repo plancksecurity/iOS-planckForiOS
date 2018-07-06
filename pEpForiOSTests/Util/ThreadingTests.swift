@@ -32,7 +32,7 @@ class ThreadingTests: CoreDataDrivenTestBase {
         topMessages.removeAll()
 
         for i in 1...EmailListViewModel_ThreadingTests.numberOfTopMessages {
-            let msg = createMessage(number: i)
+            let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
             topMessages.append(msg)
             msg.save()
         }
@@ -48,18 +48,5 @@ class ThreadingTests: CoreDataDrivenTestBase {
         for msg in topMessages {
             XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
         }
-    }
-
-    // MARK: - Helpers
-
-    func createMessage(number: Int, inFolder folder: Folder? = nil) -> Message {
-        let msg = Message.init(uuid: "\(number)",
-            uid: UInt(number),
-            parentFolder: folder ?? inbox)
-        XCTAssertEqual(msg.uid, UInt(number))
-        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
-        msg.received = Date.init(timeIntervalSince1970: Double(number))
-        msg.sent = msg.received
-        return msg
     }
 }

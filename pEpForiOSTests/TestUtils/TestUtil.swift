@@ -475,6 +475,15 @@ class TestUtil {
         return messagesInTheQueue
     }
 
+    static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
+        let msg = Message(uuid: "\(uid)", uid: UInt(uid), parentFolder: folder)
+        XCTAssertEqual(msg.uid, UInt(uid))
+        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.received = Date.init(timeIntervalSince1970: Double(uid))
+        msg.sent = msg.received
+        return msg
+    }
+
     // MARK: - FOLDER
 
     static func determineInterestingFolders(in cdAccount: CdAccount)

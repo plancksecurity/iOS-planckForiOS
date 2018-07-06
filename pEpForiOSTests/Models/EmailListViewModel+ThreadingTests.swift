@@ -258,7 +258,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                                      account: account,
                                      folderType: .sent)
         sentFolder.save()
-        let sentMessage = createMessage(number: nextUid(), inFolder: sentFolder)
+        let sentMessage = TestUtil.createMessage(uid: nextUid(), inFolder: sentFolder)
         sentMessage.save()
 
         // let a top message reference that message (i.e., someone answered to our sent message)
@@ -315,7 +315,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         topMessages.removeAll()
 
         for i in 1...EmailListViewModel_ThreadingTests.numberOfTopMessages {
-            let msg = createMessage(number: i)
+            let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
             topMessages.append(msg)
             msg.save()
         }
@@ -359,7 +359,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
-        let incomingMessage = createMessage(number: nextUid())
+        let incomingMessage = TestUtil.createMessage(uid: nextUid(), inFolder: inbox)
         incomingMessage.references = references.map {
             return $0.messageID
         }
@@ -390,17 +390,6 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
     func topMessage(byUID uid: Int) -> Message {
         return topMessages[uid-1]
-    }
-
-    func createMessage(number: Int, inFolder folder: Folder? = nil) -> Message {
-        let msg = Message.init(uuid: "\(number)",
-            uid: UInt(number),
-            parentFolder: folder ?? inbox)
-        XCTAssertEqual(msg.uid, UInt(number))
-        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
-        msg.received = Date.init(timeIntervalSince1970: Double(number))
-        msg.sent = msg.received
-        return msg
     }
 
     // MARK: - Internal - Delegate parameters
