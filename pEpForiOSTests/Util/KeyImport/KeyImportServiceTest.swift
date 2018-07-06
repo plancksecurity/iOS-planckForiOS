@@ -12,10 +12,8 @@ import MessageModel
 @testable import pEpForiOS
 
 class KeyImportServiceTest: CoreDataDrivenTestBase {
-    var _keyImportService: KeyImportService?
-    var keyImportService: KeyImportService { // Only to avoid Optional
-        return _keyImportService!
-    }
+    var keyImportService: KeyImportService!
+
     /// KeyImportService *is* the KeyImportListener. But we want semantical seperation.
     var keyImportListener: KeyImportListenerProtocol {
         return keyImportService
@@ -26,14 +24,16 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         cdAccount.createRequiredFoldersAndWait(testCase: self)
-        _keyImportService = KeyImportService()
+        keyImportService = KeyImportService()
     }
 
     override func tearDown() {
-        _keyImportService = nil
+        keyImportService = nil
         observer = nil
         super.tearDown()
     }
+
+    // MARK: newKeyImportMessageArrived
 
     func testNewKeyImportMessageArrived_headerSet() {
         assert(keyImportHeaderSet: true,
@@ -75,6 +75,8 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
                expectMessageHandledByKeyImportService: false)
     }
 
+    // MARK: receivedPrivateKey
+
     func testReceivedPrivateKey_pEpColorGreen_flagReceived() {
         assert(keyImportHeaderSet: false,
                ownPrivateKeyFlagReceived: true,
@@ -100,6 +102,12 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
                expectDelegateNewImportMessageArrivedCalled: false,
                expectDelegateReceivedPrivateKeyCalled: false,
                expectMessageHandledByKeyImportService: false)
+    }
+
+    // MARK: sendInitKeyImportMessage
+
+    func sendInitKeyImportMessage() {
+
     }
 
     // MARK: - HELPER
