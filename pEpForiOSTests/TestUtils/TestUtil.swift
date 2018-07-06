@@ -484,6 +484,28 @@ class TestUtil {
         return msg
     }
 
+    /**
+     Determines the highest UID of _all_ the messages currently in the DB.
+     */
+    static func highestUid() -> Int {
+        var theHighestUid: Int32 = 0
+        if let allCdMessages = CdMessage.all() as? [CdMessage] {
+            for cdMsg in allCdMessages {
+                if cdMsg.uid > theHighestUid {
+                    theHighestUid = cdMsg.uid
+                }
+            }
+        }
+        return Int(theHighestUid)
+    }
+
+    /**
+     - Returns: `highestUid()` + 1
+     */
+    static func nextUid() -> Int {
+        return highestUid() + 1
+    }
+
     // MARK: - FOLDER
 
     static func determineInterestingFolders(in cdAccount: CdAccount)
