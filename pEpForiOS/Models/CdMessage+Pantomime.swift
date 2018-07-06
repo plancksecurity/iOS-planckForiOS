@@ -566,7 +566,7 @@ extension CdMessage {
             }
         }
 
-        store(headerFieldNames: ["X-pEp-Version", "X-EncStatus", "X-KeyList"],
+        store(headerFieldNames: ["X-pEp-Version", "X-EncStatus", "X-KeyList", "pEp-key-import"],
               pantomimeMessage: pantomimeMessage, cdMessage: mail)
 
 
