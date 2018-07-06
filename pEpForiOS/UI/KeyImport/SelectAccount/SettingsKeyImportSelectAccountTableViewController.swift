@@ -15,7 +15,7 @@ class SettingsKeyImportSelectAccountTableViewController: BaseTableViewController
     let cellID = "SettingsKeyImportSelectAccountCell"
 
     private var viewModel: SettingsKeyImportSelectAccountViewModel?
-    private var selectedItem: IndexPath?
+    private var selectedViewModel: AutoWizardStepsViewModel?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +35,10 @@ class SettingsKeyImportSelectAccountTableViewController: BaseTableViewController
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let vm = viewModel {
-            return vm.count
+        guard let vm = viewModel else {
+            return 0
         }
-        return 0
+        return vm.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
@@ -62,19 +62,18 @@ class SettingsKeyImportSelectAccountTableViewController: BaseTableViewController
     
     // MARK: - UITableviewDelegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedItem = indexPath
-        self.performSegue(withIdentifier: "segueToStartKeyImport", sender: self)
+        if let vm = viewModel {
+            selectedViewModel = vm[indexPath.row].getWizardViewModel()
+            self.performSegue(withIdentifier: "segueToStartKeyImport", sender: self)
+        }
 
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? AutoWizardStepsViewController,
-            let item = selectedItem {
+            let wizardVM = selectedViewModel {
             destination.appConfig = self.appConfig
-            if let vm = viewModel {
-                destination.viewModel = vm[item.row].getWizardViewModel()
-            }
-
+            destination.viewModel = wizardVM
         }
     }
 }
