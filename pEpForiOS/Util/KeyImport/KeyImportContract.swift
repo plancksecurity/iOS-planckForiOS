@@ -49,9 +49,7 @@ public protocol KeyImportServiceDelegate: class {
     /// - Parameter message: received import message
     func newInitKeyImportRequestMessageArrived(message: Message)
 
-
-    /// It informs the receiver that another device wants to start a Key Import session with
-    /// me (wants to import my key).
+    /// It informs the receiver that the other device is ready for handshake
     ///
     /// Will be triggered when a message is received that:
     /// - has the FPR of a foreign (not mine) key defined in "pEp-key-import" header
