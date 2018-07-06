@@ -266,9 +266,12 @@ class TestUtil {
 
     // MARK: - Sync Loop
 
-    static public func syncAndWait(numAccountsToSync: Int = 1, skipValidation: Bool = true) {
+    static public func syncAndWait(numAccountsToSync: Int = 1,
+                                   skipValidation: Bool = true,
+                                   networkService: NetworkService? = nil) {
         let testCase = XCTestCase()
-        let networkService = NetworkService(keyImportListener: KeyImportService())
+        let networkService: NetworkService! = networkService != nil ? networkService :
+            NetworkService(keyImportListener: KeyImportService())
         networkService.sleepTimeInSeconds = 0.1
 
         let expAccountsSynced = testCase.expectation(description: "allAccountsSynced")
