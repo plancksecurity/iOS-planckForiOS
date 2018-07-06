@@ -40,7 +40,7 @@ class ThreadingTests: CoreDataDrivenTestBase {
 
     // MARK: - Tests
 
-    func testNoThreads() {
+    func testThreadedButNoThreads() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         let threaded = inbox.threadAware()
         XCTAssertEqual(threaded.allMessages().count, topMessages.count)
