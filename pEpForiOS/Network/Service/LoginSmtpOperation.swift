@@ -9,7 +9,7 @@
 import MessageModel
 
 public class LoginSmtpOperation: ConcurrentBaseOperation {
-    var service: SmtpSend!
+    var service: SmtpSend?
     var smtpSendData: SmtpSendData
 
     public init(parentName: String = #function,
@@ -25,6 +25,11 @@ public class LoginSmtpOperation: ConcurrentBaseOperation {
             return
         }
         service = SmtpSend(connectInfo: smtpSendData.connectInfo)
+        guard let service = service  else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No service")
+            handleError(BackgroundError.GeneralError.illegalState(info: "No service"))
+            return
+        }
         service.delegate = self
         service.start()
     }
