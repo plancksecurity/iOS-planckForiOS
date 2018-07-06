@@ -23,8 +23,8 @@ class ReUploadTest: CoreDataDrivenTestBase {
         setupSenderAccount()
         markAllMessagesOnServerDeleted()
         // And start from scratch
-        tearDownWithoutBotheringXCT()
-        setupWithoutBotheringXCT()
+        super.tearEverythingDown()
+        super.setupEverythingUp()
         setupSenderAccount()
     }
 
@@ -163,23 +163,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
     }
 
     // MARK: - HELPER
-
-    // Similar to super.setup() but without bothering Xcode Test
-    private func setupWithoutBotheringXCT() {
-        XCTAssertTrue(PEPUtil.pEpClean())
-        persistentSetup = PersistentSetup()
-        let cdAccount = SecretTestData().createWorkingCdAccount()
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-        self.cdAccount = cdAccount
-    }
-
-    // Similar to super.tearDown() but without bothering Xcode Test
-    private func tearDownWithoutBotheringXCT() {
-        imapSyncData?.sync?.close()
-        persistentSetup = nil
-        PEPSession.cleanup()
-    }
 
     // MARK: The actual test
 

@@ -26,11 +26,21 @@ class CoreDataDrivenTestBase: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        setupEverythingUp()
+    }
 
+    override func tearDown() {
+        tearEverythingDown()
+        super.tearDown()
+    }
+
+    // MARK: - HELPER
+
+    func setupEverythingUp() {
         XCTAssertTrue(PEPUtil.pEpClean())
-        
+
         persistentSetup = PersistentSetup()
-        
+
         let cdAccount = SecretTestData().createWorkingCdAccount()
         TestUtil.skipValidation()
         Record.saveAndWait()
@@ -44,14 +54,11 @@ class CoreDataDrivenTestBase: XCTestCase {
         XCTAssertNotNil(smtpConnectInfo)
     }
 
-    override func tearDown() {
+    func tearEverythingDown() {
         imapSyncData?.sync?.close()
         persistentSetup = nil
         PEPSession.cleanup()
-        super.tearDown()
     }
-
-    // MARK: - HELPER
 
     func fetchMessages(parentName: String) {
         let expMailsFetched = expectation(description: "expMailsFetched")
