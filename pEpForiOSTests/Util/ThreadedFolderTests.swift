@@ -67,11 +67,11 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         let sentMsg = TestUtil.createMessage(uid: TestUtil.nextUid(), inFolder: sentFolder)
         sentMsg.save()
 
-        let firstDisplayedMessage = message(by: 5)
+        let firstDisplayedMessage = message(by: UInt(inboxCount))
         firstDisplayedMessage.references = [sentMsg.messageID]
         firstDisplayedMessage.save()
 
-        let secondDisplayedMessage = message(by: 4)
+        let secondDisplayedMessage = message(by: UInt(inboxCount - 1))
         secondDisplayedMessage.references = [sentMsg.messageID]
         secondDisplayedMessage.save()
 
