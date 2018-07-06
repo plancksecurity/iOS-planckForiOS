@@ -40,13 +40,25 @@ public protocol KeyImportListenerProtocol {
 }
 
 public protocol KeyImportServiceDelegate: class {
-    /// Will be triggered when “pEp-key-import” detected, for p≡p key import.
-    /// It informs the receiver about:
-    /// 1) Another device wants to start a Key Import session with me (wants to import my key)
-    /// 2) We received a handshake request
+    /// It informs the receiver that another device wants to start a Key Import session with
+    /// me (wants to import my key).
     ///
+    /// Will be triggered when a message is received that:
+    /// - has the FPR of a foreign (not mine) key defined in "pEp-key-import" header
+    /// - is unencrypted (PEP_color == grey)
     /// - Parameter message: received import message
-    func newKeyImportMessageArrived(message: Message)
+    func newInitKeyImportRequestMessageArrived(message: Message)
+
+
+    /// It informs the receiver that another device wants to start a Key Import session with
+    /// me (wants to import my key).
+    ///
+    /// Will be triggered when a message is received that:
+    /// - has the FPR of a foreign (not mine) key defined in "pEp-key-import" header
+    /// - is encrypted
+    /// - PEP_color == yellow
+    /// - Parameter message: received import message
+    func newHandshakeRequestMessageArrived(message: Message)
 
     /// We received a private key in a green message.
     /// - Parameter account: account the private key has been sent to.

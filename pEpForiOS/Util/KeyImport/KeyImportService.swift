@@ -32,8 +32,22 @@ public class KeyImportService {
         case pEpKeyImport = "pEp-key-import"
     }
 
-    private func isKeyImportMessage(message: Message) -> Bool {
-        return message.optionalFields[Header.pEpKeyImport.rawValue] != nil
+    private func isKeyNewInitKeyImportMessage(message: Message) -> Bool {
+        return isKeyImportMessage(message: message, pepColorIs: PEP_color_no_color)
+    }
+
+    private func isNewHandshakeRequestMessage(message: Message) -> Bool {
+        return isKeyImportMessage(message: message, pepColorIs: PEP_color_yellow)
+    }
+
+    private func isKeyImportMessage(message: Message, pepColorIs requiredColor: PEP_color) -> Bool {
+        guard let myFpr = fingerprint(forAccount: message.parent.account) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No own key")
+            return false
+        }
+        let requestFpr = message.optionalFields[Header.pEpKeyImport.rawValue]
+        let messageColor = message.pEpColor()
+        return requestFpr != nil && requestFpr != myFpr && messageColor == requiredColor
     }
 
     private func isPrivateKeyMessage(message: Message, flags: PEP_decrypt_flags) -> Bool {
@@ -50,10 +64,17 @@ public class KeyImportService {
         return age < -KeyImportService.ttlKeyImportMessages
     }
 
-    private func informDelegateNewKeyImportMessageArrived(message: Message) {
+    private func informDelegateNewInitKeyImportRequestMessageArrived(message: Message) {
         if !timedOut(keyImportMessage: message) {
             // Don't bother the delegate with invalid messages.
-            delegate?.newKeyImportMessageArrived(message: message)
+            delegate?.newInitKeyImportRequestMessageArrived(message: message)
+        }
+    }
+
+    private func informDelegateNewHandshakeRequestMessageArrived(message: Message) {
+        if !timedOut(keyImportMessage: message) {
+            // Don't bother the delegate with invalid messages.
+            delegate?.newHandshakeRequestMessageArrived(message: message)
         }
     }
 
@@ -83,10 +104,6 @@ public class KeyImportService {
         }
         return  SmtpSendData(connectInfo: smtpCI)
     }
-
-    private func smtpSend(for account: Account) -> SmtpSend? {
-        return smtpSendData(for: account)?.smtp
-    }
 }
 
 // MARK: - KeyImportServiceProtocol
@@ -98,7 +115,7 @@ extension KeyImportService: KeyImportServiceProtocol {
         fatalError("Unimplemented stub")
     }
 
-    /// Call to inform the other device that we would love to start a Key Import session
+    /// Call to inform the other device that we would love to start a Key Import session.
     /// Sends an unencrypted message with header: "pEp-key-import: myPubKey_fpr" to myself (without
     /// appending the message to "Sent" folder)
     public func sendInitKeyImportMessage(forAccount account: Account) {
@@ -114,38 +131,25 @@ extension KeyImportService: KeyImportServiceProtocol {
         }
 
         let msg = Message(uuid: MessageID.generateUUID(), parentFolder: dummyFolder)
+        let mySelf = account.user
+        msg.from = mySelf
+        msg.to = [mySelf]
         msg.optionalFields[Header.pEpKeyImport.rawValue] = myFpr
 
         // Login OP
         guard let sendData = smtpSendData(for: account) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No send data") //IOS-1028: //BUFF: //HERE: Write integration tests, test, extract send, test. Think: Error delegate.
+            Log.shared.errorAndCrash(component: #function, errorString: "No send data") //IOS-1028: test, extract send, test. Think: Error delegate.
             return
         }
         let errorContainer = ErrorContainer() //IOS-1028: make property
         let loginOp = LoginSmtpOperation(smtpSendData: sendData, errorContainer: errorContainer)
-
         // send OP
-//        guard let smtpSend = smtpSend(for: account) else {
-//            Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
-//            return
-//        }
-//        let sendOp = SMTPSendOperation(errorContainer: errorContainer,
-//                                       messageToSend: msg,
-//                                       smtpSend: smtpSend)
-//        // Go!
-//        queue.addOperations([loginOp, sendOp], waitUntilFinished: false)
-        //BUFF:!
-         queue.addOperations([loginOp], waitUntilFinished: true)
-        guard let smtpSend = sendData.smtp else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
-            return
-        }
         let sendOp = SMTPSendOperation(errorContainer: errorContainer,
                                        messageToSend: msg,
-                                       smtpSend: smtpSend)
-        queue.addOperations([sendOp], waitUntilFinished: true)
+                                       smtpSendData: sendData)
+        //IOS-1028: handle errors, add test-success-delegate or such
         // Go!
-
+        queue.addOperations([loginOp, sendOp], waitUntilFinished: false)
     }
 
     /// Call after a newKeyImportMessage arrived to let the other device know
@@ -169,10 +173,14 @@ extension KeyImportService: KeyImportServiceProtocol {
 extension KeyImportService: KeyImportListenerProtocol {
     public func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool {
         var hasBeenHandled = false
-        if isKeyImportMessage(message: msg) {
+        if isKeyNewInitKeyImportMessage(message: msg){
             hasBeenHandled = true
             msg.imapMarkDeleted()
-            informDelegateNewKeyImportMessageArrived(message: msg)
+            informDelegateNewInitKeyImportRequestMessageArrived(message: msg)
+        }else if isNewHandshakeRequestMessage(message: msg){
+            hasBeenHandled = true
+            msg.imapMarkDeleted()
+            informDelegateNewHandshakeRequestMessageArrived(message: msg)
         } else if isPrivateKeyMessage(message: msg, flags: flags) {
             hasBeenHandled = true
             msg.imapMarkDeleted()
