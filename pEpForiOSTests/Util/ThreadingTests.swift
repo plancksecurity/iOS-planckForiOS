@@ -41,7 +41,7 @@ class ThreadingTests: CoreDataDrivenTestBase {
 
     // MARK: - Tests
 
-    func testSetup() {
+    func testSetupThreaded() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         let threaded = inbox.threadAware()
         XCTAssertEqual(threaded.allMessages().count, topMessages.count)
@@ -49,11 +49,6 @@ class ThreadingTests: CoreDataDrivenTestBase {
         XCTAssertEqual(topMessages[0].uid, 1)
         let inboxMessages = threaded.allMessages()
         XCTAssertEqual(inboxMessages[0].uid, UInt(inboxCount))
-    }
-
-    func testThreadedButNoThreads() {
-        FolderThreading.override(factory: ThreadAwareFolderFactory())
-        let threaded = inbox.threadAware()
 
         for msg in topMessages {
             XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
