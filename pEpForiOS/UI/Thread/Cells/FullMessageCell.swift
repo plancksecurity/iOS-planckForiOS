@@ -31,7 +31,7 @@ class FullMessageCell: SwipeTableViewCell,
     @IBOutlet weak var badgePicture: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var flaggedIcon: UIImageView!
-
+    @IBOutlet weak var toLabel: UILabel!
     var tableView: UITableView!
 
     var isFlagged:Bool = false {
@@ -52,6 +52,8 @@ class FullMessageCell: SwipeTableViewCell,
         subjectLabel.text = viewModel.subject
         backgroundColor = UIColor.clear
         dateLabel.text = viewModel.dateText
+        toLabel.attributedText = viewModel.getTo()
+
         viewModel.getProfilePicture { image in
             self.profilePicture.image = image
         }

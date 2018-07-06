@@ -223,8 +223,8 @@
                                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: adfadf" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKT-iA-rq1">
-                                                                                    <rect key="frame" x="0.0" y="24.5" width="69" height="18"/>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To: " lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKT-iA-rq1">
+                                                                                    <rect key="frame" x="0.0" y="24.5" width="25" height="18"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                                     <nil key="textColor"/>
                                                                                     <nil key="highlightedColor"/>
@@ -403,6 +403,7 @@
                                             <outlet property="roundedView" destination="u7a-uF-y9m" id="GJx-Bn-RQ4"/>
                                             <outlet property="stackView" destination="Hab-5Z-1cx" id="rsF-cc-ewt"/>
                                             <outlet property="subjectLabel" destination="Ux9-Hj-FDE" id="nVa-Ho-nU3"/>
+                                            <outlet property="toLabel" destination="TKT-iA-rq1" id="WOB-EK-9yE"/>
                                             <outlet property="view" destination="O4D-I4-BRy" id="ak1-1y-T8P"/>
                                         </connections>
                                     </tableViewCell>

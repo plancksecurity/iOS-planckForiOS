@@ -19,7 +19,6 @@ class MessageViewModel {
     var showAttchmentIcon: Bool = false
     let from: String
     let address: String
-    let to: String
     let subject: String
     let bodyPeek: String
     var isFlagged: Bool = false
@@ -36,7 +35,6 @@ class MessageViewModel {
         showAttchmentIcon = message.attachments.count > 0
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         address =  MessageViewModel.address(at: message.parent, from: message)
-        to = message.to.first?.userNameOrAddress ?? ""
         subject = message.shortMessage ?? ""
         isFlagged = message.imapFlags?.flagged ?? false
         isSeen = message.imapFlags?.seen ?? false
@@ -129,6 +127,22 @@ class MessageViewModel {
             finalText.normal("")
         }
         return finalText
+    }
+
+    func getTo()->NSMutableAttributedString {
+        let attributed = NSMutableAttributedString(
+            string: NSLocalizedString("To:", comment: "Compose field title"))
+        let attributes = [
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15.0),
+            NSAttributedStringKey.foregroundColor: UIColor.lightGray
+        ]
+        var temp: [String] = []
+        message.allRecipients.forEach { (recepient) in
+            let recepient = recepient.address
+            temp.append(recepient)
+        }
+        attributed.append(NSAttributedString(string: temp.joined(separator: ", "), attributes: attributes))
+        return attributed
     }
 
 
