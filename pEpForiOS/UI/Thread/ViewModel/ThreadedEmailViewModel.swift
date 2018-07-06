@@ -14,11 +14,7 @@ class ThreadedEmailViewModel {
 
 
     internal var messages: [Message]
-    internal var tip: Message {
-        get{
-            return messages.last!
-        }
-    }
+    internal var tip: Message 
     weak var emailDisplayDelegate: EmailDisplayDelegate!
     weak var delegate: ThreadedEmailViewModelDelegate!
     private let folder: ThreadedFolderWithTop
