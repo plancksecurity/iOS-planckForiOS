@@ -14,7 +14,11 @@ class ThreadedEmailViewModel {
 
 
     internal var messages: [Message]
-    internal var tip: Message
+    internal var tip: Message {
+        get{
+            return messages.last!
+        }
+    }
     weak var emailDisplayDelegate: EmailDisplayDelegate!
     weak var delegate: ThreadedEmailViewModelDelegate!
     private let folder: ThreadedFolderWithTop
@@ -101,25 +105,27 @@ class ThreadedEmailViewModel {
         }
     }
 
-    //Should only be called from view as it will handle its own update
     func switchFlag(forMessageAt index:Int) {
         guard index < messages.count && index >= 0 else {
             return
         }
 
         let flagStatus = (messages[index].imapFlags?.flagged ?? false)
-
-        messages[index].imapFlags?.flagged = !flagStatus
-        notifyFlag(!flagStatus, message: messages[index])
+        setFlag(to: !flagStatus, for: messages[index])
 
     }
 
     func setFlag(to status: Bool){
         for message in messages {
-            message.imapFlags?.flagged = status
-            message.save()
-            notifyFlag(status, message: message)
+            setFlag(to: status, for: message)
         }
+    }
+
+    func setFlag(to status: Bool, for message: Message){
+        message.imapFlags?.flagged = status
+        message.save()
+        notifyFlag(status, message: message)
+        delegate.emailViewModeldidChangeFlag(viewModel: self)
     }
 
     func allMessagesFlagged() -> Bool {

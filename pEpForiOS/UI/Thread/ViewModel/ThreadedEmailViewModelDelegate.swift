@@ -11,4 +11,5 @@ protocol ThreadedEmailViewModelDelegate: class, TableViewUpdate {
     func emailViewModel(viewModel: ThreadedEmailViewModel, didInsertDataAt index: Int)
     func emailViewModel(viewModel: ThreadedEmailViewModel, didUpdateDataAt index: Int)
     func emailViewModel(viewModel: ThreadedEmailViewModel, didRemoveDataAt index: Int)
+    func emailViewModeldidChangeFlag(viewModel: ThreadedEmailViewModel)
 }

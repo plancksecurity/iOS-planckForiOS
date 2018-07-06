@@ -29,6 +29,10 @@ extension ThreadViewController: ThreadedEmailViewModelDelegate {
         }
     }
 
+    func emailViewModeldidChangeFlag(viewModel: ThreadedEmailViewModel){
+        setUpFlaggedStatus()
+    }
+
     func updateView() {
         tableView.dataSource = self
         tableView.reloadData()
