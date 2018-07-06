@@ -49,4 +49,31 @@ class ThreadingTests: CoreDataDrivenTestBase {
             XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
         }
     }
+
+    func testThreadedSiblingsByReferencingSentMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+
+        let sentFolder = Folder.init(name: "Sent",
+                                     parent: nil,
+                                     account: account,
+                                     folderType: .sent)
+        sentFolder.save()
+
+        let sentMsg = TestUtil.createMessage(uid: TestUtil.nextUid(), inFolder: sentFolder)
+        sentMsg.save()
+
+        topMessages[0].references = [sentMsg.messageID]
+        topMessages[0].save()
+
+        topMessages[1].references = [sentMsg.messageID]
+        topMessages[1].save()
+
+        let threaded = inbox.threadAware()
+        let inboxMessages = threaded.allMessages()
+        XCTAssertEqual(inboxMessages.count, topMessages.count - 1)
+
+        XCTAssertEqual(threaded.messagesInThread(message: inboxMessages[0]).count, 1)
+        XCTAssertEqual(threaded.messagesInThread(message: inboxMessages[1]).count, 0)
+        XCTAssertEqual(threaded.messagesInThread(message: inboxMessages[2]).count, 0)
+    }
 }
