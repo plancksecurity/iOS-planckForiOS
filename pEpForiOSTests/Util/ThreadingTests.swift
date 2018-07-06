@@ -55,7 +55,7 @@ class ThreadingTests: CoreDataDrivenTestBase {
         }
     }
 
-    func testThreadedSiblingsByReferencingSentMessage() {
+    func testSiblingsByReferencingSentMessageThreaded() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
 
         let sentFolder = Folder.init(name: "Sent",
@@ -67,18 +67,35 @@ class ThreadingTests: CoreDataDrivenTestBase {
         let sentMsg = TestUtil.createMessage(uid: TestUtil.nextUid(), inFolder: sentFolder)
         sentMsg.save()
 
-        topMessages[0].references = [sentMsg.messageID]
-        topMessages[0].save()
+        let firstDisplayedMessage = message(by: 5)
+        firstDisplayedMessage.references = [sentMsg.messageID]
+        firstDisplayedMessage.save()
 
-        topMessages[1].references = [sentMsg.messageID]
-        topMessages[1].save()
+        let secondDisplayedMessage = message(by: 4)
+        secondDisplayedMessage.references = [sentMsg.messageID]
+        secondDisplayedMessage.save()
 
         let threaded = inbox.threadAware()
         let inboxMessages = threaded.allMessages()
         XCTAssertEqual(inboxMessages.count, topMessages.count - 1)
 
-        XCTAssertEqual(threaded.messagesInThread(message: inboxMessages[0]).count, 1)
-        XCTAssertEqual(threaded.messagesInThread(message: inboxMessages[1]).count, 0)
-        XCTAssertEqual(threaded.messagesInThread(message: inboxMessages[2]).count, 0)
+        XCTAssertEqual(threaded.messagesInThread(message: firstDisplayedMessage).count, 2)
+        XCTAssertEqual(threaded.messagesInThread(message: secondDisplayedMessage).count, 0)
+
+        for msg in inboxMessages {
+            if msg == firstDisplayedMessage {
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 2)
+            }
+            if msg.uid != firstDisplayedMessage.uid {
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
+            }
+        }
     }
+
+    // MARK: - Helpers
+
+    func message(by uid: UInt) -> Message {
+        return Message.by(messageID: "\(uid)").first!
+    }
+
 }
