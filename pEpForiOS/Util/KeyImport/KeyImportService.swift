@@ -118,22 +118,34 @@ extension KeyImportService: KeyImportServiceProtocol {
 
         // Login OP
         guard let sendData = smtpSendData(for: account) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No send data") 
+            Log.shared.errorAndCrash(component: #function, errorString: "No send data") //IOS-1028: //BUFF: //HERE: Write integration tests, test, extract send, test. Think: Error delegate.
             return
         }
         let errorContainer = ErrorContainer() //IOS-1028: make property
         let loginOp = LoginSmtpOperation(smtpSendData: sendData, errorContainer: errorContainer)
 
         // send OP
-        guard let smtpSend = smtpSend(for: account) else {
+//        guard let smtpSend = smtpSend(for: account) else {
+//            Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
+//            return
+//        }
+//        let sendOp = SMTPSendOperation(errorContainer: errorContainer,
+//                                       messageToSend: msg,
+//                                       smtpSend: smtpSend)
+//        // Go!
+//        queue.addOperations([loginOp, sendOp], waitUntilFinished: false)
+        //BUFF:!
+         queue.addOperations([loginOp], waitUntilFinished: true)
+        guard let smtpSend = sendData.smtp else {
             Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
             return
         }
         let sendOp = SMTPSendOperation(errorContainer: errorContainer,
                                        messageToSend: msg,
                                        smtpSend: smtpSend)
+        queue.addOperations([sendOp], waitUntilFinished: true)
         // Go!
-        queue.addOperations([loginOp, sendOp], waitUntilFinished: false)
+
     }
 
     /// Call after a newKeyImportMessage arrived to let the other device know
