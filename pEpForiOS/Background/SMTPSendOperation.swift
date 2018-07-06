@@ -14,29 +14,35 @@ import MessageModel
 class SMTPSendOperation: ConcurrentBaseOperation {
     /// Message to send
     private let message: Message
-    private var smtpSend: SmtpSend
+    private var smtpSendData: SmtpSendData
+
+    private var smtpSend: SmtpSend? {
+        let smtpSend = smtpSendData.smtp
+        smtpSend?.delegate = self
+        return smtpSend
+    }
 
     init(parentName: String = #function,
          errorContainer: ServiceErrorProtocol,
          messageToSend: Message,
-         smtpSend: SmtpSend) {
+         smtpSendData: SmtpSendData) {
         self.message = messageToSend
-        self.smtpSend = smtpSend
+        self.smtpSendData = smtpSendData
         super.init(parentName: parentName, errorContainer: errorContainer)
-        setup()
     }
 
     override public func main() {
         send()
     }
 
-    private func setup() {
-        smtpSend.delegate = self
-    }
-
     private func send() {
         let pepDict = message.pEpMessageDict()
         let pantMail = PEPUtil.pantomime(pEpMessageDict: pepDict)
+        guard let smtpSend = smtpSend else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
+            handleError(BackgroundError.GeneralError.illegalState(info: "No smtp"))
+            return
+        }
         smtpSend.smtp.setRecipients(nil)
         smtpSend.smtp.setMessageData(nil)
         smtpSend.smtp.setMessage(pantMail)
