@@ -33,10 +33,12 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         super.tearDown()
     }
 
+    // MARK: - KeyImportListenerProtocol Tests
+
     // MARK: newKeyImportMessageArrived
 
     func testNewKeyImportMessageArrived_headerSet() {
-        assert(keyImportHeaderSet: true,
+        assertHandleKeyImport(keyImportHeaderSet: true,
                ownPrivateKeyFlagReceived: false,
                pepColorGreen: false,
                newImportMessageTimedOut: false,
@@ -46,7 +48,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     func testNewKeyImportMessageArrived_headerSet_messageTimedOut() {
-        assert(keyImportHeaderSet: false,
+        assertHandleKeyImport(keyImportHeaderSet: false,
                ownPrivateKeyFlagReceived: false,
                pepColorGreen: false,
                newImportMessageTimedOut: true,
@@ -56,7 +58,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     func testNewKeyImportMessageArrived_headerNotSet() {
-        assert(keyImportHeaderSet: false,
+        assertHandleKeyImport(keyImportHeaderSet: false,
                ownPrivateKeyFlagReceived: false,
                pepColorGreen: false,
                newImportMessageTimedOut: false,
@@ -66,7 +68,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     func testNewKeyImportMessageArrived_headerNotSet_messageTimedOut() {
-        assert(keyImportHeaderSet: false,
+        assertHandleKeyImport(keyImportHeaderSet: false,
                ownPrivateKeyFlagReceived: false,
                pepColorGreen: false,
                newImportMessageTimedOut: true,
@@ -78,7 +80,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     // MARK: receivedPrivateKey
 
     func testReceivedPrivateKey_pEpColorGreen_flagReceived() {
-        assert(keyImportHeaderSet: false,
+        assertHandleKeyImport(keyImportHeaderSet: false,
                ownPrivateKeyFlagReceived: true,
                pepColorGreen: true,
                expectDelegateNewImportMessageArrivedCalled: false,
@@ -87,7 +89,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     func testReceivedPrivateKey_pEpColorGrey_flagReceived() {
-        assert(keyImportHeaderSet: false,
+        assertHandleKeyImport(keyImportHeaderSet: false,
                ownPrivateKeyFlagReceived: true,
                pepColorGreen: false,
                expectDelegateNewImportMessageArrivedCalled: false,
@@ -96,13 +98,15 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     func testReceivedPrivateKey_pEpColorGreen_noFlagReceived() {
-        assert(keyImportHeaderSet: false,
+        assertHandleKeyImport(keyImportHeaderSet: false,
                ownPrivateKeyFlagReceived: false,
                pepColorGreen: true,
                expectDelegateNewImportMessageArrivedCalled: false,
                expectDelegateReceivedPrivateKeyCalled: false,
                expectMessageHandledByKeyImportService: false)
     }
+
+    // MARK: - KeyImportServiceProtocol
 
     // MARK: sendInitKeyImportMessage
 
@@ -112,7 +116,9 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 
     // MARK: - HELPER
 
-    /// The actual test.
+    //IOS-1028: move?
+
+    /// The actual handleKeyImport test.
     ///
     /// - Parameters:
     ///   - keyImportHeaderSet: whether or not to set a dummy FPR to "pEp-key-import" header of
@@ -130,7 +136,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     ///                     called.
     ///   - expectMessageHandledByKeyImportService: whether or not we expect that the test message
     ///                     should be handled by KeyImportListener
-    func assert(keyImportHeaderSet: Bool,
+    func assertHandleKeyImport(keyImportHeaderSet: Bool,
                 ownPrivateKeyFlagReceived: Bool,
                 pepColorGreen: Bool,
                 newImportMessageTimedOut: Bool = false,
