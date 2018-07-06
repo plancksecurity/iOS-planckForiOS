@@ -70,4 +70,8 @@ extension KeyImportWizzard: KeyImportServiceDelegate {
     func receivedPrivateKey(forAccount account: Account) {
         fatalError("Unimplemented stub")
     }
+
+    func errorOccurred(error: Error) {
+        fatalError("unimplemented stub")
+    }
 }

@@ -51,4 +51,7 @@ public protocol KeyImportServiceDelegate: class {
     /// We received a private key in a green message.
     /// - Parameter account: account the private key has been sent to.
     func receivedPrivateKey(forAccount account: Account)
+
+    /// Reports all errors.
+    func errorOccurred(error: Error)
 }
