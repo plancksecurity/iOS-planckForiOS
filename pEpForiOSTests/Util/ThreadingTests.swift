@@ -15,6 +15,7 @@ class ThreadingTests: CoreDataDrivenTestBase {
     var account: Account!
     var inbox: Folder!
     var topMessages = [Message]()
+    var inboxCount = 5
 
     // MARK: - setup/teardown
 
@@ -31,7 +32,7 @@ class ThreadingTests: CoreDataDrivenTestBase {
 
         topMessages.removeAll()
 
-        for i in 1...EmailListViewModel_ThreadingTests.numberOfTopMessages {
+        for i in 1...inboxCount {
             let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
             topMessages.append(msg)
             msg.save()
@@ -40,10 +41,19 @@ class ThreadingTests: CoreDataDrivenTestBase {
 
     // MARK: - Tests
 
-    func testThreadedButNoThreads() {
+    func testSetup() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         let threaded = inbox.threadAware()
         XCTAssertEqual(threaded.allMessages().count, topMessages.count)
+
+        XCTAssertEqual(topMessages[0].uid, 1)
+        let inboxMessages = threaded.allMessages()
+        XCTAssertEqual(inboxMessages[0].uid, UInt(inboxCount))
+    }
+
+    func testThreadedButNoThreads() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        let threaded = inbox.threadAware()
 
         for msg in topMessages {
             XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
