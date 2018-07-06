@@ -27,6 +27,14 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
         return (orientation == .right ?   swipeActions : nil)
     }
 
+    func visibleRect(for tableView: UITableView) -> CGRect? {
+        let topInset = navigationController?.navigationBar.frame.height ?? 0
+        let bottomInset = navigationController?.toolbar?.frame.height ?? 0
+        let bounds = tableView.bounds
+
+        return CGRect(x: bounds.origin.x, y: bounds.origin.y + topInset, width: bounds.width, height: bounds.height - bottomInset)
+    }
+
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeOptions()
         options.expansionStyle = .destructive(automaticallyDelete: false)
