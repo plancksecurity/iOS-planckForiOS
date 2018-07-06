@@ -30,6 +30,13 @@ class ThreadedEmailViewModel {
         self.folder = ThreadedFolderWithTop(folder: folder)
         messages = tip.messagesInThread()
         self.tip = tip
+
+        //We get the same message reference if we can
+        //This is needed so when we update tip it updates the tip in messages array and viceversa
+        if let referencedTip = messages.first(where: { message in message == tip }) {
+            self.tip = referencedTip
+        }
+
         displayFolder = folder
         expandedMessages = Array(repeating: false, count: messages.count)
         expandedMessages.removeLast()
