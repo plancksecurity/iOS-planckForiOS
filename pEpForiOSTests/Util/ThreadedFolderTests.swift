@@ -1,5 +1,5 @@
 //
-//  ThreadingTests.swift
+//  ThreadedFolderTests.swift
 //  pEpForiOSTests
 //
 //  Created by Dirk Zimmermann on 06.07.18.
@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class ThreadingTests: CoreDataDrivenTestBase {
+class ThreadedFolderTests: CoreDataDrivenTestBase {
     var account: Account!
     var inbox: Folder!
     var topMessages = [Message]()
