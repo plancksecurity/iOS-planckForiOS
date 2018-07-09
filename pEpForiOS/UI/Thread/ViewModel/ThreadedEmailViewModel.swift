@@ -17,7 +17,7 @@ class ThreadedEmailViewModel {
     internal var tip: Message 
     weak var emailDisplayDelegate: EmailDisplayDelegate!
     weak var delegate: ThreadedEmailViewModelDelegate!
-    private let folder: ThreadedFolderWithTop
+    private let folder: ThreadedFolder
     private var expandedMessages: [Bool]
     private var messageToReply: Message?
 
@@ -27,7 +27,7 @@ class ThreadedEmailViewModel {
     public let displayFolder: Folder
 
     init(tip: Message, folder: Folder) {
-        self.folder = ThreadedFolderWithTop(folder: folder)
+        self.folder = ThreadedFolder(folder: folder)
         messages = tip.messagesInThread()
         self.tip = tip
 
@@ -44,8 +44,10 @@ class ThreadedEmailViewModel {
     }
 
     func deleteMessage(at index: Int){
-        deleteMessage(at: index)
-        emailDisplayDelegate.emailDisplayDidDelete(message: messages[index])
+        guard index < messages.count && index >= 0 else {
+            return
+        }
+        deleteInternal(at: index)
     }
 
     internal func deleteInternal(at index:Int) {
@@ -56,6 +58,8 @@ class ThreadedEmailViewModel {
         messages.remove(at: index)
         expandedMessages.remove(at: index)
         delegate.emailViewModel(viewModel: self, didRemoveDataAt: index)
+        emailDisplayDelegate.emailDisplayDidDelete(message: messages[index])
+
     }
 
     internal func deleteInternal(message: Message) {

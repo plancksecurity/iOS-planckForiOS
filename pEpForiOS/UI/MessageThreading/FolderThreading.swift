@@ -16,12 +16,12 @@ class FolderThreading {
     /**
      Makes `factory` the `ThreadedMessageFolderFactoryProtocol` to use.
      */
-    static func override(factory: ThreadAwareFolderWithTopFactory) {
+    static func override(factory: ThreadAwareFolderFactory) {
         theFactory = factory
     }
 
     static func factory() -> ThreadedMessageFolderFactoryProtocol {
-        return theFactory ?? ThreadAwareFolderWithTopFactory()
+        return theFactory ?? ThreadAwareFolderFactory()
     }
 
     /**
