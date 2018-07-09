@@ -41,7 +41,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
     // MARK: - Tests
 
-    func testSetupThreaded() {
+    func testSetup() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         let threaded = inbox.threadAware()
         XCTAssertEqual(threaded.allMessages().count, topMessages.count)
@@ -55,7 +55,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         }
     }
 
-    func testSiblingsByReferencingSentMessageThreaded() {
+    func testSiblingsByReferencingSentMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
 
         let sentFolder = Folder.init(name: "Sent",
