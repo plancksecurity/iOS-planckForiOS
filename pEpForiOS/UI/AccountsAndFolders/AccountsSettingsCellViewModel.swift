@@ -54,6 +54,17 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
         }
     }
 
+    public var detail : String? {
+        get {
+            switch self.type {
+            case .defaultAccount:
+                return AppSettings.init().defaultAccount
+            default:
+                return nil
+            }
+        }
+    }
+
     public var title : String? {
         get {
             switch self.type {

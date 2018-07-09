@@ -79,7 +79,8 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
                 return cellWithoutType
             }
             cell.textLabel?.text = vm.title
-            cell.detailTextLabel?.text = nil
+            cell.detailTextLabel?.text = vm.detail
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
             cell.delegate = self
             return cell
         } else if let vm = viewModel[indexPath.section][indexPath.row] as? SettingSwitchProtocol {

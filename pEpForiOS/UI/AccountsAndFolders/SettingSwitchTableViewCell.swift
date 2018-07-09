@@ -10,7 +10,7 @@ import UIKit
 
 /// Base ViewController for settings that can be switched on/off
 class SettingSwitchTableViewCell: UITableViewCell {
-    @IBOutlet weak var `switch`: UISwitch!
+    @IBOutlet weak var switchItem : UISwitch!
     /// Short description shown to the user in front of the switch.
     @IBOutlet weak var switchDescription: UILabel!
     /// Texfield with a lot of space to explain the setting.
@@ -27,13 +27,13 @@ class SettingSwitchTableViewCell: UITableViewCell {
 
     func handleSwitchChange() {
         if let vm = viewModel {
-            vm.switchAction(value: `switch`.isOn)
+            vm.switchAction(value: switchItem.isOn)
         }
     }
 
     func setSwitchValue() {
         if let vm = viewModel {
-            `switch`.setOn(vm.switchValue, animated: false)
+            switchItem.setOn(vm.switchValue, animated: false)
         }
     }
 }
