@@ -103,6 +103,8 @@
 		15EBE45220ECF10600268859 /* KeyImportContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45120ECF10600268859 /* KeyImportContract.swift */; };
 		15EBE45520ECF2E800268859 /* KeyImportServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45420ECF2E800268859 /* KeyImportServiceTest.swift */; };
 		15EBE45720EE157900268859 /* SMTPSendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EBE45620EE157900268859 /* SMTPSendOperation.swift */; };
+		15EBE45A20F37F8C00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE45820F37F8B00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_sec.asc */; };
+		15EBE45B20F37F8C00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE45920F37F8C00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_pub.asc */; };
 		15EE5A75203B15670041F076 /* SettingSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A72203B15660041F076 /* SettingSwitchTableViewCell.swift */; };
 		15EE5A76203B15670041F076 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EE5A73203B15660041F076 /* LogViewController.swift */; };
 		15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F835231F34BE1300FCE887 /* AccountUserInput.swift */; };
@@ -587,6 +589,8 @@
 		15EBE45120ECF10600268859 /* KeyImportContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportContract.swift; sourceTree = "<group>"; };
 		15EBE45420ECF2E800268859 /* KeyImportServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportServiceTest.swift; sourceTree = "<group>"; };
 		15EBE45620EE157900268859 /* SMTPSendOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SMTPSendOperation.swift; sourceTree = "<group>"; };
+		15EBE45820F37F8B00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_sec.asc; sourceTree = "<group>"; };
+		15EBE45920F37F8C00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_pub.asc; sourceTree = "<group>"; };
 		15EE5A72203B15660041F076 /* SettingSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		15EE5A73203B15660041F076 /* LogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogViewController.swift; sourceTree = "<group>"; };
 		15F835231F34BE1300FCE887 /* AccountUserInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountUserInput.swift; sourceTree = "<group>"; };
@@ -1743,6 +1747,8 @@
 			children = (
 				15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */,
 				15EBE44120E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc */,
+				15EBE45920F37F8C00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_pub.asc */,
+				15EBE45820F37F8B00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_sec.asc */,
 				15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */,
 				15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */,
 				4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */,
@@ -2401,6 +2407,7 @@
 				15EBE43E20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc in Resources */,
 				4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */,
 				438D25401D4B9EDB00BFF7AA /* PGPMimeMail.txt in Resources */,
+				15EBE45A20F37F8C00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_sec.asc in Resources */,
 				43C3B1622003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt in Resources */,
 				43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */,
 				43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */,
@@ -2413,6 +2420,7 @@
 				43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */,
 				1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */,
 				153CA6E81FB61B53003C9629 /* IOS-815_pep_rating_zero.txt in Resources */,
+				15EBE45B20F37F8C00268859 /* device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_pub.asc in Resources */,
 				436795FC1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch.asc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
