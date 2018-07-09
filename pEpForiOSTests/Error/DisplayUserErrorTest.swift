@@ -47,7 +47,7 @@ class DisplayUserErrorTest: XCTestCase {
 
     // MARK: - HELPERS
 
-    private func assert(error: Error, expectedDescription description: String? = nil) {
+    private func assert(error: Error, expectedDescription: String? = nil) {
         guard let testee = DisplayUserError(withError: error) else {
             XCTFail("All errors should be displayed in debug config")
             return
@@ -58,7 +58,7 @@ class DisplayUserErrorTest: XCTestCase {
         XCTAssertNotNil(title)
         XCTAssertNotNil(description)
         XCTAssertNotNil(type)
-        if let expectedDescription = description {
+        if let expectedDescription = expectedDescription {
             XCTAssertEqual(description, expectedDescription)
         }
     }
