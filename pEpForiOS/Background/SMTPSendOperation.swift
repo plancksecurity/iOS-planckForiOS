@@ -13,7 +13,7 @@ import MessageModel
 /// Use for sending messages that should not be stored locally (i.e. exist in memory only).
 class SMTPSendOperation: ConcurrentBaseOperation {
     /// Message to send
-    private let message: Message
+    private let messageDict: PEPMessageDict
     private var smtpSendData: SmtpSendData
 
     private var smtpSend: SmtpSend? {
@@ -24,9 +24,9 @@ class SMTPSendOperation: ConcurrentBaseOperation {
 
     init(parentName: String = #function,
          errorContainer: ServiceErrorProtocol,
-         messageToSend: Message,
+         messageDict: PEPMessageDict,
          smtpSendData: SmtpSendData) {
-        self.message = messageToSend
+        self.messageDict = messageDict
         self.smtpSendData = smtpSendData
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
@@ -36,8 +36,7 @@ class SMTPSendOperation: ConcurrentBaseOperation {
     }
 
     private func send() {
-        let pepDict = message.pEpMessageDict()
-        let pantMail = PEPUtil.pantomime(pEpMessageDict: pepDict)
+        let pantMail = PEPUtil.pantomime(pEpMessageDict: messageDict)
         guard let smtpSend = smtpSend else {
             Log.shared.errorAndCrash(component: #function, errorString: "No smtp")
             handleError(BackgroundError.GeneralError.illegalState(info: "No smtp"))
