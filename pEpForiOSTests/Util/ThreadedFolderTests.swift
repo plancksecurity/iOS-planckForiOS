@@ -107,7 +107,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
             if msg == firstDisplayedMessage {
                 XCTAssertEqual(threaded.messagesInThread(message: msg).count, 2)
             } else {
-                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
             }
         }
     }
