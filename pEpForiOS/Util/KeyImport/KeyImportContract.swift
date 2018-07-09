@@ -11,16 +11,25 @@ import MessageModel
 public protocol KeyImportServiceProtocol: class {
     var delegate: KeyImportServiceDelegate? { get set }
 
-    /// Call after successfull handshake.
-    /// Sends the private key without appending to "Sent" folder.
-    func sendOwnPrivateKey(inAnswerToRequestMessage msg: Message)
-
-    /// Call to inform the other device that we would love to start a Key Import session
+    /// Call to inform the other device that we would love to start a Key Import session.
+    /// - Parameters:
+    ///   - acccount: account to send message from
     func sendInitKeyImportMessage(forAccount acccount: Account)
 
     /// Call after a newKeyImportMessage arrived to let the other device know
     /// we are ready for handshake.
-    func sendHandshakeRequest(forAccount acccount: Account)
+    ///
+    /// - Parameters:
+    ///   - acccount: account to send message from
+    ///   - fpr: key to encrypt message with
+    func sendHandshakeRequest(forAccount acccount: Account, fpr: String)
+
+    /// Call after successfull handshake.
+    /// Sends the private key without appending to "Sent" folder.
+    /// - Parameters:
+    ///   - acccount: account to send message from
+    ///   - fpr: key to encrypt message with
+    func sendOwnPrivateKey(forAccount acccount: Account, fpr: String)
 
     func setNewDefaultKey(for identity: Identity, fpr: String)
 }

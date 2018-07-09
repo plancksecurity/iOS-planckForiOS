@@ -108,11 +108,6 @@ public class KeyImportService {
 // MARK: - KeyImportServiceProtocol
 
 extension KeyImportService: KeyImportServiceProtocol {
-    /// Call after successfull handshake.
-    public func sendOwnPrivateKey(inAnswerToRequestMessage msg: Message) {
-        /// TODO: Send the private key without appending to "Sent" folder.
-        fatalError("Unimplemented stub")
-    }
 
     /// Call to inform the other device that we would love to start a Key Import session.
     /// Sends an unencrypted message with header: "pEp-key-import: myPubKey_fpr" to myself (without
@@ -141,8 +136,13 @@ extension KeyImportService: KeyImportServiceProtocol {
 
     /// Call after a newKeyImportMessage arrived to let the other device know
     /// we are ready for handshake.
-    public func sendHandshakeRequest(forAccount account: Account) {
+    public func sendHandshakeRequest(forAccount acccount: Account, fpr: String) {
         //TODO: send encrypted message to myself with header: "pEp-key-import: myPubKey_fpr" (assume: without appending to sent folder)
+        fatalError("Unimplemented stub")
+    }
+
+    public func sendOwnPrivateKey(forAccount acccount: Account, fpr: String) {
+        /// TODO: Send the private key without appending to "Sent" folder.
         fatalError("Unimplemented stub")
     }
 
