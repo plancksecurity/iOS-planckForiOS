@@ -13,7 +13,7 @@ public class AccountsSettingsSectionViewModel {
 
     public enum SectionType {
         case accounts
-        case glogalSettings
+        case globalSettings
         case pgpCompatibilitySettings
     }
 
@@ -27,7 +27,7 @@ public class AccountsSettingsSectionViewModel {
         case .accounts:
             generateAccountCells()
             title = NSLocalizedString("Accounts", comment: "Tableview section  header")
-        case .glogalSettings:
+        case .globalSettings:
             generateGlobalSettingsCells()
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
         case .pgpCompatibilitySettings:

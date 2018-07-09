@@ -10,7 +10,6 @@ import Foundation
 
 protocol SettingSwitchProtocol {
     var title: String { get set }
-    var description: String { get set }
     var switchValue: Bool { get set }
     func switchAction(value: Bool)
 }

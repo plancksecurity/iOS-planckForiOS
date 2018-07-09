@@ -14,7 +14,6 @@ class SettingSwitchTableViewCell: UITableViewCell {
     /// Short description shown to the user in front of the switch.
     @IBOutlet weak var switchDescription: UILabel!
     /// Texfield with a lot of space to explain the setting.
-    //@IBOutlet weak var longDescription: UITextView!
 
     var viewModel : SettingSwitchProtocol?
 
@@ -24,7 +23,6 @@ class SettingSwitchTableViewCell: UITableViewCell {
 
     func setUpView() {
         self.switchDescription.text = viewModel?.title
-        //self.longDescription.text = viewModel?.description
     }
 
     func handleSwitchChange() {

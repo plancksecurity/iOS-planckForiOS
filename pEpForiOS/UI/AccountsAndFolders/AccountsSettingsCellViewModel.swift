@@ -12,6 +12,15 @@ import MessageModel
 public enum AccountSettingsCellType: String {
     case accountsCell = "accountsCell"
     case switchOptionCell = "switchOptionCell"
+
+    func isAccountCell() -> Bool {
+        return self == AccountSettingsCellType.accountsCell
+    }
+
+    func isSwitchOptionCell() -> Bool {
+        return self == AccountSettingsCellType.switchOptionCell
+    }
+
 }
 public enum SettingType {
     case account
