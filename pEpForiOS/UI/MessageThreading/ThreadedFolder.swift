@@ -46,7 +46,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        return Message.messages(byMessageIdSet: message.threadMessageIdSet())
+        return message.threadMessages()
     }
 
     func deleteSingle(message: Message) {
