@@ -17,6 +17,12 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         underlyingFolder = folder
     }
 
+    /**
+     - Returns: The top messages of a folder, that is all messages fulfilling the
+     underlying folder's filter that are at the top of threads.
+     - Note: For performance reasons, the basic check is if a message is a child of
+     the previous one, so the first message (and in most cases newest) is always a top message.
+     */
     func allMessages() -> [Message] {
         var topMessages = [Message]()
 
