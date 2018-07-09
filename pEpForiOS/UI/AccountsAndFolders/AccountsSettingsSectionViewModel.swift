@@ -13,12 +13,13 @@ public class AccountsSettingsSectionViewModel {
 
     public enum SectionType {
         case accounts
-        case glogalSettings
+        case globalSettings
         case pgpCompatibilitySettings
     }
 
     var cells = [SettingsCellViewModel]()
     var title: String?
+    var footer: String?
     let type: SectionType
     
     init(type: SectionType) {
@@ -27,12 +28,14 @@ public class AccountsSettingsSectionViewModel {
         case .accounts:
             generateAccountCells()
             title = NSLocalizedString("Accounts", comment: "Tableview section  header")
-        case .glogalSettings:
+        case .globalSettings:
             generateGlobalSettingsCells()
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
         case .pgpCompatibilitySettings:
             generatePgpCompatibilitySettingsCells()
             title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
+            footer = NSLocalizedString("If enabled, message subjects are also protected.",
+                                       comment: "Tableview section footer")
         }
     }
 

@@ -17,6 +17,12 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         underlyingFolder = folder
     }
 
+    /**
+     - Returns: The top messages of a folder, that is all messages fulfilling the
+     underlying folder's filter that are at the top of threads.
+     - Note: For performance reasons, the basic check is if a message is a child of
+     the previous one, so the first message (and in most cases newest) is always a top message.
+     */
     func allMessages() -> [Message] {
         var topMessages = [Message]()
 
@@ -25,13 +31,13 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
 
         MessageModel.performAndWait {
             for msg in originalMessages {
-                let threadMessageSet = Set(msg.threadMessages().map {
+                let threadMessageIds = msg.threadMessageSet().map {
                     return $0.messageID
-                })
-                if messageIdSet.intersection(threadMessageSet).isEmpty {
+                }
+                if messageIdSet.intersection(threadMessageIds).isEmpty {
                     topMessages.append(msg)
                 }
-                messageIdSet.formUnion(threadMessageSet)
+                messageIdSet.formUnion(threadMessageIds)
             }
         }
 
@@ -39,16 +45,16 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
-        let threadCount = messagesInThread(message: message).count
-        if threadCount == 1 {
-            return 0
-        } else {
-            return threadCount
-        }
+        return messagesInThread(message: message).count
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        return message.threadMessages()
+        let thread = message.threadMessages()
+        if thread.count == 1 {
+            return []
+        } else {
+            return thread
+        }
     }
 
     func deleteSingle(message: Message) {
@@ -97,46 +103,5 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         }
 
         return result
-    }
-
-    // MARK: - Private
-
-    /**
-     Determine which messages in the given list don't reference any other message in the list.
-     */
-    private func computeTopMessages(messages: [Message]) -> [Message] {
-        var topMessages = [Message]()
-
-        let originalMessageIds = messages.map {
-            return $0.messageID
-        }
-        let originalMessageIdSet = Set<MessageID>(originalMessageIds)
-
-        for msg in messages {
-            if !doesReference(message: msg, referenceSet: originalMessageIdSet) {
-                topMessages.append(msg)
-            }
-        }
-
-        return topMessages
-    }
-
-    /**
-     Which of the given `referenceSet` is referenced by `message`?
-     */
-    private func referenced(message: Message, referenceSet:Set<MessageID>) -> Set<MessageID> {
-        let refs = Set(message.references)
-        return refs.intersection(referenceSet)
-    }
-
-    /**
-     Does `message` reference any message-id from `referenceSet`?
-     */
-    private func doesReference(message: Message, referenceSet:Set<MessageID>) -> Bool {
-        if referenced(message: message, referenceSet: referenceSet).isEmpty {
-            return false
-        } else {
-            return true
-        }
     }
 }

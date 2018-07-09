@@ -51,7 +51,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         XCTAssertEqual(inboxMessages[0].uid, UInt(inboxCount))
 
         for msg in topMessages {
-            XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
+            XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
         }
     }
 
@@ -71,13 +71,15 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
             if msg == firstDisplayedMessage {
                 XCTAssertEqual(threaded.messagesInThread(message: msg).count, 2)
             } else {
-                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
             }
         }
     }
 
     func testSiblingsByReferencingSentMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
+
+        let lastInboxUid = TestUtil.highestUid()
 
         let sentFolder = Folder.init(name: "Sent",
                                      parent: nil,
@@ -88,26 +90,29 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         let sentMsg = TestUtil.createMessage(uid: TestUtil.nextUid(), inFolder: sentFolder)
         sentMsg.save()
 
-        let firstDisplayedMessage = message(by: UInt(inboxCount))
+        let firstDisplayedMessage = message(by: UInt(lastInboxUid))
         firstDisplayedMessage.references = [sentMsg.messageID]
         firstDisplayedMessage.save()
 
-        let secondDisplayedMessage = message(by: UInt(inboxCount - 1))
+        let secondDisplayedMessage = message(by: UInt(lastInboxUid - 1))
         secondDisplayedMessage.references = [sentMsg.messageID]
         secondDisplayedMessage.save()
 
         let threaded = inbox.threadAware()
-        let inboxMessages = threaded.allMessages()
-        XCTAssertEqual(inboxMessages.count, topMessages.count - 1)
+        let inboxMessageSet = Set(threaded.allMessages())
+        XCTAssertEqual(inboxMessageSet.count, topMessages.count - 1)
 
         XCTAssertEqual(threaded.messagesInThread(message: firstDisplayedMessage).count, 3)
         XCTAssertEqual(threaded.messagesInThread(message: secondDisplayedMessage).count, 3)
 
-        for msg in inboxMessages {
+        XCTAssertTrue(inboxMessageSet.contains(firstDisplayedMessage))
+        XCTAssertFalse(inboxMessageSet.contains(secondDisplayedMessage))
+
+        for msg in inboxMessageSet {
             if msg == firstDisplayedMessage {
                 XCTAssertEqual(threaded.messagesInThread(message: msg).count, 3)
             } else {
-                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
             }
         }
 

@@ -12,6 +12,15 @@ import MessageModel
 public enum AccountSettingsCellType: String {
     case accountsCell = "accountsCell"
     case switchOptionCell = "switchOptionCell"
+
+    func isAccountCell() -> Bool {
+        return self == AccountSettingsCellType.accountsCell
+    }
+
+    func isSwitchOptionCell() -> Bool {
+        return self == AccountSettingsCellType.switchOptionCell
+    }
+
 }
 public enum SettingType {
     case account
@@ -42,6 +51,17 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
             self.settingCellType = AccountSettingsCellType.accountsCell
         case .organizedByThread, .unecryptedSubject:
             self.settingCellType = AccountSettingsCellType.switchOptionCell
+        }
+    }
+
+    public var detail : String? {
+        get {
+            switch self.type {
+            case .defaultAccount:
+                return AppSettings.init().defaultAccount
+            default:
+                return nil
+            }
         }
     }
 
