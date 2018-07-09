@@ -67,6 +67,10 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         return viewModel[section].title
     }
 
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return viewModel[section].footer
+    }
+
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 

@@ -19,6 +19,7 @@ public class AccountsSettingsSectionViewModel {
 
     var cells = [SettingsCellViewModel]()
     var title: String?
+    var footer: String?
     let type: SectionType
     
     init(type: SectionType) {
@@ -33,6 +34,8 @@ public class AccountsSettingsSectionViewModel {
         case .pgpCompatibilitySettings:
             generatePgpCompatibilitySettingsCells()
             title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
+            footer = NSLocalizedString("If enabled, message subjects are also protected.",
+                                       comment: "Tableview section footer")
         }
     }
 
