@@ -18,7 +18,22 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func allMessages() -> [Message] {
-        return computeTopMessages(messages: underlyingFolder.allMessagesNonThreaded())
+        var topMessages = [Message]()
+
+        var messageIdSet = Set<MessageID>()
+        let originalMessages = underlyingFolder.allMessagesNonThreaded()
+
+        MessageModel.performAndWait {
+            for msg in originalMessages {
+                let threadMessageSet = msg.threadMessageIdSet()
+                if messageIdSet.intersection(threadMessageSet).isEmpty {
+                    topMessages.append(msg)
+                }
+                messageIdSet.formUnion(threadMessageSet)
+            }
+        }
+
+        return topMessages
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
