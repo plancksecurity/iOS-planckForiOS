@@ -22,7 +22,7 @@ public protocol KeyImportServiceProtocol: class {
     /// - Parameters:
     ///   - acccount: account to send message from
     ///   - fpr: key to encrypt message with
-    func sendHandshakeRequest(forAccount acccount: Account, fpr: String)
+    func sendHandshakeRequest(forAccount account: Account, fpr: String)
 
     /// Call after successfull handshake.
     /// Sends the private key without appending to "Sent" folder.
