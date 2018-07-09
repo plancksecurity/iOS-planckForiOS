@@ -156,8 +156,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="switch" destination="qPx-oD-7wO" id="NBY-dB-PDo"/>
                                     <outlet property="switchDescription" destination="Ag8-Qj-N8l" id="eNB-uC-Hk3"/>
+                                    <outlet property="switchItem" destination="qPx-oD-7wO" id="78Z-iO-fzB"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

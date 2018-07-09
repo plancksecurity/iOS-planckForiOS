@@ -67,24 +67,36 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         return viewModel[section].title
     }
 
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return viewModel[section].footer
+    }
+
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let vm = viewModel[indexPath.section][indexPath.row] as? AccountsSettingsCellViewModel, vm.settingCellType == AccountSettingsCellType.accountsCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier:
-                vm.settingCellType.rawValue, for: indexPath) as? SwipeTableViewCell
-            cell?.textLabel?.text = vm.title
-            cell?.detailTextLabel?.text = nil
-            cell?.delegate = self
-            return cell!
-        } else {
-            let vm = viewModel[indexPath.section][indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier:
-                vm.settingCellType.rawValue, for: indexPath) as? SettingSwitchTableViewCell
-            cell?.viewModel = vm as! SettingSwitchProtocol
-            cell?.setUpView()
-            cell?.selectionStyle = .none
-            return cell!
+
+        let cellWithoutType = tableView.dequeueReusableCell(withIdentifier:
+            viewModel[indexPath.section][indexPath.row].settingCellType.rawValue, for: indexPath)
+
+        if let vm = viewModel[indexPath.section][indexPath.row] as? AccountsSettingsCellViewModel,
+            vm.settingCellType == AccountSettingsCellType.accountsCell {
+            guard let cell = cellWithoutType as? SwipeTableViewCell else {
+                return cellWithoutType
+            }
+            cell.textLabel?.text = vm.title
+            cell.detailTextLabel?.text = vm.detail
+            cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
+            cell.delegate = self
+            return cell
+        } else if let vm = viewModel[indexPath.section][indexPath.row] as? SettingSwitchProtocol {
+            guard let cell = cellWithoutType as? SettingSwitchTableViewCell else {
+                    return cellWithoutType
+            }
+            cell.viewModel = vm
+            cell.setUpView()
+            cell.selectionStyle = .none
+            return cell
         }
+        return cellWithoutType
     }
 
     private func deleteRowAt(_ indexPath: IndexPath) {
@@ -160,9 +172,8 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         case .account:
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
-        case .unecryptedSubject:
-            break
-        case .organizedByThread:
+        case .unecryptedSubject, .organizedByThread:
+            //nothing to do here
             break
         case .defaultAccount:
             performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
@@ -186,8 +197,6 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueEditAccount
         case segueShowSettingDefaultAccount
         case segueShowLog
-        case segueShowSettingSyncTrash
-        case segueShowSettingUnecryptedSubject
         case sequeShowCredits
         case segueShowSettingKeyImportSelectAccount
         case noAccounts
@@ -210,8 +219,6 @@ extension AccountsTableViewController: SegueHandlerType {
                     destination.viewModel = vm
             }
         case .noAccounts,
-        .segueShowSettingUnecryptedSubject,
-        .segueShowSettingSyncTrash,
         .segueAddNewAccount,
         .sequeShowCredits:
             guard let destination = segue.destination as? BaseViewController else {
