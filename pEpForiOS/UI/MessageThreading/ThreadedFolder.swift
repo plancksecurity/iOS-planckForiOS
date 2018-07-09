@@ -39,16 +39,16 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
-        let threadCount = messagesInThread(message: message).count
-        if threadCount == 1 {
-            return 0
-        } else {
-            return threadCount
-        }
+        return messagesInThread(message: message).count
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        return message.threadMessages()
+        let thread = message.threadMessages()
+        if thread.count == 1 {
+            return []
+        } else {
+            return thread
+        }
     }
 
     func deleteSingle(message: Message) {
