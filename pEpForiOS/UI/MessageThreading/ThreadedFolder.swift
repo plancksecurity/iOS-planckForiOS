@@ -39,16 +39,16 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
-        let threadCount = messagesInThread(message: message).count
-        if threadCount == 1 {
-            return 0
-        } else {
-            return threadCount
-        }
+        return messagesInThread(message: message).count
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        return message.threadMessages()
+        let thread = message.threadMessages()
+        if thread.count == 1 {
+            return []
+        } else {
+            return thread
+        }
     }
 
     func deleteSingle(message: Message) {
@@ -97,46 +97,5 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         }
 
         return result
-    }
-
-    // MARK: - Private
-
-    /**
-     Determine which messages in the given list don't reference any other message in the list.
-     */
-    private func computeTopMessages(messages: [Message]) -> [Message] {
-        var topMessages = [Message]()
-
-        let originalMessageIds = messages.map {
-            return $0.messageID
-        }
-        let originalMessageIdSet = Set<MessageID>(originalMessageIds)
-
-        for msg in messages {
-            if !doesReference(message: msg, referenceSet: originalMessageIdSet) {
-                topMessages.append(msg)
-            }
-        }
-
-        return topMessages
-    }
-
-    /**
-     Which of the given `referenceSet` is referenced by `message`?
-     */
-    private func referenced(message: Message, referenceSet:Set<MessageID>) -> Set<MessageID> {
-        let refs = Set(message.references)
-        return refs.intersection(referenceSet)
-    }
-
-    /**
-     Does `message` reference any message-id from `referenceSet`?
-     */
-    private func doesReference(message: Message, referenceSet:Set<MessageID>) -> Bool {
-        if referenced(message: message, referenceSet: referenceSet).isEmpty {
-            return false
-        } else {
-            return true
-        }
     }
 }

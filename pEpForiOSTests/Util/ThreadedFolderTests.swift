@@ -51,7 +51,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         XCTAssertEqual(inboxMessages[0].uid, UInt(inboxCount))
 
         for msg in topMessages {
-            XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
+            XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
         }
     }
 
@@ -71,7 +71,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
             if msg == firstDisplayedMessage {
                 XCTAssertEqual(threaded.messagesInThread(message: msg).count, 2)
             } else {
-                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
             }
         }
     }
@@ -107,7 +107,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
             if msg == firstDisplayedMessage {
                 XCTAssertEqual(threaded.messagesInThread(message: msg).count, 3)
             } else {
-                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
             }
         }
 
