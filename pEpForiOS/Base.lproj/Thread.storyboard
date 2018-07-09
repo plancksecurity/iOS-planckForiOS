@@ -101,27 +101,12 @@
                                                                 <constraint firstAttribute="width" constant="20" id="vtw-PI-kkD"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thread-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Q7P-Ou-vEr">
-                                                            <rect key="frame" x="275.5" y="12.5" width="11" height="11"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" secondItem="Q7P-Ou-vEr" secondAttribute="width" id="1ye-Dw-CTp"/>
-                                                                <constraint firstAttribute="width" constant="11" id="T2b-iS-gyc"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMK-h8-Whk">
-                                                            <rect key="frame" x="264" y="8" width="10" height="19.5"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                                            <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="nal-dD-vzH" firstAttribute="trailing" secondItem="LiV-t9-n8p" secondAttribute="trailing" constant="-1" id="1r2-X4-FJV"/>
                                                         <constraint firstItem="nal-dD-vzH" firstAttribute="leading" secondItem="YWw-6z-KdZ" secondAttribute="trailing" constant="3" id="95t-b1-KbC"/>
-                                                        <constraint firstItem="LiV-t9-n8p" firstAttribute="leading" secondItem="Q7P-Ou-vEr" secondAttribute="trailing" constant="4" id="DPT-Pq-cuf"/>
                                                         <constraint firstItem="hki-aE-Mre" firstAttribute="top" secondItem="b1n-Bu-VHQ" secondAttribute="top" id="LZ7-6b-VgM"/>
-                                                        <constraint firstItem="JMK-h8-Whk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sMr-Gx-h2F" secondAttribute="leading" constant="20" symbolic="YES" id="P5S-6f-2ei"/>
                                                         <constraint firstItem="YWw-6z-KdZ" firstAttribute="leading" secondItem="hki-aE-Mre" secondAttribute="leading" id="SOk-3b-YQq"/>
                                                         <constraint firstItem="tKI-X2-ryx" firstAttribute="top" secondItem="YWw-6z-KdZ" secondAttribute="bottom" constant="6.5" id="UqY-55-Zta"/>
                                                         <constraint firstItem="b1n-Bu-VHQ" firstAttribute="top" secondItem="sMr-Gx-h2F" secondAttribute="topMargin" id="Wdh-D2-h0j"/>
@@ -131,12 +116,9 @@
                                                         <constraint firstAttribute="trailing" secondItem="LiV-t9-n8p" secondAttribute="trailing" constant="20" id="cyc-aL-xLQ"/>
                                                         <constraint firstItem="Lmq-dE-j3O" firstAttribute="bottom" secondItem="b1n-Bu-VHQ" secondAttribute="bottom" id="dcD-nm-kKD"/>
                                                         <constraint firstItem="Lmq-dE-j3O" firstAttribute="trailing" secondItem="b1n-Bu-VHQ" secondAttribute="trailing" id="fGd-aQ-tYZ"/>
-                                                        <constraint firstItem="JMK-h8-Whk" firstAttribute="bottom" secondItem="LiV-t9-n8p" secondAttribute="bottom" id="jHo-JO-bUw"/>
                                                         <constraint firstItem="nal-dD-vzH" firstAttribute="top" secondItem="LiV-t9-n8p" secondAttribute="bottom" constant="5" id="lDE-PX-tFY"/>
                                                         <constraint firstItem="b1n-Bu-VHQ" firstAttribute="leading" secondItem="sMr-Gx-h2F" secondAttribute="leadingMargin" constant="20" id="mBb-1s-wGL"/>
-                                                        <constraint firstItem="Q7P-Ou-vEr" firstAttribute="centerY" secondItem="LiV-t9-n8p" secondAttribute="centerY" id="nkC-vU-4xf"/>
                                                         <constraint firstItem="LiV-t9-n8p" firstAttribute="trailing" secondItem="tKI-X2-ryx" secondAttribute="trailing" id="sxI-Aj-6Pn"/>
-                                                        <constraint firstItem="Q7P-Ou-vEr" firstAttribute="leading" secondItem="JMK-h8-Whk" secondAttribute="trailing" constant="1.5" id="wBS-uX-Aes"/>
                                                         <constraint firstItem="YWw-6z-KdZ" firstAttribute="top" secondItem="hki-aE-Mre" secondAttribute="bottom" constant="5" id="yuH-cp-YmL"/>
                                                         <constraint firstItem="LiV-t9-n8p" firstAttribute="top" secondItem="sMr-Gx-h2F" secondAttribute="topMargin" id="zkJ-B6-BhN"/>
                                                     </constraints>
@@ -162,11 +144,9 @@
                                             <outlet property="contactImageView" destination="b1n-Bu-VHQ" id="oFa-mD-KZj"/>
                                             <outlet property="dateLabel" destination="LiV-t9-n8p" id="3hQ-LG-2Nm"/>
                                             <outlet property="flaggedImageView" destination="Ob8-lb-O8K" id="y3q-Hq-mnO"/>
-                                            <outlet property="messageCountLabel" destination="JMK-h8-Whk" id="0Tk-jG-sws"/>
                                             <outlet property="ratingImage" destination="Lmq-dE-j3O" id="IiM-xz-8ol"/>
                                             <outlet property="subjectLabel" destination="YWw-6z-KdZ" id="A7X-rW-GwX"/>
                                             <outlet property="summaryLabel" destination="tKI-X2-ryx" id="mHP-ON-gqz"/>
-                                            <outlet property="threadIndicator" destination="Q7P-Ou-vEr" id="eli-Ci-7gs"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="expandedCell" rowHeight="314" id="p1L-xk-0V2" userLabel="expandedCell" customClass="FullMessageCell" customModule="pEpForiOS" customModuleProvider="target">
@@ -516,7 +496,6 @@
         <image name="folders-icon-folder" width="25" height="25"/>
         <image name="folders-icon-trash" width="25" height="25"/>
         <image name="icon-unflagged" width="33" height="64"/>
-        <image name="thread-icon" width="13" height="13"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Dhz-Ep-xy2"/>

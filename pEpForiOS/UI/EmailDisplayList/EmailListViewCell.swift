@@ -25,8 +25,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
-    @IBOutlet weak var messageCountLabel: UILabel!
-    @IBOutlet weak var threadIndicator: UIImageView!
+    @IBOutlet weak var messageCountLabel: UILabel?
+    @IBOutlet weak var threadIndicator: UIImageView?
 
     var isFlagged:Bool = false {
         didSet {
@@ -61,13 +61,13 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     var messageCount:Int = 0 {
         didSet {
             if messageCount > 0 {
-                messageCountLabel.text = String(messageCount)
-                messageCountLabel.isHidden = false
-                threadIndicator.isHidden = false
+                messageCountLabel?.text = String(messageCount)
+                messageCountLabel?.isHidden = false
+                threadIndicator?.isHidden = false
             } else {
-                threadIndicator.isHidden = true
-                messageCountLabel.isHidden = true
-                messageCountLabel.text = nil
+                threadIndicator?.isHidden = true
+                messageCountLabel?.isHidden = true
+                messageCountLabel?.text = nil
             }
         }
     }
@@ -170,6 +170,6 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         subjectLabel.font = font
         summaryLabel.font = font
         dateLabel.font = font
-        messageCountLabel.font = font
+        messageCountLabel?.font = font
     }
 }
