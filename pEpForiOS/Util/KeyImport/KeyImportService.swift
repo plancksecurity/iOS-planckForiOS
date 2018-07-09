@@ -66,27 +66,6 @@ public class KeyImportService {
         return age < -KeyImportService.ttlKeyImportMessages
     }
 
-    private func informDelegateNewInitKeyImportRequestMessageArrived(message: Message) {
-        if !timedOut(keyImportMessage: message) {
-            // Don't bother the delegate with invalid messages.
-            delegate?.newInitKeyImportRequestMessageArrived(message: message)
-        }
-    }
-
-    private func informDelegateNewHandshakeRequestMessageArrived(message: Message) {
-        if !timedOut(keyImportMessage: message) {
-            // Don't bother the delegate with invalid messages.
-            delegate?.newHandshakeRequestMessageArrived(message: message)
-        }
-    }
-
-    private func informDelegateReceivedPrivateKey(message: Message) {
-        if !timedOut(keyImportMessage: message) {
-            // Don't bother the delegate with invalid messages.
-            delegate?.receivedPrivateKey(forAccount: message.parent.account)
-        }
-    }
-
     private func fingerprint(forAccount acc: Account) -> String? {
         let pEpMe = acc.user.pEpIdentity()
         do {
@@ -175,18 +154,21 @@ extension KeyImportService: KeyImportServiceProtocol {
 extension KeyImportService: KeyImportListenerProtocol {
     public func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool {
         var hasBeenHandled = false
+        if timedOut(keyImportMessage: msg) {
+            return hasBeenHandled
+        }
         if isKeyNewInitKeyImportMessage(message: msg){
             hasBeenHandled = true
             msg.imapMarkDeleted()
-            informDelegateNewInitKeyImportRequestMessageArrived(message: msg)
+            delegate?.newInitKeyImportRequestMessageArrived(message: msg)
         }else if isNewHandshakeRequestMessage(message: msg){
             hasBeenHandled = true
             msg.imapMarkDeleted()
-            informDelegateNewHandshakeRequestMessageArrived(message: msg)
+            delegate?.newHandshakeRequestMessageArrived(message: msg)
         } else if isPrivateKeyMessage(message: msg, flags: flags) {
             hasBeenHandled = true
             msg.imapMarkDeleted()
-            informDelegateReceivedPrivateKey(message: msg)
+            delegate?.receivedPrivateKey(forAccount: msg.parent.account)
         }
         return hasBeenHandled
     }
