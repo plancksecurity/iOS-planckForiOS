@@ -85,6 +85,24 @@ public class KeyImportService {
         }
         return  SmtpSendData(connectInfo: smtpCI)
     }
+
+    private func sendMessage(msg: Message, fromAccount account: Account) {
+        // Login OP
+        guard let sendData = smtpSendData(for: account) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No send data") //IOS-1028: test, extract send, test. Think: Error delegate.
+            return
+        }
+        let errorContainer = ErrorContainer() //IOS-1028: make property
+        let loginOp = LoginSmtpOperation(smtpSendData: sendData, errorContainer: errorContainer)
+        // send OP
+        let sendOp = SMTPSendOperation(errorContainer: errorContainer,
+                                       messageToSend: msg,
+                                       smtpSendData: sendData)
+        sendOp.addDependency(loginOp)
+
+        // Go!
+        queue.addOperations([loginOp, sendOp], waitUntilFinished: false)
+    }
 }
 
 // MARK: - KeyImportServiceProtocol
@@ -112,25 +130,13 @@ extension KeyImportService: KeyImportServiceProtocol {
         }
 
         let msg = Message(uuid: MessageID.generateUUID(), parentFolder: dummyFolder)
+
         let mySelf = account.user
         msg.from = mySelf
         msg.to = [mySelf]
         msg.optionalFields[Header.pEpKeyImport.rawValue] = myFpr
 
-        // Login OP
-        guard let sendData = smtpSendData(for: account) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No send data") //IOS-1028: test, extract send, test. Think: Error delegate.
-            return
-        }
-        let errorContainer = ErrorContainer() //IOS-1028: make property
-        let loginOp = LoginSmtpOperation(smtpSendData: sendData, errorContainer: errorContainer)
-        // send OP
-        let sendOp = SMTPSendOperation(errorContainer: errorContainer,
-                                       messageToSend: msg,
-                                       smtpSendData: sendData)
-        //IOS-1028: handle errors, add test-success-delegate or such
-        // Go!
-        queue.addOperations([loginOp, sendOp], waitUntilFinished: false)
+        sendMessage(msg: msg, fromAccount: account)
     }
 
     /// Call after a newKeyImportMessage arrived to let the other device know
