@@ -17,6 +17,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     var networkService: NetworkService {
         return NetworkService(keyImportListener: keyImportService)
     }
+    let folderTypesEvaluatedByTests = [FolderType.inbox]
 
     /// KeyImportService *is* the KeyImportListener. But we want semantical seperation.
     var keyImportListener: KeyImportListenerProtocol {
@@ -28,6 +29,8 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         cdAccount.createRequiredFoldersAndWait(testCase: self)
+        TestUtil.markAllMessagesOnServerDeleted(inFolderTypes: folderTypesEvaluatedByTests,
+                                                for: [cdAccount])
         account = cdAccount.account()
         keyImportService = KeyImportService()
     }
@@ -188,14 +191,18 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         setupObserver(expNewInitKeyImportRequestMessageArrived:
             expNewInitKeyImportRequestMessageArrivedCalled,
                       expectedImportMessagePepColor: expectedColor)
-        // Send message
+        // Send message from Device A
         keyImportService.sendInitKeyImportMessage(forAccount: account)
 
-        // Wait until sent
+//        // Wait until sent (ugly)
         sleep(3)
 
-        // Does it arrive and trigger?
+        // Clean Engine to not know the sent key (i.e. switch to Device B)
+        resetMyKey()
+
+        // Fetch to receive the message.
         TestUtil.syncAndWait(networkService: networkService)
+        // Did it trigger the delegate?
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
@@ -324,6 +331,15 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
             msg.pEpRatingInt = Int(PEP_rating_unencrypted.rawValue)
         }
         return msg
+    }
+
+    private func resetMyKey() {
+        XCTAssertTrue(PEPUtil.pEpClean())
+        do {
+            try PEPSession().mySelf(account.user.pEpIdentity())
+        } catch {
+            XCTFail("Problem")
+        }
     }
 }
 
