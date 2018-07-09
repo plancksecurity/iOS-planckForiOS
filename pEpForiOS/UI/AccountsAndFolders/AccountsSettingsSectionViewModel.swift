@@ -48,14 +48,13 @@ public class AccountsSettingsSectionViewModel {
     func generateGlobalSettingsCells() {
         self.cells.append(AccountsSettingsCellViewModel(type: .defaultAccount))
         self.cells.append(ThreadedSwitchViewModel(type: .organizedByThread))
-        //self.cells.append(AccountsSettingsCellViewModel(type: .organizedByThread))
         self.cells.append(AccountsSettingsCellViewModel(type: .credits))
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
+        self.cells.append(PassiveModeViewModel(type: .pasiveMode))
     }
 
     func generatePgpCompatibilitySettingsCells() {
         self.cells.append(UnecryptedSubjectViewModel(type: .unecryptedSubject))
-        //self.cells.append(AccountsSettingsCellViewModel(type: .unecryptedSubject))
     }
 
     func delete(cell: Int) {
