@@ -8,6 +8,12 @@
 
 import MessageModel
 
+/// Only for tests.
+protocol UnitTestDelegateKeyImportService: class {
+    func KeyImportService(keyImportService: KeyImportService,
+                          didSendKeyimportMessage message: Message)
+}
+
 public enum KeyImportServiceError: Error {
     case smtpError
     case engineError
@@ -19,6 +25,7 @@ public class KeyImportService {
     }
 
     public weak var delegate: KeyImportServiceDelegate?
+    weak var unitTestDelegate: UnitTestDelegateKeyImportService?
 
     /// Specifies how long a key import message is valid
     static let ttlKeyImportMessages: TimeInterval = 4 * 60 * 60
@@ -98,6 +105,15 @@ public class KeyImportService {
         let sendOp = SMTPSendOperation(errorContainer: errorContainer,
                                        messageToSend: msg,
                                        smtpSendData: sendData)
+        // Only for Unit Test
+        sendOp.completionBlock = { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.unitTestDelegate?.KeyImportService(keyImportService: me,
+                                                  didSendKeyimportMessage: msg)
+        }
         sendOp.addDependency(loginOp)
 
         // Go!

@@ -25,6 +25,8 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
     /// Holds a strong reference. KeyImportService.delegate is weak.
     var observer: TestKeyImportServiceObserver?
+    /// Holds a strong reference. KeyImportService.unitTestDelegate is weak.
+    var unitTestCallbackReceiver: UnitTestDelegateKeyImportService?
 
     override func setUp() {
         super.setUp()
@@ -39,6 +41,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         keyImportService = nil
         account = nil
         observer = nil
+        unitTestCallbackReceiver = nil
         super.tearDown()
     }
 
@@ -184,20 +187,19 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     // MARK: sendInitKeyImportMessage
 
     func testSendInitKeyImportMessage() {
-        // Setup
+         // Send message from Device A
+        let expDidSend = expectation(description: "expDidSend")
+        setupUnitTestCallbackReceiver(with: expDidSend)
+        keyImportService.sendInitKeyImportMessage(forAccount: account)
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        // Lets see if device B reacts correctly
+        switchTo(device: .b)
+
         let expNewInitKeyImportRequestMessageArrivedCalled =
             expectation(description: "expNewInitKeyImportRequestMessageArrivedCalled")
-        let expectedColor = PEP_color_no_color
         setupObserver(expNewInitKeyImportRequestMessageArrived:
-            expNewInitKeyImportRequestMessageArrivedCalled,
-                      expectedImportMessagePepColor: expectedColor)
-        // Send message from Device A
-        keyImportService.sendInitKeyImportMessage(forAccount: account)
-
-//        // Wait until sent (ugly)
-        sleep(3)
-
-        switchTo(device: .b)
+            expNewInitKeyImportRequestMessageArrivedCalled)
 
         // Fetch to receive the message.
         TestUtil.syncAndWait(networkService: networkService)
@@ -206,6 +208,11 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     // MARK: - HELPER
+
+    private func setupUnitTestCallbackReceiver(with expectation: XCTestExpectation) {
+        unitTestCallbackReceiver = KeyImportSeviceSendObserver(expDidSend: expectation)
+        keyImportService.unitTestDelegate = unitTestCallbackReceiver
+    }
 
     /// The actual handleKeyImport test.
     ///
@@ -257,8 +264,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
             expNewInitKeyImportRequestMessageArrivedCalled,
                       expNewHandshakeRequestMessageArrived:
             expNewHandshakeRequestMessageArrivedCalled,
-                      expReceivedPrivateKey: expReceivedPrivateKeyCalled,
-                      expectedImportMessagePepColor: pepColor)
+                      expReceivedPrivateKey: expReceivedPrivateKeyCalled)
 
         // We received a message ...
         let msg = createMessage(pEpKeyImportHeaderSet: keyImportHeaderSet,
@@ -286,8 +292,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     private func setupObserver(
         expNewInitKeyImportRequestMessageArrived: XCTestExpectation? = nil,
         expNewHandshakeRequestMessageArrived: XCTestExpectation? = nil,
-        expReceivedPrivateKey: XCTestExpectation? = nil,
-        expectedImportMessagePepColor: PEP_color? = nil) {
+        expReceivedPrivateKey: XCTestExpectation? = nil) {
         observer =
             TestKeyImportServiceObserver(expNewInitKeyImportRequestMessageArrived:
                 expNewInitKeyImportRequestMessageArrived,
@@ -463,5 +468,16 @@ class TestKeyImportServiceObserver: KeyImportServiceDelegate {
 
     func errorOccurred(error: Error) {
         XCTFail("We don't expect errors.")
+    }
+}
+
+class KeyImportSeviceSendObserver: UnitTestDelegateKeyImportService {
+    var expDidSend: XCTestExpectation
+
+    init(expDidSend: XCTestExpectation) {
+        self.expDidSend = expDidSend
+    }
+    func KeyImportService(keyImportService: KeyImportService, didSendKeyimportMessage message: Message) {
+        expDidSend.fulfill()
     }
 }
