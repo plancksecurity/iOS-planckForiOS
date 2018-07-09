@@ -18,7 +18,24 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func allMessages() -> [Message] {
-        return computeTopMessages(messages: underlyingFolder.allMessagesNonThreaded())
+        var topMessages = [Message]()
+
+        var messageIdSet = Set<MessageID>()
+        let originalMessages = underlyingFolder.allMessagesNonThreaded()
+
+        MessageModel.performAndWait {
+            for msg in originalMessages {
+                let threadMessageSet = Set(msg.threadMessages().map {
+                    return $0.messageID
+                })
+                if messageIdSet.intersection(threadMessageSet).isEmpty {
+                    topMessages.append(msg)
+                }
+                messageIdSet.formUnion(threadMessageSet)
+            }
+        }
+
+        return topMessages
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
@@ -26,7 +43,12 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        return message.referencingMessages()
+        let thread = message.threadMessages()
+        if thread.count == 1 {
+            return []
+        } else {
+            return thread
+        }
     }
 
     func deleteSingle(message: Message) {
@@ -34,7 +56,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func deleteThread(message: Message) {
-        let children = message.referencingMessages()
+        let children = messagesInThread(message: message)
         for msgChild in children {
             msgChild.imapDelete()
         }
@@ -75,46 +97,5 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         }
 
         return result
-    }
-
-    // MARK: - Private
-
-    /**
-     Determine which messages in the given list don't reference any other message in the list.
-     */
-    private func computeTopMessages(messages: [Message]) -> [Message] {
-        var topMessages = [Message]()
-
-        let originalMessageIds = messages.map {
-            return $0.messageID
-        }
-        let originalMessageIdSet = Set<MessageID>(originalMessageIds)
-
-        for msg in messages {
-            if !doesReference(message: msg, referenceSet: originalMessageIdSet) {
-                topMessages.append(msg)
-            }
-        }
-
-        return topMessages
-    }
-
-    /**
-     Which of the given `referenceSet` is referenced by `message`?
-     */
-    private func referenced(message: Message, referenceSet:Set<MessageID>) -> Set<MessageID> {
-        let refs = Set(message.references)
-        return refs.intersection(referenceSet)
-    }
-
-    /**
-     Does `message` reference any message-id from `referenceSet`?
-     */
-    private func doesReference(message: Message, referenceSet:Set<MessageID>) -> Bool {
-        if referenced(message: message, referenceSet: referenceSet).isEmpty {
-            return false
-        } else {
-            return true
-        }
     }
 }
