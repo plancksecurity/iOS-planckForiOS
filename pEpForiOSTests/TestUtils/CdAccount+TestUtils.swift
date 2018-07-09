@@ -31,7 +31,8 @@ extension CdAccount {
         }
     }
     
-    public func createRequiredFoldersAndWait(testCase: XCTestCase) {
+    public func createRequiredFoldersAndWait() {
+        let testCase = XCTestCase()
         guard let imapConnectInfo = self.imapConnectInfo else {
             XCTFail("No imapConnectInfo")
             return

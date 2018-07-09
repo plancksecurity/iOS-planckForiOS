@@ -333,7 +333,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
                                fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
         TestUtil.skipValidation()
         Record.saveAndWait()
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        cdAccount.createRequiredFoldersAndWait()
     }
 
     // MARK: Account / Identity 2 (receiver)
@@ -406,7 +406,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
             XCTFail("No Accoount")
             return createe
         }
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        cdAccount.createRequiredFoldersAndWait()
         return createe
     }
 

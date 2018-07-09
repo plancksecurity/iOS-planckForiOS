@@ -16,13 +16,13 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
     func testTrashMessage() {
         // Setup 2 accounts
         // the testee
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        cdAccount.createRequiredFoldersAndWait()
         Record.saveAndWait()
         // the sender
         let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
         TestUtil.skipValidation()
         Record.saveAndWait()
-        cdAccount2.createRequiredFoldersAndWait(testCase: self)
+        cdAccount2.createRequiredFoldersAndWait()
         Record.saveAndWait()
 
         // Send (and receive) messages from 2nd account to 1st account
@@ -57,13 +57,13 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
     private func assureMoveFromInbox(toFolderOfType targetFolderType: FolderType) {
         // Setup 2 accounts
         // the testee
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        cdAccount.createRequiredFoldersAndWait()
         Record.saveAndWait()
         // the sender
         let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
         TestUtil.skipValidation()
         Record.saveAndWait()
-        cdAccount2.createRequiredFoldersAndWait(testCase: self)
+        cdAccount2.createRequiredFoldersAndWait()
         Record.saveAndWait()
 
         // Send (and receive) messages from 2nd account to 1st account

@@ -29,13 +29,13 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         sleep(1)
         print(Date())
         // Setup 2 accounts
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        cdAccount.createRequiredFoldersAndWait()
         Record.saveAndWait()
 
         let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
         TestUtil.skipValidation()
         Record.saveAndWait()
-        cdAccount2.createRequiredFoldersAndWait(testCase: self)
+        cdAccount2.createRequiredFoldersAndWait()
         Record.saveAndWait()
 
         guard let id1 = cdAccount.identity,

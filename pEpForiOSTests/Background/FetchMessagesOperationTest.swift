@@ -18,13 +18,13 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
     // Message must exist twice, once for each account, after fetching mails from server.
     func testMailSentToBothPepAccounts() {
         // Setup 2 accounts
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        cdAccount.createRequiredFoldersAndWait()
         Record.saveAndWait()
         
         let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
         TestUtil.skipValidation()
         Record.saveAndWait()
-        cdAccount2.createRequiredFoldersAndWait(testCase: self)
+        cdAccount2.createRequiredFoldersAndWait()
         Record.saveAndWait()
 
         guard let id1 = cdAccount.identity,
