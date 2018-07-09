@@ -508,6 +508,36 @@ class TestUtil {
         return highestUid() + 1
     }
 
+    static private func markAllMessagesDeleted(inFolderTypes types: [FolderType], for cdAccount: CdAccount) {
+        var allMessages = [CdMessage]()
+        for type in types {
+            allMessages.append(contentsOf: cdAccount.allMessages(inFolderOfType: type))
+        }
+        for cdMsg in allMessages {
+            let msg = cdMsg.message()
+            msg?.imapMarkDeleted()
+        }
+    }
+
+    static func markAllMessagesOnServerDeleted(inFolderTypes types: [FolderType],
+                                               for cdAccounts: [CdAccount]) {
+        for cdAccount in cdAccounts {
+            for type in types {
+                makeFolderInteresting(folderType: type, cdAccount: cdAccount)
+            }
+        }
+        // Fetch current state ...
+        syncAndWait(numAccountsToSync: cdAccounts.count)
+
+        for cdAccount in cdAccounts {
+            // ... mark all deleted
+            markAllMessagesDeleted(inFolderTypes: types, for: cdAccount)
+        }
+        // ... and propagate the changes to the servers
+        syncAndWait(numAccountsToSync: cdAccounts.count)
+        Record.saveAndWait()
+    }
+
     // MARK: - FOLDER
 
     static func determineInterestingFolders(in cdAccount: CdAccount)

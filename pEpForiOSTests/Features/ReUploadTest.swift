@@ -412,17 +412,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
 
     // MARK: Prepare Messages on Server
 
-    private func markAllMessagesDeleted(inCdAccount cdAccount: CdAccount) {
-        var allMessages = [CdMessage]()
-        for type in folderTypesEvaluatedByTests {
-            allMessages.append(contentsOf: cdAccount.allMessages(inFolderOfType: type))
-        }
-        for cdMsg in allMessages {
-            let msg = cdMsg.message()
-            msg?.imapMarkDeleted()
-        }
-    }
-
     /// As we are using the same servers as trusted and untrusted depending on the test case, we
     /// must not fetch messages that already existed (from previous tests).
     private func markAllMessagesOnServerDeleted() {
@@ -432,25 +421,9 @@ class ReUploadTest: CoreDataDrivenTestBase {
             XCTFail("No account")
             return
         }
-        makeFoldersInteresting(inCdAccount: cdAccountReceiver)
-        makeFoldersInteresting(inCdAccount: cdAccount)
-        // Fetch all messages.
-        TestUtil.syncAndWait(numAccountsToSync: 2)
-        // Mark all messages deleted ...
-        markAllMessagesDeleted(inCdAccount: cdAccountReceiver)
-        markAllMessagesDeleted(inCdAccount: cdAccount)
-        // ... and propagate the changes to the servers
-        TestUtil.syncAndWait(numAccountsToSync: 2)
-        // Delete receiver account. Has to be freshly crated in tests.
+        TestUtil.markAllMessagesOnServerDeleted(inFolderTypes: folderTypesEvaluatedByTests,
+                                                for: [cdAccount, cdAccountReceiver])
         cdAccountReceiver.delete()
         Record.saveAndWait()
-    }
-
-    // MARK: Other
-
-    private func makeFoldersInteresting(inCdAccount cdAccount: CdAccount) {
-        for type in folderTypesEvaluatedByTests {
-            TestUtil.makeFolderInteresting(folderType: type, cdAccount: cdAccount)
-        }
     }
 }
