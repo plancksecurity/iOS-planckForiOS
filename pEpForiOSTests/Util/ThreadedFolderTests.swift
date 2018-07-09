@@ -100,16 +100,21 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         let inboxMessages = threaded.allMessages()
         XCTAssertEqual(inboxMessages.count, topMessages.count - 1)
 
-        XCTAssertEqual(threaded.messagesInThread(message: firstDisplayedMessage).count, 2)
-        XCTAssertEqual(threaded.messagesInThread(message: secondDisplayedMessage).count, 2)
+        XCTAssertEqual(threaded.messagesInThread(message: firstDisplayedMessage).count, 3)
+        XCTAssertEqual(threaded.messagesInThread(message: secondDisplayedMessage).count, 3)
 
         for msg in inboxMessages {
             if msg == firstDisplayedMessage {
-                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 2)
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 3)
             } else {
-                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 3)
             }
         }
+
+        let messageThreadSet1 = Set(firstDisplayedMessage.messagesInThread())
+        XCTAssertTrue(messageThreadSet1.contains(firstDisplayedMessage))
+        XCTAssertTrue(messageThreadSet1.contains(secondDisplayedMessage))
+        XCTAssertTrue(messageThreadSet1.contains(sentMsg))
     }
 
     // MARK: - Helpers
