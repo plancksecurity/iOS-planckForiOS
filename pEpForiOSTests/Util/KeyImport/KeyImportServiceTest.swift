@@ -28,7 +28,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        setupAccount(device: Device.a)
         TestUtil.markAllMessagesOnServerDeleted(inFolderTypes: folderTypesEvaluatedByTests,
                                                 for: [cdAccount])
         account = cdAccount.account()
@@ -197,8 +197,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 //        // Wait until sent (ugly)
         sleep(3)
 
-        // Clean Engine to not know the sent key (i.e. switch to Device B)
-        resetMyKey()
+        switchTo(device: .b)
 
         // Fetch to receive the message.
         TestUtil.syncAndWait(networkService: networkService)
@@ -333,14 +332,77 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         return msg
     }
 
-    private func resetMyKey() {
-        XCTAssertTrue(PEPUtil.pEpClean())
-        do {
-            try PEPSession().mySelf(account.user.pEpIdentity())
-        } catch {
-            XCTFail("Problem")
+    // MARK: Setup
+
+    // In key import tests, we switch inbetween two devices with the same account but different
+    // keys.
+    // This is to identify the devices.
+    private enum Device {
+        case a
+        case b
+    }
+
+    private func fingerprint(device: Device) -> String {
+        switch device {
+        case .a:
+            return "550A9E626822040E57CB151A651C4A5DB15B77A3"
+        case .b:
+            return "D0F3567105D4BBF10A547F3C0D891B18333155C5"
         }
     }
+
+    private func keyFileName(device: Device) -> String {
+        switch device {
+        case .a:
+            return "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_"
+        case .b:
+            return "device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_"
+        }
+    }
+    private func setupAccount(device: Device) {
+        // // Account on trusted server (sender)
+        cdAccount.identity?.userName = "unittest.ios.3"
+        cdAccount.identity?.userID = "unittest.ios.3_ID"
+        cdAccount.identity?.address = "unittest.ios.3@peptest.ch"
+        guard
+            let cdServerImap = cdAccount.server(type: .imap),
+            let imapCredentials = cdServerImap.credentials,
+            let cdServerSmtp = cdAccount.server(type: .smtp),
+            let smtpCredentials = cdServerSmtp.credentials else {
+                XCTFail("Problem in setup")
+                return
+        }
+        imapCredentials.loginName = "unittest.ios.3@peptest.ch"
+        smtpCredentials.loginName = "unittest.ios.3@peptest.ch"
+
+        let filenamePub = keyFileName(device: device) + "pub.asc"
+        let filenameSec = keyFileName(device: device) + "sec.asc"
+        let fpr = fingerprint(device: device)
+        try! TestUtil.importKeyByFileName(session,
+                                          fileName: filenameSec)
+        try! TestUtil.importKeyByFileName(session,
+                                          fileName: filenamePub)
+        try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
+                               fingerprint: fpr)
+
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        cdAccount.createRequiredFoldersAndWait()
+    }
+
+    private func switchTo(device: Device) {
+        XCTAssertTrue(PEPUtil.pEpClean())
+        setupAccount(device: device)
+    }
+
+//    private func resetMyKey() {
+//        XCTAssertTrue(PEPUtil.pEpClean())
+//        do {
+//            try PEPSession().mySelf(account.user.pEpIdentity())
+//        } catch {
+//            XCTFail("Problem")
+//        }
+//    }
 }
 
 class TestKeyImportServiceObserver: KeyImportServiceDelegate {
