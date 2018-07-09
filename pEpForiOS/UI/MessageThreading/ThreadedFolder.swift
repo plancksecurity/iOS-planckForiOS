@@ -41,9 +41,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        var theSet = message.threadMessageIdSet()
-        theSet.remove(message.messageID)
-        return Message.messages(byMessageIdSet: theSet)
+        return Message.messages(byMessageIdSet: message.threadMessageIdSet())
     }
 
     func deleteSingle(message: Message) {
