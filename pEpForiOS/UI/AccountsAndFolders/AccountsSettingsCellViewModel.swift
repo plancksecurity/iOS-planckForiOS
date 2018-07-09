@@ -9,7 +9,6 @@
 import Foundation
 import MessageModel
 
-
 public enum AccountSettingsCellType: String {
     case accountsCell = "accountsCell"
     case switchOptionCell = "switchOptionCell"
@@ -29,6 +28,7 @@ public enum SettingType {
     case organizedByThread
     case credits
     case unecryptedSubject
+    case pasiveMode
     case defaultAccount
 	case keyImport
 }
@@ -51,7 +51,7 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
         switch self.type {
         case .account, .credits, .defaultAccount, .showLog, .keyImport:
             self.settingCellType = AccountSettingsCellType.accountsCell
-        case .organizedByThread, .unecryptedSubject:
+        case .organizedByThread, .unecryptedSubject, .pasiveMode:
             self.settingCellType = AccountSettingsCellType.switchOptionCell
         }
     }
@@ -95,6 +95,9 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
                 return acc.user.address
             case .keyImport:
                 return NSLocalizedString("Key import", comment: "AccountSettings: Cell (button) title to start key import setting")
+            case .pasiveMode:
+                return "pasive mode"//TODO
+
             }
         }
     }
@@ -105,6 +108,8 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
             case .showLog, .account, .credits:
                 // Have no value.
                 return nil
+            case .pasiveMode:
+                return onOffStateString(forState: false) //TODO
             case .organizedByThread:
                 return onOffStateString(forState: AppSettings().threadedViewEnabled)
             case .defaultAccount:
