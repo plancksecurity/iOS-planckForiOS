@@ -179,26 +179,26 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     // MARK: - KeyImportServiceProtocol
 
     // MARK: sendInitKeyImportMessage
-//
-//    func testSendInitKeyImportMessage() {
-//
-//        // Setup
-//        let expNewImportMessageArrivedCalled =
-//            expectation(description: "expNewImportMessageArrivedCalled")
-//        let expectedColor = PEP_color_no_color
-//        setupObserver(expNewImportMessageArrived: expNewImportMessageArrivedCalled,
-//                      expectedImportMessagePepColor: expectedColor)
-//        // Send message
-//        keyImportService.sendInitKeyImportMessage(forAccount: account)
-//
-//        // Wait until sent
-//        sleep(3)
-//
-//        // Does it arrive and trigger?
-//        TestUtil.syncAndWait(networkService: networkService)
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//    }
-//
+
+    func testSendInitKeyImportMessage() {
+        // Setup
+        let expNewInitKeyImportRequestMessageArrivedCalled =
+            expectation(description: "expNewInitKeyImportRequestMessageArrivedCalled")
+        let expectedColor = PEP_color_no_color
+        setupObserver(expNewInitKeyImportRequestMessageArrived:
+            expNewInitKeyImportRequestMessageArrivedCalled,
+                      expectedImportMessagePepColor: expectedColor)
+        // Send message
+        keyImportService.sendInitKeyImportMessage(forAccount: account)
+
+        // Wait until sent
+        sleep(3)
+
+        // Does it arrive and trigger?
+        TestUtil.syncAndWait(networkService: networkService)
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
     // MARK: - HELPER
 
     /// The actual handleKeyImport test.
