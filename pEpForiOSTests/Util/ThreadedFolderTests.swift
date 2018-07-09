@@ -55,6 +55,27 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         }
     }
 
+    func testTopMessageReferencingOtherTopMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+
+        let firstDisplayedMessage = message(by: UInt(inboxCount))
+        let secondDisplayedMessage = message(by: UInt(inboxCount - 1))
+        secondDisplayedMessage.references = [firstDisplayedMessage.messageID]
+        secondDisplayedMessage.save()
+
+        let threaded = inbox.threadAware()
+        let inboxMessages = threaded.allMessages()
+        XCTAssertEqual(inboxMessages.count, topMessages.count - 1)
+
+        for msg in inboxMessages {
+            if msg == firstDisplayedMessage {
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 1)
+            } else {
+                XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)
+            }
+        }
+    }
+
     func testSiblingsByReferencingSentMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
 
