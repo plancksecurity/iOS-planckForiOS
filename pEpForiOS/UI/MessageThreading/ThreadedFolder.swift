@@ -18,22 +18,37 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func allMessages() -> [Message] {
-        return computeTopMessages(messages: underlyingFolder.allMessagesNonThreaded())
+        var topMessages = [Message]()
+
+        var messageIdSet = Set<MessageID>()
+        let originalMessages = underlyingFolder.allMessagesNonThreaded()
+
+        MessageModel.performAndWait {
+            for msg in originalMessages {
+                let threadMessageSet = Set(msg.threadMessages().map {
+                    return $0.messageID
+                })
+                if messageIdSet.intersection(threadMessageSet).isEmpty {
+                    topMessages.append(msg)
+                }
+                messageIdSet.formUnion(threadMessageSet)
+            }
+        }
+
+        return topMessages
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
-        return messagesInThread(message: message).count
+        let threadCount = messagesInThread(message: message).count
+        if threadCount == 1 {
+            return 0
+        } else {
+            return threadCount
+        }
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        var messageIdSet = message.referencedMessageIdSet()
-        messageIdSet.insert(message.messageID)
-        let messageIdSetReferencing = message.referencingMessageIdSet()
-        messageIdSet.formUnion(messageIdSetReferencing)
-        let messageIdsReferencing = Message.messageIdsReferencing(messageIdSet: messageIdSet)
-        messageIdSet.formUnion(messageIdsReferencing)
-        messageIdSet.remove(message.messageID)
-        return Message.messages(byMessageIdSet: messageIdSet)
+        return message.threadMessages()
     }
 
     func deleteSingle(message: Message) {
@@ -41,7 +56,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func deleteThread(message: Message) {
-        let children = message.referencingMessages()
+        let children = messagesInThread(message: message)
         for msgChild in children {
             msgChild.imapDelete()
         }

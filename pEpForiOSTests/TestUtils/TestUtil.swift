@@ -475,6 +475,37 @@ class TestUtil {
         return messagesInTheQueue
     }
 
+    static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
+        let msg = Message(uuid: "\(uid)", uid: UInt(uid), parentFolder: folder)
+        XCTAssertEqual(msg.uid, UInt(uid))
+        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.received = Date.init(timeIntervalSince1970: Double(uid))
+        msg.sent = msg.received
+        return msg
+    }
+
+    /**
+     Determines the highest UID of _all_ the messages currently in the DB.
+     */
+    static func highestUid() -> Int {
+        var theHighestUid: Int32 = 0
+        if let allCdMessages = CdMessage.all() as? [CdMessage] {
+            for cdMsg in allCdMessages {
+                if cdMsg.uid > theHighestUid {
+                    theHighestUid = cdMsg.uid
+                }
+            }
+        }
+        return Int(theHighestUid)
+    }
+
+    /**
+     - Returns: `highestUid()` + 1
+     */
+    static func nextUid() -> Int {
+        return highestUid() + 1
+    }
+
     // MARK: - FOLDER
 
     static func determineInterestingFolders(in cdAccount: CdAccount)
