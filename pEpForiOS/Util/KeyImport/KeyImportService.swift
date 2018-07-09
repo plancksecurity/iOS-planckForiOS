@@ -93,7 +93,15 @@ public class KeyImportService {
         return  SmtpSendData(connectInfo: smtpCI)
     }
 
-    private func sendMessage(msg: Message, fromAccount account: Account) {
+    /// Sends a message. In case fpr != nil, the message is encrypted using this key before sending.
+    ///
+    /// - Parameters:
+    ///   - msg: message to send
+    ///   - account: account to send from
+    ///   - fpr: fpr of key to decrypt message with.
+    private func sendMessage(msg: Message,
+                             fromAccount account: Account,
+                             encryptFor fpr: String? = nil) {
         // Login OP
         guard let sendData = smtpSendData(for: account) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No send data") //IOS-1028: test, extract send, test. Think: Error delegate.
@@ -101,16 +109,27 @@ public class KeyImportService {
         }
         let errorContainer = ErrorContainer() //IOS-1028: make property
         let loginOp = LoginSmtpOperation(smtpSendData: sendData, errorContainer: errorContainer)
-        // send OP
-        let sendOp = SMTPSendOperation(errorContainer: errorContainer,
-                                       messageToSend: msg,
-                                       smtpSendData: sendData)
-        // Only for Unit Test
+
+        // Send OP
+        guard let sendOp = buildSendOP(toSend: msg,
+                                 fromAccount: account,
+                                 smtpSendData: sendData,
+                                 errorContainer: errorContainer)
+            else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "No OP")
+                return
+        }
+
         sendOp.completionBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
+            if errorContainer.hasErrors() {
+                me.delegate?.errorOccurred(error: KeyImportServiceError.smtpError)
+            }
+            // Only for Unit Test
             me.unitTestDelegate?.KeyImportService(keyImportService: me,
                                                   didSendKeyimportMessage: msg)
         }
@@ -118,6 +137,53 @@ public class KeyImportService {
 
         // Go!
         queue.addOperations([loginOp, sendOp], waitUntilFinished: false)
+    }
+
+    /// Send op to send the given message.
+    /// In case fpr != nil, the message is encrypted using this key before sending.
+    private func buildSendOP(toSend msg: Message,
+                             fromAccount account: Account,
+                             encryptFor fpr: String? = nil,
+                             smtpSendData: SmtpSendData,
+                             errorContainer: ErrorContainer) -> SMTPSendOperation? {
+        // send OP
+        var pepDict = msg.pEpMessageDict(outgoing: true)
+        if let fpr = fpr {
+            let extraKeys =  [fpr]
+            do {
+                let encryptedMessage = try PEPSession().encryptMessageDict(pepDict,
+                                                                           extraKeys: extraKeys,
+                                                                           encFormat: PEP_enc_PEP,
+                                                                           status: nil)
+                    as PEPMessageDict
+                pepDict = encryptedMessage
+            } catch {
+                delegate?.errorOccurred(error: KeyImportServiceError.engineError)
+                return nil
+            }
+        }
+        return SMTPSendOperation(errorContainer: errorContainer,
+                                       messageDict: pepDict,
+                                       smtpSendData: smtpSendData)
+    }
+
+    private func createKeyImportMessage(for account: Account, setPEpKeyImportHeader: Bool) -> Message? {
+        guard let dummyFolder = account.folder(ofType: .sent) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+            return nil
+        }
+        let msg = Message(uuid: MessageID.generateUUID(), parentFolder: dummyFolder)
+        let mySelf = account.user
+        msg.from = mySelf
+        msg.to = [mySelf]
+        if setPEpKeyImportHeader {
+            guard let myFpr = fingerprint(forAccount: account) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No FPR")
+                return nil
+            }
+            msg.optionalFields[Header.pEpKeyImport.rawValue] = myFpr
+        }
+        return msg
     }
 }
 
@@ -129,36 +195,27 @@ extension KeyImportService: KeyImportServiceProtocol {
     /// Sends an unencrypted message with header: "pEp-key-import: myPubKey_fpr" to myself (without
     /// appending the message to "Sent" folder)
     public func sendInitKeyImportMessage(forAccount account: Account) {
-
-        guard let dummyFolder = account.folder(ofType: .sent) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+        guard let msg = createKeyImportMessage(for: account, setPEpKeyImportHeader: true) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No message")
             return
         }
-
-        guard let myFpr = fingerprint(forAccount: account) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No FPR")
-            return
-        }
-
-        let msg = Message(uuid: MessageID.generateUUID(), parentFolder: dummyFolder)
-
-        let mySelf = account.user
-        msg.from = mySelf
-        msg.to = [mySelf]
-        msg.optionalFields[Header.pEpKeyImport.rawValue] = myFpr
-
         sendMessage(msg: msg, fromAccount: account)
     }
 
     /// Call after a newKeyImportMessage arrived to let the other device know
     /// we are ready for handshake.
-    public func sendHandshakeRequest(forAccount acccount: Account, fpr: String) {
-        //TODO: send encrypted message to myself with header: "pEp-key-import: myPubKey_fpr" (assume: without appending to sent folder)
-        fatalError("Unimplemented stub")
+    public func sendHandshakeRequest(forAccount account: Account, fpr: String) {
+        guard let msg = createKeyImportMessage(for: account, setPEpKeyImportHeader: true) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No message")
+            return
+        }
+
+        sendMessage(msg: msg, fromAccount: account, encryptFor: fpr)
     }
 
     public func sendOwnPrivateKey(forAccount acccount: Account, fpr: String) {
         /// TODO: Send the private key without appending to "Sent" folder.
+
         fatalError("Unimplemented stub")
     }
 
@@ -166,7 +223,7 @@ extension KeyImportService: KeyImportServiceProtocol {
         do {
             try PEPSession().setOwnKey(identity.pEpIdentity(), fingerprint: fpr)
         } catch {
-            //TODO: handle error
+            delegate?.errorOccurred(error: KeyImportServiceError.engineError)
         }
     }
 }
