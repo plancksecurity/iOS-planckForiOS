@@ -152,19 +152,12 @@ public class KeyImportService {
             let queue = OperationQueue()
             var pepDict = msg.pEpMessageDict(outgoing: true) //IOS-1030 make async OP
             if let fpr = fpr {
-                let extraKeys =  [fpr]
-                var status: PEP_STATUS = PEP_UNKNOWN_ERROR
-                do {
-                    pepDict = try PEPSession().encryptMessageDict(pepDict,
-                                                                  extraKeys: extraKeys,
-                                                                  encFormat: PEP_enc_PEP,
-                                                                  status: &status)
-                        as PEPMessageDict
-                } catch {
+                guard let encrypted = me.encrypt(message: msg, for: fpr) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Error encrypting")
                     me.delegate?.errorOccurred(error: KeyImportServiceError.engineError)
                     return
                 }
+                pepDict = encrypted
             }
             let sendOP = SMTPSendOperation(errorContainer: errorContainer,
                                            messageDict: pepDict,
@@ -175,6 +168,34 @@ public class KeyImportService {
                 }
             }
             queue.addOperations([sendOP], waitUntilFinished: true)
+        }
+    }
+
+    private func encrypt(message: Message, for fpr: String) -> PEPMessageDict? {
+        let pepDict = message.pEpMessageDict(outgoing: true) //IOS-1030 make async OP
+        let extraKeys =  [fpr]
+        var status: PEP_STATUS = PEP_UNKNOWN_ERROR
+        do {
+            return try PEPSession().encryptMessageDict(pepDict,
+                                                          extraKeys: extraKeys,
+                                                          encFormat: PEP_enc_PEP,
+                                                          status: &status)
+
+
+                /*
+                 - (PEPDict * _Nullable)encryptMessageDict:(PEPDict * _Nonnull)messageDict
+                 toFpr:(NSString * _Nonnull)toFpr
+                 encFormat:(PEP_enc_format)encFormat
+                 flags:(PEP_decrypt_flags)flags
+                 status:(PEP_STATUS * _Nullable)status
+                 error:(NSError * _Nullable *
+                 _Nullable)error __deprecated
+                 */
+                as PEPMessageDict
+        } catch {
+            Log.shared.errorAndCrash(component: #function, errorString: "Error encrypting")
+            delegate?.errorOccurred(error: KeyImportServiceError.engineError)
+            return nil
         }
     }
 
@@ -225,6 +246,15 @@ extension KeyImportService: KeyImportServiceProtocol {
     }
 
     public func sendOwnPrivateKey(forAccount acccount: Account, fpr: String) {
+        /*
+ - (PEPDict * _Nullable)encryptMessageDict:(PEPDict * _Nonnull)messageDict
+ toFpr:(NSString * _Nonnull)toFpr
+ encFormat:(PEP_enc_format)encFormat
+ flags:(PEP_decrypt_flags)flags
+ status:(PEP_STATUS * _Nullable)status
+ error:(NSError * _Nullable *
+ _Nullable)error __deprecated
+ */
         fatalError("Unimplemented stub")
     }
 
