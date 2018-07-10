@@ -54,6 +54,9 @@ public class KeyImportService {
             Log.shared.errorAndCrash(component: #function, errorString: "No own key")
             return false
         }
+        if message.parent.folderType != .inbox {
+            return false
+        }
         let requestFpr = message.optionalFields[Header.pEpKeyImport.rawValue]
         let messageColor = message.pEpColor()
         return requestFpr != nil && requestFpr != myFpr && messageColor == requiredColor
@@ -113,6 +116,7 @@ public class KeyImportService {
         // Send OP
         guard let sendOp = buildSendOP(toSend: msg,
                                  fromAccount: account,
+                                 encryptFor: fpr,
                                  smtpSendData: sendData,
                                  errorContainer: errorContainer)
             else {
@@ -147,17 +151,19 @@ public class KeyImportService {
                              smtpSendData: SmtpSendData,
                              errorContainer: ErrorContainer) -> SMTPSendOperation? {
         // send OP
-        var pepDict = msg.pEpMessageDict(outgoing: true)
+        var pepDict = msg.pEpMessageDict(outgoing: true) //IOS-1030 make async OP
         if let fpr = fpr {
             let extraKeys =  [fpr]
+            var status: PEP_STATUS = PEP_UNKNOWN_ERROR
             do {
-                let encryptedMessage = try PEPSession().encryptMessageDict(pepDict,
-                                                                           extraKeys: extraKeys,
-                                                                           encFormat: PEP_enc_PEP,
-                                                                           status: nil)
+                // Ignore return value and use message source modified for extra keys
+                pepDict = try PEPSession().encryptMessageDict(pepDict,
+                                                              extraKeys: extraKeys,
+                                                              encFormat: PEP_enc_PEP,
+                                                              status: &status)
                     as PEPMessageDict
-                pepDict = encryptedMessage
             } catch {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error encrypting")
                 delegate?.errorOccurred(error: KeyImportServiceError.engineError)
                 return nil
             }
