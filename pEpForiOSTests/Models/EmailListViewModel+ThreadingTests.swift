@@ -162,7 +162,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let incomingMessage = testIncomingMessage(references: [theDisplayedMessage],
-                                                  indexPathUpdated: nil)
+                                                  indexPathUpdated: nil,
+                                                  openThread: true)
 
         updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
             message: incomingMessage,
