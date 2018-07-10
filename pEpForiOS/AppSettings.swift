@@ -37,7 +37,7 @@ class AppSettings {
 
     }
 
-    var threadedViewEnabled: Bool {
+    public var threadedViewEnabled: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyThreadedViewEnabled)
         }
@@ -45,6 +45,18 @@ class AppSettings {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyThreadedViewEnabled)
         }
     }
+
+    public var pasiveMode: Bool {
+        get {
+            return UserDefaults.standard.bool(forKey: AppSettings.keyPasiveMode)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyPasiveMode)
+            PEPObjCAdapter.setPassiveModeEnabled(newValue)
+        }
+    }
+
+
     
     /// Address of the default account
     public var defaultAccount: String? {
@@ -63,6 +75,7 @@ class AppSettings {
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
+    static private let keyPasiveMode = "keyPasiveMode"
     
     // MARK: - Private - DEFAULT ACCOUNT
     
@@ -87,6 +100,7 @@ class AppSettings {
     
     private func setup() {
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
+        PEPObjCAdapter.setPassiveModeEnabled(pasiveMode)
     }
     
     private func registerDefaults() {
@@ -94,6 +108,7 @@ class AppSettings {
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
         defaults[AppSettings.keyThreadedViewEnabled] = true
+        defaults[AppSettings.keyPasiveMode] = false
 
         UserDefaults.standard.register(defaults: defaults)
     }
