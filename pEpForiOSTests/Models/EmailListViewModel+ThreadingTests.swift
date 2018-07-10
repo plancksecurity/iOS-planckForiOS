@@ -88,7 +88,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let _ = testIncomingMessage(references: [theDisplayedMessage],
-                                    indexPathUpdated: nil)
+                                    indexPathUpdated: nil,
+                                    openThread: true)
 
         topMessages[0].imapFlags?.flagged = true
         XCTAssertTrue(topMessages[0].imapFlags?.flagged ?? false)
