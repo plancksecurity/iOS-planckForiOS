@@ -71,7 +71,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                         if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                             if theSelf.shouldShowThreadVc(message: message) {
                                 theSelf.emailListViewModelDelegate?.showThreadView(for: IndexPath(row: index, section: 0))
-                            }else{
+                            } else {
                                 theSelf.updateThreadListDelegate?.added(message: message)
                             }
                         }
