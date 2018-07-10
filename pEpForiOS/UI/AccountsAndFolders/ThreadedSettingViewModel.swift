@@ -10,7 +10,6 @@ import Foundation
 
 
 class ThreadedSwitchViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
-
     var settingCellType: AccountSettingsCellType
     var type: SettingType
     var title : String
@@ -27,6 +26,7 @@ class ThreadedSwitchViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
 
     func switchAction(value: Bool) {
         AppSettings.init().threadedViewEnabled = value
+        FolderThreading.switchThreading(onOrOff: value)
     }
 }
 
