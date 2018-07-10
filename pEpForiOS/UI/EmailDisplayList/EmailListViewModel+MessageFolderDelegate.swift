@@ -1,4 +1,4 @@
-//
+///
 //  EmailListViewModel+MessageFolderDelegate.swift
 //  pEp
 //
@@ -69,7 +69,11 @@ extension EmailListViewModel: MessageFolderDelegate {
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf, didUpdateDataAt: IndexPath(row: index, section: 0))
                         if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
-                            theSelf.updateThreadListDelegate?.added(message: message)
+                            if theSelf.shouldShowThreadVc(message: message) {
+                                theSelf.emailListViewModelDelegate?.showThreadView(for: IndexPath(row: index, section: 0))
+                            }else{
+                                theSelf.updateThreadListDelegate?.added(message: message)
+                            }
                         }
                     } else {
                         // Incoming message references other messages,
@@ -276,5 +280,12 @@ Something is fishy here.
             }
         }
         return nil
+    }
+    /*
+     - Returns: If the detail view should change from EmailVc to ThreadVc
+     */
+    private func shouldShowThreadVc(message: Message)-> Bool {
+       return currentDisplayedMessage?.detailType() == .single
+        && message.numberOfMessagesInThread() > 0
     }
 }

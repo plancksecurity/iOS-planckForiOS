@@ -167,20 +167,14 @@ class FullMessageCell: SwipeTableViewCell,
     }
 
     private func setFlagged() {
-        if FullMessageCell.flaggedImage == nil {
-            FullMessageCell.flaggedImage =
-                FlagImages.create(imageSize: flaggedIcon.frame.size).flaggedImage
-        }
-        guard let saveImg = FullMessageCell.flaggedImage else {
-            return
-        }
-        self.flaggedIcon.isHidden = false
-        self.flaggedIcon.image = saveImg
+        flaggedIcon.isHidden = false
+        flaggedIcon.image = UIImage.init(named: "icon-flagged")
+
     }
 
     private func unsetFlagged() {
-        self.flaggedIcon.isHidden = true
-        self.flaggedIcon.image = nil
+        flaggedIcon.isHidden = true
+        flaggedIcon.image = UIImage.init(named: "icon-unflagged")
     }
 
 

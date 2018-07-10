@@ -279,31 +279,6 @@ class NetworkServiceTests: XCTestCase {
             }
         }
 
-        // Will the sent folder be synced on next sync?
-        var fis = TestUtil.determineInterestingFolders(in: cdAccount)
-        XCTAssertEqual(fis.count, 1) // still only inbox
-        var isSentFolderInteresting = false
-        for f in fis {
-            if f.folderType == .sent {
-                isSentFolderInteresting = true
-            }
-        }
-        XCTAssertFalse(isSentFolderInteresting)
-
-        // Make sure the sent folder will be synced in the next step
-        sentFolder.lastLookedAt = Date()
-        Record.saveAndWait()
-
-        fis = TestUtil.determineInterestingFolders(in: cdAccount)
-        XCTAssertGreaterThan(fis.count, 1)
-
-        for f in fis {
-            if f.folderType == .sent {
-                isSentFolderInteresting = true
-            }
-        }
-        XCTAssertTrue(isSentFolderInteresting)
-
         // sync
         TestUtil.syncAndWait()
 

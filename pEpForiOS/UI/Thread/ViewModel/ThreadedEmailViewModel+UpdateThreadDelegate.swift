@@ -24,7 +24,9 @@ extension ThreadedEmailViewModel: UpdateThreadListDelegate {
     }
 
     func updated(message: Message) {
-        updateInternal(message: message)
+        DispatchQueue.main.async {
+            self.updateInternal(message: message)
+        }
     }
 
     func added(message: Message) {

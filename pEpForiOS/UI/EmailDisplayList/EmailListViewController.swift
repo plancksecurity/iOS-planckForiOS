@@ -640,6 +640,11 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+
+    func showThreadView(for indexPath: IndexPath) {
+        showEmail(forCellAt: indexPath)
+    }
+
     func toolbarIs(enabled: Bool) {
         flagToolbarButton?.isEnabled = enabled
         unflagToolbarButton?.isEnabled = enabled
@@ -715,6 +720,8 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
         resetSelectionIfNeeded(for: indexPath)
     }
+
+
     
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message) {

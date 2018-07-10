@@ -76,7 +76,7 @@
                                                                         <constraint firstAttribute="width" secondItem="vPY-v3-Cqy" secondAttribute="height" multiplier="1:1" id="j5E-ON-CCk"/>
                                                                     </constraints>
                                                                 </imageView>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ob8-lb-O8K" userLabel="Flagged icon">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ob8-lb-O8K" userLabel="Flagged icon">
                                                                     <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                     <constraints>
@@ -230,7 +230,7 @@
                                                                                                 <constraint firstAttribute="height" constant="14" id="wy9-sB-TuV"/>
                                                                                             </constraints>
                                                                                         </imageView>
-                                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PUy-2s-JbD" userLabel="Flagged icon">
+                                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PUy-2s-JbD" userLabel="Flagged icon">
                                                                                             <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
                                                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                                             <constraints>

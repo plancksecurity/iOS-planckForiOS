@@ -19,6 +19,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
+    func showThreadView(for indexPath: IndexPath)
 }
 
 // MARK: - FilterUpdateProtocol

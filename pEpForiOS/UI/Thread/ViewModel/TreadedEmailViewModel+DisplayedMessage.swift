@@ -22,4 +22,7 @@ extension ThreadedEmailViewModel: DisplayedMessage {
         }
     }
 
+    func detailType() -> EmailDetailType {
+        return EmailDetailType.thread
+    }
 }

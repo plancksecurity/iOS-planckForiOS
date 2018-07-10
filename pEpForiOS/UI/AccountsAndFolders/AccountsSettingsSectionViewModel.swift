@@ -31,6 +31,7 @@ public class AccountsSettingsSectionViewModel {
         case .globalSettings:
             generateGlobalSettingsCells()
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
+            footer = NSLocalizedString("public key is only attached if key is received from partner", comment: "passive mode description")
         case .pgpCompatibilitySettings:
             generatePgpCompatibilitySettingsCells()
             title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
