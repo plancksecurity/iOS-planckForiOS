@@ -173,15 +173,15 @@ class FolderTableViewController: BaseTableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "newAccount" {
-            guard
-                let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginTableViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Missing VCs")
-                    return
-            }
-            vc.appConfig = self.appConfig
-            vc.hidesBottomBarWhenPushed = true
-            vc.delegate = self
+//            guard
+//                let nav = segue.destination as? UINavigationController,
+//                let vc = nav.rootViewController as? LoginTableViewController else {
+//                    Log.shared.errorAndCrash(component: #function, errorString: "Missing VCs")
+//                    return
+//            }
+//            vc.appConfig = self.appConfig
+//            vc.hidesBottomBarWhenPushed = true
+//            vc.delegate = self
 
         } else if segue.identifier == "SettingsSegue" {
             guard let dvc = segue.destination as? AccountsTableViewController else {
