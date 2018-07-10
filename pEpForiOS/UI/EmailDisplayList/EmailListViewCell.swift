@@ -135,20 +135,14 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     private func setFlagged() {
-        if EmailListViewCell.flaggedImage == nil {
-            EmailListViewCell.flaggedImage =
-                FlagImages.create(imageSize: flaggedImageView.frame.size).flaggedImage
-        }
-        guard let saveImg = EmailListViewCell.flaggedImage else {
-            return
-        }
-        self.flaggedImageView.isHidden = false
-        self.flaggedImageView.image = saveImg
+            flaggedImageView.isHidden = false
+            flaggedImageView.image = UIImage.init(named: "icon-flagged")
+
     }
 
     private func unsetFlagged() {
-        self.flaggedImageView.isHidden = true
-        self.flaggedImageView.image = nil
+        flaggedImageView.isHidden = true
+        flaggedImageView.image = UIImage.init(named: "icon-unflagged")
     }
 
     private func setSeen() {

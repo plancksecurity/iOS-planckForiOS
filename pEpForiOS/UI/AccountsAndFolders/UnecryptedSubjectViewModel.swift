@@ -25,6 +25,6 @@ class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModel  
     }
 
     func switchAction(value: Bool) {
-        AppSettings.init().unencryptedSubjectEnabled = !value
+        AppSettings.init().unencryptedSubjectEnabled = value
     }
 }
