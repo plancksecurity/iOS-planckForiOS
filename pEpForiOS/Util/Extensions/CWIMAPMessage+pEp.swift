@@ -76,13 +76,13 @@ extension CWIMAPMessage {
             }
         }
 
-        let attachmentDictsOpt = pEpMessageDict[kPepAttachments] as? NSArray
-        if !MiscUtil.isNilOrEmptyNSArray(attachmentDictsOpt) {
-            let encrypted = PEPUtil.isProbablyPGPMime(pEpMessageDict: pEpMessageDict)
+        let attachmentDicts = pEpMessageDict[kPepAttachments] as? [PEPAttachment] ?? []
+        if !attachmentDicts.isEmpty {
+            let isEncrypted = PEPUtil.isProbablyPGPMime(pEpMessageDict: pEpMessageDict)
 
             // Create multipart mail
             let multiPart = CWMIMEMultipart()
-            if encrypted {
+            if isEncrypted {
                 self.setContentType(Constants.contentTypeMultipartEncrypted)
                 self.setContentTransferEncoding(PantomimeEncoding8bit)
                 self.setParameter(Constants.protocolPGPEncrypted, forKey: "protocol")
@@ -95,34 +95,32 @@ extension CWIMAPMessage {
             }
             self.setContent(multiPart)
 
-            if let attachmentObjs = attachmentDictsOpt as? [PEPAttachment] {
-                for attachmentObj in attachmentObjs {
-                    let part = CWPart()
-                    part.setContentType(attachmentObj.mimeType)
-                    part.setContent(attachmentObj.data as NSObject)
-                    part.setSize(attachmentObj.data.count)
+            for attachmentObj in attachmentDicts {
+                let part = CWPart()
+                part.setContentType(attachmentObj.mimeType)
+                part.setContent(attachmentObj.data as NSObject)
+                part.setSize(attachmentObj.data.count)
 
-                    let pantomimeContentDisposition =
-                        attachmentObj.contentDisposition.pantomimeContentDisposition
-                    part.setContentDisposition(pantomimeContentDisposition)
-                    
-                    if let fileName = attachmentObj.filename {
-                        if let cid = fileName.extractCid() {
-                            part.setContentID("<\(cid)>")
-                        } else {
-                            let theFilePart = fileName.extractFileName() ?? fileName
-                            part.setFilename(theFilePart)
-                        }
+                let pantomimeContentDisposition =
+                    attachmentObj.contentDisposition.pantomimeContentDisposition
+                part.setContentDisposition(pantomimeContentDisposition)
+
+                if let fileName = attachmentObj.filename {
+                    if let cid = fileName.extractCid() {
+                        part.setContentID("<\(cid)>")
+                    } else {
+                        let theFilePart = fileName.extractFileName() ?? fileName
+                        part.setFilename(theFilePart)
                     }
-
-                    if !encrypted {
-                        // We have to add base64 if this was not encrypted by the engine.
-                        // Otherwise, leave it as-is.
-                        part.setContentTransferEncoding(PantomimeEncodingBase64)
-                    }
-
-                    multiPart.add(part)
                 }
+
+                if !isEncrypted {
+                    // We have to add base64 if this was not encrypted by the engine.
+                    // Otherwise, leave it as-is.
+                    part.setContentTransferEncoding(PantomimeEncodingBase64)
+                }
+
+                multiPart.add(part)
             }
         } else {
             if let body = PEPUtil.bodyPart(pEpMessageDict: pEpMessageDict) {
