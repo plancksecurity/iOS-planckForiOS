@@ -451,6 +451,10 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         func update(forMessage message: Message) {
         }
+
+        func detailType() -> EmailDetailType {
+            return .single
+        }
     }
 
     class MyMessageSyncServiceProtocol: MessageSyncServiceProtocol {
@@ -511,6 +515,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         func updateView() {
             expectationViewUpdated?.fulfill()
+        }
+
+        func showThreadView(for indexPath: IndexPath) {
         }
     }
 
