@@ -156,7 +156,6 @@ public class KeyImportService {
             let extraKeys =  [fpr]
             var status: PEP_STATUS = PEP_UNKNOWN_ERROR
             do {
-                // Ignore return value and use message source modified for extra keys
                 pepDict = try PEPSession().encryptMessageDict(pepDict,
                                                               extraKeys: extraKeys,
                                                               encFormat: PEP_enc_PEP,
