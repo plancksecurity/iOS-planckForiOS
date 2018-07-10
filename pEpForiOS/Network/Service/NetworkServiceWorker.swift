@@ -316,28 +316,44 @@ open class NetworkServiceWorker {
                 format: "account = %@ and lastLookedAt > %@", account,
                 earlierTimestamp as CVarArg)
             let folders = CdFolder.all(predicate: pInteresting) as? [CdFolder] ?? []
-            var haveInbox = false
+            var inboxIsInteresting = false
+            var sentFolderIsInteresting = false
             for f in folders {
                 if let name = f.name {
                     if f.folderTypeRawValue == FolderType.inbox.rawValue {
-                        haveInbox = true
+                        inboxIsInteresting = true
                     }
+                    if f.folderTypeRawValue == FolderType.sent.rawValue {
+                        sentFolderIsInteresting = true
+                    }
+
+
                     folderInfos.append(FolderInfo(
                         name: name, folderType: f.folderType,
                         firstUID: f.firstUID(), lastUID: f.lastUID(), folderID: f.objectID))
                 }
             }
 
-            // Try to determine and add the inbox if it's not already there
-            if !haveInbox {
+            // Try to determine and add inbox and sent folder if not already there. Both are
+            // considered as always interesting.
+            if !inboxIsInteresting {
                 if let inboxFolder = CdFolder.by(folderType: .inbox, account: account) {
                     let name = inboxFolder.name ?? ImapSync.defaultImapInboxName
-                    folderInfos.append(
-                        FolderInfo(
-                            name: name,
-                            folderType: inboxFolder.folderType,
-                            firstUID: inboxFolder.firstUID(), lastUID: inboxFolder.lastUID(),
-                            folderID: inboxFolder.objectID))
+                    folderInfos.append(FolderInfo(name: name,
+                                                  folderType: inboxFolder.folderType,
+                                                  firstUID: inboxFolder.firstUID(),
+                                                  lastUID: inboxFolder.lastUID(),
+                                                  folderID: inboxFolder.objectID))
+                }
+            }
+            if !sentFolderIsInteresting {
+                if let sentFolder = CdFolder.by(folderType: .sent, account: account),
+                    let name = sentFolder.name {
+                    folderInfos.append(FolderInfo(name: name,
+                                                  folderType: sentFolder.folderType,
+                                                  firstUID: sentFolder.firstUID(),
+                                                  lastUID: sentFolder.lastUID(),
+                                                  folderID: sentFolder.objectID))
                 }
             }
         }
