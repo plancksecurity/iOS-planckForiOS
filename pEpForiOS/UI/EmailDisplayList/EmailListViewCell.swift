@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 import SwipeCellKit
 
-class EmailListViewCell: SwipeTableViewCell {
+class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     static let storyboardId = "EmailListViewCell"
     static var flaggedImage: UIImage? = nil
     static var emptyContactImage = UIImage.init(named: "empty-avatar")
@@ -25,6 +25,8 @@ class EmailListViewCell: SwipeTableViewCell {
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
+    @IBOutlet weak var messageCountLabel: UILabel?
+    @IBOutlet weak var threadIndicator: UIImageView?
 
     var isFlagged:Bool = false {
         didSet {
@@ -53,6 +55,44 @@ class EmailListViewCell: SwipeTableViewCell {
             } else {
                 attachmentIcon.isHidden = true
             }
+        }
+    }
+
+    var messageCount:Int = 0 {
+        didSet {
+            if messageCount > 0 {
+                messageCountLabel?.text = String(messageCount)
+                messageCountLabel?.isHidden = false
+                threadIndicator?.isHidden = false
+            } else {
+                threadIndicator?.isHidden = true
+                messageCountLabel?.isHidden = true
+                messageCountLabel?.text = nil
+            }
+        }
+    }
+
+
+    public func configure(for viewModel: MessageViewModel) {
+        addressLabel.text = viewModel.from
+        subjectLabel.text = viewModel.subject
+        summaryLabel.text = viewModel.bodyPeek
+        isFlagged = viewModel.isFlagged
+        isSeen = viewModel.isSeen
+        hasAttachment = viewModel.showAttchmentIcon
+        dateLabel.text = viewModel.dateText
+        messageCount = viewModel.messageCount
+        if viewModel.senderContactImage != nil {
+            setContactImage(image: viewModel.senderContactImage)
+        } else {
+            viewModel.getProfilePicture {
+                image in
+                self.setContactImage(image: image )
+            }
+        }
+        viewModel.getSecurityBadge {
+            image in
+            self.setPepRatingImage(image: image)
         }
     }
 
@@ -124,5 +164,6 @@ class EmailListViewCell: SwipeTableViewCell {
         subjectLabel.font = font
         summaryLabel.font = font
         dateLabel.font = font
+        messageCountLabel?.font = font
     }
 }

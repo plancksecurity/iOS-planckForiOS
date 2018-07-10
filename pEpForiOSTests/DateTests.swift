@@ -21,8 +21,10 @@ class DateTests: XCTestCase {
         calender.locale = Locale(identifier: "en_US")
         do {
             reWeekday = try NSRegularExpression.init(pattern: "^(\\w+)$", options: [])
-            reTime = try NSRegularExpression.init(pattern: "^\\d\\d?:\\d\\d (?:A|P)M$", options: [])
-            reDate = try NSRegularExpression.init(pattern: "^\\d\\d?/\\d\\d?/\\d\\d$", options: [])
+            reTime = try NSRegularExpression.init(pattern: "^\\d\\d?:\\d\\d (?:A|P)M$",
+                                                  options: [])
+            reDate = try NSRegularExpression.init(pattern: "^\\w+ \\d\\d?, \\d\\d\\d\\d$",
+                                                  options: [])
         } catch {
             XCTFail(error.localizedDescription)
         }

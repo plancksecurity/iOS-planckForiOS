@@ -250,6 +250,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
+        FolderThreading.switchThreading(onOrOff: appSettings.threadedViewEnabled)
+
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
             // and pretty much don't do anything.

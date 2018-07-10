@@ -29,7 +29,7 @@ extension EmailViewController {
 
         setToolbarItems(items.reversed(), animated: true)
         navigationItem.setRightBarButtonItems([previousMessage, nextMessage], animated: true)
-        self.navigationController?.setToolbarHidden(false, animated: true)
+        self.navigationController?.setToolbarHidden(false, animated: false)
     }
 
     private func adaptBarButtonItemsForRegularSize() {
@@ -40,7 +40,7 @@ extension EmailViewController {
         barItems = items
 
         navigationItem.rightBarButtonItems = items
-        self.navigationController?.setToolbarHidden(true, animated: true)
+        self.navigationController?.setToolbarHidden(true, animated: false)
         toolbarItems = nil
     }
 }

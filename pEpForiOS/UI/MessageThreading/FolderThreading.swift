@@ -21,7 +21,18 @@ class FolderThreading {
     }
 
     static func factory() -> ThreadedMessageFolderFactoryProtocol {
-        return theFactory ?? ThreadUnAwareFolderFactory()
+        return theFactory ?? ThreadAwareFolderFactory()
+    }
+
+    /**
+     Shortcut for `override` based on boolean "threading on or off".
+     */
+    static func switchThreading(onOrOff: Bool) {
+        if onOrOff {
+            override(factory: ThreadAwareFolderFactory())
+        } else {
+            override(factory: ThreadUnAwareFolderFactory())
+        }
     }
 
     /**
