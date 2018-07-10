@@ -23,6 +23,7 @@ class SettingSwitchTableViewCell: UITableViewCell {
 
     func setUpView() {
         self.switchDescription.text = viewModel?.title
+        setSwitchValue()
     }
 
     func handleSwitchChange() {
