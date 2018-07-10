@@ -105,7 +105,7 @@ public class KeyImportService {
     private func sendMessage(msg: Message,
                              fromAccount account: Account,
                              encryptFor fpr: String? = nil) {
-        // Login OP
+        // Build Login OP
         guard let sendData = smtpSendData(for: account) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No send data") //IOS-1028: test, extract send, test. Think: Error delegate.
             return
@@ -113,18 +113,12 @@ public class KeyImportService {
         let errorContainer = ErrorContainer() //IOS-1028: make property
         let loginOp = LoginSmtpOperation(smtpSendData: sendData, errorContainer: errorContainer)
 
-        // Send OP
-        guard let sendOp = buildSendOP(toSend: msg,
+        // Build Send OP
+        let sendOp = encryptAndSendOperation(toSend: msg,
                                  fromAccount: account,
                                  encryptFor: fpr,
                                  smtpSendData: sendData,
                                  errorContainer: errorContainer)
-            else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "No OP")
-                return
-        }
-
         sendOp.completionBlock = { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
@@ -145,31 +139,43 @@ public class KeyImportService {
 
     /// Send op to send the given message.
     /// In case fpr != nil, the message is encrypted using this key before sending.
-    private func buildSendOP(toSend msg: Message,
-                             fromAccount account: Account,
-                             encryptFor fpr: String? = nil,
-                             smtpSendData: SmtpSendData,
-                             errorContainer: ErrorContainer) -> SMTPSendOperation? {
-        // send OP
-        var pepDict = msg.pEpMessageDict(outgoing: true) //IOS-1030 make async OP
-        if let fpr = fpr {
-            let extraKeys =  [fpr]
-            var status: PEP_STATUS = PEP_UNKNOWN_ERROR
-            do {
-                pepDict = try PEPSession().encryptMessageDict(pepDict,
-                                                              extraKeys: extraKeys,
-                                                              encFormat: PEP_enc_PEP,
-                                                              status: &status)
-                    as PEPMessageDict
-            } catch {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error encrypting")
-                delegate?.errorOccurred(error: KeyImportServiceError.engineError)
-                return nil
+    private func encryptAndSendOperation(toSend msg: Message,
+                                         fromAccount account: Account,
+                                         encryptFor fpr: String? = nil,
+                                         smtpSendData: SmtpSendData,
+                                         errorContainer: ErrorContainer) -> Operation {
+        return BlockOperation() {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
             }
+            let queue = OperationQueue()
+            var pepDict = msg.pEpMessageDict(outgoing: true) //IOS-1030 make async OP
+            if let fpr = fpr {
+                let extraKeys =  [fpr]
+                var status: PEP_STATUS = PEP_UNKNOWN_ERROR
+                do {
+                    pepDict = try PEPSession().encryptMessageDict(pepDict,
+                                                                  extraKeys: extraKeys,
+                                                                  encFormat: PEP_enc_PEP,
+                                                                  status: &status)
+                        as PEPMessageDict
+                } catch {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Error encrypting")
+                    me.delegate?.errorOccurred(error: KeyImportServiceError.engineError)
+                    return
+                }
+            }
+            let sendOP = SMTPSendOperation(errorContainer: errorContainer,
+                                           messageDict: pepDict,
+                                           smtpSendData: smtpSendData)
+            sendOP.completionBlock = {
+                if errorContainer.hasErrors() {
+                    me.delegate?.errorOccurred(error: KeyImportServiceError.smtpError)
+                }
+            }
+            queue.addOperations([sendOP], waitUntilFinished: true)
         }
-        return SMTPSendOperation(errorContainer: errorContainer,
-                                       messageDict: pepDict,
-                                       smtpSendData: smtpSendData)
     }
 
     private func createKeyImportMessage(for account: Account, setPEpKeyImportHeader: Bool) -> Message? {
