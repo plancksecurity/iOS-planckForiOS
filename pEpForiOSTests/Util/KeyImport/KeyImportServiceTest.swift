@@ -207,6 +207,87 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
+    func testSendHandshakeRequestMessage() {
+        // Device A sent device B an InitKeyImport message.
+        // We are on device B and react.
+        switchTo(device: .b)
+        // We know the pub key and the FPR of device A already
+        importPubKey(of: .a)
+        let fpr = fingerprint(device: .a)
+
+        // Send HandshakeRequest message (from Device B)
+        let expDidSend = expectation(description: "expDidSend")
+        setupUnitTestCallbackReceiver(with: expDidSend)
+        keyImportService.sendHandshakeRequest(forAccount: account, fpr: fpr)
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+        // Lets see if device A reacts correctly
+        switchTo(device: .a)
+
+        let expDelegateNewHandshakeRequestMessageArrivedCalled =
+            expectation(description: "expDelegateNewHandshakeRequestMessageArrivedCalled")
+        setupObserver(expNewHandshakeRequestMessageArrived:
+            expDelegateNewHandshakeRequestMessageArrivedCalled)
+
+        // Fetch to receive the message.
+        TestUtil.syncAndWait(networkService: networkService)
+        // Did it trigger the delegate?
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
+    // MARK: full key import cycle
+//
+//    func testFullKeyImportProcess() {
+//        // **********************************
+//        // Send Init message from Device A
+//        // **********************************
+//        var expDidSend = expectation(description: "expDidSend")
+//        setupUnitTestCallbackReceiver(with: expDidSend)
+//        keyImportService.sendInitKeyImportMessage(forAccount: account)
+//        waitForExpectations(timeout: TestUtil.waitTime)
+//
+//        // **********************************
+//        // Receive it on device B
+//        // **********************************
+//        switchTo(device: .b)
+//
+//        let expNewInitKeyImportRequestMessageArrivedCalled =
+//            expectation(description: "expNewInitKeyImportRequestMessageArrivedCalled")
+//        setupObserver(expNewInitKeyImportRequestMessageArrived:
+//            expNewInitKeyImportRequestMessageArrivedCalled)
+//
+//        // Fetch to receive the message.
+//        TestUtil.syncAndWait(networkService: networkService)
+//        // Did it trigger the delegate?
+//        waitForExpectations(timeout: TestUtil.waitTime)
+//        // Has correctly be received.
+////        // Thus the pub key of device A should now be know to device B
+////        importPubKey(of: Device.a)
+//
+//        // **********************************
+//        // Device B sends handshake request
+//        // **********************************
+//        expDidSend = expectation(description: "expDidSend")
+//        setupUnitTestCallbackReceiver(with: expDidSend)
+//        let fprDeviceA = fingerprint(device: .a)
+//        let fprDeviceB = fingerprint(device: .b)
+//        keyImportService.sendHandshakeRequest(forAccount: account, fpr: fprDeviceB)
+//        waitForExpectations(timeout: TestUtil.waitTime)
+//
+//        // **********************************
+//        // Device A & B confirm FPRs (do handshake)
+//        // **********************************
+//        let pepIdentityA = account.user.pEpIdentity()
+//        pepIdentityA.fingerPrint = fingerprint(device: .a)
+//        let pepIdentityB = account.user.pEpIdentity()
+//        pepIdentityB.fingerPrint = fingerprint(device: .b)
+//        session.trustPersonalKey(<#T##identity: PEPIdentity##PEPIdentity#>)
+//
+//
+//
+//
+//    }
+
     // MARK: - HELPER
 
     private func setupUnitTestCallbackReceiver(with expectation: XCTestExpectation) {
@@ -364,6 +445,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
             return "device_B_unittest_ios_3_D0F3_5671_05D4_BBF1_0A54_7F3C_0D89_1B18_3331_55C5_"
         }
     }
+
     private func setupAccount(device: Device) {
         // // Account on trusted server (sender)
         cdAccount.identity?.userName = "unittest.ios.3"
@@ -383,12 +465,13 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         let filenamePub = keyFileName(device: device) + "pub.asc"
         let filenameSec = keyFileName(device: device) + "sec.asc"
         let fpr = fingerprint(device: device)
-        try! TestUtil.importKeyByFileName(session,
-                                          fileName: filenameSec)
-        try! TestUtil.importKeyByFileName(session,
-                                          fileName: filenamePub)
-        try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
-                               fingerprint: fpr)
+        do {
+            try TestUtil.importKeyByFileName(session, fileName: filenameSec)
+            try TestUtil.importKeyByFileName(session, fileName: filenamePub)
+            try session.setOwnKey(cdAccount.identity!.pEpIdentity(), fingerprint: fpr)
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
 
         TestUtil.skipValidation()
         Record.saveAndWait()
@@ -400,14 +483,24 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         setupAccount(device: device)
     }
 
-//    private func resetMyKey() {
-//        XCTAssertTrue(PEPUtil.pEpClean())
-//        do {
-//            try PEPSession().mySelf(account.user.pEpIdentity())
-//        } catch {
-//            XCTFail("Problem")
-//        }
-//    }
+    private func importPubKey(of device: Device) {
+        let filenamePub = keyFileName(device: device) + "pub.asc"
+        do {
+            try TestUtil.importKeyByFileName(session, fileName: filenamePub)
+        } catch {
+            XCTFail("importKeyByFileName failed")
+        }
+    }
+
+    private func trustKey(of device: Device) {
+        let pepIdentity = account.user.pEpIdentity()
+        pepIdentity.fingerPrint = fingerprint(device: device)
+        do {
+            try session.trustPersonalKey(pepIdentity)
+        } catch {
+            XCTFail("trustPersonalKey failed")
+        }
+    }
 }
 
 class TestKeyImportServiceObserver: KeyImportServiceDelegate {
