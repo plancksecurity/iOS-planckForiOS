@@ -76,7 +76,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         // topMessages[0] is the oldest, so it's last in the list
         let _ = testIncomingMessage(references: [theDisplayedMessage],
-                                    indexPathUpdated: nil)
+                                    indexPathUpdated: nil,
+                                    openThread: true)
     }
 
     func testThreadedUpdateTopMessage() {
@@ -340,7 +341,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     func testIncomingMessage(references: [Message],
-                             indexPathUpdated: IndexPath?) -> Message {
+                             indexPathUpdated: IndexPath?,
+                             openThread: Bool = false) -> Message {
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
@@ -361,10 +363,17 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                 indexPath: indexPath,
                 expectation: expectation(description: "expectationUpdated"))
         } else {
-            // expect child message
-            updateThreadListDelegate.expectationAdded = ExpectationChildMessageAdded(
-                expectation: expectation(description: "expectationAdded"))
+            if openThread {
+                // expect transforming from single to thread
+                emailListViewModelDelegate.expectationShowThreadView = ExpectationShowThreadView(
+                    expectation: expectation(description: "expectationShowThreadView"))
+            } else {
+                // expect child message to existing thread
+                updateThreadListDelegate.expectationAdded = ExpectationChildMessageAdded(
+                    expectation: expectation(description: "expectationAdded"))
+            }
         }
+
         emailListViewModel.didCreate(messageFolder: incomingMessage)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
@@ -444,6 +453,10 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let expectation: XCTestExpectation
     }
 
+    struct ExpectationShowThreadView {
+        let expectation: XCTestExpectation
+    }
+
     // MARK: - Internal - Delegates
 
     class MyDisplayedMessage: DisplayedMessage {
@@ -471,6 +484,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         var expectationInserted: ExpectationTopMessageInserted?
         var expectationUndiplayedMessageUpdated: ExpectationUndiplayedMessageUpdated?
         var expectationTopMessageDeleted: ExpectationViewModelDelegateTopMessageDeleted?
+        var expectationShowThreadView: ExpectationShowThreadView?
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didInsertDataAt indexPath: IndexPath) {
@@ -518,6 +532,9 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         }
 
         func showThreadView(for indexPath: IndexPath) {
+            if let exp = expectationShowThreadView {
+                exp.expectation.fulfill()
+            }
         }
     }
 
