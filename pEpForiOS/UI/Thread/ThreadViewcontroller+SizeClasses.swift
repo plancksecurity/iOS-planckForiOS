@@ -1,15 +1,14 @@
 //
-//  EmailViewController+SizeClasses.swift
+//  ThreadedViewcontroller+SizeClasses.swift
 //  pEp
 //
-//  Created by Miguel Berrocal Gómez on 23/05/2018.
+//  Created by Borja González de Pablo on 27/06/2018.
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
 
-extension EmailViewController {
-
+extension ThreadViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -17,24 +16,10 @@ extension EmailViewController {
             traitCollection.verticalSizeClass == .regular) {
             adaptBarButtonItemsForRegularSize()
         }
-        else {
-            adaptBarButtonItemsForAnyHeight()
-        }
     }
-
-    private func adaptBarButtonItemsForAnyHeight() {
-        guard let items = barItems, toolbarItems == nil else {
-            return
-        }
-
-        setToolbarItems(items.reversed(), animated: true)
-        navigationItem.setRightBarButtonItems([previousMessage, nextMessage], animated: true)
-        self.navigationController?.setToolbarHidden(false, animated: false)
-    }
-
     private func adaptBarButtonItemsForRegularSize() {
         guard let items = toolbarItems else {
-                return
+            return
         }
 
         barItems = items
@@ -44,4 +29,3 @@ extension EmailViewController {
         toolbarItems = nil
     }
 }
-

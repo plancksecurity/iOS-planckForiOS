@@ -21,7 +21,7 @@ class FolderThreading {
     }
 
     static func factory() -> ThreadedMessageFolderFactoryProtocol {
-        return theFactory ?? ThreadUnAwareFolderFactory()
+        return theFactory ?? ThreadAwareFolderFactory()
     }
 
     /**

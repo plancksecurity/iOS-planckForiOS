@@ -19,7 +19,8 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
                              collapseSecondary secondaryViewController:UIViewController,
                              onto primaryViewController:UIViewController) -> Bool {
         guard let navigationController = secondaryViewController as? UINavigationController,
-            navigationController.rootViewController is EmailViewController
+            navigationController.rootViewController is EmailViewController ||
+                navigationController.rootViewController is ThreadViewController
             else {
                 return true
         }
@@ -35,7 +36,8 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
                     splitViewController.viewControllers.first as? UINavigationController,
                 let secondaryNavigationController =
                     navigationController.topViewController as? UINavigationController,
-                secondaryNavigationController.rootViewController is EmailViewController
+                secondaryNavigationController.rootViewController is EmailViewController ||
+                    secondaryNavigationController.rootViewController is ThreadViewController
                 else {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let vc = storyboard.instantiateViewController(withIdentifier: "noMessagesViewController")

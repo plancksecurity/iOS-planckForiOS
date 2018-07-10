@@ -192,93 +192,20 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     // MARK: - Other
 
-    private func address(forRowAt indexPath: IndexPath) -> String {
-        guard
-            let saveModel = model,
-            let row = saveModel.row(for: indexPath),
-            let folder = folderToShow
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-                return ""
-        }
-        switch folder.folderType {
-        case .all: fallthrough
-        case .archive: fallthrough
-        case .spam: fallthrough
-        case .trash: fallthrough
-        case .flagged: fallthrough
-        case .inbox: fallthrough
-        case .normal:
-            return row.from
-        case .drafts: fallthrough
-        case .sent:
-            return row.to
-        }
-    }
-    
-    private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {
-        // Configure lightweight stuff on main thread ...
-        guard let saveModel = model else {
-            return
-        }
-        guard let row = saveModel.row(for: indexPath) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
-            return
-        }
-        cell.addressLabel.text = address(forRowAt: indexPath)
-        cell.subjectLabel.text = row.subject
-        cell.summaryLabel.text = row.bodyPeek
-        cell.isFlagged = row.isFlagged
-        cell.isSeen = row.isSeen
-        cell.hasAttachment = row.showAttchmentIcon
-        cell.dateLabel.text = row.dateText
-        // Set image from cache if any
-        cell.setContactImage(image: row.senderContactImage)
-
-        let op = BlockOperation() { [weak self] in
-            MessageModel.performAndWait {
-                // ... and expensive computations in background
-                guard let strongSelf = self else {
-                    // View is gone, nothing to do.
-                    return
-                }
-
-                if row.senderContactImage == nil {
-                    // image for identity has not been cached yet
-                    // Get (and cache) it here in the background ...
-                    let senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
-                    
-                    // ... and set it on the main queue
-                    DispatchQueue.main.async {
-                        if senderImage != nil && senderImage != cell.contactImageView.image {
-                            cell.contactImageView.image  = senderImage
-                        }
-                    }
-                }
-                
-                guard let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath) else {
-                    return
-                }
-                
-                // In theory we want to set all data in *one* async call. But as pEpRatingColorImage takes
-                // very long, we are setting the sender image seperatelly. //IOS-999: after Engine rewrite and not logging to Engine anymore computing the peprating is way more performant. Try if moving this up in image setting block.
-                DispatchQueue.main.async {
-                    cell.setPepRatingImage(image: pEpRatingImage)
-                }
-            }
-        }
-        queue(operation: op, for: indexPath)
-    }
-
     private func showComposeView() {
         self.performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
-        guard let vm = model else {
+        guard let vm = model,
+            let message = vm.message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No model.")
             return
+        }
+        if message.numberOfMessagesInThread() > 0 {
+            performSegue(withIdentifier: SegueIdentifier.segueShowThreadedEmail, sender: self)
+        } else {
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
         }
         vm.markRead(forIndexPath: indexPath)
     }
@@ -513,7 +440,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
-            configure(cell: theCell, for: indexPath)
+            guard let viewModel =  model?.viewModel(for: indexPath.row) else {
+                return cell
+            }
+            theCell.configure(for:viewModel)
         } else {
             Log.shared.errorAndCrash(component: #function, errorString: "dequeued wrong cell")
         }
@@ -884,7 +814,7 @@ extension EmailListViewController {
     }
     
     func flagAction(forCellAt indexPath: IndexPath) {
-        guard let row = model?.row(for: indexPath) else {
+        guard let row = model?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
             return
         }
@@ -921,6 +851,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueFolderViews
         case segueShowMoveToFolder
         case showNoMessage
+        case segueShowThreadedEmail
         case noSegue
     }
     
@@ -947,6 +878,23 @@ extension EmailListViewController: SegueHandlerType {
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model
             model?.currentDisplayedMessage = vc
+        case .segueShowThreadedEmail:
+            guard let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? ThreadViewController,
+                let indexPath = lastSelectedIndexPath,
+                let folder = folderToShow else {
+                    return
+            }
+            guard let message = model?.message(representedByRowAt: indexPath) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                return
+            }
+            vc.appConfig = appConfig
+            let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
+            viewModel.emailDisplayDelegate = self.model
+            vc.model = viewModel
+            model?.currentDisplayedMessage = viewModel
+            model?.updateThreadListDelegate = viewModel
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -1026,7 +974,7 @@ extension EmailListViewController: SegueHandlerType {
         composeVc.origin = folderToShow?.account.user
         if composeMode != .normal {
             // This is not a simple compose (but reply, forward or such),
-            // thus we have to pass the original meaasge.
+            // thus we have to pass the original message.
             guard
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
@@ -1070,7 +1018,7 @@ extension EmailListViewController: LoginTableViewControllerDelegate {
  Swipe configuration.
  */
 enum SwipeActionDescriptor {
-    case read, more, flag, trash, archive
+    case read, reply, more, flag, unflag, trash, archive
 
     func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
         if displayMode == .imageOnly {
@@ -1080,10 +1028,14 @@ enum SwipeActionDescriptor {
         switch self {
         case .read:
             return NSLocalizedString("Read", comment: "read button in slide-left menu")
+        case .reply:
+            return NSLocalizedString("Reply", comment: "read button in slide-left menu")
         case .more:
             return NSLocalizedString("More", comment: "more button in slide-left menu")
         case .flag:
             return NSLocalizedString("Flag", comment: "read button in slide-left menu")
+        case .unflag:
+            return NSLocalizedString("Unflag", comment: "read button in slide-left menu")
         case .trash:
             return NSLocalizedString("Trash", comment: "Trash button in slide-left menu")
         case .archive:
@@ -1099,20 +1051,24 @@ enum SwipeActionDescriptor {
         let name: String
         switch self {
         case .read: name = "read"
+        case .reply: name = "reply"
         case .more: name = "more"
         case .flag: name = "flag"
+        case .unflag: name = "unflag"
         case .trash: name = "trash"
         case .archive: name = "archive"
         }
 
-        return UIImage(named: "swipe-" + name)
+        return UIImage(named: "swipe-" + name + (style == .backgroundColor ? "" : "-circle"))
     }
 
     var color: UIColor {
         switch self {
         case .read: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        case .reply: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
         case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
+        case .unflag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
         case .archive: return UIColor.blue
         }

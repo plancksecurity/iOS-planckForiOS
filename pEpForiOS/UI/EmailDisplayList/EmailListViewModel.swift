@@ -36,30 +36,6 @@ class EmailListViewModel {
         "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
     let messageSyncService: MessageSyncServiceProtocol
-    class Row {
-        var senderContactImage: UIImage?
-        var ratingImage: UIImage?
-        var showAttchmentIcon: Bool = false
-        let from: String
-        let to: String
-        let subject: String
-        let bodyPeek: String
-        var isFlagged: Bool = false
-        var isSeen: Bool = false
-        var dateText: String
-        
-        init(withPreviewMessage pvmsg: PreviewMessage, senderContactImage: UIImage? = nil) {
-            self.senderContactImage = senderContactImage
-            showAttchmentIcon = pvmsg.hasAttachments
-            from = pvmsg.from.userNameOrAddress
-            to = pvmsg.to
-            subject = pvmsg.subject
-            bodyPeek = pvmsg.bodyPeek
-            isFlagged = pvmsg.isFlagged
-            isSeen = pvmsg.isSeen
-            dateText = pvmsg.dateSent.smartString()
-        }
-    }
     
     internal var messages: SortedSet<PreviewMessage>
     private let queue: OperationQueue = {
@@ -104,8 +80,7 @@ class EmailListViewModel {
         self.messageSyncService = messageSyncService
 
         self.folderToShow = folderToShow
-        threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
-
+        self.threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
         resetViewModel()
     }
 
@@ -143,19 +118,15 @@ class EmailListViewModel {
         return messages.index(of: PreviewMessage(withMessage: message))
     }
     
-    func row(for indexPath: IndexPath) -> Row? {
-        guard let previewMessage = messages.object(at: indexPath.row) else {
+    func viewModel(for index: Int) -> MessageViewModel? {
+        guard let message = messages.object(at: index)?.message() else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "InconsistencyviewModel vs. model")
             return nil
         }
-        if let cachedSenderImage = contactImageTool.cachedIdentityImage(
-            forIdentity: previewMessage.from) {
-            return Row(withPreviewMessage: previewMessage, senderContactImage: cachedSenderImage)
-        } else {
-            return Row(withPreviewMessage: previewMessage)
-        }
+        return MessageViewModel(with: message)
     }
+
     
     var rowCount: Int {
         return messages.count
@@ -221,7 +192,7 @@ class EmailListViewModel {
 
     public func checkFlaggedMessages(indexPaths: [IndexPath]) {
         let flagged = indexPaths.filter { (ip) -> Bool in
-            if let flag = row(for: ip)?.isFlagged {
+            if let flag = viewModel(for: ip.row)?.isFlagged {
                 return flag
             }
             return false
@@ -236,7 +207,7 @@ class EmailListViewModel {
 
     public func checkUnreadMessages(indexPaths: [IndexPath]) {
         let read = indexPaths.filter { (ip) -> Bool in
-            if let read = row(for: ip)?.isSeen {
+            if let read = viewModel(for: ip.row)?.isSeen {
                 return read
             }
             return false
