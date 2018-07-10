@@ -83,7 +83,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 object: nil)
         }
         setup()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -92,7 +91,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if MiscUtil.isUnitTest() {
             return
         }
-
 
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
@@ -133,7 +131,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     private func resetModel() {
         if let theFolder = folderToShow {
-            model = EmailListViewModel(delegate: self,
+            model = EmailListViewModel(emailListViewModelDelegate: self,
                                        messageSyncService: appConfig.messageSyncService,
                                        folderToShow: theFolder)
         }
@@ -194,93 +192,20 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     // MARK: - Other
 
-    private func address(forRowAt indexPath: IndexPath) -> String {
-        guard
-            let saveModel = model,
-            let row = saveModel.row(for: indexPath),
-            let folder = folderToShow
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-                return ""
-        }
-        switch folder.folderType {
-        case .all: fallthrough
-        case .archive: fallthrough
-        case .spam: fallthrough
-        case .trash: fallthrough
-        case .flagged: fallthrough
-        case .inbox: fallthrough
-        case .normal:
-            return row.from
-        case .drafts: fallthrough
-        case .sent:
-            return row.to
-        }
-    }
-    
-    private func configure(cell: EmailListViewCell, for indexPath: IndexPath) {
-        // Configure lightweight stuff on main thread ...
-        guard let saveModel = model else {
-            return
-        }
-        guard let row = saveModel.row(for: indexPath) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "We should have a row here")
-            return
-        }
-        cell.addressLabel.text = address(forRowAt: indexPath)
-        cell.subjectLabel.text = row.subject
-        cell.summaryLabel.text = row.bodyPeek
-        cell.isFlagged = row.isFlagged
-        cell.isSeen = row.isSeen
-        cell.hasAttachment = row.showAttchmentIcon
-        cell.dateLabel.text = row.dateText
-        // Set image from cache if any
-        cell.setContactImage(image: row.senderContactImage)
-
-        let op = BlockOperation() { [weak self] in
-            MessageModel.performAndWait {
-                // ... and expensive computations in background
-                guard let strongSelf = self else {
-                    // View is gone, nothing to do.
-                    return
-                }
-
-                if row.senderContactImage == nil {
-                    // image for identity has not been cached yet
-                    // Get (and cache) it here in the background ...
-                    let senderImage = strongSelf.model?.senderImage(forCellAt: indexPath)
-                    
-                    // ... and set it on the main queue
-                    DispatchQueue.main.async {
-                        if senderImage != nil && senderImage != cell.contactImageView.image {
-                            cell.contactImageView.image  = senderImage
-                        }
-                    }
-                }
-                
-                guard let pEpRatingImage = strongSelf.model?.pEpRatingColorImage(forCellAt: indexPath) else {
-                    return
-                }
-                
-                // In theory we want to set all data in *one* async call. But as pEpRatingColorImage takes
-                // very long, we are setting the sender image seperatelly. //IOS-999: after Engine rewrite and not logging to Engine anymore computing the peprating is way more performant. Try if moving this up in image setting block.
-                DispatchQueue.main.async {
-                    cell.setPepRatingImage(image: pEpRatingImage)
-                }
-            }
-        }
-        queue(operation: op, for: indexPath)
-    }
-
     private func showComposeView() {
         self.performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
-        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
-        guard let vm = model else {
+        guard let vm = model,
+            let message = vm.message(representedByRowAt: indexPath) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No model.")
             return
+        }
+        if message.numberOfMessagesInThread() > 0 {
+            performSegue(withIdentifier: SegueIdentifier.segueShowThreadedEmail, sender: self)
+        } else {
+            performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
         }
         vm.markRead(forIndexPath: indexPath)
     }
@@ -302,6 +227,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private var tempToolbarItems:  [UIBarButtonItem]?
     private var editRightButton: UIBarButtonItem?
+    var flagToolbarButton : UIBarButtonItem?
+    var unflagToolbarButton : UIBarButtonItem?
+    var readToolbarButton : UIBarButtonItem?
+    var unreadToolbarButton : UIBarButtonItem?
+    var deleteToolbarButton : UIBarButtonItem?
+    var moveToolbarButton : UIBarButtonItem?
 
     @IBAction func Edit(_ sender: Any) {
 
@@ -327,42 +258,62 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         var img = UIImage(named: "icon-flagged")
 
-        let flag = UIBarButtonItem(image: img,
+        flagToolbarButton = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.flagToolbar(_:)))
+        flagToolbarButton?.isEnabled = false
 
-        img = UIImage(named: "icon-unread")
+        img = UIImage(named: "icon-unflagged")
 
-        let unread = UIBarButtonItem(image: img,
+        unflagToolbarButton = UIBarButtonItem(image: img,
+                                            style: UIBarButtonItemStyle.plain,
+                                            target: self,
+                                            action: #selector(self.unflagToolbar(_:)))
+        unflagToolbarButton?.isEnabled = false
+
+        img = UIImage(named: "icon-read")
+
+        readToolbarButton = UIBarButtonItem(image: img,
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.readToolbar(_:)))
+        readToolbarButton?.isEnabled = false
+
+        img = UIImage(named: "icon-unread")
+
+        unreadToolbarButton = UIBarButtonItem(image: img,
+                                            style: UIBarButtonItemStyle.plain,
+                                            target: self,
+                                            action: #selector(self.unreadToolbar(_:)))
+        unreadToolbarButton?.isEnabled = false
 
         img = UIImage(named: "folders-icon-trash")
 
-        let delete = UIBarButtonItem(image: img,
+        deleteToolbarButton = UIBarButtonItem(image: img,
                                      style: UIBarButtonItemStyle.plain,
                                      target: self,
                                      action: #selector(self.deleteToolbar(_:)))
 
+        deleteToolbarButton?.isEnabled = false
+
         img = UIImage(named: "swipe-archive")
 
-        let move = UIBarButtonItem(image: img,
+        moveToolbarButton = UIBarButtonItem(image: img,
                                      style: UIBarButtonItemStyle.plain,
                                      target: self,
                                      action: #selector(self.moveToolbar(_:)))
 
-        img = UIImage(named: "pep-logo")
+        moveToolbarButton?.isEnabled = false
 
         let pEp = UIBarButtonItem(title: "p≡p",
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.cancelToolbar (_:)))
 
-        toolbarItems = [flag, flexibleSpace, unread,
-                        flexibleSpace, delete, flexibleSpace,
-                        move, flexibleSpace, pEp]
+        toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
+                        flexibleSpace, deleteToolbarButton, flexibleSpace,
+                        moveToolbarButton, flexibleSpace, pEp] as? [UIBarButtonItem]
 
 
         //right navigation button to ensure the logic
@@ -388,6 +339,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         cancelToolbar(sender)
     }
 
+    @IBAction func unflagToolbar(_ sender:UIBarButtonItem!) {
+        if let selectedItems = self.tableView.indexPathsForSelectedRows {
+            model?.markSelectedAsUnFlagged(indexPaths: selectedItems)
+        }
+        cancelToolbar(sender)
+    }
+
     @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = self.tableView.indexPathsForSelectedRows {
             model?.markSelectedAsRead(indexPaths: selectedItems)
@@ -395,26 +353,22 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         cancelToolbar(sender)
     }
 
-    @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
-        self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
+    @IBAction func unreadToolbar(_ sender:UIBarButtonItem!) {
+        if let selectedItems = self.tableView.indexPathsForSelectedRows {
+            model?.markSelectedAsUnread(indexPaths: selectedItems)
+        }
+        cancelToolbar(sender)
     }
 
-    @IBAction func markToolbar(_ sender:UIBarButtonItem!) {
-
-        let alertControler = UIAlertController.pEpAlertController(
-            title: nil, message: nil, preferredStyle: .actionSheet)
-        let cancelAction = createCancelAction()
-        alertControler.addAction(cancelAction)
-        if let popoverPresentationController = alertControler.popoverPresentationController {
-            popoverPresentationController.sourceView = tableView
-        }
-        present(alertControler, animated: true, completion: nil)
+    @IBAction func moveToolbar(_ sender:UIBarButtonItem!) {
+        self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
+        cancelToolbar(sender)
     }
 
     @IBAction func deleteToolbar(_ sender:UIBarButtonItem!) {
-       /* if let vm = model, let selectedIndexPaths = self.tableView.indexPathsForSelectedRows {
+        if let vm = model, let selectedIndexPaths = self.tableView.indexPathsForSelectedRows {
             vm.deleteSelected(indexPaths: selectedIndexPaths)
-        }*/
+        }
         cancelToolbar(sender)
     }
 
@@ -486,20 +440,19 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
-            configure(cell: theCell, for: indexPath)
+            guard let viewModel =  model?.viewModel(for: indexPath.row) else {
+                return cell
+            }
+            theCell.configure(for:viewModel)
         } else {
             Log.shared.errorAndCrash(component: #function, errorString: "dequeued wrong cell")
         }
 
         return cell
     }
+
+    // MARK: - UITableViewDelegate
     
-    // MARK: - SwipeTableViewCellDelegate
-
-    fileprivate func folderIsDraft(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType != .drafts
-    }
-
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt
         indexPath: IndexPath,
@@ -567,37 +520,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return options
     }
 
-    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
-        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
-        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
-
-        switch buttonStyle {
-        case .backgroundColor:
-            action.backgroundColor = descriptor.color
-        case .circular:
-            action.backgroundColor = .clear
-            action.textColor = descriptor.color
-            action.font = .systemFont(ofSize: 13)
-            action.transitionDelegate = ScaleTransition.default
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelOperation(for: indexPath)
     }
 
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        if tableView.isEditing {
-            if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-                vm.checkFlaggedMessages(indexPaths: selectedIndexPaths)
-            }
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
             if let vm = model, let selectedIndexPaths = tableView.indexPathsForSelectedRows {
-                vm.checkFlaggedMessages(indexPaths: selectedIndexPaths)
+                vm.updatedItems(indexPaths: selectedIndexPaths)
             }
             return
         }
@@ -615,6 +545,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView.isEditing, let vm = model {
+            if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+                vm.updatedItems(indexPaths: selectedIndexPaths)
+            } else {
+                vm.updatedItems(indexPaths: [])
+            }
+        }
+    }
+
     // Implemented to get informed about the scrolling position.
     // If the user has scrolled down (almost) to the end, we need to get older emails to display.
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
@@ -624,6 +564,27 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
         vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
+    }
+
+    // MARK: - SwipeTableViewCellDelegate
+
+    fileprivate func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType != .drafts
+    }
+
+    func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+            action.transitionDelegate = ScaleTransition.default
+        }
     }
 
     // MARK: - Queue Handling
@@ -679,24 +640,42 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+    func toolbarIs(enabled: Bool) {
+        flagToolbarButton?.isEnabled = enabled
+        unflagToolbarButton?.isEnabled = enabled
+        readToolbarButton?.isEnabled = enabled
+        unreadToolbarButton?.isEnabled = enabled
+        moveToolbarButton?.isEnabled = enabled
+        deleteToolbarButton?.isEnabled = enabled
+    }
 
     func showUnflagButton(enabled: Bool) {
         if enabled {
-            let img = UIImage(named: "icon-flagged")
-            toolbarItems![0].image = img
+
+            if let button = unflagToolbarButton {
+                toolbarItems?.remove(at: 0)
+                toolbarItems?.insert(button, at: 0)
+            }
+
         } else {
-            let img = UIImage(named: "icon-unflagged")
-            toolbarItems![0].image = img
+            if let button = flagToolbarButton {
+                toolbarItems?.remove(at: 0)
+                toolbarItems?.insert(button, at: 0)
+            }
         }
     }
 
     func showUnreadButton(enabled: Bool) {
         if enabled {
-            let img = UIImage(named: "icon-read")
-            toolbarItems![1].image = img
+            if let button = unreadToolbarButton {
+                toolbarItems?.remove(at: 2)
+                toolbarItems?.insert(button, at: 2)
+            }
         } else {
-            let img = UIImage(named: "icon-read")
-            toolbarItems![1].image = img
+            if let button = readToolbarButton {
+                toolbarItems?.remove(at: 2)
+                toolbarItems?.insert(button, at: 2)
+            }
         }
     }
 
@@ -737,6 +716,11 @@ extension EmailListViewController: EmailListViewModelDelegate {
         resetSelectionIfNeeded(for: indexPath)
     }
     
+    func emailListViewModel(viewModel: EmailListViewModel,
+                            didUpdateUndisplayedMessage message: Message) {
+        // ignore
+    }
+
     func updateView() {
         loadingBlocked = false
         tableView.dataSource = self
@@ -830,7 +814,7 @@ extension EmailListViewController {
     }
     
     func flagAction(forCellAt indexPath: IndexPath) {
-        guard let row = model?.row(for: indexPath) else {
+        guard let row = model?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
             return
         }
@@ -867,6 +851,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueFolderViews
         case segueShowMoveToFolder
         case showNoMessage
+        case segueShowThreadedEmail
         case noSegue
     }
     
@@ -893,6 +878,23 @@ extension EmailListViewController: SegueHandlerType {
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model
             model?.currentDisplayedMessage = vc
+        case .segueShowThreadedEmail:
+            guard let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? ThreadViewController,
+                let indexPath = lastSelectedIndexPath,
+                let folder = folderToShow else {
+                    return
+            }
+            guard let message = model?.message(representedByRowAt: indexPath) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                return
+            }
+            vc.appConfig = appConfig
+            let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
+            viewModel.emailDisplayDelegate = self.model
+            vc.model = viewModel
+            model?.currentDisplayedMessage = viewModel
+            model?.updateThreadListDelegate = viewModel
         case .segueFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -904,12 +906,14 @@ extension EmailListViewController: SegueHandlerType {
             destiny.filterEnabled = folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
-            guard let nav = segue.destination as? UINavigationController,
-            let vc = nav.rootViewController as? LoginTableViewController else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                return
+            guard
+                let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? LoginTableViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
             }
             vc.appConfig = appConfig
+            vc.delegate = self
             vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:
@@ -930,15 +934,17 @@ extension EmailListViewController: SegueHandlerType {
             }
 
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToFolderViewController,
+                let destination = nav.topViewController as? MoveToAccountViewController,
                 let messages = model?.messagesToMove(indexPaths: selectedRows)
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
+            if let msgs = messages as? [Message] {
+                let destinationvm = MoveToAccountViewModel(messages: msgs)
+                destination.viewModel = destinationvm
+            }
             destination.appConfig = appConfig
-            destination.message = messages
-            destination.delegate = model
             break
         case .showNoMessage:
             //No initialization needed
@@ -968,7 +974,7 @@ extension EmailListViewController: SegueHandlerType {
         composeVc.origin = folderToShow?.account.user
         if composeMode != .normal {
             // This is not a simple compose (but reply, forward or such),
-            // thus we have to pass the original meaasge.
+            // thus we have to pass the original message.
             guard
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
@@ -998,11 +1004,21 @@ extension EmailListViewController: SegueHandlerType {
     }
 }
 
+// MARK: - LoginTableViewControllerDelegate
+
+extension EmailListViewController: LoginTableViewControllerDelegate {
+    func loginTableViewControllerDidCreateNewAccount(
+        _ loginTableViewController: LoginTableViewController) {
+        // Setup model after initial account setup
+        setup()
+    }
+}
+
 /**
  Swipe configuration.
  */
 enum SwipeActionDescriptor {
-    case read, more, flag, trash, archive
+    case read, reply, more, flag, unflag, trash, archive
 
     func title(forDisplayMode displayMode: ButtonDisplayMode) -> String? {
         if displayMode == .imageOnly {
@@ -1012,10 +1028,14 @@ enum SwipeActionDescriptor {
         switch self {
         case .read:
             return NSLocalizedString("Read", comment: "read button in slide-left menu")
+        case .reply:
+            return NSLocalizedString("Reply", comment: "read button in slide-left menu")
         case .more:
             return NSLocalizedString("More", comment: "more button in slide-left menu")
         case .flag:
             return NSLocalizedString("Flag", comment: "read button in slide-left menu")
+        case .unflag:
+            return NSLocalizedString("Unflag", comment: "read button in slide-left menu")
         case .trash:
             return NSLocalizedString("Trash", comment: "Trash button in slide-left menu")
         case .archive:
@@ -1031,20 +1051,24 @@ enum SwipeActionDescriptor {
         let name: String
         switch self {
         case .read: name = "read"
+        case .reply: name = "reply"
         case .more: name = "more"
         case .flag: name = "flag"
+        case .unflag: name = "unflag"
         case .trash: name = "trash"
         case .archive: name = "archive"
         }
 
-        return UIImage(named: "swipe-" + name)
+        return UIImage(named: "swipe-" + name + (style == .backgroundColor ? "" : "-circle"))
     }
 
     var color: UIColor {
         switch self {
         case .read: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
+        case .reply: return #colorLiteral(red: 0.2980392157, green: 0.8509803922, blue: 0.3921568627, alpha: 1)
         case .more: return #colorLiteral(red: 0.7803494334, green: 0.7761332393, blue: 0.7967314124, alpha: 1)
         case .flag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
+        case .unflag: return #colorLiteral(red: 1, green: 0.5803921569, blue: 0, alpha: 1)
         case .trash: return #colorLiteral(red: 1, green: 0.2352941176, blue: 0.1882352941, alpha: 1)
         case .archive: return UIColor.blue
         }

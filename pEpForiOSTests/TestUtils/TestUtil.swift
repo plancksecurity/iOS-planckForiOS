@@ -14,6 +14,11 @@ import XCTest
 
 class TestUtil {
     /**
+     The maximum time for tests that don't consume any remote service.
+     */
+    static let waitTimeLocal: TimeInterval = 3
+
+    /**
      The maximum time most tests are allowed to run.
      */
     static let waitTime: TimeInterval = 30
@@ -259,59 +264,6 @@ class TestUtil {
         }
     }
 
-    class FetchMessagesServiceTestDelegate: FetchMessagesServiceDelegate {
-        var fetchedMessages = [Message]()
-
-        func didFetch(message: Message) {
-            fetchedMessages.append(message)
-        }
-    }
-
-    static func runFetchTest(parentName: String, testCase: XCTestCase, cdAccount: CdAccount,
-                             useDisfunctionalAccount: Bool,
-                             folderName: String = ImapSync.defaultImapInboxName,
-                             expectError: Bool) {
-        if useDisfunctionalAccount {
-            TestUtil.makeServersUnreachable(cdAccount: cdAccount)
-        }
-
-        guard let (imapSyncData, _) = TestUtil.syncData(cdAccount: cdAccount) else {
-            XCTFail()
-            return
-        }
-
-        let expectationServiceRan = testCase.expectation(description: "expectationServiceRan")
-        let mbg = MockBackgrounder(expBackgroundTaskFinishedAtLeastOnce: expectationServiceRan)
-
-        let service = FetchMessagesService(parentName: parentName, backgrounder: mbg,
-                                           imapSyncData: imapSyncData, folderName: folderName)
-        let testDelegate = FetchMessagesServiceTestDelegate()
-        service.delegate = testDelegate
-
-        let expServiceBlockInvoked = testCase.expectation(description: "expServiceBlockInvoked")
-        service.execute() { error in
-            expServiceBlockInvoked.fulfill()
-
-            if expectError {
-                XCTAssertNotNil(error)
-            } else {
-                XCTAssertNil(error)
-            }
-        }
-
-        testCase.waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-
-        if expectError {
-            XCTAssertEqual(testDelegate.fetchedMessages.count, 0)
-        } else {
-            XCTAssertGreaterThan(testDelegate.fetchedMessages.count, 0)
-        }
-
-        imapSyncData.sync?.close()
-    }
-
     // MARK: - Sync Loop
 
     static public func syncAndWait(numAccountsToSync: Int = 1, testCase: XCTestCase, skipValidation: Bool) {
@@ -338,11 +290,11 @@ class TestUtil {
             XCTAssertNil(error)
         }
 
-        TestUtil.cancelNetworkService(networkService: networkService, testCase: testCase)
+        TestUtil.cancelNetworkServiceAndWait(networkService: networkService, testCase: testCase)
     }
 
     // MARK: - NetworkService
-    static public func cancelNetworkService(networkService: NetworkService, testCase: XCTestCase) {
+    static public func cancelNetworkServiceAndWait(networkService: NetworkService, testCase: XCTestCase) {
         let del = NetworkServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
         networkService.unitTestDelegate = del
@@ -354,14 +306,71 @@ class TestUtil {
         })
     }
 
-    // MARK: Messages
+    // MARK: - Messages
 
-    static func createOutgoingMails(cdAccount: CdAccount,
+    /// Calls createOutgoingMails for Cd...Objcets. See docs there.
+    static func createOutgoingMails(account: Account,
+                                    fromIdentity: Identity? = nil,
+                                    toIdentity: Identity? = nil,
+                                    setSentTimeOffsetForManualOrdering: Bool = false,
                                     testCase: XCTestCase,
                                     numberOfMails: Int,
                                     withAttachments: Bool = true,
                                     attachmentsInlined: Bool = false,
-                                    encrypt: Bool = true) throws -> [CdMessage] {
+                                    encrypt: Bool = true,
+                                    forceUnencrypted: Bool = false) throws -> [Message] {
+        guard
+            let cdAccount = account.cdAccount(),
+            let cdFromIdentity = fromIdentity?.cdIdentity(),
+            let cdToIdentity = toIdentity?.cdIdentity()
+            else {
+                XCTFail("No account.")
+                return []
+        }
+
+        let cdMessages = try createOutgoingMails(cdAccount: cdAccount,
+                                                 fromIdentity: cdFromIdentity,
+                                                 toIdentity: cdToIdentity,
+                                                 setSentTimeOffsetForManualOrdering: setSentTimeOffsetForManualOrdering,
+                                                 testCase: testCase,
+                                                 numberOfMails: numberOfMails,
+                                                 withAttachments: withAttachments,
+                                                 attachmentsInlined: attachmentsInlined,
+                                                 encrypt: encrypt,
+                                                 forceUnencrypted: forceUnencrypted)
+        return cdMessages.map { $0.message()! }
+    }
+
+    /// Creates outgoing messages
+    ///
+    /// - Parameters:
+    ///   - cdAccount: account to send from. Is ignored if fromIdentity is not nil 
+    ///   - fromIdentity: identity used as sender
+    ///   - toIdentity: identity used as recipient
+    ///   - setSentTimeOffsetForManualOrdering: Add some time difference to date sent tp be
+    ///                                         recognised by Date().sort. That makes it easier to
+    ///                                         misuse thoses mails for manual debugging.
+    //
+    ///   - testCase: the one to make fail
+    ///   - numberOfMails: num mails to create
+    ///   - withAttachments: Whether or not messages should contain attachments
+    ///   - attachmentsInlined: Whether or not the attachments should be inlined
+    ///   - encrypt: Whether or not to import a key for the receipient. Is ignored if `toIdentity`
+    ///              is not nil
+    ///   - forceUnencrypted: mark mails force unencrypted
+    /// - Returns: created mails
+    /// - Throws: error importing key
+    static func createOutgoingMails(cdAccount: CdAccount,
+                                    fromIdentity: CdIdentity? = nil,
+                                    toIdentity: CdIdentity? = nil,
+                                    setSentTimeOffsetForManualOrdering: Bool = false,
+                                    testCase: XCTestCase,
+                                    numberOfMails: Int,
+                                    withAttachments: Bool = true,
+                                    attachmentsInlined: Bool = false,
+                                    encrypt: Bool = true,
+                                    forceUnencrypted: Bool = false) throws -> [CdMessage] {
+        let cdAccount = fromIdentity?.accounts?.allObjects.first as? CdAccount ?? cdAccount 
         testCase.continueAfterFailure = false
 
         if numberOfMails == 0 {
@@ -371,20 +380,8 @@ class TestUtil {
         let existingSentFolder = CdFolder.by(folderType: .sent, account: cdAccount)
 
         if existingSentFolder == nil {
-            let expectationFoldersFetched = testCase.expectation(
-                description: "expectationFoldersFetched")
-            guard let imapCI = cdAccount.imapConnectInfo else {
-                XCTFail()
-                return []
-            }
-            let imapSyncData = ImapSyncData(connectInfo: imapCI)
-            let fs = SyncFoldersFromServerService(parentName: #function, imapSyncData: imapSyncData)
-            fs.execute() { error in
-                XCTAssertNil(error)
-                expectationFoldersFetched.fulfill()
-            }
-
-            testCase.wait(for: [expectationFoldersFetched], timeout: waitTime)
+            // Make sure folders are synced
+            syncAndWait(testCase: testCase, skipValidation: true)
         }
 
         guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
@@ -392,27 +389,33 @@ class TestUtil {
             return []
         }
 
-        if encrypt {
-            let session = PEPSession()
-            try TestUtil.importKeyByFileName(
-                session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
+        let from: CdIdentity
+        if let fromIdentity = fromIdentity {
+            from = fromIdentity
+        } else {
+            from = CdIdentity.create()
+            from.userName = cdAccount.identity?.userName ?? "Unit 004"
+            from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
         }
-
-        let from = CdIdentity.create()
-        from.userName = cdAccount.identity?.userName ?? "Unit 004"
-        from.address = cdAccount.identity?.address ?? "unittest.ios.4@peptest.ch"
         guard let fromUserId = cdAccount.identity?.userID else {
             fatalError("No userId")
         }
         from.userID = fromUserId
 
-        let toWithKey = CdIdentity.create()
-        toWithKey.userName = "Unit 001"
-        toWithKey.address = "unittest.ios.1@peptest.ch"
-
-        let toWithoutKey = CdIdentity.create()
-        toWithoutKey.userName = "Unit 002"
-        toWithoutKey.address = "unittest.ios.2@peptest.ch"
+        let to: CdIdentity
+        if let toIdentity = toIdentity {
+            to = toIdentity
+        } else {
+            if encrypt {
+                let session = PEPSession()
+                try TestUtil.importKeyByFileName(
+                    session, fileName: "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc")
+            }
+            let toWithKey = CdIdentity.create()
+            toWithKey.userName = "Unit 001"
+            toWithKey.address = "unittest.ios.1@peptest.ch"
+            to = toWithKey
+        }
 
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
         guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
@@ -429,11 +432,16 @@ class TestUtil {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            // Add some time difference recognised by Date().sort.
-            // That makes it easier to misuse thoses mails for manual debugging.
-            let sentTimeOffset = Double(i) - 1
-            message.sent = Date().addingTimeInterval(sentTimeOffset)
-            message.addTo(cdIdentity: toWithKey)
+            message.pEpProtected = !forceUnencrypted
+            if setSentTimeOffsetForManualOrdering {
+                // Add some time difference recognised by Date().sort.
+                // That makes it easier to misuse thoses mails for manual debugging.
+                let sentTimeOffset = Double(i) - 1
+                message.sent = Date().addingTimeInterval(sentTimeOffset)
+            } else {
+                message.sent = Date()
+            }
+            message.addTo(cdIdentity: to)
 
             // add attachments
             if withAttachments {
@@ -453,8 +461,9 @@ class TestUtil {
 
         if let cdOutgoingMsgs = sentFolder.messages?.sortedArray(
             using: [NSSortDescriptor.init(key: "uid", ascending: true)]) as? [CdMessage] {
-            XCTAssertEqual(cdOutgoingMsgs.count, numberOfMails)
-            for m in cdOutgoingMsgs {
+            let unsent = cdOutgoingMsgs.filter { $0.uid == 0 }
+            XCTAssertEqual(unsent.count, numberOfMails)
+            for m in unsent {
                 XCTAssertEqual(m.parent?.folderType, FolderType.sent)
                 XCTAssertEqual(m.uid, Int32(0))
                 XCTAssertEqual(m.sendStatus, SendStatus.none)
@@ -465,6 +474,83 @@ class TestUtil {
         
         return messagesInTheQueue
     }
+
+    static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
+        let msg = Message(uuid: "\(uid)", uid: UInt(uid), parentFolder: folder)
+        XCTAssertEqual(msg.uid, UInt(uid))
+        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.received = Date.init(timeIntervalSince1970: Double(uid))
+        msg.sent = msg.received
+        return msg
+    }
+
+    /**
+     Determines the highest UID of _all_ the messages currently in the DB.
+     */
+    static func highestUid() -> Int {
+        var theHighestUid: Int32 = 0
+        if let allCdMessages = CdMessage.all() as? [CdMessage] {
+            for cdMsg in allCdMessages {
+                if cdMsg.uid > theHighestUid {
+                    theHighestUid = cdMsg.uid
+                }
+            }
+        }
+        return Int(theHighestUid)
+    }
+
+    /**
+     - Returns: `highestUid()` + 1
+     */
+    static func nextUid() -> Int {
+        return highestUid() + 1
+    }
+
+    // MARK: - FOLDER
+
+    static func determineInterestingFolders(in cdAccount: CdAccount)
+        -> [NetworkServiceWorker.FolderInfo] {
+        let accountInfo = AccountConnectInfo(accountID: cdAccount.objectID)
+        let dummyConfig = NetworkService.ServiceConfig(sleepTimeInSeconds: 1,
+                                                       parentName: #function,
+                                                       mySelfer:
+            DefaultMySelfer(parentName: #function,
+                            backgrounder: nil),
+                                                       backgrounder: nil,
+                                                       errorPropagator: nil)
+        let networkServiceWorker = NetworkServiceWorker(serviceConfig: dummyConfig,
+                                                        imapConnectionDataCache: nil)
+        return networkServiceWorker.determineInterestingFolders(accountInfo: accountInfo)
+    }
+
+    static func makeFolderInteresting(folderType: FolderType, cdAccount: CdAccount) {
+        let folder = cdFolder(ofType: folderType, in: cdAccount)
+        folder.lastLookedAt = Date(timeInterval: -1, since: Date())
+        Record.saveAndWait()
+    }
+
+    static func cdFolder(ofType type: FolderType, in cdAccount: CdAccount) -> CdFolder {
+        guard let folder = CdFolder.by(folderType: type, account: cdAccount, context: nil)
+            else {
+                fatalError()
+        }
+        return folder
+    }
+
+    // MARK: - SERVER
+
+    static func setServersTrusted(forCdAccount cdAccount: CdAccount, testCase: XCTestCase) {
+        guard let cdServers = cdAccount.servers?.allObjects as? [CdServer] else {
+            XCTFail("No Servers")
+            return
+        }
+        for server in cdServers {
+            server.trusted = true
+        }
+        Record.saveAndWait()
+    }
+
+    // MARK: - ERROR
 
     class TestErrorContainer: ServiceErrorProtocol {
         var error: Error?

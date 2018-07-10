@@ -118,8 +118,8 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                     content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
                 context.saveAndLogErrors()
             } else {
-                Log.error(
-                    component: self.comp, errorString: "Could not access sent message by ID")
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Could not access sent message by ID")
             }
         }
     }
@@ -145,20 +145,35 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         }
 
         lastSentMessageObjectID = nil
-        if let (msg, protected, objID) = EncryptAndSendOperation.retrieveNextMessage(
+        if let (msg, protected, cdMessageObjID) = EncryptAndSendOperation.retrieveNextMessage(
             context: context, cdAccount: cdAccount) {
-            lastSentMessageObjectID = objID
+            lastSentMessageObjectID = cdMessageObjID
             let session = PEPSession()
             do {
-                let (_, encMsg) = try session.encrypt(
+                let (_, encryptedMessageToSend) = try session.encrypt(
                     pEpMessageDict: msg, encryptionFormat: protected ? PEP_enc_PEP : PEP_enc_none)
-                send(pEpMessageDict: encMsg as? PEPMessageDict)
+
+                setOriginalRatingHeader(toMessageWithObjId: cdMessageObjID, inContext: context)
+                send(pEpMessageDict: encryptedMessageToSend as? PEPMessageDict)
             } catch let err as NSError {
                 handleError(err)
             }
         } else {
             markAsFinished()
         }
+    }
+
+    private func setOriginalRatingHeader(toMessageWithObjId objId: NSManagedObjectID,
+                                         inContext moc: NSManagedObjectContext) {
+        guard let unencryptedMessage = CdMessage.message(withObjectID: objId) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No Message")
+                handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
+                return
+        }
+
+        let originalRating = unencryptedMessage.outgoingMessageRating()
+        unencryptedMessage.setOriginalRatingHeader(rating: originalRating)
+        unencryptedMessage.save()
     }
 }
 

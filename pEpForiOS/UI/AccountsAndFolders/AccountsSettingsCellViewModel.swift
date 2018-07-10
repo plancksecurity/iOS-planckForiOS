@@ -9,29 +9,60 @@
 import Foundation
 import MessageModel
 
-public class AccountsSettingsCellViewModel {
-    public enum SettingType {
-        case account
-        case showLog
-        case organizedByThread
-        case credits
-        case unecryptedSubject
-        case defaultAccount
+public enum AccountSettingsCellType: String {
+    case accountsCell = "accountsCell"
+    case switchOptionCell = "switchOptionCell"
+
+    func isAccountCell() -> Bool {
+        return self == AccountSettingsCellType.accountsCell
     }
 
+    func isSwitchOptionCell() -> Bool {
+        return self == AccountSettingsCellType.switchOptionCell
+    }
+
+}
+public enum SettingType {
+    case account
+    case showLog
+    case organizedByThread
+    case credits
+    case unecryptedSubject
+    case pasiveMode
+    case defaultAccount
+}
+
+public class AccountsSettingsCellViewModel: SettingsCellViewModel {
+
+    var settingCellType: AccountSettingsCellType
+    var type: SettingType
     var account: Account?
-    let type: SettingType
     var status: Bool?
 
     init(account: Account) {
         self.type = .account
         self.account = account
+        self.settingCellType = .accountsCell
     }
 
     init(type: SettingType) {
         self.type = type
-        if type == .organizedByThread {
-            status = false
+        switch self.type {
+        case .account, .credits, .defaultAccount, .showLog:
+            self.settingCellType = AccountSettingsCellType.accountsCell
+        case .organizedByThread, .unecryptedSubject, .pasiveMode:
+            self.settingCellType = AccountSettingsCellType.switchOptionCell
+        }
+    }
+
+    public var detail : String? {
+        get {
+            switch self.type {
+            case .defaultAccount:
+                return AppSettings.init().defaultAccount
+            default:
+                return nil
+            }
         }
     }
 
@@ -41,10 +72,13 @@ public class AccountsSettingsCellViewModel {
             case .showLog:
                 return NSLocalizedString("Logging", comment: "")
             case .organizedByThread:
-                return NSLocalizedString("Enable Threading", comment: "")
+                return NSLocalizedString(
+                    "Enable Threading Messages",
+                    comment: "AccountsSettings: Cell (button) title to view threads messages together")
             case .credits:
-                return NSLocalizedString("Credits", comment:
-                    "AccountsSettings: Cell (button) title to view app credits")
+                return NSLocalizedString(
+                    "Credits",
+                    comment: "AccountsSettings: Cell (button) title to view app credits")
             case .unecryptedSubject:
                 return NSLocalizedString("Subject Protection", comment:
                     "AccountsSettings: Cell (button) title to view unencrypted subject setting")
@@ -58,6 +92,10 @@ public class AccountsSettingsCellViewModel {
                     return nil
                 }
                 return acc.user.address
+
+            case .pasiveMode:
+                return "pasive mode"//TODO
+
             }
         }
     }
@@ -68,13 +106,14 @@ public class AccountsSettingsCellViewModel {
             case .showLog, .account, .credits:
                 // Have no value.
                 return nil
+            case .pasiveMode:
+                return onOffStateString(forState: false) //TODO
             case .organizedByThread:
-                // Feature unimplemented
-                return nil
+                return onOffStateString(forState: AppSettings().threadedViewEnabled)
             case .defaultAccount:
                 return AppSettings().defaultAccount
             case .unecryptedSubject:
-                return onOffStateString(forState: !AppSettings().unecryptedSubjectEnabled)
+                return onOffStateString(forState: !AppSettings().unencryptedSubjectEnabled)
             }
         }
     }

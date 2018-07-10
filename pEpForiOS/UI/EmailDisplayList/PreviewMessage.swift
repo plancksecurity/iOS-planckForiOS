@@ -81,6 +81,8 @@ class PreviewMessage: Equatable {
                 // The model has changed.
                 return nil
         }
+        msg.imapFlags?.seen = isSeen
+        msg.imapFlags?.flagged = isFlagged
         return msg
     }
 

@@ -26,6 +26,8 @@ class EmailViewController: BaseTableViewController {
     var folderShow : Folder?
     var messageId = 0
 
+    var shouldShowOKButton: Bool = false
+
     private var partnerIdentity: Identity?
     private var tableData: ComposeDataSource?
     private var ratingReEvaluator: RatingReEvaluator?
@@ -39,6 +41,7 @@ class EmailViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
+        configureOKButton()
 
         loadDatasource("MessageData")
 
@@ -78,9 +81,8 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func showPepRating() {
-        let session = PEPSession()
-        if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating(session: session)) {
-            let handshakeCombos = message?.handshakeActionCombinations(session: session) ?? []
+        if let privacyStatusIcon = showPepRating(pEpRating: message?.pEpRating()) {
+            let handshakeCombos = message?.handshakeActionCombinations() ?? []
             if !handshakeCombos.isEmpty {
                 let tapGestureRecognizer = UITapGestureRecognizer(
                     target: self,
@@ -136,6 +138,19 @@ class EmailViewController: BaseTableViewController {
     private func configureSplitViewBackButton() {
         self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         self.navigationItem.leftItemsSupplementBackButton = true
+    }
+
+    private func configureOKButton() {
+        if (shouldShowOKButton) {
+            let okButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: .okButtonPressed)
+            self.navigationItem.leftBarButtonItems? = [okButton]
+            self.navigationItem.hidesBackButton = true
+        }
+    }
+
+    @objc internal func okButtonPressed(sender: UIBarButtonItem) {
+        performSegue(withIdentifier: .unwindToThread, sender: self)
+        print("what")
     }
 
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
@@ -287,39 +302,21 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
-        let alertViewWithoutTitle = UIAlertController.pEpAlertController()
+        let alert = ReplyAlertCreator()
+            .withReplyOption { action in
+                self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
+            }.withReplyAllOption { action in
+                self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+            }.withFordwardOption { action in
+                self.performSegue(withIdentifier: .segueForward , sender: self)
+            }.withCancelOption()
+            .build()
 
-        if let popoverPresentationController = alertViewWithoutTitle.popoverPresentationController {
+        if let popoverPresentationController = alert.popoverPresentationController {
             popoverPresentationController.barButtonItem = sender
         }
 
-        let alertActionReply = UIAlertAction(
-            title: NSLocalizedString("Reply", comment: "Message actions"),
-            style: .default) { (action) in
-                self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-        }
-        alertViewWithoutTitle.addAction(alertActionReply)
-
-        let alertActionReplyAll = UIAlertAction(
-            title: NSLocalizedString("Reply All", comment: "Message actions"),
-            style: .default) { (action) in
-                self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
-        }
-        alertViewWithoutTitle.addAction(alertActionReplyAll)
-
-        let alertActionForward = UIAlertAction(
-            title: NSLocalizedString("Forward", comment: "Message actions"),
-            style: .default) { (action) in
-                self.performSegue(withIdentifier: .segueForward , sender: self)
-        }
-        alertViewWithoutTitle.addAction(alertActionForward)
-
-        let cancelAction = UIAlertAction(
-            title: NSLocalizedString("Cancel", comment: "Message actions"),
-            style: .cancel) { (action) in }
-        alertViewWithoutTitle.addAction(cancelAction)
-
-        present(alertViewWithoutTitle, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
     @IBAction func flagButtonTapped(_ sender: UIBarButtonItem) {
@@ -451,6 +448,7 @@ extension EmailViewController: SegueHandlerType {
         case segueForward
         case segueHandshake
         case segueShowMoveToFolder
+        case unwindToThread
         case noSegue
     }
 
@@ -477,12 +475,14 @@ extension EmailViewController: SegueHandlerType {
             }
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToFolderViewController else {
+                let destination = nav.topViewController as? MoveToAccountViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
             destination.appConfig = appConfig
-            destination.message = [message]
+            if let msg = message {
+                destination.viewModel = MoveToAccountViewModel(messages: [msg])
+            }
             destination.delegate = self
         case .segueHandshake:
             guard let destination = segue.destination as? HandshakeViewController else {
@@ -493,7 +493,7 @@ extension EmailViewController: SegueHandlerType {
             destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
             break
-        case .noSegue:
+        case .noSegue, .unwindToThread:
             break
         }
     }
@@ -557,4 +557,8 @@ extension EmailViewController: SecureWebViewControllerDelegate {
                                  sizeChangedTo size: CGSize) {
         tableView.updateSize()
     }
+}
+
+fileprivate extension Selector {
+    static let okButtonPressed = #selector(EmailViewController.okButtonPressed(sender:))
 }

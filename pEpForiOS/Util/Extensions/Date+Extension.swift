@@ -38,7 +38,7 @@ extension Date {
         }
 
         let formatter = DateFormatter()
-        formatter.dateStyle = .short
+        formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter.string(from: self)
     }

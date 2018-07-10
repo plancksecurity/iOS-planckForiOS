@@ -49,18 +49,18 @@ extension CWIMAPMessage {
         // Go over all references and inReplyTo, and add all the uniques
         // as references, with the inReplyTo last
         // (https://cr.yp.to/immhf/thread.html)
-        let allRefsAdded = NSMutableOrderedSet()
+        var allRefsToAdd = [String]()
         if let refs = pEpMessageDict[kPepReferences] as? [AnyObject] {
-            for ref in refs {
-                allRefsAdded.add(ref)
+            for case let ref as String in refs {
+                allRefsToAdd.append(ref)
             }
         }
         if let inReplyTos = pEpMessageDict[kPepInReplyTo] as? [AnyObject] {
-            for inReplyTo in inReplyTos {
-                allRefsAdded.add(inReplyTo)
+            for case let inReplyTo as String in inReplyTos {
+                allRefsToAdd.append(inReplyTo)
             }
         }
-        self.setReferences(allRefsAdded.array)
+        self.setReferences(allRefsToAdd)
 
         if let optFields = pEpMessageDict[kPepOptFields] as? NSArray {
             for item in optFields {
@@ -76,13 +76,13 @@ extension CWIMAPMessage {
             }
         }
 
-        let attachmentDictsOpt = pEpMessageDict[kPepAttachments] as? NSArray
-        if !MiscUtil.isNilOrEmptyNSArray(attachmentDictsOpt) {
-            let encrypted = PEPUtil.isProbablyPGPMime(pEpMessageDict: pEpMessageDict)
+        let attachmentDicts = pEpMessageDict[kPepAttachments] as? [PEPAttachment] ?? []
+        if !attachmentDicts.isEmpty {
+            let isEncrypted = PEPUtil.isProbablyPGPMime(pEpMessageDict: pEpMessageDict)
 
             // Create multipart mail
             let multiPart = CWMIMEMultipart()
-            if encrypted {
+            if isEncrypted {
                 self.setContentType(Constants.contentTypeMultipartEncrypted)
                 self.setContentTransferEncoding(PantomimeEncoding8bit)
                 self.setParameter(Constants.protocolPGPEncrypted, forKey: "protocol")
@@ -95,34 +95,32 @@ extension CWIMAPMessage {
             }
             self.setContent(multiPart)
 
-            if let attachmentObjs = attachmentDictsOpt as? [PEPAttachment] {
-                for attachmentObj in attachmentObjs {
-                    let part = CWPart()
-                    part.setContentType(attachmentObj.mimeType)
-                    part.setContent(attachmentObj.data as NSObject)
-                    part.setSize(attachmentObj.data.count)
+            for attachmentObj in attachmentDicts {
+                let part = CWPart()
+                part.setContentType(attachmentObj.mimeType)
+                part.setContent(attachmentObj.data as NSObject)
+                part.setSize(attachmentObj.data.count)
 
-                    let pantomimeContentDisposition =
-                        attachmentObj.contentDisposition.pantomimeContentDisposition
-                    part.setContentDisposition(pantomimeContentDisposition)
-                    
-                    if let fileName = attachmentObj.filename {
-                        if let cid = fileName.extractCid() {
-                            part.setContentID("<\(cid)>")
-                        } else {
-                            let theFilePart = fileName.extractFileName() ?? fileName
-                            part.setFilename(theFilePart)
-                        }
+                let pantomimeContentDisposition =
+                    attachmentObj.contentDisposition.pantomimeContentDisposition
+                part.setContentDisposition(pantomimeContentDisposition)
+
+                if let fileName = attachmentObj.filename {
+                    if let cid = fileName.extractCid() {
+                        part.setContentID("<\(cid)>")
+                    } else {
+                        let theFilePart = fileName.extractFileName() ?? fileName
+                        part.setFilename(theFilePart)
                     }
-
-                    if !encrypted {
-                        // We have to add base64 if this was not encrypted by the engine.
-                        // Otherwise, leave it as-is.
-                        part.setContentTransferEncoding(PantomimeEncodingBase64)
-                    }
-
-                    multiPart.add(part)
                 }
+
+                if !isEncrypted {
+                    // We have to add base64 if this was not encrypted by the engine.
+                    // Otherwise, leave it as-is.
+                    part.setContentTransferEncoding(PantomimeEncodingBase64)
+                }
+
+                multiPart.add(part)
             }
         } else {
             if let body = PEPUtil.bodyPart(pEpMessageDict: pEpMessageDict) {

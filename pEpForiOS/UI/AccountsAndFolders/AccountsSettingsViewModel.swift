@@ -18,7 +18,7 @@ class AccountsSettingsViewModel {
 
     private func generateSections() {
         sections.append(AccountsSettingsSectionViewModel(type: .accounts))
-        sections.append(AccountsSettingsSectionViewModel(type: .glogalSettings))
+        sections.append(AccountsSettingsSectionViewModel(type: .globalSettings))
         sections.append(AccountsSettingsSectionViewModel(type: .pgpCompatibilitySettings))
     }
 
@@ -33,7 +33,7 @@ class AccountsSettingsViewModel {
         }
     }
 
-    func rowType(for indexPath: IndexPath) -> AccountsSettingsCellViewModel.SettingType {
+    func rowType(for indexPath: IndexPath) -> SettingType {
         return self[indexPath.section][indexPath.row].type
     }
 

@@ -16,7 +16,7 @@ import MessageModel
  - Note: Objects implmenting this protocol can choose to ignore threading
  completely, which is transparent to the client.
  */
-protocol ThreadedMessageFolderProtocol {
+public protocol ThreadedMessageFolderProtocol {
     /**
      Depending on whether the underlying implmentation is configured to
      show threads or not, this will return a list of all messages or just
@@ -25,15 +25,22 @@ protocol ThreadedMessageFolderProtocol {
     func allMessages() -> [Message]
 
     /**
-     Assuming the given message is the tip of the thread, returns all (known) messages
-     in the thread that went before.
-     - Note: Only downloaded, decrypted messages are considered.
+     Assuming the given message is part of a thread, returns all the count of
+     all (known) messages in the thread.
+     - Note:
+       * See `messagesInThread()`
+       * A single (unthreaded) message will have a count of 0. As soon as another message
+     belongs to the same thread, the count will be 2. So this will never yield 1.
      */
     func numberOfMessagesInThread(message: Message) -> Int
 
     /**
-     - Returns: All messages belonging to the same thread, that went before.
-     - Note: Only downloaded, decrypted messages are considered.
+     - Returns: _All_ messages belonging to the same thread.
+     - Note:
+       * Includes the given `message` in the list.
+       * Only downloaded, decrypted messages are considered
+         (that is to say, they exist locally in the DB in unencrypted form).
+       * They are ordered oldest to newest (if possible to determine).
      */
     func messagesInThread(message: Message) -> [Message]
 
@@ -47,4 +54,11 @@ protocol ThreadedMessageFolderProtocol {
      before it.
      */
     func deleteThread(message: Message)
+
+    /**
+     When a new message arrives, the client needs to find out if it belongs into to the
+     message list (of thread tips), or if it's a message referenced by a top message
+     (then it might have to go to the thread view).
+     */
+    func referencedTopMessages(message: Message) -> [Message]
 }

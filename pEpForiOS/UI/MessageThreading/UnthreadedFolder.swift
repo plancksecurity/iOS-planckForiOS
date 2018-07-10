@@ -40,4 +40,8 @@ class UnthreadedFolder: ThreadedMessageFolderProtocol {
     func deleteThread(message: Message) {
         deleteSingle(message: message)
     }
+
+    func referencedTopMessages(message: Message) -> [Message] {
+        return [] // make it seem this is a top message
+    }
 }

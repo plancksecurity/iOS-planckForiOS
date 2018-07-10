@@ -13,12 +13,13 @@ public class AccountsSettingsSectionViewModel {
 
     public enum SectionType {
         case accounts
-        case glogalSettings
+        case globalSettings
         case pgpCompatibilitySettings
     }
 
-    var cells = [AccountsSettingsCellViewModel]()
+    var cells = [SettingsCellViewModel]()
     var title: String?
+    var footer: String?
     let type: SectionType
     
     init(type: SectionType) {
@@ -27,12 +28,14 @@ public class AccountsSettingsSectionViewModel {
         case .accounts:
             generateAccountCells()
             title = NSLocalizedString("Accounts", comment: "Tableview section  header")
-        case .glogalSettings:
+        case .globalSettings:
             generateGlobalSettingsCells()
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
         case .pgpCompatibilitySettings:
             generatePgpCompatibilitySettingsCells()
             title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
+            footer = NSLocalizedString("If enabled, message subjects are also protected.",
+                                       comment: "Tableview section footer")
         }
     }
 
@@ -44,18 +47,21 @@ public class AccountsSettingsSectionViewModel {
 
     func generateGlobalSettingsCells() {
         self.cells.append(AccountsSettingsCellViewModel(type: .defaultAccount))
-        self.cells.append(AccountsSettingsCellViewModel(type: .organizedByThread))
+        self.cells.append(ThreadedSwitchViewModel(type: .organizedByThread))
         self.cells.append(AccountsSettingsCellViewModel(type: .credits))
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
+        self.cells.append(PassiveModeViewModel(type: .pasiveMode))
     }
 
     func generatePgpCompatibilitySettingsCells() {
-        self.cells.append(AccountsSettingsCellViewModel(type: .unecryptedSubject))
+        self.cells.append(UnecryptedSubjectViewModel(type: .unecryptedSubject))
     }
 
     func delete(cell: Int) {
-        cells[cell].delete()
-        cells.remove(at: cell)
+        if let remove = cells[cell] as? AccountsSettingsCellViewModel {
+            remove.delete()
+            cells.remove(at: cell)
+        }
     }
 
     func cellIsValid(cell: Int) -> Bool {
@@ -68,7 +74,7 @@ public class AccountsSettingsSectionViewModel {
         }
     }
 
-    subscript(cell: Int) -> AccountsSettingsCellViewModel {
+    subscript(cell: Int) -> SettingsCellViewModel {
         get {
             assert(cellIsValid(cell: cell), "Cell out of range")
             return cells[cell]
