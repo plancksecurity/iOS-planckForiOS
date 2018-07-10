@@ -20,4 +20,9 @@ extension EmailViewController: DisplayedMessage {
         self.message = message
         configureView()
     }
+
+    func detailType() -> EmailDetailType {
+        return EmailDetailType.single
+    }
+
 }

@@ -24,4 +24,9 @@ protocol DisplayedMessage: class {
      so the detail view controller is informed about changes.
      */
     func update(forMessage message: Message)
+
+    /**
+        Return if the detail is Single email or a Thread
+     */
+    func detailType() -> EmailDetailType
 }
