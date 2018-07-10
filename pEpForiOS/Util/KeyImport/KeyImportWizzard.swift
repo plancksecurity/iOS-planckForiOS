@@ -63,11 +63,11 @@ class KeyImportWizzard {
 // MARK: - KeyImportServiceDelegate
 
 extension KeyImportWizzard: KeyImportServiceDelegate {
-    func newInitKeyImportRequestMessageArrived(message: Message) {
+    func newInitKeyImportRequestMessageArrived(forAccount account: Account, fpr: String) {
         fatalError("Unimplemented stub")
     }
 
-    func newHandshakeRequestMessageArrived(message: Message) {
+    func newHandshakeRequestMessageArrived(forAccount account: Account, fpr: String) {
         fatalError("Unimplemented stub")
     }
 

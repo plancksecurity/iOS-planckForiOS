@@ -207,6 +207,8 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 
+    // MARK: sendHandshakeRequestMessage
+
     func testSendHandshakeRequestMessage() {
         // Device A sent device B an InitKeyImport message.
         // We are on device B and react.
@@ -234,6 +236,53 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         // Did it trigger the delegate?
         waitForExpectations(timeout: TestUtil.waitTime)
     }
+
+    // MARK: sendOwnPrivateKey
+
+//    func testSendOwnPrivateKey() {
+//        // Device A sent device B an InitKeyImport message.
+//        // Device B sent handshake request to device A
+//        // Both devices did handshake
+//
+//        // We are on device A.
+//        // We know pub key and FPR of device B already. Also we did handshake.
+//        importPubKey(of: .b)
+//        let fprB = fingerprint(device: .b)
+//        let identityB = account.user.pEpIdentity()
+//        identityB.fingerPrint = fprB
+//        do {
+//            try PEPSession().trustPersonalKey(identityB)
+//        } catch {
+//            XCTFail("I do not trust you!")
+//        }
+//
+//        // Now we send our private key. (from device A)
+//        let expDidSend = expectation(description: "expDidSend")
+//        setupUnitTestCallbackReceiver(with: expDidSend)
+//        keyImportService.sendOwnPrivateKey(forAccount: account, fpr: fprB)
+//        waitForExpectations(timeout: TestUtil.waitTime)
+//
+//        // Lets see if device B reacts correctly
+//        switchTo(device: .b)
+//        // We already know pub key and FPR of device A and did handshake.
+//        let fprA = fingerprint(device: .a)
+//        let identityA = account.user.pEpIdentity()
+//        identityA.fingerPrint = fprA
+//        do {
+//            try PEPSession().trustPersonalKey(identityA)
+//        } catch {
+//            XCTFail("I do not trust you!")
+//        }
+//
+//        let expDelegateReceivedPrivateKeyCalled =
+//            expectation(description: "expDelegateReceivedPrivateKeyCalled")
+//        setupObserver(expReceivedPrivateKey: expDelegateReceivedPrivateKeyCalled)
+//
+//        // Fetch to receive the message.
+//        TestUtil.syncAndWait(networkService: networkService)
+//        // Did it trigger the delegate?
+//        waitForExpectations(timeout: TestUtil.waitTime)
+//    }
 
     // MARK: full key import cycle
 //
@@ -375,7 +424,8 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         expNewHandshakeRequestMessageArrived: XCTestExpectation? = nil,
         expReceivedPrivateKey: XCTestExpectation? = nil) {
         observer =
-            TestKeyImportServiceObserver(expNewInitKeyImportRequestMessageArrived:
+            TestKeyImportServiceObserver(account: account,
+                                         expNewInitKeyImportRequestMessageArrived:
                 expNewInitKeyImportRequestMessageArrived,
                                          expNewHandshakeRequestMessageArrived:
                 expNewHandshakeRequestMessageArrived,
@@ -504,47 +554,35 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 }
 
 class TestKeyImportServiceObserver: KeyImportServiceDelegate {
-
-    let expNewInitKeyImportRequestMessageArrived: XCTestExpectation?
+    let account: Account
+       let expNewInitKeyImportRequestMessageArrived: XCTestExpectation?
     let expNewHandshakeRequestMessageArrived: XCTestExpectation?
     let expReceivedPrivateKey: XCTestExpectation?
 
     /// Init observer with what to expect.
     /// If no expectation is passed for a method, we expect that method must not be called.
-    init(expNewInitKeyImportRequestMessageArrived: XCTestExpectation? = nil,
+    init(account: Account,
+         expNewInitKeyImportRequestMessageArrived: XCTestExpectation? = nil,
          expNewHandshakeRequestMessageArrived: XCTestExpectation? = nil,
          expReceivedPrivateKey: XCTestExpectation? = nil) {
+        self.account = account
         self.expNewInitKeyImportRequestMessageArrived = expNewInitKeyImportRequestMessageArrived
         self.expNewHandshakeRequestMessageArrived = expNewHandshakeRequestMessageArrived
         self.expReceivedPrivateKey = expReceivedPrivateKey
     }
 
-    func newInitKeyImportRequestMessageArrived(message: Message) {
+    func newInitKeyImportRequestMessageArrived(forAccount account: Account, fpr: String) {
         if let exp = expNewInitKeyImportRequestMessageArrived {
-            // Must be grey
-            XCTAssertEqual(message.pEpColor(), PEP_color_no_color)
-            // Asset message got deleted in MM ...
-            XCTAssertTrue(message.imapFlags?.deleted ?? false)
-            // ... and CD
-            let cdMessage = CdMessage.search(message: message)
-            XCTAssertTrue(cdMessage?.imapFields().imapFlags().deleted ?? false)
-
+            XCTAssertEqual(self.account, account)
             exp.fulfill()
         } else {
             XCTFail("method called unexpectedly.")
         }
     }
 
-    func newHandshakeRequestMessageArrived(message: Message) {
+    func newHandshakeRequestMessageArrived(forAccount account: Account, fpr: String) {
         if let exp = expNewHandshakeRequestMessageArrived {
-            // Must be yellow
-            XCTAssertEqual(message.pEpColor(), PEP_color_yellow)
-            // Asset message got deleted in MM ...
-            XCTAssertTrue(message.imapFlags?.deleted ?? false)
-            // ... and CD
-            let cdMessage = CdMessage.search(message: message)
-            XCTAssertTrue(cdMessage?.imapFields().imapFlags().deleted ?? false)
-
+            XCTAssertEqual(self.account, account)
             exp.fulfill()
         } else {
             XCTFail("method called unexpectedly.")
@@ -553,6 +591,7 @@ class TestKeyImportServiceObserver: KeyImportServiceDelegate {
 
     func receivedPrivateKey(forAccount account: Account) {
         if let exp = expReceivedPrivateKey {
+            XCTAssertEqual(self.account, account)
             exp.fulfill()
         } else {
             XCTFail("method called unexpectedly.")

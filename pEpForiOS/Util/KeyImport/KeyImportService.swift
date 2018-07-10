@@ -225,8 +225,6 @@ extension KeyImportService: KeyImportServiceProtocol {
     }
 
     public func sendOwnPrivateKey(forAccount acccount: Account, fpr: String) {
-        /// TODO: Send the private key without appending to "Sent" folder.
-
         fatalError("Unimplemented stub")
     }
 
@@ -250,11 +248,23 @@ extension KeyImportService: KeyImportListenerProtocol {
         if isKeyNewInitKeyImportMessage(message: msg){
             hasBeenHandled = true
             msg.imapMarkDeleted()
-            delegate?.newInitKeyImportRequestMessageArrived(message: msg)
-        }else if isNewHandshakeRequestMessage(message: msg){
+            guard let fpr = msg.optionalFields[Header.pEpKeyImport.rawValue] else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "No fpr header. Impossible in this state.")
+                return false
+            }
+            delegate?.newInitKeyImportRequestMessageArrived(forAccount: msg.parent.account,
+                                                            fpr: fpr)
+        } else if isNewHandshakeRequestMessage(message: msg){
             hasBeenHandled = true
             msg.imapMarkDeleted()
-            delegate?.newHandshakeRequestMessageArrived(message: msg)
+            guard let fpr = msg.optionalFields[Header.pEpKeyImport.rawValue] else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "No fpr header. Impossible in this state.")
+                return false
+            }
+            delegate?.newHandshakeRequestMessageArrived(forAccount: msg.parent.account,
+                                                        fpr: fpr)
         } else if isPrivateKeyMessage(message: msg, flags: flags) {
             hasBeenHandled = true
             msg.imapMarkDeleted()

@@ -55,8 +55,11 @@ public protocol KeyImportServiceDelegate: class {
     /// Will be triggered when a message is received that:
     /// - has the FPR of a foreign (not mine) key defined in "pEp-key-import" header
     /// - is unencrypted (PEP_color == grey)
-    /// - Parameter message: received import message
-    func newInitKeyImportRequestMessageArrived(message: Message)
+    /// - is in Inbox
+    /// - Parameters:
+    ///   - account: account the key import request has been sent for
+    ///   - fpr: fingerprint of senders public key (from "pEp-key-import" header)
+    func newInitKeyImportRequestMessageArrived(forAccount account: Account, fpr: String)
 
     /// It informs the receiver that the other device is ready for handshake
     ///
@@ -64,8 +67,11 @@ public protocol KeyImportServiceDelegate: class {
     /// - has the FPR of a foreign (not mine) key defined in "pEp-key-import" header
     /// - is encrypted
     /// - PEP_color == yellow
-    /// - Parameter message: received import message
-    func newHandshakeRequestMessageArrived(message: Message)
+    /// - is in Inbox
+    /// - Parameters:
+    ///   - account: account the key import request has been sent for
+    ///   - fpr: fingerprint of senders public key (from "pEp-key-import" header)
+    func newHandshakeRequestMessageArrived(forAccount account: Account, fpr: String)
 
     /// We received a private key in a green message.
     /// - Parameter account: account the private key has been sent to.
