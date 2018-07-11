@@ -89,7 +89,7 @@ class ThreadedEmailViewModel {
     }
 
     internal func indexOfMessage(message: Message)-> Int? {
-        for  i in 0...messages.count {
+        for  i in 0 ..< messages.count {
             if messages[i] == message{
                 return i
             }
