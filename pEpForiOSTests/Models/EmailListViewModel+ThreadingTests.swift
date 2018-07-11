@@ -344,13 +344,15 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     func testIncomingMessage(references: [Message],
+                             fromFolder: Folder? = nil,
                              indexPathUpdated: IndexPath?,
                              openThread: Bool = false) -> Message {
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
+        let theFolder: Folder = fromFolder ?? inbox
         let incomingMessage = TestUtil.createMessage(uid: TestUtil.nextUid(),
-                                                     inFolder: inbox)
+                                                     inFolder: theFolder)
         incomingMessage.references = references.map {
             return $0.messageID
         }
