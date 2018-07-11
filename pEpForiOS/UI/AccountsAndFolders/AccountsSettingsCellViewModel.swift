@@ -28,7 +28,7 @@ public enum SettingType {
     case organizedByThread
     case credits
     case unecryptedSubject
-    case pasiveMode
+    case passiveMode
     case defaultAccount
 }
 
@@ -50,7 +50,7 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
         switch self.type {
         case .account, .credits, .defaultAccount, .showLog:
             self.settingCellType = AccountSettingsCellType.accountsCell
-        case .organizedByThread, .unecryptedSubject, .pasiveMode:
+        case .organizedByThread, .unecryptedSubject, .passiveMode:
             self.settingCellType = AccountSettingsCellType.switchOptionCell
         }
     }
@@ -93,8 +93,8 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
                 }
                 return acc.user.address
 
-            case .pasiveMode:
-                return "pasive mode"//TODO
+            case .passiveMode:
+                return "passive mode"//TODO
 
             }
         }
@@ -106,7 +106,7 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
             case .showLog, .account, .credits:
                 // Have no value.
                 return nil
-            case .pasiveMode:
+            case .passiveMode:
                 return onOffStateString(forState: false) //TODO
             case .organizedByThread:
                 return onOffStateString(forState: AppSettings().threadedViewEnabled)

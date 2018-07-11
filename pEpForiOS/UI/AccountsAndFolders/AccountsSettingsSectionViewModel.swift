@@ -51,7 +51,7 @@ public class AccountsSettingsSectionViewModel {
         self.cells.append(ThreadedSwitchViewModel(type: .organizedByThread))
         self.cells.append(AccountsSettingsCellViewModel(type: .credits))
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
-        self.cells.append(PassiveModeViewModel(type: .pasiveMode))
+        self.cells.append(PassiveModeViewModel(type: .passiveMode))
     }
 
     func generatePgpCompatibilitySettingsCells() {

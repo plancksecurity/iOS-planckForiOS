@@ -22,11 +22,11 @@ class PassiveModeViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
         self.type = type
         self.settingCellType = .switchOptionCell
         self.title = NSLocalizedString("Enable passive mode", comment: "Passive mode title")
-        self.switchValue = AppSettings.init().pasiveMode
+        self.switchValue = AppSettings.init().passiveMode
     }
 
     func switchAction(value: Bool) {
-        AppSettings.init().pasiveMode = value
+        AppSettings.init().passiveMode = value
     }
 }
 

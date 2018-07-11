@@ -46,12 +46,12 @@ class AppSettings {
         }
     }
 
-    public var pasiveMode: Bool {
+    public var passiveMode: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: AppSettings.keyPasiveMode)
+            return UserDefaults.standard.bool(forKey: AppSettings.keyPassiveMode)
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: AppSettings.keyPasiveMode)
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyPassiveMode)
             PEPObjCAdapter.setPassiveModeEnabled(newValue)
         }
     }
@@ -96,12 +96,12 @@ class AppSettings {
         }
     }
 
-    public static var pasiveMode: Bool {
+    public static var passiveMode: Bool {
         get {
-            return appSettings.pasiveMode
+            return appSettings.passiveMode
         }
         set {
-            appSettings.pasiveMode = newValue
+            appSettings.passiveMode = newValue
         }
     }
 
@@ -121,7 +121,7 @@ class AppSettings {
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
-    static private let keyPasiveMode = "keyPasiveMode"
+    static private let keyPassiveMode = "keyPassiveMode"
     
     // MARK: - Private - DEFAULT ACCOUNT
     
@@ -146,7 +146,7 @@ class AppSettings {
     
     private func setup() {
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        PEPObjCAdapter.setPassiveModeEnabled(pasiveMode)
+        PEPObjCAdapter.setPassiveModeEnabled(passiveMode)
     }
     
     private func registerDefaults() {
@@ -154,7 +154,7 @@ class AppSettings {
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
         defaults[AppSettings.keyThreadedViewEnabled] = true
-        defaults[AppSettings.keyPasiveMode] = false
+        defaults[AppSettings.keyPassiveMode] = false
 
         UserDefaults.standard.register(defaults: defaults)
     }
