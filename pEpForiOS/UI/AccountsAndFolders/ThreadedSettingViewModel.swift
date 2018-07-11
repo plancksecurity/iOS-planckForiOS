@@ -24,11 +24,11 @@ class ThreadedSwitchViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
         self.description = NSLocalizedString(
             "If enabled, messages in the same thread will be displayed together",
             comment: "explanation for thread view settings")
-        self.switchValue = AppSettings.init().threadedViewEnabled
+        self.switchValue = AppSettings.threadedViewEnabled
     }
 
     func switchAction(value: Bool) {
-        AppSettings.init().threadedViewEnabled = value
+        AppSettings.threadedViewEnabled = value
         FolderThreading.switchThreading(onOrOff: value)
     }
 }

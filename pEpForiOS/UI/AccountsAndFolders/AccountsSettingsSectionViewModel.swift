@@ -52,7 +52,7 @@ public class AccountsSettingsSectionViewModel {
         self.cells.append(AccountsSettingsCellViewModel(type: .credits))
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
         self.cells.append(AccountsSettingsCellViewModel(type: .keyImport))
-        self.cells.append(PassiveModeViewModel(type: .pasiveMode))
+        self.cells.append(PassiveModeViewModel(type: .passiveMode))
     }
 
     func generatePgpCompatibilitySettingsCells() {

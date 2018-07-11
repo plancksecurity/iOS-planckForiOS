@@ -57,6 +57,24 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                                     indexPathUpdated: indexOfTopMessage0)
     }
 
+    func testThreadedIncomingSentChildMessageToSingleUndisplayedParent() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let sentFolder = Folder.init(name: "Sent",
+                                     parent: nil,
+                                     account: account,
+                                     folderType: .sent)
+        sentFolder.save()
+
+        // topMessages[0] is the oldest, so it's last in the list
+        let _ = testIncomingMessage(references: [topMessages[1]],
+                                    fromFolder: sentFolder,
+                                    indexPathUpdated: indexOfTopMessage1)
+        let _ = testIncomingMessage(references: [topMessages[0]],
+                                    indexPathUpdated: indexOfTopMessage0)
+    }
+
     func testThreadedIncomingChildMessageToUndisplayedParents() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
@@ -76,7 +94,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         // topMessages[0] is the oldest, so it's last in the list
         let _ = testIncomingMessage(references: [theDisplayedMessage],
-                                    indexPathUpdated: nil)
+                                    indexPathUpdated: nil,
+                                    openThread: true)
     }
 
     func testThreadedUpdateTopMessage() {
@@ -87,7 +106,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let _ = testIncomingMessage(references: [theDisplayedMessage],
-                                    indexPathUpdated: nil)
+                                    indexPathUpdated: nil,
+                                    openThread: true)
 
         topMessages[0].imapFlags?.flagged = true
         XCTAssertTrue(topMessages[0].imapFlags?.flagged ?? false)
@@ -111,7 +131,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let incomingMessage = testIncomingMessage(references: [theDisplayedMessage],
-                                                  indexPathUpdated: nil)
+                                                  indexPathUpdated: nil,
+                                                  openThread: true)
 
         incomingMessage.imapFlags?.flagged = true
         XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
@@ -159,7 +180,8 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let incomingMessage = testIncomingMessage(references: [theDisplayedMessage],
-                                                  indexPathUpdated: nil)
+                                                  indexPathUpdated: nil,
+                                                  openThread: true)
 
         updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
             message: incomingMessage,
@@ -340,12 +362,15 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
     }
 
     func testIncomingMessage(references: [Message],
-                             indexPathUpdated: IndexPath?) -> Message {
+                             fromFolder: Folder? = nil,
+                             indexPathUpdated: IndexPath?,
+                             openThread: Bool = false) -> Message {
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
+        let theFolder: Folder = fromFolder ?? inbox
         let incomingMessage = TestUtil.createMessage(uid: TestUtil.nextUid(),
-                                                     inFolder: inbox)
+                                                     inFolder: theFolder)
         incomingMessage.references = references.map {
             return $0.messageID
         }
@@ -361,10 +386,17 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
                 indexPath: indexPath,
                 expectation: expectation(description: "expectationUpdated"))
         } else {
-            // expect child message
-            updateThreadListDelegate.expectationAdded = ExpectationChildMessageAdded(
-                expectation: expectation(description: "expectationAdded"))
+            if openThread {
+                // expect transforming from single to thread
+                emailListViewModelDelegate.expectationShowThreadView = ExpectationShowThreadView(
+                    expectation: expectation(description: "expectationShowThreadView"))
+            } else {
+                // expect child message to existing thread
+                updateThreadListDelegate.expectationAdded = ExpectationChildMessageAdded(
+                    expectation: expectation(description: "expectationAdded"))
+            }
         }
+
         emailListViewModel.didCreate(messageFolder: incomingMessage)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
@@ -444,12 +476,20 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         let expectation: XCTestExpectation
     }
 
+    struct ExpectationShowThreadView {
+        let expectation: XCTestExpectation
+    }
+
     // MARK: - Internal - Delegates
 
     class MyDisplayedMessage: DisplayedMessage {
         var messageModel: Message?
 
         func update(forMessage message: Message) {
+        }
+
+        func detailType() -> EmailDetailType {
+            return .single
         }
     }
 
@@ -467,6 +507,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
         var expectationInserted: ExpectationTopMessageInserted?
         var expectationUndiplayedMessageUpdated: ExpectationUndiplayedMessageUpdated?
         var expectationTopMessageDeleted: ExpectationViewModelDelegateTopMessageDeleted?
+        var expectationShowThreadView: ExpectationShowThreadView?
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didInsertDataAt indexPath: IndexPath) {
@@ -511,6 +552,12 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         func updateView() {
             expectationViewUpdated?.fulfill()
+        }
+
+        func showThreadView(for indexPath: IndexPath) {
+            if let exp = expectationShowThreadView {
+                exp.expectation.fulfill()
+            }
         }
     }
 
