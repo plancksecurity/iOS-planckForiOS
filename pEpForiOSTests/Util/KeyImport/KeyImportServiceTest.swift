@@ -33,6 +33,10 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         setupAccount(device: Device.a)
         TestUtil.markAllMessagesOnServerDeleted(inFolderTypes: folderTypesEvaluatedByTests,
                                                 for: [cdAccount])
+        super.tearEverythingDown()
+        super.setupEverythingUp()
+        setupAccount(device: Device.a)
+
         account = cdAccount.account()
         keyImportService = KeyImportService()
     }
@@ -214,8 +218,11 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         // We are on device B and react.
         switchTo(device: .b)
         // We know the pub key and the FPR of device A already
-        importPubKey(of: .a)
-        let fpr = fingerprint(device: .a)
+        guard let fpr = setupWhatWeKnowAlready(fromDevice: .a, pubKeyKnown: true, fprKnown: true)
+            else {
+            XCTFail("No FPR")
+            return
+        }
 
         // Send HandshakeRequest message (from Device B)
         let expDidSend = expectation(description: "expDidSend")
@@ -239,6 +246,17 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 
     // MARK: sendOwnPrivateKey
 
+    /*
+    //IOS-1028
+     Fails as test setup methods partly fail.
+     Problem is setOwnKey and trustPersonalKey. They fail silently (without throwing).
+     Breaking in Engine let's me suspect it PEP_CANNOT_FIND_IDENTITY.
+     The result is that device B is not handshaked and thus the privateKeyMessage is yellow,
+     not green as expected.
+
+    //commented until clarified
+ */
+
 //    func testSendOwnPrivateKey() {
 //        // Device A sent device B an InitKeyImport message.
 //        // Device B sent handshake request to device A
@@ -246,14 +264,13 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 //
 //        // We are on device A.
 //        // We know pub key and FPR of device B already. Also we did handshake.
-//        importPubKey(of: .b)
-//        let fprB = fingerprint(device: .b)
-//        let identityB = account.user.pEpIdentity()
-//        identityB.fingerPrint = fprB
-//        do {
-//            try PEPSession().trustPersonalKey(identityB)
-//        } catch {
-//            XCTFail("I do not trust you!")
+//        guard let fprB = setupWhatWeKnowAlready(fromDevice: .b,
+//                                                pubKeyKnown: true,
+//                                                fprKnown: true,
+//                                                handshakeDone: true)
+//            else {
+//                XCTFail("No FPR")
+//                return
 //        }
 //
 //        // Now we send our private key. (from device A)
@@ -265,14 +282,10 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 //        // Lets see if device B reacts correctly
 //        switchTo(device: .b)
 //        // We already know pub key and FPR of device A and did handshake.
-//        let fprA = fingerprint(device: .a)
-//        let identityA = account.user.pEpIdentity()
-//        identityA.fingerPrint = fprA
-//        do {
-//            try PEPSession().trustPersonalKey(identityA)
-//        } catch {
-//            XCTFail("I do not trust you!")
-//        }
+//        setupWhatWeKnowAlready(fromDevice: .a,
+//                               pubKeyKnown: true,
+//                               fprKnown: true,
+//                               handshakeDone: true)
 //
 //        let expDelegateReceivedPrivateKeyCalled =
 //            expectation(description: "expDelegateReceivedPrivateKeyCalled")
@@ -284,65 +297,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 //        waitForExpectations(timeout: TestUtil.waitTime)
 //    }
 
-    // MARK: full key import cycle
-//
-//    func testFullKeyImportProcess() {
-//        // **********************************
-//        // Send Init message from Device A
-//        // **********************************
-//        var expDidSend = expectation(description: "expDidSend")
-//        setupUnitTestCallbackReceiver(with: expDidSend)
-//        keyImportService.sendInitKeyImportMessage(forAccount: account)
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//
-//        // **********************************
-//        // Receive it on device B
-//        // **********************************
-//        switchTo(device: .b)
-//
-//        let expNewInitKeyImportRequestMessageArrivedCalled =
-//            expectation(description: "expNewInitKeyImportRequestMessageArrivedCalled")
-//        setupObserver(expNewInitKeyImportRequestMessageArrived:
-//            expNewInitKeyImportRequestMessageArrivedCalled)
-//
-//        // Fetch to receive the message.
-//        TestUtil.syncAndWait(networkService: networkService)
-//        // Did it trigger the delegate?
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//        // Has correctly be received.
-////        // Thus the pub key of device A should now be know to device B
-////        importPubKey(of: Device.a)
-//
-//        // **********************************
-//        // Device B sends handshake request
-//        // **********************************
-//        expDidSend = expectation(description: "expDidSend")
-//        setupUnitTestCallbackReceiver(with: expDidSend)
-//        let fprDeviceA = fingerprint(device: .a)
-//        let fprDeviceB = fingerprint(device: .b)
-//        keyImportService.sendHandshakeRequest(forAccount: account, fpr: fprDeviceB)
-//        waitForExpectations(timeout: TestUtil.waitTime)
-//
-//        // **********************************
-//        // Device A & B confirm FPRs (do handshake)
-//        // **********************************
-//        let pepIdentityA = account.user.pEpIdentity()
-//        pepIdentityA.fingerPrint = fingerprint(device: .a)
-//        let pepIdentityB = account.user.pEpIdentity()
-//        pepIdentityB.fingerPrint = fingerprint(device: .b)
-//        session.trustPersonalKey(<#T##identity: PEPIdentity##PEPIdentity#>)
-//
-//
-//
-//
-//    }
-
     // MARK: - HELPER
-
-    private func setupUnitTestCallbackReceiver(with expectation: XCTestExpectation) {
-        unitTestCallbackReceiver = KeyImportSeviceSendObserver(expDidSend: expectation)
-        keyImportService.unitTestDelegate = unitTestCallbackReceiver
-    }
 
     /// The actual handleKeyImport test.
     ///
@@ -478,6 +433,43 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         case b
     }
 
+    /// Set the state of the Engine.
+    ///
+    /// - Parameters:
+    ///   - device: device which we have some knowledge of
+    ///   - pubKeyKnown: if true, the pub key is imported
+    ///   - fprKnown: if true, the FPR is returned
+    ///   - handshakeDone: if true, we trust the key of the other divice
+    /// - Returns: if known, fpr of other device. nil otherwize.
+    @discardableResult private func setupWhatWeKnowAlready(fromDevice device: Device, pubKeyKnown: Bool = false, fprKnown: Bool = false, handshakeDone: Bool = false) -> String? {
+        if pubKeyKnown {
+            importPubKey(of: device)
+        }
+        if handshakeDone {
+            handshake(withDevice: device)
+        }
+        return fprKnown ? fingerprint(device: device) : nil
+    }
+
+    private func handshake(withDevice device: Device) {
+        let fpr = fingerprint(device: device)
+        let identity = account.user.pEpIdentity()
+        identity.fingerPrint = fpr
+        identity.userID = "THE_OTHER_DEVICE_USER_ID"
+        identity.isOwn = false
+
+        do {
+            try session.trustPersonalKey(identity)
+        } catch {
+            XCTFail("I do not trust you!")
+        }
+    }
+
+    private func setupUnitTestCallbackReceiver(with expectation: XCTestExpectation) {
+        unitTestCallbackReceiver = KeyImportSeviceSendObserver(expDidSend: expectation)
+        keyImportService.unitTestDelegate = unitTestCallbackReceiver
+    }
+
     private func fingerprint(device: Device) -> String {
         switch device {
         case .a:
@@ -497,9 +489,9 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     private func setupAccount(device: Device) {
-        // // Account on trusted server (sender)
         cdAccount.identity?.userName = "unittest.ios.3"
-        cdAccount.identity?.userID = "unittest.ios.3_ID"
+        //        cdAccount.identity?.userID = "unittest.ios.3_ID" //IOS-1028:
+        cdAccount.identity?.userID = "pep4ios_pEp_own_userId"
         cdAccount.identity?.address = "unittest.ios.3@peptest.ch"
         guard
             let cdServerImap = cdAccount.server(type: .imap),
@@ -518,7 +510,11 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         do {
             try TestUtil.importKeyByFileName(session, fileName: filenameSec)
             try TestUtil.importKeyByFileName(session, fileName: filenamePub)
-            try session.setOwnKey(cdAccount.identity!.pEpIdentity(), fingerprint: fpr)
+
+            let pepIdentity = cdAccount.identity!.pEpIdentity()
+            pepIdentity.isOwn = true
+            try session.mySelf(pepIdentity)
+            try session.setOwnKey(pepIdentity, fingerprint: fpr) //IOS-1028: fails silently. PEP_CANNOT_FIND_IDENTITY
         } catch {
             XCTFail(error.localizedDescription)
         }
@@ -541,17 +537,9 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
             XCTFail("importKeyByFileName failed")
         }
     }
-
-    private func trustKey(of device: Device) {
-        let pepIdentity = account.user.pEpIdentity()
-        pepIdentity.fingerPrint = fingerprint(device: device)
-        do {
-            try session.trustPersonalKey(pepIdentity)
-        } catch {
-            XCTFail("trustPersonalKey failed")
-        }
-    }
 }
+
+// MARK: -
 
 class TestKeyImportServiceObserver: KeyImportServiceDelegate {
     let account: Account
@@ -602,6 +590,8 @@ class TestKeyImportServiceObserver: KeyImportServiceDelegate {
         XCTFail("We don't expect errors.")
     }
 }
+
+// MARK: -
 
 class KeyImportSeviceSendObserver: UnitTestDelegateKeyImportService {
     var expDidSend: XCTestExpectation
