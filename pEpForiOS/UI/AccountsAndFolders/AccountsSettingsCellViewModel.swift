@@ -59,7 +59,7 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
         get {
             switch self.type {
             case .defaultAccount:
-                return AppSettings.init().defaultAccount
+                return AppSettings.defaultAccount
             default:
                 return nil
             }
@@ -109,11 +109,11 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
             case .passiveMode:
                 return onOffStateString(forState: false) //TODO
             case .organizedByThread:
-                return onOffStateString(forState: AppSettings().threadedViewEnabled)
+                return onOffStateString(forState: AppSettings.threadedViewEnabled)
             case .defaultAccount:
-                return AppSettings().defaultAccount
+                return AppSettings.defaultAccount
             case .unecryptedSubject:
-                return onOffStateString(forState: !AppSettings().unencryptedSubjectEnabled)
+                return onOffStateString(forState: !AppSettings.unencryptedSubjectEnabled)
             }
         }
     }

@@ -30,7 +30,7 @@ class SettingDefaultAccountTableViewController: BaseTableViewController {
         let address = allAccounts[indexPath.row].user.address
         cell.textLabel?.text = address
         cell.tintColor = UIColor.pEpGreen
-        if let defaultAccountAddress = AppSettings().defaultAccount,
+        if let defaultAccountAddress = AppSettings.defaultAccount,
             defaultAccountAddress == address {
             cell.accessoryType = .checkmark
         } else {
@@ -49,7 +49,7 @@ class SettingDefaultAccountTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedAccount = allAccounts[indexPath.row]
-        AppSettings().defaultAccount = selectedAccount.user.address
+        AppSettings.defaultAccount = selectedAccount.user.address
         tableView.reloadData()
     }
 }

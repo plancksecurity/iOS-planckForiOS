@@ -13,7 +13,7 @@ extension Account {
     ///
     /// - Returns: default account
     static public func defaultAccount() -> Account? {
-        guard let addressDefaultAccount = AppSettings().defaultAccount else {
+        guard let addressDefaultAccount = AppSettings.defaultAccount else {
             return all().first
         }
         return Account.by(address: addressDefaultAccount)
