@@ -310,6 +310,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                    style: UIBarButtonItemStyle.plain,
                                    target: self,
                                    action: #selector(self.cancelToolbar (_:)))
+        
+
 
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
