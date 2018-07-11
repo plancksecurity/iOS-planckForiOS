@@ -25,9 +25,6 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
 
     /// Tests if sent attachments are received with correct content disposition
     func attchmentRoundTrip(attachmentsInlined: Bool) {
-        print(Date())
-        sleep(1)
-        print(Date())
         // Setup 2 accounts
         cdAccount.createRequiredFoldersAndWait()
         Record.saveAndWait()
