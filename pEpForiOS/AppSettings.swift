@@ -56,8 +56,6 @@ class AppSettings {
         }
     }
 
-
-    
     /// Address of the default account
     public var defaultAccount: String? {
         get {
@@ -68,7 +66,55 @@ class AppSettings {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyDefaultAccountAddress)
         }
     }
-    
+
+    // MARK: - Static API
+
+    public static var shouldReinitializePepOnNextStartup: Bool {
+        get {
+            return appSettings.shouldReinitializePepOnNextStartup
+        }
+        set {
+            appSettings.shouldReinitializePepOnNextStartup = newValue
+        }
+    }
+
+    public static var unencryptedSubjectEnabled: Bool {
+        get {
+            return appSettings.unencryptedSubjectEnabled
+        }
+        set {
+            appSettings.unencryptedSubjectEnabled = newValue
+        }
+    }
+
+    public static var threadedViewEnabled: Bool {
+        get {
+            return appSettings.threadedViewEnabled
+        }
+        set {
+            appSettings.threadedViewEnabled = newValue
+        }
+    }
+
+    public static var pasiveMode: Bool {
+        get {
+            return appSettings.pasiveMode
+        }
+        set {
+            appSettings.pasiveMode = newValue
+        }
+    }
+
+    /// Address of the default account
+    public static var defaultAccount: String? {
+        get {
+            return appSettings.defaultAccount
+        }
+        set {
+            appSettings.defaultAccount = newValue
+        }
+    }
+
     // MARK: - Private
     
     static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
@@ -112,4 +158,8 @@ class AppSettings {
 
         UserDefaults.standard.register(defaults: defaults)
     }
+
+    // MARK: - Private - Enable static API
+
+    static private var appSettings = AppSettings()
 }
