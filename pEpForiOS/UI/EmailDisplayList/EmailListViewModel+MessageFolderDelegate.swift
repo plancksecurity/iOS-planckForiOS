@@ -228,12 +228,11 @@ Something is fishy here.
     }
 
     private func shouldBeDisplayed(message: Message) -> Bool {
-        if !isInFolderToShow(message: message) {
+        if message.isEncrypted ||
+            (!AppSettings.threadedViewEnabled && !isInFolderToShow(message: message)) {
             return false
         }
-        if message.isEncrypted {
-            return false
-        }
+
         return true
     }
 
