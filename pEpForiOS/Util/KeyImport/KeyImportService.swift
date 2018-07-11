@@ -96,27 +96,33 @@ public class KeyImportService {
         return  SmtpSendData(connectInfo: smtpCI)
     }
 
-    /// Sends a message. In case fpr != nil, the message is encrypted using this key before sending.
+    /// Sends a message.
+    /// In case fpr != nil, the message is encrypted using this key before sending.
+    /// In case fpr != nil && attachPrivateKey == true, the private key is attached before
+    /// encrypting and sending the message.
     ///
     /// - Parameters:
     ///   - msg: message to send
     ///   - account: account to send from
     ///   - fpr: fpr of key to decrypt message with.
+    ///   - attachPrivateKey: whether or not to attach our private key
     private func sendMessage(msg: Message,
                              fromAccount account: Account,
-                             encryptFor fpr: String? = nil) {
+                             encryptFor fpr: String? = nil,
+                             attachPrivateKey: Bool = false) {
         // Build Login OP
         guard let sendData = smtpSendData(for: account) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No send data") //IOS-1028: test, extract send, test. Think: Error delegate.
+            Log.shared.errorAndCrash(component: #function, errorString: "No send data")
             return
         }
-        let errorContainer = ErrorContainer() //IOS-1028: make property
+        let errorContainer = ErrorContainer()
         let loginOp = LoginSmtpOperation(smtpSendData: sendData, errorContainer: errorContainer)
 
         // Build Send OP
         let sendOp = encryptAndSendOperation(toSend: msg,
                                  fromAccount: account,
                                  encryptFor: fpr,
+                                 attachPrivateKey: attachPrivateKey,
                                  smtpSendData: sendData,
                                  errorContainer: errorContainer)
         sendOp.completionBlock = { [weak self] in
@@ -142,6 +148,7 @@ public class KeyImportService {
     private func encryptAndSendOperation(toSend msg: Message,
                                          fromAccount account: Account,
                                          encryptFor fpr: String? = nil,
+                                         attachPrivateKey: Bool = false,
                                          smtpSendData: SmtpSendData,
                                          errorContainer: ErrorContainer) -> Operation {
         return BlockOperation() {[weak self] in
@@ -150,12 +157,16 @@ public class KeyImportService {
                 return
             }
             let queue = OperationQueue()
-            var pepDict = msg.pEpMessageDict(outgoing: true) //IOS-1030 make async OP
+            var pepDict = msg.pEpMessageDict(outgoing: true)
             if let fpr = fpr {
-                guard let encrypted = me.encrypt(message: msg, for: fpr) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Error encrypting")
-                    me.delegate?.errorOccurred(error: KeyImportServiceError.engineError)
-                    return
+                guard let encrypted = me.encrypt(message: msg,
+                                                 for: fpr,
+                                                 attachPrivateKey: attachPrivateKey)
+                    else {
+                        Log.shared.errorAndCrash(component: #function,
+                                                 errorString: "Error encrypting")
+                        me.delegate?.errorOccurred(error: KeyImportServiceError.engineError)
+                        return
                 }
                 pepDict = encrypted
             }
@@ -171,32 +182,35 @@ public class KeyImportService {
         }
     }
 
-    private func encrypt(message: Message, for fpr: String) -> PEPMessageDict? {
-        let pepDict = message.pEpMessageDict(outgoing: true) //IOS-1030 make async OP
+    private func encrypt(message: Message,
+                         for fpr: String,
+                         attachPrivateKey: Bool = false) -> PEPMessageDict? {
+        let pepDict = message.pEpMessageDict(outgoing: true)
         let extraKeys =  [fpr]
-        var status: PEP_STATUS = PEP_UNKNOWN_ERROR
+        var result: PEPMessageDict? = nil
         do {
-            return try PEPSession().encryptMessageDict(pepDict,
-                                                          extraKeys: extraKeys,
-                                                          encFormat: PEP_enc_PEP,
-                                                          status: &status)
-
-
-                /*
-                 - (PEPDict * _Nullable)encryptMessageDict:(PEPDict * _Nonnull)messageDict
-                 toFpr:(NSString * _Nonnull)toFpr
-                 encFormat:(PEP_enc_format)encFormat
-                 flags:(PEP_decrypt_flags)flags
-                 status:(PEP_STATUS * _Nullable)status
-                 error:(NSError * _Nullable *
-                 _Nullable)error __deprecated
-                 */
-                as PEPMessageDict
+            if attachPrivateKey {
+                let flags = PEP_decrypt_flag_none
+                result = try PEPSession().encryptMessageDict(pepDict,
+                                                    toFpr: fpr,
+                                                    encFormat: PEP_enc_PEP,
+                                                    flags: flags,
+                                                    status: nil)
+                    as PEPMessageDict
+            } else {
+                result = try PEPSession().encryptMessageDict(pepDict,
+                                                           extraKeys: extraKeys,
+                                                           encFormat: PEP_enc_PEP,
+                                                           status: nil)
+                    as PEPMessageDict
+            }
         } catch {
             Log.shared.errorAndCrash(component: #function, errorString: "Error encrypting")
             delegate?.errorOccurred(error: KeyImportServiceError.engineError)
-            return nil
+            return result
         }
+
+        return result
     }
 
     private func createKeyImportMessage(for account: Account, setPEpKeyImportHeader: Bool) -> Message? {
@@ -241,21 +255,15 @@ extension KeyImportService: KeyImportServiceProtocol {
             Log.shared.errorAndCrash(component: #function, errorString: "No message")
             return
         }
-
         sendMessage(msg: msg, fromAccount: account, encryptFor: fpr)
     }
 
-    public func sendOwnPrivateKey(forAccount acccount: Account, fpr: String) {
-        /*
- - (PEPDict * _Nullable)encryptMessageDict:(PEPDict * _Nonnull)messageDict
- toFpr:(NSString * _Nonnull)toFpr
- encFormat:(PEP_enc_format)encFormat
- flags:(PEP_decrypt_flags)flags
- status:(PEP_STATUS * _Nullable)status
- error:(NSError * _Nullable *
- _Nullable)error __deprecated
- */
-        fatalError("Unimplemented stub")
+    public func sendOwnPrivateKey(forAccount account: Account, fpr: String) {
+        guard let msg = createKeyImportMessage(for: account, setPEpKeyImportHeader: true) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No message")
+            return
+        }
+        sendMessage(msg: msg, fromAccount: account, encryptFor: fpr, attachPrivateKey: true)
     }
 
     public func setNewDefaultKey(for identity: Identity, fpr: String) {
@@ -273,8 +281,9 @@ extension KeyImportService: KeyImportListenerProtocol {
     public func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool {
         var hasBeenHandled = false
         if timedOut(keyImportMessage: msg) {
-            return hasBeenHandled
+            return hasBeenHandled //IOS-1028: delete timeedout message?
         }
+
         if isKeyNewInitKeyImportMessage(message: msg){
             hasBeenHandled = true
             msg.imapMarkDeleted()
