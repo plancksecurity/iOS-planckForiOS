@@ -72,7 +72,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
                               expDelegateNewInitKeyImportRequestMessageArrived: false,
                               expDelegateNewHandshakeRequestMessageArrived: false,
                               expectDelegateReceivedPrivateKeyCalled: false,
-                              expectMessageHandledByKeyImportService: false)
+                              expectMessageHandledByKeyImportService: true)
     }
 
     func testNewInitKeyImportRequestMessageArrived_headerNotSet() {
@@ -118,7 +118,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
                               expDelegateNewInitKeyImportRequestMessageArrived: false,
                               expDelegateNewHandshakeRequestMessageArrived: false,
                               expectDelegateReceivedPrivateKeyCalled: false,
-                              expectMessageHandledByKeyImportService: false)
+                              expectMessageHandledByKeyImportService: true)
     }
 
     func testNewHandshakeRequestMessageArrived_headerNotSet() {
@@ -163,6 +163,17 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
                               expDelegateNewInitKeyImportRequestMessageArrived: false,
                               expDelegateNewHandshakeRequestMessageArrived: false,
                               expectDelegateReceivedPrivateKeyCalled: true,
+                              expectMessageHandledByKeyImportService: true)
+    }
+
+    func testReceivedPrivateKey_pEpColorGreen_flagReceived_timedout() {
+        assertHandleKeyImport(keyImportHeaderSet: false,
+                              ownPrivateKeyFlagReceived: true,
+                              pepColor: PEP_color_green,
+                              newImportMessageTimedOut: true,
+                              expDelegateNewInitKeyImportRequestMessageArrived: false,
+                              expDelegateNewHandshakeRequestMessageArrived: false,
+                              expectDelegateReceivedPrivateKeyCalled: false,
                               expectMessageHandledByKeyImportService: true)
     }
 

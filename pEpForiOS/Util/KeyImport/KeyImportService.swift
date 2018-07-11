@@ -49,6 +49,12 @@ public class KeyImportService {
         return isKeyImportMessage(message: message, pepColorIs: PEP_color_yellow)
     }
 
+    private func isKeyImportRelatedMessage(msg: Message, flags: PEP_decrypt_flags) -> Bool {
+        return isKeyNewInitKeyImportMessage(message: msg) ||
+            isNewHandshakeRequestMessage(message: msg) ||
+            isPrivateKeyMessage(message:msg, flags:flags)
+    }
+
     private func isKeyImportMessage(message: Message, pepColorIs requiredColor: PEP_color) -> Bool {
         guard let myFpr = fingerprint(forAccount: message.parent.account) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No own key")
@@ -280,8 +286,10 @@ extension KeyImportService: KeyImportServiceProtocol {
 extension KeyImportService: KeyImportListenerProtocol {
     public func handleKeyImport(forMessage msg: Message, flags: PEP_decrypt_flags) -> Bool {
         var hasBeenHandled = false
-        if timedOut(keyImportMessage: msg) {
-            return hasBeenHandled //IOS-1028: delete timeedout message?
+        if isKeyImportRelatedMessage(msg: msg, flags: flags) && timedOut(keyImportMessage: msg) {
+            hasBeenHandled = true
+            msg.imapMarkDeleted()
+            return hasBeenHandled
         }
 
         if isKeyNewInitKeyImportMessage(message: msg){
