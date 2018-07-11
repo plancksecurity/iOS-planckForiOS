@@ -809,7 +809,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
-                        <barButtonItem title="p≡p" id="1oP-DI-wuJ"/>
+                        <barButtonItem image="icon-settings" id="1oP-DI-wuJ"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3">
                         <rightBarButtonItems>
@@ -980,6 +980,7 @@
         <image name="empty-avatar" width="150" height="150"/>
         <image name="folders-icon-folder" width="25" height="25"/>
         <image name="folders-icon-trash" width="25" height="25"/>
+        <image name="icon-settings" width="33" height="64"/>
         <image name="icon-unflagged" width="33" height="64"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
         <image name="thread-icon" width="13" height="13"/>

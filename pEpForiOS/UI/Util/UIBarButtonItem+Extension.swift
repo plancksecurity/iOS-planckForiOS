@@ -9,9 +9,10 @@
 import Foundation
 
 extension UIBarButtonItem {
-    public static func getpEpButton(action: Selector, target: Any) {
+    public static func getpEpButton(action: Selector, target: Any) -> UIBarButtonItem {
 
-        let pepButton = UIBarButtonItem(image: nil, style: .plain, target: target, action: action)
-
+        let img = UIImage(named: "icon-settings")
+        let pepButton = UIBarButtonItem(image: img, style: .plain, target: target, action: action)
+        return pepButton
     }
 }
