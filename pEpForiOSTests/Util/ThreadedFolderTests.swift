@@ -179,7 +179,8 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
                            "ID6",
                            "ID7",
                            "ID8",
-                           "ID9"]
+                           "ID9",
+                           "ID2"]
         msg1.save()
 
         let msg2 = Message(uuid: "ID10",
@@ -190,7 +191,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         msg2.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg2.received = Date.init(timeIntervalSince1970: 2)
         msg2.sent = msg2.received
-        msg2.references = ["ID2",
+        msg2.references = ["ID1",
                            "ID3",
                            "ID4",
                            "ID5",
@@ -198,6 +199,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
                            "ID7",
                            "ID8",
                            "ID9",
+                           "ID2",
                            "ID1"]
         msg2.save()
 
@@ -209,8 +211,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         msg3.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg3.received = Date.init(timeIntervalSince1970: 3)
         msg3.sent = msg3.received
-        msg3.references = ["ID8",
-                           "ID2",
+        msg3.references = ["ID9",
                            "ID3",
                            "ID4",
                            "ID5",
