@@ -31,9 +31,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
 
         MessageModel.performAndWait {
             for msg in originalMessages {
-                let threadMessageIds = msg.threadMessageSet().map {
-                    return $0.messageID
-                }
+                let threadMessageIds = msg.threadMessageIdSet()
                 if messageIdSet.intersection(threadMessageIds).isEmpty {
                     topMessages.append(msg)
                 }
