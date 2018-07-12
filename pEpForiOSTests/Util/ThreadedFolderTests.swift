@@ -122,6 +122,8 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
     }
 
     func testSpecialThread() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+
         let msgs = createSpecialThread()
 
         let threaded = inbox.threadAware()
