@@ -29,20 +29,15 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
         let trash = Folder.init(name: "Trash", parent: nil, account: account, folderType: .trash)
         trash.save()
-
-        topMessages.removeAll()
-
-        for i in 1...inboxCount {
-            let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
-            topMessages.append(msg)
-            msg.save()
-        }
     }
 
     // MARK: - Tests
 
     func testSetup() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
+
+        createSomeMessages()
+
         let threaded = inbox.threadAware()
         XCTAssertEqual(threaded.allMessages().count, topMessages.count)
 
@@ -57,6 +52,8 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
     func testTopMessageReferencingOtherTopMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
+
+        createSomeMessages()
 
         let firstDisplayedMessage = message(by: UInt(inboxCount))
         let secondDisplayedMessage = message(by: UInt(inboxCount - 1))
@@ -78,6 +75,8 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
     func testSiblingsByReferencingSentMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
+
+        createSomeMessages()
 
         let lastInboxUid = TestUtil.highestUid()
 
@@ -128,4 +127,13 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         return Message.by(messageID: "\(uid)").first!
     }
 
+    func createSomeMessages() {
+        topMessages.removeAll()
+
+        for i in 1...inboxCount {
+            let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
+            topMessages.append(msg)
+            msg.save()
+        }
+    }
 }
