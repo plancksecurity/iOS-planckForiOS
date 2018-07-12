@@ -135,7 +135,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
             return
         }
 
-        XCTAssertEqual(topMsg, msgs[0])
+        XCTAssertEqual(topMsg, msgs[2])
     }
 
     // MARK: - Helpers
