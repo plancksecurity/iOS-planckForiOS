@@ -162,7 +162,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         let from3 = Identity.create(address: "be")
         from3.save()
 
-        let msg1 = Message(uuid: "AB9FF83B-54E9-4F5C-9B0C-C19E96BBD6D6",
+        let msg1 = Message(uuid: "ID1",
                           uid: 1,
                           parentFolder: inbox)
         msg1.from = from1
@@ -170,17 +170,17 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         msg1.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg1.received = Date.init(timeIntervalSince1970: 1)
         msg1.sent = msg1.received
-        msg1.references = ["C4E6FF74-95D7-4058-A96E-68896A0BF25C",
-                           "CFF40637-A977-4EA5-8637-2417FBD6E30A",
-                           "FB693878-CF66-4985-96C5-DCE469698916",
-                           "CACL5pUvx9C45CxDUEgSRbVKgwb08GA58524wPiNBJLrftwJ1YQ",
-                           "B8A172B5-8EB2-4A20-913E-428482C79BED",
-                           "B262F646-6A0A-4785-ADBC-44C0BCD3AE10",
-                           "CACL5pUvKBRSeMpro30GuPXD9RWFwpg7DJWn3+t4ihcAZY0dKDw",
-                           "CAGLLa-Uy9kUbNV2-R-fbxkbs2khhQoiXRQc_P-zf1g4rswAOgw"]
+        msg1.references = ["ID2",
+                           "ID3",
+                           "ID4",
+                           "ID5",
+                           "ID6",
+                           "ID7",
+                           "ID8",
+                           "ID9"]
         msg1.save()
 
-        let msg2 = Message(uuid: "CAGLLa-UDqi-F=J_5oWvAuHvBzE_YwEwWce3dAorzLRn8w+fPtw",
+        let msg2 = Message(uuid: "ID10",
                            uid: 2,
                            parentFolder: inbox)
         msg2.from = from2
@@ -188,18 +188,18 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         msg2.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg2.received = Date.init(timeIntervalSince1970: 2)
         msg2.sent = msg2.received
-        msg2.references = ["C4E6FF74-95D7-4058-A96E-68896A0BF25C",
-                           "CFF40637-A977-4EA5-8637-2417FBD6E30A",
-                           "FB693878-CF66-4985-96C5-DCE469698916",
-                           "CACL5pUvx9C45CxDUEgSRbVKgwb08GA58524wPiNBJLrftwJ1YQ",
-                           "B8A172B5-8EB2-4A20-913E-428482C79BED",
-                           "B262F646-6A0A-4785-ADBC-44C0BCD3AE10",
-                           "CACL5pUvKBRSeMpro30GuPXD9RWFwpg7DJWn3+t4ihcAZY0dKDw",
-                           "CAGLLa-Uy9kUbNV2-R-fbxkbs2khhQoiXRQc_P-zf1g4rswAOgw",
-                           "AB9FF83B-54E9-4F5C-9B0C-C19E96BBD6D6"]
+        msg2.references = ["ID2",
+                           "ID3",
+                           "ID4",
+                           "ID5",
+                           "ID6",
+                           "ID7",
+                           "ID8",
+                           "ID9",
+                           "ID1"]
         msg2.save()
 
-        let msg3 = Message(uuid: "1862FFC3-F1C3-4F36-953B-42ADB89F333F",
+        let msg3 = Message(uuid: "ID11",
                            uid: 3,
                            parentFolder: inbox)
         msg3.from = from3
@@ -207,14 +207,14 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         msg3.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg3.received = Date.init(timeIntervalSince1970: 3)
         msg3.sent = msg3.received
-        msg3.references = ["CACL5pUvKBRSeMpro30GuPXD9RWFwpg7DJWn3+t4ihcAZY0dKDw",
-                           "C4E6FF74-95D7-4058-A96E-68896A0BF25C",
-                           "CFF40637-A977-4EA5-8637-2417FBD6E30A",
-                           "FB693878-CF66-4985-96C5-DCE469698916",
-                           "CACL5pUvx9C45CxDUEgSRbVKgwb08GA58524wPiNBJLrftwJ1YQ",
-                           "B8A172B5-8EB2-4A20-913E-428482C79BED",
-                           "B262F646-6A0A-4785-ADBC-44C0BCD3AE10",
-                           "CACL5pUvKBRSeMpro30GuPXD9RWFwpg7DJWn3+t4ihcAZY0dKDw"]
+        msg3.references = ["ID8",
+                           "ID2",
+                           "ID3",
+                           "ID4",
+                           "ID5",
+                           "ID6",
+                           "ID7",
+                           "ID8"]
         msg3.save()
 
         return [msg1, msg2, msg3]
