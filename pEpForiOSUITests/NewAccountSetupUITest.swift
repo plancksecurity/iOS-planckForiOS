@@ -120,24 +120,6 @@ class NewAccountSetupUITest: XCTestCase {
         waitForExpectations(timeout: 3000, handler: nil)
     }
 
-    /**
-     Clears the given text element.
-     */
-    func clearTextField(_ textField: XCUIElement) {
-        let string = textField.value as? String
-        XCTAssertNotNil(string)
-
-        while true {
-            guard let text = textField.value as? String else {
-                break
-            }
-            if text.count == 0 {
-                break
-            }
-            textField.typeText("\u{8}")
-        }
-    }
-
     func typeTextIfEmpty(textField: XCUIElement,  text: String) {
         if (textField.value as? String ?? "") == "" {
             textField.typeText(text)
@@ -165,8 +147,7 @@ class NewAccountSetupUITest: XCTestCase {
         tf.typeText(account.imapServerName)
         tf = tablesQuery.textFields["imapPort"]
         tf.tap()
-        clearTextField(tf)
-        tf.typeText(String(account.imapPort))
+        tf.clearAndEnter(text: String(account.imapPort))
 
         tablesQuery.buttons["imapTransportSecurity"].tap()
         let sheet = theApp.sheets["Transport protocol"]
@@ -179,8 +160,7 @@ class NewAccountSetupUITest: XCTestCase {
         tf.typeText(account.smtpServerName)
         tf = tablesQuery.textFields["smtpPort"]
         tf.tap()
-        clearTextField(tf)
-        tf.typeText(String(account.smtpPort))
+        tf.clearAndEnter(text: String(account.smtpPort))
 
         tablesQuery.buttons["smtpTransportSecurity"].tap()
         sheet.buttons[account.smtpTransportSecurityString].tap()
