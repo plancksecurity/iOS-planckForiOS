@@ -12,9 +12,6 @@ extension UITextField {
     func convertToLoginField(placeholder: String, delegate: UITextFieldDelegate) {
         // common properties
         self.delegate = delegate
-        self.backgroundColor = UIColor.clear
-        self.tintColor = UIColor.pEpGreen
-        self.layer.borderWidth = 1.0
         self.placeholder = placeholder
 
         // properties divided between enabled/disabled
@@ -34,9 +31,9 @@ extension UITextField {
     }
 
     func enableOrDisableLoginField(enable: Bool) {
-        let theColor = enable ? UIColor.pEpGreen : UIColor.gray
+        let theColor = enable ? UIColor.white : UIColor.gray
         self.textColor = theColor
-        self.layer.borderColor = theColor.cgColor
+//        self.layer.borderColor = theColor.cgColor
         if let ph = placeholder {
             self.attributedPlaceholder = NSAttributedString(
                 string: ph, attributes: [NSAttributedStringKey.foregroundColor: theColor])

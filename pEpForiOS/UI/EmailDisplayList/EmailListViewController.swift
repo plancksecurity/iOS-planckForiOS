@@ -906,15 +906,15 @@ extension EmailListViewController: SegueHandlerType {
             destiny.filterEnabled = folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
-//            guard
-//                let nav = segue.destination as? UINavigationController,
-//                let vc = nav.rootViewController as? LoginTableViewController else {
-//                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-//                    return
-//            }
-//            vc.appConfig = appConfig
-//            vc.delegate = self
-//            vc.hidesBottomBarWhenPushed = true
+            guard
+                let nav = segue.destination as? UINavigationController,
+                let vc = nav.rootViewController as? LoginViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
+            }
+            vc.appConfig = appConfig
+            vc.delegate = self
+            vc.hidesBottomBarWhenPushed = true
             break
         case .segueFolderViews:
             guard let vC = segue.destination as? FolderTableViewController  else {
@@ -1006,9 +1006,9 @@ extension EmailListViewController: SegueHandlerType {
 
 // MARK: - LoginTableViewControllerDelegate
 
-extension EmailListViewController: LoginTableViewControllerDelegate {
-    func loginTableViewControllerDidCreateNewAccount(
-        _ loginTableViewController: LoginTableViewController) {
+extension EmailListViewController: LoginViewControllerDelegate {
+    func loginViewControllerDidCreateNewAccount(
+        _ loginViewController: LoginViewController) {
         // Setup model after initial account setup
         setup()
     }
