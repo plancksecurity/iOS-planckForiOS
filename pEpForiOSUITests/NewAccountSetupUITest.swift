@@ -62,8 +62,13 @@ class NewAccountSetupUITest: XCTestCase {
     /// Start app, accept contact permissions manually, start test,
     /// wait for alert and click OK manually
     func testNewAccountSetupManual() {
-        app().launch()
         let theApp = app()
+
+        theApp.launch()
+
+        dismissAlert(app: theApp, buttonTitleToWaitFor: "Allow")
+        dismissAlert(app: theApp, buttonTitleToWaitFor: "OK")
+
         let account = SecretUITestData.manualAccount
         newAccountSetup(account: account)
 
@@ -78,6 +83,22 @@ class NewAccountSetupUITest: XCTestCase {
         manualNewAccountSetup(account)
 
         waitForever()
+    }
+
+    func dismissAlert(app: XCUIApplication,
+                      buttonTitleToWaitFor: String,
+                      buttonTitleToPush: String? = nil) {
+        let buttonToWaitFor = app.buttons[buttonTitleToWaitFor]
+
+        if !buttonToWaitFor.exists {
+            let exists = NSPredicate(format: "enabled == true")
+            expectation(for: exists, evaluatedWith: buttonToWaitFor, handler: nil)
+            waitForExpectations(timeout: 2, handler: nil)
+        }
+
+        let nextTitle = buttonTitleToPush ?? buttonTitleToWaitFor
+        let buttonToPush = app.buttons[nextTitle]
+        buttonToPush.tap()
     }
 
     // Adds Yahoo account
