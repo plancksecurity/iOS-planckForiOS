@@ -22,6 +22,7 @@
 		003C0FA720B5581A0093A987 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003C0FA620B5581A0093A987 /* SecretTestData.swift */; };
 		005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */; };
 		006BE6BC20F4B63C00DDE8C9 /* EmailDetailType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */; };
+		007A542920F7AD3A00AC1E21 /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007A542820F7AD3A00AC1E21 /* WrappedCell.swift */; };
 		00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */; };
 		00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */; };
 		00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */; };
@@ -524,6 +525,7 @@
 		003C0FA620B5581A0093A987 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretTestData.swift; sourceTree = "<group>"; };
 		005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadedEmailViewModel.swift; sourceTree = "<group>"; };
 		006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailType.swift; sourceTree = "<group>"; };
+		007A542820F7AD3A00AC1E21 /* WrappedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
 		00A12CAD20D3D9AC00B82BE3 /* FullMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullMessageCell.swift; sourceTree = "<group>"; };
 		00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedsRefreshDelegate.swift; sourceTree = "<group>"; };
 		00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMessagesViewController.swift; sourceTree = "<group>"; };
@@ -1270,6 +1272,7 @@
 				431AE5D61D2EC0DD00F609D3 /* RecipientCell.swift */,
 				222B35BB1E00049C007A1F82 /* AccountCell.swift */,
 				4340F5F81D363BE6006A5C82 /* ContactCell.swift */,
+				007A542820F7AD3A00AC1E21 /* WrappedCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -2806,6 +2809,7 @@
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				434BF39520C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
+				007A542920F7AD3A00AC1E21 /* WrappedCell.swift in Sources */,
 				150DF6D32052ED4800A9DCF7 /* UIView+Autolayout.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
 				4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */,

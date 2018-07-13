@@ -10,7 +10,7 @@ import UIKit
 
 public class ComposeFieldModel {
     public enum FieldType: String {
-        case to, cc, bcc, from, subject, content, mailingList, none, attachment
+        case to, cc, bcc, from, subject, content, mailingList, none, attachment, wraped
 
         func translatedTitle(expanded: Bool = false) -> String {
             switch self {
@@ -20,12 +20,10 @@ public class ComposeFieldModel {
                 return NSLocalizedString("CC:", comment: "Compose field title")
             case .bcc:
                 return NSLocalizedString("BCC:", comment: "Compose field title")
+            case .wraped:
+                return NSLocalizedString("Cc/Bcc:", comment: "Compose field title")
             case .from:
-                if expanded {
                     return NSLocalizedString("From:", comment: "Compose field title")
-                } else {
-                    return NSLocalizedString("Cc/Bcc, From:", comment: "Compose field title")
-                }
             case .subject:
                 return NSLocalizedString("Subject:", comment: "Compose field title")
             case .mailingList:

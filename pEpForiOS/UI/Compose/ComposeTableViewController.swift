@@ -1,4 +1,4 @@
-//
+ //
 //  ComposeViewController.swift
 //  pEpForiOS
 //
@@ -813,9 +813,12 @@ class ComposeTableViewController: BaseTableViewController {
                 }
             }
         }
-
+        if let tempCell = cell as? RecipientCell{
+            tempCell.ccEnabled = ccEnabled
+        }
+        
         if cell.fieldModel?.display == .conditional {
-            if ccEnabled {
+            if cell.shouldDisplay() {
                 if height <= row.height {
                     return caching(height: row.height, indexPath: indexPath)
                 }
@@ -930,8 +933,14 @@ class ComposeTableViewController: BaseTableViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else {
             return
         }
-        if let accountCell = cell as? AccountCell {
-            ccEnabled = accountCell.expand()
+        if let recipientCell = cell as? WrappedCell {
+            ccEnabled = recipientCell.expand()
+            recipientCell.ccEnabled = ccEnabled
+            self.tableView.updateSize()
+        }
+
+        if let recipientCell = cell as? AccountCell {
+            recipientCell.expand()
             self.tableView.updateSize()
         }
     }
