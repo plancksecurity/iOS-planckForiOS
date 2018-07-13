@@ -465,7 +465,6 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         let fpr = fingerprint(device: device)
         let identity = account.user.pEpIdentity()
         identity.fingerPrint = fpr
-//        identity.isOwn = true //BUFF:
         do {
             try session.trustPersonalKey(identity)
         } catch {
@@ -497,8 +496,8 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     private func setupAccount(device: Device) {
+        // Setup Account
         cdAccount.identity?.userName = "unittest.ios.3"
-        //        cdAccount.identity?.userID = "unittest.ios.3_ID" //IOS-1028:
         cdAccount.identity?.userID = "pep4ios_pEp_own_userId"
         cdAccount.identity?.address = "unittest.ios.3@peptest.ch"
         guard
@@ -511,7 +510,11 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         }
         imapCredentials.loginName = "unittest.ios.3@peptest.ch"
         smtpCredentials.loginName = "unittest.ios.3@peptest.ch"
+        TestUtil.skipValidation()
+        Record.saveAndWait()
+        cdAccount.createRequiredFoldersAndWait()
 
+        // Setup Engine state
         let filenamePub = keyFileName(device: device) + "pub.asc"
         let filenameSec = keyFileName(device: device) + "sec.asc"
         let fpr = fingerprint(device: device)
@@ -521,19 +524,19 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 
             let pepIdentity = cdAccount.identity!.pEpIdentity()
             pepIdentity.isOwn = true
-            try session.mySelf(pepIdentity)
-            try session.setOwnKey(pepIdentity, fingerprint: fpr) //IOS-1028: fails silently. PEP_CANNOT_FIND_IDENTITY
+//            try session.mySelf(pepIdentity)
+            try session.setOwnKey(pepIdentity, fingerprint: fpr)
         } catch {
             XCTFail(error.localizedDescription)
         }
 
-        TestUtil.skipValidation()
-        Record.saveAndWait()
-        cdAccount.createRequiredFoldersAndWait()
+
     }
 
     private func switchTo(device: Device) {
-        XCTAssertTrue(PEPUtil.pEpClean())
+//        XCTAssertTrue(PEPUtil.pEpClean())
+        super.tearEverythingDown()
+        super.setupEverythingUp()
         setupAccount(device: device)
     }
 
