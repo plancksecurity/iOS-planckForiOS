@@ -260,10 +260,9 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     /*
     //IOS-1028
      Fails as test setup methods partly fail.
-     Problem is setOwnKey and trustPersonalKey. They fail silently (without throwing).
-     Breaking in Engine let's me suspect it PEP_CANNOT_FIND_IDENTITY.
-     The result is that device B is not handshaked and thus the privateKeyMessage is yellow,
-     not green as expected.
+     Problem is that the Engine does not return PEP_decrypt_flag_own_private_key when decrypting the
+     message.
+     As a result the privateKeyMessage is not identified as such.
 
     //commented until clarified
  */
@@ -466,6 +465,7 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         let fpr = fingerprint(device: device)
         let identity = account.user.pEpIdentity()
         identity.fingerPrint = fpr
+//        identity.isOwn = true //BUFF:
         do {
             try session.trustPersonalKey(identity)
         } catch {
