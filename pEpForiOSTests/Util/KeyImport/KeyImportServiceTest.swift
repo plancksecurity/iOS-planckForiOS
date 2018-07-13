@@ -524,7 +524,6 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 
             let pepIdentity = cdAccount.identity!.pEpIdentity()
             pepIdentity.isOwn = true
-//            try session.mySelf(pepIdentity)
             try session.setOwnKey(pepIdentity, fingerprint: fpr)
         } catch {
             XCTFail(error.localizedDescription)
