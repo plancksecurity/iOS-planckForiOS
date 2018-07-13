@@ -267,45 +267,45 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     //commented until clarified
  */
 
-    func testSendOwnPrivateKey() {
-        // Device A sent device B an InitKeyImport message.
-        // Device B sent handshake request to device A
-        // Both devices did handshake
-
-        // We are on device A.
-        // We know pub key and FPR of device B already. Also we did handshake.
-        guard let fprB = setupWhatWeKnowAlready(fromDevice: .b,
-                                                pubKeyKnown: true,
-                                                fprKnown: true,
-                                                handshakeDone: true)
-            else {
-                XCTFail("No FPR")
-                return
-        }
-
-        // Now we send our private key. (from device A)
-        let expDidSend = expectation(description: "expDidSend")
-        setupUnitTestCallbackReceiver(with: expDidSend)
-        keyImportService.sendOwnPrivateKey(forAccount: account, fpr: fprB)
-        waitForExpectations(timeout: TestUtil.waitTime)
-
-        // Lets see if device B reacts correctly
-        switchTo(device: .b)
-        // We already know pub key and FPR of device A and did handshake.
-        setupWhatWeKnowAlready(fromDevice: .a,
-                               pubKeyKnown: true,
-                               fprKnown: true,
-                               handshakeDone: true)
-
-        let expDelegateReceivedPrivateKeyCalled =
-            expectation(description: "expDelegateReceivedPrivateKeyCalled")
-        setupObserver(expReceivedPrivateKey: expDelegateReceivedPrivateKeyCalled)
-
-        // Fetch to receive the message.
-        TestUtil.syncAndWait(networkService: networkService)
-        // Did it trigger the delegate?
-        waitForExpectations(timeout: TestUtil.waitTime)
-    }
+//    func testSendOwnPrivateKey() {
+//        // Device A sent device B an InitKeyImport message.
+//        // Device B sent handshake request to device A
+//        // Both devices did handshake
+//
+//        // We are on device A.
+//        // We know pub key and FPR of device B already. Also we did handshake.
+//        guard let fprB = setupWhatWeKnowAlready(fromDevice: .b,
+//                                                pubKeyKnown: true,
+//                                                fprKnown: true,
+//                                                handshakeDone: true)
+//            else {
+//                XCTFail("No FPR")
+//                return
+//        }
+//
+//        // Now we send our private key. (from device A)
+//        let expDidSend = expectation(description: "expDidSend")
+//        setupUnitTestCallbackReceiver(with: expDidSend)
+//        keyImportService.sendOwnPrivateKey(forAccount: account, fpr: fprB)
+//        waitForExpectations(timeout: TestUtil.waitTime)
+//
+//        // Lets see if device B reacts correctly
+//        switchTo(device: .b)
+//        // We already know pub key and FPR of device A and did handshake.
+//        setupWhatWeKnowAlready(fromDevice: .a,
+//                               pubKeyKnown: true,
+//                               fprKnown: true,
+//                               handshakeDone: true)
+//
+//        let expDelegateReceivedPrivateKeyCalled =
+//            expectation(description: "expDelegateReceivedPrivateKeyCalled")
+//        setupObserver(expReceivedPrivateKey: expDelegateReceivedPrivateKeyCalled)
+//
+//        // Fetch to receive the message.
+//        TestUtil.syncAndWait(networkService: networkService)
+//        // Did it trigger the delegate?
+//        waitForExpectations(timeout: TestUtil.waitTime)
+//    }
 
     // MARK: - HELPER
 
