@@ -22,20 +22,13 @@ class AccountCell: ComposeCell, UIPickerViewDelegate, UIPickerViewDataSource {
 
     // MARK: - Public Methods
     
-    public final func expand() -> Bool {
-        if isExpanded && !shouldDisplayPicker {
-            shouldDisplayPicker = true
-        } else {
-            shouldDisplayPicker = false
-            isExpanded = !isExpanded
-            
-            titleLabel?.text = fieldModel?.title
-            
-            if isExpanded {
-                titleLabel?.text = fieldModel?.expandedTitle
-            }
-        }
-        return isExpanded
+    public final func expand() {
+            shouldDisplayPicker = !shouldDisplayPicker
+            isExpanded = shouldDisplayPicker
+    }
+
+    override func shouldDisplay() -> Bool {
+        return pickerEmailAdresses.count > 1
     }
 
     // MARK: - UIPickerView Delegate & Datasource

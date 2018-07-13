@@ -13,7 +13,6 @@ let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
 
 class MoveToAccountViewModel {
 
-    //var delegate: MoveToFolderDelegate
     var accounts = Account.all()
     var items : [MoveToAccountCellViewModel]
     /// We do not allow to move messages to those folders.
@@ -120,5 +119,4 @@ class moveToFolderCellViewModel {
             validFolder = false
         }
     }
-
 }

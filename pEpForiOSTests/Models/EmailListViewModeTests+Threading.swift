@@ -1,5 +1,5 @@
 //
-//  EmailListViewModel+ThreadingTests.swift
+//  EmailListViewModelTests_Threading.swift
 //  pEpForiOSTests
 //
 //  Created by Dirk Zimmermann on 25.06.18.
@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
+class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
     var account: Account!
     var inbox: Folder!
     var topMessages = [Message]()
@@ -337,7 +337,7 @@ class EmailListViewModel_ThreadingTests: CoreDataDrivenTestBase {
 
         topMessages.removeAll()
 
-        for i in 1...EmailListViewModel_ThreadingTests.numberOfTopMessages {
+        for i in 1...EmailListViewModelTests_Threading.numberOfTopMessages {
             let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
             topMessages.append(msg)
             msg.save()

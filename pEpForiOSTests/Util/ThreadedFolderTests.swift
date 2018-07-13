@@ -124,7 +124,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
     func testSpecialThread() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
 
-        let msgs = createSpecialThread()
+        let msgs = ThreadedFolderTests.createSpecialThread(inFolder: inbox, receiver: account.user)
 
         let threaded = inbox.threadAware()
         let topMessages = threaded.allMessages()
@@ -154,21 +154,12 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
         }
     }
 
-    func createSpecialThread() -> [Message] {
-        let from1 = Identity.create(address: "ar")
-        from1.save()
-
-        let from2 = Identity.create(address: "ba")
-        from2.save()
-
-        let from3 = Identity.create(address: "be")
-        from3.save()
-
+    static func createSpecialThread(inFolder folder: Folder, receiver: Identity) -> [Message] {
         let msg1 = Message(uuid: "ID1",
                           uid: 1,
-                          parentFolder: inbox)
-        msg1.from = from1
-        msg1.to = [account.user]
+                          parentFolder: folder)
+        msg1.from = Identity.create(address: "ar")
+        msg1.to = [receiver]
         msg1.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg1.received = Date.init(timeIntervalSince1970: 1)
         msg1.sent = msg1.received
@@ -185,9 +176,9 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
         let msg2 = Message(uuid: "ID10",
                            uid: 2,
-                           parentFolder: inbox)
-        msg2.from = from2
-        msg2.to = [account.user]
+                           parentFolder: folder)
+        msg2.from = Identity.create(address: "ba")
+        msg2.to = [receiver]
         msg2.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg2.received = Date.init(timeIntervalSince1970: 2)
         msg2.sent = msg2.received
@@ -205,9 +196,9 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
         let msg3 = Message(uuid: "ID11",
                            uid: 3,
-                           parentFolder: inbox)
-        msg3.from = from3
-        msg3.to = [account.user]
+                           parentFolder: folder)
+        msg3.from = Identity.create(address: "be")
+        msg3.to = [receiver]
         msg3.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg3.received = Date.init(timeIntervalSince1970: 3)
         msg3.sent = msg3.received

@@ -17,9 +17,6 @@ class MoveToAccountViewController: BaseViewController {
     private var selectedViewModel : moveToFolderViewModel?
     weak var delegate : MoveToFolderDelegate?
 
-    //private var viewModel: FolderViewModel?
-
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
@@ -34,12 +31,7 @@ class MoveToAccountViewController: BaseViewController {
     }
 
     private func setupTableView() {
-        hideSeperatorForEmptyCells()
-    }
-
-    private func hideSeperatorForEmptyCells() {
-        // Add empty footer to not show empty cells (visible as dangling seperators)
-        tableview.tableFooterView = UIView(frame: .zero)
+        BaseTableViewController.setupCommonSettings(tableView: tableview)
     }
 
     private func setupNavigationBar() {
@@ -92,7 +84,8 @@ extension MoveToAccountViewController: UITableViewDelegate {
     }
 }
 
-// Mark: Segue
+// Mark: - Segue
+
 extension MoveToAccountViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -105,26 +98,3 @@ extension MoveToAccountViewController {
         }
     }
 }
-
-/*
-
-// MARK: - SELECTABILITY
-
-private extension MoveToFolderViewController {
-    private func isSelectable(rowAt indexPath: IndexPath) -> Bool {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No model")
-            return false
-        }
-        let fcvm = vm[indexPath.section][indexPath.row]
-        return !MoveToFolderViewController.folderTypesNotAllowedToMoveTo.contains(fcvm.folder.folderType)
-    }
-}
-
-private extension Message {
-    func isAllowedToMoveTo(targetFolder: Folder) -> Bool {
-        return
-            !MoveToFolderViewController.folderTypesNotAllowedToMoveTo.contains(targetFolder.folderType)
-                && parent != targetFolder
-    }
-}*/

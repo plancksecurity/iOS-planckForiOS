@@ -69,7 +69,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf, didUpdateDataAt: IndexPath(row: index, section: 0))
                         if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
-                            if theSelf.shouldShowThreadVC(message: message) {
+                            if theSelf.shouldShowThreadVC() {
                                 theSelf.emailListViewModelDelegate?.showThreadView(
                                     for: IndexPath(row: index, section: 0))
                             } else {
@@ -284,8 +284,7 @@ Something is fishy here.
     /*
      - Returns: If the detail view should change from EmailVC to ThreadVC
      */
-    private func shouldShowThreadVC(message: Message) -> Bool {
+    private func shouldShowThreadVC() -> Bool {
        return currentDisplayedMessage?.detailType() == .single
-        && message.numberOfMessagesInThread() > 0
     }
 }
