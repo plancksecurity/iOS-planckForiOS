@@ -18,7 +18,6 @@ class MoveToFolderTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
-        //self.tableView.reloadData()
     }
 
     private func setup() {
@@ -36,13 +35,7 @@ class MoveToFolderTableViewController: BaseTableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         if let vm = viewModel {
             return vm.count
         }
@@ -76,9 +69,7 @@ class MoveToFolderTableViewController: BaseTableViewController {
             if vm.moveMessagesTo(index: indexPath.row) {
                 delegate?.didMove()
             }
-
             dismiss(animated: true)
         }
     }
-
 }
