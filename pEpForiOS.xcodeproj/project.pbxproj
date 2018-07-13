@@ -249,6 +249,7 @@
 		434BF39320C6B6D300FCBCCA /* ThreadAwareFolderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF39220C6B6D300FCBCCA /* ThreadAwareFolderProtocol.swift */; };
 		434BF39520C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF39420C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift */; };
 		434BF39A20C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434BF39920C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift */; };
+		434C051B20F8BAB6009B271D /* XCUIElement+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434C051A20F8BAB6009B271D /* XCUIElement+Extension.swift */; };
 		434DDC2B20D10F9A00755F44 /* EncryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */; };
 		434E5A1B20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434E5A1A20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift */; };
 		434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434F40931EB0B173002FBF0D /* ObservableValue.swift */; };
@@ -764,6 +765,7 @@
 		434BF39220C6B6D300FCBCCA /* ThreadAwareFolderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadAwareFolderProtocol.swift; sourceTree = "<group>"; };
 		434BF39420C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadAwareMessageProtocol.swift; sourceTree = "<group>"; };
 		434BF39920C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewMessage+ThreadAware.swift"; sourceTree = "<group>"; };
+		434C051A20F8BAB6009B271D /* XCUIElement+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+Extension.swift"; sourceTree = "<group>"; };
 		434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTests.swift; sourceTree = "<group>"; };
 		434E5A1A20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewModel+MessageFolderDelegate.swift"; sourceTree = "<group>"; };
 		434F40931EB0B173002FBF0D /* ObservableValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableValue.swift; sourceTree = "<group>"; };
@@ -1714,6 +1716,7 @@
 				43980E4B1CBD0BCA00A7FC3C /* Info.plist */,
 				43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */,
 				431E65621EEAE65200B8BBFC /* HandshakeUITest.swift */,
+				434C051A20F8BAB6009B271D /* XCUIElement+Extension.swift */,
 			);
 			path = pEpForiOSUITests;
 			sourceTree = "<group>";
@@ -3092,6 +3095,7 @@
 				43E3C74020CE544900E58DAD /* SecretUITestData.swift in Sources */,
 				43B0443920067CC7007BCE3F /* UIAccount.swift in Sources */,
 				43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */,
+				434C051B20F8BAB6009B271D /* XCUIElement+Extension.swift in Sources */,
 				431E65631EEAE65200B8BBFC /* HandshakeUITest.swift in Sources */,
 				43B0443B20067D25007BCE3F /* UITestDataProtocol.swift in Sources */,
 			);
