@@ -59,15 +59,12 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-    /// Start app, accept contact permissions manually, start test,
-    /// wait for alert and click OK manually
     func testNewAccountSetupManual() {
         let theApp = app()
 
         theApp.launch()
 
-        dismissAlert(app: theApp, buttonTitleToWaitFor: "Allow")
-        dismissAlert(app: theApp, buttonTitleToWaitFor: "OK")
+        dismissInitialSystemAlerts()
 
         let account = SecretUITestData.manualAccount
         newAccountSetup(account: account)
@@ -85,20 +82,25 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-    func dismissAlert(app: XCUIApplication,
-                      buttonTitleToWaitFor: String,
-                      buttonTitleToPush: String? = nil) {
-        let buttonToWaitFor = app.buttons[buttonTitleToWaitFor]
+    /**
+     Dismisses the initial system alerts (access to contacts, allow notifications).
+     */
+    func dismissInitialSystemAlerts() {
+        dismissSystemAlert(buttonTitle: "Allow")
+        dismissSystemAlert(buttonTitle: "OK")
+    }
 
-        if !buttonToWaitFor.exists {
+    func dismissSystemAlert(buttonTitle: String) {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let button = springboard.buttons[buttonTitle]
+        if button.exists {
+            button.tap()
+        } else {
             let exists = NSPredicate(format: "enabled == true")
-            expectation(for: exists, evaluatedWith: buttonToWaitFor, handler: nil)
+            expectation(for: exists, evaluatedWith: button, handler: nil)
             waitForExpectations(timeout: 2, handler: nil)
+            button.tap()
         }
-
-        let nextTitle = buttonTitleToPush ?? buttonTitleToWaitFor
-        let buttonToPush = app.buttons[nextTitle]
-        buttonToPush.tap()
     }
 
     // Adds Yahoo account
