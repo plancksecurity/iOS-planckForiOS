@@ -17,20 +17,6 @@ class MoveToFolderTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setup()
-    }
-
-    private func setup() {
-        setupTableView()
-    }
-
-    private func setupTableView() {
-        hideSeperatorForEmptyCells()
-    }
-
-    private func hideSeperatorForEmptyCells() {
-        // Add empty footer to not show empty cells (visible as dangling seperators)
-        self.tableView.tableFooterView = UIView(frame: .zero)
     }
 
     // MARK: - Table view data source

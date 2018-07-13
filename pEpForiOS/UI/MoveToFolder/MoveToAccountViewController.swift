@@ -34,12 +34,7 @@ class MoveToAccountViewController: BaseViewController {
     }
 
     private func setupTableView() {
-        hideSeperatorForEmptyCells()
-    }
-
-    private func hideSeperatorForEmptyCells() {
-        // Add empty footer to not show empty cells (visible as dangling seperators)
-        tableview.tableFooterView = UIView(frame: .zero)
+        BaseTableViewController.setupCommonSettings(tableView: tableview)
     }
 
     private func setupNavigationBar() {
