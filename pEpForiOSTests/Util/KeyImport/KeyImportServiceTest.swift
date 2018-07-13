@@ -529,8 +529,6 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         } catch {
             XCTFail(error.localizedDescription)
         }
-
-
     }
 
     private func switchTo(device: Device) {
