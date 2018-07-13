@@ -61,18 +61,21 @@ class NewAccountSetupUITest: XCTestCase {
 
     /// Start app, accept contact permissions manually, start test,
     /// wait for alert and click OK manually
-    func testNewAccountSetupManuallyAccountThatDoesNotWorkAutomatically() {
+    func testNewAccountSetupManual() {
         app().launch()
         let theApp = app()
         let account = SecretUITestData.manualAccount
         newAccountSetup(account: account)
 
-        //wait until manual setup button appaers
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(80), execute: {
-            theApp.buttons["Manual configuration"].tap()
-            self.manualNewAccountSetup(account)
-        })
+        let alertOkButton = theApp.buttons["Ok"]
+        let exists = NSPredicate(format: "enabled == true")
+        expectation(for: exists, evaluatedWith: alertOkButton, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
 
+        alertOkButton.tap()
+        theApp.buttons["Manual configuration"].tap()
+
+        manualNewAccountSetup(account)
 
         waitForever()
     }
