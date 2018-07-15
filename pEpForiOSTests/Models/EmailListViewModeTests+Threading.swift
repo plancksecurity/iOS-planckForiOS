@@ -350,6 +350,15 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         XCTAssertTrue(isReferencingIncomingMessage)
     }
 
+    func testThreadedSpecial() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages([createSpecialMessage(number: 0, folder: inbox, receiver: account.user)])
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.message(
+                createSpecialMessage(number: 1, folder: inbox, receiver: account.user)),
+            indexPathUpdated: IndexPath(row: 0, section: 0))
+    }
+
     // MARK: - Internal - Helpers
 
     func setUpTopMessages(_ messages: [Message] = []) {
