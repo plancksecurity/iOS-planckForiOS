@@ -326,7 +326,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
     // MARK: - Internal - Helpers
 
-    func setUpTopMessages() {
+    func setUpTopMessages(_ messages: [Message] = []) {
         account = cdAccount.account()
 
         inbox = Folder.init(name: "INBOX", parent: nil, account: account, folderType: .inbox)
@@ -337,10 +337,14 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         topMessages.removeAll()
 
-        for i in 1...EmailListViewModelTests_Threading.numberOfTopMessages {
-            let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
-            topMessages.append(msg)
-            msg.save()
+        if messages.isEmpty {
+            for i in 1...EmailListViewModelTests_Threading.numberOfTopMessages {
+                let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
+                topMessages.append(msg)
+                msg.save()
+            }
+        } else {
+            topMessages = messages
         }
 
         emailListViewModelDelegate.expectationViewUpdated = expectation(
