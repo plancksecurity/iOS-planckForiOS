@@ -57,7 +57,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
     func testUnthreadedIncomingTopMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
         setUpTopMessages()
-        let _ = testIncomingMessage(references: [], indexPathUpdated: nil)
+        let _ = testIncomingMessage(parameters: IncomingMessageParameters.noMessage([], nil),
+                                    indexPathUpdated: nil)
     }
 
     func testThreadedIncomingChildMessageToSingleUndisplayedParent() {
@@ -65,10 +66,12 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         setUpTopMessages()
 
         // topMessages[0] is the oldest, so it's last in the list
-        let _ = testIncomingMessage(references: [topMessages[1]],
-                                    indexPathUpdated: indexOfTopMessage1)
-        let _ = testIncomingMessage(references: [topMessages[0]],
-                                    indexPathUpdated: indexOfTopMessage0)
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([topMessages[1]], nil),
+            indexPathUpdated: indexOfTopMessage1)
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([topMessages[0]], nil),
+            indexPathUpdated: indexOfTopMessage0)
     }
 
     func testThreadedIncomingSentChildMessageToSingleUndisplayedParent() {
@@ -82,11 +85,12 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         sentFolder.save()
 
         // topMessages[0] is the oldest, so it's last in the list
-        let _ = testIncomingMessage(references: [topMessages[1]],
-                                    fromFolder: sentFolder,
-                                    indexPathUpdated: indexOfTopMessage1)
-        let _ = testIncomingMessage(references: [topMessages[0]],
-                                    indexPathUpdated: indexOfTopMessage0)
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([topMessages[1]], sentFolder),
+            indexPathUpdated: indexOfTopMessage1)
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([topMessages[0]], nil),
+            indexPathUpdated: indexOfTopMessage0)
     }
 
     func testThreadedIncomingChildMessageToUndisplayedParents() {
@@ -95,8 +99,9 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         // Will update the first (newest) message it finds,
         // which is topMessages[1] with row 3.
-        let _ = testIncomingMessage(references: [topMessages[0], topMessages[1]],
-                                    indexPathUpdated: indexOfTopMessage1)
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([topMessages[0], topMessages[1]], nil),
+            indexPathUpdated: indexOfTopMessage1)
     }
 
     func testThreadedIncomingChildMessageToSingleDisplayedParent() {
@@ -107,9 +112,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         // topMessages[0] is the oldest, so it's last in the list
-        let _ = testIncomingMessage(references: [theDisplayedMessage],
-                                    indexPathUpdated: nil,
-                                    openThread: true)
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            indexPathUpdated: nil,
+            openThread: true)
     }
 
     func testThreadedUpdateTopMessage() {
@@ -119,9 +125,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         let theDisplayedMessage = topMessages[1]
         displayedMessage.messageModel = theDisplayedMessage
 
-        let _ = testIncomingMessage(references: [theDisplayedMessage],
-                                    indexPathUpdated: nil,
-                                    openThread: true)
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            indexPathUpdated: nil,
+            openThread: true)
 
         topMessages[0].imapFlags?.flagged = true
         XCTAssertTrue(topMessages[0].imapFlags?.flagged ?? false)
@@ -144,9 +151,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         let theDisplayedMessage = topMessages[1]
         displayedMessage.messageModel = theDisplayedMessage
 
-        let incomingMessage = testIncomingMessage(references: [theDisplayedMessage],
-                                                  indexPathUpdated: nil,
-                                                  openThread: true)
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            indexPathUpdated: nil,
+            openThread: true)
 
         incomingMessage.imapFlags?.flagged = true
         XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
@@ -169,8 +177,9 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         let unDisplayedMessage = topMessages[1]
         displayedMessage.messageModel = topMessages[0]
 
-        let incomingMessage = testIncomingMessage(references: [unDisplayedMessage],
-                                                  indexPathUpdated: indexOfTopMessage1)
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([unDisplayedMessage], nil),
+            indexPathUpdated: indexOfTopMessage1)
         incomingMessage.imapFlags?.flagged = true
         XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
 
@@ -193,9 +202,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         let theDisplayedMessage = topMessages[1]
         displayedMessage.messageModel = theDisplayedMessage
 
-        let incomingMessage = testIncomingMessage(references: [theDisplayedMessage],
-                                                  indexPathUpdated: nil,
-                                                  openThread: true)
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            indexPathUpdated: nil,
+            openThread: true)
 
         updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
             message: incomingMessage,
@@ -216,8 +226,9 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         let theDisplayedMessage = topMessages[1]
         displayedMessage.messageModel = theDisplayedMessage
 
-        let incomingMessage = testIncomingMessage(references: [topMessages[0]],
-                                                  indexPathUpdated: indexOfTopMessage0)
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([topMessages[0]], nil),
+            indexPathUpdated: indexOfTopMessage0)
 
         emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
             indexPath: indexOfTopMessage0,
@@ -312,8 +323,9 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         XCTAssertEqual(referencedSentMessageOrig.messageID, sentMessage.messageID)
 
         // receive another reply to our top message
-        let incomingMessage = testIncomingMessage(references: [sentMessage],
-                                                  indexPathUpdated: indexOfTopMessage0)
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([sentMessage], nil),
+            indexPathUpdated: indexOfTopMessage0)
 
         // check that the incoming message indeed references our sent message
         let incomingMessageReferencedMessages = incomingMessage.referencedMessages()
@@ -369,22 +381,38 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         XCTAssertNil(emailListViewModel.currentDisplayedMessage?.messageModel)
     }
 
-    func testIncomingMessage(references: [Message],
-                             fromFolder: Folder? = nil,
+    enum IncomingMessageParameters {
+        case message (Message)
+        case noMessage ([Message], Folder?)
+    }
+
+    func testIncomingMessage(parameters: IncomingMessageParameters,
                              indexPathUpdated: IndexPath?,
                              openThread: Bool = false) -> Message {
         XCTAssertEqual(emailListViewModel.messages.count, topMessages.count)
         emailListViewModel.currentDisplayedMessage = displayedMessage
 
-        let theFolder: Folder = fromFolder ?? inbox
-        let incomingMessage = TestUtil.createMessage(uid: TestUtil.nextUid(),
-                                                     inFolder: theFolder)
-        incomingMessage.references = references.map {
-            return $0.messageID
-        }
-        incomingMessage.save()
+        var theReferences: [MessageID]
+        var optIncomingMessage: Message?
 
-        if references.isEmpty {
+        switch parameters {
+        case .noMessage(let (references, folder)):
+            let theFolder: Folder = folder ?? inbox
+            let incomingMessage = TestUtil.createMessage(uid: TestUtil.nextUid(),
+                                                         inFolder: theFolder)
+            theReferences = references.map {
+                return $0.messageID
+            }
+            incomingMessage.references = theReferences
+            incomingMessage.save()
+
+            optIncomingMessage = incomingMessage
+        case .message(let msg):
+            theReferences = msg.references
+            optIncomingMessage = msg
+        }
+
+        if theReferences.isEmpty {
             // expect top message
             emailListViewModelDelegate.expectationInserted = ExpectationTopMessageInserted(
                 indexPath: indexOfTopMessageNewest,
@@ -405,13 +433,13 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             }
         }
 
-        emailListViewModel.didCreate(messageFolder: incomingMessage)
+        emailListViewModel.didCreate(messageFolder: optIncomingMessage!)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
 
-        return incomingMessage
+        return optIncomingMessage!
     }
 
     func topMessage(byUID uid: Int) -> Message {
