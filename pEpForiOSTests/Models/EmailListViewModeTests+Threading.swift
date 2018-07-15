@@ -38,6 +38,20 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
      */
     let indexOfTopMessageNewest = IndexPath(row: 0, section: 0)
 
+    // MARK: - Setup
+
+    override func setUp() {
+        super.setUp()
+
+        account = cdAccount.account()
+
+        inbox = Folder.init(name: "INBOX", parent: nil, account: account, folderType: .inbox)
+        inbox.save()
+
+        let trash = Folder.init(name: "Trash", parent: nil, account: account, folderType: .trash)
+        trash.save()
+    }
+
     // MARK: - Tests
 
     func testUnthreadedIncomingTopMessage() {
@@ -327,16 +341,6 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
     // MARK: - Internal - Helpers
 
     func setUpTopMessages(_ messages: [Message] = []) {
-        account = cdAccount.account()
-
-        inbox = Folder.init(name: "INBOX", parent: nil, account: account, folderType: .inbox)
-        inbox.save()
-
-        let trash = Folder.init(name: "Trash", parent: nil, account: account, folderType: .trash)
-        trash.save()
-
-        topMessages.removeAll()
-
         if messages.isEmpty {
             for i in 1...EmailListViewModelTests_Threading.numberOfTopMessages {
                 let msg = TestUtil.createMessage(uid: i, inFolder: inbox)
