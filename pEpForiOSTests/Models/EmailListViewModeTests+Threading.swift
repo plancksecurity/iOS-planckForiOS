@@ -352,14 +352,18 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
     func testThreadedSpecial() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
-        setUpTopMessages([createSpecialMessage(number: 0, folder: inbox, receiver: account.user)])
+        setUpTopMessages(
+            [EmailListViewModelTests_Threading.createSpecialMessage(
+                number: 0, folder: inbox, receiver: account.user)])
         let _ = testIncomingMessage(
             parameters: IncomingMessageParameters.message(
-                createSpecialMessage(number: 1, folder: inbox, receiver: account.user)),
+                EmailListViewModelTests_Threading.createSpecialMessage(
+                    number: 1, folder: inbox, receiver: account.user)),
             indexPathUpdated: IndexPath(row: 0, section: 0))
         let _ = testIncomingMessage(
             parameters: IncomingMessageParameters.message(
-                createSpecialMessage(number: 2, folder: inbox, receiver: account.user)),
+                EmailListViewModelTests_Threading.createSpecialMessage(
+                    number: 2, folder: inbox, receiver: account.user)),
             indexPathUpdated: IndexPath(row: 0, section: 0))
     }
 
@@ -459,7 +463,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         return topMessages[uid-1]
     }
 
-    func createSpecialMessage(number: Int, folder: Folder, receiver: Identity) -> Message {
+    static func createSpecialMessage(number: Int, folder: Folder, receiver: Identity) -> Message {
         struct Blueprint {
             let uuid: String
             let from: Identity
