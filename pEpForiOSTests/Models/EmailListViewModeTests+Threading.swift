@@ -410,6 +410,67 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         return topMessages[uid-1]
     }
 
+    func createSpecialMessage(number: Int, folder: Folder, receiver: Identity) -> Message {
+        struct Blueprint {
+            let uuid: String
+            let from: Identity
+            let references: [String]
+        }
+
+        let blueprintData = [
+            Blueprint(
+                uuid: "ID1",
+                from: Identity.create(address: "ar"),
+                references: ["ID2",
+                             "ID3",
+                             "ID4",
+                             "ID5",
+                             "ID6",
+                             "ID7",
+                             "ID8",
+                             "ID9",
+                             "ID2"]),
+            Blueprint(
+                uuid: "ID10",
+                from: Identity.create(address: "ba"),
+                references: ["ID1",
+                             "ID3",
+                             "ID4",
+                             "ID5",
+                             "ID6",
+                             "ID7",
+                             "ID8",
+                             "ID9",
+                             "ID2",
+                             "ID1"]),
+            Blueprint(
+                uuid: "ID11",
+                from: Identity.create(address: "be"),
+                references: ["ID9",
+                             "ID3",
+                             "ID4",
+                             "ID5",
+                             "ID6",
+                             "ID7",
+                             "ID8"])
+        ]
+
+        let blueprint = blueprintData[number]
+
+        let msg = Message(uuid: blueprint.uuid,
+                          uid: UInt(number + 1),
+                          parentFolder: folder)
+        msg.from = blueprint.from
+        msg.to = [receiver]
+        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.received = Date(timeIntervalSince1970: Double(number))
+        msg.sent = msg.received
+        msg.references = blueprint.references
+        msg.save()
+
+        return msg
+    }
+
     // MARK: - Internal - Delegate parameters
 
     /**
