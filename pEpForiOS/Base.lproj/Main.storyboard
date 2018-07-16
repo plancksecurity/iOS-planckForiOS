@@ -808,8 +808,6 @@
                                 <action selector="pressReply:" destination="3bx-34-vLD" id="KDm-Or-31Y"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
-                        <barButtonItem image="icon-settings" id="1oP-DI-wuJ"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3">
                         <rightBarButtonItems>
@@ -980,7 +978,6 @@
         <image name="empty-avatar" width="150" height="150"/>
         <image name="folders-icon-folder" width="25" height="25"/>
         <image name="folders-icon-trash" width="25" height="25"/>
-        <image name="icon-settings" width="33" height="64"/>
         <image name="icon-unflagged" width="33" height="64"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
         <image name="thread-icon" width="13" height="13"/>
@@ -988,7 +985,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
-        <segue reference="oPc-EL-W2c"/>
+        <segue reference="8Xh-Bv-MFq"/>
         <segue reference="ber-OQ-S16"/>
         <segue reference="Usl-iS-7fo"/>
     </inferredMetricsTieBreakers>

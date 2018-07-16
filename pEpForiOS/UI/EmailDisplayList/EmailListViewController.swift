@@ -159,6 +159,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         title = folderToShow?.localizedName
+        let item = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)),
+                                                target: self)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
         self.navigationController?.title = title
     }
 
@@ -306,11 +313,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         moveToolbarButton?.isEnabled = false
 
-        let pEp = UIBarButtonItem(title: "p≡p",
-                                   style: UIBarButtonItemStyle.plain,
-                                   target: self,
-                                   action: #selector(self.cancelToolbar (_:)))
-        
+        let pEp = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)), target: self)
 
 
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
@@ -944,7 +947,7 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
             vC.appConfig = appConfig
-            vC.hidesBottomBarWhenPushed = true
+            //vC.hidesBottomBarWhenPushed = true
             break
         case .segueShowMoveToFolder:
             var selectedRows: [IndexPath] = []

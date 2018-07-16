@@ -60,10 +60,9 @@
                             <outlet property="delegate" destination="6ra-tc-Aiv" id="z48-Ic-eJ4"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" id="rcC-dN-oTh"/>
-                    <connections>
-                        <segue destination="tEI-hD-lXp" kind="show" identifier="SettingsSegue" id="Bui-fu-GFU"/>
-                    </connections>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
