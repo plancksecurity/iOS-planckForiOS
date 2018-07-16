@@ -358,13 +358,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             parameters: IncomingMessageParameters.message(
                 TestUtil.createSpecialMessage(number: 1, folder: inbox, receiver: account.user)),
             indexPathUpdated: IndexPath(row: 0, section: 0))
-        // TODO
-        /*
         let _ = testIncomingMessage(
             parameters: IncomingMessageParameters.message(
                 TestUtil.createSpecialMessage(number: 2, folder: inbox, receiver: account.user)),
             indexPathUpdated: IndexPath(row: 0, section: 0))
-         */
     }
 
     // MARK: - Internal - Helpers
