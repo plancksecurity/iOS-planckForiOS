@@ -307,6 +307,39 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
 //        waitForExpectations(timeout: TestUtil.waitTime)
 //    }
 
+    func testSetNewDefaultKey() {
+        setupObserver()
+
+        // Device A sent device B an InitKeyImport message.
+        // Device B sent handshake request to device A
+        // Both devices did handshake
+        // Both devices have sent and received the private key.
+
+        // We are on device A.
+        switchTo(device: .a)
+
+        // We know pub key and FPR of device B already. Also we did handshake and received the
+        // private key.
+        guard let fprB = setupWhatWeKnowAlready(fromDevice: .b,
+                                                pubKeyKnown: true,
+                                                fprKnown: true,
+                                                secKeyKnown: true,
+                                                handshakeDone: true)
+            else {
+                XCTFail("No FPR")
+                return
+        }
+        // Remember device A key before importing device B's key.
+        let fprABefore = myCurrentlyUsedKey()
+
+        // The imported key should be used form now on ...
+        keyImportService.setNewDefaultKey(for: account.user, fpr: fprB)
+        // ...is it?
+        let testee_fprAAfter = myCurrentlyUsedKey()
+        XCTAssertNotEqual(fprABefore, testee_fprAAfter)
+        XCTAssertEqual(fprB, testee_fprAAfter)
+    }
+
     // MARK: - HELPER
 
     /// The actual handleKeyImport test.
@@ -451,14 +484,22 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     ///   - fprKnown: if true, the FPR is returned
     ///   - handshakeDone: if true, we trust the key of the other divice
     /// - Returns: if known, fpr of other device. nil otherwize.
-    @discardableResult private func setupWhatWeKnowAlready(fromDevice device: Device, pubKeyKnown: Bool = false, fprKnown: Bool = false, handshakeDone: Bool = false) -> String? {
+    @discardableResult private func setupWhatWeKnowAlready(fromDevice device: Device,
+                                                           pubKeyKnown: Bool = false,
+                                                           fprKnown: Bool = false,
+                                                           secKeyKnown: Bool = false,
+                                                           handshakeDone: Bool = false) -> String? {
         if pubKeyKnown {
             importPubKey(of: device)
         }
         if handshakeDone {
             handshake(withDevice: device)
         }
-        return fprKnown ? fingerprint(device: device) : nil
+        let fpr = fprKnown ? fingerprint(device: device) : nil
+        if secKeyKnown {
+            importSecKey(of: device)
+        }
+        return fpr
     }
 
     private func handshake(withDevice device: Device) {
@@ -543,6 +584,27 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
             try TestUtil.importKeyByFileName(session, fileName: filenamePub)
         } catch {
             XCTFail("importKeyByFileName failed")
+        }
+    }
+
+    private func importSecKey(of device: Device) {
+        let filenamePub = keyFileName(device: device) + "sec.asc"
+        do {
+            try TestUtil.importKeyByFileName(session, fileName: filenamePub)
+        } catch {
+            XCTFail("importKeyByFileName failed")
+        }
+    }
+
+    private func myCurrentlyUsedKey() -> String? {
+        let pEpMe = account.user.pEpIdentity()
+        pEpMe.fingerPrint = nil
+        do {
+            try PEPSession().update(pEpMe)
+            return pEpMe.fingerPrint
+        } catch {
+            XCTFail("Problem getting curretn FPR")
+            return nil
         }
     }
 }
