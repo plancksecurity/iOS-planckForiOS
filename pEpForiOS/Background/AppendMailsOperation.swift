@@ -39,6 +39,10 @@ public class AppendMailsOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
+        if folder.shouldNotAppendMessages {
+            markAsFinished()
+            return
+        }
         syncDelegate = AppendMailsSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
 
