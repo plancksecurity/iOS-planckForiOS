@@ -560,24 +560,39 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         var expectationShowThreadView: ExpectationShowThreadView?
 
         func emailListViewModel(viewModel: EmailListViewModel,
-                                didInsertDataAt indexPath: IndexPath) {
+                                didInsertDataAt indexPaths: [IndexPath]) {
             if let exp = expectationInserted {
+                guard
+                    indexPaths.count == 1,
+                    let indexPath = indexPaths.first else {
+                    XCTFail()
+                }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
             }
         }
 
         func emailListViewModel(viewModel: EmailListViewModel,
-                                didUpdateDataAt indexPath: IndexPath) {
+                                didUpdateDataAt indexPaths: [IndexPath]) {
             if let exp = expectationUpdated {
+                guard
+                    indexPaths.count == 1,
+                    let indexPath = indexPaths.first else {
+                        XCTFail()
+                }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
             }
         }
 
         func emailListViewModel(viewModel: EmailListViewModel,
-                                didRemoveDataAt indexPath: IndexPath) {
+                                didRemoveDataAt indexPaths: [IndexPath]) {
             if let exp = expectationTopMessageDeleted {
+                guard
+                    indexPaths.count == 1,
+                    let indexPath = indexPaths.first else {
+                        XCTFail()
+                }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
             }
