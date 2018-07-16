@@ -84,8 +84,9 @@ public class KeyImportService {
 
     private func fingerprint(forAccount acc: Account) -> String? {
         let pEpMe = acc.user.pEpIdentity()
+        pEpMe.fingerPrint = nil
         do {
-            try PEPSession().mySelf(pEpMe)
+            try PEPSession().update(pEpMe)
             return pEpMe.fingerPrint
         } catch {
             Log.shared.errorAndCrash(component: #function,
