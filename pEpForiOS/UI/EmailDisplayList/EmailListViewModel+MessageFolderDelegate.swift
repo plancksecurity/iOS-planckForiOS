@@ -11,6 +11,7 @@ import Foundation
 import MessageModel
 
 extension EmailListViewModel: MessageFolderDelegate {
+
     // MARK: - MessageFolderDelegate (public)
 
     func didCreate(messageFolder: MessageFolder) {
