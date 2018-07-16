@@ -155,61 +155,9 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
     }
 
     static func createSpecialThread(inFolder folder: Folder, receiver: Identity) -> [Message] {
-        let msg1 = Message(uuid: "ID1",
-                          uid: 1,
-                          parentFolder: folder)
-        msg1.from = Identity.create(address: "ar")
-        msg1.to = [receiver]
-        msg1.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
-        msg1.received = Date.init(timeIntervalSince1970: 1)
-        msg1.sent = msg1.received
-        msg1.references = ["ID2",
-                           "ID3",
-                           "ID4",
-                           "ID5",
-                           "ID6",
-                           "ID7",
-                           "ID8",
-                           "ID9",
-                           "ID2"]
-        msg1.save()
-
-        let msg2 = Message(uuid: "ID10",
-                           uid: 2,
-                           parentFolder: folder)
-        msg2.from = Identity.create(address: "ba")
-        msg2.to = [receiver]
-        msg2.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
-        msg2.received = Date.init(timeIntervalSince1970: 2)
-        msg2.sent = msg2.received
-        msg2.references = ["ID1",
-                           "ID3",
-                           "ID4",
-                           "ID5",
-                           "ID6",
-                           "ID7",
-                           "ID8",
-                           "ID9",
-                           "ID2",
-                           "ID1"]
-        msg2.save()
-
-        let msg3 = Message(uuid: "ID11",
-                           uid: 3,
-                           parentFolder: folder)
-        msg3.from = Identity.create(address: "be")
-        msg3.to = [receiver]
-        msg3.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
-        msg3.received = Date.init(timeIntervalSince1970: 3)
-        msg3.sent = msg3.received
-        msg3.references = ["ID9",
-                           "ID3",
-                           "ID4",
-                           "ID5",
-                           "ID6",
-                           "ID7",
-                           "ID8"]
-        msg3.save()
+        let msg1 = TestUtil.createSpecialMessage(number: 0, folder: folder, receiver: receiver)
+        let msg2 = TestUtil.createSpecialMessage(number: 1, folder: folder, receiver: receiver)
+        let msg3 = TestUtil.createSpecialMessage(number: 2, folder: folder, receiver: receiver)
 
         return [msg1, msg2, msg3]
     }

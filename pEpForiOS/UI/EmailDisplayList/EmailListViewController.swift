@@ -842,6 +842,18 @@ extension EmailListViewController {
     }
 }
 
+// MARK: - Segue handling
+
+extension EmailListViewController {
+    /**
+     Enables manual account setup to unwind to the unified inbox.
+     */
+    @IBAction func unwindToFolderView(segue:UIStoryboardSegue) {
+        folderToShow = UnifiedInbox()
+        resetModel()
+    }
+}
+
 // MARK: - SegueHandlerType
 
 extension EmailListViewController: SegueHandlerType {
