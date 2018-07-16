@@ -565,7 +565,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
                 guard
                     indexPaths.count == 1,
                     let indexPath = indexPaths.first else {
-                    XCTFail()
+                        XCTFail()
+                        return
                 }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
@@ -579,6 +580,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
                     indexPaths.count == 1,
                     let indexPath = indexPaths.first else {
                         XCTFail()
+                        return
                 }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
@@ -592,6 +594,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
                     indexPaths.count == 1,
                     let indexPath = indexPaths.first else {
                         XCTFail()
+                        return
                 }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
