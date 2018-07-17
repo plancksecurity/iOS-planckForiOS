@@ -47,7 +47,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        let thread = message.threadMessages()
+        let thread = message.threadMessages(includeTrash: false)
         if thread.count == 1 {
             return []
         } else {
