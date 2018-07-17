@@ -65,12 +65,14 @@ class FullMessageCell: SwipeTableViewCell,
             bodyText.isHidden = true
             view.addSubview(htmlViewerViewController.view)
             view.isUserInteractionEnabled = false
+            view.isHidden = false
 
             htmlViewerViewController.view.fullSizeInSuperView()
 
             let displayHtml = appendInlinedPlainText(fromAttachmentsIn: viewModel.message, to: htmlBody)
             htmlViewerViewController.display(htmlString: displayHtml)
         } else {
+            view.isHidden = true
             bodyText.attributedText = viewModel.body
             bodyText.isHidden = false
             bodyText.tintColor = UIColor.pEpGreen
