@@ -141,6 +141,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if noAccountsExist() {
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
+            return
         } else if let vm = model {
             // We came back from e.g EmailView ...
             updateFilterText()
