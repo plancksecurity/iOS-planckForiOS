@@ -22,6 +22,9 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testInitialAccountSetup1() {
         app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.workingAccount1
         newAccountSetup(account: account)
         waitForever()
@@ -29,6 +32,9 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testInitialAccountSetup2() {
         app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.workingAccount2
         newAccountSetup(account: account)
         waitForever()
@@ -47,6 +53,9 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testTwoInitialAccounts() {
         app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account1 = SecretUITestData.workingAccount1
         newAccountSetup(account: account1)
 
@@ -115,6 +124,9 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testTriggerGmailOauth2() {
         app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.gmailOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
@@ -122,6 +134,9 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testTriggerYahooOauth2() {
         app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.yahooOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
