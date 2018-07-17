@@ -91,27 +91,6 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-    /**
-     Dismisses the initial system alerts (access to contacts, allow notifications).
-     */
-    func dismissInitialSystemAlerts() {
-        dismissSystemAlert(buttonTitle: "Allow")
-        dismissSystemAlert(buttonTitle: "OK")
-    }
-
-    func dismissSystemAlert(buttonTitle: String) {
-        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-        let button = springboard.buttons[buttonTitle]
-        if button.exists {
-            button.tap()
-        } else {
-            let exists = NSPredicate(format: "enabled == true")
-            expectation(for: exists, evaluatedWith: button, handler: nil)
-            waitForExpectations(timeout: 2, handler: nil)
-            button.tap()
-        }
-    }
-
     // Adds Yahoo account
     // Note: A working accound must exist already.
     func testAddYahooAccount() {
@@ -244,5 +223,26 @@ class NewAccountSetupUITest: XCTestCase {
         tablesQuery.buttons["Sign In"].tap()
         theApp.alerts["Error"].buttons["Ok"].tap()
         tablesQuery.buttons["Manual configuration"].tap()
+    }
+
+    /**
+     Dismisses the initial system alerts (access to contacts, allow notifications).
+     */
+    func dismissInitialSystemAlerts() {
+        dismissSystemAlert(buttonTitle: "Allow")
+        dismissSystemAlert(buttonTitle: "OK")
+    }
+
+    func dismissSystemAlert(buttonTitle: String) {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let button = springboard.buttons[buttonTitle]
+        if button.exists {
+            button.tap()
+        } else {
+            let exists = NSPredicate(format: "enabled == true")
+            expectation(for: exists, evaluatedWith: button, handler: nil)
+            waitForExpectations(timeout: 2, handler: nil)
+            button.tap()
+        }
     }
 }
