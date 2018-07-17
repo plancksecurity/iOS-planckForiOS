@@ -126,6 +126,11 @@ extension CWIMAPMessage {
             if let body = PEPUtil.bodyPart(pEpMessageDict: pEpMessageDict) {
                 self.setContent(body.content())
                 self.setContentType(body.contentType())
+                if body.contentTransferEncoding() != PantomimeEncodingNone {
+                    self.setContentTransferEncoding(body.contentTransferEncoding())
+                } else {
+                    self.setContentTransferEncoding(PantomimeEncoding8bit)
+                }
             }
         }
 
