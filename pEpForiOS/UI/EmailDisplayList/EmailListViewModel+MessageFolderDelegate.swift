@@ -11,6 +11,7 @@ import Foundation
 import MessageModel
 
 extension EmailListViewModel: MessageFolderDelegate {
+
     // MARK: - MessageFolderDelegate (public)
 
     func didCreate(messageFolder: MessageFolder) {
@@ -57,7 +58,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                     let index = theSelf.messages.insert(object: previewMessage)
                     let indexPath = IndexPath(row: index, section: 0)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf, didInsertDataAt: indexPath)
+                        viewModel: theSelf, didInsertDataAt: [indexPath])
                 }
 
                 if referencedMessages.isEmpty {
@@ -67,7 +68,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                         messages: referencedMessages) {
                         // The thread count might need to be updated
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
-                            viewModel: theSelf, didUpdateDataAt: IndexPath(row: index, section: 0))
+                            viewModel: theSelf, didUpdateDataAt: [IndexPath(row: index, section: 0)])
                         if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                             if theSelf.shouldShowThreadVC() {
                                 theSelf.emailListViewModelDelegate?.showThreadView(
@@ -112,7 +113,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                                 // The thread count might need to be updated
                                 theSelf.emailListViewModelDelegate?.emailListViewModel(
                                     viewModel: theSelf,
-                                    didUpdateDataAt: IndexPath(row: index, section: 0))
+                                    didUpdateDataAt: [IndexPath(row: index, section: 0)])
                             }
                         }
                     }
@@ -126,7 +127,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                 let indexPath = IndexPath(row: indexExisting, section: 0)
                 theSelf.emailListViewModelDelegate?.emailListViewModel(
                     viewModel: theSelf,
-                    didRemoveDataAt: indexPath)
+                    didRemoveDataAt: [indexPath])
             }
         }
     }
@@ -201,7 +202,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // Remove it.
                     let indexPath = IndexPath(row: indexExisting, section: 0)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf, didRemoveDataAt: indexPath)
+                        viewModel: theSelf, didRemoveDataAt: [indexPath])
                     return
                 }
                 // The updated message has to be shown. Add it to the model ...
@@ -219,7 +220,7 @@ Something is fishy here.
                 // ...  and inform the delegate.
                 let indexPath = IndexPath(row: indexInserted, section: 0)
                 theSelf.emailListViewModelDelegate?.emailListViewModel(
-                    viewModel: theSelf, didUpdateDataAt: indexPath)
+                    viewModel: theSelf, didUpdateDataAt: [indexPath])
 
                 if theSelf.currentDisplayedMessage?.messageModel == message {
                     theSelf.currentDisplayedMessage?.update(forMessage: message)

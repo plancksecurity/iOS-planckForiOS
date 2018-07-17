@@ -47,7 +47,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func messagesInThread(message: Message) -> [Message] {
-        let thread = message.threadMessages()
+        let thread = message.threadMessages(includeTrash: false)
         if thread.count == 1 {
             return []
         } else {
@@ -72,29 +72,14 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         var result = [Message]()
 
         MessageModel.performAndWait {
-            let referenceSet = Set(message.referencedMessages().map {
-                return $0.messageID
-            })
-
-            // test for direct references
+            let referenceIdSet = message.threadMessageIdSet()
 
             for aTopMsg in topMessages {
-                if referenceSet.contains(aTopMsg.messageID) {
-                    result.append(aTopMsg)
+                if aTopMsg == message {
+                    continue
                 }
-            }
 
-            if !result.isEmpty {
-                return
-            }
-
-            // if no direct references could be found, check for indirects
-
-            for aTopMsg in topMessages {
-                let topReferenceSet = Set(aTopMsg.referencedMessages().map {
-                    return $0.messageID
-                })
-                if !topReferenceSet.intersection(referenceSet).isEmpty {
+                if !aTopMsg.threadMessageIdSet().intersection(referenceIdSet).isEmpty {
                     result.append(aTopMsg)
                 }
             }

@@ -684,41 +684,42 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath]) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.beginUpdates()
-        tableView.insertRows(at: [indexPath], with: .automatic)
+        tableView.insertRows(at: indexPaths, with: .automatic)
         tableView.endUpdates()
     }
     
-    func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow ?? lastSelectedIndexPath
 
         if let swipeDelete = swipeDelete {
             swipeDelete.fulfill(with: .delete)
         } else {
             tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.deleteRows(at: indexPaths, with: .automatic)
             tableView.endUpdates()
         }
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
-        if lastSelectedIndexPath == indexPath {
+        if let lastSelectedIndexPath = lastSelectedIndexPath,
+            indexPaths.contains(lastSelectedIndexPath) {
             showNotMessageSelectedIfNeeded()
         }
-
     }
     
-    func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
 
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
 
         tableView.beginUpdates()
-        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.reloadRows(at: indexPaths, with: .none)
         tableView.endUpdates()
-
-        resetSelectionIfNeeded(for: indexPath)
+        for indexPath in indexPaths {
+            resetSelectionIfNeeded(for: indexPath)
+        }
     }
 
 
@@ -948,7 +949,7 @@ extension EmailListViewController: SegueHandlerType {
 
             if let selectedItems = self.tableView.indexPathsForSelectedRows {
                 selectedRows = selectedItems
-            } else if let last = lastSelectedIndexPath{
+            } else if let last = lastSelectedIndexPath {
                 selectedRows.append(last)
             }
 

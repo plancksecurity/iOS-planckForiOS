@@ -295,59 +295,16 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
+    enum SentOrTrashed {
+        case sent, trashed
+    }
+
     func testThreadedReferencesSentMessage() {
-        FolderThreading.override(factory: ThreadAwareFolderFactory())
-        setUpTopMessages()
+        testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .sent)
+    }
 
-        // create a sent message
-        let sentFolder = Folder.init(name: "Sent",
-                                     parent: nil,
-                                     account: account,
-                                     folderType: .sent)
-        sentFolder.save()
-        let sentMessage = TestUtil.createMessage(uid: TestUtil.nextUid(),
-                                                 inFolder: sentFolder)
-        sentMessage.save()
-
-        // let a top message reference that message (i.e., someone answered to our sent message)
-        let topMessageReferencingSentMessage = topMessages[0]
-        topMessageReferencingSentMessage.references.append(sentMessage.messageID)
-        topMessageReferencingSentMessage.save()
-
-        // check if it's indeed referenced
-        guard let referencedSentMessageOrig =
-            topMessageReferencingSentMessage.referencedMessages().first else {
-                XCTFail()
-                return
-        }
-        XCTAssertEqual(referencedSentMessageOrig.messageID, sentMessage.messageID)
-
-        // receive another reply to our top message
-        let incomingMessage = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([sentMessage], nil),
-            indexPathUpdated: indexOfTopMessage0)
-
-        // check that the incoming message indeed references our sent message
-        let incomingMessageReferencedMessages = incomingMessage.referencedMessages()
-        guard let referencedSentMessageIncoming = incomingMessageReferencedMessages.first else {
-                XCTFail()
-                return
-        }
-        XCTAssertEqual(referencedSentMessageIncoming.messageID, sentMessage.messageID)
-
-        // Will the thread be displayed correctly?
-        var isReferencingSentMessage = false
-        var isReferencingIncomingMessage = false
-        let threadMessages = topMessageReferencingSentMessage.messagesInThread()
-        for msg in threadMessages {
-            if msg.messageID == sentMessage.messageID {
-                isReferencingSentMessage = true
-            } else if msg.messageID == incomingMessage.messageID {
-                isReferencingIncomingMessage = true
-            }
-        }
-        XCTAssertTrue(isReferencingSentMessage)
-        XCTAssertTrue(isReferencingIncomingMessage)
+    func testThreadedReferencesTrashedMessage() {
+        testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .trashed)
     }
 
     func testThreadedSpecial() {
@@ -358,13 +315,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             parameters: IncomingMessageParameters.message(
                 TestUtil.createSpecialMessage(number: 1, folder: inbox, receiver: account.user)),
             indexPathUpdated: IndexPath(row: 0, section: 0))
-        // TODO
-        /*
         let _ = testIncomingMessage(
             parameters: IncomingMessageParameters.message(
                 TestUtil.createSpecialMessage(number: 2, folder: inbox, receiver: account.user)),
             indexPathUpdated: IndexPath(row: 0, section: 0))
-         */
     }
 
     // MARK: - Internal - Helpers
@@ -461,6 +415,79 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
     func topMessage(byUID uid: Int) -> Message {
         return topMessages[uid-1]
+    }
+
+    func testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: SentOrTrashed) {
+        func createFolder(sentOrTrashed: SentOrTrashed) -> Folder {
+            switch sentOrTrashed {
+            case .sent:
+                return Folder(name: "Sent",
+                              parent: nil,
+                              account: account,
+                              folderType: .sent)
+            case .trashed:
+                return Folder(name: "Trash",
+                              parent: nil,
+                              account: account,
+                              folderType: .trash)
+            }
+        }
+
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        // create the thread base message
+        let existingFolder = createFolder(sentOrTrashed: sentOrTrashed)
+
+        existingFolder.save()
+        let sentMessage = TestUtil.createMessage(uid: TestUtil.nextUid(),
+                                                 inFolder: existingFolder)
+        sentMessage.save()
+
+        // let a top message reference that message (i.e., someone answered to our sent message)
+        let topMessageReferencingSentMessage = topMessages[0]
+        topMessageReferencingSentMessage.references.append(sentMessage.messageID)
+        topMessageReferencingSentMessage.save()
+
+        // check if it's indeed referenced
+        guard let referencedSentMessageOrig =
+            topMessageReferencingSentMessage.referencedMessages().first else {
+                XCTFail()
+                return
+        }
+        XCTAssertEqual(referencedSentMessageOrig.messageID, sentMessage.messageID)
+
+        // receive another reply to our top message
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([sentMessage], nil),
+            indexPathUpdated: indexOfTopMessage0)
+
+        // check that the incoming message indeed references our sent message
+        let incomingMessageReferencedMessages = incomingMessage.referencedMessages()
+        guard let referencedSentMessageIncoming = incomingMessageReferencedMessages.first else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(referencedSentMessageIncoming.messageID, sentMessage.messageID)
+
+        // Will the thread be displayed correctly?
+        var isReferencingSentMessage = false
+        var isReferencingIncomingMessage = false
+        let threadMessages = topMessageReferencingSentMessage.messagesInThread()
+        for msg in threadMessages {
+            if msg.messageID == sentMessage.messageID {
+                isReferencingSentMessage = true
+            } else if msg.messageID == incomingMessage.messageID {
+                isReferencingIncomingMessage = true
+            }
+        }
+
+        switch sentOrTrashed {
+        case .sent: XCTAssertTrue(isReferencingSentMessage)
+        case .trashed: break
+        }
+
+        XCTAssertTrue(isReferencingIncomingMessage)
     }
 
     // MARK: - Internal - Delegate parameters
@@ -563,24 +590,42 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         var expectationShowThreadView: ExpectationShowThreadView?
 
         func emailListViewModel(viewModel: EmailListViewModel,
-                                didInsertDataAt indexPath: IndexPath) {
+                                didInsertDataAt indexPaths: [IndexPath]) {
             if let exp = expectationInserted {
+                guard
+                    indexPaths.count == 1,
+                    let indexPath = indexPaths.first else {
+                        XCTFail()
+                        return
+                }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
             }
         }
 
         func emailListViewModel(viewModel: EmailListViewModel,
-                                didUpdateDataAt indexPath: IndexPath) {
+                                didUpdateDataAt indexPaths: [IndexPath]) {
             if let exp = expectationUpdated {
+                guard
+                    indexPaths.count == 1,
+                    let indexPath = indexPaths.first else {
+                        XCTFail()
+                        return
+                }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
             }
         }
 
         func emailListViewModel(viewModel: EmailListViewModel,
-                                didRemoveDataAt indexPath: IndexPath) {
+                                didRemoveDataAt indexPaths: [IndexPath]) {
             if let exp = expectationTopMessageDeleted {
+                guard
+                    indexPaths.count == 1,
+                    let indexPath = indexPaths.first else {
+                        XCTFail()
+                        return
+                }
                 XCTAssertEqual(indexPath, exp.indexPath)
                 exp.expectation.fulfill()
             }

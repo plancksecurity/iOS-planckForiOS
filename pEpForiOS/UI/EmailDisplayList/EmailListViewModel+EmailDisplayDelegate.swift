@@ -66,14 +66,14 @@ extension EmailListViewModel: EmailDisplayDelegate {
     private func informUpdateRow(at index: Int) {
         let indexPath = self.indexPath(for: index)
         emailListViewModelDelegate?.emailListViewModel(viewModel: self,
-                                                       didUpdateDataAt: indexPath)
+                                                       didUpdateDataAt: [indexPath])
     }
 
     private func informDeleteRow(at index: Int) {
         let indexPath = IndexPath(row: index, section: 0)
 
         emailListViewModelDelegate?.emailListViewModel(viewModel: self,
-                                                       didRemoveDataAt: indexPath)
+                                                       didRemoveDataAt: [indexPath])
     }
 
     private func indexPath(for index: Int) -> IndexPath {
