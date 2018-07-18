@@ -104,13 +104,15 @@ public class KeyImportService {
     }
 
     /// Sends a message.
-    /// In case fpr != nil, the message is encrypted using this key before sending.
+    /// In case fpr != nil && forceSendUnencrypted == false, the message is encrypted using this
+    /// key before sending.
     /// In case fpr != nil && attachPrivateKey == true, the private key is attached before
     /// encrypting and sending the message.
     ///
     /// - Parameters:
     ///   - msg: message to send
     ///   - account: account to send from
+     ///   - forceSendUnencrypted: if true, the message is sent unencrypted. No matter what.
     ///   - fpr: fpr of key to decrypt message with.
     ///   - attachPrivateKey: whether or not to attach our private key
     private func sendMessage(msg: Message,
@@ -170,6 +172,7 @@ public class KeyImportService {
             var pepDict = msg.pEpMessageDict(outgoing: true)
 //            if let fpr = fpr {
                 guard let encrypted = me.encrypt(message: msg,
+                                                 forceSendUnencrypted: forceSendUnencrypted,
                                                  for: fpr,
                                                  attachPrivateKey: attachPrivateKey)
                     else {
@@ -194,13 +197,13 @@ public class KeyImportService {
 
     private func encrypt(message: Message,
                          forceSendUnencrypted: Bool,
-                         for fpr: String,
+                         for fpr: String?,
                          attachPrivateKey: Bool = false) -> PEPMessageDict? {
         let pepDict = message.pEpMessageDict(outgoing: true)
-        let extraKeys =  [fpr]
+//        let extraKeys =  [fpr]
         var result: PEPMessageDict? = nil
         do {
-            if attachPrivateKey {
+            if let fpr = fpr, attachPrivateKey {
                 let flags = PEP_decrypt_flag_none
                 result = try PEPSession().encryptMessageDict(pepDict,
                                                     toFpr: fpr,
@@ -209,6 +212,10 @@ public class KeyImportService {
                                                     status: nil)
                     as PEPMessageDict
             } else {
+                var extraKeys:[String]? = nil
+                if let fpr = fpr {
+                    extraKeys = [fpr]
+                }
                 let encFormat = forceSendUnencrypted ? PEP_enc_none : PEP_enc_PEP
                 result = try PEPSession().encryptMessageDict(pepDict,
                                                            extraKeys: extraKeys,
@@ -257,7 +264,7 @@ extension KeyImportService: KeyImportServiceProtocol {
             Log.shared.errorAndCrash(component: #function, errorString: "No message")
             return
         }
-        sendMessage(msg: msg, fromAccount: account)
+        sendMessage(msg: msg, fromAccount: account, forceSendUnencrypted: true)
     }
 
     /// Call after a newKeyImportMessage arrived to let the other device know
