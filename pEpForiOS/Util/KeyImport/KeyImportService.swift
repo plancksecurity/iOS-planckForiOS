@@ -115,6 +115,7 @@ public class KeyImportService {
     ///   - attachPrivateKey: whether or not to attach our private key
     private func sendMessage(msg: Message,
                              fromAccount account: Account,
+                             forceSendUnencrypted: Bool = false,
                              encryptFor fpr: String? = nil,
                              attachPrivateKey: Bool = false) {
         // Build Login OP
@@ -128,6 +129,7 @@ public class KeyImportService {
         // Build Send OP
         let sendOp = encryptAndSendOperation(toSend: msg,
                                  fromAccount: account,
+                                 forceSendUnencrypted: forceSendUnencrypted,
                                  encryptFor: fpr,
                                  attachPrivateKey: attachPrivateKey,
                                  smtpSendData: sendData,
@@ -154,8 +156,9 @@ public class KeyImportService {
     /// In case fpr != nil, the message is encrypted using this key before sending.
     private func encryptAndSendOperation(toSend msg: Message,
                                          fromAccount account: Account,
+                                         forceSendUnencrypted: Bool,
                                          encryptFor fpr: String? = nil,
-                                         attachPrivateKey: Bool = false,
+                                         attachPrivateKey: Bool,
                                          smtpSendData: SmtpSendData,
                                          errorContainer: ErrorContainer) -> Operation {
         return BlockOperation() {[weak self] in
@@ -165,7 +168,7 @@ public class KeyImportService {
             }
             let queue = OperationQueue()
             var pepDict = msg.pEpMessageDict(outgoing: true)
-            if let fpr = fpr {
+//            if let fpr = fpr {
                 guard let encrypted = me.encrypt(message: msg,
                                                  for: fpr,
                                                  attachPrivateKey: attachPrivateKey)
@@ -176,7 +179,7 @@ public class KeyImportService {
                         return
                 }
                 pepDict = encrypted
-            }
+//            }
             let sendOP = SMTPSendOperation(errorContainer: errorContainer,
                                            messageDict: pepDict,
                                            smtpSendData: smtpSendData)
@@ -190,6 +193,7 @@ public class KeyImportService {
     }
 
     private func encrypt(message: Message,
+                         forceSendUnencrypted: Bool,
                          for fpr: String,
                          attachPrivateKey: Bool = false) -> PEPMessageDict? {
         let pepDict = message.pEpMessageDict(outgoing: true)
@@ -205,9 +209,10 @@ public class KeyImportService {
                                                     status: nil)
                     as PEPMessageDict
             } else {
+                let encFormat = forceSendUnencrypted ? PEP_enc_none : PEP_enc_PEP
                 result = try PEPSession().encryptMessageDict(pepDict,
                                                            extraKeys: extraKeys,
-                                                           encFormat: PEP_enc_PEP,
+                                                           encFormat: encFormat,
                                                            status: nil)
                     as PEPMessageDict
             }
