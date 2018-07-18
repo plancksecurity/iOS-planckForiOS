@@ -18,14 +18,6 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
-    enum ComposeMode {
-        case normal
-        case replyFrom
-        case replyAll
-        case forward
-        case draft
-    }
-
     private let contactPicker = CNContactPickerViewController()
     private let imagePicker = UIImagePickerController()
     private let menuController = UIMenuController.shared
@@ -44,7 +36,7 @@ class ComposeTableViewController: BaseTableViewController {
     private var cells = [ComposeFieldModel.FieldType:ComposeCell]()
     private var ccEnabled = false
 
-    var composeMode: ComposeMode = .normal
+    var composeMode = ComposeUtil.ComposeMode.normal
     private var messageToSend: Message?
     var originalMessage: Message?
 
@@ -125,7 +117,8 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func setup(_ cell: AccountCell) {
-        origin = origin ?? initialFrom(originalMessage: originalMessage)
+        origin = origin ?? ComposeUtil.initialFrom(composeMode: composeMode,
+                                                   originalMessage: originalMessage)
         cell.textView.text = origin?.address
         let accounts = Account.all()
         cell.pickerEmailAdresses = accounts.map { $0.user.address }
@@ -146,24 +139,19 @@ class ComposeTableViewController: BaseTableViewController {
             // There is no original message in `normal`compose mode. It's OK.
             return
         }
+        var result = [Identity]()
         switch fm.type {
         case .to:
-            let tos = initialTos(composeMode: composeMode, originalMessage: om)
-            for to in tos {
-                recipientCell.addIdentity(to)
-            }
+            result = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
         case .cc:
-            let ccs = initialCcs(composeMode: composeMode, originalMessage: om)
-            for cc in ccs {
-                recipientCell.addIdentity(cc)
-            }
+            result = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
         case .bcc:
-            let bccs = initialBccs(composeMode: composeMode, originalMessage: om)
-            for bcc in bccs {
-                recipientCell.addIdentity(bcc)
-            }
+            result =  ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
         default:
-            break
+            return
+        }
+        for id in result {
+            recipientCell.addIdentity(id)
         }
     }
 
@@ -267,7 +255,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell,
-                             composeMode mode: ComposeMode) {
+                             composeMode mode: ComposeUtil.ComposeMode) {
         guard mode == .draft || mode == .forward else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "Compose mode \(mode) is not supported")
@@ -381,89 +369,6 @@ class ComposeTableViewController: BaseTableViewController {
         let zeroOffset = UIEdgeInsets()
         suggestTableView.contentInset = zeroOffset
         suggestTableView.scrollIndicatorInsets = zeroOffset
-    }
-
-    //IOS-1106: move to reply util?!
-
-    // MARK: - Compose Mode / Folder Handling
-
-    private func initialTos(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
-        var result = [Identity]()
-        switch composeMode {
-        case .draft:
-            result = om.to
-        case .replyFrom:
-            if om.parent.folderType == .sent {
-                result = om.to
-            } else if om.parent.folderType != .sent, let omFrom = om.from {
-                result = [omFrom]
-            }
-        case .replyAll:
-            if om.parent.folderType == .sent {
-                result = om.to
-            } else if om.parent.folderType != .sent, let omFrom = om.from {
-                guard let me = initialFrom(originalMessage: om) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No from")
-                    return result
-                }
-                let origTos = om.to
-                let originalTosWithoutMe = origTos.filter { $0 != me}
-                result = originalTosWithoutMe + [omFrom]
-            }
-        case .normal, .forward:
-            break
-        }
-        return result
-    }
-
-    private func initialCcs(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
-        var result = [Identity]()
-        switch composeMode {
-        case .draft:
-            result = om.cc
-        case .replyFrom:
-            return result
-        case .replyAll:
-            if om.parent.folderType == .sent {
-                result = om.cc
-            } else if om.parent.folderType != .sent {
-                guard let me = initialFrom(originalMessage: om) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No from")
-                    return result
-                }
-                let origCcs = om.cc
-                result = origCcs.filter { $0 != me}
-            }
-        case .normal, .forward:
-            break
-        }
-        return result
-    }
-
-    private func initialBccs(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
-        var result = [Identity]()
-        switch composeMode {
-        case .draft:
-            result = om.bcc
-        case .normal, .forward, .replyAll, .replyFrom:
-            break
-        }
-        return result
-    }
-
-    private func initialFrom(originalMessage om: Message?) -> Identity? {
-        switch composeMode {
-        case .draft:
-            return om?.from
-        case .replyFrom:
-            return om?.parent.account.user
-        case .replyAll:
-            return om?.parent.account.user
-        case .forward:
-            return om?.parent.account.user
-        case .normal:
-            return Account.defaultAccount()?.user
-        }
     }
 
     // MARK: - Composing Mail

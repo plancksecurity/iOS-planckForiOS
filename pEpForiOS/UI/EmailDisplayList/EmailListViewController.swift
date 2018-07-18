@@ -1038,7 +1038,7 @@ extension EmailListViewController: SegueHandlerType {
         }
     }
 
-    private func composeMode(for segueId: SegueIdentifier) -> ComposeTableViewController.ComposeMode? {
+    private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode? {
         switch segueId {
         case .segueReply:
             return .replyFrom
