@@ -243,6 +243,11 @@ public class KeyImportService {
             }
             msg.optionalFields[Header.pEpKeyImport.rawValue] = myFpr
         }
+        let ignoreMeSubject =
+            NSLocalizedString("Please ignore, this message is part of import key protocol",
+                              comment: "Subject set on messages that are automatically sent by " +
+                "the app due to the Key Import protocol.")
+        msg.shortMessage = ignoreMeSubject
         return msg
     }
 }
