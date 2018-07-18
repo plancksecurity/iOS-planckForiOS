@@ -21,7 +21,6 @@ class FolderTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setToolbarHidden(true, animated: true)
         setup()
         if showNext {
             showFolder(indexPath: nil)
@@ -31,7 +30,6 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Setup
 
     private func setup() {
-        //ViewModel init
         DispatchQueue.main.async {
             self.folderVM =  FolderViewModel()
             self.tableView.reloadData()
@@ -44,9 +42,13 @@ class FolderTableViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        let item = UIBarButtonItem(title: "Settings", style: .plain, target: self,
-                                   action: #selector(settingsTapped))
-        navigationItem.rightBarButtonItem = item
+        let item = UIBarButtonItem.getpEpButton(action:#selector(self.showSettingsViewController(_:)),
+                                                target: self)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        self.toolbarItems = [flexibleSpace,item]
     }
 
     // MARK: - Cell Setup
@@ -59,12 +61,6 @@ class FolderTableViewController: BaseTableViewController {
     private func setSelectableStyle(to cell: UITableViewCell) {
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.textColor = UIColor.black
-    }
-
-    // MARK: - Actions
-
-    @objc func settingsTapped() {
-        performSegue(withIdentifier: "SettingsSegue", sender: self)
     }
 
     // MARK: - Table view data source

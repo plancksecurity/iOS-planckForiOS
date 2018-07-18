@@ -141,6 +141,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if noAccountsExist() {
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
+            return
         } else if let vm = model {
             // We came back from e.g EmailView ...
             updateFilterText()
@@ -159,6 +160,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         title = folderToShow?.localizedName
+        let item = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)),
+                                                target: self)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
         self.navigationController?.title = title
     }
 
@@ -306,10 +314,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         moveToolbarButton?.isEnabled = false
 
-        let pEp = UIBarButtonItem(title: "p≡p",
-                                   style: UIBarButtonItemStyle.plain,
-                                   target: self,
-                                   action: #selector(self.cancelToolbar (_:)))
+        let pEp = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)), target: self)
+
 
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
@@ -942,7 +948,7 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
             vC.appConfig = appConfig
-            vC.hidesBottomBarWhenPushed = true
+            //vC.hidesBottomBarWhenPushed = true
             break
         case .segueShowMoveToFolder:
             var selectedRows: [IndexPath] = []
@@ -964,6 +970,7 @@ extension EmailListViewController: SegueHandlerType {
                 let destinationvm = MoveToAccountViewModel(messages: msgs)
                 destination.viewModel = destinationvm
             }
+            destination.delegate = model
             destination.appConfig = appConfig
             break
         case .showNoMessage:
