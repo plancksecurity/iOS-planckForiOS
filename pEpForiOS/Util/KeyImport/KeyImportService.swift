@@ -112,7 +112,7 @@ public class KeyImportService {
     /// - Parameters:
     ///   - msg: message to send
     ///   - account: account to send from
-     ///   - forceSendUnencrypted: if true, the message is sent unencrypted. No matter what.
+    ///   - forceSendUnencrypted: if true, the message is sent unencrypted. No matter what.
     ///   - fpr: fpr of key to decrypt message with.
     ///   - attachPrivateKey: whether or not to attach our private key
     private func sendMessage(msg: Message,
@@ -154,8 +154,6 @@ public class KeyImportService {
         queue.addOperations([loginOp, sendOp], waitUntilFinished: false)
     }
 
-    /// Send op to send the given message.
-    /// In case fpr != nil, the message is encrypted using this key before sending.
     private func encryptAndSendOperation(toSend msg: Message,
                                          fromAccount account: Account,
                                          forceSendUnencrypted: Bool,
@@ -170,19 +168,17 @@ public class KeyImportService {
             }
             let queue = OperationQueue()
             var pepDict = msg.pEpMessageDict(outgoing: true)
-//            if let fpr = fpr {
-                guard let encrypted = me.encrypt(message: msg,
-                                                 forceSendUnencrypted: forceSendUnencrypted,
-                                                 for: fpr,
-                                                 attachPrivateKey: attachPrivateKey)
-                    else {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString: "Error encrypting")
-                        me.delegate?.errorOccurred(error: KeyImportServiceError.engineError)
-                        return
-                }
-                pepDict = encrypted
-//            }
+            guard let encrypted = me.encrypt(message: msg,
+                                             forceSendUnencrypted: forceSendUnencrypted,
+                                             for: fpr,
+                                             attachPrivateKey: attachPrivateKey)
+                else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "Error encrypting")
+                    me.delegate?.errorOccurred(error: KeyImportServiceError.engineError)
+                    return
+            }
+            pepDict = encrypted
             let sendOP = SMTPSendOperation(errorContainer: errorContainer,
                                            messageDict: pepDict,
                                            smtpSendData: smtpSendData)
@@ -200,7 +196,6 @@ public class KeyImportService {
                          for fpr: String?,
                          attachPrivateKey: Bool = false) -> PEPMessageDict? {
         let pepDict = message.pEpMessageDict(outgoing: true)
-//        let extraKeys =  [fpr]
         var result: PEPMessageDict? = nil
         do {
             if let fpr = fpr, attachPrivateKey {
