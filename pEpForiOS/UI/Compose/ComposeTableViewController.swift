@@ -395,6 +395,78 @@ class ComposeTableViewController: BaseTableViewController {
         suggestTableView.scrollIndicatorInsets = zeroOffset
     }
 
+    //IOS-1106: move to reply util?!
+
+    // MARK: - Compose Mode / Folder Handling
+
+    private func initialTos(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
+        var result = [Identity]()
+        switch composeMode {
+        case .draft:
+            result = om.to
+        case .replyFrom:
+            if om.parent.folderType == .sent {
+                result = om.to
+            } else if om.parent.folderType != .sent, let omFrom = om.from {
+                result = [omFrom]
+            }
+        case .replyAll:
+            if om.parent.folderType == .sent {
+                result = om.to
+            } else if om.parent.folderType != .sent, let omFrom = om.from {
+                guard let me = initialFrom(originalMessage: om) else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No from")
+                    return result
+                }
+                let origTos = om.to
+                let originalTosWithoutMe = origTos.filter { $0 != me}
+                result = originalTosWithoutMe + [omFrom]
+            }
+        case .normal, .forward:
+            break
+        }
+        return result
+    }
+
+    private func initialCcs(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
+        var result = [Identity]()
+        switch composeMode {
+        case .draft:
+            result = om.cc
+        case .replyFrom:
+            return result
+        case .replyAll:
+            if om.parent.folderType == .sent {
+                result = om.cc
+            } else if om.parent.folderType != .sent {
+                guard let me = initialFrom(originalMessage: om) else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No from")
+                    return result
+                }
+                let origCcs = om.cc
+                result = origCcs.filter { $0 != me}
+            }
+        case .normal, .forward:
+            break
+        }
+        return result
+    }
+
+    private func initialBccs(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
+        var result = [Identity]()
+        switch composeMode {
+        case .draft:
+            result = om.bcc
+        case .normal, .forward, .replyAll, .replyFrom:
+            break
+        }
+        return result
+    }
+
+    private func initialFrom(originalMessage om: Message) -> Identity? {
+        return originalMessage?.parent.account.user
+    }
+
     // MARK: - Composing Mail
 
     private final func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
