@@ -970,6 +970,7 @@ extension EmailListViewController: SegueHandlerType {
                 let destinationvm = MoveToAccountViewModel(messages: msgs)
                 destination.viewModel = destinationvm
             }
+            destination.delegate = model
             destination.appConfig = appConfig
             break
         case .showNoMessage:
