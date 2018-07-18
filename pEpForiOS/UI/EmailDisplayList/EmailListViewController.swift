@@ -648,7 +648,33 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 extension EmailListViewController: EmailListViewModelDelegate {
 
     func showThreadView(for indexPath: IndexPath) {
-        showEmail(forCellAt: indexPath)
+        guard let splitViewController = splitViewController else {
+            return
+        }
+
+        let storyboard = UIStoryboard(name: "Thread", bundle: nil)
+        if splitViewController.isCollapsed {
+            guard let message = model?.message(representedByRowAt: indexPath),
+                let folder = folderToShow,
+                let nav = navigationController,
+                let vc: ThreadViewController =
+                storyboard.instantiateViewController(withIdentifier: "threadViewController")
+                    as? ThreadViewController
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
+            }
+
+            vc.appConfig = appConfig
+            let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
+            viewModel.emailDisplayDelegate = self.model
+            vc.model = viewModel
+            model?.currentDisplayedMessage = viewModel
+            model?.updateThreadListDelegate = viewModel
+            nav.viewControllers[nav.viewControllers.count - 1] = vc
+        } else {
+            showEmail(forCellAt: indexPath)
+        }
     }
 
     func toolbarIs(enabled: Bool) {
