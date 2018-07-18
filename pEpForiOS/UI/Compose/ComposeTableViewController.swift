@@ -52,7 +52,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private let mimeTypeController = MimeTypeUtil()
 
-    var origin : Identity?
+    private var origin : Identity?
     private var destinyTo = [Identity]()
     private var destinyCc = [Identity]()
     private var destinyBcc = [Identity]()
@@ -125,9 +125,9 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func setup(_ cell: AccountCell) {
-        let accounts = Account.all()
-        origin = origin ?? Account.defaultAccount()?.user
+        origin = origin ?? initialFrom(originalMessage: originalMessage)
         cell.textView.text = origin?.address
+        let accounts = Account.all()
         cell.pickerEmailAdresses = accounts.map { $0.user.address }
         cell.picker.reloadAllComponents()
     }
@@ -142,37 +142,25 @@ class ComposeTableViewController: BaseTableViewController {
                                      errorString: "Is it OK to have no model?")
             return
         }
-
         guard let om = originalMessage else {
             // There is no original message in `normal`compose mode. It's OK.
             return
         }
         switch fm.type {
         case .to:
-            if composeMode == .replyFrom, let from = om.from {
-                recipientCell.addIdentity(from)
-            } else if composeMode == .replyAll, let from = om.from {
-                let to = om.to
-                for identity in to {
-                    recipientCell.addIdentity(identity)
-                }
-                recipientCell.addIdentity(from)
-            } else if composeMode == .draft {
-                for ident in om.to {
-                    recipientCell.addIdentity(ident)
-                }
+            let tos = initialTos(composeMode: composeMode, originalMessage: om)
+            for to in tos {
+                recipientCell.addIdentity(to)
             }
         case .cc:
-            if composeMode == .replyAll || composeMode == .draft {
-                for ident in om.cc {
-                    recipientCell.addIdentity(ident)
-                }
+            let ccs = initialCcs(composeMode: composeMode, originalMessage: om)
+            for cc in ccs {
+                recipientCell.addIdentity(cc)
             }
         case .bcc:
-            if composeMode == .replyAll  || composeMode == .draft {
-                for ident in om.bcc {
-                    recipientCell.addIdentity(ident)
-                }
+            let bccs = initialBccs(composeMode: composeMode, originalMessage: om)
+            for bcc in bccs {
+                recipientCell.addIdentity(bcc)
             }
         default:
             break
@@ -463,8 +451,19 @@ class ComposeTableViewController: BaseTableViewController {
         return result
     }
 
-    private func initialFrom(originalMessage om: Message) -> Identity? {
-        return originalMessage?.parent.account.user
+    private func initialFrom(originalMessage om: Message?) -> Identity? {
+        switch composeMode {
+        case .draft:
+            return om?.from
+        case .replyFrom:
+            return om?.parent.account.user
+        case .replyAll:
+            return om?.parent.account.user
+        case .forward:
+            return om?.parent.account.user
+        case .normal:
+            return Account.defaultAccount()?.user
+        }
     }
 
     // MARK: - Composing Mail

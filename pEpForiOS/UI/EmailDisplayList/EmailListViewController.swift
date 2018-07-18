@@ -1024,7 +1024,6 @@ extension EmailListViewController: SegueHandlerType {
         }
         composeVc.appConfig = appConfig
         composeVc.composeMode = composeMode
-        composeVc.origin = folderToShow?.account.user
         if composeMode != .normal {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
