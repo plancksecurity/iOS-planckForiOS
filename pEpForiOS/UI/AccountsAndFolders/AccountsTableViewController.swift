@@ -33,6 +33,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(true, animated: false)
 
         if MiscUtil.isUnitTest() {
             super.viewWillAppear(animated)
