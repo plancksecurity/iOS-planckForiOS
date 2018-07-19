@@ -48,12 +48,10 @@ struct ComposeUtil {
     static func initialCcs(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
         var result = [Identity]()
         switch composeMode {
-        case .replyFrom:
-            return result
         case .replyAll:
-            if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
+            if om.parent.folderType == .sent || om.parent.folderType == .drafts {
                 result = om.cc
-            } else if om.parent.folderType != .sent {
+            } else {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No from")
                     return result
@@ -61,7 +59,7 @@ struct ComposeUtil {
                 let origCcs = om.cc
                 result = origCcs.filter { $0 != me}
             }
-        case .normal, .forward:
+        case .replyFrom, .normal, .forward:
             break
         }
         return result
@@ -70,10 +68,12 @@ struct ComposeUtil {
     static func initialBccs(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
         var result = [Identity]()
         switch composeMode {
-        case .normal, .forward, .replyAll, .replyFrom:
-            if om.parent.folderType == .drafts  {
+        case .normal:
+            if om.parent.folderType == .drafts || om.parent.folderType == .sent {
                 result = om.bcc
             }
+        case .replyFrom, .forward, .replyAll:
+            break
         }
         return result
     }
@@ -87,7 +87,8 @@ struct ComposeUtil {
         case .forward:
             return om?.parent.account.user
         case .normal:
-            if let om = om, om.parent.folderType == .drafts  {
+            if let om = om,
+                om.parent.folderType == .drafts || om.parent.folderType == .sent  {
                 return om.from
             }
             return Account.defaultAccount()?.user
