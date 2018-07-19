@@ -27,7 +27,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Accounts", comment: "Accounts view title")
+        title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
