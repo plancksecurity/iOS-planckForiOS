@@ -52,11 +52,14 @@ class KeyImportWizzard {
 
         switch state {
         case .INIT:
-            keyImportService.sendInitKeyImportMessage(forAccount: account)
             if starter {
+                keyImportService.sendInitKeyImportMessage(forAccount: account)
                 nextState = WizardState.BEACON_SENT
             }
             else {
+                stepDescription = NSLocalizedString("If you initiated a key import for the "
+                    + "following account, please click Start.If this was not you, please cancel",
+                                                    comment: "pEp key import beacon received")
                 nextState = WizardState.BEACON_RECEIVED
             }
             isWaiting = true
@@ -75,6 +78,7 @@ class KeyImportWizzard {
             break
         }
         state = nextState
+        delegate?.notifyUpdate()
         //return state;
     }
     

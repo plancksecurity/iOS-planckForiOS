@@ -13,10 +13,11 @@ import MessageModel
 class AutoWizardStepsViewModel {
     private let keyImportService: KeyImportServiceProtocol
     let account: Account
-    private var keyImportWizzard: KeyImportWizzard
+    private var keyImportWizzard: KeyImportWizzard?
     var userAction: String
     var stepDescription: String
     var isWaiting: Bool
+    var delegate: AutoWizardViewControllerDelegate?
     
     init(keyImportService: KeyImportServiceProtocol, account: Account,
          keyImportWizzard: KeyImportWizzard? = nil) {
@@ -27,28 +28,36 @@ class AutoWizardStepsViewModel {
             self.userAction = wizard.userAction
             self.stepDescription = wizard.stepDescription
             self.isWaiting = wizard.isWaiting
+            wizard.account = account
+            wizard.delegate = self
             self.keyImportWizzard = wizard
+
         } else {
+            self.userAction = "No user action"
+            self.stepDescription = "No description"
+            self.isWaiting = false
+        }
+        /*else {
             let wizard = KeyImportWizzard(keyImportService: keyImportService, starter: true)
             self.userAction = wizard.userAction
             self.stepDescription = wizard.stepDescription
             self.isWaiting = wizard.isWaiting
             self.keyImportWizzard = wizard
-        }
-        self.keyImportWizzard.account = account
+        }*/
+
 
     }
 
     func start() {
-        keyImportWizzard.start()
+        keyImportWizzard?.start()
     }
 
     func next() {
-        keyImportWizzard.next()
+        keyImportWizzard?.next()
     }
 
     func finish() {
-        keyImportWizzard.finish()
+        keyImportWizzard?.finish()
     }
 }
 
@@ -59,5 +68,4 @@ extension AutoWizardStepsViewModel: KeyImportWizardDelegate {
     func notifyUpdate() {
 
     }
-
 }

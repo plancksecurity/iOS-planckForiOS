@@ -22,9 +22,9 @@ class AutoWizardStepsViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        if let vm = viewModel {
-//            vm.delegate = self
-//        }
+        if let vm = viewModel {
+            vm.delegate = self
+        }
     }
 
     // MARK: - Actions
@@ -34,10 +34,8 @@ class AutoWizardStepsViewController: BaseViewController {
 
     @IBAction func onStartClicked(_ sender: Any) {
         if let vm = viewModel {
-            action.titleLabel?.text = vm.userAction
-            stepDescription.text = vm.stepDescription
-            loading.isHidden = vm.isWaiting
-            vm.start()
+            updateState()
+            vm.start() 
         }
 
         //hideStartButton()
@@ -58,4 +56,28 @@ class AutoWizardStepsViewController: BaseViewController {
         //showCancelButton()
         //showCurrentStep()
     }
+
+    private func updateState() {
+        if let vm = viewModel {
+            action.titleLabel?.text = vm.userAction
+            stepDescription.text = vm.stepDescription
+            loading.isHidden = vm.isWaiting
+        }
+    }
+}
+
+extension AutoWizardStepsViewController: AutoWizardViewControllerDelegate {
+    func showError(error: Error) {
+
+    }
+
+    func notifyUpdate() {
+        updateState()
+    }
+
+
+}
+public protocol AutoWizardViewControllerDelegate: class {
+    func showError(error: Error)
+    func notifyUpdate()
 }
