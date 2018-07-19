@@ -39,6 +39,13 @@ class ComposeTableViewController: BaseTableViewController {
     var composeMode = ComposeUtil.ComposeMode.normal
     private var messageToSend: Message?
     var originalMessage: Message?
+    var originalMessageIsDraft: Bool {
+        var omIsDrafts = false
+        if let om = originalMessage, om.parent.folderType == .drafts {
+            omIsDrafts = true
+        }
+        return omIsDrafts
+    }
 
     private lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
 
@@ -178,7 +185,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    private func setInitialSendButtonStatus() {
+    private func setInitialSendButtonStatus() { //IOS-1106: The name suggests that this should *not* set recipients but some button state
         destinyTo = [Identity]()
         destinyCc = [Identity]()
         destinyBcc = [Identity]()
@@ -189,7 +196,7 @@ class ComposeTableViewController: BaseTableViewController {
             return
         }
         origin = om.parent.account.user
-        switch composeMode {
+        switch composeMode { //IOS-1106: the duplicates the "recipients for original message" logic. Plus it is wrong (ignores sent folder + other issues).
         case .replyFrom:
             if let from = om.from {
                 destinyTo.append(from)
@@ -208,22 +215,23 @@ class ComposeTableViewController: BaseTableViewController {
                 destinyCc.append(id)
             }
         case .normal:
+            if originalMessageIsDraft {
+                for id in om.to {
+                    destinyTo.append(id)
+                }
+                for id in om.cc {
+                    destinyCc.append(id)
+                }
+                for id in om.bcc {
+                    destinyBcc.append(id)
+                }
+            }
             // Do nothing, has no recipient by definition, can not be send.
             break
         case .forward:
             // Do nothing. A initial forwarded message has no recipient by definition and thus
             // can not be send.
             break
-        case .draft:
-            for id in om.to {
-                destinyTo.append(id)
-            }
-            for id in om.cc {
-                destinyCc.append(id)
-            }
-            for id in om.bcc {
-                destinyBcc.append(id)
-            }
         }
 
         if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
@@ -245,27 +253,26 @@ class ComposeTableViewController: BaseTableViewController {
             messageBodyCell.setInitial(text: ReplyUtil.quotedMessageText(message: om,
                                                                          replyAll: true))
         case .forward:
-            setBodyText(forMessage: om, to: messageBodyCell, composeMode: .forward)
-        case .draft:
-            setBodyText(forMessage: om, to: messageBodyCell, composeMode: .draft)
+            setBodyText(forMessage: om, to: messageBodyCell)
         case .normal:
+            if originalMessageIsDraft {
+                setBodyText(forMessage: om, to: messageBodyCell)
+            }
             // do nothing.
-            break
         }
     }
 
-    private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell,
-                             composeMode mode: ComposeUtil.ComposeMode) {
-        guard mode == .draft || mode == .forward else {
+    private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell) {
+        guard originalMessageIsDraft || composeMode == .forward else {
             Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Compose mode \(mode) is not supported")
+                                     errorString: "Unsupported mode or message")
             return
         }
         if let html = msg.longMessageFormatted {
             // We have HTML content. Parse it taking inlined attachments into account.
             let attributedString = html.htmlToAttributedString(attachmentDelegate: self)
             var result = attributedString
-            if mode == .forward {
+            if composeMode == .forward {
                 // forwarded messges must have a cite header ("yxz wrote on ...")
                 result = ReplyUtil.citedMessageText(textToCite: attributedString,
                                                            fromMessage: msg)
@@ -274,7 +281,7 @@ class ComposeTableViewController: BaseTableViewController {
         } else {
             // No HTML available.
             var result = msg.longMessage ?? ""
-            if mode == .forward {
+            if composeMode == .forward {
                 // forwarded messges must have a cite header ("yxz wrote on ...")
                 result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
                                            fromMessage: msg)
@@ -294,18 +301,11 @@ class ComposeTableViewController: BaseTableViewController {
             subjectCell.setInitial(text: ReplyUtil.replySubject(message: om))
         case .forward:
             subjectCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
-        case .draft:
-            subjectCell.setInitial(text: om.shortMessage ?? "")
-        case .normal: fallthrough// do nothing.
-        default:
-            guard composeMode == .normal else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString:
-                    """
-.normal is the only compose mode that is intentionally ignored here
-""")
-                return
+        case .normal:
+            if om.parent.folderType == .drafts {
+                subjectCell.setInitial(text: om.shortMessage ?? "")
             }
+            //.normal for other folder types is intentionally ignored here
         }
     }
 
@@ -341,7 +341,7 @@ class ComposeTableViewController: BaseTableViewController {
     ///
     /// - Returns: true if we must take over attachments from the original message, false otherwize
     private func shouldTakeOverAttachments() -> Bool {
-        return composeMode == .forward || composeMode == .draft
+        return composeMode == .forward || originalMessageIsDraft
     }
 
     // MARK: - Address Suggstions
@@ -950,7 +950,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func saveDraft() {
-        if self.composeMode == .draft {
+        if originalMessageIsDraft {
             // We are in drafts folder and, from user perespective, are editing a drafted mail.
             // Technically we have to create a new one and delete the original message, as the
             // mail is already synced with the IMAP server and thus we must not modify it.
@@ -988,7 +988,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text: String
-        if composeMode == .draft {
+        if originalMessageIsDraft {
             text = NSLocalizedString("Discharge changes", comment:
                 "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
         } else {
@@ -1003,7 +1003,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text:String
-        if composeMode == .draft {
+        if originalMessageIsDraft {
             text = NSLocalizedString("Save changes", comment:
                 "ComposeTableView: button to decide to save changes made on a drafted mail.")
         } else {
@@ -1060,7 +1060,7 @@ class ComposeTableViewController: BaseTableViewController {
             return
         }
         msg.save()
-        if composeMode == .draft {
+        if originalMessageIsDraft {
             // From user perspective, we have edited a drafted message and will send it.
             // Technically we are creating and sending a new message (msg), thus we have to
             // delete the original, previously drafted one.

@@ -1049,7 +1049,7 @@ extension EmailListViewController: SegueHandlerType {
         case .segueCompose:
             return .normal
         case .segueEditDraft:
-            return .draft
+            return .normal
         default:
             return nil
         }

@@ -16,22 +16,19 @@ struct ComposeUtil {
         case replyFrom
         case replyAll
         case forward
-        case draft
     }
 
     static func initialTos(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
         var result = [Identity]()
         switch composeMode {
-        case .draft:
-            result = om.to
         case .replyFrom:
-            if om.parent.folderType == .sent {
+            if om.parent.folderType == .sent || om.parent.folderType == .drafts {
                 result = om.to
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 result = [omFrom]
             }
         case .replyAll:
-            if om.parent.folderType == .sent {
+            if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
                 result = om.to
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
@@ -51,12 +48,10 @@ struct ComposeUtil {
     static func initialCcs(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
         var result = [Identity]()
         switch composeMode {
-        case .draft:
-            result = om.cc
         case .replyFrom:
             return result
         case .replyAll:
-            if om.parent.folderType == .sent {
+            if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
                 result = om.cc
             } else if om.parent.folderType != .sent {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
@@ -75,18 +70,16 @@ struct ComposeUtil {
     static func initialBccs(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
         var result = [Identity]()
         switch composeMode {
-        case .draft:
-            result = om.bcc
         case .normal, .forward, .replyAll, .replyFrom:
-            break
+            if om.parent.folderType == .drafts  {
+                result = om.bcc
+            }
         }
         return result
     }
 
     static func initialFrom(composeMode: ComposeMode, originalMessage om: Message?) -> Identity? {
         switch composeMode {
-        case .draft:
-            return om?.from
         case .replyFrom:
             return om?.parent.account.user
         case .replyAll:
@@ -94,6 +87,9 @@ struct ComposeUtil {
         case .forward:
             return om?.parent.account.user
         case .normal:
+            if let om = om, om.parent.folderType == .drafts  {
+                return om.from
+            }
             return Account.defaultAccount()?.user
         }
     }
