@@ -36,7 +36,7 @@ extension KeyImportAccountCellViewModel : KeyImportAccountCell {
     }
 
     func getWizardViewModel() -> AutoWizardStepsViewModel {
-        return AutoWizardStepsViewModel(account: account, keyImportService: keyImportService)
+        return AutoWizardStepsViewModel(keyImportService: keyImportService, account: account)
     }
 
 }

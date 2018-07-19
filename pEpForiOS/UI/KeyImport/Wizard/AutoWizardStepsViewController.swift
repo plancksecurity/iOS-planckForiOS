@@ -11,9 +11,9 @@ import UIKit
 class AutoWizardStepsViewController: BaseViewController {
     
     var viewModel: AutoWizardStepsViewModel?
+    static let storyBoardID = "AutoWizardStepsKeyImport"
     
-    
-    @IBOutlet weak var start: UIButton!
+    @IBOutlet weak var action: UIButton!
     @IBOutlet weak var cancel: UIButton!
     @IBOutlet weak var stepDescription: UILabel!
     @IBOutlet weak var loading: UIActivityIndicatorView!
@@ -22,6 +22,9 @@ class AutoWizardStepsViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        if let vm = viewModel {
+//            vm.delegate = self
+//        }
     }
 
     // MARK: - Actions
@@ -30,8 +33,15 @@ class AutoWizardStepsViewController: BaseViewController {
     //TODO: Use viewModel.
 
     @IBAction func onStartClicked(_ sender: Any) {
+        if let vm = viewModel {
+            action.titleLabel?.text = vm.userAction
+            stepDescription.text = vm.stepDescription
+            loading.isHidden = vm.isWaiting
+            vm.start()
+        }
+
         //hideStartButton()
-        start.isHidden = true
+        action.isHidden = true
         //showCancelButton()
         cancel.isHidden = false
         //showCurrentStep()
@@ -40,7 +50,7 @@ class AutoWizardStepsViewController: BaseViewController {
     }
     
     @IBAction func onCancelClicked(_ sender: Any) {
-        start.isHidden = false
+        action.isHidden = false
         cancel.isHidden = true
         stepDescription.isHidden = true
         loading.isHidden = true

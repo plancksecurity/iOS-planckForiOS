@@ -15,7 +15,7 @@
         <!--Auto Wizard Steps View Controller-->
         <scene sceneID="oOa-mH-8t8">
             <objects>
-                <viewController id="CoZ-Bi-RAc" customClass="AutoWizardStepsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AutoWizardStepsKeyImport" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CoZ-Bi-RAc" customClass="AutoWizardStepsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wHM-us-7La">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -58,9 +58,9 @@
                         <viewLayoutGuide key="safeArea" id="cNH-7d-hhs"/>
                     </view>
                     <connections>
+                        <outlet property="action" destination="p7I-Vo-PmL" id="dVs-ye-gPm"/>
                         <outlet property="cancel" destination="Zmd-J4-rOU" id="KXi-RK-8xl"/>
                         <outlet property="loading" destination="DY1-Kj-Os0" id="luJ-qr-A0p"/>
-                        <outlet property="start" destination="p7I-Vo-PmL" id="oDc-aQ-q64"/>
                         <outlet property="stepDescription" destination="X0a-u7-8tz" id="kDe-7b-eQ9"/>
                     </connections>
                 </viewController>

@@ -484,6 +484,7 @@
 		B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */; };
 		B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */; };
 		B7F19A001E5DE9FB0079A513 /* FolderType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F199FF1E5DE9FB0079A513 /* FolderType+Extensions.swift */; };
+		C40EB0D120EFD3670009CF5F /* KeyImportWizardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C40EB0D020EFD3670009CF5F /* KeyImportWizardDelegate.swift */; };
 		C457845120AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C457845020AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift */; };
 		C474D25A20B3FB9C0071F638 /* KeyImport.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C474D25820B3FB9C0071F638 /* KeyImport.storyboard */; };
 		C474D25F20B44A9E0071F638 /* AutoWizardStepsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C474D25E20B44A9E0071F638 /* AutoWizardStepsViewController.swift */; };
@@ -1028,6 +1029,7 @@
 		B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterCellViewModel.swift; path = Filter/ViewModel/FilterCellViewModel.swift; sourceTree = "<group>"; };
 		B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollapsibleTableViewHeader.swift; path = Folder/CollapsibleTableViewHeader.swift; sourceTree = "<group>"; };
 		B7F199FF1E5DE9FB0079A513 /* FolderType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FolderType+Extensions.swift"; sourceTree = "<group>"; };
+		C40EB0D020EFD3670009CF5F /* KeyImportWizardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyImportWizardDelegate.swift; sourceTree = "<group>"; };
 		C457845020AF4CE00053BF19 /* SettingsKeyImportSelectAccountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsKeyImportSelectAccountTableViewController.swift; sourceTree = "<group>"; };
 		C474D25920B3FB9C0071F638 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/KeyImport.storyboard; sourceTree = "<group>"; };
 		C474D25E20B44A9E0071F638 /* AutoWizardStepsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoWizardStepsViewController.swift; sourceTree = "<group>"; };
@@ -2378,6 +2380,7 @@
 			isa = PBXGroup;
 			children = (
 				C483EBE220EB624300C319D1 /* AutoWizardStepsViewModel.swift */,
+				C40EB0D020EFD3670009CF5F /* KeyImportWizardDelegate.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -3017,6 +3020,7 @@
 				4351C2D91F4441190053381F /* render.c in Sources */,
 				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,
 				43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */,
+				C40EB0D120EFD3670009CF5F /* KeyImportWizardDelegate.swift in Sources */,
 				43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */,
 				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
 				492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */,

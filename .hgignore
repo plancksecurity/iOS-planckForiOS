@@ -16,3 +16,4 @@ build/.*
 ^.*\.pyc$
 
 glob
+\.idea

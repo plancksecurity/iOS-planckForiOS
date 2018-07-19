@@ -34,6 +34,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
     func didSetAppConfig() {
         // Do nothing. Meant to override in subclasses.
     }
+    var keyimportWizard: KeyImportWizzard?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -47,6 +48,12 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         appConfig.errorPropagator.subscriber = self
         self.navigationController?.title = title
         BaseTableViewController.setupCommonSettings(tableView: tableView)
+
+        if keyimportWizard == nil {
+            keyimportWizard = KeyImportWizzard(keyImportService: appConfig.keyImportService,
+                                               starter: false)
+            keyimportWizard?.startKeyImportDelegate = self
+        }
     }
 
     static func setupCommonSettings(tableView: UITableView) {
@@ -73,5 +80,23 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 extension BaseTableViewController: KickOffMySelfProtocol {
     func startMySelf() {
         Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
+    }
+}
+
+import MessageModel
+//TODO: Move to proper site
+extension BaseTableViewController: StartKeyImportDelegate {
+
+    func startKeyImport(account: Account) {
+        let storyId = AutoWizardStepsViewController.storyBoardID
+        if let vc = UIStoryboard.init(name: "KeyImport", bundle: Bundle.main)
+            .instantiateViewController(withIdentifier: storyId) as? AutoWizardStepsViewController {
+            vc.appConfig = self.appConfig
+            vc.viewModel = AutoWizardStepsViewModel(keyImportService: appConfig.keyImportService,
+                                                account: account, keyImportWizzard: keyimportWizard)
+            self.present(vc, animated: true)
+            //self.navigationController?.pushViewController(vc, animated: true)
+        }
+
     }
 }
