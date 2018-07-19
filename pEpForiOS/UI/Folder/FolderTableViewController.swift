@@ -100,6 +100,17 @@ class FolderTableViewController: BaseTableViewController {
                             heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
     }
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+            return 0.0
+        }
+        if vm[section].hidden {
+            return 0.0
+        } else {
+            return tableView.sectionHeaderHeight
+        }
+    }
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
