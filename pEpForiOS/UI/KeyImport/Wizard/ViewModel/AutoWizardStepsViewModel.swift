@@ -18,7 +18,8 @@ class AutoWizardStepsViewModel {
     var stepDescription: String
     var isWaiting: Bool
     
-    init(keyImportService: KeyImportServiceProtocol, account: Account,  keyImportWizzard: KeyImportWizzard? = nil) {
+    init(keyImportService: KeyImportServiceProtocol, account: Account,
+         keyImportWizzard: KeyImportWizzard? = nil) {
         self.keyImportService = keyImportService
         self.account = account
 
