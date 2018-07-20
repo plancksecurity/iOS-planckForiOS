@@ -47,8 +47,10 @@ class CreditsViewController: BaseViewController {
         let styleColumn = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 25%;}.right {width: 75%;}.row:after {content: \"\";display: table;clear: both;}"
         let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)</style>"
         let result = """
-        <html> <head> \(style)
-
+        <html>
+         <head>
+           \(style)
+           <meta charset="utf-8"/>
         </head>
         <body>
         <blockquote>
