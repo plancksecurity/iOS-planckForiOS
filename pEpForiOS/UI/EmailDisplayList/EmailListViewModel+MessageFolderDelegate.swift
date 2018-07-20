@@ -39,6 +39,10 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The createe is no message. Ignore.
             return
         }
+        if !shouldBeDisplayed(message: message){
+            return
+        }
+
         // Is a Message (not a Folder)
         if let filter = folderToShow.filter,
             !filter.fulfillsFilter(message: message) {
