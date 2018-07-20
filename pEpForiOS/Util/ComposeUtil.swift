@@ -61,7 +61,10 @@ struct ComposeUtil {
                 let origCcs = om.cc
                 result = origCcs.filter { $0 != me}
             }
-        case .replyFrom, .normal, .forward:
+        case .replyFrom:
+            // Reply never has CC set
+            break
+        case .normal, .forward:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
                 result = om.cc
             }
