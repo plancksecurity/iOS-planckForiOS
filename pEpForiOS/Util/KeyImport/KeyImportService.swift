@@ -28,7 +28,7 @@ public class KeyImportService {
     weak var unitTestDelegate: UnitTestDelegateKeyImportService?
 
     /// Specifies how long a key import message is valid
-    static let ttlKeyImportMessages: TimeInterval = 4 * 60 * 60
+    static let ttlKeyImportMessages: TimeInterval = 10 * 60
     /// Work queue
     let queue: OperationQueue
 
