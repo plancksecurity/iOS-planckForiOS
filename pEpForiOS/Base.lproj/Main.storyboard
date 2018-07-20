@@ -194,6 +194,7 @@
                         <segue destination="lPr-gi-BrG" kind="showDetail" identifier="segueShowEmail" id="63y-AC-Fyu"/>
                         <segue destination="wwj-Sj-78N" kind="showDetail" identifier="showNoMessage" id="a9I-b0-iqU"/>
                         <segue destination="eLD-PA-Nmx" kind="showDetail" identifier="segueShowThreadedEmail" id="rUh-Ai-iWA"/>
+                        <segue destination="ahd-JG-zww" kind="showDetail" identifier="segueShowThreadedEmailSingle" id="rVm-oN-S6B"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -291,8 +292,45 @@
                                     <outlet property="titleLabel" destination="DWr-lq-DOL" id="Vbu-6N-VWY"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="wrappedCell" rowHeight="58" id="SiN-H9-bHS" customClass="WrappedCell" customModule="pEpForiOS" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="144" width="375" height="58"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SiN-H9-bHS" id="JHU-BA-XRQ">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="57.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cc/Bcc:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cCa-EA-IIy">
+                                            <rect key="frame" x="8" y="17" width="57" height="20"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnO-TW-ONu" customClass="SubjectComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
+                                            <rect key="frame" x="73" y="10" width="292" height="39"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="SiN-H9-bHS" id="WZ4-n5-cx5"/>
+                                            </connections>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="MnO-TW-ONu" secondAttribute="bottom" constant="8" id="7Ju-d3-kf8"/>
+                                        <constraint firstItem="cCa-EA-IIy" firstAttribute="leading" secondItem="JHU-BA-XRQ" secondAttribute="leading" constant="8" id="Ift-fP-0Tn"/>
+                                        <constraint firstAttribute="trailing" secondItem="MnO-TW-ONu" secondAttribute="trailing" constant="10" id="mVd-8m-bN6"/>
+                                        <constraint firstItem="MnO-TW-ONu" firstAttribute="leading" secondItem="cCa-EA-IIy" secondAttribute="trailing" constant="7.5" id="psZ-zz-syU"/>
+                                        <constraint firstItem="cCa-EA-IIy" firstAttribute="top" secondItem="JHU-BA-XRQ" secondAttribute="top" constant="17" id="tLl-VO-clL"/>
+                                        <constraint firstItem="MnO-TW-ONu" firstAttribute="top" secondItem="JHU-BA-XRQ" secondAttribute="top" constant="10" id="tfY-Kg-9Wq"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textView" destination="MnO-TW-ONu" id="BzB-TO-sJC"/>
+                                    <outlet property="titleLabel" destination="cCa-EA-IIy" id="bxQ-2a-45p"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="composeCell" rowHeight="260" id="xhW-oS-ri3" userLabel="Content Table View Cell" customClass="MessageBodyCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="144" width="375" height="260"/>
+                                <rect key="frame" x="0.0" y="202" width="375" height="260"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xhW-oS-ri3" id="doY-9c-uKA">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="259.5"/>
@@ -320,7 +358,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accountCell" rowHeight="190" id="prY-xp-1rI" customClass="AccountCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="404" width="375" height="190"/>
+                                <rect key="frame" x="0.0" y="462" width="375" height="190"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="prY-xp-1rI" id="FU0-SW-FOj">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="189.5"/>
@@ -771,8 +809,6 @@
                                 <action selector="pressReply:" destination="3bx-34-vLD" id="KDm-Or-31Y"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Pba-MT-N93"/>
-                        <barButtonItem title="p≡p" id="1oP-DI-wuJ"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3">
                         <rightBarButtonItems>
@@ -949,9 +985,9 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RTR-We-Kc1"/>
-        <segue reference="8Xh-Bv-MFq"/>
+        <segue reference="d5O-Wk-gjZ"/>
+        <segue reference="oPc-EL-W2c"/>
         <segue reference="ber-OQ-S16"/>
-        <segue reference="Usl-iS-7fo"/>
+        <segue reference="6vv-Jr-8Nm"/>
     </inferredMetricsTieBreakers>
 </document>

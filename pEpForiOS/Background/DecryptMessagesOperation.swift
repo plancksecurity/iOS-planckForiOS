@@ -52,7 +52,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 if me.isCancelled {
                     break
                 }
-                //
+
                 let ratingBeforeEngine = cdMessage.pEpRating
 
                 var outgoing = false

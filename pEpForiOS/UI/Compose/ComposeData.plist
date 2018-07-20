@@ -19,6 +19,18 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>height</key>
+			<string>64</string>
+			<key>identifier</key>
+			<string>wrappedCell</string>
+			<key>type</key>
+			<string>wraped</string>
+			<key>visible</key>
+			<string>conditional</string>
+			<key>New item</key>
+			<string></string>
+		</dict>
+		<dict>
 			<key>identifier</key>
 			<string>recipientCell</string>
 			<key>type</key>
@@ -47,6 +59,8 @@
 			<true/>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<string>190.0</string>
 			<key>identifier</key>
 			<string>accountCell</string>
 			<key>value</key>
@@ -54,11 +68,9 @@
 			<key>type</key>
 			<string>from</string>
 			<key>visible</key>
-			<string>always</string>
+			<string>conditional</string>
 			<key>height</key>
 			<string>64.0</string>
-			<key>expanded</key>
-			<string>190.0</string>
 			<key>contactSuggestion</key>
 			<false/>
 		</dict>

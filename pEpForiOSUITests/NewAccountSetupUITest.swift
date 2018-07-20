@@ -16,27 +16,32 @@ class NewAccountSetupUITest: XCTestCase {
 
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-        // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
-        app().launch()
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     // MARK: - Tests
 
     func testInitialAccountSetup1() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.workingAccount1
         newAccountSetup(account: account)
         waitForever()
     }
 
     func testInitialAccountSetup2() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.workingAccount2
         newAccountSetup(account: account)
         waitForever()
     }
 
     func testAdditionalAccount() {
+        app().launch()
         let theApp = app()
         theApp.navigationBars["Inbox"].buttons["Folders"].tap()
         theApp.tables.buttons["add account"].tap()
@@ -47,6 +52,10 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func testTwoInitialAccounts() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account1 = SecretUITestData.workingAccount1
         newAccountSetup(account: account1)
 
@@ -59,19 +68,25 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-    /// Start app, accept contact permissions manually, start test,
-    /// wait for alert and click OK manually
-    func testNewAccountSetupManuallyAccountThatDoesNotWorkAutomatically() {
+    func testNewAccountSetupManual() {
         let theApp = app()
+
+        theApp.launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.manualAccount
         newAccountSetup(account: account)
 
-        //wait until manual setup button appaers
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(80), execute: {
-            theApp.buttons["Manual configuration"].tap()
-            self.manualNewAccountSetup(account)
-        })
+        let alertOkButton = theApp.buttons["Ok"]
+        let exists = NSPredicate(format: "enabled == true")
+        expectation(for: exists, evaluatedWith: alertOkButton, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
 
+        alertOkButton.tap()
+        theApp.buttons["Manual configuration"].tap()
+
+        manualNewAccountSetup(account)
 
         waitForever()
     }
@@ -79,6 +94,7 @@ class NewAccountSetupUITest: XCTestCase {
     // Adds Yahoo account
     // Note: A working accound must exist already.
     func testAddYahooAccount() {
+        app().launch()
         openAddAccountManualConfiguration()
         let account = SecretUITestData.workingYahooAccount
         manualNewAccountSetup(account)
@@ -86,12 +102,20 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func testTriggerGmailOauth2() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.gmailOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
     }
 
     func testTriggerYahooOauth2() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+
         let account = SecretUITestData.yahooOAuth2Account
         newAccountSetup(account: account, enterPassword: false)
         waitForever()
@@ -111,24 +135,6 @@ class NewAccountSetupUITest: XCTestCase {
     func waitForever() {
         let _ = expectation(description: "Never happens")
         waitForExpectations(timeout: 3000, handler: nil)
-    }
-
-    /**
-     Clears the given text element.
-     */
-    func clearTextField(_ textField: XCUIElement) {
-        let string = textField.value as? String
-        XCTAssertNotNil(string)
-
-        while true {
-            guard let text = textField.value as? String else {
-                break
-            }
-            if text.count == 0 {
-                break
-            }
-            textField.typeText("\u{8}")
-        }
     }
 
     func typeTextIfEmpty(textField: XCUIElement,  text: String) {
@@ -158,8 +164,7 @@ class NewAccountSetupUITest: XCTestCase {
         tf.typeText(account.imapServerName)
         tf = tablesQuery.textFields["imapPort"]
         tf.tap()
-        clearTextField(tf)
-        tf.typeText(String(account.imapPort))
+        tf.clearAndEnter(text: String(account.imapPort))
 
         tablesQuery.buttons["imapTransportSecurity"].tap()
         let sheet = theApp.sheets["Transport protocol"]
@@ -172,8 +177,7 @@ class NewAccountSetupUITest: XCTestCase {
         tf.typeText(account.smtpServerName)
         tf = tablesQuery.textFields["smtpPort"]
         tf.tap()
-        clearTextField(tf)
-        tf.typeText(String(account.smtpPort))
+        tf.clearAndEnter(text: String(account.smtpPort))
 
         tablesQuery.buttons["smtpTransportSecurity"].tap()
         sheet.buttons[account.smtpTransportSecurityString].tap()
@@ -219,5 +223,26 @@ class NewAccountSetupUITest: XCTestCase {
         tablesQuery.buttons["Sign In"].tap()
         theApp.alerts["Error"].buttons["Ok"].tap()
         tablesQuery.buttons["Manual configuration"].tap()
+    }
+
+    /**
+     Dismisses the initial system alerts (access to contacts, allow notifications).
+     */
+    func dismissInitialSystemAlerts() {
+        dismissSystemAlert(buttonTitle: "Allow")
+        dismissSystemAlert(buttonTitle: "OK")
+    }
+
+    func dismissSystemAlert(buttonTitle: String) {
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let button = springboard.buttons[buttonTitle]
+        if button.exists {
+            button.tap()
+        } else {
+            let exists = NSPredicate(format: "enabled == true")
+            expectation(for: exists, evaluatedWith: button, handler: nil)
+            waitForExpectations(timeout: 2, handler: nil)
+            button.tap()
+        }
     }
 }

@@ -45,6 +45,14 @@ class EmailViewController: BaseTableViewController {
 
         loadDatasource("MessageData")
 
+        let item = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)),
+                                                target: self)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
+
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()

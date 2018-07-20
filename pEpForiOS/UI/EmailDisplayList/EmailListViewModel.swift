@@ -11,14 +11,15 @@ import Foundation
 import MessageModel
 
 protocol EmailListViewModelDelegate: TableViewUpdate {
-    func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath)
-    func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath)
-    func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath)
+    func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath])
+    func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath])
+    func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message)
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
+    func showThreadView(for indexPath: IndexPath)
 }
 
 // MARK: - FilterUpdateProtocol
@@ -176,7 +177,6 @@ class EmailListViewModel {
 
     //multiple message selection handler
 
-
     private var unreadMessages = false
     private var flaggedMessages = false
 
@@ -221,7 +221,6 @@ class EmailListViewModel {
     }
 
     public func markSelectedAsFlagged(indexPaths: [IndexPath]) {
-
         indexPaths.forEach { (ip) in
             setFlagged(forIndexPath: ip)
         }
@@ -246,10 +245,23 @@ class EmailListViewModel {
     }
 
     public func deleteSelected(indexPaths: [IndexPath]) {
+        var deletees = [PreviewMessage]()
         indexPaths.forEach { (ip) in
-            delete(forIndexPath: ip)
-
+            guard let previewMessage = messages.object(at: ip.row)else {
+                    return
+            }
+            deletees.append(previewMessage)
         }
+
+        for pvm in deletees {
+            guard let message = pvm.message() else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No mesage")
+                return
+            }
+            delete(message: message)
+            messages.remove(object: pvm)
+        }
+        emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPaths)
     }
 
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
@@ -279,7 +291,7 @@ class EmailListViewModel {
             }
             previewMessage.isSeen = true
             me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                                      didUpdateDataAt: indexPath)
+                                                                      didUpdateDataAt: [indexPath])
         }
     }
 
@@ -294,21 +306,33 @@ class EmailListViewModel {
             }
             previewMessage.isSeen = false
             me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                                      didUpdateDataAt: indexPath)
+                                                                      didUpdateDataAt: [indexPath])
         }
     }
     
     func delete(forIndexPath indexPath: IndexPath) {
+        guard let deletedMessage = deleteMessage(at: indexPath) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Not sure if this is a valid case. Remove this " +
+                "log if so.")
+            return
+        }
+        didDelete(messageFolder: deletedMessage)
+    }
+
+    private func deleteMessage(at indexPath: IndexPath) -> Message? {
         guard let previewMessage = messages.object(at: indexPath.row),
             let message = previewMessage.message() else {
-                return
+                return nil
         }
+        delete(message: message)
+        return message
+    }
 
+    private func delete(message: Message) {
         // The message to delete might be a single, unthreaded message,
         // or the tip of a thread. `threadedMessageFolder` will figure it out.
         threadedMessageFolder.deleteThread(message: message)
-
-        didDelete(messageFolder: message)
     }
     
     func message(representedByRowAt indexPath: IndexPath) -> Message? {

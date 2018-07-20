@@ -31,6 +31,7 @@ public class AccountsSettingsSectionViewModel {
         case .globalSettings:
             generateGlobalSettingsCells()
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
+            footer = NSLocalizedString("public key is only attached if key is received from partner", comment: "passive mode description")
         case .pgpCompatibilitySettings:
             generatePgpCompatibilitySettingsCells()
             title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
@@ -50,7 +51,7 @@ public class AccountsSettingsSectionViewModel {
         self.cells.append(ThreadedSwitchViewModel(type: .organizedByThread))
         self.cells.append(AccountsSettingsCellViewModel(type: .credits))
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
-        self.cells.append(PassiveModeViewModel(type: .pasiveMode))
+        self.cells.append(PassiveModeViewModel(type: .passiveMode))
     }
 
     func generatePgpCompatibilitySettingsCells() {

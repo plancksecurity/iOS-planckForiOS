@@ -21,17 +21,16 @@ class FolderTableViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setToolbarHidden(true, animated: true)
         setup()
         if showNext {
             showFolder(indexPath: nil)
         }
+        self.navigationController?.setToolbarHidden(false, animated: false)
     }
 
     // MARK: - Setup
 
     private func setup() {
-        //ViewModel init
         DispatchQueue.main.async {
             self.folderVM =  FolderViewModel()
             self.tableView.reloadData()
@@ -39,14 +38,18 @@ class FolderTableViewController: BaseTableViewController {
     }
     
     private func initialConfig() {
-        self.title = NSLocalizedString("Accounts", comment: "AccountsView")
+        self.title = NSLocalizedString("Folders", comment: "FoldersView")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        let item = UIBarButtonItem(title: "Settings", style: .plain, target: self,
-                                   action: #selector(settingsTapped))
-        navigationItem.rightBarButtonItem = item
+        let item = UIBarButtonItem.getpEpButton(action:#selector(self.showSettingsViewController(_:)),
+                                                target: self)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        self.toolbarItems = [flexibleSpace,item]
     }
 
     // MARK: - Cell Setup
@@ -59,12 +62,6 @@ class FolderTableViewController: BaseTableViewController {
     private func setSelectableStyle(to cell: UITableViewCell) {
         cell.accessoryType = .disclosureIndicator
         cell.textLabel?.textColor = UIColor.black
-    }
-
-    // MARK: - Actions
-
-    @objc func settingsTapped() {
-        performSegue(withIdentifier: "SettingsSegue", sender: self)
     }
 
     // MARK: - Table view data source
@@ -103,6 +100,17 @@ class FolderTableViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
+    }
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+            return 0.0
+        }
+        if vm[section].hidden {
+            return 0.0
+        } else {
+            return tableView.sectionHeaderHeight
+        }
     }
 
     override func tableView(_ tableView: UITableView,

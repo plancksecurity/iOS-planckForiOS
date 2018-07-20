@@ -310,7 +310,7 @@
 
  extension LoginTableViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
-            GCD.onMain() { [weak self] in
+        GCD.onMain() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
@@ -329,7 +329,7 @@
             case .noImapConnectData, .noSmtpConnectData:
                 me.lastAccountInput = accountInput
                 me.handleLoginError(error: LoginTableViewControllerError.noConnectData,
-                                       offerManualSetup: true)
+                                    offerManualSetup: true)
             }
         }
     }

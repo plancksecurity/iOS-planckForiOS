@@ -13,18 +13,16 @@ class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModel  
     var settingCellType: AccountSettingsCellType
     var type: SettingType
     var title : String
-    var description : String
     var switchValue : Bool
 
     init(type: SettingType) {
         self.settingCellType = AccountSettingsCellType.switchOptionCell
         self.type = type
-        self.title = "Enable Protected Subject"
-        self.description = "If enabled, message subjects are also protected."
-        self.switchValue = !AppSettings.init().unencryptedSubjectEnabled
+        self.title = NSLocalizedString("Enable Protected Subject", comment: "title for subject protection")
+        self.switchValue = !AppSettings.unencryptedSubjectEnabled
     }
 
     func switchAction(value: Bool) {
-        AppSettings.init().unencryptedSubjectEnabled = value
+        AppSettings.unencryptedSubjectEnabled = !value
     }
 }

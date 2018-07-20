@@ -1,4 +1,4 @@
-//
+ //
 //  ComposeViewController.swift
 //  pEpForiOS
 //
@@ -18,24 +18,25 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
-    enum ComposeMode {
-        case normal
-        case replyFrom
-        case replyAll
-        case forward
-        case draft
-    }
+    var originalMessage: Message?
+    var composeMode = ComposeUtil.ComposeMode.normal
 
+    private var originalMessageIsDraft: Bool {
+        var omIsDrafts = false
+        if let om = originalMessage, om.parent.folderType == .drafts {
+            omIsDrafts = true
+        }
+        return omIsDrafts
+    }
     private let contactPicker = CNContactPickerViewController()
     private let imagePicker = UIImagePickerController()
     private let menuController = UIMenuController.shared
-
     private var suggestTableView: SuggestTableView!
     private let composeSection = 0
     private let attachmentSection = 1
-    lazy private var attachmentFileIOQueue = DispatchQueue(
-        label: "net.pep-security.ComposeTableViewController.attachmentFileIOQueue",
-        qos: .userInitiated)
+    lazy private var attachmentFileIOQueue = DispatchQueue(label:
+        "net.pep-security.ComposeTableViewController.attachmentFileIOQueue",
+                                                           qos: .userInitiated)
     private var tableDict: NSDictionary?
     private var composeData: ComposeDataSource? = nil
     private var nonInlinedAttachmentData = ComposeDataSource.AttachmentDataSource()
@@ -43,44 +44,32 @@ class ComposeTableViewController: BaseTableViewController {
     private var allCells = MutableOrderedSet<ComposeCell>()
     private var cells = [ComposeFieldModel.FieldType:ComposeCell]()
     private var ccEnabled = false
-
-    var composeMode: ComposeMode = .normal
     private var messageToSend: Message?
-    var originalMessage: Message?
-
     private lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-
     private let mimeTypeController = MimeTypeUtil()
-
-    var origin : Identity?
+    private var origin : Identity?
     private var destinyTo = [Identity]()
     private var destinyCc = [Identity]()
     private var destinyBcc = [Identity]()
-
     private let attachmentCounter = AttachmentCounter()
     private let mimeTypeUtil = MimeTypeUtil()
-
     private var edited = false
-
     /**
      A value of `true` means that the mail will be encrypted.
      */
     private var pEpProtection = true
-
     /**
      The `ComposeTextView`, if it currently owns the focus.
      */
-    var composeTextViewFirstResponder: ComposeTextView?
-
+    private var composeTextViewFirstResponder: ComposeTextView?
     /**
      Caching the last row heights, in case the cell goes out of visiblity.
      */
-    var rowHeightCache = [IndexPath:CGFloat]()
-
+    private var rowHeightCache = [IndexPath:CGFloat]()
     /**
      Last time something changed, this was the rating of the message currently in edit.
      */
-    var currentRating = PEP_rating_undefined
+    private var currentRating = PEP_rating_undefined
 
     // MARK: - Lifecycle
 
@@ -96,7 +85,7 @@ class ComposeTableViewController: BaseTableViewController {
         super.viewWillAppear(animated)
         composeData?.filterRows(message: nil)
         takeOverAttachmentsIfRequired()
-        setInitialSendButtonStatus()
+        setInitialStatus()
         rowHeightCache.removeAll()
     }
 
@@ -125,9 +114,10 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func setup(_ cell: AccountCell) {
-        let accounts = Account.all()
-        origin = origin ?? Account.defaultAccount()?.user
+        origin = origin ?? ComposeUtil.initialFrom(composeMode: composeMode,
+                                                   originalMessage: originalMessage)
         cell.textView.text = origin?.address
+        let accounts = Account.all()
         cell.pickerEmailAdresses = accounts.map { $0.user.address }
         cell.picker.reloadAllComponents()
     }
@@ -139,43 +129,30 @@ class ComposeTableViewController: BaseTableViewController {
     private func updateInitialContent(recipientCell: RecipientCell) {
         guard let fm = recipientCell.fieldModel else {
             Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Is it OK to have no model?")
+                                     errorString: "No model")
             return
         }
-
         guard let om = originalMessage else {
             // There is no original message in `normal`compose mode. It's OK.
             return
         }
+        var result = [Identity]()
         switch fm.type {
         case .to:
-            if composeMode == .replyFrom, let from = om.from {
-                recipientCell.addIdentity(from)
-            } else if composeMode == .replyAll, let from = om.from {
-                let to = om.to
-                for identity in to {
-                    recipientCell.addIdentity(identity)
-                }
-                recipientCell.addIdentity(from)
-            } else if composeMode == .draft {
-                for ident in om.to {
-                    recipientCell.addIdentity(ident)
-                }
-            }
+            result = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
         case .cc:
-            if composeMode == .replyAll || composeMode == .draft {
-                for ident in om.cc {
-                    recipientCell.addIdentity(ident)
-                }
-            }
+            result = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
         case .bcc:
-            if composeMode == .replyAll  || composeMode == .draft {
-                for ident in om.bcc {
-                    recipientCell.addIdentity(ident)
-                }
-            }
+            result =  ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
         default:
-            break
+            return
+        }
+        for id in result {
+            recipientCell.addIdentity(id)
+        }
+        if result.count > 0 && ( fm.type == .cc || fm.type == .bcc) {
+            // CC and/or BCC has been set. Show it to the user
+            ccEnabled = true
         }
     }
 
@@ -202,7 +179,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    private func setInitialSendButtonStatus() {
+    private func setInitialStatus() { //IOS-1106: The name suggests that this should *not* set recipients but some button state
         destinyTo = [Identity]()
         destinyCc = [Identity]()
         destinyBcc = [Identity]()
@@ -212,43 +189,10 @@ class ComposeTableViewController: BaseTableViewController {
             // thus we can not send the mail and.
             return
         }
-        origin = om.parent.account.user
-        switch composeMode {
-        case .replyFrom:
-            if let from = om.from {
-                destinyTo.append(from)
-            }
-        case .replyAll:
-            if let from = om.from {
-                destinyTo.append(from)
-            }
-            let to = om.to
-            for id in to {
-                if !id.isMySelf {
-                    destinyTo.append(id)
-                }
-            }
-            for id in om.cc {
-                destinyCc.append(id)
-            }
-        case .normal:
-            // Do nothing, has no recipient by definition, can not be send.
-            break
-        case .forward:
-            // Do nothing. A initial forwarded message has no recipient by definition and thus
-            // can not be send.
-            break
-        case .draft:
-            for id in om.to {
-                destinyTo.append(id)
-            }
-            for id in om.cc {
-                destinyCc.append(id)
-            }
-            for id in om.bcc {
-                destinyBcc.append(id)
-            }
-        }
+        origin = ComposeUtil.initialFrom(composeMode: composeMode, originalMessage: om)
+        destinyTo = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
+        destinyCc = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
+        destinyBcc = ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
 
         if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
             messageCanBeSend(value: true)
@@ -269,27 +213,26 @@ class ComposeTableViewController: BaseTableViewController {
             messageBodyCell.setInitial(text: ReplyUtil.quotedMessageText(message: om,
                                                                          replyAll: true))
         case .forward:
-            setBodyText(forMessage: om, to: messageBodyCell, composeMode: .forward)
-        case .draft:
-            setBodyText(forMessage: om, to: messageBodyCell, composeMode: .draft)
+            setBodyText(forMessage: om, to: messageBodyCell)
         case .normal:
+            if originalMessageIsDraft {
+                setBodyText(forMessage: om, to: messageBodyCell)
+            }
             // do nothing.
-            break
         }
     }
 
-    private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell,
-                             composeMode mode: ComposeMode) {
-        guard mode == .draft || mode == .forward else {
+    private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell) {
+        guard originalMessageIsDraft || composeMode == .forward else {
             Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Compose mode \(mode) is not supported")
+                                     errorString: "Unsupported mode or message")
             return
         }
         if let html = msg.longMessageFormatted {
             // We have HTML content. Parse it taking inlined attachments into account.
             let attributedString = html.htmlToAttributedString(attachmentDelegate: self)
             var result = attributedString
-            if mode == .forward {
+            if composeMode == .forward {
                 // forwarded messges must have a cite header ("yxz wrote on ...")
                 result = ReplyUtil.citedMessageText(textToCite: attributedString,
                                                            fromMessage: msg)
@@ -298,7 +241,7 @@ class ComposeTableViewController: BaseTableViewController {
         } else {
             // No HTML available.
             var result = msg.longMessage ?? ""
-            if mode == .forward {
+            if composeMode == .forward {
                 // forwarded messges must have a cite header ("yxz wrote on ...")
                 result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
                                            fromMessage: msg)
@@ -318,18 +261,11 @@ class ComposeTableViewController: BaseTableViewController {
             subjectCell.setInitial(text: ReplyUtil.replySubject(message: om))
         case .forward:
             subjectCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
-        case .draft:
-            subjectCell.setInitial(text: om.shortMessage ?? "")
-        case .normal: fallthrough// do nothing.
-        default:
-            guard composeMode == .normal else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString:
-                    """
-.normal is the only compose mode that is intentionally ignored here
-""")
-                return
+        case .normal:
+            if om.parent.folderType == .drafts {
+                subjectCell.setInitial(text: om.shortMessage ?? "")
             }
+            //.normal for other folder types is intentionally ignored here
         }
     }
 
@@ -365,7 +301,7 @@ class ComposeTableViewController: BaseTableViewController {
     ///
     /// - Returns: true if we must take over attachments from the original message, false otherwize
     private func shouldTakeOverAttachments() -> Bool {
-        return composeMode == .forward || composeMode == .draft
+        return composeMode == .forward || originalMessageIsDraft
     }
 
     // MARK: - Address Suggstions
@@ -813,9 +749,12 @@ class ComposeTableViewController: BaseTableViewController {
                 }
             }
         }
-
+        if let tempCell = cell as? RecipientCell{
+            tempCell.ccEnabled = ccEnabled
+        }
+        
         if cell.fieldModel?.display == .conditional {
-            if ccEnabled {
+            if cell.shouldDisplay() {
                 if height <= row.height {
                     return caching(height: row.height, indexPath: indexPath)
                 }
@@ -930,8 +869,14 @@ class ComposeTableViewController: BaseTableViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else {
             return
         }
-        if let accountCell = cell as? AccountCell {
-            ccEnabled = accountCell.expand()
+        if let recipientCell = cell as? WrappedCell {
+            ccEnabled = recipientCell.expand()
+            recipientCell.ccEnabled = ccEnabled
+            self.tableView.updateSize()
+        }
+
+        if let recipientCell = cell as? AccountCell {
+            recipientCell.expand()
             self.tableView.updateSize()
         }
     }
@@ -965,7 +910,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func saveDraft() {
-        if self.composeMode == .draft {
+        if originalMessageIsDraft {
             // We are in drafts folder and, from user perespective, are editing a drafted mail.
             // Technically we have to create a new one and delete the original message, as the
             // mail is already synced with the IMAP server and thus we must not modify it.
@@ -1003,7 +948,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text: String
-        if composeMode == .draft {
+        if originalMessageIsDraft {
             text = NSLocalizedString("Discharge changes", comment:
                 "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
         } else {
@@ -1018,7 +963,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text:String
-        if composeMode == .draft {
+        if originalMessageIsDraft {
             text = NSLocalizedString("Save changes", comment:
                 "ComposeTableView: button to decide to save changes made on a drafted mail.")
         } else {
@@ -1075,7 +1020,7 @@ class ComposeTableViewController: BaseTableViewController {
             return
         }
         msg.save()
-        if composeMode == .draft {
+        if originalMessageIsDraft {
             // From user perspective, we have edited a drafted message and will send it.
             // Technically we are creating and sending a new message (msg), thus we have to
             // delete the original, previously drafted one.

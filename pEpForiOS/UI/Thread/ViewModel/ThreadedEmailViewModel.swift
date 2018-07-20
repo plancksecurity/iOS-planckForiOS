@@ -39,8 +39,14 @@ class ThreadedEmailViewModel {
 
         displayFolder = folder
         expandedMessages = Array(repeating: false, count: messages.count)
-        expandedMessages.removeLast()
-        expandedMessages.append(true)
+        
+        for i in 0..<messages.count {
+            if !(messages[i].imapFlags?.seen ?? true) || i == messages.count - 1 {
+                markSeen(message: messages[i])
+                expandedMessages[i] = true
+            }
+        }
+
     }
 
     func deleteMessage(at index: Int){
@@ -89,7 +95,7 @@ class ThreadedEmailViewModel {
     }
 
     internal func indexOfMessage(message: Message)-> Int? {
-        for  i in 0...messages.count {
+        for  i in 0 ..< messages.count {
             if messages[i] == message{
                 return i
             }
@@ -156,6 +162,7 @@ class ThreadedEmailViewModel {
     }
 
     func messageDidExpand(at index: Int){
+        markSeen(message: messages[index])
         expandedMessages[index] = true
     }
 
@@ -175,5 +182,12 @@ class ThreadedEmailViewModel {
             return messages.last
         }
         return message
+    }
+
+    private func markSeen(message: Message?) {
+        message?.imapFlags?.seen = true
+        MessageModel.performAndWait {
+            message?.save()
+        }
     }
 }

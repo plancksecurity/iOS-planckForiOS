@@ -42,6 +42,10 @@ open class ComposeCell: UITableViewCell, CellProtocol {
         }
     }
 
+    func shouldDisplay()-> Bool {
+        return fieldModel?.display == .always
+    }
+
     /**
      Makes the contained text view the first responder and sets the cursor at the top.
      */

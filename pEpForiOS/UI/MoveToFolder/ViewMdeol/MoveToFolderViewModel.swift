@@ -13,7 +13,6 @@ let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]
 
 class MoveToAccountViewModel {
 
-    //var delegate: MoveToFolderDelegate
     var accounts = Account.all()
     var items : [MoveToAccountCellViewModel]
     /// We do not allow to move messages to those folders.
@@ -110,15 +109,16 @@ class moveToFolderCellViewModel {
     var folder: Folder
     var title: String
     var indentationLevel: Int
-    var validFolder = true
+    var isSelectable : Bool {
+        get {
+            return folder.selectable && !folderTypesNotAllowedToMoveTo.contains(folder.folderType)
+        }
+    }
 
     init(folder: Folder, level: Int) {
         self.folder = folder
         self.title = folder.realName
         self.indentationLevel = level
-        if folderTypesNotAllowedToMoveTo.contains(folder.folderType) {
-            validFolder = false
-        }
-    }
 
+    }
 }

@@ -28,7 +28,7 @@ public enum SettingType {
     case organizedByThread
     case credits
     case unecryptedSubject
-    case pasiveMode
+    case passiveMode
     case defaultAccount
 }
 
@@ -50,7 +50,7 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
         switch self.type {
         case .account, .credits, .defaultAccount, .showLog:
             self.settingCellType = AccountSettingsCellType.accountsCell
-        case .organizedByThread, .unecryptedSubject, .pasiveMode:
+        case .organizedByThread, .unecryptedSubject, .passiveMode:
             self.settingCellType = AccountSettingsCellType.switchOptionCell
         }
     }
@@ -59,7 +59,7 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
         get {
             switch self.type {
             case .defaultAccount:
-                return AppSettings.init().defaultAccount
+                return AppSettings.defaultAccount
             default:
                 return nil
             }
@@ -93,8 +93,8 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
                 }
                 return acc.user.address
 
-            case .pasiveMode:
-                return "pasive mode"//TODO
+            case .passiveMode:
+                return "passive mode"//TODO
 
             }
         }
@@ -106,14 +106,14 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
             case .showLog, .account, .credits:
                 // Have no value.
                 return nil
-            case .pasiveMode:
+            case .passiveMode:
                 return onOffStateString(forState: false) //TODO
             case .organizedByThread:
-                return onOffStateString(forState: AppSettings().threadedViewEnabled)
+                return onOffStateString(forState: AppSettings.threadedViewEnabled)
             case .defaultAccount:
-                return AppSettings().defaultAccount
+                return AppSettings.defaultAccount
             case .unecryptedSubject:
-                return onOffStateString(forState: !AppSettings().unencryptedSubjectEnabled)
+                return onOffStateString(forState: !AppSettings.unencryptedSubjectEnabled)
             }
         }
     }

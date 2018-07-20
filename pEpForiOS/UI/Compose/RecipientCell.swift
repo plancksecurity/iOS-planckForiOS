@@ -12,9 +12,8 @@ import MessageModel
 
 class RecipientCell: ComposeCell {
     @IBOutlet weak var addButton: UIButton!
-    
     public var identities = [Identity]()
-    private var ccEnabled = false
+    var ccEnabled = false
     
     private var recipients = [Int]()
     private var hasSelection = false
@@ -31,6 +30,7 @@ class RecipientCell: ComposeCell {
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
+        
     }
     
     private func removeRecepients() {
@@ -42,6 +42,12 @@ class RecipientCell: ComposeCell {
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
+    }
+
+    // MARK: - Public Methods
+
+    override func shouldDisplay()-> Bool {
+        return fieldModel?.display == .always || ccEnabled
     }
 }
 

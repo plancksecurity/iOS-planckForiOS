@@ -65,12 +65,14 @@ class FullMessageCell: SwipeTableViewCell,
             bodyText.isHidden = true
             view.addSubview(htmlViewerViewController.view)
             view.isUserInteractionEnabled = false
+            view.isHidden = false
 
             htmlViewerViewController.view.fullSizeInSuperView()
 
             let displayHtml = appendInlinedPlainText(fromAttachmentsIn: viewModel.message, to: htmlBody)
             htmlViewerViewController.display(htmlString: displayHtml)
         } else {
+            view.isHidden = true
             bodyText.attributedText = viewModel.body
             bodyText.isHidden = false
             bodyText.tintColor = UIColor.pEpGreen
@@ -167,20 +169,14 @@ class FullMessageCell: SwipeTableViewCell,
     }
 
     private func setFlagged() {
-        if FullMessageCell.flaggedImage == nil {
-            FullMessageCell.flaggedImage =
-                FlagImages.create(imageSize: flaggedIcon.frame.size).flaggedImage
-        }
-        guard let saveImg = FullMessageCell.flaggedImage else {
-            return
-        }
-        self.flaggedIcon.isHidden = false
-        self.flaggedIcon.image = saveImg
+        flaggedIcon.isHidden = false
+        flaggedIcon.image = UIImage.init(named: "icon-flagged")
+
     }
 
     private func unsetFlagged() {
-        self.flaggedIcon.isHidden = true
-        self.flaggedIcon.image = nil
+        flaggedIcon.isHidden = true
+        flaggedIcon.image = UIImage.init(named: "icon-unflagged")
     }
 
 

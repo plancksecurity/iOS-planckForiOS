@@ -1,4 +1,4 @@
-//
+///
 //  EmailListViewModel+MessageFolderDelegate.swift
 //  pEp
 //
@@ -11,6 +11,7 @@ import Foundation
 import MessageModel
 
 extension EmailListViewModel: MessageFolderDelegate {
+
     // MARK: - MessageFolderDelegate (public)
 
     func didCreate(messageFolder: MessageFolder) {
@@ -41,6 +42,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         if !shouldBeDisplayed(message: message){
             return
         }
+
         // Is a Message (not a Folder)
         if let filter = folderToShow.filter,
             !filter.fulfillsFilter(message: message) {
@@ -54,10 +56,13 @@ extension EmailListViewModel: MessageFolderDelegate {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 func insertAsTopMessage() {
+                    if !theSelf.isInFolderToShow(message: message){
+                        return
+                    }
                     let index = theSelf.messages.insert(object: previewMessage)
                     let indexPath = IndexPath(row: index, section: 0)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf, didInsertDataAt: indexPath)
+                        viewModel: theSelf, didInsertDataAt: [indexPath])
                 }
 
                 if referencedMessages.isEmpty {
@@ -67,9 +72,14 @@ extension EmailListViewModel: MessageFolderDelegate {
                         messages: referencedMessages) {
                         // The thread count might need to be updated
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
-                            viewModel: theSelf, didUpdateDataAt: IndexPath(row: index, section: 0))
+                            viewModel: theSelf, didUpdateDataAt: [IndexPath(row: index, section: 0)])
                         if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
-                            theSelf.updateThreadListDelegate?.added(message: message)
+                            if theSelf.shouldShowThreadVC() {
+                                theSelf.emailListViewModelDelegate?.showThreadView(
+                                    for: IndexPath(row: index, section: 0))
+                            } else {
+                                theSelf.updateThreadListDelegate?.added(message: message)
+                            }
                         }
                     } else {
                         // Incoming message references other messages,
@@ -107,7 +117,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                                 // The thread count might need to be updated
                                 theSelf.emailListViewModelDelegate?.emailListViewModel(
                                     viewModel: theSelf,
-                                    didUpdateDataAt: IndexPath(row: index, section: 0))
+                                    didUpdateDataAt: [IndexPath(row: index, section: 0)])
                             }
                         }
                     }
@@ -121,7 +131,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                 let indexPath = IndexPath(row: indexExisting, section: 0)
                 theSelf.emailListViewModelDelegate?.emailListViewModel(
                     viewModel: theSelf,
-                    didRemoveDataAt: indexPath)
+                    didRemoveDataAt: [indexPath])
             }
         }
     }
@@ -196,7 +206,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // Remove it.
                     let indexPath = IndexPath(row: indexExisting, section: 0)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf, didRemoveDataAt: indexPath)
+                        viewModel: theSelf, didRemoveDataAt: [indexPath])
                     return
                 }
                 // The updated message has to be shown. Add it to the model ...
@@ -214,7 +224,7 @@ Something is fishy here.
                 // ...  and inform the delegate.
                 let indexPath = IndexPath(row: indexInserted, section: 0)
                 theSelf.emailListViewModelDelegate?.emailListViewModel(
-                    viewModel: theSelf, didUpdateDataAt: indexPath)
+                    viewModel: theSelf, didUpdateDataAt: [indexPath])
 
                 if theSelf.currentDisplayedMessage?.messageModel == message {
                     theSelf.currentDisplayedMessage?.update(forMessage: message)
@@ -224,12 +234,11 @@ Something is fishy here.
     }
 
     private func shouldBeDisplayed(message: Message) -> Bool {
-        if !isInFolderToShow(message: message) {
+        if message.isEncrypted ||
+            (!AppSettings.threadedViewEnabled && !isInFolderToShow(message: message)) {
             return false
         }
-        if message.isEncrypted {
-            return false
-        }
+
         return true
     }
 
@@ -276,5 +285,11 @@ Something is fishy here.
             }
         }
         return nil
+    }
+    /*
+     - Returns: If the detail view should change from EmailVC to ThreadVC
+     */
+    private func shouldShowThreadVC() -> Bool {
+       return currentDisplayedMessage?.detailType() == .single
     }
 }

@@ -31,9 +31,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
 
         MessageModel.performAndWait {
             for msg in originalMessages {
-                let threadMessageIds = msg.threadMessageSet().map {
-                    return $0.messageID
-                }
+                let threadMessageIds = msg.threadMessageIdSet()
                 if messageIdSet.intersection(threadMessageIds).isEmpty {
                     topMessages.append(msg)
                 }
@@ -45,7 +43,11 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func numberOfMessagesInThread(message: Message) -> Int {
-        return messagesInThread(message: message).count
+        let theCount = messagesInThread(message: message).count
+        if theCount > 0 {
+            return theCount - 1
+        }
+        return theCount
     }
 
     func messagesInThread(message: Message) -> [Message] {
@@ -74,29 +76,14 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         var result = [Message]()
 
         MessageModel.performAndWait {
-            let referenceSet = Set(message.referencedMessages().map {
-                return $0.messageID
-            })
-
-            // test for direct references
+            let referenceIdSet = message.threadMessageIdSet()
 
             for aTopMsg in topMessages {
-                if referenceSet.contains(aTopMsg.messageID) {
-                    result.append(aTopMsg)
+                if aTopMsg == message {
+                    continue
                 }
-            }
 
-            if !result.isEmpty {
-                return
-            }
-
-            // if no direct references could be found, check for indirects
-
-            for aTopMsg in topMessages {
-                let topReferenceSet = Set(aTopMsg.referencedMessages().map {
-                    return $0.messageID
-                })
-                if !topReferenceSet.intersection(referenceSet).isEmpty {
+                if !aTopMsg.threadMessageIdSet().intersection(referenceIdSet).isEmpty {
                     result.append(aTopMsg)
                 }
             }

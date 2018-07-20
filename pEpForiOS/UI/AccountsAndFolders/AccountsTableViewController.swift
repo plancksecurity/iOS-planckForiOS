@@ -27,12 +27,13 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Accounts", comment: "Accounts view title")
+        title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.setToolbarHidden(true, animated: false)
 
         if MiscUtil.isUnitTest() {
             super.viewWillAppear(animated)
@@ -172,7 +173,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         case .account:
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
-        case .unecryptedSubject, .organizedByThread, .pasiveMode:
+        case .unecryptedSubject, .organizedByThread, .passiveMode:
             //nothing to do here
             break
         case .defaultAccount:

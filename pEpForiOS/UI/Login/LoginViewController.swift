@@ -87,6 +87,7 @@ class LoginViewController: BaseViewController {
         loginViewModel.loginViewModelLoginErrorDelegate = self
         loginViewModel.loginViewModelOAuth2ErrorDelegate = self
         configureView()
+        configureKeyboardAwareness()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -122,6 +123,10 @@ class LoginViewController: BaseViewController {
             title:NSLocalizedString("Cancel", comment: "Login NavigationBar canel button title"),
             style:.plain, target:self,
             action:#selector(self.backButton))
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: self, queue: nil) { (notification) in
+            print("hola")
+        }
     }
 
     @objc func backButton() {
@@ -255,13 +260,10 @@ extension LoginViewController: UITextFieldDelegate {
         } else if textField == self.emailAddress {
             self.password.becomeFirstResponder()
         } else if textField == self.password {
+            textField.resignFirstResponder()
             self.logIn(self.password)
         }
         return true
-    }
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        contentScrollView.scrollRectToVisible(textField.frame, animated: true)
     }
 }
 

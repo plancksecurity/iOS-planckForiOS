@@ -124,6 +124,14 @@ public class AppendMailsOperation: ImapSyncOperation {
         }
         lastHandledMessageObjectID = objID
 
+        if folder.shouldNotAppendMessages {
+            // We are not supposed to append messages to this forder.
+            // We need to handle all messages anyway to make sure markLastMessageAsFinished() is
+            // called on them (i.e. they get delted).
+            handleNextMessage()
+            return
+        }
+
         if encryptMode == .unencryptedForTrustedServer {
             // Always append unencrypted for trusted server.
             appendMessage(pEpMessageDict: msg)

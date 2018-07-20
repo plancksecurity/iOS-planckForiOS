@@ -141,6 +141,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if noAccountsExist() {
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
+            return
         } else if let vm = model {
             // We came back from e.g EmailView ...
             updateFilterText()
@@ -159,6 +160,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         title = folderToShow?.localizedName
+        let item = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)),
+                                                target: self)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
         self.navigationController?.title = title
     }
 
@@ -306,10 +314,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         moveToolbarButton?.isEnabled = false
 
-        let pEp = UIBarButtonItem(title: "p≡p",
-                                   style: UIBarButtonItemStyle.plain,
-                                   target: self,
-                                   action: #selector(self.cancelToolbar (_:)))
+        let pEp = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)), target: self)
+
 
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
@@ -640,6 +646,37 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+
+    func showThreadView(for indexPath: IndexPath) {
+        guard let splitViewController = splitViewController else {
+            return
+        }
+
+        let storyboard = UIStoryboard(name: "Thread", bundle: nil)
+        if splitViewController.isCollapsed {
+            guard let message = model?.message(representedByRowAt: indexPath),
+                let folder = folderToShow,
+                let nav = navigationController,
+                let vc: ThreadViewController =
+                storyboard.instantiateViewController(withIdentifier: "threadViewController")
+                    as? ThreadViewController
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
+            }
+
+            vc.appConfig = appConfig
+            let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
+            viewModel.emailDisplayDelegate = self.model
+            vc.model = viewModel
+            model?.currentDisplayedMessage = viewModel
+            model?.updateThreadListDelegate = viewModel
+            nav.viewControllers[nav.viewControllers.count - 1] = vc
+        } else {
+            showEmail(forCellAt: indexPath)
+        }
+    }
+
     func toolbarIs(enabled: Bool) {
         flagToolbarButton?.isEnabled = enabled
         unflagToolbarButton?.isEnabled = enabled
@@ -679,42 +716,45 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath]) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.beginUpdates()
-        tableView.insertRows(at: [indexPath], with: .automatic)
+        tableView.insertRows(at: indexPaths, with: .automatic)
         tableView.endUpdates()
     }
     
-    func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow ?? lastSelectedIndexPath
 
         if let swipeDelete = swipeDelete {
             swipeDelete.fulfill(with: .delete)
         } else {
             tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+            tableView.deleteRows(at: indexPaths, with: .automatic)
             tableView.endUpdates()
         }
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
-        if lastSelectedIndexPath == indexPath {
+        if let lastSelectedIndexPath = lastSelectedIndexPath,
+            indexPaths.contains(lastSelectedIndexPath) {
             showNotMessageSelectedIfNeeded()
         }
-
     }
     
-    func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPath: IndexPath) {
+    func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
 
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
 
         tableView.beginUpdates()
-        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.reloadRows(at: indexPaths, with: .none)
         tableView.endUpdates()
-
-        resetSelectionIfNeeded(for: indexPath)
+        for indexPath in indexPaths {
+            resetSelectionIfNeeded(for: indexPath)
+        }
     }
+
+
     
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message) {
@@ -835,6 +875,18 @@ extension EmailListViewController {
     }
 }
 
+// MARK: - Segue handling
+
+extension EmailListViewController {
+    /**
+     Enables manual account setup to unwind to the unified inbox.
+     */
+    @IBAction func unwindToFolderView(segue:UIStoryboardSegue) {
+        folderToShow = UnifiedInbox()
+        resetModel()
+    }
+}
+
 // MARK: - SegueHandlerType
 
 extension EmailListViewController: SegueHandlerType {
@@ -922,14 +974,14 @@ extension EmailListViewController: SegueHandlerType {
                 return
             }
             vC.appConfig = appConfig
-            vC.hidesBottomBarWhenPushed = true
+            //vC.hidesBottomBarWhenPushed = true
             break
         case .segueShowMoveToFolder:
             var selectedRows: [IndexPath] = []
 
             if let selectedItems = self.tableView.indexPathsForSelectedRows {
                 selectedRows = selectedItems
-            } else if let last = lastSelectedIndexPath{
+            } else if let last = lastSelectedIndexPath {
                 selectedRows.append(last)
             }
 
@@ -944,6 +996,7 @@ extension EmailListViewController: SegueHandlerType {
                 let destinationvm = MoveToAccountViewModel(messages: msgs)
                 destination.viewModel = destinationvm
             }
+            destination.delegate = model
             destination.appConfig = appConfig
             break
         case .showNoMessage:
@@ -971,8 +1024,7 @@ extension EmailListViewController: SegueHandlerType {
         }
         composeVc.appConfig = appConfig
         composeVc.composeMode = composeMode
-        composeVc.origin = folderToShow?.account.user
-        if composeMode != .normal {
+        if segueId != .segueCompose {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
             guard
@@ -986,7 +1038,7 @@ extension EmailListViewController: SegueHandlerType {
         }
     }
 
-    private func composeMode(for segueId: SegueIdentifier) -> ComposeTableViewController.ComposeMode? {
+    private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode? {
         switch segueId {
         case .segueReply:
             return .replyFrom
@@ -997,7 +1049,7 @@ extension EmailListViewController: SegueHandlerType {
         case .segueCompose:
             return .normal
         case .segueEditDraft:
-            return .draft
+            return .normal
         default:
             return nil
         }
