@@ -18,16 +18,25 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
+    var originalMessage: Message?
+    var composeMode = ComposeUtil.ComposeMode.normal
+
+    private var originalMessageIsDraft: Bool {
+        var omIsDrafts = false
+        if let om = originalMessage, om.parent.folderType == .drafts {
+            omIsDrafts = true
+        }
+        return omIsDrafts
+    }
     private let contactPicker = CNContactPickerViewController()
     private let imagePicker = UIImagePickerController()
     private let menuController = UIMenuController.shared
-
     private var suggestTableView: SuggestTableView!
     private let composeSection = 0
     private let attachmentSection = 1
-    lazy private var attachmentFileIOQueue = DispatchQueue(
-        label: "net.pep-security.ComposeTableViewController.attachmentFileIOQueue",
-        qos: .userInitiated)
+    lazy private var attachmentFileIOQueue = DispatchQueue(label:
+        "net.pep-security.ComposeTableViewController.attachmentFileIOQueue",
+                                                           qos: .userInitiated)
     private var tableDict: NSDictionary?
     private var composeData: ComposeDataSource? = nil
     private var nonInlinedAttachmentData = ComposeDataSource.AttachmentDataSource()
@@ -35,51 +44,32 @@ class ComposeTableViewController: BaseTableViewController {
     private var allCells = MutableOrderedSet<ComposeCell>()
     private var cells = [ComposeFieldModel.FieldType:ComposeCell]()
     private var ccEnabled = false
-
-    var composeMode = ComposeUtil.ComposeMode.normal
     private var messageToSend: Message?
-    var originalMessage: Message?
-    var originalMessageIsDraft: Bool {
-        var omIsDrafts = false
-        if let om = originalMessage, om.parent.folderType == .drafts {
-            omIsDrafts = true
-        }
-        return omIsDrafts
-    }
-
     private lazy var activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
-
     private let mimeTypeController = MimeTypeUtil()
-
     private var origin : Identity?
     private var destinyTo = [Identity]()
     private var destinyCc = [Identity]()
     private var destinyBcc = [Identity]()
-
     private let attachmentCounter = AttachmentCounter()
     private let mimeTypeUtil = MimeTypeUtil()
-
     private var edited = false
-
     /**
      A value of `true` means that the mail will be encrypted.
      */
     private var pEpProtection = true
-
     /**
      The `ComposeTextView`, if it currently owns the focus.
      */
-    var composeTextViewFirstResponder: ComposeTextView?
-
+    private var composeTextViewFirstResponder: ComposeTextView?
     /**
      Caching the last row heights, in case the cell goes out of visiblity.
      */
-    var rowHeightCache = [IndexPath:CGFloat]()
-
+    private var rowHeightCache = [IndexPath:CGFloat]()
     /**
      Last time something changed, this was the rating of the message currently in edit.
      */
-    var currentRating = PEP_rating_undefined
+    private var currentRating = PEP_rating_undefined
 
     // MARK: - Lifecycle
 
@@ -95,7 +85,7 @@ class ComposeTableViewController: BaseTableViewController {
         super.viewWillAppear(animated)
         composeData?.filterRows(message: nil)
         takeOverAttachmentsIfRequired()
-        setInitialSendButtonStatus()
+        setInitialStatus()
         rowHeightCache.removeAll()
     }
 
@@ -185,7 +175,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    private func setInitialSendButtonStatus() { //IOS-1106: The name suggests that this should *not* set recipients but some button state
+    private func setInitialStatus() { //IOS-1106: The name suggests that this should *not* set recipients but some button state
         destinyTo = [Identity]()
         destinyCc = [Identity]()
         destinyBcc = [Identity]()
@@ -195,44 +185,10 @@ class ComposeTableViewController: BaseTableViewController {
             // thus we can not send the mail and.
             return
         }
-        origin = om.parent.account.user
-        switch composeMode { //IOS-1106: the duplicates the "recipients for original message" logic. Plus it is wrong (ignores sent folder + other issues).
-        case .replyFrom:
-            if let from = om.from {
-                destinyTo.append(from)
-            }
-        case .replyAll:
-            if let from = om.from {
-                destinyTo.append(from)
-            }
-            let to = om.to
-            for id in to {
-                if !id.isMySelf {
-                    destinyTo.append(id)
-                }
-            }
-            for id in om.cc {
-                destinyCc.append(id)
-            }
-        case .normal:
-            if originalMessageIsDraft {
-                for id in om.to {
-                    destinyTo.append(id)
-                }
-                for id in om.cc {
-                    destinyCc.append(id)
-                }
-                for id in om.bcc {
-                    destinyBcc.append(id)
-                }
-            }
-            // Do nothing, has no recipient by definition, can not be send.
-            break
-        case .forward:
-            // Do nothing. A initial forwarded message has no recipient by definition and thus
-            // can not be send.
-            break
-        }
+        origin = ComposeUtil.initialFrom(composeMode: composeMode, originalMessage: om)
+        destinyTo = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
+        destinyCc = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
+        destinyBcc = ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
 
         if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
             messageCanBeSend(value: true)
