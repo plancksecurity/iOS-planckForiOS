@@ -18,7 +18,7 @@ struct ComposeUtil {
         case forward
     }
 
-    static func initialTos(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
+    static func initialTos(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] { //BUFF: HERE: test .normal
         var result = [Identity]()
         switch composeMode {
         case .replyFrom:
@@ -80,11 +80,7 @@ struct ComposeUtil {
 
     static func initialFrom(composeMode: ComposeMode, originalMessage om: Message?) -> Identity? {
         switch composeMode {
-        case .replyFrom:
-            return om?.parent.account.user
-        case .replyAll:
-            return om?.parent.account.user
-        case .forward:
+        case .replyFrom, .replyAll, .forward:
             return om?.parent.account.user
         case .normal:
             if let om = om,
