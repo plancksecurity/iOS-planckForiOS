@@ -47,15 +47,57 @@ class CreditsViewController: BaseViewController {
         let styleColumn = ".column {float: left;margin: -15px 0px -20px 0px;font-size: \(fontSize)px;font-family: \(fontFamily);font-weight: \(fontWeight);}.left {width: 25%;}.right {width: 75%;}.row:after {content: \"\";display: table;clear: both;}"
         let style = "<style>\(styleP)\(styleBody)\(styleColumn)\(styleA)</style>"
         let result = """
-        <html> <head> \(style)
-
+        <html>
+         <head>
+           \(style)
+           <meta charset="utf-8"/>
         </head>
         <body>
         <blockquote>
         <p>&nbsp;</p>
         <p>p&equiv;p for iOS<br/> \(appVersion)</p>
         <p>Credits:<br />
-        Xavier Algarra Torello, Volker Birk, Simon Witts, Sibu Kurian, Sandro K&ouml;chle, Sabrina Schleifer, Robert Goldmann, Rena Tangens, Patricia Bednar, Patrick Meier, padeluun, Nana Karlstetter, Meinhard Starostik, Mathijs de Haan, Martin Vojcik, Markus Schaber, Leonard Marquitan, Leon Schumacher, Lars Rohwedder, Krista Bennet, Kinga Prettenhoffer, Hussein Kasem, Hern&acirc;ni Marques, Edouard Tisserant, Dol&ccedil;a Moreno, Dirk Zimmermann, Dietz Proepper, Detlev Sieber, Dean, Daniel Sosa, be, Berna Alp, Bart Polot, Arturo Jim&eacute;nez, Andy Weber, Andreas Buff, Ana Rebolledo
+        Yves Landert,
+        Xavier Algarra Torello,
+        Volker Birk,
+        Simon Witts,
+        Sibu Kurian,
+        Sandro K&ouml;chle,
+        Sabrina Schleifer,
+        Robert Goldmann,
+        Rena Tangens,
+        Patricia Bednar,
+        Patrick Meier,
+        padeluun,
+        Nana Karlstetter,
+        miguel@helm.cat,
+        Meinhard Starostik,
+        Mathijs de Haan,
+        Martin Vojcik,
+        Markus Schaber,
+        Leonard Marquitan,
+        Leon Schumacher,
+        Lars Rohwedder,
+        Krista Bennet,
+        Kinga Prettenhoffer,
+        Igor Vojinovic,
+        Hussein Kasem,
+        Hern&acirc;ni Marques,
+        Edouard Tisserant,
+        Dol&ccedil;a Moreno,
+        Dirk Zimmermann,
+        Dietz Proepper,
+        Detlev Sieber,
+        Dean,
+        Daniel Sosa,
+        borja@helm.cat,
+        be,
+        Berna Alp,
+        Bart Polot,
+        Arturo Jim&eacute;nez,
+        Andy Weber,
+        Andreas Buff,
+        Ana Rebollo
         </p>
         <p>&nbsp;</p>
         <p>Thanks to:
@@ -618,6 +660,28 @@ private func licencesRows() -> String {
 <p>3. The name of Nominet UK or the contributors may not be used to  endorse or promote products derived from this software without specific  prior written permission;</p>
 <p>and provided that the user accepts the terms of the following disclaimer:</p>
 <p>THIS SOFTWARE IS PROVIDED BY NOMINET UK AND CONTRIBUTORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL NOMINET UK OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+""",
+        // appculture
+        """
+<p>Copyright (c) 2014-2016 appculture AG http://appculture.com</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
 """
     ]
     let delimiter = "<p>################</p>"

@@ -40,10 +40,19 @@ class FolderThreading {
      `factory()`.
      */
     static func makeThreadAware(folder: Folder) -> ThreadedMessageFolderProtocol {
+        if noThreadingFolderTypes.contains(folder.folderType) {
+            return UnthreadedFolder(folder: folder)
+        }
         return factory().makeThreadAware(folder: folder)
     }
 
     // MARK: - Private
 
     private static var theFactory: ThreadedMessageFolderFactoryProtocol?
+
+    /**
+     The folder types that don't support threading, and hence will always just be a
+     normal folder.
+     */
+    private static let noThreadingFolderTypes = Set([FolderType.drafts, .spam, .sent, .trash])
 }

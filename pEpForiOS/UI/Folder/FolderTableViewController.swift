@@ -25,6 +25,7 @@ class FolderTableViewController: BaseTableViewController {
         if showNext {
             showFolder(indexPath: nil)
         }
+        self.navigationController?.setToolbarHidden(false, animated: false)
     }
 
     // MARK: - Setup
@@ -37,7 +38,7 @@ class FolderTableViewController: BaseTableViewController {
     }
     
     private func initialConfig() {
-        self.title = NSLocalizedString("Accounts", comment: "AccountsView")
+        self.title = NSLocalizedString("Folders", comment: "FoldersView")
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
@@ -99,6 +100,17 @@ class FolderTableViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView,
                             heightForFooterInSection section: Int) -> CGFloat {
         return 0.0
+    }
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard let vm = folderVM else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No model.")
+            return 0.0
+        }
+        if vm[section].hidden {
+            return 0.0
+        } else {
+            return tableView.sectionHeaderHeight
+        }
     }
 
     override func tableView(_ tableView: UITableView,

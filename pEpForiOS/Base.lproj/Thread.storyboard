@@ -23,7 +23,7 @@
         <!--Thread View Controller-->
         <scene sceneID="jOA-ic-7D6">
             <objects>
-                <viewController id="8tS-ie-Ovo" customClass="ThreadViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="threadViewController" id="8tS-ie-Ovo" customClass="ThreadViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="li9-eb-DlS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
