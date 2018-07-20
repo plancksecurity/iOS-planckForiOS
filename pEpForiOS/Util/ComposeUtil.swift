@@ -40,7 +40,9 @@ struct ComposeUtil {
                 result = originalTosWithoutMe + [omFrom]
             }
         case .normal, .forward:
-            break
+            if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
+                result = om.to
+            }
         }
         return result
     }
@@ -60,7 +62,9 @@ struct ComposeUtil {
                 result = origCcs.filter { $0 != me}
             }
         case .replyFrom, .normal, .forward:
-            break
+            if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
+                result = om.cc
+            }
         }
         return result
     }
