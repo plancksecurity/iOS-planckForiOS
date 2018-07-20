@@ -55,6 +55,7 @@ class CreditsViewController: BaseViewController {
         <p>&nbsp;</p>
         <p>p&equiv;p for iOS<br/> \(appVersion)</p>
         <p>Credits:<br />
+        Yves Landert,
         Xavier Algarra Torello,
         Volker Birk,
         Simon Witts,
@@ -77,6 +78,7 @@ class CreditsViewController: BaseViewController {
         Lars Rohwedder,
         Krista Bennet,
         Kinga Prettenhoffer,
+        Igor Vojinovic,
         Hussein Kasem,
         Hern&acirc;ni Marques,
         Edouard Tisserant,
