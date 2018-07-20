@@ -380,6 +380,35 @@ class ComposeUtilTest: CoreDataDrivenTestBase {
                                        expectedBccs: expectedBccs)
     }
 
+    // MARK: - Drafts
+
+    /*
+     expected: testee == original message
+     */
+    func testNormal_Drafts_fromSomeoneA_toSomeMeIncluded_ccSome_bccSome() {
+        let mode = ComposeUtil.ComposeMode.normal
+        // Original message
+        let folderType = FolderType.drafts
+        let sender = meCurrentlyUsedAccount
+        let originalTos = [meCurrentlyUsedAccount, someone_B]
+        let originalCcs = [someone_B]
+        let originalBccs = [someone_C]
+        // Expected
+        let expectedTos = originalTos
+        let expectedCcs = originalCcs
+        let expectedBccs = originalBccs
+
+        assertCorrectInitialRecipients(forReplyMode: mode,
+                                       originalMessageParentFolderType: folderType,
+                                       originalFrom: sender,
+                                       originalTos: originalTos,
+                                       originalCcs: originalCcs,
+                                       originalBccs: originalBccs,
+                                       expectedTos: expectedTos,
+                                       expectedCcs: expectedCcs,
+                                       expectedBccs: expectedBccs)
+    }
+
     // MARK: - HELPER
 
     private func assertCorrectInitialRecipients(forReplyMode mode: ComposeUtil.ComposeMode,
