@@ -39,9 +39,6 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The createe is no message. Ignore.
             return
         }
-        if !shouldBeDisplayed(message: message){
-            return
-        }
         // Is a Message (not a Folder)
         if let filter = folderToShow.filter,
             !filter.fulfillsFilter(message: message) {
@@ -55,6 +52,9 @@ extension EmailListViewModel: MessageFolderDelegate {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 func insertAsTopMessage() {
+                    if !theSelf.isInFolderToShow(message: message){
+                        return
+                    }
                     let index = theSelf.messages.insert(object: previewMessage)
                     let indexPath = IndexPath(row: index, section: 0)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
