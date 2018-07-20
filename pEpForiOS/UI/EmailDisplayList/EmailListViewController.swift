@@ -1004,7 +1004,7 @@ extension EmailListViewController: SegueHandlerType {
     }
 }
 
-// MARK: - LoginTableViewControllerDelegate
+// MARK: - LoginViewControllerDelegate
 
 extension EmailListViewController: LoginViewControllerDelegate {
     func loginViewControllerDidCreateNewAccount(

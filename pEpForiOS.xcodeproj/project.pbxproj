@@ -414,6 +414,7 @@
 		43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */; };
 		43FE80322099F62400E97AB3 /* SubjectComposeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */; };
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
+		490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA62100EAD500E8579C /* SelfDismissable.swift */; };
 		4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */; };
 		491B656220CFE0FD00C2ADDA /* Thread.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 491B656020CFE0FD00C2ADDA /* Thread.storyboard */; };
 		49228A5320D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49228A5220D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift */; };
@@ -945,6 +946,7 @@
 		43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
 		43FE80312099F62400E97AB3 /* SubjectComposeTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SubjectComposeTextView.swift; path = ../Util/SubjectComposeTextView.swift; sourceTree = "<group>"; };
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
+		490CEBA62100EAD500E8579C /* SelfDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfDismissable.swift; sourceTree = "<group>"; };
 		4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		491B656120CFE0FD00C2ADDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Thread.storyboard; sourceTree = "<group>"; };
 		49228A5220D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewController+SegueHandlerType.swift"; sourceTree = "<group>"; };
@@ -1769,6 +1771,7 @@
 				150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */,
 				4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */,
 				4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */,
+				490CEBA62100EAD500E8579C /* SelfDismissable.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2792,6 +2795,7 @@
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
 				150B84C620A5DD0600D8B288 /* UIDCopyOperation.swift in Sources */,
+				490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */,
 				1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,

@@ -59,6 +59,8 @@ class LoginViewController: BaseViewController {
     @IBOutlet var user: UITextField!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
 
+    @IBOutlet var contentScrollView: UIScrollView!
+
 
     var isCurrentlyVerifying = false {
         didSet {
@@ -70,6 +72,10 @@ class LoginViewController: BaseViewController {
      The last account input as determined by LAS, and delivered via didVerify.
      */
     var lastAccountInput: AccountUserInput?
+
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 
     override func didSetAppConfig() {
         super.didSetAppConfig()
@@ -253,6 +259,10 @@ extension LoginViewController: UITextFieldDelegate {
         }
         return true
     }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        contentScrollView.scrollRectToVisible(textField.frame, animated: true)
+    }
 }
 
 // MARK: - SegueHandlerType
@@ -286,6 +296,7 @@ extension LoginViewController: SegueHandlerType {
                 let vc = navVC.topViewController as? LogViewController {
                 vc.appConfig = appConfig
                 vc.navigationController?.navigationBar.isHidden = false
+                vc.configureDismissButton(with: .done)
             }
         default:
             break
