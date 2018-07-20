@@ -129,7 +129,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func updateInitialContent(recipientCell: RecipientCell) {
         guard let fm = recipientCell.fieldModel else {
             Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Is it OK to have no model?")
+                                     errorString: "No model")
             return
         }
         guard let om = originalMessage else {
@@ -149,6 +149,10 @@ class ComposeTableViewController: BaseTableViewController {
         }
         for id in result {
             recipientCell.addIdentity(id)
+        }
+        if result.count > 0 && ( fm.type == .cc || fm.type == .bcc) {
+            // CC and/or BCC has been set. Show it to the user
+            ccEnabled = true
         }
     }
 
