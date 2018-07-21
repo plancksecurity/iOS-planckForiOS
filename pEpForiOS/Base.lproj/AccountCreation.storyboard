@@ -741,6 +741,7 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mKi-gF-bu9" customClass="CredentialTextField" customModule="pEpForiOS" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="300" height="28"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="username"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="300" id="3CW-GR-48R">
                                                                 <variation key="heightClass=compact" constant="250"/>
@@ -765,6 +766,7 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email Address" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="36s-Iw-b58" customClass="CredentialTextField" customModule="pEpForiOS" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="62" width="300" height="28"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="email"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="28" id="QOR-dt-iTk"/>
                                                         </constraints>
@@ -789,6 +791,7 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3wB-RC-5fz" customClass="CredentialTextField" customModule="pEpForiOS" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="124" width="300" height="28"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="password"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="28" id="dOX-HK-3Vs"/>
                                                         </constraints>
@@ -897,18 +900,18 @@
                                         </variation>
                                         <variation key="heightClass=compact">
                                             <mask key="constraints">
-                                                <exclude reference="1Jp-wK-FMZ"/>
-                                                <exclude reference="D5k-Pq-NkU"/>
                                                 <include reference="K0i-st-1Td"/>
                                                 <include reference="VW7-JT-bRE"/>
-                                                <exclude reference="neM-48-j4c"/>
                                                 <include reference="Eau-tw-crL"/>
                                                 <exclude reference="Lj5-RZ-eaB"/>
                                                 <exclude reference="Vw6-Ka-K5S"/>
+                                                <exclude reference="1Jp-wK-FMZ"/>
+                                                <exclude reference="D5k-Pq-NkU"/>
                                                 <include reference="S0B-zV-xqY"/>
                                                 <include reference="XuF-mJ-K95"/>
                                                 <include reference="dgS-ln-IuB"/>
                                                 <exclude reference="gVR-yZ-GlE"/>
+                                                <exclude reference="neM-48-j4c"/>
                                                 <include reference="o71-cd-lSO"/>
                                                 <exclude reference="sAa-Hc-jVc"/>
                                                 <include reference="msW-Uz-O7y"/>

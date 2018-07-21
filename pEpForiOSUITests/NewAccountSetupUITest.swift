@@ -21,7 +21,7 @@ class NewAccountSetupUITest: XCTestCase {
     // MARK: - Tests
 
     func testInitialAccountSetup1() {
-        app().launch()
+                app().launch()
 
         dismissInitialSystemAlerts()
 
@@ -43,7 +43,7 @@ class NewAccountSetupUITest: XCTestCase {
     func testAdditionalAccount() {
         app().launch()
         let theApp = app()
-        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
+        theApp.navigationBars["All"].buttons["Folders"].tap()
         theApp.tables.buttons["add account"].tap()
 
         let account = SecretUITestData.workingAccount2
@@ -188,23 +188,23 @@ class NewAccountSetupUITest: XCTestCase {
 
     func newAccountSetup(account: UIAccount, enterPassword: Bool = true) {
         let theApp = app()
-        let tablesQuery = theApp.tables
+        let textFieldsQuery = theApp.textFields
 
-        var tf = tablesQuery.cells.textFields["userName"]
+        var tf = textFieldsQuery["username"]
         tf.tap()
         tf.typeText(account.nameOfTheUser)
 
-        tf = tablesQuery.cells.textFields["email"]
+        tf = textFieldsQuery["email"]
         tf.tap()
         tf.typeText(account.email)
 
         if enterPassword {
-            tf = tablesQuery.cells.secureTextFields["password"]
+            tf = theApp.secureTextFields["password"]
             tf.tap()
             tf.typeText(account.password)
         }
 
-        theApp.tables.cells.buttons["Sign In"].tap()
+        theApp.buttons["Sign In"].tap()
     }
 
     // Opens the "add account" setting in manual configuration mode.
