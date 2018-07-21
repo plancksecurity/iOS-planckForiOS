@@ -183,7 +183,7 @@ class FolderTableViewController: BaseTableViewController {
         if segue.identifier == "newAccount" {
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginTableViewController else {
+                let vc = nav.rootViewController as? LoginViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Missing VCs")
                     return
             }
@@ -204,9 +204,9 @@ class FolderTableViewController: BaseTableViewController {
 
 // MARK: - LoginTableViewControllerDelegate
 
-extension FolderTableViewController: LoginTableViewControllerDelegate {
-    func loginTableViewControllerDidCreateNewAccount(
-        _ loginTableViewController: LoginTableViewController) {
+extension FolderTableViewController: LoginViewControllerDelegate {
+    func loginViewControllerDidCreateNewAccount(
+        _ loginViewController: LoginViewController) {
         showNext = true
     }
 }
