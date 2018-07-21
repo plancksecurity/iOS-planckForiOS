@@ -21,7 +21,7 @@ class NewAccountSetupUITest: XCTestCase {
     // MARK: - Tests
 
     func testInitialAccountSetup1() {
-                app().launch()
+        app().launch()
 
         dismissInitialSystemAlerts()
 
