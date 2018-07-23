@@ -48,7 +48,6 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
                                        result: .smtpError(smtpErr))
                 }
             } else {
-                account.needsVerification = false
                 delegate?.verified(account: account, service: self, result: .ok)
             }
         }

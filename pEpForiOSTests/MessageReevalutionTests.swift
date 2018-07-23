@@ -49,7 +49,6 @@ class MessageReevalutionTests: XCTestCase {
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
-        TestUtil.skipValidation()
         self.cdOwnAccount = cdMyAccount
 
         // Sender

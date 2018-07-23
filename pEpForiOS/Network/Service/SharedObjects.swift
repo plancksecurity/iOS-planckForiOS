@@ -12,7 +12,6 @@ import CoreData
  Used for building a line of operations for synching an account.
  */
 public struct AccountConnectInfo {
-    let needsVerification: Bool//IOS-1033: cleanup.
     let accountID: NSManagedObjectID//IOS-1033: cleanup.
     let imapConnectInfo: EmailConnectInfo?
     let smtpConnectInfo: EmailConnectInfo?
@@ -20,7 +19,6 @@ public struct AccountConnectInfo {
 
 extension AccountConnectInfo {
     public init(accountID: NSManagedObjectID) {
-        self.needsVerification = false
         self.accountID = accountID
         self.imapConnectInfo = nil
         self.smtpConnectInfo = nil

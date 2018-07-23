@@ -149,7 +149,6 @@ UITextFieldDelegate {
         isCurrentlyVerifying =  true
         do {
             let account = try model.account()
-            account.needsVerification = true
             account.save()
             appConfig.messageSyncService.requestVerification(account: account, delegate: self)
         } catch {

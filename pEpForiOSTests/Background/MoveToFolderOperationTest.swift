@@ -20,7 +20,6 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
         // the sender
         let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-        TestUtil.skipValidation()
         Record.saveAndWait()
         cdAccount2.createRequiredFoldersAndWait(testCase: self)
         Record.saveAndWait()
@@ -34,7 +33,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         }
 
         // Sync
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Assure deleted messages are in trash
         checkExistance(ofMessages: receivedMsgs, inFolderOfType: .trash, mustExist: true)
@@ -61,7 +60,6 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
         // the sender
         let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-        TestUtil.skipValidation()
         Record.saveAndWait()
         cdAccount2.createRequiredFoldersAndWait(testCase: self)
         Record.saveAndWait()
@@ -73,7 +71,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         move(messages: receivedMsgs, toFolerOfType: targetFolderType)
 
         // Sync
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Assure messages are in target folder
         checkExistance(ofMessages: receivedMsgs, inFolderOfType: targetFolderType, mustExist: true)
@@ -137,7 +135,7 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         }
 
         // Sync both acocunts and remember what we got before starting the actual test
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
         let msgsBefore = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
 
         // Create mails from cdAccount2 to cdAccount ...
@@ -158,10 +156,10 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()    
 
         // ... and send them.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Sync once again to make sure we mirror the servers state (i.e. receive the sent mails)
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Assure the messages have been received
         let msgsAfter = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)

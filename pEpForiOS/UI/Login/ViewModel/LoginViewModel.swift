@@ -175,7 +175,6 @@ class LoginViewModel {
 
         account.imapServer?.trusted = trusted
 
-        account.needsVerification = true
         account.save()
         ms.requestVerification(account: account, delegate: self)
     }

@@ -22,7 +22,6 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
         
         let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-        TestUtil.skipValidation()
         Record.saveAndWait()
         cdAccount2.createRequiredFoldersAndWait(testCase: self)
         Record.saveAndWait()
@@ -34,7 +33,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         }
 
         // Sync both acocunts and remember what we got before starting the actual test
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
         let msgsBefore1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
         let msgsBefore2 = cdAccount2.allMessages(inFolderOfType: .inbox, sendFrom: id2)
 
@@ -59,10 +58,10 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
 
         // ... and send them.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Sync once again to make sure we mirror the servers state (i.e. receive the sent mails)
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Now let's see what we got.
         let msgsAfter1 = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)

@@ -123,8 +123,6 @@ public class AccountSettingsViewModel {
                 Log.shared.errorAndCrash(component: #function, errorString: "Invalid input.")
                 return
         }
-        serverImap.needsVerification = true
-        serverSmtp.needsVerification = true
 
         serverImap.updateValues(with: editedServerImap)
         serverSmtp.updateValues(with: editedServerSmtp)
@@ -135,7 +133,6 @@ public class AccountSettingsViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
             return
         }
-        account.needsVerification = true
         account.save()
         ms.requestVerification(account: account, delegate: self)
     }

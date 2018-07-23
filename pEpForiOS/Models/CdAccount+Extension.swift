@@ -99,25 +99,4 @@ extension CdAccount {
     open func folder(byName name: String) -> CdFolder? {
         return CdFolder.first(attributes: ["account": self, "name": name])
     }
-
-    /**
-     Check all credentials for their `needsVerification` status. If none need it anymore,
-     the whole account gets updated too.
-     */
-    open func checkVerificationStatus() {
-        guard let cdServers = servers?.allObjects as? [CdServer] else {
-            return
-        }
-        var verificationStillNeeded = false
-        for cdServer in cdServers {
-            guard let creds = cdServer.credentials else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Server \(cdServer) has no credetials.")
-                continue
-            }
-            if creds.needsVerification {
-                verificationStillNeeded = true
-            }
-        }
-        needsVerification = verificationStillNeeded
-    }
 }
