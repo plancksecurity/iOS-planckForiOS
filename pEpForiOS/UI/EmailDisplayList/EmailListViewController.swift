@@ -960,7 +960,7 @@ extension EmailListViewController: SegueHandlerType {
         case .segueAddNewAccount:
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginTableViewController else {
+                let vc = nav.rootViewController as? LoginViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
@@ -1056,11 +1056,11 @@ extension EmailListViewController: SegueHandlerType {
     }
 }
 
-// MARK: - LoginTableViewControllerDelegate
+// MARK: - LoginViewControllerDelegate
 
-extension EmailListViewController: LoginTableViewControllerDelegate {
-    func loginTableViewControllerDidCreateNewAccount(
-        _ loginTableViewController: LoginTableViewController) {
+extension EmailListViewController: LoginViewControllerDelegate {
+    func loginViewControllerDidCreateNewAccount(
+        _ loginViewController: LoginViewController) {
         // Setup model after initial account setup
         setup()
     }
