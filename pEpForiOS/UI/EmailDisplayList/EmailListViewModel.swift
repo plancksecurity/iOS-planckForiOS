@@ -70,6 +70,7 @@ class EmailListViewModel {
     private var selectedItems: Set<IndexPath>?
 
     weak var updateThreadListDelegate: UpdateThreadListDelegate?
+    var defaultFilter: CompositeFilter<FilterBase>?
     
     // MARK: - Life Cycle
     
@@ -82,6 +83,7 @@ class EmailListViewModel {
 
         self.folderToShow = folderToShow
         self.threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
+        self.defaultFilter = folderToShow.filter?.clone()
         resetViewModel()
     }
 
@@ -399,7 +401,7 @@ class EmailListViewModel {
         if isFilterEnabled {
             folderFilter.with(filters: filterViewFilter)
         } else {
-            folderFilter.without(filters: filterViewFilter)
+            self.folderToShow.filter = defaultFilter
         }
         resetViewModel()
     }
