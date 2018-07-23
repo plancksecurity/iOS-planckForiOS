@@ -15,7 +15,7 @@ class QualifyServerIsLocalService: QualifyServerIsLocalServiceProtocol {
 
     func qualify(serverName: String) {
         let op = QualifyServerIsLocalOperation(serverName: serverName)
-        op.completionBlock = { [weak self] in
+        op.completionBlock = { [weak self] in //Looks like leak to me. Tripple check, make op weak.
             self?.delegate?.didQualify(serverName: serverName,
                                        isLocal: op.isLocal,
                                        error: op.error)
