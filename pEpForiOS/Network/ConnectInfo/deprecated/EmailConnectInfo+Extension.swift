@@ -12,20 +12,30 @@ import CoreData
 import MessageModel
 
 extension EmailConnectInfo {
-    func folderBy(name: String) throws -> Folder {
-        var cdResult: CdFolder
+
+    func folderBy(name: String) throws -> Folder? {
+        var cdResult: CdFolder?
         var error: Error?
-        MessageModel.performAndWait {
+        MessageModel.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
             let context = Record.Context.background
-            guard let cdAccount = context.object(with: accountObjectID) as? CdAccount else {
-                throw BackgroundError.CoreDataError.couldNotFindAccount(info: #function)
+            guard let cdAccount = context.object(with: me.accountObjectID) as? CdAccount else {
+                error = BackgroundError.CoreDataError.couldNotFindAccount(info: #function)
+                return
             }
             guard let cdFolder = CdFolder.by(name: name, account: cdAccount, context: context) else {
-                throw BackgroundError.CoreDataError.couldNotFindFolder(info: #function)
+                error = BackgroundError.CoreDataError.couldNotFindFolder(info: #function)
+                return
             }
-
             cdResult = cdFolder
         }
-        return cdResult.folder()
+        if let error = error {
+            throw error
+        }
+        return cdResult?.folder()
     }
+
 }

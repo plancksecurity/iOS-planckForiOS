@@ -74,7 +74,8 @@ extension ConnectInfo {
 }
 
 extension EmailConnectInfo {
-    @available(*, deprecated, message: "use credentials instead")
+
+    @available(*, deprecated, message: "use folderBy(name:) instead")
     func folderBy(name: String, context: NSManagedObjectContext) throws -> CdFolder {
         guard let cdAccount = context.object(with: accountObjectID) as? CdAccount else {
             throw BackgroundError.CoreDataError.couldNotFindAccount(info: #function)
@@ -84,4 +85,5 @@ extension EmailConnectInfo {
         }
         return cdFolder
     }
+
 }
