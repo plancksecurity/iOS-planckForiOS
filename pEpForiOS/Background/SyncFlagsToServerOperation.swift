@@ -27,8 +27,10 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     var changedMessageIDs = [NSManagedObjectID]()
     weak var delegate: SyncFlagsToServerOperationDelegate?
 
-    public init?(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                 imapSyncData: ImapSyncData, folder: CdFolder) {
+    init?(parentName: String = #function,
+          errorContainer: ServiceErrorProtocol = ErrorContainer(),
+          imapSyncData: ImapSyncData,
+          folder: CdFolder) {
         guard let moc = folder.managedObjectContext else {
             Log.shared.errorAndCrash(component: #function, errorString: "MO without moc")
             return nil
@@ -53,9 +55,9 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    public convenience init?(parentName: String,
-                             errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                             imapSyncData: ImapSyncData, folderID: NSManagedObjectID) {
+    convenience init?(parentName: String,
+                      errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                      imapSyncData: ImapSyncData, folderID: NSManagedObjectID) {
         let moc = Record.Context.background
         var folder: CdFolder? = nil;
         moc.performAndWait {

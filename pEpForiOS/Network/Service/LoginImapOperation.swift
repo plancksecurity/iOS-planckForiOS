@@ -14,10 +14,10 @@ public class LoginImapOperation: ImapSyncOperation {
     var syncDelegate: LoginImapSyncDelegate?
     var capabilities: Set<String>?
     var service: ImapSync
-
-    override public init(parentName: String = #function,
-                         errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                         imapSyncData: ImapSyncData) {
+    
+    override init(parentName: String = #function,
+                  errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                  imapSyncData: ImapSyncData) {
         service = imapSyncData.sync ?? ImapSync(connectInfo: imapSyncData.connectInfo)
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
@@ -63,10 +63,10 @@ class LoginImapSyncDelegate: DefaultImapSyncDelegate {
         op.capabilities = sync.capabilities
         let context = Record.Context.background
         context.performAndWait {
-            if let err = op.imapSyncData.connectInfo.unsetNeedsVerificationAndFinish(
-                context: context) {
-                op.addError(err)
-            }
+            //            if let err = op.imapSyncData.connectInfo.unsetNeedsVerificationAndFinish( //IOS-1033: cleanup.
+//                context: context) {
+//                op.addError(err)
+//            }
             op.markAsFinished()
         }
     }

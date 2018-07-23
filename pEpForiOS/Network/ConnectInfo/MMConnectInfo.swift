@@ -8,7 +8,19 @@
 
 import MessageModel
 
-class MMConnectInfo: Hashable {
+enum NetworkAddressType: String {
+    case ipv4 = "IPv4"
+    case ipv6 = "IPv6"
+    case dns = "DNS"
+    case gns = "GNS" // GNU Name System (TBD)
+}
+
+enum NetworkTransportType: String {
+    case udp = "UDP"
+    case tcp = "TCP"
+}
+
+class ConnectInfo: Hashable {
     public let account: Account
     public let server: Server
     public let credentials: ServerCredentials
@@ -64,9 +76,9 @@ class MMConnectInfo: Hashable {
     }
 }
 
-extension MMConnectInfo: Equatable {}
+extension ConnectInfo: Equatable {}
 
-func ==(l: MMConnectInfo, r: MMConnectInfo) -> Bool {
+func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
     return l.hashValue == r.hashValue
 }
 
@@ -74,7 +86,7 @@ func ==(l: MMConnectInfo, r: MMConnectInfo) -> Bool {
 
 import MessageModel
 
-extension MMConnectInfo {
+extension ConnectInfo {
     //    func handleCdAccount(handler: @escaping (CdAccount) -> ()) {
     //        let context = Record.Context.background
     //        context.perform { [weak self] in

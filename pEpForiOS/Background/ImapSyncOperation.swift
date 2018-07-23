@@ -11,7 +11,7 @@ import MessageModel
 public class ImapSyncOperation: ConcurrentBaseOperation {
     let imapSyncData: ImapSyncData
 
-    public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData) {
         self.imapSyncData = imapSyncData
         super.init(parentName: parentName, errorContainer: errorContainer)

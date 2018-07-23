@@ -44,10 +44,10 @@ extension LoginSmtpOperation: SmtpSendDelegate {
         smtpSendData.smtp = smtp
         let context = Record.Context.background
         context.perform {
-            if let err = self.smtpSendData.connectInfo.unsetNeedsVerificationAndFinish(
-                context: context) {
-                self.addError(err)
-            }
+//            if let err = self.smtpSendData.connectInfo.unsetNeedsVerificationAndFinish( //IOS-1033: cleanup.
+//                context: context) {
+//                self.addError(err)
+//            }
             self.markAsFinished()
         }
     }

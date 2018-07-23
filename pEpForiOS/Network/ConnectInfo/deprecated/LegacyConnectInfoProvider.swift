@@ -10,7 +10,7 @@ import MessageModel
 import CoreData
 
 /// Supports usage of deprecated EmailConnectInfo.
-extension MMConnectInfo {
+extension ConnectInfo {
     @available(*, deprecated, message: "use account instead")
     var accountObjectID: NSManagedObjectID {
         var result = NSManagedObjectID()

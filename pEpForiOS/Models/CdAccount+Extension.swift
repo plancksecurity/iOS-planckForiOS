@@ -9,23 +9,27 @@
 import MessageModel
 
 extension CdAccount {
-    private func emailConnectInfos() -> [(EmailConnectInfo, CdServerCredentials)] {
-        var result = [(emailConnectInfo: EmailConnectInfo,
-                       cdServerCredentials: CdServerCredentials)]()
+    private func emailConnectInfos() -> [EmailConnectInfo] {
+        var result = [EmailConnectInfo]()
         guard let cdServers = servers?.allObjects as? [CdServer] else {
             return result
         }
 
         for cdServer in cdServers {
-            if cdServer.serverType == Server.ServerType.imap
-                || cdServer.serverType == Server.ServerType.smtp  {
-                guard let cdCredentials = cdServer.credentials else {
-                        continue
-                }
-                if let emailConnectInfo = emailConnectInfo(
-                    account: self, server: cdServer, credentials: cdCredentials) {
-                    result.append((emailConnectInfo, cdCredentials))
-                }
+            guard
+                cdServer.serverType == Server.ServerType.imap ||
+                    cdServer.serverType == Server.ServerType.smtp
+                else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "Unsupported server type")
+                    continue
+            }
+            let server = cdServer.server()
+            let credentials = server.credentials
+            if let emailConnectInfo = emailConnectInfo(account: self.account(),
+                                                       server: server,
+                                                       credentials: credentials) {
+                result.append(emailConnectInfo)
             }
         }
 
@@ -35,35 +39,59 @@ extension CdAccount {
     /**
      - Returns: The first found IMAP connect info. Used by some tests.
      */
-    open var imapConnectInfo: EmailConnectInfo? {
-        return emailConnectInfos().filter { return $0.0.emailProtocol == .imap }.first?.0
+    var imapConnectInfo: EmailConnectInfo? {
+        return emailConnectInfos().filter { return $0.emailProtocol == .imap }.first
     }
 
     /**
      - Returns: The first found SMTP connect info. Used by some tests.
      */
-    open var smtpConnectInfo: EmailConnectInfo? {
-        return emailConnectInfos().filter { return $0.0.emailProtocol == .smtp }.first?.0
+    var smtpConnectInfo: EmailConnectInfo? {
+        return emailConnectInfos().filter { return $0.emailProtocol == .smtp }.first
     }
 
-    func emailConnectInfo(account: CdAccount, server: CdServer,
-                          credentials: CdServerCredentials) -> EmailConnectInfo? {
-        if let port = server.port?.int16Value,
-            let address = server.address,
-            let emailProtocol = EmailProtocol(serverType: server.serverType) {
-            return EmailConnectInfo(
-                accountObjectID: account.objectID, serverObjectID: server.objectID,
-                credentialsObjectID: credentials.objectID,
-                loginName: credentials.loginName,
-                loginPasswordKeyChainKey: credentials.key,
-                networkAddress: address, networkPort: UInt16(port),
-                networkAddressType: nil,
-                networkTransportType: nil, emailProtocol: emailProtocol,
-                connectionTransport: ConnectionTransport(fromInt: Int(server.transportRawValue)),
-                authMethod: AuthMethod(string: server.authMethod),
-                trusted: server.trusted)
+    func emailConnectInfo(account: Account, server: Server,
+                          credentials: ServerCredentials) -> EmailConnectInfo? {
+        guard
+            let emailProtocol = EmailProtocol(serverType: server.serverType),
+            let connectionTransport = server.transport,
+            let authMethodRaw = server.authMethod
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Missing emailProtocol")
+                return nil
         }
-        return nil
+
+        return EmailConnectInfo(account: account,
+                                server: server,
+                                credentials: credentials,
+                                loginName: credentials.loginName,
+                                loginPasswordKeyChainKey: credentials.key,
+                                networkAddress: server.address,
+                                networkPort: server.port,
+                                networkAddressType: nil,
+                                networkTransportType: nil,
+                                emailProtocol: emailProtocol,
+                                connectionTransport: ConnectionTransport(fromInt: Int(connectionTransport.rawValue)),
+                                authMethod: AuthMethod(rawValue: authMethodRaw),
+                                trusted: server.trusted)
+
+        //IOS-1033: cleanup
+//        if let port = server.port?.int16Value,
+//            let address = server.address,
+//            let emailProtocol = EmailProtocol(serverType: server.serverType) {
+//            return EmailConnectInfo(
+//                accountObjectID: account.objectID, serverObjectID: server.objectID,
+//                credentialsObjectID: credentials.objectID,
+//                loginName: credentials.loginName,
+//                loginPasswordKeyChainKey: credentials.key,
+//                networkAddress: address, networkPort: UInt16(port),
+//                networkAddressType: nil,
+//                networkTransportType: nil, emailProtocol: emailProtocol,
+//                connectionTransport: ConnectionTransport(fromInt: Int(server.transportRawValue)),
+//                authMethod: AuthMethod(string: server.authMethod),
+//                trusted: server.trusted)
+//        }
+//        return nil
     }
 
     /**

@@ -87,7 +87,7 @@ enum EmailProtocol: String {
     }
 }
 
-class MMEmailConnectInfo: MMConnectInfo {
+class EmailConnectInfo: ConnectInfo {
     enum EmailConnectInfoError: Error {
         case cannotFindServerCredentials
     }
@@ -164,9 +164,9 @@ class MMEmailConnectInfo: MMConnectInfo {
     }
 }
 
-func ==(l: MMEmailConnectInfo, r: MMEmailConnectInfo) -> Bool {
-    let sl = l as MMConnectInfo
-    let sr = r as MMConnectInfo
+func ==(l: EmailConnectInfo, r: EmailConnectInfo) -> Bool {
+    let sl = l as ConnectInfo
+    let sr = r as ConnectInfo
     return sl == sr &&
         l.connectionTransport == r.connectionTransport &&
         l.authMethod == r.authMethod &&
