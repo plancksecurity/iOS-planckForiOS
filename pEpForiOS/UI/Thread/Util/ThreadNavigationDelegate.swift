@@ -19,6 +19,7 @@ UINavigationControllerDelegate {
 
         guard let splitView = navigationController.splitViewController,
         !splitView.isCollapsed else {
+            navigationController.interactivePopGestureRecognizer?.delegate = nil
             return nil
         }
         if toVC is EmailViewController {
