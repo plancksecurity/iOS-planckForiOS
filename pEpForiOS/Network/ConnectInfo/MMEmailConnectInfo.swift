@@ -1,16 +1,14 @@
 //
-//  EmailConnectInfo
-//  pEpForiOS
+//  MMEmailConnectInfo.swift
+//  pEp
 //
-//  Created by Dirk Zimmermann on 08/04/16.
-//  Copyright © 2016 p≡p Security S.A. All rights reserved.
+//  Created by Andreas Buff on 23.07.18.
+//  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
-
-import CoreData
 
 import MessageModel
 
-public extension ConnectionTransport {
+extension ConnectionTransport {
     init?(fromInt: Int?) {
         guard let i = fromInt else {
             return nil
@@ -27,7 +25,7 @@ public extension ConnectionTransport {
         }
     }
 
-    static public func fromInteger(_ i: Int) -> ConnectionTransport {
+    static func fromInteger(_ i: Int) -> ConnectionTransport {
         switch i {
         case ConnectionTransport.plain.rawValue:
             return ConnectionTransport.plain
@@ -39,8 +37,8 @@ public extension ConnectionTransport {
             abort()
         }
     }
-    
-    public func localizedString() -> String {
+
+    func localizedString() -> String {
         let transport_security_text = "Transport security (ConnectionTransport)"
         switch self {
         case .plain:
@@ -51,22 +49,21 @@ public extension ConnectionTransport {
             return NSLocalizedString("StartTLS", comment: transport_security_text)
         }
     }
-    
+
     // XXX: Here material from the Model area is used: to be avoided or code-shared.
-    public func toServerTransport() -> Server.Transport {
+    func toServerTransport() -> Server.Transport {
         switch self {
         case .plain: return Server.Transport.plain
         case .TLS: return Server.Transport.tls
         case .startTLS: return Server.Transport.startTls
         }
     }
-
 }
 
-public enum EmailProtocol: String {
+enum EmailProtocol: String {
     case smtp = "SMTP"
     case imap = "IMAP"
-    
+
     init?(emailProtocol: String) {
         if emailProtocol.isEqual(EmailProtocol.smtp.rawValue) {
             self = .smtp
@@ -90,24 +87,21 @@ public enum EmailProtocol: String {
     }
 }
 
-/**
- Holds additional connection info (like server, port etc.) for IMAP and SMTP.
- */
-public class EmailConnectInfo: ConnectInfo {
+class MMEmailConnectInfo: MMConnectInfo {
     enum EmailConnectInfoError: Error {
         case cannotFindServerCredentials
     }
-    
-    public let emailProtocol: EmailProtocol?
-    public let connectionTransport: ConnectionTransport?
-    public let authMethod: AuthMethod?
-    public let trusted: Bool
+
+    let emailProtocol: EmailProtocol?
+    let connectionTransport: ConnectionTransport?
+    let authMethod: AuthMethod?
+    let trusted: Bool
 
     /**
      There is either the `loginPassword`, or this, but there should never exist both.
      If non-nil, the `authMethod` is expected to be `AuthMethod.saslXoauth2`.
      */
-    public var accessToken: OAuth2AccessTokenProtocol? {
+    var accessToken: OAuth2AccessTokenProtocol? {
         guard authMethod == .saslXoauth2,
             let key = loginPasswordKeyChainKey,
             let token = KeyChain.serverPassword(forKey: key) else {
@@ -116,9 +110,9 @@ public class EmailConnectInfo: ConnectInfo {
         return OAuth2AccessToken.from(base64Encoded: token) as? OAuth2AccessTokenProtocol
     }
 
-    public init(accountObjectID: NSManagedObjectID,
-                serverObjectID: NSManagedObjectID,
-                credentialsObjectID: NSManagedObjectID,
+    init(account: Account,
+                server: Server,
+                credentials: ServerCredentials,
                 loginName: String? = nil,
                 loginPasswordKeyChainKey: String? = nil,
                 networkAddress: String,
@@ -134,9 +128,9 @@ public class EmailConnectInfo: ConnectInfo {
         self.authMethod = authMethod
         self.trusted = trusted
 
-        super.init(accountObjectID: accountObjectID,
-                   serverObjectID: serverObjectID,
-                   credentialsObjectID: credentialsObjectID,
+        super.init(account: account,
+                   server: server,
+                   credentials: credentials,
                    loginName: loginName,
                    loginPasswordKeyChainKey: loginPasswordKeyChainKey,
                    networkAddress: networkAddress,
@@ -145,24 +139,24 @@ public class EmailConnectInfo: ConnectInfo {
                    networkTransportType: networkTransportType)
     }
 
-    func unsetNeedsVerificationAndFinish(context: NSManagedObjectContext) -> Error? {
-        guard let creds = context.object(
-            with: self.credentialsObjectID)
-            as? CdServerCredentials else {
-                return EmailConnectInfoError.cannotFindServerCredentials
-        }
+    //    func unsetNeedsVerificationAndFinish(context: NSManagedObjectContext) -> Error? {
+    //        guard let creds = context.object(
+    //            with: self.credentialsObjectID)
+    //            as? CdServerCredentials else {
+    //                return EmailConnectInfoError.cannotFindServerCredentials
+    //        }
+    //
+    //        if creds.needsVerification == true {
+    //            creds.needsVerification = false
+    //            if let cdAccount = creds.account {
+    //                cdAccount.checkVerificationStatus()
+    //            }
+    //            context.saveAndLogErrors()
+    //        }
+    //        return nil
+    //    }
 
-        if creds.needsVerification == true {
-            creds.needsVerification = false
-            if let cdAccount = creds.account {
-                cdAccount.checkVerificationStatus()
-            }
-            context.saveAndLogErrors()
-        }
-        return nil
-    }
-
-    override public var hashValue: Int {
+    override var hashValue: Int {
         return super.hashValue &+ (emailProtocol?.hashValue ?? 0)
             &+ (connectionTransport?.hashValue ?? 0)
             &+ (authMethod?.hashValue ?? 0)
@@ -170,12 +164,11 @@ public class EmailConnectInfo: ConnectInfo {
     }
 }
 
-public func ==(l: EmailConnectInfo, r: EmailConnectInfo) -> Bool {
-    let sl = l as ConnectInfo
-    let sr = r as ConnectInfo
+func ==(l: MMEmailConnectInfo, r: MMEmailConnectInfo) -> Bool {
+    let sl = l as MMConnectInfo
+    let sr = r as MMConnectInfo
     return sl == sr &&
         l.connectionTransport == r.connectionTransport &&
         l.authMethod == r.authMethod &&
         l.trusted == r.trusted
 }
-

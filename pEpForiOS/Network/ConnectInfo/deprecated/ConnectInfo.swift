@@ -24,6 +24,7 @@ public enum NetworkTransportType: String {
 /**
  Holds basic info to connect to peers (perhaps servers).
  */
+@available(*, deprecated, message: "use MMConnectInfo instead")
 public class ConnectInfo: Hashable {
     public let accountObjectID: NSManagedObjectID
     public let serverObjectID: NSManagedObjectID

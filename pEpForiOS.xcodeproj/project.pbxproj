@@ -73,6 +73,8 @@
 		1541D7FA1FCC18E100D52A5D /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */; };
 		1541D7FC1FCC199B00D52A5D /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */; };
 		1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */; };
+		15484B682105D5AA00F9D962 /* MMConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15484B672105D5AA00F9D962 /* MMConnectInfo.swift */; };
+		15484B6A2105D5C500F9D962 /* MMEmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15484B692105D5C500F9D962 /* MMEmailConnectInfo.swift */; };
 		154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */; };
 		154F0A802085FC7D00C77D72 /* CdAttachment+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A7F2085FC7D00C77D72 /* CdAttachment+Pantomime.swift */; };
 		154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */; };
@@ -585,6 +587,8 @@
 		1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
 		1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
 		154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNumberOfNewMailsOperation.swift; sourceTree = "<group>"; };
+		15484B672105D5AA00F9D962 /* MMConnectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMConnectInfo.swift; sourceTree = "<group>"; };
+		15484B692105D5C500F9D962 /* MMEmailConnectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MMEmailConnectInfo.swift; sourceTree = "<group>"; };
 		154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderOperationTest.swift; sourceTree = "<group>"; };
 		154F0A7F2085FC7D00C77D72 /* CdAttachment+Pantomime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Pantomime.swift"; sourceTree = "<group>"; };
 		154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentDispositionTest.swift; sourceTree = "<group>"; };
@@ -1175,6 +1179,26 @@
 			path = IMAP;
 			sourceTree = "<group>";
 		};
+		15484B652105D55600F9D962 /* ConnectInfo */ = {
+			isa = PBXGroup;
+			children = (
+				15484B662105D58800F9D962 /* deprecated */,
+				15484B672105D5AA00F9D962 /* MMConnectInfo.swift */,
+				15484B692105D5C500F9D962 /* MMEmailConnectInfo.swift */,
+			);
+			path = ConnectInfo;
+			sourceTree = "<group>";
+		};
+		15484B662105D58800F9D962 /* deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				43122B121DF5B48B00610253 /* ConnectInfo.swift */,
+				43122B131DF5B48B00610253 /* EmailConnectInfo.swift */,
+				43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */,
+			);
+			path = deprecated;
+			sourceTree = "<group>";
+		};
 		1569AEA320E14DC2002102A0 /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -1364,11 +1388,9 @@
 		43122B111DF5B48B00610253 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				15484B652105D55600F9D962 /* ConnectInfo */,
 				43122B3A1DF5B75000610253 /* Service */,
-				43122B121DF5B48B00610253 /* ConnectInfo.swift */,
 				4315E4BE2011FD6900F68763 /* AuthMethod.swift */,
-				43122B131DF5B48B00610253 /* EmailConnectInfo.swift */,
-				43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */,
 				43122B141DF5B48B00610253 /* EmailService.swift */,
 				43122B151DF5B48B00610253 /* ImapService.swift */,
 				43122B161DF5B48B00610253 /* SmtpService.swift */,
@@ -2663,6 +2685,7 @@
 				4360282F1ED6F33400C95FC4 /* ImapSyncError.swift in Sources */,
 				222B35561DF962D7007A1F82 /* ComposeHelpers.swift in Sources */,
 				220DCE361E0AB5CC002FE716 /* MessageSenderCell.swift in Sources */,
+				15484B6A2105D5C500F9D962 /* MMEmailConnectInfo.swift in Sources */,
 				49D292A320F3ABA600F33C78 /* CredentialTextField.swift in Sources */,
 				4341EBCF2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift in Sources */,
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,
@@ -2912,6 +2935,7 @@
 				B75CF47A20DBEA0000184F33 /* ThreadedSettingViewModel.swift in Sources */,
 				150B8E981FCDACBB00374438 /* ErrorPropagator.swift in Sources */,
 				49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */,
+				15484B682105D5AA00F9D962 /* MMConnectInfo.swift in Sources */,
 				0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
