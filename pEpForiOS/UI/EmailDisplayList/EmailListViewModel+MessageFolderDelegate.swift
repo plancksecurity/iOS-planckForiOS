@@ -101,6 +101,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         if !shouldBeDisplayed(message: message) {
             return
         }
+        let currentMessageCount = currentDisplayedMessage?.messageModel?.numberOfMessagesInThread()
         guard let indexExisting = index(of: message) else {
             // We do not have this message in our model, so we do not have to remove it,
             // but it might belong to a thread.

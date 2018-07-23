@@ -33,8 +33,25 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
         emailListViewModel.updateThreadListDelegate = viewModel
     }
 
-    func showSingleView(for indexPath: IndexPath) {
-        return
+    func emailListViewModel(_ emailListViewModel: EmailListViewModel,
+                            requestsShowEmailViewFor message: Message) {
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+        guard let threadViewController = getDetailViewController() as? EmailViewController,
+            let nav = threadViewController.navigationController,
+            let vc: EmailViewController =
+            storyboard.instantiateViewController(withIdentifier: "emailDetail")
+                as? EmailViewController
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                return
+        }
+
+        vc.appConfig = threadViewController.appConfig
+        nav.viewControllers[nav.viewControllers.count - 1 ] = vc
+        emailListViewModel.currentDisplayedMessage = vc
+
     }
 
     private func getDetailViewController() -> UIViewController? {

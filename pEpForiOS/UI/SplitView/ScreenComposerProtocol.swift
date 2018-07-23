@@ -12,5 +12,7 @@ import MessageModel
 protocol ScreenComposerProtocol {
     func emailListViewModel(_ emailListViewModel: EmailListViewModel,
                             requestsShowThreadViewFor message: Message)
-    func showSingleView(for indexPath: IndexPath)
+    
+    func emailListViewModel(_ emailListViewModel: EmailListViewModel,
+                            requestsShowEmailViewFor message: Message)
 }
