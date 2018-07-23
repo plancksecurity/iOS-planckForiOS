@@ -661,7 +661,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
 
 
-        func showThreadView(sender: EmailListViewModel, for message: Message) {
+        func emailListViewModel(_ emailListViewModel: EmailListViewModel,
+                                requestsShowThreadViewFor message: Message) {
                 if let exp = expectationShowThreadView {
                     exp.expectation.fulfill()
                 }

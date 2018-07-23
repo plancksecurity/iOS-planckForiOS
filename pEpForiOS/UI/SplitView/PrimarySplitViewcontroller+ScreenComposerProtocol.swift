@@ -10,7 +10,8 @@ import Foundation
 import MessageModel
 
 extension PrimarySplitViewController: ScreenComposerProtocol{
-    func showThreadView(sender: EmailListViewModel, for message: Message) {
+    func emailListViewModel(_ emailListViewModel: EmailListViewModel,
+                            requestsShowThreadViewFor message: Message) {
         let storyboard = UIStoryboard(name: "Thread", bundle: nil)
 
         guard let singleViewController = getDetailViewController() as? EmailViewController,
@@ -25,11 +26,11 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
         }
         vc.appConfig = singleViewController.appConfig
         let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
-        viewModel.emailDisplayDelegate = sender
+        viewModel.emailDisplayDelegate = emailListViewModel
         vc.model = viewModel
         nav.viewControllers[nav.viewControllers.count - 1] = vc
-        sender.currentDisplayedMessage = viewModel
-        sender.updateThreadListDelegate = viewModel
+        emailListViewModel.currentDisplayedMessage = viewModel
+        emailListViewModel.updateThreadListDelegate = viewModel
     }
 
     func showSingleView(for indexPath: IndexPath) {
