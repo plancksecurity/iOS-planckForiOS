@@ -57,30 +57,6 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
         func requestFetchOlderMessages(inFolder folder: Folder) {
             XCTFail("unexpected call to \(#function)")
         }
-
-        func requestDraft(message: Message) {
-            XCTFail("unexpected call to \(#function)")
-        }
-
-        func requestSend(message: Message) {
-            XCTFail("unexpected call to \(#function)")
-        }
-
-        func requestFlagChange(message: Message) {
-            XCTFail("unexpected call to \(#function)")
-        }
-
-        func requestMessageSync(folder: Folder) {
-            XCTFail("unexpected call to \(#function)")
-        }
-
-        func start(account: Account) {
-            XCTFail("unexpected call to \(#function)")
-        }
-
-        func cancel(account: Account) {
-            XCTFail("unexpected call to \(#function)")
-        }
     }
 
     /// This tests makes sense only if the server settings 
