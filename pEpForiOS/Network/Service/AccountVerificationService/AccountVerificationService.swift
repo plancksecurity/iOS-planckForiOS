@@ -80,8 +80,9 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
                 imapVerifyOp.completionBlock = nil
                 self?.removeFromRunning(account: account)
             }
-            let smtpVerifyOp = LoginSmtpOperation(
-                parentName: #function, smtpSendData: smtpSendData, errorContainer: ErrorContainer())
+            let smtpVerifyOp = LoginSmtpOperation(parentName: #function,
+                                                  smtpSendData: smtpSendData,
+                                                  errorContainer: ErrorContainer())
             smtpVerifyOp.completionBlock = {[weak self] in
                 smtpVerifyOp.completionBlock = nil
                 self?.removeFromRunning(account: account)
