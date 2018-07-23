@@ -54,8 +54,7 @@ extension CdAccount {
                           credentials: ServerCredentials) -> EmailConnectInfo? {
         guard
             let emailProtocol = EmailProtocol(serverType: server.serverType),
-            let connectionTransport = server.transport,
-            let authMethodRaw = server.authMethod
+            let connectionTransport = server.transport
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Missing emailProtocol")
                 return nil
@@ -72,7 +71,7 @@ extension CdAccount {
                                 networkTransportType: nil,
                                 emailProtocol: emailProtocol,
                                 connectionTransport: ConnectionTransport(fromInt: Int(connectionTransport.rawValue)),
-                                authMethod: AuthMethod(rawValue: authMethodRaw),
+                                authMethod: AuthMethod(string: server.authMethod),
                                 trusted: server.trusted)
 
         //IOS-1033: cleanup
