@@ -37,7 +37,6 @@ class EmailListViewModel {
         "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
     let messageSyncService: MessageSyncServiceProtocol
-    
     internal var messages: SortedSet<PreviewMessage>
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -51,6 +50,7 @@ class EmailListViewModel {
     internal let threadedMessageFolder: ThreadedMessageFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
+    public var screenComposer: ScreenComposerProtocol?
 
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in

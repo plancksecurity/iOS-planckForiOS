@@ -194,7 +194,6 @@
                         <segue destination="lPr-gi-BrG" kind="showDetail" identifier="segueShowEmail" id="63y-AC-Fyu"/>
                         <segue destination="wwj-Sj-78N" kind="showDetail" identifier="showNoMessage" id="a9I-b0-iqU"/>
                         <segue destination="eLD-PA-Nmx" kind="showDetail" identifier="segueShowThreadedEmail" id="rUh-Ai-iWA"/>
-                        <segue destination="ahd-JG-zww" kind="showDetail" identifier="segueShowThreadedEmailSingle" id="rVm-oN-S6B"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8T-vB-XpT" userLabel="First Responder" sceneMemberID="firstResponder"/>

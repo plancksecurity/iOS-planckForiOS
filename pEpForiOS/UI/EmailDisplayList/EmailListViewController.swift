@@ -52,7 +52,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         UIHelper.emailListTableHeight(self.tableView)
         self.textFilterButton.isEnabled = false
 
@@ -134,6 +134,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             model = EmailListViewModel(emailListViewModelDelegate: self,
                                        messageSyncService: appConfig.messageSyncService,
                                        folderToShow: theFolder)
+
+            guard let screenComposer = splitViewController as? ScreenComposerProtocol else {
+                return
+            }
+            model?.screenComposer =  screenComposer
         }
     }
     
@@ -168,6 +173,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action: nil)
         self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
         self.navigationController?.title = title
+
     }
 
     private func weCameBackFromAPushedView() -> Bool {
