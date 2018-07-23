@@ -8,7 +8,7 @@
 
 import XCTest
 import MessageModel
-import pEpForiOS
+@testable import pEpForiOS
 
 extension CdAccount {
     public func allMessages(inFolderOfType type: FolderType,
