@@ -208,7 +208,7 @@ class LoginViewController: BaseViewController {
             return
         }
 
-        guard username.count > 4 else {
+        guard username.count >= LoginTableViewController.minCharUserName else {
             handleLoginError(error: LoginTableViewControllerError.minimumLengthUsername,
                              offerManualSetup: false)
             return
