@@ -13,14 +13,16 @@ class PepProfilePictureComposer: ProfilePictureComposer {
 
     let contactImageTool = IdentityImageTool()
 
-    func getProfilePicture(for address: String, completion: @escaping (UIImage?) -> ()) {
-        let identity = Identity(address: address)
+    func getProfilePicture(for address: Identity, completion: @escaping (UIImage?) -> ()) {
 
-        if let image = self.contactImageTool.cachedIdentityImage(forIdentity: identity){
+        if let image = self.contactImageTool.cachedIdentityImage(forIdentity: address){
             completion(image)
+
+
         } else {
-            MessageModel.performAndWait {
-                let senderImage = self.contactImageTool.identityImage(for: identity)
+            DispatchQueue.global().async {
+
+                let senderImage = self.contactImageTool.identityImage(for: address)
                 DispatchQueue.main.async {
                     completion(senderImage)
                 }

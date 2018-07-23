@@ -105,7 +105,8 @@ class MessageViewModel {
     }
 
     func getProfilePicture(completion: @escaping (UIImage?)->()){
-        profilePictureComposer.getProfilePicture(for: from, completion: completion)
+        let identity = message.from ?? Identity(address: from)
+        profilePictureComposer.getProfilePicture(for: identity, completion: completion)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
