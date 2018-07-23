@@ -16,6 +16,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
     var inbox: Folder!
     var topMessages = [Message]()
     let emailListViewModelDelegate = MyEmailListViewModelDelegate()
+    let screenComposerProtocol = MyScreenComposerProtocol()
     let messageSyncServiceProtocol = MyMessageSyncServiceProtocol()
     var emailListViewModel: EmailListViewModel!
     var displayedMessage = MyDisplayedMessage()
@@ -341,7 +342,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             emailListViewModelDelegate: emailListViewModelDelegate,
             messageSyncService: messageSyncServiceProtocol,
             folderToShow: inbox)
-
+        emailListViewModel.screenComposer = self.screenComposerProtocol
         emailListViewModel.updateThreadListDelegate = updateThreadListDelegate
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
@@ -394,8 +395,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
                 expectation: expectation(description: "expectationUpdated"))
         } else {
             if openThread {
-                // expect transforming from single to thread
-                emailListViewModelDelegate.expectationShowThreadView = ExpectationShowThreadView(
+                //expect transforming from single to thread
+                screenComposerProtocol.expectationShowThreadView = ExpectationShowThreadView(
                     expectation: expectation(description: "expectationShowThreadView"))
             } else {
                 // expect child message to existing thread
@@ -587,7 +588,6 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         var expectationInserted: ExpectationTopMessageInserted?
         var expectationUndiplayedMessageUpdated: ExpectationUndiplayedMessageUpdated?
         var expectationTopMessageDeleted: ExpectationViewModelDelegateTopMessageDeleted?
-        var expectationShowThreadView: ExpectationShowThreadView?
 
         func emailListViewModel(viewModel: EmailListViewModel,
                                 didInsertDataAt indexPaths: [IndexPath]) {
@@ -651,12 +651,21 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         func updateView() {
             expectationViewUpdated?.fulfill()
         }
+    }
 
-        func showThreadView(for indexPath: IndexPath) {
-            if let exp = expectationShowThreadView {
-                exp.expectation.fulfill()
-            }
+    class MyScreenComposerProtocol: ScreenComposerProtocol {
+        var expectationShowThreadView: ExpectationShowThreadView?
+
+         func showSingleView(for indexPath: IndexPath) {
+
         }
+
+
+        func showThreadView(sender: EmailListViewModel, for message: Message) {
+                if let exp = expectationShowThreadView {
+                    exp.expectation.fulfill()
+                }
+            }
     }
 
     class MyUpdateThreadListDelegate: UpdateThreadListDelegate {
