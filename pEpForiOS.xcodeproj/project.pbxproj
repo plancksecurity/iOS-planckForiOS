@@ -162,8 +162,6 @@
 		431144B51CC0FCA40007639D /* StoreFolderOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B41CC0FCA40007639D /* StoreFolderOperation.swift */; };
 		431144B71CC11D6A0007639D /* BaseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B61CC11D6A0007639D /* BaseOperation.swift */; };
 		431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */; };
-		43122B171DF5B48B00610253 /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B121DF5B48B00610253 /* ConnectInfo.swift */; };
-		43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B131DF5B48B00610253 /* EmailConnectInfo.swift */; };
 		43122B191DF5B48B00610253 /* EmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B141DF5B48B00610253 /* EmailService.swift */; };
 		43122B1A1DF5B48B00610253 /* ImapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B151DF5B48B00610253 /* ImapService.swift */; };
 		43122B1B1DF5B48B00610253 /* SmtpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B161DF5B48B00610253 /* SmtpService.swift */; };
@@ -673,8 +671,6 @@
 		431144B41CC0FCA40007639D /* StoreFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreFolderOperation.swift; sourceTree = "<group>"; };
 		431144B61CC11D6A0007639D /* BaseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseOperation.swift; sourceTree = "<group>"; };
 		431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorePrefetchedMailOperation.swift; sourceTree = "<group>"; };
-		43122B121DF5B48B00610253 /* ConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectInfo.swift; sourceTree = "<group>"; };
-		43122B131DF5B48B00610253 /* EmailConnectInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailConnectInfo.swift; sourceTree = "<group>"; };
 		43122B141DF5B48B00610253 /* EmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailService.swift; sourceTree = "<group>"; };
 		43122B151DF5B48B00610253 /* ImapService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapService.swift; sourceTree = "<group>"; };
 		43122B161DF5B48B00610253 /* SmtpService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpService.swift; sourceTree = "<group>"; };
@@ -1194,8 +1190,6 @@
 		15484B662105D58800F9D962 /* deprecated */ = {
 			isa = PBXGroup;
 			children = (
-				43122B121DF5B48B00610253 /* ConnectInfo.swift */,
-				43122B131DF5B48B00610253 /* EmailConnectInfo.swift */,
 				43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */,
 				15484B6B2105E26600F9D962 /* LegacyConnectInfoProvider.swift */,
 			);
@@ -2693,7 +2687,6 @@
 				4341EBCF2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift in Sources */,
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,
 				43E657E01F3C74030014CBEC /* AXHTMLParser.m in Sources */,
-				43122B181DF5B48B00610253 /* EmailConnectInfo.swift in Sources */,
 				B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */,
 				155050F61FEAB082009CEAD2 /* ErrorContainer.swift in Sources */,
 				151F71D22029FA1B0057C74D /* PantomimeFolderAttribute+Extensions.swift in Sources */,
@@ -2852,7 +2845,6 @@
 				43FAA0D21EC9972B005BFC4B /* Tuple.swift in Sources */,
 				430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */,
 				4395CDEC20AAB2E9003FC5F1 /* UIImage+GIF.swift in Sources */,
-				43122B171DF5B48B00610253 /* ConnectInfo.swift in Sources */,
 				436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */,
 				434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */,
 				430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */,
