@@ -31,11 +31,13 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
 
         MessageModel.performAndWait {
             for msg in originalMessages {
-                let threadMessageIds = msg.threadMessageIdSet()
-                if messageIdSet.intersection(threadMessageIds).isEmpty {
-                    topMessages.append(msg)
+                if !messageIdSet.contains(msg.uuid) {
+                    let threadMessageIds = msg.threadMessageIdSet()
+                    if messageIdSet.intersection(threadMessageIds).isEmpty {
+                        topMessages.append(msg)
+                    }
+                    messageIdSet.formUnion(threadMessageIds)
                 }
-                messageIdSet.formUnion(threadMessageIds)
             }
         }
 
