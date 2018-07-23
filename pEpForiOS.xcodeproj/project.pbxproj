@@ -3067,7 +3067,6 @@
 				151DE7E51FC5D41600CDC273 /* Base */,
 			);
 			name = FolderViews.storyboard;
-			path = UI;
 			sourceTree = "<group>";
 		};
 		155F2DA020530798001B4B1C /* Reusable.storyboard */ = {
