@@ -175,7 +175,7 @@ class LoginViewModel {
 
         account.imapServer?.trusted = trusted
 
-        account.save()
+        //        account.save() //IOS-1033: we save verified accounts only
         ms.requestVerification(account: account, delegate: self)
     }
 
@@ -192,15 +192,18 @@ class LoginViewModel {
 // MARK: - AccountVerificationServiceDelegate
 
 extension LoginViewModel: AccountVerificationServiceDelegate {
-    func verified(account: Account, service: AccountVerificationServiceProtocol,
+    func verified(account: Account,
+                  service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
+            account.save() //IOS-1033: assume is verified here and ready to save
             mySelfer?.startMySelf()
-        } else {
-            MessageModel.performAndWait {
-                account.delete()
-            }
         }
+//        else { //IOS-1033
+//            MessageModel.performAndWait {
+//                account.delete()
+//            }
+//        }
 
         accountVerificationResultDelegate?.didVerify(result: result,
                                                      accountInput: accountInVerification)
