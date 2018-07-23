@@ -15,6 +15,11 @@ class ThreadViewController: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
     var model: ThreadedEmailViewModel!
 
+    var numberOfMessages = 0 {
+        didSet {
+            self.navigationItem.title = String(numberOfMessages)  + " messages"
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
@@ -22,7 +27,7 @@ class ThreadViewController: BaseViewController {
             return
         }
         model.delegate = self
-        self.navigationItem.title = String(model.rowCount())  + " messages"
+        numberOfMessages = model.rowCount()
         setUpFlaggedStatus()
     }
 
