@@ -199,9 +199,9 @@ UITextFieldDelegate {
         switch segueIdentifier(for: segue) {
         case .backToEmailListSegue:
             guard
-                let destination = segue.destination as? EmailListViewController
-                else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Problem casting DVC")
+                let destination = segue.destination as? EmailListViewController else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "Problem casting DVC")
                     return
             }
             destination.appConfig = self.appConfig
