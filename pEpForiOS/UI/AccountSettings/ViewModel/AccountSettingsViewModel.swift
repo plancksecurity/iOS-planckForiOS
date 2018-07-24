@@ -17,7 +17,6 @@ public class AccountSettingsViewModel {
     }
 
     public struct SecurityViewModel {
-
         var options = Server.Transport.toArray()
         var size : Int {
             get {
@@ -33,7 +32,6 @@ public class AccountSettingsViewModel {
     }
 
     private var account: Account
-    private var clonedAccount: Account?
     private let headers = [
         NSLocalizedString("Account", comment: "Account settings"),
         NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
@@ -45,7 +43,9 @@ public class AccountSettingsViewModel {
     public let isOAuth2: Bool
 
     public init(account: Account) {
-        self.account = account
+        // We are using a copy here. The outside world must not know changed settings until they
+        // have been verified.
+        self.account = Account(withDataFrom: account)
         isOAuth2 = account.server(with: .imap)?.authMethod == AuthMethod.saslXoauth2.rawValue
     }
 
@@ -97,7 +97,6 @@ public class AccountSettingsViewModel {
     // If we run into problems here modify to updateOrCreate
     func update(loginName: String, name: String, password: String? = nil, imap: ServerViewModel,
                 smtp: ServerViewModel) {
-        clonedAccount = account.clone()
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
                 Log.shared.errorAndCrash(component: #function,
@@ -133,7 +132,6 @@ public class AccountSettingsViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
             return
         }
-        account.save()
         ms.requestVerification(account: account, delegate: self)
     }
 
@@ -154,7 +152,6 @@ public class AccountSettingsViewModel {
         }
     }
 
-    //MARK: - PRIVATE
     private func server(from viewModel:ServerViewModel, serverType:Server.ServerType,
                         loginName: String, password: String?, key: String? = nil) -> Server? {
         guard let viewModelPort = viewModel.port,
@@ -164,7 +161,7 @@ public class AccountSettingsViewModel {
                                          errorString: "viewModel misses required data.")
                 return nil
         }
-        let transport = Server.Transport.init(fromString: viewModel.transport)
+        let transport = Server.Transport(fromString: viewModel.transport)
 
         let credentials = ServerCredentials.create(loginName: loginName, key: key)
         if password != nil && password != "" {
@@ -177,10 +174,6 @@ public class AccountSettingsViewModel {
         return server
     }
 
-    func cleanClonedAccount() {
-        //account.update(to: clonedAccount)
-    }
-
     func updateToken(accessToken: OAuth2AccessTokenProtocol) {
         guard let imapServer = account.imapServer,
             let smtpServer = account.smtpServer else {
@@ -189,17 +182,26 @@ public class AccountSettingsViewModel {
         let password = accessToken.persistBase64Encoded()
         imapServer.credentials.password = password
         smtpServer.credentials.password = password
-        imapServer.credentials.save()
     }
 }
 
+// MARK: - AccountVerificationServiceDelegate
+
 extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
-    func verified(account: Account, service: AccountVerificationServiceProtocol,
+    func verified(account: Account,
+                  service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
-        cleanClonedAccount()
-        DispatchQueue.main.sync {
-            delegate?.didVerify(result: result, accountInput: nil)
+        if result == .ok {
+            MessageModel.performAndWait {
+                account.save()
+            }
+        }
+        GCD.onMainWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.delegate?.didVerify(result: result, accountInput: nil)
         }
     }
 }
-
