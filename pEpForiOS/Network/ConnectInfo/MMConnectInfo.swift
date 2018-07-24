@@ -78,25 +78,3 @@ extension ConnectInfo: Equatable {}
 func ==(l: ConnectInfo, r: ConnectInfo) -> Bool {
     return l.hashValue == r.hashValue
 }
-
-// MARK: Retrieving the account object in an async, safe way
-
-import MessageModel
-
-extension ConnectInfo {
-    //    func handleCdAccount(handler: @escaping (CdAccount) -> ()) {
-    //        let context = Record.Context.background
-    //        context.perform { [weak self] in
-    //            if let theSelf = self, let cdAccount = context.object(
-    //                with: theSelf.accountObjectID) as? CdAccount {
-    //                handler(cdAccount)
-    //            }
-    //        }
-    //    }
-    //
-    //    func handleAccount(handler: @escaping (Account) -> ()) {
-    //        handleCdAccount() { cdAccount in
-    //            handler(cdAccount.account())
-    //        }
-    //    }
-}
