@@ -83,7 +83,7 @@
                                             </constraints>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="m0u-Jn-mQU">
-                                            <rect key="frame" x="44" y="36" width="20" height="20"/>
+                                            <rect key="frame" x="44" y="40" width="20" height="20"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="4Pu-ac-G9n"/>
@@ -133,7 +133,7 @@
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="topMargin" constant="-3" id="j3H-Iv-HG5"/>
                                         <constraint firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" constant="8" id="n5I-Yb-okr"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" id="tYc-Ao-foD"/>
-                                        <constraint firstItem="m0u-Jn-mQU" firstAttribute="bottom" secondItem="YqR-ga-Tf9" secondAttribute="bottom" id="ubw-w6-q4y"/>
+                                        <constraint firstItem="m0u-Jn-mQU" firstAttribute="bottom" secondItem="YqR-ga-Tf9" secondAttribute="bottom" constant="4" id="ubw-w6-q4y"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -984,9 +984,9 @@
         <image name="unread-icon" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RTR-We-Kc1"/>
+        <segue reference="d5O-Wk-gjZ"/>
         <segue reference="8Xh-Bv-MFq"/>
         <segue reference="ber-OQ-S16"/>
-        <segue reference="Usl-iS-7fo"/>
+        <segue reference="xmi-xn-p8T"/>
     </inferredMetricsTieBreakers>
 </document>
