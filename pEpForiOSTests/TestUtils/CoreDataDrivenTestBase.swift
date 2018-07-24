@@ -32,7 +32,6 @@ class CoreDataDrivenTestBase: XCTestCase {
         persistentSetup = PersistentSetup()
         
         let cdAccount = SecretTestData().createWorkingCdAccount()
-        TestUtil.skipValidation()
         Record.saveAndWait()
         self.cdAccount = cdAccount
 

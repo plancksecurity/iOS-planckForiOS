@@ -34,7 +34,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         self.title = NSLocalizedString("Account", comment: "Title for manual account setup")
         handleCancelButtonVisibility()
         passwordValue.delegate = self
@@ -44,7 +44,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+
         viewWidthAligner.alignViews([
             emailTitle,
             usernameTitle,
@@ -52,7 +52,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
             nameTitle
             ], parentView: view)
     }
-    
+
     func handleCancelButtonVisibility() {
         accounts = Account.all()
         if accounts.isEmpty {
@@ -66,7 +66,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
         updateViewFromInitialModel()
         updateView()
     }
-    
+
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         firstResponder(!model.isValidName)
@@ -93,7 +93,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
         }
         return true
     }
-    
+
     public func textFieldDidEndEditing(_ textField: UITextField) {
         changedResponder(textField)
     }
@@ -117,7 +117,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
         model.userName = sender.text
         updateView()
     }
-    
+
     @IBAction func cancelButtonTapped(_ sender: UIButton) {
         navigationController?.dismiss(animated: true, completion: nil)
     }
@@ -130,7 +130,7 @@ extension UserInfoTableViewController: SegueHandlerType {
         case IMAPSettings
         case noSegue
     }
-    
+
     public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .IMAPSettings:

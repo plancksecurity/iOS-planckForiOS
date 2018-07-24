@@ -169,7 +169,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
         XCTAssertTrue(PEPUtil.pEpClean())
         persistentSetup = PersistentSetup()
         let cdAccount = SecretTestData().createWorkingCdAccount()
-        TestUtil.skipValidation()
         Record.saveAndWait()
         self.cdAccount = cdAccount
     }
@@ -230,7 +229,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
             return
         }
         TestUtil.makeFolderInteresting(folderType: .sent, cdAccount: cdAccount)
-        TestUtil.syncAndWait(numAccountsToSync: 1, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 1, testCase: self)
 
         let sentFolder = TestUtil.cdFolder(ofType: .sent, in: cdAccount)
         guard let sentFolderName = sentFolder.name else {
@@ -280,7 +279,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
             TestUtil.setServersTrusted(forCdAccount: cdAccountReceiver, testCase: self)
         }
         // Fetch, maybe re-upload and fetch again.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Check inbox for the received message
         let inbox = TestUtil.cdFolder(ofType: .inbox, in: cdAccountReceiver)
@@ -349,7 +348,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
             "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc")
         try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
                                fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
-        TestUtil.skipValidation()
         Record.saveAndWait()
         cdAccount.createRequiredFoldersAndWait(testCase: self)
     }
@@ -419,7 +417,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
         // Save new acount
         createe.save()
-        TestUtil.skipValidation()
         guard let cdAccount = createe.cdAccount() else {
             XCTFail("No Accoount")
             return createe
@@ -453,12 +450,12 @@ class ReUploadTest: CoreDataDrivenTestBase {
         makeFoldersInteresting(inCdAccount: cdAccountReceiver)
         makeFoldersInteresting(inCdAccount: cdAccount)
         // Fetch all messages.
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
         // Mark all messages deleted ...
         markAllMessagesDeleted(inCdAccount: cdAccountReceiver)
         markAllMessagesDeleted(inCdAccount: cdAccount)
         // ... and propagate the changes to the servers
-        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
         // Delete receiver account. Has to be freshly crated in tests.
         cdAccountReceiver.delete()
         Record.saveAndWait()

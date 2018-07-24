@@ -116,7 +116,6 @@ class NetworkServiceTests: XCTestCase {
         networkService.sendLayerDelegate = sendLayerDelegate
 
         _ = SecretTestData().createWorkingCdAccount()
-        TestUtil.skipValidation()
         Record.saveAndWait()
 
         networkService.start()
@@ -190,7 +189,6 @@ class NetworkServiceTests: XCTestCase {
         let networkService = NetworkService(parentName: #function)
 
         _ = SecretTestData().createWorkingCdAccount()
-        TestUtil.skipValidation()
         Record.saveAndWait()
 
         for _ in 0...10 {
@@ -236,10 +234,9 @@ class NetworkServiceTests: XCTestCase {
 
         let cdAccount = useCorrectSmtpAccount ? SecretTestData().createWorkingCdAccount() :
             SecretTestData().createSmtpTimeOutCdAccount()
-        TestUtil.skipValidation()
         Record.saveAndWait()
 
-        TestUtil.syncAndWait(testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(testCase: self)
 
         let from = CdIdentity.create()
         from.userName = cdAccount.identity?.userName ?? "Unit 004"
@@ -270,7 +267,7 @@ class NetworkServiceTests: XCTestCase {
             XCTAssertEqual(m.sendStatus, SendStatus.none)
         }
 
-        TestUtil.syncAndWait(testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(testCase: self)
 
         // Check that the sent mails have been deleted
         Record.refreshRegisteredObjects(mergeChanges: true)
@@ -281,7 +278,7 @@ class NetworkServiceTests: XCTestCase {
         }
 
         // sync
-        TestUtil.syncAndWait(testCase: self, skipValidation: true)
+        TestUtil.syncAndWait(testCase: self)
 
         if useCorrectSmtpAccount {
             // those messages do not exist if we are using an incorrect account

@@ -478,7 +478,6 @@ class ComposeUtilTest: CoreDataDrivenTestBase {
     }
 
     private func createOriginalMessage(inFolderOfType type: FolderType,
-                                       /*of account: Account? = nil,*/
                                        from: Identity,
                                        tos: [Identity],
                                        ccs: [Identity],

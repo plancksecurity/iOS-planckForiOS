@@ -7,10 +7,9 @@
 //
 
 import XCTest
-import pEpForiOS
 import MessageModel
-
 import CoreData
+@testable import pEpForiOS
 
 class NetworkServiceObserver: NetworkServiceUnitTestDelegate, CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?

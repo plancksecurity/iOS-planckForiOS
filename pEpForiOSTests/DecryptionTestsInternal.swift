@@ -55,8 +55,6 @@ class DecryptionTestsInternal: XCTestCase {
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
-
-        TestUtil.skipValidation()
         Record.saveAndWait()
 
         self.backgroundQueue = OperationQueue()

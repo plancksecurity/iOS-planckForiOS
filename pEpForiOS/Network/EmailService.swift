@@ -26,7 +26,7 @@ open class Service: IEmailService {
     /// Used if non of the login methods Pantomime currently supports is supported by the server.
     private let fallBackAuthMethod = AuthMethod.plain
 
-    public init(connectInfo: EmailConnectInfo,
+    init(connectInfo: EmailConnectInfo,
                 fileString: String = #file, functionName: String = #function) {
         CWLogger.setLogger(Log.shared)
 

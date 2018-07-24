@@ -21,8 +21,12 @@ public class SyncMessagesOperation: ImapSyncOperation {
     let firstUID: UInt
     var syncDelegate: SyncMessagesSyncDelegate?
 
-    public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                imapSyncData: ImapSyncData, folderName: String, firstUID: UInt, lastUID: UInt) {
+    init(parentName: String = #function,
+         errorContainer: ServiceErrorProtocol = ErrorContainer(),
+         imapSyncData: ImapSyncData,
+         folderName: String,
+         firstUID: UInt,
+         lastUID: UInt) {
         self.folderToOpen = folderName
         self.lastUID = lastUID
         self.firstUID = firstUID
@@ -30,10 +34,10 @@ public class SyncMessagesOperation: ImapSyncOperation {
                    imapSyncData: imapSyncData)
     }
 
-    public convenience init?(parentName: String,
-                             errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                             imapSyncData: ImapSyncData,
-                             folder: CdFolder) {
+    convenience init?(parentName: String,
+                      errorContainer: ServiceErrorProtocol = ErrorContainer(),
+                      imapSyncData: ImapSyncData,
+                      folder: CdFolder) {
         guard let folderName = folder.name else {
             return nil
         }

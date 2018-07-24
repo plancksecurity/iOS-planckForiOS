@@ -9,7 +9,7 @@
 import XCTest
 
 import CoreData
-import pEpForiOS
+@testable import pEpForiOS
 import MessageModel
 
 class LoginImapOperationTest: CoreDataDrivenTestBase {

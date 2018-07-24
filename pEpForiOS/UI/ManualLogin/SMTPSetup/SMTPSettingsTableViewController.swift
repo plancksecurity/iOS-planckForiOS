@@ -10,10 +10,7 @@ import UIKit
 
 import MessageModel
 
-class SMTPSettingsTableViewController: BaseTableViewController, TextfieldResponder,
-UITextFieldDelegate {
-    let comp = "SMTPSettingsTableView"
-
+class SMTPSettingsTableViewController: BaseTableViewController, TextfieldResponder {
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
     @IBOutlet weak var serverValue: UITextField!
     @IBOutlet weak var portValue: UITextField!
@@ -23,6 +20,7 @@ UITextFieldDelegate {
     @IBOutlet weak var portTitle: UILabel!
 
     var model: AccountUserInput!
+    private var currentlyVerifiedAccount: Account?
     var fields = [UITextField]()
     var responder = 0
 
@@ -33,21 +31,13 @@ UITextFieldDelegate {
         }
     }
 
+    // MARK: - Life Cylcle
+
     public override func viewDidLoad() {
         super.viewDidLoad()
-
         self.title = NSLocalizedString("SMTP", comment: "Manual account setup")
         UIHelper.variableCellHeightsTableView(tableView)
         fields = [serverValue, portValue]
-    }
-
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        viewWidthAligner.alignViews([
-            serverTitle,
-            portTitle
-            ], parentView: view)
     }
 
     public override func viewWillAppear(_ animated: Bool) {
@@ -57,13 +47,15 @@ UITextFieldDelegate {
 
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         firstResponder(model.serverSMTP == nil)
     }
 
-    public override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        viewWidthAligner.alignViews([serverTitle, portTitle], parentView: view)
     }
+
+    // MARK: - Working Bees
 
     private func updateView() {
         serverValue.text = model.serverSMTP
@@ -81,7 +73,8 @@ UITextFieldDelegate {
     private func showErrorMessage (_ message: String) {
         let alertView = UIAlertController.pEpAlertController(
             title: NSLocalizedString("Error",
-                                     comment: "the text in the title for the error message AlerView in account settings"),
+                                     comment:
+                "the text in the title for the error message AlerView in account settings"),
             message:message, preferredStyle: .alert)
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
@@ -93,7 +86,8 @@ UITextFieldDelegate {
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
                 "Ok",
-                comment: "confirmation button text for error message AlertView in account settings"),
+                comment:
+                "confirmation button text for error message AlertView in account settings"),
             style: .default, handler: nil))
         present(alertView, animated: true, completion: nil)
     }
@@ -101,6 +95,35 @@ UITextFieldDelegate {
     private func viewLog() {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
+
+    /// Triggers verification for given data.
+    ///
+    /// - Throws: AccountVerificationError
+    private func verifyAccount() throws {
+        isCurrentlyVerifying =  true
+        let account = try model.account()
+        currentlyVerifiedAccount = account
+        appConfig.messageSyncService.requestVerification(account: account, delegate: self)
+    }
+
+    private func informUser(about error: Error, title: String) {
+        let alert = UIAlertController.pEpAlertController(
+            title: title,
+            message: error.localizedDescription,
+            preferredStyle: UIAlertControllerStyle.alert)
+        let cancelAction = UIAlertAction(title:
+            NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
+                                         style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+
+    private func hideKeybord() {
+        serverValue.resignFirstResponder()
+        portValue.resignFirstResponder()
+    }
+
+    // MARK: - Actions
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {
         let alertController = UIAlertController.pEpAlertController(
@@ -141,22 +164,6 @@ UITextFieldDelegate {
         }
     }
 
-    /// Creates and persits an account with given data and triggers a verification request.
-    ///
-    /// - Parameter model: account data
-    /// - Throws: AccountVerificationError
-    private func verifyAccount() throws {
-        isCurrentlyVerifying =  true
-        do {
-            let account = try model.account()
-            account.needsVerification = true
-            account.save()
-            appConfig.messageSyncService.requestVerification(account: account, delegate: self)
-        } catch {
-            throw error
-        }
-    }
-
     @IBAction func nextButtonTapped(_ sender: UIBarButtonItem) {
         do {
             try verifyAccount()
@@ -168,51 +175,28 @@ UITextFieldDelegate {
             informUser(about: error, title: errorTopic)
         }
     }
-
-    private func informUser(about error: Error, title: String) {
-        let alert = UIAlertController.pEpAlertController(
-            title: title,
-            message: error.localizedDescription,
-            preferredStyle: UIAlertControllerStyle.alert)
-        let cancelAction = UIAlertAction(title:
-            NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
-                                         style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        present(alert, animated: true)
-    }
-
-    private func hideKeybord() {
-        serverValue.resignFirstResponder()
-        portValue.resignFirstResponder()
-    }
-
-    public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
-        nextResponder(textfield)
-        return true
-    }
-
-    public func textFieldDidEndEditing(_ textField: UITextField) {
-        changedResponder(textField)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segueIdentifier(for: segue) {
-        case .backToEmailListSegue:
-            // nothing to do, since it's an unwind segue the targets already are configured
-            break
-        case .viewLogSegue:
-            if let dnc = segue.destination as? UINavigationController,
-                let dvc = dnc.rootViewController as? LogViewController {
-                dvc.appConfig = appConfig
-            }
-        default:()
-        }
-    }
 }
+
+// MARK: - AccountVerificationServiceDelegate
 
 extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
+        if result == .ok {
+            MessageModel.performAndWait { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                guard let account = me.currentlyVerifiedAccount else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "We verified an non-existing account? " +
+                        "Now what?")
+                    return
+                }
+                account.save()
+            }
+        }
         GCD.onMain() {
             self.isCurrentlyVerifying =  false
             switch result {
@@ -231,10 +215,40 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     }
 }
 
+// MARK: - SegueHandlerType
+
 extension SMTPSettingsTableViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
         case viewLogSegue
         case backToEmailListSegue
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .backToEmailListSegue:
+            // nothing to do, since it's an unwind segue the targets already are configured
+            break
+        case .viewLogSegue:
+            if let dnc = segue.destination as? UINavigationController,
+                let dvc = dnc.rootViewController as? LogViewController {
+                dvc.appConfig = appConfig
+            }
+        default:()
+        }
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension SMTPSettingsTableViewController: UITextFieldDelegate {
+
+    public func textFieldShouldReturn(_ textfield: UITextField) -> Bool {
+        nextResponder(textfield)
+        return true
+    }
+
+    public func textFieldDidEndEditing(_ textField: UITextField) {
+        changedResponder(textField)
     }
 }

@@ -30,7 +30,8 @@
             return NSLocalizedString("Username must not be empty.",
                                      comment: "Empty username message")
         case .minimumLengthUsername:
-            return NSLocalizedString("Username must have more than 5 characters.",
+            return NSLocalizedString("Username must have more than " +
+                "\(LoginTableViewController.minCharUserName) characters.",
                                      comment: "minimum username length")
         case .noConnectData:
             return NSLocalizedString("Internal error",
@@ -46,6 +47,7 @@
  }
 
  class LoginTableViewController: BaseTableViewController {
+    static let minCharUserName = 1
     var loginViewModel = LoginViewModel()
     var offerManualSetup = false
     var delegate: LoginTableViewControllerDelegate?

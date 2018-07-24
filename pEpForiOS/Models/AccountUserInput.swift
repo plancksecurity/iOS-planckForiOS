@@ -112,13 +112,11 @@ public struct AccountUserInput {
         let credentialsImap = ServerCredentials.create(loginName: logIn,
                                                        key: accessToken?.keyChainID)
         credentialsImap.password = thePassword
-        credentialsImap.needsVerification = true
 
         let imapServer = Server.create(serverType: .imap, port: self.portIMAP, address: serverIMAP,
                                        transport: self.transportIMAP.toServerTransport(),
                                        authMethod: authMethod?.rawValue,
                                        credentials: credentialsImap)
-        imapServer.needsVerification = true
 
         let credentialsSmtp: ServerCredentials
         if authMethod == .saslXoauth2 {
@@ -128,13 +126,13 @@ public struct AccountUserInput {
             credentialsSmtp = ServerCredentials.create(loginName: logIn, key: accessToken?.keyChainID)
             credentialsSmtp.password = thePassword
         }
-        credentialsSmtp.needsVerification = true
 
-        let smtpServer = Server.create(serverType: .smtp, port: self.portSMTP, address: serverSMTP,
+        let smtpServer = Server.create(serverType: .smtp,
+                                       port: self.portSMTP,
+                                       address: serverSMTP,
                                        transport: self.transportSMTP.toServerTransport(),
                                        authMethod: authMethod?.rawValue,
                                        credentials: credentialsSmtp)
-        smtpServer.needsVerification = true
 
         let account = Account(user: identity, servers: [imapServer, smtpServer])
         return account

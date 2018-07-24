@@ -49,8 +49,7 @@ class FetchNumberOfNewMailsService {
     // MARK: - Internal
 
     private func fetchAccounts() -> [CdAccount] {
-        let p = NSPredicate(format: "needsVerification = false")
-        return CdAccount.all(predicate: p, in: context) as? [CdAccount] ?? []
+        return CdAccount.all() ?? []
     }
 
     private func gatherConnectInfos() -> [EmailConnectInfo] {

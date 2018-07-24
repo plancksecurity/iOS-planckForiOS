@@ -20,9 +20,9 @@ open class ServiceUtil {
                 let smtpCI = acc.smtpConnectInfo
                 let imapCI = acc.imapConnectInfo
                 if (smtpCI != nil || imapCI != nil) {
-                    connectInfos.append(AccountConnectInfo(
-                        needsVerification: acc.needsVerification,
-                        accountID: acc.objectID, imapConnectInfo: imapCI, smtpConnectInfo: smtpCI))
+                    connectInfos.append(AccountConnectInfo(accountID: acc.objectID,
+                                                           imapConnectInfo: imapCI,
+                                                           smtpConnectInfo: smtpCI))
                 }
             }
         }

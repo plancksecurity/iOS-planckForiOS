@@ -167,16 +167,11 @@ class LoginViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
             return
         }
-
         guard let account = loginAccount else {
             Log.shared.errorAndCrash(component: #function, errorString: "have lost loginAccount")
             return
         }
-
         account.imapServer?.trusted = trusted
-
-        account.needsVerification = true
-        account.save()
         ms.requestVerification(account: account, delegate: self)
     }
 
@@ -193,16 +188,15 @@ class LoginViewModel {
 // MARK: - AccountVerificationServiceDelegate
 
 extension LoginViewModel: AccountVerificationServiceDelegate {
-    func verified(account: Account, service: AccountVerificationServiceProtocol,
+    func verified(account: Account,
+                  service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            mySelfer?.startMySelf()
-        } else {
             MessageModel.performAndWait {
-                account.delete()
+                account.save()
             }
+            mySelfer?.startMySelf()
         }
-
         accountVerificationResultDelegate?.didVerify(result: result,
                                                      accountInput: accountInVerification)
     }
@@ -233,6 +227,8 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
         currentOauth2Authorizer = nil
     }
 }
+
+// MARK: - QualifyServerIsLocalServiceDelegate
 
 extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
