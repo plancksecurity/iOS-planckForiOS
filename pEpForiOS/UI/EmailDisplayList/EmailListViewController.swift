@@ -503,11 +503,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Flag
         if folderIsDraft(parentFolder) {
             // Do not add "Flag" action to drafted mails.
+
             let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
                 self.flagAction(forCellAt: indexPath)
             }
+
             flagAction.hidesWhenSelected = true
-            configure(action: flagAction, with: .flag)
+            
+            let flagged = model?.message(representedByRowAt: indexPath)?.imapFlags?.flagged ?? false
+            let actionDescriptor: SwipeActionDescriptor = flagged == true ? .unflag : .flag
+
+            configure(action: flagAction, with: actionDescriptor)
             swipeActions.append(flagAction)
         }
 
@@ -1112,7 +1118,7 @@ enum SwipeActionDescriptor {
         case .reply: name = "reply"
         case .more: name = "more"
         case .flag: name = "flag"
-        case .unflag: name = "unflag"
+        case .unflag: name = "flag"
         case .trash: name = "trash"
         case .archive: name = "archive"
         }
