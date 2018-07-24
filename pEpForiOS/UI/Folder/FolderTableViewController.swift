@@ -202,9 +202,9 @@ class FolderTableViewController: BaseTableViewController {
     }
 
     /**
-     Unwinds segue for the case of adding an account that requires manual setup
+     Unwind segue for the case of adding an account that requires manual setup
      */
-    @IBAction func unwindToFolderView(segue:UIStoryboardSegue) {
+    @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
     }
 }
 

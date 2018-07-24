@@ -522,7 +522,7 @@
                         <outlet property="serverValue" destination="HIi-Wv-jJs" id="yqf-Es-fSK"/>
                         <outlet property="transportSecurity" destination="Cjb-ue-OdU" id="W8X-Rm-6rK"/>
                         <segue destination="6yd-9e-jF0" kind="show" identifier="viewLogSegue" id="ohe-5h-dsJ"/>
-                        <segue destination="4H2-fK-y3g" kind="unwind" identifier="backToEmailListSegue" unwindAction="unwindToFolderViewWithSegue:" id="KmU-Ae-tvH"/>
+                        <segue destination="4H2-fK-y3g" kind="unwind" identifier="backToEmailListSegue" unwindAction="segueUnwindAfterAccountCreationWithSegue:" id="KmU-Ae-tvH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SBU-82-njk" userLabel="First Responder" sceneMemberID="firstResponder"/>

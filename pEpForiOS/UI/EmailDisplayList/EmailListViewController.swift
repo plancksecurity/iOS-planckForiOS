@@ -881,7 +881,7 @@ extension EmailListViewController {
     /**
      Enables manual account setup to unwind to the unified inbox.
      */
-    @IBAction func unwindToFolderView(segue:UIStoryboardSegue) {
+    @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
         folderToShow = UnifiedInbox()
         resetModel()
     }
