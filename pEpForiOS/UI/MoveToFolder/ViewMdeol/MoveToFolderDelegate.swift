@@ -12,4 +12,6 @@ import MessageModel
 protocol MoveToFolderDelegate: class {
     func didMove()
 
+    func didmove(messages: [Message])
+
 }
