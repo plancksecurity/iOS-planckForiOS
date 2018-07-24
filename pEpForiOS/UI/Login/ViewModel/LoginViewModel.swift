@@ -167,15 +167,11 @@ class LoginViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
             return
         }
-
         guard let account = loginAccount else {
             Log.shared.errorAndCrash(component: #function, errorString: "have lost loginAccount")
             return
         }
-
         account.imapServer?.trusted = trusted
-
-        //        account.save() //IOS-1033: we save verified accounts only
         ms.requestVerification(account: account, delegate: self)
     }
 
@@ -196,15 +192,11 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                   service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            account.save() //IOS-1033: assume is verified here and ready to save
+            MessageModel.performAndWait {
+                account.save()
+            }
             mySelfer?.startMySelf()
         }
-//        else { //IOS-1033
-//            MessageModel.performAndWait {
-//                account.delete()
-//            }
-//        }
-
         accountVerificationResultDelegate?.didVerify(result: result,
                                                      accountInput: accountInVerification)
     }
