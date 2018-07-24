@@ -51,6 +51,22 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
+    func testAdditionalManualAccount() {
+        app().launch()
+        addAdditionalManual(account: SecretUITestData.manualAccount)
+    }
+
+    func testAutoAccountPlusManual() {
+        app().launch()
+
+        dismissInitialSystemAlerts()
+
+        let account1 = SecretUITestData.workingAccount1
+        newAccountSetup(account: account1)
+
+        addAdditionalManual(account: SecretUITestData.manualAccount)
+    }
+
     func testTwoInitialAccounts() {
         app().launch()
 
@@ -60,7 +76,7 @@ class NewAccountSetupUITest: XCTestCase {
         newAccountSetup(account: account1)
 
         let theApp = app()
-        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
+        theApp.navigationBars["All"].buttons["Folders"].tap()
         theApp.tables.buttons["add account"].tap()
 
         let account2 = SecretUITestData.workingAccount2
@@ -78,13 +94,7 @@ class NewAccountSetupUITest: XCTestCase {
         let account = SecretUITestData.manualAccount
         newAccountSetup(account: account)
 
-        let alertOkButton = theApp.buttons["Ok"]
-        let exists = NSPredicate(format: "enabled == true")
-        expectation(for: exists, evaluatedWith: alertOkButton, handler: nil)
-        waitForExpectations(timeout: 5, handler: nil)
-
-        alertOkButton.tap()
-        theApp.buttons["Manual configuration"].tap()
+        switchToManualConfig()
 
         manualNewAccountSetup(account)
 
@@ -137,7 +147,7 @@ class NewAccountSetupUITest: XCTestCase {
         waitForExpectations(timeout: 3000, handler: nil)
     }
 
-    func typeTextIfEmpty(textField: XCUIElement,  text: String) {
+    func typeTextIfEmpty(textField: XCUIElement, text: String) {
         if (textField.value as? String ?? "") == "" {
             textField.typeText(text)
         }
@@ -147,7 +157,7 @@ class NewAccountSetupUITest: XCTestCase {
         let theApp = app()
         let tablesQuery = theApp.tables
 
-        var tf = tablesQuery.cells.textFields["nameOfTheUser"]
+        var tf = tablesQuery.cells.textFields["username"]
         typeTextIfEmpty(textField: tf, text: account.nameOfTheUser)
 
         tf = tablesQuery.cells.textFields["email"]
@@ -187,24 +197,7 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func newAccountSetup(account: UIAccount, enterPassword: Bool = true) {
-        let theApp = app()
-        let textFieldsQuery = theApp.textFields
-
-        var tf = textFieldsQuery["username"]
-        tf.tap()
-        tf.typeText(account.nameOfTheUser)
-
-        tf = textFieldsQuery["email"]
-        tf.tap()
-        tf.typeText(account.email)
-
-        if enterPassword {
-            tf = theApp.secureTextFields["password"]
-            tf.tap()
-            tf.typeText(account.password)
-        }
-
-        theApp.buttons["Sign In"].tap()
+        signIn(account: account, enterPassword: enterPassword)
     }
 
     // Opens the "add account" setting in manual configuration mode.
@@ -244,5 +237,50 @@ class NewAccountSetupUITest: XCTestCase {
             waitForExpectations(timeout: 2, handler: nil)
             button.tap()
         }
+    }
+
+    func addAdditionalManual(account: UIAccount) {
+        let theApp = app()
+        theApp.navigationBars["All"].buttons["Folders"].tap()
+        theApp.tables.buttons["add account"].tap()
+
+        signIn(account: account, enterPassword: true)
+        switchToManualConfig()
+        manualNewAccountSetup(account)
+
+        waitForever()
+    }
+
+    func signIn(account: UIAccount, enterPassword: Bool = true) {
+        let theApp = app()
+        let textFieldsQuery = theApp.textFields
+
+        var tf = textFieldsQuery["username"]
+        tf.tap()
+        tf.typeText(account.nameOfTheUser)
+
+        tf = textFieldsQuery["email"]
+        tf.tap()
+        tf.typeText(account.email)
+
+        if enterPassword {
+            tf = theApp.secureTextFields["password"]
+            tf.tap()
+            tf.typeText(account.password)
+        }
+
+        theApp.buttons["Sign In"].tap()
+    }
+
+    func switchToManualConfig() {
+        let theApp = app()
+
+        let alertOkButton = theApp.buttons["Ok"]
+        let exists = NSPredicate(format: "enabled == true")
+        expectation(for: exists, evaluatedWith: alertOkButton, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
+
+        alertOkButton.tap()
+        theApp.buttons["Manual configuration"].tap()
     }
 }
