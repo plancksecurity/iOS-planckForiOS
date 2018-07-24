@@ -10,6 +10,7 @@ import MessageModel
 
 extension CdAccount {
     private func emailConnectInfos() -> [EmailConnectInfo] {
+        //        return self.account().emailConnectInfos() //IOS-1033: use this, rm rest
         var result = [EmailConnectInfo]()
         guard let cdServers = servers?.allObjects as? [CdServer] else {
             return result
@@ -39,6 +40,7 @@ extension CdAccount {
     /**
      - Returns: The first found IMAP connect info. Used by some tests.
      */
+    @available(*, deprecated, message: "use Account - imapConnectInfo() instead")
     var imapConnectInfo: EmailConnectInfo? {
         return emailConnectInfos().filter { return $0.emailProtocol == .imap }.first
     }
@@ -46,33 +48,36 @@ extension CdAccount {
     /**
      - Returns: The first found SMTP connect info. Used by some tests.
      */
+    @available(*, deprecated, message: "use Account - smtpConnectInfo() instead")
     var smtpConnectInfo: EmailConnectInfo? {
         return emailConnectInfos().filter { return $0.emailProtocol == .smtp }.first
     }
 
+    @available(*, deprecated, message: "use Account - emailConnectInfos() instead")
     func emailConnectInfo(account: Account, server: Server,
                           credentials: ServerCredentials) -> EmailConnectInfo? {
-        guard
-            let emailProtocol = EmailProtocol(serverType: server.serverType),
-            let connectionTransport = server.transport
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Missing emailProtocol")
-                return nil
-        }
-
-        return EmailConnectInfo(account: account,
-                                server: server,
-                                credentials: credentials,
-                                loginName: credentials.loginName,
-                                loginPasswordKeyChainKey: credentials.key,
-                                networkAddress: server.address,
-                                networkPort: server.port,
-                                networkAddressType: nil,
-                                networkTransportType: nil,
-                                emailProtocol: emailProtocol,
-                                connectionTransport: ConnectionTransport(fromInt: Int(connectionTransport.rawValue)),
-                                authMethod: AuthMethod(string: server.authMethod),
-                                trusted: server.trusted)
+        return Account.emailConnectInfo(account: account, server: server, credentials: credentials)
+//        guard
+//            let emailProtocol = EmailProtocol(serverType: server.serverType),
+//            let connectionTransport = server.transport
+//            else {
+//                Log.shared.errorAndCrash(component: #function, errorString: "Missing emailProtocol")
+//                return nil
+//        }
+//
+//        return EmailConnectInfo(account: account,
+//                                server: server,
+//                                credentials: credentials,
+//                                loginName: credentials.loginName,
+//                                loginPasswordKeyChainKey: credentials.key,
+//                                networkAddress: server.address,
+//                                networkPort: server.port,
+//                                networkAddressType: nil,
+//                                networkTransportType: nil,
+//                                emailProtocol: emailProtocol,
+//                                connectionTransport: ConnectionTransport(fromInt: Int(connectionTransport.rawValue)),
+//                                authMethod: AuthMethod(string: server.authMethod),
+//                                trusted: server.trusted)
 
         //IOS-1033: cleanup
 //        if let port = server.port?.int16Value,
