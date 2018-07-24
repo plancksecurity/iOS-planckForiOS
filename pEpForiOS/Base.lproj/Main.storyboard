@@ -168,7 +168,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Ypz-yH-KbI"/>
-                        <barButtonItem systemItem="compose" id="u8o-KA-6lO">
+                        <barButtonItem image="compose" id="u8o-KA-6lO">
                             <connections>
                                 <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueCompose" modalPresentationStyle="pageSheet" id="6vv-Jr-8Nm"/>
                             </connections>
@@ -975,6 +975,7 @@
         <image name="arrow-lft-active" width="10" height="18"/>
         <image name="arrow-rgt-active" width="10" height="18"/>
         <image name="attachment-list-icon" width="14" height="15"/>
+        <image name="compose" width="33" height="64"/>
         <image name="empty-avatar" width="150" height="150"/>
         <image name="folders-icon-folder" width="25" height="25"/>
         <image name="folders-icon-trash" width="25" height="25"/>
