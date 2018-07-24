@@ -228,6 +228,8 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
     }
 }
 
+// MARK: - QualifyServerIsLocalServiceDelegate
+
 extension LoginViewModel: QualifyServerIsLocalServiceDelegate {
     func didQualify(serverName: String, isLocal: Bool?, error: Error?) {
         GCD.onMain { [weak self] in

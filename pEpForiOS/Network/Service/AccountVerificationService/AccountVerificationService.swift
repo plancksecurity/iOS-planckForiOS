@@ -41,11 +41,9 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
             let errorOps = ops.filter() { return $0.hasErrors() }
             if let op = errorOps.first, let err = op.error {
                 if let imapErr = err as? ImapSyncError {
-                    delegate?.verified(account: account, service: self,
-                                       result: .imapError(imapErr))
+                    delegate?.verified(account: account, service: self, result: .imapError(imapErr))
                 } else if let smtpErr = err as? SmtpSendError {
-                    delegate?.verified(account: account, service: self,
-                                       result: .smtpError(smtpErr))
+                    delegate?.verified(account: account, service: self, result: .smtpError(smtpErr))
                 }
             } else {
                 delegate?.verified(account: account, service: self, result: .ok)
