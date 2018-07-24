@@ -11,24 +11,24 @@ import MessageModel
 class AccountVerificationService: AccountVerificationServiceProtocol {
     weak var delegate: AccountVerificationServiceDelegate?
     var accountVerificationState = AccountVerificationState.idle
-    
+
     var runningOperations = [Account:[BaseOperation]]()
     let verificationQueue = DispatchQueue(
         label: "AccountVerificationService.verificationQueue", qos: .utility, target: nil)
     let backgroundQueue = OperationQueue()
-    
+
     func verify(account: Account) {
         verificationQueue.async {
             self.verifyInternal(account: account)
         }
     }
-    
+
     func removeFromRunning(account: Account) {
         verificationQueue.async {
             self.removeFromRunningInternal(account: account)
         }
     }
-    
+
     func removeFromRunningInternal(account: Account) {
         guard let ops = runningOperations[account] else {
             return
@@ -52,7 +52,7 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
             }
         }
     }
-    
+
     func verifyInternal(account: Account) {
         if runningOperations[account] != nil {
             return
@@ -63,12 +63,11 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
                 Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
                 return
             }
-            let cdAccount = CdAccount.updateOrCreate(account: account)
-            guard let imapConnectInfo = cdAccount.imapConnectInfo else {
+            guard let imapConnectInfo = account.imapConnectInfo else {
                 me.delegate?.verified(account: account, service: me, result: .noImapConnectData)
                 return
             }
-            guard let smtpConnectInfo = cdAccount.smtpConnectInfo else {
+            guard let smtpConnectInfo = account.smtpConnectInfo else {
                 me.delegate?.verified(account: account, service: me, result: .noSmtpConnectData)
                 return
             }
