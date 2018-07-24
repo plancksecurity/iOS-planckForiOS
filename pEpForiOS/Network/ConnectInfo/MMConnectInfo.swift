@@ -26,12 +26,9 @@ class ConnectInfo: Hashable {
     public let credentials: ServerCredentials
     
     public let loginName: String?
-    public let loginPasswordKeyChainKey: String?
+    public let loginPasswordKeyChainKey: String? //IOS-1033: tripple check Oauth still working!
     public var loginPassword: String? {
-        guard let key = loginPasswordKeyChainKey else {
-            return nil
-        }
-        return KeyChain.serverPassword(forKey: key)
+        return credentials.password
     }
     public let networkAddress: String
     public let networkPort: UInt16
