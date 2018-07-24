@@ -12,7 +12,7 @@ import CoreData
  Used for building a line of operations for synching an account.
  */
 public struct AccountConnectInfo {
-    let accountID: NSManagedObjectID//IOS-1033: cleanup.
+    let accountID: NSManagedObjectID
     let imapConnectInfo: EmailConnectInfo?
     let smtpConnectInfo: EmailConnectInfo?
 }
