@@ -24,7 +24,7 @@ class ConnectInfo: Hashable {
     public let account: Account
     public let server: Server
     public let credentials: ServerCredentials
-    
+
     public let loginName: String?
     public let loginPasswordKeyChainKey: String?
     public var loginPassword: String? {
@@ -34,7 +34,7 @@ class ConnectInfo: Hashable {
     public let networkPort: UInt16
     public let networkAddressType: NetworkAddressType?
     public let networkTransportType: NetworkTransportType?
-    
+
     public init(account: Account,
                 server: Server,
                 credentials: ServerCredentials,
@@ -54,9 +54,9 @@ class ConnectInfo: Hashable {
         self.networkAddressType = networkAddressType
         self.networkTransportType = networkTransportType
     }
-    
+
     // MARK: Hashable
-    
+
     /**
      If this was in an extension, the subclasses could not override it. Therefore, it's here.
      */
