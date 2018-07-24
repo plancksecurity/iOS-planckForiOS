@@ -30,7 +30,7 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                     <inset key="contentEdgeInsets" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     <inset key="titleEdgeInsets" minX="25" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                    <state key="normal" title="add account" image="button-add">
+                                    <state key="normal" title="Add Account" image="button-add">
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
