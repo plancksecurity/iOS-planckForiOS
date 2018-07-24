@@ -10,31 +10,7 @@ import MessageModel
 
 extension CdAccount {
     private func emailConnectInfos() -> [EmailConnectInfo] {
-        //        return self.account().emailConnectInfos() //IOS-1033: use this, rm rest
-        var result = [EmailConnectInfo]()
-        guard let cdServers = servers?.allObjects as? [CdServer] else {
-            return result
-        }
-
-        for cdServer in cdServers {
-            guard
-                cdServer.serverType == Server.ServerType.imap ||
-                    cdServer.serverType == Server.ServerType.smtp
-                else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "Unsupported server type")
-                    continue
-            }
-            let server = cdServer.server()
-            let credentials = server.credentials
-            if let emailConnectInfo = emailConnectInfo(account: self.account(),
-                                                       server: server,
-                                                       credentials: credentials) {
-                result.append(emailConnectInfo)
-            }
-        }
-
-        return result
+        return self.account().emailConnectInfos()
     }
 
     /**
@@ -57,45 +33,6 @@ extension CdAccount {
     func emailConnectInfo(account: Account, server: Server,
                           credentials: ServerCredentials) -> EmailConnectInfo? {
         return Account.emailConnectInfo(account: account, server: server, credentials: credentials)
-//        guard
-//            let emailProtocol = EmailProtocol(serverType: server.serverType),
-//            let connectionTransport = server.transport
-//            else {
-//                Log.shared.errorAndCrash(component: #function, errorString: "Missing emailProtocol")
-//                return nil
-//        }
-//
-//        return EmailConnectInfo(account: account,
-//                                server: server,
-//                                credentials: credentials,
-//                                loginName: credentials.loginName,
-//                                loginPasswordKeyChainKey: credentials.key,
-//                                networkAddress: server.address,
-//                                networkPort: server.port,
-//                                networkAddressType: nil,
-//                                networkTransportType: nil,
-//                                emailProtocol: emailProtocol,
-//                                connectionTransport: ConnectionTransport(fromInt: Int(connectionTransport.rawValue)),
-//                                authMethod: AuthMethod(string: server.authMethod),
-//                                trusted: server.trusted)
-
-        //IOS-1033: cleanup
-//        if let port = server.port?.int16Value,
-//            let address = server.address,
-//            let emailProtocol = EmailProtocol(serverType: server.serverType) {
-//            return EmailConnectInfo(
-//                accountObjectID: account.objectID, serverObjectID: server.objectID,
-//                credentialsObjectID: credentials.objectID,
-//                loginName: credentials.loginName,
-//                loginPasswordKeyChainKey: credentials.key,
-//                networkAddress: address, networkPort: UInt16(port),
-//                networkAddressType: nil,
-//                networkTransportType: nil, emailProtocol: emailProtocol,
-//                connectionTransport: ConnectionTransport(fromInt: Int(server.transportRawValue)),
-//                authMethod: AuthMethod(string: server.authMethod),
-//                trusted: server.trusted)
-//        }
-//        return nil
     }
 
     /**

@@ -61,14 +61,7 @@ class LoginImapSyncDelegate: DefaultImapSyncDelegate {
         op.imapSyncData.sync = sync
 
         op.capabilities = sync.capabilities
-        let context = Record.Context.background
-        context.performAndWait {
-            //            if let err = op.imapSyncData.connectInfo.unsetNeedsVerificationAndFinish( //IOS-1033: cleanup.
-//                context: context) {
-//                op.addError(err)
-//            }
-            op.markAsFinished()
-        }
+        op.markAsFinished()
     }
 
     override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
