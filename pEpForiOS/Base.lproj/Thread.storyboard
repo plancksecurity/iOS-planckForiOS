@@ -419,7 +419,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="0OE-2V-PxY"/>
-                        <barButtonItem systemItem="reply" id="wu8-Rw-KTi">
+                        <barButtonItem image="reply" id="wu8-Rw-KTi">
                             <connections>
                                 <action selector="replyButtonTapped:" destination="8tS-ie-Ovo" id="6eg-Mm-ndp"/>
                             </connections>
@@ -492,6 +492,7 @@
         <image name="folders-icon-folder" width="25" height="25"/>
         <image name="folders-icon-trash" width="25" height="25"/>
         <image name="icon-unflagged" width="33" height="64"/>
+        <image name="reply" width="33" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Dhz-Ep-xy2"/>
