@@ -13,10 +13,10 @@ class MoveToFolderTableViewController: BaseTableViewController {
     var viewModel : moveToFolderViewModel?
     let storyboardId = "MoveToFolderViewController"
     private let cellId = "FolderCell"
-    weak var delegate : MoveToFolderDelegate?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
     }
 
     // MARK: - Table view data source
@@ -53,9 +53,7 @@ class MoveToFolderTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let vm = viewModel {
-            if vm.moveMessagesTo(index: indexPath.row) {
-                delegate?.didMove()
-            }
+            vm.moveMessagesTo(index: indexPath.row)
             dismiss(animated: true)
         }
     }

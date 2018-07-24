@@ -61,6 +61,8 @@ class moveToFolderViewModel {
     var items : [moveToFolderCellViewModel]
     var acc : Account
     var messages: [Message]
+    var delegate : MoveToFolderDelegate?
+
     init(account: Account, messages: [Message]) {
         items = []
         self.acc = account
@@ -90,6 +92,9 @@ class moveToFolderViewModel {
                 msg.move(to: items[index].folder)
                 result = true
             }
+        }
+        if result {
+            delegate?.didmove(messages: messages)
         }
         return result
     }

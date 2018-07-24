@@ -24,7 +24,6 @@ class MessageViewModel {
     var isFlagged: Bool = false
     var isSeen: Bool = false
     var dateText: String
-    var messageCount: Int
     var profilePictureComposer: ProfilePictureComposer
     var body: NSAttributedString {
             return getBodyMessage()
@@ -39,10 +38,22 @@ class MessageViewModel {
         isFlagged = message.imapFlags?.flagged ?? false
         isSeen = message.imapFlags?.seen ?? false
         dateText =  (message.sent ?? Date()).smartString()
-        messageCount = message.numberOfMessagesInThread()
         profilePictureComposer = PepProfilePictureComposer()
         bodyPeek = MessageViewModel.getSummary(fromMessage: message)
         self.message = message
+    }
+
+    func messageCount(completion: @escaping (Int)->()) {
+        DispatchQueue.global(qos: .userInitiated).async {
+
+            MessageModel.performAndWait {
+                let messageCount = self.message.numberOfMessagesInThread()
+
+                DispatchQueue.main.async {
+                    completion(messageCount)
+                }
+            }
+        }
     }
 
     private class func address(at folder: Folder?, from message: Message) -> String {
