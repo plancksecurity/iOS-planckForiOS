@@ -7,14 +7,13 @@
 //
 
 import UIKit
-
 import MessageModel
 
 public class LoginImapOperation: ImapSyncOperation {
     var syncDelegate: LoginImapSyncDelegate?
     var capabilities: Set<String>?
     var service: ImapSync
-    
+
     override init(parentName: String = #function,
                   errorContainer: ServiceErrorProtocol = ErrorContainer(),
                   imapSyncData: ImapSyncData) {
