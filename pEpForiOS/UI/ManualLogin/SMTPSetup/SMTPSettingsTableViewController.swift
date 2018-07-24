@@ -197,13 +197,8 @@ UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .backToEmailListSegue:
-            guard
-                let destination = segue.destination as? EmailListViewController else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "Problem casting DVC")
-                    return
-            }
-            destination.appConfig = self.appConfig
+            // nothing to do, since it's an unwind segue the targets already are configured
+            break
         case .viewLogSegue:
             if let dnc = segue.destination as? UINavigationController,
                 let dvc = dnc.rootViewController as? LogViewController {
@@ -221,7 +216,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
             self.isCurrentlyVerifying =  false
             switch result {
             case .ok:
-                // unwind back to INBOX on success
+                // unwind back to INBOX or folder list on success
                 self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
             case .imapError(let err):
                 self.showErrorMessage(err.localizedDescription)

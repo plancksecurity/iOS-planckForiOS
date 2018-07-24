@@ -42,10 +42,7 @@ class NewAccountSetupUITest: XCTestCase {
 
     func testAdditionalAccount() {
         app().launch()
-        let theApp = app()
-        theApp.navigationBars["All"].buttons["Folders"].tap()
-        theApp.tables.buttons["add account"].tap()
-
+        addAccount()
         let account = SecretUITestData.workingAccount2
         newAccountSetup(account: account)
         waitForever()
@@ -75,9 +72,7 @@ class NewAccountSetupUITest: XCTestCase {
         let account1 = SecretUITestData.workingAccount1
         newAccountSetup(account: account1)
 
-        let theApp = app()
-        theApp.navigationBars["All"].buttons["Folders"].tap()
-        theApp.tables.buttons["add account"].tap()
+        addAccount()
 
         let account2 = SecretUITestData.workingAccount2
         newAccountSetup(account: account2)
@@ -240,9 +235,7 @@ class NewAccountSetupUITest: XCTestCase {
     }
 
     func addAdditionalManual(account: UIAccount) {
-        let theApp = app()
-        theApp.navigationBars["All"].buttons["Folders"].tap()
-        theApp.tables.buttons["add account"].tap()
+        addAccount()
 
         signIn(account: account, enterPassword: true)
         switchToManualConfig()
@@ -282,5 +275,11 @@ class NewAccountSetupUITest: XCTestCase {
 
         alertOkButton.tap()
         theApp.buttons["Manual configuration"].tap()
+    }
+
+    func addAccount() {
+        let theApp = app()
+        theApp.navigationBars["All"].buttons["Folders"].tap()
+        theApp.tables.buttons["Add Account"].tap()
     }
 }

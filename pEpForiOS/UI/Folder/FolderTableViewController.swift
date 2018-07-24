@@ -200,6 +200,12 @@ class FolderTableViewController: BaseTableViewController {
             dvc.hidesBottomBarWhenPushed = true
         }
     }
+
+    /**
+     Unwind segue for the case of adding an account that requires manual setup
+     */
+    @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
+    }
 }
 
 // MARK: - LoginTableViewControllerDelegate
