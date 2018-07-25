@@ -175,7 +175,6 @@ class NewAccountSetupUITest: XCTestCase {
         let sheet = theApp.sheets["Transport protocol"]
         sheet.buttons[account.imapTransportSecurityString].tap()
 
-        // TODO: Support alert for choosing transport
         theApp.navigationBars.buttons["Next"].tap()
 
         tf = tablesQuery.textFields["smtpServer"]
