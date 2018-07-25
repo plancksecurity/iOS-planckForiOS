@@ -19,7 +19,6 @@ class MessageViewModel {
     let from: String
     let address: String
     let subject: String
-    let bodyPeek: String
     var isFlagged: Bool = false
     var isSeen: Bool = false
     var dateText: String
@@ -28,6 +27,22 @@ class MessageViewModel {
             return getBodyMessage()
     }
     var message: Message
+
+
+    private var bodyPeek: String? {
+        didSet {
+            informIfBodyPeekCompleted()
+        }
+    }
+
+    var bodyPeekCompletion: ((String) -> ())? = nil {
+        didSet {
+            guard bodyPeekCompletion != nil else {
+                return
+            }
+            informIfBodyPeekCompleted()
+        }
+    }
 
     init(with message: Message) {
         showAttchmentIcon = message.attachments.count > 0
@@ -38,8 +53,29 @@ class MessageViewModel {
         isSeen = message.imapFlags?.seen ?? false
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
-        bodyPeek = MessageViewModel.getSummary(fromMessage: message)
         self.message = message
+        setBodyPeek()
+    }
+
+    func setBodyPeek() {
+        DispatchQueue.global(qos: .userInitiated).async {
+
+            MessageModel.performAndWait {
+                let summary = MessageViewModel.getSummary(fromMessage: self.message)
+
+                DispatchQueue.main.async {
+                    self.bodyPeek = summary
+                }
+            }
+        }
+    }
+
+    func informIfBodyPeekCompleted() {
+        guard let bodyPeek = bodyPeek else {
+            return
+        }
+        bodyPeekCompletion?(bodyPeek)
+        bodyPeekCompletion = nil
     }
 
     func messageCount(completion: @escaping (Int)->()) {

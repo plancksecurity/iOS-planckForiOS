@@ -76,7 +76,9 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     public func configure(for viewModel: MessageViewModel) {
         addressLabel.text = viewModel.from
         subjectLabel.text = viewModel.subject
-        summaryLabel.text = viewModel.bodyPeek
+        viewModel.bodyPeekCompletion = { bodyPeek in
+            self.summaryLabel.text = bodyPeek
+        }
         isFlagged = viewModel.isFlagged
         isSeen = viewModel.isSeen
         hasAttachment = viewModel.showAttchmentIcon
