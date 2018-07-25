@@ -160,11 +160,11 @@ class FolderTableViewController: BaseTableViewController {
     private func showFolder(indexPath: IndexPath?) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
-            let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId)
-                as? EmailListViewController
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
-                return
+            let vc = sb.instantiateViewController(
+                withIdentifier: EmailListViewController.storyboardId)
+                as? EmailListViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
+                    return
         }
         vc.appConfig = appConfig
         if let vm = folderVM, let ip = indexPath {
