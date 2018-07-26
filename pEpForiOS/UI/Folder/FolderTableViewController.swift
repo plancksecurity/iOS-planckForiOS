@@ -205,6 +205,7 @@ class FolderTableViewController: BaseTableViewController {
      Unwind segue for the case of adding an account that requires manual setup
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
+        showNext = true
     }
 }
 
