@@ -656,8 +656,9 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
     class MyScreenComposerProtocol: ScreenComposerProtocol {
         var expectationShowThreadView: ExpectationShowThreadView?
 
-         func showSingleView(for indexPath: IndexPath) {
-
+        func emailListViewModel(_ emailListViewModel: EmailListViewModel,
+                                requestsShowEmailViewFor message: Message) {
+            
         }
 
 
