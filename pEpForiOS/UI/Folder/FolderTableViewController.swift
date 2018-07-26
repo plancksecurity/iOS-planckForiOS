@@ -160,11 +160,11 @@ class FolderTableViewController: BaseTableViewController {
     private func showFolder(indexPath: IndexPath?) {
         let sb = UIStoryboard(name: "Main", bundle: nil)
         guard
-            let vc = sb.instantiateViewController(withIdentifier: EmailListViewController.storyboardId)
-                as? EmailListViewController
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
-                return
+            let vc = sb.instantiateViewController(
+                withIdentifier: EmailListViewController.storyboardId)
+                as? EmailListViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
+                    return
         }
         vc.appConfig = appConfig
         if let vm = folderVM, let ip = indexPath {
@@ -183,7 +183,7 @@ class FolderTableViewController: BaseTableViewController {
         if segue.identifier == "newAccount" {
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginTableViewController else {
+                let vc = nav.rootViewController as? LoginViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Missing VCs")
                     return
             }
@@ -200,13 +200,20 @@ class FolderTableViewController: BaseTableViewController {
             dvc.hidesBottomBarWhenPushed = true
         }
     }
+
+    /**
+     Unwind segue for the case of adding an account that requires manual setup
+     */
+    @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
+        showNext = true
+    }
 }
 
 // MARK: - LoginTableViewControllerDelegate
 
-extension FolderTableViewController: LoginTableViewControllerDelegate {
-    func loginTableViewControllerDidCreateNewAccount(
-        _ loginTableViewController: LoginTableViewController) {
+extension FolderTableViewController: LoginViewControllerDelegate {
+    func loginViewControllerDidCreateNewAccount(
+        _ loginViewController: LoginViewController) {
         showNext = true
     }
 }

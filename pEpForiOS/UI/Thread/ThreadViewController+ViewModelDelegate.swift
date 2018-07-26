@@ -13,6 +13,7 @@ extension ThreadViewController: ThreadedEmailViewModelDelegate {
         updateTableView {
             tableView.insertSections(IndexSet([index]), with: .automatic)
         }
+        numberOfMessages += 1
     }
 
     func emailViewModel(viewModel: ThreadedEmailViewModel, didUpdateDataAt index: Int) {
@@ -27,6 +28,7 @@ extension ThreadViewController: ThreadedEmailViewModelDelegate {
         updateTableView {
             tableView.deleteSections(IndexSet([index]), with: .none)
         }
+        numberOfMessages -= 1
     }
 
     func emailViewModeldidChangeFlag(viewModel: ThreadedEmailViewModel){

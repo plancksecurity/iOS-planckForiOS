@@ -30,7 +30,6 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
 
         let cdAccount2 = SecretTestData().createWorkingCdAccount(number: 1)
-        TestUtil.skipValidation()
         Record.saveAndWait()
         cdAccount2.createRequiredFoldersAndWait()
         Record.saveAndWait()

@@ -116,7 +116,6 @@ class NetworkServiceTests: XCTestCase {
         networkService.sendLayerDelegate = sendLayerDelegate
 
         _ = SecretTestData().createWorkingCdAccount()
-        TestUtil.skipValidation()
         Record.saveAndWait()
 
         networkService.start()
@@ -190,7 +189,6 @@ class NetworkServiceTests: XCTestCase {
         let networkService = NetworkService(keyImportListener: KeyImportService())
 
         _ = SecretTestData().createWorkingCdAccount()
-        TestUtil.skipValidation()
         Record.saveAndWait()
 
         for _ in 0...10 {
@@ -236,7 +234,6 @@ class NetworkServiceTests: XCTestCase {
 
         let cdAccount = useCorrectSmtpAccount ? SecretTestData().createWorkingCdAccount() :
             SecretTestData().createSmtpTimeOutCdAccount()
-        TestUtil.skipValidation()
         Record.saveAndWait()
 
         TestUtil.syncAndWait()

@@ -188,31 +188,6 @@ class TestUtil {
         }
     }
 
-    /**
-     Validates all servers and their credentials without actually validating them.
-     */
-    static func skipValidation() {
-        guard let accs = CdAccount.all() as? [CdAccount] else {
-            XCTAssertTrue(false)
-            return
-        }
-        for acc in accs {
-            acc.needsVerification = false
-        }
-
-        guard let servers = CdServer.all() as? [CdServer] else {
-            XCTAssertTrue(false)
-            return
-        }
-        for server in servers {
-            guard let creds = server.credentials else {
-                XCTAssertTrue(false)
-                return
-            }
-            creds.needsVerification = false
-        }
-    }
-
     static func checkForExistanceAndUniqueness(uuids: [MessageID]) {
         for uuid in uuids {
             if let ms = CdMessage.all(attributes: ["uuid": uuid]) as? [CdMessage] {
@@ -266,9 +241,7 @@ class TestUtil {
 
     // MARK: - Sync Loop
 
-    static public func syncAndWait(numAccountsToSync: Int = 1,
-                                   skipValidation: Bool = true,
-                                   networkService: NetworkService? = nil) {
+    static public func syncAndWait(numAccountsToSync: Int = 1, networkService: NetworkService? = nil) {
         let testCase = XCTestCase()
         let networkService: NetworkService! = networkService != nil ? networkService :
             NetworkService(keyImportListener: KeyImportService())
@@ -281,10 +254,6 @@ class TestUtil {
                                          failOnError: true)
 
         networkService.unitTestDelegate = del
-
-        if skipValidation {
-            TestUtil.skipValidation()
-        }
         Record.saveAndWait()
 
         networkService.start()

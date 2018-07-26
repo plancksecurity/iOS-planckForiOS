@@ -52,7 +52,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         UIHelper.emailListTableHeight(self.tableView)
         self.textFilterButton.isEnabled = false
 
@@ -134,6 +134,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             model = EmailListViewModel(emailListViewModelDelegate: self,
                                        messageSyncService: appConfig.messageSyncService,
                                        folderToShow: theFolder)
+
+            guard let screenComposer = splitViewController as? ScreenComposerProtocol else {
+                return
+            }
+            model?.screenComposer =  screenComposer
         }
     }
     
@@ -168,6 +173,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action: nil)
         self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
         self.navigationController?.title = title
+
     }
 
     private func weCameBackFromAPushedView() -> Bool {
@@ -497,11 +503,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Flag
         if folderIsDraft(parentFolder) {
             // Do not add "Flag" action to drafted mails.
+
             let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
                 self.flagAction(forCellAt: indexPath)
             }
+
             flagAction.hidesWhenSelected = true
-            configure(action: flagAction, with: .flag)
+            
+            let flagged = model?.message(representedByRowAt: indexPath)?.imapFlags?.flagged ?? false
+            let actionDescriptor: SwipeActionDescriptor = flagged == true ? .unflag : .flag
+
+            configure(action: flagAction, with: actionDescriptor)
             swipeActions.append(flagAction)
         }
 
@@ -881,7 +893,7 @@ extension EmailListViewController {
     /**
      Enables manual account setup to unwind to the unified inbox.
      */
-    @IBAction func unwindToFolderView(segue:UIStoryboardSegue) {
+    @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
         folderToShow = UnifiedInbox()
         resetModel()
     }
@@ -960,7 +972,7 @@ extension EmailListViewController: SegueHandlerType {
         case .segueAddNewAccount:
             guard
                 let nav = segue.destination as? UINavigationController,
-                let vc = nav.rootViewController as? LoginTableViewController else {
+                let vc = nav.rootViewController as? LoginViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return
             }
@@ -1056,11 +1068,11 @@ extension EmailListViewController: SegueHandlerType {
     }
 }
 
-// MARK: - LoginTableViewControllerDelegate
+// MARK: - LoginViewControllerDelegate
 
-extension EmailListViewController: LoginTableViewControllerDelegate {
-    func loginTableViewControllerDidCreateNewAccount(
-        _ loginTableViewController: LoginTableViewController) {
+extension EmailListViewController: LoginViewControllerDelegate {
+    func loginViewControllerDidCreateNewAccount(
+        _ loginViewController: LoginViewController) {
         // Setup model after initial account setup
         setup()
     }
@@ -1106,7 +1118,7 @@ enum SwipeActionDescriptor {
         case .reply: name = "reply"
         case .more: name = "more"
         case .flag: name = "flag"
-        case .unflag: name = "unflag"
+        case .unflag: name = "flag"
         case .trash: name = "trash"
         case .archive: name = "archive"
         }

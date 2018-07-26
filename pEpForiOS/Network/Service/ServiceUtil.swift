@@ -20,9 +20,9 @@ open class ServiceUtil {
                 let smtpCI = acc.smtpConnectInfo
                 let imapCI = acc.imapConnectInfo
                 if (smtpCI != nil || imapCI != nil) {
-                    connectInfos.append(AccountConnectInfo(
-                        needsVerification: acc.needsVerification,
-                        accountID: acc.objectID, imapConnectInfo: imapCI, smtpConnectInfo: smtpCI))
+                    connectInfos.append(AccountConnectInfo(accountID: acc.objectID,
+                                                           imapConnectInfo: imapCI,
+                                                           smtpConnectInfo: smtpCI))
                 }
             }
         }
@@ -44,8 +44,7 @@ open class ServiceUtil {
                     Log.shared.errorAndCrash(component: #function, errorString: "No objId")
                     accObjID = NSManagedObjectID() // Use nonsense
                 }
-                connectInfos.append(AccountConnectInfo(needsVerification: acc.needsVerification,
-                                                       accountID: accObjID,
+                connectInfos.append(AccountConnectInfo(accountID: accObjID,
                                                        imapConnectInfo: imapCI,
                                                        smtpConnectInfo: smtpCI))
             }

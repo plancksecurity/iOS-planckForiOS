@@ -10,6 +10,10 @@ import Foundation
 import MessageModel
 
 extension EmailViewController: MoveToFolderDelegate {
+    func didmove(messages: [Message]) {
+        self.didMove()
+    }
+
     func didMove() {
         if let msg = self.message {
             delegate?.emailDisplayDidDelete(message: msg)

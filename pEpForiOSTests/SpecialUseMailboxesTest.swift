@@ -7,10 +7,9 @@
 //
 
 import XCTest
-
 import CoreData
-import pEpForiOS
 import MessageModel
+@testable import pEpForiOS
 
 class SpecialUseMailboxesTest: CoreDataDrivenTestBase {
     /// This test makes sense only for a Yahoo account as special-use

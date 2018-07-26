@@ -38,7 +38,7 @@ class ComposeUtilTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        cdAccount.createRequiredFoldersAndWait(testCase: self)
+        cdAccount.createRequiredFoldersAndWait()
         meSomeUnusedAccount = SecretTestData().createWorkingAccount(number: 1).user
     }
 
@@ -478,7 +478,6 @@ class ComposeUtilTest: CoreDataDrivenTestBase {
     }
 
     private func createOriginalMessage(inFolderOfType type: FolderType,
-                                       /*of account: Account? = nil,*/
                                        from: Identity,
                                        tos: [Identity],
                                        ccs: [Identity],

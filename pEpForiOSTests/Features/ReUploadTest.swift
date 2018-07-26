@@ -331,7 +331,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
             "unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc")
         try! session.setOwnKey(cdAccount.identity!.pEpIdentity(),
                                fingerprint: "550A9E626822040E57CB151A651C4A5DB15B77A3")
-        TestUtil.skipValidation()
         Record.saveAndWait()
         cdAccount.createRequiredFoldersAndWait()
     }
@@ -401,7 +400,6 @@ class ReUploadTest: CoreDataDrivenTestBase {
         Record.saveAndWait()
         // Save new acount
         createe.save()
-        TestUtil.skipValidation()
         guard let cdAccount = createe.cdAccount() else {
             XCTFail("No Accoount")
             return createe

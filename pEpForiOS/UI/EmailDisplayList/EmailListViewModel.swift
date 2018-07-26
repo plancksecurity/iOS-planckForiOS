@@ -19,7 +19,6 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
-    func showThreadView(for indexPath: IndexPath)
 }
 
 // MARK: - FilterUpdateProtocol
@@ -37,7 +36,6 @@ class EmailListViewModel {
         "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
     let messageSyncService: MessageSyncServiceProtocol
-    
     internal var messages: SortedSet<PreviewMessage>
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -51,6 +49,7 @@ class EmailListViewModel {
     internal let threadedMessageFolder: ThreadedMessageFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
+    public var screenComposer: ScreenComposerProtocol?
 
     let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
     { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
@@ -70,6 +69,7 @@ class EmailListViewModel {
     private var selectedItems: Set<IndexPath>?
 
     weak var updateThreadListDelegate: UpdateThreadListDelegate?
+    var defaultFilter: CompositeFilter<FilterBase>?
     
     // MARK: - Life Cycle
     
@@ -82,6 +82,7 @@ class EmailListViewModel {
 
         self.folderToShow = folderToShow
         self.threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
+        self.defaultFilter = folderToShow.filter?.clone()
         resetViewModel()
     }
 
@@ -399,7 +400,7 @@ class EmailListViewModel {
         if isFilterEnabled {
             folderFilter.with(filters: filterViewFilter)
         } else {
-            folderFilter.without(filters: filterViewFilter)
+            self.folderToShow.filter = defaultFilter
         }
         resetViewModel()
     }

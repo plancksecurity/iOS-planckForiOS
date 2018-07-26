@@ -7,8 +7,13 @@
 //
 
 import Foundation
+import MessageModel
 
 extension ThreadedEmailViewModel: MoveToFolderDelegate{
+    func didmove(messages: [Message]) {
+        didMove()
+    }
+
     func didMove() {
         guard let lastMessage = messages.last else {
             return

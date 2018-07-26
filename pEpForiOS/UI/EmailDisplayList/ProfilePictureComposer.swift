@@ -11,7 +11,7 @@ import MessageModel
 
 protocol ProfilePictureComposer {
 
-    func getProfilePicture(for address: String, completion: @escaping (UIImage?)->())
+    func getProfilePicture(for identity: Identity, completion: @escaping (UIImage?)->())
 
     func getSecurityBadge(for message: Message, completion: @escaping (UIImage?) ->())
 

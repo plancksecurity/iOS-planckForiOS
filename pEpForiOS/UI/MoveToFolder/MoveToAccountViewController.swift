@@ -92,8 +92,8 @@ extension MoveToAccountViewController {
         if segue.identifier == "showAccount" {
             if let vc = segue.destination as? MoveToFolderTableViewController, let appCfg = self.appConfig, let vm = selectedViewModel {
                 vc.appConfig = appCfg
+                vm.delegate = self.delegate
                 vc.viewModel = vm
-                vc.delegate = self.delegate
             }
         }
     }

@@ -15,6 +15,9 @@ class LogViewController: BaseViewController {
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var enableLogSwitch: UISwitch!
 
+    override func viewDidAppear(_ animated: Bool) {
+        print("MAO")
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -51,5 +54,11 @@ class LogViewController: BaseViewController {
         } else {
             Log.disableLog()
         }
+    }
+}
+
+extension LogViewController: Dismissable, SelfDismissable {
+    func requestDismiss() {
+        self.dismiss(animated: true, completion: nil)
     }
 }

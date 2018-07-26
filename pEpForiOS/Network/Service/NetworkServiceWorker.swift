@@ -195,10 +195,9 @@ open class NetworkServiceWorker {
     }
 
     func fetchAccounts() -> [CdAccount] {
-        let p = NSPredicate(format: "needsVerification = false")
         var result = [CdAccount]()
         context.performAndWait {
-            result =  CdAccount.all(predicate: p, orderedBy: nil, in: context) as? [CdAccount] ?? []
+            result =  CdAccount.all() ?? []
         }
         return result
     }

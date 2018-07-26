@@ -44,7 +44,6 @@ class FullMessageCell: SwipeTableViewCell,
         }
     }
 
-
     @IBOutlet weak var view: UIView!
     func configure(for viewModel:MessageViewModel) {
         isFlagged = viewModel.isFlagged
@@ -88,7 +87,9 @@ class FullMessageCell: SwipeTableViewCell,
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        self.profilePicture.layer.cornerRadius = round(profilePicture.bounds.size.width / 2)
+        self.profilePicture.layer.masksToBounds = true
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

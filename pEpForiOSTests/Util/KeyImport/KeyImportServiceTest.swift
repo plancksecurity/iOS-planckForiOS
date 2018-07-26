@@ -551,7 +551,6 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
         }
         imapCredentials.loginName = "unittest.ios.3@peptest.ch"
         smtpCredentials.loginName = "unittest.ios.3@peptest.ch"
-        TestUtil.skipValidation()
         Record.saveAndWait()
         cdAccount.createRequiredFoldersAndWait()
 
@@ -572,7 +571,6 @@ class KeyImportServiceTest: CoreDataDrivenTestBase {
     }
 
     private func switchTo(device: Device) {
-//        XCTAssertTrue(PEPUtil.pEpClean())
         super.tearEverythingDown()
         super.setupEverythingUp()
         setupAccount(device: device)

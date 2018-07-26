@@ -10,7 +10,7 @@ import UIKit
 
 class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
-    var appConfig: AppConfig? {
+    var appConfig: AppConfig! {
         get {
             guard _appConfig != nil else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No appConfig?")
@@ -20,7 +20,12 @@ class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
         }
         set {
             _appConfig = newValue
+            didSetAppConfig()
         }
+    }
+
+    func didSetAppConfig() {
+        // Do nothing. Meant to override in subclasses.
     }
 
     override func viewWillAppear(_ animated: Bool) {

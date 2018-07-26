@@ -16,7 +16,7 @@ public class DeleteFolderOperation: ImapSyncOperation {
     var account: CdAccount!
     var syncDelegate: DeleteFolderSyncDelegate?
 
-    public init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+    init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount,
                 folderName: String) {
         self.accountID = account.objectID

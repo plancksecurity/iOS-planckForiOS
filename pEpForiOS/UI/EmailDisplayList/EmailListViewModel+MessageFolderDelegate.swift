@@ -75,8 +75,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                             viewModel: theSelf, didUpdateDataAt: [IndexPath(row: index, section: 0)])
                         if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
                             if theSelf.shouldShowThreadVC() {
-                                theSelf.emailListViewModelDelegate?.showThreadView(
-                                    for: IndexPath(row: index, section: 0))
+                              theSelf.screenComposer?.emailListViewModel(theSelf, requestsShowThreadViewFor: message)
                             } else {
                                 theSelf.updateThreadListDelegate?.added(message: message)
                             }

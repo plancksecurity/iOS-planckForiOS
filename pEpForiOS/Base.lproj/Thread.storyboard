@@ -94,7 +94,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lmq-dE-j3O">
-                                                            <rect key="frame" x="44" y="36" width="20" height="20"/>
+                                                            <rect key="frame" x="44" y="40" width="20" height="20"/>
                                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="EZJ-iq-rKe"/>
@@ -114,7 +114,7 @@
                                                         <constraint firstItem="hki-aE-Mre" firstAttribute="leading" secondItem="b1n-Bu-VHQ" secondAttribute="trailing" constant="8" id="avA-w8-BVb"/>
                                                         <constraint firstItem="LiV-t9-n8p" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hki-aE-Mre" secondAttribute="trailing" constant="8" id="cL0-g2-O1Z"/>
                                                         <constraint firstAttribute="trailing" secondItem="LiV-t9-n8p" secondAttribute="trailing" constant="8" id="cyc-aL-xLQ"/>
-                                                        <constraint firstItem="Lmq-dE-j3O" firstAttribute="bottom" secondItem="b1n-Bu-VHQ" secondAttribute="bottom" id="dcD-nm-kKD"/>
+                                                        <constraint firstItem="Lmq-dE-j3O" firstAttribute="bottom" secondItem="b1n-Bu-VHQ" secondAttribute="bottom" constant="4" id="dcD-nm-kKD"/>
                                                         <constraint firstItem="Lmq-dE-j3O" firstAttribute="trailing" secondItem="b1n-Bu-VHQ" secondAttribute="trailing" id="fGd-aQ-tYZ"/>
                                                         <constraint firstItem="nal-dD-vzH" firstAttribute="top" secondItem="LiV-t9-n8p" secondAttribute="bottom" constant="5" id="lDE-PX-tFY"/>
                                                         <constraint firstItem="b1n-Bu-VHQ" firstAttribute="leading" secondItem="sMr-Gx-h2F" secondAttribute="leadingMargin" constant="8" id="mBb-1s-wGL"/>
@@ -176,7 +176,7 @@
                                                                                     </constraints>
                                                                                 </imageView>
                                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ivx-PK-RPE">
-                                                                                    <rect key="frame" x="44" y="28" width="20" height="20"/>
+                                                                                    <rect key="frame" x="44" y="32" width="20" height="20"/>
                                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="20" id="E76-bS-hUN"/>
@@ -190,7 +190,7 @@
                                                                                 <constraint firstItem="ivx-PK-RPE" firstAttribute="trailing" secondItem="Fte-Eh-jpP" secondAttribute="trailing" id="Dxo-VA-uFc"/>
                                                                                 <constraint firstItem="Fte-Eh-jpP" firstAttribute="leading" secondItem="OdI-WY-AV8" secondAttribute="leadingMargin" constant="8" id="g1Z-cb-EWT"/>
                                                                                 <constraint firstItem="Fte-Eh-jpP" firstAttribute="top" secondItem="OdI-WY-AV8" secondAttribute="top" id="s5N-G1-a9A"/>
-                                                                                <constraint firstItem="ivx-PK-RPE" firstAttribute="bottom" secondItem="Fte-Eh-jpP" secondAttribute="bottom" id="tXI-b0-we4"/>
+                                                                                <constraint firstItem="ivx-PK-RPE" firstAttribute="bottom" secondItem="Fte-Eh-jpP" secondAttribute="bottom" constant="4" id="tXI-b0-we4"/>
                                                                             </constraints>
                                                                         </view>
                                                                         <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="250" axis="vertical" distribution="fillProportionally" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="FKO-Bw-vhC">
@@ -419,7 +419,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="0OE-2V-PxY"/>
-                        <barButtonItem systemItem="reply" id="wu8-Rw-KTi">
+                        <barButtonItem image="reply" id="wu8-Rw-KTi">
                             <connections>
                                 <action selector="replyButtonTapped:" destination="8tS-ie-Ovo" id="6eg-Mm-ndp"/>
                             </connections>
@@ -492,6 +492,7 @@
         <image name="folders-icon-folder" width="25" height="25"/>
         <image name="folders-icon-trash" width="25" height="25"/>
         <image name="icon-unflagged" width="33" height="64"/>
+        <image name="reply" width="33" height="64"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Dhz-Ep-xy2"/>

@@ -47,8 +47,6 @@ class DecryptImportedMessagesTests: XCTestCase {
         cdInbox.name = ImapSync.defaultImapInboxName
         cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdOwnAccount
-
-        TestUtil.skipValidation()
         Record.saveAndWait()
 
         return cdOwnAccount

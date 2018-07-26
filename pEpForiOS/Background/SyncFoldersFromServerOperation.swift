@@ -41,7 +41,7 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
 
     // MARK: - LIFE CYCLE
 
-    public init(parentName: String = #function,
+    init(parentName: String = #function,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary

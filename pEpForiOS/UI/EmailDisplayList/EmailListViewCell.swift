@@ -81,7 +81,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         isSeen = viewModel.isSeen
         hasAttachment = viewModel.showAttchmentIcon
         dateLabel.text = viewModel.dateText
-        messageCount = viewModel.messageCount
+        
+        configureThreadIndicator(for: viewModel)
         if viewModel.senderContactImage != nil {
             setContactImage(image: viewModel.senderContactImage)
         } else {
@@ -94,6 +95,18 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
             image in
             self.setPepRatingImage(image: image)
         }
+    }
+
+    func configureThreadIndicator(for viewModel: MessageViewModel) {
+        guard let _ = messageCountLabel,
+            let _ = threadIndicator else {
+                messageCount = 0
+                return
+        }
+        viewModel.messageCount { (messageCount) in
+            self.messageCount = messageCount
+        }
+
     }
 
     func setPepRatingImage(image: UIImage?) {
