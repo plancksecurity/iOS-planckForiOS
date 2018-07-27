@@ -65,7 +65,7 @@ open class Service: IEmailService {
             // AUTH=LOGIN is not recommended at all, so a simple LOGIN command suffices.
             return fallBackAuthMethod
         } else {
-            // no auth mechanisms have been provides by the server
+            // no auth mechanisms have been provided by the server
             return fallBackAuthMethod
         }
     }
