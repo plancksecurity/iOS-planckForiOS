@@ -46,15 +46,32 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Outlets
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
-    @IBOutlet weak var textFilterButton: UIBarButtonItem!
+    //@IBOutlet weak var textFilterButton: UIBarButtonItem!
+
+    var textFilterButton: UIBarButtonItem = UIBarButtonItem(
+        title: "",
+        style: .plain,
+        target: nil,
+        action: nil)
     
     // MARK: - Life Cycle
     
+    fileprivate func setUpTextFilter() {
+        self.textFilterButton.isEnabled = false
+        self.textFilterButton.action = #selector(self.showFilterOptions(_:))
+        self.textFilterButton.target = self
+
+        let fontSize:CGFloat = 10;
+        let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize);
+        let attributes = [NSAttributedStringKey.font: font];
+
+        self.textFilterButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         UIHelper.emailListTableHeight(self.tableView)
-        self.textFilterButton.isEnabled = false
 
         configureSearchBar()
         tableView.allowsMultipleSelectionDuringEditing = true
@@ -92,6 +109,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
+        setUpTextFilter()
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
 
@@ -339,6 +357,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     }
 
+    @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {
+        performSegue(withIdentifier: .segueShowFilter, sender: self)
+    }
+
     @IBAction func cancelToolbar(_ sender:UIBarButtonItem!) {
         showStandardToolbar()
         tableView.setEditing(false, animated: true)
@@ -413,6 +435,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         stopLoading()
         vm.isFilterEnabled = !vm.isFilterEnabled
+        if vm.isFilterEnabled {
+            let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+                target: nil,
+                action: nil)
+            self.toolbarItems?.insert(textFilterButton, at: 1)
+            self.toolbarItems?.insert(flexibleSpace, at: 1)
+        } else {
+            self.toolbarItems?.remove(at: 1)
+            self.toolbarItems?.remove(at: 1)
+
+        }
         updateFilterButtonView()
     }
     
@@ -911,7 +945,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueReplyAll
         case segueForward
         case segueEditDraft
-        case segueFilter
+        case segueShowFilter
         case segueFolderViews
         case segueShowMoveToFolder
         case showNoMessage
@@ -959,7 +993,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.model = viewModel
             model?.currentDisplayedMessage = viewModel
             model?.updateThreadListDelegate = viewModel
-        case .segueFilter:
+        case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                 return
