@@ -400,7 +400,7 @@ class EmailListViewModel {
         if isFilterEnabled {
             folderFilter.with(filters: filterViewFilter)
         } else {
-            self.folderToShow.filter = defaultFilter
+            self.folderToShow.filter = defaultFilter?.clone()
         }
         resetViewModel()
     }
