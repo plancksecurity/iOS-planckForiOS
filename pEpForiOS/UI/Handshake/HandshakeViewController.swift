@@ -13,6 +13,7 @@ import MessageModel
 class HandshakeViewController: BaseTableViewController {
     var ratingReEvaluator: RatingReEvaluator?
     var backTitle: String?
+    var currentLanguageCode = "en"
 
     var message: Message? {
         didSet {
@@ -31,6 +32,15 @@ class HandshakeViewController: BaseTableViewController {
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableViewAutomaticDimension
+
+        let img = UIImage(named: "grid-globe")
+
+        let item = UIBarButtonItem(image: img,
+                        style: UIBarButtonItemStyle.plain,
+                        target: self,
+                        action: #selector(self.languageSelectedAction(_:)))
+
+        navigationItem.rightBarButtonItems = [item]
     }
 
     override func didReceiveMemoryWarning() {
@@ -122,11 +132,13 @@ class HandshakeViewController: BaseTableViewController {
             let viewModel = createViewModel(partnerIdentity: handshakeCombo.partnerIdentity,
                                             selfIdentity: handshakeCombo.ownIdentity)
             adjustBackgroundColor(viewModel: viewModel, indexPath: indexPath)
+            viewModel.trustwordsLanguage = currentLanguageCode
             cell.viewModel = viewModel
             cell.indexPath = indexPath
             cell.sizeToFit()
             cell.needsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
+
 
             return cell
         }
@@ -205,18 +217,34 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         tableView.updateSize()
     }
 
-    @IBAction func languageSelectedAction(unwindSegue: UIStoryboardSegue) {
-        if let sourceVC = unwindSegue.source as? LanguageListViewController,
-            let lang = sourceVC.chosenLanguage,
-            let indexPath = indexPathRequestingLanguage,
-            let cell = tableView.cellForRow(at: indexPath)
-                as? HandshakePartnerTableViewCell {
-            cell.viewModel?.trustwordsLanguage = lang.code
-            let session = PEPSession()
-            cell.viewModel?.updateTrustwords(session: session)
-            cell.updateTrustwords()
-            tableView.updateSize()
+    @IBAction func languageSelectedAction(_ sender: Any) {
+        let theSession = PEPSession()
+        var languages: [PEPLanguage] = []
+        do {
+            languages = try theSession.languageList()
+        } catch let err as NSError {
+            Log.shared.error(component: #function, error: err)
+            languages = []
         }
+
+        let alertController = UIAlertController.pEpAlertController(title: nil,
+                                                                   message: nil,
+                                                                   preferredStyle: .actionSheet)
+
+        for language in languages {
+            let action =   UIAlertAction.init(title: language.name, style: .default) {_ in
+                self.currentLanguageCode = language.code
+                self.tableView.reloadData()
+            }
+            alertController.addAction(action)
+        }
+        let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel) { _ in
+            alertController.dismiss(animated: true, completion: nil)
+        }
+        
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+
     }
 }
 

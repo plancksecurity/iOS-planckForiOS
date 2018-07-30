@@ -42,7 +42,7 @@
                                                                     <accessibility key="accessibilityConfiguration" identifier="partnerImageView"/>
                                                                 </imageView>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZH-e1-puE">
-                                                                    <rect key="frame" x="28" y="28" width="20" height="20"/>
+                                                                    <rect key="frame" x="28" y="32" width="20" height="20"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="pEpStatusImageView"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" secondItem="hZH-e1-puE" secondAttribute="height" multiplier="1:1" id="And-L7-gTh"/>
@@ -56,23 +56,23 @@
                                                                 <constraint firstAttribute="width" secondItem="SFH-dH-XjY" secondAttribute="height" multiplier="1:1" id="IKs-R6-4ca"/>
                                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="width" secondItem="SFH-dH-XjY" secondAttribute="width" id="KPA-o5-y53"/>
                                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="height" secondItem="SFH-dH-XjY" secondAttribute="height" id="cOE-W5-pie"/>
-                                                                <constraint firstAttribute="bottom" secondItem="hZH-e1-puE" secondAttribute="bottom" id="do2-MY-H0j"/>
+                                                                <constraint firstAttribute="bottom" secondItem="hZH-e1-puE" secondAttribute="bottom" constant="-4" id="do2-MY-H0j"/>
                                                                 <constraint firstAttribute="trailing" secondItem="hZH-e1-puE" secondAttribute="trailing" id="jF0-Ie-G4Z"/>
                                                                 <constraint firstItem="rG1-9L-QdA" firstAttribute="leading" secondItem="SFH-dH-XjY" secondAttribute="leading" id="keh-aa-d4N"/>
                                                             </constraints>
                                                         </view>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vj3-9e-bA1" userLabel="MiddleStackView">
-                                                            <rect key="frame" x="56" y="0.0" width="168" height="48"/>
+                                                            <rect key="frame" x="56" y="0.0" width="224" height="48"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="PartnerNameLabel">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="168" height="20.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="224" height="20.5"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT" userLabel="PrivacyStatusLabel">
-                                                                    <rect key="frame" x="0.0" y="30" width="168" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="30" width="224" height="18"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="privacyStatusTitle"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <nil key="textColor"/>
@@ -80,15 +80,9 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grid-globe" translatesAutoresizingMaskIntoConstraints="NO" id="yXG-vT-v6v" userLabel="LanguageSelectorView">
-                                                            <rect key="frame" x="232" y="0.0" width="48" height="48"/>
-                                                            <accessibility key="accessibilityConfiguration" identifier="Language Selector Image View"/>
-                                                        </imageView>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="48" id="J8w-pv-TxH"/>
-                                                        <constraint firstItem="yXG-vT-v6v" firstAttribute="height" secondItem="SFH-dH-XjY" secondAttribute="height" id="Nen-gh-hvA"/>
-                                                        <constraint firstItem="yXG-vT-v6v" firstAttribute="width" secondItem="SFH-dH-XjY" secondAttribute="width" id="tce-ci-tGB"/>
                                                     </constraints>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" text="Your communication partner is mistrusted." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eaF-0u-kGb" userLabel="PrivacyStatusDescription">
@@ -114,25 +108,25 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="O51-e1-VQJ" userLabel="TrustButtonsStackView">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O51-e1-VQJ" userLabel="TrustButtonsStackView">
                                                     <rect key="frame" x="0.0" y="277" width="280" height="33"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton" customClass="handshakeButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="135" height="33"/>
-                                                            <accessibility key="accessibilityConfiguration" label="confirmButton"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                            <state key="normal" title="Confirm Trustwords"/>
-                                                            <connections>
-                                                                <action selector="confirmAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="0Ra-lN-sx4"/>
-                                                            </connections>
-                                                        </button>
                                                         <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="dbO-2K-SpB" userLabel="WrongButton" customClass="handshakeButton" customModule="pEpForiOS" customModuleProvider="target">
-                                                            <rect key="frame" x="145" y="0.0" width="135" height="33"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="140" height="33"/>
                                                             <accessibility key="accessibilityConfiguration" label="wrongButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Wrong Trustwords"/>
                                                             <connections>
                                                                 <action selector="wrongAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="UGm-r5-suP"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="Jgi-7k-Ymf" userLabel="ConfirmButton" customClass="handshakeButton" customModule="pEpForiOS" customModuleProvider="target">
+                                                            <rect key="frame" x="140" y="0.0" width="140" height="33"/>
+                                                            <accessibility key="accessibilityConfiguration" label="confirmButton"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                            <state key="normal" title="Confirm Trustwords"/>
+                                                            <connections>
+                                                                <action selector="confirmAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="0Ra-lN-sx4"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -151,7 +145,6 @@
                                 <connections>
                                     <outlet property="confirmButton" destination="Jgi-7k-Ymf" id="HLm-tc-MV5"/>
                                     <outlet property="headerView" destination="Hwo-n8-tYE" id="zNp-a3-bgC"/>
-                                    <outlet property="languageSelectorImageView" destination="yXG-vT-v6v" id="MzY-mh-9Wi"/>
                                     <outlet property="pEpStatusImageView" destination="hZH-e1-puE" id="YT2-Mj-hro"/>
                                     <outlet property="partnerImageView" destination="rG1-9L-QdA" id="Czw-W0-5iJ"/>
                                     <outlet property="partnerNameLabel" destination="hFh-wv-YAc" id="ZDB-k9-YM8"/>
@@ -258,6 +251,5 @@
     </scenes>
     <resources>
         <image name="empty-avatar" width="150" height="150"/>
-        <image name="grid-globe" width="18" height="18"/>
     </resources>
 </document>

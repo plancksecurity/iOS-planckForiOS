@@ -50,7 +50,11 @@ class HandshakePartnerTableViewCellViewModel {
      */
     var partnerColor: PEP_color
 
-    var trustwordsLanguage: String
+    var trustwordsLanguage: String{
+        didSet{
+            updateTrustwords(session: session)
+        }
+    }
     var trustwordsFull = false
 
     var ownName: String {
