@@ -45,10 +45,8 @@ class MessageViewModel {
 
     func messageCount(completion: @escaping (Int)->()) {
         DispatchQueue.global(qos: .userInitiated).async {
-
-            MessageModel.performAndWait {
+            MessageModel.perform {
                 let messageCount = self.message.numberOfMessagesInThread()
-
                 DispatchQueue.main.async {
                     completion(messageCount)
                 }
