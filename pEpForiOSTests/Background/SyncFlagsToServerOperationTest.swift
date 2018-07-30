@@ -22,10 +22,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
             op.completionBlock = nil
@@ -99,10 +96,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -170,10 +164,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count)
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -243,10 +234,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -327,10 +315,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(messagesToBeSynced.count, messages.count,
                        "all messages should need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -406,10 +391,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -486,10 +468,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -566,10 +545,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -645,12 +621,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function,
-                                                  imapSyncData: imapSyncData,
-                                                  folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -720,10 +691,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -796,10 +764,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, 0)
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -874,12 +839,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function,
-                                                  imapSyncData: imapSyncData,
-                                                  folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -954,10 +914,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -1032,12 +989,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function,
-                                                  imapSyncData: imapSyncData,
-                                                  folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -1112,10 +1064,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function, imapSyncData: imapSyncData, folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -1190,12 +1139,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             folder: inbox, context: Record.Context.main)
         XCTAssertEqual(messagesToBeSynced.count, messages.count, "all messages need to be synced")
 
-        guard let op = SyncFlagsToServerOperation(parentName: #function,
-                                                  imapSyncData: imapSyncData,
-                                                  folder: inbox) else {
-            XCTFail()
-            return
-        }
+        let op = SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
 
         let expEmailsSynced = expectation(description: "expEmailsSynced")
         op.completionBlock = {
@@ -1278,13 +1222,8 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
         let numSyncOpsToTrigger = 5
         var ops = [SyncFlagsToServerOperation]()
         for i in 1...numSyncOpsToTrigger {
-            guard let op = SyncFlagsToServerOperation(parentName: #function,
-                imapSyncData: imapSyncData,
-                folder: inbox)
-                else {
-                    XCTFail()
-                    return
-            }
+            let op =
+                SyncFlagsToServerOperation(imapSyncData: imapSyncData, folderID: inbox.objectID)
             let expEmailsSynced = expectation(description: "expEmailsSynced\(i)")
             op.completionBlock = {
                 op.completionBlock = nil

@@ -396,15 +396,14 @@ open class NetworkServiceWorker {
                             lastOp = syncMessagesOp
                             operations.append(syncMessagesOp)
                         }
-                        if let syncFlagsOp =
+                        let syncFlagsOp =
                             SyncFlagsToServerOperation(parentName: me.description,
                                                        errorContainer: errorContainer,
                                                        imapSyncData: imapSyncData,
-                                                       folderID: folderID) {
-                            syncFlagsOp.addDependency(lastOp)
-                            lastOp = syncFlagsOp
-                            operations.append(syncFlagsOp)
-                        }
+                                                       folderID: folderID)
+                        syncFlagsOp.addDependency(lastOp)
+                        lastOp = syncFlagsOp
+                        operations.append(syncFlagsOp)
                     }
                 }
             }

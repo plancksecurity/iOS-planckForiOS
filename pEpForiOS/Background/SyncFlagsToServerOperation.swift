@@ -16,10 +16,22 @@ protocol SyncFlagsToServerOperationDelegate: class {
 /// Sends (syncs) local changes of Imap flags to server.
 public class SyncFlagsToServerOperation: ImapSyncOperation {
     var folderID: NSManagedObjectID
-    let folderName: String
+
+    lazy var folderName: String? = {
+        var result: String? = nil
+        privateMOC.performAndWait {
+            guard
+                let folder = privateMOC.object(with: folderID) as? CdFolder,
+                let folderName = folder.name else {
+                    return
+            }
+            result = folderName
+        }
+        return result
+    }()
 
     private var currentlyProcessedMessage: CdMessage?
-    public var numberOfMessagesSynced: Int {
+    var numberOfMessagesSynced: Int {
         return changedMessageIDs.count
     }
 
@@ -27,48 +39,11 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     var changedMessageIDs = [NSManagedObjectID]()
     weak var delegate: SyncFlagsToServerOperationDelegate?
 
-    init?(parentName: String = #function,
-          errorContainer: ServiceErrorProtocol = ErrorContainer(),
-          imapSyncData: ImapSyncData,
-          folder: CdFolder) {
-        guard let moc = folder.managedObjectContext else {
-            Log.shared.errorAndCrash(component: #function, errorString: "MO without moc")
-            return nil
-        }
-        var folderName:String? = nil
-        var folderID:NSManagedObjectID? = nil
-        moc.performAndWait {
-            if let fn = folder.name {
-                folderName = fn
-            } else {
-                return
-            }
-            folderID = folder.objectID
-        }
-        guard let safeFolderName = folderName, let safeFolderId = folderID else {
-            return nil
-        }
-        self.folderName = safeFolderName
-        self.folderID = safeFolderId
-        
+    init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
+         imapSyncData: ImapSyncData,  folderID: NSManagedObjectID) {
+        self.folderID = folderID
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
-    }
-
-    convenience init?(parentName: String,
-                      errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                      imapSyncData: ImapSyncData, folderID: NSManagedObjectID) {
-        let moc = Record.Context.background
-        var folder: CdFolder? = nil;
-        moc.performAndWait {
-            folder = moc.object(with: folderID) as? CdFolder
-        }
-        guard let safeFolder = folder else {
-            return nil
-        }
-        
-        self.init(parentName: parentName, errorContainer: errorContainer,
-                  imapSyncData: imapSyncData, folder: safeFolder)
     }
 
     public override func main() {
@@ -77,18 +52,23 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
             return
         }
         privateMOC.perform() {
-            self.startSync(context: self.privateMOC)
+            self.startSync()
         }
     }
 
-    func startSync(context: NSManagedObjectContext) {
+    func startSync() {
+        guard let folderName = folderName else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folderName")
+            waitForBackgroundTasksToFinish()
+            return
+        }
         syncDelegate = SyncFlagsToServerSyncDelegate(errorHandler: self)
         imapSyncData.sync?.delegate = syncDelegate
         // Immediately check for work. If there is none, bail out
-        if let _ = nextMessageToBeSynced(context: context) {
+        if let _ = nextMessageToBeSynced() {
             if !self.isCancelled, let sync = imapSyncData.sync {
                 if !sync.openMailBox(name: folderName) {
-                    syncNextMessage(context: context)
+                    syncNextMessage()
                 }
             }
         } else {
@@ -96,8 +76,8 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
         }
     }
 
-    public static func messagesToBeSynced(
-        folder: CdFolder, context: NSManagedObjectContext) -> [CdMessage] {
+    public static func messagesToBeSynced(folder: CdFolder,
+                                          context: NSManagedObjectContext) -> [CdMessage] {
         let pFlagsChanged = CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
         return CdMessage.all(
             predicate: pFlagsChanged,
@@ -105,60 +85,59 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
             as? [CdMessage] ?? []
     }
 
-    func nextMessageToBeSynced(context: NSManagedObjectContext) -> CdMessage? {
-        guard let folder = context.object(with: folderID) as? CdFolder else {
+    func nextMessageToBeSynced() -> CdMessage? {
+        guard let folder = privateMOC.object(with: folderID) as? CdFolder else {
             addError(BackgroundError.CoreDataError.couldNotFindFolder(info: comp))
             waitForBackgroundTasksToFinish()
             return nil
         }
         let messagesToBeSynced = SyncFlagsToServerOperation.messagesToBeSynced(folder: folder,
-                                                                               context: context)
+                                                                               context: privateMOC)
         return messagesToBeSynced.first
     }
 
-    func syncNextMessage(context: NSManagedObjectContext) {
+    func syncNextMessage() {
         guard !isCancelled else {
             waitForBackgroundTasksToFinish()
             return
         }
-        context.performAndWait() { [weak self] in
+        privateMOC.performAndWait() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            guard let m = me.nextMessageToBeSynced(context: context) else {
+            guard let m = me.nextMessageToBeSynced() else {
                 me.waitForBackgroundTasksToFinish()
                 return
             }
-            me.updateFlags(message: m, context: context)
+            me.updateFlags(message: m)
         }
     }
 
     func folderOpenCompleted() {
-        syncNextMessage(context: privateMOC)
+        syncNextMessage()
     }
-    
-    private func
-        currentMessageNeedSyncRemoveFlagsToServer(context: NSManagedObjectContext) -> Bool {
+
+    private func currentMessageNeedSyncRemoveFlagsToServer() -> Bool {
         guard let message = currentlyProcessedMessage else {
             return false
         }
         var result = false
-        context.performAndWait {
+        privateMOC.performAndWait {
             result = message.storeCommandForUpdateFlags(to: .remove) != nil
         }
         return result
     }
 
-    func updateFlags(message: CdMessage, context: NSManagedObjectContext) {
+    func updateFlags(message: CdMessage) {
         currentlyProcessedMessage = message
-        updateFlags(to: .add, context: context)
+        updateFlags(to: .add)
     }
 
-    private func updateFlags(to mode:UpdateFlagsMode, context: NSManagedObjectContext) {
+    private func updateFlags(to mode:UpdateFlagsMode) {
         guard let message = currentlyProcessedMessage else {
             Log.shared.errorAndCrash(component:"\(#function)[\(#line)]", errorString: "No message!")
-            syncNextMessage(context: context)
+            syncNextMessage()
             return
         }
 
@@ -182,45 +161,44 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
             } else {
                 Log.shared.errorAndCrash(component: comp, errorString: "No IMAP store command")
             }
-        } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer(context: context) {
-            updateFlags(to: .remove, context: context)
+        } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer() {
+            updateFlags(to: .remove)
         } else {
-            syncNextMessage(context: context)
+            syncNextMessage()
         }
     }
 
     // MARK: - ImapSyncDelegate (internal)
 
     func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
-        let moc = privateMOC
-        moc.performAndWait { [weak self] in
+        privateMOC.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "I am gone already")
                 return
             }
             // flags to add have been synced, but we might need to sync flags to remove also before
             // processing the next message.
-            if currentMessageNeedSyncRemoveFlagsToServer(context: moc) {
-                updateFlags(to: .remove, context: moc)
+            if currentMessageNeedSyncRemoveFlagsToServer() {
+                updateFlags(to: .remove)
                 return
             }
             guard let n = notification else {
                 handle(error: PantomimeError.missingNotification)
                 return
             }
-            me.storeMessages(context: moc, notification: n) { [weak self] in
+            me.storeMessages(notification: n) { [weak self] in
                 guard let me = self else {
                     Log.shared.errorAndCrash(component: #function, errorString: "I am gone already")
                     return
                 }
-                me.syncNextMessage(context: moc)
+                me.syncNextMessage()
             }
         }
     }
 
-    func storeMessages(context: NSManagedObjectContext,
-                       notification n: Notification, handler: () -> ()) {
-        guard let folder = context.object(with: folderID) as? CdFolder else {
+    func storeMessages(notification n: Notification, handler: () -> ()) {
+        let moc = privateMOC
+        guard let folder = moc.object(with: folderID) as? CdFolder else {
             addError(BackgroundError.CoreDataError.couldNotFindFolder(info: comp))
             waitForBackgroundTasksToFinish()
             handler()
@@ -240,11 +218,11 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
 
         for cw in cwMessages {
             if let cdMsg = CdMessage.first(
-                attributes: ["uid": cw.uid(), "parent": folder], in: context) {
+                attributes: ["uid": cw.uid(), "parent": folder]) {
                 let cwFlags = cw.flags()
-                let imap = cdMsg.imapFields(context: context)
+                let imap = cdMsg.imapFields(context: privateMOC)
 
-                let cdFlags = imap.serverFlags ?? CdImapFlags.create(context: context)
+                let cdFlags = imap.serverFlags ?? CdImapFlags.create(context: moc)
                 imap.serverFlags = cdFlags
 
                 cdFlags.update(cwFlags: cwFlags)
@@ -254,7 +232,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
                 handle(error: BackgroundError.CoreDataError.couldNotFindMessage(info: nil))
             }
         }
-        context.saveAndLogErrors()
+        moc.saveAndLogErrors()
         handler()
     }
 }
