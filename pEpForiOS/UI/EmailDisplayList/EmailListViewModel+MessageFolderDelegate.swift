@@ -39,15 +39,24 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The createe is no message. Ignore.
             return
         }
-        if !shouldBeDisplayed(message: message){
+        if !shouldBeDisplayed(message: message) {
             return
         }
 
-        // Is a Message (not a Folder)
+        // With threading, incoming messages might miss the filter
+        // but still be considered as a child message.
+        var messagePassedFilter = true
+
         if let filter = folderToShow.filter,
             !filter.fulfillsFilter(message: message) {
-            // The message does not fit in current filter criteria. Ignore- and do not show it.
-            return
+            // The message does not fit in current filter criteria.
+            if AppSettings.threadedViewEnabled {
+                // In case of threading, it could be a child message
+                messagePassedFilter = false
+            } else {
+                // No threading -> this message can be ignored
+                return
+            }
         }
 
         let previewMessage = PreviewMessage(withMessage: message)
@@ -65,7 +74,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                         viewModel: theSelf, didInsertDataAt: [indexPath])
                 }
 
-                if referencedMessages.isEmpty {
+                if referencedMessages.isEmpty && messagePassedFilter {
                     insertAsTopMessage()
                 } else {
                     if let (index, _) = theSelf.referencedTopMessageIndex(
