@@ -10,6 +10,7 @@ import Foundation
 import MessageModel
 
 class AccountsSettingsViewModel {
+    var settingsDelegate: SettingsUpdated?
     var sections = [AccountsSettingsSectionViewModel]()
 
     init() {

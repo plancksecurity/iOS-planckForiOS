@@ -13,6 +13,7 @@ import Foundation
 
 class PassiveModeViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
 
+    var settingsDelegate: SettingsUpdated?
     var settingCellType: AccountSettingsCellType
     var type: SettingType
     var title : String

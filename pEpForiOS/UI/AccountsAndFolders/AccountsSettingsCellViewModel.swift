@@ -38,6 +38,7 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
     var type: SettingType
     var account: Account?
     var status: Bool?
+    var settingsDelegate: SettingsUpdated?
 
     init(account: Account) {
         self.type = .account
@@ -120,6 +121,7 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
 
     public func delete() {
         self.account?.delete()
+        self.settingsDelegate?.importantSettingsUpdated()
     }
 
     private func onOffStateString(forState enabled: Bool) -> String {

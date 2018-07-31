@@ -11,6 +11,7 @@ import SwipeCellKit
 class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     let viewModel = AccountsSettingsViewModel()
     var settingSwitchViewModel: SettingSwitchProtocol?
+    var settingsDelegate : SettingsUpdated?
 
     /** Our vanilla table view cell */
     let accountsCellIdentifier = "accountsCell"
@@ -26,6 +27,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
+        viewModel.settingsDelegate = self.settingsDelegate
         super.viewDidLoad()
         title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(self.tableView)
@@ -85,6 +87,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             }
             cell.textLabel?.text = vm.title
             cell.detailTextLabel?.text = vm.detail
+            vm.settingsDelegate = self.settingsDelegate
             cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
             cell.delegate = self
             return cell

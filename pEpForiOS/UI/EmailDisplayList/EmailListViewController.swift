@@ -1112,6 +1112,14 @@ extension EmailListViewController: LoginViewControllerDelegate {
     }
 }
 
+extension EmailListViewController: SettingsUpdated {
+    func importantSettingsUpdated() {
+        self.tableView.reloadData()
+    }
+
+
+}
+
 /**
  Swipe configuration.
  */

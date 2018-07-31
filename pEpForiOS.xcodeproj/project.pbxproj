@@ -479,6 +479,7 @@
 		B761A80A20F5F0A6000832C2 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */; };
 		B7698D5420DA99E200CB32B4 /* SettingsSwichtUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7698D5320DA99E200CB32B4 /* SettingsSwichtUtil.swift */; };
 		B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
+		B775D1F7210E303B0077E006 /* SettingsUpdatedprotocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B775D1F6210E303B0077E006 /* SettingsUpdatedprotocol.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
 		B78371D320F3A2A200C35A8D /* PassiveModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78371D220F3A2A200C35A8D /* PassiveModeViewModel.swift */; };
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
@@ -1019,6 +1020,7 @@
 		B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		B7698D5320DA99E200CB32B4 /* SettingsSwichtUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwichtUtil.swift; sourceTree = "<group>"; };
 		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
+		B775D1F6210E303B0077E006 /* SettingsUpdatedprotocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsUpdatedprotocol.swift; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
 		B78371D220F3A2A200C35A8D /* PassiveModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassiveModeViewModel.swift; sourceTree = "<group>"; };
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
@@ -2323,6 +2325,7 @@
 				B72528341EE953BC00815118 /* AccountsSettingsCellViewModel.swift */,
 				B72528361EE9562200815118 /* AccountsSettingsSectionViewModel.swift */,
 				B78371D220F3A2A200C35A8D /* PassiveModeViewModel.swift */,
+				B775D1F6210E303B0077E006 /* SettingsUpdatedprotocol.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -2881,6 +2884,7 @@
 				007A542920F7AD3A00AC1E21 /* WrappedCell.swift in Sources */,
 				150DF6D32052ED4800A9DCF7 /* UIView+Autolayout.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
+				B775D1F7210E303B0077E006 /* SettingsUpdatedprotocol.swift in Sources */,
 				4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
 				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,

@@ -14,6 +14,7 @@ class ThreadedSwitchViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
     var title: String
     var description: String
     var switchValue: Bool
+    var settingsDelegate: SettingsUpdated?
 
     init(type: SettingType) {
         self.type = type
@@ -30,5 +31,6 @@ class ThreadedSwitchViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
     func switchAction(value: Bool) {
         AppSettings.threadedViewEnabled = value
         FolderThreading.switchThreading(onOrOff: value)
+        self.settingsDelegate?.importantSettingsUpdated()
     }
 }
