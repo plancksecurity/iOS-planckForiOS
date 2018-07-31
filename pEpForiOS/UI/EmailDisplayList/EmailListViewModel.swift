@@ -98,18 +98,18 @@ class EmailListViewModel {
         // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
         queue.addOperation { [weak self] in
-            if let theSelf = self {
-                let messagesToDisplay = theSelf.folderToShow.allMessages()
-                let previewMessages = messagesToDisplay.map {
-                    PreviewMessage(withMessage: $0)
-                }
-
-                theSelf.messages = SortedSet(array: previewMessages,
-                                             sortBlock: theSelf.sortByDateSentAscending)
-                DispatchQueue.main.async {
-                    theSelf.emailListViewModelDelegate?.updateView()
-                    theSelf.startListeningToChanges()
-                }
+            guard let me = self else {
+                return
+            }
+            let messagesToDisplay = me.folderToShow.allMessages()
+            let previewMessages = messagesToDisplay.map {
+                PreviewMessage(withMessage: $0)
+            }
+            me.messages = SortedSet(array: previewMessages,
+                                    sortBlock: me.sortByDateSentAscending)
+            DispatchQueue.main.async {
+                me.emailListViewModelDelegate?.updateView()
+                me.startListeningToChanges()
             }
         }
     }
