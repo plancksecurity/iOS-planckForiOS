@@ -257,7 +257,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Action Edit Button
 
-    private var tempToolbarItems:  [UIBarButtonItem]?
+    private var tempToolbarItems: [UIBarButtonItem]?
     private var editRightButton: UIBarButtonItem?
     var flagToolbarButton : UIBarButtonItem?
     var unflagToolbarButton : UIBarButtonItem?
@@ -339,7 +339,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         moveToolbarButton?.isEnabled = false
 
         let pEp = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)), target: self)
-
 
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
@@ -471,13 +470,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             textFilterButton.title = "Filter by: " + txt
         }
     }
-    
+
     // MARK: - UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model?.rowCount ?? 0
     }
-    
+
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
@@ -647,12 +646,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         queue.cancelAllOperations()
         queue.waitUntilAllOperationsAreFinished()
     }
-    
+
     private func queue(operation op:Operation, for indexPath: IndexPath) {
         operations[indexPath] = op
         queue.addOperation(op)
     }
-    
+
     private func cancelOperation(for indexPath:IndexPath) {
         guard let op = operations.removeValue(forKey: indexPath) else {
             return
@@ -784,7 +783,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
             showNoMessageSelectedIfNeeded()
         }
     }
-    
+
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
 
@@ -798,8 +797,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-
-    
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message) {
         // ignore
@@ -839,7 +836,7 @@ extension EmailListViewController {
         }
         present(alertControler, animated: true, completion: nil)
     }
-    
+
     // MARK: Action Sheet Actions
 
     private func createMoveToFolderAction() -> UIAlertAction {
@@ -851,7 +848,7 @@ extension EmailListViewController {
             self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
         }
     }
-    
+
     func createCancelAction() -> UIAlertAction {
         let title = NSLocalizedString("Cancel", comment: "EmailList action title")
         return  UIAlertAction(title: title, style: .cancel) { (action) in
@@ -860,21 +857,21 @@ extension EmailListViewController {
             self.tableView.endUpdates()
         }
     }
-    
+
     func createReplyAction() ->  UIAlertAction {
         let title = NSLocalizedString("Reply", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReply, sender: self)
         }
     }
-    
+
     func createReplyAllAction() ->  UIAlertAction {
         let title = NSLocalizedString("Reply All", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyAll, sender: self)
         }
     }
-    
+
     func createForwardAction() -> UIAlertAction {
         let title = NSLocalizedString("Forward", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
@@ -896,7 +893,7 @@ extension EmailListViewController {
         }
         return rowAction
     }
-    
+
     func flagAction(forCellAt indexPath: IndexPath) {
         guard let row = model?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
@@ -909,11 +906,10 @@ extension EmailListViewController {
         }
     }
 
-
     func deleteAction(forCellAt indexPath: IndexPath) {
         model?.delete(forIndexPath: indexPath)
     }
-    
+
     func moreAction(forCellAt indexPath: IndexPath) {
         self.showMoreActionSheet(forRowAt: indexPath)
     }
@@ -1051,7 +1047,7 @@ extension EmailListViewController: SegueHandlerType {
             break
         }
     }
-    
+
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
         // nothing to do.
     }
@@ -1114,8 +1110,6 @@ extension EmailListViewController: SettingsUpdated {
     func importantSettingsUpdated() {
         self.tableView.reloadData()
     }
-
-
 }
 
 /**
