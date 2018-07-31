@@ -19,7 +19,7 @@ class EmailViewController: BaseTableViewController {
     @IBOutlet var moveToFolderButton: UIBarButtonItem!
     @IBOutlet var replyButton: UIBarButtonItem!
     @IBOutlet var pepButton: UIBarButtonItem!
-    
+    @IBOutlet var pepRating: UIBarButtonItem!
     var barItems: [UIBarButtonItem]?
 
     var message: Message?
@@ -393,7 +393,13 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func showHandshakeView(gestureRecognizer: UITapGestureRecognizer) {
-        performSegue(withIdentifier: .segueHandshake, sender: self)
+        if (splitViewController?.isCollapsed) ?? true {
+            performSegue(withIdentifier: .segueHandshakeCollapsed, sender: self)
+
+        } else {
+            performSegue(withIdentifier: .segueHandshake, sender: self)
+
+        }
     }
 }
 
@@ -455,6 +461,7 @@ extension EmailViewController: SegueHandlerType {
         case segueReplyAllForm
         case segueForward
         case segueHandshake
+        case segueHandshakeCollapsed
         case segueShowMoveToFolder
         case unwindToThread
         case noSegue
@@ -492,11 +499,20 @@ extension EmailViewController: SegueHandlerType {
                 destination.viewModel = MoveToAccountViewModel(messages: [msg])
             }
             destination.delegate = self
-        case .segueHandshake:
-            guard let destination = segue.destination as? HandshakeViewController else {
+        case .segueHandshake, .segueHandshakeCollapsed:
+
+            guard let destination = segue.destination as? HandshakeViewController,
+            let titleView = navigationItem.titleView else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                 break
             }
+
+            destination.popoverPresentationController?.delegate = self
+            destination.popoverPresentationController?.sourceView = titleView
+            destination.popoverPresentationController?.sourceRect = CGRect(x: titleView.bounds.midX,
+                                                                           y:titleView.bounds.midY,
+                                                                           width:0,
+                                                                           height:0)
             destination.appConfig = appConfig
             destination.message = message
             destination.ratingReEvaluator = ratingReEvaluator
@@ -505,6 +521,9 @@ extension EmailViewController: SegueHandlerType {
             break
         }
     }
+
+    
+
 }
 
 // MARK: - RatingReEvaluatorDelegate

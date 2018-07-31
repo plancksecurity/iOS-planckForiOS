@@ -50,6 +50,7 @@ class HandshakeViewController: BaseTableViewController {
     // MARK: - Layout
 
     override func viewDidLayoutSubviews() {
+        popoverPresentationController?.sourceView = navigationItem.titleView
         var changedPreferredMaxLayoutWidth = false
 
         let cells = tableView.visibleCells
@@ -245,6 +246,10 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)
 
+    }
+
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return UIModalPresentationStyle.none
     }
 }
 
