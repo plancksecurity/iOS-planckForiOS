@@ -51,7 +51,16 @@ class CellDetailTransition: NSObject, UIViewControllerAnimatedTransitioning {
         let originalFrame = fromCellView.frame
 
         var fromFrame: CGRect!
-        let toFrame = toView.frame
+        var toFrame = toView.frame
+        
+        if #available(iOS 11, *) {
+            
+        }
+        else {
+            toFrame.origin.y = 64.0
+            toFrame.size.height = toFrame.size.height - 64.0
+        }
+        
         fromFrame = containerView.convert(fromCellView.frame, from: cell)
         toView.frame = fromFrame
         toView.alpha = 0
