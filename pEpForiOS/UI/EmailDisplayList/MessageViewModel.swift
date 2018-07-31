@@ -13,7 +13,6 @@ class MessageViewModel {
 
     static var maxBodyPreviewCharacters = 120
 
-
     var senderContactImage: UIImage?
     var ratingImage: UIImage?
     var showAttchmentIcon: Bool = false
@@ -45,10 +44,8 @@ class MessageViewModel {
 
     func messageCount(completion: @escaping (Int)->()) {
         DispatchQueue.global(qos: .userInitiated).async {
-
-            MessageModel.performAndWait {
+            MessageModel.perform {
                 let messageCount = self.message.numberOfMessagesInThread()
-
                 DispatchQueue.main.async {
                     completion(messageCount)
                 }
@@ -61,16 +58,9 @@ class MessageViewModel {
             return ""
         }
         switch folder.folderType {
-        case .all: fallthrough
-        case .archive: fallthrough
-        case .spam: fallthrough
-        case .trash: fallthrough
-        case .flagged: fallthrough
-        case .inbox: fallthrough
-        case .normal:
+        case .all, .archive, .spam, .trash, .flagged, .inbox, .normal:
             return (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
-        case .drafts: fallthrough
-        case .sent:
+        case .drafts, .sent:
             return message.to.first?.userNameOrAddress ?? ""
         }
     }
@@ -112,7 +102,6 @@ class MessageViewModel {
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
         profilePictureComposer.getSecurityBadge(for: message, completion: completion)
     }
-
 
     func getBodyMessage() -> NSMutableAttributedString {
         let finalText = NSMutableAttributedString()
@@ -159,4 +148,3 @@ class MessageViewModel {
 
 
 }
-    
