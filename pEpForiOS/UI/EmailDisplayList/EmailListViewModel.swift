@@ -93,7 +93,7 @@ class EmailListViewModel {
     internal func stopListeningToChanges() {
         MessageModelConfig.messageFolderDelegate = nil
     }
-    
+
     private func resetViewModel() {
         // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
@@ -105,7 +105,7 @@ class EmailListViewModel {
                 }
 
                 theSelf.messages = SortedSet(array: previewMessages,
-                                          sortBlock: theSelf.sortByDateSentAscending)
+                                             sortBlock: theSelf.sortByDateSentAscending)
                 DispatchQueue.main.async {
                     theSelf.emailListViewModelDelegate?.updateView()
                     theSelf.startListeningToChanges()
@@ -113,13 +113,13 @@ class EmailListViewModel {
             }
         }
     }
-    
+
     // MARK: - Public Data Access & Manipulation
 
     func index(of message: Message) -> Int? {
         return messages.index(of: PreviewMessage(withMessage: message))
     }
-    
+
     func viewModel(for index: Int) -> MessageViewModel? {
         guard let message = messages.object(at: index)?.message() else {
             Log.shared.errorAndCrash(component: #function,
@@ -129,11 +129,10 @@ class EmailListViewModel {
         return MessageViewModel(with: message)
     }
 
-    
     var rowCount: Int {
         return messages.count
     }
-    
+
     /// Returns the senders contact image to display.
     /// This is a possibly time consuming process and shold not be called from the main thread.
     ///
@@ -147,7 +146,7 @@ class EmailListViewModel {
         }
         return contactImageTool.identityImage(for: previewMessage.from)
     }
-    
+
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
         guard
             indexPath.row < messages.count,
@@ -158,7 +157,7 @@ class EmailListViewModel {
         }
         return contactImageTool.cachedIdentityImage(forIdentity: previewMessage.from)
     }
-    
+
     func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
         guard
             indexPath.row < messages.count,
@@ -276,7 +275,7 @@ class EmailListViewModel {
     func setFlagged(forIndexPath indexPath: IndexPath) {
         setFlaggedValue(forIndexPath: indexPath, newValue: true)
     }
-    
+
     func unsetFlagged(forIndexPath indexPath: IndexPath) {
         setFlaggedValue(forIndexPath: indexPath, newValue: false)
     }
@@ -310,7 +309,7 @@ class EmailListViewModel {
                                                                       didUpdateDataAt: [indexPath])
         }
     }
-    
+
     func delete(forIndexPath indexPath: IndexPath) {
         guard let deletedMessage = deleteMessage(at: indexPath) else {
             Log.shared.errorAndCrash(component: #function,
@@ -335,11 +334,11 @@ class EmailListViewModel {
         // or the tip of a thread. `threadedMessageFolder` will figure it out.
         threadedMessageFolder.deleteThread(message: message)
     }
-    
+
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
         return messages.object(at: indexPath.row)?.message()
     }
-    
+
     func freeMemory() {
         contactImageTool.clearCache()
     }
@@ -404,7 +403,7 @@ class EmailListViewModel {
         }
         resetViewModel()
     }
-    
+
     public func setSearchFilter(forSearchText txt: String = "") {
         if txt == "" {
             assuredFilterOfFolderToShow().removeSearchFilter()
@@ -416,7 +415,7 @@ class EmailListViewModel {
         }
         resetViewModel()
     }
-    
+
     public func removeSearchFilter() {
         guard let filter = folderToShow.filter else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
