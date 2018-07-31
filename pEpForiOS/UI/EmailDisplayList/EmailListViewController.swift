@@ -242,7 +242,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         vm.markRead(forIndexPath: indexPath)
     }
 
-    private func showNotMessageSelectedIfNeeded() {
+    private func showNoMessageSelectedIfNeeded() {
         guard let splitViewController = self.splitViewController else {
             return
         }
@@ -480,10 +480,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: EmailListViewCell.storyboardId,
-            for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
+                                                 for: indexPath)
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
             guard let viewModel =  model?.viewModel(for: indexPath.row) else {
@@ -783,7 +781,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
         if let lastSelectedIndexPath = lastSelectedIndexPath,
             indexPaths.contains(lastSelectedIndexPath) {
-            showNotMessageSelectedIfNeeded()
+            showNoMessageSelectedIfNeeded()
         }
     }
     
@@ -811,7 +809,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         loadingBlocked = false
         tableView.dataSource = self
         tableView.reloadData()
-        showNotMessageSelectedIfNeeded()
+        showNoMessageSelectedIfNeeded()
     }
 }
 
