@@ -67,7 +67,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
         }
     }
 
-    func process(context: NSManagedObjectContext) {
+    private func process(context: NSManagedObjectContext) {
         guard
             let cdAccount = context.object(
                 with: imapSyncData.connectInfo.accountObjectID) as? CdAccount
@@ -91,16 +91,27 @@ public class SyncMessagesOperation: ImapSyncOperation {
         self.imapSyncData.sync?.folderBuilder = folderBuilder
 
         guard let sync = self.imapSyncData.sync else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No sync")
             handle(error: BackgroundError.GeneralError.illegalState(info: "No sync"))
             return
         }
-        if !sync.openMailBox(name: self.folderToOpen) {
-            sync.imapState.currentFolder?.resetMatchedUIDs()
+
+        resetUidCache()
+        if !sync.openMailBox(name: self.folderToOpen, updateExistsCount: true) {
             self.syncMessages(sync)
         }
     }
 
-    func syncMessages(_ sync: ImapSync) {
+    private func resetUidCache() {
+        guard let sync = self.imapSyncData.sync else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No sync")
+            handle(error: BackgroundError.GeneralError.illegalState(info: "No sync"))
+            return
+        }
+        sync.imapState.currentFolder?.resetMatchedUIDs()
+    }
+
+    private func syncMessages(_ sync: ImapSync) {
         do {
             try sync.syncMessages(firstUID: firstUID, lastUID: lastUID, updateExistsCount: true)
         } catch {
@@ -109,7 +120,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
         }
     }
 
-    func deleteDeletedMails(context: NSManagedObjectContext, existingUIDs: Set<AnyHashable>) {
+    private func deleteDeletedMails(context: NSManagedObjectContext, existingUIDs: Set<AnyHashable>) {
         guard
             let theFolderID = folderID,
             let folder = context.object(with: theFolderID) as? CdFolder else {
@@ -132,7 +143,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
 
     // MARK: - ImapSyncDelegate (internal)
 
-    func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
+    fileprivate func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
         // delete locally whatever was not mentioned in our big sync
         if let folder = sync.imapState.currentFolder {
             let existingUIDs = folder.existingUIDs()
@@ -144,7 +155,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
         markAsFinished()
     }
 
-    func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
+    fileprivate func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         syncMessages(sync)
     }
 
