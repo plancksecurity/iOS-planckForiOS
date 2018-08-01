@@ -192,7 +192,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
 
         let previewMessage = PreviewMessage(withMessage: message)
-        if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
+        if !previewMessage.flagsDiffer(previewMessage: existingMessage) { //IOS-1224: handle: message is flagged deleted
             // The only message properties displayed in this view that might be updated
             // are flagged and seen.
             // We got called even the flaggs did not change. Ignore.

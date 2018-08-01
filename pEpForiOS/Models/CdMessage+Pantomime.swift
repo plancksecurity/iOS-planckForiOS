@@ -471,6 +471,12 @@ extension CdMessage {
         if !flags.deleted {
             MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
         }
+            // IOS-1224: cuurrent solution. Awaiting answer on #dev.
+            // For me /Delete flag modified is also a message update.
+            // The current UI implementation has another opinion though.
+        else {
+            MessageModelConfig.messageFolderDelegate?.didDelete(messageFolder: msg)
+        }
     }
 
     /**
