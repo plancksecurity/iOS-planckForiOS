@@ -246,11 +246,10 @@ extension PersistentImapFolder: CWIMAPCache {
                 let msn = cdMsg.imap?.messageNumber
                 cdMsg.deleteAndInformDelegate(context: self.privateMOC)
                 if let theCdFolder = cdFolder, let theMsn = msn {
-                    let p1 = NSPredicate(
-                        format: "parent = %@ and imap.messageNumber > %d",
-                        theCdFolder, theMsn)
-                    let cdMsgs = CdMessage.all(
-                        predicate: p1, in: self.privateMOC) as? [CdMessage] ?? []
+                    let p1 = NSPredicate(format: "parent = %@ and imap.messageNumber > %d",
+                                         theCdFolder, theMsn)
+                    let cdMsgs = CdMessage.all(predicate: p1,
+                                               in: self.privateMOC) as? [CdMessage] ?? []
                     for aCdMsg in cdMsgs {
                         let oldMsn = aCdMsg.imapFields().messageNumber
                         if oldMsn > 0 {
