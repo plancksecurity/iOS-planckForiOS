@@ -102,7 +102,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
 
     func syncMessages(_ sync: ImapSync) {
         do {
-            try sync.syncMessages(firstUID: firstUID, lastUID: lastUID)
+            try sync.syncMessages(firstUID: firstUID, lastUID: lastUID, updateExistsCount: true)
         } catch {
             addError(error)
             waitForBackgroundTasksToFinish()
