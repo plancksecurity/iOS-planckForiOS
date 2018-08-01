@@ -238,8 +238,8 @@ open class ImapSync: Service {
         folder.fetchUidsForNewMails()
     }
 
-    open func syncMessages(firstUID: UInt, lastUID: UInt) throws {
-        let folder = try openFolder(updateExistsCount: false)
+    open func syncMessages(firstUID: UInt, lastUID: UInt, updateExistsCount: Bool = false) throws {
+        let folder = try openFolder(updateExistsCount: updateExistsCount)
         folder.syncExistingFirstUID(firstUID, lastUID: lastUID)
     }
 
