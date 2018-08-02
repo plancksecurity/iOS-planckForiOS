@@ -12,8 +12,9 @@ protocol SecureWebViewControllerDelegate {
     /// Called after the webview has finished loadding and layouting its subviews.
     /// - Parameters:
     ///   - webViewController: calling view controller
-    ///   - size: webview.scrollview.contentSize after loading html content and layouting
-    func secureWebViewController(_ webViewController: SecureWebViewController, sizeChangedTo size: CGSize)
+    ///   - sizeChangedTo: webview.scrollview.contentSize after loading html content and layouting
+    func secureWebViewController(_ webViewController: SecureWebViewController,
+                                 sizeChangedTo size: CGSize)
 }
 
 /// Webview that does not:
@@ -47,7 +48,8 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
-    var delegate: SecureWebViewControllerDelegate?
+    var delegate: SecureWebViewControllerDelegate? //IOS-1222 TODO: make weak
+    weak var urlClickHandler: UrlClickHandlerProtocol?
 
     // MARK: - Life Cycle
 
@@ -114,7 +116,7 @@ class SecureWebViewController: UIViewController {
                 // We ignore it.
                 return
             }
-            compiledBlockList = loadedRuleList  
+            compiledBlockList = loadedRuleList
         }
         loadGroup.notify(queue: DispatchQueue.main) {
             if compiledBlockList != nil {
@@ -155,23 +157,23 @@ class SecureWebViewController: UIViewController {
     ///     and loaded locally by CidHandler.
     private var blockRulesJson: String {
         return """
-         [{
-             "trigger": {
-                 "url-filter": ".*"
-             },
-             "action": {
-                 "type": "block"
-             }
+        [{
+            "trigger": {
+                "url-filter": ".*"
+            },
+            "action": {
+                "type": "block"
+            }
         },
         {
             "trigger": {
                 "url-filter": "cid"
-        },
+            },
             "action": {
                 "type": "ignore-previous-rules"
-        }
+            }
         }]
-      """
+        """
     }
 
     // MARK: - Handle Content Size Changes
@@ -248,7 +250,7 @@ class SecureWebViewController: UIViewController {
             a:link {
                 color:\(UIColor.pEpDarkGreenHex);
                 text-decoration: underline;
-            }
+        }
         """
         let tweak = """
             \(scaleToFitHtml)
@@ -263,17 +265,17 @@ class SecureWebViewController: UIViewController {
         if html.contains(find: "<head>") {
             result = html.replacingOccurrences(of: "<head>", with:
                 """
-        <head>
-            \(tweak)
-        """)
+                <head>
+                \(tweak)
+                """)
         } else if html.contains(find: "<html>") {
             result = html.replacingOccurrences(of: "<html>", with:
                 """
-        <html>
-                <head>
-                    \(tweak)
-                </head>
-        """
+                <html>
+                    <head>
+                        \(tweak)
+                    </head>
+                """
             )
         }
         return result
@@ -318,12 +320,22 @@ extension SecureWebViewController: WKNavigationDelegate {
             decisionHandler(.allow)
             return
         case .linkActivated:
-            // Open clicked links in external apps
-            guard let newURL = navigationAction.request.url, UIApplication.shared.canOpenURL(newURL)
-                else {
-                    break
+            guard let url = navigationAction.request.url else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Link to nonexisting URL has been clicked?")
+                break
             }
-            UIApplication.shared.openURL(newURL)
+            if url.scheme == "mailto" {
+                // The user clicked on an email URL.
+                urlClickHandler?.didClickMailToUrlLink(sender: self, url: url)
+            } else {
+                // The user clicked a links we do not allow custom handling for.
+                // Try to open it in an appropriate app, do nothing if that fails.
+                guard UIApplication.shared.canOpenURL(url) else {
+                    break
+                }
+                UIApplication.shared.openURL(url)
+            }
         case .backForward, .formResubmitted, .formSubmitted, .reload:
             // ignore
             break
