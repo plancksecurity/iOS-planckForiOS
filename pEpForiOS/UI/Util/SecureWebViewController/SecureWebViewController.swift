@@ -8,7 +8,7 @@
 
 import WebKit
 
-protocol SecureWebViewControllerDelegate {
+protocol SecureWebViewControllerDelegate: class {
     /// Called after the webview has finished loadding and layouting its subviews.
     /// - Parameters:
     ///   - webViewController: calling view controller
@@ -48,7 +48,7 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
-    var delegate: SecureWebViewControllerDelegate? //IOS-1222 TODO: make weak
+    weak var delegate: SecureWebViewControllerDelegate?
     weak var urlClickHandler: UrlClickHandlerProtocol?
 
     // MARK: - Life Cycle
