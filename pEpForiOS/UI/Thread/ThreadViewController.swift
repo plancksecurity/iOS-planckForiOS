@@ -20,7 +20,7 @@ class ThreadViewController: BaseViewController {
             self.navigationItem.title = String(numberOfMessages)  + " messages"
         }
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
@@ -104,7 +104,9 @@ class ThreadViewController: BaseViewController {
     }
 }
 
-extension ThreadViewController: UrlClickHandlerProtocol {
+// MARK: - UrlClickHandlerProtocol
+
+extension ThreadViewController: UrlClickHandlerProtocol {  //IOS-1222 implement ClickHandler to DRY
     func didClickMailToUrlLink(sender: AnyObject, url: URL) {
         Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
     }

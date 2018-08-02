@@ -218,7 +218,7 @@ class EmailViewController: BaseTableViewController {
         }
         vc.scrollingEnabled = false
         vc.delegate = self
-
+        vc.urlClickHandler = self
         htmlViewerViewControllerExists = true
 
         return vc
@@ -260,7 +260,7 @@ class EmailViewController: BaseTableViewController {
                 htmlViewerViewController.view.superview == contentCell.contentView {
                 htmlViewerViewController.view.removeFromSuperview()
             }
-            contentCell.updateCell(model: rowData, message: m)
+            contentCell.updateCell(model: rowData, message: m, clickHandler: self)
         }
     }
 
@@ -522,8 +522,6 @@ extension EmailViewController: SegueHandlerType {
         }
     }
 
-    
-
 }
 
 // MARK: - RatingReEvaluatorDelegate
@@ -586,6 +584,25 @@ extension EmailViewController: SecureWebViewControllerDelegate {
     }
 }
 
-fileprivate extension Selector {
+private extension Selector {
     static let okButtonPressed = #selector(EmailViewController.okButtonPressed(sender:))
+}
+
+// MARK: - UITextViewDelegate
+
+extension EmailViewController: UITextViewDelegate { //IOS-1222 implement ClickHandler to DRY
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange) -> Bool {
+        Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
+        return true
+    }
+}
+
+// MARK: - UrlClickHandlerProtocol
+
+extension EmailViewController: UrlClickHandlerProtocol {  //IOS-1222 implement ClickHandler to DRY
+    func didClickMailToUrlLink(sender: AnyObject, url: URL) {
+        Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
+    }
 }

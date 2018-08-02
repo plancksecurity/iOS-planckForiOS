@@ -184,7 +184,9 @@ class FullMessageCell: SwipeTableViewCell,
     }
 }
 
-extension FullMessageCell: UITextViewDelegate {
+// MARK: - UITextViewDelegate
+
+extension FullMessageCell: UITextViewDelegate { //IOS-1222 implement ClickHandler to DRY
     func textView(_ textView: UITextView,
                   shouldInteractWith URL: URL,
                   in characterRange: NSRange) -> Bool {
