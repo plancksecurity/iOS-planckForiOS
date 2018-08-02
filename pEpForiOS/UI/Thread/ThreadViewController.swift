@@ -101,5 +101,10 @@ class ThreadViewController: BaseViewController {
 
         present(alert, animated: true, completion: nil)
     }
+}
 
+extension ThreadViewController: UrlClickHandlerProtocol {
+    func didClickMailToUrlLink(sender: AnyObject, url: URL) {
+        Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
+    }
 }

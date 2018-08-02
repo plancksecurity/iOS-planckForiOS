@@ -16,6 +16,8 @@ class FullMessageCell: SwipeTableViewCell,
 
     static var flaggedImage: UIImage? = nil
 
+    weak var clickHandler: UrlClickHandlerProtocol?
+
     var requestsReload: (() -> Void)?
 
     @IBOutlet weak var contentHeightConstraint: NSLayoutConstraint!
@@ -75,6 +77,10 @@ class FullMessageCell: SwipeTableViewCell,
             bodyText.attributedText = viewModel.body
             bodyText.isHidden = false
             bodyText.tintColor = UIColor.pEpGreen
+
+            bodyText.dataDetectorTypes = UIDataDetectorTypes.link
+            bodyText.delegate = self
+
             // We are not allowed to use a webview (iOS<11) or do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
             if htmlViewerViewControllerExists &&
@@ -82,14 +88,12 @@ class FullMessageCell: SwipeTableViewCell,
                 htmlViewerViewController.view.removeFromSuperview()
             }
         }
-
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         self.profilePicture.layer.cornerRadius = round(profilePicture.bounds.size.width / 2)
         self.profilePicture.layer.masksToBounds = true
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -103,10 +107,8 @@ class FullMessageCell: SwipeTableViewCell,
         
     }
 
-    /**
-     Indicate that the htmlViewerViewController already exists, to avoid
-     instantiation just to check if it has been instantiated.
-     */
+    /// Indicate that the htmlViewerViewController already exists, to avoid
+    /// instantiation just to check if it has been instantiated.
     var htmlViewerViewControllerExists = false
 
     lazy private var htmlViewerViewController: SecureWebViewController = {
@@ -120,6 +122,7 @@ class FullMessageCell: SwipeTableViewCell,
         }
         vc.scrollingEnabled = false
         vc.delegate = self
+        vc.urlClickHandler = clickHandler
 
         htmlViewerViewControllerExists = true
 
@@ -179,6 +182,13 @@ class FullMessageCell: SwipeTableViewCell,
         flaggedIcon.isHidden = true
         flaggedIcon.image = UIImage.init(named: "icon-unflagged")
     }
+}
 
-
+extension FullMessageCell: UITextViewDelegate {
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange) -> Bool {
+        Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
+        return true
+    }
 }
