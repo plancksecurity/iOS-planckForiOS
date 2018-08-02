@@ -74,7 +74,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func referencedTopMessages(message: Message) -> [Message] {
-        let topMessages = underlyingFolder.allMessagesNonThreaded()
+        let topMessages = allMessages()
         var result = [Message]()
 
         MessageModel.performAndWait {
