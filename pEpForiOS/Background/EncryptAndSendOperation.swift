@@ -103,7 +103,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             return
         }
 
-        msg.cleansePEPHeaders()
+        msg.removeOriginalRatingHeader()
 
         let pantMail = PEPUtil.pantomime(pEpMessageDict: msg)
         smtpSend.smtp.setRecipients(nil)
@@ -254,7 +254,7 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
 }
 
 extension Dictionary where Key == String {
-    public mutating func cleansePEPHeaders() {
+    public mutating func removeOriginalRatingHeader() {
         let headersToIgnore = Set(["X-EncStatus".lowercased()])
         let newHeaders = NSMutableArray()
         if let theHeaders = self[kPepOptFields] as? [NSArray] {
