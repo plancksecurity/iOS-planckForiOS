@@ -30,31 +30,28 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         self.appConfig = appConfig
     }
 
-    private func presentComposeView() {
-
+    private func presentComposeView(forRecipientInUrl url: URL) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
+            let address = url.firstRecipientAddress(),
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier: Constants.composeSceneStoryboardId) as? UINavigationController,
             let composeVc = composeNavigationController.rootViewController as? ComposeTableViewController
             else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Nothing to present.")
+                Log.shared.errorAndCrash(component: #function, errorString: "Missing required data")
                 return
         }
         composeVc.appConfig = appConfig
-        composeVc.composeMode = .normal
-
-        //IOS-1222: we need a new compose mode or extend .normal to accept a recipient without a originalMessage
-
-        
+        composeVc.composeMode = .replyFrom
+        let to = Identity(address: address)
+        composeVc.prefilledTo = to
         actor.present(composeNavigationController, animated: true)
-
     }
 
     // MARK: - UITextViewDelegate
 
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         if URL.scheme == "mailto" {
-            presentComposeView()
+            presentComposeView(forRecipientInUrl: URL)
             return false
         }
         return true
@@ -63,6 +60,6 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
     // MARK: - SecureWebViewUrlClickHandlerProtocol
 
     func secureWebViewController(_ webViewController: SecureWebViewController, didClickMailToUrlLink url: URL) {
-        presentComposeView()
+        presentComposeView(forRecipientInUrl: url)
     }
 }
