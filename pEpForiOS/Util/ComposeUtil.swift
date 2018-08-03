@@ -18,7 +18,7 @@ struct ComposeUtil {
         case forward
     }
 
-    static func initialTos(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] { //BUFF: HERE: test .normal
+    static func initialTos(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
         var result = [Identity]()
         switch composeMode {
         case .replyFrom:
