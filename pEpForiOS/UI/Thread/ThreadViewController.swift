@@ -21,6 +21,10 @@ class ThreadViewController: BaseViewController {
         }
     }
 
+    lazy var clickHandler: UrlClickHandler = {
+        return UrlClickHandler(actor: self)
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
@@ -101,13 +105,5 @@ class ThreadViewController: BaseViewController {
         }
 
         present(alert, animated: true, completion: nil)
-    }
-}
-
-// MARK: - UrlClickHandlerProtocol
-
-extension ThreadViewController: UrlClickHandlerProtocol {  //IOS-1222 implement ClickHandler to DRY
-    func didClickMailToUrlLink(sender: AnyObject, url: URL) {
-        Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
     }
 }

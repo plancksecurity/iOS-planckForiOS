@@ -34,6 +34,10 @@ class EmailViewController: BaseTableViewController {
     lazy private var backgroundQueue = OperationQueue()
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
+    lazy var clickHandler: UrlClickHandler = {
+        return UrlClickHandler(actor: self)
+    }()
+
     weak var delegate: EmailDisplayDelegate?
 
     // MARK: - LIFE CYCLE
@@ -218,7 +222,7 @@ class EmailViewController: BaseTableViewController {
         }
         vc.scrollingEnabled = false
         vc.delegate = self
-        vc.urlClickHandler = self
+        vc.urlClickHandler = clickHandler
         htmlViewerViewControllerExists = true
 
         return vc
@@ -260,7 +264,7 @@ class EmailViewController: BaseTableViewController {
                 htmlViewerViewController.view.superview == contentCell.contentView {
                 htmlViewerViewController.view.removeFromSuperview()
             }
-            contentCell.updateCell(model: rowData, message: m, clickHandler: self)
+            contentCell.updateCell(model: rowData, message: m, clickHandler: clickHandler)
         }
     }
 
@@ -586,23 +590,4 @@ extension EmailViewController: SecureWebViewControllerDelegate {
 
 private extension Selector {
     static let okButtonPressed = #selector(EmailViewController.okButtonPressed(sender:))
-}
-
-// MARK: - UITextViewDelegate
-
-extension EmailViewController: UITextViewDelegate { //IOS-1222 implement ClickHandler to DRY
-    func textView(_ textView: UITextView,
-                  shouldInteractWith URL: URL,
-                  in characterRange: NSRange) -> Bool {
-        Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
-        return true
-    }
-}
-
-// MARK: - UrlClickHandlerProtocol
-
-extension EmailViewController: UrlClickHandlerProtocol {  //IOS-1222 implement ClickHandler to DRY
-    func didClickMailToUrlLink(sender: AnyObject, url: URL) {
-        Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
-    }
 }

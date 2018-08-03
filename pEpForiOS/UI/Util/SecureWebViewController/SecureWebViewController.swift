@@ -17,6 +17,15 @@ protocol SecureWebViewControllerDelegate: class {
                                  sizeChangedTo size: CGSize)
 }
 
+protocol SecureWebViewUrlClickHandlerProtocol: class {
+    /// Called whenever a mailto:// URL has been clicked by the user.
+    /// - Parameters:
+    ///   - sender: caller of the message
+    ///   - mailToUrlClicked: the clicked URL
+    func secureWebViewController(_ webViewController: SecureWebViewController,
+                           didClickMailToUrlLink url: URL)
+}
+
 /// Webview that does not:
 /// - excecute JS
 /// - load any remote content
@@ -49,7 +58,7 @@ class SecureWebViewController: UIViewController {
         }
     }
     weak var delegate: SecureWebViewControllerDelegate?
-    weak var urlClickHandler: UrlClickHandlerProtocol?
+    weak var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
 
     // MARK: - Life Cycle
 
@@ -327,7 +336,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             }
             if url.scheme == "mailto" {
                 // The user clicked on an email URL.
-                urlClickHandler?.didClickMailToUrlLink(sender: self, url: url)
+                urlClickHandler?.secureWebViewController(self, didClickMailToUrlLink: url)
             } else {
                 // The user clicked a links we do not allow custom handling for.
                 // Try to open it in an appropriate app, do nothing if that fails.

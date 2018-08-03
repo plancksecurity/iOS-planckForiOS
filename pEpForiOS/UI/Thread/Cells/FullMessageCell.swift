@@ -16,6 +16,7 @@ class FullMessageCell: SwipeTableViewCell,
 
     static var flaggedImage: UIImage? = nil
 
+    //!!!: IOS-1159: this must be removed after refactoring SecureWebViewController out of herer
     weak var clickHandler: UrlClickHandlerProtocol?
 
     var requestsReload: (() -> Void)?
@@ -79,7 +80,7 @@ class FullMessageCell: SwipeTableViewCell,
             bodyText.tintColor = UIColor.pEpGreen
 
             bodyText.dataDetectorTypes = UIDataDetectorTypes.link
-            bodyText.delegate = self
+            bodyText.delegate = clickHandler
 
             // We are not allowed to use a webview (iOS<11) or do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
@@ -181,16 +182,5 @@ class FullMessageCell: SwipeTableViewCell,
     private func unsetFlagged() {
         flaggedIcon.isHidden = true
         flaggedIcon.image = UIImage.init(named: "icon-unflagged")
-    }
-}
-
-// MARK: - UITextViewDelegate
-
-extension FullMessageCell: UITextViewDelegate { //IOS-1222 implement ClickHandler to DRY
-    func textView(_ textView: UITextView,
-                  shouldInteractWith URL: URL,
-                  in characterRange: NSRange) -> Bool {
-        Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
-        return true
     }
 }

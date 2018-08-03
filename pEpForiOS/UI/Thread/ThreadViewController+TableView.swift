@@ -50,7 +50,7 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         if let fullCell = cell as? FullMessageCell {
-            fullCell.clickHandler = self
+            fullCell.clickHandler = clickHandler
         }
 
         cell.configure(for: viewModel)
