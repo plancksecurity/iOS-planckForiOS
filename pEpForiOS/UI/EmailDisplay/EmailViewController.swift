@@ -35,7 +35,7 @@ class EmailViewController: BaseTableViewController {
     lazy private var documentInteractionController = UIDocumentInteractionController()
 
     lazy var clickHandler: UrlClickHandler = {
-        return UrlClickHandler(actor: self)
+        return UrlClickHandler(actor: self, appConfig: appConfig)
     }()
 
     weak var delegate: EmailDisplayDelegate?

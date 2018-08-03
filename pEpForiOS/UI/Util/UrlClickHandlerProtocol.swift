@@ -6,34 +6,55 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import MessageModel
 
 /// If pEp offers custom handling for a URL clicked by a user, here is the place for the custom
 /// implementation.
 /// Note: Conforming classes have to inherit from NSObject. Conforming to UITextViewDelegate
 /// requires that for some reason.
 protocol UrlClickHandlerProtocol: SecureWebViewUrlClickHandlerProtocol, UITextViewDelegate {
-    /// View Controller to act on.
-    var actor: UIViewController? { get }
-    /// - Parameter actor: View Controller to act on.
-    init(actor: UIViewController)
+    /// - Parameters:
+    ///   - actor: View Controller to act on
+    ///   - appConfig: appConfig. Required to pass around
+    init(actor: UIViewController, appConfig: AppConfig)
 }
 
 //IOS-1222: move!
 class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
     /// View controller to act on.
-    var actor: UIViewController?
+    var actor: UIViewController
+    let appConfig: AppConfig
 
-    required init(actor: UIViewController) {
+    required init(actor: UIViewController, appConfig: AppConfig) {
         self.actor = actor
+        self.appConfig = appConfig
+    }
+
+    private func presentComposeView() {
+
+        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        guard
+            let composeNavigationController = storyboard.instantiateViewController(withIdentifier: Constants.composeSceneStoryboardId) as? UINavigationController,
+            let composeVc = composeNavigationController.rootViewController as? ComposeTableViewController
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Nothing to present.")
+                return
+        }
+        composeVc.appConfig = appConfig
+        composeVc.composeMode = .normal
+
+        //IOS-1222: we need a new compose mode or extend .normal to accept a recipient without a originalMessage
+
+        
+        actor.present(composeNavigationController, animated: true)
+
     }
 
     // MARK: - UITextViewDelegate
 
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         if URL.scheme == "mailto" {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "IOS-1222 unimplemented stub")
+            presentComposeView()
             return false
         }
         return true
@@ -42,6 +63,6 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
     // MARK: - SecureWebViewUrlClickHandlerProtocol
 
     func secureWebViewController(_ webViewController: SecureWebViewController, didClickMailToUrlLink url: URL) {
-         Log.shared.errorAndCrash(component: #function, errorString: "IOS-1222 unimplemented stub")
+        presentComposeView()
     }
 }

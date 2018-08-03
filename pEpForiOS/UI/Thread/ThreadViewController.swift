@@ -22,7 +22,7 @@ class ThreadViewController: BaseViewController {
     }
 
     lazy var clickHandler: UrlClickHandler = {
-        return UrlClickHandler(actor: self)
+        return UrlClickHandler(actor: self, appConfig: appConfig)
     }()
 
     override func viewDidLoad() {
