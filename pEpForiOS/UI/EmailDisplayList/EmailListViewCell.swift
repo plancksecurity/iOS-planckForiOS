@@ -147,6 +147,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         ratingImage.isHidden = true
         hasAttachment = false
         contactImageView.image = EmailListViewCell.emptyContactImage
+        messageCountLabel?.isHidden = true
+        threadIndicator?.isHidden = true
     }
 
     private func setFlagged() {
