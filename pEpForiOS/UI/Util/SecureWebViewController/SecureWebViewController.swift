@@ -23,7 +23,7 @@ protocol SecureWebViewUrlClickHandlerProtocol: class {
     ///   - sender: caller of the message
     ///   - mailToUrlClicked: the clicked URL
     func secureWebViewController(_ webViewController: SecureWebViewController,
-                           didClickMailToUrlLink url: URL)
+                                 didClickMailToUrlLink url: URL)
 }
 
 /// Webview that does not:

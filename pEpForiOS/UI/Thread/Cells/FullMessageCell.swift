@@ -16,7 +16,7 @@ class FullMessageCell: SwipeTableViewCell,
 
     static var flaggedImage: UIImage? = nil
 
-    //!!!: IOS-1159: this must be removed after refactoring SecureWebViewController out of herer
+    //!!!: IOS-1159: this must be removed after refactoring SecureWebViewController
     weak var clickHandler: UrlClickHandlerProtocol?
 
     var requestsReload: (() -> Void)?
