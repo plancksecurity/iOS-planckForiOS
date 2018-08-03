@@ -390,7 +390,7 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func messagesCopyCompleted(_ theNotification: Notification?) { //IOS-633 eamove @objc's
+    @objc public func messagesCopyCompleted(_ theNotification: Notification?) { //IOS-633 remove @objc's
         dumpMethodName("messagesCopyCompleted", notification: theNotification)
         runOnDelegate() { theDelegate in
             theDelegate.messagesCopyCompleted(self, notification: theNotification)
