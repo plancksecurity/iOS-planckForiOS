@@ -19,7 +19,6 @@ protocol UrlClickHandlerProtocol: SecureWebViewUrlClickHandlerProtocol, UITextVi
     init(actor: UIViewController, appConfig: AppConfig)
 }
 
-//IOS-1222: move!
 class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
     /// View controller to act on.
     var actor: UIViewController
