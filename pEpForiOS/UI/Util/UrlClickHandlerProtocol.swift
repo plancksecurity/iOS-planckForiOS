@@ -40,7 +40,7 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
                 return
         }
         composeVc.appConfig = appConfig
-        composeVc.composeMode = .replyFrom
+        composeVc.composeMode = .normal
         let to = Identity(address: address)
         composeVc.prefilledTo = to
         actor.present(composeNavigationController, animated: true)

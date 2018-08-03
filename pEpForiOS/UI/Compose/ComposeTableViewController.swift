@@ -19,7 +19,7 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
 
     /// Recipient to set as "To:". Is ignored if a originalMessage is set.
-    var prefilledTo: Identity? //IOS-1222: refactor usage of this. Introduce new mode. Its cleaner.
+    var prefilledTo: Identity?
     /// Original message to compute content and recipients from (e.g. a message we reply to).
     var originalMessage: Message?
     var composeMode = ComposeUtil.ComposeMode.normal
@@ -176,10 +176,9 @@ class ComposeTableViewController: BaseTableViewController {
             }
         }
 
-        if toCell != nil
-            && (composeMode == .normal || composeMode == .forward){
+        if destinyTo.count == 0 {
             toCell?.makeBecomeFirstResponder(inTableView: tableView)
-        } else if bodyCell != nil {
+        } else {
             bodyCell?.makeBecomeFirstResponder(inTableView: tableView)
         }
     }
