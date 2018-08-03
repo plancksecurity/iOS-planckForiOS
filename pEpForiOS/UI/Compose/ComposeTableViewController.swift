@@ -18,6 +18,9 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
+    /// Recipient to set as "To:". Is ignored if a originalMessage is set.
+    var prefilledTo: Identity? //IOS-1222: refactor usage of this. Introduce new mode. Its cleaner.
+    /// Original message to compute content and recipients from (e.g. a message we reply to).
     var originalMessage: Message?
     var composeMode = ComposeUtil.ComposeMode.normal
 
@@ -123,29 +126,31 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     /**
-     Updates the given `RecipientCell` with data from the `originalMessage`,
-     if this is a suitable `ComposeMode`.
+     Updates the given `RecipientCell` with available data, if this is a suitable `ComposeMode`.
      */
     private func updateInitialContent(recipientCell: RecipientCell) {
         guard let fm = recipientCell.fieldModel else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "No model")
-            return
-        }
-        guard let om = originalMessage else {
-            // There is no original message in `normal`compose mode. It's OK.
+            Log.shared.errorAndCrash(component: #function, errorString: "No model")
             return
         }
         var result = [Identity]()
-        switch fm.type {
-        case .to:
-            result = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
-        case .cc:
-            result = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
-        case .bcc:
-            result =  ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
-        default:
-            return
+        if let om = originalMessage {
+            //            var result = [Identity]()
+            switch fm.type {
+            case .to:
+                result = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
+            case .cc:
+                result = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
+            case .bcc:
+                result =  ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
+            default:
+                return
+            }
+        } else if let to = prefilledTo, fm.type == .to {
+            result = [to]
+        } else {
+            // There is no original message (e.g. in `normal`compose mode). It's OK.
+            // Do nothing
         }
         for id in result {
             recipientCell.addIdentity(id)
@@ -179,21 +184,20 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
-    private func setInitialStatus() { //IOS-1106: The name suggests that this should *not* set recipients but some button state
+    private func setInitialStatus() {
         destinyTo = [Identity]()
         destinyCc = [Identity]()
         destinyBcc = [Identity]()
-        guard let om = originalMessage else {
-            // Nothing to do.
-            // We have no original message, thus recipient fileds must be empty,
-            // thus we can not send the mail and.
-            return
-        }
-        origin = ComposeUtil.initialFrom(composeMode: composeMode, originalMessage: om)
-        destinyTo = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
-        destinyCc = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
-        destinyBcc = ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
+        if let om = originalMessage {
+            origin = ComposeUtil.initialFrom(composeMode: composeMode, originalMessage: om)
+            destinyTo = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
+            destinyCc = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
+            destinyBcc = ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
 
+
+        } else if let to = prefilledTo {
+            destinyTo = [to]
+        }
         if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
             messageCanBeSend(value: true)
         }
