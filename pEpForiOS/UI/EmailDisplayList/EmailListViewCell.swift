@@ -105,6 +105,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
                 messageCount = 0
                 return
         }
+        messageCount = 0
         viewModel.messageCount { (messageCount) in
             self.messageCount = messageCount
         }

@@ -12,6 +12,8 @@ import MessageModel
 class MessageViewModel {
 
     static var maxBodyPreviewCharacters = 120
+    let queue = OperationQueue()
+
 
     var senderContactImage: UIImage?
     var ratingImage: UIImage?
@@ -27,6 +29,7 @@ class MessageViewModel {
             return getBodyMessage()
     }
     var message: Message
+    internal var internalMessageCount: Int? = nil
 
 
     private var bodyPeek: String? {
@@ -45,6 +48,8 @@ class MessageViewModel {
     }
 
     init(with message: Message) {
+        queue.qualityOfService = .userInitiated
+        
         showAttchmentIcon = message.attachments.count > 0
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         address =  MessageViewModel.address(at: message.parent, from: message)
@@ -79,15 +84,18 @@ class MessageViewModel {
     }
 
     func messageCount(completion: @escaping (Int)->()) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
-                let messageCount = self.message.numberOfMessagesInThread()
-                DispatchQueue.main.async {
-                    completion(messageCount)
-                }
+        if let messageCount = internalMessageCount {
+            completion(messageCount)
+        } else {
+            let operation =   messageCountPrefetch { count in
+                completion(count)
+            }
+            if(!operation.isFinished){
+                queue.addOperation(operation)
             }
         }
     }
+
 
     private class func address(at folder: Folder?, from message: Message) -> String {
         guard let folder = folder else {
@@ -136,7 +144,7 @@ class MessageViewModel {
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
-        profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+      //  profilePictureComposer.getSecurityBadge(for: message, completion: completion)
     }
 
     func getBodyMessage() -> NSMutableAttributedString {
