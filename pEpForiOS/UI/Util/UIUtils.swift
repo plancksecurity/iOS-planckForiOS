@@ -105,6 +105,7 @@ struct UIUtils {
         let alerSheet = UIAlertController.init(title: nil,
                                                message: nil,
                                                preferredStyle: .actionSheet)
+        alerSheet.view.tintColor = UIColor.pEpDarkGreen
         //
         let newMailtitle = NSLocalizedString("New Mail Message",
                                               comment:
