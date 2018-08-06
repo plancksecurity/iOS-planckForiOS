@@ -12,6 +12,12 @@ import MessageModel
 extension MessageViewModel: PrefetchableViewModel {
 
     func loadData() {
+        let summaryOperation = bodyPeekPrefetch(completion: { sumary in
+            self.internalBoddyPeek = sumary
+        })
+        if(!summaryOperation.isFinished){
+            queue.addOperation(summaryOperation)
+        }
         let messageOperation = messageCountPrefetch(completion: { count in
             self.internalMessageCount = count
         })
@@ -25,15 +31,39 @@ extension MessageViewModel: PrefetchableViewModel {
 
     func messageCountPrefetch(completion: @escaping (Int)->()) -> PrefetchOperation {
        
-        let prefetchOperation = PrefetchOperation {
+        let prefetchOperation = PrefetchOperation { operation in
             MessageModel.perform {
+                guard !operation.isCancelled else {
+                    return
+                }
                 let messageCount = self.message.numberOfMessagesInThread()
-                DispatchQueue.main.async {
-                    completion(messageCount)
+                self.internalMessageCount = messageCount
+                if (!operation.isCancelled){
+                    DispatchQueue.main.async {
+                        completion(messageCount)
+                    }
                 }
             }
         }
-        prefetchOperation.qualityOfService = .userInitiated
+        return prefetchOperation
+    }
+
+    func bodyPeekPrefetch(completion: @escaping (String)->()) -> PrefetchOperation {
+
+        let prefetchOperation = PrefetchOperation {operation in
+            MessageModel.performAndWait {
+                guard !operation.isCancelled else {
+                    return
+                }
+                let summary = MessageViewModel.getSummary(fromMessage: self.message)
+                self.internalBoddyPeek = summary
+                if(!operation.isCancelled){
+                    DispatchQueue.main.async {
+                        completion(summary)
+                    }
+                }
+            }
+        }
         return prefetchOperation
     }
 }

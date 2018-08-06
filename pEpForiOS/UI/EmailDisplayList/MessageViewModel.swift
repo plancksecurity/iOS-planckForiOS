@@ -30,7 +30,7 @@ class MessageViewModel {
     }
     var message: Message
     internal var internalMessageCount: Int? = nil
-
+    internal var internalBoddyPeek: String? = nil
 
     private var bodyPeek: String? {
         didSet {
@@ -49,7 +49,7 @@ class MessageViewModel {
 
     init(with message: Message) {
         queue.qualityOfService = .userInitiated
-        
+        queue.maxConcurrentOperationCount = 2
         showAttchmentIcon = message.attachments.count > 0
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         address =  MessageViewModel.address(at: message.parent, from: message)
@@ -63,14 +63,14 @@ class MessageViewModel {
     }
 
     func setBodyPeek() {
-        DispatchQueue.global(qos: .userInitiated).async {
-
-            MessageModel.performAndWait {
-                let summary = MessageViewModel.getSummary(fromMessage: self.message)
-
-                DispatchQueue.main.async {
-                    self.bodyPeek = summary
-                }
+        if let bodyPeek = internalBoddyPeek {
+           self.bodyPeek = bodyPeek
+        } else {
+            let operation = bodyPeekPrefetch { bodyPeek in
+                self.bodyPeek = bodyPeek
+            }
+            if(!operation.isFinished){
+                queue.addOperation(operation)
             }
         }
     }
@@ -109,7 +109,7 @@ class MessageViewModel {
         }
     }
 
-    private class func getSummary(fromMessage msg: Message) -> String {
+    internal class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
         if let text = msg.longMessage {
             body = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
@@ -144,7 +144,7 @@ class MessageViewModel {
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
-      //  profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+        profilePictureComposer.getSecurityBadge(for: message, completion: completion)
     }
 
     func getBodyMessage() -> NSMutableAttributedString {

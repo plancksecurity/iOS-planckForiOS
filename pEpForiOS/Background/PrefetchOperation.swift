@@ -10,9 +10,9 @@ import Foundation
 
 class PrefetchOperation: ConcurrentBaseOperation {
 
-    let executionBlock: ()-> Void
+    let executionBlock: (_ operation: PrefetchOperation)-> Void
     
-    init (executionBlock: @escaping ()-> Void){
+    init (executionBlock: @escaping (_ operation: PrefetchOperation)-> Void){
         self.executionBlock = executionBlock
         super.init()
     }
@@ -22,7 +22,7 @@ class PrefetchOperation: ConcurrentBaseOperation {
         if(isCancelled){
             return
         }
-        executionBlock()
+        executionBlock(self)
     }
 
     

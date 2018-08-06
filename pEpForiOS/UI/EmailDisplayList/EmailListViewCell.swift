@@ -76,6 +76,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     public func configure(for viewModel: MessageViewModel) {
         addressLabel.text = viewModel.from
         subjectLabel.text = viewModel.subject
+        self.summaryLabel.text = nil
         viewModel.bodyPeekCompletion = { bodyPeek in
             self.summaryLabel.text = bodyPeek
         }
@@ -135,7 +136,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     override func prepareForReuse() {
-        resetToDefault()
+       // resetToDefault()
     }
 
     private func resetToDefault() {
@@ -165,7 +166,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
     private func setSeen() {
         if let font = addressLabel.font {
-            let font = UIFont.systemFont(ofSize: font.pointSize)
+        let font = UIFont.systemFont(ofSize: font.pointSize)
             setupLabels(font: font)
         }
     }

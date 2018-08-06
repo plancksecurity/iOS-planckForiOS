@@ -486,10 +486,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                                  for: indexPath)
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
-            guard let viewModel =  model?.viewModel(for: indexPath.row) else {
+
+            guard let viewModel = viewModels[indexPath] as? MessageViewModel ?? model?.viewModel(for: indexPath.row) else {
                 return cell
             }
             viewModels[indexPath] = viewModel
+
             theCell.configure(for:viewModel)
         } else {
             Log.shared.errorAndCrash(component: #function, errorString: "dequeued wrong cell")
@@ -576,6 +578,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelOperation(for: indexPath)
         viewModels[indexPath]?.cancelLoad()
+        viewModels[indexPath] = nil
+
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
