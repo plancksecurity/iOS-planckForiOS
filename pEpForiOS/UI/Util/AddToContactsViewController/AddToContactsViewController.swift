@@ -40,16 +40,20 @@ class AddToContactsViewController: BaseViewController {
         contactVC.contactStore = CNContactStore()
         contactVC.delegate = self
         contactVC.allowsActions = false
+        contactVC.view.tintColor = UIColor.pEpDarkGreen
 
         addChildViewController(contactVC)
         view.addSubview(contactVC.view)
         contactVC.view.fullSizeInSuperView()
+    }
+    @IBAction func cancelButtonPressed() {
+        dismiss(animated: true)
     }
 }
 
 extension AddToContactsViewController: CNContactViewControllerDelegate {
     func contactViewController(_ viewController: CNContactViewController,
                                didCompleteWith contact: CNContact?) {
-        self.dismiss(animated: true)
+        dismiss(animated: true)
     }
 }

@@ -85,12 +85,8 @@ struct UIUtils {
         }
         contactVc.appConfig = appConfig
         contactVc.emailAddress = contact.address
-        if let _ = viewController.navigationController {
-            viewController.present(contactVc, animated: true, completion: nil)
-        } else {
-            let navigationController = UINavigationController(rootViewController: contactVc)
-            viewController.present(navigationController, animated: true, completion: nil)
-        }
+        let navigationController = UINavigationController(rootViewController: contactVc)
+        viewController.present(navigationController, animated: true, completion: nil)
     }
 
     static func presentActionSheetWithContactOptions(forUrl url: URL,

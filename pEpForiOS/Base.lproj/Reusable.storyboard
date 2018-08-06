@@ -25,19 +25,27 @@
             </objects>
             <point key="canvasLocation" x="-2487" y="-351"/>
         </scene>
-        <!--Add To Contacts View Controller-->
+        <!--Add to Contacts-->
         <scene sceneID="Rc2-5i-Wki">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TM4-zV-K5Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="AddToContactsViewController" id="s44-OX-Z1E" customClass="AddToContactsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6XV-yY-DIJ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="exg-sf-cHu"/>
                     </view>
-                    <navigationItem key="navigationItem" id="syC-0J-gTU"/>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" title="Add to Contacts" id="Jan-ZA-zMd">
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="QuY-ZC-bzo">
+                            <connections>
+                                <action selector="cancelButtonPressed" destination="s44-OX-Z1E" id="RHe-hy-ObJ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TM4-zV-K5Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-879" y="-351"/>
         </scene>
