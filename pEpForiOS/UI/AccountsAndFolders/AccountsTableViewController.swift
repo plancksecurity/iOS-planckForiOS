@@ -38,7 +38,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         super.viewWillAppear(animated)
         if let nc = self.navigationController {
             oldToolbarStatus = nc.isToolbarHidden
-        }
+        } 
         self.navigationController?.setToolbarHidden(true, animated: false)
 
         if MiscUtil.isUnitTest() {
