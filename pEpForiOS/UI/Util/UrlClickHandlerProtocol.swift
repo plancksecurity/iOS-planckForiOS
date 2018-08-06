@@ -64,13 +64,6 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         return true
     }
 
-    func textView(_ textView: UITextView,
-                  shouldInteractWith textAttachment: NSTextAttachment,
-                  in characterRange: NSRange) -> Bool {
-        print("1")
-        return true
-    }
-
     @available(iOS 10.0, *)
     func textView(_ textView: UITextView, shouldInteractWith URL: URL,
                   in characterRange: NSRange,
