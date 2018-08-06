@@ -320,6 +320,7 @@ class SecureWebViewController: UIViewController {
 // MARK: - WKNavigationDelegate
 
 extension SecureWebViewController: WKNavigationDelegate {
+
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

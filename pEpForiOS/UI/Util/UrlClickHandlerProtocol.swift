@@ -33,8 +33,10 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
             let address = url.firstRecipientAddress(),
-            let composeNavigationController = storyboard.instantiateViewController(withIdentifier: Constants.composeSceneStoryboardId) as? UINavigationController,
-            let composeVc = composeNavigationController.rootViewController as? ComposeTableViewController
+            let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
+                Constants.composeSceneStoryboardId) as? UINavigationController,
+            let composeVc = composeNavigationController.rootViewController
+                as? ComposeTableViewController
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Missing required data")
                 return
@@ -46,10 +48,39 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         actor.present(composeNavigationController, animated: true)
     }
 
+    private func presentAvailableMailtoUrlHandlingChoices(for url: URL) {
+        Log.shared.errorAndCrash(component: #function, errorString: "Unimplemented stub")
+    }
+
     // MARK: - UITextViewDelegate
 
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange) -> Bool {
         if URL.scheme == "mailto" {
+            presentComposeView(forRecipientInUrl: URL)
+            return false
+        }
+        return true
+    }
+
+    func textView(_ textView: UITextView,
+                  shouldInteractWith textAttachment: NSTextAttachment,
+                  in characterRange: NSRange) -> Bool {
+        print("1")
+        return true
+    }
+
+    @available(iOS 10.0, *)
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
+        if URL.scheme == "mailto" && interaction == .presentActions  {
+            // User long-pressed on mailto url
+            presentAvailableMailtoUrlHandlingChoices(for: URL)
+            return false
+        } else if URL.scheme == "mailto" && interaction == .invokeDefaultAction {
+            // User clicked on mailto url
             presentComposeView(forRecipientInUrl: URL)
             return false
         }
@@ -58,7 +89,8 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
 
     // MARK: - SecureWebViewUrlClickHandlerProtocol
 
-    func secureWebViewController(_ webViewController: SecureWebViewController, didClickMailToUrlLink url: URL) {
+    func secureWebViewController(_ webViewController: SecureWebViewController,
+                                 didClickMailToUrlLink url: URL) {
         presentComposeView(forRecipientInUrl: url)
     }
 }
