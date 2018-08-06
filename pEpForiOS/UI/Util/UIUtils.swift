@@ -143,23 +143,23 @@ struct UIUtils {
         let addTitle = NSLocalizedString("Add to Contacts",
                                               comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts")
-        alerSheet.addAction(UIAlertAction.init(title: addTitle, style: .default, handler: { (action) in
+        alerSheet.addAction(UIAlertAction.init(title: addTitle, style: .default) { (action) in
             presentAddToContactsView(for: contact, on: viewController, appConfig: appConfig)
-        }))
+        })
         //
         let copyTitle = NSLocalizedString("Copy Email",
                                          comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
-        alerSheet.addAction(UIAlertAction.init(title: copyTitle, style: .default, handler: { (action) in
+        alerSheet.addAction(UIAlertAction.init(title: copyTitle, style: .default) { (action) in
             UIPasteboard.general.string = url.firstRecipientAddress()
-        }))
+        })
         //
         let cancelTitle = NSLocalizedString("Cancel",
                                           comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Cancel")
-        alerSheet.addAction(UIAlertAction.init(title: cancelTitle, style: .cancel, handler: { (action) in
+        alerSheet.addAction(UIAlertAction.init(title: cancelTitle, style: .cancel) { (action) in
             print("cancel action")
-        }))
+        })
         viewController.present(alerSheet, animated: true, completion: nil)
     }
 }
