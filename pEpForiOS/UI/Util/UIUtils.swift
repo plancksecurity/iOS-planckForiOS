@@ -50,13 +50,19 @@ struct UIUtils {
 
     // MARK: - Compose View
 
-    static func presentComposeView(forRecipientInUrl url: URL,
+    /// Modally presents a "Compose New Mail" view.
+    /// If we can parse a recipient from the url (e.g. "mailto:me@me.com") we prefill the "To:"
+    /// field of the presented compose view.
+    ///
+    /// - Parameters:
+    ///   - url: url to parse recipients from
+    ///   - viewController: presenting view controller
+    ///   - appConfig: AppConfig to forward
+    static func presentComposeView(forRecipientInUrl url: URL?,
                                    on viewController: UIViewController,
                                    appConfig: AppConfig) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
-            url.scheme == UrlClickHandler.Scheme.mailto.rawValue,
-            let address = url.firstRecipientAddress(),
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.composeSceneStoryboardId) as? UINavigationController,
             let composeVc = composeNavigationController.rootViewController
@@ -65,15 +71,26 @@ struct UIUtils {
                 Log.shared.errorAndCrash(component: #function, errorString: "Missing required data")
                 return
         }
+        if let url = url,
+            let url.scheme == UrlClickHandler.Scheme.mailto.rawValue,
+            let address = url.firstRecipientAddress() {
+            let to = Identity(address: address)
+            composeVc.prefilledTo = to
+        }
         composeVc.appConfig = appConfig
         composeVc.composeMode = .normal
-        let to = Identity(address: address)
-        composeVc.prefilledTo = to
+
         viewController.present(composeNavigationController, animated: true)
     }
 
     // MARK: - Add to Contacts View
 
+    /// Modally presents a "Add to Contacts" view for a given contact.
+    ///
+    /// - Parameters:
+    ///   - contact: contact to show "Add to Contacts" view for
+    ///   - viewController:  presenting view controller
+    ///   - appConfig: AppConfig to forward
     static func presentAddToContactsView(for contact: Identity,
                                          on viewController: UIViewController,
                                          appConfig: AppConfig) {
@@ -89,6 +106,15 @@ struct UIUtils {
         viewController.present(navigationController, animated: true, completion: nil)
     }
 
+    // MARK: - Contact Handling Action Sheet
+
+    /// Presents action sheet with all available custom actions for a given url.
+    /// Currently the only URL scheme custom actions exist for is mailto:
+    ///
+    /// - Parameters:
+    ///   - url: url to show custom actions for
+    ///   - viewController: viewcontroller to present action view controllers on (if requiered)
+    ///   - appConfig: AppConfig to forward to potentionally created viewControllers
     static func presentActionSheetWithContactOptions(forUrl url: URL,
                                                      on viewController: UIViewController,
                                                      appConfig: AppConfig) {
