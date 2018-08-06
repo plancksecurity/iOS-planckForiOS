@@ -65,8 +65,9 @@ class FullMessageCell: SwipeTableViewCell,
         if let htmlBody = htmlBody(message: viewModel.message) {
             // Its fine to use a webview (iOS>=11) and we do have HTML content.
             bodyText.isHidden = true
+            if !htmlViewerViewControllerExists {
             view.addSubview(htmlViewerViewController.view)
-            view.isUserInteractionEnabled = false
+            }
             view.isHidden = false
 
             htmlViewerViewController.view.fullSizeInSuperView()
