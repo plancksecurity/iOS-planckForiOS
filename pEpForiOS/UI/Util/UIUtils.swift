@@ -72,7 +72,7 @@ struct UIUtils {
                 return
         }
         if let url = url,
-            let url.scheme == UrlClickHandler.Scheme.mailto.rawValue,
+            url.scheme == UrlClickHandler.Scheme.mailto.rawValue,
             let address = url.firstRecipientAddress() {
             let to = Identity(address: address)
             composeVc.prefilledTo = to
@@ -151,8 +151,7 @@ struct UIUtils {
                                          comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
         alerSheet.addAction(UIAlertAction.init(title: copyTitle, style: .default, handler: { (action) in
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "unimplemented stub - copy action")
+            UIPasteboard.general.string = url.firstRecipientAddress()
         }))
         //
         let cancelTitle = NSLocalizedString("Cancel",
