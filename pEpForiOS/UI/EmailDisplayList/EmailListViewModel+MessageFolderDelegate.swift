@@ -60,7 +60,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
 
         let previewMessage = PreviewMessage(withMessage: message)
-        let referencedMessages = threadedMessageFolder.referencedTopMessages(message: message)
+        let referencedTopMessages = threadedMessageFolder.referencedTopMessages(message: message)
 
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
@@ -74,17 +74,20 @@ extension EmailListViewModel: MessageFolderDelegate {
                         viewModel: theSelf, didInsertDataAt: [indexPath])
                 }
 
-                if referencedMessages.isEmpty && messagePassedFilter {
+                if referencedTopMessages.isEmpty && messagePassedFilter {
                     insertAsTopMessage()
                 } else {
                     if let (index, _) = theSelf.referencedTopMessageIndex(
-                        messages: referencedMessages) {
+                        messages: referencedTopMessages) {
                         // The thread count might need to be updated
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
-                            viewModel: theSelf, didUpdateDataAt: [IndexPath(row: index, section: 0)])
-                        if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
+                            viewModel: theSelf,
+                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
+                        if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedTopMessages) {
                             if theSelf.shouldShowThreadVC() {
-                              theSelf.screenComposer?.emailListViewModel(theSelf, requestsShowThreadViewFor: message)
+                              theSelf.screenComposer?.emailListViewModel(
+                                theSelf,
+                                requestsShowThreadViewFor: message)
                             } else {
                                 theSelf.updateThreadListDelegate?.added(message: message)
                             }
