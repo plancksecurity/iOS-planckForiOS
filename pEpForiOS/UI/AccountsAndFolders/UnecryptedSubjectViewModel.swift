@@ -10,8 +10,6 @@ import Foundation
 
 class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModel  {
 
-
-    var settingsDelegate: SettingsUpdated?
     var settingCellType: AccountSettingsCellType
     var type: SettingType
     var title : String

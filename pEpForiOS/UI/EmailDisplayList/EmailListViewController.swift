@@ -258,6 +258,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    @objc private func settingsChanged() {
+        self.model?.reloadData()
+        self.tableView.reloadData()
+    }
+
     // MARK: - Action Edit Button
 
     private var tempToolbarItems: [UIBarButtonItem]?
@@ -1115,12 +1120,6 @@ extension EmailListViewController: LoginViewControllerDelegate {
         _ loginViewController: LoginViewController) {
         // Setup model after initial account setup
         setup()
-    }
-}
-
-extension EmailListViewController: SettingsUpdated {
-    func importantSettingsUpdated() {
-        self.tableView.reloadData()
     }
 }
 

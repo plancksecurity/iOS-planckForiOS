@@ -17,5 +17,4 @@ protocol SettingSwitchProtocol {
 protocol SettingsCellViewModel {
     var type : SettingType { get set }
     var settingCellType : AccountSettingsCellType { get set }
-    var settingsDelegate: SettingsUpdated? { get set }
 }
