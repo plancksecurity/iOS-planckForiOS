@@ -18,20 +18,20 @@ class AddToContactsViewController: BaseViewController {
 
     private var contactVC: CNContactViewController?
 
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupContactVc()
     }
 
     func setupContactVc() {
+        guard let address = emailAddress else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data to add?")
+            dismiss(animated: false)
+            return
+        }
         let newContact = CNMutableContact()
-        newContact.phoneNumbers.append(CNLabeledValue(label: "home",
-                                                      value: CNPhoneNumber(stringValue: "123456")))
+        newContact.emailAddresses.append(CNLabeledValue(label: CNLabelHome,
+                                                        value: address as NSString))
         contactVC = CNContactViewController(forUnknownContact: newContact)
         guard let contactVC = contactVC else {
             Log.shared.errorAndCrash(component: #function, errorString: "Missing contactVC")
