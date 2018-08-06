@@ -61,4 +61,7 @@ struct Constants {
     static let composeSceneStoryboardId = "ReplyNavigation"
     /// Name of Storyboard that contains ComposeViewController.
     static let composeSceneStoryboard = "Main"
+
+    /// Name of Storyboard that contains AddToContactsViewController.
+    static let addToContactsStoryboard = "Reusable"
 }
