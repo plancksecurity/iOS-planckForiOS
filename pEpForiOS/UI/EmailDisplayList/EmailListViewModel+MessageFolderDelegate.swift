@@ -83,12 +83,15 @@ extension EmailListViewModel: MessageFolderDelegate {
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf,
                             didUpdateDataAt: [IndexPath(row: index, section: 0)])
-                        if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedTopMessages) {
-                            if theSelf.shouldShowThreadVC() {
-                              theSelf.screenComposer?.emailListViewModel(
-                                theSelf,
-                                requestsShowThreadViewFor: message)
+                        if let topMessage = theSelf.currentlyDisplayedMessage(
+                            of: referencedTopMessages) {
+                            if theSelf.isShowingSingleMessage() {
+                                // switch from single to thread
+                                theSelf.screenComposer?.emailListViewModel(
+                                    theSelf,
+                                    requestsShowThreadViewFor: topMessage)
                             } else {
+                                // add the new message to the existing thread view
                                 theSelf.updateThreadListDelegate?.added(message: message)
                             }
                         }
@@ -290,6 +293,18 @@ Something is fishy here.
         return false
     }
 
+    /**
+     - Returns: The first currently displayed (top) message out of a given sequence or nil.
+     */
+    func currentlyDisplayedMessage(of messages: [Message]) -> Message? {
+        for msg in messages {
+            if isCurrentlyDisplayingDetailsOf(message: msg) {
+                return msg
+            }
+        }
+        return nil
+    }
+
     /*
      - Returns: The index (or nil) of the first message from `messages`
      that is currently displayed as a top message.
@@ -304,9 +319,10 @@ Something is fishy here.
         return nil
     }
     /*
-     - Returns: If the detail view should change from EmailVC to ThreadVC
+     - Returns: If the detail view should change from a view of a single email to
+     a thread view.
      */
-    private func shouldShowThreadVC() -> Bool {
+    private func isShowingSingleMessage() -> Bool {
        return currentDisplayedMessage?.detailType() == .single
     }
 }
