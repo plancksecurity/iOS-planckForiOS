@@ -28,7 +28,7 @@ class ThreadedEmailViewModel {
 
     init(tip: Message, folder: Folder) {
         self.folder = ThreadedFolder(folder: folder)
-        messages = tip.messagesInThread()
+        messages = self.folder.messagesInThread(message: tip)
         self.tip = tip
 
         //We get the same message reference if we can
