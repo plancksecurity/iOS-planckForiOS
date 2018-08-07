@@ -28,6 +28,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var messageCountLabel: UILabel?
     @IBOutlet weak var threadIndicator: UIImageView?
 
+    var viewModel: MessageViewModel!
+
     var isFlagged:Bool = false {
         didSet {
             if isFlagged {
@@ -74,9 +76,9 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
 
     public func configure(for viewModel: MessageViewModel) {
+        self.viewModel = viewModel
         addressLabel.text = viewModel.from
         subjectLabel.text = viewModel.subject
-        self.summaryLabel.text = nil
         viewModel.bodyPeekCompletion = { bodyPeek in
             self.summaryLabel.text = bodyPeek
         }
@@ -106,7 +108,6 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
                 messageCount = 0
                 return
         }
-        messageCount = 0
         viewModel.messageCount { (messageCount) in
             self.messageCount = messageCount
         }
@@ -136,7 +137,11 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     override func prepareForReuse() {
-       // resetToDefault()
+        resetToDefault()
+    }
+
+    func clear() {
+        viewModel.unsubscribeForUpdates()
     }
 
     private func resetToDefault() {

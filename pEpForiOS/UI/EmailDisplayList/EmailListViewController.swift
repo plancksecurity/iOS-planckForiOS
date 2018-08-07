@@ -487,10 +487,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
 
-            guard let viewModel = viewModels[indexPath] as? MessageViewModel ?? model?.viewModel(for: indexPath.row) else {
+            guard let viewModel = model?.viewModel(for: indexPath.row) else {
                 return cell
             }
-            viewModels[indexPath] = viewModel
+//            viewModels[indexPath] = viewModel
 
             theCell.configure(for:viewModel)
         } else {
@@ -577,8 +577,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelOperation(for: indexPath)
-        viewModels[indexPath]?.cancelLoad()
-        viewModels[indexPath] = nil
+        guard let cell = cell as? EmailListViewCell else {
+            return
+        }
+
+        cell.clear()
 
     }
 

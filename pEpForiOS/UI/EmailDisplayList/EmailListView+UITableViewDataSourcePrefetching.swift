@@ -13,19 +13,19 @@ extension EmailListViewController: UITableViewDataSourcePrefetching {
 
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            let prefetchViewModel =  model?.viewModel(for: indexPath.row)
-            prefetchViewModel?.loadData()
-            viewModels[indexPath] = prefetchViewModel
+//            let prefetchViewModel =  model?.viewModel(for: indexPath.row)
+//            prefetchViewModel?.loadData()
+//            viewModels[indexPath] = prefetchViewModel
 
         }
     }
 
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-        indexPaths.forEach { indexPath in
-            viewModels[indexPath]?.cancelLoad()
-            viewModels[indexPath] = nil
-
-        }
+//        indexPaths.forEach { indexPath in
+//            viewModels[indexPath]?.cancelLoad()
+//            viewModels[indexPath] = nil
+//
+//        }
     }
 
 }

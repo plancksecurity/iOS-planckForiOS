@@ -62,6 +62,14 @@ class MessageViewModel {
         setBodyPeek()
     }
 
+    func unsubscribeForUpdates() {
+        cancelLoad()
+    }
+
+    func cancelLoad() {
+        queue.cancelAllOperations()
+    }
+
     func setBodyPeek() {
         if let bodyPeek = internalBoddyPeek {
            self.bodyPeek = bodyPeek

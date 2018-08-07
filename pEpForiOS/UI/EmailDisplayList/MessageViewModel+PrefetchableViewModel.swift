@@ -25,9 +25,6 @@ extension MessageViewModel: PrefetchableViewModel {
             queue.addOperation(messageOperation)
         }
     }
-    func cancelLoad() {
-        queue.cancelAllOperations()
-    }
 
     func messageCountPrefetch(completion: @escaping (Int)->()) -> PrefetchOperation {
        
@@ -51,6 +48,9 @@ extension MessageViewModel: PrefetchableViewModel {
     func bodyPeekPrefetch(completion: @escaping (String)->()) -> PrefetchOperation {
 
         let prefetchOperation = PrefetchOperation {operation in
+            guard !operation.isCancelled else {
+                return
+            }
             MessageModel.performAndWait {
                 guard !operation.isCancelled else {
                     return
