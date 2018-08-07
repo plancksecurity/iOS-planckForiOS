@@ -120,7 +120,6 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
 
     public func delete() {
         self.account?.delete()
-        NotificationCenter.default.post(name: NSNotification.Name.settingsChanged, object: nil)
     }
 
     private func onOffStateString(forState enabled: Bool) -> String {

@@ -131,7 +131,6 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             self.tableView.beginUpdates()
             self.tableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.fade)
             self.tableView.endUpdates()
-            NotificationCenter.default.post(name: NSNotification.Name.settingsChanged, object: nil)
         }
         alertController.addAction(destroyAction)
 

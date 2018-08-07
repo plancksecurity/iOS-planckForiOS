@@ -30,6 +30,5 @@ class ThreadedSwitchViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
     func switchAction(value: Bool) {
         AppSettings.threadedViewEnabled = value
         FolderThreading.switchThreading(onOrOff: value)
-        NotificationCenter.default.post(name: NSNotification.Name.settingsChanged, object: nil)
     }
 }
