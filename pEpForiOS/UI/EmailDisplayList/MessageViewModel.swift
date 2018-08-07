@@ -20,6 +20,8 @@ class MessageViewModel {
     private let parentFolderName: String
     private let accountAddress: String
 
+    let identity:Identity
+    let dateSent: Date
     let longMessageFormatted: String?
 
     var senderContactImage: UIImage?
@@ -44,8 +46,6 @@ class MessageViewModel {
         }
     }
 
-    private let identity:Identity
-
     var bodyPeekCompletion: ((String) -> ())? = nil {
         didSet {
             guard bodyPeekCompletion != nil else {
@@ -65,6 +65,7 @@ class MessageViewModel {
         accountAddress = message.parent.account.user.address
 
         longMessageFormatted = message.longMessageFormatted
+        dateSent = message.sent ?? Date()
 
         showAttchmentIcon = message.attachments.count > 0
         identity = (message.from ?? Identity(address: "unknown@unknown.com"))
@@ -76,6 +77,13 @@ class MessageViewModel {
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
         setBodyPeek(for: message)
+    }
+
+    public func flagsDiffer(from messageViewModel: MessageViewModel) -> Bool {
+        if self != messageViewModel {
+            return true
+        }
+        return self.isFlagged != messageViewModel.isFlagged || self.isSeen != messageViewModel.isSeen
     }
 
     func unsubscribeForUpdates() {
@@ -265,4 +273,13 @@ class MessageViewModel {
     }
 
 
+}
+
+extension MessageViewModel: Equatable {
+    static func ==(lhs: MessageViewModel, rhs: MessageViewModel) -> Bool {
+        return lhs.uuid == rhs.uuid &&
+            lhs.uid == rhs.uid &&
+            lhs.parentFolderName == rhs.parentFolderName &&
+            lhs.accountAddress == rhs.accountAddress
+    }
 }

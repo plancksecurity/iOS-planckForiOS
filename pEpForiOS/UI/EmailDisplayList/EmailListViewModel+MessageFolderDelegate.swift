@@ -61,7 +61,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             }
         }
 
-        let previewMessage = PreviewMessage(withMessage: message)
+        let previewMessage = MessageViewModel(with: message)
         let referencedTopMessages = threadedMessageFolder.referencedTopMessages(message: message)
 
         DispatchQueue.main.async { [weak self] in
@@ -209,8 +209,8 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
 
-        let previewMessage = PreviewMessage(withMessage: message)
-        if !previewMessage.flagsDiffer(previewMessage: existingMessage) {
+        let previewMessage = MessageViewModel(with: message)
+        if !previewMessage.flagsDiffer(from: existingMessage) {
             // The only message properties displayed in this view that might be updated
             // are flagged and seen.
             // We got called even the flaggs did not change. Ignore.
@@ -225,7 +225,7 @@ extension EmailListViewModel: MessageFolderDelegate {
        * The message might get deleted if it doesn't fit the filter anymore.
        * The `previewMessage` might seem redundant, but it has already been computed.
      */
-    func update(message: Message, previewMessage: PreviewMessage, atIndex indexExisting: Int) {
+    func update(message: Message, previewMessage: MessageViewModel, atIndex indexExisting: Int) {
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 theSelf.messages.removeObject(at: indexExisting)
@@ -323,7 +323,7 @@ Something is fishy here.
      */
     private func referencedTopMessageIndex(messages: [Message]) -> (Int, Message)? {
         for msg in messages {
-            let preview = PreviewMessage(withMessage: msg)
+            let preview = MessageViewModel(with: msg)
             if let index = self.messages.index(of: preview) {
                 return (index, msg)
             }
