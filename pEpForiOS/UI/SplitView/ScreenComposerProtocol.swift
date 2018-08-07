@@ -10,6 +10,9 @@ import Foundation
 import MessageModel
 
 protocol ScreenComposerProtocol {
+    /**
+     Use to indicate a transition from a single message view to a thread view.
+     */
     func emailListViewModel(_ emailListViewModel: EmailListViewModel,
                             requestsShowThreadViewFor message: Message)
     
