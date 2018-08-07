@@ -12,28 +12,29 @@ import MessageModel
 extension MessageViewModel: PrefetchableViewModel {
 
     func loadData() {
-        let summaryOperation = bodyPeekPrefetch(completion: { sumary in
-            self.internalBoddyPeek = sumary
-        })
-        if(!summaryOperation.isFinished){
-            queue.addOperation(summaryOperation)
-        }
-        let messageOperation = messageCountPrefetch(completion: { count in
-            self.internalMessageCount = count
-        })
-        if(!messageOperation.isFinished){
-            queue.addOperation(messageOperation)
-        }
+//        let summaryOperation = bodyPeekPrefetch(completion: { sumary in
+//            self.internalBoddyPeek = sumary
+//        })
+//        if(!summaryOperation.isFinished){
+//            queue.addOperation(summaryOperation)
+//        }
+//        let messageOperation = messageCountPrefetch(completion: { count in
+//            self.internalMessageCount = count
+//        })
+//        if(!messageOperation.isFinished){
+//            queue.addOperation(messageOperation)
+//        }
     }
 
     func messageCountPrefetch(completion: @escaping (Int)->()) -> PrefetchOperation {
        
         let prefetchOperation = PrefetchOperation { operation in
             MessageModel.perform {
-                guard !operation.isCancelled else {
+                guard !operation.isCancelled,
+                let message = self.message() else {
                     return
                 }
-                let messageCount = self.message.numberOfMessagesInThread()
+                let messageCount = message.numberOfMessagesInThread()
                 self.internalMessageCount = messageCount
                 if (!operation.isCancelled){
                     DispatchQueue.main.async {
@@ -45,7 +46,7 @@ extension MessageViewModel: PrefetchableViewModel {
         return prefetchOperation
     }
 
-    func bodyPeekPrefetch(completion: @escaping (String)->()) -> PrefetchOperation {
+    func bodyPeekPrefetch(for message: Message, completion: @escaping (String)->()) -> PrefetchOperation {
 
         let prefetchOperation = PrefetchOperation {operation in
             guard !operation.isCancelled else {
@@ -55,7 +56,7 @@ extension MessageViewModel: PrefetchableViewModel {
                 guard !operation.isCancelled else {
                     return
                 }
-                let summary = MessageViewModel.getSummary(fromMessage: self.message)
+                let summary = MessageViewModel.getSummary(fromMessage: message)
                 self.internalBoddyPeek = summary
                 if(!operation.isCancelled){
                     DispatchQueue.main.async {

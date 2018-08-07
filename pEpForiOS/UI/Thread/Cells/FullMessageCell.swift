@@ -62,7 +62,7 @@ class FullMessageCell: SwipeTableViewCell,
         viewModel.getSecurityBadge { image in
             self.badgePicture.image = image
         }
-        if let htmlBody = htmlBody(message: viewModel.message) {
+        if let htmlBody = htmlBody(viewModel: viewModel) {
             // Its fine to use a webview (iOS>=11) and we do have HTML content.
             bodyText.isHidden = true
             if !htmlViewerViewControllerExists {
@@ -72,7 +72,7 @@ class FullMessageCell: SwipeTableViewCell,
 
             htmlViewerViewController.view.fullSizeInSuperView()
 
-            let displayHtml = appendInlinedPlainText(fromAttachmentsIn: viewModel.message, to: htmlBody)
+            let displayHtml = viewModel.appendInlinedAttachmentsPlainText(to: htmlBody)
             htmlViewerViewController.display(htmlString: displayHtml)
         } else {
             view.isHidden = true
@@ -137,41 +137,15 @@ class FullMessageCell: SwipeTableViewCell,
      * we have non-empty HTML content at all
      - Returns: The HTML message body or nil
      */
-    private func htmlBody(message: Message?) ->  String? {
+    private func htmlBody(viewModel: MessageViewModel) ->  String? {
         guard
             SecureWebViewController.isSaveToUseWebView,
-            let m = message,
-            let htmlBody = m.longMessageFormatted,
+            let htmlBody = viewModel.longMessageFormatted,
             !htmlBody.isEmpty else {
                 return nil
         }
 
         return htmlBody
-    }
-
-    private func appendInlinedPlainText(fromAttachmentsIn message: Message, to text: String) -> String {
-        var result = text
-        let inlinedText = message.inlinedTextAttachments()
-        for inlinedTextAttachment in inlinedText {
-            guard
-                let data = inlinedTextAttachment.data,
-                let inlinedText = String(data: data, encoding: .utf8) else {
-                    continue
-            }
-            result = append(appendText: inlinedText, to: result)
-        }
-        return result
-    }
-
-    private func append(appendText: String, to body: String) -> String {
-        var result = body
-        let replacee = result.contains(find: "</body>") ? "</body>" : "</html>"
-        if result.contains(find: replacee) {
-            result = result.replacingOccurrences(of: replacee, with: appendText + replacee)
-        } else {
-            result += "\n" + appendText
-        }
-        return result
     }
 
     private func setFlagged() {
