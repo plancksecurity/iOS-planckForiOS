@@ -133,19 +133,20 @@ extension EmailListViewModel: MessageFolderDelegate {
         } else {
             // We do not have this top message in our model, so we do not have to remove it,
             // but it might belong to a thread.
-            let referencedMessages = threadedMessageFolder.referencedTopMessages(message: message)
-            if !referencedMessages.isEmpty {
+            let referencedTopMessages = threadedMessageFolder.referencedTopMessages(
+                message: message)
+            if !referencedTopMessages.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     guard let theSelf = self else {
                         Log.shared.errorAndCrash(component: #function,
                                                  errorString: "Self reference is nil!")
                         return
                     }
-                    if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
+                    if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedTopMessages) {
                         theSelf.updateThreadListDelegate?.deleted(message: message)
                     } else {
                         if let (index, _) = theSelf.referencedTopMessageIndex(
-                            messages: referencedMessages) {
+                            messages: referencedTopMessages) {
                             // The thread count might need to be updated
                             theSelf.emailListViewModelDelegate?.emailListViewModel(
                                 viewModel: theSelf,
