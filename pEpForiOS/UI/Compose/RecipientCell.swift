@@ -33,11 +33,11 @@ class RecipientCell: ComposeCell {
     }
 
     private func removeRecepients() {
-        recipients.forEach({ (recepient: Int) in
+        recipients.forEach { (recepient: Int) in
             if identities[safe: recepient] != nil {
                 identities.remove(at: recepient)
             }
-        })
+        } 
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
