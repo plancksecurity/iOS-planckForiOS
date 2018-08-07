@@ -9,7 +9,7 @@
 import Foundation
 import ContactsUI
 
-/// Use to show ContactsUI for "add a contact" to the system address book
+/// Represents ContactsUI for "add a contact" to the system address book
 class AddToContactsViewController: BaseViewController {
     static let storyboardId = "AddToContactsViewController"
     /// Known data of the contact.
@@ -18,8 +18,8 @@ class AddToContactsViewController: BaseViewController {
 
     private var contactVC: CNContactViewController?
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupContactVc()
     }
 
@@ -46,6 +46,7 @@ class AddToContactsViewController: BaseViewController {
         view.addSubview(contactVC.view)
         contactVC.view.fullSizeInSuperView()
     }
+
     @IBAction func cancelButtonPressed() {
         dismiss(animated: true)
     }
