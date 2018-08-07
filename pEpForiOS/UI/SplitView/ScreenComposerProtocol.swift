@@ -15,7 +15,11 @@ protocol ScreenComposerProtocol {
      */
     func emailListViewModel(_ emailListViewModel: EmailListViewModel,
                             requestsShowThreadViewFor message: Message)
-    
+
+    /**
+     Use for indicationg that a thread view should switch to single message view
+     following the deletion of a message contained in a thread.
+     */
     func emailListViewModel(_ emailListViewModel: EmailListViewModel,
                             requestsShowEmailViewFor message: Message)
 }
