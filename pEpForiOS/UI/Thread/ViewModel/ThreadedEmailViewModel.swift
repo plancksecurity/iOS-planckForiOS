@@ -60,11 +60,12 @@ class ThreadedEmailViewModel {
         guard index < messages.count && index >= 0 else {
             return
         }
-        folder.deleteSingle(message: messages[index])
+        let theMessageToDelete = messages[index]
+        folder.deleteSingle(message: theMessageToDelete)
         messages.remove(at: index)
         expandedMessages.remove(at: index)
         delegate.emailViewModel(viewModel: self, didRemoveDataAt: index)
-        emailDisplayDelegate.emailDisplayDidDelete(message: messages[index])
+        emailDisplayDelegate.emailDisplayDidDelete(message: theMessageToDelete)
 
     }
 
