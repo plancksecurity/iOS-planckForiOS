@@ -26,9 +26,11 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    func didDelete(messageFolder: MessageFolder) {
+    func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
         messageFolderDelegateHandlingQueue.async {
-            self.didDeleteInternal(messageFolder: messageFolder)
+            self.didDeleteInternal(
+                messageFolder: messageFolder,
+                belongingToThread: belongingToThread)
         }
     }
 
@@ -107,7 +109,8 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    private func didDeleteInternal(messageFolder: MessageFolder) {
+    private func didDeleteInternal(messageFolder: MessageFolder,
+                                   belongingToThread: Set<MessageID>) {
         // Make sure it is a Message (not a Folder). Flag must have changed
         guard let message = messageFolder as? Message else {
             // It is not a Message (probably it is a Folder).
