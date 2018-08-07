@@ -151,6 +151,25 @@ struct UIUtils {
                                              appConfig: appConfig)
     }
 
+    /// On iPads, an UIAlertController must have `popoverPresentationController` set.
+    ///
+    /// - Parameters:
+    ///   - actionSheet: popover to set anchor to
+    ///   - presentingViewController: view controller the popover should be presented on
+    static private func setIPadAnchor(for actionSheet: UIAlertController,
+                               in presentingViewController: UIViewController) {
+        guard let targetView = presentingViewController.view else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We are about topresent a")
+            return
+        }
+
+        actionSheet.popoverPresentationController?.sourceView = targetView
+        actionSheet.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection()
+        actionSheet.popoverPresentationController?.sourceRect =
+            CGRect(x: targetView.bounds.midX, y: targetView.bounds.midY, width: 0, height: 0)
+    }
+
     /// Presents action sheet with all available custom actions for a given url.
     /// Currently the only URL scheme custom actions exist for is mailto:
     ///
@@ -163,15 +182,18 @@ struct UIUtils {
                                                      appConfig: AppConfig) {
         let contact = Identity(address: address)
 
-        let alerSheet = UIAlertController.init(title: nil,
+        let alertSheet = UIAlertController.init(title: nil,
                                                message: nil,
                                                preferredStyle: .actionSheet)
-        alerSheet.view.tintColor = UIColor.pEpDarkGreen
+
+        setIPadAnchor(for: alertSheet, in: viewController)
+
+        alertSheet.view.tintColor = UIColor.pEpDarkGreen
         //
         let newMailtitle = NSLocalizedString("New Mail Message",
                                               comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message")
-        alerSheet.addAction(UIAlertAction.init(title: newMailtitle, style: .default) { (action) in
+        alertSheet.addAction(UIAlertAction.init(title: newMailtitle, style: .default) { (action) in
             presentComposeView(forRecipientWithAddress: address,
                                on: viewController,
                                appConfig: appConfig)
@@ -180,23 +202,23 @@ struct UIUtils {
         let addTitle = NSLocalizedString("Add to Contacts",
                                               comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts")
-        alerSheet.addAction(UIAlertAction.init(title: addTitle, style: .default) { (action) in
+        alertSheet.addAction(UIAlertAction.init(title: addTitle, style: .default) { (action) in
             presentAddToContactsView(for: contact, on: viewController, appConfig: appConfig)
         })
         //
         let copyTitle = NSLocalizedString("Copy Email",
                                          comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
-        alerSheet.addAction(UIAlertAction.init(title: copyTitle, style: .default) { (action) in
+        alertSheet.addAction(UIAlertAction.init(title: copyTitle, style: .default) { (action) in
             UIPasteboard.general.string = address
         })
         //
         let cancelTitle = NSLocalizedString("Cancel",
                                           comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Cancel")
-        alerSheet.addAction(UIAlertAction.init(title: cancelTitle, style: .cancel) { (action) in
+        alertSheet.addAction(UIAlertAction.init(title: cancelTitle, style: .cancel) { (action) in
             print("cancel action")
         })
-        viewController.present(alerSheet, animated: true, completion: nil)
+        viewController.present(alertSheet, animated: true, completion: nil)
     }
 }
