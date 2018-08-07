@@ -61,6 +61,23 @@ struct UIUtils {
     static func presentComposeView(forRecipientInUrl url: URL?,
                                    on viewController: UIViewController,
                                    appConfig: AppConfig) {
+        let address = url?.firstRecipientAddress()
+        presentComposeView(forRecipientWithAddress: address,
+                           on: viewController,
+                           appConfig: appConfig)
+    }
+
+    /// Modally presents a "Compose New Mail" view.
+    /// If we can parse a recipient from the url (e.g. "mailto:me@me.com") we prefill the "To:"
+    /// field of the presented compose view.
+    ///
+    /// - Parameters:
+    ///   - address: address to prefill "To:" field with
+    ///   - viewController: presenting view controller
+    ///   - appConfig: AppConfig to forward
+    static func presentComposeView(forRecipientWithAddress address: String?,
+                                   on viewController: UIViewController,
+                                   appConfig: AppConfig) {
         let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
         guard
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
@@ -71,9 +88,7 @@ struct UIUtils {
                 Log.shared.errorAndCrash(component: #function, errorString: "Missing required data")
                 return
         }
-        if let url = url,
-            url.scheme == UrlClickHandler.Scheme.mailto.rawValue,
-            let address = url.firstRecipientAddress() {
+        if let address = address {
             let to = Identity(address: address)
             composeVc.prefilledTo = to
         }
@@ -126,6 +141,21 @@ struct UIUtils {
             Log.shared.errorAndCrash(component: #function, errorString: "No address")
             return
         }
+        presentActionSheetWithContactOptions(forContactWithEmailAddress: address,
+                                             on: viewController,
+                                             appConfig: appConfig)
+    }
+
+    /// Presents action sheet with all available custom actions for a given url.
+    /// Currently the only URL scheme custom actions exist for is mailto:
+    ///
+    /// - Parameters:
+    ///   - address: address to show custom actions for
+    ///   - viewController: viewcontroller to present action view controllers on (if requiered)
+    ///   - appConfig: AppConfig to forward to potentionally created viewControllers
+    static func presentActionSheetWithContactOptions(forContactWithEmailAddress address: String,
+                                                     on viewController: UIViewController,
+                                                     appConfig: AppConfig) {
         let contact = Identity(address: address)
 
         let alerSheet = UIAlertController.init(title: nil,
@@ -137,7 +167,9 @@ struct UIUtils {
                                               comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message")
         alerSheet.addAction(UIAlertAction.init(title: newMailtitle, style: .default) { (action) in
-            presentComposeView(forRecipientInUrl: url, on: viewController, appConfig: appConfig)
+            presentComposeView(forRecipientWithAddress: address,
+                               on: viewController,
+                               appConfig: appConfig)
         })
         //
         let addTitle = NSLocalizedString("Add to Contacts",
@@ -151,7 +183,7 @@ struct UIUtils {
                                          comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
         alerSheet.addAction(UIAlertAction.init(title: copyTitle, style: .default) { (action) in
-            UIPasteboard.general.string = url.firstRecipientAddress()
+            UIPasteboard.general.string = address
         })
         //
         let cancelTitle = NSLocalizedString("Cancel",
