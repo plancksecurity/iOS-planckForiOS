@@ -116,8 +116,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
 
-        if model != nil {
+        if let vm = model {
             updateFilterButtonView()
+            if vm.checkIfSettingsChanged() {
+                self.settingsChanged()
+            }
         }
     }
 

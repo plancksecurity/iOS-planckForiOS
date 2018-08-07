@@ -70,6 +70,8 @@ class EmailListViewModel {
 
     weak var updateThreadListDelegate: UpdateThreadListDelegate?
     var defaultFilter: CompositeFilter<FilterBase>?
+
+    var oldThreadSetting : Bool
     
     // MARK: - Life Cycle
     
@@ -83,7 +85,19 @@ class EmailListViewModel {
         self.folderToShow = folderToShow
         self.threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
         self.defaultFilter = folderToShow.filter?.clone()
+        self.oldThreadSetting = AppSettings.threadedViewEnabled
+        
         resetViewModel()
+        
+    }
+    
+    //check if there are some important settings that have changed to force a reload
+    func checkIfSettingsChanged() -> Bool {
+        if AppSettings.threadedViewEnabled != oldThreadSetting {
+            oldThreadSetting = AppSettings.threadedViewEnabled
+            return true
+        }
+        return false
     }
 
     internal func startListeningToChanges() {
