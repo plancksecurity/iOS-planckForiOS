@@ -28,6 +28,7 @@ extension URL {
         } else {
             result = schemeStriped
         }
-        return result
+        let isValid = result?.isProbablyValidEmail() ?? false
+        return isValid ? result : nil
     }
 }

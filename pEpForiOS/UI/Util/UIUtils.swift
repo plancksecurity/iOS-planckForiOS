@@ -62,6 +62,11 @@ struct UIUtils {
                                    on viewController: UIViewController,
                                    appConfig: AppConfig) {
         let address = url?.firstRecipientAddress()
+        if url != nil && address == nil {
+            // A URL has been passed, but it is no valid mailto URL.
+            return
+        }
+
         presentComposeView(forRecipientWithAddress: address,
                            on: viewController,
                            appConfig: appConfig)

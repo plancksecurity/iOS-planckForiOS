@@ -31,8 +31,8 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         }
     }
     /// View controller to act on.
-    var actor: UIViewController
-    let appConfig: AppConfig
+    private var actor: UIViewController
+    private let appConfig: AppConfig
 
     required init(actor: UIViewController, appConfig: AppConfig) {
         self.actor = actor

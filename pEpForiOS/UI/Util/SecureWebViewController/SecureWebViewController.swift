@@ -367,6 +367,7 @@ extension SecureWebViewController {
         static var appConfigDirtyHack: AppConfig?
 }
 extension UISplitViewController {
+
     override open func present(_ viewControllerToPresent: UIViewController,
                                animated flag: Bool,
                                completion: (() -> Void)? = nil) {
@@ -375,19 +376,42 @@ extension UISplitViewController {
         // - the title of the action sheet is (probably) a valid email address
         guard
             let alertController = viewControllerToPresent as? UIAlertController,
-            alertController.preferredStyle == .actionSheet,
-            let emailAddress = alertController.title,
-            emailAddress.isProbablyValidEmail(),
-            let appConfig = SecureWebViewController.appConfigDirtyHack
-            else {
-                // Is not an Action Sheet shown due to long-press on mailto: URL.
-                // Forward for custom handling.
+            alertController.preferredStyle == .actionSheet else {
+                // Is not an Action Sheet. Forward for custom handling.
                 super.present(viewControllerToPresent, animated: flag, completion: completion)
-                return
+               return
         }
-        UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: emailAddress,
-                                                     on: self,
-                                                     appConfig: appConfig)
+
+        let alertTitle = alertController.title ?? ""
+
+        if alertTitle.isProbablyValidEmail(),
+            let appConfig = SecureWebViewController.appConfigDirtyHack {
+            // It *is* an Action Sheet shown due to long-press on mailto: URL and we know the
+            // clicked address.
+            // Forward for custom handling.
+            let mailAddress = alertTitle
+            UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
+                                                         on: self,
+                                                         appConfig: appConfig)
+        } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
+            // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
+            // the clicked address.
+            // That happens due to an Apple bug. Apple passes everything prefixed with "mailto:"
+            // to its Action Sheet.
+            // Example:
+            //          A click on "mailto:Fred%20Foo<foo@example.com>"
+            //          results in
+            //          alertController.title == "mailto:Fred"
+            //
+            // We simply ignore it as:
+            //                      - we are unable to handle it due to the missing email address
+            //                      - we do not want to display Apple's ActionSheet
+                return
+        } else {
+            // Is not shown due to long-press on mailto: URL.
+            // Forward for custom handling.
+            super.present(viewControllerToPresent, animated: flag, completion: completion)
+        }
     }
 }
 
