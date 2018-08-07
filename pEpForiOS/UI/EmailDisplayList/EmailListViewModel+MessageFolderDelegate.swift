@@ -116,8 +116,22 @@ extension EmailListViewModel: MessageFolderDelegate {
         if !shouldBeDisplayed(message: message) {
             return
         }
-        guard let indexExisting = index(of: message) else {
-            // We do not have this message in our model, so we do not have to remove it,
+        if let indexExisting = index(of: message) {
+            // This concerns a top message
+            DispatchQueue.main.async { [weak self] in
+                guard let theSelf = self else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "Self reference is nil!")
+                    return
+                }
+                theSelf.messages.removeObject(at: indexExisting)
+                let indexPath = IndexPath(row: indexExisting, section: 0)
+                theSelf.emailListViewModelDelegate?.emailListViewModel(
+                    viewModel: theSelf,
+                    didRemoveDataAt: [indexPath])
+            }
+        } else {
+            // We do not have this top message in our model, so we do not have to remove it,
             // but it might belong to a thread.
             let referencedMessages = threadedMessageFolder.referencedTopMessages(message: message)
             if !referencedMessages.isEmpty {
@@ -140,19 +154,6 @@ extension EmailListViewModel: MessageFolderDelegate {
                     }
                 }
             }
-            return
-        }
-        DispatchQueue.main.async { [weak self] in
-            guard let theSelf = self else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Self reference is nil!")
-                return
-            }
-            theSelf.messages.removeObject(at: indexExisting)
-            let indexPath = IndexPath(row: indexExisting, section: 0)
-            theSelf.emailListViewModelDelegate?.emailListViewModel(
-                viewModel: theSelf,
-                didRemoveDataAt: [indexPath])
         }
     }
 
