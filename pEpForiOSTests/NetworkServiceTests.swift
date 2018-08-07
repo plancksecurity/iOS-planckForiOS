@@ -79,9 +79,11 @@ class NetworkServiceTests: XCTestCase {
                 changedMessagesByID[msg.messageID] = msg
             }
         }
-        func didDelete(messageFolder: MessageFolder) {
+
+        func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
             // this message has been deleted from the start, ignore
         }
+
         func didCreate(messageFolder: MessageFolder) {
             if let msg = messageFolder as? Message {
                 add(message: msg)
