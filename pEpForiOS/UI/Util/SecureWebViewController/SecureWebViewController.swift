@@ -354,7 +354,8 @@ extension SecureWebViewController: WKNavigationDelegate {
     }
 }
 
-// MARK: - !! EXTREMELY DIRTY HACK START !!
+// MARK: -
+// MARK: !! EXTREMELY DIRTY HACK START !! ( START )
 
 /// This is the only hack found to intercept WKWebViews default long-press on mailto: URL
 /// behaviour.
@@ -415,4 +416,5 @@ extension UISplitViewController {
     }
 }
 
-// MARK: - !! EXTREMELY DIRTY HACK END !!
+// MARK: !! EXTREMELY DIRTY HACK START !! ( END )
+// MARK: -
