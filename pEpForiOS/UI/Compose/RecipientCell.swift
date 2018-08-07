@@ -30,9 +30,8 @@ class RecipientCell: ComposeCell {
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
-        
     }
-    
+
     private func removeRecepients() {
         recipients.forEach({ (recepient: Int) in
             if identities[safe: recepient] != nil {
@@ -149,5 +148,15 @@ extension RecipientCell {
 
     public override func textViewDidEndEditing(_ textView: UITextView) {
         let _ = generateContact(textView)
+    }
+
+    func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange) -> Bool {
+        if let _ = textAttachment.image {
+            // Suppress default image handling. Our recipient names are actually displayed as
+            // images and we do not want to offer "save to camera roll" aciont sheet or other image
+            // actions.
+            return false
+        }
+        return true
     }
 }
