@@ -121,6 +121,13 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
         if let indexExisting = index(of: message) {
             // This concerns a top message
+
+            if AppSettings.threadedViewEnabled &&
+                !belongingToThread.isEmpty &&
+                isCurrentlyDisplayingDetailsOf(message: message) {
+                // deleting a top message that spans the thread that is currently displayed
+            }
+
             DispatchQueue.main.async { [weak self] in
                 guard let theSelf = self else {
                     Log.shared.errorAndCrash(component: #function,
