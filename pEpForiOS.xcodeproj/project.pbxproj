@@ -360,7 +360,6 @@
 		43AE48E71EEFC93900B92BB6 /* DebugMergePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AE48E61EEFC93900B92BB6 /* DebugMergePolicy.swift */; };
 		43B0443920067CC7007BCE3F /* UIAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443820067CC7007BCE3F /* UIAccount.swift */; };
 		43B0443B20067D25007BCE3F /* UITestDataProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0443A20067D25007BCE3F /* UITestDataProtocol.swift */; };
-		43B044422007683E007BCE3F /* secret.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 43B044412007683E007BCE3F /* secret.xcconfig */; };
 		43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
 		43B044542007AFDA007BCE3F /* AccountVerificationResultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B044532007AFDA007BCE3F /* AccountVerificationResultDelegate.swift */; };
 		43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */; };
@@ -476,7 +475,6 @@
 		B72528351EE953BC00815118 /* AccountsSettingsCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72528341EE953BC00815118 /* AccountsSettingsCellViewModel.swift */; };
 		B72528371EE9562200815118 /* AccountsSettingsSectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72528361EE9562200815118 /* AccountsSettingsSectionViewModel.swift */; };
 		B729BEC61E7C35E200793110 /* FilterUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729BEC51E7C35E200793110 /* FilterUpdateProtocol.swift */; };
-		B73118FF1FEBE2DB0006573B /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439932311FEA9B7200E92C35 /* SwipeCellKit.framework */; };
 		B73119001FEBE2DB0006573B /* SwipeCellKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 439932311FEA9B7200E92C35 /* SwipeCellKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B7365CDE1EAF45F30036ECC7 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7365CDD1EAF45F30036ECC7 /* UITextField+Extension.swift */; };
 		B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */; };
@@ -1066,7 +1064,6 @@
 				43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */,
 				43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */,
 				495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */,
-				B73118FF1FEBE2DB0006573B /* SwipeCellKit.framework in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
@@ -2470,7 +2467,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "p≡p Security S.A.";
 				TargetAttributes = {
 					43980E221CBD0BC900A7FC3C = {
@@ -2531,7 +2528,6 @@
 			files = (
 				491B656220CFE0FD00C2ADDA /* Thread.storyboard in Resources */,
 				43980E341CBD0BCA00A7FC3C /* LaunchScreen.storyboard in Resources */,
-				43B044422007683E007BCE3F /* secret.xcconfig in Resources */,
 				155F2D9E20530798001B4B1C /* Reusable.storyboard in Resources */,
 				220DCE2F1E0AB544002FE716 /* MessageData.plist in Resources */,
 				435942042118555300CF41BF /* InfoPlist.strings in Resources */,
@@ -3233,12 +3229,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -3301,12 +3299,14 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
