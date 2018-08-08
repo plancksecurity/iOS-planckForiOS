@@ -407,7 +407,7 @@ extension UISplitViewController {
             // We simply ignore it as:
             //                      - we are unable to handle it due to the missing email address
             //                      - we do not want to display Apple's ActionSheet
-                return
+            return
         } else {
             // Is not shown due to long-press on mailto: URL.
             // Forward for custom handling.

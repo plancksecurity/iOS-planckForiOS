@@ -11,7 +11,7 @@ import MessageModel
 import ContactsUI
 
 struct UIUtils {
-    
+
     /// Converts the error to a user frienldy DisplayUserError and presents it to the user
     ///
     /// - Parameters:
