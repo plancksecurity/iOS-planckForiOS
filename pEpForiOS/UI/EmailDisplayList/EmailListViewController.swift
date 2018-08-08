@@ -691,15 +691,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 // MARK: - UISearchResultsUpdating, UISearchControllerDelegate
 
 extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
+
     public func updateSearchResults(for searchController: UISearchController) {
         guard let vm = model, let searchText = searchController.searchBar.text else {
             return
         }
         vm.setSearchFilter(forSearchText: searchText)
     }
-    
+
     func didDismissSearchController(_ searchController: UISearchController) {
         guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "No chance to remove filter, sorry.")
             return
         }
         vm.removeSearchFilter()
