@@ -111,8 +111,16 @@ class EmailListViewModel {
     private func resetViewModel() {
         // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
-        queue.addOperation { [weak self] in
-            guard let me = self else {
+
+        queue.cancelAllOperations()
+
+        let op = BlockOperation()
+        weak var weakOp = op
+        op.addExecutionBlock { [weak self] in
+            guard
+                let me = self,
+                let op = weakOp,
+                !op.isCancelled else {
                 return
             }
             let messagesToDisplay = me.folderToShow.allMessages()
@@ -121,11 +129,15 @@ class EmailListViewModel {
             }
             me.messages = SortedSet(array: previewMessages,
                                     sortBlock: me.sortByDateSentAscending)
-            DispatchQueue.main.async {
+            if op.isCancelled {
+                return
+            }
+            DispatchQueue.main.sync {
                 me.emailListViewModelDelegate?.updateView()
                 me.startListeningToChanges()
             }
         }
+        queue.addOperation(op)
     }
 
     // MARK: - Public Data Access & Manipulation
