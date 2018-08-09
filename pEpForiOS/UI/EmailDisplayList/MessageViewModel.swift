@@ -118,13 +118,12 @@ class MessageViewModel {
     func messageCount(completion: @escaping (Int)->()) {
         if let messageCount = internalMessageCount {
             completion(messageCount)
-        } else {
-            let operation =  messageCountPrefetch { count in
-                completion(count)
-            }
-            if(!operation.isFinished){
-                queue.addOperation(operation)
-            }
+        }
+        let operation =  messageCountPrefetch { count in
+            completion(count)
+        }
+        if(!operation.isFinished){
+            queue.addOperation(operation)
         }
     }
 
