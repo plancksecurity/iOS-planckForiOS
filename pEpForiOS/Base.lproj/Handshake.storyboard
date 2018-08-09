@@ -62,17 +62,17 @@
                                                             </constraints>
                                                         </view>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vj3-9e-bA1" userLabel="MiddleStackView">
-                                                            <rect key="frame" x="56" y="0.0" width="224" height="48"/>
+                                                            <rect key="frame" x="56" y="0.0" width="166" height="48"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Hannibal Chew" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFh-wv-YAc" userLabel="PartnerNameLabel">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="224" height="20.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="166" height="20.5"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="partnerNameLabel"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" text="Privacy Status: Mistrusted" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5RJ-Gx-qBT" userLabel="PrivacyStatusLabel">
-                                                                    <rect key="frame" x="0.0" y="30" width="224" height="18"/>
+                                                                    <rect key="frame" x="0.0" y="30" width="166" height="18"/>
                                                                     <accessibility key="accessibilityConfiguration" identifier="privacyStatusTitle"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                     <nil key="textColor"/>
@@ -80,6 +80,26 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="asI-Uh-p3r">
+                                                            <rect key="frame" x="230" y="0.0" width="50" height="48"/>
+                                                            <subviews>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bYF-el-am0">
+                                                                    <rect key="frame" x="25" y="0.0" width="25" height="25"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" secondItem="bYF-el-am0" secondAttribute="height" multiplier="1:1" id="3le-3i-0wy"/>
+                                                                        <constraint firstAttribute="height" constant="25" id="E93-vf-f2Y"/>
+                                                                        <constraint firstAttribute="width" constant="25" id="Ptu-zw-GXB"/>
+                                                                    </constraints>
+                                                                    <color key="tintColor" red="0.0" green="0.97680455450000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <state key="normal" image="pEpForiOS-icon-languagechange"/>
+                                                                </button>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstItem="bYF-el-am0" firstAttribute="top" secondItem="asI-Uh-p3r" secondAttribute="top" id="aoE-nk-xrK"/>
+                                                                <constraint firstAttribute="trailing" secondItem="bYF-el-am0" secondAttribute="trailing" id="cA9-5c-zdg"/>
+                                                            </constraints>
+                                                        </view>
                                                     </subviews>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="48" id="J8w-pv-TxH"/>
@@ -251,5 +271,6 @@
     </scenes>
     <resources>
         <image name="empty-avatar" width="150" height="150"/>
+        <image name="pEpForiOS-icon-languagechange" width="100" height="100"/>
     </resources>
 </document>
