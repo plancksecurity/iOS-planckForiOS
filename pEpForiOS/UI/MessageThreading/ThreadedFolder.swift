@@ -81,11 +81,7 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
             let referenceIdSet = message.threadMessageIdSet()
 
             for aTopMsg in topMessages {
-                if aTopMsg == message {
-                    continue
-                }
-
-                if !aTopMsg.threadMessageIdSet().intersection(referenceIdSet).isEmpty {
+                if referenceIdSet.contains(aTopMsg.messageID) {
                     result.append(aTopMsg)
                 }
             }
