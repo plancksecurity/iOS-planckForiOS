@@ -9,10 +9,7 @@
 import Foundation
 import MessageModel
 
-
 class ThreadedEmailViewModel {
-
-
     internal var messages: [Message]
     internal var tip: Message 
     weak var emailDisplayDelegate: EmailDisplayDelegate!
@@ -186,9 +183,12 @@ class ThreadedEmailViewModel {
     }
 
     private func markSeen(message: Message?) {
-        message?.imapFlags?.seen = true
-        MessageModel.performAndWait {
-            message?.save()
+        let currentSeen = message?.imapFlags?.seen ?? false
+        if !currentSeen {
+            message?.imapFlags?.seen = true
+            MessageModel.performAndWait {
+                message?.save()
+            }
         }
     }
 }
