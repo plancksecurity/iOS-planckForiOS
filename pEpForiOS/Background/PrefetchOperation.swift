@@ -12,13 +12,13 @@ class PrefetchOperation: ConcurrentBaseOperation {
 
     let executionBlock: (_ operation: PrefetchOperation)-> Void
     
-    init (executionBlock: @escaping (_ operation: PrefetchOperation) -> Void) {
+    init(executionBlock: @escaping (_ operation: PrefetchOperation) -> Void) {
         self.executionBlock = executionBlock
         super.init()
     }
 
     override func main() {
-        if(isCancelled){
+        if (isCancelled){
             return
         }
         executionBlock(self)
