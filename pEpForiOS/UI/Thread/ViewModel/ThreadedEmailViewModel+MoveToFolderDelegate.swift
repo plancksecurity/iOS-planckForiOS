@@ -18,6 +18,6 @@ extension ThreadedEmailViewModel: MoveToFolderDelegate{
         guard let lastMessage = messages.last else {
             return
         }
-        emailDisplayDelegate.emailDisplayDidDelete(message: lastMessage)
+        emailDisplayDelegate?.emailDisplayDidDelete(message: lastMessage)
     }
 }

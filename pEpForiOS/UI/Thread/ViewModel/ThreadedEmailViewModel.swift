@@ -12,8 +12,8 @@ import MessageModel
 class ThreadedEmailViewModel {
     internal var messages: [Message]
     internal var tip: Message 
-    weak var emailDisplayDelegate: EmailDisplayDelegate!
-    weak var delegate: ThreadedEmailViewModelDelegate!
+    weak var emailDisplayDelegate: EmailDisplayDelegate?
+    weak var delegate: ThreadedEmailViewModelDelegate?
     private let folder: ThreadedFolder
     private var expandedMessages: [Bool]
     private var messageToReply: Message?
@@ -61,8 +61,8 @@ class ThreadedEmailViewModel {
         folder.deleteSingle(message: theMessageToDelete)
         messages.remove(at: index)
         expandedMessages.remove(at: index)
-        delegate.emailViewModel(viewModel: self, didRemoveDataAt: index)
-        emailDisplayDelegate.emailDisplayDidDelete(message: theMessageToDelete)
+        delegate?.emailViewModel(viewModel: self, didRemoveDataAt: index)
+        emailDisplayDelegate?.emailDisplayDidDelete(message: theMessageToDelete)
 
     }
 
@@ -75,7 +75,7 @@ class ThreadedEmailViewModel {
 
     func deleteAllMessages(){
         folder.deleteThread(message: tip)
-        emailDisplayDelegate.emailDisplayDidDelete(message: tip)
+        emailDisplayDelegate?.emailDisplayDidDelete(message: tip)
     }
 
     func addMessage(message: Message) -> Int{
@@ -103,9 +103,9 @@ class ThreadedEmailViewModel {
 
     internal func notifyFlag(_ status: Bool, message: Message) {
         if status {
-            emailDisplayDelegate.emailDisplayDidFlag(message: message)
+            emailDisplayDelegate?.emailDisplayDidFlag(message: message)
         } else {
-            emailDisplayDelegate.emailDisplayDidUnflag(message: message)
+            emailDisplayDelegate?.emailDisplayDidUnflag(message: message)
         }
     }
 
@@ -129,7 +129,7 @@ class ThreadedEmailViewModel {
         message.imapFlags?.flagged = status
         message.save()
         notifyFlag(status, message: message)
-        delegate.emailViewModeldidChangeFlag(viewModel: self)
+        delegate?.emailViewModeldidChangeFlag(viewModel: self)
     }
 
     func allMessagesFlagged() -> Bool {
