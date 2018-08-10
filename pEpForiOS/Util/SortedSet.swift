@@ -106,6 +106,34 @@ class SortedSet<T: Equatable>: Sequence {
         set.removeAllObjects()
     }
 
+    // MARK: - Array Support
+
+    public func array() -> [T] {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+
+        if let theArray = set.array as? [T] {
+            return theArray
+        } else {
+            return []
+        }
+    }
+
+    public subscript(safe index: Int) -> T? {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+
+        if index >= set.count {
+            return nil
+        }
+
+        if let obj = set.object(at: index) as? T {
+            return obj
+        } else {
+            return nil
+        }
+    }
+
     // MARK: - Sequence
 
     public typealias Iterator = SortedSetIterator<T>
