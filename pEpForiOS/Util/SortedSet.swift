@@ -57,6 +57,17 @@ class SortedSet<T: Equatable>: Sequence {
         set.removeObject(at: index)
     }
     
+    public func replaceObject(at index: Int, with object: T) {
+        objc_sync_enter(self)
+        defer { objc_sync_exit(self) }
+
+        guard isValidIndex(index) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Index out of range")
+            return
+        }
+        set.replaceObject(at: index, with: object)
+    }
+
     public func object(at index: Int) -> T? {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
