@@ -70,25 +70,15 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 var rating = PEP_rating_undefined
                 let pEpDecryptedMessage: NSDictionary
                 do {
-                    // (This nasty if clause is a workaround to what I consider as a Swift 4.1 bug,
-                    // causing an error "generic parameter "wrapped" could not be inferred".
-                    // The only difference is the `flags`parameter.)
-                    if message.isOnTrustedServer {
-                        pEpDecryptedMessage = try session.decryptMessageDict(pepMessage,
-                                                                             flags: nil,
-                                                                             rating: &rating,
-                                                                             extraKeys: &keys,
-                                                                             status: nil)
-                            as NSDictionary
-                    } else {
-                        var flags = PEP_decrypt_flag_untrusted_server
+                    var flags = message.isOnTrustedServer ? PEP_decrypt_flag_none :
+                    PEP_decrypt_flag_untrusted_server
                         pEpDecryptedMessage = try session.decryptMessageDict(pepMessage,
                                                                              flags: &flags,
                                                                              rating: &rating,
                                                                              extraKeys: &keys,
                                                                              status: nil)
                             as NSDictionary
-                    }
+
                     me.handleDecryptionSuccess(cdMessage: cdMessage,
                                                pEpDecryptedMessage: pEpDecryptedMessage,
                                                ratingBeforeEngine: ratingBeforeEngine,
