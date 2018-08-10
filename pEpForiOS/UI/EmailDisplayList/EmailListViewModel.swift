@@ -40,6 +40,7 @@ class EmailListViewModel {
     private let queue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInteractive
+        createe.maxConcurrentOperationCount = 1
         return createe
     }()
 
