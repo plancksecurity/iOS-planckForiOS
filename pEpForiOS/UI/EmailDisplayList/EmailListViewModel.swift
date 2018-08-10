@@ -39,7 +39,7 @@ class EmailListViewModel {
     internal var messages: SortedSet<MessageViewModel>
     private let queue: OperationQueue = {
         let createe = OperationQueue()
-        createe.qualityOfService = .userInteractive
+        createe.qualityOfService = .userInitiated
         createe.maxConcurrentOperationCount = 1
         return createe
     }()
