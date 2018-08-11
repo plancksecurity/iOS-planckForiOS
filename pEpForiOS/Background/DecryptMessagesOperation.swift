@@ -23,99 +23,115 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
     public weak var delegate: DecryptMessagesOperationDelegateProtocol?// Only used in Tests. Maybe refactor out.
     private(set) var didMarkMessagesForReUpload = false
 
+    private var messagesToDecrypt = [CdMessage]()
+    private var currentlyProcessedMessage: CdMessage?
+    private var ratingBeforeEngine = Int16(PEP_rating_undefined.rawValue)
+
+    private func setupMessagesToDecrypt() {
+        privateMOC.performAndWait {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            guard let cdMessages = CdMessage.all(
+                predicate: CdMessage.unknownToPepMessagesPredicate(),
+                orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
+                in: privateMOC) as? [CdMessage] else {
+                    me.markAsFinished()
+                    return
+            }
+            messagesToDecrypt = cdMessages
+        }
+    }
+
     public override func main() {
         if isCancelled {
             markAsFinished()
             return
         }
-        let context = privateMOC
-        context.perform() { [weak self] in
+        setupMessagesToDecrypt()
+        handleNextMessage()
+    }
+
+    // MARK: - Process
+
+    private func cleanup() {
+        currentlyProcessedMessage = nil
+        ratingBeforeEngine = Int16(PEP_rating_undefined.rawValue)
+    }
+
+    private func handleNextMessage() {
+        cleanup()
+
+        if messagesToDecrypt.count == 0 {
+            waitForBackgroundTasksToFinish()
+            return
+        }
+
+        privateMOC.perform { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            defer {
-                me.markAsFinished()
+            if me.isCancelled {
+                me.waitForBackgroundTasksToFinish()
+                return
             }
-            guard let cdMessages = CdMessage.all(
-                predicate: CdMessage.unknownToPepMessagesPredicate(),
-                orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
-                in: context) as? [CdMessage] else {
-                    return
+            let cdMsg = me.messagesToDecrypt.removeFirst()
+            me.currentlyProcessedMessage = cdMsg
+            guard let msg = cdMsg.message() else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No message")
+                me.handleError(
+                    BackgroundError.GeneralError.illegalState(info: "No Message for CdMessage"))
+                return
             }
-
-            for cdMessage in cdMessages {
-                guard let message = cdMessage.message() else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No message")
-                    continue
-                }
-                if me.isCancelled {
-                    break
-                }
-
-                let ratingBeforeEngine = cdMessage.pEpRating
-
-                var outgoing = false
-                if let folderType = cdMessage.parent?.folderType {
-                    outgoing = folderType.isOutgoing()
-                }
-
-                let pepMessage = PEPUtil.pEpDict(
-                    cdMessage: cdMessage, outgoing: outgoing).mutableDictionary()
-                var keys: NSArray?
-                Log.info(component: me.comp,
-                         content: "Will decrypt \(cdMessage.logString())")
-                let session = PEPSession()
-
-                var rating = PEP_rating_undefined
-                let pEpDecryptedMessage: NSDictionary
-                do {
-                    var flags = message.isOnTrustedServer ? PEP_decrypt_flag_none :
-                    PEP_decrypt_flag_untrusted_server
-                        pEpDecryptedMessage = try session.decryptMessageDict(pepMessage,
-                                                                             flags: &flags,
-                                                                             rating: &rating,
-                                                                             extraKeys: &keys,
-                                                                             status: nil)
-                            as NSDictionary
-
-                    me.handleDecryptionSuccess(cdMessage: cdMessage,
-                                               pEpDecryptedMessage: pEpDecryptedMessage,
-                                               ratingBeforeEngine: ratingBeforeEngine,
-                                               rating: rating,
-                                               keys: keys)
-                } catch let error as NSError {
-                    // log, and try again next time
-                    Log.error(component: #function, error: error)
-                }
+            me.ratingBeforeEngine = cdMsg.pEpRating
+            var outgoing = false
+            if let folderType = cdMsg.parent?.folderType {
+                outgoing = folderType.isOutgoing()
             }
+            let pepMessage = PEPUtil.pEpDict(cdMessage: cdMsg, outgoing: outgoing)
+            let flags = msg.isOnTrustedServer ? PEP_decrypt_flag_none :
+            PEP_decrypt_flag_untrusted_server
+            let decryptOp = DecryptMessageOperation(messageToDecrypt: pepMessage,
+                                                    flags: flags,
+                                                    delegate: me)
+            me.backgroundQueue.addOperation(decryptOp)
         }
     }
+
+    // MARK: - Handle Result
 
     private func handleDecryptionSuccess(cdMessage: CdMessage,
                                          pEpDecryptedMessage: NSDictionary,
                                          ratingBeforeEngine: Int16,
                                          rating: PEP_rating,
                                          keys: NSArray?) {
-        let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
+        privateMOC.performAndWait {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
 
-        // Only used in Tests. Maybe refactor out.
-        self.delegate?.decrypted(originalCdMessage: cdMessage,
-                                 decryptedMessageDict: pEpDecryptedMessage,
-                                 rating: rating,
-                                 keys: theKeys)
+            // Only used in Tests. Maybe refactor out.
+            me.delegate?.decrypted(originalCdMessage: cdMessage,
+                                     decryptedMessageDict: pEpDecryptedMessage,
+                                     rating: rating,
+                                     keys: theKeys)
 
-        if rating.shouldUpdateMessageContent() {
-            updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
-                               ratingBeforeEngine: ratingBeforeEngine,
-                               rating: rating,
-                               cdMessage: cdMessage,
-                               keys: theKeys)
-            handleReUploadAndNotify(cdMessage: cdMessage, rating: rating)
-        } else {
-            if rating.rawValue != ratingBeforeEngine {
-                cdMessage.update(rating: rating)
-                saveAndNotify(cdMessage: cdMessage  )
+            if rating.shouldUpdateMessageContent() {
+                me.updateWholeMessage(pEpDecryptedMessage: pEpDecryptedMessage,
+                                   ratingBeforeEngine: ratingBeforeEngine,
+                                   rating: rating,
+                                   cdMessage: cdMessage,
+                                   keys: theKeys)
+                me.handleReUploadAndNotify(cdMessage: cdMessage, rating: rating)
+            } else {
+                if rating.rawValue != ratingBeforeEngine {
+                    cdMessage.update(rating: rating)
+                    saveAndNotify(cdMessage: cdMessage  )
+                }
             }
         }
     }
@@ -181,6 +197,32 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         }
         MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
     }
+
+// MARK: - Handle DecryptMessageOperationDelegate Calls
+
+    private func decryptMessageOperationDidDecryptMessage(result:
+        DecryptMessageOperation.DecryptionResult) {
+        guard
+            let decrypted = result.pEpDecryptedMessage,
+            let currentlyProcessedMessage = currentlyProcessedMessage
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                handleError(BackgroundError.GeneralError.illegalState(info:
+                    "Error handling decryption result"))
+                return
+        }
+        handleDecryptionSuccess(cdMessage: currentlyProcessedMessage,
+                                pEpDecryptedMessage: decrypted,
+                                ratingBeforeEngine: ratingBeforeEngine,
+                                rating: result.rating,
+                                keys: result.keys)
+        handleNextMessage()
+    }
+
+    private func decryptMessageOperationDidFail(error: Error) {
+        addError(error)
+        handleNextMessage()
+    }
 }
 
 // MARK: - Re-Upload - Trusted Server
@@ -220,5 +262,19 @@ extension DecryptMessagesOperation {
     private func setOriginalRatingHeader(rating: PEP_rating, toMessage msg: Message) {
         msg.setOriginalRatingHeader(rating: rating)
         msg.save()
+    }
+}
+
+// MARK: - DecryptMessageOperationDelegate
+
+extension DecryptMessagesOperation: DecryptMessageOperationDelegate {
+    func decryptMessageOperation(sender: DecryptMessageOperation,
+                                 didDecryptMessageWithResult result:
+        DecryptMessageOperation.DecryptionResult) {
+        decryptMessageOperationDidDecryptMessage(result: result)
+    }
+
+    func decryptMessageOperation(sender: DecryptMessageOperation, failed error: Error) {
+        decryptMessageOperationDidFail(error: error)
     }
 }
