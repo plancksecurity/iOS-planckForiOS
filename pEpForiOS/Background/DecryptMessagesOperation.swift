@@ -198,14 +198,13 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
     }
 
-// MARK: - Handle DecryptMessageOperationDelegate Calls
+    // MARK: - Handle DecryptMessageOperationDelegate Calls
 
     private func decryptMessageOperationDidDecryptMessage(result:
         DecryptMessageOperation.DecryptionResult) {
         guard
             let decrypted = result.pEpDecryptedMessage,
-            let currentlyProcessedMessage = currentlyProcessedMessage
-            else {
+            let currentlyProcessedMessage = currentlyProcessedMessage else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                 handleError(BackgroundError.GeneralError.illegalState(info:
                     "Error handling decryption result"))
