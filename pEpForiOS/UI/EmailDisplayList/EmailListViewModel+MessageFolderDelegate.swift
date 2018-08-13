@@ -133,7 +133,12 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if isDisplayingThread {
                     // deleting a top message that spans the thread that is currently displayed
                     theSelf.updateThreadListDelegate?.deleted(message: message)
+                    let indexPath = IndexPath(row: indexExisting, section: 0)
+                    theSelf.emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theSelf, requestThreadUpdateAt: indexPath,
+                        deletedMessage: message, belongingToThread: belongingToThread)
                 } else {
+                    // unthreaded top message (or currently not displayed)
                     theSelf.messages.removeObject(at: indexExisting)
                     let indexPath = IndexPath(row: indexExisting, section: 0)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
