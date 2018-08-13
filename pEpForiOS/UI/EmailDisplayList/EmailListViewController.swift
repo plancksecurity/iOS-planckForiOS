@@ -825,12 +825,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
         // ignore
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            requestThreadUpdateAt indexPath: IndexPath, deletedMessage: Message,
-                            belongingToThread: Set<MessageID>) {
-
-    }
-
     func updateView() {
         loadingBlocked = false
         tableView.dataSource = self
