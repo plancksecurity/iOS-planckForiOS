@@ -172,15 +172,16 @@ extension EmailListViewModel: MessageFolderDelegate {
                                                  errorString: "Self reference is nil!")
                         return
                     }
+
                     if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedIndices) {
                         theSelf.updateThreadListDelegate?.deleted(message: message)
-                    } else {
-                        if let index = referencedIndices.first {
-                            // The thread count might need to be updated
-                            theSelf.emailListViewModelDelegate?.emailListViewModel(
-                                viewModel: theSelf,
-                                didUpdateDataAt: [IndexPath(row: index, section: 0)])
-                        }
+                    }
+
+                    if let index = referencedIndices.first {
+                        // The thread count might need to be updated
+                        theSelf.emailListViewModelDelegate?.emailListViewModel(
+                            viewModel: theSelf,
+                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
                     }
                 }
             }
