@@ -110,8 +110,15 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
     func referenced<T>(
         messageIdentifiers: [T],
         message: Message) -> [Int] where T: MessageIdentitfying {
-        let threadMessageIds = message.threadMessageIdSet()
-        return referenced(messageIdentifiers: messageIdentifiers,
-                          belongingToThread: threadMessageIds)
+
+        var result = [Int]()
+
+        MessageModel.performAndWait { [weak self] in
+            let threadMessageIds = message.threadMessageIdSet()
+            result = self?.referenced(messageIdentifiers: messageIdentifiers,
+                                     belongingToThread: threadMessageIds) ?? []
+        }
+
+        return result
     }
 }
