@@ -89,4 +89,22 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
 
         return result
     }
+
+    func referenced<T>(
+        messageIdentifiers: [T],
+        message: Message) -> [T] where T: MessageIdentitfying {
+        var result = [T]()
+
+        MessageModel.performAndWait {
+            let referenceIdSet = message.threadMessageIdSet()
+
+            for somethingIdentifiable in messageIdentifiers {
+                if referenceIdSet.contains(somethingIdentifiable.messageIdentifier) {
+                    result.append(somethingIdentifiable)
+                }
+            }
+        }
+
+        return result
+    }
 }
