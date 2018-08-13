@@ -107,8 +107,6 @@ extension EmailListViewModel: MessageFolderDelegate {
                         // Incoming message references other messages,
                         // but none of them are displayed right now in this model.
                         // Not in the master view, not in the detail view.
-                        // So treat it as a top message even though strictly speaking it's not.
-                        insertAsTopMessage()
                     }
                 }
             }
