@@ -33,5 +33,5 @@ protocol UpdateThreadListDelegate: class {
     /**
      Tip message did change
      */
-    func tipChanged(to message: Message)
+    func tipDidChange(to message: Message)
 }
