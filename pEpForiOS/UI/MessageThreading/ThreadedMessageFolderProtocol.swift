@@ -65,6 +65,9 @@ public protocol ThreadedMessageFolderProtocol {
     /**
      Generalized version of `referencedTopMessages`, in case you already know the
      top messages.
+     - Parameter messageIdentifiers: An array of message-ids to check for membership
+     in the thread.
+     - Parameter belongingToThread: The thread to check.
      - Returns: An array of indices into `messageIdentifiers` where the message-id
      is contained in `belongingToThread`.
      */
@@ -75,6 +78,9 @@ public protocol ThreadedMessageFolderProtocol {
     /**
      Generalized version of `referencedTopMessages`, in case you already know the
      top messages.
+     - Parameter messageIdentifiers: An array of message-ids to check for membership
+     in the thread that `message` belongs to.
+     - Parameter message: The `Message` whose thread is taken for the check.
      - Returns: An array of indices into `messageIdentifiers` where the message-id
      was part of the thread that `message` is a part of.
      */
