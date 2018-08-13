@@ -81,15 +81,16 @@ extension EmailListViewModel: MessageFolderDelegate {
                     insertAsTopMessage()
                 } else {
                     if let index = referencedIndices.first {
-
                         // The thread count might need to be updated
                         if let messageModel = theSelf.messages.object(at: index),
                             let messageCount = messageModel.internalMessageCount  {
                             messageModel.internalMessageCount = messageCount + 1
                         }
+
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf,
                             didUpdateDataAt: [IndexPath(row: index, section: 0)])
+
                         if let index = theSelf.currentlyDisplayedIndex(of: referencedIndices) {
                             if theSelf.isShowingSingleMessage() {
                                 // switch from single to thread
