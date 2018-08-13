@@ -13,6 +13,6 @@ import MessageModel
 /**
  Something that has a message-id.
  */
-protocol MessageIdentitfying {
+public protocol MessageIdentitfying {
     var messageIdentifier: MessageID { get }
 }

@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 
 extension Message: MessageIdentitfying {
-    var messageIdentifier: MessageID {
+    public var messageIdentifier: MessageID {
         return messageID
     }
 }

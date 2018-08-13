@@ -92,15 +92,16 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
 
     func referenced<T>(
         messageIdentifiers: [T],
-        message: Message) -> [T] where T: MessageIdentitfying {
-        var result = [T]()
+        message: Message) -> [Int] where T: MessageIdentitfying {
+        var result = [Int]()
 
         MessageModel.performAndWait {
             let referenceIdSet = message.threadMessageIdSet()
 
-            for somethingIdentifiable in messageIdentifiers {
+            for i in 0..<messageIdentifiers.count {
+                let somethingIdentifiable = messageIdentifiers[i]
                 if referenceIdSet.contains(somethingIdentifiable.messageIdentifier) {
-                    result.append(somethingIdentifiable)
+                    result.append(i)
                 }
             }
         }
