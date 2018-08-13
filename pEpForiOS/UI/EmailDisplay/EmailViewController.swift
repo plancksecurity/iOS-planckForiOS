@@ -506,21 +506,19 @@ extension EmailViewController: SegueHandlerType {
             destination.delegate = self
         case .segueHandshake, .segueHandshakeCollapsed:
 
-            guard let destination = segue.destination as? HandshakeViewController,
-            let titleView = navigationItem.titleView else {
+            guard let nv = segue.destination as? UINavigationController,
+                let vc = nv.topViewController as? HandshakeViewController,
+                let titleView = navigationItem.titleView else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                 break
             }
 
-            destination.popoverPresentationController?.delegate = self
-            destination.popoverPresentationController?.sourceView = titleView
-            destination.popoverPresentationController?.sourceRect = CGRect(x: titleView.bounds.midX,
-                                                                           y:titleView.bounds.midY,
-                                                                           width:0,
-                                                                           height:0)
-            destination.appConfig = appConfig
-            destination.message = message
-            destination.ratingReEvaluator = ratingReEvaluator
+            nv.popoverPresentationController?.delegate = self
+            nv.popoverPresentationController?.sourceView = titleView
+            nv.popoverPresentationController?.sourceRect = CGRect(x: titleView.bounds.midX,                                                                           y:titleView.bounds.midY,                                                                           width:0,                                                                           height:0)
+            vc.appConfig = appConfig
+            vc.message = message
+            vc.ratingReEvaluator = ratingReEvaluator
             break
         case .noSegue, .unwindToThread:
             break

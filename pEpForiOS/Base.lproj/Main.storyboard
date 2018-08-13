@@ -830,10 +830,8 @@
                         <segue destination="NY2-HI-4ou" kind="presentation" identifier="segueForward" modalPresentationStyle="pageSheet" id="2fD-kL-Bvj"/>
                         <segue destination="WY0-yJ-1SU" kind="presentation" identifier="segueShowMoveToFolder" modalPresentationStyle="pageSheet" id="RTR-We-Kc1"/>
                         <segue destination="Adk-MD-apd" kind="unwind" identifier="unwindToThread" unwindAction="segueUnwindEmailDisplayDoneWithSegue:" id="eRi-pR-kLP"/>
-                        <segue destination="Dbs-KG-RkX" kind="popoverPresentation" identifier="segueHandshake" popoverAnchorView="mYV-vz-wEb" id="mZj-Mg-VzM">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
-                        <segue destination="Dbs-KG-RkX" kind="show" identifier="segueHandshakeCollapsed" id="0zl-tV-6Kr"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" id="mZj-Mg-VzM"/>
+                        <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshakeCollapsed" id="0zl-tV-6Kr"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C92-OM-qzy" userLabel="First Responder" sceneMemberID="firstResponder"/>
