@@ -160,8 +160,9 @@ extension EmailListViewModel: MessageFolderDelegate {
                 }
             }
         } else {
-            // We do not have this top message in our model, so we do not have to remove it,
-            // but it might belong to a thread.
+            // We do not have this top message in our model, so we do not have to remove it there,
+            // but it might belong to some top message's thread so we might have to update
+            // that top message.
             let referencedIndices = threadedMessageFolder.referenced(
                 messageIdentifiers: messages.array(), message: message)
             if !referencedIndices.isEmpty {
