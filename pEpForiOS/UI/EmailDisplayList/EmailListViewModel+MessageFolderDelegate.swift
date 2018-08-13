@@ -81,10 +81,16 @@ extension EmailListViewModel: MessageFolderDelegate {
                 } else {
                     if let (index, _) = theSelf.referencedTopMessageIndex(
                         messages: referencedTopMessages) {
+
                         // The thread count might need to be updated
-                        theSelf.emailListViewModelDelegate?.emailListViewModel(
-                            viewModel: theSelf,
-                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
+                        if let messageModel = theSelf.messages.object(at: index),
+                            let messageCount = messageModel.internalMessageCount  {
+                            messageModel.internalMessageCount = messageCount + 1
+                            theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                viewModel: theSelf,
+                                didUpdateDataAt: [IndexPath(row: index, section: 0)])
+                        }
+
                         if let topMessage = theSelf.currentlyDisplayedMessage(
                             of: referencedTopMessages) {
                             if theSelf.isShowingSingleMessage() {
@@ -158,9 +164,13 @@ extension EmailListViewModel: MessageFolderDelegate {
                         if let (index, _) = theSelf.referencedTopMessageIndex(
                             messages: referencedTopMessages) {
                             // The thread count might need to be updated
-                            theSelf.emailListViewModelDelegate?.emailListViewModel(
-                                viewModel: theSelf,
-                                didUpdateDataAt: [IndexPath(row: index, section: 0)])
+                            if let messageModel = theSelf.messages.object(at: index),
+                                let messageCount = messageModel.internalMessageCount  {
+                                messageModel.internalMessageCount = messageCount + 1
+                                theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                    viewModel: theSelf,
+                                    didUpdateDataAt: [IndexPath(row: index, section: 0)])
+                            }
                         }
                     }
                 }

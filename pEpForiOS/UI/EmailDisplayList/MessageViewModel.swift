@@ -118,15 +118,15 @@ class MessageViewModel {
     func messageCount(completion: @escaping (Int)->()) {
         if let messageCount = internalMessageCount {
             completion(messageCount)
-        }
-        let operation =  messageCountPrefetch { count in
-            completion(count)
-        }
-        if(!operation.isFinished){
-            queue.addOperation(operation)
+        } else {
+            let operation =  messageCountPrefetch { count in
+                completion(count)
+            }
+            if(!operation.isFinished){
+                queue.addOperation(operation)
+            }
         }
     }
-
 
     private class func address(at folder: Folder?, from message: Message) -> String {
         guard let folder = folder else {
