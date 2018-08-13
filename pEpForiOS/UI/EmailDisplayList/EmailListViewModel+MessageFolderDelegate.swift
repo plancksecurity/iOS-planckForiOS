@@ -86,10 +86,10 @@ extension EmailListViewModel: MessageFolderDelegate {
                         if let messageModel = theSelf.messages.object(at: index),
                             let messageCount = messageModel.internalMessageCount  {
                             messageModel.internalMessageCount = messageCount + 1
-                            theSelf.emailListViewModelDelegate?.emailListViewModel(
-                                viewModel: theSelf,
-                                didUpdateDataAt: [IndexPath(row: index, section: 0)])
                         }
+                        theSelf.emailListViewModelDelegate?.emailListViewModel(
+                            viewModel: theSelf,
+                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
 
                         if let topMessage = theSelf.currentlyDisplayedMessage(
                             of: referencedTopMessages) {
@@ -166,11 +166,11 @@ extension EmailListViewModel: MessageFolderDelegate {
                             // The thread count might need to be updated
                             if let messageModel = theSelf.messages.object(at: index),
                                 let messageCount = messageModel.internalMessageCount  {
-                                messageModel.internalMessageCount = messageCount + 1
-                                theSelf.emailListViewModelDelegate?.emailListViewModel(
-                                    viewModel: theSelf,
-                                    didUpdateDataAt: [IndexPath(row: index, section: 0)])
+                                messageModel.internalMessageCount = messageCount - 1
                             }
+                            theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                viewModel: theSelf,
+                                didUpdateDataAt: [IndexPath(row: index, section: 0)])
                         }
                     }
                 }
