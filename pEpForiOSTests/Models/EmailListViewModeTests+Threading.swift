@@ -639,6 +639,11 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             }
         }
 
+        func emailListViewModel(viewModel: EmailListViewModel,
+                                requestThreadUpdateAt indexPath: IndexPath, deletedMessage: Message,
+                                belongingToThread: Set<MessageID>) {
+        }
+
         func toolbarIs(enabled: Bool) {
         }
 

@@ -16,6 +16,15 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message)
+
+    /**
+     Called when a message gets deleted that is part of a thread that is currently displayed
+     and is the top message for that thread at the same time.
+     */
+    func emailListViewModel(viewModel: EmailListViewModel,
+                            requestThreadUpdateAt indexPath: IndexPath, deletedMessage: Message,
+                            belongingToThread: Set<MessageID>)
+
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
@@ -332,8 +341,9 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = false
-            me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                                      didUpdateDataAt: [indexPath])
+            me.emailListViewModelDelegate?.emailListViewModel(
+                viewModel: me,
+                didUpdateDataAt: [indexPath])
         }
     }
 
