@@ -62,7 +62,8 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
 
         let previewMessage = MessageViewModel(with: message)
-        let referencedTopMessages = threadedMessageFolder.referencedTopMessages(message: message)
+        let referencedIndices = threadedMessageFolder.referenced(
+            messageIdentifiers: messages.array(), message: message)
 
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
@@ -76,22 +77,23 @@ extension EmailListViewModel: MessageFolderDelegate {
                         viewModel: theSelf, didInsertDataAt: [indexPath])
                 }
 
-                if referencedTopMessages.isEmpty && messagePassedFilter {
+                if referencedIndices.isEmpty && messagePassedFilter {
                     insertAsTopMessage()
                 } else {
-                    if let (index, _) = theSelf.referencedTopMessageIndex(
-                        messages: referencedTopMessages) {
+                    if let index = referencedIndices.first {
                         // The thread count might need to be updated
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf,
                             didUpdateDataAt: [IndexPath(row: index, section: 0)])
-                        if let topMessage = theSelf.currentlyDisplayedMessage(
-                            of: referencedTopMessages) {
+                        if let index = theSelf.currentlyDisplayedIndex(of: referencedIndices) {
                             if theSelf.isShowingSingleMessage() {
                                 // switch from single to thread
-                                theSelf.screenComposer?.emailListViewModel(
-                                    theSelf,
-                                    requestsShowThreadViewFor: topMessage)
+                                if let theMessafeViewModel = theSelf.messages[safe: index],
+                                    let theMsg = theMessafeViewModel.message() {
+                                    theSelf.screenComposer?.emailListViewModel(
+                                        theSelf,
+                                        requestsShowThreadViewFor: theMsg)
+                                }
                             } else {
                                 // add the new message to the existing thread view
                                 theSelf.updateThreadListDelegate?.added(message: message)
@@ -340,17 +342,30 @@ Something is fishy here.
     }
 
     /**
-     Like `currentlyDisplaying(messageViewModel: MessageViewModel)`, but checks a list of messages.
+     Like `isCurrentlyDisplayingDetailsOf(messageViewModel: MessageViewModel)`,
+     but checks a list of `MessageViewModel` indices.
      */
     func isCurrentlyDisplayingDetailsOf(oneOf messageViewModelIndices: [Int]) -> Bool {
+        if currentlyDisplayedIndex(of: messageViewModelIndices) != nil {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    /**
+     Like `currentlyDisplayedMessage(of messages: [Message]))`,
+     but checks a list of `MessageViewModel` indices.
+     */
+    func currentlyDisplayedIndex(of messageViewModelIndices: [Int]) -> Int? {
         for i in messageViewModelIndices {
             if let messageViewModel = messages[safe: i] {
                 if isCurrentlyDisplayingDetailsOf(messageViewModel: messageViewModel) {
-                    return true
+                    return i
                 }
             }
         }
-        return false
+        return nil
     }
 
     /**
