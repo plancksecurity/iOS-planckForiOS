@@ -29,4 +29,9 @@ protocol UpdateThreadListDelegate: class {
      A new child message came in.
      */
     func added(message: Message)
+
+    /**
+     Tip message did change
+     */
+    func tipChanged(to message: Message)
 }
