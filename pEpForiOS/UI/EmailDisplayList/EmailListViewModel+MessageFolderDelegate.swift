@@ -154,8 +154,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf, didUpdateDataAt: [indexPath])
 
-                        // TODO: We have to change what currentDisplayedMessage?.messageModel
-                        // is currently pointing to.
+                        theSelf.updateThreadListDelegate?.tipDidChange(to: replacementMessage)
                     }
                 } else {
                     // unthreaded top message (or currently not displayed)
