@@ -157,20 +157,19 @@ extension EmailListViewModel: MessageFolderDelegate {
         } else {
             // We do not have this top message in our model, so we do not have to remove it,
             // but it might belong to a thread.
-            let referencedTopMessages = threadedMessageFolder.referencedTopMessages(
-                message: message)
-            if !referencedTopMessages.isEmpty {
+            let referencedIndices = threadedMessageFolder.referenced(
+                messageIdentifiers: messages.array(), message: message)
+            if !referencedIndices.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     guard let theSelf = self else {
                         Log.shared.errorAndCrash(component: #function,
                                                  errorString: "Self reference is nil!")
                         return
                     }
-                    if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedTopMessages) {
+                    if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedIndices) {
                         theSelf.updateThreadListDelegate?.deleted(message: message)
                     } else {
-                        if let (index, _) = theSelf.referencedTopMessageIndex(
-                            messages: referencedTopMessages) {
+                        if let index = referencedIndices.first {
                             // The thread count might need to be updated
                             theSelf.emailListViewModelDelegate?.emailListViewModel(
                                 viewModel: theSelf,
@@ -300,8 +299,8 @@ Something is fishy here.
     }
 
     /**
-     Is the detail view currently displaying messages derived from `Message`?
-     I.e., is the given message currently selected in the master view?
+     Is the detail view currently displaying messages derived from the given `message`?
+     I.e., is the given `message` currently selected in the master view?
      */
     func isCurrentlyDisplayingDetailsOf(message: Message) -> Bool {
         return currentDisplayedMessage?.messageModel == message
@@ -314,6 +313,34 @@ Something is fishy here.
         for msg in messages {
             if isCurrentlyDisplayingDetailsOf(message: msg) {
                 return true
+            }
+        }
+        return false
+    }
+
+    /**
+     Is the detail view currently displaying messages derived from `messageViewModel`?
+     I.e., is the given `messageViewModel` currently selected in the master view?
+     */
+    func isCurrentlyDisplayingDetailsOf(messageViewModel: MessageViewModel) -> Bool {
+        if let currentMessageModel = currentDisplayedMessage?.messageModel {
+            return
+                currentMessageModel.messageIdentifier == messageViewModel.messageIdentifier &&
+                    currentMessageModel.uid == messageViewModel.uid
+        } else {
+            return false
+        }
+    }
+
+    /**
+     Like `currentlyDisplaying(messageViewModel: MessageViewModel)`, but checks a list of messages.
+     */
+    func isCurrentlyDisplayingDetailsOf(oneOf messageViewModelIndices: [Int]) -> Bool {
+        for i in messageViewModelIndices {
+            if let messageViewModel = messages[safe: i] {
+                if isCurrentlyDisplayingDetailsOf(messageViewModel: messageViewModel) {
+                    return true
+                }
             }
         }
         return false
