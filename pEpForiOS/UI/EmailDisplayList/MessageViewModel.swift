@@ -128,7 +128,6 @@ class MessageViewModel {
         }
     }
 
-
     private class func address(at folder: Folder?, from message: Message) -> String {
         guard let folder = folder else {
             return ""
