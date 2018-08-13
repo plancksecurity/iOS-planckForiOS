@@ -1,5 +1,5 @@
 //
-//  MessageIdentitfying.swift
+//  Message+MessageIdentitfying.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 09.08.18.
@@ -10,9 +10,8 @@ import Foundation
 
 import MessageModel
 
-/**
- Something that has a message-id.
- */
-protocol MessageIdentitfying {
-    var messageIdentifier: MessageID { get }
+extension Message: MessageIdentitfying {
+    var messageIdentifier: MessageID {
+        return messageID
+    }
 }
