@@ -122,23 +122,24 @@ extension EmailListViewModel: MessageFolderDelegate {
         if let indexExisting = index(of: message) {
             // This concerns a top message
 
-            if AppSettings.threadedViewEnabled &&
+            let isDisplayingThread = AppSettings.threadedViewEnabled &&
                 !belongingToThread.isEmpty &&
-                isCurrentlyDisplayingDetailsOf(message: message) {
-                // deleting a top message that spans the thread that is currently displayed
-            }
+                isCurrentlyDisplayingDetailsOf(message: message)
 
             DispatchQueue.main.async { [weak self] in
                 guard let theSelf = self else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "Self reference is nil!")
                     return
                 }
-                theSelf.messages.removeObject(at: indexExisting)
-                let indexPath = IndexPath(row: indexExisting, section: 0)
-                theSelf.emailListViewModelDelegate?.emailListViewModel(
-                    viewModel: theSelf,
-                    didRemoveDataAt: [indexPath])
+                if isDisplayingThread {
+                    // deleting a top message that spans the thread that is currently displayed
+                    theSelf.updateThreadListDelegate?.deleted(message: message)
+                } else {
+                    theSelf.messages.removeObject(at: indexExisting)
+                    let indexPath = IndexPath(row: indexExisting, section: 0)
+                    theSelf.emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theSelf,
+                        didRemoveDataAt: [indexPath])
+                }
             }
         } else {
             // We do not have this top message in our model, so we do not have to remove it,
