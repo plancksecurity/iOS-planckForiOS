@@ -396,15 +396,14 @@ open class NetworkServiceWorker {
                             lastOp = syncMessagesOp
                             operations.append(syncMessagesOp)
                         }
-                        if let syncFlagsOp =
+                        let syncFlagsOp =
                             SyncFlagsToServerOperation(parentName: me.description,
                                                        errorContainer: errorContainer,
                                                        imapSyncData: imapSyncData,
-                                                       folderID: folderID) {
-                            syncFlagsOp.addDependency(lastOp)
-                            lastOp = syncFlagsOp
-                            operations.append(syncFlagsOp)
-                        }
+                                                       folderID: folderID)
+                        syncFlagsOp.addDependency(lastOp)
+                        lastOp = syncFlagsOp
+                        operations.append(syncFlagsOp)
                     }
                 }
             }
@@ -560,10 +559,9 @@ open class NetworkServiceWorker {
                 operations.append(opDecrypt)
                 // In case messages need to be re-uploaded (e.g. for trusted server or extra
                 // keys), we want do append, fetch and decrypt them in the same sync cycle.
-                let opAppendAndFetchReUploaded = BlockOperation() {[weak self, weak opDecrypt] in
+                let opAppendAndFetchReUploaded = BlockOperation() { [weak self, weak opDecrypt] in
                     guard let me = self, let decryptOp = opDecrypt else {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString: "Lost...")
+                        Log.shared.error(component: #function, errorString: "Lost myself")
                         return
                     }
                     if !decryptOp.didMarkMessagesForReUpload {

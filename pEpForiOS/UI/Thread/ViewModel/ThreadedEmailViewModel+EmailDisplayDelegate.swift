@@ -13,18 +13,18 @@ extension ThreadedEmailViewModel: EmailDisplayDelegate {
 
     func emailDisplayDidFlag(message: Message) {
         updateInternal(message: message)
-        emailDisplayDelegate.emailDisplayDidFlag(message: message)
+        emailDisplayDelegate?.emailDisplayDidFlag(message: message)
 
     }
 
     func emailDisplayDidUnflag(message: Message) {
         updateInternal(message: message)
-        emailDisplayDelegate.emailDisplayDidUnflag(message: message)
+        emailDisplayDelegate?.emailDisplayDidUnflag(message: message)
 
     }
 
     func emailDisplayDidDelete(message: Message) {
         deleteInternal(message: message)
-        emailDisplayDelegate.emailDisplayDidDelete(message: message)
+        emailDisplayDelegate?.emailDisplayDidDelete(message: message)
     }
 }

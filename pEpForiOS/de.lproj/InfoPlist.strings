@@ -1,0 +1,15 @@
+/* (No Comment) */
+"CFBundleDisplayName" = "";
+
+/* (No Comment) */
+"CFBundleName" = "$(PRODUCT_NAME)";
+
+/* (No Comment) */
+"NSCameraUsageDescription" = "Kamera verwenden";
+
+/* (No Comment) */
+"NSContactsUsageDescription" = "p≡p wird Kontakte weder sammeln noch teilen.";
+
+/* (No Comment) */
+"NSPhotoLibraryUsageDescription" = "";
+

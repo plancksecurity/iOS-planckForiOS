@@ -470,6 +470,10 @@ extension CdMessage {
         }
         if !flags.deleted {
             MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+        } else {
+            MessageModelConfig.messageFolderDelegate?.didDelete(
+                messageFolder: msg,
+                belongingToThread: Set())
         }
     }
 

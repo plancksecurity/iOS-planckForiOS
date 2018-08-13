@@ -16,6 +16,9 @@ class FullMessageCell: SwipeTableViewCell,
 
     static var flaggedImage: UIImage? = nil
 
+    //!!!: IOS-1159: this must be removed after refactoring SecureWebViewController
+    weak var clickHandler: UrlClickHandlerProtocol?
+
     var requestsReload: (() -> Void)?
 
     @IBOutlet weak var contentHeightConstraint: NSLayoutConstraint!
@@ -59,22 +62,27 @@ class FullMessageCell: SwipeTableViewCell,
         viewModel.getSecurityBadge { image in
             self.badgePicture.image = image
         }
-        if let htmlBody = htmlBody(message: viewModel.message) {
+        if let htmlBody = htmlBody(viewModel: viewModel) {
             // Its fine to use a webview (iOS>=11) and we do have HTML content.
             bodyText.isHidden = true
+            if !htmlViewerViewControllerExists {
             view.addSubview(htmlViewerViewController.view)
-            view.isUserInteractionEnabled = false
+            }
             view.isHidden = false
 
             htmlViewerViewController.view.fullSizeInSuperView()
 
-            let displayHtml = appendInlinedPlainText(fromAttachmentsIn: viewModel.message, to: htmlBody)
+            let displayHtml = viewModel.appendInlinedAttachmentsPlainText(to: htmlBody)
             htmlViewerViewController.display(htmlString: displayHtml)
         } else {
             view.isHidden = true
             bodyText.attributedText = viewModel.body
             bodyText.isHidden = false
             bodyText.tintColor = UIColor.pEpGreen
+
+            bodyText.dataDetectorTypes = UIDataDetectorTypes.link
+            bodyText.delegate = clickHandler
+
             // We are not allowed to use a webview (iOS<11) or do not have HTML content.
             // Remove the HTML view if we just stepped from an HTML mail to one without
             if htmlViewerViewControllerExists &&
@@ -82,14 +90,12 @@ class FullMessageCell: SwipeTableViewCell,
                 htmlViewerViewController.view.removeFromSuperview()
             }
         }
-
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         self.profilePicture.layer.cornerRadius = round(profilePicture.bounds.size.width / 2)
         self.profilePicture.layer.masksToBounds = true
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -103,10 +109,8 @@ class FullMessageCell: SwipeTableViewCell,
         
     }
 
-    /**
-     Indicate that the htmlViewerViewController already exists, to avoid
-     instantiation just to check if it has been instantiated.
-     */
+    /// Indicate that the htmlViewerViewController already exists, to avoid
+    /// instantiation just to check if it has been instantiated.
     var htmlViewerViewControllerExists = false
 
     lazy private var htmlViewerViewController: SecureWebViewController = {
@@ -120,6 +124,7 @@ class FullMessageCell: SwipeTableViewCell,
         }
         vc.scrollingEnabled = false
         vc.delegate = self
+        vc.urlClickHandler = clickHandler
 
         htmlViewerViewControllerExists = true
 
@@ -132,41 +137,15 @@ class FullMessageCell: SwipeTableViewCell,
      * we have non-empty HTML content at all
      - Returns: The HTML message body or nil
      */
-    private func htmlBody(message: Message?) ->  String? {
+    private func htmlBody(viewModel: MessageViewModel) ->  String? {
         guard
             SecureWebViewController.isSaveToUseWebView,
-            let m = message,
-            let htmlBody = m.longMessageFormatted,
+            let htmlBody = viewModel.longMessageFormatted,
             !htmlBody.isEmpty else {
                 return nil
         }
 
         return htmlBody
-    }
-
-    private func appendInlinedPlainText(fromAttachmentsIn message: Message, to text: String) -> String {
-        var result = text
-        let inlinedText = message.inlinedTextAttachments()
-        for inlinedTextAttachment in inlinedText {
-            guard
-                let data = inlinedTextAttachment.data,
-                let inlinedText = String(data: data, encoding: .utf8) else {
-                    continue
-            }
-            result = append(appendText: inlinedText, to: result)
-        }
-        return result
-    }
-
-    private func append(appendText: String, to body: String) -> String {
-        var result = body
-        let replacee = result.contains(find: "</body>") ? "</body>" : "</html>"
-        if result.contains(find: replacee) {
-            result = result.replacingOccurrences(of: replacee, with: appendText + replacee)
-        } else {
-            result += "\n" + appendText
-        }
-        return result
     }
 
     private func setFlagged() {
@@ -179,6 +158,4 @@ class FullMessageCell: SwipeTableViewCell,
         flaggedIcon.isHidden = true
         flaggedIcon.image = UIImage.init(named: "icon-unflagged")
     }
-
-
 }

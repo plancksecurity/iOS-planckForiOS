@@ -8,12 +8,22 @@
 
 import WebKit
 
-protocol SecureWebViewControllerDelegate {
+protocol SecureWebViewControllerDelegate: class {
     /// Called after the webview has finished loadding and layouting its subviews.
     /// - Parameters:
     ///   - webViewController: calling view controller
-    ///   - size: webview.scrollview.contentSize after loading html content and layouting
-    func secureWebViewController(_ webViewController: SecureWebViewController, sizeChangedTo size: CGSize)
+    ///   - sizeChangedTo: webview.scrollview.contentSize after loading html content and layouting
+    func secureWebViewController(_ webViewController: SecureWebViewController,
+                                 sizeChangedTo size: CGSize)
+}
+
+protocol SecureWebViewUrlClickHandlerProtocol: class {
+    /// Called whenever a mailto:// URL has been clicked by the user.
+    /// - Parameters:
+    ///   - sender: caller of the message
+    ///   - mailToUrlClicked: the clicked URL
+    func secureWebViewController(_ webViewController: SecureWebViewController,
+                                 didClickMailToUrlLink url: URL)
 }
 
 /// Webview that does not:
@@ -47,7 +57,8 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
-    var delegate: SecureWebViewControllerDelegate?
+    weak var delegate: SecureWebViewControllerDelegate?
+    weak var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
 
     // MARK: - Life Cycle
 
@@ -114,7 +125,7 @@ class SecureWebViewController: UIViewController {
                 // We ignore it.
                 return
             }
-            compiledBlockList = loadedRuleList  
+            compiledBlockList = loadedRuleList
         }
         loadGroup.notify(queue: DispatchQueue.main) {
             if compiledBlockList != nil {
@@ -155,23 +166,23 @@ class SecureWebViewController: UIViewController {
     ///     and loaded locally by CidHandler.
     private var blockRulesJson: String {
         return """
-         [{
-             "trigger": {
-                 "url-filter": ".*"
-             },
-             "action": {
-                 "type": "block"
-             }
+        [{
+            "trigger": {
+                "url-filter": ".*"
+            },
+            "action": {
+                "type": "block"
+            }
         },
         {
             "trigger": {
                 "url-filter": "cid"
-        },
+            },
             "action": {
                 "type": "ignore-previous-rules"
-        }
+            }
         }]
-      """
+        """
     }
 
     // MARK: - Handle Content Size Changes
@@ -248,7 +259,7 @@ class SecureWebViewController: UIViewController {
             a:link {
                 color:\(UIColor.pEpDarkGreenHex);
                 text-decoration: underline;
-            }
+        }
         """
         let tweak = """
             \(scaleToFitHtml)
@@ -263,17 +274,17 @@ class SecureWebViewController: UIViewController {
         if html.contains(find: "<head>") {
             result = html.replacingOccurrences(of: "<head>", with:
                 """
-        <head>
-            \(tweak)
-        """)
+                <head>
+                \(tweak)
+                """)
         } else if html.contains(find: "<html>") {
             result = html.replacingOccurrences(of: "<html>", with:
                 """
-        <html>
-                <head>
-                    \(tweak)
-                </head>
-        """
+                <html>
+                    <head>
+                        \(tweak)
+                    </head>
+                """
             )
         }
         return result
@@ -309,6 +320,7 @@ class SecureWebViewController: UIViewController {
 // MARK: - WKNavigationDelegate
 
 extension SecureWebViewController: WKNavigationDelegate {
+
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -318,12 +330,22 @@ extension SecureWebViewController: WKNavigationDelegate {
             decisionHandler(.allow)
             return
         case .linkActivated:
-            // Open clicked links in external apps
-            guard let newURL = navigationAction.request.url, UIApplication.shared.canOpenURL(newURL)
-                else {
-                    break
+            guard let url = navigationAction.request.url else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Link to nonexisting URL has been clicked?")
+                break
             }
-            UIApplication.shared.openURL(newURL)
+            if url.scheme == "mailto" {
+                // The user clicked on an email URL.
+                urlClickHandler?.secureWebViewController(self, didClickMailToUrlLink: url)
+            } else {
+                // The user clicked a links we do not allow custom handling for.
+                // Try to open it in an appropriate app, do nothing if that fails.
+                guard UIApplication.shared.canOpenURL(url) else {
+                    break
+                }
+                UIApplication.shared.openURL(url)
+            }
         case .backForward, .formResubmitted, .formSubmitted, .reload:
             // ignore
             break
@@ -331,3 +353,68 @@ extension SecureWebViewController: WKNavigationDelegate {
         decisionHandler(.cancel)
     }
 }
+
+// MARK: -
+// MARK: !! EXTREMELY DIRTY HACK !! ( START )
+
+/// This is the only hack found to intercept WKWebViews default long-press on mailto: URL
+/// behaviour.
+/// !! IF YOU ARE AWARE OF A BETTER SOLUTION, PLEASE LET US KNOW OR IMPLEMENT !!
+/// We must intercept it to show our custom action sheet.
+/// The hack overrrides present(...) in the root view controller of the App (!).
+
+extension SecureWebViewController {
+        /// DIRTY HACK. Find details in below UISplitViewController extension
+        static var appConfigDirtyHack: AppConfig?
+}
+extension UISplitViewController {
+
+    override open func present(_ viewControllerToPresent: UIViewController,
+                               animated flag: Bool,
+                               completion: (() -> Void)? = nil) {
+        // We intercept if:
+        // - the viewControllerToPresent is an Action Sheet
+        // - the title of the action sheet is (probably) a valid email address
+        guard
+            let alertController = viewControllerToPresent as? UIAlertController,
+            alertController.preferredStyle == .actionSheet else {
+                // Is not an Action Sheet. Forward for custom handling.
+                super.present(viewControllerToPresent, animated: flag, completion: completion)
+               return
+        }
+
+        let alertTitle = alertController.title ?? ""
+
+        if alertTitle.isProbablyValidEmail(),
+            let appConfig = SecureWebViewController.appConfigDirtyHack {
+            // It *is* an Action Sheet shown due to long-press on mailto: URL and we know the
+            // clicked address.
+            // Forward for custom handling.
+            let mailAddress = alertTitle
+            UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
+                                                         on: self,
+                                                         appConfig: appConfig)
+        } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
+            // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
+            // the clicked address.
+            // That happens due to an Apple bug. Apple passes everything prefixed with "mailto:"
+            // to its Action Sheet.
+            // Example:
+            //          A click on "mailto:Fred%20Foo<foo@example.com>"
+            //          results in
+            //          alertController.title == "mailto:Fred"
+            //
+            // We simply ignore it as:
+            //                      - we are unable to handle it due to the missing email address
+            //                      - we do not want to display Apple's ActionSheet
+            return
+        } else {
+            // Is not shown due to long-press on mailto: URL.
+            // Forward for custom handling.
+            super.present(viewControllerToPresent, animated: flag, completion: completion)
+        }
+    }
+}
+
+// MARK: !! EXTREMELY DIRTY HACK !! ( END )
+// MARK: -

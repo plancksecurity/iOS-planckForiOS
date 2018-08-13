@@ -28,6 +28,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var messageCountLabel: UILabel?
     @IBOutlet weak var threadIndicator: UIImageView?
 
+    var viewModel: MessageViewModel!
+
     var isFlagged:Bool = false {
         didSet {
             if isFlagged {
@@ -74,9 +76,12 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
 
     public func configure(for viewModel: MessageViewModel) {
+        self.viewModel = viewModel
         addressLabel.text = viewModel.from
         subjectLabel.text = viewModel.subject
-        summaryLabel.text = viewModel.bodyPeek
+        viewModel.bodyPeekCompletion = { bodyPeek in
+            self.summaryLabel.text = bodyPeek
+        }
         isFlagged = viewModel.isFlagged
         isSeen = viewModel.isSeen
         hasAttachment = viewModel.showAttchmentIcon
@@ -135,6 +140,10 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         resetToDefault()
     }
 
+    func clear() {
+        viewModel.unsubscribeForUpdates()
+    }
+
     private func resetToDefault() {
         addressLabel.text = nil
         subjectLabel.text = nil
@@ -145,6 +154,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         ratingImage.isHidden = true
         hasAttachment = false
         contactImageView.image = EmailListViewCell.emptyContactImage
+        messageCountLabel?.isHidden = true
+        threadIndicator?.isHidden = true
     }
 
     private func setFlagged() {
@@ -160,7 +171,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
     private func setSeen() {
         if let font = addressLabel.font {
-            let font = UIFont.systemFont(ofSize: font.pointSize)
+        let font = UIFont.systemFont(ofSize: font.pointSize)
             setupLabels(font: font)
         }
     }

@@ -206,14 +206,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Needs to be done once to set defaults. Calling it more than once does not do any harm.
         let _ = AppSettings()
 
-        // Setup AppConfig
-        let messageSyncService = MessageSyncService()
+        let theMessageSyncService = MessageSyncService()
         let keyImportService = KeyImportService()
-        appConfig = AppConfig(mySelfer: self,
-                              messageSyncService: messageSyncService,
-                              errorPropagator: errorPropagator,
-                              keyImportService: keyImportService,
-                              oauth2AuthorizationFactory: oauth2Provider)
+        let theAppConfig = AppConfig(mySelfer: self,
+                                     messageSyncService: theMessageSyncService,
+                                     errorPropagator: errorPropagator,
+                              		 keyImportService: keyImportService,
+                                     oauth2AuthorizationFactory: oauth2Provider)
+        appConfig = theAppConfig
+        // This is a very dirty hack!! See SecureWebViewController docs for details.
+        SecureWebViewController.appConfigDirtyHack = theAppConfig
+
         // set up logging for libraries
         MessageModelConfig.logger = Log.shared
 

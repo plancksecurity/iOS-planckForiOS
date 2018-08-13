@@ -54,7 +54,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
             mail.removeTos(cdIdentities: currentReceipinets)
             mail.addTo(cdIdentity: id1)
             mail.addTo(cdIdentity: id2)
-			mail.pEpProtected = false // force unencrypted
+            mail.pEpProtected = false // force unencrypted
         }
         Record.saveAndWait()
 

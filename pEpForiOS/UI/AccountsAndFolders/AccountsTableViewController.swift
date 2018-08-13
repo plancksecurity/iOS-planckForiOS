@@ -30,9 +30,13 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
+    var oldToolbarStatus : Bool = true
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if let nc = self.navigationController {
+            oldToolbarStatus = nc.isToolbarHidden
+        } 
         self.navigationController?.setToolbarHidden(true, animated: false)
 
         if MiscUtil.isUnitTest() {
@@ -40,6 +44,10 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             return
         }
         updateModel()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setToolbarHidden(oldToolbarStatus, animated: false)
     }
     
     // MARK: - Internal

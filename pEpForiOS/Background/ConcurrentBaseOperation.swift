@@ -35,6 +35,12 @@ public class ConcurrentBaseOperation: BaseOperation {
 
     // MARK: - LIFE CYCLE
 
+    public override init(parentName: String = #function,
+                         errorContainer: ServiceErrorProtocol = ErrorContainer()) {
+        backgroundQueue.name = "\(parentName) - background queue of ConcurrentBaseOperation"
+        super.init(parentName: parentName, errorContainer: errorContainer)
+    }
+
     deinit {
         Log.shared.info(component: comp,
                         content: "\(#function): \(unsafeBitCast(self, to: UnsafeRawPointer.self))")

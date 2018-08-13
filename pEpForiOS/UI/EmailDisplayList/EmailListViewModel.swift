@@ -36,10 +36,11 @@ class EmailListViewModel {
         "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
     let messageSyncService: MessageSyncServiceProtocol
-    internal var messages: SortedSet<PreviewMessage>
+    internal var messages: SortedSet<MessageViewModel>
     private let queue: OperationQueue = {
         let createe = OperationQueue()
-        createe.qualityOfService = .userInteractive
+        createe.qualityOfService = .userInitiated
+        createe.maxConcurrentOperationCount = 1
         return createe
     }()
 
@@ -51,8 +52,8 @@ class EmailListViewModel {
     public var currentDisplayedMessage: DisplayedMessage?
     public var screenComposer: ScreenComposerProtocol?
 
-    let sortByDateSentAscending: SortedSet<PreviewMessage>.SortBlock =
-    { (pvMsg1: PreviewMessage, pvMsg2: PreviewMessage) -> ComparisonResult in
+    let sortByDateSentAscending: SortedSet<MessageViewModel>.SortBlock =
+    { (pvMsg1: MessageViewModel, pvMsg2: MessageViewModel) -> ComparisonResult in
         if pvMsg1.dateSent > pvMsg2.dateSent {
             return .orderedAscending
         } else if pvMsg1.dateSent < pvMsg2.dateSent {
@@ -70,6 +71,8 @@ class EmailListViewModel {
 
     weak var updateThreadListDelegate: UpdateThreadListDelegate?
     var defaultFilter: CompositeFilter<FilterBase>?
+
+    var oldThreadSetting : Bool
     
     // MARK: - Life Cycle
     
@@ -83,7 +86,19 @@ class EmailListViewModel {
         self.folderToShow = folderToShow
         self.threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
         self.defaultFilter = folderToShow.filter?.clone()
+        self.oldThreadSetting = AppSettings.threadedViewEnabled
+        
         resetViewModel()
+        
+    }
+    
+    //check if there are some important settings that have changed to force a reload
+    func checkIfSettingsChanged() -> Bool {
+        if AppSettings.threadedViewEnabled != oldThreadSetting {
+            oldThreadSetting = AppSettings.threadedViewEnabled
+            return true
+        }
+        return false
     }
 
     internal func startListeningToChanges() {
@@ -93,47 +108,58 @@ class EmailListViewModel {
     internal func stopListeningToChanges() {
         MessageModelConfig.messageFolderDelegate = nil
     }
-    
+
     private func resetViewModel() {
         // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
-        queue.addOperation { [weak self] in
-            if let theSelf = self {
-                let messagesToDisplay = theSelf.folderToShow.allMessages()
-                let previewMessages = messagesToDisplay.map {
-                    PreviewMessage(withMessage: $0)
-                }
 
-                theSelf.messages = SortedSet(array: previewMessages,
-                                          sortBlock: theSelf.sortByDateSentAscending)
-                DispatchQueue.main.async {
-                    theSelf.emailListViewModelDelegate?.updateView()
-                    theSelf.startListeningToChanges()
-                }
+        queue.cancelAllOperations()
+
+        let op = BlockOperation()
+        weak var weakOp = op
+        op.addExecutionBlock { [weak self] in
+            guard
+                let me = self,
+                let op = weakOp,
+                !op.isCancelled else {
+                return
+            }
+            let messagesToDisplay = me.folderToShow.allMessages()
+            let previewMessages = messagesToDisplay.map {
+                MessageViewModel(with: $0)
+            }
+            me.messages = SortedSet(array: previewMessages,
+                                    sortBlock: me.sortByDateSentAscending)
+            if op.isCancelled {
+                return
+            }
+            DispatchQueue.main.sync {
+                me.emailListViewModelDelegate?.updateView()
+                me.startListeningToChanges()
             }
         }
+        queue.addOperation(op)
     }
-    
+
     // MARK: - Public Data Access & Manipulation
 
     func index(of message: Message) -> Int? {
-        return messages.index(of: PreviewMessage(withMessage: message))
+        return messages.index(of: MessageViewModel(with: message))
     }
-    
+
     func viewModel(for index: Int) -> MessageViewModel? {
-        guard let message = messages.object(at: index)?.message() else {
+        guard let messageViewModel = messages.object(at: index) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "InconsistencyviewModel vs. model")
             return nil
         }
-        return MessageViewModel(with: message)
+        return messageViewModel
     }
 
-    
     var rowCount: Int {
         return messages.count
     }
-    
+
     /// Returns the senders contact image to display.
     /// This is a possibly time consuming process and shold not be called from the main thread.
     ///
@@ -145,9 +171,9 @@ class EmailListViewModel {
                                      errorString: "InconsistencyviewModel vs. model")
             return nil
         }
-        return contactImageTool.identityImage(for: previewMessage.from)
+        return contactImageTool.identityImage(for: previewMessage.identity)
     }
-    
+
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
         guard
             indexPath.row < messages.count,
@@ -156,9 +182,9 @@ class EmailListViewModel {
             // The model has been updated.
             return nil
         }
-        return contactImageTool.cachedIdentityImage(forIdentity: previewMessage.from)
+        return contactImageTool.cachedIdentityImage(forIdentity: previewMessage.identity)
     }
-    
+
     func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
         guard
             indexPath.row < messages.count,
@@ -246,7 +272,7 @@ class EmailListViewModel {
     }
 
     public func deleteSelected(indexPaths: [IndexPath]) {
-        var deletees = [PreviewMessage]()
+        var deletees = [MessageViewModel]()
         indexPaths.forEach { (ip) in
             guard let previewMessage = messages.object(at: ip.row)else {
                     return
@@ -276,7 +302,7 @@ class EmailListViewModel {
     func setFlagged(forIndexPath indexPath: IndexPath) {
         setFlaggedValue(forIndexPath: indexPath, newValue: true)
     }
-    
+
     func unsetFlagged(forIndexPath indexPath: IndexPath) {
         setFlaggedValue(forIndexPath: indexPath, newValue: false)
     }
@@ -310,7 +336,7 @@ class EmailListViewModel {
                                                                       didUpdateDataAt: [indexPath])
         }
     }
-    
+
     func delete(forIndexPath indexPath: IndexPath) {
         guard let deletedMessage = deleteMessage(at: indexPath) else {
             Log.shared.errorAndCrash(component: #function,
@@ -318,7 +344,7 @@ class EmailListViewModel {
                 "log if so.")
             return
         }
-        didDelete(messageFolder: deletedMessage)
+        didDelete(messageFolder: deletedMessage, belongingToThread: Set())
     }
 
     private func deleteMessage(at indexPath: IndexPath) -> Message? {
@@ -335,11 +361,11 @@ class EmailListViewModel {
         // or the tip of a thread. `threadedMessageFolder` will figure it out.
         threadedMessageFolder.deleteThread(message: message)
     }
-    
+
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
         return messages.object(at: indexPath.row)?.message()
     }
-    
+
     func freeMemory() {
         contactImageTool.clearCache()
     }
@@ -400,11 +426,11 @@ class EmailListViewModel {
         if isFilterEnabled {
             folderFilter.with(filters: filterViewFilter)
         } else {
-            self.folderToShow.filter = defaultFilter
+            self.folderToShow.filter = defaultFilter?.clone()
         }
         resetViewModel()
     }
-    
+
     public func setSearchFilter(forSearchText txt: String = "") {
         if txt == "" {
             assuredFilterOfFolderToShow().removeSearchFilter()
@@ -416,7 +442,7 @@ class EmailListViewModel {
         }
         resetViewModel()
     }
-    
+
     public func removeSearchFilter() {
         guard let filter = folderToShow.filter else {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")

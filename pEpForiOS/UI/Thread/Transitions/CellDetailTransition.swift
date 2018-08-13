@@ -18,8 +18,8 @@ class CellDetailTransition: NSObject, UIViewControllerAnimatedTransitioning {
         self.isDismissing = isDismissing
     }
 
-
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+        using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
     }
 
@@ -29,7 +29,6 @@ class CellDetailTransition: NSObject, UIViewControllerAnimatedTransitioning {
         } else {
             animatePop(using: transitionContext)
         }
-
     }
 
     private func animatePush(using transitionContext: UIViewControllerContextTransitioning) {
@@ -51,7 +50,15 @@ class CellDetailTransition: NSObject, UIViewControllerAnimatedTransitioning {
         let originalFrame = fromCellView.frame
 
         var fromFrame: CGRect!
-        let toFrame = toView.frame
+        var toFrame = toView.frame
+
+        if #available(iOS 11, *) {
+            //Intentioanlly nothing to do?
+        } else {
+            toFrame.origin.y = 64.0
+            toFrame.size.height = toFrame.size.height - 64.0
+        }
+
         fromFrame = containerView.convert(fromCellView.frame, from: cell)
         toView.frame = fromFrame
         toView.alpha = 0
@@ -70,7 +77,6 @@ class CellDetailTransition: NSObject, UIViewControllerAnimatedTransitioning {
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }
-
 
     private func animatePop(using transitionContext: UIViewControllerContextTransitioning) {
         let containerView = transitionContext.containerView

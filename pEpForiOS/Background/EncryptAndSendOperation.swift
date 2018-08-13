@@ -97,11 +97,14 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     }
 
     func send(pEpMessageDict: PEPMessageDict?) {
-        guard let msg = pEpMessageDict else {
+        guard var msg = pEpMessageDict else {
             handleError(BackgroundError.GeneralError.invalidParameter(info: comp),
                         message: "Cannot send nil message")
             return
         }
+
+        msg.removeOriginalRatingHeader()
+
         let pantMail = PEPUtil.pantomime(pEpMessageDict: msg)
         smtpSend.smtp.setRecipients(nil)
         smtpSend.smtp.setMessageData(nil)
@@ -248,4 +251,27 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
     public func serviceInitialized(_ smtp: SmtpSend, theNotification: Notification?) {}
 
     public func serviceReconnected(_ smtp: SmtpSend, theNotification: Notification?) {}
+}
+
+extension Dictionary where Key == String {
+    public mutating func removeOriginalRatingHeader() {
+        let headersToIgnore = Set(["X-EncStatus".lowercased()])
+        let newHeaders = NSMutableArray()
+        if let theHeaders = self[kPepOptFields] as? [NSArray] {
+            for aHeader in theHeaders {
+                if aHeader.count == 2, let headerName = aHeader[0] as? String {
+                    if !headersToIgnore.contains(headerName.lowercased()) {
+                        newHeaders.add(aHeader)
+                    }
+                }
+            }
+            if theHeaders.count != newHeaders.count {
+                if let newValue = newHeaders as? Value {
+                    self[kPepOptFields] = newValue
+                } else {
+                    Log.shared.warn(component: #function, content: "can't cast to `Value`")
+                }
+            }
+        }
+    }
 }

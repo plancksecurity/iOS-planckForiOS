@@ -38,8 +38,8 @@ protocol HandshakePartnerTableViewCellDelegate: class {
 
 class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var startStopTrustingButton: UIButton!
-    @IBOutlet weak var confirmButton: UIButton!
-    @IBOutlet weak var wrongButton: UIButton!
+    @IBOutlet weak var confirmButton: handshakeButton!
+    @IBOutlet weak var wrongButton: handshakeButton!
     @IBOutlet weak var partnerImageView: UIImageView!
     @IBOutlet weak var pEpStatusImageView: UIImageView!
     @IBOutlet weak var partnerNameLabel: UILabel!
@@ -48,7 +48,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var trustWordsLabel: UILabel!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var trustWordsView: UIView!
-    @IBOutlet weak var languageSelectorImageView: UIImageView!
     @IBOutlet weak var trustMistrustButtonsStackView: UIStackView!
 
     var sizeHelper = false
@@ -102,8 +101,17 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         trustWordsLabel.preferredMaxLayoutWidth = self.bounds.width
         startStopTrustingButton.pEpIfyForTrust(backgroundColor: UIColor.pEpYellow,
                                                textColor: .black)
-        confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
         wrongButton.pEpIfyForTrust(backgroundColor: UIColor.pEpRed, textColor: .white)
+        confirmButton.pEpIfyForTrust(backgroundColor: UIColor.pEpGreen, textColor: .white)
+
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        confirmButton.roundCorners(corners: [.bottomRight, .topRight], radius: 10)
+        wrongButton.roundCorners(corners: [.topLeft, .bottomLeft], radius: 10)
+        startStopTrustingButton.layer.cornerRadius = 10
     }
 
     func updateView() {
@@ -118,17 +126,10 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateTrustwords()
         partnerImageView.image = viewModel?.partnerImage.value
 
-        languageSelectorImageView.isUserInteractionEnabled = isPartnerPEPUser
         trustWordsLabel.isUserInteractionEnabled = isPartnerPEPUser
 
-        languageSelectorImageView.isHidden = !isPartnerPEPUser
         if isPartnerPEPUser && showTrustwords {
-            install(gestureRecognizer: UITapGestureRecognizer(
-                target: self,
-                action: #selector(languageSelectorAction(_:))),
-                    view: languageSelectorImageView)
-
-            install(gestureRecognizer: UITapGestureRecognizer(
+                install(gestureRecognizer: UITapGestureRecognizer(
                 target: self,
                 action: #selector(toggleTrustwordsLengthAction(_:))),
                     view: trustWordsLabel)
@@ -255,16 +256,6 @@ class HandshakePartnerTableViewCell: UITableViewCell {
     }
 
     // MARK: - Gestures
-
-    @objc func languageSelectorAction(_ gestureRecognizer: UIGestureRecognizer) {
-        if gestureRecognizer.state == .ended {
-            delegate?.pickLanguage(
-                sender: gestureRecognizer.view ?? languageSelectorImageView,
-                cell: self,
-                indexPath: indexPath,
-                viewModel: viewModel)
-        }
-    }
 
     @objc func toggleTrustwordsLengthAction(_ gestureRecognizer: UIGestureRecognizer) {
         if gestureRecognizer.state == .ended {

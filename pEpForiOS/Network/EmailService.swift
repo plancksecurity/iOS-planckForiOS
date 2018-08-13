@@ -24,7 +24,7 @@ open class Service: IEmailService {
     var service: CWService!
 
     /// Used if non of the login methods Pantomime currently supports is supported by the server.
-    private let fallBackAuthMethod = AuthMethod.plain
+    private let fallBackAuthMethod = AuthMethod.simple
 
     init(connectInfo: EmailConnectInfo,
                 fileString: String = #file, functionName: String = #function) {
@@ -54,18 +54,18 @@ open class Service: IEmailService {
             let mechanismsLC = mechanisms.map() { mech in
                 return mech.lowercased()
             }
-            let s = Set.init(mechanismsLC)
+
+            let s = Set(mechanismsLC)
+
             if s.contains("cram-md5") {
                 return .cramMD5
-            } else if s.contains("plain") {
-                return .plain
-            } else if s.contains("login") {
-                return .login
             }
-            // non of the auth mechanisms Patomime currently supports is supported by the server.
+
+            // None of the auth mechanisms Patomime currently supports is supported by the server.
+            // AUTH=LOGIN is not recommended at all, so a simple LOGIN command suffices.
             return fallBackAuthMethod
         } else {
-            // no auth mechanisms have been provides by the server
+            // no auth mechanisms have been provided by the server
             return fallBackAuthMethod
         }
     }

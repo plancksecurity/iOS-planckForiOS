@@ -9,6 +9,12 @@
 import Foundation
 
 public enum AuthMethod: String {
+    /**
+     IMAP built-in LOGIN (https://tools.ietf.org/html/rfc3501#section-6.2.3)
+     Every IMAP server supports this.
+     */
+    case simple = "NONE"
+
     case plain = "PLAIN"
     case login = "LOGIN"
     case cramMD5 = "CRAM-MD5"
@@ -16,20 +22,21 @@ public enum AuthMethod: String {
     /** Pantomime requires XOAUTH2 */
     case saslXoauth2 = "XOAUTH2"
 
-    init?(string: String?) {
-        guard let s = string else {
-            return nil
-        }
-        if s.isEqual(AuthMethod.plain.rawValue) {
-            self = .plain
-        } else if s.isEqual(AuthMethod.login.rawValue) {
-            self = .login
-        } else if s.isEqual(AuthMethod.cramMD5.rawValue) {
-            self = .cramMD5
-        } else if s.isEqual(AuthMethod.saslXoauth2.rawValue) {
-            self = .saslXoauth2
+    init(string: String?) {
+        if let s = string  {
+            if s.isEqual(AuthMethod.plain.rawValue) {
+                self = .plain
+            } else if s.isEqual(AuthMethod.login.rawValue) {
+                self = .login
+            } else if s.isEqual(AuthMethod.cramMD5.rawValue) {
+                self = .cramMD5
+            } else if s.isEqual(AuthMethod.saslXoauth2.rawValue) {
+                self = .saslXoauth2
+            } else {
+                self = .simple
+            }
         } else {
-            return nil
+            self = .simple
         }
     }
 }

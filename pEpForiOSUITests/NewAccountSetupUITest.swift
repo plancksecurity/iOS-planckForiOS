@@ -96,16 +96,6 @@ class NewAccountSetupUITest: XCTestCase {
         waitForever()
     }
 
-    // Adds Yahoo account
-    // Note: A working accound must exist already.
-    func testAddYahooAccount() {
-        app().launch()
-        openAddAccountManualConfiguration()
-        let account = SecretUITestData.workingYahooAccount
-        manualNewAccountSetup(account)
-        waitForever()
-    }
-
     func testTriggerGmailOauth2() {
         app().launch()
 
@@ -192,24 +182,6 @@ class NewAccountSetupUITest: XCTestCase {
 
     func newAccountSetup(account: UIAccount, enterPassword: Bool = true) {
         signIn(account: account, enterPassword: enterPassword)
-    }
-
-    // Opens the "add account" setting in manual configuration mode.
-    // Note: A working accound must exist already.
-    func openAddAccountManualConfiguration() {
-        XCUIDevice.shared.orientation = .faceUp
-        XCUIDevice.shared.orientation = .faceUp
-
-        let theApp = app()
-        theApp.navigationBars["Inbox"].buttons["Folders"].tap()
-
-        let tablesQuery2 = theApp.tables
-        tablesQuery2.buttons["button add"].tap()
-
-        let tablesQuery = tablesQuery2
-        tablesQuery.buttons["Sign In"].tap()
-        theApp.alerts["Error"].buttons["Ok"].tap()
-        tablesQuery.buttons["Manual configuration"].tap()
     }
 
     /**

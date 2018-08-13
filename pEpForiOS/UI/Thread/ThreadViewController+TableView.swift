@@ -49,6 +49,10 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
             refreshableCell.requestsReload = { self.tableView.updateSize() }
         }
 
+        if let fullCell = cell as? FullMessageCell {
+            fullCell.clickHandler = clickHandler
+        }
+
         cell.configure(for: viewModel)
         configureSwipeCell(cell: cell)
         return cell
@@ -61,7 +65,6 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
 
         cell.delegate = self
     }
-
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if model?.messageisExpanded(at: indexPath.section) == false {

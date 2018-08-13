@@ -57,7 +57,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
             return
         }
         
-        let previewMessage = PreviewMessage(withMessage: message)
+        let previewMessage = MessageViewModel(with: message)
         messages.removeObject(at: index)
         _ = messages.insert(object: previewMessage)
         informUpdateRow(at: index)

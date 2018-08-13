@@ -19,8 +19,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         saveFolder.updateLastLookAt()
     }
-    
-    private var model: EmailListViewModel?
+    var viewModels = [IndexPath : PrefetchableViewModel]()
+
+    internal var model: EmailListViewModel?
     
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -46,19 +47,38 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Outlets
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
-    @IBOutlet weak var textFilterButton: UIBarButtonItem!
+    //@IBOutlet weak var textFilterButton: UIBarButtonItem!
+
+    var textFilterButton: UIBarButtonItem = UIBarButtonItem(
+        title: "",
+        style: .plain,
+        target: nil,
+        action: nil)
     
     // MARK: - Life Cycle
     
+    fileprivate func setUpTextFilter() {
+        self.textFilterButton.isEnabled = false
+        self.textFilterButton.action = #selector(self.showFilterOptions(_:))
+        self.textFilterButton.target = self
+
+        let fontSize:CGFloat = 10;
+        let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize);
+        let attributes = [NSAttributedStringKey.font: font];
+
+        self.textFilterButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         UIHelper.emailListTableHeight(self.tableView)
-        self.textFilterButton.isEnabled = false
 
         configureSearchBar()
         tableView.allowsMultipleSelectionDuringEditing = true
-        
+        if #available(iOS 10.0, *) {
+            tableView.prefetchDataSource = self
+        }
         if #available(iOS 11.0, *) {
             searchController.isActive = false
             self.navigationItem.searchController = searchController
@@ -92,11 +112,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
 
+        setUpTextFilter()
         // Mark this folder as having been looked at by the user
         updateLastLookAt()
 
-        if model != nil {
+        if let vm = model {
             updateFilterButtonView()
+            if vm.checkIfSettingsChanged() {
+                self.settingsChanged()
+            }
         }
     }
 
@@ -224,7 +248,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         vm.markRead(forIndexPath: indexPath)
     }
 
-    private func showNotMessageSelectedIfNeeded() {
+    private func showNoMessageSelectedIfNeeded() {
         guard let splitViewController = self.splitViewController else {
             return
         }
@@ -237,9 +261,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
     }
 
+    @objc private func settingsChanged() {
+        self.model?.reloadData()
+        self.tableView.reloadData()
+    }
+
     // MARK: - Action Edit Button
 
-    private var tempToolbarItems:  [UIBarButtonItem]?
+    private var tempToolbarItems: [UIBarButtonItem]?
     private var editRightButton: UIBarButtonItem?
     var flagToolbarButton : UIBarButtonItem?
     var unflagToolbarButton : UIBarButtonItem?
@@ -322,7 +351,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         let pEp = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)), target: self)
 
-
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
                         moveToolbarButton, flexibleSpace, pEp] as? [UIBarButtonItem]
@@ -337,6 +365,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         editRightButton = self.navigationItem.rightBarButtonItem
         self.navigationItem.rightBarButtonItem = cancel
 
+    }
+
+    @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {
+        performSegue(withIdentifier: .segueShowFilter, sender: self)
     }
 
     @IBAction func cancelToolbar(_ sender:UIBarButtonItem!) {
@@ -413,6 +445,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         stopLoading()
         vm.isFilterEnabled = !vm.isFilterEnabled
+        if vm.isFilterEnabled {
+            let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+                target: nil,
+                action: nil)
+            self.toolbarItems?.insert(textFilterButton, at: 1)
+            self.toolbarItems?.insert(flexibleSpace, at: 1)
+        } else {
+            self.toolbarItems?.remove(at: 1)
+            self.toolbarItems?.remove(at: 1)
+
+        }
         updateFilterButtonView()
     }
     
@@ -437,24 +481,25 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             textFilterButton.title = "Filter by: " + txt
         }
     }
-    
+
     // MARK: - UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model?.rowCount ?? 0
     }
-    
+
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: EmailListViewCell.storyboardId,
-            for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: EmailListViewCell.storyboardId,
+                                                 for: indexPath)
         if let theCell = cell as? EmailListViewCell {
             theCell.delegate = self
-            guard let viewModel =  model?.viewModel(for: indexPath.row) else {
+
+            guard let viewModel = model?.viewModel(for: indexPath.row) else {
                 return cell
             }
+//            viewModels[indexPath] = viewModel
+
             theCell.configure(for:viewModel)
         } else {
             Log.shared.errorAndCrash(component: #function, errorString: "dequeued wrong cell")
@@ -540,6 +585,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cancelOperation(for: indexPath)
+        guard let cell = cell as? EmailListViewCell else {
+            return
+        }
+
+        cell.clear()
+
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -615,12 +666,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         queue.cancelAllOperations()
         queue.waitUntilAllOperationsAreFinished()
     }
-    
+
     private func queue(operation op:Operation, for indexPath: IndexPath) {
         operations[indexPath] = op
         queue.addOperation(op)
     }
-    
+
     private func cancelOperation(for indexPath:IndexPath) {
         guard let op = operations.removeValue(forKey: indexPath) else {
             return
@@ -640,15 +691,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 // MARK: - UISearchResultsUpdating, UISearchControllerDelegate
 
 extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
+
     public func updateSearchResults(for searchController: UISearchController) {
         guard let vm = model, let searchText = searchController.searchBar.text else {
             return
         }
         vm.setSearchFilter(forSearchText: searchText)
     }
-    
+
     func didDismissSearchController(_ searchController: UISearchController) {
         guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "No chance to remove filter, sorry.")
             return
         }
         vm.removeSearchFilter()
@@ -749,10 +803,10 @@ extension EmailListViewController: EmailListViewModelDelegate {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
         if let lastSelectedIndexPath = lastSelectedIndexPath,
             indexPaths.contains(lastSelectedIndexPath) {
-            showNotMessageSelectedIfNeeded()
+            showNoMessageSelectedIfNeeded()
         }
     }
-    
+
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
 
@@ -766,8 +820,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-
-    
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message) {
         // ignore
@@ -777,7 +829,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
         loadingBlocked = false
         tableView.dataSource = self
         tableView.reloadData()
-        showNotMessageSelectedIfNeeded()
+        showNoMessageSelectedIfNeeded()
     }
 }
 
@@ -807,7 +859,7 @@ extension EmailListViewController {
         }
         present(alertControler, animated: true, completion: nil)
     }
-    
+
     // MARK: Action Sheet Actions
 
     private func createMoveToFolderAction() -> UIAlertAction {
@@ -819,7 +871,7 @@ extension EmailListViewController {
             self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
         }
     }
-    
+
     func createCancelAction() -> UIAlertAction {
         let title = NSLocalizedString("Cancel", comment: "EmailList action title")
         return  UIAlertAction(title: title, style: .cancel) { (action) in
@@ -828,21 +880,21 @@ extension EmailListViewController {
             self.tableView.endUpdates()
         }
     }
-    
+
     func createReplyAction() ->  UIAlertAction {
         let title = NSLocalizedString("Reply", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReply, sender: self)
         }
     }
-    
+
     func createReplyAllAction() ->  UIAlertAction {
         let title = NSLocalizedString("Reply All", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyAll, sender: self)
         }
     }
-    
+
     func createForwardAction() -> UIAlertAction {
         let title = NSLocalizedString("Forward", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
@@ -864,7 +916,7 @@ extension EmailListViewController {
         }
         return rowAction
     }
-    
+
     func flagAction(forCellAt indexPath: IndexPath) {
         guard let row = model?.viewModel(for: indexPath.row) else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
@@ -877,11 +929,10 @@ extension EmailListViewController {
         }
     }
 
-
     func deleteAction(forCellAt indexPath: IndexPath) {
         model?.delete(forIndexPath: indexPath)
     }
-    
+
     func moreAction(forCellAt indexPath: IndexPath) {
         self.showMoreActionSheet(forRowAt: indexPath)
     }
@@ -911,7 +962,7 @@ extension EmailListViewController: SegueHandlerType {
         case segueReplyAll
         case segueForward
         case segueEditDraft
-        case segueFilter
+        case segueShowFilter
         case segueFolderViews
         case segueShowMoveToFolder
         case showNoMessage
@@ -959,7 +1010,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.model = viewModel
             model?.currentDisplayedMessage = viewModel
             model?.updateThreadListDelegate = viewModel
-        case .segueFilter:
+        case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                 return
@@ -1019,7 +1070,7 @@ extension EmailListViewController: SegueHandlerType {
             break
         }
     }
-    
+
     @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
         // nothing to do.
     }

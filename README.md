@@ -47,9 +47,9 @@ cd ~/src
 
 git clone https://pep-security.lu/gitlab/misc/ldns/
 git clone https://github.com/fdik/libetpan.git
-git clone https://github.com/x2on/OpenSSL-for-iPhone.git
-git clone https://github.com/SwipeCellKit/SwipeCellKit.git
-git clone https://github.com/openid/AppAuth-iOS
+git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
+git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
+git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
 
 hg clone https://pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://pep.foundation/dev/repos/netpgp-et

@@ -238,8 +238,8 @@ open class ImapSync: Service {
         folder.fetchUidsForNewMails()
     }
 
-    open func syncMessages(firstUID: UInt, lastUID: UInt) throws {
-        let folder = try openFolder(updateExistsCount: false)
+    open func syncMessages(firstUID: UInt, lastUID: UInt, updateExistsCount: Bool = false) throws {
+        let folder = try openFolder(updateExistsCount: updateExistsCount)
         folder.syncExistingFirstUID(firstUID, lastUID: lastUID)
     }
 
@@ -285,7 +285,7 @@ open class ImapSync: Service {
 }
 
 extension ImapSync: CWServiceClient {
-    @objc public func badResponse(_ theNotification: Notification?) {
+    public func badResponse(_ theNotification: Notification?) {
         dumpMethodName(#function, notification: theNotification)
         let errorMsg = theNotification?.parseErrorMessageBadResponse()
         runOnDelegate(logName: #function) { theDelegate in
@@ -293,7 +293,7 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func authenticationCompleted(_ notification: Notification?) {
+    public func authenticationCompleted(_ notification: Notification?) {
         dumpMethodName("authenticationCompleted", notification: notification)
         imapState.authenticationCompleted = true
         runOnDelegate(logName: #function) { theDelegate in
@@ -301,18 +301,18 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func authenticationFailed(_ notification: Notification?) {
+    public func authenticationFailed(_ notification: Notification?) {
         dumpMethodName("authenticationFailed", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.authenticationFailed(self, notification: notification)
         }
     }
 
-    @objc public func connectionEstablished(_ notification: Notification?) {
+    public func connectionEstablished(_ notification: Notification?) {
         dumpMethodName("connectionEstablished", notification: notification)
     }
 
-    @objc public func connectionLost(_ notification: Notification?) {
+    public func connectionLost(_ notification: Notification?) {
         dumpMethodName("connectionLost", notification: notification)
         imapState.authenticationCompleted = false
         runOnDelegate(logName: #function) { theDelegate in
@@ -320,7 +320,7 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func connectionTerminated(_ notification: Notification?) {
+    public func connectionTerminated(_ notification: Notification?) {
         dumpMethodName("connectionTerminated", notification: notification)
         imapState.authenticationCompleted = false
         runOnDelegate(logName: #function) { theDelegate in
@@ -328,7 +328,7 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func connectionTimedOut(_ notification: Notification?) {
+    public func connectionTimedOut(_ notification: Notification?) {
         dumpMethodName("connectionTimedOut", notification: notification)
         imapState.authenticationCompleted = false
         runOnDelegate(logName: #function) { theDelegate in
@@ -336,7 +336,7 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func folderFetchCompleted(_ notification: Notification?) {
+    public func folderFetchCompleted(_ notification: Notification?) {
         dumpMethodName("folderFetchCompleted", notification: notification)
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
@@ -349,7 +349,7 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func folderSyncCompleted(_ notification: Notification?) {
+    public func folderSyncCompleted(_ notification: Notification?) {
         dumpMethodName("folderSyncCompleted", notification: notification)
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
@@ -362,21 +362,21 @@ extension ImapSync: CWServiceClient {
         }
     }
     
-    @objc public func folderSyncFailed(_ notification: Notification?) {
+    public func folderSyncFailed(_ notification: Notification?) {
         dumpMethodName("folderSyncFailed", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderSyncFailed(self, notification: notification)
         }
     }
 
-    @objc public func messagePrefetchCompleted(_ notification: Notification?) {
+    public func messagePrefetchCompleted(_ notification: Notification?) {
         dumpMethodName("messagePrefetchCompleted", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messagePrefetchCompleted(self, notification: notification)
         }
     }
 
-    @objc public func messageUidMoveCompleted(_ theNotification: Notification?) {
+    public func messageUidMoveCompleted(_ theNotification: Notification?) {
         dumpMethodName("messageUidMoveCompleted", notification: theNotification)
         runOnDelegate() { theDelegate in
             theDelegate.messageUidMoveCompleted(self, notification: theNotification)
@@ -390,7 +390,7 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func messagesCopyCompleted(_ theNotification: Notification?) { //IOS-633 eamove @objc's
+    public func messagesCopyCompleted(_ theNotification: Notification?) {
         dumpMethodName("messagesCopyCompleted", notification: theNotification)
         runOnDelegate() { theDelegate in
             theDelegate.messagesCopyCompleted(self, notification: theNotification)
@@ -404,7 +404,7 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func serviceInitialized(_ notification: Notification?) {
+    public func serviceInitialized(_ notification: Notification?) {
         dumpMethodName("serviceInitialized", notification: notification)
         
         if connectInfo.connectionTransport == ConnectionTransport.startTLS
@@ -458,25 +458,25 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func serviceReconnected(_ theNotification: Notification?) {
+    public func serviceReconnected(_ theNotification: Notification?) {
         dumpMethodName("serviceReconnected", notification: theNotification)
     }
 
-    @objc public func messageChanged(_ notification: Notification?) {
+    public func messageChanged(_ notification: Notification?) {
         dumpMethodName("messageChanged", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageChanged(self, notification: notification)
         }
     }
 
-    @objc public func folderStatusCompleted(_ notification: Notification?) {
+    public func folderStatusCompleted(_ notification: Notification?) {
         dumpMethodName("folderStatusCompleted", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderStatusCompleted(self, notification: notification)
         }
     }
 
-    @objc public func actionFailed(_ notification: Notification?) {
+    public func actionFailed(_ notification: Notification?) {
         dumpMethodName("actionFailed", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             guard
@@ -491,49 +491,49 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func messageStoreCompleted(_ notification: Notification?) {
+    public func messageStoreCompleted(_ notification: Notification?) {
         dumpMethodName("messageStoreCompleted", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageStoreCompleted(self, notification: notification)
         }
     }
 
-    @objc public func messageStoreFailed(_ notification: Notification?) {
+    public func messageStoreFailed(_ notification: Notification?) {
         dumpMethodName("messageStoreFailed", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.messageStoreFailed(self, notification: notification)
         }
     }
 
-    @objc public func folderCreateCompleted(_ notification: Notification?) {
+    public func folderCreateCompleted(_ notification: Notification?) {
         dumpMethodName("folderCreateCompleted", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderCreateCompleted(self, notification: notification)
         }
     }
 
-    @objc public func folderCreateFailed(_ notification: Notification?) {
+    public func folderCreateFailed(_ notification: Notification?) {
         dumpMethodName("folderCreateFailed", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderCreateFailed(self, notification: notification)
         }
     }
 
-    @objc public func folderDeleteCompleted(_ notification: Notification?) {
+    public func folderDeleteCompleted(_ notification: Notification?) {
         dumpMethodName("folderDeleteCompleted", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderDeleteCompleted(self, notification: notification)
         }
     }
 
-    @objc public func folderDeleteFailed(_ notification: Notification?) {
+    public func folderDeleteFailed(_ notification: Notification?) {
         dumpMethodName("folderDeleteFailed", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderDeleteFailed(self, notification: notification)
         }
     }
 
-    @objc public func idleEntered(_ notification: Notification?) {
+    public func idleEntered(_ notification: Notification?) {
         dumpMethodName("idleEntered", notification: notification)
         imapState.isIdling = true
         runOnDelegate(logName: #function) { theDelegate in
@@ -541,14 +541,14 @@ extension ImapSync: CWServiceClient {
         }
     }
 
-    @objc public func idleNewMessages(_ notification: Notification?) {
+    public func idleNewMessages(_ notification: Notification?) {
         dumpMethodName("idleNewMessages", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.idleNewMessages(self, notification: notification)
         }
     }
 
-    @objc public func idleFinished(_ notification: Notification?) {
+    public func idleFinished(_ notification: Notification?) {
         dumpMethodName("idleFinished", notification: notification)
         imapState.isIdling = false
         runOnDelegate(logName: #function) { theDelegate in
@@ -558,7 +558,7 @@ extension ImapSync: CWServiceClient {
 }
 
 extension ImapSync: PantomimeFolderDelegate {
-    @objc public func folderOpenCompleted(_ notification: Notification?) {
+    public func folderOpenCompleted(_ notification: Notification?) {
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
             Log.info(component: comp, content: "folderOpenCompleted: \(folder.name())")
@@ -572,7 +572,7 @@ extension ImapSync: PantomimeFolderDelegate {
         }
     }
 
-    @objc public func folderOpenFailed(_ notification: Notification?) {
+    public func folderOpenFailed(_ notification: Notification?) {
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
             Log.info(component: comp, content: "folderOpenFailed: \(folder.name())")
@@ -584,28 +584,28 @@ extension ImapSync: PantomimeFolderDelegate {
         }
     }
 
-    @objc public func folderListCompleted(_ notification: Notification?) {
+    public func folderListCompleted(_ notification: Notification?) {
         dumpMethodName("folderListCompleted", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderListCompleted(self, notification: notification)
         }
     }
 
-    @objc public func folderNameParsed(_ notification: Notification?) {
+    public func folderNameParsed(_ notification: Notification?) {
         dumpMethodName("folderNameParsed", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderNameParsed(self, notification: notification)
         }
     }
 
-    @objc public func folderAppendCompleted(_ notification: Notification?) {
+    public func folderAppendCompleted(_ notification: Notification?) {
         dumpMethodName("folderAppendCompleted", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderAppendCompleted(self, notification: notification)
         }
     }
 
-    @objc public func folderAppendFailed(_ notification: Notification?) {
+    public func folderAppendFailed(_ notification: Notification?) {
         dumpMethodName("folderAppendFailed", notification: notification)
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderAppendFailed(self, notification: notification)

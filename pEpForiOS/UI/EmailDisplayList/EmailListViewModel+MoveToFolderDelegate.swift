@@ -12,7 +12,7 @@ import MessageModel
 extension EmailListViewModel: MoveToFolderDelegate {
     func didmove(messages: [Message]) {
         var ips = [IndexPath]()
-        var pms = [PreviewMessage]()
+        var pms = [MessageViewModel]()
         messages.forEach { (msg) in
             let ind = index(of: msg)!
             let pm = self.messages.object(at: ind)!
@@ -24,7 +24,7 @@ extension EmailListViewModel: MoveToFolderDelegate {
         emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: ips)
     }
 
-    func deletePreviewMessagesHelper(previewMEssages: [PreviewMessage]) {
+    func deletePreviewMessagesHelper(previewMEssages: [MessageViewModel]) {
         previewMEssages.forEach { (pm) in
             self.messages.remove(object: pm)
         }

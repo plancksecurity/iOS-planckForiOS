@@ -12,15 +12,23 @@ import MessageModel
 class MessageViewModel {
 
     static var maxBodyPreviewCharacters = 120
+    let queue = OperationQueue()
 
+    let uid: UInt
+    private let uuid: MessageID
+    private let address: String
+    private let parentFolderName: String
+    private let accountAddress: String
+
+    let identity:Identity
+    let dateSent: Date
+    let longMessageFormatted: String?
 
     var senderContactImage: UIImage?
     var ratingImage: UIImage?
     var showAttchmentIcon: Bool = false
     let from: String
-    let address: String
     let subject: String
-    let bodyPeek: String
     var isFlagged: Bool = false
     var isSeen: Bool = false
     var dateText: String
@@ -28,10 +36,39 @@ class MessageViewModel {
     var body: NSAttributedString {
             return getBodyMessage()
     }
-    var message: Message
+
+    internal var internalMessageCount: Int? = nil
+    internal var internalBoddyPeek: String? = nil
+
+    private var bodyPeek: String? {
+        didSet {
+            informIfBodyPeekCompleted()
+        }
+    }
+
+    var bodyPeekCompletion: ((String) -> ())? = nil {
+        didSet {
+            guard bodyPeekCompletion != nil else {
+                return
+            }
+            informIfBodyPeekCompleted()
+        }
+    }
 
     init(with message: Message) {
+        queue.qualityOfService = .userInitiated
+        queue.maxConcurrentOperationCount = 2
+
+        uid = message.uid
+        uuid = message.uuid
+        parentFolderName = message.parent.name
+        accountAddress = message.parent.account.user.address
+
+        longMessageFormatted = message.longMessageFormatted
+        dateSent = message.sent ?? Date()
+
         showAttchmentIcon = message.attachments.count > 0
+        identity = (message.from ?? Identity(address: "unknown@unknown.com"))
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         address =  MessageViewModel.address(at: message.parent, from: message)
         subject = message.shortMessage ?? ""
@@ -39,19 +76,54 @@ class MessageViewModel {
         isSeen = message.imapFlags?.seen ?? false
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
-        bodyPeek = MessageViewModel.getSummary(fromMessage: message)
-        self.message = message
+        setBodyPeek(for: message)
+    }
+
+    public func flagsDiffer(from messageViewModel: MessageViewModel) -> Bool {
+        if self != messageViewModel {
+            return true
+        }
+        return self.isFlagged != messageViewModel.isFlagged || self.isSeen != messageViewModel.isSeen
+    }
+
+    func unsubscribeForUpdates() {
+        cancelLoad()
+    }
+
+    func cancelLoad() {
+        queue.cancelAllOperations()
+    }
+
+    func setBodyPeek(for message:Message) {
+        if let bodyPeek = internalBoddyPeek {
+           self.bodyPeek = bodyPeek
+        } else {
+            let operation = bodyPeekPrefetch(for: message) { bodyPeek in
+                self.bodyPeek = bodyPeek
+            }
+            if(!operation.isFinished){
+                queue.addOperation(operation)
+            }
+        }
+    }
+
+    func informIfBodyPeekCompleted() {
+        guard let bodyPeek = bodyPeek else {
+            return
+        }
+        bodyPeekCompletion?(bodyPeek)
+        bodyPeekCompletion = nil
     }
 
     func messageCount(completion: @escaping (Int)->()) {
-        DispatchQueue.global(qos: .userInitiated).async {
-
-            MessageModel.performAndWait {
-                let messageCount = self.message.numberOfMessagesInThread()
-
-                DispatchQueue.main.async {
-                    completion(messageCount)
-                }
+        if let messageCount = internalMessageCount {
+            completion(messageCount)
+        } else {
+            let operation =  messageCountPrefetch { count in
+                completion(count)
+            }
+            if(!operation.isFinished){
+                queue.addOperation(operation)
             }
         }
     }
@@ -61,21 +133,14 @@ class MessageViewModel {
             return ""
         }
         switch folder.folderType {
-        case .all: fallthrough
-        case .archive: fallthrough
-        case .spam: fallthrough
-        case .trash: fallthrough
-        case .flagged: fallthrough
-        case .inbox: fallthrough
-        case .normal:
+        case .all, .archive, .spam, .trash, .flagged, .inbox, .normal:
             return (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
-        case .drafts: fallthrough
-        case .sent:
+        case .drafts, .sent:
             return message.to.first?.userNameOrAddress ?? ""
         }
     }
 
-    private class func getSummary(fromMessage msg: Message) -> String {
+    internal class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
         if let text = msg.longMessage {
             body = text.replaceNewLinesWith(" ").trimmedWhiteSpace()
@@ -104,17 +169,66 @@ class MessageViewModel {
         return result
     }
 
-    func getProfilePicture(completion: @escaping (UIImage?)->()){
-        let identity = message.from ?? Identity(address: from)
-        profilePictureComposer.getProfilePicture(for: identity, completion: completion)
+    func appendInlinedAttachmentsPlainText(to text: String) -> String {
+        var result = text
+        guard let message = message() else {
+            return result
+        }
+        let inlinedText = message.inlinedTextAttachments()
+        for inlinedTextAttachment in inlinedText {
+            guard
+                let data = inlinedTextAttachment.data,
+                let inlinedText = String(data: data, encoding: .utf8) else {
+                    continue
+            }
+            result = append(appendText: inlinedText, to: result)
+        }
+        return result
     }
 
+    private func append(appendText: String, to body: String) -> String {
+        var result = body
+        let replacee = result.contains(find: "</body>") ? "</body>" : "</html>"
+        if result.contains(find: replacee) {
+            result = result.replacingOccurrences(of: replacee, with: appendText + replacee)
+        } else {
+            result += "\n" + appendText
+        }
+        return result
+    }
+
+    public func message() -> Message? {
+        guard let msg = Message.by(uid: uid,
+                                   uuid: uuid,
+                                   folderName: parentFolderName,
+                                   accountAddress: accountAddress)
+            else {
+                // The model has changed.
+                return nil
+        }
+        msg.imapFlags?.seen = isSeen
+        msg.imapFlags?.flagged = isFlagged
+        return msg
+    }
+
+    func getProfilePicture(completion: @escaping (UIImage?)->()){
+        profilePictureComposer.getProfilePicture(for: identity, completion: completion)
+    }
+    
+
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
+        guard let message = message() else {
+            completion(nil)
+            return
+        }
         profilePictureComposer.getSecurityBadge(for: message, completion: completion)
     }
 
-
     func getBodyMessage() -> NSMutableAttributedString {
+        guard let message = message() else {
+            //crash and return nonsense
+            return NSMutableAttributedString()
+        }
         let finalText = NSMutableAttributedString()
         if message.underAttack {
             let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
@@ -149,7 +263,7 @@ class MessageViewModel {
             NSAttributedStringKey.foregroundColor: UIColor.lightGray
         ]
         var temp: [String] = []
-        message.allRecipients.forEach { (recepient) in
+        message()?.allRecipients.forEach { (recepient) in
             let recepient = recepient.address
             temp.append(recepient)
         }
@@ -159,4 +273,12 @@ class MessageViewModel {
 
 
 }
-    
+
+extension MessageViewModel: Equatable {
+    static func ==(lhs: MessageViewModel, rhs: MessageViewModel) -> Bool {
+        return lhs.uuid == rhs.uuid &&
+            lhs.uid == rhs.uid &&
+            lhs.parentFolderName == rhs.parentFolderName &&
+            lhs.accountAddress == rhs.accountAddress
+    }
+}

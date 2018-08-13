@@ -20,6 +20,11 @@ class ThreadViewController: BaseViewController {
             self.navigationItem.title = String(numberOfMessages)  + " messages"
         }
     }
+
+    lazy var clickHandler: UrlClickHandler = {
+        return UrlClickHandler(actor: self, appConfig: appConfig)
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureSplitViewBackButton()
@@ -49,7 +54,7 @@ class ThreadViewController: BaseViewController {
             flagButton.image = UIImage(named: "icon-unflagged")
         }
     }
-    
+
     private func configureSplitViewBackButton() {
         self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         self.navigationItem.leftItemsSupplementBackButton = true
@@ -64,7 +69,7 @@ class ThreadViewController: BaseViewController {
     }
 
     // MARK: Actions
-    
+
     @IBAction func flagButtonTapped(_ sender: Any) {
         guard let model = model else {
             return
@@ -101,5 +106,4 @@ class ThreadViewController: BaseViewController {
 
         present(alert, animated: true, completion: nil)
     }
-
 }

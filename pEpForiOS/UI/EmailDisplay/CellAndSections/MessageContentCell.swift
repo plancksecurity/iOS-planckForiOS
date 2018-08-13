@@ -14,15 +14,19 @@ open class MessageContentCell: MessageCell {
     @IBOutlet weak var contentText: UITextView!
 
     public override func updateCell(model: ComposeFieldModel, message: Message) {
+        updateCell(model: model, message: message, clickHandler: nil)
+    }
+
+    func updateCell(model: ComposeFieldModel, message: Message, clickHandler: UITextViewDelegate?) {
         super.updateCell(model: model, message: message)
 
         let finalText = NSMutableAttributedString()
         if message.underAttack {
             let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
-            let messageString = String(
-                format: NSLocalizedString(
+            let messageString = String(format: NSLocalizedString(
                     "\n%@\n\n%@\n\n%@\n\nAttachments are disabled.\n\n",
-                    comment: "Disabled attachments for a message with status 'under attack'. Placeholders: title, explanation, suggestion."),
+                    comment: "Disabled attachments for a message with status 'under attack'. " +
+                    "Placeholders: title, explanation, suggestion."),
                 status.title, status.explanation, status.suggestion)
             finalText.bold(messageString)
         }
@@ -42,5 +46,7 @@ open class MessageContentCell: MessageCell {
 
         contentText.tintColor = UIColor.pEpGreen
         contentText.attributedText = finalText
+        contentText.dataDetectorTypes = UIDataDetectorTypes.link
+        contentText.delegate = clickHandler
     }
 }

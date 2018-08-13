@@ -14,14 +14,10 @@ class PepProfilePictureComposer: ProfilePictureComposer {
     let contactImageTool = IdentityImageTool()
 
     func getProfilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ()) {
-
         if let image = self.contactImageTool.cachedIdentityImage(forIdentity: identity){
             completion(image)
-
-
         } else {
-            DispatchQueue.global().async {
-
+            DispatchQueue.global(qos: .userInitiated).async{
                 let senderImage = self.contactImageTool.identityImage(for: identity)
                 DispatchQueue.main.async {
                     completion(senderImage)
@@ -31,7 +27,7 @@ class PepProfilePictureComposer: ProfilePictureComposer {
     }
 
     func getSecurityBadge(for message: Message, completion: @escaping (UIImage?) ->()){
-        MessageModel.performAndWait {
+        DispatchQueue.global(qos: .userInitiated).async{
             let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
             var image: UIImage? = nil
             if color != PEP_color_no_color {
@@ -42,5 +38,4 @@ class PepProfilePictureComposer: ProfilePictureComposer {
             }
         }
     }
-
 }

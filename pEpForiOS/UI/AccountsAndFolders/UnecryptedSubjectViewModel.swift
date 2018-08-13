@@ -9,7 +9,7 @@
 import Foundation
 
 class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModel  {
-    
+
     var settingCellType: AccountSettingsCellType
     var type: SettingType
     var title : String

@@ -71,6 +71,29 @@ open class SmtpSend: Service {
                            port: UInt32(connectInfo.networkPort),
                            transport: connectInfo.connectionTransport!)
     }
+
+    open override func bestAuthMethodFromList(_ mechanisms: [String])  -> AuthMethod {
+        if mechanisms.count > 0 {
+            let mechanismsLC = mechanisms.map() { mech in
+                return mech.lowercased()
+            }
+
+            let s = Set(mechanismsLC)
+
+            if s.contains("cram-md5") {
+                return .cramMD5
+            } else if s.contains("plain") {
+                return .plain
+            } else if s.contains("login") {
+                return .login
+            }
+
+            return .login
+        } else {
+            // no auth mechanisms have been provided by the server
+            return .login
+        }
+    }
 }
 
 extension SmtpSend: TransportClient {
