@@ -63,11 +63,22 @@ public protocol ThreadedMessageFolderProtocol {
     func referencedTopMessages(message: Message) -> [Message]
 
     /**
-     Generalized version of `referencedTopMessages`.
+     Generalized version of `referencedTopMessages`, in case you already know the
+     top messages.
+     - Returns: An array of indices into `messageIdentifiers` where the message-id
+     is contained in `belongingToThread`.
+     */
+    func referenced<T>(
+        messageIdentifiers: [T],
+        belongingToThread: Set<MessageID>) -> [Int] where T: MessageIdentitfying
+
+    /**
+     Generalized version of `referencedTopMessages`, in case you already know the
+     top messages.
      - Returns: An array of indices into `messageIdentifiers` where the message-id
      was part of the thread that `message` is a part of.
      */
     func referenced<T>(
         messageIdentifiers: [T],
-        belongingToThread: Set<MessageID>) -> [Int] where T: MessageIdentitfying
+        message: Message) -> [Int] where T: MessageIdentitfying
 }
