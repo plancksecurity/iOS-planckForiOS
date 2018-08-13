@@ -694,5 +694,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
                 exp.expectation.fulfill()
             }
         }
+
+        func tipDidChange(to message: Message) {
+        }
     }
 }
