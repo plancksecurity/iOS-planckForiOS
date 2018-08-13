@@ -138,12 +138,17 @@ extension EmailListViewModel: MessageFolderDelegate {
                         fromMessageIdSet: belongingToThread,
                         fulfillingFilter: theSelf.folderToShow.filter)?.message() {
                         // we have the next message in the thread that we can substitute with
+
                         theSelf.messages.replaceObject(
                             at: indexExisting,
                             with: MessageViewModel(with: replacementMessage))
+
                         let indexPath = IndexPath(row: indexExisting, section: 0)
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf, didUpdateDataAt: [indexPath])
+
+                        // TODO: We have to change what currentDisplayedMessage?.messageModel
+                        // is currently pointing to.
                     }
                 } else {
                     // unthreaded top message (or currently not displayed)
