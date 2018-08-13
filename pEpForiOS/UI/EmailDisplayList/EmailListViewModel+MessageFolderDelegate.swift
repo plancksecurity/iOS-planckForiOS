@@ -316,7 +316,7 @@ Something is fishy here.
     }
 
     /**
-     Like `currentlyDisplaying(message: Message)`, but checks a list of messages.
+     Like `isCurrentlyDisplayingDetailsOf(message: Message)`, but checks a list of messages.
      */
     func isCurrentlyDisplayingDetailsOf(oneOf messages: [Message]) -> Bool {
         for msg in messages {
@@ -354,8 +354,8 @@ Something is fishy here.
     }
 
     /**
-     Like `currentlyDisplayedMessage(of messages: [Message]))`,
-     but checks a list of `MessageViewModel` indices.
+     - Returns: The first currently displayed (top) index out of an array of `MessageViewModel`
+     indices or nil.
      */
     func currentlyDisplayedIndex(of messageViewModelIndices: [Int]) -> Int? {
         for i in messageViewModelIndices {
@@ -363,18 +363,6 @@ Something is fishy here.
                 if isCurrentlyDisplayingDetailsOf(messageViewModel: messageViewModel) {
                     return i
                 }
-            }
-        }
-        return nil
-    }
-
-    /**
-     - Returns: The first currently displayed (top) message out of a given sequence or nil.
-     */
-    func currentlyDisplayedMessage(of messages: [Message]) -> Message? {
-        for msg in messages {
-            if isCurrentlyDisplayingDetailsOf(message: msg) {
-                return msg
             }
         }
         return nil
