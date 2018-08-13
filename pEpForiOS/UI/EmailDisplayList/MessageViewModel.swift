@@ -283,3 +283,9 @@ extension MessageViewModel: Equatable {
             lhs.accountAddress == rhs.accountAddress
     }
 }
+
+extension MessageViewModel: MessageIdentitfying {
+    var messageIdentifier: MessageID {
+        return uuid
+    }
+}
