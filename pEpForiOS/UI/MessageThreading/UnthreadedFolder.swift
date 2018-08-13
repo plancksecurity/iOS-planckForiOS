@@ -46,7 +46,7 @@ class UnthreadedFolder: ThreadedMessageFolderProtocol {
     }
 
     func referenced<T>(messageIdentifiers: [T],
-                       message: Message) -> [Int] where T: MessageIdentitfying {
+                       belongingToThread: Set<MessageID>) -> [Int] where T: MessageIdentitfying {
         return []
     }
 }

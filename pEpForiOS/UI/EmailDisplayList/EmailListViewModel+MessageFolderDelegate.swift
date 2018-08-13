@@ -164,7 +164,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // but it might belong to some top message's thread so we might have to update
             // that top message.
             let referencedIndices = threadedMessageFolder.referenced(
-                messageIdentifiers: messages.array(), message: message)
+                messageIdentifiers: messages.array(), belongingToThread: belongingToThread)
             if !referencedIndices.isEmpty {
                 DispatchQueue.main.async { [weak self] in
                     guard let theSelf = self else {

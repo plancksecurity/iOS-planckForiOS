@@ -67,6 +67,7 @@ public protocol ThreadedMessageFolderProtocol {
      - Returns: An array of indices into `messageIdentifiers` where the message-id
      was part of the thread that `message` is a part of.
      */
-    func referenced<T>(messageIdentifiers: [T],
-                       message: Message) -> [Int] where T: MessageIdentitfying
+    func referenced<T>(
+        messageIdentifiers: [T],
+        belongingToThread: Set<MessageID>) -> [Int] where T: MessageIdentitfying
 }
