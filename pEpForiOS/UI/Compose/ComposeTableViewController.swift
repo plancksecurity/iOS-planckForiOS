@@ -18,7 +18,8 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
-    /// Recipient to set as "To:". Is ignored if a originalMessage is set.
+    /// Recipient to set as "To:".
+    /// Is ignored if a originalMessage is set.
     var prefilledTo: Identity?
     /// Original message to compute content and recipients from (e.g. a message we reply to).
     var originalMessage: Message?
@@ -31,6 +32,8 @@ class ComposeTableViewController: BaseTableViewController {
         }
         return omIsDrafts
     }
+    private var tookOverAttachmentsAlready = false
+
     private let contactPicker = CNContactPickerViewController()
     private let imagePicker = UIImagePickerController()
     private let menuController = UIMenuController.shared
@@ -268,7 +271,7 @@ class ComposeTableViewController: BaseTableViewController {
             if om.parent.folderType == .drafts {
                 subjectCell.setInitial(text: om.shortMessage ?? "")
             }
-            //.normal for other folder types is intentionally ignored here
+            // .normal is intentionally ignored here for other folder types
         }
     }
 
@@ -287,9 +290,10 @@ class ComposeTableViewController: BaseTableViewController {
     /// from original message.
     /// Does nothing otherwise
     private func takeOverAttachmentsIfRequired() {
-        guard shouldTakeOverAttachments() else {
+        guard shouldTakeOverAttachments(), !tookOverAttachmentsAlready else {
             return // Nothing to do.
         }
+        tookOverAttachmentsAlready = true
         guard let om = originalMessage else {
             Log.shared.errorAndCrash(
                 component: #function,
