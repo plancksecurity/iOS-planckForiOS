@@ -37,6 +37,8 @@ class SecureWebViewController: UIViewController {
     weak var delegate: SecureWebViewControllerDelegate?
     weak var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
 
+    var zoomingEnabled: Bool = true
+
     private var _userInteractionEnabled: Bool = true
     var userInteractionEnabled: Bool {
         get {
@@ -112,6 +114,7 @@ class SecureWebViewController: UIViewController {
         CidHandler.setup(config: config)
         webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
+         webView.scrollView.delegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
         webView.scrollView.isUserInteractionEnabled = userInteractionEnabled
         view = webView
@@ -383,6 +386,14 @@ extension SecureWebViewController: WKNavigationDelegate {
             break
         }
         decisionHandler(.cancel)
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension SecureWebViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        scrollView.pinchGestureRecognizer?.isEnabled = zoomingEnabled
     }
 }
 
