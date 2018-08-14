@@ -301,7 +301,8 @@ class ComposeTableViewController: BaseTableViewController {
                 "We must take over attachments from original message, but original message is nil.")
             return
         }
-        nonInlinedAttachmentData.add(attachments: om.viewableAttachments())
+        let nonInlinedAttachments = om.viewableAttachments().filter { $0.contentDisposition == .attachment }
+        nonInlinedAttachmentData.add(attachments: nonInlinedAttachments)
     }
 
     /// Computes whether or not attachments must be taken over in current compose mode
