@@ -221,7 +221,7 @@ class EmailViewController: BaseTableViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
                 return SecureWebViewController()
         }
-        vc.scrollingEnabled = true
+        vc.zoomingEnabled = true
         vc.delegate = self
         vc.urlClickHandler = clickHandler
         htmlViewerViewControllerExists = true
