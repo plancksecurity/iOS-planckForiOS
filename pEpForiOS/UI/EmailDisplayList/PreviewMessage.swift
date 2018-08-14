@@ -81,8 +81,6 @@ class PreviewMessage: Equatable {
                 // The model has changed.
                 return nil
         }
-        msg.imapFlags?.seen = isSeen
-        msg.imapFlags?.flagged = isFlagged
         return msg
     }
 
@@ -99,7 +97,7 @@ class PreviewMessage: Equatable {
             lhs.parentFolderName == rhs.parentFolderName &&
             lhs.address == rhs.address
     }
-    
+
     static func ==(lhs: PreviewMessage, rhs: Message) -> Bool {
         return lhs.uuid == rhs.uuid &&
             lhs.uid == rhs.uid &&

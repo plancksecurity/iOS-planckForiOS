@@ -209,8 +209,6 @@ class MessageViewModel {
                     "Extra anoying long string to not forget please.")
                 return nil
         }
-        msg.imapFlags?.seen = isSeen //IOS-1243: This looks wrong. I assume it causes IOS-1132
-        msg.imapFlags?.flagged = isFlagged
         return msg
     }
 
