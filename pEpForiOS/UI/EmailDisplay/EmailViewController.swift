@@ -61,8 +61,6 @@ class EmailViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
-
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
