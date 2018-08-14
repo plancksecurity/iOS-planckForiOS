@@ -29,7 +29,7 @@ extension MessageViewModel: PrefetchableViewModel {
     func messageCountPrefetch(completion: @escaping (Int)->()) -> PrefetchOperation {
        
         let prefetchOperation = PrefetchOperation { operation in
-            MessageModel.perform {
+            MessageModel.performAndWait {
                 guard !operation.isCancelled,
                 let message = self.message() else {
                     return
@@ -67,4 +67,22 @@ extension MessageViewModel: PrefetchableViewModel {
         }
         return prefetchOperation
     }
+
+    func getSecurityBadgeOperation(completion: @escaping (UIImage?)->()) -> PrefetchOperation {
+
+        let prefetchOperation = PrefetchOperation { operation in
+            MessageModel.performAndWait {
+                guard !operation.isCancelled,
+                    let message = self.message() else {
+                        return
+                }
+
+                if (!operation.isCancelled) {
+                    self.profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+                }
+            }
+        }
+        return prefetchOperation
+    }
+
 }
