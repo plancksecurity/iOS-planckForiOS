@@ -162,6 +162,8 @@ extension EmailListViewModel: MessageFolderDelegate {
                 messages.replaceObject(
                     at: indexExisting,
                     with: MessageViewModel(with: replacementMessage))
+            } else {
+                messages.removeObject(at: indexExisting)
             }
         } else {
             messages.removeObject(at: indexExisting)
