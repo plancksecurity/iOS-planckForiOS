@@ -145,14 +145,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     private func resetToDefault() {
-        addressLabel.text = nil
-        subjectLabel.text = nil
         summaryLabel.text = nil
-        dateLabel.text = nil
-        unsetFlagged()
-        unsetSeen()
         ratingImage.isHidden = true
-        hasAttachment = false
         contactImageView.image = EmailListViewCell.emptyContactImage
         messageCountLabel?.isHidden = true
         threadIndicator?.isHidden = true
@@ -161,18 +155,18 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     private func setFlagged() {
             flaggedImageView.isHidden = false
             flaggedImageView.image = UIImage.init(named: "icon-flagged")
-
     }
 
     private func unsetFlagged() {
         flaggedImageView.isHidden = true
-        flaggedImageView.image = UIImage.init(named: "icon-unflagged")
     }
 
     private func setSeen() {
         if let font = addressLabel.font {
-        let font = UIFont.systemFont(ofSize: font.pointSize)
-            setupLabels(font: font)
+            let seenFont = UIFont.systemFont(ofSize: font.pointSize)
+            if font != seenFont {
+                setupLabels(font: seenFont)
+            }
         }
     }
 

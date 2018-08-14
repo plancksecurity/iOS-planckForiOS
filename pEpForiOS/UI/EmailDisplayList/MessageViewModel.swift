@@ -55,9 +55,13 @@ class MessageViewModel {
         }
     }
 
+    //Only to use internally, external use should call public message()
+    private var internalMessage: Message
+
     init(with message: Message) {
+        self.internalMessage = message
         queue.qualityOfService = .userInitiated
-        queue.maxConcurrentOperationCount = 2
+        queue.maxConcurrentOperationCount = 3
 
         uid = message.uid
         uuid = message.uuid
@@ -217,11 +221,8 @@ class MessageViewModel {
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
-        guard let message = message() else {
-            completion(nil)
-            return
-        }
-        profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+        let operation = getSecurityBadgeOperation(completion: completion)
+        queue.addOperation(operation)
     }
 
     func getBodyMessage() -> NSMutableAttributedString {

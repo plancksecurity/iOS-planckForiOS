@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PrefetchOperation: ConcurrentBaseOperation {
+class PrefetchOperation: Operation {
 
     let executionBlock: (_ operation: PrefetchOperation)-> Void
     
