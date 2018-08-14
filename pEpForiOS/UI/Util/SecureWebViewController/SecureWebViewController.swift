@@ -9,7 +9,7 @@
 import WebKit
 
 protocol SecureWebViewControllerDelegate: class {
-    /// Called after the webview has finished loadding and layouting its subviews.
+    /// Called on content size changes while within loading time.
     /// - Parameters:
     ///   - webViewController: calling view controller
     ///   - sizeChangedTo: webview.scrollview.contentSize after loading html content and layouting
@@ -32,18 +32,10 @@ protocol SecureWebViewUrlClickHandlerProtocol: class {
 /// Note: It is insecure to use this class on iOS < 11. Thus it will intentionally take the
 /// emergency exit and crash when trying to use it running iOS < 11.
 class SecureWebViewController: UIViewController {
-    private var webView: WKWebView!
-    private var sizeChangeObserver: NSKeyValueObservation?
-
-    static var isSaveToUseWebView: Bool {
-        if #available(iOS 11.0, *) {
-            return true
-        }
-        return false
-    }
     static let storyboardId = "SecureWebViewController"
-    /// webview.scrollView.contentSize after html has finished loading and layouting
-    private(set) var contentSize: CGSize?
+
+    weak var delegate: SecureWebViewControllerDelegate?
+    weak var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
 
     private var _scrollingEnabled: Bool = true
     var scrollingEnabled: Bool {
@@ -57,8 +49,25 @@ class SecureWebViewController: UIViewController {
             }
         }
     }
-    weak var delegate: SecureWebViewControllerDelegate?
-    weak var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
+
+    static var isSaveToUseWebView: Bool {
+        if #available(iOS 11.0, *) {
+            return true
+        }
+        return false
+    }
+
+    private var webView: WKWebView!
+    private var sizeChangeObserver: NSKeyValueObservation?
+
+    /// webview.scrollView.contentSize after html has finished loading and layouting
+    private(set) var contentSize: CGSize?
+
+    /// Assumed max time it can take to load a page.
+    /// After this time content size changes are not reported any more.
+    static private let maxLoadingTime: TimeInterval = 0.5
+    /// Last time a size change has been reported to
+    private var lastReportedSizeUpdate: Date?
 
     // MARK: - Life Cycle
 
@@ -91,6 +100,9 @@ class SecureWebViewController: UIViewController {
         webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
+        //DEBUG:
+        webView.isUserInteractionEnabled = true
+
         view = webView
     }
 
@@ -194,6 +206,15 @@ class SecureWebViewController: UIViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
+
+            if let sinceUpdate = me.lastReportedSizeUpdate?.timeIntervalSinceNow,
+                -sinceUpdate > SecureWebViewController.maxLoadingTime {
+                // We assuem initial loading is done.
+                // The size change must be zooming triggered by user.
+                return
+            }
+            me.lastReportedSizeUpdate = Date()
+
             guard
                 let contentSize = change.newValue,
                 !me.shouldIgnoreContentSizeChange(newSize: contentSize) else {
