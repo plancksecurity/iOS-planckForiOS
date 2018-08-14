@@ -129,83 +129,95 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         if let indexExisting = index(of: message) {
             // This concerns a top message
+            didDeleteInternal(topMessage: message,
+                              atIndex: indexExisting,
+                              belongingToThread: belongingToThread)
+        } else {
+            // We do not have this top message in our model, so we do not have to remove it there,
+            // but it might belong to some top message's thread so we might have to update
+            // that top message.
+            didDeleteInternal(notTopMessage: message, belongingToThread: belongingToThread)
+        }
+    }
 
-            let isDisplayingThread = AppSettings.threadedViewEnabled &&
-                !belongingToThread.isEmpty &&
-                isCurrentlyDisplayingDetailsOf(message: message)
+    private func didDeleteInternal(topMessage: Message,
+                                   atIndex indexExisting: Int,
+                                   belongingToThread: Set<MessageID>) {
+        let isDisplayingThread = AppSettings.threadedViewEnabled &&
+            !belongingToThread.isEmpty &&
+            isCurrentlyDisplayingDetailsOf(message: topMessage)
 
-            var aReplacementMessage: Message?
-            if isDisplayingThread {
-                MessageModel.performAndWait { [weak self] in
-                    guard let theSelf = self else {
-                        return
-                    }
-                    aReplacementMessage = CdMessage.latestMessage(
-                        fromMessageIdSet: belongingToThread,
-                        fulfillingFilter: theSelf.folderToShow.filter)?.message()
+        var aReplacementMessage: Message?
+        if isDisplayingThread {
+            MessageModel.performAndWait { [weak self] in
+                guard let theSelf = self else {
+                    return
                 }
-
-                if let replacementMessage = aReplacementMessage {
-                    messages.replaceObject(
-                        at: indexExisting,
-                        with: MessageViewModel(with: replacementMessage))
-                }
-            } else {
-                messages.removeObject(at: indexExisting)
+                aReplacementMessage = CdMessage.latestMessage(
+                    fromMessageIdSet: belongingToThread,
+                    fulfillingFilter: theSelf.folderToShow.filter)?.message()
             }
 
+            if let replacementMessage = aReplacementMessage {
+                messages.replaceObject(
+                    at: indexExisting,
+                    with: MessageViewModel(with: replacementMessage))
+            }
+        } else {
+            messages.removeObject(at: indexExisting)
+        }
+
+        DispatchQueue.main.sync { [weak self] in
+            guard let theSelf = self else {
+                return
+            }
+
+            if isDisplayingThread {
+                // deleting a top message that spans the thread that is currently displayed
+                theSelf.updateThreadListDelegate?.deleted(message: topMessage)
+
+                if let replacementMessage = aReplacementMessage {
+                    // we have the next message in the thread that we can substitute with
+
+                    let indexPath = IndexPath(row: indexExisting, section: 0)
+                    theSelf.emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theSelf, didUpdateDataAt: [indexPath])
+
+                    theSelf.updateThreadListDelegate?.tipDidChange(to: replacementMessage)
+                }
+            } else {
+                // unthreaded top message (or currently not displayed)
+                let indexPath = IndexPath(row: indexExisting, section: 0)
+                theSelf.emailListViewModelDelegate?.emailListViewModel(
+                    viewModel: theSelf,
+                    didRemoveDataAt: [indexPath])
+            }
+        }
+    }
+
+    private func didDeleteInternal(notTopMessage: Message,
+                                   belongingToThread: Set<MessageID>) {
+        let referencedIndices = threadedMessageFolder.referenced(
+            messageIdentifiers: messages.array(), belongingToThread: belongingToThread)
+        if !referencedIndices.isEmpty {
             DispatchQueue.main.sync { [weak self] in
                 guard let theSelf = self else {
                     return
                 }
 
-                if isDisplayingThread {
-                    // deleting a top message that spans the thread that is currently displayed
-                    theSelf.updateThreadListDelegate?.deleted(message: message)
+                if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedIndices) {
+                    theSelf.updateThreadListDelegate?.deleted(message: notTopMessage)
+                }
 
-                    if let replacementMessage = aReplacementMessage {
-                        // we have the next message in the thread that we can substitute with
-
-                        let indexPath = IndexPath(row: indexExisting, section: 0)
-                        theSelf.emailListViewModelDelegate?.emailListViewModel(
-                            viewModel: theSelf, didUpdateDataAt: [indexPath])
-
-                        theSelf.updateThreadListDelegate?.tipDidChange(to: replacementMessage)
+                if let index = referencedIndices.first {
+                    // The thread count might need to be updated
+                    if let messageModel = theSelf.messages.object(at: index),
+                        let messageCount = messageModel.internalMessageCount  {
+                        messageModel.internalMessageCount = messageCount - 1
                     }
-                } else {
-                    // unthreaded top message (or currently not displayed)
-                    let indexPath = IndexPath(row: indexExisting, section: 0)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theSelf,
-                        didRemoveDataAt: [indexPath])
-                }
-            }
-        } else {
-            // We do not have this top message in our model, so we do not have to remove it there,
-            // but it might belong to some top message's thread so we might have to update
-            // that top message.
-            let referencedIndices = threadedMessageFolder.referenced(
-                messageIdentifiers: messages.array(), belongingToThread: belongingToThread)
-            if !referencedIndices.isEmpty {
-                DispatchQueue.main.sync { [weak self] in
-                    guard let theSelf = self else {
-                        return
-                    }
-
-                    if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedIndices) {
-                        theSelf.updateThreadListDelegate?.deleted(message: message)
-                    }
-
-                    if let index = referencedIndices.first {
-                        // The thread count might need to be updated
-                            if let messageModel = theSelf.messages.object(at: index),
-                                let messageCount = messageModel.internalMessageCount  {
-                                messageModel.internalMessageCount = messageCount - 1
-                            }
-                        theSelf.emailListViewModelDelegate?.emailListViewModel(
-                            viewModel: theSelf,
-                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
-                    }
+                        didUpdateDataAt: [IndexPath(row: index, section: 0)])
                 }
             }
         }
