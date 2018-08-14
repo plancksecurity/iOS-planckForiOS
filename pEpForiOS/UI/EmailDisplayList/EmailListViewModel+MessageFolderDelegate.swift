@@ -122,9 +122,11 @@ extension EmailListViewModel: MessageFolderDelegate {
             // It is not a Message (probably it is a Folder).
             return
         }
+
         if !shouldBeDisplayed(message: message) {
             return
         }
+
         if let indexExisting = index(of: message) {
             // This concerns a top message
 
@@ -132,22 +134,37 @@ extension EmailListViewModel: MessageFolderDelegate {
                 !belongingToThread.isEmpty &&
                 isCurrentlyDisplayingDetailsOf(message: message)
 
+            var aReplacementMessage: Message?
+            if isDisplayingThread {
+                MessageModel.performAndWait { [weak self] in
+                    guard let theSelf = self else {
+                        return
+                    }
+                    aReplacementMessage = CdMessage.latestMessage(
+                        fromMessageIdSet: belongingToThread,
+                        fulfillingFilter: theSelf.folderToShow.filter)?.message()
+                }
+
+                if let replacementMessage = aReplacementMessage {
+                    messages.replaceObject(
+                        at: indexExisting,
+                        with: MessageViewModel(with: replacementMessage))
+                }
+            } else {
+                messages.removeObject(at: indexExisting)
+            }
+
             DispatchQueue.main.sync { [weak self] in
                 guard let theSelf = self else {
                     return
                 }
+
                 if isDisplayingThread {
                     // deleting a top message that spans the thread that is currently displayed
                     theSelf.updateThreadListDelegate?.deleted(message: message)
 
-                    if let replacementMessage = CdMessage.latestMessage(
-                        fromMessageIdSet: belongingToThread,
-                        fulfillingFilter: theSelf.folderToShow.filter)?.message() {
+                    if let replacementMessage = aReplacementMessage {
                         // we have the next message in the thread that we can substitute with
-
-                        theSelf.messages.replaceObject(
-                            at: indexExisting,
-                            with: MessageViewModel(with: replacementMessage))
 
                         let indexPath = IndexPath(row: indexExisting, section: 0)
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
@@ -157,7 +174,6 @@ extension EmailListViewModel: MessageFolderDelegate {
                     }
                 } else {
                     // unthreaded top message (or currently not displayed)
-                    theSelf.messages.removeObject(at: indexExisting)
                     let indexPath = IndexPath(row: indexExisting, section: 0)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theSelf,
@@ -173,8 +189,6 @@ extension EmailListViewModel: MessageFolderDelegate {
             if !referencedIndices.isEmpty {
                 DispatchQueue.main.sync { [weak self] in
                     guard let theSelf = self else {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString: "Self reference is nil!")
                         return
                     }
 
