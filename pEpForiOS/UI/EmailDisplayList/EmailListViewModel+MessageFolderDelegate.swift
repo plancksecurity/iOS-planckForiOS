@@ -148,23 +148,19 @@ extension EmailListViewModel: MessageFolderDelegate {
             isCurrentlyDisplayingDetailsOf(message: topMessage)
 
         var aReplacementMessage: Message?
-        if isDisplayingThread {
-            MessageModel.performAndWait { [weak self] in
-                guard let theSelf = self else {
-                    return
-                }
-                aReplacementMessage = CdMessage.latestMessage(
-                    fromMessageIdSet: belongingToThread,
-                    fulfillingFilter: theSelf.folderToShow.filter)?.message()
+        MessageModel.performAndWait { [weak self] in
+            guard let theSelf = self else {
+                return
             }
+            aReplacementMessage = CdMessage.latestMessage(
+                fromMessageIdSet: belongingToThread,
+                fulfillingFilter: theSelf.folderToShow.filter)?.message()
+        }
 
-            if let replacementMessage = aReplacementMessage {
-                messages.replaceObject(
-                    at: indexExisting,
-                    with: MessageViewModel(with: replacementMessage))
-            } else {
-                messages.removeObject(at: indexExisting)
-            }
+        if let replacementMessage = aReplacementMessage {
+            messages.replaceObject(
+                at: indexExisting,
+                with: MessageViewModel(with: replacementMessage))
         } else {
             messages.removeObject(at: indexExisting)
         }
@@ -175,21 +171,14 @@ extension EmailListViewModel: MessageFolderDelegate {
             if isDisplayingThread {
                 // deleting a top message that spans the thread that is currently displayed
                 updateThreadListDelegate?.deleted(message: topMessage)
+            }
 
-                if let replacementMessage = aReplacementMessage {
-                    // we have the next message in the thread that we can substitute with
-
-                    emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theModel, didUpdateDataAt: [indexPath])
-
-                    updateThreadListDelegate?.tipDidChange(to: replacementMessage)
-                } else {
-                    emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theModel,
-                        didRemoveDataAt: [indexPath])
-                }
+            if let replacementMessage = aReplacementMessage {
+                // we have the next message in the thread that we can substitute with
+                emailListViewModelDelegate?.emailListViewModel(
+                    viewModel: theModel, didUpdateDataAt: [indexPath])
+                updateThreadListDelegate?.tipDidChange(to: replacementMessage)
             } else {
-                // unthreaded top message (or currently not displayed)
                 emailListViewModelDelegate?.emailListViewModel(
                     viewModel: theModel,
                     didRemoveDataAt: [indexPath])
