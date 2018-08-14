@@ -132,7 +132,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                 !belongingToThread.isEmpty &&
                 isCurrentlyDisplayingDetailsOf(message: message)
 
-            DispatchQueue.main.async { [weak self] in
+            DispatchQueue.main.sync { [weak self] in
                 guard let theSelf = self else {
                     return
                 }
@@ -171,7 +171,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             let referencedIndices = threadedMessageFolder.referenced(
                 messageIdentifiers: messages.array(), belongingToThread: belongingToThread)
             if !referencedIndices.isEmpty {
-                DispatchQueue.main.async { [weak self] in
+                DispatchQueue.main.sync { [weak self] in
                     guard let theSelf = self else {
                         Log.shared.errorAndCrash(component: #function,
                                                  errorString: "Self reference is nil!")
