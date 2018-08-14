@@ -204,17 +204,17 @@ class MessageViewModel {
                                    accountAddress: accountAddress)
             else {
                 // The model has changed.
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "There are valid cases, so we should not crash here. Will crash here for debug reasons to pinpoint the root of IOS-1243. Please remove this Log command after IOS-1243 is fixed." +
+                    "Extra anoying long string to not forget please.")
                 return nil
         }
-        msg.imapFlags?.seen = isSeen
-        msg.imapFlags?.flagged = isFlagged
         return msg
     }
 
     func getProfilePicture(completion: @escaping (UIImage?)->()){
         profilePictureComposer.getProfilePicture(for: identity, completion: completion)
     }
-    
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
         guard let message = message() else {

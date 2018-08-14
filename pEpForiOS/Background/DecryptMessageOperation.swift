@@ -63,7 +63,7 @@ class DecryptMessageOperation: Operation {
     }
 
     private func process() {
-        Log.info(component: #function, content: "Will decrypt \(messageToDecrypt)")
+//        Log.info(component: #function, content: "Will decrypt \(messageToDecrypt)")
         let inOutMessage = messageToDecrypt.mutableDictionary()
         var inOutFlags = flags
         var keys: NSArray?

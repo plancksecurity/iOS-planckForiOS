@@ -124,6 +124,13 @@ class LoginViewController: BaseViewController {
             style:.plain, target:self,
             action:#selector(self.backButton))
 
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+        
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: self, queue: nil) { (notification) in
             print("hola")
         }
