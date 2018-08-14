@@ -235,7 +235,11 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
 
-        let referencedMessages = threadedMessageFolder.referencedTopMessages(message: message)
+        var referencedMessages = [Message]()
+        MessageModel.performAndWait { [weak self] in
+            referencedMessages =
+                self?.threadedMessageFolder.referencedTopMessages(message: message) ?? []
+        }
 
         guard let indexExisting = index(of: message) else {
             // We do not have this updated message in our model yet. It might have been updated in
