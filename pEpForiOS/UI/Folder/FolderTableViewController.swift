@@ -214,6 +214,7 @@ class FolderTableViewController: BaseTableViewController {
 extension FolderTableViewController: LoginViewControllerDelegate {
     func loginViewControllerDidCreateNewAccount(
         _ loginViewController: LoginViewController) {
+        setup()
         showNext = true
     }
 }
