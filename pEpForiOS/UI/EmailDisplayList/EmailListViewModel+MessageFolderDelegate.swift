@@ -163,6 +163,8 @@ extension EmailListViewModel: MessageFolderDelegate {
                     at: indexExisting,
                     with: MessageViewModel(with: replacementMessage))
             } else {
+                // TODO: It seems the whole thread has been nuked as far is this view
+                // is concerned. Bomb back to the list and refresh.
                 messages.removeObject(at: indexExisting)
             }
         } else {
