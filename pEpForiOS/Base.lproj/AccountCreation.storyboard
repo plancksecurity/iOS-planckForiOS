@@ -726,17 +726,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mfN-N5-g8Y">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="never" translatesAutoresizingMaskIntoConstraints="NO" id="mfN-N5-g8Y">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KYm-MK-9MQ" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashscreen" translatesAutoresizingMaskIntoConstraints="NO" id="qYA-qu-vFE">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                             </imageView>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="7IS-Mp-8VB">
-                                                <rect key="frame" x="37.5" y="223.5" width="300" height="152"/>
+                                                <rect key="frame" x="37.5" y="267.5" width="300" height="152"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mKi-gF-bu9" customClass="CredentialTextField" customModule="pEpForiOS" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="300" height="28"/>
@@ -826,7 +826,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTY-gw-zK9">
-                                                <rect key="frame" x="163" y="425.5" width="49" height="32"/>
+                                                <rect key="frame" x="163" y="469.5" width="49" height="32"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="16"/>
                                                 <state key="normal" title="Sign In">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -836,7 +836,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O4c-eF-dJT">
-                                                <rect key="frame" x="156" y="526.5" width="64" height="29"/>
+                                                <rect key="frame" x="156" y="570.5" width="64" height="29"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="14"/>
                                                 <state key="normal" title="Advanced">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -890,6 +890,7 @@
                                             <mask key="constraints">
                                                 <exclude reference="K0i-st-1Td"/>
                                                 <exclude reference="VW7-JT-bRE"/>
+                                                <exclude reference="oed-9e-ftm"/>
                                                 <exclude reference="Eau-tw-crL"/>
                                                 <exclude reference="S0B-zV-xqY"/>
                                                 <exclude reference="XuF-mJ-K95"/>
@@ -920,10 +921,11 @@
                                         </variation>
                                     </view>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="dja-Bh-vu3">
-                                        <rect key="frame" x="169" y="383.5" width="37" height="37"/>
+                                        <rect key="frame" x="169" y="427.5" width="37" height="37"/>
                                     </activityIndicatorView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="qYA-qu-vFE" firstAttribute="top" secondItem="mfN-N5-g8Y" secondAttribute="top" id="PaM-iJ-95A"/>
                                     <constraint firstAttribute="trailing" secondItem="KYm-MK-9MQ" secondAttribute="trailing" id="V6p-Xd-zIP"/>
                                     <constraint firstItem="KYm-MK-9MQ" firstAttribute="top" secondItem="mfN-N5-g8Y" secondAttribute="top" id="WiK-Z3-Smf"/>
                                     <constraint firstItem="KYm-MK-9MQ" firstAttribute="leading" secondItem="mfN-N5-g8Y" secondAttribute="leading" id="YHy-Bc-Jvo"/>
@@ -938,11 +940,17 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="mfN-N5-g8Y" firstAttribute="trailing" secondItem="jAI-Xy-z2r" secondAttribute="trailing" id="LLP-nz-asU"/>
-                            <constraint firstItem="mfN-N5-g8Y" firstAttribute="top" secondItem="jAI-Xy-z2r" secondAttribute="top" id="Td1-FE-HYs"/>
+                            <constraint firstItem="mfN-N5-g8Y" firstAttribute="top" secondItem="jAI-Xy-z2r" secondAttribute="top" constant="-44" id="Td1-FE-HYs"/>
                             <constraint firstItem="jAI-Xy-z2r" firstAttribute="leading" secondItem="mfN-N5-g8Y" secondAttribute="leading" id="l2S-RX-1bM"/>
                             <constraint firstAttribute="bottom" secondItem="mfN-N5-g8Y" secondAttribute="bottom" id="pgz-bC-B7d"/>
+                            <constraint firstAttribute="topMargin" secondItem="qYA-qu-vFE" secondAttribute="top" id="xgX-mN-wr7"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jAI-Xy-z2r"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="xgX-mN-wr7"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="sZ7-8R-F3P"/>
                     <connections>
@@ -976,6 +984,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xOX-61-BbZ">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

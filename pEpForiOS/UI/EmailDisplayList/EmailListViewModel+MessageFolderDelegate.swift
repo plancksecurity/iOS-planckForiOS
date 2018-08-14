@@ -286,42 +286,43 @@ extension EmailListViewModel: MessageFolderDelegate {
        * The message might get deleted if it doesn't fit the filter anymore.
        * The `previewMessage` might seem redundant, but it has already been computed.
      */
-    func update(message: Message, previewMessage: MessageViewModel, atIndex indexExisting: Int) {
+    private func update(message: Message, previewMessage: MessageViewModel, atIndex indexExisting: Int) {
         DispatchQueue.main.async { [weak self] in
-            if let theSelf = self {
-                theSelf.messages.removeObject(at: indexExisting)
+            guard let me = self else {
+                // Assumtion taken over from original implementaion: It's ok here.
+                return
+            }
+            me.messages.removeObject(at: indexExisting)
 
-                if let filter = theSelf.folderToShow.filter,
-                    !filter.fulfillsFilter(message: message) {
-                    // The message was included in the model,
-                    // but does not fulfil the filter criteria
-                    // anymore after it has been updated.
-                    // Remove it.
-                    let indexPath = IndexPath(row: indexExisting, section: 0)
-                    theSelf.emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf, didRemoveDataAt: [indexPath])
-                    return
-                }
-                // The updated message has to be shown. Add it to the model ...
-                let indexInserted = theSelf.messages.insert(object: previewMessage)
-                if indexExisting != indexInserted {
-                    Log.shared.warn(
-                        component: #function,
-                        content:
-                        """
+            if let filter = me.folderToShow.filter,
+                !filter.fulfillsFilter(message: message) {
+                // The message was included in the model,
+                // but does not fulfil the filter criteria
+                // anymore after it has been updated.
+                // Remove it.
+                let indexPath = IndexPath(row: indexExisting, section: 0)
+                me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
+                                                                  didRemoveDataAt: [indexPath])
+                return
+            }
+            // The updated message has to be shown. Add it to the model ...
+            let indexInserted = me.messages.insert(object: previewMessage)
+            if indexExisting != indexInserted {
+                Log.shared.warn(
+                    component: #function,
+                    content:
+                    """
 When updating a message, the the new index of the message must be the same as the old index.
 Something is fishy here.
 """
-                    )
-                }
-                // ...  and inform the delegate.
-                let indexPath = IndexPath(row: indexInserted, section: 0)
-                theSelf.emailListViewModelDelegate?.emailListViewModel(
-                    viewModel: theSelf, didUpdateDataAt: [indexPath])
-
-                if theSelf.currentDisplayedMessage?.messageModel == message {
-                    theSelf.currentDisplayedMessage?.update(forMessage: message)
-                }
+                )
+            }
+            // ...  and inform the delegate.
+            let indexPath = IndexPath(row: indexInserted, section: 0)
+            me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
+                                                              didUpdateDataAt: [indexPath])
+            if me.currentDisplayedMessage?.messageModel == message {
+                me.currentDisplayedMessage?.update(forMessage: message)
             }
         }
     }
