@@ -163,38 +163,42 @@ extension EmailListViewModel: MessageFolderDelegate {
                     at: indexExisting,
                     with: MessageViewModel(with: replacementMessage))
             } else {
-                // TODO: It seems the whole thread has been nuked as far is this view
-                // is concerned. Bomb back to the list and refresh.
                 messages.removeObject(at: indexExisting)
             }
         } else {
             messages.removeObject(at: indexExisting)
         }
 
-        DispatchQueue.main.sync { [weak self] in
-            guard let theSelf = self else {
-                return
-            }
+        func notifyUI(theModel: EmailListViewModel) {
+            let indexPath = IndexPath(row: indexExisting, section: 0)
 
             if isDisplayingThread {
                 // deleting a top message that spans the thread that is currently displayed
-                theSelf.updateThreadListDelegate?.deleted(message: topMessage)
+                updateThreadListDelegate?.deleted(message: topMessage)
 
                 if let replacementMessage = aReplacementMessage {
                     // we have the next message in the thread that we can substitute with
 
-                    let indexPath = IndexPath(row: indexExisting, section: 0)
-                    theSelf.emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf, didUpdateDataAt: [indexPath])
+                    emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theModel, didUpdateDataAt: [indexPath])
 
-                    theSelf.updateThreadListDelegate?.tipDidChange(to: replacementMessage)
+                    updateThreadListDelegate?.tipDidChange(to: replacementMessage)
+                } else {
+                    emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theModel,
+                        didRemoveDataAt: [indexPath])
                 }
             } else {
                 // unthreaded top message (or currently not displayed)
-                let indexPath = IndexPath(row: indexExisting, section: 0)
-                theSelf.emailListViewModelDelegate?.emailListViewModel(
-                    viewModel: theSelf,
+                emailListViewModelDelegate?.emailListViewModel(
+                    viewModel: theModel,
                     didRemoveDataAt: [indexPath])
+            }
+        }
+
+        DispatchQueue.main.sync { [weak self] in
+            if let theSelf = self {
+                notifyUI(theModel: theSelf)
             }
         }
     }
