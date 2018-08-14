@@ -37,6 +37,19 @@ class SecureWebViewController: UIViewController {
     weak var delegate: SecureWebViewControllerDelegate?
     weak var urlClickHandler: SecureWebViewUrlClickHandlerProtocol?
 
+    private var _userInteractionEnabled: Bool = true
+    var userInteractionEnabled: Bool {
+        get {
+            return _userInteractionEnabled
+        }
+        set {
+            _userInteractionEnabled = newValue
+            if let wv = webView {
+                wv.scrollView.isUserInteractionEnabled = _userInteractionEnabled
+            }
+        }
+    }
+
     private var _scrollingEnabled: Bool = true
     var scrollingEnabled: Bool {
         get {
@@ -100,9 +113,7 @@ class SecureWebViewController: UIViewController {
         webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
-        //DEBUG:
-        webView.isUserInteractionEnabled = true
-
+        webView.scrollView.isUserInteractionEnabled = userInteractionEnabled
         view = webView
     }
 
