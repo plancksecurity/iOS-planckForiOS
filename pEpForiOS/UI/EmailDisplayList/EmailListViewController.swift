@@ -74,34 +74,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         UIHelper.emailListTableHeight(self.tableView)
 
-        configureSearchBar()
         tableView.allowsMultipleSelectionDuringEditing = true
+
         if #available(iOS 10.0, *) {
             tableView.prefetchDataSource = self
         }
-        if #available(iOS 11.0, *) {
-            searchController.isActive = false
-            self.navigationItem.searchController = searchController
-            self.navigationItem.hidesSearchBarWhenScrolling = true
-        } else {
-            addSearchBar10()
-
-            if tableView.tableHeaderView == nil {
-                tableView.tableHeaderView = searchController.searchBar
-            }
-
-            // some notifications to control when the app enter and recover from background
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeActiveInstallSearchBar10),
-                name: NSNotification.Name.UIApplicationDidBecomeActive,
-                object: nil)
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeInactiveUninstallSearchbar10),
-                name: NSNotification.Name.UIApplicationDidEnterBackground,
-                object: nil)
-        }
+        setupSearchBar()
         setup()
     }
 
@@ -125,14 +103,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: NSNotification.Name.UIApplicationDidBecomeActive,
-            object: nil)
-        NotificationCenter.default.removeObserver(
-            self,
-            name: NSNotification.Name.UIApplicationDidEnterBackground,
-            object: nil)
+         NotificationCenter.default.removeObserver(self)
     }
 
     /**
@@ -165,7 +136,34 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             model?.screenComposer =  screenComposer
         }
     }
-    
+
+    private func setupSearchBar() {
+        configureSearchBar()
+        if #available(iOS 11.0, *) {
+            searchController.isActive = false
+            self.navigationItem.searchController = searchController
+            self.navigationItem.hidesSearchBarWhenScrolling = true
+        } else {
+            addSearchBar10()
+
+            if tableView.tableHeaderView == nil {
+                tableView.tableHeaderView = searchController.searchBar
+            }
+
+            // some notifications to control when the app enter and recover from background
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didBecomeActiveInstallSearchBar10),
+                name: NSNotification.Name.UIApplicationDidBecomeActive,
+                object: nil)
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didBecomeInactiveUninstallSearchbar10),
+                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                object: nil)
+        }
+    }
+
     private func setup() {
         if noAccountsExist() {
             // No account exists. Show account setup.
