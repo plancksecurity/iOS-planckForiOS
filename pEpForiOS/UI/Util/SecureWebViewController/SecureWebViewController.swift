@@ -80,7 +80,7 @@ class SecureWebViewController: UIViewController {
 
     /// Assumed max time it can take to load a page.
     /// After this time content size changes are not reported any more.
-    static private let maxLoadingTime: TimeInterval = 0.5
+    static private let maxLoadingTime: TimeInterval = 0.1
     /// Last time a size change has been reported to
     private var lastReportedSizeUpdate: Date?
 
