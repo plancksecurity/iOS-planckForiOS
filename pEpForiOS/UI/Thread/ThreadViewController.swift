@@ -27,6 +27,7 @@ class ThreadViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        assureNavigationBarVisible()
         configureSplitViewBackButton()
         guard let model = model else {
             return
@@ -50,12 +51,18 @@ class ThreadViewController: BaseViewController {
         }
     }
 
+    private func assureNavigationBarVisible() {
+        // When pushed from a ViewController with active SearchBar, the navigation bar might be
+        // hidden.
+        navigationController?.isNavigationBarHidden = false
+    }
+
     private func configureSplitViewBackButton() {
         self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
         self.navigationItem.leftItemsSupplementBackButton = true
     }
 
-    internal func isSplitViewControllerCollapsed() -> Bool! {
+    func isSplitViewControllerCollapsed() -> Bool! {
         guard let splitViewController = self.splitViewController else {
             Log.shared.errorAndCrash(component: #function, errorString: "We need a splitViewController here")
             return nil
