@@ -152,9 +152,9 @@ extension EmailListViewModel: MessageFolderDelegate {
             guard let theSelf = self else {
                 return
             }
-            aReplacementMessage = CdMessage.latestMessage(
+            aReplacementMessage = Message.latestMessage(
                 fromMessageIdSet: belongingToThread,
-                fulfillingFilter: theSelf.folderToShow.filter)?.message()
+                fulfillingFilter: theSelf.folderToShow.filter)
         }
 
         if let replacementMessage = aReplacementMessage {
