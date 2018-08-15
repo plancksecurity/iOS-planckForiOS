@@ -607,7 +607,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="emailDetail" title="Show email" id="3bx-34-vLD" customClass="EmailViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mYV-vz-wEb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -803,7 +803,7 @@
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Title" id="PAv-Od-zv3">
+                    <navigationItem key="navigationItem" id="PAv-Od-zv3">
                         <rightBarButtonItems>
                             <barButtonItem image="arrow-lft-active" id="nCS-Wg-ZJI">
                                 <connections>
@@ -985,7 +985,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
         <segue reference="0zl-tV-6Kr"/>
-        <segue reference="anx-J8-OKE"/>
+        <segue reference="ber-OQ-S16"/>
         <segue reference="1zD-EW-3fN"/>
     </inferredMetricsTieBreakers>
 </document>
