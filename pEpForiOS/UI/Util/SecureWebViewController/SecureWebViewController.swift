@@ -212,6 +212,17 @@ class SecureWebViewController: UIViewController {
     }
 
     // MARK: - Handle Content Size Changes
+
+    private var isContentLoadedAndLayouted: Bool {
+        if let sinceUpdate = lastReportedSizeUpdate?.timeIntervalSinceNow,
+            -sinceUpdate > SecureWebViewController.maxLoadingTime {
+            // We assuem initial loading is done.
+            // The size change must be zooming triggered by user.
+            return true
+        }
+        return false
+    }
+
     private func informDelegateAfterLoadingFinished() {
         // code to run whenever the content(size) changes
         let handler = {
@@ -221,13 +232,11 @@ class SecureWebViewController: UIViewController {
                 return
             }
 
-            if let sinceUpdate = me.lastReportedSizeUpdate?.timeIntervalSinceNow,
-                -sinceUpdate > SecureWebViewController.maxLoadingTime {
+            if me.isContentLoadedAndLayouted {
                 // We assuem initial loading is done.
                 // The size change must be zooming triggered by user.
                 return
             }
-            me.lastReportedSizeUpdate = Date()
 
             guard
                 let contentSize = change.newValue,
@@ -235,6 +244,7 @@ class SecureWebViewController: UIViewController {
                     return
             }
             me.contentSize = contentSize
+            me.lastReportedSizeUpdate = Date()
             me.delegate?.secureWebViewController(me, sizeChangedTo: contentSize)
         }
         sizeChangeObserver = webView.scrollView.observe(\UIScrollView.contentSize,
@@ -260,7 +270,7 @@ class SecureWebViewController: UIViewController {
     /// Prepares the html string for displaying.
     ///
     /// - Parameter html: html to prepare
-    /// - Returns: html ready for diplaying
+    /// - Returns: html ready for displaying
     private func preprocess(html: String) -> String {
         var result = html
         result = htmlTagsAssured(html: result)
@@ -393,7 +403,7 @@ extension SecureWebViewController: WKNavigationDelegate {
 
 extension SecureWebViewController: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        scrollView.pinchGestureRecognizer?.isEnabled = zoomingEnabled
+        scrollView.pinchGestureRecognizer?.isEnabled = isContentLoadedAndLayouted && zoomingEnabled
     }
 }
 
