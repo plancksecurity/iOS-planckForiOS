@@ -48,7 +48,6 @@ public class AccountsSettingsSectionViewModel {
 
     func generateGlobalSettingsCells() {
         self.cells.append(AccountsSettingsCellViewModel(type: .defaultAccount))
-        self.cells.append(ThreadedSwitchViewModel(type: .organizedByThread))
         self.cells.append(AccountsSettingsCellViewModel(type: .credits))
         self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
         self.cells.append(PassiveModeViewModel(type: .passiveMode))

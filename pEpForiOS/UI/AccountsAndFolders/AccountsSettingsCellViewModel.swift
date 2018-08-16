@@ -25,7 +25,6 @@ public enum AccountSettingsCellType: String {
 public enum SettingType {
     case account
     case showLog
-    case organizedByThread
     case credits
     case unecryptedSubject
     case passiveMode
@@ -50,8 +49,8 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
         switch self.type {
         case .account, .credits, .defaultAccount, .showLog:
             self.settingCellType = AccountSettingsCellType.accountsCell
-        case .organizedByThread, .unecryptedSubject, .passiveMode:
-            self.settingCellType = AccountSettingsCellType.switchOptionCell
+            case .unecryptedSubject, .passiveMode:
+                self.settingCellType = AccountSettingsCellType.switchOptionCell
         }
     }
 
@@ -71,10 +70,6 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
             switch self.type {
             case .showLog:
                 return NSLocalizedString("Logging", comment: "")
-            case .organizedByThread:
-                return NSLocalizedString(
-                    "Enable Threading Messages",
-                    comment: "AccountsSettings: Cell (button) title to view threads messages together")
             case .credits:
                 return NSLocalizedString(
                     "Credits",
@@ -108,8 +103,6 @@ public class AccountsSettingsCellViewModel: SettingsCellViewModel {
                 return nil
             case .passiveMode:
                 return onOffStateString(forState: false) //TODO
-            case .organizedByThread:
-                return onOffStateString(forState: AppSettings.threadedViewEnabled)
             case .defaultAccount:
                 return AppSettings.defaultAccount
             case .unecryptedSubject:

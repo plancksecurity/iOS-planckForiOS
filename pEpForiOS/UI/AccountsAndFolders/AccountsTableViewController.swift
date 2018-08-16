@@ -181,7 +181,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         case .account:
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
-        case .unecryptedSubject, .organizedByThread, .passiveMode:
+        case .unecryptedSubject, .passiveMode:
             //nothing to do here
             break
         case .defaultAccount:
