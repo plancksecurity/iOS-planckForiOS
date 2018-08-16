@@ -212,8 +212,9 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             message: incomingMessage,
             expectation: expectation(description: "expectationChildMessageDeleted"))
 
+        let refs = Set(incomingMessage.references)
         incomingMessage.imapDelete()
-        emailListViewModel.didDelete(messageFolder: incomingMessage, belongingToThread: Set())
+        emailListViewModel.didDelete(messageFolder: incomingMessage, belongingToThread: refs)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
@@ -235,8 +236,9 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             indexPath: indexOfTopMessage0,
             expectation: expectation(description: "expectationUpdated"))
 
+        let refs = Set(incomingMessage.references)
         incomingMessage.imapDelete()
-        emailListViewModel.didDelete(messageFolder: incomingMessage, belongingToThread: Set())
+        emailListViewModel.didDelete(messageFolder: incomingMessage, belongingToThread: refs)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)

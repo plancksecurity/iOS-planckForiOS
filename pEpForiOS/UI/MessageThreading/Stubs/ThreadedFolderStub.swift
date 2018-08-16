@@ -18,7 +18,6 @@ class ThreadedFolderStub: ThreadedMessageFolderProtocol{
         return false
     }
 
-
     let underlyingFolder: Folder
 
     func allMessages() -> [Message] {
@@ -43,12 +42,19 @@ class ThreadedFolderStub: ThreadedMessageFolderProtocol{
     }
 
     func deleteSingle(message: Message) {
-
     }
 
     func deleteThread(message: Message) {
-
     }
 
+    func referenced<T>(messageIdentifiers: [T],
+                       belongingToThread: Set<MessageID>) -> [Int] where T: MessageIdentitfying {
+        return []
+    }
 
+    func referenced<T>(
+        messageIdentifiers: [T],
+        message: Message) -> [Int] where T: MessageIdentitfying {
+        return []
+    }
 }

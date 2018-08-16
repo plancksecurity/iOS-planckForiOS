@@ -17,6 +17,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message)
+
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
@@ -333,8 +334,9 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = false
-            me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                                      didUpdateDataAt: [indexPath])
+            me.emailListViewModelDelegate?.emailListViewModel(
+                viewModel: me,
+                didUpdateDataAt: [indexPath])
         }
     }
 
