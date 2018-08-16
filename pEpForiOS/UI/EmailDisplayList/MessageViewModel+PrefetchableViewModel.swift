@@ -26,9 +26,9 @@ extension MessageViewModel: PrefetchableViewModel {
 //        }
     }
 
-    func messageCountPrefetch(completion: @escaping (Int)->()) -> PrefetchOperation {
+    func messageCountPrefetch(completion: @escaping (Int)->()) -> SelfReferencingOperation {
        
-        let prefetchOperation = PrefetchOperation { operation in
+        let prefetchOperation = SelfReferencingOperation { operation in
             MessageModel.performAndWait {
                 guard !operation.isCancelled,
                 let message = self.message() else {
@@ -46,9 +46,9 @@ extension MessageViewModel: PrefetchableViewModel {
         return prefetchOperation
     }
 
-    func bodyPeekPrefetch(for message: Message, completion: @escaping (String)->()) -> PrefetchOperation {
+    func bodyPeekPrefetch(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
-        let prefetchOperation = PrefetchOperation {operation in
+        let prefetchOperation = SelfReferencingOperation {operation in
             guard !operation.isCancelled else {
                 return
             }
@@ -68,9 +68,9 @@ extension MessageViewModel: PrefetchableViewModel {
         return prefetchOperation
     }
 
-    func getSecurityBadgeOperation(completion: @escaping (UIImage?)->()) -> PrefetchOperation {
+    func getSecurityBadgeOperation(completion: @escaping (UIImage?)->()) -> SelfReferencingOperation {
 
-        let prefetchOperation = PrefetchOperation { operation in
+        let prefetchOperation = SelfReferencingOperation { operation in
             MessageModel.performAndWait {
                 guard !operation.isCancelled,
                     let message = self.message() else {
