@@ -14,6 +14,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
+    func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message)
     func toolbarIs(enabled: Bool)
