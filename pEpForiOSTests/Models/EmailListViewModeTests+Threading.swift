@@ -641,6 +641,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             }
         }
 
+        func emailListViewModel(viewModel: EmailListViewModel,
+                                didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
+        }
+
         func toolbarIs(enabled: Bool) {
         }
 
