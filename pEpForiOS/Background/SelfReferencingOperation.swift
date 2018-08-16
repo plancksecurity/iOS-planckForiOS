@@ -7,9 +7,9 @@ import Foundation
 
 class SelfReferencingOperation: Operation {
 
-    let executionBlock: (_ operation: SelfReferencingOperation?)-> Void
+    let executionBlock: (_ operation: SelfReferencingOperation)-> Void
 
-    init(executionBlock: @escaping (_ operation: SelfReferencingOperation?) -> Void) {
+    init(executionBlock: @escaping (_ operation: SelfReferencingOperation) -> Void) {
         self.executionBlock = executionBlock
         super.init()
     }
@@ -18,8 +18,6 @@ class SelfReferencingOperation: Operation {
         if (isCancelled){
             return
         }
-        weak var weakSelf = self
-
-        executionBlock(weakSelf)
+        executionBlock(self)
     }
 }
