@@ -56,52 +56,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         action: nil)
     
     // MARK: - Life Cycle
-    
-    fileprivate func setUpTextFilter() {
-        self.textFilterButton.isEnabled = false
-        self.textFilterButton.action = #selector(self.showFilterOptions(_:))
-        self.textFilterButton.target = self
-
-        let fontSize:CGFloat = 10;
-        let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize);
-        let attributes = [NSAttributedStringKey.font: font];
-
-        self.textFilterButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         UIHelper.emailListTableHeight(self.tableView)
 
-        configureSearchBar()
         tableView.allowsMultipleSelectionDuringEditing = true
+
         if #available(iOS 10.0, *) {
             tableView.prefetchDataSource = self
         }
-        if #available(iOS 11.0, *) {
-            searchController.isActive = false
-            self.navigationItem.searchController = searchController
-            self.navigationItem.hidesSearchBarWhenScrolling = true
-        } else {
-            addSearchBar10()
-
-            if tableView.tableHeaderView == nil {
-                tableView.tableHeaderView = searchController.searchBar
-            }
-
-            // some notifications to control when the app enter and recover from background
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeActiveInstallSearchBar10),
-                name: NSNotification.Name.UIApplicationDidBecomeActive,
-                object: nil)
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(didBecomeInactiveUninstallSearchbar10),
-                name: NSNotification.Name.UIApplicationDidEnterBackground,
-                object: nil)
-        }
+        setupSearchBar()
         setup()
     }
 
@@ -125,33 +91,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: NSNotification.Name.UIApplicationDidBecomeActive,
-            object: nil)
-        NotificationCenter.default.removeObserver(
-            self,
-            name: NSNotification.Name.UIApplicationDidEnterBackground,
-            object: nil)
-    }
-
-    /**
-     Showing the search controller in versions iOS 10 and earlier.
-     */
-    @objc func didBecomeActiveInstallSearchBar10() {
-        if tableView.tableHeaderView == nil {
-            tableView.tableHeaderView = searchController.searchBar
-        }
-    }
-
-    /**
-     Hide/remove the search controller in versions iOS 10 and earlier.
-     */
-    @objc func didBecomeInactiveUninstallSearchbar10() {
-        tableView.tableHeaderView = nil
+         NotificationCenter.default.removeObserver(self)
     }
     
-    // MARK: - NavigationBar
+    // MARK: - Setup
     
     private func resetModel() {
         if let theFolder = folderToShow {
@@ -165,7 +108,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             model?.screenComposer =  screenComposer
         }
     }
-    
+
     private func setup() {
         if noAccountsExist() {
             // No account exists. Show account setup.
@@ -197,15 +140,47 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action: nil)
         self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
         self.navigationController?.title = title
-
     }
 
-    private func weCameBackFromAPushedView() -> Bool {
-        return model != nil
+    private func setUpTextFilter() {
+        self.textFilterButton.isEnabled = false
+        self.textFilterButton.action = #selector(self.showFilterOptions(_:))
+        self.textFilterButton.target = self
+
+        let fontSize:CGFloat = 10;
+        let font:UIFont = UIFont.boldSystemFont(ofSize: fontSize);
+        let attributes = [NSAttributedStringKey.font: font];
+
+        self.textFilterButton.setTitleTextAttributes(attributes, for: UIControlState.normal)
     }
-    
-    private func noAccountsExist() -> Bool {
-        return Account.all().isEmpty
+
+    // MARK: - Search Bar
+
+    private func setupSearchBar() {
+        configureSearchBar()
+        if #available(iOS 11.0, *) {
+            searchController.isActive = false
+            self.navigationItem.searchController = searchController
+            self.navigationItem.hidesSearchBarWhenScrolling = true
+        } else {
+            addSearchBar10()
+
+            if tableView.tableHeaderView == nil {
+                tableView.tableHeaderView = searchController.searchBar
+            }
+
+            // some notifications to control when the app enter and recover from background
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didBecomeActiveInstallSearchBar10),
+                name: NSNotification.Name.UIApplicationDidBecomeActive,
+                object: nil)
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(didBecomeInactiveUninstallSearchbar10),
+                name: NSNotification.Name.UIApplicationDidEnterBackground,
+                object: nil)
+        }
     }
 
     /**
@@ -215,6 +190,22 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.delegate = self
+    }
+
+    /**
+     Showing the search controller in versions iOS 10 and earlier.
+     */
+    @objc func didBecomeActiveInstallSearchBar10() {
+        if tableView.tableHeaderView == nil {
+            tableView.tableHeaderView = searchController.searchBar
+        }
+    }
+
+    /**
+     Hide/remove the search controller in versions iOS 10 and earlier.
+     */
+    @objc func didBecomeInactiveUninstallSearchbar10() {
+        tableView.tableHeaderView = nil
     }
 
     /**
@@ -229,6 +220,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     // MARK: - Other
+
+    private func weCameBackFromAPushedView() -> Bool {
+        return model != nil
+    }
+
+    private func noAccountsExist() -> Bool {
+        return Account.all().isEmpty
+    }
 
     private func showComposeView() {
         self.performSegue(withIdentifier: SegueIdentifier.segueEditDraft, sender: self)

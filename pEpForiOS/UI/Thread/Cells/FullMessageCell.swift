@@ -122,6 +122,7 @@ class FullMessageCell: SwipeTableViewCell,
                 Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
                 return SecureWebViewController()
         }
+        vc.zoomingEnabled = false
         vc.scrollingEnabled = false
         vc.delegate = self
         vc.urlClickHandler = clickHandler

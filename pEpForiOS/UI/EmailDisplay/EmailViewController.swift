@@ -48,21 +48,12 @@ class EmailViewController: BaseTableViewController {
         configureOKButton()
 
         loadDatasource("MessageData")
-
-        let item = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)),
-                                                target: self)
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
-        self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
+        setuptoolbar()
 
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.setNeedsLayout()
         tableView.layoutIfNeeded()
-
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -115,7 +106,17 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - SETUP
 
-    internal func configureView() {
+    private func setuptoolbar() {
+        let item = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)),
+                                                target: self)
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
+    }
+
+    func configureView() {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false)
 
@@ -220,7 +221,7 @@ class EmailViewController: BaseTableViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
                 return SecureWebViewController()
         }
-        vc.scrollingEnabled = false
+        vc.zoomingEnabled = true
         vc.delegate = self
         vc.urlClickHandler = clickHandler
         htmlViewerViewControllerExists = true
