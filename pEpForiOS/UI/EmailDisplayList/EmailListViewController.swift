@@ -422,6 +422,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         self.navigationItem.rightBarButtonItem = editRightButton
     }
 
+    private func moveSelectionIfNeeded(fromIndexPath: IndexPath, toIndexPath: IndexPath) {
+        if lastSelectedIndexPath == fromIndexPath {
+            lastSelectedIndexPath = toIndexPath
+            resetSelection()
+        }
+    }
+
     private func resetSelectionIfNeeded(for indexPath: IndexPath) {
         if lastSelectedIndexPath == indexPath {
             resetSelection()
@@ -822,6 +829,16 @@ extension EmailListViewController: EmailListViewModelDelegate {
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message) {
         // ignore
+    }
+
+    func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow
+
+        tableView.beginUpdates()
+        tableView.moveRow(at: atIndexPath, to: toIndexPath)
+        tableView.endUpdates()
+
+        moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)
     }
 
     func updateView() {

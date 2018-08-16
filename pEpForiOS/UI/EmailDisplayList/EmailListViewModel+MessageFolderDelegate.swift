@@ -82,14 +82,20 @@ extension EmailListViewModel: MessageFolderDelegate {
                 } else {
                     if let index = referencedIndices.first {
                         // The thread count might need to be updated
-                        if let messageModel = theSelf.messages.object(at: index),
-                            let messageCount = messageModel.internalMessageCount  {
-                            messageModel.internalMessageCount = messageCount + 1
+
+                        theSelf.messages.removeObject(at: index)
+                        let newIndex = theSelf.messages.insert(object: previewMessage)
+
+                        if newIndex != index {
+                            theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                viewModel: theSelf,
+                                didMoveData: IndexPath(row: index, section: 0),
+                                toIndexPath: IndexPath(row: newIndex, section: 0))
                         }
 
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf,
-                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
+                            didUpdateDataAt: [IndexPath(row: newIndex, section: 0)])
 
                         if let index = theSelf.currentlyDisplayedIndex(of: referencedIndices) {
                             if theSelf.isShowingSingleMessage() {
