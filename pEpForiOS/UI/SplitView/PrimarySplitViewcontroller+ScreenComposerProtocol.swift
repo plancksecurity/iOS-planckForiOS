@@ -14,8 +14,12 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
                             requestsShowThreadViewFor message: Message) {
         let storyboard = UIStoryboard(name: "Thread", bundle: nil)
 
-        guard let singleViewController = getDetailViewController() as? EmailViewController,
-            let nav = singleViewController.navigationController,
+        guard let singleViewController = getDetailViewController() as? EmailViewController else {
+            //Do nothing as it is not showing the detail we want
+            return
+        }
+
+        guard let nav = singleViewController.navigationController,
             let folder = singleViewController.folderShow,
             let vc: ThreadViewController =
             storyboard.instantiateViewController(withIdentifier: "threadViewController")
@@ -38,8 +42,11 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
-        guard let threadViewController = getDetailViewController() as? EmailViewController,
-            let nav = threadViewController.navigationController,
+        guard let threadViewController = getDetailViewController() as? ThreadViewController else {
+            //Do nothing as it is not showing the detail we want
+            return
+        }
+            guard let nav = threadViewController.navigationController,
             let vc: EmailViewController =
             storyboard.instantiateViewController(withIdentifier: "emailDetail")
                 as? EmailViewController
@@ -61,21 +68,19 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
         if isCollapsed {
             guard let nav = last as? UINavigationController,
                 let emailNav = nav.topViewController as? UINavigationController,
-                let singleViewController = emailNav.rootViewController as? EmailViewController
+                let viewController = emailNav.rootViewController as? EmailViewController
                 else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return nil
             }
-            return singleViewController
+            return viewController
 
         } else {
             guard let nav = last as? UINavigationController,
-                let singleViewController = nav.rootViewController as? EmailViewController
+                let viewController = nav.rootViewController as? EmailViewController
                 else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                     return nil
             }
-            return singleViewController
+            return viewController
         }
     }
 
