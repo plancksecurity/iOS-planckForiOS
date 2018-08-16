@@ -28,14 +28,19 @@ extension MessageViewModel: PrefetchableViewModel {
 
     func messageCountPrefetch(completion: @escaping (Int)->()) -> SelfReferencingOperation {
        
-        let prefetchOperation = SelfReferencingOperation { operation in
+        let prefetchOperation = SelfReferencingOperation {  [weak self] operation in
+            guard let me = self else {
+                return
+            }
             MessageModel.performAndWait {
-                guard !operation.isCancelled,
-                let message = self.message() else {
+                guard
+                    let operation = operation,
+                    !operation.isCancelled,
+                let message = me.message() else {
                     return
                 }
                 let messageCount = message.numberOfMessagesInThread()
-                self.internalMessageCount = messageCount
+                me.internalMessageCount = messageCount
                 if (!operation.isCancelled){
                     DispatchQueue.main.async {
                         completion(messageCount)
@@ -49,7 +54,9 @@ extension MessageViewModel: PrefetchableViewModel {
     func bodyPeekPrefetch(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
         let prefetchOperation = SelfReferencingOperation {operation in
-            guard !operation.isCancelled else {
+            guard
+                let operation = operation,
+                !operation.isCancelled else {
                 return
             }
             MessageModel.performAndWait {
@@ -70,15 +77,20 @@ extension MessageViewModel: PrefetchableViewModel {
 
     func getSecurityBadgeOperation(completion: @escaping (UIImage?)->()) -> SelfReferencingOperation {
 
-        let prefetchOperation = SelfReferencingOperation { operation in
+        let prefetchOperation = SelfReferencingOperation { [weak self] operation in
+            guard let me = self else {
+                return
+            }
             MessageModel.performAndWait {
-                guard !operation.isCancelled,
-                    let message = self.message() else {
+                guard
+                    let operation = operation,
+                    !operation.isCancelled,
+                    let message = me.message() else {
                         return
                 }
 
                 if (!operation.isCancelled) {
-                    self.profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+                    me.profilePictureComposer.getSecurityBadge(for: message, completion: completion)
                 }
             }
         }
