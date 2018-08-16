@@ -157,11 +157,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Search Bar
 
     private func setupSearchBar() {
+        definesPresentationContext = true
         configureSearchBar()
         if #available(iOS 11.0, *) {
             searchController.isActive = false
-            self.navigationItem.searchController = searchController
-            self.navigationItem.hidesSearchBarWhenScrolling = true
+            navigationItem.searchController = searchController
+            navigationItem.hidesSearchBarWhenScrolling = true
         } else {
             addSearchBar10()
 
@@ -212,7 +213,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
      Add the search bar when running on iOS 10 or earlier.
      */
     private func addSearchBar10() {
-        definesPresentationContext = true
         tableView.tableHeaderView = searchController.searchBar
         tableView.setContentOffset(CGPoint(x: 0.0,
                                            y: searchController.searchBar.frame.size.height),
