@@ -202,10 +202,18 @@ class MessageViewModel {
     }
 
     public func message() -> Message? {
-        return Message.by(uid: uid,
-                          uuid: uuid,
-                          folderName: parentFolderName,
-                          accountAddress: accountAddress)
+        guard let msg = Message.by(uid: uid,
+                                   uuid: uuid,
+                                   folderName: parentFolderName,
+                                   accountAddress: accountAddress)
+            else {
+                // The model has changed.
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "There are valid cases, so we should not crash here. Will crash here for debug reasons to pinpoint the root of IOS-1243. Please remove this Log command after IOS-1243 is fixed." +
+                    "Extra anoying long string to not forget please.")
+                return nil
+        }
+        return msg
     }
 
     func getProfilePicture(completion: @escaping (UIImage?)->()){
