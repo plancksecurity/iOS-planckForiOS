@@ -150,51 +150,62 @@ extension EmailListViewModel: MessageFolderDelegate {
     private func didDeleteInternal(topMessage: Message,
                                    atIndex indexExisting: Int,
                                    belongingToThread: Set<MessageID>) {
-        let isDisplayingThread = AppSettings.threadedViewEnabled &&
-            !belongingToThread.isEmpty &&
-            isCurrentlyDisplayingDetailsOf(message: topMessage)
+        if AppSettings.threadedViewEnabled {
+            let isDisplayingThread = !belongingToThread.isEmpty &&
+                isCurrentlyDisplayingDetailsOf(message: topMessage)
 
-        var aReplacementMessage: Message?
-        MessageModel.performAndWait { [weak self] in
-            guard let theSelf = self else {
-                return
-            }
-            aReplacementMessage = Message.latestMessage(
-                fromMessageIdSet: belongingToThread,
-                fulfillingFilter: theSelf.folderToShow.filter)
-        }
-
-        if let replacementMessage = aReplacementMessage {
-            messages.replaceObject(
-                at: indexExisting,
-                with: MessageViewModel(with: replacementMessage))
-        } else {
-            messages.removeObject(at: indexExisting)
-        }
-
-        func notifyUI(theModel: EmailListViewModel) {
-            let indexPath = IndexPath(row: indexExisting, section: 0)
-
-            if isDisplayingThread {
-                // deleting a top message that spans the thread that is currently displayed
-                updateThreadListDelegate?.deleted(message: topMessage)
+            var aReplacementMessage: Message?
+            MessageModel.performAndWait { [weak self] in
+                guard let theSelf = self else {
+                    return
+                }
+                aReplacementMessage = Message.latestMessage(
+                    fromMessageIdSet: belongingToThread,
+                    fulfillingFilter: theSelf.folderToShow.filter)
             }
 
             if let replacementMessage = aReplacementMessage {
-                // we have the next message in the thread that we can substitute with
-                emailListViewModelDelegate?.emailListViewModel(
-                    viewModel: theModel, didUpdateDataAt: [indexPath])
-                updateThreadListDelegate?.tipDidChange(to: replacementMessage)
+                messages.replaceObject(
+                    at: indexExisting,
+                    with: MessageViewModel(with: replacementMessage))
             } else {
-                emailListViewModelDelegate?.emailListViewModel(
-                    viewModel: theModel,
-                    didRemoveDataAt: [indexPath])
+                messages.removeObject(at: indexExisting)
             }
-        }
 
-        DispatchQueue.main.sync { [weak self] in
-            if let theSelf = self {
-                notifyUI(theModel: theSelf)
+            func notifyUI(theModel: EmailListViewModel) {
+                let indexPath = IndexPath(row: indexExisting, section: 0)
+
+                if isDisplayingThread {
+                    // deleting a top message that spans the thread that is currently displayed
+                    updateThreadListDelegate?.deleted(message: topMessage)
+                }
+
+                if let replacementMessage = aReplacementMessage {
+                    // we have the next message in the thread that we can substitute with
+                    emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theModel, didUpdateDataAt: [indexPath])
+                    updateThreadListDelegate?.tipDidChange(to: replacementMessage)
+                } else {
+                    emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theModel,
+                        didRemoveDataAt: [indexPath])
+                }
+            }
+
+            DispatchQueue.main.sync { [weak self] in
+                if let theSelf = self {
+                    notifyUI(theModel: theSelf)
+                }
+            }
+        } else {
+            messages.removeObject(at: indexExisting)
+            DispatchQueue.main.sync { [weak self] in
+                if let theSelf = self {
+                    let indexPath = IndexPath(row: indexExisting, section: 0)
+                    emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theSelf,
+                        didRemoveDataAt: [indexPath])
+                }
             }
         }
     }
