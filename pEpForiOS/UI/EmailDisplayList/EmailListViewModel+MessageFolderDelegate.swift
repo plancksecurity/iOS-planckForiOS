@@ -81,7 +81,8 @@ extension EmailListViewModel: MessageFolderDelegate {
                     insertAsTopMessage()
                 } else {
                     if let index = referencedIndices.first {
-                        // The thread count might need to be updated
+                        // The thread count might need to be updated and the body should reflect the
+                        // new top message. Index should be checked and reported in case it changes.
 
                         theSelf.messages.removeObject(at: index)
                         let newIndex = theSelf.messages.insert(object: previewMessage)
