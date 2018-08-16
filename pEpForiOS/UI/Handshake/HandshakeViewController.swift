@@ -254,7 +254,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         }
         
         alertController.addAction(cancelAction)
-        alertController.popoverPresentationController?.sourceView = self.navigationItem.rightBarButtonItem?.customView
+        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
         present(alertController, animated: true, completion: nil)
 
     }
