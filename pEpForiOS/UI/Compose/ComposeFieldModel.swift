@@ -23,7 +23,7 @@ public class ComposeFieldModel {
             case .wraped:
                 return NSLocalizedString("Cc/Bcc:", comment: "Compose field title")
             case .from:
-                    return NSLocalizedString("From:", comment: "Compose field title")
+                return NSLocalizedString("From:", comment: "Compose field title")
             case .subject:
                 return NSLocalizedString("Subject:", comment: "Compose field title")
             case .mailingList:
