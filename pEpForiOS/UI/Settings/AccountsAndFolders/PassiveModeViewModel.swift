@@ -11,7 +11,7 @@ import Foundation
 import Foundation
 
 
-class PassiveModeViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
+class PassiveModeViewModel:SettingSwitchProtocol, SettingsCellViewModelProtocol  {
 
     var settingCellType: AccountSettingsCellType
     var type: SettingType

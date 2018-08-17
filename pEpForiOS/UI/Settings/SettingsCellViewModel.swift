@@ -1,5 +1,5 @@
 //
-//  AccountsSettingsCellViewModel.swift
+//  SettingsCellViewModel.swift
 //  pEpForiOS
 //
 //  Created by Xavier Algarra on 08/06/2017.
@@ -20,7 +20,6 @@ public enum AccountSettingsCellType: String {
     func isSwitchOptionCell() -> Bool {
         return self == AccountSettingsCellType.switchOptionCell
     }
-
 }
 public enum SettingType {
     case account
@@ -32,7 +31,7 @@ public enum SettingType {
     case defaultAccount
 }
 
-public class AccountsSettingsCellViewModel: SettingsCellViewModel {
+public class SettingsCellViewModel: SettingsCellViewModelProtocol {
 
     var settingCellType: AccountSettingsCellType
     var type: SettingType

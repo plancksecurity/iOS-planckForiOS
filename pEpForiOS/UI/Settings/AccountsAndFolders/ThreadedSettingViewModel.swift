@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ThreadedSwitchViewModel:SettingSwitchProtocol, SettingsCellViewModel  {
+class ThreadedSwitchViewModel: SettingSwitchProtocol, SettingsCellViewModelProtocol  {
     var settingCellType: AccountSettingsCellType
     var type: SettingType
     var title: String

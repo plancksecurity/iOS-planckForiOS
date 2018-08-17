@@ -9,7 +9,7 @@
 import SwipeCellKit
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
-    let viewModel = AccountsSettingsViewModel()
+    let viewModel = SettingsViewModel()
     var settingSwitchViewModel: SettingSwitchProtocol?
 
     /** Our vanilla table view cell */
@@ -86,7 +86,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         let cellWithoutType = tableView.dequeueReusableCell(withIdentifier:
             viewModel[indexPath.section][indexPath.row].settingCellType.rawValue, for: indexPath)
 
-        if let vm = viewModel[indexPath.section][indexPath.row] as? AccountsSettingsCellViewModel,
+        if let vm = viewModel[indexPath.section][indexPath.row] as? SettingsCellViewModel,
             vm.settingCellType == AccountSettingsCellType.accountsCell {
             guard let cell = cellWithoutType as? SwipeTableViewCell else {
                 return cellWithoutType
@@ -218,7 +218,7 @@ extension SettingsTableViewController: SegueHandlerType {
             }
             destination.appConfig = self.appConfig
             if let path = ipath ,
-                let vm = viewModel[path.section][path.row] as? AccountsSettingsCellViewModel,
+                let vm = viewModel[path.section][path.row] as? SettingsCellViewModel,
                 let acc = vm.account  {
                     let vm = AccountSettingsViewModel(account: acc)
                     destination.viewModel = vm

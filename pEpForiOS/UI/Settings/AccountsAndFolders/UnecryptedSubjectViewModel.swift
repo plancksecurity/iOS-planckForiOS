@@ -8,7 +8,7 @@
 
 import Foundation
 
-class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModel  {
+class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModelProtocol  {
 
     var settingCellType: AccountSettingsCellType
     var type: SettingType

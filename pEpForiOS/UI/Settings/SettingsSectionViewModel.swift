@@ -1,5 +1,5 @@
 //
-//  AccountSectionViewModel.swift
+//  SettingsSectionViewModel.swift
 //  pEpForiOS
 //
 //  Created by Xavier Algarra on 08/06/2017.
@@ -9,7 +9,7 @@
 import Foundation
 import MessageModel
 
-public class AccountsSettingsSectionViewModel {
+public class SettingsSectionViewModel {
 
     public enum SectionType {
         case accounts
@@ -17,7 +17,7 @@ public class AccountsSettingsSectionViewModel {
         case pgpCompatibilitySettings
     }
 
-    var cells = [SettingsCellViewModel]()
+    var cells = [SettingsCellViewModelProtocol]()
     var title: String?
     var footer: String?
     let type: SectionType
@@ -42,15 +42,15 @@ public class AccountsSettingsSectionViewModel {
 
     func generateAccountCells() {
         Account.all().forEach { (acc) in
-            self.cells.append(AccountsSettingsCellViewModel(account: acc))
+            self.cells.append(SettingsCellViewModel(account: acc))
         }
     }
 
     func generateGlobalSettingsCells() {
-        self.cells.append(AccountsSettingsCellViewModel(type: .defaultAccount))
+        self.cells.append(SettingsCellViewModel(type: .defaultAccount))
         self.cells.append(ThreadedSwitchViewModel(type: .organizedByThread))
-        self.cells.append(AccountsSettingsCellViewModel(type: .credits))
-        self.cells.append(AccountsSettingsCellViewModel(type: .showLog))
+        self.cells.append(SettingsCellViewModel(type: .credits))
+        self.cells.append(SettingsCellViewModel(type: .showLog))
         self.cells.append(PassiveModeViewModel(type: .passiveMode))
     }
 
@@ -59,7 +59,7 @@ public class AccountsSettingsSectionViewModel {
     }
 
     func delete(cell: Int) {
-        if let remove = cells[cell] as? AccountsSettingsCellViewModel {
+        if let remove = cells[cell] as? SettingsCellViewModel {
             remove.delete()
             cells.remove(at: cell)
         }
@@ -75,7 +75,7 @@ public class AccountsSettingsSectionViewModel {
         }
     }
 
-    subscript(cell: Int) -> SettingsCellViewModel {
+    subscript(cell: Int) -> SettingsCellViewModelProtocol {
         get {
             assert(cellIsValid(cell: cell), "Cell out of range")
             return cells[cell]
