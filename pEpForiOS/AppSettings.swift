@@ -76,6 +76,16 @@ struct AppSettings {
         }
     }
 
+    /// Addresses of all accounts the user explicitly trusted
+    static var manuallyTrustedServers: [String] {
+        get {
+            return UserDefaults.standard.stringArray(forKey: keyManuallyTrustedServers) ?? []
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyManuallyTrustedServers)
+        }
+    }
+
     // MARK: SETUP
 
     private init() {
