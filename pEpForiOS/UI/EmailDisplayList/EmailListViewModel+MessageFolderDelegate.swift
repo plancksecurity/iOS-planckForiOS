@@ -143,7 +143,9 @@ extension EmailListViewModel: MessageFolderDelegate {
             // We do not have this top message in our model, so we do not have to remove it there,
             // but it might belong to some top message's thread so we might have to update
             // that top message.
-            didDeleteInternal(notTopMessage: message, belongingToThread: belongingToThread)
+            if AppSettings.threadedViewEnabled {
+                didDeleteInternal(notTopMessage: message, belongingToThread: belongingToThread)
+            }
         }
     }
 
