@@ -21,14 +21,21 @@ struct TrustedServerSettingsViewModel {
         reset()
     }
 
-    mutating func toggleOnOff(forRowAt index: Int) {
-        guard index >= 0 && index < rows.count else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
-            return
+    mutating func setTrusted(forAccountWith address: String, toValue newValue: Bool) {
+        var rowForAddress: Row?
+        for i in 0...rows.count {
+            let row = rows[i]
+            if row.address == address {
+                rowForAddress = row
+                rows[i] = Row(address: row.address, trusted: newValue)
+                break
+            }
         }
-        let oldRow = rows[index]
-        let toggeled = Row(address: oldRow.address, trusted: !oldRow.trusted)
-        rows[index] = toggeled
+        if newValue {
+            AppSettings.addToManuallyTrustedServers(address: address)
+        } else {
+            AppSettings.removeFromManuallyTrustedServers(address: address)
+        }
     }
 
     mutating private func reset() {
