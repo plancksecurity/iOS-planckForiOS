@@ -76,6 +76,8 @@ struct AppSettings {
         }
     }
 
+    // MARK: manuallyTrustedServers
+
     /// Addresses of all accounts the user explicitly trusted
     static var manuallyTrustedServers: [String] {
         get {
@@ -84,6 +86,18 @@ struct AppSettings {
         set {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyManuallyTrustedServers)
         }
+    }
+
+    static func addToManuallyTrustedServers(address: String) {
+        var addresses = Set(manuallyTrustedServers)
+        addresses.insert(address)
+        manuallyTrustedServers = Array(addresses)
+    }
+
+    static func removeFromManuallyTrustedServers(address: String) {
+        var addresses = Set(manuallyTrustedServers)
+        addresses.remove(address)
+        manuallyTrustedServers = Array(addresses)
     }
 
     // MARK: SETUP
