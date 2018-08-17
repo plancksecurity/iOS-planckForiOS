@@ -461,4 +461,12 @@ Something is fishy here.
             return $0 - 1
         }
     }
+
+    private func dumpThreadCount(at index: Int?, message: String) {
+        if let theIndex = index,
+            let messageModel = messages.object(at: theIndex),
+            let messageCount = messageModel.internalMessageCount  {
+            print("*** \(message) threadCount \(messageCount)")
+        }
+    }
 }
