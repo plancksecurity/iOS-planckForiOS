@@ -192,6 +192,7 @@
                         <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindAccountAddedWithSegue:" id="dbj-Gx-Exo"/>
                         <segue destination="pQb-5p-QId" kind="showDetail" identifier="segueShowSettingDefaultAccount" id="qiY-7g-nll"/>
                         <segue destination="01V-rr-Nt1" kind="showDetail" identifier="segueShowLog" id="U6Q-tx-u4b"/>
+                        <segue destination="95U-QI-nlr" kind="showDetail" identifier="segueShowSettingTrustedServers" id="tvG-bN-ITt"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -586,6 +587,34 @@
             </objects>
             <point key="canvasLocation" x="-390" y="-388"/>
         </scene>
+        <!--Trusted Server Settings View Controller-->
+        <scene sceneID="ayN-a1-vAb">
+            <objects>
+                <tableViewController id="95U-QI-nlr" customClass="TrustedServerSettingsViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="0KH-xe-CQo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="PoR-ac-chb">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PoR-ac-chb" id="dSZ-uk-uWx">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="95U-QI-nlr" id="3Km-cg-rAl"/>
+                            <outlet property="delegate" destination="95U-QI-nlr" id="nFP-1V-3vR"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d7G-qu-RO5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1337" y="-390"/>
+        </scene>
         <!--AccountCreation-->
         <scene sceneID="0vj-GL-XbM">
             <objects>
@@ -633,6 +662,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hUX-d3-8R0"/>
+        <segue reference="U6Q-tx-u4b"/>
     </inferredMetricsTieBreakers>
 </document>

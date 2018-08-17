@@ -203,6 +203,7 @@ extension AccountsTableViewController: SegueHandlerType {
         case segueShowSettingDefaultAccount
         case segueShowLog
         case sequeShowCredits
+        case segueShowSettingTrustedServers
         case noAccounts
         case noSegue
     }
@@ -223,13 +224,14 @@ extension AccountsTableViewController: SegueHandlerType {
                     destination.viewModel = vm
             }
         case .noAccounts,
-        .segueAddNewAccount,
-        .sequeShowCredits:
+             .segueAddNewAccount,
+             .sequeShowCredits:
             guard let destination = segue.destination as? BaseViewController else {
                 return
             }
             destination.appConfig = self.appConfig
-        case .segueShowSettingDefaultAccount: // BaseTableViewControllers
+        case .segueShowSettingDefaultAccount,
+             .segueShowSettingTrustedServers:
             guard let destination = segue.destination as? BaseTableViewController else {
                 return
             }
