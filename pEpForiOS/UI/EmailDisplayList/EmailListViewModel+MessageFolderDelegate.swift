@@ -98,14 +98,13 @@ extension EmailListViewModel: MessageFolderDelegate {
                     }
 
                     if let index = referencedIndices.first {
-                        theSelf.incThreadCount(at: index)
-                        theSelf.emailListViewModelDelegate?.emailListViewModel(
-                            viewModel: theSelf,
-                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
-
                         if messagePassedFilter {
                             theSelf.messages.removeObject(at: index)
                             let newIndex = theSelf.messages.insert(object: previewMessage)
+
+                            theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                viewModel: theSelf,
+                                didUpdateDataAt: [IndexPath(row: newIndex, section: 0)])
 
                             if newIndex != index {
                                 theSelf.emailListViewModelDelegate?.emailListViewModel(
@@ -113,6 +112,11 @@ extension EmailListViewModel: MessageFolderDelegate {
                                     didMoveData: IndexPath(row: index, section: 0),
                                     toIndexPath: IndexPath(row: newIndex, section: 0))
                             }
+                        } else {
+                            theSelf.incThreadCount(at: index)
+                            theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                viewModel: theSelf,
+                                didUpdateDataAt: [IndexPath(row: index, section: 0)])
                         }
                     }
                 }
