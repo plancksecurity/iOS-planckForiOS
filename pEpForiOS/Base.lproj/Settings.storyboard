@@ -75,7 +75,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XWE-s0-h4d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3385" y="69"/>
+            <point key="canvasLocation" x="-1327" y="-376"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="P8Y-01-hqj">
@@ -94,7 +94,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5pQ-iQ-idy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3368" y="789"/>
+            <point key="canvasLocation" x="-1346" y="344"/>
         </scene>
         <!--Credits View Controller-->
         <scene sceneID="T9v-3i-MfR">
@@ -109,7 +109,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXj-Sq-nBh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2471" y="56"/>
+            <point key="canvasLocation" x="-2242" y="-390"/>
         </scene>
         <!--Accounts Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
@@ -190,8 +190,6 @@
                         <segue destination="Eri-pJ-T3J" kind="showDetail" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="9LH-QE-79O" kind="showDetail" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
                         <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindAccountAddedWithSegue:" id="dbj-Gx-Exo"/>
-                        <segue destination="EOv-Ee-Waq" kind="showDetail" identifier="segueShowSetting" id="W4o-Ei-uzM"/>
-                        <segue destination="FFF-lc-Mu5" kind="showDetail" identifier="segueShowSettingUnecryptedSubject" id="yJT-PJ-mmN"/>
                         <segue destination="pQb-5p-QId" kind="showDetail" identifier="segueShowSettingDefaultAccount" id="qiY-7g-nll"/>
                         <segue destination="01V-rr-Nt1" kind="showDetail" identifier="segueShowLog" id="U6Q-tx-u4b"/>
                     </connections>
@@ -199,7 +197,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPe-Zm-lKR" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="1at-88-jou" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3385" y="-725"/>
+            <point key="canvasLocation" x="-1327" y="-1170"/>
         </scene>
         <!--Account Settings Table View Controller-->
         <scene sceneID="8yf-Dg-eGD">
@@ -586,7 +584,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Hi-lO-EOj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4324" y="58"/>
+            <point key="canvasLocation" x="-390" y="-388"/>
         </scene>
         <!--AccountCreation-->
         <scene sceneID="0vj-GL-XbM">
@@ -594,58 +592,7 @@
                 <viewControllerPlaceholder storyboardName="AccountCreation" id="Rly-af-89k" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLV-3R-1jF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6912" y="-436"/>
-        </scene>
-        <!--Setting Switch View Controller-->
-        <scene sceneID="qJL-Xh-Gld">
-            <objects>
-                <viewController id="EOv-Ee-Waq" customClass="SettingSwitchViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Zry-xu-tEo">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ysl-Jw-ZPh">
-                                <rect key="frame" x="290" y="30" width="51" height="31"/>
-                                <connections>
-                                    <action selector="switchChanged:" destination="EOv-Ee-Waq" eventType="valueChanged" id="e9W-Fe-B5w"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkK-aU-Vvk">
-                                <rect key="frame" x="16" y="35" width="29" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="description" translatesAutoresizingMaskIntoConstraints="NO" id="boR-Zs-5NC">
-                                <rect key="frame" x="16" y="81" width="343" height="566"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
-                            </textView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="boR-Zs-5NC" secondAttribute="trailing" id="3S3-6U-dBc"/>
-                            <constraint firstItem="5P0-wj-geP" firstAttribute="bottom" secondItem="boR-Zs-5NC" secondAttribute="bottom" constant="20" id="3n8-oz-doG"/>
-                            <constraint firstItem="hkK-aU-Vvk" firstAttribute="top" secondItem="5P0-wj-geP" secondAttribute="top" constant="15" id="43Y-ON-Eo7"/>
-                            <constraint firstItem="boR-Zs-5NC" firstAttribute="top" secondItem="Ysl-Jw-ZPh" secondAttribute="bottom" constant="20" id="9jy-HT-aqK"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Ysl-Jw-ZPh" secondAttribute="trailing" constant="20" id="JVM-sQ-jgc"/>
-                            <constraint firstItem="hkK-aU-Vvk" firstAttribute="centerY" secondItem="Ysl-Jw-ZPh" secondAttribute="centerY" id="XLh-EU-D2L"/>
-                            <constraint firstItem="Ysl-Jw-ZPh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hkK-aU-Vvk" secondAttribute="trailing" constant="15" id="XZK-ZS-znW"/>
-                            <constraint firstItem="boR-Zs-5NC" firstAttribute="leading" secondItem="Zry-xu-tEo" secondAttribute="leadingMargin" id="ihf-dn-3Us"/>
-                            <constraint firstItem="hkK-aU-Vvk" firstAttribute="leading" secondItem="Zry-xu-tEo" secondAttribute="leadingMargin" id="m2O-5N-bID"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="5P0-wj-geP"/>
-                    </view>
-                    <connections>
-                        <outlet property="longDescription" destination="boR-Zs-5NC" id="z5h-NL-HrT"/>
-                        <outlet property="switch" destination="Ysl-Jw-ZPh" id="uvx-Aq-Xsh"/>
-                        <outlet property="switchDescription" destination="hkK-aU-Vvk" id="KqH-Cf-saA"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jgT-NF-o3r" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4401" y="-725"/>
+            <point key="canvasLocation" x="2214" y="-391"/>
         </scene>
         <!--Setting Default Account Table View Controller-->
         <scene sceneID="26G-EO-g0Z">
@@ -682,61 +629,10 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a0D-hC-kA1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5162" y="57"/>
-        </scene>
-        <!--Setting Unecrypted Subject View Controller-->
-        <scene sceneID="m5y-Up-gOb">
-            <objects>
-                <viewController id="FFF-lc-Mu5" customClass="SettingUnecryptedSubjectViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5jG-bR-qgt">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bqd-aG-YIs">
-                                <rect key="frame" x="290" y="30" width="51" height="31"/>
-                                <connections>
-                                    <action selector="switchChanged:" destination="FFF-lc-Mu5" eventType="valueChanged" id="9bw-h9-Anc"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Protected Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZK3-BJ-fs0">
-                                <rect key="frame" x="16" y="35" width="194" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="If enabled, message subjects are also protected." translatesAutoresizingMaskIntoConstraints="NO" id="1zc-SP-iqW">
-                                <rect key="frame" x="16" y="81" width="343" height="566"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no"/>
-                            </textView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="1zc-SP-iqW" firstAttribute="top" secondItem="Bqd-aG-YIs" secondAttribute="bottom" constant="20" id="18R-aJ-MIg"/>
-                            <constraint firstItem="xFe-TR-BCQ" firstAttribute="bottom" secondItem="1zc-SP-iqW" secondAttribute="bottom" constant="20" id="2q3-gP-16D"/>
-                            <constraint firstItem="ZK3-BJ-fs0" firstAttribute="centerY" secondItem="Bqd-aG-YIs" secondAttribute="centerY" id="5xN-a8-7xP"/>
-                            <constraint firstItem="ZK3-BJ-fs0" firstAttribute="top" secondItem="xFe-TR-BCQ" secondAttribute="top" constant="15" id="EbP-RE-gbS"/>
-                            <constraint firstItem="1zc-SP-iqW" firstAttribute="leading" secondItem="5jG-bR-qgt" secondAttribute="leadingMargin" id="Jp4-QC-ivv"/>
-                            <constraint firstItem="ZK3-BJ-fs0" firstAttribute="leading" secondItem="5jG-bR-qgt" secondAttribute="leadingMargin" id="Wmu-ex-viJ"/>
-                            <constraint firstItem="Bqd-aG-YIs" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZK3-BJ-fs0" secondAttribute="trailing" constant="15" id="jbt-4q-NSs"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Bqd-aG-YIs" secondAttribute="trailing" constant="20" id="q8X-V9-dod"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="1zc-SP-iqW" secondAttribute="trailing" id="wNP-3f-WJ3"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="xFe-TR-BCQ"/>
-                    </view>
-                    <connections>
-                        <outlet property="longDescription" destination="1zc-SP-iqW" id="A4R-8A-oLs"/>
-                        <outlet property="switch" destination="Bqd-aG-YIs" id="Dff-bt-YbU"/>
-                        <outlet property="switchDescription" destination="ZK3-BJ-fs0" id="k8Q-L1-gmr"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="mvg-FE-aZP" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4401" y="-1430"/>
+            <point key="canvasLocation" x="449" y="-389"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="U6Q-tx-u4b"/>
+        <segue reference="hUX-d3-8R0"/>
     </inferredMetricsTieBreakers>
 </document>
