@@ -33,8 +33,12 @@ class SettingsViewModel {
         }
     }
 
-    func rowType(for indexPath: IndexPath) -> SettingsCellViewModel.SettingType {
-        return self[indexPath.section][indexPath.row].type
+    func rowType(for indexPath: IndexPath) -> SettingsCellViewModel.SettingType? {
+        guard let model = self[indexPath.section][indexPath.row] as?
+            ComplexSettingCellViewModelProtocol else {
+            return nil
+        }
+        return model.type
     }
 
     func noAccounts() -> Bool {

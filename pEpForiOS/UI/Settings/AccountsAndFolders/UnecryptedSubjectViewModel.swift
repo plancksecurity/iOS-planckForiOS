@@ -8,22 +8,19 @@
 
 import Foundation
 
-class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModelProtocol  {
+struct UnecryptedSubjectViewModel: SwitchSettingCellViewModelProtocol  {
 
-    var settingCellType: SettingsCellViewModel.CellType
-    var type: SettingsCellViewModel.SettingType
-    var title : String
-    var switchValue : Bool
+    // MARK: - SwitchSettingCellViewModelProtocol
 
-    init(type: SettingsCellViewModel.SettingType) {
-        self.settingCellType = SettingsCellViewModel.CellType.switchOptionCell
-        self.type = type
-        self.title = NSLocalizedString("Enable Protected Subject",
-                                       comment: "title for subject protection")
-        self.switchValue = !AppSettings.unencryptedSubjectEnabled
+    var cellIdentifier = "switchOptionCell"
+
+    private(set) var title = NSLocalizedString("Enable Protected Subject",
+                                           comment: "title for subject protection")
+    func setSwitch(value: Bool) {
+        AppSettings.unencryptedSubjectEnabled = !value
     }
 
-    func switchAction(value: Bool) {
-        AppSettings.unencryptedSubjectEnabled = !value
+    func switchValue() -> Bool {
+        return !AppSettings.unencryptedSubjectEnabled
     }
 }

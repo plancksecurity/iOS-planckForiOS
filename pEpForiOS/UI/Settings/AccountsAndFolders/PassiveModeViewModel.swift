@@ -11,22 +11,19 @@ import Foundation
 import Foundation
 
 
-class PassiveModeViewModel:SettingSwitchProtocol, SettingsCellViewModelProtocol  {
+struct PassiveModeViewModel: SwitchSettingCellViewModelProtocol  {
 
-    var settingCellType: SettingsCellViewModel.CellType
-    var type: SettingsCellViewModel.SettingType
-    var title : String
-    var switchValue : Bool
+    // MARK: - SwitchSettingCellViewModelProtocol
 
-    init(type: SettingsCellViewModel.SettingType) {
-        self.type = type
-        self.settingCellType = .switchOptionCell
-        self.title = NSLocalizedString("Enable passive mode", comment: "Passive mode title")
-        self.switchValue = AppSettings.passiveMode
-    }
+    var cellIdentifier = "switchOptionCell"
 
-    func switchAction(value: Bool) {
+    private(set) var title = NSLocalizedString("Enable passive mode", comment: "Passive mode title")
+
+    func setSwitch(value: Bool) {
         AppSettings.passiveMode = value
     }
-}
 
+    func switchValue() -> Bool {
+        return AppSettings.passiveMode
+    }
+}

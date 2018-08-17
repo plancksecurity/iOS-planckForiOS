@@ -8,26 +8,21 @@
 
 import Foundation
 
-class ThreadedSwitchViewModel: SettingSwitchProtocol, SettingsCellViewModelProtocol  {
-    var settingCellType: SettingsCellViewModel.CellType
-    var type: SettingsCellViewModel.SettingType
-    var title: String
-    var description: String
-    var switchValue: Bool
+struct ThreadedSwitchViewModel: SwitchSettingCellViewModelProtocol  {
 
-    init(type: SettingsCellViewModel.SettingType) {
-        self.type = type
-        self.settingCellType = .switchOptionCell
-        self.title = NSLocalizedString("Thread Messages",
-                                       comment: "settings, enable thread view or not")
-        self.description = NSLocalizedString(
-            "If enabled, messages in the same thread will be displayed together",
-            comment: "explanation for thread view settings")
-        self.switchValue = AppSettings.threadedViewEnabled
-    }
+    // MARK: - SwitchSettingCellViewModelProtocol
 
-    func switchAction(value: Bool) {
+    var cellIdentifier = "switchOptionCell"
+
+    private(set) var title = NSLocalizedString("Thread Messages",
+                                           comment: "settings, enable thread view or not")
+
+    func setSwitch(value: Bool) {
         AppSettings.threadedViewEnabled = value
         FolderThreading.switchThreading(onOrOff: value)
+    }
+
+    func switchValue() -> Bool {
+         return AppSettings.threadedViewEnabled
     }
 }

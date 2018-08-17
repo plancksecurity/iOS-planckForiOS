@@ -11,7 +11,7 @@ import SwipeCellKit
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let storyboardId = "SettingsTableViewController"
     let viewModel = SettingsViewModel()
-    var settingSwitchViewModel: SettingSwitchProtocol?
+    var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
 
     /** Our vanilla table view cell */
     let accountsCellIdentifier = "accountsCell"
@@ -24,6 +24,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     var state = UIState()
 
+    var oldToolbarStatus : Bool = true
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -31,7 +33,6 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         title = NSLocalizedString("Settings", comment: "Settings view title")
         UIHelper.variableCellHeightsTableView(self.tableView)
     }
-    var oldToolbarStatus : Bool = true
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -83,30 +84,39 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let dequeuedCell = tableView.dequeueReusableCell(withIdentifier:
+            viewModel[indexPath.section][indexPath.row].cellIdentifier, for: indexPath)
 
-        let cellWithoutType = tableView.dequeueReusableCell(withIdentifier:
-            viewModel[indexPath.section][indexPath.row].settingCellType.rawValue, for: indexPath)
-
-        if let vm = viewModel[indexPath.section][indexPath.row] as? SettingsCellViewModel,
-            vm.settingCellType == SettingsCellViewModel.CellType.accountsCell {
-            guard let cell = cellWithoutType as? SwipeTableViewCell else {
-                return cellWithoutType
+        let vm = viewModel[indexPath.section][indexPath.row]
+        if isRepresentingOnOffSwichSetting(viewModel: vm) {
+            guard
+                let vm = viewModel[indexPath.section][indexPath.row]
+                    as? SwitchSettingCellViewModelProtocol,
+                let cell = dequeuedCell as? SettingSwitchTableViewCell
+                else {
+                    return dequeuedCell
+            }
+            cell.viewModel = vm
+            cell.setUpView()
+            cell.selectionStyle = .none
+            return cell
+        } else {
+            guard
+                let vm = viewModel[indexPath.section][indexPath.row] as? SettingsCellViewModel,
+                let cell = dequeuedCell as? SwipeTableViewCell else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state.")
+                    return dequeuedCell
             }
             cell.textLabel?.text = vm.title
             cell.detailTextLabel?.text = vm.detail
             cell.accessoryType = UITableViewCellAccessoryType.disclosureIndicator
             cell.delegate = self
             return cell
-        } else if let vm = viewModel[indexPath.section][indexPath.row] as? SettingSwitchProtocol {
-            guard let cell = cellWithoutType as? SettingSwitchTableViewCell else {
-                    return cellWithoutType
-            }
-            cell.viewModel = vm
-            cell.setUpView()
-            cell.selectionStyle = .none
-            return cell
         }
-        return cellWithoutType
+    }
+
+    private func isRepresentingOnOffSwichSetting(viewModel: SettingCellViewModelProtocol) -> Bool {
+        return (viewModel as? SwitchSettingCellViewModelProtocol != nil) ? true : false
     }
 
     private func deleteRowAt(_ indexPath: IndexPath) {
@@ -177,14 +187,14 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let rowType = viewModel.rowType(for: indexPath)
+        guard let rowType = viewModel.rowType(for: indexPath) else {
+            // Nothing to do here. Its a simple On/Off switch cell. No need to segue anywhere.
+            return
+        }
         switch rowType {
         case .account:
             self.ipath = indexPath
             performSegue(withIdentifier: .segueEditAccount, sender: self)
-        case .unecryptedSubject, .organizedByThread, .passiveMode:
-            //nothing to do here
-            break
         case .defaultAccount:
             performSegue(withIdentifier: .segueShowSettingDefaultAccount, sender: self)
         case .showLog:

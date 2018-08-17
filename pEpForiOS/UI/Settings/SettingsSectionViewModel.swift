@@ -17,7 +17,7 @@ public class SettingsSectionViewModel {
         case pgpCompatibilitySettings
     }
 
-    var cells = [SettingsCellViewModelProtocol]()
+    var cells = [SettingCellViewModelProtocol]()
     var title: String?
     var footer: String?
     let type: SectionType
@@ -31,7 +31,8 @@ public class SettingsSectionViewModel {
         case .globalSettings:
             generateGlobalSettingsCells()
             title = NSLocalizedString("Global Settings", comment: "Tableview section header")
-            footer = NSLocalizedString("public key is only attached if key is received from partner", comment: "passive mode description")
+            footer = NSLocalizedString("public key is only attached if key is received from partner",
+                                       comment: "passive mode description")
         case .pgpCompatibilitySettings:
             generatePgpCompatibilitySettingsCells()
             title = NSLocalizedString("PGP Compatibility", comment: "Tableview section header")
@@ -48,14 +49,14 @@ public class SettingsSectionViewModel {
 
     func generateGlobalSettingsCells() {
         self.cells.append(SettingsCellViewModel(type: .defaultAccount))
-        self.cells.append(ThreadedSwitchViewModel(type: .organizedByThread))
+        self.cells.append(ThreadedSwitchViewModel())
         self.cells.append(SettingsCellViewModel(type: .credits))
         self.cells.append(SettingsCellViewModel(type: .showLog))
-        self.cells.append(PassiveModeViewModel(type: .passiveMode))
+        self.cells.append(PassiveModeViewModel())
     }
 
     func generatePgpCompatibilitySettingsCells() {
-        self.cells.append(UnecryptedSubjectViewModel(type: .unecryptedSubject))
+        self.cells.append(UnecryptedSubjectViewModel())
     }
 
     func delete(cell: Int) {
@@ -75,7 +76,7 @@ public class SettingsSectionViewModel {
         }
     }
 
-    subscript(cell: Int) -> SettingsCellViewModelProtocol {
+    subscript(cell: Int) -> SettingCellViewModelProtocol {
         get {
             assert(cellIsValid(cell: cell), "Cell out of range")
             return cells[cell]
