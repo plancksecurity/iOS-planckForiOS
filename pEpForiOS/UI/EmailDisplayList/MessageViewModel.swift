@@ -9,7 +9,7 @@
 import Foundation
 import MessageModel
 
-class MessageViewModel {
+class MessageViewModel: CustomDebugStringConvertible {
 
     static var maxBodyPreviewCharacters = 120
     let queue = OperationQueue()
@@ -269,7 +269,9 @@ class MessageViewModel {
         return attributed
     }
 
-
+    public var debugDescription: String {
+        return "<MessageViewModel |\(messageIdentifier)| |\(internalMessage.longMessage?.prefix(3) ?? "nil")|>"
+    }
 }
 
 extension MessageViewModel: Equatable {
