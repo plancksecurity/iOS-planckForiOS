@@ -98,10 +98,12 @@ extension EmailListViewModel: MessageFolderDelegate {
                             viewModel: theSelf,
                             didUpdateDataAt: [IndexPath(row: newIndex, section: 0)])
 
-                        if let index = theSelf.currentlyDisplayedIndex(of: referencedIndices) {
+                        if let currentlyDisplayedIndex =
+                            theSelf.currentlyDisplayedIndex(of: referencedIndices) {
                             if theSelf.isShowingSingleMessage() {
                                 // switch from single to thread
-                                if let theMessafeViewModel = theSelf.messages[safe: index],
+                                if let theMessafeViewModel =
+                                    theSelf.messages[safe: currentlyDisplayedIndex],
                                     let theMsg = theMessafeViewModel.message() {
                                     theSelf.screenComposer?.emailListViewModel(
                                         theSelf,
