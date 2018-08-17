@@ -9,13 +9,14 @@
 import MessageModel
 
 class AppSettings {
-    // MARK: - Public
-    
+
+    // MARK: - Public API
+
     public init() {
         registerDefaults()
         setup()
     }
-    
+
     public var shouldReinitializePepOnNextStartup: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyReinitializePepOnNextStartup)
@@ -25,7 +26,7 @@ class AppSettings {
                                       forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
     }
-    
+
     public var unencryptedSubjectEnabled: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyUnencryptedSubjectEnabled)
@@ -67,7 +68,7 @@ class AppSettings {
         }
     }
 
-    // MARK: - Static API
+    // MARK: Static
 
     public static var shouldReinitializePepOnNextStartup: Bool {
         get {
@@ -116,15 +117,15 @@ class AppSettings {
     }
 
     // MARK: - Private
-    
+
     static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
     static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
     static private let keyPassiveMode = "keyPassiveMode"
-    
-    // MARK: - Private - DEFAULT ACCOUNT
-    
+
+    // MARK: DEFAULT ACCOUNT
+
     private func assureDefaultAccountIsSetAndExists() {
         if UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress) == nil {
             // Default account is not set. Take the first MessageModel provides as a starting point
@@ -141,14 +142,14 @@ class AppSettings {
                 return
         }
     }
-    
-    // MARK: - Private - SETUP
-    
+
+    // MARK: SETUP
+
     private func setup() {
         PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
         PEPObjCAdapter.setPassiveModeEnabled(passiveMode)
     }
-    
+
     private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
@@ -159,7 +160,7 @@ class AppSettings {
         UserDefaults.standard.register(defaults: defaults)
     }
 
-    // MARK: - Private - Enable static API
+    // MARK: Enable
 
     static private var appSettings = AppSettings()
 }
