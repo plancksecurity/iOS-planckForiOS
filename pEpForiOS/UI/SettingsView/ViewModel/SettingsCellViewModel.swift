@@ -15,12 +15,13 @@ extension SettingsCellViewModel {
         case showLog
         case credits
         case defaultAccount
+        case trustedServer
     }
 }
 
 /// Cell for settings that are not only one on/off switch.
 public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol { //IOS-1250: rename!
-    var cellIdentifier = "accountsCell" //IOS-1250 rename cell ID
+    var cellIdentifier = "SettingsCell"
     
     var type: SettingType
     var account: Account?
@@ -54,10 +55,10 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol { //IOS-
             case .credits:
                 return NSLocalizedString(
                     "Credits",
-                    comment: "AccountsSettings: Cell (button) title to view app credits")
+                    comment: "Settings: Cell (button) title to view app credits")
             case .defaultAccount:
                 return NSLocalizedString("Default Account", comment:
-                    "AccountsSettings: Cell (button) title to view default account setting")
+                    "Settings: Cell (button) title to view default account setting")
             case .account:
                 guard let acc = account else {
                     Log.shared.errorAndCrash(component: #function,
@@ -65,6 +66,10 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol { //IOS-
                     return nil
                 }
                 return acc.user.address
+            case .trustedServer:
+                return NSLocalizedString("Trusted Servers",
+                                         comment:
+                    "Settings: Cell (button) title to view default account setting")
             }
         }
     }
@@ -72,7 +77,7 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol { //IOS-
     public var value : String? {
         get {
             switch self.type {
-            case .showLog, .account, .credits:
+            case .showLog, .account, .credits, .trustedServer:
                 // Have no value.
                 return nil
             case .defaultAccount:

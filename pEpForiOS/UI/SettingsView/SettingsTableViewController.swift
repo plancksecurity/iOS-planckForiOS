@@ -14,7 +14,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     var settingSwitchViewModel: SwitchSettingCellViewModelProtocol?
 
     /** Our vanilla table view cell */
-    let accountsCellIdentifier = "accountsCell"
+    let accountsCellIdentifier = "SettingsCell"
 
     var ipath : IndexPath?
 
@@ -201,6 +201,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             performSegue(withIdentifier: .segueShowLog, sender: self)
         case .credits:
             performSegue(withIdentifier: .sequeShowCredits, sender: self)
+        case .trustedServer:
+            performSegue(withIdentifier: .segueShowSettingTrustedServers, sender: self)
         }
     }
 }
