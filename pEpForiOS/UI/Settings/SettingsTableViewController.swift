@@ -9,6 +9,7 @@
 import SwipeCellKit
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
+    static let storyboardId = "SettingsTableViewController"
     let viewModel = SettingsViewModel()
     var settingSwitchViewModel: SettingSwitchProtocol?
 

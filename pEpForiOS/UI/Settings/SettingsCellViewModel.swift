@@ -51,7 +51,7 @@ public class SettingsCellViewModel: SettingsCellViewModelProtocol {
         self.type = type
         switch self.type {
         case .account, .credits, .defaultAccount, .showLog:
-            self.settingCellType = 
+            self.settingCellType =
                 CellType.accountsCell
         case .organizedByThread, .unecryptedSubject, .passiveMode:
             self.settingCellType = CellType.switchOptionCell
