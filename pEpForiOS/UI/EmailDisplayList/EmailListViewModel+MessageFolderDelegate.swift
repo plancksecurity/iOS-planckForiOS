@@ -443,17 +443,22 @@ Something is fishy here.
        return currentDisplayedMessage?.detailType() == .single
     }
 
-    private func incThreadCount(at index: Int) {
+    private func modifyThreadCount(at index: Int, _ modifier: (Int) -> (Int)) {
         if let messageModel = messages.object(at: index),
             let messageCount = messageModel.internalMessageCount  {
-            messageModel.internalMessageCount = messageCount + 1
+            messageModel.internalMessageCount = modifier(messageCount)
+        }
+    }
+
+    private func incThreadCount(at index: Int) {
+        modifyThreadCount(at: index) {
+            return $0 + 1
         }
     }
 
     private func decThreadCount(at index: Int) {
-        if let messageModel = messages.object(at: index),
-            let messageCount = messageModel.internalMessageCount  {
-            messageModel.internalMessageCount = messageCount - 1
+        modifyThreadCount(at: index) {
+            return $0 - 1
         }
     }
 }
