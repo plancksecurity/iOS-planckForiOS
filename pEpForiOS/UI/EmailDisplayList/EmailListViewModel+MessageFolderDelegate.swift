@@ -112,10 +112,6 @@ extension EmailListViewModel: MessageFolderDelegate {
                                 theSelf.updateThreadListDelegate?.added(message: message)
                             }
                         }
-                    } else {
-                        // Incoming message references other messages,
-                        // but none of them are displayed right now in this model.
-                        // Not in the master view, not in the detail view.
                     }
                 }
             }
