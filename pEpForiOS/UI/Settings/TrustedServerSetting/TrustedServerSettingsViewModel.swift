@@ -7,7 +7,13 @@
 //
 
 import Foundation
+import MessageModel
 
 struct TrustedServerSettingsViewModel {
+
+//    func serversThatHaveNotBeenInLocalNetworkWhenCreatingTheAccount() -> [String] {
+//        CdServer.al
+//
+//    }
 
 }

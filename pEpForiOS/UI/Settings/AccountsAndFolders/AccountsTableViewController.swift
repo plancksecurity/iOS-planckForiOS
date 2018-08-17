@@ -21,7 +21,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         var isSynching = false
     }
 
-    var state = UIState.init()
+    var state = UIState()
     
     // MARK: - Life Cycle
 

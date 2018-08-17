@@ -24,10 +24,10 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
         account = cdAccount.account()
 
-        inbox = Folder.init(name: "INBOX", parent: nil, account: account, folderType: .inbox)
+        inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
 
-        let trash = Folder.init(name: "Trash", parent: nil, account: account, folderType: .trash)
+        let trash = Folder(name: "Trash", parent: nil, account: account, folderType: .trash)
         trash.save()
     }
 
@@ -80,7 +80,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
         let lastInboxUid = TestUtil.highestUid()
 
-        let sentFolder = Folder.init(name: "Sent",
+        let sentFolder = Folder(name: "Sent",
                                      parent: nil,
                                      account: account,
                                      folderType: .sent)

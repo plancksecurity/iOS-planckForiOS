@@ -55,7 +55,7 @@ class MessagePantomimeTests: XCTestCase {
     }
 
     func testCWFlagsAsShort() {
-        let fl = CWFlags.init()
+        let fl = CWFlags()
         fl.add(.recent)
         XCTAssertEqual(fl.rawFlagsAsShort(), 8)
 

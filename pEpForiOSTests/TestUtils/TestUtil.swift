@@ -67,7 +67,7 @@ class TestUtil {
             dumpBundle(bundle)
         }
 
-        let testBundle = Bundle.init(for: PEPSessionTest.self)
+        let testBundle = Bundle(for: PEPSessionTest.self)
         dumpBundle(testBundle)
     }
 
@@ -79,12 +79,12 @@ class TestUtil {
     }
 
     static func loadData(fileName: String) -> Data? {
-        let testBundle = Bundle.init(for: PEPSessionTest.self)
+        let testBundle = Bundle(for: PEPSessionTest.self)
         guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
             XCTAssertTrue(false, "Could not find file named \(fileName)")
             return nil
         }
-        guard let data = try? Data.init(contentsOf: URL(fileURLWithPath: keyPath)) else {
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: keyPath)) else {
             XCTAssertTrue(false, "Could not load file named \(fileName)")
             return nil
         }
@@ -431,7 +431,7 @@ class TestUtil {
         Record.saveAndWait()
 
         if let cdOutgoingMsgs = sentFolder.messages?.sortedArray(
-            using: [NSSortDescriptor.init(key: "uid", ascending: true)]) as? [CdMessage] {
+            using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] {
             let unsent = cdOutgoingMsgs.filter { $0.uid == 0 }
             XCTAssertEqual(unsent.count, numberOfMails)
             for m in unsent {
@@ -450,7 +450,7 @@ class TestUtil {
         let msg = Message(uuid: "\(uid)", uid: UInt(uid), parentFolder: folder)
         XCTAssertEqual(msg.uid, UInt(uid))
         msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
-        msg.received = Date.init(timeIntervalSince1970: Double(uid))
+        msg.received = Date(timeIntervalSince1970: Double(uid))
         msg.sent = msg.received
         return msg
     }

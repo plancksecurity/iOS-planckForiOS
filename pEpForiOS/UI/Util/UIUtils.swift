@@ -193,7 +193,7 @@ struct UIUtils {
         let newMailtitle = NSLocalizedString("New Mail Message",
                                               comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message")
-        alertSheet.addAction(UIAlertAction.init(title: newMailtitle, style: .default) { (action) in
+        alertSheet.addAction(UIAlertAction(title: newMailtitle, style: .default) { (action) in
             presentComposeView(forRecipientWithAddress: address,
                                on: viewController,
                                appConfig: appConfig)
@@ -202,21 +202,21 @@ struct UIUtils {
         let addTitle = NSLocalizedString("Add to Contacts",
                                               comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts")
-        alertSheet.addAction(UIAlertAction.init(title: addTitle, style: .default) { (action) in
+        alertSheet.addAction(UIAlertAction(title: addTitle, style: .default) { (action) in
             presentAddToContactsView(for: contact, on: viewController, appConfig: appConfig)
         })
         //
         let copyTitle = NSLocalizedString("Copy Email",
                                          comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
-        alertSheet.addAction(UIAlertAction.init(title: copyTitle, style: .default) { (action) in
+        alertSheet.addAction(UIAlertAction(title: copyTitle, style: .default) { (action) in
             UIPasteboard.general.string = address
         })
         //
         let cancelTitle = NSLocalizedString("Cancel",
                                           comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Cancel")
-        alertSheet.addAction(UIAlertAction.init(title: cancelTitle, style: .cancel) { (action) in
+        alertSheet.addAction(UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
             print("cancel action")
         })
         viewController.present(alertSheet, animated: true, completion: nil)

@@ -153,7 +153,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
-        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         let msg = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
             forceParseAttachments: true)
@@ -178,7 +178,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
-        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let _ = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
             forceParseAttachments: true) else {
@@ -208,7 +208,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
-        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let _ = CdMessage.insertOrUpdate(
             pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
             forceParseAttachments: true) else {

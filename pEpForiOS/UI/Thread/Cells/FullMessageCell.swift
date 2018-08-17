@@ -151,12 +151,12 @@ class FullMessageCell: SwipeTableViewCell,
 
     private func setFlagged() {
         flaggedIcon.isHidden = false
-        flaggedIcon.image = UIImage.init(named: "icon-flagged")
+        flaggedIcon.image = UIImage(named: "icon-flagged")
 
     }
 
     private func unsetFlagged() {
         flaggedIcon.isHidden = true
-        flaggedIcon.image = UIImage.init(named: "icon-unflagged")
+        flaggedIcon.image = UIImage(named: "icon-unflagged")
     }
 }
