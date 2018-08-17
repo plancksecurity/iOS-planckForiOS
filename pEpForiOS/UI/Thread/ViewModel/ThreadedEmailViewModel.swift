@@ -57,13 +57,16 @@ class ThreadedEmailViewModel {
         guard index < messages.count && index >= 0 else {
             return
         }
+        let isTheLastMessage = index == messages.count - 1
         let theMessageToDelete = messages[index]
         folder.deleteSingle(message: theMessageToDelete)
         messages.remove(at: index)
         expandedMessages.remove(at: index)
         delegate?.emailViewModel(viewModel: self, didRemoveDataAt: index)
         emailDisplayDelegate?.emailDisplayDidDelete(message: theMessageToDelete)
-
+        if isTheLastMessage {
+            expandLastMessage()
+        }
     }
 
     internal func deleteInternal(message: Message) {
@@ -157,6 +160,15 @@ class ThreadedEmailViewModel {
             return nil
         }
         return messages[index]
+    }
+
+    private func expandLastMessage() {
+        guard 0 < messages.count else {
+            return
+        }
+        let index = messages.count-1
+        messageDidExpand(at: index)
+        delegate?.emailViewModel(viewModel: self, didUpdateDataAt: index)
     }
 
     func messageDidExpand(at index: Int){

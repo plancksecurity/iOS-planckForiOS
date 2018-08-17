@@ -84,9 +84,9 @@ extension EmailListViewModel: MessageFolderDelegate {
                         theSelf.currentlyDisplayedIndex(of: referencedIndices) {
                         if theSelf.isShowingSingleMessage() {
                             // switch from single to thread
-                            if let theMessafeViewModel =
+                            if let theMessageViewModel =
                                 theSelf.messages[safe: currentlyDisplayedIndex],
-                                let theMsg = theMessafeViewModel.message() {
+                                let theMsg = theMessageViewModel.message() {
                                 theSelf.screenComposer?.emailListViewModel(
                                     theSelf,
                                     requestsShowThreadViewFor: theMsg)
@@ -98,10 +98,6 @@ extension EmailListViewModel: MessageFolderDelegate {
                     }
 
                     if let index = referencedIndices.first {
-                        theSelf.emailListViewModelDelegate?.emailListViewModel(
-                            viewModel: theSelf,
-                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
-
                         if messagePassedFilter {
                             theSelf.messages.removeObject(at: index)
                             let newIndex = theSelf.messages.insert(object: previewMessage)
@@ -112,6 +108,15 @@ extension EmailListViewModel: MessageFolderDelegate {
                                     didMoveData: IndexPath(row: index, section: 0),
                                     toIndexPath: IndexPath(row: newIndex, section: 0))
                             }
+
+                            theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                viewModel: theSelf,
+                                didUpdateDataAt: [IndexPath(row: newIndex, section: 0)])
+                        } else {
+                            theSelf.incThreadCount(at: index)
+                            theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                viewModel: theSelf,
+                                didUpdateDataAt: [IndexPath(row: index, section: 0)])
                         }
                     }
                 }
@@ -184,6 +189,10 @@ extension EmailListViewModel: MessageFolderDelegate {
                     emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theModel, didUpdateDataAt: [indexPath])
                     updateThreadListDelegate?.tipDidChange(to: replacementMessage)
+
+                    if replacementMessage.numberOfMessagesInThread() == 0 {
+                        screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: replacementMessage)
+                    }
                 } else {
                     emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theModel,
@@ -225,10 +234,6 @@ extension EmailListViewModel: MessageFolderDelegate {
 
                 if let index = referencedIndices.first {
                     // The thread count might need to be updated
-                    if let messageModel = theSelf.messages.object(at: index),
-                        let messageCount = messageModel.internalMessageCount  {
-                        messageModel.internalMessageCount = messageCount - 1
-                    }
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theSelf,
                         didUpdateDataAt: [IndexPath(row: index, section: 0)])
@@ -439,5 +444,32 @@ Something is fishy here.
      */
     private func isShowingSingleMessage() -> Bool {
        return currentDisplayedMessage?.detailType() == .single
+    }
+
+    private func modifyThreadCount(at index: Int, _ modifier: (Int) -> (Int)) {
+        if let messageModel = messages.object(at: index),
+            let messageCount = messageModel.internalMessageCount  {
+            messageModel.internalMessageCount = modifier(messageCount)
+        }
+    }
+
+    private func incThreadCount(at index: Int) {
+        modifyThreadCount(at: index) {
+            return $0 + 1
+        }
+    }
+
+    private func decThreadCount(at index: Int) {
+        modifyThreadCount(at: index) {
+            return $0 - 1
+        }
+    }
+
+    private func dumpThreadCount(at index: Int?, message: String) {
+        if let theIndex = index,
+            let messageModel = messages.object(at: theIndex),
+            let messageCount = messageModel.internalMessageCount  {
+            print("*** \(message) threadCount \(messageCount)")
+        }
     }
 }
