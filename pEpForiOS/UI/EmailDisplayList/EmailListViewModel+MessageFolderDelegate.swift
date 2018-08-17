@@ -230,7 +230,6 @@ extension EmailListViewModel: MessageFolderDelegate {
 
                 if let index = referencedIndices.first {
                     // The thread count might need to be updated
-                    decThreadCount(at: index)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theSelf,
                         didUpdateDataAt: [IndexPath(row: index, section: 0)])
