@@ -98,6 +98,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                     }
 
                     if let index = referencedIndices.first {
+                        theSelf.incThreadCount(at: index)
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf,
                             didUpdateDataAt: [IndexPath(row: index, section: 0)])
@@ -225,10 +226,7 @@ extension EmailListViewModel: MessageFolderDelegate {
 
                 if let index = referencedIndices.first {
                     // The thread count might need to be updated
-                    if let messageModel = theSelf.messages.object(at: index),
-                        let messageCount = messageModel.internalMessageCount  {
-                        messageModel.internalMessageCount = messageCount - 1
-                    }
+                    decThreadCount(at: index)
                     theSelf.emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theSelf,
                         didUpdateDataAt: [IndexPath(row: index, section: 0)])
@@ -439,5 +437,19 @@ Something is fishy here.
      */
     private func isShowingSingleMessage() -> Bool {
        return currentDisplayedMessage?.detailType() == .single
+    }
+
+    private func incThreadCount(at index: Int) {
+        if let messageModel = messages.object(at: index),
+            let messageCount = messageModel.internalMessageCount  {
+            messageModel.internalMessageCount = messageCount + 1
+        }
+    }
+
+    private func decThreadCount(at index: Int) {
+        if let messageModel = messages.object(at: index),
+            let messageCount = messageModel.internalMessageCount  {
+            messageModel.internalMessageCount = messageCount - 1
+        }
     }
 }
