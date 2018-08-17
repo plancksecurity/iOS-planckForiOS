@@ -192,7 +192,7 @@ class FolderTableViewController: BaseTableViewController {
             vc.delegate = self
 
         } else if segue.identifier == "SettingsSegue" {
-            guard let dvc = segue.destination as? AccountsTableViewController else {
+            guard let dvc = segue.destination as? SettingsTableViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
                 return
             }

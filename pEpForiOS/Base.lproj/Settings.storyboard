@@ -111,10 +111,10 @@
             </objects>
             <point key="canvasLocation" x="-2242" y="-390"/>
         </scene>
-        <!--Accounts Table View Controller-->
+        <!--Settings Table View Controller-->
         <scene sceneID="ODz-Rf-1g6">
             <objects>
-                <tableViewController storyboardIdentifier="AccountsTableList" id="cPx-YX-3ty" customClass="AccountsTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="AccountsTableList" id="cPx-YX-3ty" customClass="SettingsTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="FPz-NY-KRU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

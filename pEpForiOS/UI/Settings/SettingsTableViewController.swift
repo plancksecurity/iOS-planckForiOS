@@ -1,5 +1,5 @@
 //
-//  AccountsFoldersViewController.swift
+//  SettingsTableViewController.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 19/08/16.
@@ -8,7 +8,7 @@
 
 import SwipeCellKit
 
-class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
+class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     let viewModel = AccountsSettingsViewModel()
     var settingSwitchViewModel: SettingSwitchProtocol?
 
@@ -22,7 +22,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     }
 
     var state = UIState()
-    
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -36,7 +36,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         super.viewWillAppear(animated)
         if let nc = self.navigationController {
             oldToolbarStatus = nc.isToolbarHidden
-        } 
+        }
         self.navigationController?.setToolbarHidden(true, animated: false)
 
         if MiscUtil.isUnitTest() {
@@ -49,7 +49,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setToolbarHidden(oldToolbarStatus, animated: false)
     }
-    
+
     // MARK: - Internal
 
     private func updateModel() {
@@ -196,7 +196,7 @@ class AccountsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
 // MARK: - Navigation
 
-extension AccountsTableViewController: SegueHandlerType {
+extension SettingsTableViewController: SegueHandlerType {
     enum SegueIdentifier: String {
         case segueAddNewAccount
         case segueEditAccount

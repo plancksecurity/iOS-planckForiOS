@@ -39,7 +39,7 @@ extension UIViewController {
 
 extension BaseViewController {
     @objc func showSettingsViewController(_ button: UIBarButtonItem) {
-        if let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "AccountsTableList") as? AccountsTableViewController {
+        if let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "AccountsTableList") as? SettingsTableViewController {
             vc.appConfig = self.appConfig!
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -48,7 +48,7 @@ extension BaseViewController {
 
 extension BaseTableViewController {
     @objc func showSettingsViewController(_ button: UIBarButtonItem) {
-        if let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "AccountsTableList") as? AccountsTableViewController {
+        if let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: "AccountsTableList") as? SettingsTableViewController {
             vc.appConfig = self.appConfig
             self.navigationController?.pushViewController(vc, animated: true)
         }
