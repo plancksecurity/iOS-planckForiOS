@@ -17,9 +17,15 @@ extension Message {
         return PEPUtil.pEpRatingFromInt(self.pEpRatingInt) == PEP_rating_unencrypted
     }
 
-    // @objc to make it swizzle-able in tests
-    @objc public var isOnTrustedServer: Bool {
-        return parent.account.server(with: .imap)?.trusted ?? false
+    public var isOnTrustedServer: Bool {
+        guard let imapServer = parent.account.server(with: .imap) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No imap server")
+            return false
+        }
+        let accountHasBeenCreatedInLocalNetwork = imapServer.trusted
+        let userDecidedToTrustServer =
+            AppSettings.isManuallyTrustedServer(address: imapServer.address)
+        return accountHasBeenCreatedInLocalNetwork || userDecidedToTrustServer
     }
 
     public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
