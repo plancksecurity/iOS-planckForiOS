@@ -8,30 +8,32 @@
 
 import Foundation
 
-enum AccountSettingsError: Error {
-    case timeOut
-    case notFound
-    case illegalValue
+extension AccountSettings {
+    enum AccountSettingsError: Error {
+        case timeOut
+        case notFound
+        case illegalValue
 
-    init?(accountSettings: AccountSettingsProtocol) {
-        switch accountSettings.status {
-        case AS_TIMEOUT:
-            self = .timeOut
-        case AS_NOT_FOUND:
-            self = .notFound
-        case AS_ILLEGAL_VALUE:
-            self = .illegalValue
-        default:
-            if let _ = accountSettings.outgoing, let _ = accountSettings.incoming {
-                return nil
-            } else {
+        init?(accountSettings: AccountSettingsProtocol) {
+            switch accountSettings.status {
+            case AS_TIMEOUT:
+                self = .timeOut
+            case AS_NOT_FOUND:
                 self = .notFound
+            case AS_ILLEGAL_VALUE:
+                self = .illegalValue
+            default:
+                if let _ = accountSettings.outgoing, let _ = accountSettings.incoming {
+                    return nil
+                } else {
+                    self = .notFound
+                }
             }
         }
     }
 }
 
-extension AccountSettingsError: LocalizedError {
+extension AccountSettings.AccountSettingsError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .timeOut:

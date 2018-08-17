@@ -1332,7 +1332,10 @@
 		15EE5A70203B15660041F076 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				B70D32B3205BD47E0094A92A /* OptionsViewController */,
+				15EE5A73203B15660041F076 /* LogViewController.swift */,
+				15BA536520A075AE0090F126 /* SettingDefaultAccountTableViewController.swift */,
+				431B0B961D6734BF0082D0DB /* On/Off Settings */,
+				B70D32A8205BCC6C0094A92A /* AccountSettings */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1488,14 +1491,14 @@
 			path = Compose;
 			sourceTree = "<group>";
 		};
-		431B0B961D6734BF0082D0DB /* AccountsListSettings */ = {
+		431B0B961D6734BF0082D0DB /* On/Off Settings */ = {
 			isa = PBXGroup;
 			children = (
 				B74F81031EB0E20700519FCC /* ViewModel */,
 				15EE5A72203B15660041F076 /* SettingSwitchTableViewCell.swift */,
 				431B0B991D6734DF0082D0DB /* AccountsTableViewController.swift */,
 			);
-			name = AccountsListSettings;
+			name = "On/Off Settings";
 			path = AccountsAndFolders;
 			sourceTree = "<group>";
 		};
@@ -1658,6 +1661,7 @@
 		438D5A6F1EA77CFC001A37E1 /* Handshake */ = {
 			isa = PBXGroup;
 			children = (
+				4304FCFD1EBB8C2C0086DADA /* LanguageList */,
 				B70D32A6205BCC120094A92A /* CellsAndSections */,
 				B70D32A5205BCC020094A92A /* ViewModel */,
 				438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */,
@@ -1986,11 +1990,8 @@
 				43A6E0491E5726C8005BEE69 /* Background */,
 				B71EBBB41E55E43100150177 /* Folder */,
 				15EE5A70203B15660041F076 /* Settings */,
-				B70D32A8205BCC6C0094A92A /* AccountSettings */,
-				431B0B961D6734BF0082D0DB /* AccountsListSettings */,
 				431AE5D11D2EC0A700F609D3 /* Compose */,
 				B70D32AF205BCF460094A92A /* ManualLogin */,
-				4304FCFD1EBB8C2C0086DADA /* LanguageList */,
 				438D5A6F1EA77CFC001A37E1 /* Handshake */,
 			);
 			path = UI;
@@ -2278,15 +2279,6 @@
 				431D60DC1E93D580001266D7 /* MessageAttachmentsCell.swift */,
 			);
 			path = CellAndSections;
-			sourceTree = "<group>";
-		};
-		B70D32B3205BD47E0094A92A /* OptionsViewController */ = {
-			isa = PBXGroup;
-			children = (
-				15EE5A73203B15660041F076 /* LogViewController.swift */,
-				15BA536520A075AE0090F126 /* SettingDefaultAccountTableViewController.swift */,
-			);
-			path = OptionsViewController;
 			sourceTree = "<group>";
 		};
 		B70D32B4205BD4B10094A92A /* Util */ = {
