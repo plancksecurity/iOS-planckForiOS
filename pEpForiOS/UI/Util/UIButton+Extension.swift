@@ -43,28 +43,6 @@ extension UIButton {
 
 public class handshakeButton: UIButton {
 
-    public override var intrinsicContentSize: CGSize {
-        if let titleContentSize = self.titleLabel?.intrinsicContentSize {
-            if titleContentSize.height <= 30.0 {
-                return CGSize(width: titleContentSize.width, height: 50.0)
-            } else {
-                return titleContentSize
-            }
-        } else {
-            return super.intrinsicContentSize
-        }
-    }
-
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        if let titleWidth = self.titleLabel?.frame.size.width {
-            self.titleLabel?.preferredMaxLayoutWidth = titleWidth + 10.0
-            super.layoutSubviews()
-        }
-
-
-    }
-
     public func roundCorners(corners: UIRectCorner, radius: CGFloat){
         clipsToBounds = true
         layer.cornerRadius = 0
