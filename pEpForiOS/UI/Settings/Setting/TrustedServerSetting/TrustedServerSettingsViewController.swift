@@ -15,8 +15,7 @@ class TrustedServerSettingsViewController: BaseTableViewController {
 //IOS-1250:
 /*
  //TODO:
- - Handle now saved setting in decrypt or wherever trusted server plays a role
- - Test!
+ - Test! > seems reuplosded twice under unknown circumstances (send to yourself trusted on)
  */
 
 // MARK: -  UITableViewDataSource
