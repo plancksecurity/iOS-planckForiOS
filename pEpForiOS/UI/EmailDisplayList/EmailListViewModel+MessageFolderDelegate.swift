@@ -80,38 +80,37 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedIndices.isEmpty && messagePassedFilter {
                     insertAsTopMessage()
                 } else {
-                    if let index = referencedIndices.first {
-                        // The thread count might need to be updated and the body should reflect the
-                        // new top message. Index should be checked and reported in case it changes.
-
-                        theSelf.messages.removeObject(at: index)
-                        let newIndex = theSelf.messages.insert(object: previewMessage)
-
-                        if newIndex != index {
-                            theSelf.emailListViewModelDelegate?.emailListViewModel(
-                                viewModel: theSelf,
-                                didMoveData: IndexPath(row: index, section: 0),
-                                toIndexPath: IndexPath(row: newIndex, section: 0))
+                    if let currentlyDisplayedIndex =
+                        theSelf.currentlyDisplayedIndex(of: referencedIndices) {
+                        if theSelf.isShowingSingleMessage() {
+                            // switch from single to thread
+                            if let theMessafeViewModel =
+                                theSelf.messages[safe: currentlyDisplayedIndex],
+                                let theMsg = theMessafeViewModel.message() {
+                                theSelf.screenComposer?.emailListViewModel(
+                                    theSelf,
+                                    requestsShowThreadViewFor: theMsg)
+                            }
+                        } else {
+                            // add the new message to the existing thread view
+                            theSelf.updateThreadListDelegate?.added(message: message)
                         }
+                    }
 
+                    if let index = referencedIndices.first {
                         theSelf.emailListViewModelDelegate?.emailListViewModel(
                             viewModel: theSelf,
-                            didUpdateDataAt: [IndexPath(row: newIndex, section: 0)])
+                            didUpdateDataAt: [IndexPath(row: index, section: 0)])
 
-                        if let currentlyDisplayedIndex =
-                            theSelf.currentlyDisplayedIndex(of: referencedIndices) {
-                            if theSelf.isShowingSingleMessage() {
-                                // switch from single to thread
-                                if let theMessafeViewModel =
-                                    theSelf.messages[safe: currentlyDisplayedIndex],
-                                    let theMsg = theMessafeViewModel.message() {
-                                    theSelf.screenComposer?.emailListViewModel(
-                                        theSelf,
-                                        requestsShowThreadViewFor: theMsg)
-                                }
-                            } else {
-                                // add the new message to the existing thread view
-                                theSelf.updateThreadListDelegate?.added(message: message)
+                        if messagePassedFilter {
+                            theSelf.messages.removeObject(at: index)
+                            let newIndex = theSelf.messages.insert(object: previewMessage)
+
+                            if newIndex != index {
+                                theSelf.emailListViewModelDelegate?.emailListViewModel(
+                                    viewModel: theSelf,
+                                    didMoveData: IndexPath(row: index, section: 0),
+                                    toIndexPath: IndexPath(row: newIndex, section: 0))
                             }
                         }
                     }
