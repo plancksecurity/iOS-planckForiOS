@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TrustedServerSettingsViewController: BaseViewController {
+class TrustedServerSettingsViewController: BaseTableViewController {
     let viewModel = TrustedServerSettingsViewModel()
 
 
