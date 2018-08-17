@@ -13,12 +13,12 @@ import Foundation
 
 class PassiveModeViewModel:SettingSwitchProtocol, SettingsCellViewModelProtocol  {
 
-    var settingCellType: AccountSettingsCellType
-    var type: SettingType
+    var settingCellType: SettingsCellViewModel.CellType
+    var type: SettingsCellViewModel.SettingType
     var title : String
     var switchValue : Bool
 
-    init(type: SettingType) {
+    init(type: SettingsCellViewModel.SettingType) {
         self.type = type
         self.settingCellType = .switchOptionCell
         self.title = NSLocalizedString("Enable passive mode", comment: "Passive mode title")

@@ -9,18 +9,17 @@
 import Foundation
 
 class ThreadedSwitchViewModel: SettingSwitchProtocol, SettingsCellViewModelProtocol  {
-    var settingCellType: AccountSettingsCellType
-    var type: SettingType
+    var settingCellType: SettingsCellViewModel.CellType
+    var type: SettingsCellViewModel.SettingType
     var title: String
     var description: String
     var switchValue: Bool
 
-    init(type: SettingType) {
+    init(type: SettingsCellViewModel.SettingType) {
         self.type = type
         self.settingCellType = .switchOptionCell
-        self.title = NSLocalizedString(
-            "Thread Messages",
-            comment: "settings, enable thread view or not")
+        self.title = NSLocalizedString("Thread Messages",
+                                       comment: "settings, enable thread view or not")
         self.description = NSLocalizedString(
             "If enabled, messages in the same thread will be displayed together",
             comment: "explanation for thread view settings")

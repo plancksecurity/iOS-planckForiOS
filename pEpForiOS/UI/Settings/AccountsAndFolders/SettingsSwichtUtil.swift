@@ -15,6 +15,6 @@ protocol SettingSwitchProtocol {
 }
 
 protocol SettingsCellViewModelProtocol {
-    var type : SettingType { get set }
-    var settingCellType : AccountSettingsCellType { get set }
+    var type : SettingsCellViewModel.SettingType { get set }
+    var settingCellType : SettingsCellViewModel.CellType { get set }
 }

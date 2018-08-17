@@ -9,31 +9,34 @@
 import Foundation
 import MessageModel
 
-public enum AccountSettingsCellType: String {
-    case accountsCell = "accountsCell"
-    case switchOptionCell = "switchOptionCell"
+extension SettingsCellViewModel {
+    public enum CellType: String {
+        case accountsCell = "accountsCell"
+        case switchOptionCell = "switchOptionCell"
 
-    func isAccountCell() -> Bool {
-        return self == AccountSettingsCellType.accountsCell
+        func isAccountCell() -> Bool {
+            return self == CellType.accountsCell
+        }
+
+        func isSwitchOptionCell() -> Bool {
+            return self == CellType.switchOptionCell
+        }
     }
 
-    func isSwitchOptionCell() -> Bool {
-        return self == AccountSettingsCellType.switchOptionCell
+    public enum SettingType {
+        case account
+        case showLog
+        case organizedByThread
+        case credits
+        case unecryptedSubject
+        case passiveMode
+        case defaultAccount
     }
-}
-public enum SettingType {
-    case account
-    case showLog
-    case organizedByThread
-    case credits
-    case unecryptedSubject
-    case passiveMode
-    case defaultAccount
 }
 
 public class SettingsCellViewModel: SettingsCellViewModelProtocol {
 
-    var settingCellType: AccountSettingsCellType
+    var settingCellType: CellType
     var type: SettingType
     var account: Account?
     var status: Bool?
@@ -48,9 +51,10 @@ public class SettingsCellViewModel: SettingsCellViewModelProtocol {
         self.type = type
         switch self.type {
         case .account, .credits, .defaultAccount, .showLog:
-            self.settingCellType = AccountSettingsCellType.accountsCell
+            self.settingCellType = 
+                CellType.accountsCell
         case .organizedByThread, .unecryptedSubject, .passiveMode:
-            self.settingCellType = AccountSettingsCellType.switchOptionCell
+            self.settingCellType = CellType.switchOptionCell
         }
     }
 

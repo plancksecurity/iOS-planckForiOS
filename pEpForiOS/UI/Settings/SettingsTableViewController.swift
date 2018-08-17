@@ -87,7 +87,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             viewModel[indexPath.section][indexPath.row].settingCellType.rawValue, for: indexPath)
 
         if let vm = viewModel[indexPath.section][indexPath.row] as? SettingsCellViewModel,
-            vm.settingCellType == AccountSettingsCellType.accountsCell {
+            vm.settingCellType == SettingsCellViewModel.CellType.accountsCell {
             guard let cell = cellWithoutType as? SwipeTableViewCell else {
                 return cellWithoutType
             }

@@ -10,15 +10,16 @@ import Foundation
 
 class UnecryptedSubjectViewModel: SettingSwitchProtocol, SettingsCellViewModelProtocol  {
 
-    var settingCellType: AccountSettingsCellType
-    var type: SettingType
+    var settingCellType: SettingsCellViewModel.CellType
+    var type: SettingsCellViewModel.SettingType
     var title : String
     var switchValue : Bool
 
-    init(type: SettingType) {
-        self.settingCellType = AccountSettingsCellType.switchOptionCell
+    init(type: SettingsCellViewModel.SettingType) {
+        self.settingCellType = SettingsCellViewModel.CellType.switchOptionCell
         self.type = type
-        self.title = NSLocalizedString("Enable Protected Subject", comment: "title for subject protection")
+        self.title = NSLocalizedString("Enable Protected Subject",
+                                       comment: "title for subject protection")
         self.switchValue = !AppSettings.unencryptedSubjectEnabled
     }
 
