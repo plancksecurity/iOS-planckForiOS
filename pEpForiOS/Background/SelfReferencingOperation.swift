@@ -1,18 +1,15 @@
 //
-//  PrefetchOperation.swift
-//  pEp
-//
 //  Created by Borja González de Pablo on 02/08/2018.
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
 import Foundation
 
-class PrefetchOperation: ConcurrentBaseOperation {
+class SelfReferencingOperation: Operation {
 
-    let executionBlock: (_ operation: PrefetchOperation)-> Void
-    
-    init(executionBlock: @escaping (_ operation: PrefetchOperation) -> Void) {
+    let executionBlock: (_ operation: SelfReferencingOperation?)-> Void
+
+    init(executionBlock: @escaping (_ operation: SelfReferencingOperation?) -> Void) {
         self.executionBlock = executionBlock
         super.init()
     }
@@ -21,6 +18,8 @@ class PrefetchOperation: ConcurrentBaseOperation {
         if (isCancelled){
             return
         }
-        executionBlock(self)
+        weak var weakSelf = self
+
+        executionBlock(weakSelf)
     }
 }

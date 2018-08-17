@@ -9,7 +9,7 @@
 import Foundation
 import MessageModel
 
-class MessageViewModel {
+class MessageViewModel: CustomDebugStringConvertible {
 
     static var maxBodyPreviewCharacters = 120
     let queue = OperationQueue()
@@ -55,9 +55,13 @@ class MessageViewModel {
         }
     }
 
+    //Only to use internally, external use should call public message()
+    private var internalMessage: Message
+
     init(with message: Message) {
+        self.internalMessage = message
         queue.qualityOfService = .userInitiated
-        queue.maxConcurrentOperationCount = 2
+        queue.maxConcurrentOperationCount = 3
 
         uid = message.uid
         uuid = message.uuid
@@ -204,9 +208,6 @@ class MessageViewModel {
                                    accountAddress: accountAddress)
             else {
                 // The model has changed.
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "There are valid cases, so we should not crash here. Will crash here for debug reasons to pinpoint the root of IOS-1243. Please remove this Log command after IOS-1243 is fixed." +
-                    "Extra anoying long string to not forget please.")
                 return nil
         }
         return msg
@@ -217,11 +218,8 @@ class MessageViewModel {
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
-        guard let message = message() else {
-            completion(nil)
-            return
-        }
-        profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+        let operation = getSecurityBadgeOperation(completion: completion)
+        queue.addOperation(operation)
     }
 
     func getBodyMessage() -> NSMutableAttributedString {
@@ -271,7 +269,9 @@ class MessageViewModel {
         return attributed
     }
 
-
+    public var debugDescription: String {
+        return "<MessageViewModel |\(messageIdentifier)| |\(internalMessage.longMessage?.prefix(3) ?? "nil")|>"
+    }
 }
 
 extension MessageViewModel: Equatable {
@@ -280,5 +280,11 @@ extension MessageViewModel: Equatable {
             lhs.uid == rhs.uid &&
             lhs.parentFolderName == rhs.parentFolderName &&
             lhs.accountAddress == rhs.accountAddress
+    }
+}
+
+extension MessageViewModel: MessageIdentitfying {
+    var messageIdentifier: MessageID {
+        return uuid
     }
 }

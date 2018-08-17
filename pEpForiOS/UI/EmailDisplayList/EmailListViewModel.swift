@@ -14,8 +14,10 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
+    func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
     func emailListViewModel(viewModel: EmailListViewModel,
                             didUpdateUndisplayedMessage message: Message)
+
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
@@ -275,9 +277,6 @@ class EmailListViewModel {
         var deletees = [MessageViewModel]()
         indexPaths.forEach { (ip) in
             guard let previewMessage = messages.object(at: ip.row)else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "There are valid cases, so we should not crash here. Will crash here for debug reasons to pinpoint the root of IOS-1243. Please remove this Log command after IOS-1243 is fixed." +
-                    "Extra anoying long string to not forget please.")
                     return
             }
             deletees.append(previewMessage)
@@ -335,8 +334,9 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = false
-            me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                                      didUpdateDataAt: [indexPath])
+            me.emailListViewModelDelegate?.emailListViewModel(
+                viewModel: me,
+                didUpdateDataAt: [indexPath])
         }
     }
 

@@ -23,7 +23,7 @@
 		004A8C552112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C542112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift */; };
 		004A8C57211303B500203143 /* PrefetchableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C56211303B500203143 /* PrefetchableViewModel.swift */; };
 		004A8C592113056900203143 /* MessageViewModel+PrefetchableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C582113056900203143 /* MessageViewModel+PrefetchableViewModel.swift */; };
-		004A8C5B211316E100203143 /* PrefetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C5A211316E100203143 /* PrefetchOperation.swift */; };
+		004A8C5B211316E100203143 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C5A211316E100203143 /* SelfReferencingOperation.swift */; };
 		005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */; };
 		0069DCFB2110679200846EB1 /* EmailViewController+UIPopoverPresentationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0069DCFA2110679200846EB1 /* EmailViewController+UIPopoverPresentationControllerDelegate.swift */; };
 		006BE6BC20F4B63C00DDE8C9 /* EmailDetailType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */; };
@@ -255,6 +255,8 @@
 		43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */; };
 		4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4348EF0C1E27ABA100F441A9 /* LoginSmtpOperation.swift */; };
 		4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 4348EF141E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */; };
+		43497B38211C62DE00AC42B0 /* MessageIdentitfying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43497B37211C62DE00AC42B0 /* MessageIdentitfying.swift */; };
+		43497B3A211C63CA00AC42B0 /* Message+MessageIdentitfying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43497B39211C63CA00AC42B0 /* Message+MessageIdentitfying.swift */; };
 		43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */; };
 		43498CDD200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */; };
 		434AC3E320A450D800C11B7F /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */; };
@@ -561,7 +563,7 @@
 		004A8C542112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListView+UITableViewDataSourcePrefetching.swift"; sourceTree = "<group>"; };
 		004A8C56211303B500203143 /* PrefetchableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefetchableViewModel.swift; sourceTree = "<group>"; };
 		004A8C582113056900203143 /* MessageViewModel+PrefetchableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageViewModel+PrefetchableViewModel.swift"; sourceTree = "<group>"; };
-		004A8C5A211316E100203143 /* PrefetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefetchOperation.swift; sourceTree = "<group>"; };
+		004A8C5A211316E100203143 /* SelfReferencingOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfReferencingOperation.swift; sourceTree = "<group>"; };
 		005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadedEmailViewModel.swift; sourceTree = "<group>"; };
 		0069DCFA2110679200846EB1 /* EmailViewController+UIPopoverPresentationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+UIPopoverPresentationControllerDelegate.swift"; sourceTree = "<group>"; };
 		006BE6BB20F4B63C00DDE8C9 /* EmailDetailType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailDetailType.swift; sourceTree = "<group>"; };
@@ -792,6 +794,8 @@
 		43425EDE1FE3E052004A2728 /* OAuth2ProviderFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ProviderFactory.swift; sourceTree = "<group>"; };
 		4348EF0C1E27ABA100F441A9 /* LoginSmtpOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSmtpOperation.swift; sourceTree = "<group>"; };
 		4348EF141E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc"; sourceTree = "<group>"; };
+		43497B37211C62DE00AC42B0 /* MessageIdentitfying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageIdentitfying.swift; sourceTree = "<group>"; };
+		43497B39211C63CA00AC42B0 /* Message+MessageIdentitfying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+MessageIdentitfying.swift"; sourceTree = "<group>"; };
 		43498CDA200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelLoginErrorDelegate.swift; sourceTree = "<group>"; };
 		43498CDC200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelOAuth2ErrorDelegate.swift; sourceTree = "<group>"; };
 		434AC3E220A450D700C11B7F /* UIAlertController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extension.swift"; sourceTree = "<group>"; };
@@ -1468,8 +1472,8 @@
 				154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */,
 				150B84C320A44DE100D8B288 /* MoveToFolderOperation.swift */,
 				150B84C520A5DD0600D8B288 /* UIDCopyOperation.swift */,
+				004A8C5A211316E100203143 /* SelfReferencingOperation.swift */,
 				15EBE45620EE157900268859 /* SMTPSendOperation.swift */,
-				004A8C5A211316E100203143 /* PrefetchOperation.swift */,
 				15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */,
 			);
 			path = Background;
@@ -2081,6 +2085,8 @@
 				434BF38E20C6AFAF00FCBCCA /* Folder+ThreadAware.swift */,
 				434BF39020C6B02100FCBCCA /* Message+ThreadAware.swift */,
 				434BF39920C6B94700FCBCCA /* PreviewMessage+ThreadAware.swift */,
+				43497B37211C62DE00AC42B0 /* MessageIdentitfying.swift */,
+				43497B39211C63CA00AC42B0 /* Message+MessageIdentitfying.swift */,
 			);
 			path = MessageThreading;
 			sourceTree = "<group>";
@@ -3002,6 +3008,7 @@
 				432198E81DF6B51B00318A74 /* LoginImapOperation.swift in Sources */,
 				155050F21FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift in Sources */,
 				B78CF82B1E76E146008C1739 /* FilterCellViewModel.swift in Sources */,
+				43497B3A211C63CA00AC42B0 /* Message+MessageIdentitfying.swift in Sources */,
 				4333A2A51E5C9B6E0025D8A5 /* FixAttachmentsOperation.swift in Sources */,
 				431E58FA1ED591E900EFA77F /* AccountVerificationService.swift in Sources */,
 				150B84C420A44DE100D8B288 /* MoveToFolderOperation.swift in Sources */,
@@ -3045,7 +3052,7 @@
 				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
 				43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */,
 				434BF39520C6B72000FCBCCA /* ThreadAwareMessageProtocol.swift in Sources */,
-				004A8C5B211316E100203143 /* PrefetchOperation.swift in Sources */,
+				004A8C5B211316E100203143 /* SelfReferencingOperation.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
 				15EBE45720EE157900268859 /* SMTPSendOperation.swift in Sources */,
 				007A542920F7AD3A00AC1E21 /* WrappedCell.swift in Sources */,
@@ -3100,6 +3107,7 @@
 				492EF92A20C18C6C004EAE14 /* DisplayedMessage.swift in Sources */,
 				15AA6016207CD71D00D57DB4 /* ImapFlags+Pantomime.swift in Sources */,
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,
+				43497B38211C62DE00AC42B0 /* MessageIdentitfying.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
 				00FD0CE82102014C00BA0C56 /* PrimarySplitViewcontroller+ScreenComposerProtocol.swift in Sources */,
 				434E5A1B20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift in Sources */,

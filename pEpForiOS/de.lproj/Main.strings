@@ -38,7 +38,7 @@
 "oWA-cC-IZF.normalTitle" = "Abmelden";
 
 /* Class = "UINavigationItem"; title = "Title"; ObjectID = "PAv-Od-zv3"; */
-"PAv-Od-zv3.title" = "Titel";
+"PAv-Od-zv3.title" = "";
 
 /* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "RnR-fE-Pxv"; */
 "RnR-fE-Pxv.title" = "";

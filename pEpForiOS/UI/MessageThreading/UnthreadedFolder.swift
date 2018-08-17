@@ -44,4 +44,15 @@ class UnthreadedFolder: ThreadedMessageFolderProtocol {
     func referencedTopMessages(message: Message) -> [Message] {
         return [] // make it seem this is a top message
     }
+
+    func referenced<T>(messageIdentifiers: [T],
+                       belongingToThread: Set<MessageID>) -> [Int] where T: MessageIdentitfying {
+        return []
+    }
+
+    func referenced<T>(
+        messageIdentifiers: [T],
+        message: Message) -> [Int] where T: MessageIdentitfying {
+        return []
+    }
 }

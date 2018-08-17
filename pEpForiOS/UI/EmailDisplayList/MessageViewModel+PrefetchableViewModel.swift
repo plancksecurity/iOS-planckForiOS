@@ -26,16 +26,21 @@ extension MessageViewModel: PrefetchableViewModel {
 //        }
     }
 
-    func messageCountPrefetch(completion: @escaping (Int)->()) -> PrefetchOperation {
+    func messageCountPrefetch(completion: @escaping (Int)->()) -> SelfReferencingOperation {
        
-        let prefetchOperation = PrefetchOperation { operation in
-            MessageModel.perform {
-                guard !operation.isCancelled,
-                let message = self.message() else {
+        let prefetchOperation = SelfReferencingOperation {  [weak self] operation in
+            guard let me = self else {
+                return
+            }
+            MessageModel.performAndWait {
+                guard
+                    let operation = operation,
+                    !operation.isCancelled,
+                let message = me.message() else {
                     return
                 }
                 let messageCount = message.numberOfMessagesInThread()
-                self.internalMessageCount = messageCount
+                me.internalMessageCount = messageCount
                 if (!operation.isCancelled){
                     DispatchQueue.main.async {
                         completion(messageCount)
@@ -46,10 +51,12 @@ extension MessageViewModel: PrefetchableViewModel {
         return prefetchOperation
     }
 
-    func bodyPeekPrefetch(for message: Message, completion: @escaping (String)->()) -> PrefetchOperation {
+    func bodyPeekPrefetch(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
-        let prefetchOperation = PrefetchOperation {operation in
-            guard !operation.isCancelled else {
+        let prefetchOperation = SelfReferencingOperation {operation in
+            guard
+                let operation = operation,
+                !operation.isCancelled else {
                 return
             }
             MessageModel.performAndWait {
@@ -67,4 +74,27 @@ extension MessageViewModel: PrefetchableViewModel {
         }
         return prefetchOperation
     }
+
+    func getSecurityBadgeOperation(completion: @escaping (UIImage?)->()) -> SelfReferencingOperation {
+
+        let prefetchOperation = SelfReferencingOperation { [weak self] operation in
+            guard let me = self else {
+                return
+            }
+            MessageModel.performAndWait {
+                guard
+                    let operation = operation,
+                    !operation.isCancelled,
+                    let message = me.message() else {
+                        return
+                }
+
+                if (!operation.isCancelled) {
+                    me.profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+                }
+            }
+        }
+        return prefetchOperation
+    }
+
 }

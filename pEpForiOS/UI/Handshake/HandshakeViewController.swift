@@ -47,6 +47,16 @@ class HandshakeViewController: BaseTableViewController {
         identityViewModelCache.removeAllObjects()
     }
 
+    override func viewDidLoad() {
+        let newBackButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(HandshakeViewController.back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
+    }
+
+    @objc func back(sender: UIBarButtonItem) {
+        // Perform your custom action
+        self.dismiss(animated: true, completion: nil)
+    }
+
     // MARK: - Layout
 
     override func viewDidLayoutSubviews() {
@@ -244,6 +254,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         }
         
         alertController.addAction(cancelAction)
+        alertController.popoverPresentationController?.barButtonItem = self.navigationItem.rightBarButtonItem
         present(alertController, animated: true, completion: nil)
 
     }

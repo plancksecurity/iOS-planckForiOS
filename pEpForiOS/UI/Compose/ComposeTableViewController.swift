@@ -32,6 +32,11 @@ class ComposeTableViewController: BaseTableViewController {
         }
         return omIsDrafts
     }
+
+    var accountPicker = UIPickerView()
+    var pickerEmailAdresses = [String]()
+    var accountCell: AccountCell?
+
     private var tookOverAttachmentsAlready = false
 
     private let contactPicker = CNContactPickerViewController()
@@ -93,12 +98,24 @@ class ComposeTableViewController: BaseTableViewController {
         takeOverAttachmentsIfRequired()
         setInitialStatus()
         rowHeightCache.removeAll()
+        setupPickerView()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setFirstResponder()
         calculateComposeColorAndInstallTapGesture()
+    }
+
+    func setupPickerView() {
+        let accounts = Account.all()
+        self.pickerEmailAdresses = accounts.map { $0.user.address }
+        self.accountPicker.delegate = self
+        self.accountPicker.dataSource = self
+    }
+
+    func shouldDisplayAccountCell() -> Bool {
+        return pickerEmailAdresses.count > 1
     }
 
     deinit {
@@ -123,9 +140,7 @@ class ComposeTableViewController: BaseTableViewController {
         origin = origin ?? ComposeUtil.initialFrom(composeMode: composeMode,
                                                    originalMessage: originalMessage)
         cell.textView.text = origin?.address
-        let accounts = Account.all()
-        cell.pickerEmailAdresses = accounts.map { $0.user.address }
-        cell.picker.reloadAllComponents()
+        cell.textView.inputView = accountPicker
     }
 
     /**
@@ -748,15 +763,10 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         let height = cell.textView.fieldHeight
-        let expandable = cell.fieldModel?.expanded
-
-        if let tempCell = cell as? AccountCell {
-            if (tempCell).shouldDisplayPicker {
-                if let theExpanded = expandable, cell.isExpanded {
-                    return theExpanded
-                }
-            }
+            if cell is AccountCell, self.shouldDisplayAccountCell() {
+                return height
         }
+
         if let tempCell = cell as? RecipientCell{
             tempCell.ccEnabled = ccEnabled
         }
@@ -840,6 +850,7 @@ class ComposeTableViewController: BaseTableViewController {
                 } else if let ac = cell as? AccountCell, let type = ac.fieldModel?.type {
                     setup(ac)
                     cells[type] = ac
+                    self.accountCell = ac
                 }
             }
         } else if indexPath.section == attachmentSection {
@@ -883,10 +894,6 @@ class ComposeTableViewController: BaseTableViewController {
             self.tableView.updateSize()
         }
 
-        if let recipientCell = cell as? AccountCell {
-            recipientCell.expand()
-            self.tableView.updateSize()
-        }
     }
 
     // MARK: - SwipeTableViewCell
@@ -1422,3 +1429,29 @@ extension ComposeTableViewController {
                                                 inViewController: self)
     }
 }
+
+ //pickerView extension
+
+ extension ComposeTableViewController: UIPickerViewDelegate, UIPickerViewDataSource  {
+
+    // MARK: - UIPickerView Delegate & Datasource
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerEmailAdresses.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerEmailAdresses[row]
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let address = pickerEmailAdresses[row]
+        self.accountCell?.setAccount(address: address)
+    }
+
+
+ }

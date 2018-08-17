@@ -247,13 +247,23 @@ open class NetworkServiceWorker {
 
     func buildAppendOperation(imapSyncData: ImapSyncData,
                               errorContainer: ServiceErrorProtocol) -> Operation {
-        let resultOp = BlockOperation {
+        let resultOp = SelfReferencingOperation() { operation in
+            guard let operation = operation else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                return
+            }
+            if operation.isCancelled {
+                return
+            }
             let queue = OperationQueue()
             var operations = [Operation]()
             var lastOp = Operation()
             operations.append(lastOp)
 
             MessageModel.performAndWait {
+                if operation.isCancelled {
+                    return
+                }
                 let folders = AppendMailsOperation.foldersContainingMarkedForAppend(connectInfo:
                     imapSyncData.connectInfo)
                 for folder in folders {
@@ -263,6 +273,9 @@ open class NetworkServiceWorker {
                     operations.append(op)
                 }
             }
+            if operation.isCancelled {
+                return
+            }
             queue.addOperations(operations, waitUntilFinished: false)
             queue.waitUntilAllOperationsAreFinished()
         }
@@ -271,12 +284,22 @@ open class NetworkServiceWorker {
 
     func buildUidMoveToFolderOperation(imapSyncData: ImapSyncData,
                                        errorContainer: ServiceErrorProtocol) -> Operation {
-        let resultOp = BlockOperation {
+        let resultOp = SelfReferencingOperation() { operation in
+            guard let operation = operation else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                return
+            }
+            if operation.isCancelled {
+                return
+            }
             let queue = OperationQueue()
             var operations = [Operation]()
             var lastOp = Operation()
             operations.append(lastOp)
             MessageModel.performAndWait {
+                if operation.isCancelled {
+                    return
+                }
                 let folders =
                     MoveToFolderOperation.foldersContainingMarkedForMoveToFolder(connectInfo:
                     imapSyncData.connectInfo)
@@ -288,6 +311,9 @@ open class NetworkServiceWorker {
                     lastOp = op
                     operations.append(op)
                 }
+            }
+            if operation.isCancelled {
+                return
             }
             queue.addOperations(operations, waitUntilFinished: false)
             queue.waitUntilAllOperationsAreFinished()
@@ -369,9 +395,12 @@ open class NetworkServiceWorker {
                                        errorContainer: ServiceErrorProtocol,
                                        imapSyncData: ImapSyncData,
                                        onlySyncChangesTriggeredByUser: Bool) -> Operation {
-        let resultOp = BlockOperation {[weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+        let resultOp = SelfReferencingOperation() { [weak self] operation in
+            guard let me = self, let operation = operation else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                return
+            }
+            if operation.isCancelled {
                 return
             }
             let queue = OperationQueue()
@@ -379,6 +408,9 @@ open class NetworkServiceWorker {
             var lastOp = Operation()
             operations.append(lastOp)
             MessageModel.performAndWait {
+                if operation.isCancelled {
+                    return
+                }
                 for fi in folderInfos {
                     if let folderID = fi.folderID,
                         let firstUID = fi.firstUID,
@@ -406,6 +438,9 @@ open class NetworkServiceWorker {
                         operations.append(syncFlagsOp)
                     }
                 }
+            }
+            if operation.isCancelled {
+                return
             }
             queue.addOperations(operations, waitUntilFinished: false)
             queue.waitUntilAllOperationsAreFinished()
@@ -559,16 +594,21 @@ open class NetworkServiceWorker {
                 operations.append(opDecrypt)
                 // In case messages need to be re-uploaded (e.g. for trusted server or extra
                 // keys), we want do append, fetch and decrypt them in the same sync cycle.
-                let opAppendAndFetchReUploaded = BlockOperation() { [weak self, weak opDecrypt] in
-                    guard let me = self, let decryptOp = opDecrypt else {
-                        Log.shared.error(component: #function, errorString: "Lost myself")
+                let opAppendAndFetchReUploaded = SelfReferencingOperation() {
+                    [weak self, weak opDecrypt]  operation in
+                    guard
+                        let me = self,
+                        let decryptOp = opDecrypt,
+                        let operation = operation else {
+                            return
+                    }
+                    if operation.isCancelled {
                         return
                     }
                     if !decryptOp.didMarkMessagesForReUpload {
                         // Nothing to do.
                         return
                     }
-
                     let reUploadQueue = OperationQueue()
                     reUploadQueue.name = "security.pep.networkServiceWorker.ReUploadQueue"
                     var reUploadOperations = [Operation]()
@@ -591,7 +631,6 @@ open class NetworkServiceWorker {
                         lastOp = fetchMessagesOp
                         reUploadOperations.append(fetchMessagesOp)
                     }
-
                     // ... and decrypt
                     let listener = me.serviceConfig.keyImportListener
                     let opDecrypt = DecryptMessagesOperation(parentName: me.description,
