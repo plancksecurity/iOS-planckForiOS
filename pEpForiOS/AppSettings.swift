@@ -88,6 +88,10 @@ struct AppSettings {
         }
     }
 
+    static func isManuallyTrustedServer(address: String) -> Bool {
+        return manuallyTrustedServers.contains(address)
+    }
+
     static func addToManuallyTrustedServers(address: String) {
         var addresses = Set(manuallyTrustedServers)
         addresses.insert(address)
