@@ -49,16 +49,20 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
             guard let nav = threadViewController.navigationController,
             let vc: EmailViewController =
             storyboard.instantiateViewController(withIdentifier: "emailDetail")
-                as? EmailViewController
+                as? EmailViewController,
+            let index = emailListViewModel.index(of: message)
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                 return
         }
 
         vc.appConfig = threadViewController.appConfig
-        nav.viewControllers[nav.viewControllers.count - 1 ] = vc
+        vc.message = message
+        vc.folderShow = emailListViewModel.folderToShow
+        vc.messageId = index
+        vc.delegate = emailListViewModel
         emailListViewModel.currentDisplayedMessage = vc
-
+        nav.viewControllers[nav.viewControllers.count - 1 ] = vc
     }
 
     private func getDetailViewController() -> UIViewController? {
@@ -68,7 +72,7 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
         if isCollapsed {
             guard let nav = last as? UINavigationController,
                 let emailNav = nav.topViewController as? UINavigationController,
-                let viewController = emailNav.rootViewController as? EmailViewController
+                let viewController = emailNav.rootViewController
                 else {
                     return nil
             }
@@ -76,7 +80,7 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
 
         } else {
             guard let nav = last as? UINavigationController,
-                let viewController = nav.rootViewController as? EmailViewController
+                let viewController = nav.rootViewController
                 else {
                     return nil
             }

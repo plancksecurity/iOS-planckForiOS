@@ -189,6 +189,10 @@ extension EmailListViewModel: MessageFolderDelegate {
                     emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theModel, didUpdateDataAt: [indexPath])
                     updateThreadListDelegate?.tipDidChange(to: replacementMessage)
+
+                    if replacementMessage.numberOfMessagesInThread() == 0 {
+                        screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: replacementMessage)
+                    }
                 } else {
                     emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theModel,
