@@ -221,4 +221,15 @@ struct UIUtils {
         })
         viewController.present(alertSheet, animated: true, completion: nil)
     }
+
+    // MARK: - Settings Presentation
+
+    static func presentSettings(on viewController: UIViewController, appConfig: AppConfig) {
+        guard let vc = UIStoryboard.init(name: "Settings", bundle: Bundle.main).instantiateViewController(withIdentifier: SettingsTableViewController.storyboardId) as? SettingsTableViewController else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No controller")
+            return
+        }
+        vc.appConfig = appConfig
+        viewController.navigationController?.pushViewController(vc, animated: true)
+    }
 }
