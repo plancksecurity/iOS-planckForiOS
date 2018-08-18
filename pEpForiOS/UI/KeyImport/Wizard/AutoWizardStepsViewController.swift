@@ -24,6 +24,7 @@ class AutoWizardStepsViewController: BaseViewController {
         super.viewDidLoad()
         if let vm = viewModel {
             vm.delegate = self
+            updateState()
         }
     }
 
@@ -45,6 +46,8 @@ class AutoWizardStepsViewController: BaseViewController {
         //showCurrentStep()
         stepDescription.isHidden = false
         loading.isHidden = false
+
+
     }
     
     @IBAction func onCancelClicked(_ sender: Any) {
@@ -61,6 +64,7 @@ class AutoWizardStepsViewController: BaseViewController {
         if let vm = viewModel {
             action.titleLabel?.text = vm.userAction
             stepDescription.text = vm.stepDescription
+            stepDescription.isHidden = vm.isHiddingDescription
             loading.isHidden = vm.isWaiting
         }
     }

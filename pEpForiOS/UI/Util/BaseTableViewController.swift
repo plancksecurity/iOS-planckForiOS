@@ -50,8 +50,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         BaseTableViewController.setupCommonSettings(tableView: tableView)
 
         if keyimportWizard == nil {
-            keyimportWizard = KeyImportWizzard(keyImportService: appConfig.keyImportService,
-                                               starter: false)
+            keyimportWizard = KeyImportWizzard(keyImportService: appConfig.keyImportService, starter: false)
             keyimportWizard?.startKeyImportDelegate = self
         }
     }
@@ -92,10 +91,12 @@ extension BaseTableViewController: StartKeyImportDelegate {
         if let vc = UIStoryboard.init(name: "KeyImport", bundle: Bundle.main)
             .instantiateViewController(withIdentifier: storyId) as? AutoWizardStepsViewController {
             vc.appConfig = self.appConfig
-            vc.viewModel = AutoWizardStepsViewModel(keyImportService: appConfig.keyImportService,
-                                                account: account, keyImportWizzard: keyimportWizard)
+            if let wizard = keyimportWizard {
+                vc.viewModel = AutoWizardStepsViewModel(keyImportService: appConfig.keyImportService,
+                    account: account, keyImportWizzard: wizard)
+            }
+
             self.present(vc, animated: true)
-            //self.navigationController?.pushViewController(vc, animated: true)
         }
 
     }

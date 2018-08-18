@@ -13,29 +13,36 @@ import MessageModel
 class AutoWizardStepsViewModel {
     private let keyImportService: KeyImportServiceProtocol
     let account: Account
-    private var keyImportWizzard: KeyImportWizzard?
+    private var keyImportWizzard: KeyImportWizzard
     var userAction: String
     var stepDescription: String
     var isWaiting: Bool
-    var delegate: AutoWizardViewControllerDelegate?
+    var isHiddingDescription: Bool {
+        get {
+            return stepDescription.isEmpty
+        }
+    }
+    var isHiddingAction: Bool {
+        get {
+            return userAction.isEmpty
+        }
+    }
+
+    weak var delegate: AutoWizardViewControllerDelegate?
     
     init(keyImportService: KeyImportServiceProtocol, account: Account,
-         keyImportWizzard: KeyImportWizzard? = nil) {
+         keyImportWizzard: KeyImportWizzard) {
         self.keyImportService = keyImportService
         self.account = account
 
-        if let wizard = keyImportWizzard {
-            self.userAction = wizard.userAction
-            self.stepDescription = wizard.stepDescription
-            self.isWaiting = wizard.isWaiting
-            wizard.account = account
-            wizard.delegate = self
-            self.keyImportWizzard = wizard
+            self.userAction = keyImportWizzard.userAction
+            self.stepDescription = keyImportWizzard.stepDescription
+            self.isWaiting = keyImportWizzard.isWaiting
+            keyImportWizzard.account = account
 
-        } else {
-            self.userAction = "No user action"
-            self.stepDescription = "No description"
-            self.isWaiting = false
+
+        if (!keyImportWizzard.starter) {
+            keyImportWizzard.next()
         }
         /*else {
             let wizard = KeyImportWizzard(keyImportService: keyImportService, starter: true)
@@ -45,19 +52,23 @@ class AutoWizardStepsViewModel {
             self.keyImportWizzard = wizard
         }*/
 
+        self.keyImportWizzard = keyImportWizzard
+        keyImportWizzard.delegate = self
+        self.notifyUpdate()
+
 
     }
 
     func start() {
-        keyImportWizzard?.start()
+        keyImportWizzard.start()
     }
 
     func next() {
-        keyImportWizzard?.next()
+        keyImportWizzard.next()
     }
 
     func finish() {
-        keyImportWizzard?.finish()
+        keyImportWizzard.finish()
     }
 }
 
@@ -66,6 +77,9 @@ extension AutoWizardStepsViewModel: KeyImportWizardDelegate {
         fatalError("Not implemented yet")
     }
     func notifyUpdate() {
-
+        self.userAction = keyImportWizzard.userAction
+        self.stepDescription = keyImportWizzard.stepDescription
+        self.isWaiting = keyImportWizzard.isWaiting
+        keyImportWizzard.account = account
     }
 }
