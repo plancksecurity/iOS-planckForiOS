@@ -20,7 +20,7 @@ extension SettingsCellViewModel {
 }
 
 /// Cell for settings that are not only one on/off switch.
-public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol { //IOS-1250: rename!
+public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     var cellIdentifier = "SettingsCell"
     
     var type: SettingType

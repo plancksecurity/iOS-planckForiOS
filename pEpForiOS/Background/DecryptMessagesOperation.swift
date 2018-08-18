@@ -237,8 +237,7 @@ extension DecryptMessagesOperation {
             message.wasAlreadyUnencrypted { // If the message was not encrypted, there is no reason to re-upload it.
             return false
         }   
-        let messageCopyForReupload = Message(message: message) //IOS-1250 we might wnt to change the uuid and reset sent status
-        messageCopyForReupload.uuid = UUID().uuidString //IOS-1250
+        let messageCopyForReupload = Message(message: message)
         setOriginalRatingHeader(rating: rating, toMessage: messageCopyForReupload)
         message.imapMarkDeleted()
 

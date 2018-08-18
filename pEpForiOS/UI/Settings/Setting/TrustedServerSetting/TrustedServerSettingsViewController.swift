@@ -12,12 +12,6 @@ class TrustedServerSettingsViewController: BaseTableViewController {
     var viewModel = TrustedServerSettingsViewModel()
 }
 
-//IOS-1250:
-/*
- //TODO:
- - Test! > seems reuplosded twice under unknown circumstances (send to yourself trusted on)
- */
-
 // MARK: -  UITableViewDataSource
 
 extension TrustedServerSettingsViewController {
