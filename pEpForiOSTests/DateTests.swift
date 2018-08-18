@@ -20,10 +20,10 @@ class DateTests: XCTestCase {
     override func setUp() {
         calender.locale = Locale(identifier: "en_US")
         do {
-            reWeekday = try NSRegularExpression.init(pattern: "^(\\w+)$", options: [])
-            reTime = try NSRegularExpression.init(pattern: "^\\d\\d?:\\d\\d (?:A|P)M$",
+            reWeekday = try NSRegularExpression(pattern: "^(\\w+)$", options: [])
+            reTime = try NSRegularExpression(pattern: "^\\d\\d?:\\d\\d (?:A|P)M$",
                                                   options: [])
-            reDate = try NSRegularExpression.init(pattern: "^\\w+ \\d\\d?, \\d\\d\\d\\d$",
+            reDate = try NSRegularExpression(pattern: "^\\w+ \\d\\d?, \\d\\d\\d\\d$",
                                                   options: [])
         } catch {
             XCTFail(error.localizedDescription)

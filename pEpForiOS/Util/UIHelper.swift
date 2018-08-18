@@ -113,8 +113,8 @@ class UIHelper {
      a background color.
      */
     static func imageFromColor(_ color: UIColor) -> UIImage {
-        let rect = CGRect.init(origin: CGPoint.init(x: 0, y: 0),
-                               size: CGSize.init(width: 1, height: 1))
+        let rect = CGRect(origin: CGPoint(x: 0, y: 0),
+                          size: CGSize(width: 1, height: 1))
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()
         context!.setFillColor(color.cgColor)

@@ -69,10 +69,10 @@ class EmailViewController: BaseTableViewController {
 
     internal func changeFlagButtonTo(flagged: Bool) {
         if (flagged) {
-            flagButton.image = UIImage.init(named: "icon-flagged")
+            flagButton.image = UIImage(named: "icon-flagged")
         }
         else {
-            flagButton.image = UIImage.init(named: "icon-unflagged")
+            flagButton.image = UIImage(named: "icon-unflagged")
         }
     }
 
@@ -107,7 +107,7 @@ class EmailViewController: BaseTableViewController {
     // MARK: - SETUP
 
     private func setuptoolbar() {
-        let item = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)),
+        let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
                                                 target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
@@ -295,6 +295,10 @@ class EmailViewController: BaseTableViewController {
     }
 
     // MARK: - IBActions
+
+    @objc private func showSettingsViewController() {
+        UIUtils.presentSettings(on: self, appConfig: appConfig)
+    }
 
     @IBAction func next(_ sender: Any) {
         messageId += 1

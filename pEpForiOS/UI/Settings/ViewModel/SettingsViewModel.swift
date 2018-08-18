@@ -1,5 +1,5 @@
 //
-//  AccountsSettingsViewModel.swift
+//  SettingsViewModel.swift
 //  pEpForiOS
 //
 //  Created by Xavier Algarra on 08/06/2017.
@@ -9,17 +9,17 @@
 import Foundation
 import MessageModel
 
-class AccountsSettingsViewModel {
-    var sections = [AccountsSettingsSectionViewModel]()
+class SettingsViewModel {
+    var sections = [SettingsSectionViewModel]()
 
     init() {
         generateSections()
     }
 
     private func generateSections() {
-        sections.append(AccountsSettingsSectionViewModel(type: .accounts))
-        sections.append(AccountsSettingsSectionViewModel(type: .globalSettings))
-        sections.append(AccountsSettingsSectionViewModel(type: .pgpCompatibilitySettings))
+        sections.append(SettingsSectionViewModel(type: .accounts))
+        sections.append(SettingsSectionViewModel(type: .globalSettings))
+        sections.append(SettingsSectionViewModel(type: .pgpCompatibilitySettings))
     }
 
     private func sectionIsValid(section: Int) -> Bool {
@@ -33,8 +33,12 @@ class AccountsSettingsViewModel {
         }
     }
 
-    func rowType(for indexPath: IndexPath) -> SettingType {
-        return self[indexPath.section][indexPath.row].type
+    func rowType(for indexPath: IndexPath) -> SettingsCellViewModel.SettingType? {
+        guard let model = self[indexPath.section][indexPath.row] as?
+            ComplexSettingCellViewModelProtocol else {
+            return nil
+        }
+        return model.type
     }
 
     func noAccounts() -> Bool {
@@ -47,7 +51,7 @@ class AccountsSettingsViewModel {
         }
     }
 
-    subscript(section: Int) -> AccountsSettingsSectionViewModel {
+    subscript(section: Int) -> SettingsSectionViewModel {
         get {
             assert(sectionIsValid(section: section), "Section out of range")
             return sections[section]

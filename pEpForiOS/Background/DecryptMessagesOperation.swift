@@ -236,7 +236,7 @@ extension DecryptMessagesOperation {
         if !message.isOnTrustedServer ||    // The only currently supported case for re-upload is trusted server.
             message.wasAlreadyUnencrypted { // If the message was not encrypted, there is no reason to re-upload it.
             return false
-        }
+        }   
         let messageCopyForReupload = Message(message: message)
         setOriginalRatingHeader(rating: rating, toMessage: messageCopyForReupload)
         message.imapMarkDeleted()

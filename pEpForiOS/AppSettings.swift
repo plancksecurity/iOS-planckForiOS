@@ -8,15 +8,25 @@
 
 import MessageModel
 
-class AppSettings {
-    // MARK: - Public
-    
-    public init() {
-        registerDefaults()
-        setup()
+struct AppSettings {
+    // Assures init is called once.
+    static private var appSettings = AppSettings()
+
+    static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
+    static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
+    static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
+    static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
+    static private let keyPassiveMode = "keyPassiveMode"
+    static private let keyManuallyTrustedServers = "keyManuallyTrustedServers"
+
+    // MARK: - API
+
+    static func setupObjcAdapter() {
+        PEPObjCAdapter.setUnEncryptedSubjectEnabled(AppSettings.unencryptedSubjectEnabled)
+        PEPObjCAdapter.setPassiveModeEnabled(AppSettings.passiveMode)
     }
-    
-    public var shouldReinitializePepOnNextStartup: Bool {
+
+    static var shouldReinitializePepOnNextStartup: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
@@ -25,8 +35,8 @@ class AppSettings {
                                       forKey: AppSettings.keyReinitializePepOnNextStartup)
         }
     }
-    
-    public var unencryptedSubjectEnabled: Bool {
+
+    static var unencryptedSubjectEnabled: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyUnencryptedSubjectEnabled)
         }
@@ -34,10 +44,9 @@ class AppSettings {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyUnencryptedSubjectEnabled)
             PEPObjCAdapter.setUnEncryptedSubjectEnabled(newValue)
         }
-
     }
 
-    public var threadedViewEnabled: Bool {
+    static var threadedViewEnabled: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyThreadedViewEnabled)
         }
@@ -46,7 +55,7 @@ class AppSettings {
         }
     }
 
-    public var passiveMode: Bool {
+    static var passiveMode: Bool {
         get {
             return UserDefaults.standard.bool(forKey: AppSettings.keyPassiveMode)
         }
@@ -57,7 +66,7 @@ class AppSettings {
     }
 
     /// Address of the default account
-    public var defaultAccount: String? {
+    static var defaultAccount: String? {
         get {
             assureDefaultAccountIsSetAndExists()
             return UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress)
@@ -67,65 +76,53 @@ class AppSettings {
         }
     }
 
-    // MARK: - Static API
+    // MARK: manuallyTrustedServers
 
-    public static var shouldReinitializePepOnNextStartup: Bool {
+    /// Addresses of all accounts the user explicitly trusted
+    static var manuallyTrustedServers: [String] {
         get {
-            return appSettings.shouldReinitializePepOnNextStartup
+            return UserDefaults.standard.stringArray(forKey: keyManuallyTrustedServers) ?? []
         }
         set {
-            appSettings.shouldReinitializePepOnNextStartup = newValue
+            UserDefaults.standard.set(newValue, forKey: AppSettings.keyManuallyTrustedServers)
         }
     }
 
-    public static var unencryptedSubjectEnabled: Bool {
-        get {
-            return appSettings.unencryptedSubjectEnabled
-        }
-        set {
-            appSettings.unencryptedSubjectEnabled = newValue
-        }
+    static func isManuallyTrustedServer(address: String) -> Bool {
+        return manuallyTrustedServers.contains(address)
     }
 
-    public static var threadedViewEnabled: Bool {
-        get {
-            return appSettings.threadedViewEnabled
-        }
-        set {
-            appSettings.threadedViewEnabled = newValue
-        }
+    static func addToManuallyTrustedServers(address: String) {
+        var addresses = Set(manuallyTrustedServers)
+        addresses.insert(address)
+        manuallyTrustedServers = Array(addresses)
     }
 
-    public static var passiveMode: Bool {
-        get {
-            return appSettings.passiveMode
-        }
-        set {
-            appSettings.passiveMode = newValue
-        }
+    static func removeFromManuallyTrustedServers(address: String) {
+        var addresses = Set(manuallyTrustedServers)
+        addresses.remove(address)
+        manuallyTrustedServers = Array(addresses)
     }
 
-    /// Address of the default account
-    public static var defaultAccount: String? {
-        get {
-            return appSettings.defaultAccount
-        }
-        set {
-            appSettings.defaultAccount = newValue
-        }
+    // MARK: SETUP
+
+    private init() {
+        registerDefaults()
     }
 
-    // MARK: - Private
-    
-    static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
-    static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
-    static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
-    static private let keyThreadedViewEnabled = "keyThreadedViewEnabled"
-    static private let keyPassiveMode = "keyPassiveMode"
-    
-    // MARK: - Private - DEFAULT ACCOUNT
-    
-    private func assureDefaultAccountIsSetAndExists() {
+    private func registerDefaults() {
+        var defaults = [String: Any]()
+        defaults[AppSettings.keyReinitializePepOnNextStartup] = false
+        defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
+        defaults[AppSettings.keyThreadedViewEnabled] = true
+        defaults[AppSettings.keyPassiveMode] = false
+
+        UserDefaults.standard.register(defaults: defaults)
+    }
+
+    // MARK: - Other
+
+    static private func assureDefaultAccountIsSetAndExists() {
         if UserDefaults.standard.string(forKey: AppSettings.keyDefaultAccountAddress) == nil {
             // Default account is not set. Take the first MessageModel provides as a starting point
             let initialDefault = Account.all().first?.user.address
@@ -141,25 +138,4 @@ class AppSettings {
                 return
         }
     }
-    
-    // MARK: - Private - SETUP
-    
-    private func setup() {
-        PEPObjCAdapter.setUnEncryptedSubjectEnabled(unencryptedSubjectEnabled)
-        PEPObjCAdapter.setPassiveModeEnabled(passiveMode)
-    }
-    
-    private func registerDefaults() {
-        var defaults = [String: Any]()
-        defaults[AppSettings.keyReinitializePepOnNextStartup] = false
-        defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
-        defaults[AppSettings.keyThreadedViewEnabled] = true
-        defaults[AppSettings.keyPassiveMode] = false
-
-        UserDefaults.standard.register(defaults: defaults)
-    }
-
-    // MARK: - Private - Enable static API
-
-    static private var appSettings = AppSettings()
 }

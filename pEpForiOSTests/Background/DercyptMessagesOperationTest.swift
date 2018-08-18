@@ -29,7 +29,7 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
                 XCTAssertTrue(false)
                 return
         }
-        message.setFolder(CWIMAPFolder.init(name: ImapSync.defaultImapInboxName))
+        message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         message.setUID(1)
         guard let msg = CdMessage.insertOrUpdate(  pantomimeMessage: message,
                                                    account: cdAccount,

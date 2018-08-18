@@ -243,13 +243,13 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                                                                    preferredStyle: .actionSheet)
 
         for language in languages {
-            let action =   UIAlertAction.init(title: language.name, style: .default) {_ in
+            let action =   UIAlertAction(title: language.name, style: .default) {_ in
                 self.currentLanguageCode = language.code
                 self.tableView.reloadData()
             }
             alertController.addAction(action)
         }
-        let cancelAction = UIAlertAction.init(title: "Cancel", style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
             alertController.dismiss(animated: true, completion: nil)
         }
         

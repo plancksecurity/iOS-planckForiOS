@@ -21,7 +21,7 @@ extension AccountSettingsProtocol {
             // do a sync call, but this should only lookup local information, so not blocking
             acSettings.lookup()
 
-            if let _ = AccountSettingsError(accountSettings: acSettings) {
+            if let _ = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
                 return nil
             }
 

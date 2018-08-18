@@ -26,8 +26,8 @@ extension Dictionary where Key: ExpressibleByStringLiteral, Value: AnyObject {
 }
 
 public func ==(lhs: PEPIdentityDict, rhs: PEPIdentityDict) -> Bool {
-    let a = NSDictionary.init(dictionary: lhs)
-    let b = NSDictionary.init(dictionary: rhs)
+    let a = NSDictionary(dictionary: lhs)
+    let b = NSDictionary(dictionary: rhs)
     return a == b
 }
 

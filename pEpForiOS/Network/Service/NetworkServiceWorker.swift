@@ -334,7 +334,6 @@ open class NetworkServiceWorker {
             guard let account = context.object(with: accountInfo.accountID) as? CdAccount else {
                 return
             }
-
             let earlierTimestamp = Date(
                 timeIntervalSinceNow: -self.serviceConfig.timeIntervalForInterestingFolders)
             let pInteresting = NSPredicate(
@@ -351,14 +350,11 @@ open class NetworkServiceWorker {
                     if f.folderTypeRawValue == FolderType.sent.rawValue {
                         sentFolderIsInteresting = true
                     }
-
-
                     folderInfos.append(FolderInfo(
                         name: name, folderType: f.folderType,
                         firstUID: f.firstUID(), lastUID: f.lastUID(), folderID: f.objectID))
                 }
             }
-
             // Try to determine and add inbox and sent folder if not already there. Both are
             // considered as always interesting.
             if !inboxIsInteresting {

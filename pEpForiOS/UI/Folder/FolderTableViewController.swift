@@ -43,13 +43,19 @@ class FolderTableViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        let item = UIBarButtonItem.getpEpButton(action:#selector(self.showSettingsViewController(_:)),
+        let item = UIBarButtonItem.getpEpButton(action:#selector(showSettingsViewController),
                                                 target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
             target: nil,
             action: nil)
         self.toolbarItems = [flexibleSpace,item]
+    }
+
+    // MARK: - Action
+
+    @objc private func showSettingsViewController() {
+        UIUtils.presentSettings(on: self, appConfig: appConfig)
     }
 
     // MARK: - Cell Setup
@@ -192,7 +198,7 @@ class FolderTableViewController: BaseTableViewController {
             vc.delegate = self
 
         } else if segue.identifier == "SettingsSegue" {
-            guard let dvc = segue.destination as? AccountsTableViewController else {
+            guard let dvc = segue.destination as? SettingsTableViewController else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casting DVC")
                 return
             }

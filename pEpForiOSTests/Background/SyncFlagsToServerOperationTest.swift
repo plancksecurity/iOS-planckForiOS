@@ -1232,7 +1232,7 @@ class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {
             ops.append(op)
         }
         
-        let backgroundQueue = OperationQueue.init()
+        let backgroundQueue = OperationQueue()
         
         // Serialize all ops
         backgroundQueue.maxConcurrentOperationCount = 1

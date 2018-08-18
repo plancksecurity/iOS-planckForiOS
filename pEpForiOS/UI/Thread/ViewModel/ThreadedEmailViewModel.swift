@@ -57,6 +57,7 @@ class ThreadedEmailViewModel {
         guard index < messages.count && index >= 0 else {
             return
         }
+        let isTheLastMessage = index == messages.count - 1
         let theMessageToDelete = messages[index]
         folder.deleteSingle(message: theMessageToDelete)
         messages.remove(at: index)

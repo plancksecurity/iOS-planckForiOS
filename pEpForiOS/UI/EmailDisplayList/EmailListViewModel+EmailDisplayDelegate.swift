@@ -25,11 +25,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
         }
 
         if currentDisplayedMessage?.messageModel == message {
-            if message.numberOfMessagesInThread() == 0 {
-                deleteRow(for: message)
-            } else {
-                updateRow(for: message)
-            }
+            updateRow(for: message)
         } else {
             updateRow(for: displayedMessage)
         }

@@ -542,21 +542,6 @@
             </objects>
             <point key="canvasLocation" x="5420" y="-1649.3253373313344"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="QbH-rZ-eM1">
-            <objects>
-                <viewController id="lTo-z4-vWj" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="qjv-bK-K6G">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="pnm-WK-6KX"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qh2-rr-jWK" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6630" y="-1722"/>
-        </scene>
         <!--FolderViews-->
         <scene sceneID="9j8-vu-u1w">
             <objects>

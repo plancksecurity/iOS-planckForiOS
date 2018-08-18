@@ -25,7 +25,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         fetchMessages(parentName: #function)
 
         XCTAssertGreaterThan(
-            CdFolder.countBy(predicate: NSPredicate.init(value: true)), 0)
+            CdFolder.countBy(predicate: NSPredicate(value: true)), 0)
         XCTAssertGreaterThan(
             CdMessage.all()?.count ?? 0, 0)
 
@@ -210,7 +210,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         })
 
         XCTAssertGreaterThanOrEqual(
-            CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
+            CdFolder.countBy(predicate: NSPredicate(value: true)), 1)
 
         var options: [String: Any] = ["folderTypeRawValue": FolderType.inbox.rawValue,
                                       "account": cdAccount]
@@ -225,14 +225,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testStorePrefetchedMailOperation() {
-        let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
+        let folder = CWIMAPFolder(name: ImapSync.defaultImapInboxName)
 
         let _ = CdFolder.insertOrUpdate(
             folderName: folder.name(), folderSeparator: nil, folderType: nil, account: cdAccount)
         Record.saveAndWait()
 
-        let message = CWIMAPMessage.init()
-        message.setFrom(CWInternetAddress.init(personal: "personal", address: "somemail@test.com"))
+        let message = CWIMAPMessage()
+        message.setFrom(CWInternetAddress(personal: "personal", address: "somemail@test.com"))
         message.setFolder(folder)
         message.setMessageID("001@whatever.test")
 
@@ -245,7 +245,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             storeOp.completionBlock = nil
             expStored.fulfill()
         }
-        let backgroundQueue = OperationQueue.init()
+        let backgroundQueue = OperationQueue()
         backgroundQueue.addOperation(storeOp)
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
@@ -256,23 +256,23 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testStoreMultipleMails() {
-        let folder = CWIMAPFolder.init(name: ImapSync.defaultImapInboxName)
+        let folder = CWIMAPFolder(name: ImapSync.defaultImapInboxName)
         let numMails = 10
         var numberOfCallbacksCalled = 0
 
         let _ = CdFolder.insertOrUpdate(
             folderName: folder.name(), folderSeparator: nil, folderType: nil,account: cdAccount)
         Record.saveAndWait()
-        XCTAssertEqual(CdFolder.countBy(predicate: NSPredicate.init(value: true)), 1)
+        XCTAssertEqual(CdFolder.countBy(predicate: NSPredicate(value: true)), 1)
 
         let expMailsStored = expectation(description: "expMailsStored")
-        let backgroundQueue = OperationQueue.init()
+        let backgroundQueue = OperationQueue()
         for i in 1...numMails {
-            let message = CWIMAPMessage.init()
-            message.setFrom(CWInternetAddress.init(personal: "personal\(i)",
+            let message = CWIMAPMessage()
+            message.setFrom(CWInternetAddress(personal: "personal\(i)",
                 address: "somemail\(i)@test.com"))
             message.setSubject("Subject \(i)")
-            message.setRecipients([CWInternetAddress.init(personal: "thisIsMe",
+            message.setRecipients([CWInternetAddress(personal: "thisIsMe",
                                                           address: "myaddress@test.com", type: .toRecipient)])
             message.setFolder(folder)
             message.setUID(UInt(i))

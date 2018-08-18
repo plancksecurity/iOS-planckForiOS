@@ -13,7 +13,7 @@ import SwipeCellKit
 class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     static let storyboardId = "EmailListViewCell"
     static var flaggedImage: UIImage? = nil
-    static var emptyContactImage = UIImage.init(named: "empty-avatar")
+    static var emptyContactImage = UIImage(named: "empty-avatar")
 
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -154,7 +154,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
     private func setFlagged() {
             flaggedImageView.isHidden = false
-            flaggedImageView.image = UIImage.init(named: "icon-flagged")
+            flaggedImageView.image = UIImage(named: "icon-flagged")
     }
 
     private func unsetFlagged() {
