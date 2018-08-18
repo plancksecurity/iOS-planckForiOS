@@ -490,6 +490,10 @@ open class PEPUtil {
         do {
             return try session.rating(for: pepC).pEpRating
         } catch let error as NSError {
+            Log.shared.error(
+                component: #function,
+                errorString: "Identity \(identity)",
+                error: error)
             assertionFailure("\(error)")
             return PEP_rating_undefined
         }
