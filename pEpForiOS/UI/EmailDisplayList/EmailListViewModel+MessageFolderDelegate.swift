@@ -80,8 +80,12 @@ extension EmailListViewModel: MessageFolderDelegate {
                 if referencedIndices.isEmpty && messagePassedFilter {
                     insertAsTopMessage()
                 } else {
+                    var isReferencingDisplayedThread = false
+
                     if let currentlyDisplayedIndex =
                         theSelf.currentlyDisplayedIndex(of: referencedIndices) {
+                        isReferencingDisplayedThread = true
+
                         if theSelf.isShowingSingleMessage() {
                             // switch from single to thread
                             if let theMessageViewModel =
@@ -112,6 +116,10 @@ extension EmailListViewModel: MessageFolderDelegate {
                             theSelf.emailListViewModelDelegate?.emailListViewModel(
                                 viewModel: theSelf,
                                 didUpdateDataAt: [IndexPath(row: newIndex, section: 0)])
+
+                            if isReferencingDisplayedThread {
+                                theSelf.updateThreadListDelegate?.tipDidChange(to: message)
+                            }
                         } else {
                             theSelf.incThreadCount(at: index)
                             theSelf.emailListViewModelDelegate?.emailListViewModel(
