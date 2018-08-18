@@ -35,7 +35,7 @@ extension ThreadedEmailViewModel: UpdateThreadListDelegate {
     }
 
     func tipDidChange(to message: Message) {
-        if let referencedTip = messages.first(where: { message in message == message }) {
+        if let referencedTip = messages.first(where: { $0 == message }) {
             self.tip = referencedTip
         }
     }
