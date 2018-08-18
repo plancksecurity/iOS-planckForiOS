@@ -119,7 +119,6 @@
 		15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BB82127493E00A3A4A6 /* AccountVerificationResultDelegate.swift */; };
 		15874BCC2127493E00A3A4A6 /* AccountSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BB92127493E00A3A4A6 /* AccountSettingsViewModel.swift */; };
 		15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBA2127493E00A3A4A6 /* AccountSettingsError.swift */; };
-		15874BCE2127493E00A3A4A6 /* AccountSettingsError.swift.orig in Resources */ = {isa = PBXBuildFile; fileRef = 15874BBB2127493E00A3A4A6 /* AccountSettingsError.swift.orig */; };
 		15874BCF2127493E00A3A4A6 /* AccountSettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBC2127493E00A3A4A6 /* AccountSettingsTableViewController.swift */; };
 		15874BD02127493E00A3A4A6 /* LogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBD2127493E00A3A4A6 /* LogViewController.swift */; };
 		15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BBF2127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift */; };
@@ -2697,7 +2696,6 @@
 				151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */,
 				430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				1541D7FA1FCC18E100D52A5D /* AttachmentCell.xib in Resources */,
-				15874BCE2127493E00A3A4A6 /* AccountSettingsError.swift.orig in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				435942072118555300CF41BF /* Localizable.strings in Resources */,
 				431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */,
