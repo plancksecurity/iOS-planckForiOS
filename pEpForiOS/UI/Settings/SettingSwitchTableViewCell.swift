@@ -13,9 +13,8 @@ class SettingSwitchTableViewCell: UITableViewCell {
     @IBOutlet weak var switchItem : UISwitch!
     /// Short description shown to the user in front of the switch.
     @IBOutlet weak var switchDescription: UILabel!
-    /// Texfield with a lot of space to explain the setting.
 
-    var viewModel : SettingSwitchProtocol?
+    var viewModel : SwitchSettingCellViewModelProtocol?
 
     @IBAction func switchChanged(_ sender: Any) {
         handleSwitchChange()
@@ -28,13 +27,13 @@ class SettingSwitchTableViewCell: UITableViewCell {
 
     func handleSwitchChange() {
         if let vm = viewModel {
-            vm.switchAction(value: switchItem.isOn)
+            vm.setSwitch(value: switchItem.isOn)
         }
     }
 
     func setSwitchValue() {
         if let vm = viewModel {
-            switchItem.setOn(vm.switchValue, animated: false)
+            switchItem.setOn(vm.switchValue(), animated: false)
         }
     }
 }

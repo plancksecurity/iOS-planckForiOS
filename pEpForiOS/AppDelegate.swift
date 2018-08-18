@@ -32,8 +32,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let mySelfQueue = LimitedOperationQueue()
 
-    lazy var appSettings = AppSettings()
-
     let sendLayerDelegate = DefaultUISendLayerDelegate()
 
     /**
@@ -171,8 +169,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      - Returns: True if the pEp management DB was deleted, so further actions can be taken.
      */
     func deleteManagementDBIfRequired() -> Bool {
-        if appSettings.shouldReinitializePepOnNextStartup {
-            appSettings.shouldReinitializePepOnNextStartup = false
+        if AppSettings.shouldReinitializePepOnNextStartup {
+            AppSettings.shouldReinitializePepOnNextStartup = false
             let _ = PEPUtil.pEpClean()
             return true
         }
@@ -203,8 +201,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        // Needs to be done once to set defaults. Calling it more than once does not do any harm.
-        let _ = AppSettings()
+        AppSettings.setupObjcAdapter()
 
         let theMessageSyncService = MessageSyncService()
         let keyImportService = KeyImportService()
@@ -253,7 +250,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
-        FolderThreading.switchThreading(onOrOff: appSettings.threadedViewEnabled)
+        FolderThreading.switchThreading(onOrOff: AppSettings.threadedViewEnabled)
 
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them

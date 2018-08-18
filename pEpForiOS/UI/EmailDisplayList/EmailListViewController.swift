@@ -132,7 +132,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         title = folderToShow?.localizedName
-        let item = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)),
+        let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
                                                 target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
@@ -348,8 +348,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         moveToolbarButton?.isEnabled = false
 
-        let pEp = UIBarButtonItem.getpEpButton(action: #selector(self.showSettingsViewController(_:)), target: self)
-
+        let pEp = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
+                                               target: self)
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
                         moveToolbarButton, flexibleSpace, pEp] as? [UIBarButtonItem]
@@ -364,6 +364,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         editRightButton = self.navigationItem.rightBarButtonItem
         self.navigationItem.rightBarButtonItem = cancel
 
+    }
+
+    @objc private func showSettingsViewController() {
+        UIUtils.presentSettings(on: self, appConfig: appConfig)
     }
 
     @IBAction func showFilterOptions(_ sender: UIBarButtonItem!) {

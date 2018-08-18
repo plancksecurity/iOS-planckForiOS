@@ -57,7 +57,7 @@ struct SmtpStatus {
 open class SmtpSend: Service {
     open override var comp: String { get { return "SmtpSend" } }
 
-    private var smtpStatus: SmtpStatus = SmtpStatus.init()
+    private var smtpStatus: SmtpStatus = SmtpStatus()
     weak open var delegate: SmtpSendDelegate?
 
     var smtp: CWSMTP {
@@ -67,7 +67,7 @@ open class SmtpSend: Service {
     }
 
     open override func createService() -> CWService {
-        return CWSMTP.init(name: connectInfo.networkAddress,
+        return CWSMTP(name: connectInfo.networkAddress,
                            port: UInt32(connectInfo.networkPort),
                            transport: connectInfo.connectionTransport!)
     }

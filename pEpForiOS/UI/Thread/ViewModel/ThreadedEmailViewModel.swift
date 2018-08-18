@@ -64,9 +64,6 @@ class ThreadedEmailViewModel {
         expandedMessages.remove(at: index)
         delegate?.emailViewModel(viewModel: self, didRemoveDataAt: index)
         emailDisplayDelegate?.emailDisplayDidDelete(message: theMessageToDelete)
-        if isTheLastMessage {
-            expandLastMessage()
-        }
     }
 
     internal func deleteInternal(message: Message) {

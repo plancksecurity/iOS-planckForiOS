@@ -77,7 +77,7 @@ class FlagImages {
         return produceImage(size: size, block: { ctx in
             ctx.setFillColor(color.cgColor)
             ctx.setStrokeColor(color.cgColor)
-            let r = CGRect.init(origin: CGPoint(x: 0.0, y: 0.0), size: size)
+            let r = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: size)
             ctx.fillEllipse(in: r)
         })
     }
@@ -87,7 +87,7 @@ class FlagImages {
         let image = produceImage(size: finalsize, block: { ctx in
             ctx.setFillColor(color.cgColor)
             ctx.setStrokeColor(color.cgColor)
-            let r = CGRect.init(origin: CGPoint(x: 0.0, y: 0.0), size: size)
+            let r = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: size)
             let path = UIBezierPath(roundedRect: r, cornerRadius: 2.5)
             ctx.addPath(path.cgPath)
             ctx.fillPath()

@@ -178,9 +178,9 @@ class PersistentImapFolder: CWIMAPFolder {
     }
 
     func cdMessage(withUID theUID: UInt, context: NSManagedObjectContext) -> CdMessage? {
-        let pUid = NSPredicate.init(format: "uid = %d", theUID)
-        let pFolder = NSPredicate.init(format: "parent = %@", self.folder)
-        let p = NSCompoundPredicate.init(andPredicateWithSubpredicates: [pUid, pFolder])
+        let pUid = NSPredicate(format: "uid = %d", theUID)
+        let pFolder = NSPredicate(format: "parent = %@", self.folder)
+        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pUid, pFolder])
 
         return CdMessage.first(predicate: p)
     }

@@ -20,13 +20,13 @@ extension CdMessage {
      - Returns: A `CWFlags object` for the given `NSNumber`
      */
     static open func pantomimeFlagsFromNumber(_ flags: Int16) -> CWFlags {
-        if let fl = PantomimeFlag.init(rawValue: UInt(flags)) {
-            return CWFlags.init(flags: fl)
+        if let fl = PantomimeFlag(rawValue: UInt(flags)) {
+            return CWFlags(flags: fl)
         }
         Log.error(component:
             "Message", errorString:
             "Could not convert \(flags) to PantomimeFlag")
-        return CWFlags.init()
+        return CWFlags()
     }
 
     /**
@@ -63,12 +63,12 @@ extension CdMessage {
      */
     static open func pantomimeFlags(flagsInt16: Int16) -> CWFlags {
         if let fl = PantomimeFlag(rawValue: UInt(flagsInt16)) {
-            return CWFlags.init(flags: fl)
+            return CWFlags(flags: fl)
         }
         Log.error(component:
             "Message", errorString:
             "Could not convert \(flagsInt16) to PantomimeFlag")
-        return CWFlags.init()
+        return CWFlags()
     }
 
     /**

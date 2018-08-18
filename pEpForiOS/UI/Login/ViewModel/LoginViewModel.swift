@@ -101,7 +101,7 @@ class LoginViewModel {
         }
 
         func statusOk() {
-            if let error = AccountSettingsError(accountSettings: acSettings) {
+            if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
                 Log.shared.error(component: #function, error: error)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return

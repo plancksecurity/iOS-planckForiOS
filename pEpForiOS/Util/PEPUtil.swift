@@ -236,12 +236,10 @@ open class PEPUtil {
             dict[kPepReferences] = refs as AnyObject
         }
 
-        if let r = cdMessage.replyTo {
-            dict[kPepReplyTo] = r.array as AnyObject
+        if let replyTos = cdMessage.replyTo, replyTos.count > 0 {
+                dict[kPepReplyTo] = NSArray(array: replyTos
+                    .map { pEpDict(cdIdentity: $0 as! CdIdentity) })
         }
-
-        dict[kPepReplyTo] = NSArray(array: cdMessage.replyTo!.map()
-            { return pEpDict(cdIdentity: $0 as! CdIdentity) })
 
         let headerFields = cdMessage.optionalFields?.array as? [CdHeaderField] ?? []
         var theFields = [(String, String)]()
@@ -498,6 +496,10 @@ open class PEPUtil {
         do {
             return try session.rating(for: pepC).pEpRating
         } catch let error as NSError {
+            Log.shared.error(
+                component: #function,
+                errorString: "Identity \(identity)",
+                error: error)
             assertionFailure("\(error)")
             return PEP_rating_undefined
         }
