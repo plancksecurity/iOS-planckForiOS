@@ -495,6 +495,7 @@
 		B75CF47A20DBEA0000184F33 /* ThreadedSettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75CF47920DBEA0000184F33 /* ThreadedSettingViewModel.swift */; };
 		B75CF47C20DBEB7200184F33 /* UnecryptedSubjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75CF47B20DBEB7200184F33 /* UnecryptedSubjectViewModel.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
+		B760704421284F4C00E3483F /* HandshakeViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B760704321284F4C00E3483F /* HandshakeViewControllerDelegate.swift */; };
 		B761A80A20F5F0A6000832C2 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */; };
 		B7698D5420DA99E200CB32B4 /* SettingsSwichtUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7698D5320DA99E200CB32B4 /* SettingsSwichtUtil.swift */; };
 		B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
@@ -1068,6 +1069,7 @@
 		B75CF47920DBEA0000184F33 /* ThreadedSettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadedSettingViewModel.swift; sourceTree = "<group>"; };
 		B75CF47B20DBEB7200184F33 /* UnecryptedSubjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnecryptedSubjectViewModel.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
+		B760704321284F4C00E3483F /* HandshakeViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandshakeViewControllerDelegate.swift; sourceTree = "<group>"; };
 		B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		B7698D5320DA99E200CB32B4 /* SettingsSwichtUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwichtUtil.swift; sourceTree = "<group>"; };
 		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
@@ -1709,6 +1711,7 @@
 				B70D32A6205BCC120094A92A /* CellsAndSections */,
 				B70D32A5205BCC020094A92A /* ViewModel */,
 				438D5A701EA77CFC001A37E1 /* HandshakeViewController.swift */,
+				B760704321284F4C00E3483F /* HandshakeViewControllerDelegate.swift */,
 			);
 			path = Handshake;
 			sourceTree = "<group>";
@@ -3032,6 +3035,7 @@
 				C483EBE320EB624300C319D1 /* AutoWizardStepsViewModel.swift in Sources */,
 				431B0B9A1D6734DF0082D0DB /* AccountsTableViewController.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,
+				B760704421284F4C00E3483F /* HandshakeViewControllerDelegate.swift in Sources */,
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
 				150B84C620A5DD0600D8B288 /* UIDCopyOperation.swift in Sources */,

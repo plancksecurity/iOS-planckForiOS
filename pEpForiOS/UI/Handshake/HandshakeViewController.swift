@@ -10,14 +10,39 @@ import UIKit
 
 import MessageModel
 
+extension HandshakeViewController {
+    public struct Identities {
+        var ownIdentity : Identity
+        var foreignIdentity : Identity
+    }
+
+    public enum Result {
+        case accepted
+        case denied
+        case cancelled
+    }
+}
+
 class HandshakeViewController: BaseTableViewController {
     var ratingReEvaluator: RatingReEvaluator?
     var backTitle: String?
     var currentLanguageCode = "en"
 
+    var delegate : HandshakeViewControllerDelegate?
+
     var message: Message? {
         didSet {
             handshakeCombinations = message?.handshakeActionCombinations() ?? []
+        }
+    }
+
+    var identitiesHandshake: Identities? {
+        didSet {
+            guard let ids = identitiesHandshake else {
+                return
+            }
+            let handshakable = HandshakeCombination(ownIdentity: ids.ownIdentity, partnerIdentity: ids.foreignIdentity)
+            handshakeCombinations = [handshakable]
         }
     }
 
@@ -35,12 +60,19 @@ class HandshakeViewController: BaseTableViewController {
 
         let img = UIImage(named: "grid-globe")
 
-        let item = UIBarButtonItem(image: img,
+        let lang = UIBarButtonItem(image: img,
                         style: UIBarButtonItemStyle.plain,
                         target: self,
                         action: #selector(self.languageSelectedAction(_:)))
 
-        navigationItem.rightBarButtonItems = [item]
+        navigationItem.rightBarButtonItems = [lang]
+
+        let cancel = UIBarButtonItem(title: "Cancel",
+                                   style: UIBarButtonItemStyle.plain,
+                                   target: self,
+                                   action: #selector(self.Cancel(_:)))
+
+        navigationItem.leftBarButtonItem = cancel
     }
 
     override func didReceiveMemoryWarning() {
@@ -206,12 +238,20 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
                       indexPath: IndexPath,
                       viewModel: HandshakePartnerTableViewCellViewModel?) {
         invokeTrustAction(cell: cell, indexPath: indexPath) { viewModel?.confirmTrust() }
+        if let del = delegate {
+            del.handshakeViewController(sender: self, didFinishWithResult: .accepted)
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 
     func denyTrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
                    indexPath: IndexPath,
                    viewModel: HandshakePartnerTableViewCellViewModel?) {
         invokeTrustAction(cell: cell, indexPath: indexPath) { viewModel?.denyTrust() }
+        if let del = delegate {
+            del.handshakeViewController(sender: self, didFinishWithResult: .denied)
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 
     func pickLanguage(sender: UIView, cell: HandshakePartnerTableViewCell,
@@ -226,6 +266,11 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         viewModel?.toggleTrustwordsLength()
         cell.updateTrustwords()
         tableView.updateSize()
+    }
+
+    @IBAction func Cancel(_ sender: Any) {
+        delegate?.handshakeViewController(sender: self, didFinishWithResult: .cancelled)
+        self.navigationController?.popViewController(animated: true)
     }
 
     @IBAction func languageSelectedAction(_ sender: Any) {
