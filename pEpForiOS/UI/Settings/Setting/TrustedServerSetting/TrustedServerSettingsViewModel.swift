@@ -22,11 +22,9 @@ struct TrustedServerSettingsViewModel {
     }
 
     mutating func setTrusted(forAccountWith address: String, toValue newValue: Bool) {
-        var rowForAddress: Row?
         for i in 0...rows.count {
             let row = rows[i]
             if row.address == address {
-                rowForAddress = row
                 rows[i] = Row(address: row.address, trusted: newValue)
                 break
             }
@@ -42,7 +40,7 @@ struct TrustedServerSettingsViewModel {
         let servers = serversAllowedToManuallyTrust()
         var createes = [Row]()
         for address in servers {
-            let isTrusted = AppSettings.manuallyTrustedServers.contains(address)
+            let isTrusted = AppSettings.isManuallyTrustedServer(address: address)
             createes.append(Row(address: address, trusted: isTrusted))
         }
         rows = createes
