@@ -313,8 +313,10 @@ extension KeyImportService: KeyImportListenerProtocol {
                                          errorString: "No fpr header. Impossible in this state.")
                 return false
             }
-            delegate?.newInitKeyImportRequestMessageArrived(forAccount: msg.parent.account,
-                                                            fpr: fpr)
+            DispatchQueue.main.async {
+                self.delegate?.newInitKeyImportRequestMessageArrived(forAccount: msg.parent.account,
+                                                                fpr: fpr)
+            }
         } else if isNewHandshakeRequestMessage(message: msg){
             hasBeenHandled = true
             msg.imapMarkDeleted()
@@ -323,12 +325,17 @@ extension KeyImportService: KeyImportListenerProtocol {
                                          errorString: "No fpr header. Impossible in this state.")
                 return false
             }
-            delegate?.newHandshakeRequestMessageArrived(forAccount: msg.parent.account,
-                                                        fpr: fpr)
+            DispatchQueue.main.async {
+                self.delegate?.newHandshakeRequestMessageArrived(forAccount: msg.parent.account,
+                                                            fpr: fpr)
+            }
         } else if isPrivateKeyMessage(message: msg, flags: flags) {
             hasBeenHandled = true
             msg.imapMarkDeleted()
-            delegate?.receivedPrivateKey(forAccount: msg.parent.account)
+            DispatchQueue.main.async {
+                self.delegate?.receivedPrivateKey(forAccount: msg.parent.account)
+            }
+
         }
         return hasBeenHandled
     }
