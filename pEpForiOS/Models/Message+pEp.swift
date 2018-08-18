@@ -24,7 +24,7 @@ extension Message {
         }
         let accountHasBeenCreatedInLocalNetwork = imapServer.trusted
         let userDecidedToTrustServer =
-            AppSettings.isManuallyTrustedServer(address: imapServer.address)
+            AppSettings.isManuallyTrustedServer(address: parent.account.user.address)
         return accountHasBeenCreatedInLocalNetwork || userDecidedToTrustServer
     }
 
