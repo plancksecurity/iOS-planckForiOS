@@ -70,6 +70,10 @@ class AutoWizardStepsViewModel {
     func finish() {
         keyImportWizzard.finish()
     }
+
+    func cancel() {
+        //TODO code when cancel is pressed.
+    }
 }
 
 extension AutoWizardStepsViewModel: KeyImportWizardDelegate {

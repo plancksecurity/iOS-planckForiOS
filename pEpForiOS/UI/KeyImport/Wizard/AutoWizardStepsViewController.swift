@@ -51,13 +51,8 @@ class AutoWizardStepsViewController: BaseViewController {
     }
     
     @IBAction func onCancelClicked(_ sender: Any) {
-        action.isHidden = false
-        cancel.isHidden = true
-        stepDescription.isHidden = true
-        loading.isHidden = true
-        //hideStartButton()
-        //showCancelButton()
-        //showCurrentStep()
+        self.viewModel?.cancel()
+        self.navigationController?.popViewController(animated: true)
     }
 
     private func updateState() {

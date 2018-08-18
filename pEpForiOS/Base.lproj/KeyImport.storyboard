@@ -28,7 +28,7 @@
                                     <action selector="onStartClicked:" destination="CoZ-Bi-RAc" eventType="touchUpInside" id="OTy-EV-s4v"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zmd-J4-rOU">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zmd-J4-rOU">
                                 <rect key="frame" x="106.5" y="474" width="48" height="30"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
