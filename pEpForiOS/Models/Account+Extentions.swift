@@ -69,6 +69,9 @@ extension Account {
                 return nil
         }
 
+        let trusedServer =
+            server.trusted || AppSettings.isManuallyTrustedServer(address: account.user.address)
+
         return EmailConnectInfo(account: account,
                                 server: server,
                                 credentials: credentials,
@@ -81,6 +84,6 @@ extension Account {
                                 emailProtocol: emailProtocol,
                                 connectionTransport: ConnectionTransport(fromInt: Int(connectionTransport.rawValue)),
                                 authMethod: AuthMethod(string: server.authMethod),
-                                trusted: server.trusted)
+                                trusted: trusedServer)
     }
 }
