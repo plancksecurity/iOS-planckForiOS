@@ -458,8 +458,10 @@ class EmailListViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
             return
         }
-        filter.removeSearchFilter()
-        resetViewModel()
+        let filtersChanged = filter.removeSearchFilter()
+        if filtersChanged {
+            resetViewModel()
+        }
     }
 
     private func assuredFilterOfFolderToShow() -> CompositeFilter<FilterBase> {
