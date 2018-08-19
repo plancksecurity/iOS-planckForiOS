@@ -9,9 +9,6 @@
 import MessageModel
 
 struct AppSettings {
-    // Assures init is called once.
-    static private var appSettings = AppSettings()
-
     static private let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static private let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
     static private let keyDefaultAccountAddress = "keyDefaultAccountAddress"
@@ -20,11 +17,6 @@ struct AppSettings {
     static private let keyManuallyTrustedServers = "keyManuallyTrustedServers"
 
     // MARK: - API
-
-    static func setupObjcAdapter() {
-        PEPObjCAdapter.setUnEncryptedSubjectEnabled(AppSettings.unencryptedSubjectEnabled)
-        PEPObjCAdapter.setPassiveModeEnabled(AppSettings.passiveMode)
-    }
 
     static var shouldReinitializePepOnNextStartup: Bool {
         get {
@@ -106,11 +98,17 @@ struct AppSettings {
 
     // MARK: SETUP
 
-    private init() {
+    static func setup() {
         registerDefaults()
+        setupObjcAdapter()
     }
 
-    private func registerDefaults() {
+    static private func setupObjcAdapter() {
+        PEPObjCAdapter.setUnEncryptedSubjectEnabled(AppSettings.unencryptedSubjectEnabled)
+        PEPObjCAdapter.setPassiveModeEnabled(AppSettings.passiveMode)
+    }
+
+    static private func registerDefaults() {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true

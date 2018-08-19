@@ -206,8 +206,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        AppSettings.setupObjcAdapter()
-
         let theMessageSyncService = MessageSyncService()
         messageSyncService = theMessageSyncService
         let theAppConfig = AppConfig(mySelfer: self,
@@ -254,7 +252,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
+        AppSettings.setup()
         FolderThreading.switchThreading(onOrOff: AppSettings.threadedViewEnabled)
 
         if MiscUtil.isUnitTest() {
