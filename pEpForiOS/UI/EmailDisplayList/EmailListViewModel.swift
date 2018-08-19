@@ -46,6 +46,8 @@ class EmailListViewModel {
         return createe
     }()
 
+    var lastSearchTerm = ""
+
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     internal let folderToShow: Folder
@@ -435,6 +437,11 @@ class EmailListViewModel {
     }
 
     public func setSearchFilter(forSearchText txt: String = "") {
+        if txt == lastSearchTerm {
+            // Happens e.g. when initially setting the cursor in search bar.
+            return
+        }
+        lastSearchTerm = txt
         if txt == "" {
             assuredFilterOfFolderToShow().removeSearchFilter()
         } else {
