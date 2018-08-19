@@ -51,7 +51,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
         if keyimportWizard == nil {
             keyimportWizard = KeyImportWizzard(keyImportService: appConfig.keyImportService, starter: false)
-            keyimportWizard?.startKeyImportDelegate = self
+            keyimportWizard?.startKeyImportDelegate = self //IOS-1028: we want to do this everytime as far as I can see.
         }
     }
 

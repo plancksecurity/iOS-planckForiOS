@@ -8,6 +8,14 @@
 
 import MessageModel
 
+protocol StartKeyImportDelegate: class {
+    func startKeyImport(account: Account);
+}
+
+public protocol KeyImportWizardDelegate: class {
+    func showError(error: Error)
+    func notifyUpdate()
+}
 
 class KeyImportWizzard {
     enum WizardState {
@@ -23,8 +31,6 @@ class KeyImportWizzard {
     var account: Account?
     weak var delegate: KeyImportWizardDelegate?
     weak var startKeyImportDelegate: StartKeyImportDelegate?
-
-    //??? We probably needs a KeyImportWizzardDelegate to inform the client (i.e. AutoWizardStepsViewModel)
 
     init(keyImportService: KeyImportServiceProtocol, starter: Bool) {
         self.starter = starter
@@ -93,7 +99,6 @@ class KeyImportWizzard {
         state = WizardState.INIT;
         senderFpr = ""
     }
-
 }
 
 // MARK: - KeyImportServiceDelegate
@@ -114,7 +119,6 @@ extension KeyImportWizzard: KeyImportServiceDelegate {
 
     func receivedPrivateKey(forAccount account: Account) {
         finish()
-        fatalError("Unimplemented stub")
     }
 
     func errorOccurred(error: Error) {
@@ -122,12 +126,6 @@ extension KeyImportWizzard: KeyImportServiceDelegate {
         //TODO: ask user to try later due to an error.
         //SMTP Error && Engine Error
         finish()
-        fatalError("unimplemented stub")
     }
-
-}
-
-protocol StartKeyImportDelegate: class {
-    func startKeyImport(account: Account);
 }
 

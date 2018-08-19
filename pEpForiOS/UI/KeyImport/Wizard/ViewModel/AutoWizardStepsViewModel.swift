@@ -9,6 +9,10 @@
 import Foundation
 import MessageModel
 
+public protocol AutoWizardStepsViewModelDelegate: class {
+    func showError(error: Error)
+    func notifyUpdate()
+}
 
 class AutoWizardStepsViewModel {
     private let keyImportService: KeyImportServiceProtocol
@@ -28,7 +32,7 @@ class AutoWizardStepsViewModel {
         }
     }
 
-    weak var delegate: AutoWizardViewControllerDelegate?
+    weak var delegate: AutoWizardStepsViewModelDelegate?
     
     init(keyImportService: KeyImportServiceProtocol, account: Account,
          keyImportWizzard: KeyImportWizzard) {
@@ -54,9 +58,7 @@ class AutoWizardStepsViewModel {
 
         self.keyImportWizzard = keyImportWizzard
         keyImportWizzard.delegate = self
-        self.notifyUpdate()
-
-
+        self.notifyUpdate() //IOS-1028: should not be neccessarry
     }
 
     func start() {
@@ -72,6 +74,7 @@ class AutoWizardStepsViewModel {
     }
 
     func cancel() {
+        fatalError("Unimplemented stub")
         //TODO code when cancel is pressed.
     }
 }
@@ -81,9 +84,9 @@ extension AutoWizardStepsViewModel: KeyImportWizardDelegate {
         fatalError("Not implemented yet")
     }
     func notifyUpdate() {
-        self.userAction = keyImportWizzard.userAction
-        self.stepDescription = keyImportWizzard.stepDescription
-        self.isWaiting = keyImportWizzard.isWaiting
+        userAction = keyImportWizzard.userAction
+        stepDescription = keyImportWizzard.stepDescription
+        isWaiting = keyImportWizzard.isWaiting
         keyImportWizzard.account = account
     }
 }

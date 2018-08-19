@@ -45,7 +45,7 @@ class AutoWizardStepsViewController: BaseViewController {
         cancel.isHidden = false
         //showCurrentStep()
         stepDescription.isHidden = false
-        loading.isHidden = false
+        loading.stopAnimating()
 
 
     }
@@ -56,27 +56,23 @@ class AutoWizardStepsViewController: BaseViewController {
     }
 
     private func updateState() {
-        if let vm = viewModel {
-            action.titleLabel?.text = vm.userAction
-            stepDescription.text = vm.stepDescription
-            stepDescription.isHidden = vm.isHiddingDescription
-            loading.isHidden = vm.isWaiting
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No vm")
+            return
         }
+        action.titleLabel?.text = vm.userAction
+        stepDescription.text = vm.stepDescription
+        stepDescription.isHidden = vm.isHiddingDescription
+        vm.isWaiting ? loading.stopAnimating() : loading.startAnimating() //IOS-1028 I think this is the wrong way around, I did not want to change the implementation though
     }
 }
 
-extension AutoWizardStepsViewController: AutoWizardViewControllerDelegate {
+extension AutoWizardStepsViewController: AutoWizardStepsViewModelDelegate {
     func showError(error: Error) {
-
+        fatalError("Unimplemented stub")
     }
 
     func notifyUpdate() {
         updateState()
     }
-
-
-}
-public protocol AutoWizardViewControllerDelegate: class {
-    func showError(error: Error)
-    func notifyUpdate()
 }
