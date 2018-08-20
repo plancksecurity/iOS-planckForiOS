@@ -97,21 +97,25 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     }
 
     func syncNextMessage() {
-        guard !isCancelled else {
-            waitForBackgroundTasksToFinish()
-            return
-        }
-        privateMOC.performAndWait() { [weak self] in
+        let op = BlockOperation() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            guard let m = me.nextMessageToBeSynced() else {
+
+            guard !me.isCancelled else {
                 me.waitForBackgroundTasksToFinish()
                 return
             }
-            me.updateFlags(message: m)
+            me.privateMOC.perform() {
+                guard let m = me.nextMessageToBeSynced() else {
+                    me.waitForBackgroundTasksToFinish()
+                    return
+                }
+                me.updateFlags(message: m)
+            }
         }
+        backgroundQueue.addOperation(op)
     }
 
     func folderOpenCompleted() {
