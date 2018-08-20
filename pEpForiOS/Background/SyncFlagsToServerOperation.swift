@@ -31,11 +31,13 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     }()
 
     private var currentlyProcessedMessage: CdMessage?
+    // Used for Tests only. hould be refactored out.
     var numberOfMessagesSynced: Int {
         return changedMessageIDs.count
     }
 
     var syncDelegate: SyncFlagsToServerSyncDelegate?
+    // Used for Tests only. hould be refactored out.
     var changedMessageIDs = [NSManagedObjectID]()
     weak var delegate: SyncFlagsToServerOperationDelegate?
 
