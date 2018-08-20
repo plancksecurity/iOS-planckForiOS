@@ -61,6 +61,15 @@ extension EmailListViewModel: MessageFolderDelegate {
             }
         }
 
+        // Check for messages sent to oneself, that are already shown as
+        // an incoming message.
+        if !messagePassedFilter && message.parent.folderType == .sent {
+            let messageIdSet = Set(messages.map { return $0.messageIdentifier })
+            if messageIdSet.contains(message.messageIdentifier) {
+                return
+            }
+        }
+
         let previewMessage = MessageViewModel(with: message)
         let referencedIndices = threadedMessageFolder.referenced(
             messageIdentifiers: messages.array(), message: message)
