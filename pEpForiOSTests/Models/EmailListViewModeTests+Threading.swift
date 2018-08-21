@@ -105,20 +105,20 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             indexPathUpdated: indexOfTopMessageNewest)
     }
 
-//    func testThreadedIncomingChildMessageToSingleDisplayedParent() {
-//        FolderThreading.override(factory: ThreadAwareFolderFactory())
-//        setUpTopMessages()
-//
-//        let theDisplayedMessage = topMessages[1]
-//        displayedMessage.messageModel = theDisplayedMessage
-//
-//        // topMessages[0] is the oldest, so it's last in the list
-//        let _ = testIncomingMessage(
-//            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
-//            indexPathUpdated: nil,
-//            openThread: true)
-//    }
-//
+    func testThreadedIncomingChildMessageToSingleDisplayedParent() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        // topMessages[0] is the oldest, so it's last in the list
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            indexPathUpdated: nil,
+            openThread: true)
+    }
+
 //    func testThreadedUpdateTopMessage() {
 //        FolderThreading.override(factory: ThreadAwareFolderFactory())
 //        setUpTopMessages()
