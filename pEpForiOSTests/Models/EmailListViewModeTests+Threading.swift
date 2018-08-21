@@ -356,7 +356,13 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
     }
 
     enum IncomingMessageParameters {
+        /** Use the given message as incoming */
         case message (Message)
+
+        /**
+         Create a new message in the given folder, reference the given ones,
+         and use it as incoming
+         */
         case noMessage ([Message], Folder?)
     }
 
