@@ -371,6 +371,16 @@ class EmailListViewModel {
         return messages.object(at: indexPath.row)?.message()
     }
 
+    internal func requestEmailViewIfNeeded(for message:Message) {
+        MessageModel.performAndWait {
+            if (message.numberOfMessagesInThread() == 0) {
+                DispatchQueue.main.async {
+                    self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
+                }
+            }
+        }
+    }
+
     func freeMemory() {
         contactImageTool.clearCache()
     }

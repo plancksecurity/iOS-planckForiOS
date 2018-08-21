@@ -251,6 +251,7 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // The thread count might need to be updated
 
                     if let topMessage = theSelf.messages[safe: index]?.message() {
+                        theSelf.messages.replaceObject(at: index, with: MessageViewModel(with: topMessage))
                         requestEmailViewIfNeeded(for: topMessage)
                     }
 
@@ -361,12 +362,6 @@ Something is fishy here.
             if me.currentDisplayedMessage?.messageModel == message {
                 me.currentDisplayedMessage?.update(forMessage: message)
             }
-        }
-    }
-
-    private func requestEmailViewIfNeeded(for message:Message) {
-        if (message.numberOfMessagesInThread() == 0) {
-            screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
         }
     }
 

@@ -20,14 +20,13 @@ extension EmailListViewModel: EmailDisplayDelegate {
     }
 
     func emailDisplayDidDelete(message: Message) {
-        guard let displayedMessage = currentDisplayedMessage?.messageModel else {
-            return
-        }
 
-        if currentDisplayedMessage?.messageModel == message {
-            updateRow(for: message)
-        } else {
-            updateRow(for: displayedMessage)
+        MessageModel.performAndWait { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
+                return
+            }
+            me.didDelete(messageFolder: message, belongingToThread: message.threadMessageIdSet())
         }
     }
 
