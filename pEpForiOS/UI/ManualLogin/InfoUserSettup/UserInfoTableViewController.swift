@@ -104,7 +104,7 @@ class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, 
     }
 
     @IBAction func changeUsername(_ sender: UITextField) {
-        model.userName = sender.text
+        model.loginName = sender.text
         updateView()
     }
 
