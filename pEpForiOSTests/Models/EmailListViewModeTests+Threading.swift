@@ -269,28 +269,28 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
-//    func testUnThreadedUserDeleteDisplayedMessage() {
-//        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
-//        setUpTopMessages()
-//
-//        emailListViewModel.currentDisplayedMessage = displayedMessage
-//
-//        let messageToBeDeleted = topMessages.last!
-//        displayedMessage.messageModel = messageToBeDeleted
-//
-//        emailListViewModelDelegate.expectationTopMessageDeleted =
-//            ExpectationViewModelDelegateTopMessageDeleted(
-//                indexPath: indexOfTopMessageNewest,
-//                expectation: expectation(
-//                    description: "expectationTopMessageDeleted testUnThreadedUserDeleteDisplayedMessage"))
-//
-//        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
-//
-//        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
-//            XCTAssertNil(err)
-//        }
-//    }
-//
+    func testUnThreadedUserDeleteDisplayedMessage() {
+        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
+        setUpTopMessages()
+
+        emailListViewModel.currentDisplayedMessage = displayedMessage
+
+        let messageToBeDeleted = topMessages.last!
+        displayedMessage.messageModel = messageToBeDeleted
+
+        emailListViewModelDelegate.expectationTopMessageDeleted =
+            ExpectationViewModelDelegateTopMessageDeleted(
+                indexPath: indexOfTopMessageNewest,
+                expectation: expectation(
+                    description: "expectationTopMessageDeleted testUnThreadedUserDeleteDisplayedMessage"))
+
+        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
 //    func testThreadedUserDeleteMessageWithoutChild() {
 //        FolderThreading.override(factory: ThreadAwareFolderFactory())
 //        setUpTopMessages()
