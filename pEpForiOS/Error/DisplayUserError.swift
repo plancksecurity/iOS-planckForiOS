@@ -278,7 +278,7 @@ struct DisplayUserError: LocalizedError { //IOS-1248: handle LoginTableViewContr
     public var errorDescription: String? {
         switch type {
         case .authenticationFailed:
-            return NSLocalizedString("It was impossible to login to the server. Username or password are wrong.",
+            return NSLocalizedString("It was impossible to login to the server. Username or password is wrong.",
                                      comment:
                 "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
         case .messageNotSent:
