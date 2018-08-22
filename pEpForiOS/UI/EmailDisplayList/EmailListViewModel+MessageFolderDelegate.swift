@@ -324,7 +324,9 @@ extension EmailListViewModel: MessageFolderDelegate {
        * The message might get deleted if it doesn't fit the filter anymore.
        * The `previewMessage` might seem redundant, but it has already been computed.
      */
-    private func update(message: Message, previewMessage: MessageViewModel, atIndex indexExisting: Int) {
+    private func update(message: Message,
+                        previewMessage: MessageViewModel,
+                        atIndex indexExisting: Int) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 // Assumtion taken over from original implementaion: It's ok here.
