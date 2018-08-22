@@ -316,19 +316,19 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .trashed)
     }
 
-//    func testThreadedSpecial() {
-//        FolderThreading.override(factory: ThreadAwareFolderFactory())
-//        setUpTopMessages(
-//            [TestUtil.createSpecialMessage(number: 0, folder: inbox, receiver: account.user)])
-//        let _ = testIncomingMessage(
-//            parameters: IncomingMessageParameters.message(
-//                TestUtil.createSpecialMessage(number: 1, folder: inbox, receiver: account.user)),
-//            indexPathUpdated: IndexPath(row: 0, section: 0))
-//        let _ = testIncomingMessage(
-//            parameters: IncomingMessageParameters.message(
-//                TestUtil.createSpecialMessage(number: 2, folder: inbox, receiver: account.user)),
-//            indexPathUpdated: IndexPath(row: 0, section: 0))
-//    }
+    func testThreadedSpecial() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages(
+            [TestUtil.createSpecialMessage(number: 0, folder: inbox, receiver: account.user)])
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.message(
+                TestUtil.createSpecialMessage(number: 1, folder: inbox, receiver: account.user)),
+            indexPathUpdated: IndexPath(row: 0, section: 0))
+        let _ = testIncomingMessage(
+            parameters: IncomingMessageParameters.message(
+                TestUtil.createSpecialMessage(number: 2, folder: inbox, receiver: account.user)),
+            indexPathUpdated: IndexPath(row: 0, section: 0))
+    }
 
     // MARK: - Internal - Helpers
 
