@@ -70,28 +70,6 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
         navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
     }
 
-    private func showErrorMessage (_ message: String) {
-        let alertView = UIAlertController.pEpAlertController(
-            title: NSLocalizedString("Error",
-                                     comment:
-                "the text in the title for the error message AlerView in account settings"),
-            message:message, preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "View log",
-                comment: "Button for viewing the log on error"),
-            style: .default, handler: { action in
-                self.viewLog()
-        }))
-        alertView.addAction(UIAlertAction(
-            title: NSLocalizedString(
-                "Ok",
-                comment:
-                "confirmation button text for error message AlertView in account settings"),
-            style: .default, handler: nil))
-        present(alertView, animated: true, completion: nil)
-    }
-
     private func viewLog() {
         performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
@@ -197,19 +175,19 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
                 account.save()
             }
         }
-        GCD.onMain() {
+        GCD.onMain() { //IOS-1148: clean up
             self.isCurrentlyVerifying =  false
             switch result {
             case .ok:
                 // unwind back to INBOX or folder list on success
                 self.performSegue(withIdentifier: .backToEmailListSegue, sender: self)
             case .imapError(let err):
-                self.showErrorMessage(err.localizedDescription)
+                UIUtils.show(error: err, inViewController: self)
             case .smtpError(let err):
-                self.showErrorMessage(err.localizedDescription)
+                UIUtils.show(error: err, inViewController: self)
             case .noImapConnectData, .noSmtpConnectData:
-                self.showErrorMessage(
-                    LoginTableViewControllerError.noConnectData.localizedDescription)
+                let error = LoginTableViewControllerError.noConnectData
+                UIUtils.show(error: error, inViewController: self)
             }
         }
     }
