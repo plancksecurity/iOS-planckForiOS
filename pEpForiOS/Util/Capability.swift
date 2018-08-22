@@ -110,12 +110,6 @@ public struct Capability {
                     completion(permissionsGranted, error)
                 }
             }
-
-
-
-
-
-
         }
     }
 }
