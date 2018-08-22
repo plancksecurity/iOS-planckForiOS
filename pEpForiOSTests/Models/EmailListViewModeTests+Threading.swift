@@ -58,7 +58,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
     func testUnthreadedIncomingTopMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
         setUpTopMessages()
-        let _ = testIncomingMessage(parameters: IncomingMessageParameters.noMessage([], nil),
+        let _ = testIncomingMessage(parameters: IncomingMessageParameters.createMessage([], nil),
                                     indexPathUpdated: nil)
     }
 
@@ -68,10 +68,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         // topMessages[0] is the oldest, so it's last in the list
         let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([topMessages[1]], nil),
+            parameters: IncomingMessageParameters.createMessage([topMessages[1]], nil),
             indexPathUpdated: indexOfTopMessageNewest)
         let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([topMessages[0]], nil),
+            parameters: IncomingMessageParameters.createMessage([topMessages[0]], nil),
             indexPathUpdated: indexOfTopMessageNewest)
     }
 
@@ -87,10 +87,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         // topMessages[0] is the oldest, so it's last in the list
         let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([topMessages[1]], sentFolder),
+            parameters: IncomingMessageParameters.createMessage([topMessages[1]], sentFolder),
             indexPathUpdated: indexOfTopMessageNewest)
         let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([topMessages[0]], nil),
+            parameters: IncomingMessageParameters.createMessage([topMessages[0]], nil),
             indexPathUpdated: indexOfTopMessageNewest)
     }
 
@@ -101,7 +101,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         // Will update the first (newest) message it finds,
         // which is topMessages[1] with row 3.
         let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([topMessages[0], topMessages[1]], nil),
+            parameters: IncomingMessageParameters.createMessage([topMessages[0], topMessages[1]], nil),
             indexPathUpdated: indexOfTopMessageNewest)
     }
 
@@ -114,7 +114,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         // topMessages[0] is the oldest, so it's last in the list
         let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            parameters: IncomingMessageParameters.createMessage([theDisplayedMessage], nil),
             indexPathUpdated: nil,
             openThread: true)
     }
@@ -127,7 +127,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            parameters: IncomingMessageParameters.createMessage([theDisplayedMessage], nil),
             indexPathUpdated: nil,
             openThread: true)
 
@@ -154,7 +154,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let incomingMessage = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            parameters: IncomingMessageParameters.createMessage([theDisplayedMessage], nil),
             indexPathUpdated: nil,
             openThread: true)
 
@@ -181,7 +181,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         displayedMessage.messageModel = topMessages[0]
 
         let incomingMessage = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([unDisplayedMessage], nil),
+            parameters: IncomingMessageParameters.createMessage([unDisplayedMessage], nil),
             indexPathUpdated: indexOfTopMessageNewest)
         incomingMessage.imapFlags?.flagged = true
         XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
@@ -206,7 +206,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let incomingMessage = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            parameters: IncomingMessageParameters.createMessage([theDisplayedMessage], nil),
             indexPathUpdated: nil,
             openThread: true)
 
@@ -236,7 +236,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         displayedMessage.messageModel = theDisplayedMessage
 
         let incomingMessage = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([topMessages[0]], nil),
+            parameters: IncomingMessageParameters.createMessage([topMessages[0]], nil),
             indexPathUpdated: indexOfTopMessageNewest)
 
         emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
@@ -377,7 +377,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
          Create a new message in the given folder, reference the given ones,
          and use it as incoming
          */
-        case noMessage ([Message], Folder?)
+        case createMessage ([Message], Folder?)
     }
 
     func testIncomingMessage(parameters: IncomingMessageParameters,
@@ -390,7 +390,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         var optIncomingMessage: Message?
 
         switch parameters {
-        case .noMessage(let (references, folder)):
+        case .createMessage(let (references, folder)):
             let theFolder: Folder = folder ?? inbox
             let incomingMessage = TestUtil.createMessage(uid: TestUtil.nextUid(),
                                                          inFolder: theFolder)
@@ -483,7 +483,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         // receive another reply to our top message
         let incomingMessage = testIncomingMessage(
-            parameters: IncomingMessageParameters.noMessage([sentMessage], nil),
+            parameters: IncomingMessageParameters.createMessage([sentMessage], nil),
             indexPathUpdated: indexOfTopMessageNewest)
 
         // check that the incoming message indeed references our sent message
