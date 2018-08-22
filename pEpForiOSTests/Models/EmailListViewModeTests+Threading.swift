@@ -308,10 +308,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
-//    func testThreadedReferencesSentMessage() {
-//        testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .sent)
-//    }
-//
+    func testThreadedReferencesSentMessage() {
+        testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .sent)
+    }
+
 //    func testThreadedReferencesTrashedMessage() {
 //        testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .trashed)
 //    }
@@ -480,7 +480,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         // receive another reply to our top message
         let incomingMessage = testIncomingMessage(
             parameters: IncomingMessageParameters.noMessage([sentMessage], nil),
-            indexPathUpdated: indexOfTopMessage0)
+            indexPathUpdated: indexOfTopMessageNewest)
 
         // check that the incoming message indeed references our sent message
         let incomingMessageReferencedMessages = incomingMessage.referencedMessages()
