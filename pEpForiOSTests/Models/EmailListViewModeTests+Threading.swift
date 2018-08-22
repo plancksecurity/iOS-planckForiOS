@@ -227,31 +227,31 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
-//    func testThreadedDeleteUnDisplayedChildMessage() {
-//        FolderThreading.override(factory: ThreadAwareFolderFactory())
-//        setUpTopMessages()
-//
-//        let theDisplayedMessage = topMessages[1]
-//        displayedMessage.messageModel = theDisplayedMessage
-//
-//        let incomingMessage = testIncomingMessage(
-//            parameters: IncomingMessageParameters.noMessage([topMessages[0]], nil),
-//            indexPathUpdated: indexOfTopMessage0)
-//
-//        emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
-//            indexPath: indexOfTopMessage0,
-//            expectation: expectation(
-//                description: "expectationUpdated testThreadedDeleteUnDisplayedChildMessage"))
-//
-//        let refs = Set(incomingMessage.references)
-//        incomingMessage.imapDelete()
-//        emailListViewModel.didDelete(messageFolder: incomingMessage, belongingToThread: refs)
-//
-//        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
-//            XCTAssertNil(err)
-//        }
-//    }
-//
+    func testThreadedDeleteUnDisplayedChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([topMessages[0]], nil),
+            indexPathUpdated: indexOfTopMessageNewest)
+
+        emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
+            indexPath: indexOfTopMessageNewest,
+            expectation: expectation(
+                description: "expectationUpdated testThreadedDeleteUnDisplayedChildMessage"))
+
+        let refs = Set(incomingMessage.references)
+        incomingMessage.imapDelete()
+        emailListViewModel.didDelete(messageFolder: incomingMessage, belongingToThread: refs)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
 //    func testUnThreadedUserDeleteUndisplayedMessage() {
 //        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
 //        setUpTopMessages()
