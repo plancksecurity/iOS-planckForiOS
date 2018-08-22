@@ -166,11 +166,6 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             expectation: expectation(
                 description: "expectationTopUpdated testThreadedUpdateDisplayedChildMessage"))
 
-        updateThreadListDelegate.expectationUpdated = ExpectationChildMessageUpdated(
-            message: incomingMessage,
-            expectation: expectation(
-                description: "expectationChildUpdated testThreadedUpdateDisplayedChildMessage"))
-
         emailListViewModel.didUpdate(messageFolder: incomingMessage)
 
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
@@ -187,15 +182,14 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         let incomingMessage = testIncomingMessage(
             parameters: IncomingMessageParameters.noMessage([unDisplayedMessage], nil),
-            indexPathUpdated: indexOfTopMessage1)
+            indexPathUpdated: indexOfTopMessageNewest)
         incomingMessage.imapFlags?.flagged = true
         XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
 
-        emailListViewModelDelegate.expectationUndiplayedMessageUpdated =
-            ExpectationUndiplayedMessageUpdated(
-                message: incomingMessage,
-                expectation: expectation(
-                    description: "expectationUndiplayedMessageUpdated testThreadedUpdateUnDisplayedChildMessage"))
+        emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
+            indexPath: indexOfTopMessageNewest,
+            expectation: expectation(
+                description: "expectationTopUpdated testThreadedUpdateUnDisplayedChildMessage"))
 
         emailListViewModel.didUpdate(messageFolder: incomingMessage)
 
