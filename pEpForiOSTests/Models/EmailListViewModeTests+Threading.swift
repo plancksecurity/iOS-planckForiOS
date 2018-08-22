@@ -164,15 +164,13 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             indexPath: indexOfTopMessageNewest,
             expectation: expectation(description: "expectationTopUpdated"))
 
-        /*
         updateThreadListDelegate.expectationUpdated = ExpectationChildMessageUpdated(
             message: incomingMessage,
             expectation: expectation(description: "expectationChildUpdated"))
- */
 
         emailListViewModel.didUpdate(messageFolder: incomingMessage)
 
-        waitForExpectations(timeout: TestUtil.waitTimeForever) { err in
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
     }

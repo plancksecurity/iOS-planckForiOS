@@ -283,8 +283,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // We do not have this updated message in our model yet. It might have been updated in
             // a way, that fulfills the current filters now but did not before the update.
             // Or it has just been decrypted.
-            if isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
-                updateThreadListDelegate?.updated(message: message)
+            if updateIfDisplayed(childMessage: message, referencedMessages: referencedMessages) {
                 return
             } else {
                 if referencedMessages.isEmpty {
@@ -301,7 +300,9 @@ extension EmailListViewModel: MessageFolderDelegate {
             }
         }
 
-        // We do have this message in our model, so we do have to update it
+        let _ = updateIfDisplayed(childMessage: message, referencedMessages: referencedMessages)
+
+        // We do have this message in our (top message) model, so we do have to update it
         guard let existingMessage = messages.object(at: indexExisting) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We should have the message at this point")
@@ -316,6 +317,18 @@ extension EmailListViewModel: MessageFolderDelegate {
             return
         }
         update(message: message, previewMessage: previewMessage, atIndex: indexExisting)
+    }
+
+    /**
+     Updates the given `childMessage` if it's currently displayed.
+     - Returns: `true` if the `childMessage` was updated, `false` otherwise.
+     */
+    private func updateIfDisplayed(childMessage: Message, referencedMessages: [Message]) -> Bool {
+        if isCurrentlyDisplayingDetailsOf(oneOf: referencedMessages) {
+            updateThreadListDelegate?.updated(message: childMessage)
+            return true
+        }
+        return false
     }
 
     /**
