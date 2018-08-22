@@ -136,7 +136,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
             indexPath: indexOfTopMessage0,
-            expectation: expectation(description: "expectationUpdated"))
+            expectation: expectation(
+                description: "expectationUpdated testThreadedUpdateTopMessage"))
 
         emailListViewModel.didUpdate(messageFolder: topMessages[0])
 
@@ -162,11 +163,13 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
         emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
             indexPath: indexOfTopMessageNewest,
-            expectation: expectation(description: "expectationTopUpdated"))
+            expectation: expectation(
+                description: "expectationTopUpdated testThreadedUpdateDisplayedChildMessage"))
 
         updateThreadListDelegate.expectationUpdated = ExpectationChildMessageUpdated(
             message: incomingMessage,
-            expectation: expectation(description: "expectationChildUpdated"))
+            expectation: expectation(
+                description: "expectationChildUpdated testThreadedUpdateDisplayedChildMessage"))
 
         emailListViewModel.didUpdate(messageFolder: incomingMessage)
 
@@ -191,7 +194,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 //        emailListViewModelDelegate.expectationUndiplayedMessageUpdated =
 //            ExpectationUndiplayedMessageUpdated(
 //                message: incomingMessage,
-//                expectation: expectation(description: "expectationUndiplayedMessageUpdated"))
+//                expectation: expectation(
+//                    description: "expectationUndiplayedMessageUpdated testThreadedUpdateUnDisplayedChildMessage"))
 //
 //        emailListViewModel.didUpdate(messageFolder: incomingMessage)
 //
@@ -214,7 +218,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 //
 //        updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
 //            message: incomingMessage,
-//            expectation: expectation(description: "expectationChildMessageDeleted"))
+//            expectation: expectation(description: "expectationChildMessageDeleted testThreadedDeleteDisplayedChildMessage"))
 //
 //        let refs = Set(incomingMessage.references)
 //        incomingMessage.imapDelete()
@@ -238,7 +242,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 //
 //        emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
 //            indexPath: indexOfTopMessage0,
-//            expectation: expectation(description: "expectationUpdated"))
+//            expectation: expectation(
+//                description: "expectationUpdated testThreadedDeleteUnDisplayedChildMessage"))
 //
 //        let refs = Set(incomingMessage.references)
 //        incomingMessage.imapDelete()
@@ -256,7 +261,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 //        emailListViewModelDelegate.expectationTopMessageDeleted =
 //            ExpectationViewModelDelegateTopMessageDeleted(
 //                indexPath: indexOfTopMessageNewest,
-//                expectation: expectation(description: "expectationTopMessageDeleted"))
+//                expectation: expectation(
+//                    description: "expectationTopMessageDeleted testUnThreadedUserDeleteUndisplayedMessage"))
 //
 //        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 //
@@ -277,7 +283,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 //        emailListViewModelDelegate.expectationTopMessageDeleted =
 //            ExpectationViewModelDelegateTopMessageDeleted(
 //                indexPath: indexOfTopMessageNewest,
-//                expectation: expectation(description: "expectationTopMessageDeleted"))
+//                expectation: expectation(
+//                    description: "expectationTopMessageDeleted testUnThreadedUserDeleteDisplayedMessage"))
 //
 //        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 //
@@ -293,7 +300,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 //        emailListViewModelDelegate.expectationTopMessageDeleted =
 //            ExpectationViewModelDelegateTopMessageDeleted(
 //                indexPath: indexOfTopMessageNewest,
-//                expectation: expectation(description: "expectationTopMessageDeleted"))
+//                expectation: expectation(
+//                    description: "expectationTopMessageDeleted testThreadedUserDeleteMessageWithoutChild"))
 //
 //        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 //
@@ -342,7 +350,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
 
         emailListViewModelDelegate.expectationViewUpdated = expectation(
-            description: "expectationViewUpdated")
+            description: "expectationViewUpdated setUpTopMessages")
 
         emailListViewModel = EmailListViewModel(
             emailListViewModelDelegate: emailListViewModelDelegate,
@@ -400,20 +408,21 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             // expect top message
             emailListViewModelDelegate.expectationInserted = ExpectationTopMessageInserted(
                 indexPath: indexOfTopMessageNewest,
-                expectation: expectation(description: "expectationInserted"))
+                expectation: expectation(description: "expectationInserted testIncomingMessage"))
         } else if let indexPath = indexPathUpdated {
             emailListViewModelDelegate.expectationUpdated = ExpectationTopMessageUpdated(
                 indexPath: indexPath,
-                expectation: expectation(description: "expectationUpdated"))
+                expectation: expectation(description: "expectationUpdated testIncomingMessage"))
         } else {
             if openThread {
                 //expect transforming from single to thread
                 screenComposerProtocol.expectationShowThreadView = ExpectationShowThreadView(
-                    expectation: expectation(description: "expectationShowThreadView"))
+                    expectation: expectation(
+                        description: "expectationShowThreadView testIncomingMessage"))
             } else {
                 // expect child message to existing thread
                 updateThreadListDelegate.expectationAdded = ExpectationChildMessageAdded(
-                    expectation: expectation(description: "expectationAdded"))
+                    expectation: expectation(description: "expectationAdded testIncomingMessage"))
             }
         }
 
