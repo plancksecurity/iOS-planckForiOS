@@ -77,7 +77,7 @@ public struct AccountUserInput {
     public func account() throws -> Account {
         guard let address = self.address, address != "" else {
             let msg = NSLocalizedString("E-mail must not be empty",
-                                        comment: "Alert message for empty em-mail address field")
+                                        comment: "Alert message for empty e-mail address field")
             throw AccountSettingsUserInputError.invalidInputEmailAddress(localizedMessage: msg)
         }
 
