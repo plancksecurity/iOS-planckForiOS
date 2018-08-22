@@ -178,32 +178,32 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
-//    func testThreadedUpdateUnDisplayedChildMessage() {
-//        FolderThreading.override(factory: ThreadAwareFolderFactory())
-//        setUpTopMessages()
-//
-//        let unDisplayedMessage = topMessages[1]
-//        displayedMessage.messageModel = topMessages[0]
-//
-//        let incomingMessage = testIncomingMessage(
-//            parameters: IncomingMessageParameters.noMessage([unDisplayedMessage], nil),
-//            indexPathUpdated: indexOfTopMessage1)
-//        incomingMessage.imapFlags?.flagged = true
-//        XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
-//
-//        emailListViewModelDelegate.expectationUndiplayedMessageUpdated =
-//            ExpectationUndiplayedMessageUpdated(
-//                message: incomingMessage,
-//                expectation: expectation(
-//                    description: "expectationUndiplayedMessageUpdated testThreadedUpdateUnDisplayedChildMessage"))
-//
-//        emailListViewModel.didUpdate(messageFolder: incomingMessage)
-//
-//        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
-//            XCTAssertNil(err)
-//        }
-//    }
-//
+    func testThreadedUpdateUnDisplayedChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let unDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = topMessages[0]
+
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([unDisplayedMessage], nil),
+            indexPathUpdated: indexOfTopMessage1)
+        incomingMessage.imapFlags?.flagged = true
+        XCTAssertTrue(incomingMessage.imapFlags?.flagged ?? false)
+
+        emailListViewModelDelegate.expectationUndiplayedMessageUpdated =
+            ExpectationUndiplayedMessageUpdated(
+                message: incomingMessage,
+                expectation: expectation(
+                    description: "expectationUndiplayedMessageUpdated testThreadedUpdateUnDisplayedChildMessage"))
+
+        emailListViewModel.didUpdate(messageFolder: incomingMessage)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
 //    func testThreadedDeleteDisplayedChildMessage() {
 //        FolderThreading.override(factory: ThreadAwareFolderFactory())
 //        setUpTopMessages()
