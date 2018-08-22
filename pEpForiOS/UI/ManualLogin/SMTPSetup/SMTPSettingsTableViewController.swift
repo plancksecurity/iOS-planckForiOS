@@ -175,7 +175,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
                 account.save()
             }
         }
-        GCD.onMain() { //IOS-1148: clean up
+        GCD.onMain() {
             self.isCurrentlyVerifying =  false
             switch result {
             case .ok:

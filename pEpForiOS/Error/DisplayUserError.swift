@@ -19,7 +19,7 @@ import Foundation
 /// a message.
 /// Buttons and actions to react to buttons have intentionally not been implemented. Currently not
 /// required.
-struct DisplayUserError: LocalizedError { //IOS-1248: handle LoginTableViewControllerError
+struct DisplayUserError: LocalizedError {
     enum ErrorType {
         /// We could not login for some reason
         case authenticationFailed
@@ -28,7 +28,7 @@ struct DisplayUserError: LocalizedError { //IOS-1248: handle LoginTableViewContr
         /// Somthing went wrong internally. Do not bother the user with technical details.
         case internalError
         /// Any issue comunicating with the server
-        case brokenServerConnectionImap //IOS-1248: differ between IMAP and SMTP
+        case brokenServerConnectionImap
         /// Any issue comunicating with the server
         case brokenServerConnectionSmtp
         /// Use this only for errors that are not known to DisplayUserError yet and thus can not
