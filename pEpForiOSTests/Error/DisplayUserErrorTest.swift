@@ -25,14 +25,76 @@ class DisplayUserErrorTest: XCTestCase {
                                            .folderAppendFailed,
                                            .badResponse(#function),
                                            .actionFailed]
-    func testSmtpErrors() {
+    let backgroundGeneralErrors: [BackgroundError.GeneralError] =
+        [.illegalState(info: "illegalState"),
+         .invalidParameter(info: "invalidParameter"),
+         .operationFailed(info: "operationFailed")]
+
+    let backgroundImapErrors: [BackgroundError.ImapError] =
+        [.invalidConnection(info: "invalidConnection")]
+
+    let backgroundSmtpErrors: [BackgroundError.SmtpError] =
+        [.invalidConnection(info: "invalidConnection"),
+         .messageNotSent(info: "invalidConnection"),
+         .transactionInitiationFailed(info: "transactionInitiationFailed"),
+         .recipientIdentificationFailed(info: "recipientIdentificationFailed"),
+         .transactionResetFailed(info: "transactionResetFailed"),
+         .authenticationFailed(info: "authenticationFailed"),
+         .connectionLost(info: "connectionLost"),
+         .connectionTerminated(info: "connectionTerminated"),
+         .connectionTimedOut(info: "connectionTimedOut"),
+         .requestCancelled(info: "requestCancelled"),
+         .badResponse(info: "badResponse")]
+
+    let backgroundCoreDataErrors: [BackgroundError.CoreDataError] =
+        [.couldNotInsertOrUpdate(info: "couldNotInsertOrUpdate"),
+         .couldNotStoreFolder(info: "couldNotStoreFolder"),
+         .couldNotStoreMessage(info: "couldNotStoreMessage"),
+         .couldNotFindAccount(info: "couldNotFindAccount"),
+         .couldNotFindFolder(info: "couldNotFindFolder"),
+         .couldNotFindMessage(info: "couldNotFindMessage")]
+
+    let backgroundPepErrors: [BackgroundError.PepError] =
+        [.encryptionError(info: "encryptionError")]
+
+    func testSmtpSentErrors() {
         for error in smtpSentErrors {
             assert(error: error)
         }
     }
 
-    func testImapErrors() {
+    func testImapSyncErrors() {
         for error in imapSyncErrors {
+            assert(error: error)
+        }
+    }
+
+    func testBackgroundGeneralErrors() {
+        for error in backgroundGeneralErrors {
+            assert(error: error)
+        }
+    }
+
+    func testBackgroundImapErrors() {
+        for error in backgroundImapErrors {
+            assert(error: error)
+        }
+    }
+
+    func testBackgroundSmtpErrors() {
+        for error in backgroundSmtpErrors {
+            assert(error: error)
+        }
+    }
+
+    func testBackgroundCoreDataErrors() {
+        for error in backgroundCoreDataErrors {
+            assert(error: error)
+        }
+    }
+
+    func testBackgroundPepErrors() {
+        for error in backgroundPepErrors {
             assert(error: error)
         }
     }
