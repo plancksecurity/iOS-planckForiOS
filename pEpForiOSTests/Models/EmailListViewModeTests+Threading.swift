@@ -252,23 +252,23 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
-//    func testUnThreadedUserDeleteUndisplayedMessage() {
-//        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
-//        setUpTopMessages()
-//
-//        emailListViewModelDelegate.expectationTopMessageDeleted =
-//            ExpectationViewModelDelegateTopMessageDeleted(
-//                indexPath: indexOfTopMessageNewest,
-//                expectation: expectation(
-//                    description: "expectationTopMessageDeleted testUnThreadedUserDeleteUndisplayedMessage"))
-//
-//        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
-//
-//        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
-//            XCTAssertNil(err)
-//        }
-//    }
-//
+    func testUnThreadedUserDeleteUndisplayedMessage() {
+        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
+        setUpTopMessages()
+
+        emailListViewModelDelegate.expectationTopMessageDeleted =
+            ExpectationViewModelDelegateTopMessageDeleted(
+                indexPath: indexOfTopMessageNewest,
+                expectation: expectation(
+                    description: "expectationTopMessageDeleted testUnThreadedUserDeleteUndisplayedMessage"))
+
+        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
 //    func testUnThreadedUserDeleteDisplayedMessage() {
 //        FolderThreading.override(factory: ThreadUnAwareFolderFactory())
 //        setUpTopMessages()
