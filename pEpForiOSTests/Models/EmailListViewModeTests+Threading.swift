@@ -291,23 +291,23 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
-//    func testThreadedUserDeleteMessageWithoutChild() {
-//        FolderThreading.override(factory: ThreadAwareFolderFactory())
-//        setUpTopMessages()
-//
-//        emailListViewModelDelegate.expectationTopMessageDeleted =
-//            ExpectationViewModelDelegateTopMessageDeleted(
-//                indexPath: indexOfTopMessageNewest,
-//                expectation: expectation(
-//                    description: "expectationTopMessageDeleted testThreadedUserDeleteMessageWithoutChild"))
-//
-//        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
-//
-//        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
-//            XCTAssertNil(err)
-//        }
-//    }
-//
+    func testThreadedUserDeleteMessageWithoutChild() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        emailListViewModelDelegate.expectationTopMessageDeleted =
+            ExpectationViewModelDelegateTopMessageDeleted(
+                indexPath: indexOfTopMessageNewest,
+                expectation: expectation(
+                    description: "expectationTopMessageDeleted testThreadedUserDeleteMessageWithoutChild"))
+
+        emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
 //    func testThreadedReferencesSentMessage() {
 //        testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .sent)
 //    }
