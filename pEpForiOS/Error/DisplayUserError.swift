@@ -19,7 +19,7 @@ import Foundation
 /// a message.
 /// Buttons and actions to react to buttons have intentionally not been implemented. Currently not
 /// required.
-struct DisplayUserError: LocalizedError {
+struct DisplayUserError: LocalizedError { //IOS-1248: handle LoginTableViewControllerError
     enum ErrorType {
         /// We could not login for some reason
         case authenticationFailed
@@ -28,7 +28,9 @@ struct DisplayUserError: LocalizedError {
         /// Somthing went wrong internally. Do not bother the user with technical details.
         case internalError
         /// Any issue comunicating with the server
-        case brokenServerConnection
+        case brokenServerConnectionImap //IOS-1248: differ between IMAP and SMTP
+        /// Any issue comunicating with the server
+        case brokenServerConnectionSmtp
         /// Use this only for errors that are not known to DisplayUserError yet and thus can not
         /// be categorized
         case unknownError
@@ -42,7 +44,11 @@ struct DisplayUserError: LocalizedError {
                 #else
                     return false
                 #endif
-            case .authenticationFailed, .brokenServerConnection, .messageNotSent, .unknownError:
+            case .authenticationFailed,
+                 .brokenServerConnectionImap,
+                 .brokenServerConnectionSmtp,
+                 .messageNotSent,
+                 .unknownError:
                 return true
             }
         }
@@ -106,11 +112,11 @@ struct DisplayUserError: LocalizedError {
         case .authenticationFailed:
             return .authenticationFailed
         case .connectionLost:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .connectionTerminated:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .connectionTimedOut:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .badResponse:
             return .internalError
         }
@@ -125,11 +131,11 @@ struct DisplayUserError: LocalizedError {
         case .authenticationFailed:
             return .authenticationFailed
         case .connectionLost:
-            return .brokenServerConnection
+            return .brokenServerConnectionImap
         case .connectionTerminated:
-            return .brokenServerConnection
+            return .brokenServerConnectionImap
         case .connectionTimedOut:
-            return .brokenServerConnection
+            return .brokenServerConnectionImap
         case .folderAppendFailed:
             return .internalError
         case .badResponse:
@@ -157,7 +163,7 @@ struct DisplayUserError: LocalizedError {
     static private func type(forError error: BackgroundError.ImapError) -> ErrorType {
         switch error {
         case .invalidConnection:
-            return .brokenServerConnection
+            return .brokenServerConnectionImap
         }
     }
 
@@ -166,25 +172,25 @@ struct DisplayUserError: LocalizedError {
     static private func type(forError error: BackgroundError.SmtpError) -> ErrorType {
         switch error {
         case .invalidConnection:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .messageNotSent:
             return .messageNotSent
         case .transactionInitiationFailed:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .recipientIdentificationFailed:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .transactionResetFailed:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .authenticationFailed:
             return .authenticationFailed
         case .connectionLost:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .connectionTerminated:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .connectionTimedOut:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .requestCancelled:
-            return .brokenServerConnection
+            return .brokenServerConnectionSmtp
         case .badResponse:
             return .internalError
         }
@@ -249,10 +255,14 @@ struct DisplayUserError: LocalizedError {
             return NSLocalizedString("Error",
                                      comment:
                 "Title of error alert shown to the user in case a message could not be sent")
-        case .brokenServerConnection:
+        case .brokenServerConnectionImap:
             return NSLocalizedString("Server Unreachable",
                                      comment:
-                "Title of error alert shown to the user in case we can not connect to the server")
+                "Title of error alert shown to the user in case we can not connect to the IMAP server")
+        case .brokenServerConnectionSmtp:
+            return NSLocalizedString("Server Unreachable",
+                                     comment:
+                "Title of error alert shown to the user in case we can not connect to the SMTP server")
         case .internalError:
             return NSLocalizedString("Internal Error",
                                      comment:"Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server ")
@@ -268,17 +278,21 @@ struct DisplayUserError: LocalizedError {
     public var errorDescription: String? {
         switch type {
         case .authenticationFailed:
-            return NSLocalizedString("It was impossible to login to the server.",
+            return NSLocalizedString("It was impossible to login to the server. Username or password are wrong.",
                                      comment:
                 "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
         case .messageNotSent:
             return NSLocalizedString("The message could not be sent. Please try again later.",
                                      comment:
                 "Error message shown to the user in case a message could not be sent.")
-        case .brokenServerConnection:
-            return NSLocalizedString("We could not connect to the server.",
+        case .brokenServerConnectionImap:
+            return NSLocalizedString("We could not connect to the IMAP server.",
                                      comment:
-                "Error message shown to the user in case we can not connect to the server")
+                "Error message shown to the user in case we can not connect to the IMAP server")
+        case .brokenServerConnectionSmtp:
+            return NSLocalizedString("We could not connect to the SMTP server.",
+                                     comment:
+                "Error message shown to the user in case we can not connect to the SMTP server")
         case .internalError:
             return NSLocalizedString("An internal error occured. Sorry, that should not happen.",
                                      comment:
