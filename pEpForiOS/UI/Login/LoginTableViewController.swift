@@ -8,16 +8,18 @@
 
  import UIKit
 
- enum LoginTableViewControllerError: Error {
-    case missingEmail
-    case missingPassword
-    case noConnectData
-    case missingUsername
-    case minimumLengthUsername
-    case accountExistence
+ extension LoginTableViewController {
+    enum LoginError: Error {
+        case missingEmail
+        case missingPassword
+        case noConnectData
+        case missingUsername
+        case minimumLengthUsername
+        case accountExistence
+    }
  }
 
- extension LoginTableViewControllerError: LocalizedError {
+ extension LoginTableViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingEmail:
@@ -196,24 +198,24 @@
         isCurrentlyVerifying = true
 
         guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
-            handleLoginError(error: LoginTableViewControllerError.missingEmail,
+            handleLoginError(error: LoginTableViewController.LoginError.missingEmail,
                              offerManualSetup: false)
             return
         }
         guard !loginViewModel.exist(address: email) else {
             isCurrentlyVerifying = false
-            handleLoginError(error: LoginTableViewControllerError.accountExistence,
+            handleLoginError(error: LoginTableViewController.LoginError.accountExistence,
                              offerManualSetup: false)
             return
         }
         guard let username = user.text, username != ""  else {
-            handleLoginError(error: LoginTableViewControllerError.missingUsername,
+            handleLoginError(error: LoginTableViewController.LoginError.missingUsername,
                              offerManualSetup: false)
             return
         }
 
         guard username.count > 4 else {
-            handleLoginError(error: LoginTableViewControllerError.minimumLengthUsername,
+            handleLoginError(error: LoginTableViewController.LoginError.minimumLengthUsername,
                              offerManualSetup: false)
             return
         }
@@ -227,7 +229,7 @@
                 mySelfer: appConfig.mySelfer, oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
-                handleLoginError(error: LoginTableViewControllerError.missingPassword,
+                handleLoginError(error: LoginTableViewController.LoginError.missingPassword,
                                  offerManualSetup: false)
                 return
             }
@@ -330,7 +332,7 @@
                 me.handleLoginError(error: err, offerManualSetup: true)
             case .noImapConnectData, .noSmtpConnectData:
                 me.lastAccountInput = accountInput
-                me.handleLoginError(error: LoginTableViewControllerError.noConnectData,
+                me.handleLoginError(error: LoginTableViewController.LoginError.noConnectData,
                                     offerManualSetup: true)
             }
         }
