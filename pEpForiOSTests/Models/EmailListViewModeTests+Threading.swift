@@ -216,7 +216,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
             message: incomingMessage,
             expectation: expectation(
-                description: "expectationChildMessageDeleted testThreadedDeleteDisplayedChildMessage"))
+                description:
+                "expectationChildMessageDeleted testThreadedDeleteDisplayedChildMessage"))
 
         let refs = Set(incomingMessage.references)
         incomingMessage.imapDelete()
@@ -260,7 +261,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             ExpectationViewModelDelegateTopMessageDeleted(
                 indexPath: indexOfTopMessageNewest,
                 expectation: expectation(
-                    description: "expectationTopMessageDeleted testUnThreadedUserDeleteUndisplayedMessage"))
+                    description:
+                    "expectationTopMessageDeleted testUnThreadedUserDeleteUndisplayedMessage"))
 
         emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 
@@ -282,7 +284,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             ExpectationViewModelDelegateTopMessageDeleted(
                 indexPath: indexOfTopMessageNewest,
                 expectation: expectation(
-                    description: "expectationTopMessageDeleted testUnThreadedUserDeleteDisplayedMessage"))
+                    description:
+                    "expectationTopMessageDeleted testUnThreadedUserDeleteDisplayedMessage"))
 
         emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 
@@ -299,7 +302,8 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             ExpectationViewModelDelegateTopMessageDeleted(
                 indexPath: indexOfTopMessageNewest,
                 expectation: expectation(
-                    description: "expectationTopMessageDeleted testThreadedUserDeleteMessageWithoutChild"))
+                    description:
+                    "expectationTopMessageDeleted testThreadedUserDeleteMessageWithoutChild"))
 
         emailListViewModel.delete(forIndexPath: indexOfTopMessageNewest)
 
