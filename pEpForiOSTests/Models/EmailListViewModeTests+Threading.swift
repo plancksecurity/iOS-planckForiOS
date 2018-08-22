@@ -198,31 +198,35 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
-//    func testThreadedDeleteDisplayedChildMessage() {
-//        FolderThreading.override(factory: ThreadAwareFolderFactory())
-//        setUpTopMessages()
-//
-//        let theDisplayedMessage = topMessages[1]
-//        displayedMessage.messageModel = theDisplayedMessage
-//
-//        let incomingMessage = testIncomingMessage(
-//            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
-//            indexPathUpdated: nil,
-//            openThread: true)
-//
-//        updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
-//            message: incomingMessage,
-//            expectation: expectation(description: "expectationChildMessageDeleted testThreadedDeleteDisplayedChildMessage"))
-//
-//        let refs = Set(incomingMessage.references)
-//        incomingMessage.imapDelete()
-//        emailListViewModel.didDelete(messageFolder: incomingMessage, belongingToThread: refs)
-//
-//        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
-//            XCTAssertNil(err)
-//        }
-//    }
-//
+    func testThreadedDeleteDisplayedChildMessage() {
+        FolderThreading.override(factory: ThreadAwareFolderFactory())
+        setUpTopMessages()
+
+        let theDisplayedMessage = topMessages[1]
+        displayedMessage.messageModel = theDisplayedMessage
+
+        let incomingMessage = testIncomingMessage(
+            parameters: IncomingMessageParameters.noMessage([theDisplayedMessage], nil),
+            indexPathUpdated: nil,
+            openThread: true)
+
+        // simulate the UI replacing the top message that is currently shown
+        displayedMessage.messageModel = incomingMessage
+
+        updateThreadListDelegate.expectationChildMessageDeleted = ExpectationChildMessageDeleted(
+            message: incomingMessage,
+            expectation: expectation(
+                description: "expectationChildMessageDeleted testThreadedDeleteDisplayedChildMessage"))
+
+        let refs = Set(incomingMessage.references)
+        incomingMessage.imapDelete()
+        emailListViewModel.didDelete(messageFolder: incomingMessage, belongingToThread: refs)
+
+        waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
+            XCTAssertNil(err)
+        }
+    }
+
 //    func testThreadedDeleteUnDisplayedChildMessage() {
 //        FolderThreading.override(factory: ThreadAwareFolderFactory())
 //        setUpTopMessages()
