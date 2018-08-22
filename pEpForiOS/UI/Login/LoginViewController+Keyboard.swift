@@ -23,11 +23,27 @@ extension LoginViewController {
             return
         }
 
-        var contentInset:UIEdgeInsets = contentScrollView.contentInset
-        contentInset.bottom = keyboardFrame.size.height
-        contentScrollView.contentInset = contentInset
-        contentScrollView.scrollIndicatorInsets = contentInset
-        contentScrollView.scrollRectToVisible(loginButton.frame, animated: true)
+        if UIDevice.current.userInterfaceIdiom == .pad && self.traitCollection.horizontalSizeClass == .regular {
+            var loginButtonUnderSpace = loginButton.frame.maxY
+            loginButtonUnderSpace = self.view.frame.height - loginButtonUnderSpace
+            
+            var contentInset:UIEdgeInsets = contentScrollView.contentInset
+            contentInset.bottom = keyboardFrame.size.height - loginButtonUnderSpace
+            contentScrollView.contentInset = contentInset
+            contentScrollView.scrollIndicatorInsets = contentInset
+            
+            var biggerLoginButtonFrame = loginButton.frame
+            biggerLoginButtonFrame.size = CGSize(width: loginButton.frame.width, height: loginButton.frame.height + 20)
+            contentScrollView.scrollRectToVisible(biggerLoginButtonFrame, animated: true)
+        }
+        else {
+            var contentInset:UIEdgeInsets = contentScrollView.contentInset
+            contentInset.bottom = keyboardFrame.size.height
+            contentScrollView.contentInset = contentInset
+            contentScrollView.scrollIndicatorInsets = contentInset
+            contentScrollView.scrollRectToVisible(loginButton.frame, animated: true)
+
+        }
     }
 
     @objc func keyboardWillHide(notification:NSNotification){
