@@ -312,10 +312,10 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .sent)
     }
 
-//    func testThreadedReferencesTrashedMessage() {
-//        testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .trashed)
-//    }
-//
+    func testThreadedReferencesTrashedMessage() {
+        testThreadedReferencesSentOrTrashedExistingMessage(sentOrTrashed: .trashed)
+    }
+
 //    func testThreadedSpecial() {
 //        FolderThreading.override(factory: ThreadAwareFolderFactory())
 //        setUpTopMessages(
