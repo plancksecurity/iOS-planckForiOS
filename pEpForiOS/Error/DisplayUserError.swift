@@ -71,9 +71,21 @@ struct DisplayUserError: LocalizedError {
             type = DisplayUserError.type(forError: oauthInternalError)
         } else if let oauthError = error as? OAuth2AuthorizationError {
             type = DisplayUserError.type(forError: oauthError)
-        } else if let err = error as? BackgroundError.PepError {
+        }
+            //BackgroundError
+        else if let err = error as? BackgroundError.GeneralError {
             type = DisplayUserError.type(forError: err)
-        } else {
+        } else if let err = error as? BackgroundError.ImapError {
+            type = DisplayUserError.type(forError: err)
+        } else if let err = error as? BackgroundError.SmtpError {
+            type = DisplayUserError.type(forError: err)
+        } else if let err = error as? BackgroundError.CoreDataError {
+            type = DisplayUserError.type(forError: err)
+        }else if let err = error as? BackgroundError.PepError {
+            type = DisplayUserError.type(forError: err)
+        }
+            //Unknown
+        else {
             foreignDescription = error.localizedDescription
             type = .unknownError
         }
