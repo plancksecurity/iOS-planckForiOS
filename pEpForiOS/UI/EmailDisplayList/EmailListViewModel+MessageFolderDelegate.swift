@@ -316,7 +316,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // We got called even the flaggs did not change. Ignore.
             return
         }
-        update(message: message, previewMessage: previewMessage, atIndex: indexExisting)
+        update(topMessage: message, previewMessage: previewMessage, atIndex: indexExisting)
     }
 
     /**
@@ -332,12 +332,12 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
 
     /**
-     Updates the given `message` at the given `atIndex`.
+     Updates the given `topMessage` at the given `atIndex`.
      - Note:
        * The message might get deleted if it doesn't fit the filter anymore.
        * The `previewMessage` might seem redundant, but it has already been computed.
      */
-    private func update(message: Message,
+    private func update(topMessage: Message,
                         previewMessage: MessageViewModel,
                         atIndex indexExisting: Int) {
         DispatchQueue.main.async { [weak self] in
@@ -348,7 +348,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             me.messages.removeObject(at: indexExisting)
 
             if let filter = me.folderToShow.filter,
-                !filter.fulfillsFilter(message: message) {
+                !filter.fulfillsFilter(message: topMessage) {
                 // The message was included in the model,
                 // but does not fulfil the filter criteria
                 // anymore after it has been updated.
@@ -374,8 +374,8 @@ Something is fishy here.
             let indexPath = IndexPath(row: indexInserted, section: 0)
             me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
                                                               didUpdateDataAt: [indexPath])
-            if me.currentDisplayedMessage?.messageModel == message {
-                me.currentDisplayedMessage?.update(forMessage: message)
+            if me.currentDisplayedMessage?.messageModel == topMessage {
+                me.currentDisplayedMessage?.update(forMessage: topMessage)
             }
         }
     }
