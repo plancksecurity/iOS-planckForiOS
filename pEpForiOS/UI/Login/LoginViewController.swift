@@ -8,16 +8,18 @@
 
 import UIKit
 
-enum LoginViewControllerError: Error {
-    case missingEmail
-    case missingPassword
-    case noConnectData
-    case missingUsername
-    case minimumLengthUsername
-    case accountExistence
+extension LoginViewController {
+    enum LoginError: Error {
+        case missingEmail
+        case missingPassword
+        case noConnectData
+        case missingUsername
+        case minimumLengthUsername
+        case accountExistence
+    }
 }
 
-extension LoginViewControllerError: LocalizedError {
+extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingEmail:
@@ -41,13 +43,12 @@ extension LoginViewControllerError: LocalizedError {
     }
 }
 
-
 protocol LoginViewControllerDelegate: class  {
     func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController)
 }
 
-
 class LoginViewController: BaseViewController {
+    static let minCharUserName = 1
     var loginViewModel = LoginViewModel()
     var offerManualSetup = false
     weak var delegate: LoginViewControllerDelegate?
@@ -60,7 +61,6 @@ class LoginViewController: BaseViewController {
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
 
     @IBOutlet var contentScrollView: UIScrollView!
-
 
     var isCurrentlyVerifying = false {
         didSet {
@@ -115,7 +115,7 @@ class LoginViewController: BaseViewController {
         // hide extended login fields
         manualConfigButton.isHidden = true
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self, action: #selector(LoginTableViewController.dismissKeyboard))
+            target: self, action: #selector(LoginViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
 
         self.navigationItem.hidesBackButton = true
@@ -199,24 +199,24 @@ class LoginViewController: BaseViewController {
         isCurrentlyVerifying = true
 
         guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
-            handleLoginError(error: LoginTableViewController.LoginError.missingEmail,
+            handleLoginError(error: LoginViewController.LoginError.missingEmail,
                              offerManualSetup: false)
             return
         }
         guard !loginViewModel.exist(address: email) else {
             isCurrentlyVerifying = false
-            handleLoginError(error: LoginTableViewController.LoginError.accountExistence,
+            handleLoginError(error: LoginViewController.LoginError.accountExistence,
                              offerManualSetup: false)
             return
         }
         guard let username = user.text, username != ""  else {
-            handleLoginError(error: LoginTableViewController.LoginError.missingUsername,
+            handleLoginError(error: LoginViewController.LoginError.missingUsername,
                              offerManualSetup: false)
             return
         }
 
-        guard username.count >= LoginTableViewController.minCharUserName else {
-            handleLoginError(error: LoginTableViewController.LoginError.minimumLengthUsername,
+        guard username.count >= LoginViewController.minCharUserName else {
+            handleLoginError(error: LoginViewController.LoginError.minimumLengthUsername,
                              offerManualSetup: false)
             return
         }
@@ -230,7 +230,7 @@ class LoginViewController: BaseViewController {
                 mySelfer: appConfig.mySelfer, oauth2Authorizer: oauth)
         } else {
             guard let pass = password.text, pass != "" else {
-                handleLoginError(error: LoginTableViewController.LoginError.missingPassword,
+                handleLoginError(error: LoginViewController.LoginError.missingPassword,
                                  offerManualSetup: false)
                 return
             }
@@ -335,7 +335,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
                 me.handleLoginError(error: err, offerManualSetup: true)
             case .noImapConnectData, .noSmtpConnectData:
                 me.lastAccountInput = accountInput
-                me.handleLoginError(error: LoginTableViewController.LoginError.noConnectData,
+                me.handleLoginError(error: LoginViewController.LoginError.noConnectData,
                                     offerManualSetup: true)
             }
         }
