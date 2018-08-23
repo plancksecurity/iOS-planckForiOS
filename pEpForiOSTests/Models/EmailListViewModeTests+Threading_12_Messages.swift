@@ -82,21 +82,26 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
         myDisplayedMessage.messageModel = msg2
         myDisplayedMessage.detailTypeVar = .thread
 
-        let msg3 = createMessage(number: 3, referencing: [1, 2])
-        addToThread(message: msg3,
-                    viewModel: viewModel,
-                    emailListViewModelDelegate: emailListViewModelDelegate,
-                    displayedMessage: myDisplayedMessage,
-                    updateThreadListDelegate: myUpdateThreadListDelegate,
-                    indexPathUpdated: index0)
-
-        let msg4 = createMessage(number: 4, referencing: [1, 2])
-        addToThread(message: msg4,
-                    viewModel: viewModel,
-                    emailListViewModelDelegate: emailListViewModelDelegate,
-                    displayedMessage: myDisplayedMessage,
-                    updateThreadListDelegate: myUpdateThreadListDelegate,
-                    indexPathUpdated: index0)
+        for newMessage in
+            [createMessage(number: 3, referencing: [1, 2]),
+             createMessage(number: 4, referencing: [1, 2]),
+             createMessage(number: 5, referencing: [1, 2, 3]),
+             createMessage(number: 6, referencing: [1, 2, 3, 5]),
+             createMessage(number: 7, referencing: [1, 2, 3, 5, 6]),
+             createMessage(number: 8, referencing: [1, 2, 3, 5]),
+             createMessage(number: 9, referencing: [1, 2, 3, 5, 6]),
+             createMessage(number: 10, referencing: [8]),
+             createMessage(number: 11, referencing: [1, 2, 3]),
+             createMessage(number: 12, referencing: [1, 2, 3, 11]),
+             createMessage(number: 13, referencing: [1, 2, 3, 5, 6, 9]),
+             createMessage(number: 14, referencing: [1, 2, 3, 5, 6, 9, 13])] {
+                addToThread(message: newMessage,
+                            viewModel: viewModel,
+                            emailListViewModelDelegate: emailListViewModelDelegate,
+                            displayedMessage: myDisplayedMessage,
+                            updateThreadListDelegate: myUpdateThreadListDelegate,
+                            indexPathUpdated: index0)
+        }
     }
 
     // MARK: - Helpers
