@@ -90,10 +90,14 @@ extension RecipientCell {
         }
 
         //enable send button when there are something in recipents and disable it if its empty
-        delegate?.messageCanBeSend(value: !(
-            (textView.text.isEmpty || text.isEmpty)
+        delegate?.recipientCellContentHasChanged(newValueIsProbablyValidEmailAddress:
+            !(
+                (textView.text.isEmpty || text.isEmpty)
                 &&
-            (range.length == 1 && !(range.location > 0))))
+                    (range.length == 1 && !(range.location > 0))
+            )
+            && textView.text.isProbablyValidEmail()
+        )
         
         if text.utf8.count == 0 && range.location != NSNotFound && !hasSelection {
             let selectedRange = textView.selectedTextRange!

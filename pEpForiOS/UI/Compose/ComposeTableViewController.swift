@@ -1104,6 +1104,12 @@ class ComposeTableViewController: BaseTableViewController {
 // MARK: - ComposeCellDelegate
 
 extension ComposeTableViewController: ComposeCellDelegate {
+
+    func recipientCellContentHasChanged(newValueIsProbablyValidEmailAddress maybeValid: Bool) {
+        //DODO: re-calculate send status
+        messageCanBeSend(value: maybeValid)
+    }
+
     func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
                      forFieldType type: ComposeFieldModel.FieldType) {
         let identities = changedAddresses.map { Identity(address: $0) }
@@ -1230,6 +1236,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {
     }
 
+    //IOS-1259: rename
     func messageCanBeSend(value: Bool) {
         self.sendButton.isEnabled = value
     }
