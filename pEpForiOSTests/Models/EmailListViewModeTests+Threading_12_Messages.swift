@@ -82,19 +82,20 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
         myDisplayedMessage.messageModel = msg2
         myDisplayedMessage.detailTypeVar = .thread
 
-        for newMessage in
-            [createMessage(number: 3, referencing: [1, 2]),
-             createMessage(number: 4, referencing: [1, 2]),
-             createMessage(number: 5, referencing: [1, 2, 3]),
-             createMessage(number: 6, referencing: [1, 2, 3, 5]),
-             createMessage(number: 7, referencing: [1, 2, 3, 5, 6]),
-             createMessage(number: 8, referencing: [1, 2, 3, 5]),
-             createMessage(number: 9, referencing: [1, 2, 3, 5, 6]),
-             createMessage(number: 10, referencing: [8]),
-             //createMessage(number: 11, referencing: [1, 2, 3]),
-             //createMessage(number: 12, referencing: [1, 2, 3, 11]),
-             //createMessage(number: 13, referencing: [1, 2, 3, 5, 6, 9]),
-             /*createMessage(number: 14, referencing: [1, 2, 3, 5, 6, 9, 13])*/] {
+        for (uid, references) in
+            [(3, [1, 2]),
+             (4, [1, 2]),
+             (5, [1, 2, 3]),
+             (6, [1, 2, 3, 5]),
+             (7, [1, 2, 3, 5, 6]),
+             (8, [1, 2, 3, 5]),
+             (9, [1, 2, 3, 5, 6]),
+             (10, [1, 2, 3, 5, 8]),
+             (11, [1, 2, 3]),
+             (12, [1, 2, 3, 11]),
+             (13, [1, 2, 3, 5, 6, 9]),
+             (14, [1, 2, 3, 5, 6, 9, 13])] {
+                let newMessage = createMessage(number: uid, referencing: references)
                 addToThread(message: newMessage,
                             viewModel: viewModel,
                             emailListViewModelDelegate: emailListViewModelDelegate,
