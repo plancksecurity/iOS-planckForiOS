@@ -91,10 +91,10 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
              createMessage(number: 8, referencing: [1, 2, 3, 5]),
              createMessage(number: 9, referencing: [1, 2, 3, 5, 6]),
              createMessage(number: 10, referencing: [8]),
-             createMessage(number: 11, referencing: [1, 2, 3]),
-             createMessage(number: 12, referencing: [1, 2, 3, 11]),
-             createMessage(number: 13, referencing: [1, 2, 3, 5, 6, 9]),
-             createMessage(number: 14, referencing: [1, 2, 3, 5, 6, 9, 13])] {
+             //createMessage(number: 11, referencing: [1, 2, 3]),
+             //createMessage(number: 12, referencing: [1, 2, 3, 11]),
+             //createMessage(number: 13, referencing: [1, 2, 3, 5, 6, 9]),
+             /*createMessage(number: 14, referencing: [1, 2, 3, 5, 6, 9, 13])*/] {
                 addToThread(message: newMessage,
                             viewModel: viewModel,
                             emailListViewModelDelegate: emailListViewModelDelegate,
