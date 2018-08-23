@@ -109,9 +109,9 @@ class ComposeTableViewController: BaseTableViewController {
 
     func setupPickerView() {
         let accounts = Account.all()
-        self.pickerEmailAdresses = accounts.map { $0.user.address }
-        self.accountPicker.delegate = self
-        self.accountPicker.dataSource = self
+        pickerEmailAdresses = accounts.map { $0.user.address }
+        accountPicker.delegate = self
+        accountPicker.dataSource = self
     }
 
     func shouldDisplayAccountCell() -> Bool {
@@ -452,7 +452,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         message.pEpProtected = pEpProtection
-        message.setOriginalRatingHeader(rating: self.recalculateCurrentRating())
+        message.setOriginalRatingHeader(rating: recalculateCurrentRating())
 
         return message
     }
@@ -497,11 +497,11 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func recalculateCurrentRating() -> PEP_rating {
         let session = PEPSession()
-        if let from = self.origin {
+        if let from = origin {
             currentRating = session.outgoingMessageRating(from: from,
-                                                          to: self.destinyTo,
-                                                          cc: self.destinyCc,
-                                                          bcc: self.destinyBcc)
+                                                          to: destinyTo,
+                                                          cc: destinyCc,
+                                                          bcc: destinyBcc)
         } else {
             currentRating = PEP_rating_undefined
         }
@@ -509,7 +509,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func handshakeActionCombinations() -> [HandshakeCombination] {
-        if let from = self.origin {
+        if let from = origin {
             var allIdenties = destinyTo
             allIdenties.append(from)
             allIdenties.append(contentsOf: destinyCc)
@@ -663,7 +663,7 @@ class ComposeTableViewController: BaseTableViewController {
 
         let attachment = createAttachment(forAssetWithUrl: url, image: image)
         cell.inline(attachment: attachment)
-        self.tableView.updateSize()
+        tableView.updateSize()
     }
 
     private func attachVideo(forMediaWithInfo info: [String: Any]) {
@@ -763,7 +763,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         let height = cell.textView.fieldHeight
-            if cell is AccountCell, self.shouldDisplayAccountCell() {
+            if cell is AccountCell, shouldDisplayAccountCell() {
                 return height
         }
 
@@ -850,7 +850,7 @@ class ComposeTableViewController: BaseTableViewController {
                 } else if let ac = cell as? AccountCell, let type = ac.fieldModel?.type {
                     setup(ac)
                     cells[type] = ac
-                    self.accountCell = ac
+                    accountCell = ac
                 }
             }
         } else if indexPath.section == attachmentSection {
@@ -929,10 +929,10 @@ class ComposeTableViewController: BaseTableViewController {
             // We are in drafts folder and, from user perespective, are editing a drafted mail.
             // Technically we have to create a new one and delete the original message, as the
             // mail is already synced with the IMAP server and thus we must not modify it.
-            self.deleteOriginalMessage()
+            deleteOriginalMessage()
         }
 
-        if let msg = self.populateMessageFromUserInput() {
+        if let msg = populateMessageFromUserInput() {
             let acc = msg.parent.account
             if let f = Folder.by(account:acc, folderType: .drafts) {
                 msg.parent = f
@@ -1074,7 +1074,7 @@ class ComposeTableViewController: BaseTableViewController {
         if let composeView = composeTextViewFirstResponder {
             Timer.scheduledTimer(timeInterval: 0.1,
                                  target: self,
-                                 selector: #selector(self.scrollToMessageBodyCaretOnTimer),
+                                 selector: #selector(scrollToMessageBodyCaretOnTimer),
                                  userInfo: composeView,
                                  repeats: false)
             scrollToMessageBodyCaret(composeTextView: composeView)
@@ -1093,7 +1093,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     @objc func scrollToMessageBodyCaretOnTimer(_ timer: Timer) {
         if let composeView = timer.userInfo as? ComposeTextView {
-            self.scrollToMessageBodyCaret(composeTextView: composeView)
+            scrollToMessageBodyCaret(composeTextView: composeView)
         }
     }
     func scrollToMessageBodyCaret(composeTextView: ComposeTextView) {
@@ -1238,7 +1238,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
 
     //IOS-1259: rename
     func messageCanBeSend(value: Bool) {
-        self.sendButton.isEnabled = value
+        sendButton.isEnabled = value
     }
 }
 
@@ -1326,7 +1326,7 @@ extension ComposeTableViewController: SegueHandlerType {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
                 return
             }
-            destination.appConfig = self.appConfig
+            destination.appConfig = appConfig
             destination.message = populateMessageFromUserInput()
         }
     }
@@ -1462,7 +1462,7 @@ extension ComposeTableViewController {
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let address = pickerEmailAdresses[row]
-        self.accountCell?.setAccount(address: address)
+        accountCell?.setAccount(address: address)
     }
 
 
