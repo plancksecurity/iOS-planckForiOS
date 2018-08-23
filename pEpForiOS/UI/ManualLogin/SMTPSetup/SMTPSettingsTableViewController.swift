@@ -70,10 +70,6 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
         navigationItem.rightBarButtonItem?.isEnabled = !isCurrentlyVerifying
     }
 
-    private func viewLog() {
-        performSegue(withIdentifier: .viewLogSegue, sender: self)
-    }
-
     /// Triggers verification for given data.
     ///
     /// - Throws: AccountVerificationError
@@ -198,7 +194,6 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
 extension SMTPSettingsTableViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
-        case viewLogSegue
         case backToEmailListSegue
     }
 
@@ -207,11 +202,6 @@ extension SMTPSettingsTableViewController: SegueHandlerType {
         case .backToEmailListSegue:
             // nothing to do, since it's an unwind segue the targets already are configured
             break
-        case .viewLogSegue:
-            if let dnc = segue.destination as? UINavigationController,
-                let dvc = dnc.rootViewController as? LogViewController {
-                dvc.appConfig = appConfig
-            }
         default:()
         }
     }

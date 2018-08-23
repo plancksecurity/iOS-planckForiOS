@@ -166,12 +166,6 @@ class LoginViewController: BaseViewController {
                                                              message:error.localizedDescription,
                                                              preferredStyle: .alert)
         alertView.addAction(UIAlertAction(
-            title: NSLocalizedString( "View log",
-                                      comment: "Button for viewing the log on error"),
-            style: .default, handler: { action in
-                self.viewLog()
-        }))
-        alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
                 "Ok",
                 comment: "UIAlertAction ok after error"),
@@ -186,10 +180,6 @@ class LoginViewController: BaseViewController {
 
     @objc func dismissKeyboard() {
         view.endEditing(true)
-    }
-
-    func viewLog() {
-        performSegue(withIdentifier: .viewLogSegue, sender: self)
     }
 
     // MARK: - IBAction
@@ -279,7 +269,6 @@ extension LoginViewController: UITextFieldDelegate {
 extension LoginViewController: SegueHandlerType {
     public enum SegueIdentifier: String {
         case noSegue
-        case viewLogSegue
         case manualConfigSegue
     }
 
@@ -299,13 +288,6 @@ extension LoginViewController: SegueHandlerType {
                 vc.model.address = emailAddress.text
                 vc.model.password = password.text
                 vc.model.userName = user.text
-            }
-        case .viewLogSegue:
-            if let navVC = segue.destination as? UINavigationController,
-                let vc = navVC.topViewController as? LogViewController {
-                vc.appConfig = appConfig
-                vc.navigationController?.navigationBar.isHidden = false
-                vc.configureDismissButton(with: .done)
             }
         default:
             break

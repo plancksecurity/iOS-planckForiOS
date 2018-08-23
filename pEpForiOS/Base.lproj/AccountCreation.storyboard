@@ -521,7 +521,6 @@
                         <outlet property="serverTitle" destination="VW4-JJ-HKV" id="LAU-sZ-LS7"/>
                         <outlet property="serverValue" destination="HIi-Wv-jJs" id="yqf-Es-fSK"/>
                         <outlet property="transportSecurity" destination="Cjb-ue-OdU" id="W8X-Rm-6rK"/>
-                        <segue destination="6yd-9e-jF0" kind="show" identifier="viewLogSegue" id="ohe-5h-dsJ"/>
                         <segue destination="4H2-fK-y3g" kind="unwind" identifier="backToEmailListSegue" unwindAction="segueUnwindAfterAccountCreationWithSegue:" id="KmU-Ae-tvH"/>
                     </connections>
                 </tableViewController>
@@ -529,14 +528,6 @@
                 <exit id="4H2-fK-y3g" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="9512.7999999999993" y="-395.35232383808096"/>
-        </scene>
-        <!--logNavController-->
-        <scene sceneID="m5u-Nz-i7s">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="logNavController" id="kdj-h1-w8d" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4Zu-x4-nOq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5868" y="-411"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="1zz-5w-MA7">
@@ -791,20 +782,11 @@
                         <outlet property="manualConfigButton" destination="O4c-eF-dJT" id="vnZ-WA-mrK"/>
                         <outlet property="password" destination="3wB-RC-5fz" id="nje-PL-ldq"/>
                         <outlet property="user" destination="mKi-gF-bu9" id="UKH-Mf-Jwf"/>
-                        <segue destination="kdj-h1-w8d" kind="show" identifier="viewLogSegue" id="yg0-Go-ez6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bBb-dZ-w49" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="9167.2000000000007" y="335.98200899550227"/>
-        </scene>
-        <!--UIViewController-01V-rr-Nt1-->
-        <scene sceneID="Ib2-kl-E5M">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Settings" referencedIdentifier="UIViewController-01V-rr-Nt1" id="6yd-9e-jF0" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3c0-E0-VNt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="12328" y="90.854572713643179"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="aJL-6s-3px">
