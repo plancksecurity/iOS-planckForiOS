@@ -19,6 +19,7 @@ extension TrustedServerSettingsViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.rows.count
     }
+
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
@@ -34,6 +35,19 @@ extension TrustedServerSettingsViewController {
         cell.onOfSwitch.setOn(row.trusted, animated: false)
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView,
+                            titleForHeaderInSection section: Int) -> String? {
+        return NSLocalizedString("Trusted Server",
+                                 comment: "Trusted Server Setting Section Title")
+    }
+
+    override func tableView(_ tableView: UITableView,
+                            titleForFooterInSection section: Int) -> String? {
+        return NSLocalizedString("If enabled, an unencrypted copy of each message is stored on " +
+            "the server.\n\nDo not enable if you are not sure what you are doing!",
+                                 comment: "Trusted Server Setting Section Footer")
     }
 }
 
