@@ -79,27 +79,43 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
             XCTAssertNil(err)
         }
 
-        let msg3 = createMessage(number: 3, referencing: [1, 2])
         myDisplayedMessage.messageModel = msg2
         myDisplayedMessage.detailTypeVar = .thread
-        myUpdateThreadListDelegate.didAddMessageToThread = DidAddMessageToThread(
+
+        let msg3 = createMessage(number: 3, referencing: [1, 2])
+        addToThread(message: msg3,
+                    viewModel: viewModel,
+                    emailListViewModelDelegate: emailListViewModelDelegate,
+                    displayedMessage: myDisplayedMessage,
+                    updateThreadListDelegate: myUpdateThreadListDelegate,
+                    indexPathUpdated: index0)
+    }
+
+    // MARK: - Helpers
+
+    func addToThread(message: Message,
+                     viewModel: EmailListViewModel,
+                     emailListViewModelDelegate: MyEmailListViewModelDelegate,
+                     displayedMessage: MyDisplayedMessage,
+                     updateThreadListDelegate: MyUpdateThreadListDelegate,
+                     indexPathUpdated: IndexPath) {
+        updateThreadListDelegate.didAddMessageToThread = DidAddMessageToThread(
             expectation: expectation(
-                description: "testIncoming didAddMessageToThread on 3rd message"),
-            message: msg3)
+                description: "testIncoming didAddMessageToThread message \(message.uuid)"),
+            message: message)
         emailListViewModelDelegate.reset()
         emailListViewModelDelegate.didUpdateData = DidUpdateData(
-            expectation: expectation(description: "testIncoming didUpdateData on 3rd message"),
-            indexPaths: [index0])
-        viewModel.didCreate(messageFolder: msg3)
+            expectation: expectation(
+                description: "testIncoming didUpdateData on message \(message.uid)"),
+            indexPaths: [indexPathUpdated])
+        viewModel.didCreate(messageFolder: message)
 
         waitForExpectations(timeout: myWaitTime) { err in
             XCTAssertNil(err)
         }
 
-        myDisplayedMessage.messageModel = msg3
+        displayedMessage.messageModel = message
     }
-
-    // MARK: - Helpers
 
     func createMessage(number: Int, referencing: [Int]) -> Message {
         let aMessage = TestUtil.createMessage(uid: number, inFolder: inbox)
