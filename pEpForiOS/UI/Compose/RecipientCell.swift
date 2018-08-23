@@ -119,10 +119,13 @@ extension RecipientCell {
     }
 
     @discardableResult  func generateContact(_ textView: UITextView) -> Bool {
-        guard let cTextview = textView as? ComposeTextView else { return false }
+        guard let cTextview = textView as? ComposeTextView else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+            return false
+        }
         var mail = false
         var string = cTextview.attributedText.string.cleanAttachments
-        if string.utf8.count >= 3 && string.isProbablyValidEmail() {
+        if string.isProbablyValidEmail() {
             let identity = Identity.create(address: string.trimmedWhiteSpace())
             identities.append(identity)
             let width = self.textView.bounds.width
@@ -130,13 +133,10 @@ extension RecipientCell {
             cTextview.removePlainText()
             mail =  true
         }
-
         delegate?.textDidEndEditing(at: index, textView: cTextview)
-
         if let fm = super.fieldModel {
             delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
         }
-
         return mail
     }
 
