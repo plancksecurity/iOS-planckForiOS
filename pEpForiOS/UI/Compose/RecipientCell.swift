@@ -84,19 +84,11 @@ extension RecipientCell {
     
     public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                                   replacementText text: String) -> Bool {
-        if (text == .returnKey) {
+        if (text == .returnKey || text == .space) {
             let result = generateContact(textView)
             return result
         }
 
-        let isProbalblyValidEmail = !(
-            (textView.text.isEmpty || text.isEmpty) && (range.length == 1 && !(range.location > 0))
-            )
-            && textView.text.isProbablyValidEmail()
-        // Inform the delegate about our content change.
-        delegate?.recipientCellContentHasChanged(
-            newValueIsProbablyValidEmailAddress:isProbalblyValidEmail)
-        
         if text.utf8.count == 0 && range.location != NSNotFound && !hasSelection {
             let selectedRange = textView.selectedTextRange!
             
@@ -130,7 +122,7 @@ extension RecipientCell {
         guard let cTextview = textView as? ComposeTextView else { return false }
         var mail = false
         var string = cTextview.attributedText.string.cleanAttachments
-        if string.utf8.count >= 3 && string.isEmailAddress {
+        if string.utf8.count >= 3 && string.isProbablyValidEmail() {
             let identity = Identity.create(address: string.trimmedWhiteSpace())
             identities.append(identity)
             let width = self.textView.bounds.width
