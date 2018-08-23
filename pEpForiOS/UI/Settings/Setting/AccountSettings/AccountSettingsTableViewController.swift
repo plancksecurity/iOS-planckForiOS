@@ -316,7 +316,7 @@ extension AccountSettingsTableViewController: AccountVerificationResultDelegate 
             case .smtpError(let err):
                 self.handleLoginError(error: err)
             case .noImapConnectData, .noSmtpConnectData:
-                self.handleLoginError(error: LoginTableViewController.LoginError.noConnectData)
+                self.handleLoginError(error: LoginViewController.LoginError.noConnectData)
             }
         }
     }

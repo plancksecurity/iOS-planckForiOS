@@ -186,7 +186,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
             case .smtpError(let err):
                 UIUtils.show(error: err, inViewController: self)
             case .noImapConnectData, .noSmtpConnectData:
-                let error = LoginTableViewController.LoginError.noConnectData
+                let error = LoginViewController.LoginError.noConnectData
                 UIUtils.show(error: error, inViewController: self)
             }
         }

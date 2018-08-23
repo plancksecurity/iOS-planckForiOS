@@ -478,7 +478,6 @@
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */; };
 		B70DE6881F2773BF00C0A50A /* EmailValidatiorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70DE6871F2773BF00C0A50A /* EmailValidatiorTest.swift */; };
-		B714C4851ED437A7000BC84D /* LoginTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B714C4841ED437A7000BC84D /* LoginTableViewController.swift */; };
 		B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */; };
 		B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */; };
 		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
@@ -1043,7 +1042,6 @@
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewModel.swift; path = Folder/ViewModel/FolderViewModel.swift; sourceTree = "<group>"; };
 		B70DE6871F2773BF00C0A50A /* EmailValidatiorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailValidatiorTest.swift; sourceTree = "<group>"; };
-		B714C4841ED437A7000BC84D /* LoginTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTableViewController.swift; sourceTree = "<group>"; };
 		B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderTableViewController.swift; sourceTree = "<group>"; };
 		B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewController.swift; path = Folder/FolderTableViewController.swift; sourceTree = "<group>"; };
 		B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderCellViewModel.swift; path = Folder/ViewModel/FolderCellViewModel.swift; sourceTree = "<group>"; };
@@ -2250,7 +2248,6 @@
 			isa = PBXGroup;
 			children = (
 				B70D32AB205BCCDD0094A92A /* ViewModel */,
-				B714C4841ED437A7000BC84D /* LoginTableViewController.swift */,
 				49D3BECB20F8F7330043E05D /* LoginViewController.swift */,
 				490CEBA821020BF900E8579C /* LoginViewController+Keyboard.swift */,
 			);
@@ -2818,7 +2815,6 @@
 				43A26FBA1E0408FB00AF0B84 /* ServiceErrorProtocol.swift in Sources */,
 				15874BC52127493E00A3A4A6 /* SettingsSectionViewModel.swift in Sources */,
 				43C3220C1EA915C6005073FB /* CGRect+Util.swift in Sources */,
-				B714C4851ED437A7000BC84D /* LoginTableViewController.swift in Sources */,
 				15874BC12127493E00A3A4A6 /* SettingSwitchTableViewCell.swift in Sources */,
 				43FE802E209992B800E97AB3 /* QualifyServerIsLocalService.swift in Sources */,
 				4351C2D41F4441190053381F /* iterator.c in Sources */,
