@@ -100,12 +100,10 @@ class ThreadedFolder: ThreadedMessageFolderProtocol {
         belongingToThread: Set<MessageID>) -> [Int] where T: MessageIdentitfying {
         var result = [Int]()
 
-        MessageModel.performAndWait {
-            for i in 0..<messageIdentifiers.count {
-                let somethingIdentifiable = messageIdentifiers[i]
-                if belongingToThread.contains(somethingIdentifiable.messageIdentifier) {
-                    result.append(i)
-                }
+        for i in 0..<messageIdentifiers.count {
+            let somethingIdentifiable = messageIdentifiers[i]
+            if belongingToThread.contains(somethingIdentifiable.messageIdentifier) {
+                result.append(i)
             }
         }
 
