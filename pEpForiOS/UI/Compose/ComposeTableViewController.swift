@@ -1027,31 +1027,25 @@ class ComposeTableViewController: BaseTableViewController {
             informUser(invalidRecipients: invalidRecipients)
             return
         }
-        /*defer {
-            dismiss(animated: true, completion: nil)
-        }*/
         guard let msg = populateMessageFromUserInput() else {
             Log.error(component: #function, errorString: "No message for sending")
             dismiss(animated: true, completion: nil)
             return
         }
-        if !msg.allRecipients.isEmpty {
-            msg.save()
-            if originalMessageIsDraft {
-                // From user perspective, we have edited a drafted message and will send it.
-                // Technically we are creating and sending a new message (msg), thus we have to
-                // delete the original, previously drafted one.
-                deleteOriginalMessage()
-            }
-            dismiss(animated: true, completion: nil)
-        } else {
-
-
-            let title = NSLocalizedString("Error", comment: "send action without valid accounts error")
-            let message = NSLocalizedString("There is no valid account in the message",
-                                            comment: "send action without valid accounts")
-            UIUtils.showAlertWithOnlyPositiveButton(title: title, message: message, inViewController: self)
+        guard !msg.allRecipients.isEmpty else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString:
+                "Should never be reached. Send button should be greyed out in this case")
+            return
         }
+        msg.save()
+        if originalMessageIsDraft {
+            // From user perspective, we have edited a drafted message and will send it.
+            // Technically we are creating and sending a new message (msg), thus we have to
+            // delete the original, previously drafted one.
+            deleteOriginalMessage()
+        }
+        dismiss(animated: true, completion: nil)
     }
 
     // MARK: - KeyboardObserver
