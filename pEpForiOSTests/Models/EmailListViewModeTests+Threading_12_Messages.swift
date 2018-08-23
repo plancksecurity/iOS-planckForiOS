@@ -41,6 +41,7 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
         let emailListViewModelDelegate = MyEmailListViewModelDelegate()
         let myDisplayedMessage = MyDisplayedMessage()
         let myScreenComposer = MyScreenComposerProtocol()
+        let myUpdateThreadListDelegate = MyUpdateThreadListDelegate()
 
         let viewModel = EmailListViewModel(
             emailListViewModelDelegate: emailListViewModelDelegate,
@@ -49,6 +50,7 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
 
         viewModel.currentDisplayedMessage = myDisplayedMessage
         viewModel.screenComposer = myScreenComposer
+        viewModel.updateThreadListDelegate = myUpdateThreadListDelegate
 
         let msg1 = createMessage(number: 1, referencing: [])
         emailListViewModelDelegate.didInsertData = DidInsertData(
@@ -60,32 +62,34 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
             XCTAssertNil(err)
         }
 
+        let msg2 = createMessage(number: 2, referencing: [1])
         myDisplayedMessage.messageModel = msg1
         myDisplayedMessage.detailTypeVar = .single
         myScreenComposer.didRequestShowThreadView = DidRequestShowThreadView(
             expectation: expectation(
                 description: "testIncoming didRequestShowThreadView on 2nd message"),
             message: msg1)
-
         emailListViewModelDelegate.reset()
         emailListViewModelDelegate.didUpdateData = DidUpdateData(
             expectation: expectation(description: "testIncoming didUpdateData on 2nd message"),
             indexPaths: [index0])
-        let msg2 = createMessage(number: 2, referencing: [1])
         viewModel.didCreate(messageFolder: msg2)
 
         waitForExpectations(timeout: myWaitTime) { err in
             XCTAssertNil(err)
         }
 
+        let msg3 = createMessage(number: 3, referencing: [1, 2])
         myDisplayedMessage.messageModel = msg2
         myDisplayedMessage.detailTypeVar = .thread
-
+        myUpdateThreadListDelegate.didAddMessageToThread = DidAddMessageToThread(
+            expectation: expectation(
+                description: "testIncoming didAddMessageToThread on 3rd message"),
+            message: msg3)
         emailListViewModelDelegate.reset()
         emailListViewModelDelegate.didUpdateData = DidUpdateData(
             expectation: expectation(description: "testIncoming didUpdateData on 3rd message"),
             indexPaths: [index0])
-        let msg3 = createMessage(number: 3, referencing: [1, 2])
         viewModel.didCreate(messageFolder: msg3)
 
         waitForExpectations(timeout: myWaitTime) { err in
@@ -145,6 +149,31 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
 
         func emailListViewModel(_ emailListViewModel: EmailListViewModel,
                                 requestsShowEmailViewFor message: Message) {
+        }
+    }
+
+    struct DidAddMessageToThread {
+        let expectation: XCTestExpectation
+        let message: Message
+    }
+
+    class MyUpdateThreadListDelegate: UpdateThreadListDelegate {
+        var didAddMessageToThread: DidAddMessageToThread?
+
+        func deleted(message: Message) {
+        }
+
+        func updated(message: Message) {
+        }
+
+        func added(message: Message) {
+            if let theDidAddMessageToThread = didAddMessageToThread {
+                XCTAssertEqual(message, didAddMessageToThread?.message)
+                theDidAddMessageToThread.expectation.fulfill()
+            }
+        }
+
+        func tipDidChange(to message: Message) {
         }
     }
 
