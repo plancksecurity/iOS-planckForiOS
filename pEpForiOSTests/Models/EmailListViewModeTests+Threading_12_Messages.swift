@@ -128,6 +128,11 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
         }
 
         displayedMessage.messageModel = message
+
+        XCTAssertEqual(
+            viewModel.messages.count,
+            1,
+            "unexpected top message count \(viewModel.messages.count) when receiving message \(message.uuid)")
     }
 
     func createMessage(number: Int, referencing: [Int]) -> Message {
