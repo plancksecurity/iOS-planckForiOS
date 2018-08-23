@@ -1,4 +1,4 @@
- //
+//
 //  ComposeViewController.swift
 //  pEpForiOS
 //
@@ -216,7 +216,7 @@ class ComposeTableViewController: BaseTableViewController {
             destinyTo = [to]
         }
         if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
-            messageCanBeSend(value: true)
+            setMessageCanBeSend(value: true)
         }
     }
 
@@ -1121,11 +1121,6 @@ class ComposeTableViewController: BaseTableViewController {
 
 extension ComposeTableViewController: ComposeCellDelegate {
 
-    func recipientCellContentHasChanged(newValueIsProbablyValidEmailAddress maybeValid: Bool) {
-        //DODO: re-calculate send status
-        messageCanBeSend(value: maybeValid)
-    }
-
     func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
                      forFieldType type: ComposeFieldModel.FieldType) {
         let identities = changedAddresses.map { Identity(address: $0) }
@@ -1138,23 +1133,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
             destinyBcc = identities
         case .from:
             origin = identities.last
-        default:
-            break
-        }
-        calculateComposeColorAndInstallTapGesture()
-    }
-
-    //remove after refactoring all Cells to not know Identity
-    public func haveToUpdateColor(newIdentity: [Identity], type: ComposeFieldModel) {
-        switch type.type {
-        case .to:
-            destinyTo = newIdentity
-        case .cc:
-            destinyCc = newIdentity
-        case .bcc:
-            destinyBcc = newIdentity
-        case .from:
-            origin = newIdentity.last
         default:
             break
         }
@@ -1245,6 +1223,11 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView) {
+        //IOS-1259
+        print("DEBUG: allValidForSending: \(allValidForSending)")
+        //
+        setMessageCanBeSend(value: allValidForSending)
+
         tableView.updateSize()
         suggestTableView.hide()
     }
@@ -1253,7 +1236,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     //IOS-1259: rename
-    func messageCanBeSend(value: Bool) {
+    private func setMessageCanBeSend(value: Bool) {
         sendButton.isEnabled = value
     }
 }
@@ -1415,6 +1398,7 @@ extension ComposeTableViewController: HtmlToAttributedTextSaxParserAttachmentDel
 
 extension ComposeTableViewController {
 
+    //IOS-1259: remove
     /// Checks all recipients addresses for validity and returns invalid ones.
     ///
     /// - Returns:  if any: all recipients with invalid e-mail addresses
@@ -1438,6 +1422,36 @@ extension ComposeTableViewController {
             }
         }
         return invalidReceipients.count > 0 ? invalidReceipients : nil
+    }
+
+    private var hasInvalidRecipients: Bool {
+        for cell in allCells where cell is RecipientCell {
+            guard let recipientCell = cell as? RecipientCell else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                continue
+            }
+            if !recipientCell.containsNothingButValidAddresses {
+                return true
+            }
+        }
+        return false
+    }
+
+    private var atLeastOneRecipientIsSet: Bool {
+        for cell in allCells where cell is RecipientCell {
+            guard let recipientCell = cell as? RecipientCell else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                continue
+            }
+            if !recipientCell.isEmpty {
+                return true
+            }
+        }
+        return false
+    }
+
+    private var allValidForSending: Bool {
+        return atLeastOneRecipientIsSet && !hasInvalidRecipients
     }
 
     /// Inform user: He entered invalid email addresses.

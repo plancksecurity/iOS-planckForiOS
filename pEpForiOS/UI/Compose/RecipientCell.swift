@@ -28,7 +28,7 @@ class RecipientCell: ComposeCell {
         textView.insertImage(identity, true, maxWidth: width)
         textView.removePlainText()
         if let fm = super.fieldModel {
-            delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
+            delegate?.composeCell(cell: self, didChangeEmailAddresses: identities.map{ $0.address }, forFieldType: fm.type)
         }
     }
 
@@ -39,7 +39,7 @@ class RecipientCell: ComposeCell {
             }
         } 
         if let fm = super.fieldModel {
-            delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
+            delegate?.composeCell(cell: self, didChangeEmailAddresses: identities.map{ $0.address }, forFieldType: fm.type)
         }
     }
 
@@ -118,13 +118,13 @@ extension RecipientCell {
         return true
     }
 
-    @discardableResult  func generateContact(_ textView: UITextView) -> Bool {
+    @discardableResult func generateContact(_ textView: UITextView) -> Bool {
         guard let cTextview = textView as? ComposeTextView else {
             Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
             return false
         }
         var mail = false
-        var string = cTextview.attributedText.string.cleanAttachments
+        let string = cTextview.attributedText.string.cleanAttachments
         if string.isProbablyValidEmail() {
             let identity = Identity.create(address: string.trimmedWhiteSpace())
             identities.append(identity)
@@ -135,9 +135,20 @@ extension RecipientCell {
         }
         delegate?.textDidEndEditing(at: index, textView: cTextview)
         if let fm = super.fieldModel {
-            delegate?.haveToUpdateColor(newIdentity: identities, type: fm)
+            delegate?.composeCell(cell: self, didChangeEmailAddresses: identities.map{ $0.address }, forFieldType: fm.type)
         }
         return mail
+    }
+
+    var containsNothingButValidAddresses: Bool {
+        // Only addresses that became an attachment are considered valid ...
+        let allButValidAddresses = textView.attributedText.string.cleanAttachments
+        // ... thus, if we remove all attachments, there should be nothing left.
+        return allButValidAddresses == ""
+    }
+
+    var isEmpty: Bool {
+        return textView.attributedText.string == ""
     }
 
     public override func textViewDidEndEditing(_ textView: UITextView) {
