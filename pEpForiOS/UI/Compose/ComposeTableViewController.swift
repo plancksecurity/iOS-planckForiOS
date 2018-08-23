@@ -551,19 +551,24 @@ class ComposeTableViewController: BaseTableViewController {
     @objc private final func addMediaToCell() {
         let media = Capability.media
         media.requestAndInformUserInErrorCase(viewController: self)  {
-            (permissionsGranted: Bool, error: Capability.AccessError?) in
+            [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+
             guard permissionsGranted else {
                 return
             }
-            self.imagePicker.delegate = self
-            self.imagePicker.modalPresentationStyle = .currentContext
-            self.imagePicker.allowsEditing = false
-            self.imagePicker.sourceType = .photoLibrary
+            me.imagePicker.delegate = self
+            me.imagePicker.modalPresentationStyle = .currentContext
+            me.imagePicker.allowsEditing = false
+            me.imagePicker.sourceType = .photoLibrary
 
             if let mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary) {
-                self.imagePicker.mediaTypes = mediaTypes
+                me.imagePicker.mediaTypes = mediaTypes
             }
-            self.present(self.imagePicker, animated: true, completion: nil)
+            me.present(me.imagePicker, animated: true, completion: nil)
         }
     }
 
@@ -599,7 +604,11 @@ class ComposeTableViewController: BaseTableViewController {
     /// - Returns: attachment for given resource
     private final func createAttachment(forResource resourceUrl: URL,
                                             completion: @escaping (Attachment?) -> Void) {
-        attachmentFileIOQueue.async {
+        attachmentFileIOQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "Cound not get data for URL")
@@ -607,7 +616,7 @@ class ComposeTableViewController: BaseTableViewController {
                 return
             }
             let mimeType = resourceUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-            let filename = self.fileName(forVideoAt: resourceUrl)
+            let filename = me.fileName(forVideoAt: resourceUrl)
             let attachment =  Attachment.create(data: resourceData,
                                                 mimeType: mimeType,
                                                 fileName: filename,
@@ -671,14 +680,18 @@ class ComposeTableViewController: BaseTableViewController {
             Log.shared.errorAndCrash(component: #function, errorString: "Please check.")
             return
         }
-        createAttachment(forResource: url) { (attachment: Attachment?) in
+        createAttachment(forResource: url) { [weak self] (attachment: Attachment?) in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
             guard let safeAttachment = attachment else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No attachment")
                 return
             }
             GCD.onMain {
-                self.addMovie(attachment: safeAttachment)
-                self.tableView.updateSize()
+                me.addMovie(attachment: safeAttachment)
+                me.tableView.updateSize()
             }
         }
     }
@@ -893,7 +906,6 @@ class ComposeTableViewController: BaseTableViewController {
             recipientCell.ccEnabled = ccEnabled
             self.tableView.updateSize()
         }
-
     }
 
     // MARK: - SwipeTableViewCell
@@ -969,8 +981,8 @@ class ComposeTableViewController: BaseTableViewController {
         } else {
             text = NSLocalizedString("Delete", comment: "compose email delete")
         }
-        action = ac.action(text, .destructive) {
-            self.dismiss()
+        action = ac.action(text, .destructive) { [weak self] in
+            self?.dismiss()
         }
         return action
     }
@@ -985,9 +997,13 @@ class ComposeTableViewController: BaseTableViewController {
             text = NSLocalizedString("Save", comment: "compose email save")
         }
 
-        action = ac.action(text, .default) {
-            self.saveDraft()
-            self.dismiss()
+        action = ac.action(text, .default) {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.saveDraft()
+            me.dismiss()
         }
         return action
     }
@@ -1288,15 +1304,20 @@ extension ComposeTableViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController,
                         didPickDocumentsAt urls: [URL]) {
         for url in urls {
-            createAttachment(forSecurityScopedResource: url) { (attachment: Attachment?) in
+            createAttachment(forSecurityScopedResource: url) {
+                [weak self] (attachment: Attachment?) in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
                 guard let safeAttachment = attachment else {
                     Log.shared.errorAndCrash(component: #function,
                                              errorString: "No attachment")
                     return
                 }
                 GCD.onMain {
-                    self.add(nonInlinedAttachment: safeAttachment)
-                    self.tableView.updateSize()
+                    me.add(nonInlinedAttachment: safeAttachment)
+                    me.tableView.updateSize()
                 }
             }
         }
