@@ -12,6 +12,7 @@ public extension String {
     static let internalRecipientDelimiter = ","
     static let externalRecipientDelimiter = ", "
     static let returnKey = "\n"
+    static let space = " "
     static let comp = "String.Extensions"
     
     static let unquoteRegex = try! NSRegularExpression(
@@ -33,11 +34,6 @@ public extension String {
 
     public var trim: String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    
-    public var isEmailAddress: Bool {
-        let eav = EmailAddressValidation(address: self)
-        return eav.result
     }
     
     public func contains(find: String) -> Bool {
