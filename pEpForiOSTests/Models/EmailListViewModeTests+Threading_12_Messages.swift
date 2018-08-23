@@ -234,7 +234,6 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
                                 didInsertDataAt indexPaths: [IndexPath]) {
             if let theDidInsertData = didInsertData {
                 XCTAssertEqual(theDidInsertData.indexPaths, indexPaths)
-                print("fulfill \(theDidInsertData.expectation)")
                 theDidInsertData.expectation.fulfill()
             }
         }
@@ -243,7 +242,6 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
                                 didUpdateDataAt indexPaths: [IndexPath]) {
             if let theDidUpdateData = didUpdateData {
                 XCTAssertEqual(theDidUpdateData.indexPaths, indexPaths)
-                print("fulfill \(theDidUpdateData.expectation)")
                 theDidUpdateData.expectation.fulfill()
             }
         }
