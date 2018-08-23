@@ -89,6 +89,14 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
                     displayedMessage: myDisplayedMessage,
                     updateThreadListDelegate: myUpdateThreadListDelegate,
                     indexPathUpdated: index0)
+
+        let msg4 = createMessage(number: 4, referencing: [1, 2])
+        addToThread(message: msg4,
+                    viewModel: viewModel,
+                    emailListViewModelDelegate: emailListViewModelDelegate,
+                    displayedMessage: myDisplayedMessage,
+                    updateThreadListDelegate: myUpdateThreadListDelegate,
+                    indexPathUpdated: index0)
     }
 
     // MARK: - Helpers
