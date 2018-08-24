@@ -126,6 +126,7 @@ class StringExtensionsTest: XCTestCase {
             ("uia-666-euia", true),
             ("9uia666euia9", true),
             ("9uia66.6euia9", false),
+            ("aeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaa", false),
             ("blah", true)]
 
         for (name, shouldPass) in testData {

@@ -52,7 +52,13 @@ extension String {
         let rangeNumerical: ClosedRange<Character> = "0"..."9"
 
         var currentIndex = 0
-        let lastIndex = count - 1
+
+        let theCount = count
+        if theCount > 63 {
+            return false
+        }
+
+        let lastIndex = theCount - 1
 
         var haveSeenAlpha = false
 
