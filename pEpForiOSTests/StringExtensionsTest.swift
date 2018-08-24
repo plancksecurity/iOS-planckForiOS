@@ -118,17 +118,17 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertTrue("üöäp-b___la0654654h@gmail.notyet".isGmailAddress)
     }
 
-    let domainLabelTestData = [
-        ("uiaeuiae-", false),
-        ("-uiaeuia", false),
-        ("uia-euia", true),
-        ("uia-666-euia", true),
-        ("9uia666euia9", true),
-        ("9uia66.6euia9", false),
-        ("aeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaa", false),
-        ("blah", true)]
-
     func testIsValidDomainAndisValidDomainDnsLabel() {
+        let domainLabelTestData = [
+            ("uiaeuiae-", false),
+            ("-uiaeuia", false),
+            ("uia-euia", true),
+            ("uia-666-euia", true),
+            ("9uia666euia9", true),
+            ("9uia66.6euia9", false),
+            ("aeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaa", false),
+            ("blah", true)]
+
         for (name, shouldPass) in domainLabelTestData {
             if shouldPass {
                 let domain1 = "\(name).\(name).\(name)"
