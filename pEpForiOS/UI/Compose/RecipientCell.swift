@@ -21,7 +21,7 @@ class RecipientCell: ComposeCell {
     override open func awakeFromNib() {
         selectionStyle = .none
     }
-    
+
     public func addIdentity(_ identity: Identity) {
         identities.append(identity)
         let width = self.textView.bounds.width
@@ -58,14 +58,14 @@ extension RecipientCell {
 
         delegate?.textDidStartEditing(at: index, textView: cTextview)
     }
-    
+
     override public func textViewDidChange(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
         
         recipients.removeAll()
         delegate?.textDidChange(at: index, textView: cTextview)
     }
-    
+
     public func textViewDidChangeSelection(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
         
@@ -81,7 +81,7 @@ extension RecipientCell {
             }
         }
     }
-    
+
     public override func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                                   replacementText text: String) -> Bool {
         if (text == .returnKey || text == .space) {
@@ -103,11 +103,11 @@ extension RecipientCell {
                 }
             }
         }
-        
+
         if range.location != NSNotFound {
             removeRecepients()
         }
-        
+
         hasSelection = false
 
         let last = textView.text.last
