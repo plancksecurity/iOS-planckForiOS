@@ -118,26 +118,44 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertTrue("üöäp-b___la0654654h@gmail.notyet".isGmailAddress)
     }
 
-    func testIsValidDomainDnsLabel() {
-        let testData = [
-            ("uiaeuiae-", false),
-            ("-uiaeuia", false),
-            ("uia-euia", true),
-            ("uia-666-euia", true),
-            ("9uia666euia9", true),
-            ("9uia66.6euia9", false),
-            ("aeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaa", false),
-            ("blah", true)]
+    let domainLabelTestData = [
+        ("uiaeuiae-", false),
+        ("-uiaeuia", false),
+        ("uia-euia", true),
+        ("uia-666-euia", true),
+        ("9uia666euia9", true),
+        ("9uia66.6euia9", false),
+        ("aeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaaaeaaaaaaaa", false),
+        ("blah", true)]
 
-        for (name, shouldPass) in testData {
+    func testIsValidDomainAndisValidDomainDnsLabel() {
+        for (name, shouldPass) in domainLabelTestData {
             if shouldPass {
+                let domain1 = "\(name).\(name).\(name)"
                 XCTAssertTrue(
-                    name.isValidDomainDnsLabel(),
-                    "expected \(name) to be a valid DNS domain label")
+                    domain1.isValidDomain(),
+                    "expected \(domain1) to be a valid domain")
+
+                let invalidDomainLabels = domainLabelTestData.filter { (n, shouldPass) in
+                    return !shouldPass
+                }
+                for (invalidLabel, _) in invalidDomainLabels {
+                    let theLabel = invalidLabel.replacingOccurrences(of: ".", with: "")
+                    if !theLabel.isValidDomainDnsLabel() {
+                        let domain2 = "\(domain1).\(theLabel)"
+                        XCTAssertFalse(
+                            domain2.isValidDomain(),
+                            "expected \(domain2) to NOT be a valid domain")
+                    }
+                }
             } else {
-                XCTAssertFalse(
-                    name.isValidDomainDnsLabel(),
-                    "expected \(name) to NOT be a valid DNS domain label")
+                let theLabel = name.replacingOccurrences(of: ".", with: "")
+                if !theLabel.isValidDomainDnsLabel() {
+                    let domain = "\(name).\(name).\(name)"
+                    XCTAssertFalse(
+                        domain.isValidDomain(),
+                        "expected \(domain) to NOT be a valid domain")
+                }
             }
         }
     }

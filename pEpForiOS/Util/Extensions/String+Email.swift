@@ -80,6 +80,20 @@ extension String {
     }
 
     /**
+     See https://en.wikipedia.org/wiki/Email_address#Domain
+     */
+    public func isValidDomain() -> Bool {
+        let labels = components(separatedBy: ".")
+        for label in labels {
+            if !label.isValidDomainDnsLabel() {
+                return false
+            }
+        }
+
+        return true
+    }
+
+    /**
      Contains a String like e.g. "email1, email2, email3", only probably valid emails?
      - Parameter delimiter: The delimiter that separates the emails.
      - Returns: True if all email parts yield true with `isProbablyValidEmail`.
