@@ -44,6 +44,36 @@ extension String {
     }
 
     /**
+     See https://en.wikipedia.org/wiki/Email_address#Domain
+     */
+    public func isValidDomainDnsLabel() -> Bool {
+        let rangeAlpha: ClosedRange<Character> = "a"..."z"
+        let rangeCapitalAlpha: ClosedRange<Character> = "A"..."Z"
+        let rangeNumerical: ClosedRange<Character> = "0"..."9"
+
+        var currentIndex = 0
+        let lastIndex = count - 1
+
+        var haveSeenAlpha = false
+
+        for ch in self {
+            if ch == "-" {
+                if currentIndex == 0 || currentIndex == lastIndex {
+                    return false
+                }
+            } else if rangeAlpha.contains(ch) || rangeCapitalAlpha.contains(ch) {
+                haveSeenAlpha = true
+            } else if !rangeNumerical.contains(ch) {
+                return false
+            }
+
+            currentIndex += 1
+        }
+
+        return haveSeenAlpha
+    }
+
+    /**
      Contains a String like e.g. "email1, email2, email3", only probably valid emails?
      - Parameter delimiter: The delimiter that separates the emails.
      - Returns: True if all email parts yield true with `isProbablyValidEmail`.
