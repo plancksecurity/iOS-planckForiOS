@@ -215,9 +215,7 @@ class ComposeTableViewController: BaseTableViewController {
         } else if let to = prefilledTo {
             destinyTo = [to]
         }
-        if (!destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty) {
-            setMessageCanBeSend(value: true)
-        }
+        sendButton.isEnabled = !destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty
     }
 
     private func updateInitialContent(messageBodyCell: MessageBodyCell) {
@@ -1039,10 +1037,6 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     @IBAction func send() {
-        if let invalidRecipients = invalidReceipients() {
-            informUser(invalidRecipients: invalidRecipients)
-            return
-        }
         guard let msg = populateMessageFromUserInput() else {
             Log.error(component: #function, errorString: "No message for sending")
             dismiss(animated: true, completion: nil)
@@ -1137,6 +1131,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
             break
         }
         calculateComposeColorAndInstallTapGesture()
+        recalculateSendButtonStatus()
     }
 
     /**
@@ -1226,7 +1221,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
         //IOS-1259
         print("DEBUG: allValidForSending: \(allValidForSending)")
         //
-        setMessageCanBeSend(value: allValidForSending)
+//        setMessageCanBeSend(value: allValidForSending)
 
         tableView.updateSize()
         suggestTableView.hide()
@@ -1236,8 +1231,8 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     //IOS-1259: rename
-    private func setMessageCanBeSend(value: Bool) {
-        sendButton.isEnabled = value
+    private func recalculateSendButtonStatus() {
+        sendButton.isEnabled = allValidForSending
     }
 }
 
@@ -1398,32 +1393,6 @@ extension ComposeTableViewController: HtmlToAttributedTextSaxParserAttachmentDel
 
 extension ComposeTableViewController {
 
-    //IOS-1259: remove
-    /// Checks all recipients addresses for validity and returns invalid ones.
-    ///
-    /// - Returns:  if any: all recipients with invalid e-mail addresses
-    ///             nil otherwize
-    private func invalidReceipients() -> [Identity]? {
-        var invalidReceipients = [Identity]()
-        for cell in allCells {
-            if let tempCell = cell as? RecipientCell, let fm = cell.fieldModel {
-                tempCell.generateContact(tempCell.textView)
-                let addresses = (tempCell).identities
-                switch fm.type {
-                case .to, .cc, .bcc:
-                    addresses.forEach({ (recipient) in
-                        if !recipient.address.isProbablyValidEmail() {
-                            invalidReceipients.append(recipient)
-                        }
-                    })
-                default:
-                    break
-                }
-            }
-        }
-        return invalidReceipients.count > 0 ? invalidReceipients : nil
-    }
-
     private var hasInvalidRecipients: Bool {
         for cell in allCells where cell is RecipientCell {
             guard let recipientCell = cell as? RecipientCell else {
@@ -1443,7 +1412,7 @@ extension ComposeTableViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
                 continue
             }
-            if !recipientCell.isEmpty {
+            if !recipientCell.identities.isEmpty {
                 return true
             }
         }
@@ -1452,28 +1421,6 @@ extension ComposeTableViewController {
 
     private var allValidForSending: Bool {
         return atLeastOneRecipientIsSet && !hasInvalidRecipients
-    }
-
-    /// Inform user: He entered invalid email addresses.
-    ///
-    /// - Parameter invalidRecipients: recipients with invalid email address
-    private func informUser(invalidRecipients: [Identity]) {
-        let title = NSLocalizedString("Invalid Address",
-                                      comment:
-            "Compose view-invalid email address - Alert Title for invalid recipient address(es)")
-        let addressesString = invalidRecipients.reduce("") { (result, recipient) -> String in
-            if result == "" {
-                return recipient.address
-            } else {
-                return result + ", " + recipient.address
-            }
-        }
-        let message = NSLocalizedString(
-            "\(invalidRecipients.count == 1 ? "This address is" : "Those addresses are") not valid: \n\(addressesString)",
-            comment: "Compose view-invalid email address - Alert body for invalid recipient address(es)")
-        UIUtils.showAlertWithOnlyPositiveButton(title: title,
-                                                message: message,
-                                                inViewController: self)
     }
 }
 
