@@ -14,10 +14,10 @@ class RecipientCell: ComposeCell {
     @IBOutlet weak var addButton: UIButton!
     public var identities = [Identity]()
     var ccEnabled = false
-    
+
     private var recipients = [Int]()
     private var hasSelection = false
-    
+
     override open func awakeFromNib() {
         selectionStyle = .none
     }
