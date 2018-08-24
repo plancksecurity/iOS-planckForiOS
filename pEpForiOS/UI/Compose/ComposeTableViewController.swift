@@ -1355,9 +1355,11 @@ extension ComposeTableViewController: SegueHandlerType {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segueIdentifier(for: segue) {
         case .segueHandshake:
-            guard let destination = segue.destination as? HandshakeViewController else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
-                return
+            guard
+                let nc = segue.destination as? UINavigationController,
+                let destination = nc.rootViewController as? HandshakeViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
             }
             destination.appConfig = appConfig
             destination.message = populateMessageFromUserInput()
