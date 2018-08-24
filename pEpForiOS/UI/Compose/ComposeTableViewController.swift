@@ -1042,12 +1042,6 @@ class ComposeTableViewController: BaseTableViewController {
             dismiss(animated: true, completion: nil)
             return
         }
-        guard !msg.allRecipients.isEmpty else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString:
-                "Should never be reached. Send button should be greyed out in this case")
-            return
-        }
         msg.save()
         if originalMessageIsDraft {
             // From user perspective, we have edited a drafted message and will send it.
