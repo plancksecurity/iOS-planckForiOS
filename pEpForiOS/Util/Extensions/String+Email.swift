@@ -95,6 +95,40 @@ extension String {
     }
 
     /**
+     See https://en.wikipedia.org/wiki/Email_address#Local-part
+     */
+    public func isValidEmailLocalPart() -> Bool {
+        var previousCharWasDot = false
+
+        let lastIndex = count - 1
+        var currentIndex = 0
+        for ch in self {
+            if ch == "." {
+                if previousCharWasDot {
+                    return false
+                }
+                if currentIndex == 0 || currentIndex == lastIndex {
+                    return false
+                }
+                previousCharWasDot = true
+            } else {
+                previousCharWasDot = false
+
+                let specialChars = Set("!#$%&'*+-/=?^_`{|}~")
+                if !specialChars.contains(ch) &&
+                    !String.rangeNumerical.contains(ch) &&
+                    !String.rangeLatinLetter.contains(ch) &&
+                    !String.rangeCapitalLatinLetter.contains(ch) {
+                    return false
+                }
+            }
+            currentIndex += 1
+        }
+
+        return true
+    }
+
+    /**
      Contains a String like e.g. "email1, email2, email3", only probably valid emails?
      - Parameter delimiter: The delimiter that separates the emails.
      - Returns: True if all email parts yield true with `isProbablyValidEmail`.
