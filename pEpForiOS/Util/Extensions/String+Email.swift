@@ -12,21 +12,21 @@ import Foundation
  Methods that deal with email detection.
  */
 extension String {
-    static let gmailRegex = emailProviderDetectionPattern(providerDomainPart: "gmail")
-    static let yahooRegex = emailProviderDetectionPattern(providerDomainPart: "yahoo")
+    private static let gmailRegex = emailProviderDetectionPattern(providerDomainPart: "gmail")
+    private static let yahooRegex = emailProviderDetectionPattern(providerDomainPart: "yahoo")
 
-    static func emailProviderDetectionPattern(providerDomainPart: String) -> NSRegularExpression {
+    public static func emailProviderDetectionPattern(providerDomainPart: String) -> NSRegularExpression {
         return try! NSRegularExpression(
             // character classes: https://en.wikipedia.org/wiki/Unicode_character_property
             pattern: "[-_[\\p{Ll}\\p{Lu}\\p{Nd}.]]+@\(providerDomainPart)\\.[a-z]+",
             options: [])
     }
 
-    var isGmailAddress: Bool {
+    public var isGmailAddress: Bool {
         return String.gmailRegex.matchesWhole(string: self.lowercased())
     }
 
-    var isYahooAddress: Bool {
+    public var isYahooAddress: Bool {
         return String.yahooRegex.matchesWhole(string: self.lowercased())
     }
 
