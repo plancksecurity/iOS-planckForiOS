@@ -12,12 +12,22 @@ import XCTest
 
 class StringExtensionsTest: XCTestCase {
     func testValidEmail() {
-        XCTAssertFalse("".isProbablyValidEmail())
-        XCTAssertFalse("whe@@@uiae".isProbablyValidEmail())
-        XCTAssertTrue("whe@uiae".isProbablyValidEmail())
-        XCTAssertTrue("w@u".isProbablyValidEmail())
-        XCTAssertFalse("whe@uiae, whe@uiae".isProbablyValidEmail())
-        XCTAssertFalse("wh,e@uiae".isProbablyValidEmail())
+        let testData = [("", false),
+                        ("whe@@@uiae", false),
+                        ("whe@uiae", true),
+                        ("w@u", true),
+                        ("whe@uiae, whe@uiae", false),
+                        ("wh,e@uiae", false)]
+
+        for (email, isValid) in testData {
+            if isValid {
+                XCTAssertTrue(email.isProbablyValidEmail(),
+                              "expected \(email) to be valid")
+            } else {
+                XCTAssertFalse(email.isProbablyValidEmail(),
+                               "expected \(email) to NOT be valid")
+            }
+        }
     }
 
     func testUnquote() {
