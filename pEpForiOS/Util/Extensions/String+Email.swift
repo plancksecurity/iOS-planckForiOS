@@ -43,14 +43,14 @@ extension String {
         return matches.count == 1
     }
 
+    private static let rangeLatinLetter: ClosedRange<Character> = "a"..."z"
+    private static let rangeCapitalLatinLetter: ClosedRange<Character> = "A"..."Z"
+    private static let rangeNumerical: ClosedRange<Character> = "0"..."9"
+
     /**
      See https://en.wikipedia.org/wiki/Email_address#Domain
      */
     public func isValidDomainDnsLabel() -> Bool {
-        let rangeAlpha: ClosedRange<Character> = "a"..."z"
-        let rangeCapitalAlpha: ClosedRange<Character> = "A"..."Z"
-        let rangeNumerical: ClosedRange<Character> = "0"..."9"
-
         var currentIndex = 0
 
         let theCount = count
@@ -67,9 +67,10 @@ extension String {
                 if currentIndex == 0 || currentIndex == lastIndex {
                     return false
                 }
-            } else if rangeAlpha.contains(ch) || rangeCapitalAlpha.contains(ch) {
+            } else if String.rangeLatinLetter.contains(ch) ||
+                String.rangeCapitalLatinLetter.contains(ch) {
                 haveSeenAlpha = true
-            } else if !rangeNumerical.contains(ch) {
+            } else if !String.rangeNumerical.contains(ch) {
                 return false
             }
 
