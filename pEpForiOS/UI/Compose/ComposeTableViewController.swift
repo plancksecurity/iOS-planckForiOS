@@ -61,14 +61,34 @@ class ComposeTableViewController: BaseTableViewController {
     private var origin : Identity?
     private var destinyTo = [Identity]()
     private var destinyCc = [Identity]()
-    private var destinyBcc = [Identity]()
+    private var destinyBcc = [Identity]() {
+        didSet {
+            print("DEBUG: destinyBcc.count: \(destinyBcc.count)")
+            let newValue = destinyBcc
+            // We do currently not support encryption if any BCC is set.
+            if newValue.count > 0 {
+                pEpProtection = false
+            } else if oldValue.count > 0 && newValue.count == 0 {
+                // We removed all BCCs. Encryption supported again.
+                pEpProtection = true
+            }
+
+        }
+    }
+    private var isForceUnprotectedDueToBccSet: Bool {
+        return destinyBcc.count > 0
+    }
     private let attachmentCounter = AttachmentCounter()
     private let mimeTypeUtil = MimeTypeUtil()
     private var edited = false
     /**
      A value of `true` means that the mail will be encrypted.
      */
-    private var pEpProtection = true
+    private var pEpProtection = true {
+        didSet {
+            calculateComposeColorAndInstallTapGesture()
+        }
+    }
     /**
      The `ComposeTextView`, if it currently owns the focus.
      */
@@ -217,6 +237,9 @@ class ComposeTableViewController: BaseTableViewController {
             destinyTo = [to]
         }
         sendButton.isEnabled = !destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty
+        if isForceUnprotectedDueToBccSet {
+            pEpProtection = false
+        }
     }
 
     private func updateInitialContent(messageBodyCell: MessageBodyCell) {
@@ -524,11 +547,18 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func canToggleProtection() -> Bool {
+        if isForceUnprotectedDueToBccSet {
+            return false
+        }
         let outgoingRatingColor = currentRating.pEpColor()
         return outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green
     }
 
     private func calculateComposeColorAndInstallTapGesture() {
+        if isForceUnprotectedDueToBccSet {
+            self.showPepRating(pEpRating: PEP_rating_unencrypted)
+            return
+        }
         DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 let ratingValue = theSelf.recalculateCurrentRating()
