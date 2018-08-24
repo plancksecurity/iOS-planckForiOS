@@ -478,7 +478,6 @@
 		A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C5A8D1CFEDF59006A195F /* UIHelper.swift */; };
 		A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B50A811CD26FF100B1A997 /* Constants.swift */; };
 		B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */; };
-		B70DE6881F2773BF00C0A50A /* EmailValidatiorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70DE6871F2773BF00C0A50A /* EmailValidatiorTest.swift */; };
 		B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */; };
 		B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */; };
 		B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */; };
@@ -1042,7 +1041,6 @@
 		8B81BB8F1E03F73100D38C82 /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
 		A1B50A811CD26FF100B1A997 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewModel.swift; path = Folder/ViewModel/FolderViewModel.swift; sourceTree = "<group>"; };
-		B70DE6871F2773BF00C0A50A /* EmailValidatiorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailValidatiorTest.swift; sourceTree = "<group>"; };
 		B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderTableViewController.swift; sourceTree = "<group>"; };
 		B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewController.swift; path = Folder/FolderTableViewController.swift; sourceTree = "<group>"; };
 		B722EC4C1E5B01B300A2B9D5 /* FolderCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderCellViewModel.swift; path = Folder/ViewModel/FolderCellViewModel.swift; sourceTree = "<group>"; };
@@ -1822,7 +1820,6 @@
 				431E58FB1ED5926B00EFA77F /* AccountVerificationServiceTests.swift */,
 				436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */,
 				15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */,
-				B70DE6871F2773BF00C0A50A /* EmailValidatiorTest.swift */,
 				43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */,
 				431F987E1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift */,
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
@@ -3127,7 +3124,6 @@
 				43F7F07A1F6AD44600BDF151 /* HandshakeTests.swift in Sources */,
 				1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */,
 				150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */,
-				B70DE6881F2773BF00C0A50A /* EmailValidatiorTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
 				4335002E212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
