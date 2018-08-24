@@ -140,15 +140,18 @@ extension RecipientCell {
         return mail
     }
 
+    /// Wheter or not
     var containsNothingButValidAddresses: Bool {
         // Only addresses that became an attachment are considered valid ...
         let allButValidAddresses = textView.attributedText.string.cleanAttachments
         // ... thus, if we remove all attachments, there should be nothing left.
-        return allButValidAddresses == ""
+        return allButValidAddresses.trimObjectReplacementCharacters() == ""
     }
 
     var isEmpty: Bool {
-        return textView.attributedText.string == ""
+        // UITextView places this character if you delete an attachment, which leads to a
+        // non-empty string.
+        return textView.attributedText.string.trimObjectReplacementCharacters() == ""
     }
 
     public override func textViewDidEndEditing(_ textView: UITextView) {
