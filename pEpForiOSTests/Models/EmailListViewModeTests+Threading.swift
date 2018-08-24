@@ -75,6 +75,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             indexPathUpdated: indexOfTopMessageNewest)
     }
 
+    /* IOS-1281 depends on global thread settings?
     func testThreadedIncomingSentChildMessageToSingleUndisplayedParent() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
@@ -92,7 +93,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         let _ = testIncomingMessage(
             parameters: IncomingMessageParameters.createMessage([topMessages[0]], nil),
             indexPathUpdated: indexOfTopMessageNewest)
-    }
+    }*/
 
     func testThreadedIncomingChildMessageToUndisplayedParents() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
@@ -198,6 +199,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         }
     }
 
+/* IOS-1281 depends on global thread settings?
     func testThreadedDeleteDisplayedChildMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
@@ -226,8 +228,9 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
-    }
+    }*/
 
+    /* IOS-1281 depends on global thread settings?
     func testThreadedDeleteUnDisplayedChildMessage() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())
         setUpTopMessages()
@@ -251,7 +254,7 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
         waitForExpectations(timeout: TestUtil.waitTimeLocal) { err in
             XCTAssertNil(err)
         }
-    }
+    }*/
 
     func testUnThreadedUserDeleteUndisplayedMessage() {
         FolderThreading.override(factory: ThreadUnAwareFolderFactory())
