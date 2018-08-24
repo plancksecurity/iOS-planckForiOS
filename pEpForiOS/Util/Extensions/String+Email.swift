@@ -46,35 +46,44 @@ extension String {
 
     /**
      Character range for small latin letters.
+     - Note: This is used by a `Substring` extension, but it can probably be found
+     easier here.
      */
     public static let rangeLatinLetter: ClosedRange<Character> = "a"..."z"
 
     /**
      Character range for capital latin letters.
+     - Note: This is used by a `Substring` extension, but it can probably be found
+     easier here.
      */
     public static let rangeCapitalLatinLetter: ClosedRange<Character> = "A"..."Z"
 
     /**
      Character range for numerical letters.
+     - Note: This is used by a `Substring` extension, but it can probably be found
+     easier here.
      */
     public static let rangeNumerical: ClosedRange<Character> = "0"..."9"
 
     /**
-     See https://en.wikipedia.org/wiki/Email_address#Domain
+     See https://en.wikipedia.org/wiki/Email_address#Domain and
+     the `Substring` method of the same name.
      */
     public func isValidDomainDnsLabel() -> Bool {
         return self[startIndex..<endIndex].isValidDomainDnsLabel()
     }
 
     /**
-     See https://en.wikipedia.org/wiki/Email_address#Domain
+     See https://en.wikipedia.org/wiki/Email_address#Domain and
+     the `Substring` method of the same name.
      */
     public func isValidDomain() -> Bool {
         return self[startIndex..<endIndex].isValidDomain()
     }
 
     /**
-     See https://en.wikipedia.org/wiki/Email_address#Local-part
+     See https://en.wikipedia.org/wiki/Email_address#Local-part and
+     the `Substring` method of the same name.
      */
     public func isValidEmailLocalPart() -> Bool {
         return self[startIndex..<endIndex].isValidEmailLocalPart()
