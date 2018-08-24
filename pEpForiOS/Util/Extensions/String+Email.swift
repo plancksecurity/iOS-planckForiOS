@@ -99,9 +99,15 @@ extension String {
      See https://en.wikipedia.org/wiki/Email_address#Local-part
      */
     public func isValidEmailLocalPart() -> Bool {
+        let theCount = count
+        if theCount > 64 {
+            return false
+        }
+
+        let lastIndex = theCount - 1
+
         var previousCharWasDot = false
 
-        let lastIndex = count - 1
         var currentIndex = 0
         for ch in self {
             if ch == "." {
