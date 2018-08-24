@@ -86,6 +86,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = ""
         registerXibs()
         addContactSuggestTable()
         prepareFields()
