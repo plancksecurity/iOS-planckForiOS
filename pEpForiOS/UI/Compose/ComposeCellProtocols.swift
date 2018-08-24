@@ -15,7 +15,7 @@ public protocol CellProtocol {
 }
 
 public protocol ComposeCellDelegate: class {
-    func textDidStartEditing(at indexPath: IndexPath, textView: ComposeTextView)
+    func textDidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) // Only used by AccountCell afaics. Maybe refactor out.
     func textDidChange(at indexPath: IndexPath, textView: ComposeTextView)
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView)
 
