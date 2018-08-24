@@ -15,9 +15,6 @@ extension String {
     static let gmailRegex = emailProviderDetectionPattern(providerDomainPart: "gmail")
     static let yahooRegex = emailProviderDetectionPattern(providerDomainPart: "yahoo")
 
-    static let probablyValidEmailRegex = try! NSRegularExpression(
-        pattern: "^[^@,]+@[^@,]+$", options: .caseInsensitive)
-
     static func emailProviderDetectionPattern(providerDomainPart: String) -> NSRegularExpression {
         return try! NSRegularExpression(
             // character classes: https://en.wikipedia.org/wiki/Unicode_character_property
@@ -38,9 +35,13 @@ extension String {
      - Returns: `true` if the number of matches are exactly 1, `false` otherwise.
      */
     public func isProbablyValidEmail() -> Bool {
-        let matches = String.probablyValidEmailRegex.matches(
-            in: self, options: [], range: wholeRange())
-        return matches.count == 1
+        guard let indexOfAt = index(of: "@") else {
+            return false
+        }
+        let localPart = self[..<indexOfAt]
+        let indexOfDomainPart = index(after: indexOfAt)
+        let domainPart = self[indexOfDomainPart...]
+        return String(localPart).isValidEmailLocalPart() && String(domainPart).isValidDomain()
     }
 
     private static let rangeLatinLetter: ClosedRange<Character> = "a"..."z"
