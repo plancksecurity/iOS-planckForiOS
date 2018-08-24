@@ -1184,6 +1184,9 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textDidChange(at indexPath: IndexPath, textView: ComposeTextView) {
+        defer {
+            recalculateSendButtonStatus()
+        }
         edited = true
 
         guard indexPath.section == composeSection else {
@@ -1300,7 +1303,7 @@ extension ComposeTableViewController: UIDocumentPickerDelegate {
 // MARK: - UINavigationControllerDelegate
 
 extension ComposeTableViewController: UINavigationControllerDelegate {
-    // We have to conform to UINavigationControllerDelegate to be ab le to set our self as
+    // We have to conform to UINavigationControllerDelegate to be able to set our self as
     // UIImagePickerController delegate, which is defined as
     // (UIImagePickerControllerDelegate & UINavigationControllerDelegate)?
 }
@@ -1419,11 +1422,9 @@ extension ComposeTableViewController {
     }
 }
 
- //pickerView extension
+ // MARK: - UIPickerViewDelegate, UIPickerViewDataSource
 
  extension ComposeTableViewController: UIPickerViewDelegate, UIPickerViewDataSource  {
-
-    // MARK: - UIPickerView Delegate & Datasource
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -1441,6 +1442,4 @@ extension ComposeTableViewController {
         let address = pickerEmailAdresses[row]
         accountCell?.setAccount(address: address)
     }
-
-
  }
