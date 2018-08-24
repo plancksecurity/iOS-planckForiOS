@@ -17,7 +17,23 @@ class StringExtensionsTest: XCTestCase {
                         ("whe@uiae", true),
                         ("w@u", true),
                         ("whe@uiae, whe@uiae", false),
-                        ("wh,e@uiae", false)]
+                        ("wh,e@uiae", false),
+                        ("simple@example.com", true),
+                        ("very.common@example.com", true),
+                        ("disposable.style.email.with+symbol@example.com", true),
+                        ("other.email-with-hyphen@example.com", true),
+                        ("fully-qualified-domain@example.com", true),
+                        ("user.name+tag+sorting@example.com", true),
+                        ("x@example.com", true),
+                        ("example-indeed@strange-example.com", true),
+                        ("admin@mailserver1", true),
+                        ("#!$%&'*+-/=?^_`{}|~@example.org", true),
+                        ("example@s.example", true),
+                        ("Abc.example.com", false),
+                        ("A@b@c@example.com", false),
+                        ("1234567890123456789012345678901234567890123456789012345678901234+x@example.com", false),
+                        ("john..doe@example.com", false),
+                        ("john.doe@example..com", false)]
 
         for (email, isValid) in testData {
             if isValid {
