@@ -51,6 +51,14 @@ public extension String {
         return self
     }
 
+    public func objectReplacementCharacterRemoved() -> String {
+        // UITextView places this character if you delete an attachment, which leads to a
+        // non-empty string.
+        // https://www.fileformat.info/info/unicode/char/fffc/index.htm
+        let objectReplacementCharacter = "\u{FFFC}"
+        return self.replacingOccurrences(of: objectReplacementCharacter, with: "")
+    }
+
     /**
      Runs `trimmedWhiteSpace`, `unquote`, and `trimmedWhiteSpace` again.
      */
