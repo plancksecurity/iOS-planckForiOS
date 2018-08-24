@@ -44,9 +44,20 @@ extension String {
         return String(localPart).isValidEmailLocalPart() && String(domainPart).isValidDomain()
     }
 
-    private static let rangeLatinLetter: ClosedRange<Character> = "a"..."z"
-    private static let rangeCapitalLatinLetter: ClosedRange<Character> = "A"..."Z"
-    private static let rangeNumerical: ClosedRange<Character> = "0"..."9"
+    /**
+     Character range for small latin letters.
+     */
+    public static let rangeLatinLetter: ClosedRange<Character> = "a"..."z"
+
+    /**
+     Character range for capital latin letters.
+     */
+    public static let rangeCapitalLatinLetter: ClosedRange<Character> = "A"..."Z"
+
+    /**
+     Character range for numerical letters.
+     */
+    public static let rangeNumerical: ClosedRange<Character> = "0"..."9"
 
     /**
      See https://en.wikipedia.org/wiki/Email_address#Domain
