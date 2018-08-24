@@ -40,7 +40,7 @@ struct AppSettings {
 
     static var threadedViewEnabled: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: AppSettings.keyThreadedViewEnabled)
+            return false
         }
         set {
             UserDefaults.standard.set(newValue, forKey: AppSettings.keyThreadedViewEnabled)
@@ -112,7 +112,7 @@ struct AppSettings {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
-        defaults[AppSettings.keyThreadedViewEnabled] = false
+        defaults[AppSettings.keyThreadedViewEnabled] = true
         defaults[AppSettings.keyPassiveMode] = false
 
         UserDefaults.standard.register(defaults: defaults)
