@@ -80,16 +80,6 @@ class StringExtensionsTest: XCTestCase {
         XCTAssertEqual("Whatever New ".trimmedWhiteSpace(), "Whatever New")
     }
 
-    func testFinishedRecipientPart() {
-        XCTAssertEqual("unfinis".finishedRecipientPart(), "")
-        XCTAssertEqual("finished1,".finishedRecipientPart(), "finished1")
-        XCTAssertEqual("finished, unfinis".finishedRecipientPart(), "finished")
-        XCTAssertEqual("finished1, finished2, unfinis".finishedRecipientPart(),
-                       "finished1, finished2")
-        XCTAssertEqual("finished1, finished2, finished3, non terminado".finishedRecipientPart(),
-                       "finished1, finished2, finished3")
-    }
-
     func testMatchesPattern() {
         XCTAssertTrue("uiaeuiae, ".matches(pattern: ", $"))
         XCTAssertFalse("uiaeuiae, uiae".matches(pattern: ", $"))

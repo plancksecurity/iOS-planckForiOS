@@ -9,28 +9,23 @@
 import UIKit
 
 public extension String {
-    static let internalRecipientDelimiter = ","
-    static let externalRecipientDelimiter = ", "
     static let returnKey = "\n"
     static let space = " "
-    static let comp = "String.Extensions"
-    
-    static let unquoteRegex = try! NSRegularExpression(
-        pattern: "^\"(.*)\"$", options: [])
+
+    static let unquoteRegex = try! NSRegularExpression(pattern: "^\"(.*)\"$", options: [])
 
     static let namePartOfEmailRegex = try! NSRegularExpression(pattern: "^([^@]+)@", options: [])
 
-    static let endWhiteSpaceRegex = try! NSRegularExpression(
-        pattern: "^(.*?)\\s*$", options: [])
+    static let endWhiteSpaceRegex = try! NSRegularExpression(pattern: "^(.*?)\\s*$", options: [])
 
     static let newlineRegex = try! NSRegularExpression(
         pattern: "(\\n|\\r\\n)+", options: [])
 
-    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(
-        pattern: "(\\n|\\r\\n){3,}", options: [])
+    static let threeOrMoreNewlinesRegex = try! NSRegularExpression(pattern: "(\\n|\\r\\n){3,}",
+                                                                   options: [])
 
-    static let fileExtensionRegex = try! NSRegularExpression(
-        pattern: "^([^.]+)\\.([^.]+)$", options: [])
+    static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$",
+                                                             options: [])
 
     public var trim: String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
@@ -56,6 +51,7 @@ public extension String {
         // non-empty string.
         // https://www.fileformat.info/info/unicode/char/fffc/index.htm
         let objectReplacementCharacter = "\u{FFFC}"
+
         return self.replacingOccurrences(of: objectReplacementCharacter, with: "")
     }
 
@@ -106,35 +102,6 @@ public extension String {
                                                    withString replacement: String) -> String {
         let s = self as NSString
         return s.replacingCharacters(in: range, with: replacement)
-    }
-
-    /**
-     Assumes that the `String` is a list of recipients, delimited by comma (","), and you
-     can only edit the last one. This is very similar to the way the native iOS mail app
-     handles contact input.
-     - Returns: The last part of a contact list that can still be edited.
-     */
-    public func unfinishedRecipientPart() -> String {
-        let comps = self.components(separatedBy: String.internalRecipientDelimiter)
-        if comps.count == 0 {
-            return self
-        } else {
-            return comps.last!.trimmedWhiteSpace()
-        }
-    }
-
-    /**
-     - Returns: The part of a recipient list that connot be edited anymore.
-     */
-    public func finishedRecipientPart() -> String {
-        var comps = self.components(separatedBy: String.internalRecipientDelimiter)
-        if comps.count == 1 {
-            return ""
-        } else {
-            comps = Array(comps.dropLast())
-            let ar = comps.map({$0.trimmedWhiteSpace()})
-            return ar.joined(separator: String.externalRecipientDelimiter)
-        }
     }
 
     /**
@@ -224,7 +191,7 @@ public extension String {
             let matches = regex.matches(in: self, options: [], range: wholeRange())
             return matches.count > 0
         } catch {
-            Log.shared.errorAndCrash(component: String.comp, error: error)
+            Log.shared.errorAndCrash(component: #function, error: error)
         }
         return false
     }
@@ -255,7 +222,7 @@ public extension String {
                 }
             }
         } catch {
-            Log.shared.errorAndCrash(component: String.comp, error: error)
+            Log.shared.errorAndCrash(component: #function, error: error)
         }
         return self
     }
@@ -278,7 +245,7 @@ public extension String {
                 }
             }
         } catch {
-            Log.shared.errorAndCrash(component: String.comp, error: error)
+            Log.shared.errorAndCrash(component: #function, error: error)
         }
         return self
     }
