@@ -112,7 +112,7 @@ struct AppSettings {
         var defaults = [String: Any]()
         defaults[AppSettings.keyReinitializePepOnNextStartup] = false
         defaults[AppSettings.keyUnencryptedSubjectEnabled] = true
-        defaults[AppSettings.keyThreadedViewEnabled] = true
+        defaults[AppSettings.keyThreadedViewEnabled] = false
         defaults[AppSettings.keyPassiveMode] = false
 
         UserDefaults.standard.register(defaults: defaults)
