@@ -1180,6 +1180,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textDidStartEditing(at indexPath: IndexPath, textView: ComposeTextView) {
+        // do nothing
     }
 
     func textDidChange(at indexPath: IndexPath, textView: ComposeTextView) {
@@ -1218,11 +1219,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
     }
 
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView) {
-        //IOS-1259
-        print("DEBUG: allValidForSending: \(allValidForSending)")
-        //
-//        setMessageCanBeSend(value: allValidForSending)
-
         tableView.updateSize()
         suggestTableView.hide()
     }
@@ -1230,7 +1226,6 @@ extension ComposeTableViewController: ComposeCellDelegate {
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {
     }
 
-    //IOS-1259: rename
     private func recalculateSendButtonStatus() {
         sendButton.isEnabled = allValidForSending
     }
