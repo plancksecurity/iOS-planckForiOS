@@ -487,12 +487,9 @@ open class PEPUtil {
         let pepC = pEp(identity: identity)
         do {
             return try session.rating(for: pepC).pEpRating
-        } catch let error as NSError {
-            Log.shared.error(
-                component: #function,
-                errorString: "Identity \(identity)",
-                error: error)
-            assertionFailure("\(error)")
+        } catch {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Identity: \(identity) caused error: \(error)")
             return PEP_rating_undefined
         }
     }
