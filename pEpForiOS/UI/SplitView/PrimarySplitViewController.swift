@@ -36,8 +36,8 @@ class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDe
                     splitViewController.viewControllers.first as? UINavigationController,
                 let secondaryNavigationController =
                     navigationController.topViewController as? UINavigationController,
-                secondaryNavigationController.rootViewController is EmailViewController ||
-                    secondaryNavigationController.rootViewController is ThreadViewController
+                secondaryNavigationController.topViewController is EmailViewController ||
+                    secondaryNavigationController.topViewController is ThreadViewController
                 else {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let vc = storyboard.instantiateViewController(withIdentifier: "noMessagesViewController")
