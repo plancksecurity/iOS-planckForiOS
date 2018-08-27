@@ -6,6 +6,12 @@
 //  Copyright © 2017 p≡p Security S.A. All rights reserved.
 //
 
+/**
+ Static facade over a `AppSettingsProtocol`, by default using
+ `DefaultAppSettings`.
+ - Note: You can override the implementation (e.g., in tests) by setting your own
+ `settingsHandler`.
+ */
 struct AppSettings {
     static public let keyReinitializePepOnNextStartup = "keyReinitializePepOnNextStartup"
     static public let keyUnencryptedSubjectEnabled = "keyUnencryptedSubjectEnabled"
@@ -14,6 +20,9 @@ struct AppSettings {
     static public let keyPassiveMode = "keyPassiveMode"
     static public let keyManuallyTrustedServers = "keyManuallyTrustedServers"
 
+    /**
+     The actual implementation of `AppSettingsProtocol` to defer to.
+     */
     static public var settingsHandler: AppSettingsProtocol = DefaultAppSettings()
 
     // MARK: - API
