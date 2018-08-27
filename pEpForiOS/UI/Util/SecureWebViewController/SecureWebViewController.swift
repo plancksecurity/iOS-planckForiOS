@@ -52,7 +52,7 @@ class SecureWebViewController: UIViewController {
         }
     }
 
-    private var _scrollingEnabled: Bool = true
+    private var _scrollingEnabled: Bool = false
     var scrollingEnabled: Bool {
         get {
             return _scrollingEnabled
@@ -114,7 +114,7 @@ class SecureWebViewController: UIViewController {
         CidHandler.setup(config: config)
         webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
-         webView.scrollView.delegate = self
+        webView.scrollView.delegate = self
         webView.scrollView.isScrollEnabled = scrollingEnabled
         webView.scrollView.isUserInteractionEnabled = userInteractionEnabled
         view = webView
@@ -404,6 +404,11 @@ extension SecureWebViewController: WKNavigationDelegate {
 extension SecureWebViewController: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         scrollView.pinchGestureRecognizer?.isEnabled = isContentLoadedAndLayouted && zoomingEnabled
+    }
+
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        // We disable vertical scrolling if we are not zoomed in.
+        scrollingEnabled = scrollView.contentSize.width > view.frame.size.width
     }
 }
 
