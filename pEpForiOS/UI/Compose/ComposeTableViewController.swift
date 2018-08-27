@@ -1153,7 +1153,7 @@ extension ComposeTableViewController: ComposeCellDelegate {
 
     func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
                      forFieldType type: ComposeFieldModel.FieldType) {
-        let identities = changedAddresses.map { Identity(address: $0) }
+        let identities = changedAddresses.map { Identity.by(address: $0) ?? Identity(address: $0) }
         switch type {
         case .to:
             destinyTo = identities
