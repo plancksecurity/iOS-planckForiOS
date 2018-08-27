@@ -67,7 +67,7 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                 }
                 return acc.user.address
             case .trustedServer:
-                return NSLocalizedString("Trusted Servers",
+                return NSLocalizedString("Store Messages Securely",
                                          comment:
                     "Settings: Cell (button) title to view default account setting")
             }

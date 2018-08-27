@@ -12,7 +12,7 @@ import MessageModel
 struct TrustedServerSettingsViewModel {
     struct Row: Equatable {
         let address: String
-        let trusted: Bool
+        let storeMessagesSecurely: Bool
     }
 
     private(set) var rows = [Row]()
@@ -21,15 +21,16 @@ struct TrustedServerSettingsViewModel {
         reset()
     }
 
-    mutating func setTrusted(forAccountWith address: String, toValue newValue: Bool) {
+    mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
         for i in 0...rows.count {
             let row = rows[i]
             if row.address == address {
-                rows[i] = Row(address: row.address, trusted: newValue)
+                rows[i] = Row(address: row.address, storeMessagesSecurely: newValue)
                 break
             }
         }
-        if newValue {
+        let isTruestedServer = !newValue
+        if isTruestedServer {
             AppSettings.addToManuallyTrustedServers(address: address)
         } else {
             AppSettings.removeFromManuallyTrustedServers(address: address)
@@ -41,7 +42,7 @@ struct TrustedServerSettingsViewModel {
         var createes = [Row]()
         for address in servers {
             let isTrusted = AppSettings.isManuallyTrustedServer(address: address)
-            createes.append(Row(address: address, trusted: isTrusted))
+            createes.append(Row(address: address, storeMessagesSecurely: !isTrusted))
         }
         rows = createes
     }

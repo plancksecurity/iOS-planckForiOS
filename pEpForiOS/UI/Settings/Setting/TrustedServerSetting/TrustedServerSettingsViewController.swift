@@ -32,21 +32,21 @@ extension TrustedServerSettingsViewController {
         cell.delegate = self
         let row = viewModel.rows[indexPath.row]
         cell.address.text = row.address
-        cell.onOfSwitch.setOn(row.trusted, animated: false)
+        cell.onOfSwitch.setOn(row.storeMessagesSecurely, animated: false)
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView,
                             titleForHeaderInSection section: Int) -> String? {
-        return NSLocalizedString("Trusted Server",
+        return NSLocalizedString("Store Messages Securely",
                                  comment: "Trusted Server Setting Section Title")
     }
 
     override func tableView(_ tableView: UITableView,
                             titleForFooterInSection section: Int) -> String? {
-        return NSLocalizedString("If enabled, an unencrypted copy of each message is stored on " +
-            "the server.\n\nDo not enable if you are not sure what you are doing!",
+        return NSLocalizedString("If disabled, an unencrypted copy of each message is stored on " +
+            "the server.\n\nDo not disable if you are not sure what you are doing!",
                                  comment: "Trusted Server Setting Section Footer")
     }
 }
@@ -60,6 +60,6 @@ extension TrustedServerSettingsViewController: TrustedServerSettingCellDelegate 
             Log.shared.errorAndCrash(component: #function, errorString: "No address.")
             return
         }
-        viewModel.setTrusted(forAccountWith: address , toValue: newValue)
+        viewModel.setStoreSecurely(forAccountWith: address , toValue: newValue)
     }
 }
