@@ -106,14 +106,24 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - SETUP
 
-    private func setuptoolbar() {
-        let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
-                                                target: self)
-        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
-            target: nil,
-            action: nil)
-        self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
+    private func setuptoolbar(forceDrawing: Bool = false) {
+        guard let isCollapsed = splitViewController?.isCollapsed else {
+            return
+        }
+        if(isCollapsed || forceDrawing){
+            let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
+                                                    target: self)
+            item.tag = BarButtonType.settings.rawValue
+            let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+                target: nil,
+                action: nil)
+            flexibleSpace.tag = BarButtonType.space.rawValue
+
+            self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
+        } else {
+            removePepButton()
+        }
     }
 
     func configureView() {
@@ -189,10 +199,20 @@ class EmailViewController: BaseTableViewController {
             if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems {
                 leftBarButtonItems.append(contentsOf: unwrappedLeftBarButtonItems)
             }
+            if(traitCollection.verticalSizeClass == .regular){
+                let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
+                                                        target: self)
+                item.tag = BarButtonType.settings.rawValue
+                navigationItem.rightBarButtonItems?.append(item)
 
+            } else {
+                setuptoolbar(forceDrawing: true)
+            }
             navigationItem.setLeftBarButtonItems(leftBarButtonItems.reversed(), animated: true)
+
             break
         case .allVisible:
+            removePepButton()
             var leftBarButtonItems: [UIBarButtonItem] = []
             if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
                 leftBarButtonItems.append(unwrappedLeftBarButtonItems)
@@ -297,7 +317,12 @@ class EmailViewController: BaseTableViewController {
     // MARK: - IBActions
 
     @objc private func showSettingsViewController() {
-        UIUtils.presentSettings(on: self, appConfig: appConfig)
+        splitViewController?.preferredDisplayMode = .allVisible
+        guard let nav = splitViewController?.viewControllers.first as? UINavigationController,
+            let vc = nav.topViewController else {
+                return
+        }
+        UIUtils.presentSettings(on: vc, appConfig: appConfig)
     }
 
     @IBAction func next(_ sender: Any) {
@@ -529,6 +554,44 @@ extension EmailViewController: SegueHandlerType {
         }
     }
 
+    internal func removePepButton(){
+        var items: [UIBarButtonItem]!
+        if traitCollection.verticalSizeClass == .regular {
+            guard let auxItems = navigationItem.rightBarButtonItems else {
+                return
+            }
+            items = auxItems
+        } else {
+            guard let auxItems = toolbarItems else {
+                return
+            }
+            items = auxItems
+        }
+
+        if let collapsed = splitViewController?.isCollapsed,
+            collapsed == false {
+            var positionToRemove: Int? = nil
+            for i in 0..<items.count {
+                if items[i].tag == BarButtonType.settings.rawValue {
+                    positionToRemove = i
+                }
+            }
+            if let positionToRemove = positionToRemove {
+                items.remove(at: positionToRemove)
+            }
+            if items.last?.tag == BarButtonType.space.rawValue {
+                items.removeLast()
+            }
+
+        }
+
+        if traitCollection.verticalSizeClass == .regular {
+            navigationItem.rightBarButtonItems = items
+
+        } else {
+            toolbarItems = items
+        }
+    }
 }
 
 // MARK: - RatingReEvaluatorDelegate
@@ -548,6 +611,12 @@ extension EmailViewController: MessageAttachmentDelegate {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         if UI_USER_INTERFACE_IDIOM() == .pad {
             documentInteractionController.dismissMenu(animated: false)
+        }
+
+        splitViewController?.preferredDisplayMode = .allVisible
+
+        coordinator.animate(alongsideTransition: nil){ _ in
+            self.setuptoolbar()
         }
     }
 
@@ -593,4 +662,9 @@ extension EmailViewController: SecureWebViewControllerDelegate {
 
 private extension Selector {
     static let okButtonPressed = #selector(EmailViewController.okButtonPressed(sender:))
+}
+
+enum BarButtonType: Int {
+    case space = 1
+    case settings = 2
 }
