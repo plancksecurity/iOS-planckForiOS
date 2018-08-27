@@ -52,7 +52,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         if let filter = folderToShow.filter,
             !filter.fulfillsFilter(message: message) {
             // The message does not fit in current filter criteria.
-            if AppSettings.threadedViewEnabled {
+            if threadedMessageFolder.isThreaded {
                 // In case of threading, it could be a child message
                 messagePassedFilter = false
             } else {
@@ -162,7 +162,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // We do not have this top message in our model, so we do not have to remove it there,
             // but it might belong to some top message's thread so we might have to update
             // that top message.
-            if AppSettings.threadedViewEnabled {
+            if threadedMessageFolder.isThreaded {
                 didDeleteInternal(notTopMessage: message, belongingToThread: belongingToThread)
             }
         }
@@ -171,7 +171,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     private func didDeleteInternal(topMessage: Message,
                                    atIndex indexExisting: Int,
                                    belongingToThread: Set<MessageID>) {
-        if AppSettings.threadedViewEnabled {
+        if threadedMessageFolder.isThreaded {
             let isDisplayingThread = !belongingToThread.isEmpty &&
                 isCurrentlyDisplayingDetailsOf(message: topMessage)
 
@@ -382,7 +382,7 @@ Something is fishy here.
 
     private func shouldBeDisplayed(message: Message) -> Bool {
         if message.isEncrypted ||
-            (!AppSettings.threadedViewEnabled && !isInFolderToShow(message: message)) {
+            (!threadedMessageFolder.isThreaded && !isInFolderToShow(message: message)) {
             return false
         }
 
