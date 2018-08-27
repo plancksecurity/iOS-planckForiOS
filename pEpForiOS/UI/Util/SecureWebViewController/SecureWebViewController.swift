@@ -422,8 +422,8 @@ extension SecureWebViewController: UIScrollViewDelegate {
 /// The hack overrrides present(...) in the root view controller of the App (!).
 
 extension SecureWebViewController {
-        /// DIRTY HACK. Find details in below UISplitViewController extension
-        static var appConfigDirtyHack: AppConfig?
+    /// DIRTY HACK. Find details in below UISplitViewController extension
+    static var appConfigDirtyHack: AppConfig?
 }
 extension UISplitViewController {
 
@@ -438,7 +438,7 @@ extension UISplitViewController {
             alertController.preferredStyle == .actionSheet else {
                 // Is not an Action Sheet. Forward for custom handling.
                 super.present(viewControllerToPresent, animated: flag, completion: completion)
-               return
+                return
         }
 
         let alertTitle = alertController.title ?? ""
