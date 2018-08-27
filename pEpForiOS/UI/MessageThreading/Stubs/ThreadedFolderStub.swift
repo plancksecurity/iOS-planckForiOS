@@ -9,7 +9,9 @@
 import Foundation
 import MessageModel
 
-class ThreadedFolderStub: ThreadedMessageFolderProtocol{
+class ThreadedFolderStub: ThreadedMessageFolderProtocol {
+    var isThreaded = true
+
     func referencedTopMessages(message: Message) -> [Message] {
         return [Message]()
     }

@@ -11,6 +11,8 @@ import Foundation
 import MessageModel
 
 class ThreadedFolder: ThreadedMessageFolderProtocol {
+    var isThreaded = true
+
     let underlyingFolder: Folder
 
     init(folder: Folder) {

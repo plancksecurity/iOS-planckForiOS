@@ -15,6 +15,8 @@ import MessageModel
  Can be used in case the user has disabled threading in the settings.
  */
 class UnthreadedFolder: ThreadedMessageFolderProtocol {
+    var isThreaded = false
+
     let underlyingFolder: Folder
 
     init(folder: Folder) {

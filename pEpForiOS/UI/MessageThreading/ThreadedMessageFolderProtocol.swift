@@ -18,6 +18,12 @@ import MessageModel
  */
 public protocol ThreadedMessageFolderProtocol {
     /**
+     Some processing requires a model to know if the underlying folder
+     is a threading one.
+     */
+    var isThreaded: Bool { get }
+
+    /**
      Depending on whether the underlying implmentation is configured to
      show threads or not, this will return a list of all messages or just
      the top messages of the threads.
