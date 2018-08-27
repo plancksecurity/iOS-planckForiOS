@@ -196,7 +196,6 @@
 		43122B3C1DF5B75000610253 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3B1DF5B75000610253 /* NetworkService.swift */; };
 		43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3D1DF5BB6600610253 /* MySelfOperation.swift */; };
 		431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 431394A81E4B03AA00D92F33 /* Settings.bundle */; };
-		431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431394C01E4B11CF00D92F33 /* AppSettings.swift */; };
 		4315E4BF2011FD6900F68763 /* AuthMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4BE2011FD6900F68763 /* AuthMethod.swift */; };
 		4315E4C120120F1600F68763 /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C020120F1600F68763 /* NSSecureCoding+Extension.swift */; };
 		4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
@@ -404,6 +403,7 @@
 		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
 		43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */; };
 		43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63D01DE8866C00FAC505 /* Message+pEp.swift */; };
+		43D0702F2133DB3F0013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D0702E2133DB3F0013B120 /* AppSettings.swift */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
 		43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */; };
 		43D755F61F262B37006F933A /* PantomimeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755F51F262B37006F933A /* PantomimeError.swift */; };
@@ -722,7 +722,6 @@
 		43122B3B1DF5B75000610253 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		43122B3D1DF5BB6600610253 /* MySelfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySelfOperation.swift; sourceTree = "<group>"; };
 		431394A81E4B03AA00D92F33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		431394C01E4B11CF00D92F33 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		4315E4BE2011FD6900F68763 /* AuthMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthMethod.swift; sourceTree = "<group>"; };
 		4315E4C020120F1600F68763 /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Extension.swift"; sourceTree = "<group>"; };
@@ -965,6 +964,7 @@
 		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
 		43CE63D01DE8866C00FAC505 /* Message+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+pEp.swift"; sourceTree = "<group>"; };
+		43D0702E2133DB3F0013B120 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchUidToMsnOperation.swift; sourceTree = "<group>"; };
 		43D755F51F262B37006F933A /* PantomimeError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantomimeError.swift; sourceTree = "<group>"; };
@@ -1771,8 +1771,8 @@
 				43980EDE1CBD24B000A7FC3C /* Util */,
 				431394A31E4B036000D92F33 /* Settings */,
 				43B10C7E1EC2EE65003E849F /* cpp */,
+				43D0702D2133DB3F0013B120 /* AppSettings */,
 				43980E261CBD0BC900A7FC3C /* AppDelegate.swift */,
-				431394C01E4B11CF00D92F33 /* AppSettings.swift */,
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
 				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
@@ -1992,6 +1992,14 @@
 				43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		43D0702D2133DB3F0013B120 /* AppSettings */ = {
+			isa = PBXGroup;
+			children = (
+				43D0702E2133DB3F0013B120 /* AppSettings.swift */,
+			);
+			path = AppSettings;
 			sourceTree = "<group>";
 		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
@@ -2800,7 +2808,6 @@
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
 				4341980520AB037E0062F7F6 /* CGImageSource+Extension.swift in Sources */,
 				43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */,
-				431394C11E4B11CF00D92F33 /* AppSettings.swift in Sources */,
 				15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */,
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
@@ -3038,6 +3045,7 @@
 				B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */,
 				43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */,
 				4341EBD1208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift in Sources */,
+				43D0702F2133DB3F0013B120 /* AppSettings.swift in Sources */,
 				00FD0CE62101F7D700BA0C56 /* ScreenComposerProtocol.swift in Sources */,
 				4351C2D81F4441190053381F /* references.c in Sources */,
 				432645811F4C26CF002E3EF8 /* NSAttributedString+Parsing.swift in Sources */,
