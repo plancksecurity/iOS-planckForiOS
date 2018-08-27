@@ -8,19 +8,6 @@
 
 import MessageModel
 
-public protocol AppSettingsProtocol {
-    var shouldReinitializePepOnNextStartup: Bool { get set }
-    var unencryptedSubjectEnabled: Bool { get set }
-    var threadedViewEnabled: Bool { get set }
-    var passiveMode: Bool { get set }
-    var defaultAccount: String? { get set }
-    var manuallyTrustedServers: [String] { get set }
-
-    func isManuallyTrustedServer(address: String) -> Bool
-    func addToManuallyTrustedServers(address: String)
-    func removeFromManuallyTrustedServers(address: String)
-}
-
 public class DefaultAppSettings: AppSettingsProtocol {
     init() {
         setup()
