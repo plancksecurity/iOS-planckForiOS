@@ -23,7 +23,7 @@ extension FolderType {
             let result = Message.ImapFlags()
             result.seen = true
             return result
-        case .archive, .drafts, .inbox, .normal, .trash, .spam, .all, .flagged:
+        case .archive, .drafts, .inbox, .normal, .trash, .spam, .all, .flagged, .outbox:
             break
         }
         return nil

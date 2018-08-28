@@ -139,7 +139,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         switch folder.folderType {
         case .all, .archive, .spam, .trash, .flagged, .inbox, .normal:
             return (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
-        case .drafts, .sent:
+        case .drafts, .sent, .outbox:
             return message.to.first?.userNameOrAddress ?? ""
         }
     }
