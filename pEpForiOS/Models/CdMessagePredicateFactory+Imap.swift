@@ -18,17 +18,6 @@ extension CdMessage.PredicateFactory {
         return NSPredicate(format: "targetFolder != nil AND targetFolder != parent")
     }
 
-//    static public func notMarkedForMoveToFolder() -> NSPredicate {
-//        var predicates = [NSPredicate]()
-//        predicates.append(NSPredicate(format: "targetFolder == nil"))
-//        predicates.append(NSPredicate(format: "targetFolder == parent"))
-//        return NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
-//    }
-
-//    static public func unread() -> NSPredicate {
-//        return NSPredicate(format: "imap.localFlags.flagSeen = false")
-//    }
-
     /// - Returns: Predicate to fetch all messages that need to be IMAP appended (uploaded to server).
     static public func needImapAppend() -> NSPredicate {
         return NSPredicate(format: "uid = 0 and parent.folderTypeRawValue IN %@",

@@ -17,23 +17,6 @@ extension Folder {
         return i2
     }
 
-//    /**
-//     - Returns: All the messages contained in that folder in a flat and linear way,
-//     that is no threading involved.
-//     */
-//    open func allCdMessagesNonThreaded(includingDeleted: Bool = false,
-//                                       includingMarkedForMoveToFolder: Bool = false) -> [CdMessage] {
-//        var predicates = [NSPredicate]()
-//
-//        if let cdFolder = cdFolder() {
-//            predicates.append(containedMessagesPredicate(cdFolder: cdFolder))
-//        }
-//
-//        return allCdMessages(includingDeleted: includingDeleted,
-//                             includingMarkedForMoveToFolder: includingMarkedForMoveToFolder,
-//                             takingPredicatesIntoAccount: predicates)
-//    }
-
     /**
      - Returns: All the messages contained in that folder in a flat and linear way,
      that is no threading involved.
@@ -50,59 +33,6 @@ extension Folder {
         }
         return nil
     }
-
-//    public func messageCount() -> Int {
-//        return allCdMessagesNonThreaded().count
-//    }
-
-//    func defaultSortDescriptors() -> [NSSortDescriptor] {
-//        return [NSSortDescriptor(key: "sent", ascending: false),
-//                NSSortDescriptor(key: "uid", ascending: false),
-//                NSSortDescriptor(key: "parent.name", ascending: false)]
-//    }
-
-//    public func allCdMessages(includingDeleted: Bool, includingMarkedForMoveToFolder: Bool = false,
-//                              takingPredicatesIntoAccount prePredicates: [NSPredicate])  -> [CdMessage] {
-//        var predicates = prePredicates
-//
-//        predicates.append(CdMessage.PredicateFactory.decrypted())
-//        if !includingDeleted {
-//            predicates.append(CdMessage.PredicateFactory.undeleted())
-//        }
-//        if !includingMarkedForMoveToFolder {
-//            predicates.append(CdMessage.PredicateFactory.notMarkedForMoveToFolder())
-//        }
-//        if let filterPredicates = filter?.predicates {
-//            predicates.append(contentsOf: filterPredicates)
-//        }
-//        let p = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-//        let descs = defaultSortDescriptors()
-//        let msgs = CdMessage.all(predicate: p, orderedBy: descs) as? [CdMessage] ?? []
-//        return msgs
-//    }
-
-//    open func contains(message: Message, deletedMessagesAreContained: Bool = false,
-//                       markedForMoveToFolderArteContained: Bool = false) -> Bool {
-//        if let cdFolder = cdFolder() {
-//            var ps = [NSPredicate]()
-//            ps.append(containedMessagesPredicate(cdFolder: cdFolder))
-//            if deletedMessagesAreContained {
-//                ps.append(NSPredicate(format: "uuid = %@", message.uuid))
-//                if let account = CdAccount.search(account: message.parent.account) {
-//                    ps.append(NSPredicate(format: "parent.account = %@", account))
-//                }
-//            }
-//            if !markedForMoveToFolderArteContained {
-//                ps.append(CdMessage.PredicateFactory.notMarkedForMoveToFolder())
-//            }
-//            let p = NSCompoundPredicate(andPredicateWithSubpredicates: ps)
-//            let d = defaultSortDescriptors()
-//            if let _ = CdMessage.first(predicate: p, orderedBy: d) {
-//                return true
-//            }
-//        }
-//        return false
-//    }
 
     func indexOfBinary(message: Message) -> Int? {
         func comparator(m1: CdMessage, m2: CdMessage) -> ComparisonResult {
