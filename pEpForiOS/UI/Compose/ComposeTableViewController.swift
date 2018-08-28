@@ -407,9 +407,8 @@ class ComposeTableViewController: BaseTableViewController {
                     errorString: "We have a problem here getting the senders account.")
                 return nil
         }
-        guard let f = Folder.by(account: account, folderType: .sent) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "No sent folder exists.")
+        guard let f = Folder.by(account: account, folderType: .outbox) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No outbox")
             return nil
         }
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
