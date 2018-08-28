@@ -355,7 +355,7 @@ class TestUtil {
             syncAndWait(testCase: testCase)
         }
 
-        guard let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount) else {
+        guard let outbox = CdFolder.by(folderType: .outbox, account: cdAccount) else {
             XCTFail()
             return []
         }
@@ -399,7 +399,7 @@ class TestUtil {
         for i in 1...numberOfMails {
             let message = CdMessage.create()
             message.from = from
-            message.parent = sentFolder
+            message.parent = outbox
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
@@ -430,14 +430,13 @@ class TestUtil {
         }
         Record.saveAndWait()
 
-        if let cdOutgoingMsgs = sentFolder.messages?.sortedArray(
+        if let cdOutgoingMsgs = outbox.messages?.sortedArray(
             using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] {
             let unsent = cdOutgoingMsgs.filter { $0.uid == 0 }
             XCTAssertEqual(unsent.count, numberOfMails)
             for m in unsent {
-                XCTAssertEqual(m.parent?.folderType, FolderType.sent)
+                XCTAssertEqual(m.parent?.folderType, FolderType.outbox)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, SendStatus.none)
             }
         } else {
             XCTFail()

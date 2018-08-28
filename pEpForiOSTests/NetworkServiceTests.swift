@@ -264,9 +264,8 @@ class NetworkServiceTests: XCTestCase {
 
         // Verify outgoing mails
         for m in outgoingMails {
-            XCTAssertEqual(m.parent?.folderType, FolderType.sent)
+            XCTAssertEqual(m.parent?.folderType, FolderType.outbox)
             XCTAssertEqual(m.uid, Int32(0))
-            XCTAssertEqual(m.sendStatus, SendStatus.none)
         }
 
         TestUtil.syncAndWait(testCase: self)
