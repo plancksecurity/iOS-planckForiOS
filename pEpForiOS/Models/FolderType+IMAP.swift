@@ -9,4 +9,13 @@
 import MessageModel
 
 extension FolderType {
+    /// Folder of those types mirror a remote IMAP folder and have to be synced.
+    static let typesSyncedWithImapServer = [FolderType.inbox,
+                                            .normal,
+                                            .sent,
+                                            .drafts,
+                                            .trash,
+                                            .spam,
+                                            .archive,
+                                            .all, .flagged] //IOS-729: sure about .all and .flagged?
 }
