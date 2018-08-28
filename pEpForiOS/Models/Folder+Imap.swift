@@ -6,7 +6,6 @@
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-//IOS-729: seperate concerns (threading, imap ...)
 import MessageModel
 
 /// Logic based on data MessageModel should not know.
