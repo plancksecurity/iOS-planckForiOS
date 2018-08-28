@@ -17,7 +17,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     var smtpSend: SmtpSend!
     var smtpSendData: SmtpSendData
 
-    /** The object ID of the last sent message, so we can change the sendStatus on success */
+    /** The object ID of the last sent message, so we can move it on success */
     var lastSentMessageObjectID: NSManagedObjectID?
 
     public init(parentName: String = #function, smtpSendData: SmtpSendData,
@@ -26,7 +26,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
-    func checkSmtpSend() -> Bool {
+    private func checkSmtpSend() -> Bool {
         smtpSend = smtpSendData.smtp
         if smtpSend == nil {
             addError(BackgroundError.SmtpError.invalidConnection(info: comp))
@@ -47,12 +47,12 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     public static func predicateOutgoingMails(cdAccount: CdAccount) -> NSPredicate {
         return NSPredicate(
-            format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d and parent.account = %@",
-            FolderType.sent.rawValue, SendStatus.none.rawValue, cdAccount)
+            format: "parent.folderTypeRawValue = %d and parent.account = %@",
+            FolderType.outbox.rawValue, cdAccount)
     }
 
-    public static func outgoingMails(
-        context: NSManagedObjectContext, cdAccount: CdAccount) -> [CdMessage] {
+    public static func outgoingMails(context: NSManagedObjectContext,
+                                     cdAccount: CdAccount) -> [CdMessage] {
         let p = predicateOutgoingMails(cdAccount: cdAccount)
         return CdMessage.all(predicate: p, in: context) as? [CdMessage] ?? []
     }
@@ -112,19 +112,21 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         smtpSend.smtp.sendMessage()
     }
 
-    func markLastSentMessageAsSent(context: NSManagedObjectContext) {
-        if let objID = lastSentMessageObjectID {
-            if let msg = context.object(with: objID) as? CdMessage {
-                msg.sendStatus = SendStatus.smtpDone
-                Log.info(
-                    component: #function,
-                    content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
-                context.saveAndLogErrors()
-            } else {
+    func moveLastMessageToSentFolder(context: NSManagedObjectContext) {
+        guard
+            let objID = lastSentMessageObjectID,
+            let msg = context.object(with: objID) as? CdMessage,
+            let cdAccount = msg.parent?.account,
+            let outbox = CdFolder.by(folderType: .outbox, account: cdAccount)
+            else {
                 Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Could not access sent message by ID")
-            }
+                                         errorString: "Problem moving last message")
+                return
         }
+        msg.parent = outbox
+        Log.info(component: #function,
+                 content: "Sent message. messageID: \(String(describing: msg.messageID))")
+        context.saveAndLogErrors()
     }
 
     func handleNextMessage() {
@@ -139,7 +141,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     }
 
     func handleNextMessageInternal(context: NSManagedObjectContext) {
-        markLastSentMessageAsSent(context: context)
+        moveLastMessageToSentFolder(context: context)
 
         guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
             as? CdAccount else {
