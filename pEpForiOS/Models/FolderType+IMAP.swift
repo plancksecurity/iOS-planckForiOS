@@ -9,8 +9,14 @@
 import MessageModel
 
 extension FolderType {
+
+    /// Whether or not a folder of this type represents a remote folder
+    var isSyncedWithServer: Bool {
+        return FolderType.typesSyncedWithImapServer.contains(self)
+    }
+
     /// Folder of those types mirror a remote IMAP folder and have to be synced.
-    static let typesSyncedWithImapServer = [FolderType.inbox,
+    static private let typesSyncedWithImapServer = [FolderType.inbox,
                                             .normal,
                                             .sent,
                                             .drafts,
