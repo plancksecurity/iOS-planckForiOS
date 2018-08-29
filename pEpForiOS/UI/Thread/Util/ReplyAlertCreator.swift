@@ -12,9 +12,11 @@ import MessageModel
 
 struct ReplyAlertCreator {
 
+    public let replyAllChecker: ReplyAllPossibleCheckerProtocol
     public let alert: UIAlertController
 
-    public init() {
+    public init(replyAllChecker: ReplyAllPossibleCheckerProtocol) {
+        self.replyAllChecker = replyAllChecker
         alert = UIAlertController.pEpAlertController()
     }
 
@@ -30,7 +32,7 @@ struct ReplyAlertCreator {
     public func withReplyAllOption(
         forMessage: Message?,
         handler: @escaping (UIAlertAction) -> Swift.Void) -> ReplyAlertCreator {
-        if ReplyAllPossibleChecker().isReplyAllPossible(forMessage: forMessage) {
+        if replyAllChecker.isReplyAllPossible(forMessage: forMessage) {
             let alertActionReplyAll = UIAlertAction(
                 title: NSLocalizedString("Reply All", comment: "Message actions"),
                 style: .default, handler: handler)

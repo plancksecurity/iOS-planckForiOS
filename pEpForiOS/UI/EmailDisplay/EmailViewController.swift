@@ -344,7 +344,7 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
-        let alert = ReplyAlertCreator()
+        let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
             .withReplyOption { action in
                 self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
             }.withReplyAllOption(forMessage: message) { action in
