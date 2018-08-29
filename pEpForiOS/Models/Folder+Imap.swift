@@ -26,6 +26,25 @@ extension Folder {
         return i2
     }
 
+    static public func allRemoteFolders(inAccount account: Account) -> [Folder] {
+        var result = [Folder]()
+        guard let cdAcc = CdAccount.search(account: account) else {
+            return result
+        }
+        let pInAccount = CdFolder.PredicateFactory.inAccount(cdAccount: cdAcc)
+        let pIsRemote = CdFolder.PredicateFactory.isSyncedWithServer()
+        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pInAccount, pIsRemote])
+        guard let cdFolders = CdFolder.all(predicate: p) as? [CdFolder] else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+            return result
+        }
+        result =
+            cdFolders
+            .map { $0.folder() }
+            .filter { $0.isSyncedWithServer }
+        return result
+    }
+
     /**
      - Returns: All the messages contained in that folder in a flat and linear way,
      that is no threading involved.
