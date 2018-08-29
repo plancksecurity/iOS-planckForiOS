@@ -117,7 +117,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             let objID = lastSentMessageObjectID,
             let cdMessage = context.object(with: objID) as? CdMessage,
             let cdAccount = cdMessage.parent?.account,
-            let outbox = CdFolder.by(folderType: .outbox, account: cdAccount)
+            let outbox = CdFolder.by(folderType: .sent, account: cdAccount)
             else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "Problem moving last message")
