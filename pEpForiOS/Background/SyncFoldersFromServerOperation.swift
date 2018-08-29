@@ -129,7 +129,7 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            // Get all local folders
+            // Get all local folders that represent a remote mailbox
             guard let cdAaccount =
                 me.privateMOC.object(with: me.imapSyncData.connectInfo.accountObjectID)
                     as? CdAccount else {
@@ -138,9 +138,9 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
                         return
             }
             let account = cdAaccount.account()
-            let localFolders = Folder.allFolders(inAccount: account)
+            let localSyncedFolders = Folder.allRemoteFolders(inAccount: account)
             // Filter local folders that do not exist on server any more ...
-            let foldersToDelete = localFolders.filter {
+            let foldersToDelete = localSyncedFolders.filter {
                 !folderNamesExistingOnServer.contains($0.name) && $0.subFolders().count == 0
             }
             // ... and delete them
