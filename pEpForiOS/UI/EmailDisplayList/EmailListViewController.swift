@@ -918,15 +918,7 @@ extension EmailListViewController {
     }
 
     func createReplyAllAction(forRowAt indexPath: IndexPath) ->  UIAlertAction? {
-        guard let theMessage = model?.message(representedByRowAt: indexPath) else {
-            return nil
-        }
-
-        guard let theModel = model else {
-            return nil
-        }
-
-        if theModel.isReplyAllPossible(forMessage: theMessage) {
+        if (model?.isReplyAllPossible(forRowAt: indexPath) ?? false) {
             let title = NSLocalizedString("Reply All", comment: "EmailList action title")
             return UIAlertAction(title: title, style: .default) { (action) in
                 self.performSegue(withIdentifier: .segueReplyAll, sender: self)

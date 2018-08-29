@@ -534,4 +534,8 @@ extension EmailListViewModel: ReplyAllPossibleCheckerProtocol {
     func isReplyAllPossible(forMessage: Message?) -> Bool {
         return ReplyAllPossibleChecker().isReplyAllPossible(forMessage: forMessage)
     }
+
+    func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
+        return isReplyAllPossible(forMessage: message(representedByRowAt: indexPath))
+    }
 }
