@@ -76,12 +76,26 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                                        cc: [],
                                        bcc: [account.user, otherRecipient1]))
 
-        // Note: Why would we receive such an email?
-        // If that fails, maybe because it doesn't make actual sense.
+        // Fake
         XCTAssertFalse(replyAllPossible(testName: #function,
                                         folder: inbox,
                                         from: externalFrom1,
                                         to: [externalFrom1],
+                                        cc: [],
+                                        bcc: []))
+
+        // Some SPAM?
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: inbox,
+                                        from: externalFrom1,
+                                        to: [],
+                                        cc: [],
+                                        bcc: []))
+
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: inbox,
+                                        from: nil,
+                                        to: [account.user],
                                         cc: [],
                                         bcc: []))
 
@@ -126,7 +140,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     func replyAllPossible(
         testName: String,
         folder: Folder,
-        from: Identity, to: [Identity], cc: [Identity], bcc: [Identity]) -> Bool {
+        from: Identity?, to: [Identity], cc: [Identity], bcc: [Identity]) -> Bool {
         let msgNumber = nextMessageNumber(testName: testName)
 
         let msg = Message.init(uuid: "\(msgNumber)", uid: UInt(msgNumber), parentFolder: folder)
