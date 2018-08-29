@@ -139,6 +139,18 @@ extension FolderType {
     }
 
     // MARK: - Individual Properties and Actions
+
+    func deleteAction() -> (Message)->() { //IOS-729:
+        return { message in
+            if FolderType.typesSyncedWithImapServer.contains(self) {
+                message.imapDelete()
+            } else {
+                // Folder not synced, delete from store only.
+                message.delete()
+            }
+        }
+    }
+
     /**
      Is a mail in that folder *typically* outgoing? This can only be a guess for some cases.
      */
