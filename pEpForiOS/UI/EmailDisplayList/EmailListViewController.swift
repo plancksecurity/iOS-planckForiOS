@@ -557,7 +557,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Delete or Archive
         let defaultIsArchive = parentFolder.defaultDestructiveActionIsArchive
         let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
-        let descriptorDestructive: SwipeActionDescriptor = defaultIsArchive ? .archive : .trash
+        let usedDescriptor =
+            folderIsOutbox(parentFolder) ?
+            SwipeActionDescriptor.trash :
+                (defaultIsArchive ? .archive : .trash)
+        let descriptorDestructive: SwipeActionDescriptor = usedDescriptor
         let archiveAction =
             SwipeAction(style: .destructive, title: titleDestructive) {
                 [weak self] action, indexPath in
@@ -573,9 +577,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         swipeActions.append(archiveAction)
 
         // Flag
-        if !folderIsDraft(parentFolder) {
-            // Do not add "Flag" action to drafted mails.
-
+        if !folderIsDraftsOrOutbox(parentFolder) {
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
@@ -595,8 +597,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         // More (reply++)
-        if !folderIsDraft(parentFolder) {
-            // Do not add "more" actions (reply...) to drafted mails.
+        if !folderIsDraftsOrOutbox(parentFolder) {
+            // Do not add "more" actions (reply...) to drafts or outbox.
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
                 guard let me = self else {
@@ -1224,7 +1226,7 @@ extension EmailListViewController: ComposeTableViewControllerDelegate {
 
 // MARK: - Enums that should be moved elsewhere
 
-// IOS-729: off topic: move all below. Not LIstViewController specific
+// IOS-729: off topic: move all below. Not ListViewController specific
 /**
  Swipe configuration.
  */
