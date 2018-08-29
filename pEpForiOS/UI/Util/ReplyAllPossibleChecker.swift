@@ -26,6 +26,7 @@ struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
         }
 
         if theMessage.parent.folderType == .inbox {
+            // remove the message's account's user for the check
             if let receivingId = forMessage?.parent.account.user {
                 uniqueReplyRecipients.remove(receivingId)
             }
@@ -35,6 +36,18 @@ struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
             }
 
             return uniqueReplyRecipients.count > 1
+        } else if theMessage.parent.folderType == .sent {
+            // Assume that from is ourselves, and therefore all recipients
+            // are eligible except our own account
+
+            // remove the message's account's user for the check
+            if let receivingId = forMessage?.parent.account.user {
+                uniqueReplyRecipients.remove(receivingId)
+            }
+
+            return uniqueReplyRecipients.count > 1
+        } else if theMessage.parent.folderType == .drafts {
+            return false
         }
 
         return true
