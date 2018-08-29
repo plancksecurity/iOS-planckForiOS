@@ -148,6 +148,14 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                                         to: [otherRecipient1],
                                         cc: [],
                                         bcc: []))
+
+        XCTAssertTrue(
+            replyAllPossible(testName: #function,
+                             folder: sent,
+                             from: account.user,
+                             to: [otherRecipient1, otherRecipient2],
+                             cc: [],
+                             bcc: []))
     }
 
     // MARK: Helpers
