@@ -10,30 +10,25 @@ import MessageModel
 
 extension FolderType {
 
-//    /// Whether or not a folder of this type represents a remote folder
-//    var isSyncedWithServer: Bool {
-//        return FolderType.typesSyncedWithImapServer.contains(self)
-//    }
-//
-//    /// Folder of those types mirror a remote IMAP folder and have to be synced.
-//    static private let typesSyncedWithImapServer = [FolderType.inbox,
-//                                            .normal,
-//                                            .sent,
-//                                            .drafts,
-//                                            .trash,
-//                                            .spam,
-//                                            .archive,
-//                                            .all, .flagged] //IOS-729: sure about .all and .flagged?
+    /// Whether or not a folder of this type represents a remote folder
+    var isSyncedWithServer: Bool {
+        return FolderType.typesSyncedWithImapServer.contains(self)
+    }
 
     /// Folder of those types mirror a remote IMAP folder and have to be synced.
-    static let typesSyncedWithImapServerRawValues = [FolderType.inbox.rawValue,
-                                                             FolderType.normal.rawValue,
-                                                             FolderType.sent.rawValue,
-                                                             FolderType.drafts.rawValue,
-                                                             FolderType.trash.rawValue,
-                                                             FolderType.spam.rawValue,
-                                                             FolderType.archive.rawValue,
-                                                             FolderType.all.rawValue, FolderType.flagged.rawValue] //IOS-729: sure about .all and .flagged?
+    static private let typesSyncedWithImapServer = [FolderType.inbox,
+                                                    .normal,
+                                                    .sent,
+                                                    .drafts,
+                                                    .trash,
+                                                    .spam,
+                                                    .archive,
+                                                    .all, .flagged] //IOS-729: sure about .all and .flagged?
+
+    /// Raw values of typesSyncedWithImapServer
+    static let typesSyncedWithImapServerRawValues: [FolderType.RawValue] = {
+        typesSyncedWithImapServer.map { $0.rawValue }
+    }()
 
     /// Flags that should be used when appending mails to a folder of this type.
     ///
