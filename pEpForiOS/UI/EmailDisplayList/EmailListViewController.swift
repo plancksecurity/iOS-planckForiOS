@@ -547,9 +547,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
         let descriptorDestructive: SwipeActionDescriptor = defaultIsArchive ? .archive : .trash
         let archiveAction =
-            SwipeAction(style: .destructive, title: titleDestructive) {action, indexPath in
-                self.deleteAction(forCellAt: indexPath)
-                self.swipeDelete = action
+            SwipeAction(style: .destructive, title: titleDestructive) {
+                [weak self] action, indexPath in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+
+                me.deleteAction(forCellAt: indexPath)
+                me.swipeDelete = action
         }
         configure(action: archiveAction, with: descriptorDestructive)
         swipeActions.append(archiveAction)
@@ -558,8 +564,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if folderIsDraft(parentFolder) {
             // Do not add "Flag" action to drafted mails.
 
-            let flagAction = SwipeAction(style: .default, title: "Flag") { action, indexPath in
-                self.flagAction(forCellAt: indexPath)
+            let flagAction = SwipeAction(style: .default, title: "Flag") {
+                [weak self] action, indexPath in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                me.flagAction(forCellAt: indexPath)
             }
 
             flagAction.hidesWhenSelected = true
@@ -574,8 +585,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // More (reply++)
         if folderIsDraft(parentFolder) {
             // Do not add "more" actions (reply...) to drafted mails.
-            let moreAction = SwipeAction(style: .default, title: "More") { action, indexPath in
-                self.moreAction(forCellAt: indexPath)
+            let moreAction = SwipeAction(style: .default, title: "More") {
+                [weak self] action, indexPath in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                me.moreAction(forCellAt: indexPath)
             }
             moreAction.hidesWhenSelected = true
             configure(action: moreAction, with: .more)
@@ -892,32 +908,51 @@ extension EmailListViewController {
 
     private func createMoveToFolderAction() -> UIAlertAction {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
-        return UIAlertAction(title: title, style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueShowMoveToFolder, sender: self)
+        return UIAlertAction(title: title, style: .default) { [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.performSegue(withIdentifier: .segueShowMoveToFolder, sender: me)
         }
     }
 
     func createCancelAction() -> UIAlertAction {
         let title = NSLocalizedString("Cancel", comment: "EmailList action title")
-        return  UIAlertAction(title: title, style: .cancel) { (action) in
-            self.tableView.beginUpdates()
-            self.tableView.setEditing(false, animated: true)
-            self.tableView.endUpdates()
+        return  UIAlertAction(title: title, style: .cancel) {
+            [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.tableView.beginUpdates()
+            me.tableView.setEditing(false, animated: true)
+            me.tableView.endUpdates()
         }
     }
 
     func createReplyAction() ->  UIAlertAction {
         let title = NSLocalizedString("Reply", comment: "EmailList action title")
-        return UIAlertAction(title: title, style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueReply, sender: self)
+        return UIAlertAction(title: title, style: .default) {
+            [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.performSegue(withIdentifier: .segueReply, sender: me)
         }
     }
 
     func createReplyAllAction(forRowAt indexPath: IndexPath) ->  UIAlertAction? {
         if (model?.isReplyAllPossible(forRowAt: indexPath) ?? false) {
             let title = NSLocalizedString("Reply All", comment: "EmailList action title")
-            return UIAlertAction(title: title, style: .default) { (action) in
-                self.performSegue(withIdentifier: .segueReplyAll, sender: self)
+            return UIAlertAction(title: title, style: .default) {
+                [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                me.performSegue(withIdentifier: .segueReplyAll, sender: me)
             }
         } else {
             return nil
@@ -926,8 +961,13 @@ extension EmailListViewController {
 
     func createForwardAction() -> UIAlertAction {
         let title = NSLocalizedString("Forward", comment: "EmailList action title")
-        return UIAlertAction(title: title, style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueForward, sender: self)
+        return UIAlertAction(title: title, style: .default) {
+            [weak self] action in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.performSegue(withIdentifier: .segueForward, sender: me)
         }
     }
 }
