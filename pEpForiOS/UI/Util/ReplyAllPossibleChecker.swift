@@ -11,7 +11,7 @@ import Foundation
 import MessageModel
 
 /**
- Determins if a reply-all is possible, or even desirable for a given message.
+ Determines if a reply-all is possible, or even desirable for a given message.
  */
 struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
     func isReplyAllPossible(forMessage: Message?) -> Bool {
