@@ -37,6 +37,8 @@ class MessageViewModel: CustomDebugStringConvertible {
             return getBodyMessage()
     }
 
+    var displayedIdentity: String
+
     internal var internalMessageCount: Int? = nil
     internal var internalBoddyPeek: String? = nil
 
@@ -59,7 +61,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     private var internalMessage: Message
 
     init(with message: Message) {
-        self.internalMessage = message
+        internalMessage = message
         queue.qualityOfService = .userInitiated
         queue.maxConcurrentOperationCount = 3
 
@@ -80,7 +82,23 @@ class MessageViewModel: CustomDebugStringConvertible {
         isSeen = message.imapFlags?.seen ?? false
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
+        displayedIdentity = MessageViewModel.getDisplayedIdentity(for: message)
         setBodyPeek(for: message)
+    }
+
+    static private func getDisplayedIdentity(for message: Message)-> String{
+        if (message.parent.folderType == .sent
+            || message.parent.folderType == .drafts){
+            var identities: [String] = []
+            message.allRecipients.forEach { (recepient) in
+                let recepient = recepient.userNameOrAddress
+                identities.append(recepient)
+            }
+            return identities.joined(separator: ", ")
+        } else {
+            return message.from?.userNameOrAddress ?? ""
+
+        }
     }
 
     public func flagsDiffer(from messageViewModel: MessageViewModel) -> Bool {
