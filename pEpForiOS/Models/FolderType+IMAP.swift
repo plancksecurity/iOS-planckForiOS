@@ -156,9 +156,9 @@ extension FolderType {
      */
     public func isOutgoing() -> Bool {
         switch self {
-        case .inbox, .trash, .normal, .spam, .archive, .all, .flagged, .outbox:
+        case .inbox, .trash, .normal, .spam, .archive, .all, .flagged:
             return false
-        case .sent, .drafts:
+        case .sent, .drafts, .outbox:
             return true
         }
     }
