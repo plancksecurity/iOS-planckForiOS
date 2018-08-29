@@ -632,7 +632,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         lastSelectedIndexPath = indexPath
         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
 
-        if folder.folderType == .drafts {
+        if folder.folderType == .drafts || folder.folderType == .outbox {
             showComposeView()
         } else {
             showEmail(forCellAt: indexPath)

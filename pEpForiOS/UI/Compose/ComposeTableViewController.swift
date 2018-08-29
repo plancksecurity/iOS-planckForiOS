@@ -31,9 +31,10 @@ class ComposeTableViewController: BaseTableViewController {
     var originalMessage: Message?
     var composeMode = ComposeUtil.ComposeMode.normal
 
-    private var originalMessageIsDraft: Bool {
+    private var originalMessageIsDraft: Bool { //IOS-729: rename
         var omIsDrafts = false
-        if let om = originalMessage, om.parent.folderType == .drafts {
+        if let om = originalMessage,
+            om.parent.folderType == .drafts || om.parent.folderType == .outbox {
             omIsDrafts = true
         }
         return omIsDrafts
@@ -322,7 +323,7 @@ class ComposeTableViewController: BaseTableViewController {
         case .forward:
             subjectCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
         case .normal:
-            if om.parent.folderType == .drafts {
+            if originalMessageIsDraft {
                 subjectCell.setInitial(text: om.shortMessage ?? "")
             }
             // .normal is intentionally ignored here for other folder types

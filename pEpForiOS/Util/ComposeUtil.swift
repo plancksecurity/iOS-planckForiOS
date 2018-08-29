@@ -40,7 +40,9 @@ struct ComposeUtil {
                 result = originalTosWithoutMe + [omFrom]
             }
         case .normal:
-            if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
+            if om.parent.folderType == .sent ||
+                om.parent.folderType == .drafts ||
+                om.parent.folderType == .outbox  {
                 result = om.to
             }
         case .forward:
@@ -66,7 +68,9 @@ struct ComposeUtil {
         case .replyFrom, .forward:
             break
         case .normal:
-            if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
+            if om.parent.folderType == .sent ||
+                om.parent.folderType == .drafts ||
+                om.parent.folderType == .outbox  {
                 result = om.cc
             }
         }
@@ -77,7 +81,9 @@ struct ComposeUtil {
         var result = [Identity]()
         switch composeMode {
         case .normal:
-            if om.parent.folderType == .drafts || om.parent.folderType == .sent {
+            if om.parent.folderType == .sent ||
+                om.parent.folderType == .drafts ||
+                om.parent.folderType == .outbox {
                 result = om.bcc
             }
         case .replyFrom, .forward, .replyAll:
@@ -92,7 +98,9 @@ struct ComposeUtil {
             return om?.parent.account.user
         case .normal:
             if let om = om,
-                om.parent.folderType == .drafts || om.parent.folderType == .sent  {
+                om.parent.folderType == .sent ||
+                    om.parent.folderType == .drafts ||
+                    om.parent.folderType == .outbox  {
                 return om.from
             }
             return Account.defaultAccount()?.user
