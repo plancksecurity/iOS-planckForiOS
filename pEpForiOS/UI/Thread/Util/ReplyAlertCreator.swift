@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 struct ReplyAlertCreator {
 
     public let alert: UIAlertController
@@ -26,11 +28,14 @@ struct ReplyAlertCreator {
     }
 
     public func withReplyAllOption(
+        forMessage: Message?,
         handler: @escaping (UIAlertAction) -> Swift.Void) -> ReplyAlertCreator {
-        let alertActionReplyAll = UIAlertAction(
-            title: NSLocalizedString("Reply All", comment: "Message actions"),
-            style: .default, handler: handler)
-        alert.addAction(alertActionReplyAll)
+        if ReplyAllPossibleChecker().isReplyAllPossible(forMessage: forMessage) {
+            let alertActionReplyAll = UIAlertAction(
+                title: NSLocalizedString("Reply All", comment: "Message actions"),
+                style: .default, handler: handler)
+            alert.addAction(alertActionReplyAll)
+        }
         return self
     }
 
