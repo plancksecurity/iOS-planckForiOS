@@ -26,9 +26,6 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
-
-        let trash = Folder(name: "Trash", parent: nil, account: account, folderType: .trash)
-        trash.save()
     }
 
     // MARK: - Tests

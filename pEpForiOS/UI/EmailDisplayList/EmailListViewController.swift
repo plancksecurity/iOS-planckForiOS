@@ -863,14 +863,22 @@ extension EmailListViewController {
             title: nil, message: nil, preferredStyle: .actionSheet)
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction()
-        let replyAllAction = createReplyAllAction()
+
+        let replyAllAction = createReplyAllAction(forRowAt: indexPath)
+
         let forwardAction = createForwardAction()
         let moveToFolderAction = createMoveToFolderAction()
+
         alertControler.addAction(cancelAction)
         alertControler.addAction(replyAction)
-        alertControler.addAction(replyAllAction)
+
+        if let theReplyAllAction = replyAllAction {
+            alertControler.addAction(theReplyAllAction)
+        }
+
         alertControler.addAction(forwardAction)
         alertControler.addAction(moveToFolderAction)
+
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
             let cellFrame = tableView.rectForRow(at: indexPath)
@@ -909,10 +917,14 @@ extension EmailListViewController {
         }
     }
 
-    func createReplyAllAction() ->  UIAlertAction {
-        let title = NSLocalizedString("Reply All", comment: "EmailList action title")
-        return UIAlertAction(title: title, style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueReplyAll, sender: self)
+    func createReplyAllAction(forRowAt indexPath: IndexPath) ->  UIAlertAction? {
+        if (model?.isReplyAllPossible(forRowAt: indexPath) ?? false) {
+            let title = NSLocalizedString("Reply All", comment: "EmailList action title")
+            return UIAlertAction(title: title, style: .default) { (action) in
+                self.performSegue(withIdentifier: .segueReplyAll, sender: self)
+            }
+        } else {
+            return nil
         }
     }
 
