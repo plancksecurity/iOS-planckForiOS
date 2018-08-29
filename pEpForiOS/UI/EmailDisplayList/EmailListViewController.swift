@@ -779,11 +779,14 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func toolbarIs(enabled: Bool) {
-        flagToolbarButton?.isEnabled = enabled
-        unflagToolbarButton?.isEnabled = enabled
-        readToolbarButton?.isEnabled = enabled
-        unreadToolbarButton?.isEnabled = enabled
-        moveToolbarButton?.isEnabled = enabled
+        if let type = folderToShow?.folderType, type != .outbox {
+            // Never enable those for outbox
+            flagToolbarButton?.isEnabled = enabled
+            unflagToolbarButton?.isEnabled = enabled
+            readToolbarButton?.isEnabled = enabled
+            unreadToolbarButton?.isEnabled = enabled
+            moveToolbarButton?.isEnabled = enabled
+        }
         deleteToolbarButton?.isEnabled = enabled
     }
 
