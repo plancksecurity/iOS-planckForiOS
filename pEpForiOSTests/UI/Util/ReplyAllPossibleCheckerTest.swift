@@ -93,19 +93,19 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                             cc: [account.user],
                             bcc: [account.user]))
 
-        XCTAssertTrue(test(testName: #function,
-                           folder: inbox,
-                           from: externalFrom1,
-                           to: [account.user, account.user],
-                           cc: [],
-                           bcc: []))
+        XCTAssertFalse(test(testName: #function,
+                            folder: inbox,
+                            from: externalFrom1,
+                            to: [account.user, account.user],
+                            cc: [],
+                            bcc: []))
 
-        XCTAssertTrue(test(testName: #function,
-                           folder: inbox,
-                           from: externalFrom1,
-                           to: [account.user, account.user],
-                           cc: [account.user, account.user],
-                           bcc: [account.user, account.user]))
+        XCTAssertFalse(test(testName: #function,
+                            folder: inbox,
+                            from: externalFrom1,
+                            to: [account.user, account.user],
+                            cc: [account.user, account.user],
+                            bcc: [account.user, account.user]))
     }
 
     // MARK: Helpers
