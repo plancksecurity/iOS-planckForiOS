@@ -115,17 +115,17 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     func moveLastMessageToSentFolder(context: NSManagedObjectContext) {
         guard
             let objID = lastSentMessageObjectID,
-            let msg = context.object(with: objID) as? CdMessage,
-            let cdAccount = msg.parent?.account,
+            let cdMessage = context.object(with: objID) as? CdMessage,
+            let cdAccount = cdMessage.parent?.account,
             let outbox = CdFolder.by(folderType: .outbox, account: cdAccount)
             else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "Problem moving last message")
                 return
         }
-        msg.parent = outbox
+        cdMessage.parent = outbox
         Log.info(component: #function,
-                 content: "Sent message. messageID: \(String(describing: msg.messageID))")
+                 content: "Sent message. messageID: \(String(describing: cdMessage.messageID))")
         context.saveAndLogErrors()
     }
 
@@ -140,9 +140,19 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         }
     }
 
-    func handleNextMessageInternal(context: NSManagedObjectContext) {
-        moveLastMessageToSentFolder(context: context)
+    private func handleMessageSent() {
+        let moc = privateMOC
+        moc.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.moveLastMessageToSentFolder(context: moc)
+            me.handleNextMessageInternal(context: moc)
+        }
+    }
 
+    func handleNextMessageInternal(context: NSManagedObjectContext) {
         guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
             as? CdAccount else {
                 handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
@@ -189,7 +199,7 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
     }
 
     public func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {
-        handleNextMessage()
+        handleMessageSent()
     }
 
     public func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {
