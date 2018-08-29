@@ -33,8 +33,6 @@
 		00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */; };
 		00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */; };
 		00D3CD3E20B58976009ABBC9 /* PrimarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */; };
-		00E305AD20CE98D3005D696F /* ThreadedFolderStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E305AC20CE98D3005D696F /* ThreadedFolderStub.swift */; };
-		00E305B020CEB8D3005D696F /* Message+Stub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E305AF20CEB8D3005D696F /* Message+Stub.swift */; };
 		00EB89AB20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */; };
 		00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */; };
 		00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */; };
@@ -567,8 +565,6 @@
 		00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedsRefreshDelegate.swift; sourceTree = "<group>"; };
 		00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMessagesViewController.swift; sourceTree = "<group>"; };
 		00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimarySplitViewController.swift; sourceTree = "<group>"; };
-		00E305AC20CE98D3005D696F /* ThreadedFolderStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadedFolderStub.swift; sourceTree = "<group>"; };
-		00E305AF20CEB8D3005D696F /* Message+Stub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Stub.swift"; sourceTree = "<group>"; };
 		00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewcontroller+SizeClasses.swift"; sourceTree = "<group>"; };
 		00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadedEmailViewModel+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
 		00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAlertCreator.swift; sourceTree = "<group>"; };
@@ -1130,15 +1126,6 @@
 			children = (
 			);
 			name = "Recovered References";
-			sourceTree = "<group>";
-		};
-		00E305AE20CEB8A5005D696F /* Stubs */ = {
-			isa = PBXGroup;
-			children = (
-				00E305AC20CE98D3005D696F /* ThreadedFolderStub.swift */,
-				00E305AF20CEB8D3005D696F /* Message+Stub.swift */,
-			);
-			path = Stubs;
 			sourceTree = "<group>";
 		};
 		00EA5F6D20CFD46F00900097 /* Row */ = {
@@ -2129,7 +2116,6 @@
 		43F8D80020C537640038ABD5 /* MessageThreading */ = {
 			isa = PBXGroup;
 			children = (
-				00E305AE20CEB8A5005D696F /* Stubs */,
 				43F8D80120C537640038ABD5 /* ThreadedMessageFolderProtocol.swift */,
 				43F8D80720C53DBB0038ABD5 /* ThreadedMessageFolderFactoryProtocol.swift */,
 				43F8D80920C549120038ABD5 /* FolderThreading.swift */,
@@ -2787,7 +2773,6 @@
 				15874BC92127493E00A3A4A6 /* PassiveModeViewModel.swift in Sources */,
 				4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */,
 				4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */,
-				00E305B020CEB8D3005D696F /* Message+Stub.swift in Sources */,
 				433019E61E01A71300788B89 /* PeriodicTask.swift in Sources */,
 				00A12CAE20D3D9AC00B82BE3 /* FullMessageCell.swift in Sources */,
 				006BE6BC20F4B63C00DDE8C9 /* EmailDetailType.swift in Sources */,
@@ -3099,7 +3084,6 @@
 				001D366220C576BD002434EB /* EmailViewController+MoveToFolderDelegate.swift in Sources */,
 				433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */,
 				4351C2DA1F4441190053381F /* scanners.c in Sources */,
-				00E305AD20CE98D3005D696F /* ThreadedFolderStub.swift in Sources */,
 				4351C2D91F4441190053381F /* render.c in Sources */,
 				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,
 				43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */,
