@@ -49,71 +49,63 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     }
     
     func testSimplestCases() {
-        test(testName: #function,
-             folder: inbox,
-             from: externalFrom1,
-             to: [account.user],
-             cc: [],
-             bcc: [],
-             expectedReplyAllPossible: false)
+        XCTAssertFalse(test(testName: #function,
+                            folder: inbox,
+                            from: externalFrom1,
+                            to: [account.user],
+                            cc: [],
+                            bcc: []))
 
-        test(testName: #function,
-             folder: inbox,
-             from: externalFrom1,
-             to: [account.user, otherRecipient1],
-             cc: [],
-             bcc: [],
-             expectedReplyAllPossible: true)
+        XCTAssertTrue(test(testName: #function,
+                           folder: inbox,
+                           from: externalFrom1,
+                           to: [account.user, otherRecipient1],
+                           cc: [],
+                           bcc: []))
 
-        test(testName: #function,
-             folder: inbox,
-             from: externalFrom1,
-             to: [],
-             cc: [],
-             bcc: [account.user, otherRecipient1],
-             expectedReplyAllPossible: true)
+        XCTAssertTrue(test(testName: #function,
+                           folder: inbox,
+                           from: externalFrom1,
+                           to: [],
+                           cc: [],
+                           bcc: [account.user, otherRecipient1]))
 
         // Note: Why would we receive such an email?
         // If that fails, maybe because it doesn't make actual sense.
-        test(testName: #function,
-             folder: inbox,
-             from: externalFrom1,
-             to: [externalFrom1],
-             cc: [],
-             bcc: [],
-             expectedReplyAllPossible: false)
+        XCTAssertFalse(test(testName: #function,
+                            folder: inbox,
+                            from: externalFrom1,
+                            to: [externalFrom1],
+                            cc: [],
+                            bcc: []))
 
-        test(testName: #function,
-             folder: inbox,
-             from: account.user,
-             to: [account.user],
-             cc: [],
-             bcc: [],
-             expectedReplyAllPossible: false)
+        XCTAssertFalse(test(testName: #function,
+                            folder: inbox,
+                            from: account.user,
+                            to: [account.user],
+                            cc: [],
+                            bcc: []))
 
-        test(testName: #function,
-             folder: inbox,
-             from: account.user,
-             to: [account.user],
-             cc: [account.user],
-             bcc: [account.user],
-             expectedReplyAllPossible: false)
+        XCTAssertFalse(test(testName: #function,
+                            folder: inbox,
+                            from: account.user,
+                            to: [account.user],
+                            cc: [account.user],
+                            bcc: [account.user]))
 
-        test(testName: #function,
-             folder: inbox,
-             from: externalFrom1,
-             to: [account.user, account.user],
-             cc: [],
-             bcc: [],
-             expectedReplyAllPossible: true)
+        XCTAssertTrue(test(testName: #function,
+                           folder: inbox,
+                           from: externalFrom1,
+                           to: [account.user, account.user],
+                           cc: [],
+                           bcc: []))
 
-        test(testName: #function,
-             folder: inbox,
-             from: externalFrom1,
-             to: [account.user, account.user],
-             cc: [account.user, account.user],
-             bcc: [account.user, account.user],
-             expectedReplyAllPossible: true)
+        XCTAssertTrue(test(testName: #function,
+                           folder: inbox,
+                           from: externalFrom1,
+                           to: [account.user, account.user],
+                           cc: [account.user, account.user],
+                           bcc: [account.user, account.user]))
     }
 
     // MARK: Helpers
@@ -121,8 +113,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     func test(
         testName: String,
         folder: Folder,
-        from: Identity, to: [Identity], cc: [Identity], bcc: [Identity],
-        expectedReplyAllPossible: Bool) {
+        from: Identity, to: [Identity], cc: [Identity], bcc: [Identity]) -> Bool {
         let msgNumber = nextMessageNumber(testName: testName)
 
         let msg = Message.init(uuid: "\(msgNumber)", uid: UInt(msgNumber), parentFolder: folder)
@@ -141,15 +132,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
             msg.bcc = bcc
         }
 
-        let msgInfo = "\(msg) to: \(msg.to), cc: \(msg.cc), bcc: \(msg.bcc)"
-
-        if expectedReplyAllPossible {
-            XCTAssertTrue(replyAllChecker.isReplyAllPossible(forMessage: msg),
-                          "\(testName) expected to be able to reply-all: \(msgInfo)")
-        } else {
-            XCTAssertFalse(replyAllChecker.isReplyAllPossible(forMessage: msg),
-                           "\(testName) did not expect to be able to reply-all: \(msgInfo)")
-        }
+        return replyAllChecker.isReplyAllPossible(forMessage: msg)
     }
 
     func nextMessageNumber(testName: String) -> Int {
