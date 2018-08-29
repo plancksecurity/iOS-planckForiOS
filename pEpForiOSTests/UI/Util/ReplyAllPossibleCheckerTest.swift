@@ -46,14 +46,16 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     }
     
     func testSimplestCases() {
-        test(folder: inbox,
+        test(testName: #function,
+             folder: inbox,
              from: externalFrom1,
              to: [account.user],
              cc: [],
              bcc: [],
              expectedReplyAllPossible: false)
 
-        test(folder: inbox,
+        test(testName: #function,
+             folder: inbox,
              from: externalFrom1,
              to: [account.user, otherRecipient1],
              cc: [],
@@ -64,6 +66,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     // MARK: Helpers
 
     func test(
+        testName: String,
         folder: Folder,
         from: Identity, to: [Identity], cc: [Identity], bcc: [Identity],
         expectedReplyAllPossible: Bool) {
@@ -87,10 +90,10 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
 
         if expectedReplyAllPossible {
             XCTAssertTrue(replyAllChecker.isReplyAllPossible(forMessage: msg),
-                          "expected to be able to reply-all on \(msg)")
+                          "\(testName) expected to be able to reply-all on \(msg)")
         } else {
             XCTAssertFalse(replyAllChecker.isReplyAllPossible(forMessage: msg),
-                           "did not expect to be able to reply-all on \(msg)")
+                           "\(testName) did not expect to be able to reply-all on \(msg)")
         }
     }
 
