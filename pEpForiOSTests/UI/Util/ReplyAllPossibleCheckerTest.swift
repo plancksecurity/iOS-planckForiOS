@@ -141,12 +141,14 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
             msg.bcc = bcc
         }
 
+        let msgInfo = "\(msg) to: \(msg.to), cc: \(msg.cc), bcc: \(msg.bcc)"
+
         if expectedReplyAllPossible {
             XCTAssertTrue(replyAllChecker.isReplyAllPossible(forMessage: msg),
-                          "\(testName) expected to be able to reply-all on \(msg)")
+                          "\(testName) expected to be able to reply-all: \(msgInfo)")
         } else {
             XCTAssertFalse(replyAllChecker.isReplyAllPossible(forMessage: msg),
-                           "\(testName) did not expect to be able to reply-all on \(msg)")
+                           "\(testName) did not expect to be able to reply-all: \(msgInfo)")
         }
     }
 
