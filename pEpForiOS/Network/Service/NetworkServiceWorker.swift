@@ -367,6 +367,7 @@ open class NetworkServiceWorker {
                                                   folderID: inboxFolder.objectID))
                 }
             }
+            // Sent folder must always be interesting. Message Threading relies on this.
             if !sentFolderIsInteresting {
                 if let sentFolder = CdFolder.by(folderType: .sent, account: account),
                     let name = sentFolder.name {
