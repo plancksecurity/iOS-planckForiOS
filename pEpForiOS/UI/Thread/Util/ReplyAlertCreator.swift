@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ReplyAlertCreator {
+struct ReplyAlertCreator {
 
     public let alert: UIAlertController
 
