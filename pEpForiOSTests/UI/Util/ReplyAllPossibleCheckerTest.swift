@@ -55,75 +55,75 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     }
     
     func testSimplestCases() {
-        XCTAssertFalse(test(testName: #function,
-                            folder: inbox,
-                            from: externalFrom1,
-                            to: [account.user],
-                            cc: [],
-                            bcc: []))
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: inbox,
+                                        from: externalFrom1,
+                                        to: [account.user],
+                                        cc: [],
+                                        bcc: []))
 
-        XCTAssertTrue(test(testName: #function,
-                           folder: inbox,
-                           from: externalFrom1,
-                           to: [account.user, otherRecipient1],
-                           cc: [],
-                           bcc: []))
+        XCTAssertTrue(replyAllPossible(testName: #function,
+                                       folder: inbox,
+                                       from: externalFrom1,
+                                       to: [account.user, otherRecipient1],
+                                       cc: [],
+                                       bcc: []))
 
-        XCTAssertTrue(test(testName: #function,
-                           folder: inbox,
-                           from: externalFrom1,
-                           to: [],
-                           cc: [],
-                           bcc: [account.user, otherRecipient1]))
+        XCTAssertTrue(replyAllPossible(testName: #function,
+                                       folder: inbox,
+                                       from: externalFrom1,
+                                       to: [],
+                                       cc: [],
+                                       bcc: [account.user, otherRecipient1]))
 
         // Note: Why would we receive such an email?
         // If that fails, maybe because it doesn't make actual sense.
-        XCTAssertFalse(test(testName: #function,
-                            folder: inbox,
-                            from: externalFrom1,
-                            to: [externalFrom1],
-                            cc: [],
-                            bcc: []))
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: inbox,
+                                        from: externalFrom1,
+                                        to: [externalFrom1],
+                                        cc: [],
+                                        bcc: []))
 
-        XCTAssertFalse(test(testName: #function,
-                            folder: inbox,
-                            from: account.user,
-                            to: [account.user],
-                            cc: [],
-                            bcc: []))
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: inbox,
+                                        from: account.user,
+                                        to: [account.user],
+                                        cc: [],
+                                        bcc: []))
 
-        XCTAssertFalse(test(testName: #function,
-                            folder: inbox,
-                            from: account.user,
-                            to: [account.user],
-                            cc: [account.user],
-                            bcc: [account.user]))
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: inbox,
+                                        from: account.user,
+                                        to: [account.user],
+                                        cc: [account.user],
+                                        bcc: [account.user]))
 
-        XCTAssertFalse(test(testName: #function,
-                            folder: inbox,
-                            from: externalFrom1,
-                            to: [account.user, account.user],
-                            cc: [],
-                            bcc: []))
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: inbox,
+                                        from: externalFrom1,
+                                        to: [account.user, account.user],
+                                        cc: [],
+                                        bcc: []))
 
-        XCTAssertFalse(test(testName: #function,
-                            folder: inbox,
-                            from: externalFrom1,
-                            to: [account.user, account.user],
-                            cc: [account.user, account.user],
-                            bcc: [account.user, account.user]))
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: inbox,
+                                        from: externalFrom1,
+                                        to: [account.user, account.user],
+                                        cc: [account.user, account.user],
+                                        bcc: [account.user, account.user]))
 
-        XCTAssertTrue(test(testName: #function,
-                           folder: inbox,
-                           from: externalFrom1,
-                           to: [account.user],
-                           cc: [],
-                           bcc: [otherRecipient1, otherRecipient2]))
+        XCTAssertTrue(replyAllPossible(testName: #function,
+                                       folder: inbox,
+                                       from: externalFrom1,
+                                       to: [account.user],
+                                       cc: [],
+                                       bcc: [otherRecipient1, otherRecipient2]))
     }
 
     // MARK: Helpers
 
-    func test(
+    func replyAllPossible(
         testName: String,
         folder: Folder,
         from: Identity, to: [Identity], cc: [Identity], bcc: [Identity]) -> Bool {
