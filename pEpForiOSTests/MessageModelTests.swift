@@ -11,23 +11,9 @@ import MessageModel
 
 import XCTest
 
-class MessageModelTests: XCTestCase {
-    let waitTime = TestUtil.modelSaveWaitTime
-    var persistentSetup: PersistentSetup!
-
-    override func setUp() {
-        super.setUp()
-        persistentSetup = PersistentSetup()
-    }
-
-    override func tearDown() {
-        persistentSetup = nil
-        super.tearDown()
-    }
+class MessageModelTests: CoreDataDrivenTestBase {
 
     func testSaveMessageForSending() {
-        let testData = SecretTestData()
-        let cdAccount = testData.createWorkingCdAccount()
         let account = cdAccount.account()
         account.save()
         let outbox = Folder(name: "Sent", parent: nil, account: account, folderType: .outbox)
