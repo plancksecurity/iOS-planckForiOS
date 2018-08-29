@@ -192,6 +192,40 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              bcc: []))
     }
 
+    func testSentWithoutFrom() {
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: sent,
+                             from: nil,
+                             to: [otherRecipient1],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertTrue(
+            replyAllPossible(testName: #function,
+                             folder: sent,
+                             from: nil,
+                             to: [otherRecipient1, otherRecipient2],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: sent,
+                             from: nil,
+                             to: [otherRecipient1],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertTrue(
+            replyAllPossible(testName: #function,
+                             folder: sent,
+                             from: nil,
+                             to: [otherRecipient1, otherRecipient2],
+                             cc: [],
+                             bcc: []))
+    }
+
     // MARK: Helpers
 
     func replyAllPossible(
