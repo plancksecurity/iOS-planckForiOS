@@ -30,9 +30,9 @@ class MessageModelTests: XCTestCase {
         let cdAccount = testData.createWorkingCdAccount()
         let account = cdAccount.account()
         account.save()
-        let sentFolder = Folder(name: "Sent", parent: nil, account: account, folderType: .sent)
-        sentFolder.save()
-        let msg = sentFolder.createMessage()
+        let outbox = Folder(name: "Sent", parent: nil, account: account, folderType: .outbox)
+        outbox.save()
+        let msg = outbox.createMessage()
         msg.shortMessage = "Some subject"
         msg.from = account.user
         msg.to.append(account.user)
