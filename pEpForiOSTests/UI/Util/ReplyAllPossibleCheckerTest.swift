@@ -28,6 +28,8 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                                           userName: "user2",
                                           isMySelf: false)
 
+    var currentMessageNumber = 0
+
     override func setUp() {
         super.setUp()
 
@@ -44,15 +46,56 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     }
     
     func testSimplestCases() {
-        let msg1 = Message.init(uuid: "1", uid: 1, parentFolder: inbox)
-        msg1.from = externalFrom1
-        msg1.to = [account.user]
-        XCTAssertFalse(replyAllChecker.isReplyAllPossible(forMessage: msg1))
+        test(folder: inbox,
+             from: externalFrom1,
+             to: [account.user],
+             cc: [],
+             bcc: [],
+             expectedReplyAllPossible: false)
 
-        let msg2 = Message.init(uuid: "2", uid: 2, parentFolder: inbox)
-        msg2.from = externalFrom1
-        msg2.to = [account.user]
-        msg2.cc = [otherRecipient1]
-        XCTAssertTrue(replyAllChecker.isReplyAllPossible(forMessage: msg2))
+        test(folder: inbox,
+             from: externalFrom1,
+             to: [account.user, otherRecipient1],
+             cc: [],
+             bcc: [],
+             expectedReplyAllPossible: true)
+    }
+
+    // MARK: Helpers
+
+    func test(
+        folder: Folder,
+        from: Identity, to: [Identity], cc: [Identity], bcc: [Identity],
+        expectedReplyAllPossible: Bool) {
+        let msgNumber = nextMessageNumber()
+
+        let msg = Message.init(uuid: "\(msgNumber)", uid: UInt(msgNumber), parentFolder: folder)
+
+        msg.from = from
+
+        if !to.isEmpty {
+            msg.to = to
+        }
+
+        if !cc.isEmpty {
+            msg.cc = cc
+        }
+
+        if !bcc.isEmpty {
+            msg.bcc = bcc
+        }
+
+        if expectedReplyAllPossible {
+            XCTAssertTrue(replyAllChecker.isReplyAllPossible(forMessage: msg),
+                          "expected to be able to reply-all on \(msg)")
+        } else {
+            XCTAssertFalse(replyAllChecker.isReplyAllPossible(forMessage: msg),
+                           "did not expect to be able to reply-all on \(msg)")
+        }
+    }
+
+    func nextMessageNumber() -> Int {
+        currentMessageNumber += 1
+        return currentMessageNumber
     }
 }
