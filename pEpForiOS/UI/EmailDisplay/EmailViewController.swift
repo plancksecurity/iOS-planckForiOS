@@ -344,6 +344,8 @@ class EmailViewController: BaseTableViewController {
     }
 
     @IBAction func pressReply(_ sender: UIBarButtonItem) {
+        // The ReplyAllPossibleChecker() should be pushed into the view model
+        // as soon as there is one.
         let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
             .withReplyOption { action in
                 self.performSegue(withIdentifier: .segueReplyFrom , sender: self)

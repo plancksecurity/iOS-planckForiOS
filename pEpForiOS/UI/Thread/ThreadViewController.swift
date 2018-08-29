@@ -91,7 +91,7 @@ class ThreadViewController: BaseViewController {
     }
     
     @IBAction func replyButtonTapped(_ sender: UIBarButtonItem) {
-        let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
+        let alert = ReplyAlertCreator(replyAllChecker: model)
             .withReplyOption { action in
                 self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
             }.withReplyAllOption(forMessage: nil) { action in
