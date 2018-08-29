@@ -1168,6 +1168,10 @@ extension EmailListViewController: SegueHandlerType {
             }
             composeVc.originalMessage = message
         }
+        // Outbox needs update after composing mail
+        if let folder = folderToShow, folder.folderType == .outbox {
+            composeVc.delegate = self
+        }
     }
 
     private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode? {
@@ -1198,6 +1202,15 @@ extension EmailListViewController: LoginViewControllerDelegate {
     }
 }
 
+// MARK: - ComposeTableViewControllerDelegate
+
+extension EmailListViewController: ComposeTableViewControllerDelegate {
+    func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController) {
+        model?.reloadData()
+    }
+}
+
+// IOS-729: off topic: move all below. Not LIstViewController specific
 /**
  Swipe configuration.
  */

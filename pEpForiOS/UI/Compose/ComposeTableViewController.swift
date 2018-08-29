@@ -14,9 +14,15 @@ import MessageModel
 import SwipeCellKit
 import Photos
 
+protocol ComposeTableViewControllerDelegate: class {
+    func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController)
+}
+
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
+
+    weak var delegate: ComposeTableViewControllerDelegate?
 
     /// Recipient to set as "To:".
     /// Is ignored if a originalMessage is set.
@@ -1092,6 +1098,7 @@ class ComposeTableViewController: BaseTableViewController {
             // delete the original, previously drafted one.
             deleteOriginalMessage()
         }
+        delegate?.composeTableViewControllerDidComposeNewMail(sender: self)
         dismiss(animated: true, completion: nil)
     }
 
