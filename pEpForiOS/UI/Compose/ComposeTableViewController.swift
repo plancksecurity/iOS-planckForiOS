@@ -80,7 +80,6 @@ class ComposeTableViewController: BaseTableViewController {
     private var destinyCc = [Identity]()
     private var destinyBcc = [Identity]() {
         didSet {
-            print("DEBUG: destinyBcc.count: \(destinyBcc.count)")
             let newValue = destinyBcc
             // We do currently not support encryption if any BCC is set.
             if newValue.count > 0 {
