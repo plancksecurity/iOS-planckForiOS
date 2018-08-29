@@ -133,7 +133,6 @@ extension FolderType {
         case 7:
             return .trash
         default:
-            // .outbox returns nil intentionally.
             return nil
         }
     }
