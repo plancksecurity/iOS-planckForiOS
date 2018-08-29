@@ -16,7 +16,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     let uid: UInt
     private let uuid: MessageID
-    private let address: String
+    private let address: Identity
     private let parentFolderName: String
     private let accountAddress: String
 
@@ -150,15 +150,15 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    private class func address(at folder: Folder?, from message: Message) -> String {
+    private class func address(at folder: Folder?, from message: Message) -> Identity {
         guard let folder = folder else {
-            return ""
+            return Identity(address: "unknown@unknown.com")
         }
         switch folder.folderType {
         case .all, .archive, .spam, .trash, .flagged, .inbox, .normal:
-            return (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
+            return (message.from ?? Identity(address: "unknown@unknown.com"))
         case .drafts, .sent:
-            return message.to.first?.userNameOrAddress ?? ""
+            return message.to.first ?? Identity(address: "unknown@unknown.com")
         }
     }
 
@@ -232,7 +232,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     func getProfilePicture(completion: @escaping (UIImage?)->()){
-        profilePictureComposer.getProfilePicture(for: identity, completion: completion)
+        profilePictureComposer.getProfilePicture(for: address, completion: completion)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
