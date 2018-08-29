@@ -226,6 +226,99 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              bcc: []))
     }
 
+    func testInboxWithoutFrom() {
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [account.user],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [account.user, otherRecipient1],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [],
+                             cc: [],
+                             bcc: [account.user, otherRecipient1]))
+
+        // Fake
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [externalFrom1],
+                             cc: [],
+                             bcc: []))
+
+        // Some SPAM?
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [],
+                             cc: [],
+                             bcc: []))
+
+        // PEP_rating_fully_anonymous?
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [account.user],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [account.user],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [account.user],
+                             cc: [account.user],
+                             bcc: [account.user]))
+
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [account.user, account.user],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [account.user, account.user],
+                             cc: [account.user, account.user],
+                             bcc: [account.user, account.user]))
+
+        XCTAssertTrue(
+            replyAllPossible(testName: #function,
+                             folder: inbox,
+                             from: nil,
+                             to: [account.user],
+                             cc: [],
+                             bcc: [otherRecipient1, otherRecipient2]))
+    }
+
     // MARK: Helpers
 
     func replyAllPossible(
