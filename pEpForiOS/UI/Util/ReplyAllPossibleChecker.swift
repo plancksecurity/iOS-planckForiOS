@@ -24,6 +24,6 @@ struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
             allRecipients.formUnion(recips)
         }
 
-        return allRecipients.count > 1
+        return true
     }
 }
