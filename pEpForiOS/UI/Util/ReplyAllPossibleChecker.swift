@@ -19,9 +19,17 @@ struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
             return false
         }
 
-        var allRecipients = Set<Identity>()
+        var uniqueRecipients = Set<Identity>()
         for recips in [theMessage.to, theMessage.cc, theMessage.bcc] {
-            allRecipients.formUnion(recips)
+            uniqueRecipients.formUnion(recips)
+        }
+
+        if let theFrom = theMessage.from {
+            uniqueRecipients.remove(theFrom)
+        }
+
+        if theMessage.parent.folderType == .inbox {
+            return uniqueRecipients.count > 1
         }
 
         return true
