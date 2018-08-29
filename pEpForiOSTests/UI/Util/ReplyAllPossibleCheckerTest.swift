@@ -28,7 +28,10 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                                           userName: "user2",
                                           isMySelf: false)
 
-    var currentMessageNumber = 0
+    /**
+     Maps test name to message counter in that test.
+     */
+    var currentMessageNumber = [String:Int]()
 
     override func setUp() {
         super.setUp()
@@ -70,7 +73,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
         folder: Folder,
         from: Identity, to: [Identity], cc: [Identity], bcc: [Identity],
         expectedReplyAllPossible: Bool) {
-        let msgNumber = nextMessageNumber()
+        let msgNumber = nextMessageNumber(testName: testName)
 
         let msg = Message.init(uuid: "\(msgNumber)", uid: UInt(msgNumber), parentFolder: folder)
 
@@ -97,8 +100,14 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
         }
     }
 
-    func nextMessageNumber() -> Int {
-        currentMessageNumber += 1
-        return currentMessageNumber
+    func nextMessageNumber(testName: String) -> Int {
+        if var currentCount = currentMessageNumber[testName] {
+            currentCount += 1
+            currentMessageNumber[testName] = currentCount
+            return currentCount
+        } else {
+            currentMessageNumber[testName] = 1
+            return 1
+        }
     }
 }
