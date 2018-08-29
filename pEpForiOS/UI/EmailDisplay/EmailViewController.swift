@@ -347,7 +347,7 @@ class EmailViewController: BaseTableViewController {
         let alert = ReplyAlertCreator()
             .withReplyOption { action in
                 self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-            }.withReplyAllOption { action in
+            }.withReplyAllOption(forMessage: message) { action in
                 self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
             }.withFordwardOption { action in
                 self.performSegue(withIdentifier: .segueForward , sender: self)

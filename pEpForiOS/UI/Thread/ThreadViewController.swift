@@ -91,11 +91,10 @@ class ThreadViewController: BaseViewController {
     }
     
     @IBAction func replyButtonTapped(_ sender: UIBarButtonItem) {
-
         let alert = ReplyAlertCreator()
             .withReplyOption { action in
                 self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-            }.withReplyAllOption { action in
+            }.withReplyAllOption(forMessage: nil) { action in
                 self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
             }.withFordwardOption { action in
                  self.performSegue(withIdentifier: .segueForward , sender: self)
