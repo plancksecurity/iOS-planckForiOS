@@ -45,15 +45,9 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         handleNextMessage()
     }
 
-    public static func predicateOutgoingMails(cdAccount: CdAccount) -> NSPredicate {
-        return NSPredicate(
-            format: "parent.folderTypeRawValue = %d and parent.account = %@",
-            FolderType.outbox.rawValue, cdAccount)
-    }
-
-    public static func outgoingMails(context: NSManagedObjectContext,
+    private static func outgoingMails(context: NSManagedObjectContext,
                                      cdAccount: CdAccount) -> [CdMessage] {
-        let p = predicateOutgoingMails(cdAccount: cdAccount)
+        let p = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
         return CdMessage.all(predicate: p, in: context) as? [CdMessage] ?? []
     }
 
@@ -79,7 +73,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         var objID: NSManagedObjectID?
         var protected = true
 
-        let p = predicateOutgoingMails(cdAccount: cdAccount)
+        let p = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
         if let m = CdMessage.first(predicate: p) {
             if m.sent == nil {
                 m.sent = Date()
