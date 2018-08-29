@@ -171,6 +171,25 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              to: [otherRecipient1, otherRecipient2],
                              cc: [],
                              bcc: []))
+
+        // A message from someone else that was moved into sent.
+        // But only 1 recipient.
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: sent,
+                             from: externalFrom1,
+                             to: [otherRecipient1],
+                             cc: [],
+                             bcc: []))
+
+        // A message from someone else that was moved into sent.
+        XCTAssertTrue(
+            replyAllPossible(testName: #function,
+                             folder: sent,
+                             from: externalFrom1,
+                             to: [otherRecipient1, otherRecipient2],
+                             cc: [],
+                             bcc: []))
     }
 
     // MARK: Helpers
