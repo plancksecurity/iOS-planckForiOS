@@ -866,11 +866,17 @@ extension EmailListViewController {
         let replyAllAction = createReplyAllAction()
         let forwardAction = createForwardAction()
         let moveToFolderAction = createMoveToFolderAction()
+
         alertControler.addAction(cancelAction)
         alertControler.addAction(replyAction)
-        alertControler.addAction(replyAllAction)
+
+        if let theReplyAllAction = replyAllAction {
+            alertControler.addAction(theReplyAllAction)
+        }
+
         alertControler.addAction(forwardAction)
         alertControler.addAction(moveToFolderAction)
+
         if let popoverPresentationController = alertControler.popoverPresentationController {
             popoverPresentationController.sourceView = tableView
             let cellFrame = tableView.rectForRow(at: indexPath)
@@ -909,7 +915,7 @@ extension EmailListViewController {
         }
     }
 
-    func createReplyAllAction() ->  UIAlertAction {
+    func createReplyAllAction() ->  UIAlertAction? {
         let title = NSLocalizedString("Reply All", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { (action) in
             self.performSegue(withIdentifier: .segueReplyAll, sender: self)
