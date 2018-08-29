@@ -561,7 +561,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         swipeActions.append(archiveAction)
 
         // Flag
-        if folderIsDraft(parentFolder) {
+        if !folderIsDraft(parentFolder) {
             // Do not add "Flag" action to drafted mails.
 
             let flagAction = SwipeAction(style: .default, title: "Flag") {
@@ -583,7 +583,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         // More (reply++)
-        if folderIsDraft(parentFolder) {
+        if !folderIsDraft(parentFolder) {
             // Do not add "more" actions (reply...) to drafted mails.
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
@@ -662,8 +662,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - SwipeTableViewCellDelegate
 
-    fileprivate func folderIsDraft(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType != .drafts
+    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .drafts
     }
 
     func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
