@@ -82,6 +82,38 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
              cc: [],
              bcc: [],
              expectedReplyAllPossible: false)
+
+        test(testName: #function,
+             folder: inbox,
+             from: account.user,
+             to: [account.user],
+             cc: [],
+             bcc: [],
+             expectedReplyAllPossible: false)
+
+        test(testName: #function,
+             folder: inbox,
+             from: account.user,
+             to: [account.user],
+             cc: [account.user],
+             bcc: [account.user],
+             expectedReplyAllPossible: false)
+
+        test(testName: #function,
+             folder: inbox,
+             from: externalFrom1,
+             to: [account.user, account.user],
+             cc: [],
+             bcc: [],
+             expectedReplyAllPossible: true)
+
+        test(testName: #function,
+             folder: inbox,
+             from: externalFrom1,
+             to: [account.user, account.user],
+             cc: [account.user, account.user],
+             bcc: [account.user, account.user],
+             expectedReplyAllPossible: true)
     }
 
     // MARK: Helpers
