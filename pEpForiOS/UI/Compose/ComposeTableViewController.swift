@@ -412,7 +412,6 @@ class ComposeTableViewController: BaseTableViewController {
             return nil
         }
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
-
         allCells.forEach() { (cell) in
             if let tempCell = cell as? RecipientCell, let fm = cell.fieldModel {
                 tempCell.generateContact(tempCell.textView)
@@ -484,7 +483,10 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         message.pEpProtected = pEpProtection
-        message.setOriginalRatingHeader(rating: recalculateCurrentRating())
+
+        let rating = recalculateCurrentRating()
+        message.setOriginalRatingHeader(rating: rating)
+        message.pEpRatingInt = Int(rating.rawValue) //IOS-729: double check if ok/required
 
         return message
     }
