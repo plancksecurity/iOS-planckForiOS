@@ -64,6 +64,24 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
              cc: [],
              bcc: [],
              expectedReplyAllPossible: true)
+
+        test(testName: #function,
+             folder: inbox,
+             from: externalFrom1,
+             to: [],
+             cc: [],
+             bcc: [account.user, otherRecipient1],
+             expectedReplyAllPossible: true)
+
+        // Note: Why would we receive such an email?
+        // If that fails, maybe because it doesn't make actual sense.
+        test(testName: #function,
+             folder: inbox,
+             from: externalFrom1,
+             to: [externalFrom1],
+             cc: [],
+             bcc: [],
+             expectedReplyAllPossible: false)
     }
 
     // MARK: Helpers
