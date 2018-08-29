@@ -16,6 +16,7 @@ import Photos
 
 protocol ComposeTableViewControllerDelegate: class {
     func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController)
+    func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController)
 }
 
 class ComposeTableViewController: BaseTableViewController {
@@ -32,9 +33,19 @@ class ComposeTableViewController: BaseTableViewController {
     var composeMode = ComposeUtil.ComposeMode.normal
 
     private var isOriginalMessageInDraftsOrOutbox: Bool {
-        if let om = originalMessage,
-            om.parent.folderType == .drafts || om.parent.folderType == .outbox {
-            return true
+        return originalMessageIsDrafts || originalMessageIsOutbox
+    }
+
+    private var originalMessageIsDrafts: Bool {
+        if let om = originalMessage {
+            return om.parent.folderType == .drafts
+        }
+        return false
+    }
+
+    private var originalMessageIsOutbox: Bool {
+        if let om = originalMessage {
+            return om.parent.folderType == .outbox
         }
         return false
     }
@@ -989,6 +1000,10 @@ class ComposeTableViewController: BaseTableViewController {
             // Technically we have to create a new one and delete the original message, as the
             // mail is already synced with the IMAP server and thus we must not modify it.
             deleteOriginalMessage()
+            if originalMessageIsOutbox {
+                // Message will be saved to drafts, but we are in outbox folder.
+                delegate?.composeTableViewControllerDidDeleteMessage(sender: self)
+            }
         }
 
         if let msg = populateMessageFromUserInput() {
@@ -1018,17 +1033,48 @@ class ComposeTableViewController: BaseTableViewController {
 
     // MARK: - UIAlertController
 
+    private func showAlertControllerWithOptionsForCanceling(sender: Any) {
+        let alertCtrl = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        if let popoverPresentationController = alertCtrl.popoverPresentationController {
+            popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
+        }
+        alertCtrl.addAction(
+            alertCtrl.action(
+                NSLocalizedString("Cancel",
+                                  comment: "compose email cancel"),
+                .cancel))
+        alertCtrl.addAction(deleteAction(forAlertController: alertCtrl))
+        alertCtrl.addAction(saveAction(forAlertController: alertCtrl))
+        if originalMessageIsOutbox {
+            alertCtrl.addAction(keepInOutboxAction(forAlertController: alertCtrl))
+        }
+
+        present(alertCtrl, animated: true, completion: nil)
+    }
+
     private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text: String
-        if isOriginalMessageInDraftsOrOutbox {
+        if originalMessageIsDrafts {
             text = NSLocalizedString("Discharge changes", comment:
                 "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
+        } else if originalMessageIsOutbox {
+            text = NSLocalizedString("Delete", comment:
+                "ComposeTableView: button to decide to delete a message from Outbox after " +
+                "making changes.")
         } else {
             text = NSLocalizedString("Delete", comment: "compose email delete")
         }
         action = ac.action(text, .destructive) { [weak self] in
-            self?.dismiss()
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            if me.originalMessageIsOutbox {
+                me.originalMessage?.delete()
+                me.delegate?.composeTableViewControllerDidDeleteMessage(sender: me)
+            }
+            me.dismiss()
         }
         return action
     }
@@ -1036,11 +1082,11 @@ class ComposeTableViewController: BaseTableViewController {
     private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text:String
-        if isOriginalMessageInDraftsOrOutbox {
+        if originalMessageIsDrafts {
             text = NSLocalizedString("Save changes", comment:
                 "ComposeTableView: button to decide to save changes made on a drafted mail.")
         } else {
-            text = NSLocalizedString("Save", comment: "compose email save")
+            text = NSLocalizedString("Save Draft", comment: "compose email save")
         }
 
         action = ac.action(text, .default) {[weak self] in
@@ -1054,20 +1100,18 @@ class ComposeTableViewController: BaseTableViewController {
         return action
     }
 
-    private func showAlertControllerWithOptionsForCanceling(sender: Any) {
-        let alertCtrl = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
-        if let popoverPresentationController = alertCtrl.popoverPresentationController {
-            popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
+    private func keepInOutboxAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        let action: UIAlertAction
+        let text = NSLocalizedString("Keep in Outbox", comment:
+                "ComposeTableView: button to decide to Discharge changes made on a mail in outbox.")
+        action = ac.action(text, .default) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.dismiss()
         }
-        alertCtrl.addAction(
-            alertCtrl.action(
-                NSLocalizedString("Cancel",
-                                  comment: "compose email cancel"),
-                .cancel))
-        alertCtrl.addAction(deleteAction(forAlertController: alertCtrl))
-        alertCtrl.addAction(saveAction(forAlertController: alertCtrl))
-
-        present(alertCtrl, animated: true, completion: nil)
+        return action
     }
 
     // MARK: - IBActions

@@ -1208,7 +1208,13 @@ extension EmailListViewController: ComposeTableViewControllerDelegate {
     func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController) {
         model?.reloadData()
     }
+
+    func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController) {
+        model?.reloadData()
+    }
 }
+
+// MARK: - Enums that should be moved elsewhere
 
 // IOS-729: off topic: move all below. Not LIstViewController specific
 /**
