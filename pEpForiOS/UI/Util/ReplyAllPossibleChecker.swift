@@ -13,7 +13,7 @@ import MessageModel
 /**
  Determins if a reply-all is possible, or even desirable for a given message.
  */
-struct ReplyAllPossibleChecker {
+struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
     func isReplyAllPossible(forMessage: Message?) -> Bool {
         guard let theMessage = forMessage else {
             return false
