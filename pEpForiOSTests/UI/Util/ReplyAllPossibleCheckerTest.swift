@@ -92,6 +92,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                                         cc: [],
                                         bcc: []))
 
+        // PEP_rating_fully_anonymous?
         XCTAssertFalse(replyAllPossible(testName: #function,
                                         folder: inbox,
                                         from: nil,
