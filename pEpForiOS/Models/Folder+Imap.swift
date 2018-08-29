@@ -11,6 +11,16 @@ import MessageModel
 /// Logic based on data MessageModel should not know.
 extension Folder {
 
+    /// Whether or not the folder represents a remote folder
+    var isSyncedWithServer: Bool {
+        return folderType.isSyncedWithServer
+    }
+
+    /// True if not synced with server
+    var isLocalFolder: Bool {
+        return !isSyncedWithServer
+    }
+
     public func indexOf(message: Message) -> Int? {
         let i2 = indexOfBinary(message: message)
         return i2
