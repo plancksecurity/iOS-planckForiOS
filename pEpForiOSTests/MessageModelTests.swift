@@ -16,7 +16,7 @@ class MessageModelTests: CoreDataDrivenTestBase {
     func testSaveMessageForSending() {
         let account = cdAccount.account()
         account.save()
-        let outbox = Folder(name: "Sent", parent: nil, account: account, folderType: .outbox)
+        let outbox = Folder(name: "Outbox", parent: nil, account: account, folderType: .outbox)
         outbox.save()
         let msg = outbox.createMessage()
         msg.shortMessage = "Some subject"
@@ -30,8 +30,8 @@ class MessageModelTests: CoreDataDrivenTestBase {
         }
         XCTAssertEqual(msg.uuid, cdMsg.uuid)
 
-        if let (_, _, _) = EncryptAndSendOperation.retrieveNextMessage(
-            context: Record.Context.main, cdAccount: cdAccount) {
+        if let (_, _, _) = EncryptAndSendOperation.retrieveNextMessage(context: Record.Context.main,
+                                                                       cdAccount: cdAccount) {
         } else {
             XCTFail()
         }
