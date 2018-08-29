@@ -48,7 +48,8 @@ extension Message {
         self.save()
     }
     
-    /// Triggers trashing of the message, taking everithing in account (provider specific constrains and such).
+    /// Triggers trashing of the message, taking everithing in account (provider specific constrains
+    /// and such).
     /// Always use this method to handle "user has choosen to delete an e-mail".
     /// Note: Use only for messages synced with an IMAP server.
     private func internalImapDelete() {
