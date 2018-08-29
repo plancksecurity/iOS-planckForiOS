@@ -31,13 +31,12 @@ class ComposeTableViewController: BaseTableViewController {
     var originalMessage: Message?
     var composeMode = ComposeUtil.ComposeMode.normal
 
-    private var originalMessageIsDraft: Bool { //IOS-729: rename
-        var omIsDrafts = false
+    private var isOriginalMessageInDraftsOrOutbox: Bool {
         if let om = originalMessage,
             om.parent.folderType == .drafts || om.parent.folderType == .outbox {
-            omIsDrafts = true
+            return true
         }
-        return omIsDrafts
+        return false
     }
 
     var accountPicker = UIPickerView()
@@ -276,7 +275,7 @@ class ComposeTableViewController: BaseTableViewController {
         case .forward:
             setBodyText(forMessage: om, to: messageBodyCell)
         case .normal:
-            if originalMessageIsDraft {
+            if isOriginalMessageInDraftsOrOutbox {
                 setBodyText(forMessage: om, to: messageBodyCell)
             }
             // do nothing.
@@ -284,7 +283,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell) {
-        guard originalMessageIsDraft || composeMode == .forward else {
+        guard isOriginalMessageInDraftsOrOutbox || composeMode == .forward else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "Unsupported mode or message")
             return
@@ -323,7 +322,7 @@ class ComposeTableViewController: BaseTableViewController {
         case .forward:
             subjectCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
         case .normal:
-            if originalMessageIsDraft {
+            if isOriginalMessageInDraftsOrOutbox {
                 subjectCell.setInitial(text: om.shortMessage ?? "")
             }
             // .normal is intentionally ignored here for other folder types
@@ -364,7 +363,7 @@ class ComposeTableViewController: BaseTableViewController {
     ///
     /// - Returns: true if we must take over attachments from the original message, false otherwize
     private func shouldTakeOverAttachments() -> Bool {
-        return composeMode == .forward || originalMessageIsDraft
+        return composeMode == .forward || isOriginalMessageInDraftsOrOutbox
     }
 
     // MARK: - Address Suggstions
@@ -985,7 +984,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func saveDraft() {
-        if originalMessageIsDraft {
+        if isOriginalMessageInDraftsOrOutbox {
             // We are in drafts folder and, from user perespective, are editing a drafted mail.
             // Technically we have to create a new one and delete the original message, as the
             // mail is already synced with the IMAP server and thus we must not modify it.
@@ -1007,9 +1006,8 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func deleteOriginalMessage() {
         guard let om = originalMessage else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString:
-                "We are currently editing a drafted mail but have no originalMessage?")
+            // That might happen. Message might be sent already and thus has been moved to
+            // Sent folder.
             return
         }
         // Make sure the "draft" flag is not set to avoid the original msg will keep in virtual
@@ -1023,7 +1021,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text: String
-        if originalMessageIsDraft {
+        if isOriginalMessageInDraftsOrOutbox {
             text = NSLocalizedString("Discharge changes", comment:
                 "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
         } else {
@@ -1038,7 +1036,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text:String
-        if originalMessageIsDraft {
+        if isOriginalMessageInDraftsOrOutbox {
             text = NSLocalizedString("Save changes", comment:
                 "ComposeTableView: button to decide to save changes made on a drafted mail.")
         } else {
@@ -1093,7 +1091,7 @@ class ComposeTableViewController: BaseTableViewController {
             return
         }
         msg.save()
-        if originalMessageIsDraft {
+        if isOriginalMessageInDraftsOrOutbox {
             // From user perspective, we have edited a drafted message and will send it.
             // Technically we are creating and sending a new message (msg), thus we have to
             // delete the original, previously drafted one.
