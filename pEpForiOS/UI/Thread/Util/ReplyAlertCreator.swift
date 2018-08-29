@@ -51,7 +51,7 @@ struct ReplyAlertCreator {
         return self
     }
 
-    public func build()-> UIAlertController{
+    public func build() -> UIAlertController {
         return alert
     }
 }
