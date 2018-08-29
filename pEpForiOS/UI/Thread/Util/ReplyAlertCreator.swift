@@ -14,7 +14,7 @@ struct ReplyAlertCreator {
 
     public let alert: UIAlertController
 
-    public init(){
+    public init() {
         alert = UIAlertController.pEpAlertController()
     }
 
