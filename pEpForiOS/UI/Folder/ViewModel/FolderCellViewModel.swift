@@ -21,6 +21,35 @@ public class FolderCellViewModel {
         return self.name
     }
 
+    public var image : UIImage? {
+        var name = ""
+        switch folder.folderType {
+        case .inbox:
+            name = "folders-icon-inbox"
+            break
+        case .archive:
+            name = "folders-icon-archive"
+            break
+        case .drafts:
+            name = "folders-icon-draft"
+            break
+        case .flagged:
+            name = "folders-icon-vip"
+            break
+        case .sent:
+            name = "folders-icon-sent"
+            break
+        case .spam:
+            name = "folders-icon-junk"
+            break
+        case .trash:
+            name = "folders-icon-trash"
+        default:
+            name = "folders-icon-folder"
+        }
+        return UIImage(named: name)
+    }
+
     private var name: String {
         return self.folder.localizedName
     }
