@@ -18,7 +18,7 @@ extension FolderType {
     }
 
     /// Folder of those types mirror a remote IMAP folder and have to be synced.
-    static private let typesSyncedWithImapServer = [FolderType.inbox,
+    static let typesSyncedWithImapServer = [FolderType.inbox,
                                                     .normal,
                                                     .sent,
                                                     .drafts,
@@ -139,17 +139,6 @@ extension FolderType {
     }
 
     // MARK: - Individual Properties and Actions
-
-    func deleteAction() -> (Message)->() { //IOS-729:
-        return { message in
-            if FolderType.typesSyncedWithImapServer.contains(self) {
-                message.imapDelete()
-            } else {
-                // Folder not synced, delete from store only.
-                message.delete()
-            }
-        }
-    }
 
     /**
      Is a mail in that folder *typically* outgoing? This can only be a guess for some cases.

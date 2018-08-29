@@ -9,10 +9,40 @@
 import MessageModel
 
 extension Message {
+
+    // MARK: - Deletion
+
+    /// Use this method if you do not want the message to be moved to trash folder.
+    /// Takes into account if parent folder is remote or local.
+    func imapMarkDeleted() {
+        if parent.folderType.isSyncedWithServer {
+            internalImapMarkDeleted()
+        } else {
+            delete()
+        }
+    }
+
+    /// Triggers trashing of the message, taking everithing in account (parent is local or remote,
+    /// provider specific constrains ...).
+    /// Always use this method to handle "user has choosen to delete an e-mail".
+    func imapDelete() {
+        if parent.folderType.isSyncedWithServer {
+            internalImapDelete()
+        } else {
+            delete()
+        }
+    }
     
     /// Sets flag "deleted".
     /// Use this method if you do not want the message to be moved to trash folder.
-    func imapMarkDeleted() {
+    /// Note: Use only for messages synced with an IMAP server.
+    private func internalImapMarkDeleted() {
+        guard self.parent.folderType.isSyncedWithServer else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString:
+                "This method must not be called for messages in local folders.")
+            return
+        }
         let theFlags = imapFlags ?? ImapFlags()
         theFlags.deleted = true
         self.save()
@@ -20,7 +50,14 @@ extension Message {
     
     /// Triggers trashing of the message, taking everithing in account (provider specific constrains and such).
     /// Always use this method to handle "user has choosen to delete an e-mail".
-    func imapDelete() {
+    /// Note: Use only for messages synced with an IMAP server.
+    private func internalImapDelete() {
+        guard self.parent.folderType.isSyncedWithServer else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString:
+                "This method must not be called for messages in local folders.")
+            return
+        }
         guard let trashFolder = parent.account.folder(ofType: .trash) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We should have a trash folder at this point")
@@ -33,7 +70,9 @@ extension Message {
             imapMarkDeleted()
         }
     }
-    
+
+    // MARK: - Move to Folder
+
     /// Marks the message for moving to the given folder.
     ///
     /// Does not actually move the message but set it's target folder.
