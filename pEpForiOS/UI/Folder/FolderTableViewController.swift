@@ -128,6 +128,8 @@ class FolderTableViewController: BaseTableViewController {
         }
         let fcvm = vm[indexPath.section][indexPath.item]
         cell.textLabel?.text = fcvm.title
+        cell.imageView?.image = fcvm.image
+
         if fcvm.isSelectable {
             setSelectableStyle(to: cell)
         } else {

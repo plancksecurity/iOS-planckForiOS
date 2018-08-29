@@ -16,7 +16,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     let uid: UInt
     private let uuid: MessageID
-    private let address: String
+    private let address: Identity
     private let parentFolderName: String
     private let accountAddress: String
 
@@ -36,6 +36,8 @@ class MessageViewModel: CustomDebugStringConvertible {
     var body: NSAttributedString {
             return getBodyMessage()
     }
+
+    var displayedIdentity: String
 
     internal var internalMessageCount: Int? = nil
     internal var internalBoddyPeek: String? = nil
@@ -59,7 +61,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     private var internalMessage: Message
 
     init(with message: Message) {
-        self.internalMessage = message
+        internalMessage = message
         queue.qualityOfService = .userInitiated
         queue.maxConcurrentOperationCount = 3
 
@@ -80,7 +82,23 @@ class MessageViewModel: CustomDebugStringConvertible {
         isSeen = message.imapFlags?.seen ?? false
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
+        displayedIdentity = MessageViewModel.getDisplayedIdentity(for: message)
         setBodyPeek(for: message)
+    }
+
+    static private func getDisplayedIdentity(for message: Message)-> String{
+        if (message.parent.folderType == .sent
+            || message.parent.folderType == .drafts){
+            var identities: [String] = []
+            message.allRecipients.forEach { (recepient) in
+                let recepient = recepient.userNameOrAddress
+                identities.append(recepient)
+            }
+            return identities.joined(separator: ", ")
+        } else {
+            return message.from?.userNameOrAddress ?? ""
+
+        }
     }
 
     public func flagsDiffer(from messageViewModel: MessageViewModel) -> Bool {
@@ -132,15 +150,15 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    private class func address(at folder: Folder?, from message: Message) -> String {
+    private class func address(at folder: Folder?, from message: Message) -> Identity {
         guard let folder = folder else {
-            return ""
+            return Identity(address: "unknown@unknown.com")
         }
         switch folder.folderType {
         case .all, .archive, .spam, .trash, .flagged, .inbox, .normal:
-            return (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
+            return (message.from ?? Identity(address: "unknown@unknown.com"))
         case .drafts, .sent, .outbox:
-            return message.to.first?.userNameOrAddress ?? ""
+            return message.to.first ?? Identity(address: "unknown@unknown.com")
         }
     }
 
@@ -214,7 +232,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     func getProfilePicture(completion: @escaping (UIImage?)->()){
-        profilePictureComposer.getProfilePicture(for: identity, completion: completion)
+        profilePictureComposer.getProfilePicture(for: address, completion: completion)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {

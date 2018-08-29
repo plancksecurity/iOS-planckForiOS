@@ -954,7 +954,7 @@
         <image name="reply" width="33" height="64"/>
         <image name="separator_pixel_grey" width="1" height="1"/>
         <image name="thread-icon" width="13" height="13"/>
-        <image name="unread-icon" width="22" height="22"/>
+        <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
