@@ -46,6 +46,8 @@ struct ReplyAllPossibleChecker: ReplyAllPossibleCheckerProtocol {
             }
 
             return uniqueReplyRecipients.count > 1
+        } else if theMessage.parent.folderType == .drafts {
+            return false
         }
 
         return true

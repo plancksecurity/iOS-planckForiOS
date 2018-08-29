@@ -15,6 +15,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     var account: Account!
     var inbox: Folder!
     var sent: Folder!
+    var draft: Folder!
 
     var replyAllChecker = ReplyAllPossibleChecker()
 
@@ -56,6 +57,9 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
 
         sent = Folder(name: "the_sent_folder", parent: nil, account: account, folderType: .sent)
         sent.save()
+
+        draft = Folder(name: "DRAFTS", parent: nil, account: account, folderType: .drafts)
+        draft.save()
     }
     
     override func tearDown() {
@@ -317,6 +321,33 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              to: [account.user],
                              cc: [],
                              bcc: [otherRecipient1, otherRecipient2]))
+    }
+
+    func testDrafts() {
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: draft,
+                             from: account.user,
+                             to: [otherRecipient1],
+                             cc: [],
+                             bcc: []))
+
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: draft,
+                             from: account.user,
+                             to: [otherRecipient1, otherRecipient2],
+                             cc: [],
+                             bcc: []))
+
+        // strange to land in drafts, but can happen (accidental move etc.)
+        XCTAssertFalse(
+            replyAllPossible(testName: #function,
+                             folder: draft,
+                             from: externalFrom1,
+                             to: [otherRecipient1, otherRecipient2],
+                             cc: [],
+                             bcc: []))
     }
 
     // MARK: Helpers
