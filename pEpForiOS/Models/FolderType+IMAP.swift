@@ -10,6 +10,8 @@ import MessageModel
 
 extension FolderType {
 
+    // MARK: - Local or remote folder
+
     /// Whether or not a folder of this type represents a remote folder
     var isSyncedWithServer: Bool {
         return FolderType.typesSyncedWithImapServer.contains(self)
@@ -30,6 +32,8 @@ extension FolderType {
         typesSyncedWithImapServer.map { $0.rawValue }
     }()
 
+    // MARK: - Append Flags
+
     /// Flags that should be used when appending mails to a folder of this type.
     ///
     /// - Returns:  If flags are defined for this type:: the flags.
@@ -46,17 +50,22 @@ extension FolderType {
         return nil
     }
 
+    // MARK: - Required IMAP folders
+
     /**
      `FolderType`s that should be created if they don't yet exist.
      */
     public static let requiredTypes = [FolderType.drafts, .sent, .trash]
 
+    // MARK: -
     /**
      A list of types to check folders from remote server for categorization.
      Whenever a folder is created after having been parsed from the server,
      those types should be checked for matches.
      */
     public static let allValuesToCheckFromServer = [drafts, sent, trash, spam, archive] //IOS-729: ckeck
+
+    // MARK: - Naming
 
     /**
      Each folder type has one or more human-readable name you can use to match
@@ -92,10 +101,19 @@ extension FolderType {
         }
     }
 
-    //FIXME: after new Pantomime enum approach is implemented. It is ugly that MessageModel has to know int values of Pantomime enums
     /**
-     Folder type for PantomimeSpecialUseMailboxType
+     Each kind has a human-readable name you can use to create a local folder object.
+     - Note: This is used *only* for the local-only special folders, and for fuzzy-matching
+     against a known folder type when fetching from the remote server.
      */
+    public func folderName() -> String {
+        return folderNames()[0]
+    }
+
+    // MARK: - PantomimeSpecialUseMailboxType <-> FolderType
+
+    //After new Pantomime enum approach is implemented. It is ugly that MessageModel has to know int values of Pantomime enums
+    ///Folder type for PantomimeSpecialUseMailboxType
     public static func from(pantomimeSpecialUseMailboxType: Int) -> FolderType? {
         switch pantomimeSpecialUseMailboxType {
         case 0:
@@ -120,15 +138,7 @@ extension FolderType {
         }
     }
 
-    /**
-     Each kind has a human-readable name you can use to create a local folder object.
-     - Note: This is used *only* for the local-only special folders, and for fuzzy-matching
-     against a known folder type when fetching from the remote server.
-     */
-    public func folderName() -> String {
-        return folderNames()[0]
-    }
-
+    // MARK: - Individual Properties and Actions
     /**
      Is a mail in that folder *typically* outgoing? This can only be a guess for some cases.
      */
