@@ -14,6 +14,8 @@ import XCTest
 class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     var account: Account!
     var inbox: Folder!
+    var sent: Folder!
+
     var replyAllChecker = ReplyAllPossibleChecker()
 
     var externalFrom1 = Identity.create(address: "1@example.com",
@@ -48,6 +50,9 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
 
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
+
+        sent = Folder(name: "the_sent_folder", parent: nil, account: account, folderType: .sent)
+        sent.save()
     }
     
     override func tearDown() {
@@ -134,6 +139,15 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                                        to: [account.user],
                                        cc: [],
                                        bcc: [otherRecipient1, otherRecipient2]))
+    }
+
+    func testSimpleSentCases() {
+        XCTAssertFalse(replyAllPossible(testName: #function,
+                                        folder: sent,
+                                        from: account.user,
+                                        to: [otherRecipient1],
+                                        cc: [],
+                                        bcc: []))
     }
 
     // MARK: Helpers
