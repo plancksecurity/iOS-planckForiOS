@@ -54,7 +54,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
         super.tearDown()
     }
     
-    func testSimplestCases() {
+    func testSimpleInboxCases() {
         XCTAssertFalse(replyAllPossible(testName: #function,
                                         folder: inbox,
                                         from: externalFrom1,
