@@ -15,6 +15,11 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     var account: Account!
     var inbox: Folder!
     var replyAllChecker = ReplyAllPossibleChecker()
+    var externalFrom1 = Identity.create(address: "1@example.com",
+                                        userID: "1",
+                                        addressBookID: "1",
+                                        userName: "user1",
+                                        isMySelf: false)
 
     override func setUp() {
         super.setUp()
@@ -33,11 +38,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
     
     func testSimplestMail() {
         let msg = Message.init(uuid: "1", uid: 1, parentFolder: inbox)
-        msg.from = Identity.create(address: "1@example.com",
-                                   userID: "1",
-                                   addressBookID: "1",
-                                   userName: "user1",
-                                   isMySelf: false)
+        msg.from = externalFrom1
         msg.to = [account.user]
 
         XCTAssertFalse(replyAllChecker.isReplyAllPossible(forMessage: msg))
