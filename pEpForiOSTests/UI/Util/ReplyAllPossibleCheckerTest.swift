@@ -28,6 +28,12 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                                           userName: "user2",
                                           isMySelf: false)
 
+    var otherRecipient2 = Identity.create(address: "3@example.com",
+                                          userID: "3",
+                                          addressBookID: "3",
+                                          userName: "user3",
+                                          isMySelf: false)
+
     /**
      Maps test name to message counter in that test.
      */
@@ -106,6 +112,13 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                             to: [account.user, account.user],
                             cc: [account.user, account.user],
                             bcc: [account.user, account.user]))
+
+        XCTAssertTrue(test(testName: #function,
+                           folder: inbox,
+                           from: externalFrom1,
+                           to: [account.user],
+                           cc: [],
+                           bcc: [otherRecipient1, otherRecipient2]))
     }
 
     // MARK: Helpers
