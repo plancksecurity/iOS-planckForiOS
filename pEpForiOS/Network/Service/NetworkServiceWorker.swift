@@ -337,7 +337,7 @@ open class NetworkServiceWorker {
             let earlierTimestamp = Date(
                 timeIntervalSinceNow: -self.serviceConfig.timeIntervalForInterestingFolders)
             let pInteresting = NSPredicate(
-                format: "account = %@ AND lastLookedAt > %@ AND folderType IN %@", account,
+                format: "account = %@ AND lastLookedAt > %@ AND folderTypeRawValue IN %@", account,
                 earlierTimestamp as CVarArg, FolderType.typesSyncedWithImapServerRawValues)
             let folders = CdFolder.all(predicate: pInteresting) as? [CdFolder] ?? []
             var inboxIsInteresting = false
@@ -553,7 +553,6 @@ open class NetworkServiceWorker {
             lastImapOp = appendOp
             opImapFinished.addDependency(appendOp)
             operations.append(appendOp)
-
 
             let moveToFolderOp = buildUidMoveToFolderOperation(imapSyncData: imapSyncData,
                                                                errorContainer: errorContainer)
