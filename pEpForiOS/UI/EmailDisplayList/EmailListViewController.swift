@@ -221,6 +221,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     // MARK: - Other
 
+    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .drafts
+    }
+
+    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .outbox
+    }
+
+    private func folderIsDraftsOrOutbox(_ parentFolder: Folder) -> Bool {
+        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
+    }
+
     private func weCameBackFromAPushedView() -> Bool {
         return model != nil
     }
@@ -661,18 +673,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     // MARK: - SwipeTableViewCellDelegate
-
-    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .drafts
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .outbox
-    }
-
-    private func folderIsDraftsOrOutbox(_ parentFolder: Folder) -> Bool {
-        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
-    }
 
     func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
         action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
