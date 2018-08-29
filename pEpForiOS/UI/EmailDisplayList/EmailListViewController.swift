@@ -863,7 +863,9 @@ extension EmailListViewController {
             title: nil, message: nil, preferredStyle: .actionSheet)
         let cancelAction = createCancelAction()
         let replyAction = createReplyAction()
-        let replyAllAction = createReplyAllAction()
+
+        let replyAllAction = createReplyAllAction(forRowAt: indexPath)
+
         let forwardAction = createForwardAction()
         let moveToFolderAction = createMoveToFolderAction()
 
@@ -915,10 +917,22 @@ extension EmailListViewController {
         }
     }
 
-    func createReplyAllAction() ->  UIAlertAction? {
-        let title = NSLocalizedString("Reply All", comment: "EmailList action title")
-        return UIAlertAction(title: title, style: .default) { (action) in
-            self.performSegue(withIdentifier: .segueReplyAll, sender: self)
+    func createReplyAllAction(forRowAt indexPath: IndexPath) ->  UIAlertAction? {
+        guard let theMessage = model?.message(representedByRowAt: indexPath) else {
+            return nil
+        }
+
+        guard let theModel = model else {
+            return nil
+        }
+
+        if theModel.isReplyAllPossible(forMessage: theMessage) {
+            let title = NSLocalizedString("Reply All", comment: "EmailList action title")
+            return UIAlertAction(title: title, style: .default) { (action) in
+                self.performSegue(withIdentifier: .segueReplyAll, sender: self)
+            }
+        } else {
+            return nil
         }
     }
 

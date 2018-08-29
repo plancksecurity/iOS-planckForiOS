@@ -529,3 +529,9 @@ class EmailListViewModel {
         }
     }
 }
+
+extension EmailListViewModel: ReplyAllPossibleCheckerProtocol {
+    func isReplyAllPossible(forMessage: Message?) -> Bool {
+        return ReplyAllPossibleChecker().isReplyAllPossible(forMessage: forMessage)
+    }
+}
