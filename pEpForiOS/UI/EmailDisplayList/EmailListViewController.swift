@@ -614,7 +614,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return (orientation == .right ?   swipeActions : nil)
     }
 
-    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+    func tableView(_ tableView: UITableView,
+                   editActionsOptionsForRowAt indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
         var options = SwipeTableOptions()
         options.transitionStyle = .border
         options.buttonSpacing = 11
@@ -627,9 +629,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         guard let cell = cell as? EmailListViewCell else {
             return
         }
-
         cell.clear()
-
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
