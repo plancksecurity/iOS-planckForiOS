@@ -1023,21 +1023,21 @@ class ComposeTableViewController: BaseTableViewController {
             }
         }
 
-        if let msg = populateMessageFromUserInput() {
-            let acc = msg.parent.account
-            if let f = Folder.by(account:acc, folderType: .drafts) {
-                msg.parent = f
-                msg.imapFlags?.draft = true
-                msg.save()
-            }
-            if originalMessageIsDrafts {
-                // We save a modified version of a drafted message. The UI might want to updtate
-                // its model.
-                delegate?.composeTableViewControllerDidModifyMessage(sender: self)
-            }
-        } else {
-            Log.error(component: #function,
-                      errorString: "No message")
+        guard let msg = populateMessageFromUserInput()  else {
+            Log.error(component: #function, errorString: "No message")
+            return
+        }
+        let acc = msg.parent.account
+        if let f = Folder.by(account:acc, folderType: .drafts) {
+            msg.parent = f
+            msg.imapFlags?.draft = true
+            msg.sent = Date()
+            msg.save()
+        }
+        if originalMessageIsDrafts {
+            // We save a modified version of a drafted message. The UI might want to updtate
+            // its model.
+            delegate?.composeTableViewControllerDidModifyMessage(sender: self)
         }
     }
 
