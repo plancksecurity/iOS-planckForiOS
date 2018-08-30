@@ -31,7 +31,8 @@ extension FolderType {
         case .spam:
             imageName = "folders-icon-junk"
         case .all, .flagged, .outbox:
-            break
+            // No icon defined in design. Use normal folder icon as fallback.
+            imageName = "folders-icon-folder"
         }
         guard let name = imageName, let image = UIImage(named: name) else {
             return UIImage()
