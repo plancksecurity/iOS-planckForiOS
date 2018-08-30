@@ -1392,7 +1392,7 @@
 		15BA537A20A1F5CA0090F126 /* MoveToFolder */ = {
 			isa = PBXGroup;
 			children = (
-				B76CF8B420D273A4002429A8 /* ViewMdeol */,
+				B76CF8B420D273A4002429A8 /* ViewModel */,
 				15BA537B20A1F5F50090F126 /* MoveToAccountViewController.swift */,
 				B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */,
 			);
@@ -2433,13 +2433,13 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
-		B76CF8B420D273A4002429A8 /* ViewMdeol */ = {
+		B76CF8B420D273A4002429A8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */,
 				001D365D20C56470002434EB /* MoveToFolderDelegate.swift */,
 			);
-			path = ViewMdeol;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		B78CF8261E76D70D008C1739 /* Filter */ = {
