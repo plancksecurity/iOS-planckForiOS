@@ -9,7 +9,7 @@
 import Foundation
 
 class WrappedCell: ComposeCell {
-    var ccEnabled = false
+    static var ccEnabled = false
 
     // MARK: - Public Methods
 
@@ -29,6 +29,6 @@ class WrappedCell: ComposeCell {
     }
 
     override func shouldDisplay()-> Bool {
-        return fieldModel?.display == .always || !ccEnabled
+        return fieldModel?.display == .always || !WrappedCell.ccEnabled
     }
 }
