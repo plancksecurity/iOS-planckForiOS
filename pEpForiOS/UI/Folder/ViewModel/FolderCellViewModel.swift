@@ -13,6 +13,10 @@ public class FolderCellViewModel {
     let folder: Folder
     let level : Int
 
+    public var icon: UIImage {
+        return self.folder.folderType.getIcon()
+    }
+
     public var title : String {
         return self.name
     }
