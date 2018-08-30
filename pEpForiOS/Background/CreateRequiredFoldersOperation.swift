@@ -16,14 +16,13 @@ import MessageModel
  both locally and remote.
  */
 public class CreateRequiredFoldersOperation: ImapSyncOperation {
-    struct FolderToCreate {
+    private struct FolderToCreate {
         var folderName: String
         let folderSeparator: String?
         let folderType: FolderType
         let cdAccount: CdAccount
     }
-
-    struct CreationAttempt {
+    private struct CreationAttempt {
         var count = 0
         var folderToCreate: FolderToCreate?
 
@@ -32,12 +31,12 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             folderToCreate = nil
         }
     }
-    var currentAttempt = CreationAttempt()
-
-    var foldersToCreate = [FolderToCreate]()
+    private var currentAttempt = CreationAttempt()
+    private var foldersToCreate = [FolderToCreate]()
+    private var folderSeparator: String?
+    private var syncDelegate: CreateRequiredFoldersSyncDelegate?
+    
     public var numberOfFoldersCreated = 0
-    var folderSeparator: String?
-    var syncDelegate: CreateRequiredFoldersSyncDelegate?
 
     public override func main() {
         if !checkImapSync() {
@@ -48,21 +47,6 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             self.process()
         }
     }
-
-    //IOS-729 move
-    private func assureLocalFoldersExist(for account: Account) {
-        if let _ = Folder.by(account: account, folderType: .outbox) {
-            // Nothing to do. Outbox is currently the only existing local folder type
-            return
-        }
-        let name = FolderType.outbox.folderName()
-        let createe = Folder(name: name,
-                             parent: nil,
-                             account: account,
-                             folderType: .outbox)
-        createe.save()
-    }
-    //
 
     private func process() {
         guard let account = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
@@ -142,6 +126,19 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             addIMAPError(potentialError)
             markAsFinished()
         }
+    }
+
+    private func assureLocalFoldersExist(for account: Account) {
+        if let _ = Folder.by(account: account, folderType: .outbox) {
+            // Nothing to do. Outbox is currently the only existing local folder type
+            return
+        }
+        let name = FolderType.outbox.folderName()
+        let createe = Folder(name: name,
+                             parent: nil,
+                             account: account,
+                             folderType: .outbox)
+        createe.save()
     }
 
     override func markAsFinished() {
