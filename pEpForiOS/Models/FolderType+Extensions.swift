@@ -28,8 +28,6 @@ extension FolderType {
            imageName = "folders-icon-sent"
         case .trash:
             imageName = "folders-icon-trash"
-        case .outbox:
-            imageName = "folders-icon-outbox"
         case .spam:
             imageName = "folders-icon-junk"
         case .outbox:
