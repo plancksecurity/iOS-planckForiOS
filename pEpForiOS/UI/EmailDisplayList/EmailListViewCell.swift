@@ -77,7 +77,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
     public func configure(for viewModel: MessageViewModel) {
         self.viewModel = viewModel
-        addressLabel.text = viewModel.displayedIdentity
+        addressLabel.text = viewModel.displayedUsername
         subjectLabel.text = viewModel.subject
         viewModel.bodyPeekCompletion = { bodyPeek in
             self.summaryLabel.text = bodyPeek
