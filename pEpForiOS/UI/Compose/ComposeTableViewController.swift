@@ -515,6 +515,9 @@ class ComposeTableViewController: BaseTableViewController {
 
         let rating = recalculateCurrentRating()
         message.setOriginalRatingHeader(rating: rating) // This should be moved. Algo did change. Currently we set it here and remove it when sending. We should set it where it should be set instead. Probalby in append OP
+
+        // Something to show the user before sending (i.e. before the message could meet
+        // the Engine).
         message.pEpRatingInt = Int(rating.rawValue)
 
         return message
