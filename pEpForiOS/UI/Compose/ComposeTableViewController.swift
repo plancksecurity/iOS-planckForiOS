@@ -430,6 +430,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private final func populateMessageFromUserInput() -> Message? {
         let fromCells = allCells.filter { $0.fieldModel?.type == .from }
+
         guard fromCells.count == 1,
             let fromCell = fromCells.first,
             let fromAddress = (fromCell as? AccountCell)?.textView.text,
@@ -443,11 +444,14 @@ class ComposeTableViewController: BaseTableViewController {
             Log.shared.errorAndCrash(component: #function, errorString: "No outbox")
             return nil
         }
+
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
-        allCells.forEach() { (cell) in
-            if let tempCell = cell as? RecipientCell, let fm = cell.fieldModel {
-                tempCell.generateContact(tempCell.textView)
-                let addresses = (tempCell).identities
+        message.from = account.user
+
+        allCells.forEach() { cell in
+            if let recipientCell = cell as? RecipientCell, let fm = cell.fieldModel {
+                recipientCell.generateContact(recipientCell.textView)
+                let addresses = (recipientCell).identities
 
                 switch fm.type {
                 case .to:
@@ -468,8 +472,8 @@ class ComposeTableViewController: BaseTableViewController {
                 default: ()
                     break
                 }
-            } else if let bodyCell = cell as? MessageBodyCell {
-                let inlinedAttachments = bodyCell.allInlinedAttachments()
+            } else if let messageBodyCell = cell as? MessageBodyCell {
+                let inlinedAttachments = messageBodyCell.allInlinedAttachments()
                 // add non-inlined attachments to our message ...
                 message.attachments = nonInlinedAttachmentData.attachments
 
@@ -490,16 +494,9 @@ class ComposeTableViewController: BaseTableViewController {
                 } else {
                     message.longMessage = cell.textView.text
                 }
-            } else if let fm = cell.fieldModel {
-                switch fm.type {
-                case .from:
-                    message.from = account.user
-                    break
-                default:
-                    message.shortMessage = cell.textView.text.trimmingCharacters(
-                        in: .whitespacesAndNewlines).replaceNewLinesWith(" ")
-                    break
-                }
+            } else if let fm = cell.fieldModel, fm.type == .subject {
+                message.shortMessage = cell.textView.text.trimmingCharacters(
+                    in: .whitespacesAndNewlines).replaceNewLinesWith(" ")
             }
         }
 
