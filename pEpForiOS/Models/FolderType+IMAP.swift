@@ -25,7 +25,8 @@ extension FolderType {
                                                     .trash,
                                                     .spam,
                                                     .archive,
-                                                    .all, .flagged] //IOS-729: sure about .all and .flagged?
+                                                    .all,
+                                                    .flagged]
 
     /// Raw values of typesSyncedWithImapServer
     static let typesSyncedWithImapServerRawValues: [FolderType.RawValue] = {
@@ -56,14 +57,6 @@ extension FolderType {
      `FolderType`s that should be created if they don't yet exist.
      */
     public static let requiredTypes = [FolderType.drafts, .sent, .trash]
-
-    // MARK: -
-    /**
-     A list of types to check folders from remote server for categorization.
-     Whenever a folder is created after having been parsed from the server,
-     those types should be checked for matches.
-     */
-    public static let allValuesToCheckFromServer = [drafts, sent, trash, spam, archive] //IOS-729: ckeck
 
     // MARK: - Naming
 
