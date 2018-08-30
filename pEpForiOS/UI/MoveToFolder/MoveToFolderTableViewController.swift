@@ -33,6 +33,8 @@ class MoveToFolderTableViewController: BaseTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
         if let vm = viewModel?[indexPath.row] {
             cell.textLabel?.text = vm.title
+            cell.imageView?.image = vm.icon
+
             if !vm.isSelectable {
                 cell.isUserInteractionEnabled = false
                 cell.selectionStyle = .none

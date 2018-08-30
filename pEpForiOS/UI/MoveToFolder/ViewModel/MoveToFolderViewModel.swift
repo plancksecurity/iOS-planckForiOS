@@ -114,6 +114,7 @@ class moveToFolderCellViewModel {
     var folder: Folder
     var title: String
     var indentationLevel: Int
+    var icon: UIImage
     var isSelectable : Bool {
         get {
             return folder.selectable && !folderTypesNotAllowedToMoveTo.contains(folder.folderType)
@@ -124,6 +125,7 @@ class moveToFolderCellViewModel {
         self.folder = folder
         self.title = folder.realName
         self.indentationLevel = level
+        self.icon = folder.folderType.getIcon()
 
     }
 }

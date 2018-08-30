@@ -90,6 +90,7 @@
 		155050F61FEAB082009CEAD2 /* ErrorContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050F51FEAB082009CEAD2 /* ErrorContainer.swift */; };
 		155050F81FEAB57F009CEAD2 /* BackgroundError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155050F71FEAB57F009CEAD2 /* BackgroundError.swift */; };
 		1554755F2137F6F8005A52D0 /* SwipeActionDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1554755E2137F6F8005A52D0 /* SwipeActionDescriptor.swift */; };
+		155475642137FD96005A52D0 /* FolderType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155475632137FD96005A52D0 /* FolderType+Extensions.swift */; };
 		1555361B207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555361A207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift */; };
 		1555E97C1FD587A300BF8E0E /* Message+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */; };
 		155F2D9E20530798001B4B1C /* Reusable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 155F2DA020530798001B4B1C /* Reusable.storyboard */; };
@@ -625,6 +626,7 @@
 		155050F51FEAB082009CEAD2 /* ErrorContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorContainer.swift; sourceTree = "<group>"; };
 		155050F71FEAB57F009CEAD2 /* BackgroundError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundError.swift; sourceTree = "<group>"; };
 		1554755E2137F6F8005A52D0 /* SwipeActionDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeActionDescriptor.swift; sourceTree = "<group>"; };
+		155475632137FD96005A52D0 /* FolderType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FolderType+Extensions.swift"; sourceTree = "<group>"; };
 		1555361A207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CWInternetAddress+TestUtils.swift"; sourceTree = "<group>"; };
 		1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+IMAP.swift"; sourceTree = "<group>"; };
 		155F2D9F20530798001B4B1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Reusable.storyboard; sourceTree = "<group>"; };
@@ -1385,7 +1387,7 @@
 		15BA537A20A1F5CA0090F126 /* MoveToFolder */ = {
 			isa = PBXGroup;
 			children = (
-				B76CF8B420D273A4002429A8 /* ViewMdeol */,
+				B76CF8B420D273A4002429A8 /* ViewModel */,
 				15BA537B20A1F5F50090F126 /* MoveToAccountViewController.swift */,
 				B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */,
 			);
@@ -2048,6 +2050,7 @@
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				15AA6015207CD71D00D57DB4 /* ImapFlags+Pantomime.swift */,
 				153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */,
+				155475632137FD96005A52D0 /* FolderType+Extensions.swift */,
 				15F0F7AC213594FC002BE853 /* Folder+Imap.swift */,
 				15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */,
 				1555E97B1FD587A300BF8E0E /* Message+IMAP.swift */,
@@ -2436,13 +2439,13 @@
 			name = ViewModel;
 			sourceTree = "<group>";
 		};
-		B76CF8B420D273A4002429A8 /* ViewMdeol */ = {
+		B76CF8B420D273A4002429A8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */,
 				001D365D20C56470002434EB /* MoveToFolderDelegate.swift */,
 			);
-			path = ViewMdeol;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		B78CF8261E76D70D008C1739 /* Filter */ = {
@@ -2837,6 +2840,7 @@
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
 				43E657E71F3CAB310014CBEC /* HtmlToMarkdownSaxParser.swift in Sources */,
 				43E1619120D7B2D6003F1514 /* UpdateThreadListDelegate.swift in Sources */,
+				155475642137FD96005A52D0 /* FolderType+Extensions.swift in Sources */,
 				49C2750120C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift in Sources */,
 				43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,

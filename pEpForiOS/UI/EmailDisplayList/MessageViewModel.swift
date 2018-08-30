@@ -16,7 +16,7 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     let uid: UInt
     private let uuid: MessageID
-    private let address: Identity
+    private let displayedImageIdentity: Identity
     private let parentFolderName: String
     private let accountAddress: String
 
@@ -37,7 +37,7 @@ class MessageViewModel: CustomDebugStringConvertible {
             return getBodyMessage()
     }
 
-    var displayedIdentity: String
+    var displayedUsername: String
 
     internal var internalMessageCount: Int? = nil
     internal var internalBoddyPeek: String? = nil
@@ -76,17 +76,17 @@ class MessageViewModel: CustomDebugStringConvertible {
         showAttchmentIcon = message.attachments.count > 0
         identity = (message.from ?? Identity(address: "unknown@unknown.com"))
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
-        address =  MessageViewModel.address(at: message.parent, from: message)
+        displayedImageIdentity =  MessageViewModel.identityForImage(at: message.parent, from: message)
         subject = message.shortMessage ?? ""
         isFlagged = message.imapFlags?.flagged ?? false
         isSeen = message.imapFlags?.seen ?? false
         dateText =  (message.sent ?? Date()).smartString()
         profilePictureComposer = PepProfilePictureComposer()
-        displayedIdentity = MessageViewModel.getDisplayedIdentity(for: message)
+        displayedUsername = MessageViewModel.getDisplayedUsername(for: message)
         setBodyPeek(for: message)
     }
 
-    static private func getDisplayedIdentity(for message: Message)-> String{
+    static private func getDisplayedUsername(for message: Message)-> String{
         if (message.parent.folderType == .sent
             || message.parent.folderType == .drafts){
             var identities: [String] = []
@@ -150,7 +150,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    private class func address(at folder: Folder?, from message: Message) -> Identity {
+    private class func identityForImage(at folder: Folder?, from message: Message) -> Identity {
         guard let folder = folder else {
             return Identity(address: "unknown@unknown.com")
         }
@@ -232,7 +232,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     func getProfilePicture(completion: @escaping (UIImage?)->()){
-        profilePictureComposer.getProfilePicture(for: address, completion: completion)
+        profilePictureComposer.getProfilePicture(for: displayedImageIdentity, completion: completion)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
