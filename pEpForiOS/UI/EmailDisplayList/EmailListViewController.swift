@@ -1243,14 +1243,7 @@ extension EmailListViewController: ComposeTableViewControllerDelegate {
 
     func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController) {
         if folderIsDraft(folderToShow) {
-            guard let indexPath = lastSelectedIndexPath else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString:
-                    "We were editing a drafted message the user selected. Thus we must have a" +
-                    " lastSelectedIndexPath here.")
-                return
-            }
-            tableView.reloadRows(at: [indexPath], with: .none)
+            model?.reloadData()
         }
     }
 }
