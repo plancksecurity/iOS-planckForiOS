@@ -188,7 +188,8 @@ class FolderTableViewController: BaseTableViewController {
     // MARK: - Segue
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "newAccount" {
+        if segue.identifier == "newAccountIphone"
+            || segue.identifier == "newAccountIpad"{
             guard
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? LoginViewController else {
@@ -206,6 +207,14 @@ class FolderTableViewController: BaseTableViewController {
             }
             dvc.appConfig = self.appConfig
             dvc.hidesBottomBarWhenPushed = true
+        }
+    }
+
+    @IBAction func addAccountTapped(_ sender: Any) {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            performSegue(withIdentifier: "newAccountIpad", sender: self)
+        } else {
+            performSegue(withIdentifier: "newAccountIphone", sender: self)
         }
     }
 

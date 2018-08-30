@@ -34,7 +34,8 @@
                                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </state>
                                     <connections>
-                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccount" modalPresentationStyle="formSheet" id="aKb-z0-Qyn"/>
+                                        <action selector="addAccountTapped:" destination="6ra-tc-Aiv" eventType="touchUpInside" id="OYg-F7-CRW"/>
+                                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIpad" modalPresentationStyle="formSheet" id="aKb-z0-Qyn"/>
                                     </connections>
                                 </button>
                             </subviews>
@@ -63,6 +64,9 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="rcC-dN-oTh"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="uKb-Ku-Cng" kind="presentation" identifier="newAccountIphone" id="W2T-ax-nDz"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o2c-UY-yR4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -82,7 +86,7 @@
                 <viewControllerPlaceholder storyboardName="AccountCreation" id="uKb-Ku-Cng" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7bq-Lz-J44" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10612.799999999999" y="-1142.4287856071965"/>
+            <point key="canvasLocation" x="10635" y="-1077"/>
         </scene>
         <!--Main-->
         <scene sceneID="eeX-Fr-Vs1">
@@ -127,4 +131,7 @@
     <resources>
         <image name="button-add" width="22" height="22"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="W2T-ax-nDz"/>
+    </inferredMetricsTieBreakers>
 </document>
