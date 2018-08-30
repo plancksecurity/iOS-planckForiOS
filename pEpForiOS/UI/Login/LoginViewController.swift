@@ -42,7 +42,8 @@ extension LoginViewController.LoginError: LocalizedError {
             return NSLocalizedString("Internal error",
                                      comment: "Automated account setup error description")
         case .accountExistence:
-            return NSLocalizedString("Account already exist", comment: "account exist error message")
+            return NSLocalizedString("Account already exist",
+                                     comment: "account exist error message")
         }
     }
 }
