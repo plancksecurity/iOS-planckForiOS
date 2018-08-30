@@ -71,7 +71,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         showAttchmentIcon = message.attachments.count > 0
         identity = (message.from ?? Identity(address: "unknown@unknown.com"))
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
-        displayedImageIdentity =  MessageViewModel.identityForImage(at: message.parent, from: message)
+        displayedImageIdentity =  MessageViewModel.identityForImage(from: message)
         subject = message.shortMessage ?? ""
         isFlagged = message.imapFlags?.flagged ?? false
         isSeen = message.imapFlags?.seen ?? false
@@ -145,11 +145,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    private class func identityForImage(at folder: Folder?, from message: Message) -> Identity {
-        guard let folder = folder else {
-            return Identity(address: "unknown@unknown.com")
-        }
-        switch folder.folderType {
+    private class func identityForImage(from message: Message) -> Identity {
+        switch message.parent.folderType {
         case .all, .archive, .spam, .trash, .flagged, .inbox, .normal:
             return (message.from ?? Identity(address: "unknown@unknown.com"))
         case .drafts, .sent, .outbox:
