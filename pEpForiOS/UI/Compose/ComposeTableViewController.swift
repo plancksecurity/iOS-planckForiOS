@@ -398,6 +398,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private final func populateMessageFromUserInput() -> Message? {
         let fromCells = allCells.filter { $0.fieldModel?.type == .from }
+
         guard fromCells.count == 1,
             let fromCell = fromCells.first,
             let fromAddress = (fromCell as? AccountCell)?.textView.text,
@@ -407,17 +408,19 @@ class ComposeTableViewController: BaseTableViewController {
                     errorString: "We have a problem here getting the senders account.")
                 return nil
         }
+
         guard let f = Folder.by(account: account, folderType: .sent) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "No sent folder exists.")
             return nil
         }
+
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
 
-        allCells.forEach() { (cell) in
-            if let tempCell = cell as? RecipientCell, let fm = cell.fieldModel {
-                tempCell.generateContact(tempCell.textView)
-                let addresses = (tempCell).identities
+        allCells.forEach() { cell in
+            if let recipientCell = cell as? RecipientCell, let fm = cell.fieldModel {
+                recipientCell.generateContact(recipientCell.textView)
+                let addresses = (recipientCell).identities
 
                 switch fm.type {
                 case .to:
@@ -438,8 +441,8 @@ class ComposeTableViewController: BaseTableViewController {
                 default: ()
                     break
                 }
-            } else if let bodyCell = cell as? MessageBodyCell {
-                let inlinedAttachments = bodyCell.allInlinedAttachments()
+            } else if let messageBodyCell = cell as? MessageBodyCell {
+                let inlinedAttachments = messageBodyCell.allInlinedAttachments()
                 // add non-inlined attachments to our message ...
                 message.attachments = nonInlinedAttachmentData.attachments
 
