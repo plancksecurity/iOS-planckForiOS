@@ -465,15 +465,9 @@ class ComposeTableViewController: BaseTableViewController {
                 } else {
                     message.longMessage = cell.textView.text
                 }
-            } else if let fm = cell.fieldModel {
-                switch fm.type {
-                case .from:
-                    break
-                default:
-                    message.shortMessage = cell.textView.text.trimmingCharacters(
-                        in: .whitespacesAndNewlines).replaceNewLinesWith(" ")
-                    break
-                }
+            } else if let fm = cell.fieldModel, fm.type == .subject {
+                message.shortMessage = cell.textView.text.trimmingCharacters(
+                    in: .whitespacesAndNewlines).replaceNewLinesWith(" ")
             }
         }
 
