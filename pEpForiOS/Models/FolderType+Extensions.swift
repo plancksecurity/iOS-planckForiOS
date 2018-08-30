@@ -32,7 +32,9 @@ extension FolderType {
             imageName = "folders-icon-outbox"
         case .spam:
             imageName = "folders-icon-junk"
-        case .all, .flagged, .outbox:
+        case .outbox:
+            imageName = "folders-icon-outbox"
+        case .all, .flagged:
             // No icon defined in design. Use normal folder icon as fallback.
             imageName = "folders-icon-folder"
         }
