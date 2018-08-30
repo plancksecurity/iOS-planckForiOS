@@ -849,6 +849,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         if let tempCell = cell as? RecipientCell{
+            WrappedCell.ccEnabled = ccEnabled
             tempCell.ccEnabled = ccEnabled
         }
         
@@ -971,7 +972,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
         if let recipientCell = cell as? WrappedCell {
             ccEnabled = recipientCell.expand()
-            recipientCell.ccEnabled = ccEnabled
+            WrappedCell.ccEnabled = ccEnabled
             self.tableView.updateSize()
         }
     }
