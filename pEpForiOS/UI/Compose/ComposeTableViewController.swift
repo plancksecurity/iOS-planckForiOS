@@ -417,6 +417,8 @@ class ComposeTableViewController: BaseTableViewController {
 
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
 
+        message.from = account.user
+
         allCells.forEach() { cell in
             if let recipientCell = cell as? RecipientCell, let fm = cell.fieldModel {
                 recipientCell.generateContact(recipientCell.textView)
@@ -466,7 +468,6 @@ class ComposeTableViewController: BaseTableViewController {
             } else if let fm = cell.fieldModel {
                 switch fm.type {
                 case .from:
-                    message.from = account.user
                     break
                 default:
                     message.shortMessage = cell.textView.text.trimmingCharacters(
