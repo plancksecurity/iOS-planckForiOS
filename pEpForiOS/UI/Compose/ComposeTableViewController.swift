@@ -15,7 +15,18 @@ import SwipeCellKit
 import Photos
 
 protocol ComposeTableViewControllerDelegate: class {
+    /// Called after a valid mail has been composed and saved for sending.
+    /// - Parameter sender: the sender
     func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController)
+
+    /// Called after saving a modified version of the original message.
+    /// (E.g. after editing a drafted message)
+    /// - Parameter sender: the sender
+    func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController)
+
+    /// Called after permanentaly deleting the original message.
+    /// (E.g. saving an edited oubox mail to drafts. It's permanentaly deleted from outbox.)
+    /// - Parameter sender: the sender
     func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController)
 }
 
@@ -1000,7 +1011,8 @@ class ComposeTableViewController: BaseTableViewController {
             // mail is already synced with the IMAP server and thus we must not modify it.
             deleteOriginalMessage()
             if originalMessageIsOutbox {
-                // Message will be saved to drafts, but we are in outbox folder.
+                // Message will be saved (moved from user perspective) to drafts, but we are in
+                // outbox folder.
                 delegate?.composeTableViewControllerDidDeleteMessage(sender: self)
             }
         }
@@ -1011,6 +1023,11 @@ class ComposeTableViewController: BaseTableViewController {
                 msg.parent = f
                 msg.imapFlags?.draft = true
                 msg.save()
+            }
+            if originalMessageIsDrafts {
+                // We save a modified version of a drafted message. The UI might want to updtate
+                // its model.
+                delegate?.composeTableViewControllerDidModifyMessage(sender: self)
             }
         } else {
             Log.error(component: #function,

@@ -221,15 +221,23 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     // MARK: - Other
 
-    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .drafts
+    private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
+        guard let folder = parentFolder else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
+            return false
+        }
+        return folder.folderType == .drafts
     }
 
-    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
-        return parentFolder.folderType == .outbox
+    private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
+        guard let folder = parentFolder else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
+            return false
+        }
+        return folder.folderType == .outbox
     }
 
-    private func folderIsDraftsOrOutbox(_ parentFolder: Folder) -> Bool {
+    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
         return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
     }
 
@@ -1219,11 +1227,31 @@ extension EmailListViewController: LoginViewControllerDelegate {
 
 extension EmailListViewController: ComposeTableViewControllerDelegate {
     func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController) {
-        model?.reloadData()
+        if folderIsOutbox(folderToShow) {
+            // In outbox, a new mail must show up after composing it.
+            model?.reloadData()
+        }
     }
 
     func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController) {
-        model?.reloadData()
+        if folderIsOutbox(folderToShow) {
+            // A message from outbox have been deleted in outbox
+            // (e.g. because the user saved it to drafts).
+            model?.reloadData()
+        }
+    }
+
+    func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController) {
+        if folderIsDraft(folderToShow) {
+            guard let indexPath = lastSelectedIndexPath else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString:
+                    "We were editing a drafted message the user selected. Thus we must have a" +
+                    " lastSelectedIndexPath here.")
+                return
+            }
+            tableView.reloadRows(at: [indexPath], with: .none)
+        }
     }
 }
 
