@@ -513,7 +513,7 @@ class ComposeTableViewController: BaseTableViewController {
 
         let rating = recalculateCurrentRating()
         message.setOriginalRatingHeader(rating: rating)
-        message.pEpRatingInt = Int(rating.rawValue) //IOS-729: double check if ok/required
+        message.pEpRatingInt = Int(rating.rawValue)
 
         return message
     }
