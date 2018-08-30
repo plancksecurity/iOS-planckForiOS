@@ -1189,10 +1189,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             composeVc.originalMessage = message
         }
-        // Outbox needs update after composing mail
-        if let folder = folderToShow, folder.folderType == .outbox {
-            composeVc.delegate = self
-        }
+        composeVc.delegate = self
     }
 
     private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode? {
