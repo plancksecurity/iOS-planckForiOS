@@ -1024,7 +1024,7 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         guard let msg = populateMessageFromUserInput()  else {
-            Log.error(component: #function, errorString: "No message")
+            Log.shared.errorAndCrash(component: #function, errorString: "No message")
             return
         }
         let acc = msg.parent.account
