@@ -260,6 +260,12 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
+    private func setInitialPepProtectionStatus() {
+        if isOriginalMessageInDraftsOrOutbox {
+            pEpProtection = originalMessage?.pEpProtected ?? true
+        }
+    }
+
     private func setInitialStatus() {
         destinyTo = [Identity]()
         destinyCc = [Identity]()
@@ -269,12 +275,11 @@ class ComposeTableViewController: BaseTableViewController {
             destinyTo = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
             destinyCc = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
             destinyBcc = ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
-
-
         } else if let to = prefilledTo {
             destinyTo = [to]
         }
         sendButton.isEnabled = !destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty
+        setInitialPepProtectionStatus()
         if isForceUnprotectedDueToBccSet {
             pEpProtection = false
         }
