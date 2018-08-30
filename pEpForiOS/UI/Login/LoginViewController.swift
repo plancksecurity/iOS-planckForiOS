@@ -11,6 +11,7 @@ import UIKit
 extension LoginViewController {
     enum LoginError: Error {
         case missingEmail
+        case invalidEmail
         case missingPassword
         case noConnectData
         case missingUsername
@@ -23,7 +24,10 @@ extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingEmail:
-            return NSLocalizedString("Email needed",
+            return NSLocalizedString("The email field must not be empty",
+                                     comment: "Automated account setup error description")
+        case .invalidEmail:
+            return NSLocalizedString("The entered email address is invalid",
                                      comment: "Automated account setup error description")
         case .missingPassword:
             return NSLocalizedString("Password needed",
@@ -32,7 +36,7 @@ extension LoginViewController.LoginError: LocalizedError {
             return NSLocalizedString("Username must not be empty.",
                                      comment: "Empty username message")
         case .minimumLengthUsername:
-            return NSLocalizedString("Username must have more than 5 characters.",
+            return NSLocalizedString("Username must have more than 1 characters.",
                                      comment: "minimum username length")
         case .noConnectData:
             return NSLocalizedString("Internal error",
@@ -190,6 +194,11 @@ class LoginViewController: BaseViewController {
 
         guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
             handleLoginError(error: LoginViewController.LoginError.missingEmail,
+                             offerManualSetup: false)
+            return
+        }
+        guard email.isProbablyValidEmail() else {
+            handleLoginError(error: LoginViewController.LoginError.invalidEmail,
                              offerManualSetup: false)
             return
         }
