@@ -512,7 +512,7 @@ class ComposeTableViewController: BaseTableViewController {
         message.pEpProtected = pEpProtection
 
         let rating = recalculateCurrentRating()
-        message.setOriginalRatingHeader(rating: rating)
+        message.setOriginalRatingHeader(rating: rating) // This should be moved. Algo did change. Currently we set it here and remove it when sending. We should set it where it should be set instead. Probalby in append OP
         message.pEpRatingInt = Int(rating.rawValue)
 
         return message
