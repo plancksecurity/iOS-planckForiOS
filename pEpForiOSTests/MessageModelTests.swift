@@ -11,28 +11,14 @@ import MessageModel
 
 import XCTest
 
-class MessageModelTests: XCTestCase {
-    let waitTime = TestUtil.modelSaveWaitTime
-    var persistentSetup: PersistentSetup!
-
-    override func setUp() {
-        super.setUp()
-        persistentSetup = PersistentSetup()
-    }
-
-    override func tearDown() {
-        persistentSetup = nil
-        super.tearDown()
-    }
+class MessageModelTests: CoreDataDrivenTestBase {
 
     func testSaveMessageForSending() {
-        let testData = SecretTestData()
-        let cdAccount = testData.createWorkingCdAccount()
         let account = cdAccount.account()
         account.save()
-        let sentFolder = Folder(name: "Sent", parent: nil, account: account, folderType: .sent)
-        sentFolder.save()
-        let msg = sentFolder.createMessage()
+        let outbox = Folder(name: "Outbox", parent: nil, account: account, folderType: .outbox)
+        outbox.save()
+        let msg = outbox.createMessage()
         msg.shortMessage = "Some subject"
         msg.from = account.user
         msg.to.append(account.user)
@@ -44,8 +30,8 @@ class MessageModelTests: XCTestCase {
         }
         XCTAssertEqual(msg.uuid, cdMsg.uuid)
 
-        if let (_, _, _) = EncryptAndSendOperation.retrieveNextMessage(
-            context: Record.Context.main, cdAccount: cdAccount) {
+        if let (_, _, _) = EncryptAndSendOperation.retrieveNextMessage(context: Record.Context.main,
+                                                                       cdAccount: cdAccount) {
         } else {
             XCTFail()
         }

@@ -446,7 +446,8 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 XCTFail("Missing sent message")
                 return
             }
-             XCTAssertEqual(msg.sendStatus, SendStatus.smtpDone)
+            // Have been moved from outbox to sent
+             XCTAssertEqual(msg.parent?.folderType, FolderType.sent)
         }
         smtpSendData.smtp?.close()
     }
@@ -505,7 +506,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sendStatus = SendStatus.smtpDone
             message.sent = Date()
             message.addTo(cdIdentity: to)
         }
@@ -515,7 +515,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             for m in msgs {
                 XCTAssertEqual(m.parent?.folderType, FolderType.sent)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, SendStatus.smtpDone)
             }
         } else {
             XCTFail()
@@ -594,7 +593,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.sendStatus = SendStatus.none
             message.addTo(cdIdentity: to)
         }
         Record.saveAndWait()
@@ -603,7 +601,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             for m in msgs {
                 XCTAssertEqual(m.parent?.folderType, FolderType.drafts)
                 XCTAssertEqual(m.uid, Int32(0))
-                XCTAssertEqual(m.sendStatus, SendStatus.none)
             }
         } else {
             XCTFail()

@@ -185,7 +185,8 @@ public extension CdFolder {
             let pathComponents = folderName.components(separatedBy: separator)
             testee = pathComponents.last ?? folderName
         }
-        for type in FolderType.allValuesToCheckFromServer {
+        let allTypesToCheckFromServer = [FolderType.drafts, .sent, .trash, .spam, .archive]
+        for type in allTypesToCheckFromServer {
             for theName in type.folderNames() {
                 if testee.matchesPattern("\(theName)", reOptions: [.caseInsensitive]) {
                     return type

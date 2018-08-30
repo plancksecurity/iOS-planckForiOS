@@ -14,9 +14,27 @@ import MessageModel
 import SwipeCellKit
 import Photos
 
+protocol ComposeTableViewControllerDelegate: class {
+    /// Called after a valid mail has been composed and saved for sending.
+    /// - Parameter sender: the sender
+    func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController)
+
+    /// Called after saving a modified version of the original message.
+    /// (E.g. after editing a drafted message)
+    /// - Parameter sender: the sender
+    func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController)
+
+    /// Called after permanentaly deleting the original message.
+    /// (E.g. saving an edited oubox mail to drafts. It's permanentaly deleted from outbox.)
+    /// - Parameter sender: the sender
+    func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController)
+}
+
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
+
+    weak var delegate: ComposeTableViewControllerDelegate?
 
     /// Recipient to set as "To:".
     /// Is ignored if a originalMessage is set.
@@ -25,12 +43,22 @@ class ComposeTableViewController: BaseTableViewController {
     var originalMessage: Message?
     var composeMode = ComposeUtil.ComposeMode.normal
 
-    private var originalMessageIsDraft: Bool {
-        var omIsDrafts = false
-        if let om = originalMessage, om.parent.folderType == .drafts {
-            omIsDrafts = true
+    private var isOriginalMessageInDraftsOrOutbox: Bool {
+        return originalMessageIsDrafts || originalMessageIsOutbox
+    }
+
+    private var originalMessageIsDrafts: Bool {
+        if let om = originalMessage {
+            return om.parent.folderType == .drafts
         }
-        return omIsDrafts
+        return false
+    }
+
+    private var originalMessageIsOutbox: Bool {
+        if let om = originalMessage {
+            return om.parent.folderType == .outbox
+        }
+        return false
     }
 
     var accountPicker = UIPickerView()
@@ -63,7 +91,6 @@ class ComposeTableViewController: BaseTableViewController {
     private var destinyCc = [Identity]()
     private var destinyBcc = [Identity]() {
         didSet {
-            print("DEBUG: destinyBcc.count: \(destinyBcc.count)")
             let newValue = destinyBcc
             // We do currently not support encryption if any BCC is set.
             if newValue.count > 0 {
@@ -233,6 +260,12 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
+    private func setInitialPepProtectionStatus() {
+        if isOriginalMessageInDraftsOrOutbox {
+            pEpProtection = originalMessage?.pEpProtected ?? true
+        }
+    }
+
     private func setInitialStatus() {
         destinyTo = [Identity]()
         destinyCc = [Identity]()
@@ -242,12 +275,11 @@ class ComposeTableViewController: BaseTableViewController {
             destinyTo = ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
             destinyCc = ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
             destinyBcc = ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
-
-
         } else if let to = prefilledTo {
             destinyTo = [to]
         }
         sendButton.isEnabled = !destinyCc.isEmpty || !destinyTo.isEmpty || !destinyBcc.isEmpty
+        setInitialPepProtectionStatus()
         if isForceUnprotectedDueToBccSet {
             pEpProtection = false
         }
@@ -269,7 +301,7 @@ class ComposeTableViewController: BaseTableViewController {
         case .forward:
             setBodyText(forMessage: om, to: messageBodyCell)
         case .normal:
-            if originalMessageIsDraft {
+            if isOriginalMessageInDraftsOrOutbox {
                 setBodyText(forMessage: om, to: messageBodyCell)
             }
             // do nothing.
@@ -277,7 +309,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell) {
-        guard originalMessageIsDraft || composeMode == .forward else {
+        guard isOriginalMessageInDraftsOrOutbox || composeMode == .forward else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "Unsupported mode or message")
             return
@@ -316,7 +348,7 @@ class ComposeTableViewController: BaseTableViewController {
         case .forward:
             subjectCell.setInitial(text: ReplyUtil.forwardSubject(message: om))
         case .normal:
-            if om.parent.folderType == .drafts {
+            if isOriginalMessageInDraftsOrOutbox {
                 subjectCell.setInitial(text: om.shortMessage ?? "")
             }
             // .normal is intentionally ignored here for other folder types
@@ -357,7 +389,7 @@ class ComposeTableViewController: BaseTableViewController {
     ///
     /// - Returns: true if we must take over attachments from the original message, false otherwize
     private func shouldTakeOverAttachments() -> Bool {
-        return composeMode == .forward || originalMessageIsDraft
+        return composeMode == .forward || isOriginalMessageInDraftsOrOutbox
     }
 
     // MARK: - Address Suggstions
@@ -408,15 +440,12 @@ class ComposeTableViewController: BaseTableViewController {
                     errorString: "We have a problem here getting the senders account.")
                 return nil
         }
-
-        guard let f = Folder.by(account: account, folderType: .sent) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "No sent folder exists.")
+        guard let f = Folder.by(account: account, folderType: .outbox) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No outbox")
             return nil
         }
 
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
-
         message.from = account.user
 
         allCells.forEach() { cell in
@@ -483,7 +512,10 @@ class ComposeTableViewController: BaseTableViewController {
         }
 
         message.pEpProtected = pEpProtection
-        message.setOriginalRatingHeader(rating: recalculateCurrentRating())
+
+        let rating = recalculateCurrentRating()
+        message.setOriginalRatingHeader(rating: rating) // This should be moved. Algo did change. Currently we set it here and remove it when sending. We should set it where it should be set instead. Probalby in append OP
+        message.pEpRatingInt = Int(rating.rawValue)
 
         return message
     }
@@ -976,31 +1008,40 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func saveDraft() {
-        if originalMessageIsDraft {
+        if isOriginalMessageInDraftsOrOutbox {
             // We are in drafts folder and, from user perespective, are editing a drafted mail.
             // Technically we have to create a new one and delete the original message, as the
             // mail is already synced with the IMAP server and thus we must not modify it.
             deleteOriginalMessage()
+            if originalMessageIsOutbox {
+                // Message will be saved (moved from user perspective) to drafts, but we are in
+                // outbox folder.
+                delegate?.composeTableViewControllerDidDeleteMessage(sender: self)
+            }
         }
 
-        if let msg = populateMessageFromUserInput() {
-            let acc = msg.parent.account
-            if let f = Folder.by(account:acc, folderType: .drafts) {
-                msg.parent = f
-                msg.imapFlags?.draft = true
-                msg.save()
-            }
-        } else {
-            Log.error(component: #function,
-                      errorString: "No message")
+        guard let msg = populateMessageFromUserInput()  else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No message")
+            return
+        }
+        let acc = msg.parent.account
+        if let f = Folder.by(account:acc, folderType: .drafts) {
+            msg.parent = f
+            msg.imapFlags?.draft = true
+            msg.sent = Date()
+            msg.save()
+        }
+        if originalMessageIsDrafts {
+            // We save a modified version of a drafted message. The UI might want to updtate
+            // its model.
+            delegate?.composeTableViewControllerDidModifyMessage(sender: self)
         }
     }
 
     private func deleteOriginalMessage() {
         guard let om = originalMessage else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString:
-                "We are currently editing a drafted mail but have no originalMessage?")
+            // That might happen. Message might be sent already and thus has been moved to
+            // Sent folder.
             return
         }
         // Make sure the "draft" flag is not set to avoid the original msg will keep in virtual
@@ -1010,42 +1051,6 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     // MARK: - UIAlertController
-
-    private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
-        let action: UIAlertAction
-        let text: String
-        if originalMessageIsDraft {
-            text = NSLocalizedString("Discharge changes", comment:
-                "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
-        } else {
-            text = NSLocalizedString("Delete", comment: "compose email delete")
-        }
-        action = ac.action(text, .destructive) { [weak self] in
-            self?.dismiss()
-        }
-        return action
-    }
-
-    private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
-        let action: UIAlertAction
-        let text:String
-        if originalMessageIsDraft {
-            text = NSLocalizedString("Save changes", comment:
-                "ComposeTableView: button to decide to save changes made on a drafted mail.")
-        } else {
-            text = NSLocalizedString("Save", comment: "compose email save")
-        }
-
-        action = ac.action(text, .default) {[weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            me.saveDraft()
-            me.dismiss()
-        }
-        return action
-    }
 
     private func showAlertControllerWithOptionsForCanceling(sender: Any) {
         let alertCtrl = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
@@ -1059,8 +1064,73 @@ class ComposeTableViewController: BaseTableViewController {
                 .cancel))
         alertCtrl.addAction(deleteAction(forAlertController: alertCtrl))
         alertCtrl.addAction(saveAction(forAlertController: alertCtrl))
+        if originalMessageIsOutbox {
+            alertCtrl.addAction(keepInOutboxAction(forAlertController: alertCtrl))
+        }
 
         present(alertCtrl, animated: true, completion: nil)
+    }
+
+    private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        let action: UIAlertAction
+        let text: String
+        if originalMessageIsDrafts {
+            text = NSLocalizedString("Discharge changes", comment:
+                "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
+        } else if originalMessageIsOutbox {
+            text = NSLocalizedString("Delete", comment:
+                "ComposeTableView: button to decide to delete a message from Outbox after " +
+                "making changes.")
+        } else {
+            text = NSLocalizedString("Delete", comment: "compose email delete")
+        }
+        action = ac.action(text, .destructive) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            if me.originalMessageIsOutbox {
+                me.originalMessage?.delete()
+                me.delegate?.composeTableViewControllerDidDeleteMessage(sender: me)
+            }
+            me.dismiss()
+        }
+        return action
+    }
+
+    private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        let action: UIAlertAction
+        let text:String
+        if originalMessageIsDrafts {
+            text = NSLocalizedString("Save changes", comment:
+                "ComposeTableView: button to decide to save changes made on a drafted mail.")
+        } else {
+            text = NSLocalizedString("Save Draft", comment: "compose email save")
+        }
+
+        action = ac.action(text, .default) {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.saveDraft()
+            me.dismiss()
+        }
+        return action
+    }
+
+    private func keepInOutboxAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        let action: UIAlertAction
+        let text = NSLocalizedString("Keep in Outbox", comment:
+                "ComposeTableView: button to decide to Discharge changes made on a mail in outbox.")
+        action = ac.action(text, .default) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.dismiss()
+        }
+        return action
     }
 
     // MARK: - IBActions
@@ -1084,12 +1154,13 @@ class ComposeTableViewController: BaseTableViewController {
             return
         }
         msg.save()
-        if originalMessageIsDraft {
+        if isOriginalMessageInDraftsOrOutbox {
             // From user perspective, we have edited a drafted message and will send it.
             // Technically we are creating and sending a new message (msg), thus we have to
             // delete the original, previously drafted one.
             deleteOriginalMessage()
         }
+        delegate?.composeTableViewControllerDidComposeNewMail(sender: self)
         dismiss(animated: true, completion: nil)
     }
 

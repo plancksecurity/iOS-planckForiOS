@@ -16,14 +16,13 @@ import MessageModel
  both locally and remote.
  */
 public class CreateRequiredFoldersOperation: ImapSyncOperation {
-    struct FolderToCreate {
+    private struct FolderToCreate {
         var folderName: String
         let folderSeparator: String?
         let folderType: FolderType
         let cdAccount: CdAccount
     }
-
-    struct CreationAttempt {
+    private struct CreationAttempt {
         var count = 0
         var folderToCreate: FolderToCreate?
 
@@ -32,12 +31,12 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             folderToCreate = nil
         }
     }
-    var currentAttempt = CreationAttempt()
-
-    var foldersToCreate = [FolderToCreate]()
+    private var currentAttempt = CreationAttempt()
+    private var foldersToCreate = [FolderToCreate]()
+    private var folderSeparator: String?
+    private var syncDelegate: CreateRequiredFoldersSyncDelegate?
+    
     public var numberOfFoldersCreated = 0
-    var folderSeparator: String?
-    var syncDelegate: CreateRequiredFoldersSyncDelegate?
 
     public override func main() {
         if !checkImapSync() {
@@ -49,16 +48,18 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         }
     }
 
-    func process() {
-        guard let theAccount = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
+    private func process() {
+        guard let account = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID)
             as? CdAccount else {
                 addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                 markAsFinished()
                 return
         }
 
+        assureLocalFoldersExist(for: account.account())
+
         for ft in FolderType.requiredTypes {
-            if let cdF = CdFolder.by(folderType: ft, account: theAccount) {
+            if let cdF = CdFolder.by(folderType: ft, account: account) {
                 if folderSeparator == nil {
                     folderSeparator = cdF.folderSeparatorAsString()
                 }
@@ -66,12 +67,12 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
                 let folderName = ft.folderName()
                 foldersToCreate.append(
                     FolderToCreate(folderName: folderName, folderSeparator: folderSeparator,
-                                   folderType: ft, cdAccount: theAccount))
+                                   folderType: ft, cdAccount: account))
             }
         }
 
         if folderSeparator == nil {
-            folderSeparator = CdFolder.folderSeparatorAsString(cdAccount: theAccount)
+            folderSeparator = CdFolder.folderSeparatorAsString(cdAccount: account)
         }
 
         if foldersToCreate.count > 0 {
@@ -84,7 +85,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         }
     }
 
-    func createNextFolder() {
+    fileprivate func createNextFolder() {
         if let lastFolder = currentAttempt.folderToCreate {
             privateMOC.performAndWait {
                 self.createLocal(folderToCreate: lastFolder, context: self.privateMOC)
@@ -100,11 +101,11 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         }
     }
 
-    func startFolderCreation(folderToCreate: FolderToCreate) {
+    private func startFolderCreation(folderToCreate: FolderToCreate) {
         imapSyncData.sync?.createFolderWithName(folderToCreate.folderName)
     }
 
-    func createLocal(folderToCreate: FolderToCreate, context: NSManagedObjectContext) {
+    private func createLocal(folderToCreate: FolderToCreate, context: NSManagedObjectContext) {
         let _ = CdFolder.insertOrUpdate(
             folderName: folderToCreate.folderName, folderSeparator: folderToCreate.folderSeparator,
             folderType: folderToCreate.folderType, account: folderToCreate.cdAccount)
@@ -112,7 +113,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
 
     }
 
-    func createFolderAgain(potentialError: Error) {
+    fileprivate func createFolderAgain(potentialError: Error) {
         if currentAttempt.count == 0, var folderToCreate = currentAttempt.folderToCreate,
             let fs = folderSeparator {
             folderToCreate.folderName =
@@ -125,6 +126,19 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             addIMAPError(potentialError)
             markAsFinished()
         }
+    }
+
+    private func assureLocalFoldersExist(for account: Account) {
+        if let _ = Folder.by(account: account, folderType: .outbox) {
+            // Nothing to do. Outbox is currently the only existing local folder type
+            return
+        }
+        let name = FolderType.outbox.folderName()
+        let createe = Folder(name: name,
+                             parent: nil,
+                             account: account,
+                             folderType: .outbox)
+        createe.save()
     }
 
     override func markAsFinished() {

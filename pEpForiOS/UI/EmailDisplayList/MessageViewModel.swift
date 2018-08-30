@@ -23,7 +23,6 @@ class MessageViewModel: CustomDebugStringConvertible {
     let identity:Identity
     let dateSent: Date
     let longMessageFormatted: String?
-
     var senderContactImage: UIImage?
     var ratingImage: UIImage?
     var showAttchmentIcon: Bool = false
@@ -36,18 +35,14 @@ class MessageViewModel: CustomDebugStringConvertible {
     var body: NSAttributedString {
             return getBodyMessage()
     }
-
     var displayedUsername: String
-
-    internal var internalMessageCount: Int? = nil
-    internal var internalBoddyPeek: String? = nil
-
+    var internalMessageCount: Int? = nil
+    var internalBoddyPeek: String? = nil
     private var bodyPeek: String? {
         didSet {
             informIfBodyPeekCompleted()
         }
     }
-
     var bodyPeekCompletion: ((String) -> ())? = nil {
         didSet {
             guard bodyPeekCompletion != nil else {
@@ -157,12 +152,12 @@ class MessageViewModel: CustomDebugStringConvertible {
         switch folder.folderType {
         case .all, .archive, .spam, .trash, .flagged, .inbox, .normal:
             return (message.from ?? Identity(address: "unknown@unknown.com"))
-        case .drafts, .sent:
+        case .drafts, .sent, .outbox:
             return message.to.first ?? Identity(address: "unknown@unknown.com")
         }
     }
 
-    internal class func getSummary(fromMessage msg: Message) -> String {
+    class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
         if let text = msg.longMessage {
             body = text.replaceNewLinesWith(" ").trimmedWhiteSpace()

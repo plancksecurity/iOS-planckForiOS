@@ -337,8 +337,8 @@ open class NetworkServiceWorker {
             let earlierTimestamp = Date(
                 timeIntervalSinceNow: -self.serviceConfig.timeIntervalForInterestingFolders)
             let pInteresting = NSPredicate(
-                format: "account = %@ and lastLookedAt > %@", account,
-                earlierTimestamp as CVarArg)
+                format: "account = %@ AND lastLookedAt > %@ AND folderTypeRawValue IN %@", account,
+                earlierTimestamp as CVarArg, FolderType.typesSyncedWithImapServerRawValues)
             let folders = CdFolder.all(predicate: pInteresting) as? [CdFolder] ?? []
             var inboxIsInteresting = false
             var sentFolderIsInteresting = false
@@ -367,6 +367,7 @@ open class NetworkServiceWorker {
                                                   folderID: inboxFolder.objectID))
                 }
             }
+            // Sent folder must always be interesting. Message Threading relies on this.
             if !sentFolderIsInteresting {
                 if let sentFolder = CdFolder.by(folderType: .sent, account: account),
                     let name = sentFolder.name {
@@ -552,7 +553,6 @@ open class NetworkServiceWorker {
             lastImapOp = appendOp
             opImapFinished.addDependency(appendOp)
             operations.append(appendOp)
-
 
             let moveToFolderOp = buildUidMoveToFolderOperation(imapSyncData: imapSyncData,
                                                                errorContainer: errorContainer)

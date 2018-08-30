@@ -23,12 +23,12 @@ protocol ProviderSpecificInformationProtocol {
     /// You MUST NOT append send messages to the "[Gmail]/Sent" folder, as Gmail does handle that
     /// automatically and thus appending it results in a duplicated sent message.
     /// 2) Gmail Drafts
-    /// You MIGHT (and we do) append drafted mails to the [Gmail]/Darfts folder.
+    /// You MIGHT (and we do) append drafted mails to the [Gmail]/Drafts folder.
     /// Technically the message will show up in the virtual [Gmail]/Darfts folder if:
     /// - the message is contained in *any* folder
     /// - the message has imapFlag ".draft" set
     /// - the message has not the imaFlag ".deleted" set
-    /// 2) Gmail Trash
+    /// 3) Gmail Trash
     /// You MUST append drafted mails to the [Gmail]/Trash folder to make them show up there.
     /// The "Trash" folder is the only "non-virtual mailbox" on Gmail.
     ///

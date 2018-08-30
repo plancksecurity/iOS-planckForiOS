@@ -9,7 +9,7 @@
 import Foundation
 import XCTest
 
-import pEpForiOS
+@testable import pEpForiOS
 import MessageModel
 
 /**

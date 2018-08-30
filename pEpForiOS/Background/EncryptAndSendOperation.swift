@@ -17,7 +17,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     var smtpSend: SmtpSend!
     var smtpSendData: SmtpSendData
 
-    /** The object ID of the last sent message, so we can change the sendStatus on success */
+    /** The object ID of the last sent message, so we can move it on success */
     var lastSentMessageObjectID: NSManagedObjectID?
 
     public init(parentName: String = #function, smtpSendData: SmtpSendData,
@@ -26,7 +26,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         super.init(parentName: parentName, errorContainer: errorContainer)
     }
 
-    func checkSmtpSend() -> Bool {
+    private func checkSmtpSend() -> Bool {
         smtpSend = smtpSendData.smtp
         if smtpSend == nil {
             addError(BackgroundError.SmtpError.invalidConnection(info: comp))
@@ -45,18 +45,12 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         handleNextMessage()
     }
 
-    public static func predicateOutgoingMails(cdAccount: CdAccount) -> NSPredicate {
-        return NSPredicate(
-            format: "uid = 0 and parent.folderTypeRawValue = %d and sendStatusRawValue = %d and parent.account = %@",
-            FolderType.sent.rawValue, SendStatus.none.rawValue, cdAccount)
-    }
-
-    public static func outgoingMails(
-        context: NSManagedObjectContext, cdAccount: CdAccount) -> [CdMessage] {
-        let p = predicateOutgoingMails(cdAccount: cdAccount)
+    private static func outgoingMails(context: NSManagedObjectContext,
+                                     cdAccount: CdAccount) -> [CdMessage] {
+        let p = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
         return CdMessage.all(predicate: p, in: context) as? [CdMessage] ?? []
     }
-    
+
     static func outgoingMailsExist(in context: NSManagedObjectContext,
                                    forAccountWith cdAccountObjectId: NSManagedObjectID) -> Bool {
         var outgoingMsgs = [CdMessage]()
@@ -79,7 +73,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         var objID: NSManagedObjectID?
         var protected = true
 
-        let p = predicateOutgoingMails(cdAccount: cdAccount)
+        let p = CdMessage.PredicateFactory.outgoingMails(in: cdAccount)
         if let m = CdMessage.first(predicate: p) {
             if m.sent == nil {
                 m.sent = Date()
@@ -112,19 +106,25 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         smtpSend.smtp.sendMessage()
     }
 
-    func markLastSentMessageAsSent(context: NSManagedObjectContext) {
-        if let objID = lastSentMessageObjectID {
-            if let msg = context.object(with: objID) as? CdMessage {
-                msg.sendStatus = SendStatus.smtpDone
-                Log.info(
-                    component: #function,
-                    content: "Setting \(String(describing: msg.messageID)): \(msg.sendStatus)")
-                context.saveAndLogErrors()
-            } else {
+    func moveLastMessageToSentFolder(context: NSManagedObjectContext) {
+        guard
+            let objID = lastSentMessageObjectID,
+            let cdMessage = context.object(with: objID) as? CdMessage,
+            let cdAccount = cdMessage.parent?.account,
+            let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount),
+            let message = cdMessage.message()
+            else {
                 Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Could not access sent message by ID")
-            }
+                                         errorString: "Problem moving last message")
+                return
         }
+
+        MessageModelConfig.messageFolderDelegate?.didDelete(messageFolder: message,
+                                                            belongingToThread: Set())
+        cdMessage.parent = sentFolder
+        Log.info(component: #function,
+                 content: "Sent message. messageID: \(String(describing: cdMessage.messageID))")
+        context.saveAndLogErrors()
     }
 
     func handleNextMessage() {
@@ -138,9 +138,19 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         }
     }
 
-    func handleNextMessageInternal(context: NSManagedObjectContext) {
-        markLastSentMessageAsSent(context: context)
+    private func handleMessageSent() {
+        let moc = privateMOC
+        moc.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.moveLastMessageToSentFolder(context: moc)
+            me.handleNextMessageInternal(context: moc)
+        }
+    }
 
+    func handleNextMessageInternal(context: NSManagedObjectContext) {
         guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
             as? CdAccount else {
                 handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
@@ -187,7 +197,7 @@ extension EncryptAndSendOperation: SmtpSendDelegate {
     }
 
     public func messageSent(_ smtp: SmtpSend, theNotification: Notification?) {
-        handleNextMessage()
+        handleMessageSent()
     }
 
     public func messageNotSent(_ smtp: SmtpSend, theNotification: Notification?) {

@@ -66,7 +66,7 @@ extension Message {
             switch parent.folderType {
             case .sent, .trash, .drafts:
                 return originalRating
-            case .all, .archive, .inbox, .normal, .spam, .flagged:
+            case .all, .archive, .inbox, .normal, .spam, .flagged, .outbox:
                 if isOnTrustedServer {
                     return originalRating
                 } else {

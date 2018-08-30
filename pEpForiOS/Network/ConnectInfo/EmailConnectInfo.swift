@@ -139,23 +139,6 @@ class EmailConnectInfo: ConnectInfo {
                    networkTransportType: networkTransportType)
     }
 
-    //    func unsetNeedsVerificationAndFinish(context: NSManagedObjectContext) -> Error? {
-    //        guard let creds = context.object(
-    //            with: self.credentialsObjectID)
-    //            as? CdServerCredentials else {
-    //                return EmailConnectInfoError.cannotFindServerCredentials
-    //        }
-    //
-    //        if creds.needsVerification == true {
-    //            creds.needsVerification = false
-    //            if let cdAccount = creds.account {
-    //                cdAccount.checkVerificationStatus()
-    //            }
-    //            context.saveAndLogErrors()
-    //        }
-    //        return nil
-    //    }
-
     override var hashValue: Int {
         return super.hashValue &+ (emailProtocol?.hashValue ?? 0)
             &+ (connectionTransport?.hashValue ?? 0)
