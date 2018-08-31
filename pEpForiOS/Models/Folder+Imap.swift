@@ -21,11 +21,6 @@ extension Folder {
         return !isSyncedWithServer
     }
 
-    public func indexOf(message: Message) -> Int? {
-        let i2 = indexOfBinary(message: message)
-        return i2
-    }
-
     static public func allRemoteFolders(inAccount account: Account) -> [Folder] {
         var result = [Folder]()
         guard let cdAcc = CdAccount.search(account: account) else {
@@ -40,43 +35,8 @@ extension Folder {
         }
         result =
             cdFolders
-            .map { $0.folder() }
-            .filter { $0.isSyncedWithServer }
+                .map { $0.folder() }
+                .filter { $0.isSyncedWithServer }
         return result
-    }
-
-    /**
-     - Returns: All the messages contained in that folder in a flat and linear way,
-     that is no threading involved.
-     */
-    public func allMessagesNonThreaded() -> [Message] {
-        return allCdMessagesNonThreaded().compactMap {
-            return $0.message()
-        }
-    }
-
-    public func messageAt(index: Int) -> Message? {
-        if let cdMessage = allCdMessagesNonThreaded()[safe: index] {
-            return cdMessage.message()
-        }
-        return nil
-    }
-
-    func indexOfBinary(message: Message) -> Int? {
-        func comparator(m1: CdMessage, m2: CdMessage) -> ComparisonResult {
-            for desc in defaultSortDescriptors() {
-                let c1 = desc.compare(m1, to: m2)
-                if c1 != .orderedSame {
-                    return c1
-                }
-            }
-            return .orderedSame
-        }
-
-        guard let cdMsg = CdMessage.search(message: message) else {
-            return nil
-        }
-        let msgs = allCdMessagesNonThreaded()
-        return msgs.binarySearch(element: cdMsg, comparator: comparator)
     }
 }

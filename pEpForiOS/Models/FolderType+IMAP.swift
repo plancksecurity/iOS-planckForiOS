@@ -17,6 +17,10 @@ extension FolderType {
         return FolderType.typesSyncedWithImapServer.contains(self)
     }
 
+    var isLocalFolder: Bool {
+        return !isSyncedWithServer
+    }
+
     /// Folder of those types mirror a remote IMAP folder and have to be synced.
     static let typesSyncedWithImapServer = [FolderType.inbox,
                                                     .normal,

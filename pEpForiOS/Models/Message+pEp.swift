@@ -60,13 +60,15 @@ extension Message {
         return setOriginalRatingHeader(rating: rating.asString())
     }
 
-    public func pEpRating() -> PEP_rating {
+    public func pEpRating() -> PEP_rating { //IOS-1297: what about force unencrypted?
         //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors
         if let originalRating = getOriginalRatingHeaderRating() {
             switch parent.folderType {
             case .sent, .trash, .drafts:
                 return originalRating
-            case .all, .archive, .inbox, .normal, .spam, .flagged, .outbox:
+            case .outbox:
+                return outgoingMessageRating()
+            case .all, .archive, .inbox, .normal, .spam, .flagged:
                 if isOnTrustedServer {
                     return originalRating
                 } else {

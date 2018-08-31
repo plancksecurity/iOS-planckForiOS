@@ -381,11 +381,10 @@ Something is fishy here.
     }
 
     private func shouldBeDisplayed(message: Message) -> Bool {
-        if message.isEncrypted ||
+            if (!message.parent.showsMessagesNeverSeenByEngine && message.isEncrypted) ||
             (!threadedMessageFolder.isThreaded && !isInFolderToShow(message: message)) {
             return false
         }
-
         return true
     }
 
