@@ -33,6 +33,10 @@ extension Message {
     }
 
     func outgoingMessageRating() -> PEP_rating {
+        if !pEpProtected {
+            return PEP_rating_unencrypted
+        }
+
         guard let sender = from else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "No sender for outgoing message?")
@@ -60,7 +64,7 @@ extension Message {
         return setOriginalRatingHeader(rating: rating.asString())
     }
 
-    public func pEpRating() -> PEP_rating { //IOS-1297: what about force unencrypted?
+    public func pEpRating() -> PEP_rating {
         //see: https://dev.pep.security/Common%20App%20Documentation/algorithms/MessageColors
         if let originalRating = getOriginalRatingHeaderRating() {
             switch parent.folderType {
