@@ -42,8 +42,12 @@ extension CdAccount {
         let imapLogin = LoginImapOperation(parentName: #function, imapSyncData: imapSyncData)
 
         let expFoldersFetched = testCase.expectation(description: "expFoldersFetched")
-        let syncFoldersOp = SyncFoldersFromServerOperation(
-            parentName: #function, imapSyncData: imapSyncData)
+        guard let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
+                                                                 imapSyncData: imapSyncData)
+            else {
+                XCTFail()
+                return
+        }
         syncFoldersOp.addDependency(imapLogin)
         syncFoldersOp.completionBlock = {
             syncFoldersOp.completionBlock = nil

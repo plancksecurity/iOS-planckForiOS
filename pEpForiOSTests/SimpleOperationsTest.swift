@@ -14,7 +14,12 @@ import MessageModel
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testComp() {
-        let f = SyncFoldersFromServerOperation(parentName: #function, imapSyncData: imapSyncData)
+        guard let f = SyncFoldersFromServerOperation(parentName: #function,
+                                                                 imapSyncData: imapSyncData)
+            else {
+                XCTFail()
+                return
+        }
         XCTAssertTrue(f.comp.contains("SyncFoldersFromServerOperation"))
         XCTAssertTrue(f.comp.contains(#function))
     }
@@ -194,7 +199,12 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let expFoldersFetched = expectation(description: "expFoldersFetched")
 
         let opLogin = LoginImapOperation(parentName: #function, imapSyncData: imapSyncData)
-        let op = SyncFoldersFromServerOperation(parentName: #function, imapSyncData: imapSyncData)
+        guard let op = SyncFoldersFromServerOperation(parentName: #function,
+                                                                 imapSyncData: imapSyncData)
+            else {
+                XCTFail()
+                return
+        }
         op.completionBlock = {
             op.completionBlock = nil
             expFoldersFetched.fulfill()
@@ -237,10 +247,13 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         message.setMessageID("001@whatever.test")
 
         let expStored = expectation(description: "expStored")
-        let storeOp = StorePrefetchedMailOperation(
-            parentName: #function,
-            accountID: imapConnectInfo.accountObjectID, message: message,
-            messageUpdate: CWMessageUpdate())
+        guard let accountId = imapConnectInfo.accountObjectID else {
+            XCTFail()
+            return
+        }
+        let storeOp = StorePrefetchedMailOperation(parentName: #function, accountID: accountId,
+                                                   message: message,
+                                                   messageUpdate: CWMessageUpdate())
         storeOp.completionBlock = {
             storeOp.completionBlock = nil
             expStored.fulfill()
@@ -277,10 +290,14 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.setFolder(folder)
             message.setUID(UInt(i))
             message.setMessageID("\(i)@whatever.test")
-            let op = StorePrefetchedMailOperation(
-                parentName: #function,
-                accountID: imapConnectInfo.accountObjectID, message: message,
-                messageUpdate: CWMessageUpdate())
+            guard let accountId = imapConnectInfo.accountObjectID else {
+                XCTFail()
+                return
+            }
+            let op = StorePrefetchedMailOperation(parentName: #function,
+                                                  accountID: accountId,
+                                                  message: message,
+                                                  messageUpdate: CWMessageUpdate())
             op.completionBlock = {
                 op.completionBlock = nil
                 numberOfCallbacksCalled += 1
@@ -307,8 +324,12 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             parentName: #function, imapSyncData: imapSyncData)
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let syncFoldersOp = SyncFoldersFromServerOperation(
-            parentName: #function, imapSyncData: imapSyncData)
+        guard let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
+                                                                 imapSyncData: imapSyncData)
+            else {
+                XCTFail()
+                return
+        }
         syncFoldersOp.addDependency(imapLogin)
         syncFoldersOp.completionBlock = {
             syncFoldersOp.completionBlock = nil
@@ -465,8 +486,12 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let syncFoldersOp = SyncFoldersFromServerOperation(
-            parentName: #function, imapSyncData: imapSyncData)
+        guard let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
+                                                                 imapSyncData: imapSyncData)
+            else {
+                XCTFail()
+                return
+        }
         syncFoldersOp.addDependency(imapLogin)
         syncFoldersOp.completionBlock = {
             syncFoldersOp.completionBlock = nil
@@ -553,8 +578,12 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
-        let syncFoldersOp = SyncFoldersFromServerOperation(
-            parentName: #function, imapSyncData: imapSyncData)
+        guard let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
+                                                                 imapSyncData: imapSyncData)
+            else {
+                XCTFail()
+                return
+        }
         syncFoldersOp.addDependency(imapLogin)
         syncFoldersOp.completionBlock = {
             syncFoldersOp.completionBlock = nil

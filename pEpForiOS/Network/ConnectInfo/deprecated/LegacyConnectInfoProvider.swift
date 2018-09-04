@@ -22,7 +22,6 @@ extension ConnectInfo {
             guard let cdAccount = CdAccount.search(account: me.account) else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No CdAccount")
                 return
-
             }
             result = cdAccount.objectID
         }
