@@ -121,4 +121,25 @@ class DecryptImportedMessagesTests: XCTestCase {
         XCTAssertTrue(cdMessage?.longMessage?.startsWith("It is yellow?") ?? false)
         XCTAssertEqual(cdMessage?.attachments?.count ?? 50, 0)
     }
+
+    /**
+     IOS-1300
+     */
+    func testDecrypt002() {
+        let cdOwnAccount = createLocalAccount(ownUserName: "Someonei",
+                                              ownUserID: "User_Someonei",
+                                              ownEmailAddress: "someone@gmx.de")
+
+        self.backgroundQueue = OperationQueue()
+        let cdMessage = decryptTheMessage(
+            cdOwnAccount: cdOwnAccount, fileName: "IOS-1300_odt_attachment.txt")
+
+        guard let theCdMessage = cdMessage else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(theCdMessage.shortMessage, "needed")
+        XCTAssertEqual(theCdMessage.attachments?.count ?? 0, 1)
+    }
 }
