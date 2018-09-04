@@ -49,19 +49,17 @@ public class FetchMessagesOperation: ImapSyncOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        let folderBuilder = ImapFolderBuilder(
-            accountID: self.imapSyncData.connectInfo.accountObjectID,
-            backgroundQueue: self.backgroundQueue, name: name,
-            messageFetchedBlock: messageFetchedBlock)
-
-        guard let account = context.object(
-            with: imapSyncData.connectInfo.accountObjectID)
-            as? CdAccount else {
+        guard
+            let accountId = imapSyncData.connectInfo.accountObjectID,
+            let account = context.object(with: accountId) as? CdAccount else {
                 addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                 waitForBackgroundTasksToFinish()
                 return
         }
-
+        let folderBuilder = ImapFolderBuilder(accountID: accountId,
+                                              backgroundQueue: self.backgroundQueue,
+                                              name: name,
+                                              messageFetchedBlock: messageFetchedBlock)
         // Treat Inbox specially, as it is the only mailbox
         // that is mandatorily case-insensitive.
         if self.folderToOpen.lowercased() == ImapSync.defaultImapInboxName.lowercased() {

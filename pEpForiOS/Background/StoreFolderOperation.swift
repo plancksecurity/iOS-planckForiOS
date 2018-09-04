@@ -54,9 +54,10 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
         defer {
             markAsFinished()
         }
-        guard let account = context.object(with: connectInfo.accountObjectID)
-            as? CdAccount else {
-                addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
+        guard
+            let accountId = connectInfo.accountObjectID,
+            let account = context.object(with: accountId) as? CdAccount else {
+                handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                 return
         }
         if let server = context.object(with: connectInfo.serverObjectID) as? CdServer {

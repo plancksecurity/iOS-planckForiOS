@@ -521,21 +521,22 @@ open class NetworkServiceWorker {
 
             if !onlySyncChangesTriggeredByUser {
                 // Fetch current list of interesting mailboxes
-                let opSyncFolders = SyncFoldersFromServerOperation(
-                    parentName: description, errorContainer: errorContainer,
-                    imapSyncData: imapSyncData)
-                opSyncFolders.completionBlock = { [weak self] in
-                    opSyncFolders.completionBlock = nil
-                    if let me = self {
-                        me.workerQueue.async {
-                            Log.info(component: #function, content: "opSyncFolders finished")
+                if let opSyncFolders = SyncFoldersFromServerOperation(parentName: description,
+                                                                      errorContainer: errorContainer,
+                                                                      imapSyncData: imapSyncData) {
+                    opSyncFolders.completionBlock = { [weak self] in
+                        opSyncFolders.completionBlock = nil
+                        if let me = self {
+                            me.workerQueue.async {
+                                Log.info(component: #function, content: "opSyncFolders finished")
+                            }
                         }
                     }
+                    opSyncFolders.addDependency(lastImapOp)
+                    lastImapOp = opSyncFolders
+                    opImapFinished.addDependency(opSyncFolders)
+                    operations.append(opSyncFolders)
                 }
-                opSyncFolders.addDependency(lastImapOp)
-                lastImapOp = opSyncFolders
-                opImapFinished.addDependency(opSyncFolders)
-                operations.append(opSyncFolders)
             }
             if !onlySyncChangesTriggeredByUser {
                 let opRequiredFolders = CreateRequiredFoldersOperation(

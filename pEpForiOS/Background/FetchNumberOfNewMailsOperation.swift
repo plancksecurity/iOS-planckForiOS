@@ -65,9 +65,9 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     private func cdFolder() -> CdFolder? {
         var result: CdFolder?
         privateMOC.performAndWait {
-            guard let account = privateMOC.object(
-                with: imapSyncData.connectInfo.accountObjectID)
-                as? CdAccount else {
+            guard
+                let accountId = imapSyncData.connectInfo.accountObjectID,
+                let account = privateMOC.object(with: accountId) as? CdAccount else {
                     addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                     waitForBackgroundTasksToFinish()
                     return
@@ -87,10 +87,13 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     }
 
     private func process() {
-        let folderBuilder = ImapFolderBuilder(
-            accountID: self.imapSyncData.connectInfo.accountObjectID,
-            backgroundQueue: self.backgroundQueue, name: name)
-
+        guard let accountId = imapSyncData.connectInfo.accountObjectID else {
+            handle(error: BackgroundError.GeneralError.illegalState(info: "No CdAccount ID"))
+            return
+        }
+        let folderBuilder = ImapFolderBuilder(accountID: accountId,
+                                              backgroundQueue: self.backgroundQueue,
+                                              name: name)
         let cdFolderToOpen = cdFolder()
         if  let name = cdFolderToOpen?.name {
             folderToOpen = name

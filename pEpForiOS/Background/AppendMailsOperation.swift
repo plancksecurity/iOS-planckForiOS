@@ -52,7 +52,9 @@ public class AppendMailsOperation: ImapSyncOperation {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            guard let account = privateMOC.object(with: imapSyncData.connectInfo.accountObjectID) as? CdAccount,
+            guard
+                let accountId = imapSyncData.connectInfo.accountObjectID,
+                let account = privateMOC.object(with: accountId) as? CdAccount,
                 let address = account.identity?.address
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
@@ -163,9 +165,8 @@ public class AppendMailsOperation: ImapSyncOperation {
         let privateMOC = Record.Context.background
         privateMOC.performAndWait {
             guard
-                let cdAccount =
-                privateMOC.object(with: connectInfo.accountObjectID) as? CdAccount
-                else {
+                let accountId = connectInfo.accountObjectID,
+                let cdAccount = privateMOC.object(with: accountId) as? CdAccount else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No account")
                     return
             }

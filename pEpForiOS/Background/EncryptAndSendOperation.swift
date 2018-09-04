@@ -151,8 +151,9 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     }
 
     func handleNextMessageInternal(context: NSManagedObjectContext) {
-        guard let cdAccount = context.object(with: smtpSendData.connectInfo.accountObjectID)
-            as? CdAccount else {
+        guard
+            let accountId = smtpSendData.connectInfo.accountObjectID,
+            let cdAccount = context.object(with: accountId) as? CdAccount else {
                 handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                 return
         }

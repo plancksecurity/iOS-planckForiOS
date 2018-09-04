@@ -22,13 +22,16 @@ extension EmailConnectInfo {
                 return
             }
             let context = Record.Context.background
-            guard let cdAccount = context.object(with: me.accountObjectID) as? CdAccount else {
-                error = BackgroundError.CoreDataError.couldNotFindAccount(info: #function)
-                return
+            guard
+                let accountId = me.accountObjectID,
+                let cdAccount = context.object(with: accountId) as? CdAccount else {
+                    error = BackgroundError.CoreDataError.couldNotFindAccount(info: #function)
+                    return
             }
-            guard let cdFolder = CdFolder.by(name: name, account: cdAccount, context: context) else {
-                error = BackgroundError.CoreDataError.couldNotFindFolder(info: #function)
-                return
+            guard
+                let cdFolder = CdFolder.by(name: name, account: cdAccount, context: context) else {
+                    error = BackgroundError.CoreDataError.couldNotFindFolder(info: #function)
+                    return
             }
             cdResult = cdFolder
         }

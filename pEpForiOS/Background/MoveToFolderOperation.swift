@@ -171,7 +171,9 @@ class MoveToFolderOperation: ImapSyncOperation {
     static func foldersContainingMarkedForMoveToFolder(connectInfo: EmailConnectInfo) -> [Folder] {
         var result = [Folder]()
         MessageModel.performAndWait {
-            guard let cdAccount = Record.Context.background.object(with: connectInfo.accountObjectID) as? CdAccount else {
+            guard
+                let accountId = connectInfo.accountObjectID,
+                let cdAccount = Record.Context.background.object(with: accountId) as? CdAccount else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No account.")
                 return
             }

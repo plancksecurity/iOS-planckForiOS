@@ -41,17 +41,21 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
 
     // MARK: - LIFE CYCLE
 
-    init(parentName: String = #function,
-                errorContainer: ServiceErrorProtocol = ErrorContainer(),
-                imapSyncData: ImapSyncData, onlyUpdateIfNecessary: Bool = false) {
+    init?(parentName: String = #function,
+          errorContainer: ServiceErrorProtocol = ErrorContainer(),
+          imapSyncData: ImapSyncData,
+          onlyUpdateIfNecessary: Bool = false) {
         self.onlyUpdateIfNecessary = onlyUpdateIfNecessary
 
         super.init(parentName: parentName, errorContainer: errorContainer,
                    imapSyncData: imapSyncData)
-
-        folderBuilder = ImapFolderBuilder(
-            accountID: imapSyncData.connectInfo.accountObjectID,
-            backgroundQueue: backgroundQueue, messageFetchedBlock: nil)
+        guard let accountId = imapSyncData.connectInfo.accountObjectID else {
+            handleError(BackgroundError.GeneralError.illegalState(info: "No CdAccount ID"))
+            return nil
+        }
+        folderBuilder = ImapFolderBuilder(accountID: accountId,
+                                          backgroundQueue: backgroundQueue,
+                                          messageFetchedBlock: nil)
     }
 
     // MARK: - PROCESS
@@ -73,8 +77,9 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
                                              errorString: "Lost myselft")
                     return
                 }
-                guard let account = me.privateMOC.object(
-                    with: me.imapSyncData.connectInfo.accountObjectID)
+                guard
+                    let accountId = me.imapSyncData.connectInfo.accountObjectID,
+                    let account = me.privateMOC.object(with: accountId)
                     as? CdAccount else {
                         me.handleSeriousError(error:
                             BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
@@ -130,12 +135,12 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
                 return
             }
             // Get all local folders that represent a remote mailbox
-            guard let cdAaccount =
-                me.privateMOC.object(with: me.imapSyncData.connectInfo.accountObjectID)
-                    as? CdAccount else {
-                        handleSeriousError(error:
-                            BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
-                        return
+            guard
+                let accountId = me.imapSyncData.connectInfo.accountObjectID,
+                let cdAaccount = me.privateMOC.object(with: accountId) as? CdAccount else {
+                    handleSeriousError(error: BackgroundError.GeneralError.illegalState(info:
+                        "Problem getting CdAccount"))
+                    return
             }
             let account = cdAaccount.account()
             let localSyncedFolders = Folder.allRemoteFolders(inAccount: account)

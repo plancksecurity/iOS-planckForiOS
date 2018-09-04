@@ -44,6 +44,8 @@ public class ImapSyncOperation: ConcurrentBaseOperation {
 
 extension ImapSyncOperation: ImapSyncDelegateErrorHandlerProtocol {
     func handle(error: Error) {
+        Log.shared.errorAndCrash(component: #function,
+                                 errorString: "\(error.localizedDescription)")
         addIMAPError(error)
         markAsFinished()
     }

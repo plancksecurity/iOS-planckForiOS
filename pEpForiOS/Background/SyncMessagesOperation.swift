@@ -69,9 +69,8 @@ public class SyncMessagesOperation: ImapSyncOperation {
 
     private func process(context: NSManagedObjectContext) {
         guard
-            let cdAccount = context.object(
-                with: imapSyncData.connectInfo.accountObjectID) as? CdAccount
-            else {
+            let accountId = imapSyncData.connectInfo.accountObjectID,
+            let cdAccount = context.object(with: accountId) as? CdAccount else {
                 handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                 return
         }
@@ -83,9 +82,8 @@ public class SyncMessagesOperation: ImapSyncOperation {
         }
         folderID = cdFolder.objectID
 
-        let folderBuilder = ImapFolderBuilder(
-            accountID: self.imapSyncData.connectInfo.accountObjectID,
-            backgroundQueue: self.backgroundQueue)
+        let folderBuilder = ImapFolderBuilder(accountID: accountId,
+                                              backgroundQueue: self.backgroundQueue)
         syncDelegate = SyncMessagesSyncDelegate(errorHandler: self)
         self.imapSyncData.sync?.delegate = syncDelegate
         self.imapSyncData.sync?.folderBuilder = folderBuilder

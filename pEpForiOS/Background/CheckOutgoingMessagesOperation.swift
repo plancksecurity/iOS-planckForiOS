@@ -34,8 +34,9 @@ class CheckOutgoingMessagesOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        guard let cdAccount = context.object(with: connectInfo.accountObjectID)
-            as? CdAccount else {
+        guard
+            let accountId = connectInfo.accountObjectID,
+            let cdAccount = context.object(with: accountId) as? CdAccount else {
                 handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: nil))
                 return
         }
