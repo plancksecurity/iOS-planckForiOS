@@ -141,6 +141,8 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "needed")
-        XCTAssertEqual(theCdMessage.attachments?.count ?? 0, 1)
+
+        let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
+        XCTAssertEqual(attachments.count, 1)
     }
 }
