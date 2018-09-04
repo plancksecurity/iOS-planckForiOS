@@ -87,8 +87,12 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
 
     fileprivate func createNextFolder() {
         if let lastFolder = currentAttempt.folderToCreate {
-            privateMOC.performAndWait {
-                self.createLocal(folderToCreate: lastFolder, context: self.privateMOC)
+            privateMOC.performAndWait { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                me.createLocal(folderToCreate: lastFolder, context: me.privateMOC)
             }
         }
         if !isCancelled, let folderToCreate = foldersToCreate.first {
