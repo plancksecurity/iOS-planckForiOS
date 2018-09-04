@@ -12,8 +12,8 @@ import CoreData
 /// Supports usage of deprecated EmailConnectInfo.
 extension ConnectInfo {
     @available(*, deprecated, message: "use account instead")
-    var accountObjectID: NSManagedObjectID {
-        var result = NSManagedObjectID()
+    var accountObjectID: NSManagedObjectID? {
+        var result: NSManagedObjectID? = nil
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
@@ -77,8 +77,10 @@ extension EmailConnectInfo {
 
     @available(*, deprecated, message: "use folderBy(name:) instead")
     func folderBy(name: String, context: NSManagedObjectContext) throws -> CdFolder {
-        guard let cdAccount = context.object(with: accountObjectID) as? CdAccount else {
-            throw BackgroundError.CoreDataError.couldNotFindAccount(info: #function)
+        guard
+            let accountId = accountObjectID,
+            let cdAccount = context.object(with: accountId) as? CdAccount else {
+                throw BackgroundError.CoreDataError.couldNotFindAccount(info: #function)
         }
         guard let cdFolder = CdFolder.by(name: name, account: cdAccount, context: context) else {
             throw BackgroundError.CoreDataError.couldNotFindFolder(info: #function)
