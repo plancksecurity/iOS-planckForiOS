@@ -147,6 +147,6 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         let attachment1 = attachments[0]
         XCTAssertEqual(attachment1.mimeType, "application/vnd.oasis.opendocument.text")
-        XCTAssertEqual(attachment1.fileName, "Someone andTextIncludingTheSpace.odt")
+        XCTAssertEqual(attachment1.fileName, "cid://253d226f-4e3a-b37f-4809-16cdc02f39e1@yahoo.com")
     }
 }
