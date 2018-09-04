@@ -566,7 +566,7 @@ extension CdMessage {
             if forceParseAttachments || mail.bodyFetched {
                 // Parsing attachments only makes sense once pantomime has received the
                 // mail body. Same goes for the snippet.
-                addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail, level: 0)
+                addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail)
             }
         }
 
@@ -667,7 +667,7 @@ extension CdMessage {
      Adds pantomime attachments to a `CdMessage`.
      */
     static func addAttachmentsFromPantomimePart(
-        _ part: CWPart, targetMail: CdMessage, level: Int) {
+        _ part: CWPart, targetMail: CdMessage, level: Int = 0) {
         Log.info(component: #function, content: "Parsing level \(level) \(part)")
         guard let content = part.content() else {
             return
@@ -696,6 +696,7 @@ extension CdMessage {
                 MiscUtil.isEmptyString(part.filename()) {
                 targetMail.longMessageFormatted = data.toStringWithIANACharset(part.charset())
             } else {
+                // we
                 let contentDispRawValue =
                     CdAttachment.contentDispositionRawValue(from: part.contentDisposition())
                 let attachment = insertAttachment(contentType: part.contentType(),
