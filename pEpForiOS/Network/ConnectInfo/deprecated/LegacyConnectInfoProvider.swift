@@ -30,8 +30,8 @@ extension ConnectInfo {
     }
 
     @available(*, deprecated, message: "use server instead")
-    var serverObjectID: NSManagedObjectID {
-        var result = NSManagedObjectID()
+    var serverObjectID: NSManagedObjectID? {
+        var result: NSManagedObjectID? = nil
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")

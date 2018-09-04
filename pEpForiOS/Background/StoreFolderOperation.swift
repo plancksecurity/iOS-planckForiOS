@@ -60,7 +60,8 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
                 handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                 return
         }
-        if let server = context.object(with: connectInfo.serverObjectID) as? CdServer {
+        if let serverId = connectInfo.serverObjectID,
+            let server = context.object(with: serverId) as? CdServer {
             server.imapFolderSeparator = folderInfo.separator
         }
         if let (cdFolder, newlyCreated) = CdFolder.insertOrUpdate(
