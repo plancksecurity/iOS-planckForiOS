@@ -78,7 +78,6 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
         Record.Context.main.refreshAllObjects()
-        XCTAssertEqual(cdMessage.pEpRating, Int16(PEP_rating_reliable.rawValue))
 
         guard
             let cdRecipients = cdMessage.to?.array as? [CdIdentity],
@@ -117,6 +116,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         let cdMessage = decryptTheMessage(
             cdOwnAccount: cdOwnAccount, fileName: "IOS-884_001_Mail_from_P4A.txt")
 
+        XCTAssertEqual(cdMessage?.pEpRating, Int16(PEP_rating_reliable.rawValue))
         XCTAssertEqual(cdMessage?.shortMessage, "Re:  ")
         XCTAssertTrue(cdMessage?.longMessage?.startsWith("It is yellow?") ?? false)
         XCTAssertEqual(cdMessage?.attachments?.count ?? 50, 0)
@@ -139,6 +139,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "needed")
         XCTAssertEqual(theCdMessage.attachments?.count ?? 0, 1)
     }
