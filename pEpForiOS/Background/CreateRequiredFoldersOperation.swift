@@ -43,8 +43,12 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             markAsFinished()
             return
         }
-        privateMOC.perform {
-            self.process()
+        privateMOC.perform { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.process()
         }
     }
 
