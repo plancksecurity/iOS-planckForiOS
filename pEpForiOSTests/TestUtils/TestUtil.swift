@@ -703,14 +703,17 @@ class TestUtil {
      */
     static func cwImapMessage(fileName: String) -> CWIMAPMessage? {
         guard
-            let msgTxt = TestUtil.loadData(
+            var msgTxtData = TestUtil.loadData(
                 fileName: fileName)
             else {
                 XCTFail()
                 return nil
         }
 
-        let pantomimeMail = CWIMAPMessage(data: msgTxt, charset: "UTF-8")
+        // This is what pantomime does with everything it receives
+        msgTxtData = replacedCRLFWithLF(data: msgTxtData)
+
+        let pantomimeMail = CWIMAPMessage(data: msgTxtData, charset: "UTF-8")
         pantomimeMail?.setUID(5) // some random UID out of nowhere
         pantomimeMail?.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
 
@@ -736,5 +739,11 @@ class TestUtil {
         XCTAssertEqual(cdMessage.pEpRating, CdMessage.pEpRatingNone)
 
         return cdMessage
+    }
+
+    static func replacedCRLFWithLF(data: Data) -> Data {
+        let mData = NSMutableData(data: data)
+        mData.replaceCRLFWithLF()
+        return mData as Data
     }
 }

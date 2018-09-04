@@ -3,3 +3,5 @@
 //
 
 #import "pEpForiOS-Bridging-Header.h"
+
+#import "Pantomime/NSData+Extensions.h"
