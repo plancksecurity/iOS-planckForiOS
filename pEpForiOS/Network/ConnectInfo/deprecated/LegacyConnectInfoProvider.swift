@@ -48,29 +48,6 @@ extension ConnectInfo {
         }
         return result
     }
-
-    @available(*, deprecated, message: "use credentials instead")
-    var credentialsObjectID: NSManagedObjectID {
-        var result = NSManagedObjectID()
-        MessageModel.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            let serverType = me.server.serverType
-            guard
-                let cdAccount = CdAccount.search(account: me.account),
-                let cdServer = cdAccount.server(type: serverType),
-                let cdCredentials = cdServer.credentials else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No CdAccount")
-                    // Return garbage
-                    return
-            }
-
-            result = cdCredentials.objectID
-        }
-        return result
-    }
 }
 
 extension EmailConnectInfo {
@@ -87,5 +64,4 @@ extension EmailConnectInfo {
         }
         return cdFolder
     }
-
 }
