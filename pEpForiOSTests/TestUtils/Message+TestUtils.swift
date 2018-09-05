@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpForiOS
 
 extension Message {
     func isValidMessage() -> Bool {
