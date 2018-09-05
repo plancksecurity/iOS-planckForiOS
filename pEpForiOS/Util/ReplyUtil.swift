@@ -99,12 +99,15 @@ public struct ReplyUtil {
      */
     public static func replySubject(message: Message) -> String {
         if let subject = message.shortMessage {
-            let re = NSLocalizedString(
-                "Re: ", comment: "The 'Re:' that gets appended to the subject line")
-            return "\(re) \(subject)"
-        } else {
-            return ""
+            if !hasRePrefix(subject: subject) {
+                let re = NSLocalizedString(
+                    "Re: ",
+                    comment: "The 'Re:' that gets appended to the subject line in a reply")
+                return "\(re) \(subject)"
+            }
         }
+
+        return ""
     }
 
     public static func forwardSubject(message: Message) -> String {
