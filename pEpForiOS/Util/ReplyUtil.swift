@@ -79,6 +79,22 @@ public struct ReplyUtil {
                                        "YNT"]
 
     /**
+     Has that subject already been prefixed with a "Re:" in one of the languages we support?
+     - Note: Checks in a case-insensitive manner.
+     */
+    public static func hasRePrefix(subject: String) -> Bool {
+        let lcSubject = subject.lowercased()
+
+        for replyPrefix in replyPrefixes {
+            if lcSubject.hasPrefix("\(replyPrefix.lowercased()): ") {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    /**
      Gets the subject for replying to the given `Message`.
      */
     public static func replySubject(message: Message) -> String {
