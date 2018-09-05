@@ -101,7 +101,7 @@ public struct ReplyUtil {
         if let subject = message.shortMessage {
             if !hasRePrefix(subject: subject) {
                 let re = NSLocalizedString(
-                    "Re: ",
+                    "Re:",
                     comment: "The 'Re:' that gets appended to the subject line in a reply")
                 return "\(re) \(subject)"
             }
