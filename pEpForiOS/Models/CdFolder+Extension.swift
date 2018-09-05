@@ -197,14 +197,16 @@ public extension CdFolder {
         return FolderType.normal
     }
 
+    //IOS-1274: extend predicate factory
     /**
      - Returns: The predicate (for CdMessage) to get all (undeleted, valid)
      messages contained in that folder.
      */
-    public func allMessagesPredicate() -> NSPredicate {
+    public func allMessagesPredicate() -> NSPredicate { //IOS-1274: issue is here. Ignores targetFolder (FIXED)
         let p1 = allMessagesIncludingDeletedPredicate()
         let p2 = CdMessage.PredicateFactory.undeleted()
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2])
+        let p3 = CdMessage.PredicateFactory.notMarkedForMoveToFolder()
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2, p3])
     }
 
     /**
