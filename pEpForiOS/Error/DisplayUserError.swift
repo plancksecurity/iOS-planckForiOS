@@ -297,24 +297,29 @@ struct DisplayUserError: LocalizedError {
     public var errorDescription: String? {
         switch type {
         case .authenticationFailed:
-            return NSLocalizedString("It was impossible to login to the server. Username or password is wrong.",
-                                     comment:
+            return NSLocalizedString(
+                "It was impossible to login to the server. Username or password is wrong.",
+                comment:
                 "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
         case .messageNotSent:
-            return NSLocalizedString("The message could not be sent. Please try again later.",
-                                     comment:
+            return NSLocalizedString(
+                "The message could not be sent. Please try again later.",
+                comment:
                 "Error message shown to the user in case a message could not be sent.")
         case .brokenServerConnectionImap:
-            return NSLocalizedString("We could not connect to the IMAP server.",
-                                     comment:
+            return NSLocalizedString(
+                "We could not connect to the IMAP server.",
+                comment:
                 "Error message shown to the user in case we can not connect to the IMAP server")
         case .brokenServerConnectionSmtp:
-            return NSLocalizedString("We could not connect to the SMTP server.",
-                                     comment:
+            return NSLocalizedString(
+                "We could not connect to the SMTP server.",
+                comment:
                 "Error message shown to the user in case we can not connect to the SMTP server")
         case .internalError:
-            return NSLocalizedString("An internal error occured. Sorry, that should not happen.",
-                                     comment:
+            return NSLocalizedString(
+                "An internal error occured. Sorry, that should not happen.",
+                comment:
                 "Error message shown to the user in case an error in the app occured that is not caused or related to the server")
         case .loginValidationError:
             return foreignDescription
