@@ -8,6 +8,7 @@
 
 import MessageModel
 
+/// IMAP specific predicates (MessageModel should not be aware of)
 extension CdFolder.PredicateFactory {
 
     static public  func isSyncedWithServer() -> NSPredicate {
