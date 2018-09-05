@@ -82,6 +82,12 @@ public class FilterViewModel {
                                                              comment: "title unread filter cell"),
                                     enabled: filters.contains(type: FlaggedFilter.self),
                                     filter: FlaggedFilter()))
+
+            items.append(
+                FilterCellViewModel(image: flaggedIcon,
+                                    title: "Unread or Unflagged",
+                                    enabled: filters.contains(type: UnreadOrFlaggedFilter.self),
+                                    filter: UnreadOrFlaggedFilter()))
             break
         case .other:
             guard let attachIcon = UIImage(named: "attachment-list-icon") else {
