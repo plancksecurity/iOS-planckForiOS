@@ -201,7 +201,7 @@ public extension CdFolder {
      - Returns: The predicate (for CdMessage) to get all (undeleted, not marked to move to another folder, valid)
      messages contained in that folder.
      */
-    public func allMessagesPredicate() -> NSPredicate { //IOS-1274: issue is here. Ignores targetFolder (FIXED)
+    public func allMessagesPredicate() -> NSPredicate {
         let p1 = allMessagesIncludingDeletedPredicate()
         let p2 = CdMessage.PredicateFactory.notImapFlagDeleted()
         let p3 = CdMessage.PredicateFactory.notMarkedForMoveToFolder()

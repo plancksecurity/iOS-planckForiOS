@@ -13,8 +13,8 @@ extension CdMessage.PredicateFactory {
 
     static public func existingMessages() -> NSPredicate {
         var predicates = [NSPredicate]()
-        predicates.append(NSPredicate(format: "bodyFetched = true"))//IOS-1274: rm body fetched field. We always fetch everything.
-        predicates.append(notImapFlagDeleted())//IOS-1274: take targetfolder into account (FIXED)
+        predicates.append(NSPredicate(format: "bodyFetched = true"))
+        predicates.append(notImapFlagDeleted())
         predicates.append(notMarkedForMoveToFolder())
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }

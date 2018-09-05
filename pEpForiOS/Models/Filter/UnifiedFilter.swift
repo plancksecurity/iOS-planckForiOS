@@ -8,11 +8,11 @@
 
 import MessageModel
 
-public class UnifiedFilter: FilterBase { //IOS-1274: should be (and was) in app, not MM.
+public class UnifiedFilter: FilterBase {
     public override var predicates: [NSPredicate] {
         get {
             return [CdMessage.PredicateFactory.isInInbox(),
-                    CdMessage.PredicateFactory.existingMessages()]  //IOS-1274: ignores deleted (FIXED)
+                    CdMessage.PredicateFactory.existingMessages()]
         }
     }
 
