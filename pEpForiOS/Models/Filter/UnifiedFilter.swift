@@ -11,9 +11,8 @@ import MessageModel
 public class UnifiedFilter: FilterBase { //IOS-1274: should be (and was) in app, not MM.
     public override var predicates: [NSPredicate] {
         get {
-            return
-                [NSPredicate(format: "parent.folderTypeRawValue = %d", FolderType.inbox.rawValue), //IOS-1274: move to predicate factory
-                 CdMessage.PredicateFactory.existingMessages()]  //IOS-1274: ignores deleted (FIXED)
+            return [CdMessage.PredicateFactory.isInInbox(),
+                    CdMessage.PredicateFactory.existingMessages()]  //IOS-1274: ignores deleted (FIXED)
         }
     }
 

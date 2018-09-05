@@ -8,16 +8,8 @@
 
 import MessageModel
 
-/// Predicates MessageModel should not be aware of
+/// IMAP specific predicates (MessageModel should not be aware of)
 extension CdMessage.PredicateFactory {
-
-    static public func existingMessages() -> NSPredicate {
-        var predicates = [NSPredicate]()
-        predicates.append(NSPredicate(format: "bodyFetched = true"))//IOS-1274: rm body fetched field. We always fetch everything.
-        predicates.append(undeleted())//IOS-1274: take targetfolder into account (FIXED)
-        predicates.append(notMarkedForMoveToFolder())
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-    }
 
     /// Predicate to fetch all CdMessages that need to be moved to another folder.
     ///
