@@ -24,26 +24,26 @@ extension LoginViewController.LoginError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingEmail:
-            return NSLocalizedString("The email field must not be empty",
-                                     comment: "Automated account setup error description")
+            return NSLocalizedString("A valid email is required",
+                                     comment: "error message for .missingEmail")
         case .invalidEmail:
-            return NSLocalizedString("The entered email address is invalid",
-                                     comment: "Automated account setup error description")
+            return NSLocalizedString("A valid email is required",
+                                     comment: "error message for .invalidEmail")
         case .missingPassword:
-            return NSLocalizedString("Password needed",
-                                     comment: "Automated account setup error description")
+            return NSLocalizedString("A non-empty password is required",
+                                     comment: "error message for .missingPassword")
         case .missingUsername:
-            return NSLocalizedString("Username must not be empty.",
-                                     comment: "Empty username message")
+            return NSLocalizedString("A non-empty username is required",
+                                     comment: "error message for .missingUsername")
         case .minimumLengthUsername:
-            return NSLocalizedString("Username must have more than 1 characters.",
-                                     comment: "minimum username length")
+            return NSLocalizedString("The username must contain more than 1 characters",
+                                     comment: "error message for .minimumLengthUsername")
         case .noConnectData:
-            return NSLocalizedString("Internal error",
-                                     comment: "Automated account setup error description")
+            return NSLocalizedString("An internal error occurred",
+                                     comment: "error message for .noConnectData")
         case .accountExistence:
-            return NSLocalizedString("Account already exist",
-                                     comment: "account exist error message")
+            return NSLocalizedString("The account already exists",
+                                     comment: "error message for .accountExistence")
         }
     }
 }

@@ -23,14 +23,22 @@ struct DisplayUserError: LocalizedError {
     enum ErrorType {
         /// We could not login for some reason
         case authenticationFailed
+
         /// We could not send a message for some reason
         case messageNotSent
+
         /// Somthing went wrong internally. Do not bother the user with technical details.
         case internalError
+
         /// Any issue comunicating with the server
         case brokenServerConnectionImap
+
         /// Any issue comunicating with the server
         case brokenServerConnectionSmtp
+
+        /// Any verification error in the login view, like "invalid email"
+        case loginValidationError
+
         /// Use this only for errors that are not known to DisplayUserError yet and thus can not
         /// be categorized
         case unknownError
@@ -48,6 +56,7 @@ struct DisplayUserError: LocalizedError {
                  .brokenServerConnectionImap,
                  .brokenServerConnectionSmtp,
                  .messageNotSent,
+                 .loginValidationError,
                  .unknownError:
                 return true
             }
@@ -78,7 +87,7 @@ struct DisplayUserError: LocalizedError {
         } else if let oauthError = error as? OAuth2AuthorizationError {
             type = DisplayUserError.type(forError: oauthError)
         }
-            //BackgroundError
+            // BackgroundError
         else if let err = error as? BackgroundError.GeneralError {
             type = DisplayUserError.type(forError: err)
         } else if let err = error as? BackgroundError.ImapError {
@@ -87,10 +96,15 @@ struct DisplayUserError: LocalizedError {
             type = DisplayUserError.type(forError: err)
         } else if let err = error as? BackgroundError.CoreDataError {
             type = DisplayUserError.type(forError: err)
-        }else if let err = error as? BackgroundError.PepError {
+        } else if let err = error as? BackgroundError.PepError {
             type = DisplayUserError.type(forError: err)
         }
-            //Unknown
+            // Login view controller
+        else if let err = error as? LoginViewController.LoginError {
+            type = .loginValidationError
+            foreignDescription = err.localizedDescription
+        }
+            // Unknown
         else {
             foreignDescription = error.localizedDescription
             type = .unknownError
@@ -266,6 +280,11 @@ struct DisplayUserError: LocalizedError {
         case .internalError:
             return NSLocalizedString("Internal Error",
                                      comment:"Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server ")
+        case .loginValidationError:
+            return NSLocalizedString(
+                "Validation Error",
+                comment:"Error title for validation errors on login screen")
+
         case .unknownError:
             // We have an error that is not known to us.
             // All we can do is pass its description.
@@ -297,6 +316,8 @@ struct DisplayUserError: LocalizedError {
             return NSLocalizedString("An internal error occured. Sorry, that should not happen.",
                                      comment:
                 "Error message shown to the user in case an error in the app occured that is not caused or related to the server")
+        case .loginValidationError:
+            return foreignDescription
         case .unknownError:
             // We have an error that is not known to us.
             // All we can do is pass its description.
