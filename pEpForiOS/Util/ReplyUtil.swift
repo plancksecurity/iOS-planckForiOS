@@ -56,27 +56,27 @@ public struct ReplyUtil {
      List of potential prefixes of already replied-to emails in the subject.
      See https://en.wikipedia.org/wiki/List_of_email_subject_abbreviations#Abbreviations_in_other_languages
      */
-    public static let res = ["RE", "رد",
-                             "回复",
-                             "回覆",
-                             "SV",
-                             "Antw",
-                             "VS",
-                             "REF",
-                             "AW",
-                             "ΑΠ",
-                             "ΣΧΕΤ", "תגובה",
-                             "Vá",
-                             "R",
-                             "RIF",
-                             "SV",
-                             "BLS",
-                             "SV",
-                             "SV",
-                             "RE",
-                             "RES",
-                             "Odp",
-                             "YNT"]
+    public static let replyPrefixes = ["RE", "رد",
+                                       "回复",
+                                       "回覆",
+                                       "SV",
+                                       "Antw",
+                                       "VS",
+                                       "REF",
+                                       "AW",
+                                       "ΑΠ",
+                                       "ΣΧΕΤ", "תגובה",
+                                       "Vá",
+                                       "R",
+                                       "RIF",
+                                       "SV",
+                                       "BLS",
+                                       "SV",
+                                       "SV",
+                                       "RE",
+                                       "RES",
+                                       "Odp",
+                                       "YNT"]
 
     /**
      Gets the subject for replying to the given `Message`.
