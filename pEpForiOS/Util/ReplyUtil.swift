@@ -78,26 +78,6 @@ public struct ReplyUtil {
                              "Odp",
                              "YNT"]
 
-    public static let forwards = ["FWD", "إعادة توجيه ",
-                                  "转发",
-                                  "轉寄",
-                                  "VS",
-                                  "Doorst",
-                                  "VL",
-                                  "TR",
-                                  "WG",
-                                  "ΠΡΘ", "הועבר",
-                                  "Továbbítás",
-                                  "I",
-                                  "FS",
-                                  "TRS",
-                                  "VS",
-                                  "VB",
-                                  "RV",
-                                  "ENC",
-                                  "PD",
-                                  "İLT"]
-
     /**
      Gets the subject for replying to the given `Message`.
      */
