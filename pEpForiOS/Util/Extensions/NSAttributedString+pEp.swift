@@ -63,7 +63,10 @@ extension NSMutableAttributedString {
     }
 
     @discardableResult public func normal(_ text: String) -> NSMutableAttributedString {
-        let normal =  NSAttributedString(string: text)
+        let attrs:[NSAttributedStringKey: Any] =
+            [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .body)]
+
+        let normal =  NSMutableAttributedString(string: text, attributes: attrs)
         self.append(normal)
         return self
     }
