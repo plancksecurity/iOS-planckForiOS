@@ -139,9 +139,11 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         let msgsBefore = cdAccount.allMessages(inFolderOfType: .inbox, sendFrom: id2)
 
         // Create mails from cdAccount2 to cdAccount ...
-        let mailsToSend = try! TestUtil.createOutgoingMails(
-            cdAccount: sender, testCase: self, numberOfMails: num,
-            withAttachments: false, encrypt: false)
+        let mailsToSend = try! TestUtil.createOutgoingMails(cdAccount: sender,
+                                                            testCase: self,
+                                                            numberOfMails: num,
+                                                            withAttachments: false,
+                                                            encrypt: false)
         XCTAssertEqual(mailsToSend.count, num)
 
         for mail in mailsToSend {
