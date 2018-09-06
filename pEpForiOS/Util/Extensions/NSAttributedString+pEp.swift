@@ -60,7 +60,7 @@ extension NSMutableAttributedString {
         return self
     }
 
-    @discardableResult public func normal(_ text:String)->NSMutableAttributedString {
+    @discardableResult public func normal(_ text: String) -> NSMutableAttributedString {
         let normal =  NSAttributedString(string: text)
         self.append(normal)
         return self
