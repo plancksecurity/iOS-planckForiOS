@@ -57,7 +57,7 @@ extension NSMutableAttributedString {
         let attrs:[NSAttributedStringKey: Any] =
             [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .callout)]
 
-        let boldString = NSMutableAttributedString(string:"\(text)", attributes:attrs)
+        let boldString = NSMutableAttributedString(string: text, attributes: attrs)
         self.append(boldString)
         return self
     }
