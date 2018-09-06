@@ -88,6 +88,11 @@ public class ConcurrentBaseOperation: BaseOperation {
         }
     }
 
+    func handleIlligalStateErrorAndFinish(component: String = #function, hint: String? = nil) {
+        handleError(
+            BackgroundError.GeneralError.illegalState(info: component + " - " + (hint ?? "")))
+    }
+
     func handleError(_ error: Error, message: String? = nil) {
         addError(error)
         if let theMessage = message {

@@ -46,22 +46,14 @@ class UIDCopyOperation: ImapSyncOperation {
     }
 
     fileprivate func handleMessage() {
-        MessageModel.perform { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
-                return
-            }
-            let imapFolder = CWIMAPFolder(name: me.originalMessage.parent.name)
-            if let sync = me.imapSyncData.sync {
-                imapFolder.setStore(sync.imapStore)
-            }
-            imapFolder.copyMessage(withUid: me.originalMessage.uid,
-                                   toFolderNamed: me.targetFolder.name)
+        let imapFolder = CWIMAPFolder(name: originalMessage.parent.name)
+        if let sync = imapSyncData.sync {
+            imapFolder.setStore(sync.imapStore)
         }
+        imapFolder.copyMessage(withUid: originalMessage.uid,
+                               toFolderNamed: targetFolder.name)
     }
 }
-
-
 
 // MARK: - UIDCopyOperationSyncDelegate
 

@@ -81,7 +81,7 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
                     let accountId = me.imapSyncData.connectInfo.accountObjectID,
                     let account = me.privateMOC.object(with: accountId)
                     as? CdAccount else {
-                        me.handleSeriousError(error:
+                        me.handleError(
                             BackgroundError.CoreDataError.couldNotFindAccount(info: me.comp))
                         return
                 }
@@ -138,7 +138,7 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
             guard
                 let accountId = me.imapSyncData.connectInfo.accountObjectID,
                 let cdAaccount = me.privateMOC.object(with: accountId) as? CdAccount else {
-                    handleSeriousError(error: BackgroundError.GeneralError.illegalState(info:
+                    handleError(BackgroundError.GeneralError.illegalState(info:
                         "Problem getting CdAccount"))
                     return
             }
@@ -153,12 +153,6 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
                 deletee.delete()
             }
         }
-    }
-
-    private func handleSeriousError(error: Error) {
-        self.addError(error)
-        backgroundQueue.cancelAllOperations()
-        waitForBackgroundTasksToFinish()
     }
 
     // MARK: - HANDLERS for SyncFoldersFromServerSyncDelegate

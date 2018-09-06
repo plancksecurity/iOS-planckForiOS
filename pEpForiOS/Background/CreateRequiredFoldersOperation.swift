@@ -56,8 +56,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         guard
             let accountId = imapSyncData.connectInfo.accountObjectID,
             let account = privateMOC.object(with: accountId) as? CdAccount else {
-                addError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
-                markAsFinished()
+                handleError(BackgroundError.CoreDataError.couldNotFindAccount(info: comp))
                 return
         }
 
@@ -86,7 +85,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             imapSyncData.sync?.delegate = syncDelegate
             createNextFolder()
         } else {
-            markAsFinished()
+            waitForBackgroundTasksToFinish()
         }
     }
 
@@ -101,7 +100,8 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
             }
         }
         guard !isCancelled, let folderToCreate = foldersToCreate.first else {
-            markAsFinished()
+            // We have been cancelled or there is nothing left todo.
+            waitForBackgroundTasksToFinish()
             return
         }
         currentAttempt.reset()
@@ -133,7 +133,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         } else {
             currentAttempt.reset()
             addIMAPError(potentialError)
-            markAsFinished()
+            waitForBackgroundTasksToFinish()
         }
     }
 
@@ -159,6 +159,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
 class CreateRequiredFoldersSyncDelegate: DefaultImapSyncDelegate {
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Sorry, wrong number.")
             return
         }
         op.numberOfFoldersCreated += 1
@@ -167,6 +168,7 @@ class CreateRequiredFoldersSyncDelegate: DefaultImapSyncDelegate {
 
     public override func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Sorry, wrong number.")
             return
         }
         op.createFolderAgain(potentialError: ImapSyncError.illegalState(#function))

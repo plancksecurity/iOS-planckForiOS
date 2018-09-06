@@ -96,7 +96,7 @@ class MoveToFolderOperation: ImapSyncOperation {
     }
 
     fileprivate func handleNextMessage() {
-        guard !isCancelled else {
+        guard !isCancelled, let message = retrieveNextMessage() else {
             waitForBackgroundTasksToFinish()
             return
         }
@@ -105,10 +105,11 @@ class MoveToFolderOperation: ImapSyncOperation {
                 Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
                 return
             }
-            guard let message = me.retrieveNextMessage() else {
-                me.markAsFinished()
+            guard !me.isCancelled else {
+                me.waitForBackgroundTasksToFinish()
                 return
             }
+
             if message == me.lastProcessedMessage {
                 // When UID MOVEing a message, the server expunges the message and let us know.
                 // Pantomime takes care to remove the expunged message in general.
@@ -129,8 +130,7 @@ class MoveToFolderOperation: ImapSyncOperation {
                 return
             }
             guard let targetFolderName = message.targetFolder?.name else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No target folder")
-                me.markAsFinished()
+                me.handleIlligalStateErrorAndFinish(hint: "No target folder")
                 return
             }
             me.lastProcessedMessage = message
@@ -149,6 +149,8 @@ class MoveToFolderOperation: ImapSyncOperation {
     fileprivate func handleUidMoveIsUnsupported() {
         guard let toCopy = lastProcessedMessage,
             let targetFolder = toCopy.targetFolder else {
+                handleIlligalStateErrorAndFinish(hint:
+                    "Why are we even called if there is nothing to do?")
                 return
         }
         let uidCopyOp = UIDCopyOperation(imapSyncData: imapSyncData,
@@ -160,8 +162,7 @@ class MoveToFolderOperation: ImapSyncOperation {
 
     fileprivate func handleMessageCopyCompleted() {
         if let error = errorContainer.error {
-            addIMAPError(error)
-            markAsFinished()
+            handleError(error)
             return
         }
         deleteLastCopiedMessage()
@@ -174,8 +175,8 @@ class MoveToFolderOperation: ImapSyncOperation {
             guard
                 let accountId = connectInfo.accountObjectID,
                 let cdAccount = Record.Context.background.object(with: accountId) as? CdAccount else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No account.")
-                return
+                    Log.shared.errorAndCrash(component: #function, errorString: "No account.")
+                    return
             }
             let account = cdAccount.account()
             let allUidMoveMessages = Message.allMessagesMarkedForMoveToFolder(inAccount: account)
@@ -250,8 +251,7 @@ class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
             Log.shared.errorAndCrash(component: #function, errorString: "Wrong delegate called")
             return
         }
-        handler.addIMAPError(error)
-        handler.markAsFinished()
+        handler.handleError(error)
     }
 }
 
