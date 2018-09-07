@@ -252,8 +252,6 @@ class TestUtil {
                                          failOnError: true)
 
         networkService.unitTestDelegate = del
-        Record.saveAndWait()
-
         networkService.start()
 
         let canTakeSomeTimeFactor = 3.0
