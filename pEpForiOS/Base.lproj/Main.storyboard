@@ -49,7 +49,7 @@
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
                                             <rect key="frame" x="72" y="32.5" width="278" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -123,7 +123,7 @@
                                         <constraint firstItem="8QD-qP-0hS" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="8" id="Bhk-yI-GEr"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="YqR-ga-Tf9" secondAttribute="top" id="DW6-Nq-mt1"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="YqR-ga-Tf9" secondAttribute="trailing" constant="8" id="FRQ-af-oqS"/>
-                                        <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="6.5" id="Hex-Vv-UnE"/>
+                                        <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="6" id="Hex-Vv-UnE"/>
                                         <constraint firstItem="8QD-qP-0hS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tWZ-jW-sUg" secondAttribute="trailing" constant="8" id="Qdc-6I-SDj"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="leading" id="Wva-Nq-D3D"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="5" id="Xp7-Lw-Lqg"/>
@@ -134,6 +134,7 @@
                                         <constraint firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" constant="8" id="n5I-Yb-okr"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" id="tYc-Ao-foD"/>
                                         <constraint firstItem="m0u-Jn-mQU" firstAttribute="bottom" secondItem="YqR-ga-Tf9" secondAttribute="bottom" constant="4" id="ubw-w6-q4y"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BvI-Zi-zU6" secondAttribute="bottom" constant="5" id="zul-c0-54S"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
