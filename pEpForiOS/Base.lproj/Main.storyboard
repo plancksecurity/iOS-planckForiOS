@@ -220,29 +220,35 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="57.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwf-Sw-cKo">
-                                            <rect key="frame" x="8" y="17" width="22" height="20"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Anc-8J-vDp" customClass="ComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="38" y="0.0" width="327" height="38"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                            <connections>
-                                                <outlet property="delegate" destination="Epo-ru-S9d" id="Mlo-a9-pVX"/>
-                                            </connections>
-                                        </textView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="nMk-Vq-dms">
+                                            <rect key="frame" x="8" y="0.0" width="367" height="57.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwf-Sw-cKo">
+                                                    <rect key="frame" x="0.0" y="17" width="22" height="19.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text=" " adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Anc-8J-vDp" customClass="ComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
+                                                    <rect key="frame" x="22" y="8" width="345" height="38"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="Epo-ru-S9d" id="Mlo-a9-pVX"/>
+                                                    </connections>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Anc-8J-vDp" firstAttribute="top" secondItem="nMk-Vq-dms" secondAttribute="top" constant="8" id="McU-zI-Lqb"/>
+                                            </constraints>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="lwf-Sw-cKo" firstAttribute="leading" secondItem="KqB-b6-IoI" secondAttribute="leading" constant="8" id="2HN-3E-FxZ"/>
-                                        <constraint firstItem="Anc-8J-vDp" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" priority="1" constant="11" id="9Vj-75-oUR"/>
-                                        <constraint firstItem="Anc-8J-vDp" firstAttribute="leading" secondItem="lwf-Sw-cKo" secondAttribute="trailing" constant="7.5" id="DAd-Gp-wwF"/>
-                                        <constraint firstItem="lwf-Sw-cKo" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" priority="1" constant="17" id="KT9-to-rrM"/>
-                                        <constraint firstAttribute="bottom" secondItem="Anc-8J-vDp" secondAttribute="bottom" constant="19.5" id="WUm-BF-ifd"/>
-                                        <constraint firstAttribute="trailing" secondItem="Anc-8J-vDp" secondAttribute="trailing" constant="10" id="qAV-qc-JnG"/>
+                                        <constraint firstItem="nMk-Vq-dms" firstAttribute="top" secondItem="KqB-b6-IoI" secondAttribute="top" id="3zd-IB-6YB"/>
+                                        <constraint firstItem="nMk-Vq-dms" firstAttribute="leading" secondItem="KqB-b6-IoI" secondAttribute="leading" constant="8" id="8tp-m4-KQg"/>
+                                        <constraint firstAttribute="trailing" secondItem="nMk-Vq-dms" secondAttribute="trailing" id="Ue1-8h-MyQ"/>
+                                        <constraint firstAttribute="bottom" secondItem="nMk-Vq-dms" secondAttribute="bottom" id="dlf-N4-odW"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -257,29 +263,35 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="57.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subject:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DWr-lq-DOL">
-                                            <rect key="frame" x="8" y="17" width="60" height="20"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ci-S4-tmv" customClass="SubjectComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="76" y="10" width="289" height="39"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                            <connections>
-                                                <outlet property="delegate" destination="BXJ-Ko-ZUm" id="j3k-Xu-6uH"/>
-                                            </connections>
-                                        </textView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Li-Zj-aqN">
+                                            <rect key="frame" x="8" y="0.0" width="367" height="58"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Subject:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DWr-lq-DOL">
+                                                    <rect key="frame" x="0.0" y="17" width="60" height="19.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text=" " textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ci-S4-tmv" customClass="SubjectComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
+                                                    <rect key="frame" x="60" y="8" width="307" height="38"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="BXJ-Ko-ZUm" id="j3k-Xu-6uH"/>
+                                                    </connections>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="8ci-S4-tmv" firstAttribute="top" secondItem="7Li-Zj-aqN" secondAttribute="top" constant="8" identifier="topConstraint" id="wDf-JC-0fy"/>
+                                            </constraints>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="DWr-lq-DOL" firstAttribute="leading" secondItem="Pc9-7u-OeC" secondAttribute="leading" constant="8" id="1oz-z7-XY2"/>
-                                        <constraint firstItem="8ci-S4-tmv" firstAttribute="leading" secondItem="DWr-lq-DOL" secondAttribute="trailing" constant="7.5" id="LTc-ZR-6av"/>
-                                        <constraint firstAttribute="bottom" secondItem="8ci-S4-tmv" secondAttribute="bottom" constant="8" id="Xr8-4B-LTG"/>
-                                        <constraint firstItem="DWr-lq-DOL" firstAttribute="top" secondItem="Pc9-7u-OeC" secondAttribute="top" constant="17" id="d9b-lI-XLD"/>
-                                        <constraint firstAttribute="trailing" secondItem="8ci-S4-tmv" secondAttribute="trailing" constant="10" id="fTK-ZJ-z9Q"/>
-                                        <constraint firstItem="8ci-S4-tmv" firstAttribute="top" secondItem="Pc9-7u-OeC" secondAttribute="top" constant="10" id="p5Q-5J-esL"/>
+                                        <constraint firstAttribute="trailing" secondItem="7Li-Zj-aqN" secondAttribute="trailing" id="Tiz-Ie-eby"/>
+                                        <constraint firstItem="7Li-Zj-aqN" firstAttribute="top" secondItem="Pc9-7u-OeC" secondAttribute="top" id="Zf2-ie-BeP"/>
+                                        <constraint firstItem="7Li-Zj-aqN" firstAttribute="leading" secondItem="Pc9-7u-OeC" secondAttribute="leading" constant="8" id="a4d-UL-w5v"/>
+                                        <constraint firstAttribute="bottom" secondItem="7Li-Zj-aqN" secondAttribute="bottom" id="sP1-pe-Gff"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -422,7 +434,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28t-ga-UrZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5399" y="-8"/>
+            <point key="canvasLocation" x="5397.6000000000004" y="-8.0959520239880067"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="pH2-0g-XGV">
@@ -962,6 +974,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="d5O-Wk-gjZ"/>
         <segue reference="0zl-tV-6Kr"/>
+        <segue reference="RTR-We-Kc1"/>
+        <segue reference="oPc-EL-W2c"/>
         <segue reference="ber-OQ-S16"/>
         <segue reference="I15-Dm-oo1"/>
     </inferredMetricsTieBreakers>
