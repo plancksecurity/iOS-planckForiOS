@@ -321,8 +321,11 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = true
+            let message = previewMessage.message()
+            message?.imapFlags?.seen = true
+            message?.save()
             me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                                      didUpdateDataAt: [indexPath])
+                                                              didUpdateDataAt: [indexPath])
         }
     }
 
@@ -336,6 +339,9 @@ class EmailListViewModel {
                 return
             }
             previewMessage.isSeen = false
+            let message = previewMessage.message()
+            message?.imapFlags?.seen = false
+            message?.save()
             me.emailListViewModelDelegate?.emailListViewModel(
                 viewModel: me,
                 didUpdateDataAt: [indexPath])
