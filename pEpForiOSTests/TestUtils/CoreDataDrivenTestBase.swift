@@ -10,7 +10,7 @@ import XCTest
 
 import CoreData
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class CoreDataDrivenTestBase: XCTestCase {
     var cdAccount: CdAccount!
@@ -45,8 +45,10 @@ class CoreDataDrivenTestBase: XCTestCase {
 
     override func tearDown() {
         imapSyncData?.sync?.close()
+        persistentSetup.tearDownCoreDataStack()
         persistentSetup = nil
         PEPSession.cleanup()
+        XCTAssertTrue(PEPUtil.pEpClean())
         super.tearDown()
     }
 
