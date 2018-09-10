@@ -29,4 +29,6 @@ protocol EmailDisplayDelegate: class {
      The email detail deleted the indicated message
      */
     func emailDisplayDidDelete(message: Message)
+
+    func emailDisplayDidChangeMarkSeen(message: Message)
 }

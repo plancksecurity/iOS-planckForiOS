@@ -30,6 +30,11 @@ extension EmailListViewModel: EmailDisplayDelegate {
         }
     }
 
+    func emailDisplayDidChangeMarkSeen(message: Message) {
+        //IOS-1323:
+        fatalError()
+    }
+
     private func deleteRow(for message: Message) {
         stopListeningToChanges()
         defer {
