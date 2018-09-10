@@ -47,7 +47,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Outlets
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
-    //@IBOutlet weak var textFilterButton: UIBarButtonItem!
+    //@IBOutlet weak var textFilterButton: UIBarButtonItem! //IOS-1323: off topic: cleanup
 
     var textFilterButton: UIBarButtonItem = UIBarButtonItem(
         title: "",
@@ -264,7 +264,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         } else {
             performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
         }
-        vm.markRead(forIndexPath: indexPath)
+        //        vm.markRead(forIndexPath: indexPath) //IOS-1323:
     }
 
     private func showNoMessageSelectedIfNeeded() {
@@ -866,13 +866,19 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel, didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
+    func emailListViewModel(viewModel: EmailListViewModel,
+                            didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
         //IOS-1323:
-        guard let displayMode = splitViewController?.displayMode, displayMode == .primaryHidden
-            else {
-                // We do not update the seen status when both spitview views are shown.
-                return
+        guard let isIphone = splitViewController?.isCollapsed, let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+            return
         }
+        if !isIphone && vm.isFilterEnabled && vm.activeFilter?.contains(type: UnreadFilter.self) ?? false {
+            // We do not update the seen status when both spitview views are shown and the list is
+            // currently filtered by unread.
+            return
+        }
+        // Forward to update
         emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
     }
 
