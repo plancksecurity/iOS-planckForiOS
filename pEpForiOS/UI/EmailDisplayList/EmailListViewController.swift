@@ -21,18 +21,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     var viewModels = [IndexPath : PrefetchableViewModel]()
 
-    internal var model: EmailListViewModel?
-    
-    private let queue: OperationQueue = {
-        let createe = OperationQueue()
-        createe.qualityOfService = .userInteractive
-        createe.maxConcurrentOperationCount = 5
-        return createe
-    }()
-    private var operations = [IndexPath:Operation]()
+    var model: EmailListViewModel?
+
     public static let storyboardId = "EmailListViewController"
     private var lastSelectedIndexPath: IndexPath?
-    
+
     let searchController = UISearchController(searchResultsController: nil)
 
     //swipe acctions types
@@ -41,19 +34,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private var swipeDelete : SwipeAction? = nil
 
-    /// Indicates that we must not trigger reloadData.
-    private var loadingBlocked = false
-
     // MARK: - Outlets
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
 
-    var textFilterButton: UIBarButtonItem = UIBarButtonItem(
-        title: "",
-        style: .plain,
-        target: nil,
-        action: nil)
-    
+    var textFilterButton: UIBarButtonItem = UIBarButtonItem(title: "",
+                                                            style: .plain,
+                                                            target: nil,
+                                                            action: nil)
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -83,7 +72,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         if let vm = model {
             updateFilterButtonView()
-            if vm.checkIfSettingsChanged() { //IOS-1323: off topic: This is bad.
+            if vm.checkIfSettingsChanged() {
                 settingsChanged()
             }
         }
@@ -92,9 +81,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     deinit {
          NotificationCenter.default.removeObserver(self)
     }
-    
+
     // MARK: - Setup
-    
+
     private func resetModel() {
         if let theFolder = folderToShow {
             model = EmailListViewModel(emailListViewModelDelegate: self,
@@ -113,11 +102,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
             return
-        } else if let vm = model { //IOS-1323 dead code. Remove. Not using this is actually causing  IOS-1323.
-            // We came back from e.g EmailView ...
-            updateFilterText()
-            // ... so we want to update "seen" status
-            vm.reloadData()
         } else if folderToShow == nil {
             // We have not been created to show a specific folder, thus we show unified inbox
             folderToShow = UnifiedInbox()
@@ -217,7 +201,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                                            y: searchController.searchBar.frame.size.height),
                                    animated: false)
     }
-    
+
     // MARK: - Other
 
     private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
@@ -469,14 +453,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Action Filter Button
     
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
-        guard !loadingBlocked else {
-            return
-        }
         guard let vm = model else {
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
             return
         }
-        stopLoading()
         vm.isFilterEnabled = !vm.isFilterEnabled
         if vm.isFilterEnabled {
             let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
@@ -492,13 +472,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         updateFilterButtonView()
     }
-    
+
     private func updateFilterButtonView() {
         guard let vm = model else {
             Log.shared.errorAndCrash(component: #function, errorString: "We should have a model here")
             return
         }
-        
+
         textFilterButton.isEnabled = vm.isFilterEnabled
         if textFilterButton.isEnabled {
             enableFilterButton.image = UIImage(named: "unread-icon-active")
@@ -531,8 +511,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             guard let viewModel = model?.viewModel(for: indexPath.row) else {
                 return cell
             }
-//            viewModels[indexPath] = viewModel
-
             theCell.configure(for:viewModel)
         } else {
             Log.shared.errorAndCrash(component: #function, errorString: "dequeued wrong cell")
@@ -542,7 +520,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     // MARK: - UITableViewDelegate
-    
+
     func tableView(_ tableView: UITableView,
                    editActionsForRowAt
         indexPath: IndexPath,
@@ -637,7 +615,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cancelOperation(for: indexPath)
         guard let cell = cell as? EmailListViewCell else {
             return
         }
@@ -700,31 +677,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             action.textColor = descriptor.color
             action.font = .systemFont(ofSize: 13)
             action.transitionDelegate = ScaleTransition.default
-        }
-    }
-
-    // MARK: - Queue Handling
-
-    /// Cancels all operations and sets tableView.dataSource to nil.
-    /// Used to avoid that an operation accesses an outdated view model
-    private func stopLoading() { //IOS-1323: off topic: still all this dead is hanging around
-        loadingBlocked = true
-        tableView.dataSource = nil
-        queue.cancelAllOperations()
-        queue.waitUntilAllOperationsAreFinished()
-    }
-
-    private func queue(operation op:Operation, for indexPath: IndexPath) {
-        operations[indexPath] = op
-        queue.addOperation(op)
-    }
-
-    private func cancelOperation(for indexPath:IndexPath) { //IOS-1323: off topic: still all this dead is hanging around
-        guard let op = operations.removeValue(forKey: indexPath) else {
-            return
-        }
-        if !op.isCancelled  {
-            op.cancel()
         }
     }
 
@@ -909,7 +861,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func updateView() {
-        loadingBlocked = false
         tableView.dataSource = self
         tableView.reloadData()
         showNoMessageSelectedIfNeeded()
