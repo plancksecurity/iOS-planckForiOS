@@ -18,9 +18,9 @@ class Appearance {
         UINavigationBar.appearance().titleTextAttributes =
             [NSAttributedStringKey.foregroundColor: color]
 
-        UIToolbar.appearance().backgroundColor = .white
-        UIToolbar.appearance().barTintColor = .white
-        UIToolbar.appearance().tintColor = color
+        UIToolbar.appearance().backgroundColor = color
+        UIToolbar.appearance().barTintColor = color
+        UIToolbar.appearance().tintColor = .white
 
         UITextView.appearance().tintColor = color
         UITextField.appearance().tintColor = color
