@@ -147,7 +147,10 @@ class EmailViewController: BaseTableViewController {
         DispatchQueue.main.async {
             self.checkMessageReEvaluation()
 
-            self.message?.markAsSeen()
+            if let message = self.message { //IOS-1323: off topic: factor out self
+                message.markAsSeen()
+                self.delegate?.emailDisplayDidChangeMarkSeen(message: message)
+            }
 
             if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
                 self.nextMessage.isEnabled = false
