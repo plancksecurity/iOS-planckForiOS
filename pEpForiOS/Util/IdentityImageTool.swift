@@ -13,6 +13,8 @@ import MessageModel
 class IdentityImageTool {
     static var imageCache = [Identity:UIImage]()
 
+    let backgroundImage = UIImage(named: "pEp-status-green-disabled")
+
     func clearCache() {
         IdentityImageTool.imageCache.removeAll()
     }
@@ -62,11 +64,15 @@ class IdentityImageTool {
     }
 
     private func drawCircle(ctx: CGContext, size: CGSize, color: UIColor) {
-        let bgColor = color.cgColor
-        ctx.setFillColor(bgColor)
-        ctx.setStrokeColor(bgColor)
         let r = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
-        ctx.fillEllipse(in: r)
+        if let cgImage = backgroundImage?.cgImage {
+            ctx.draw(cgImage, in: r)
+        } else {
+            let bgColor = color.cgColor
+            ctx.setFillColor(bgColor)
+            ctx.setStrokeColor(bgColor)
+            ctx.fillEllipse(in: r)
+        }
     }
 
     private func identityImageFromName(initials: String, size: CGSize, textColor: UIColor,
