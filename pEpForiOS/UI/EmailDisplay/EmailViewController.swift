@@ -89,7 +89,7 @@ class EmailViewController: BaseTableViewController {
             if !handshakeCombos.isEmpty {
                 let tapGestureRecognizer = UITapGestureRecognizer(
                     target: self,
-                    action: #selector(self.showHandshakeView(gestureRecognizer:)))
+                    action: #selector(showHandshakeView(gestureRecognizer:)))
                 privacyStatusIcon.addGestureRecognizer(tapGestureRecognizer)
             }
         }
@@ -120,7 +120,7 @@ class EmailViewController: BaseTableViewController {
                 action: nil)
             flexibleSpace.tag = BarButtonType.space.rawValue
 
-            self.toolbarItems?.append(contentsOf: [flexibleSpace,item])
+            toolbarItems?.append(contentsOf: [flexibleSpace,item])
         } else {
             removePepButton()
         }
@@ -130,19 +130,19 @@ class EmailViewController: BaseTableViewController {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false)
 
-        self.title = NSLocalizedString("Message", comment: "Message view title")
+        title = NSLocalizedString("Message", comment: "Message view title")
 
         setupDestructiveButtonIcon()
 
         tableData?.filterRows(message: message)
 
         if messageId <= 0 {
-            self.previousMessage.isEnabled = false
+            previousMessage.isEnabled = false
         } else {
-            self.previousMessage.isEnabled = true
+            previousMessage.isEnabled = true
         }
 
-        self.showPepRating()
+        showPepRating()
 
         DispatchQueue.main.async {
             self.checkMessageReEvaluation()
@@ -162,15 +162,15 @@ class EmailViewController: BaseTableViewController {
     }
 
     private func configureSplitViewBackButton() {
-        self.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
-        self.navigationItem.leftItemsSupplementBackButton = true
+        navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+        navigationItem.leftItemsSupplementBackButton = true
     }
 
     private func configureOKButton() {
         if (shouldShowOKButton) {
             let okButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: .okButtonPressed)
-            self.navigationItem.leftBarButtonItems? = [okButton]
-            self.navigationItem.hidesBackButton = true
+            navigationItem.leftBarButtonItems? = [okButton]
+            navigationItem.hidesBackButton = true
         }
     }
 
@@ -333,7 +333,7 @@ class EmailViewController: BaseTableViewController {
         if let m = folderShow?.messageAt(index: messageId) {
             message = m
         }
-        self.tableView.reloadData()
+        tableView.reloadData()
         configureView()
     }
 
@@ -342,7 +342,7 @@ class EmailViewController: BaseTableViewController {
         if let m = folderShow?.messageAt(index: messageId) {
             message = m
         }
-        self.tableView.reloadData()
+        tableView.reloadData()
         configureView()
     }
 
@@ -350,12 +350,24 @@ class EmailViewController: BaseTableViewController {
         // The ReplyAllPossibleChecker() should be pushed into the view model
         // as soon as there is one.
         let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
-            .withReplyOption { action in
-                self.performSegue(withIdentifier: .segueReplyFrom , sender: self)
-            }.withReplyAllOption(forMessage: message) { action in
-                self.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
-            }.withFordwardOption { action in
-                self.performSegue(withIdentifier: .segueForward , sender: self)
+            .withReplyOption { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
+            }.withReplyAllOption(forMessage: message) { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
+            }.withFordwardOption { [weak self] action in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                me.performSegue(withIdentifier: .segueForward , sender: self)
             }.withCancelOption()
             .build()
 
@@ -620,8 +632,12 @@ extension EmailViewController: MessageAttachmentDelegate {
 
         splitViewController?.preferredDisplayMode = .allVisible
 
-        coordinator.animate(alongsideTransition: nil){ _ in
-            self.setuptoolbar()
+        coordinator.animate(alongsideTransition: nil){ [weak self] _ in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.setuptoolbar()
         }
     }
 
