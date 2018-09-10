@@ -114,7 +114,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
             return
-        } else if let vm = model {
+        } else if let vm = model { //IOS-1323 dead code. Remove. Not using this is actually causing  IOS-1323.
             // We came back from e.g EmailView ...
             updateFilterText()
             // ... so we want to update "seen" status
@@ -755,7 +755,6 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
-
     func showThreadView(for indexPath: IndexPath) {
         guard let splitViewController = splitViewController else {
             return
@@ -865,6 +864,16 @@ extension EmailListViewController: EmailListViewModelDelegate {
         for indexPath in indexPaths {
             resetSelectionIfNeeded(for: indexPath)
         }
+    }
+
+    func emailListViewModel(viewModel: EmailListViewModel, didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
+        //IOS-1323:
+        guard let displayMode = splitViewController?.displayMode, displayMode == .primaryHidden
+            else {
+                // We do not update the seen status when both spitview views are shown.
+                return
+        }
+        emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
     }
 
     func emailListViewModel(viewModel: EmailListViewModel,
