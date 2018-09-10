@@ -43,7 +43,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     /// Indicates that we must not trigger reloadData.
     private var loadingBlocked = false
-    
+
     // MARK: - Outlets
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
@@ -84,7 +84,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         if let vm = model {
             updateFilterButtonView()
-            if vm.checkIfSettingsChanged() {
+            if vm.checkIfSettingsChanged() { //IOS-1323: off topic: This is bad.
                 settingsChanged()
             }
         }
@@ -703,7 +703,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     /// Cancels all operations and sets tableView.dataSource to nil.
     /// Used to avoid that an operation accesses an outdated view model
-    private func stopLoading() {
+    private func stopLoading() { //IOS-1323: off topic: still all this dead is hanging around
         loadingBlocked = true
         tableView.dataSource = nil
         queue.cancelAllOperations()
@@ -715,7 +715,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         queue.addOperation(op)
     }
 
-    private func cancelOperation(for indexPath:IndexPath) {
+    private func cancelOperation(for indexPath:IndexPath) { //IOS-1323: off topic: still all this dead is hanging around
         guard let op = operations.removeValue(forKey: indexPath) else {
             return
         }
@@ -1213,8 +1213,7 @@ extension EmailListViewController: SegueHandlerType {
 // MARK: - LoginViewControllerDelegate
 
 extension EmailListViewController: LoginViewControllerDelegate {
-    func loginViewControllerDidCreateNewAccount(
-        _ loginViewController: LoginViewController) {
+    func loginViewControllerDidCreateNewAccount(_ loginViewController: LoginViewController) {
         // Setup model after initial account setup
         setup()
     }
