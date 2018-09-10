@@ -35,7 +35,7 @@ class IdentityImageTool {
     /// - Returns: contact image to display
     func identityImage(for identity:Identity,
                        imageSize: CGSize = CGSize.defaultAvatarSize,
-                       textColor: UIColor = UIColor.white,
+                       textColor: UIColor = UIColor.black,
                        backgroundColor: UIColor = UIColor(hexString: "#c8c7cc")) -> UIImage? {
         var image:UIImage?
         if let cachedImage = IdentityImageTool.imageCache[identity] {
