@@ -48,7 +48,12 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Use Camera</string>
 	<key>NSContactsUsageDescription</key>
-	<string>p≡p will neither collect nor share your contacts</string>
+	<string>- p≡p is an app for encrypted emails. To make it possible to send
+     emails to already stored contacts it is necessary to allow p≡p to
+     use them.
+
+- Contact data never will leave the mobile device and will not be
+     sent to p≡p or to any third party.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Enables you to save photos to the Photo Gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
