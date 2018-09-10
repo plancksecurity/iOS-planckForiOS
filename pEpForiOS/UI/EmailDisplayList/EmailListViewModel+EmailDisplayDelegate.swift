@@ -31,7 +31,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
     }
 
     func emailDisplayDidChangeMarkSeen(message: Message) {
-        updateRow(for: message)
+        updateRow(for: message, isSeenStateChange: true)
     }
 
     private func deleteRow(for message: Message) {
@@ -47,7 +47,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
         startListeningToChanges()
     }
 
-    private func updateRow(for message: Message) {
+    private func updateRow(for message: Message, isSeenStateChange: Bool = false) {
         stopListeningToChanges()
         defer {
             startListeningToChanges()
@@ -58,14 +58,24 @@ extension EmailListViewModel: EmailDisplayDelegate {
         
         let previewMessage = MessageViewModel(with: message)
         messages.removeObject(at: index)
-        _ = messages.insert(object: previewMessage)
-        informUpdateRow(at: index)
+        messages.insert(object: previewMessage)
+        if isSeenStateChange {
+            informSeenStateChangeForRow(at: index)
+        } else {
+            informUpdateRow(at: index)
+        }
     }
 
     private func informUpdateRow(at index: Int) {
         let indexPath = self.indexPath(for: index)
         emailListViewModelDelegate?.emailListViewModel(viewModel: self,
                                                        didUpdateDataAt: [indexPath])
+    }
+
+    private func informSeenStateChangeForRow(at index: Int) {
+        let indexPath = self.indexPath(for: index)
+        emailListViewModelDelegate?.emailListViewModel(viewModel: self,
+                                                       didChangeSeenStateForDataAt: [indexPath])
     }
 
     private func informDeleteRow(at index: Int) {
