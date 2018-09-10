@@ -94,8 +94,7 @@ class FullMessageCell: SwipeTableViewCell,
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.profilePicture.layer.cornerRadius = round(profilePicture.bounds.size.width / 2)
-        self.profilePicture.layer.masksToBounds = true
+        self.profilePicture.applyContactImageCornerRadius()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

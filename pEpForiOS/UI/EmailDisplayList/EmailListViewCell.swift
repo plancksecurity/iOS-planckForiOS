@@ -131,8 +131,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.contactImageView.layer.cornerRadius = round(contactImageView.bounds.size.width / 2)
-        self.contactImageView.layer.masksToBounds = true
+        self.contactImageView.applyContactImageCornerRadius()
         resetToDefault()
     }
 

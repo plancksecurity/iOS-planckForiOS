@@ -25,4 +25,13 @@ extension UIImageView {
         let factor = 1 / aspectRatio()
         heightAnchor.constraint(equalTo: widthAnchor, multiplier: factor).isActive = true
     }
+
+    /**
+     Gives the image the uniform look of a contact image.
+     */
+    func applyContactImageCornerRadius() {
+        let theWidth = bounds.size.width
+        layer.cornerRadius = round(theWidth / 10)
+        layer.masksToBounds = true
+    }
 }
