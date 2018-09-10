@@ -68,7 +68,7 @@ class IdentityImageTool {
         return image
     }
 
-    private func drawCircle(ctx: CGContext, size: CGSize, color: UIColor) {
+    private func drawBackground(ctx: CGContext, size: CGSize, color: UIColor) {
         let r = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
         if let cgImage = backgroundImage?.cgImage {
             ctx.draw(cgImage, in: r)
@@ -84,7 +84,7 @@ class IdentityImageTool {
                                        font: UIFont = UIFont.systemFont(ofSize: 24),
                                        imageBackgroundColor: UIColor) -> UIImage? {
         return UIImage.generate(size: size) { ctx, size in
-            drawCircle(ctx: ctx, size: size, color: imageBackgroundColor)
+            drawBackground(ctx: ctx, size: size, color: imageBackgroundColor)
             initials.draw(centeredIn: size, color: textColor, font: font)
         }
     }
