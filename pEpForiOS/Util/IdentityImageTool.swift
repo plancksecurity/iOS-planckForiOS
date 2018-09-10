@@ -30,9 +30,12 @@ class IdentityImageTool {
     ///   - identity: identity to create contact image to doisplay for
     ///   - imageSize: size of the image to create
     ///   - textColor: text color to use in case the resulting images contains the users initials
-    ///   - backgroundColor: backgroundcolor to use in case the resulting images contains the users initials
+    ///   - backgroundColor: backgroundcolor to use in case the resulting images contains
+    ///     the users initials
     /// - Returns: contact image to display
-    func identityImage(for identity:Identity, imageSize: CGSize = CGSize.defaultAvatarSize, textColor: UIColor = UIColor.white,
+    func identityImage(for identity:Identity,
+                       imageSize: CGSize = CGSize.defaultAvatarSize,
+                       textColor: UIColor = UIColor.white,
                        backgroundColor: UIColor = UIColor(hexString: "#c8c7cc")) -> UIImage? {
         var image:UIImage?
         if let cachedImage = IdentityImageTool.imageCache[identity] {
@@ -54,7 +57,9 @@ class IdentityImageTool {
                 let namePart = identity.address.namePartOfEmail()
                 initials = namePart.initials()
             }
-            image = identityImageFromName(initials: initials, size: imageSize, textColor: textColor,
+            image = identityImageFromName(initials: initials,
+                                          size: imageSize,
+                                          textColor: textColor,
                                           imageBackgroundColor: backgroundColor)
         }
         if let saveImage = image {
