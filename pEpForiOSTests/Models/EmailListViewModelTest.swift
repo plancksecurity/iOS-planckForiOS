@@ -272,6 +272,11 @@ class EmailListViewModelTestDelegate: EmailListViewModelDelegate {
         XCTFail()
     }
 
+    func emailListViewModel(viewModel: EmailListViewModel,
+                            didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
+        XCTFail("Currently unused in tests. Should not be called")
+    }
+
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
         XCTFail()
     }

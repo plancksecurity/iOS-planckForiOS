@@ -248,6 +248,11 @@ class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
         }
 
         func emailListViewModel(viewModel: EmailListViewModel,
+                                didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
+            XCTFail("Currently unused in tests. Should not be called")
+        }
+
+        func emailListViewModel(viewModel: EmailListViewModel,
                                 didRemoveDataAt indexPaths: [IndexPath]) {
         }
 
