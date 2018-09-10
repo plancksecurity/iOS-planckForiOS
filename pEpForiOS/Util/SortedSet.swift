@@ -30,7 +30,7 @@ class SortedSet<T: Equatable>: Sequence {
     ///
     /// - Parameter object: object to insert
     /// - Returns: index the object has been inserted to
-    public func insert(object: T) -> Int {
+    @discardableResult public func insert(object: T) -> Int {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
 
