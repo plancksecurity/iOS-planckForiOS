@@ -264,7 +264,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         } else {
             performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
         }
-        //        vm.markRead(forIndexPath: indexPath) //IOS-1323:
     }
 
     private func showNoMessageSelectedIfNeeded() {
@@ -272,7 +271,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             return
         }
         if splitViewController.isCollapsed {
-            if navigationController?.topViewController != self {
+            guard let vm = model else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                return
+            }
+            let unreadFilterActive = vm.isFilterEnabled &&
+                vm.activeFilter?.contains(type: UnreadFilter.self) ?? false
+            if navigationController?.topViewController != self && !unreadFilterActive {
                 navigationController?.popViewController(animated: true)
             }
         } else {
@@ -294,7 +299,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     var readToolbarButton : UIBarButtonItem?
     var unreadToolbarButton : UIBarButtonItem?
     var deleteToolbarButton : UIBarButtonItem?
-    var moveToolbarButton : UIBarButtonItem?
+    var moveToolbarButton : UIBarButtonItem? //IOS-1323: off topic: fix style
 
     @IBAction func Edit(_ sender: Any) {
 
@@ -868,18 +873,25 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func emailListViewModel(viewModel: EmailListViewModel,
                             didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
-        //IOS-1323:
         guard let isIphone = splitViewController?.isCollapsed, let vm = model else {
             Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
             return
         }
-        if !isIphone && vm.isFilterEnabled && vm.activeFilter?.contains(type: UnreadFilter.self) ?? false {
+        let unreadFilterActive = vm.isFilterEnabled &&
+            vm.activeFilter?.contains(type: UnreadFilter.self) ?? false
+
+        // If unread filter is active, /seen state updates require special handling ...
+
+        if !isIphone && unreadFilterActive {
             // We do not update the seen status when both spitview views are shown and the list is
             // currently filtered by unread.
             return
+        } else if isIphone && unreadFilterActive {
+            vm.reloadData()
+        } else {
+          //  ... otherwize we forward to update
+           emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
         }
-        // Forward to update
-        emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
     }
 
     func emailListViewModel(viewModel: EmailListViewModel,
