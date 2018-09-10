@@ -47,7 +47,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Outlets
     
     @IBOutlet weak var enableFilterButton: UIBarButtonItem!
-    //@IBOutlet weak var textFilterButton: UIBarButtonItem! //IOS-1323: off topic: cleanup
 
     var textFilterButton: UIBarButtonItem = UIBarButtonItem(
         title: "",
@@ -294,12 +293,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private var tempToolbarItems: [UIBarButtonItem]?
     private var editRightButton: UIBarButtonItem?
-    var flagToolbarButton : UIBarButtonItem?
-    var unflagToolbarButton : UIBarButtonItem?
-    var readToolbarButton : UIBarButtonItem?
-    var unreadToolbarButton : UIBarButtonItem?
-    var deleteToolbarButton : UIBarButtonItem?
-    var moveToolbarButton : UIBarButtonItem? //IOS-1323: off topic: fix style
+    var flagToolbarButton: UIBarButtonItem?
+    var unflagToolbarButton: UIBarButtonItem?
+    var readToolbarButton: UIBarButtonItem?
+    var unreadToolbarButton: UIBarButtonItem?
+    var deleteToolbarButton: UIBarButtonItem?
+    var moveToolbarButton: UIBarButtonItem?
 
     @IBAction func Edit(_ sender: Any) {
 
