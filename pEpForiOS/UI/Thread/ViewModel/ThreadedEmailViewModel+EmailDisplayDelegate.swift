@@ -27,4 +27,9 @@ extension ThreadedEmailViewModel: EmailDisplayDelegate {
         deleteInternal(message: message)
         emailDisplayDelegate?.emailDisplayDidDelete(message: message)
     }
+
+    func emailDisplayDidChangeMarkSeen(message: Message) {
+        //FIXME: when implementing message threading
+        fatalError("Unimplemented stub")
+    }
 }
