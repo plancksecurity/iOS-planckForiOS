@@ -164,20 +164,6 @@ class EmailListViewModel {
         return messages.count
     }
 
-    /// Returns the senders contact image to display.
-    /// This is a possibly time consuming process and shold not be called from the main thread.
-    ///
-    /// - Parameter indexPath: row indexpath to get the contact image for
-    /// - Returns: contact image to display
-    func senderImage(forCellAt indexPath:IndexPath) -> UIImage? {
-        guard let previewMessage = messages.object(at: indexPath.row) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "InconsistencyviewModel vs. model")
-            return nil
-        }
-        return contactImageTool.identityImage(for: previewMessage.identity)
-    }
-
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
         guard
             indexPath.row < messages.count,
