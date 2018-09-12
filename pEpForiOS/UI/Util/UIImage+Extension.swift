@@ -36,12 +36,17 @@ extension UIImage {
         }
     }
 
-    public func resized(newWidth: CGFloat) -> UIImage? {
-        let scale = newWidth / self.size.width
-        let newHeight = self.size.height * scale
-        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
-        self.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+    public func resized(newWidth: CGFloat, useAlpha: Bool = true, scale: CGFloat = 0.0) -> UIImage? {
+        let factor = self.size.width / newWidth
+        let size = CGSize(width: self.size.width / factor, height: self.size.height / factor)
+        let opaque = !useAlpha
+        let scale: CGFloat = 0.0
+        UIGraphicsBeginImageContextWithOptions(size, opaque, scale)
+        self.draw(in: CGRect(origin: CGPoint.zero, size: size))
+
+        guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else {
+            return nil
+        }
         UIGraphicsEndImageContext()
         return newImage
     }

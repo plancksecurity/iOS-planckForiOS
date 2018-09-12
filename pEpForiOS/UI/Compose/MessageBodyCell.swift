@@ -50,19 +50,12 @@ extension MessageBodyCell {
             Log.shared.errorAndCrash(component: #function, errorString: "No image")
             return
         }
-        let factor = image.size.width / (frame.size.width / 2)
-        let size = CGSize(width: image.size.width / factor, height: image.size.height / factor)
-        let hasAlpha = false
-        let scale: CGFloat = 0.0
 
-        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
-        image.draw(in: CGRect(origin: CGPoint.zero, size: size))
-
-        guard let scaledImage = UIGraphicsGetImageFromCurrentImageContext() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Ui!")
-            return
+        guard let scaledImage = image.resized(newWidth: frame.size.width / 2, useAlpha: false)
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error resizing")
+                return
         }
-        UIGraphicsEndImageContext()
 
         let textAttachment = TextAttachment()
         textAttachment.image = scaledImage
