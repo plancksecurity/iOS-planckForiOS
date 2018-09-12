@@ -15,20 +15,32 @@ extension EmailListViewModel: MessageFolderDelegate {
     // MARK: - MessageFolderDelegate (public)
 
     func didCreate(messageFolder: MessageFolder) {
-        messageFolderDelegateHandlingQueue.async {
-            self.didCreateInternal(messageFolder: messageFolder)
+        messageFolderDelegateHandlingQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.didCreateInternal(messageFolder: messageFolder)
         }
     }
 
     func didUpdate(messageFolder: MessageFolder) {
-        messageFolderDelegateHandlingQueue.async {
-            self.didUpdateInternal(messageFolder: messageFolder)
+        messageFolderDelegateHandlingQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.didUpdateInternal(messageFolder: messageFolder)
         }
     }
 
     func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
-        messageFolderDelegateHandlingQueue.async {
-            self.didDeleteInternal(
+        messageFolderDelegateHandlingQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.didDeleteInternal(
                 messageFolder: messageFolder,
                 belongingToThread: belongingToThread)
         }
