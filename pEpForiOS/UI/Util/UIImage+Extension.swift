@@ -36,6 +36,17 @@ extension UIImage {
         }
     }
 
+    /// Returns the image resized to the given width, using scaleToFit behaviour.
+    ///
+    /// - Parameters:
+    ///   - newWidth:   target width the image should be resized to
+    ///   - useAlpha:   A Boolean flag indicating whether the bitmap must include an alpha channel
+    ///                 (to handle any partially transparent pixels). If you know the bitmap is
+    ///                 fully opaque, specify false to ignore the alpha channel and optimize the
+    ///                 bitmap’s storage.
+    ///   - scale:      The scale factor to apply to the bitmap.
+    ///                 If you specify a value of 0.0, the scale factor is set to the scale factor of the device’s main screen.
+    /// - Returns: resized image
     public func resized(newWidth: CGFloat, useAlpha: Bool = true, scale: CGFloat = 0.0) -> UIImage? {
         let factor = self.size.width / newWidth
         let size = CGSize(width: self.size.width / factor, height: self.size.height / factor)

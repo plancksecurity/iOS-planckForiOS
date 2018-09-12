@@ -50,7 +50,7 @@ extension MessageBodyCell {
             Log.shared.errorAndCrash(component: #function, errorString: "No image")
             return
         }
-
+        // If the image is bigger than that, UITextView causes serious performance issues.
         guard let scaledImage = image.resized(newWidth: frame.size.width / 2, useAlpha: false)
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error resizing")
