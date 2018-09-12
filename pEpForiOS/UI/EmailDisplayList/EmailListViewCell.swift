@@ -26,6 +26,18 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var messageCountLabel: UILabel?
     @IBOutlet weak var threadIndicator: UIImageView?
 
+    /**
+     Fake constraint for IB to be happy.
+     - Note: This gets deactivated on runtime.
+     */
+    @IBOutlet weak var fakeRatingImageToContactImageVertical: NSLayoutConstraint?
+
+    /**
+     Fake constraint for IB to be happy.
+     - Note: This gets deactivated on runtime.
+     */
+    @IBOutlet weak var fakeRatingImageToContactImageHorizontal: NSLayoutConstraint?
+
     public static let storyboardId = "EmailListViewCell"
 
     public var isFlagged:Bool = false {
@@ -82,6 +94,13 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     override func layoutSubviews() {
+        if let constr = fakeRatingImageToContactImageVertical {
+            constr.isActive = false
+        }
+        if let constr = fakeRatingImageToContactImageHorizontal {
+            constr.isActive = false
+        }
+
         ratingImage.centerXAnchor.constraint(
             equalTo: contactImageView.rightAnchor).isActive = true
         ratingImage.centerYAnchor.constraint(
