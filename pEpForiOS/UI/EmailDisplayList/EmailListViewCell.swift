@@ -11,10 +11,7 @@ import MessageModel
 import SwipeCellKit
 
 class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
-    public static let storyboardId = "EmailListViewCell"
-
-    private static var flaggedImage: UIImage? = nil
-    private static var emptyContactImage = UIImage(named: "empty-avatar")
+    // MARK: Public API
 
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -29,7 +26,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var messageCountLabel: UILabel?
     @IBOutlet weak var threadIndicator: UIImageView?
 
-    private var viewModel: MessageViewModel!
+    public static let storyboardId = "EmailListViewCell"
 
     public var isFlagged:Bool = false {
         didSet {
@@ -40,6 +37,56 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
             }
         }
     }
+
+    public func configure(for viewModel: MessageViewModel) {
+        self.viewModel = viewModel
+        addressLabel.text = viewModel.displayedUsername
+        subjectLabel.text = viewModel.subject
+        viewModel.bodyPeekCompletion = { bodyPeek in
+            self.summaryLabel.text = bodyPeek
+        }
+        isFlagged = viewModel.isFlagged
+        isSeen = viewModel.isSeen
+        hasAttachment = viewModel.showAttchmentIcon
+        dateLabel.text = viewModel.dateText
+
+        configureThreadIndicator(for: viewModel)
+        if viewModel.senderContactImage != nil {
+            setContactImage(image: viewModel.senderContactImage)
+        } else {
+            viewModel.getProfilePicture {
+                image in
+                self.setContactImage(image: image )
+            }
+        }
+        viewModel.getSecurityBadge {
+            image in
+            self.setPepRatingImage(image: image)
+        }
+    }
+
+    public func clear() {
+        viewModel.unsubscribeForUpdates()
+    }
+
+    // MARK: View life cycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.contactImageView.applyContactImageCornerRadius()
+        resetToDefault()
+    }
+
+    override func prepareForReuse() {
+        resetToDefault()
+    }
+
+    // MARK: Private
+
+    private static var flaggedImage: UIImage? = nil
+    private static var emptyContactImage = UIImage(named: "empty-avatar")
+
+    private var viewModel: MessageViewModel!
 
     private var isSeen:Bool = false {
         didSet {
@@ -74,52 +121,6 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
             }
         }
     }
-
-
-    public func configure(for viewModel: MessageViewModel) {
-        self.viewModel = viewModel
-        addressLabel.text = viewModel.displayedUsername
-        subjectLabel.text = viewModel.subject
-        viewModel.bodyPeekCompletion = { bodyPeek in
-            self.summaryLabel.text = bodyPeek
-        }
-        isFlagged = viewModel.isFlagged
-        isSeen = viewModel.isSeen
-        hasAttachment = viewModel.showAttchmentIcon
-        dateLabel.text = viewModel.dateText
-        
-        configureThreadIndicator(for: viewModel)
-        if viewModel.senderContactImage != nil {
-            setContactImage(image: viewModel.senderContactImage)
-        } else {
-            viewModel.getProfilePicture {
-                image in
-                self.setContactImage(image: image )
-            }
-        }
-        viewModel.getSecurityBadge {
-            image in
-            self.setPepRatingImage(image: image)
-        }
-    }
-
-    public func clear() {
-        viewModel.unsubscribeForUpdates()
-    }
-
-    // MARK: View life cycle
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        self.contactImageView.applyContactImageCornerRadius()
-        resetToDefault()
-    }
-
-    override func prepareForReuse() {
-        resetToDefault()
-    }
-
-    // MARK: Private
 
     private func configureThreadIndicator(for viewModel: MessageViewModel) {
         guard let _ = messageCountLabel,
