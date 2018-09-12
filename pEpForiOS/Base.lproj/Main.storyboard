@@ -38,25 +38,25 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-jW-sUg">
-                                            <rect key="frame" x="81" y="2" width="52" height="19.5"/>
+                                            <rect key="frame" x="81" y="6" width="52" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BvI-Zi-zU6">
-                                            <rect key="frame" x="81" y="52" width="286" height="20.5"/>
+                                            <rect key="frame" x="81" y="56" width="286" height="20.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="1000" text="Subject" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Py-55-oem">
-                                            <rect key="frame" x="81" y="26.5" width="269" height="19.5"/>
+                                            <rect key="frame" x="81" y="30.5" width="269" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <stackView opaque="NO" contentMode="scaleAspectFit" distribution="fillProportionally" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="MZJ-bg-Dw7">
-                                            <rect key="frame" x="353" y="29.5" width="14" height="14"/>
+                                            <rect key="frame" x="353" y="33.5" width="14" height="14"/>
                                             <subviews>
                                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="attachment-list-icon" translatesAutoresizingMaskIntoConstraints="NO" id="3BC-6k-zL0">
                                                     <rect key="frame" x="-14" y="0.0" width="14" height="14"/>
@@ -83,7 +83,7 @@
                                             </constraints>
                                         </imageView>
                                         <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="8QD-qP-0hS">
-                                            <rect key="frame" x="303.5" y="2" width="63.5" height="19.5"/>
+                                            <rect key="frame" x="303.5" y="6" width="63.5" height="19.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaU-dh-sn5">
                                                     <rect key="frame" x="0.0" y="0.0" width="10" height="19.5"/>
@@ -119,7 +119,7 @@
                                         <constraint firstAttribute="leadingMargin" secondItem="YqR-ga-Tf9" secondAttribute="leading" id="4p1-Aa-mjg"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="top" secondItem="8QD-qP-0hS" secondAttribute="bottom" constant="8" id="7d0-XN-5mi"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="leading" secondItem="tWZ-jW-sUg" secondAttribute="leading" id="8vT-bf-Xw4"/>
-                                        <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="2" id="HLH-Yf-Zeb"/>
+                                        <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="6" id="HLH-Yf-Zeb"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="6" id="Hex-Vv-UnE"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="m0u-Jn-mQU" secondAttribute="trailing" constant="5" id="IgE-aL-NqA"/>
                                         <constraint firstItem="8QD-qP-0hS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tWZ-jW-sUg" secondAttribute="trailing" constant="8" id="Qdc-6I-SDj"/>
@@ -133,7 +133,7 @@
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="centerY" secondItem="jgQ-nZ-h1r" secondAttribute="centerY" id="kzK-1E-vdU"/>
                                         <constraint firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" constant="8" id="n5I-Yb-okr"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" id="tYc-Ao-foD"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BvI-Zi-zU6" secondAttribute="bottom" constant="2" id="zul-c0-54S"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BvI-Zi-zU6" secondAttribute="bottom" constant="6" id="zul-c0-54S"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
