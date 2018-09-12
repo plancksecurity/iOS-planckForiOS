@@ -18,8 +18,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var summaryLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
 
-    /** Used for \Flagged, contrary to the name. */
     @IBOutlet weak var flaggedImageView: UIImageView!
+
     @IBOutlet weak var ratingImage: UIImageView!
     @IBOutlet weak var attachmentIcon: UIImageView!
     @IBOutlet weak var contactImageView: UIImageView!
