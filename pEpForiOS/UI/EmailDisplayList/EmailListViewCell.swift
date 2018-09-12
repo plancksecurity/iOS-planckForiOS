@@ -94,6 +94,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     override func layoutSubviews() {
+        super.layoutSubviews()
+
         if let constr = fakeRatingImageToContactImageVertical {
             constr.isActive = false
         }
