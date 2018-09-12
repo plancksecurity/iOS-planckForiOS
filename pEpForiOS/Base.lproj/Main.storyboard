@@ -106,7 +106,7 @@
                                                 </label>
                                             </subviews>
                                         </stackView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="m0u-Jn-mQU">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m0u-Jn-mQU">
                                             <rect key="frame" x="53" y="60" width="20" height="20"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -118,7 +118,6 @@
                                     <constraints>
                                         <constraint firstAttribute="leadingMargin" secondItem="YqR-ga-Tf9" secondAttribute="leading" id="4p1-Aa-mjg"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="top" secondItem="8QD-qP-0hS" secondAttribute="bottom" constant="8" id="7d0-XN-5mi"/>
-                                        <constraint firstItem="m0u-Jn-mQU" firstAttribute="centerX" secondItem="YqR-ga-Tf9" secondAttribute="centerX" constant="22" id="8hC-f7-nF4"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="leading" secondItem="tWZ-jW-sUg" secondAttribute="leading" id="8vT-bf-Xw4"/>
                                         <constraint firstItem="8QD-qP-0hS" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="8" id="Bhk-yI-GEr"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="leading" secondItem="YqR-ga-Tf9" secondAttribute="trailing" constant="10" id="FRQ-af-oqS"/>
@@ -127,7 +126,6 @@
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="leading" id="Wva-Nq-D3D"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="5" id="Xp7-Lw-Lqg"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" constant="3" id="acU-9j-7hJ"/>
-                                        <constraint firstItem="m0u-Jn-mQU" firstAttribute="centerY" secondItem="YqR-ga-Tf9" secondAttribute="centerY" constant="20" id="bsJ-7j-sJi"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="bottom" secondItem="8QD-qP-0hS" secondAttribute="bottom" id="dxm-I0-Sij"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" id="hA7-ed-KYt"/>
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="centerY" secondItem="jgQ-nZ-h1r" secondAttribute="centerY" id="kzK-1E-vdU"/>

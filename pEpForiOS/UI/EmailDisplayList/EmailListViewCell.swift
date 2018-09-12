@@ -81,6 +81,13 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         resetToDefault()
     }
 
+    override func layoutSubviews() {
+        ratingImage.centerXAnchor.constraint(
+            equalTo: contactImageView.rightAnchor).isActive = true
+        ratingImage.centerYAnchor.constraint(
+            equalTo: contactImageView.bottomAnchor).isActive = true
+    }
+
     // MARK: Private
 
     private static var flaggedImage: UIImage? = nil
