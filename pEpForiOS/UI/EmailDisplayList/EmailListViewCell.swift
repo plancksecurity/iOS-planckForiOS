@@ -183,6 +183,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         contactImageView.image = EmailListViewCell.emptyContactImage
         messageCountLabel?.isHidden = true
         threadIndicator?.isHidden = true
+        tintColor = UIColor.pEpGreen
     }
 
     private func setFlagged() {
