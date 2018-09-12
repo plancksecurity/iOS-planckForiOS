@@ -100,8 +100,26 @@ class FilterTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellvm = sections[indexPath.section][indexPath.row]
-        cellvm.enabled = !cellvm.enabled
+        if(cellvm.filter is AccountFilter){
+            filterEnabled?.remove(filter: UnifiedFilter())
+            let willDisable = !cellvm.enabled
+            if(willDisable || canDisable(accountFilters: sections[indexPath.section])){
+                cellvm.enabled = !cellvm.enabled
+            }
+        } else {
+            cellvm.enabled = !cellvm.enabled
+        }
         let cell = self.tableView.cellForRow(at: indexPath)
         cell?.accessoryType = (cellvm.enabled) ? .checkmark : .none
+    }
+
+    func canDisable(accountFilters: FilterViewModel) -> Bool{
+        var accountsSelected = 0
+        for i in 0..<accountFilters.count {
+            if(accountFilters[i].enabled) {
+                accountsSelected += 1
+            }
+        }
+        return accountsSelected > 1
     }
 }
