@@ -48,7 +48,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        UIHelper.emailListTableHeight(tableView)
+        tableView.rowHeight = 80
 
         tableView.allowsMultipleSelectionDuringEditing = true
 
