@@ -496,6 +496,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 txt = String(prefix)
                 txt += "..."
             }
+            if txt.isEmpty {
+                txt = "none"
+            }
             textFilterButton.title = "Filter by: " + txt
         }
     }
