@@ -11,9 +11,10 @@ import MessageModel
 import SwipeCellKit
 
 class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
-    static let storyboardId = "EmailListViewCell"
-    static var flaggedImage: UIImage? = nil
-    static var emptyContactImage = UIImage(named: "empty-avatar")
+    public static let storyboardId = "EmailListViewCell"
+
+    private static var flaggedImage: UIImage? = nil
+    private static var emptyContactImage = UIImage(named: "empty-avatar")
 
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var subjectLabel: UILabel!
@@ -28,9 +29,9 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     @IBOutlet weak var messageCountLabel: UILabel?
     @IBOutlet weak var threadIndicator: UIImageView?
 
-    var viewModel: MessageViewModel!
+    private var viewModel: MessageViewModel!
 
-    var isFlagged:Bool = false {
+    public var isFlagged:Bool = false {
         didSet {
             if isFlagged {
                 setFlagged()
@@ -40,7 +41,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    var isSeen:Bool = false {
+    private var isSeen:Bool = false {
         didSet {
             if isSeen {
                 setSeen()
@@ -50,7 +51,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    var hasAttachment:Bool = false {
+    private var hasAttachment:Bool = false {
         didSet {
             if hasAttachment {
                 attachmentIcon.isHidden = false
@@ -60,7 +61,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    var messageCount:Int = 0 {
+    private var messageCount:Int = 0 {
         didSet {
             if messageCount > 0 {
                 messageCountLabel?.text = String(messageCount)
@@ -102,32 +103,11 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    func configureThreadIndicator(for viewModel: MessageViewModel) {
-        guard let _ = messageCountLabel,
-            let _ = threadIndicator else {
-                messageCount = 0
-                return
-        }
-        viewModel.messageCount { (messageCount) in
-            self.messageCount = messageCount
-        }
-
+    public func clear() {
+        viewModel.unsubscribeForUpdates()
     }
 
-    func setPepRatingImage(image: UIImage?) {
-        guard image != nil else {
-            return
-        }
-        self.ratingImage.image = image
-        self.ratingImage.isHidden = false
-    }
-
-    func setContactImage(image: UIImage?) {
-        guard image != nil else {
-            return
-        }
-        self.contactImageView.image = image
-    }
+    // MARK: View life cycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -139,8 +119,33 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         resetToDefault()
     }
 
-    func clear() {
-        viewModel.unsubscribeForUpdates()
+    // MARK: Private
+
+    private func configureThreadIndicator(for viewModel: MessageViewModel) {
+        guard let _ = messageCountLabel,
+            let _ = threadIndicator else {
+                messageCount = 0
+                return
+        }
+        viewModel.messageCount { (messageCount) in
+            self.messageCount = messageCount
+        }
+
+    }
+
+    private func setPepRatingImage(image: UIImage?) {
+        guard image != nil else {
+            return
+        }
+        self.ratingImage.image = image
+        self.ratingImage.isHidden = false
+    }
+
+    private func setContactImage(image: UIImage?) {
+        guard image != nil else {
+            return
+        }
+        self.contactImageView.image = image
     }
 
     private func resetToDefault() {
@@ -176,7 +181,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         }
     }
 
-    func setupLabels(font: UIFont) {
+    private func setupLabels(font: UIFont) {
         addressLabel.font = font
         subjectLabel.font = font
         summaryLabel.font = font
