@@ -37,7 +37,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="83.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Sender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-jW-sUg">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Sender" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWZ-jW-sUg">
                                             <rect key="frame" x="81" y="6" width="52" height="19.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -82,7 +82,7 @@
                                                 <constraint firstAttribute="width" secondItem="YqR-ga-Tf9" secondAttribute="height" multiplier="1:1" id="b42-e4-yZf"/>
                                             </constraints>
                                         </imageView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="8QD-qP-0hS">
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="8QD-qP-0hS">
                                             <rect key="frame" x="303.5" y="6" width="63.5" height="19.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="4" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaU-dh-sn5">
