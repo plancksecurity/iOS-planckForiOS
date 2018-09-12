@@ -69,7 +69,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         viewModel.unsubscribeForUpdates()
     }
 
-    // MARK: View life cycle
+    // MARK: View overrides (life cycle etc.)
 
     override func awakeFromNib() {
         super.awakeFromNib()
