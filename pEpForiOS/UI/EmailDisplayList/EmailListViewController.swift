@@ -11,6 +11,8 @@ import MessageModel
 import SwipeCellKit
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
+    static let FILTER_TITLE_MAX_XAR = 20
+
     var folderToShow: Folder?
 
     func updateLastLookAt() {
@@ -488,7 +490,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     private func updateFilterText() {
-        if let vm = model, let txt = vm.activeFilter?.title {
+        if let vm = model, var txt = vm.activeFilter?.title {
+            if(txt.count > EmailListViewController.FILTER_TITLE_MAX_XAR){
+                let prefix = txt.prefix(ofLength: EmailListViewController.FILTER_TITLE_MAX_XAR)
+                txt = String(prefix)
+                txt += "..."
+            }
             textFilterButton.title = "Filter by: " + txt
         }
     }
