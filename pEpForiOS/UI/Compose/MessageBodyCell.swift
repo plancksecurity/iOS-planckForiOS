@@ -50,13 +50,27 @@ extension MessageBodyCell {
             Log.shared.errorAndCrash(component: #function, errorString: "No image")
             return
         }
+        let factor = image.size.width / (frame.size.width / 2)
+        let size = CGSize(width: image.size.width / factor, height: image.size.height / factor)
+        let hasAlpha = false
+        let scale: CGFloat = 0.0
+
+        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
+        image.draw(in: CGRect(origin: CGPoint.zero, size: size))
+
+        guard let scaledImage = UIGraphicsGetImageFromCurrentImageContext() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Ui!")
+            return
+        }
+        UIGraphicsEndImageContext()
+
         let textAttachment = TextAttachment()
-        textAttachment.image = image
+        textAttachment.image = scaledImage
         textAttachment.attachment = attachment
+        textAttachment.bounds = CGRect.rect(withWidth: textView.bounds.width,
+                                            ratioOf: scaledImage.size)
         let imageString = NSAttributedString(attachment: textAttachment)
-        
-        textAttachment.bounds = CGRect.rect(withWidth: textView.bounds.width, ratioOf: image.size)
-        
+
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
         attrText.replaceCharacters(in: selectedRange, with: imageString)
