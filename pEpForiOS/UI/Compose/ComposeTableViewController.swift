@@ -1367,7 +1367,9 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
 extension ComposeTableViewController: UIImagePickerControllerDelegate {
     public func imagePickerController( _ picker: UIImagePickerController,
                                        didFinishPickingMediaWithInfo info: [String: Any]) {
-        defer { dismiss(animated: true, completion: nil) }
+        defer {
+            dismiss(animated: true, completion: nil)
+        }
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             // We got an image.
             inline(image: image, forMediaWithInfo: info)
