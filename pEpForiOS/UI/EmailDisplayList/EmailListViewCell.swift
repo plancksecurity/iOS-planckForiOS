@@ -58,8 +58,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         // layouted, leading to a smaller cell than usual.
         summaryLabel.text = " "
 
-        addressLabel.text = viewModel.displayedUsername
-        subjectLabel.text = viewModel.subject
+        addressLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.displayedUsername)
+        subjectLabel.text = atLeastOneSpace(possiblyEmptyString: viewModel.subject)
 
         viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
             self?.summaryLabel.text = bodyPeek == "" ? " " : bodyPeek
@@ -226,5 +226,17 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         summaryLabel.font = font
         dateLabel.font = font
         messageCountLabel?.font = font
+    }
+
+    /**
+     - Returns: " " (a space) instead of an empty String, otherwise the original String
+     unchanged.
+     */
+    private func atLeastOneSpace(possiblyEmptyString: String) -> String {
+        if possiblyEmptyString == "" {
+            return " "
+        } else {
+            return possiblyEmptyString
+        }
     }
 }
