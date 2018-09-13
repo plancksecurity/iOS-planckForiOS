@@ -21,11 +21,21 @@ open class LimitedOperationQueue: OperationQueue {
     }
 
     open override func addOperation(_ op: Operation) {
-        workerQueue.async {
-            if self.operationCount < 2 {
-                super.addOperation(op)
+        workerQueue.async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            if me.operationCount < 2 {
+                me.callSuperAddOperation(op: op)
             }
         }
+    }
+
+    /// Works around a swift issue:
+    // "Using 'super' in a closure where 'self' is explicitly captured is not yet supported"
+    private func callSuperAddOperation(op: Operation) {
+        super.addOperation(op)
     }
 
     public func asyncAfter(deadline: DispatchTime, execute: @escaping  () -> Void) {
