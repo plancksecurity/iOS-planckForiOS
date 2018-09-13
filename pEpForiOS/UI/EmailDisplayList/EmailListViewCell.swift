@@ -54,8 +54,8 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         self.viewModel = viewModel
         addressLabel.text = viewModel.displayedUsername
         subjectLabel.text = viewModel.subject
-        viewModel.bodyPeekCompletion = { bodyPeek in
-            self.summaryLabel.text = bodyPeek
+        viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
+            self?.summaryLabel.text = bodyPeek
         }
         isFlagged = viewModel.isFlagged
         isSeen = viewModel.isSeen
@@ -66,14 +66,12 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         if viewModel.senderContactImage != nil {
             setContactImage(image: viewModel.senderContactImage)
         } else {
-            viewModel.getProfilePicture {
-                image in
-                self.setContactImage(image: image )
+            viewModel.getProfilePicture { [weak self] image in
+                self?.setContactImage(image: image )
             }
         }
-        viewModel.getSecurityBadge {
-            image in
-            self.setPepRatingImage(image: image)
+        viewModel.getSecurityBadge { [weak self] image in
+            self?.setPepRatingImage(image: image)
         }
     }
 
