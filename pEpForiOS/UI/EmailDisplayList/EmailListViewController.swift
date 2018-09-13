@@ -836,6 +836,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
             Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
             return
         }
+
         let unreadFilterActive = vm.isFilterEnabled &&
             vm.activeFilter?.contains(type: UnreadFilter.self) ?? false
 
@@ -848,8 +849,8 @@ extension EmailListViewController: EmailListViewModelDelegate {
         } else if isIphone && unreadFilterActive {
             vm.reloadData()
         } else {
-          //  ... otherwize we forward to update
-           emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
+            //  ... otherwize we forward to update
+            emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
         }
     }
 
