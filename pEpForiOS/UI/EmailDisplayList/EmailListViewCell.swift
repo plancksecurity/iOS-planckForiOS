@@ -76,7 +76,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     public func clear() {
-        viewModel.unsubscribeForUpdates()
+        viewModel?.unsubscribeForUpdates()
     }
 
     // MARK: View overrides (life cycle etc.)
@@ -112,7 +112,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     private static var flaggedImage: UIImage? = nil
     private static var emptyContactImage = UIImage(named: "empty-avatar")
 
-    private var viewModel: MessageViewModel!
+    private var viewModel: MessageViewModel?
 
     private var isSeen:Bool = false {
         didSet {
