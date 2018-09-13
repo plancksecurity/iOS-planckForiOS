@@ -52,17 +52,22 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
     public func configure(for viewModel: MessageViewModel) {
         self.viewModel = viewModel
+
         addressLabel.text = viewModel.displayedUsername
         subjectLabel.text = viewModel.subject
+
         viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
             self?.summaryLabel.text = bodyPeek == "" ? " " : bodyPeek
         }
+
         isFlagged = viewModel.isFlagged
         isSeen = viewModel.isSeen
+
         hasAttachment = viewModel.showAttchmentIcon
         dateLabel.text = viewModel.dateText
 
         configureThreadIndicator(for: viewModel)
+
         if viewModel.senderContactImage != nil {
             setContactImage(image: viewModel.senderContactImage)
         } else {
@@ -70,6 +75,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
                 self?.setContactImage(image: image )
             }
         }
+
         viewModel.getSecurityBadge { [weak self] image in
             self?.setPepRatingImage(image: image)
         }
