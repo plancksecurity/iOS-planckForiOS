@@ -55,7 +55,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         addressLabel.text = viewModel.displayedUsername
         subjectLabel.text = viewModel.subject
         viewModel.bodyPeekCompletion = { [weak self] bodyPeek in
-            self?.summaryLabel.text = bodyPeek
+            self?.summaryLabel.text = bodyPeek == "" ? " " : bodyPeek
         }
         isFlagged = viewModel.isFlagged
         isSeen = viewModel.isSeen
