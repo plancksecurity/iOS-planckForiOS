@@ -147,7 +147,7 @@ class EmailViewController: BaseTableViewController {
         DispatchQueue.main.async {
             self.checkMessageReEvaluation()
 
-            if let message = self.message {
+            if let message = self.message, !(message.imapFlags?.seen ?? false) {
                 message.markAsSeen()
                 self.delegate?.emailDisplayDidChangeMarkSeen(message: message)
             }
