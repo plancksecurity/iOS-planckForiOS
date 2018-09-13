@@ -53,6 +53,11 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
     public func configure(for viewModel: MessageViewModel) {
         self.viewModel = viewModel
 
+        // Occupy space in any case. Otherwise the summary might be filled
+        // _after_ this function has ended and the cell has already been
+        // layouted, leading to a smaller cell than usual.
+        summaryLabel.text = " "
+
         addressLabel.text = viewModel.displayedUsername
         subjectLabel.text = viewModel.subject
 
