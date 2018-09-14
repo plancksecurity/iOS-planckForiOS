@@ -9,6 +9,9 @@
 import UIKit
 
 extension PEP_color {
+    /**
+     The icon suitable for indicating the rating of an outgoing message.
+     */
     func statusIcon(enabled: Bool = true) -> UIImage? {
         switch self {
         case PEP_color_no_color:
@@ -27,6 +30,26 @@ extension PEP_color {
             } else {
                 return UIImage(named: "pEp-status-green-disabled")
             }
+        default:
+            return nil
+        }
+    }
+
+    /**
+     Similar to `statusIcon`, but for a message in a local folder and embedded
+     in the contact's profile picture.
+     Typically includes a white border, and doesn't support disabled protection.
+     */
+    func statusIconInContactPicture() -> UIImage? {
+        switch self {
+        case PEP_color_no_color:
+            return UIImage(named: "pEp-status-grey_white-border")
+        case PEP_color_red:
+            return UIImage(named: "pEp-status-red_white-border")
+        case PEP_color_yellow:
+            return UIImage(named: "pEp-status-yellow_white-border")
+        case PEP_color_green:
+            return UIImage(named: "pEp-status-green_white-border")
         default:
             return nil
         }
