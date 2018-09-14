@@ -34,6 +34,8 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
+    var isInitialSetup = true
+
     private var scrollUtil = TextViewInTableViewScrollUtil()
 
     weak var delegate: ComposeTableViewControllerDelegate?
@@ -152,6 +154,7 @@ class ComposeTableViewController: BaseTableViewController {
         super.viewDidAppear(animated)
         setFirstResponder()
         calculateComposeColorAndInstallTapGesture()
+        isInitialSetup = false
     }
 
     deinit {
@@ -236,6 +239,10 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private func setFirstResponder() {
+        guard isInitialSetup else {
+            // Don't set firstResponder when comming back from e.g. image picker.
+            return
+        }
         var toCell: RecipientCell?
         var bodyCell: MessageBodyCell?
         for cell in tableView.visibleCells {
@@ -625,7 +632,6 @@ class ComposeTableViewController: BaseTableViewController {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-
             guard permissionsGranted else {
                 return
             }
@@ -1355,9 +1361,7 @@ extension ComposeTableViewController: MessageBodyCellDelegate {
 extension ComposeTableViewController: UIImagePickerControllerDelegate {
     public func imagePickerController( _ picker: UIImagePickerController,
                                        didFinishPickingMediaWithInfo info: [String: Any]) {
-        defer {
-            dismiss(animated: true, completion: nil)
-        }
+
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             // We got an image.
             inline(image: image, forMediaWithInfo: info)
@@ -1365,6 +1369,15 @@ extension ComposeTableViewController: UIImagePickerControllerDelegate {
             // We got something from picker that is not an image. Probalby video/movie.
             attachVideo(forMediaWithInfo: info)
         }
+
+        dismiss(animated: true, completion: nil)
+        guard
+            let lastFirstResponder = tableView.cellForRow(at: currentCellIndexPath) as? MessageBodyCell
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
+                return
+        }
+        lastFirstResponder.makeBecomeFirstResponder(inTableView: tableView)
     }
 }
 
