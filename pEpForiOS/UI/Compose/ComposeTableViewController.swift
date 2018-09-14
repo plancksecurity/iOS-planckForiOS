@@ -149,6 +149,18 @@ class ComposeTableViewController: BaseTableViewController {
         calculateComposeColorAndInstallTapGesture()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setFirstResponder()
+        calculateComposeColorAndInstallTapGesture()
+    }
+
+    deinit {
+        removeObservers()
+    }
+
+    // MARK: - Setup & Configuration
+
     private func setup() {
         if hasBeenSetup {
             // Init only once
@@ -162,28 +174,12 @@ class ComposeTableViewController: BaseTableViewController {
         setupPickerView()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        setFirstResponder()
-        calculateComposeColorAndInstallTapGesture()
-    }
-
     func setupPickerView() {
         let accounts = Account.all()
         pickerEmailAdresses = accounts.map { $0.user.address }
         accountPicker.delegate = self
         accountPicker.dataSource = self
     }
-
-    func shouldDisplayAccountCell() -> Bool {
-        return pickerEmailAdresses.count > 1
-    }
-
-    deinit {
-        removeObservers()
-    }
-
-    // MARK: - Setup & Configuration
 
     private func setup(_ cell: AttachmentCell, for indexPath: IndexPath) {
         guard
@@ -392,6 +388,10 @@ class ComposeTableViewController: BaseTableViewController {
     /// - Returns: true if we must take over attachments from the original message, false otherwize
     private func shouldTakeOverAttachments() -> Bool {
         return composeMode == .forward || isOriginalMessageInDraftsOrOutbox
+    }
+
+    private func shouldDisplayAccountCell() -> Bool {
+        return pickerEmailAdresses.count > 1
     }
 
     // MARK: - Address Suggstions
