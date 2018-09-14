@@ -146,7 +146,6 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setup()
-        calculateComposeColorAndInstallTapGesture()
     }
 
     override func viewDidAppear(_ animated: Bool) {
