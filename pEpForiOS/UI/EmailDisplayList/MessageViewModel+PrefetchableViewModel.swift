@@ -75,8 +75,8 @@ extension MessageViewModel: PrefetchableViewModel {
         return prefetchOperation
     }
 
-    func getSecurityBadgeOperation(completion: @escaping (UIImage?)->()) -> SelfReferencingOperation {
-
+    func getSecurityBadgeOperation(
+        completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
         let prefetchOperation = SelfReferencingOperation { [weak self] operation in
             guard let me = self else {
                 return
@@ -90,7 +90,7 @@ extension MessageViewModel: PrefetchableViewModel {
                 }
 
                 if (!operation.isCancelled) {
-                    me.profilePictureComposer.getSecurityBadge(for: message, completion: completion)
+                    me.profilePictureComposer.securityBadge(for: message, completion: completion)
                 }
             }
         }

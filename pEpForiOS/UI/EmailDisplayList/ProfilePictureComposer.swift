@@ -10,9 +10,14 @@ import Foundation
 import MessageModel
 
 protocol ProfilePictureComposer {
+    /**
+     Retrieves a profile picture (if any) for the given identity.
+     */
+    func profilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ())
 
-    func getProfilePicture(for identity: Identity, completion: @escaping (UIImage?)->())
-
-    func getSecurityBadge(for message: Message, completion: @escaping (UIImage?) ->())
+    /**
+     Retrieves a status icon matching the status of the given message.
+     */
+    func securityBadge(for message: Message, completion: @escaping (UIImage?) -> ())
 
 }

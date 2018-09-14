@@ -223,8 +223,8 @@ class MessageViewModel: CustomDebugStringConvertible {
         return msg
     }
 
-    func getProfilePicture(completion: @escaping (UIImage?)->()){
-        profilePictureComposer.getProfilePicture(for: displayedImageIdentity, completion: completion)
+    func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
+        profilePictureComposer.profilePicture(for: displayedImageIdentity, completion: completion)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {
