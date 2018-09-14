@@ -16,15 +16,13 @@ class TextViewInTableViewScrollUtil {
     typealias Height = NSNumber
     private var sizeCache = NSMapTable<UITextView, Height>(keyOptions: .weakMemory,
                                                            valueOptions: .strongMemory)
-
     func layoutAfterTextDidChange(tableView: UITableView, textView: UITextView) {
-        self.scrollCaretToVisible(tableView: tableView, textView: textView)
         if checkCacheForChange(for: textView) {
             tableView.updateSize()
         }
+        self.scrollCaretToVisible(tableView: tableView, textView: textView)
     }
 
-    //IOS-1317:
     private func checkCacheForChange(for textView: UITextView) -> Bool {
         defer {
             sizeCache.setObject(Height(value: Double(textView.frame.size.height)),

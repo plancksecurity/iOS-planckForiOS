@@ -34,6 +34,8 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
+    private var scrollUtil = TextViewInTableViewScrollUtil()
+
     weak var delegate: ComposeTableViewControllerDelegate?
 
     /// Recipient to set as "To:".
@@ -1229,8 +1231,6 @@ class ComposeTableViewController: BaseTableViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    //IOS-1317:
-    private var scrollUtil = TextViewInTableViewScrollUtil()
     private func keyboardDidShow(notification: Notification) {
         if let composeView = composeTextViewFirstResponder {
             scrollUtil.scrollCaretToVisible(tableView: tableView,
