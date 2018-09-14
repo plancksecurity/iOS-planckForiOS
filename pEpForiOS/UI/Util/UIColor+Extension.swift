@@ -62,7 +62,7 @@ extension UIColor {
                   alpha: alpha)
     }
 
-    convenience init(hexString: String) {
+    convenience init(hexString: String, alpha: CGFloat = 1.0) {
         var theHexString = hexString
         if theHexString.hasPrefix("#") {
             theHexString = String(theHexString.dropFirst())
@@ -75,7 +75,7 @@ extension UIColor {
         let g = CGFloat((rgbValue >> 08) & 0xff) / 255.0
         let b = CGFloat((rgbValue >> 00) & 0xff) / 255.0
 
-        self.init(red: r, green: g, blue: b, alpha: 1.0)
+        self.init(red: r, green: g, blue: b, alpha: alpha)
     }
 
     convenience init(intValue32: Int, alpha: CGFloat = 1.0) {
