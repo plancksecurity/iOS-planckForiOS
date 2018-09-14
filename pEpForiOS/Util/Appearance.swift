@@ -28,5 +28,9 @@ class Appearance {
         UISearchBar.appearance().barTintColor = .white
         UISearchBar.appearance().backgroundColor = .white
         UISearchBar.appearance().tintColor = color
+
+        let tableViewCellSelectedbackgroundView = UIView()
+        tableViewCellSelectedbackgroundView.backgroundColor = UIColor.pEpGreen.rgbWith(alpha: 0.2)
+        UITableViewCell.appearance().selectedBackgroundView = tableViewCellSelectedbackgroundView
     }
 }
