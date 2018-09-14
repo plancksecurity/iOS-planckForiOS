@@ -51,7 +51,7 @@ class FilterTableViewController: BaseTableViewController {
 
     func initViewModel() {
 
-        if !inFolder {
+        if inFolder {
             sections.append(FilterViewModel(type: .accouts, filter: filterEnabled))
         }
         sections.append(FilterViewModel(type: .include, filter: filterEnabled))
@@ -101,10 +101,10 @@ class FilterTableViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellvm = sections[indexPath.section][indexPath.row]
         if(cellvm.filter is AccountFilter){
-            filterEnabled?.remove(filter: UnifiedFilter())
             let willDisable = !cellvm.enabled
             if(willDisable || canDisable(accountFilters: sections[indexPath.section])){
                 cellvm.enabled = !cellvm.enabled
+                sections[indexPath.section].addOrRemoveUnified()
             }
         } else {
             cellvm.enabled = !cellvm.enabled
@@ -114,12 +114,6 @@ class FilterTableViewController: BaseTableViewController {
     }
 
     func canDisable(accountFilters: FilterViewModel) -> Bool{
-        var accountsSelected = 0
-        for i in 0..<accountFilters.count {
-            if(accountFilters[i].enabled) {
-                accountsSelected += 1
-            }
-        }
-        return accountsSelected > 1
+        return accountFilters.accountsEnabled() > 1
     }
 }

@@ -109,6 +109,24 @@ public class FilterViewModel {
         return filter
     }
 
+    func addOrRemoveUnified(){
+        if accountsEnabled() == Account.all().count {
+            filters.add(filter: UnifiedFilter())
+        } else {
+            filters.remove(filter: UnifiedFilter())
+        }
+    }
+
+    func accountsEnabled() -> Int{
+        var accountsSelected = 0
+        for filter in items {
+        if(filter.enabled) {
+                accountsSelected += 1
+            }
+        }
+        return accountsSelected
+    }
+
     func getInvalidFilters() -> CompositeFilter<FilterBase> {
         let filter = CompositeFilter<FilterBase>()
         for item in items {

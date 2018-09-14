@@ -1093,7 +1093,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             destiny.appConfig = appConfig
             destiny.filterDelegate = model
-            destiny.inFolder = false
+            destiny.inFolder = self.folderToShow is UnifiedInbox
             destiny.filterEnabled = folderToShow?.filter
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
