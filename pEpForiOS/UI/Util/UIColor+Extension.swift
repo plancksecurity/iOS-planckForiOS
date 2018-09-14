@@ -16,31 +16,31 @@ extension UIColor {
     static let pEpYellowHex = "#FFCC00"
     static let pEpLightBackgroundHex = "#F2F2F2"
 
-    open class var pEpGreen: UIColor {
+    public static var pEpGreen: UIColor {
         get {
             return UIColor(hexString: pEpGreenHex)
         }
     }
 
-    open class var pEpDarkGreen: UIColor {
+    public static var pEpDarkGreen: UIColor {
         get {
             return UIColor(hexString: pEpDarkGreenHex)
         }
     }
 
-    open class var pEpRed: UIColor {
+    public static var pEpRed: UIColor {
         get {
             return UIColor(hexString: pEpRedHex)
         }
     }
 
-    open class var pEpGray: UIColor {
+    public static var pEpGray: UIColor {
         get {
             return UIColor(hexString: pEpGreyHex)
         }
     }
 
-    open class var pEpYellow: UIColor {
+    public static var pEpYellow: UIColor {
         get {
             return UIColor(hexString: pEpYellowHex)
         }
@@ -49,7 +49,7 @@ extension UIColor {
     /**
      Example use: In trustwords table view cells.
      */
-    open class var pEpLightBackground: UIColor {
+    public static var pEpLightBackground: UIColor {
         get {
             return UIColor(hexString: pEpLightBackgroundHex)
         }
