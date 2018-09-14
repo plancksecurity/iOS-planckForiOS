@@ -12,6 +12,7 @@ import MessageModel
 
 class ComposeMessageBodyTextView: ComposeTextView {
     override func layoutAfterTextDidChange(tableView: UITableView) {
+        sizeToFit()
         scrollUtil.layoutAfterTextDidChange(tableView: tableView, textView: self)
     }
 

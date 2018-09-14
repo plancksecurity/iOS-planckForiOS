@@ -18,9 +18,7 @@ class TextViewInTableViewScrollUtil {
                                                            valueOptions: .strongMemory)
 
     func layoutAfterTextDidChange(tableView: UITableView, textView: UITextView) {
-        textView.sizeToFit()
         self.scrollCaretToVisible(tableView: tableView, textView: textView)
-
         if checkCacheForChange(for: textView) {
             tableView.updateSize()
         }
