@@ -96,6 +96,10 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
         super.awakeFromNib()
         self.contactImageView.applyContactImageCornerRadius()
         resetToDefault()
+
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.pEpGreen.rgbWith(alpha: 0.2)
+        selectedBackgroundView = backgroundView
     }
 
     override func prepareForReuse() {
