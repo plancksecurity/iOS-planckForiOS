@@ -16,44 +16,16 @@ extension UIColor {
     static let pEpYellowHex = "#FFCC00"
     static let pEpLightBackgroundHex = "#F2F2F2"
 
-    public static var pEpGreen: UIColor {
-        get {
-            return UIColor(hexString: pEpGreenHex)
-        }
-    }
-
-    public static var pEpDarkGreen: UIColor {
-        get {
-            return UIColor(hexString: pEpDarkGreenHex)
-        }
-    }
-
-    public static var pEpRed: UIColor {
-        get {
-            return UIColor(hexString: pEpRedHex)
-        }
-    }
-
-    public static var pEpGray: UIColor {
-        get {
-            return UIColor(hexString: pEpGreyHex)
-        }
-    }
-
-    public static var pEpYellow: UIColor {
-        get {
-            return UIColor(hexString: pEpYellowHex)
-        }
-    }
+    public static var pEpGreen = UIColor(hexString: pEpGreenHex)
+    public static var pEpDarkGreen = UIColor(hexString: pEpDarkGreenHex)
+    public static var pEpRed = UIColor(hexString: pEpRedHex)
+    public static var pEpGray = UIColor(hexString: pEpGreyHex)
+    public static var pEpYellow = UIColor(hexString: pEpYellowHex)
 
     /**
      Example use: In trustwords table view cells.
      */
-    public static var pEpLightBackground: UIColor {
-        get {
-            return UIColor(hexString: pEpLightBackgroundHex)
-        }
-    }
+    public static var pEpLightBackground = UIColor(hexString: pEpLightBackgroundHex)
 
     convenience init(redInt: Int, greenInt: Int, blueInt: Int, alpha: CGFloat = 1.0) {
         self.init(red: CGFloat(redInt) / 255.0,
