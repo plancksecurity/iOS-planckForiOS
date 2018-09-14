@@ -14,16 +14,43 @@ import Foundation
  */
 class TextViewInTableViewScrollUtil {
     typealias Height = NSNumber
+    /// Caches height for TextView.
     private var sizeCache = NSMapTable<UITextView, Height>(keyOptions: .weakMemory,
                                                            valueOptions: .strongMemory)
+
     func layoutAfterTextDidChange(tableView: UITableView, textView: UITextView) {
-        if checkCacheForChange(for: textView) {
+        if heightDidChange(for: textView) {
             tableView.updateSize()
         }
         self.scrollCaretToVisible(tableView: tableView, textView: textView)
     }
 
-    private func checkCacheForChange(for textView: UITextView) -> Bool {
+    /**
+     Makes sure that the given text view's cursor (if any) is visible, given that it is
+     contained in the given table view.
+     */
+    func scrollCaretToVisible(tableView: UITableView, textView: UITextView) {
+        guard let uiRange = textView.selectedTextRange, uiRange.isEmpty else {
+            // No selection, nothing to scroll to.
+            return
+        }
+        let selectedRect = textView.caretRect(for: uiRange.end)
+        var tvRect = tableView.convert(selectedRect, from: textView)
+
+        // Extend the rectangle in both directions vertically,
+        // to both include 1 line above and below.
+        tvRect.origin.y -= tvRect.size.height
+        tvRect.size.height *= 3
+
+        tableView.scrollRectToVisible(tvRect, animated: false)
+    }
+
+    /// Tracks text view heights.
+    ///
+    /// - Parameter textView: text view to check
+    /// - Returns:  true if given textView is not known yet or it's height did change since last the
+    ///             call, false otherwize
+    private func heightDidChange(for textView: UITextView) -> Bool {
         defer {
             sizeCache.setObject(Height(value: Double(textView.frame.size.height)),
                                 forKey: textView)
@@ -39,23 +66,5 @@ class TextViewInTableViewScrollUtil {
         }
 
         return sizeChanged
-    }
-
-    /**
-     Makes sure that the given text view's cursor (if any) is visible, given that it is
-     contained in the given table view.
-     */
-    func scrollCaretToVisible(tableView: UITableView, textView: UITextView) {
-        if let uiRange = textView.selectedTextRange, uiRange.isEmpty {
-            let selectedRect = textView.caretRect(for: uiRange.end)
-            var tvRect = tableView.convert(selectedRect, from: textView)
-
-            // Extend the rectangle in both directions vertically,
-            // to both include 1 line above and below.
-            tvRect.origin.y -= tvRect.size.height
-            tvRect.size.height *= 3
-
-            tableView.scrollRectToVisible(tvRect, animated: false)
-        }
     }
 }
