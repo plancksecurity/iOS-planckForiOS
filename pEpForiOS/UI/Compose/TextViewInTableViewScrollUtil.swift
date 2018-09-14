@@ -13,16 +13,36 @@ import Foundation
  in table views (basically "scroll-to-caret-on-edit").
  */
 class TextViewInTableViewScrollUtil {
-    public func layoutAfterTextDidChange(tableView: UITableView, textView: UITextView) {
-        tableView.updateSize() { [weak self] in
-            if let theSelf = self {
-                Timer.scheduledTimer(timeInterval: 0.01,
-                                     target: theSelf,
-                                     selector: #selector(theSelf.timerScroll),
-                                     userInfo: (tableView, textView),
-                                     repeats: false)
-            }
+    typealias Height = NSNumber
+    private var sizeCache = NSMapTable<UITextView, Height>(keyOptions: .weakMemory,
+                                                           valueOptions: .strongMemory)
+
+    func layoutAfterTextDidChange(tableView: UITableView, textView: UITextView) {
+        textView.sizeToFit()
+        self.scrollCaretToVisible(tableView: tableView, textView: textView)
+
+        if checkCacheForChange(for: textView) {
+            tableView.updateSize()
         }
+    }
+
+    //IOS-1317:
+    private func checkCacheForChange(for textView: UITextView) -> Bool {
+        defer {
+            sizeCache.setObject(Height(value: Double(textView.frame.size.height)),
+                                forKey: textView)
+        }
+        var sizeChanged = true
+        guard let lastHeight = sizeCache.object(forKey: textView)?.doubleValue else {
+            // Not cached yet, so yes.
+            return sizeChanged
+        }
+        let newHeight = Double(textView.frame.size.height)
+        if lastHeight == newHeight {
+            sizeChanged = false
+        }
+
+        return sizeChanged
     }
 
     /**
@@ -41,15 +61,5 @@ class TextViewInTableViewScrollUtil {
 
             tableView.scrollRectToVisible(tvRect, animated: false)
         }
-    }
-
-    @objc private func timerScroll(_ timer: Timer) {
-        guard let (tableView, textView) = timer.userInfo as?
-            (UITableView, UITextView) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "timer.userInfo not defined correctly")
-                return
-        }
-        self.scrollCaretToVisible(tableView: tableView, textView: textView)
     }
 }

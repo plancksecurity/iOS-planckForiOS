@@ -1229,14 +1229,12 @@ class ComposeTableViewController: BaseTableViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
+    //IOS-1317:
+    private var scrollUtil = TextViewInTableViewScrollUtil()
     private func keyboardDidShow(notification: Notification) {
         if let composeView = composeTextViewFirstResponder {
-            Timer.scheduledTimer(timeInterval: 0.1,
-                                 target: self,
-                                 selector: #selector(scrollToMessageBodyCaretOnTimer),
-                                 userInfo: composeView,
-                                 repeats: false)
-            scrollToMessageBodyCaret(composeTextView: composeView)
+            scrollUtil.scrollCaretToVisible(tableView: tableView,
+                                            textView: composeView)
         }
 
         // Suggestion Tableview
@@ -1248,15 +1246,6 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func keyboardDidHide() {
         resetSuggestionsKeyboardOffset()
-    }
-
-    @objc func scrollToMessageBodyCaretOnTimer(_ timer: Timer) {
-        if let composeView = timer.userInfo as? ComposeTextView {
-            scrollToMessageBodyCaret(composeTextView: composeView)
-        }
-    }
-    func scrollToMessageBodyCaret(composeTextView: ComposeTextView) {
-        composeTextView.scrollCaretToVisible(tableView: tableView)
     }
 }
 
