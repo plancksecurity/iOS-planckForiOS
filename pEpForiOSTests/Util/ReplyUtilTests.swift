@@ -22,29 +22,13 @@ class ReplyUtilTests: XCTestCase {
         let folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         let msg = Message(uuid: "001", uid: 1, parentFolder: folder)
         let subject = "This is a subject"
-        msg.shortMessage = subject
-        XCTAssertEqual(ReplyUtil.replySubject(message: msg), "Re: \(subject)")
+        let expectedReplySubject = "Re: \(subject)"
 
-        for someReplyPrefix in ReplyUtil.replyPrefixes {
-            for theReplyPrefix in
-                [someReplyPrefix, someReplyPrefix.lowercased(), someReplyPrefix.uppercased()] {
-                    // missing ":", not detected
-                    let inSubject = "\(theReplyPrefix) \(subject)"
-                    let replySubject = "Re: \(inSubject)"
-                    msg.shortMessage = inSubject
-                    XCTAssertEqual(
-                        ReplyUtil.replySubject(message: msg),
-                        replySubject,
-                        "expected reply to \"\(inSubject)\" to have reply \"\(replySubject)\"")
-
-                    // nothing added, because already counted as a reply
-                    let inSubject2 = "\(theReplyPrefix): \(subject)"
-                    msg.shortMessage = inSubject2
-                    XCTAssertEqual(
-                        ReplyUtil.replySubject(message: msg),
-                        inSubject2,
-                        "expected reply to \"\(inSubject2)\" to stay the same")
-            }
+        var theSubject = subject
+        for _ in 1...5 {
+            theSubject = "Re: \(theSubject)"
+            msg.shortMessage = theSubject
+            XCTAssertEqual(ReplyUtil.replySubject(message: msg), expectedReplySubject)
         }
     }
 }

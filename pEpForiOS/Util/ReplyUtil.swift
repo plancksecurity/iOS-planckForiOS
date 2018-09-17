@@ -53,62 +53,20 @@ public struct ReplyUtil {
     }
 
     /**
-     List of potential prefixes of already replied-to emails in the subject.
-     See https://en.wikipedia.org/wiki/List_of_email_subject_abbreviations#Abbreviations_in_other_languages
-     */
-    public static let replyPrefixes = ["RE", "رد",
-                                       "回复",
-                                       "回覆",
-                                       "SV",
-                                       "Antw",
-                                       "VS",
-                                       "REF",
-                                       "AW",
-                                       "ΑΠ",
-                                       "ΣΧΕΤ", "תגובה",
-                                       "Vá",
-                                       "R",
-                                       "RIF",
-                                       "SV",
-                                       "BLS",
-                                       "SV",
-                                       "SV",
-                                       "RE",
-                                       "RES",
-                                       "Odp",
-                                       "YNT"]
-
-    /**
-     Has that subject already been prefixed with a "Re:" in one of the languages we support?
-     - Note: Checks in a case-insensitive manner.
-     */
-    public static func hasRePrefix(subject: String) -> Bool {
-        let lcSubject = subject.lowercased()
-
-        for replyPrefix in replyPrefixes {
-            if lcSubject.hasPrefix("\(replyPrefix.lowercased()): ") {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    /**
      Gets the subject for replying to the given `Message`.
      */
     public static func replySubject(message: Message) -> String {
-        if let subject = message.shortMessage {
-            if !hasRePrefix(subject: subject) {
-                // no "Re:" found, so add our own
-                let re = NSLocalizedString(
-                    "Re:",
-                    comment: "The 'Re:' that gets appended to the subject line in a reply")
-                return "\(re) \(subject)"
-            } else {
-                // there was already an "Re:", so don't add anything further
-                return subject
+        // The one and only reply RFC-defined prefix for replies,
+        // see https://tools.ietf.org/html/rfc5322#section-3.6.5
+        let replyPrefix = "Re: "
+
+        if var theSubject = message.shortMessage?.trim {
+            // remove all old prefixed `replyPrefix`es
+            while theSubject.hasPrefix(replyPrefix) {
+                theSubject = String(theSubject[replyPrefix.endIndex..<theSubject.endIndex])
             }
+
+            return "\(replyPrefix)\(theSubject)"
         }
 
         return ""
