@@ -64,7 +64,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             XCTAssertNotNil(partnerIdent.fingerPrint)
             XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
 
-            XCTAssertEqual(partnerIdent.fingerPrint, "365AA0E985C912DAA867B1A77C6016EE84C971BF")
+            XCTAssertEqual(partnerIdent.fingerPrint, "97F0E744CCDC15BA127A3EE76BAAAC039FB13487")
 
             return (message: message, mySelfID: mySelfID, partnerID: partnerID)
     }
