@@ -130,19 +130,19 @@ class HandshakeTests: XCTestCase {
 //        XCTAssertTrue(try! session.isPEPUser(fromIdentCopy).boolValue)
 //    }
 //
-//    func testRestTruestOnYellowIdentity() {
-//        let session = PEPSession()
-//        try! session.update(fromIdent)
-//        XCTAssertNotNil(fromIdent.fingerPrint)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        var numRating = try! session.rating(for: fromIdent)
-//        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
-//
-//        try! session.keyResetTrust(fromIdent)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        numRating = try! session.rating(for: fromIdent)
-//        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
-//    }
+    func testRestTruestOnYellowIdentity() {
+        let session = PEPSession()
+        try! session.update(fromIdent)
+        XCTAssertNotNil(fromIdent.fingerPrint)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        var numRating = try! session.rating(for: fromIdent)
+        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+
+        try! session.keyResetTrust(fromIdent)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        numRating = try! session.rating(for: fromIdent)
+        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+    }
 }
