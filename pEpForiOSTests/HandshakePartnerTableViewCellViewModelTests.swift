@@ -69,32 +69,32 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
             return (message: message, mySelfID: mySelfID, partnerID: partnerID)
     }
 
-//    /**
-//     Tests trust/reset cycle without view model.
-//     */
-//    func testBasicTrustReset() {
-//        let session = PEPSession()
-//
-//        guard
-//            let (message: _, mySelfID: _, partnerID: partnerID) = importMail(session: session) else
-//        {
-//            XCTFail()
-//            return
-//        }
-//
-//        let partnerIdent = partnerID.pEpIdentity()
-//        try! session.update(partnerIdent)
-//
-//        try! session.trustPersonalKey(partnerIdent)
-//        try! session.update(partnerIdent)
-//        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
-//
-//        try! session.keyResetTrust(partnerIdent)
-//        try! session.trustPersonalKey(partnerIdent)
-//        try! session.update(partnerIdent)
-//        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
-//    }
-//
+    /**
+     Tests trust/reset cycle without view model.
+     */
+    func testBasicTrustReset() {
+        let session = PEPSession()
+
+        guard
+            let (message: _, mySelfID: _, partnerID: partnerID) = importMail(session: session) else
+        {
+            XCTFail()
+            return
+        }
+
+        let partnerIdent = partnerID.pEpIdentity()
+        try! session.update(partnerIdent)
+
+        try! session.trustPersonalKey(partnerIdent)
+        try! session.update(partnerIdent)
+        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
+
+        try! session.keyResetTrust(partnerIdent)
+        try! session.trustPersonalKey(partnerIdent)
+        try! session.update(partnerIdent)
+        XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
+    }
+
 //    /**
 //     Tests trust/reset/mistrust/resut cycle without view model, using a backup
 //     to keep the comm type.
