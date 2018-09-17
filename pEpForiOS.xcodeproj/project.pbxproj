@@ -1847,7 +1847,6 @@
 				436795F71EE98B9A00B03E23 /* MessageReevalutionTests.swift */,
 				15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */,
 				43F7F0791F6AD44600BDF151 /* HandshakeTests.swift */,
-				438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */,
 				431F987E1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift */,
 				1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */,
 				1541D7F41FC82A4900D52A5D /* URL+MIME.swift */,
@@ -1855,6 +1854,7 @@
 				154F0A8120874B3E00C77D72 /* ContentDispositionTest.swift */,
 				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
 				434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */,
+				438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */,
 			);
 			path = pEpForiOSTests;
 			sourceTree = "<group>";
