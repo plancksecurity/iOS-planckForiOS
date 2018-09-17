@@ -27,10 +27,20 @@ public extension String {
     static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$",
                                                              options: [])
 
+    /**
+     Trims whitespace from back and front.
+     */
     public func trimmed() -> String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
+    /**
+     Trims whitespace from back and front.
+     */
+    public func trimmedWhiteSpace() -> String {
+        return trimmed()
+    }
+
     public func contains(find: String) -> Bool {
         return (self.range(of: find, options: .caseInsensitive) != nil)
     }
@@ -102,46 +112,6 @@ public extension String {
                                                    withString replacement: String) -> String {
         let s = self as NSString
         return s.replacingCharacters(in: range, with: replacement)
-    }
-
-    /**
-     Trims whitespace from back and front.
-     */
-    public func trimmedWhiteSpace() -> String {
-        enum ScanState {
-            case start
-            case middle
-            case end
-        }
-
-        var state = ScanState.start
-        var result = ""
-
-        // With a regex there are problems with "\r\n" at the beginning of the String,
-        // so solve that part manually.
-        for character in self {
-            if state == .start {
-                if !character.isWhitespace() {
-                    state = .middle
-                    result.append(character)
-                }
-            } else {
-                result.append(character)
-            }
-        }
-
-        let matches = String.endWhiteSpaceRegex.matches(
-            in: result, options: [], range: result.wholeRange())
-        if matches.count > 0 {
-            let m = matches[0]
-            let r = m.range(at: 1)
-            if r.location != NSNotFound {
-                let s = result as NSString
-                let result = s.substring(with: r)
-                return result
-            }
-        }
-        return result
     }
 
     /// Replaces all matches of the given regex pattern with a given string.
