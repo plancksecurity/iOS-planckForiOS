@@ -184,35 +184,35 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
     }
 
-//    /**
-//     Test mistrust/reset cycle using view model.
-//     */
-//    func testViewModelMistrustResetTrustCycle() {
-//        let session = PEPSession()
-//
-//        guard
-//            let (message: _, mySelfID: mySelfID,
-//                 partnerID: partnerID) = importMail(session: session) else {
-//                    XCTFail()
-//                    return
-//        }
-//
-//        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
-//                                                        partner: partnerID,
-//                                                        session: session)
-//
-//        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
-//
-//        vm.denyTrust()
-//        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
-//
-//        vm.resetOrUndoTrustOrMistrust()
-//        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
-//
-//        vm.confirmTrust()
-//        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
-//
-//        vm.resetOrUndoTrustOrMistrust()
-//        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
-//    }
+    /**
+     Test mistrust/reset cycle using view model.
+     */
+    func testViewModelMistrustResetTrustCycle() {
+        let session = PEPSession()
+
+        guard
+            let (message: _, mySelfID: mySelfID,
+                 partnerID: partnerID) = importMail(session: session) else {
+                    XCTFail()
+                    return
+        }
+
+        let vm = HandshakePartnerTableViewCellViewModel(ownIdentity: mySelfID,
+                                                        partner: partnerID,
+                                                        session: session)
+
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+
+        vm.denyTrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
+
+        vm.resetOrUndoTrustOrMistrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+
+        vm.confirmTrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+
+        vm.resetOrUndoTrustOrMistrust()
+        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+    }
 }
