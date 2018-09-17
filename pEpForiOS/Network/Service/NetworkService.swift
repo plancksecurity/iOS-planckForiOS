@@ -122,7 +122,6 @@ public class NetworkService {
     public func cancel() {
         saveCurrentWorkersConfigAndImapConnectionCache()
         currentWorker?.cancel()
-        currentWorker = nil
         // Only to make sure. Should not be required.
         newMailsService?.stop()
     }
