@@ -94,12 +94,6 @@ class HandshakeTests: XCTestCase {
         self.fromIdent = pEpFrom
     }
 
-    /**
-     Just makes sure that the setup, including the mail parsing, went well.
-     */
-    func testMailParsing() {
-    }
-
 //    func testPositiveTrustResetCycle() {
 //        let session = PEPSession()
 //        try! session.update(fromIdent)
