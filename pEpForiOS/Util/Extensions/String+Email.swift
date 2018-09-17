@@ -96,7 +96,7 @@ extension String {
      */
     public func isProbablyValidEmailListSeparatedBy(_ delimiter: String = ",") -> Bool {
         let emails = self.components(separatedBy: delimiter).map({
-            $0.trimmedWhiteSpace()
+            $0.trimmed()
         })
         for e in emails {
             if e.matches(pattern: "\(delimiter)") || !e.isProbablyValidEmail() {

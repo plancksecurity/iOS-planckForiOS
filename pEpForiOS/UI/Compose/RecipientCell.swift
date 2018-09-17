@@ -127,7 +127,7 @@ extension RecipientCell {
         var mail = false
         let string = cTextview.attributedText.string.cleanAttachments
         if string.isProbablyValidEmail() {
-            let identity = Identity.create(address: string.trimmedWhiteSpace())
+            let identity = Identity.create(address: string.trimmed())
             identities.append(identity)
             let width = self.textView.bounds.width
             cTextview.insertImage(identity, maxWidth: width)

@@ -193,7 +193,7 @@ class LoginViewController: BaseViewController {
         dismissKeyboard()
         isCurrentlyVerifying = true
 
-        guard let email = emailAddress.text?.trimmedWhiteSpace(), email != "" else {
+        guard let email = emailAddress.text?.trimmed(), email != "" else {
             handleLoginError(error: LoginViewController.LoginError.missingEmail,
                              offerManualSetup: false)
             return

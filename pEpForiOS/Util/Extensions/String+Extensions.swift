@@ -34,13 +34,6 @@ public extension String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    /**
-     Trims whitespace from back and front.
-     */
-    public func trimmedWhiteSpace() -> String {
-        return trimmed()
-    }
-
     public func contains(find: String) -> Bool {
         return (self.range(of: find, options: .caseInsensitive) != nil)
     }
@@ -69,7 +62,7 @@ public extension String {
      Runs `trimmedWhiteSpace`, `unquote`, and `trimmedWhiteSpace` again.
      */
     public func fullyUnquoted() -> String {
-        return trimmedWhiteSpace().unquote().trimmedWhiteSpace()
+        return trimmed().unquote().trimmed()
     }
 
     /**

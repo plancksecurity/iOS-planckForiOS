@@ -14,7 +14,7 @@ extension AccountSettingsProtocol {
      only doing fast local lookups.
      */
     static func quickLookUp(emailAddress: String?) -> AccountSettingsProtocol? {
-        if let theMail = emailAddress?.trimmedWhiteSpace() {
+        if let theMail = emailAddress?.trimmed() {
             let acSettings = AccountSettings(accountName: theMail, provider: nil,
                                              flags: AS_FLAG_USE_ANY_LOCAL, credentials: nil)
 

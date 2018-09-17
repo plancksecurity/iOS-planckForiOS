@@ -15,7 +15,7 @@ extension String {
     public func extractTextFromHTML() -> String? {
         let parser = HtmlToTextSaxParser()
         parser.parse(string: self)
-        return parser.output?.replaceNewLinesWith(" ").trimmedWhiteSpace()
+        return parser.output?.replaceNewLinesWith(" ").trimmed()
     }
 
     /**

@@ -56,28 +56,28 @@ class StringExtensionsTest: XCTestCase {
     }
 
     func testTrimmedWhiteSpace() {
-        XCTAssertEqual("".trimmedWhiteSpace(), "")
-        XCTAssertEqual(" ".trimmedWhiteSpace(), "")
-        XCTAssertEqual("   ".trimmedWhiteSpace(), "")
-        XCTAssertEqual("    abc".trimmedWhiteSpace(), "abc")
-        XCTAssertEqual("    abc\t".trimmedWhiteSpace(), "abc")
-        XCTAssertEqual("    abc \t ".trimmedWhiteSpace(), "abc")
-        XCTAssertEqual("abc   ".trimmedWhiteSpace(), "abc")
-        XCTAssertEqual(" finished2".trimmedWhiteSpace(), "finished2")
+        XCTAssertEqual("".trimmed(), "")
+        XCTAssertEqual(" ".trimmed(), "")
+        XCTAssertEqual("   ".trimmed(), "")
+        XCTAssertEqual("    abc".trimmed(), "abc")
+        XCTAssertEqual("    abc\t".trimmed(), "abc")
+        XCTAssertEqual("    abc \t ".trimmed(), "abc")
+        XCTAssertEqual("abc   ".trimmed(), "abc")
+        XCTAssertEqual(" finished2".trimmed(), "finished2")
 
-        XCTAssertEqual("".trimmedWhiteSpace(), "")
-        XCTAssertEqual(" ".trimmedWhiteSpace(), "")
-        XCTAssertEqual("uze".trimmedWhiteSpace(), "uze")
-        XCTAssertEqual("\nuze".trimmedWhiteSpace(), "uze")
-        XCTAssertEqual("\nuze\r\n".trimmedWhiteSpace(), "uze")
-        XCTAssertEqual("\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
-        XCTAssertEqual("\n\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
+        XCTAssertEqual("".trimmed(), "")
+        XCTAssertEqual(" ".trimmed(), "")
+        XCTAssertEqual("uze".trimmed(), "uze")
+        XCTAssertEqual("\nuze".trimmed(), "uze")
+        XCTAssertEqual("\nuze\r\n".trimmed(), "uze")
+        XCTAssertEqual("\r\n\nuze\r\n".trimmed(), "uze")
+        XCTAssertEqual("\n\r\n\nuze\r\n".trimmed(), "uze")
 
-        XCTAssertEqual("\r\n\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
-        XCTAssertEqual("\r\n\r\n\r\n\nuze\r\n".trimmedWhiteSpace(), "uze")
-        XCTAssertEqual("\r\n\r\n\r\nuze".trimmedWhiteSpace(), "uze")
-        XCTAssertEqual("\r\n\r\n\r\n\nuze\r\n\r\r\r\n\r\n".trimmedWhiteSpace(), "uze")
-        XCTAssertEqual("Whatever New ".trimmedWhiteSpace(), "Whatever New")
+        XCTAssertEqual("\r\n\r\n\nuze\r\n".trimmed(), "uze")
+        XCTAssertEqual("\r\n\r\n\r\n\nuze\r\n".trimmed(), "uze")
+        XCTAssertEqual("\r\n\r\n\r\nuze".trimmed(), "uze")
+        XCTAssertEqual("\r\n\r\n\r\n\nuze\r\n\r\r\r\n\r\n".trimmed(), "uze")
+        XCTAssertEqual("Whatever New ".trimmed(), "Whatever New")
     }
 
     func testMatchesPattern() {

@@ -31,7 +31,7 @@ open class MessageContentCell: MessageCell {
             finalText.bold(messageString)
         }
 
-        if let text = message.longMessage?.trimmedWhiteSpace() {
+        if let text = message.longMessage?.trimmed() {
             finalText.normal(text)
         } else if let text = message.longMessageFormatted?.attributedStringHtmlToMarkdown() {
             finalText.normal(text)
