@@ -24,51 +24,51 @@ class DecryptionDelegate: DecryptionAttemptCounterDelegate {
 }
 
 class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
-//    var persistentSetup: PersistentSetup!
-//    
-//    override func setUp() {
-//        super.setUp()
-//
-//        XCTAssertTrue(PEPUtil.pEpClean())
-//
-//        persistentSetup = PersistentSetup()
-//    }
-//    
-//    override func tearDown() {
-//        PEPSession.cleanup()
-//        persistentSetup = nil
-//        super.tearDown()
-//    }
-//
-//    func importMail(session: PEPSession = PEPSession()) ->
-//        (message: Message, mySelfID: Identity, partnerID: Identity)? {
-//            let decryptDelegate = DecryptionDelegate()
-//
-//            guard
-//                let (mySelf: mySelfID, partner: partnerID, message: message) =
-//                TestUtil.setUpPepFromMail(
-//                    emailFilePath: "HandshakeTests_mail_001.txt",
-//                    decryptDelegate: decryptDelegate) else {
-//                        XCTFail()
-//                        return nil
-//            }
-//            XCTAssertNotEqual(mySelfID.address, partnerID.address)
-//
-//            let meIdent = mySelfID.pEpIdentity()
-//            let partnerIdent = partnerID.pEpIdentity()
-//
-//            try! session.mySelf(meIdent)
-//            try! session.update(partnerIdent)
-//
-//            XCTAssertNotNil(meIdent.fingerPrint)
-//            XCTAssertNotNil(partnerIdent.fingerPrint)
-//            XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
-//
-//            XCTAssertEqual(partnerIdent.fingerPrint, "365AA0E985C912DAA867B1A77C6016EE84C971BF")
-//
-//            return (message: message, mySelfID: mySelfID, partnerID: partnerID)
-//    }
-//
+    var persistentSetup: PersistentSetup!
+
+    override func setUp() {
+        super.setUp()
+
+        XCTAssertTrue(PEPUtil.pEpClean())
+
+        persistentSetup = PersistentSetup()
+    }
+
+    override func tearDown() {
+        PEPSession.cleanup()
+        persistentSetup = nil
+        super.tearDown()
+    }
+
+    func importMail(session: PEPSession = PEPSession()) ->
+        (message: Message, mySelfID: Identity, partnerID: Identity)? {
+            let decryptDelegate = DecryptionDelegate()
+
+            guard
+                let (mySelf: mySelfID, partner: partnerID, message: message) =
+                TestUtil.setUpPepFromMail(
+                    emailFilePath: "HandshakeTests_mail_001.txt",
+                    decryptDelegate: decryptDelegate) else {
+                        XCTFail()
+                        return nil
+            }
+            XCTAssertNotEqual(mySelfID.address, partnerID.address)
+
+            let meIdent = mySelfID.pEpIdentity()
+            let partnerIdent = partnerID.pEpIdentity()
+
+            try! session.mySelf(meIdent)
+            try! session.update(partnerIdent)
+
+            XCTAssertNotNil(meIdent.fingerPrint)
+            XCTAssertNotNil(partnerIdent.fingerPrint)
+            XCTAssertTrue(try! partnerIdent.isPEPUser(session).boolValue)
+
+            XCTAssertEqual(partnerIdent.fingerPrint, "365AA0E985C912DAA867B1A77C6016EE84C971BF")
+
+            return (message: message, mySelfID: mySelfID, partnerID: partnerID)
+    }
+
 //    /**
 //     Tests trust/reset cycle without view model.
 //     */
