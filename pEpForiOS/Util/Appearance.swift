@@ -32,7 +32,8 @@ class Appearance {
         setAlertControllerTintColor(color)
 
         let tableViewCellSelectedbackgroundView = UIView()
-        tableViewCellSelectedbackgroundView.backgroundColor = UIColor.pEpGreen.rgbWith(alpha: 0.2)
+        tableViewCellSelectedbackgroundView.backgroundColor =
+            UIColor.pEpGreen.withAlphaComponent(0.2)
         UITableViewCell.appearance().selectedBackgroundView = tableViewCellSelectedbackgroundView
     }
 
