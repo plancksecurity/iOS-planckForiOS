@@ -44,7 +44,7 @@ open class ComposeTextView: UITextView {
                             maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         
-        let string = identity.userName ?? identity.address.trim
+        let string = identity.userName ?? identity.address.trimmed()
         let img = ComposeHelper.recepient(string, textColor: .pEpGreen, maxWidth: maxWidth-20.0)
         let at = TextAttachment()
         at.image = img

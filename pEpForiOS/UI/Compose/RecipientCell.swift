@@ -57,7 +57,7 @@ extension RecipientCell {
         guard let cTextview = textView as? ComposeTextView else { return }
 
         delegate?.textDidStartEditing(at: index, textView: cTextview)
-        textView.text = textView.text.trim
+        textView.text = textView.text.trimmed()
     }
 
     override public func textViewDidChange(_ textView: UITextView) {

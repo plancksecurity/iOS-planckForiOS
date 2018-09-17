@@ -61,11 +61,11 @@ public struct ReplyUtil {
         let replyPrefix = "Re: "
 
         if var theSubject = message.shortMessage {
-            theSubject = theSubject.trim
+            theSubject = theSubject.trimmed()
             // remove all old prefixed `replyPrefix`es
             while theSubject.hasPrefix(replyPrefix) {
                 theSubject = String(theSubject[replyPrefix.endIndex..<theSubject.endIndex])
-                theSubject = theSubject.trim
+                theSubject = theSubject.trimmed()
             }
 
             return "\(replyPrefix)\(theSubject)"

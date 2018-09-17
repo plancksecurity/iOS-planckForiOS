@@ -27,7 +27,7 @@ public extension String {
     static let fileExtensionRegex = try! NSRegularExpression(pattern: "^([^.]+)\\.([^.]+)$",
                                                              options: [])
 
-    public var trim: String {
+    public func trimmed() -> String {
         return trimmingCharacters(in: .whitespacesAndNewlines)
     }
     

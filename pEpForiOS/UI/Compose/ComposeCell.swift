@@ -60,7 +60,7 @@ extension ComposeCell: UITextViewDelegate {
         guard let cmTextview = textView as? ComposeTextView else { return }
         delegate?.textDidStartEditing(at: index, textView: cmTextview)
 
-        self.textView.text =  self.textView.text.trim
+        self.textView.text =  self.textView.text.trimmed()
     }
     
     public func textViewDidChange(_ textView: UITextView) {

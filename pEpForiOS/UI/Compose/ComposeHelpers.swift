@@ -18,7 +18,7 @@ extension String {
     var cleanAttachments: String {
         if let uc = UnicodeScalar(String.textAttachmentCharacter) {
             let s = String(Character(uc))
-            return self.replacingOccurrences(of: s, with: "").trim
+            return self.replacingOccurrences(of: s, with: "").trimmed()
         }
         return self
     }
