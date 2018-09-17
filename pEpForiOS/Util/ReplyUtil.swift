@@ -60,10 +60,12 @@ public struct ReplyUtil {
         // see https://tools.ietf.org/html/rfc5322#section-3.6.5
         let replyPrefix = "Re: "
 
-        if var theSubject = message.shortMessage?.trim {
+        if var theSubject = message.shortMessage {
+            theSubject = theSubject.trim
             // remove all old prefixed `replyPrefix`es
             while theSubject.hasPrefix(replyPrefix) {
                 theSubject = String(theSubject[replyPrefix.endIndex..<theSubject.endIndex])
+                theSubject = theSubject.trim
             }
 
             return "\(replyPrefix)\(theSubject)"

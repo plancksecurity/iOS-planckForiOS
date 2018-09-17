@@ -26,7 +26,7 @@ class ReplyUtilTests: XCTestCase {
 
         var theSubject = subject
         for _ in 1...5 {
-            theSubject = "Re: \(theSubject)"
+            theSubject = " Re:  \(theSubject)"
             msg.shortMessage = theSubject
             XCTAssertEqual(ReplyUtil.replySubject(message: msg), expectedReplySubject)
         }
