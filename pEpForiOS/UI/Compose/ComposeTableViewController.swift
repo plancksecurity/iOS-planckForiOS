@@ -69,8 +69,6 @@ class ComposeTableViewController: BaseTableViewController {
     var pickerEmailAdresses = [String]()
     var accountCell: AccountCell?
 
-    private var tookOverAttachmentsAlready = false
-
     private let contactPicker = CNContactPickerViewController()
     private let imagePicker = UIImagePickerController()
     private let menuController = UIMenuController.shared
@@ -374,10 +372,9 @@ class ComposeTableViewController: BaseTableViewController {
     /// from original message.
     /// Does nothing otherwise
     private func takeOverAttachmentsIfRequired() {
-        guard shouldTakeOverAttachments(), !tookOverAttachmentsAlready else {
+        guard shouldTakeOverAttachments(), isInitialSetup else {
             return // Nothing to do.
         }
-        tookOverAttachmentsAlready = true
         guard let om = originalMessage else {
             Log.shared.errorAndCrash(
                 component: #function,
@@ -543,24 +540,18 @@ class ComposeTableViewController: BaseTableViewController {
             div {
                 white-space: pre-wrap;
             }
+            p {
+                white-space: pre-wrap;
+            }
         """
         let prefixHtml =
         """
-            <html>
-                <head>
-                    <style>
+            <html><head><style>
                         \(style)
-                    </style>
-                </head>
-                <body>
-                    <div>
+                    </style></head><body><div>
         """
         let postfixHtml =
-        """
-                    </div>
-                </body>
-            </html>
-        """
+        "</div></body></html>"
         return prefixHtml + toWrap + postfixHtml
     }
 
