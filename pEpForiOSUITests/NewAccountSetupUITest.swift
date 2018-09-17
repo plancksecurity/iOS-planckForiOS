@@ -43,7 +43,7 @@ class NewAccountSetupUITest: XCTestCase {
     func testAdditionalAccount() {
         app().launch()
         addAccount()
-        let account = SecretUITestData.workingAccount2
+        let account = SecretUITestData.workingAccount3
         newAccountSetup(account: account)
         waitForever()
     }
