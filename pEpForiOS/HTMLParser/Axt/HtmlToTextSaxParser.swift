@@ -50,9 +50,7 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
 
     func parser(_ parser: AXHTMLParser, foundCharacters string: String) {
         if acceptCharacters() {
-//            var toAppend = string.replaceNewLinesWith("") //IOS-1333:
             var toAppend = string
-            //
             if nestedInside(tag: "blockquote") {
                 toAppend = "> \(toAppend)"
             }
