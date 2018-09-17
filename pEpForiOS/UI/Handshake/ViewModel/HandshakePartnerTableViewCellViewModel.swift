@@ -115,7 +115,7 @@ class HandshakePartnerTableViewCellViewModel {
 
     private func setPartnerImage(`for` partnerIdentity: Identity) {
         if let cachedContactImage =
-            contactImageTool.cachedIdentityImage(forIdentity: partnerIdentity) {
+            contactImageTool.cachedIdentityImage(for: partnerIdentity) {
             partnerImage.value = cachedContactImage
         } else {
             DispatchQueue.global().async {

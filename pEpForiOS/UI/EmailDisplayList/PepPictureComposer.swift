@@ -14,7 +14,7 @@ class PepProfilePictureComposer: ProfilePictureComposer {
     let contactImageTool = IdentityImageTool()
 
     func profilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ()) {
-        if let image = self.contactImageTool.cachedIdentityImage(forIdentity: identity){
+        if let image = self.contactImageTool.cachedIdentityImage(for: identity){
             completion(image)
         } else {
             DispatchQueue.global(qos: .userInitiated).async{

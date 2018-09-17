@@ -175,7 +175,7 @@ class EmailListViewModel {
             // The model has been updated.
             return nil
         }
-        return contactImageTool.cachedIdentityImage(forIdentity: previewMessage.identity)
+        return contactImageTool.cachedIdentityImage(for: previewMessage.identity)
     }
 
     func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {

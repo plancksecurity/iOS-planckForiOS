@@ -11,14 +11,27 @@ import AddressBook
 import MessageModel
 
 class IdentityImageTool {
-    static var imageCache = [Identity:UIImage]()
+    static private let lock = "lockObject"
+    static private var _imageCache = [Identity:UIImage]()
+    static private var imageCache: [Identity:UIImage] {
+        get {
+            objc_sync_enter(lock)
+            defer { objc_sync_exit(lock) }
+            return _imageCache
+        }
+        set {
+            objc_sync_enter(lock)
+            defer { objc_sync_exit(lock) }
+            _imageCache = newValue
+        }
+    }
 
     func clearCache() {
         IdentityImageTool.imageCache.removeAll()
     }
 
-    func cachedIdentityImage(forIdentity identity: Identity) -> UIImage? {
-        return IdentityImageTool.imageCache[identity]
+    func cachedIdentityImage(for identity: Identity) -> UIImage? {
+            return IdentityImageTool.imageCache[identity]
     }
 
     /// Creates (and caches) the contact image to display for an identity.
@@ -60,8 +73,8 @@ class IdentityImageTool {
                                           textColor: textColor,
                                           imageBackgroundColor: backgroundColor)
         }
-        if let saveImage = image {
-            IdentityImageTool.imageCache[identity] = saveImage
+        if let safeImage = image {
+            IdentityImageTool.imageCache[identity] = safeImage
         }
         return image
     }
