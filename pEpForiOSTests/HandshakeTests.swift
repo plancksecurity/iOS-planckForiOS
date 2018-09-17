@@ -57,6 +57,11 @@ class HandshakeTests: XCTestCase {
 
         let pEpMessage = cdMessage.pEpMessage()
 
+        let theAttachments = pEpMessage.attachments ?? []
+        XCTAssertEqual(theAttachments.count, 2)
+        XCTAssertEqual(theAttachments[0].mimeType, "plain/text")
+        XCTAssertEqual(theAttachments[1].mimeType, "application/pgp-keys")
+
         guard let optFields = pEpMessage.optionalFields else {
             XCTFail("expected optional_fields to be defined")
             return
@@ -126,19 +131,19 @@ class HandshakeTests: XCTestCase {
 //        XCTAssertTrue(try! session.isPEPUser(fromIdentCopy).boolValue)
 //    }
 //
-//    func testRestTruestOnYellowIdentity() {
-//        let session = PEPSession()
-//        try! session.update(fromIdent)
-//        XCTAssertNotNil(fromIdent.fingerPrint)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        var numRating = try! session.rating(for: fromIdent)
-//        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
-//
-//        try! session.keyResetTrust(fromIdent)
-//        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
-//
-//        numRating = try! session.rating(for: fromIdent)
-//        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
-//    }
+    func testRestTruestOnYellowIdentity() {
+        let session = PEPSession()
+        try! session.update(fromIdent)
+        XCTAssertNotNil(fromIdent.fingerPrint)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        var numRating = try! session.rating(for: fromIdent)
+        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+
+        try! session.keyResetTrust(fromIdent)
+        XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
+
+        numRating = try! session.rating(for: fromIdent)
+        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+    }
 }
