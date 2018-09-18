@@ -141,7 +141,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(index, 0)
     }
 
-    /*func testViewModel() {
+    func testViewModel() {
         let msg = createMessage(inFolder: folder, from: folder.account.user)
         msg.save()
         setupViewModel()
@@ -153,7 +153,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let vm = emailListVM.viewModel(for: ind)
         XCTAssertEqual(vm?.message(), msg)
         XCTAssertEqual(vm?.subject, msg.shortMessage)
-    }*/
+    }
 
     func testSetUpFilterViewModel() {
         var filterEnabled = false
@@ -178,6 +178,29 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListVM.rowCount, 11)
         let index = emailListVM.index(of: msg)
         XCTAssertEqual(index, 0)
+    }
+
+    func testNewMessageUpdateRecibedAndDisplayed() {
+        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        let msg = createMessage(inFolder: folder, from: folder.account.user)
+        msg.imapFlags?.flagged = false
+        msg.save()
+        XCTAssertFalse((msg.imapFlags?.flagged)!)
+        setupViewModel()
+        XCTAssertEqual(emailListVM.rowCount, 11)
+        setUpMessageFolderDelegate()
+        setUpViewModelExpectations(expectationDidInsertDataAt: true)
+        msg.imapFlags?.flagged = true
+        msg.save()
+        emailListMessageFolderDelegate.insertData(message: msg)
+        waitForExpectations(timeout: TestUtil.waitTime)
+        let index = emailListVM.index(of: msg)
+        if let ind = index {
+            let newMsg = emailListVM.message(representedByRowAt: IndexPath(row: ind, section: 0))
+            XCTAssertTrue((newMsg?.imapFlags?.flagged)!)
+        } else {
+            XCTFail()
+        }
     }
 
     // Mark: setting up
@@ -218,7 +241,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
         if expectedUpdateView {
             let updateViewExpectation = expectation(description: "UpdateViewCalled")
-            viewModelTestDelegate = EmailListViewModelTestDelegate(expectationUpdateViewCalled: updateViewExpectation)
+            viewModelTestDelegate = EmailListViewModelTestDelegate(expectationUpdateView: updateViewExpectation)
         }
         guard let vmTestDelegate = viewModelTestDelegate else {
             XCTFail()
@@ -242,7 +265,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         }
 
         emailListVM.emailListViewModelDelegate = EmailListViewModelTestDelegate(
-            expectationUpdateViewCalled: expectationUpdateViewCalled,
+            expectationUpdateView: expectationUpdateViewCalled,
             expectationDidInsertDataAt: excpectationDidInsertDataAtCalled)
     }
 
@@ -291,10 +314,14 @@ class EmailListViewModelTestDelegate: EmailListViewModelDelegate {
 
     var expectationUpdateViewCalled: XCTestExpectation?
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
+    var expectationDidUpdateDataAtCalled: XCTestExpectation?
 
-    init(expectationUpdateViewCalled: XCTestExpectation? = nil, expectationDidInsertDataAt: XCTestExpectation? = nil) {
-        self.expectationUpdateViewCalled = expectationUpdateViewCalled
+    init(expectationUpdateView: XCTestExpectation? = nil,
+         expectationDidInsertDataAt: XCTestExpectation? = nil,
+         expectationDidUpdateDataAt: XCTestExpectation? = nil) {
+        self.expectationUpdateViewCalled = expectationUpdateView
         self.excpectationDidInsertDataAtCalled = expectationDidInsertDataAt
+        self.expectationDidUpdateDataAtCalled = expectationDidUpdateDataAt
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath]) {
@@ -306,7 +333,11 @@ class EmailListViewModelTestDelegate: EmailListViewModelDelegate {
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
-        XCTFail()
+        if let expectationDidUpdateDataAtCalled = expectationDidUpdateDataAtCalled {
+            expectationDidUpdateDataAtCalled.fulfill()
+        } else {
+            XCTFail()
+        }
     }
 
     func emailListViewModel(viewModel: EmailListViewModel,
@@ -356,6 +387,10 @@ class TestServer {
     func insertData(message: Message) {
 
         self.messageFolderDelegate.didCreate(messageFolder: message)
+    }
+
+    func updateData(message: Message) {
+        self.messageFolderDelegate.didUpdate(messageFolder: message)
     }
 }
 
