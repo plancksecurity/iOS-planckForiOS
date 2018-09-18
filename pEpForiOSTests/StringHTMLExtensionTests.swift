@@ -123,7 +123,7 @@ class StringHTMLExtensionTests: XCTestCase {
         let attributedString = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
         XCTAssertEqual(
             attributedString.string,
-            "\n￼\nSent with p≡p\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n> Just some mind the gap text.\n> Blah!")
+            "\n￼\n\nSent with p≡p\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n")
 
         XCTAssertEqual(attachmentDelegate.numberOfAttachmentsUsed, 1)
         XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType)
@@ -132,8 +132,8 @@ class StringHTMLExtensionTests: XCTestCase {
         XCTAssertEqual(attachments.count, 1)
 
         let patternImage = "!\\[[^]]+]\\([^)]+\\)"
-        let patternRest1 = "\nSent with p≡p\n"
-        let patternRest2 = "Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT\\+2:\n"
+        let patternRest1 = "\n\nSent with p≡p\n\n"
+        let patternRest2 = "Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT\\+2:\n\n"
         let patternRest3 = "> Just some mind the gap text.\n> Blah!"
         XCTAssertTrue(markdown.matches(
             pattern: "^\(patternImage)\(patternRest1)\(patternRest2)\(patternRest3)$"))
