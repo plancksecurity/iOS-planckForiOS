@@ -104,7 +104,6 @@ class FilterTableViewController: BaseTableViewController {
             let willDisable = !cellvm.enabled
             if(willDisable || canDisable(accountFilters: sections[indexPath.section])){
                 cellvm.enabled = !cellvm.enabled
-                sections[indexPath.section].addOrRemoveUnified()
             }
         } else {
             cellvm.enabled = !cellvm.enabled
