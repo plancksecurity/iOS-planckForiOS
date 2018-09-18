@@ -1209,7 +1209,7 @@ extension EmailListViewController: LoginViewControllerDelegate {
 
 extension EmailListViewController: ComposeTableViewControllerDelegate {
     func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController) {
-        if folderIsOutbox(folderToShow) {
+        if folderIsDraftsOrOutbox(folderToShow){
             // In outbox, a new mail must show up after composing it.
             model?.reloadData()
         }
@@ -1217,7 +1217,7 @@ extension EmailListViewController: ComposeTableViewControllerDelegate {
 
     func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController) {
         if folderIsOutbox(folderToShow) {
-            // A message from outbox have been deleted in outbox
+            // A message from outbox has been deleted in outbox
             // (e.g. because the user saved it to drafts).
             model?.reloadData()
         }
