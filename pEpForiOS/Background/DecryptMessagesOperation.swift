@@ -34,7 +34,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 return
             }
             guard let cdMessages = CdMessage.all(
-                predicate: CdMessage.unknownToPepMessagesPredicate(),
+                predicate: CdMessage.PredicateFactory.unknownToPep(),
                 orderedBy: [NSSortDescriptor(key: "received", ascending: true)],
                 in: privateMOC) as? [CdMessage] else {
                     me.markAsFinished()

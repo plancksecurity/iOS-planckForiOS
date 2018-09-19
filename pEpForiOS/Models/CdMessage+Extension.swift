@@ -56,53 +56,6 @@ extension CdMessage {
         return msg
     }
 
-    public static func basicMessagePredicate() -> NSPredicate { //IOS-1346: move all of them to the factory extension
-        let predicates = [CdMessage.PredicateFactory.existingMessages(),
-                          CdMessage.PredicateFactory.decrypted()]
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-    }
-
-    public static func unknownToPepMessagesPredicate() -> NSPredicate {
-        var reDecryptionRatings = PEP_rating.retryDecriptionRatings.map {
-            return $0.rawValue
-        }
-        reDecryptionRatings.append(Int32(PEPUtil.pEpRatingNone))
-
-        let predicateDecrypted = NSPredicate(format: "pEpRating in %@",
-                                             reDecryptionRatings)
-        let predicateIsFromServer = NSPredicate(format: "uid > 0")
-        let predicates = [CdMessage.PredicateFactory.existingMessages(),
-                          predicateDecrypted,
-                          predicateIsFromServer]
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-    }
-
-    /**
-     - Note: \Recent is never taken into consideration, since it always is set from the server,
-     but never overridden in the client.
-     - Returns: A predicate that will search for all messages in a given folder whose flags
-     should be synced back to the server. That is, messages with locally changed flags.
-     */
-    public static func messagesWithChangedFlagsPredicate(folder: CdFolder? = nil) -> NSPredicate {
-        var predicates = [NSPredicate]()
-
-        if let f = folder {
-            predicates.append(NSPredicate(format: "parent = %@", f))
-        }
-
-        let pFlags = NSPredicate(format:
-            "(imap.localFlags.flagAnswered != imap.serverFlags.flagAnswered) OR " +
-            "(imap.localFlags.flagDraft != imap.serverFlags.flagDraft) OR " +
-            "(imap.localFlags.flagFlagged != imap.serverFlags.flagFlagged) OR " +
-            "(imap.localFlags.flagSeen != imap.serverFlags.flagSeen) OR " +
-            "(imap.localFlags.flagDeleted != imap.serverFlags.flagDeleted)")
-        predicates.append(pFlags)
-
-        let pUid = NSPredicate(format: "uid != 0")
-        predicates.append(pUid)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
-    }
-
     public static func countBy(predicate: NSPredicate) -> Int {
         let objs = all(predicate: predicate)
         return objs?.count ?? 0

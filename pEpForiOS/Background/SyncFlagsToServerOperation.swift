@@ -80,7 +80,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
 
     public static func messagesToBeSynced(folder: CdFolder,
                                           context: NSManagedObjectContext) -> [CdMessage] {
-        let pFlagsChanged = CdMessage.messagesWithChangedFlagsPredicate(folder: folder)
+        let pFlagsChanged = CdMessage.PredicateFactory.changedFlags(folder: folder)
         return CdMessage.all(
             predicate: pFlagsChanged,
             orderedBy: [NSSortDescriptor(key: "received", ascending: true)], in: context)
