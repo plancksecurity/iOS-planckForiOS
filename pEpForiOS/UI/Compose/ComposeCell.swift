@@ -25,7 +25,11 @@ open class ComposeCell: UITableViewCell, CellProtocol {
     }
 
     func setInitial(text: String) {
-        textView.text = text
+        if text.isEmpty {
+            textView.text = " "
+        } else {
+            textView.text = text
+        }
     }
 
     func setInitial(text: NSAttributedString) {
