@@ -134,6 +134,28 @@ public extension String {
         replaceRegexMatches(of: pattern, with: "")
     }
 
+    func stringByRemovingRegexMatches(of pattern: String) -> String {
+        return self.stringByReplacingRegexMatches(of: pattern, with: "")
+    }
+
+    func stringByReplacingRegexMatches(of pattern: String, with replacee: String) -> String {
+        var result = self
+        do {
+            let regex =
+                try NSRegularExpression(pattern: pattern,
+                                        options: NSRegularExpression.Options.caseInsensitive)
+            let range = NSMakeRange(0, self.count)
+            result = regex.stringByReplacingMatches(in: self,
+                                                    options: [],
+                                                    range: range,
+                                                    withTemplate: replacee)
+        } catch {
+            Log.shared.errorAndCrash(component: #function, errorString: "Catched!")
+            return result
+        }
+        return result
+    }
+
     /**
      Does this String match the given regex pattern? Without any options.
      - Parameter pattern: The pattern to match.
