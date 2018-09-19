@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class Appearance {
-    static func pEp(_ color: UIColor = .pEpGreen) {
+    public static func pEp(_ color: UIColor = .pEpGreen) {
         UINavigationBar.appearance().backgroundColor = .white
         UINavigationBar.appearance().barTintColor = .white
         UINavigationBar.appearance().tintColor = color
