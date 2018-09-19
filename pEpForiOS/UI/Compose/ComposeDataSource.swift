@@ -41,11 +41,11 @@ class ComposeDataSource: NSObject {
         let visibleRows = getVisibleRows()
         return visibleRows.count
     }
-    
+
     func getVisibleRows() -> [ComposeFieldModel] {
         return filteredRows
     }
-    
+
     func getRow(at index: Int) -> ComposeFieldModel {
         let visibleRows = getVisibleRows()
         return visibleRows[index]
