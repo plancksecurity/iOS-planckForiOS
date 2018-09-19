@@ -12,7 +12,6 @@ import XCTest
 @testable import MessageModel
 
 class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
-    var account: Account!
     var inbox: Folder!
     var topMessages = [Message]()
     let emailListViewModelDelegate = MyEmailListViewModelDelegate()
@@ -43,9 +42,6 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-
-        account = cdAccount.account()
-
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
 

@@ -12,7 +12,6 @@ import XCTest
 @testable import MessageModel
 
 class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
-    var account: Account!
     var inbox: Folder!
     var sent: Folder!
     var draft: Folder!
@@ -47,10 +46,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-
         replyAllChecker = ReplyAllPossibleChecker()
-
-        account = cdAccount.account()
 
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()

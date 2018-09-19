@@ -13,6 +13,9 @@ import CoreData
 @testable import MessageModel
 
 class CoreDataDrivenTestBase: XCTestCase {
+    var account: Account {
+        return cdAccount.account()
+    }
     var cdAccount: CdAccount!
     var persistentSetup: PersistentSetup!
 
