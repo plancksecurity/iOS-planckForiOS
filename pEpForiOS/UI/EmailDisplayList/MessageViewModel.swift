@@ -167,6 +167,11 @@ class MessageViewModel: CustomDebugStringConvertible {
             let numChars = maxBodyPreviewCharacters * factorHtmlTags
             let truncatedHtml = html.prefix(ofLength: numChars)
             body = truncatedHtml.extractTextFromHTML()
+
+            //IOS-1347:
+            // We might want to cleans when displaying instead of when saving.
+            // Waiting for details. See IOS-1347.
+
             body = body?.replaceNewLinesWith(" ").trimmed()
         }
         guard let saveBody = body else {
