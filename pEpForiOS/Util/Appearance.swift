@@ -30,6 +30,11 @@ class Appearance {
         UISearchBar.appearance().tintColor = color
 
         setAlertControllerTintColor(color)
+
+        let tableViewCellSelectedbackgroundView = UIView()
+        tableViewCellSelectedbackgroundView.backgroundColor =
+            UIColor.pEpGreen.withAlphaComponent(0.2)
+        UITableViewCell.appearance().selectedBackgroundView = tableViewCellSelectedbackgroundView
     }
 
     private static func setAlertControllerTintColor(_ color: UIColor = .pEpGreen) {
