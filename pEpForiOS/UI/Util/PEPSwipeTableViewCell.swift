@@ -16,6 +16,6 @@ import SwipeCellKit
 class PEPSwipeTableViewCell: SwipeTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
-        PEPTableViewCell.configureSelectedBackgroundViewForPep(tableViewCell: self)
+        Appearance.configureSelectedBackgroundViewForPep(tableViewCell: self)
     }
 }
