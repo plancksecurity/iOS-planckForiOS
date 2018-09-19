@@ -489,7 +489,16 @@ class ComposeTableViewController: BaseTableViewController {
                     // inlined attachments, as for instance only the movies thumbnail would be send
                     // instead of the movie itself.
                     let (markdownText, attachments) = cell.textView.toMarkdown()
-                    message.longMessage = markdownText
+
+                    //IOS-1347:
+                    // Strips inlined image info in unformatted version.
+                    // We might actually want to have this information. Waiting for decision in this regards (see IOS-1347).
+                    // In this case we *do* want to keep it, it has to be stripped preparing body preview.
+                    let textAttachmentStringPattern = "!\\[.+]\\(.+\\)"
+                    let markdownTextCleaned = markdownText.stringByRemovingRegexMatches(of: textAttachmentStringPattern)
+                    // We must also cleans font info if any!
+
+                    message.longMessage = markdownTextCleaned
                     var longMessageFormatted = markdownText.markdownToHtml()
                     if let safeHtml = longMessageFormatted {
                         longMessageFormatted = wrappedInHtmlStyle(toWrap: safeHtml)
