@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 import SwipeCellKit
 
-class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
+class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     // MARK: Public API
 
     @IBOutlet weak var addressLabel: UILabel!
@@ -94,14 +94,7 @@ class EmailListViewCell: SwipeTableViewCell, MessageViewModelConfigurable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
         self.contactImageView.applyContactImageCornerRadius()
-
-        let tableViewCellSelectedbackgroundView = UIView()
-        tableViewCellSelectedbackgroundView.backgroundColor =
-            UIColor.pEpGreen.withAlphaComponent(0.2)
-        selectedBackgroundView = tableViewCellSelectedbackgroundView
-
         resetToDefault()
     }
 
