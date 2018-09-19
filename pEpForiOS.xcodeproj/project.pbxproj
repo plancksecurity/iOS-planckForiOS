@@ -77,6 +77,8 @@
 		1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F41FC82A4900D52A5D /* URL+MIME.swift */; };
 		1541D7FA1FCC18E100D52A5D /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */; };
 		1541D7FC1FCC199B00D52A5D /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */; };
+		1544BCFE215246F30075C5A0 /* AttachmentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1544BCFD215246F30075C5A0 /* AttachmentFilter.swift */; };
+		1544BD0221524C9F0075C5A0 /* AttachmentFilterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */; };
 		1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */; };
 		15484B682105D5AA00F9D962 /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15484B672105D5AA00F9D962 /* ConnectInfo.swift */; };
 		15484B6A2105D5C500F9D962 /* EmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15484B692105D5C500F9D962 /* EmailConnectInfo.swift */; };
@@ -618,6 +620,8 @@
 		1541D7F41FC82A4900D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
 		1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
 		1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
+		1544BCFD215246F30075C5A0 /* AttachmentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentFilter.swift; sourceTree = "<group>"; };
+		1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AttachmentFilterTest.swift; path = pEpForiOSTests/Models/Filter/AttachmentFilterTest.swift; sourceTree = SOURCE_ROOT; };
 		154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNumberOfNewMailsOperation.swift; sourceTree = "<group>"; };
 		15484B672105D5AA00F9D962 /* ConnectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectInfo.swift; sourceTree = "<group>"; };
 		15484B692105D5C500F9D962 /* EmailConnectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailConnectInfo.swift; sourceTree = "<group>"; };
@@ -1234,6 +1238,15 @@
 			path = IMAP;
 			sourceTree = "<group>";
 		};
+		1544BD0021524C6C0075C5A0 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				15BA536D20A095410090F126 /* UnifiedInboxTest.swift */,
+				1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
 		15484B652105D55600F9D962 /* ConnectInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -1433,6 +1446,7 @@
 			isa = PBXGroup;
 			children = (
 				1554756B213FE139005A52D0 /* UnifiedFilter.swift */,
+				1544BCFD215246F30075C5A0 /* AttachmentFilter.swift */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -2157,10 +2171,10 @@
 		4918EBF91E783C70006207FC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1544BD0021524C6C0075C5A0 /* Filter */,
 				B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */,
 				4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */,
 				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
-				15BA536D20A095410090F126 /* UnifiedInboxTest.swift */,
 				43504D4320E0DD0E00D11E52 /* EmailListViewModeTests+Threading.swift */,
 				4335002D212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift */,
 			);
@@ -2844,6 +2858,7 @@
 				220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */,
 				43DB81331E2A56BE00A20902 /* AppendMailsOperation.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
+				1544BCFE215246F30075C5A0 /* AttachmentFilter.swift in Sources */,
 				43F848491EAA09AE00DBE460 /* Weak.swift in Sources */,
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
 				4341980520AB037E0062F7F6 /* CGImageSource+Extension.swift in Sources */,
@@ -3134,6 +3149,7 @@
 				003C0FA720B5581A0093A987 /* SecretTestData.swift in Sources */,
 				1555361B207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift in Sources */,
 				154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */,
+				1544BD0221524C9F0075C5A0 /* AttachmentFilterTest.swift in Sources */,
 				4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */,
 				151F7201202A06760057C74D /* CdAccount+TestUtils.swift in Sources */,
 				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
