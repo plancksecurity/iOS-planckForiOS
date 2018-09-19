@@ -56,7 +56,7 @@ extension CdMessage {
         return msg
     }
 
-    public static func basicMessagePredicate() -> NSPredicate {
+    public static func basicMessagePredicate() -> NSPredicate { //IOS-1346: move all of them to the factory extension
         let predicates = [CdMessage.PredicateFactory.existingMessages(),
                           CdMessage.PredicateFactory.decrypted()]
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
