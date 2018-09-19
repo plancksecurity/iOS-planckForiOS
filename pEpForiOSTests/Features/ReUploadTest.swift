@@ -19,7 +19,7 @@ class ReUploadTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        // Setup soley mark all mails on server deleted.
+        // Setup soley marks all mails on server deleted.
         setupSenderAccount()
         markAllMessagesOnServerDeleted()
         // And start from scratch
@@ -176,8 +176,10 @@ class ReUploadTest: CoreDataDrivenTestBase {
     // Similar to super.tearDown() but without bothering Xcode Test
     private func tearDownWithoutBotheringXCT() {
         imapSyncData?.sync?.close()
+        persistentSetup.tearDownCoreDataStack()
         persistentSetup = nil
         PEPSession.cleanup()
+        XCTAssertTrue(PEPUtil.pEpClean())
     }
 
     // MARK: The actual test
