@@ -16,9 +16,15 @@ public class AttachmentFilter: FilterBase {
 
     public override var predicates : [NSPredicate] {
         get {
-            return [NSPredicate(
-                format: "(SUBQUERY(attachments, $a, (not ($a.mimeType in %@)))).@count > 0",
-                AttachmentFilter.unviewableMimeTypes)]
+            let dontShowRatingsRawValues = PEP_rating.neverShowAttachmentsForRatings
+                .map { $0.rawValue }
+            let notUnencryptable = NSPredicate(format: "NOT (pEpRating IN %@)",
+                                               dontShowRatingsRawValues)
+            let viewableOnly = NSPredicate(
+                format: "(SUBQUERY(attachments, $a, (not ($a.mimeType in %@)))).@count > 0", //IOS-1346: move to CdAttachment.PredicateFactory+Extensions
+                AttachmentFilter.unviewableMimeTypes)
+            return [NSCompoundPredicate(andPredicateWithSubpredicates: [notUnencryptable,
+                                                                        viewableOnly])]
         }
     }
 
