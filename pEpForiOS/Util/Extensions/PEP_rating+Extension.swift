@@ -28,7 +28,7 @@ extension PEP_rating {
     static let neverShowAttachmentsForRatings: [PEP_rating] = [PEP_rating_cannot_decrypt,
                                                                PEP_rating_have_no_key]
 
-    func neverShowAttachmentsFor() -> Bool {
+    func dontShowAttachments() -> Bool {
         return PEP_rating.neverShowAttachmentsForRatings.contains(self)
     }
 

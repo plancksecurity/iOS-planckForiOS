@@ -68,12 +68,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         longMessageFormatted = message.longMessageFormatted
         dateSent = message.sent ?? Date()
 
-        var ratingIsOkToShowAttachments = true
-        if let msgRatingInt = message.pEpRatingInt,
-            let rating = PEPUtil.pEpRatingFromInt(msgRatingInt) {
-            ratingIsOkToShowAttachments = !PEP_rating.neverShowAttachmentsForRatings.contains(rating)
-        }
-        showAttchmentIcon = message.attachments.count > 0 && ratingIsOkToShowAttachments
+        showAttchmentIcon = message.viewableAttachments().count > 0
         identity = (message.from ?? Identity(address: "unknown@unknown.com"))
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         displayedImageIdentity =  MessageViewModel.identityForImage(from: message)

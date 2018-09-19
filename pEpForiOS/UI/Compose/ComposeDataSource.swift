@@ -34,9 +34,8 @@ class ComposeDataSource: NSObject {
      Decide on the rows that should be visible, based on the message.
      */
     public func filterRows(message: Message?) {
-        if let msgRatingInt = message?.pEpRatingInt,
-            let rating = PEPUtil.pEpRatingFromInt(msgRatingInt),
-            rating.neverShowAttachmentsFor() {
+        if let viewableAttachments = message?.viewableAttachments(),
+            viewableAttachments.count == 0 {
             filterRows(filter: { $0.type != .mailingList && $0.type != .attachment} )
         } else {
             filterRows(filter: { $0.type != .mailingList} )
