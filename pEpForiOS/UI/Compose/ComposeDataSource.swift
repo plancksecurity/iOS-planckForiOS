@@ -27,16 +27,22 @@ class ComposeDataSource: NSObject {
      Caller decides which rows are actually visible.
      */
     public func filterRows(filter: (ComposeFieldModel) -> Bool) {
-        filteredRows = originalRows.filter() { return filter($0) }
+        filteredRows = originalRows.filter { filter($0) }
     }
 
     /**
      Decide on the rows that should be visible, based on the message.
      */
     public func filterRows(message: Message?) {
-        filterRows(filter: { return $0.type != .mailingList})
+        if let msgRatingInt = message?.pEpRatingInt,
+            let rating = PEPUtil.pEpRatingFromInt(msgRatingInt),
+            rating.neverShowAttachmentsFor() {
+            filterRows(filter: { $0.type != .mailingList && $0.type != .attachment} )
+        } else {
+            filterRows(filter: { $0.type != .mailingList} )
+        }
     }
-    
+
     func numberOfRows() -> Int {
         let visibleRows = getVisibleRows()
         return visibleRows.count
