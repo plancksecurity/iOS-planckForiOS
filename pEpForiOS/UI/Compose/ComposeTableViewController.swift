@@ -653,13 +653,12 @@ class ComposeTableViewController: BaseTableViewController {
     ///   - image: image to create attachment for
     /// - Returns: attachment for given image
     private final func createAttachment(forAssetWithUrl assetUrl: URL,
-                                            image: UIImage) -> Attachment {
-        let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
-        let attachment = Attachment.createFromAsset(mimeType: mimeType,
-                                                    assetUrl: assetUrl,
-                                                    image: image,
-                                                    contentDisposition: .inline)
-        return attachment
+                                        image: UIImage) -> Attachment {
+        var mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+        return Attachment.createFromAsset(mimeType: mimeType,
+                                          assetUrl: assetUrl,
+                                          image: image,
+                                          contentDisposition: .inline)
     }
 
     /// Used to create an Attachment from files that are not a security scoped resource.
