@@ -156,8 +156,12 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
-        if let text = msg.longMessage {
-            body = text.replaceNewLinesWith(" ").trimmed()
+        if var text = msg.longMessage {
+            text = text
+                .stringCleanedFromNSAttributedStingAttributes()
+                .replaceNewLinesWith(" ")
+                .trimmed()
+            body = text
         } else if let html = msg.longMessageFormatted {
             // Limit the size of HTML to parse
             // That might result in a messy preview but valid messages use to offer a plaintext

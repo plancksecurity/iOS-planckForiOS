@@ -104,6 +104,7 @@
 		1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */; };
 		1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */; };
 		1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569AEA420E14DC2002102A0 /* ReUploadTest.swift */; };
+		1569DDB8215395BE007A0398 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */; };
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
@@ -647,6 +648,7 @@
 		1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesService.swift; sourceTree = "<group>"; };
 		1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
 		1569AEA420E14DC2002102A0 /* ReUploadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReUploadTest.swift; sourceTree = "<group>"; };
+		1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Extension.swift"; path = "pEpForiOS/Util/NSAttributedString+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
@@ -1557,6 +1559,7 @@
 				4360282C1ED6F27600C95FC4 /* NetworkError.swift */,
 				4360282E1ED6F33400C95FC4 /* ImapSyncError.swift */,
 				4307C4711ED826E400A276A4 /* SmtpSendError.swift */,
+				1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -2846,6 +2849,7 @@
 				4362399B1EAE0CE800BD2EB9 /* Date+Extension.swift in Sources */,
 				43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */,
 				431D60DB1E93BB2D001266D7 /* AttachmentsView.swift in Sources */,
+				1569DDB8215395BE007A0398 /* NSAttributedString+Extension.swift in Sources */,
 				1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */,
 				150707DA20FFC31E00AA213F /* ComposeUtil.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableViewController.swift in Sources */,
