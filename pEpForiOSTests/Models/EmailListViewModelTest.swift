@@ -213,8 +213,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         nonShownMsg.save()
         emailListMessageFolderDelegate.insertData(message: nonShownMsg)
         XCTAssertEqual(emailListVM.rowCount, 11)
-        index = emailListVM.index(of: msg)
-        XCTAssertEqual(index, 0)
+        index = emailListVM.index(of: nonShownMsg)
+        XCTAssertNil(index)
     }
 
     func testNewMessageDeleteRecibedAndDisplayed() {
@@ -226,18 +226,22 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 11)
         setUpMessageFolderDelegate()
-        setUpViewModelExpectations(expectationDidInsertDataAt: true)
-        msg.imapFlags?.flagged = true
-        msg.save()
-        emailListMessageFolderDelegate.insertData(message: msg)
+        setUpViewModelExpectations(expectationDidDeleteDataAt: true)
+        msg.delete()
+        emailListMessageFolderDelegate.deleteData(message: msg)
         waitForExpectations(timeout: TestUtil.waitTime)
-        let index = emailListVM.index(of: msg)
-        if let ind = index {
-            let newMsg = emailListVM.message(representedByRowAt: IndexPath(row: ind, section: 0))
-            XCTAssertTrue((newMsg?.imapFlags?.flagged)!)
-        } else {
-            XCTFail()
-        }
+        var index = emailListVM.index(of: msg)
+        XCTAssertNil(index)
+        XCTAssertEqual(emailListVM.rowCount, 10)
+
+        let nonShownMsg = createMessage(inFolder: trashFolder, from: folder.account.user)
+        nonShownMsg.save()
+        emailListMessageFolderDelegate.insertData(message: nonShownMsg)
+        nonShownMsg.delete()
+        emailListMessageFolderDelegate.deleteData(message: msg)
+        XCTAssertEqual(emailListVM.rowCount, 10)
+        index = emailListVM.index(of: nonShownMsg)
+        XCTAssertNil(index)
     }
 
     // Mark: setting up
@@ -294,7 +298,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     fileprivate func setUpViewModelExpectations(expectedUpdateView: Bool = false,
                                                 expectationDidInsertDataAt: Bool = false,
-                                                expectationDidUpdateDataAt: Bool = false ) {
+                                                expectationDidUpdateDataAt: Bool = false,
+                                                expectationDidDeleteDataAt: Bool = false ) {
 
         var expectationUpdateViewCalled: XCTestExpectation?
         if expectedUpdateView {
@@ -308,13 +313,19 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
         var excpectationDidUpdateDataAtCalled: XCTestExpectation?
         if expectationDidUpdateDataAt {
-            excpectationDidUpdateDataAtCalled = expectation(description: "excpectationDidInsertDataAtCalled")
+            excpectationDidUpdateDataAtCalled = expectation(description: "excpectationDidUpdateDataAtCalled")
+        }
+
+        var excpectationDidDeleteDataAtCalled: XCTestExpectation?
+        if expectationDidDeleteDataAt {
+            excpectationDidDeleteDataAtCalled = expectation(description: "excpectationDidInsertDataAtCalled")
         }
 
         emailListVM.emailListViewModelDelegate = EmailListViewModelTestDelegate(
             expectationUpdateView: expectationUpdateViewCalled,
             expectationDidInsertDataAt: excpectationDidInsertDataAtCalled,
-            expectationDidUpdateDataAt: excpectationDidUpdateDataAtCalled)
+            expectationDidUpdateDataAt: excpectationDidUpdateDataAtCalled,
+            expectationDidRemoveDataAt: excpectationDidDeleteDataAtCalled)
     }
 
     fileprivate func createMessages(number: Int,
