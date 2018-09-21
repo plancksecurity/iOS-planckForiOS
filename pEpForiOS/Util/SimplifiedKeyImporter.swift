@@ -15,12 +15,11 @@ class SimplifiedKeyImporter {
         self.trustedFingerPrint = trustedFingerPrint
     }
 
-    public func process(message: PEPMessage, keys: [String]) {
-        if let signingKey = keys.first,
+    public func process(message: PEPMessage, keys: NSArray) {
+        if let signingKey = keys.firstObject as? String,
             signingKey == trustedFingerPrint,
             let theAttachments = message.attachments {
             for attachment in theAttachments {
-                
             }
         }
     }
