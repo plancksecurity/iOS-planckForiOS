@@ -117,7 +117,7 @@ class StringHTMLExtensionTests: XCTestCase {
             data: theData, mimeType: theMimeType, fileName: "cid:\(cid1)",
             size: theData?.count)
 
-        let input = "<p><img src=\"cid:\(cid1)\" alt=\"\(alt1)\" /></p>\n<p>Sent with p≡p</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</blockquote>\n"
+        let input = "<p><img src=\"cid:\(cid1)\" alt=\"\(alt1)\" /></p>\n<p>\(String.pEpSignatureHtml)</p>\n<p>Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:</p>\n<blockquote>\n<p>Just some mind the gap text.</p>\n<p>Blah!</p>\n</blockquote>\n"
 
         let attachmentDelegate = AttachmentDelegate(attachments: [attachment])
         let attributedString = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
