@@ -10,7 +10,7 @@ import MessageModel
 
 public class AttachmentFilter: FilterBase {
     public static let unviewableMimeTypes = Set([
-        "application/pgp-keys",
+        Constants.contentTypeApplicationPGPKeys,
         "application/pgp-signature"]
     )
 

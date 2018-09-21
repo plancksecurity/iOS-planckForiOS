@@ -64,4 +64,6 @@ struct Constants {
 
     /// Name of Storyboard that contains AddToContactsViewController.
     static let addToContactsStoryboard = "Reusable"
+
+    static let contentTypeApplicationPGPKeys = "application/pgp-keys"
 }
