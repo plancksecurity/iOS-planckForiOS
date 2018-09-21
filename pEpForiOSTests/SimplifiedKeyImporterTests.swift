@@ -53,6 +53,11 @@ class SimplifiedKeyImporterTests: XCTestCase {
         let myPepIdentity = ownIdentity.pEpIdentity()
         try! session.mySelf(myPepIdentity)
 
+        guard let importFingerprint = myPepIdentity.fingerPrint else {
+            XCTFail()
+            return
+        }
+
         guard let secretPublicKeyData = TestUtil.loadData(
             fileName: "8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt") else {
                 XCTFail()
@@ -93,6 +98,14 @@ class SimplifiedKeyImporterTests: XCTestCase {
             extraKeys: &extraKeys,
             status: &decryptionStatus)
 
+        guard let theExtraKeys = extraKeys else {
+            XCTFail()
+            return
+        }
+
         XCTAssertFalse(decryptedMessage.isLikelyPEPEncrypted())
+
+        let importer = SimplifiedKeyImporter(trustedFingerPrint: importFingerprint)
+        importer.process(message: decryptedMessage, keys: theExtraKeys)
     }
 }
