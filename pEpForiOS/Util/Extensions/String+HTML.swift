@@ -31,7 +31,9 @@ extension String {
     }
 
     public func markdownToHtml() -> String? {
-        return (self as NSString).nsMarkdownToHtml()
+        return (self as NSString)
+            .nsMarkdownToHtml()?
+            .replacingOccurrencesOfPepSignatureWithHtmlVersion()
     }
 
     public func htmlToAttributedString(

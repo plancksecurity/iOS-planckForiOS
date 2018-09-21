@@ -498,9 +498,7 @@ class ComposeTableViewController: BaseTableViewController {
                     message.longMessage = cell.textView.text
                 }
                 // Set longMessageFormatted (HTML)
-                var longMessageFormatted = markdownText
-                    .markdownToHtml()?
-                    .replacingOccurrencesOfPepSignatureWithHtmlVersion()
+                var longMessageFormatted = markdownText.markdownToHtml()
                 if let safeHtml = longMessageFormatted {
                     longMessageFormatted = wrappedInHtmlStyle(toWrap: safeHtml)
                 }
