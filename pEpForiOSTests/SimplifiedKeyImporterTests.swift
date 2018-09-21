@@ -53,11 +53,23 @@ class SimplifiedKeyImporterTests: XCTestCase {
         let myPepIdentity = ownIdentity.pEpIdentity()
         try! session.mySelf(myPepIdentity)
 
+        guard let secretPublicKeyData = TestUtil.loadData(
+            fileName: "8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt") else {
+                XCTFail()
+                return
+        }
+
         let msg = Message(uuid: "001", uid: 1, parentFolder: inbox)
         msg.shortMessage = "Some Subject"
         msg.longMessage = "Should contain a secret key"
         msg.from = ownIdentity
         msg.to = [ownIdentity]
+
+        let secretPublicKeyAttachment = Attachment(
+            data: secretPublicKeyData,
+            mimeType: "application/pgp-keys",
+            contentDisposition: .attachment)
+        msg.attachments = [secretPublicKeyAttachment]
 
         let pEpMessage = PEPMessage(dictionary: msg.pEpMessageDict(outgoing: true))
         let (status, encryptedMessage) = try! session.encrypt(pEpMessage: pEpMessage)
