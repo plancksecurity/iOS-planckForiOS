@@ -498,10 +498,9 @@ class ComposeTableViewController: BaseTableViewController {
                     message.longMessage = cell.textView.text
                 }
                 // Set longMessageFormatted (HTML)
-                let pEpSignatureTrimmed = String.pepSignature.trimmed()
-                let pepSignatureLinked = "<a href=\"https://pep.software/withiOS\" style=\"color:\(UIColor.pEpDarkGreenHex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
-                let withLink = markdownText.replacingOccurrences(of: pEpSignatureTrimmed, with: pepSignatureLinked)
-                var longMessageFormatted = withLink.markdownToHtml()
+                var longMessageFormatted = markdownText
+                    .markdownToHtml()?
+                    .replacingOccurrencesOfPepSignatureWithHtmlVersion()
                 if let safeHtml = longMessageFormatted {
                     longMessageFormatted = wrappedInHtmlStyle(toWrap: safeHtml)
                 }
