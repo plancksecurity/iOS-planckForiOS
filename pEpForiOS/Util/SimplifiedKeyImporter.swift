@@ -16,10 +16,24 @@ class SimplifiedKeyImporter {
     }
 
     public func process(message: PEPMessage, keys: NSArray) {
+        let session = PEPSession()
+
         if let signingKey = keys.firstObject as? String,
             signingKey == trustedFingerPrint,
             let theAttachments = message.attachments {
             for attachment in theAttachments {
+                if attachment.mimeType == MimeTypeUtil.contentTypeApplicationPGPKeys {
+                    if let string = String(data: attachment.data, encoding: .utf8) {
+                        do {
+                            let keys = try? session.importKey(string)
+                        } catch {
+                            // log, but otherwise ignore
+                            Log.shared.error(component: #function,
+                                             errorString: "Could not import key data",
+                                             error: error)
+                        }
+                    }
+                }
             }
         }
     }
