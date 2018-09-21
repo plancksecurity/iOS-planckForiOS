@@ -42,19 +42,19 @@ open class ReferenceCounter {
         table[entry.index] = entry
     }
 
-    open static func inc(obj: AnyObject) {
+    public static func inc(obj: AnyObject) {
         var entry = fromTable(obj: obj)
         entry.inc()
         toTable(entry: entry)
     }
 
-    open static func dec(obj: AnyObject) {
+    public static func dec(obj: AnyObject) {
         var entry = fromTable(obj: obj)
         entry.dec()
         toTable(entry: entry)
     }
 
-    open static func logOutstanding() {
+    public static func logOutstanding() {
         for (_, entry) in table {
             if entry.count != 0 {
                 Log.shared.warn(component: #function, content: "\(entry)")

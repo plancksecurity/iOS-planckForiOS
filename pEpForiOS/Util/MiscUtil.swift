@@ -7,7 +7,7 @@
 //
 
 open class MiscUtil {
-    open static func optionalHashValue<T: Hashable>(_ someVar: T?) -> Int {
+    public static func optionalHashValue<T: Hashable>(_ someVar: T?) -> Int {
         if let theVar = someVar {
             return theVar.hashValue
         } else {
@@ -15,11 +15,11 @@ open class MiscUtil {
         }
     }
 
-    open static func isNilOrEmptyNSArray(_ array: NSArray?) -> Bool {
+    public static func isNilOrEmptyNSArray(_ array: NSArray?) -> Bool {
         return array == nil || array?.count == 0
     }
 
-    open static func isEmptyString(_ s: String?) -> Bool {
+    public static func isEmptyString(_ s: String?) -> Bool {
         if s == nil {
             return true
         }
@@ -29,7 +29,7 @@ open class MiscUtil {
         return false
     }
 
-    open static func isUnitTest() -> Bool {
+    public static func isUnitTest() -> Bool {
         return ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 }

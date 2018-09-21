@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIImage {
-    open static func generate(size: CGSize, block: (CGContext, CGSize) -> ()) -> UIImage? {
+    public static func generate(size: CGSize, block: (CGContext, CGSize) -> ()) -> UIImage? {
         var theImage: UIImage?
         UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         if let ctx = UIGraphicsGetCurrentContext() {
@@ -25,7 +25,7 @@ extension UIImage {
      - Note: Retina-displays are taken into account.
      - Returns: An image that contains exactly one pixel of the given color.
      */
-    open static func pixel(color: UIColor) -> UIImage? {
+    public static func pixel(color: UIColor) -> UIImage? {
         let pixelScale = UIScreen.main.scale
         let pixelSize = 1 / pixelScale
         let fillSize = CGSize(width: pixelSize, height: pixelSize)
