@@ -17,9 +17,4 @@ pushd ldns && git co IOS-749 ; popd
 
 touch pEp_for_iOS/pEpForiOS/secret.xcconfig
 
-pushd pEp_for_iOS && xcodebuild -workspace pEpForiOS.xcworkspace/ -scheme pEp -destination "platform=iOS Simulator,OS=11.3,name=iPhone SE" ; popd
-
-#
-# On the server, the build command would be:
-# xcodebuild -workspace pEpForiOS.xcworkspace -scheme pEp build
-#
+pushd pEp_for_iOS && xcodebuild -workspace pEpForiOS.xcworkspace -scheme pEp build
