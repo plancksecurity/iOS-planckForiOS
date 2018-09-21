@@ -479,10 +479,8 @@ class ComposeTableViewController: BaseTableViewController {
                 }
             } else if let messageBodyCell = cell as? MessageBodyCell {
                 let inlinedAttachments = messageBodyCell.allInlinedAttachments()
-
                 // Add non-inlined attachments to our message ...
                 message.attachments = nonInlinedAttachmentData.attachments
-
                 // ... and also inlined ones, parsed from the text.
                 // This can only work for images. I case we decide to inline generic file icons,
                 // movie thumbnails or such, we have to re-think and re-write the code for
@@ -492,7 +490,6 @@ class ComposeTableViewController: BaseTableViewController {
                 // Set longMessage (plain text)
                 if inlinedAttachments.count > 0 {
                     message.longMessage = markdownText
-
                     message.attachments = message.attachments + attachments
                 } else {
                     message.longMessage = cell.textView.text
