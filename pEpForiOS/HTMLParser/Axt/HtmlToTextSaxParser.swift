@@ -15,7 +15,7 @@ class HtmlToTextSaxParser: BasicSaxParser {
         super.parse(string: string, theDelegate: self)
     }
 
-    var tagsAcceptingChars = Set<String>(["p", "div", "body", "b", "td", "span"])
+    var tagsAcceptingChars = Set<String>(["p", "div", "body", "b", "td", "span", "a"])
 
     override init() {
         for i in 1...20 {
