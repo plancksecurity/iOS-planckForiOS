@@ -212,16 +212,6 @@
                ReferencedContainer = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E441CBD0BCA00A7FC3C"
-               BuildableName = "pEpForiOSUITests.xctest"
-               BlueprintName = "pEpForiOSUITests"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
