@@ -479,26 +479,30 @@ class ComposeTableViewController: BaseTableViewController {
                 }
             } else if let messageBodyCell = cell as? MessageBodyCell {
                 let inlinedAttachments = messageBodyCell.allInlinedAttachments()
-                // add non-inlined attachments to our message ...
+
+                // Add non-inlined attachments to our message ...
                 message.attachments = nonInlinedAttachmentData.attachments
 
+                // ... and also inlined ones, parsed from the text.
+                // This can only work for images. I case we decide to inline generic file icons,
+                // movie thumbnails or such, we have to re-think and re-write the code for
+                // inlined attachments, as for instance only the movies thumbnail would be send
+                // instead of the movie itself.
+                let (markdownText, attachments) = cell.textView.toMarkdown()
+                // Set longMessage (plain text)
                 if inlinedAttachments.count > 0 {
-                    // ... and also inlined ones, parsed from the text.
-                    // This can only work fro images. I case we decide to inline generic file icons,
-                    // movie thumbnails or such, we have to re-think and re-write the code for
-                    // inlined attachments, as for instance only the movies thumbnail would be send
-                    // instead of the movie itself.
-                    let (markdownText, attachments) = cell.textView.toMarkdown()
                     message.longMessage = markdownText
-                    var longMessageFormatted = markdownText.markdownToHtml()
-                    if let safeHtml = longMessageFormatted {
-                        longMessageFormatted = wrappedInHtmlStyle(toWrap: safeHtml)
-                    }
-                    message.longMessageFormatted = longMessageFormatted
+
                     message.attachments = message.attachments + attachments
                 } else {
                     message.longMessage = cell.textView.text
                 }
+                // Set longMessageFormatted (HTML)
+                var longMessageFormatted = markdownText.markdownToHtml()
+                if let safeHtml = longMessageFormatted {
+                    longMessageFormatted = wrappedInHtmlStyle(toWrap: safeHtml)
+                }
+                message.longMessageFormatted = longMessageFormatted
             } else if let fm = cell.fieldModel, fm.type == .subject {
                 message.shortMessage = cell.textView.text.trimmingCharacters(
                     in: .whitespacesAndNewlines).replaceNewLinesWith(" ")
@@ -654,7 +658,7 @@ class ComposeTableViewController: BaseTableViewController {
     /// - Returns: attachment for given image
     private final func createAttachment(forAssetWithUrl assetUrl: URL,
                                         image: UIImage) -> Attachment {
-        let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+        var mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
         return Attachment.createFromAsset(mimeType: mimeType,
                                           assetUrl: assetUrl,
                                           image: image,
