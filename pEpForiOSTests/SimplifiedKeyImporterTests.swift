@@ -72,7 +72,7 @@ class SimplifiedKeyImporterTests: XCTestCase {
 
         let secretPublicKeyAttachment = Attachment(
             data: secretPublicKeyData,
-            mimeType: MimeTypeUtil.contentTypeApplicationPGPKeys,
+            mimeType: MimeTypeUtil.defaultMimeType,
             contentDisposition: .attachment)
         msg.attachments = [secretPublicKeyAttachment]
 
@@ -103,9 +103,18 @@ class SimplifiedKeyImporterTests: XCTestCase {
             return
         }
 
+        XCTAssertEqual((decryptedMessage.attachments ?? []).count, msg.attachments.count)
         XCTAssertFalse(decryptedMessage.isLikelyPEPEncrypted())
 
         let importer = SimplifiedKeyImporter(trustedFingerPrint: importFingerprint)
-        importer.process(message: decryptedMessage, keys: theExtraKeys)
+        let identities = importer.process(message: decryptedMessage, keys: theExtraKeys)
+        XCTAssertEqual(identities.count, 1)
+
+        guard let importedIdent = identities.first else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(importedIdent.fingerPrint, "8B691AD204E22FD1BF018E0D6C9EAD5A798018D1")
     }
 }
