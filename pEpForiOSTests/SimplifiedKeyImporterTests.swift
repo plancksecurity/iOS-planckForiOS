@@ -72,8 +72,8 @@ class SimplifiedKeyImporterTests: XCTestCase {
         msg.attachments = [secretPublicKeyAttachment]
 
         let pEpMessage = PEPMessage(dictionary: msg.pEpMessageDict(outgoing: true))
-        let (status, encryptedMessage) = try! session.encrypt(pEpMessage: pEpMessage)
-        XCTAssertEqual(status, PEP_STATUS_OK)
+        let (encryptionStatus, encryptedMessage) = try! session.encrypt(pEpMessage: pEpMessage)
+        XCTAssertEqual(encryptionStatus, PEP_STATUS_OK)
 
         guard let theEncryptedMessage = encryptedMessage else {
             XCTFail()
@@ -81,5 +81,18 @@ class SimplifiedKeyImporterTests: XCTestCase {
         }
 
         XCTAssertTrue(theEncryptedMessage.isLikelyPEPEncrypted())
+
+        var flags = PEP_decrypt_flag_none
+        var rating = PEP_rating_b0rken
+        var extraKeys: NSArray?
+        var decryptionStatus = PEP_SYNC_NO_TRUST
+        let decryptedMessage = try! session.decryptMessage(
+            theEncryptedMessage,
+            flags: &flags,
+            rating: &rating,
+            extraKeys: &extraKeys,
+            status: &decryptionStatus)
+
+        XCTAssertFalse(decryptedMessage.isLikelyPEPEncrypted())
     }
 }
