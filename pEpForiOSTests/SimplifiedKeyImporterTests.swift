@@ -72,7 +72,7 @@ class SimplifiedKeyImporterTests: XCTestCase {
 
         let secretPublicKeyAttachment = Attachment(
             data: secretPublicKeyData,
-            mimeType: Constants.contentTypeApplicationPGPKeys,
+            mimeType: MimeTypeUtil.contentTypeApplicationPGPKeys,
             contentDisposition: .attachment)
         msg.attachments = [secretPublicKeyAttachment]
 

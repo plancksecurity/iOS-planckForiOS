@@ -12,6 +12,11 @@ open class MimeTypeUtil {
     public static let defaultMimeType = "application/octet-stream"
     public static let jpegMimeType = "image/jpeg"
 
+    /**
+     Content type/mime type for attached keys.
+     */
+    public static let contentTypeApplicationPGPKeys = "application/pgp-keys"
+
     private let comp = "MimeTypeUtil"
     private var mimeTypeToExtension = [String: String]()
     private var extensionToMimeType = [String: String]()
