@@ -26,7 +26,8 @@ extension Attachment {
     }
 
     /// Trys to extract the contentID of the attachment from the `filename` field.
-    /// Returns the CID (without `cid:` or `cid://`) if `filename` contains it. Otherwize returns `nil`.
+    /// Returns the CID (without `cid:` or `cid://`) if `filename` contains it.
+    /// Otherwize `nil` is returned.
     var contentID: String? {
         guard let fn = fileName else {
             return nil

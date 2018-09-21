@@ -13,16 +13,10 @@ import XCTest
 
 class EmailListViewModelTests_Threading_12_Messages: CoreDataDrivenTestBase {
     let myWaitTime = TestUtil.waitTimeForever
-
-    var account: Account!
     var inbox: Folder!
-
-    // MARK: - Setup
 
     override func setUp() {
         super.setUp()
-
-        account = cdAccount.account()
 
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()

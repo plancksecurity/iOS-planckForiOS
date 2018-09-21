@@ -12,7 +12,6 @@ import XCTest
 @testable import MessageModel
 
 class ThreadedFolderTests: CoreDataDrivenTestBase {
-    var account: Account!
     var inbox: Folder!
     var topMessages = [Message]()
     var inboxCount = 5
@@ -21,9 +20,6 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-
-        account = cdAccount.account()
-
         inbox = Folder(name: "INBOX", parent: nil, account: account, folderType: .inbox)
         inbox.save()
     }

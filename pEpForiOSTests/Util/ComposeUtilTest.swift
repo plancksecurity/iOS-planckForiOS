@@ -12,10 +12,6 @@ import MessageModel
 @testable import pEpForiOS
 
 class ComposeUtilTest: CoreDataDrivenTestBase {
-    var account: Account {
-        return cdAccount.account()
-    }
-
     var someone_A: Identity {
         return createForeignIdentity(withId: "A")
     }

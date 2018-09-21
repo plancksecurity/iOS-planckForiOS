@@ -34,11 +34,11 @@ public class ComposeFieldModel {
             }
         }
     }
-    
+
     enum FieldDisplayType: String {
         case always, conditional, never
     }
-    
+
     var type: FieldType = .to
     var display: FieldDisplayType = .always
     var height: CGFloat = defaultCellHeight

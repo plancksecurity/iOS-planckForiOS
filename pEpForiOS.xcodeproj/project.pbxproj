@@ -77,6 +77,8 @@
 		1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F41FC82A4900D52A5D /* URL+MIME.swift */; };
 		1541D7FA1FCC18E100D52A5D /* AttachmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */; };
 		1541D7FC1FCC199B00D52A5D /* AttachmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */; };
+		1544BCFE215246F30075C5A0 /* AttachmentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1544BCFD215246F30075C5A0 /* AttachmentFilter.swift */; };
+		1544BD0221524C9F0075C5A0 /* AttachmentFilterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */; };
 		1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */; };
 		15484B682105D5AA00F9D962 /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15484B672105D5AA00F9D962 /* ConnectInfo.swift */; };
 		15484B6A2105D5C500F9D962 /* EmailConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15484B692105D5C500F9D962 /* EmailConnectInfo.swift */; };
@@ -102,6 +104,7 @@
 		1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */; };
 		1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */; };
 		1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569AEA420E14DC2002102A0 /* ReUploadTest.swift */; };
+		1569DDB8215395BE007A0398 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */; };
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
@@ -374,6 +377,8 @@
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
 		43A26FBA1E0408FB00AF0B84 /* ServiceErrorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A26FB91E0408FB00AF0B84 /* ServiceErrorProtocol.swift */; };
 		43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */; };
+		43A3847D2153BD94006AC8F8 /* SimplifiedKeyImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A3847C2153BD94006AC8F8 /* SimplifiedKeyImporter.swift */; };
+		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
 		43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */; };
 		43A6E04B1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E04A1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift */; };
 		43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A6E0571E57400E005BEE69 /* RatingReEvaluator.swift */; };
@@ -617,6 +622,8 @@
 		1541D7F41FC82A4900D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
 		1541D7F91FCC18E100D52A5D /* AttachmentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AttachmentCell.xib; sourceTree = "<group>"; };
 		1541D7FB1FCC199B00D52A5D /* AttachmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentCell.swift; sourceTree = "<group>"; };
+		1544BCFD215246F30075C5A0 /* AttachmentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentFilter.swift; sourceTree = "<group>"; };
+		1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AttachmentFilterTest.swift; path = pEpForiOSTests/Models/Filter/AttachmentFilterTest.swift; sourceTree = SOURCE_ROOT; };
 		154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNumberOfNewMailsOperation.swift; sourceTree = "<group>"; };
 		15484B672105D5AA00F9D962 /* ConnectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectInfo.swift; sourceTree = "<group>"; };
 		15484B692105D5C500F9D962 /* EmailConnectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailConnectInfo.swift; sourceTree = "<group>"; };
@@ -642,6 +649,7 @@
 		1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesService.swift; sourceTree = "<group>"; };
 		1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
 		1569AEA420E14DC2002102A0 /* ReUploadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReUploadTest.swift; sourceTree = "<group>"; };
+		1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Extension.swift"; path = "pEpForiOS/Util/NSAttributedString+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
@@ -941,6 +949,8 @@
 		43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyUtilTests.swift; sourceTree = "<group>"; };
 		43A26FB91E0408FB00AF0B84 /* ServiceErrorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServiceErrorProtocol.swift; sourceTree = "<group>"; };
 		43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncOperation.swift; sourceTree = "<group>"; };
+		43A3847C2153BD94006AC8F8 /* SimplifiedKeyImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimplifiedKeyImporter.swift; sourceTree = "<group>"; };
+		43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSwipeTableViewCell.swift; sourceTree = "<group>"; };
 		43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UnencryptedHTMLMail.txt; sourceTree = "<group>"; };
 		43A6E04A1E5726C8005BEE69 /* ReevaluateMessageRatingOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReevaluateMessageRatingOperation.swift; sourceTree = "<group>"; };
 		43A6E0571E57400E005BEE69 /* RatingReEvaluator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingReEvaluator.swift; sourceTree = "<group>"; };
@@ -1232,6 +1242,15 @@
 			path = IMAP;
 			sourceTree = "<group>";
 		};
+		1544BD0021524C6C0075C5A0 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				15BA536D20A095410090F126 /* UnifiedInboxTest.swift */,
+				1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
 		15484B652105D55600F9D962 /* ConnectInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -1431,6 +1450,7 @@
 			isa = PBXGroup;
 			children = (
 				1554756B213FE139005A52D0 /* UnifiedFilter.swift */,
+				1544BCFD215246F30075C5A0 /* AttachmentFilter.swift */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -1541,6 +1561,7 @@
 				4360282C1ED6F27600C95FC4 /* NetworkError.swift */,
 				4360282E1ED6F33400C95FC4 /* ImapSyncError.swift */,
 				4307C4711ED826E400A276A4 /* SmtpSendError.swift */,
+				1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1919,6 +1940,7 @@
 				15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */,
 				155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */,
 				150707D920FFC31E00AA213F /* ComposeUtil.swift */,
+				43A3847C2153BD94006AC8F8 /* SimplifiedKeyImporter.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1978,6 +2000,7 @@
 				4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */,
 				4356FFE42135448600804089 /* ReplyAllPossibleChecker.swift */,
 				1554755E2137F6F8005A52D0 /* SwipeActionDescriptor.swift */,
+				43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2154,10 +2177,10 @@
 		4918EBF91E783C70006207FC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1544BD0021524C6C0075C5A0 /* Filter */,
 				B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */,
 				4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */,
 				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
-				15BA536D20A095410090F126 /* UnifiedInboxTest.swift */,
 				43504D4320E0DD0E00D11E52 /* EmailListViewModeTests+Threading.swift */,
 				4335002D212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift */,
 			);
@@ -2545,7 +2568,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "p≡p Security S.A.";
 				TargetAttributes = {
 					43980E221CBD0BC900A7FC3C = {
@@ -2829,6 +2852,7 @@
 				4362399B1EAE0CE800BD2EB9 /* Date+Extension.swift in Sources */,
 				43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */,
 				431D60DB1E93BB2D001266D7 /* AttachmentsView.swift in Sources */,
+				1569DDB8215395BE007A0398 /* NSAttributedString+Extension.swift in Sources */,
 				1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */,
 				150707DA20FFC31E00AA213F /* ComposeUtil.swift in Sources */,
 				43ED53791CC77F95006AB156 /* UserInfoTableViewController.swift in Sources */,
@@ -2841,6 +2865,8 @@
 				220DCE2E1E0AB544002FE716 /* MessageCell.swift in Sources */,
 				43DB81331E2A56BE00A20902 /* AppendMailsOperation.swift in Sources */,
 				8B69E3991E30F80E0022959E /* Appearance.swift in Sources */,
+				43A3847D2153BD94006AC8F8 /* SimplifiedKeyImporter.swift in Sources */,
+				1544BCFE215246F30075C5A0 /* AttachmentFilter.swift in Sources */,
 				43F848491EAA09AE00DBE460 /* Weak.swift in Sources */,
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
 				4341980520AB037E0062F7F6 /* CGImageSource+Extension.swift in Sources */,
@@ -2918,6 +2944,7 @@
 				432142641E8FD66900FBE987 /* FetchNumberOfNewMailsService.swift in Sources */,
 				4351C2C81F4441190053381F /* blocks.c in Sources */,
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
+				43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */,
 				4354E5EF209B07790030304B /* TextViewInTableViewScrollUtil.swift in Sources */,
 				00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */,
 				B761A80A20F5F0A6000832C2 /* UIBarButtonItem+Extension.swift in Sources */,
@@ -3130,6 +3157,7 @@
 				003C0FA720B5581A0093A987 /* SecretTestData.swift in Sources */,
 				1555361B207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift in Sources */,
 				154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */,
+				1544BD0221524C9F0075C5A0 /* AttachmentFilterTest.swift in Sources */,
 				4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */,
 				151F7201202A06760057C74D /* CdAccount+TestUtils.swift in Sources */,
 				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
@@ -3350,11 +3378,11 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
-				OTHER_SWIFT_FLAGS = "-Onone";
+				OTHER_SWIFT_FLAGS = " ";
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = "$(inherited)";
 			};
 			name = Debug;
 		};
@@ -3418,7 +3446,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = "$(inherited)";
 			};
 			name = Release;
 		};
@@ -3459,7 +3487,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				VALID_ARCHS = "arm64 armv7s armv7";
+				VALID_ARCHS = "$(inherited)";
 			};
 			name = Debug;
 		};
@@ -3497,7 +3525,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				VALID_ARCHS = "arm64 armv7s armv7";
+				VALID_ARCHS = "$(inherited)";
 			};
 			name = Release;
 		};

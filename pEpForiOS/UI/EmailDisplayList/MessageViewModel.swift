@@ -68,7 +68,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         longMessageFormatted = message.longMessageFormatted
         dateSent = message.sent ?? Date()
 
-        showAttchmentIcon = message.attachments.count > 0
+        showAttchmentIcon = message.viewableAttachments().count > 0
         identity = (message.from ?? Identity(address: "unknown@unknown.com"))
         from = (message.from ?? Identity(address: "unknown@unknown.com")).userNameOrAddress
         displayedImageIdentity =  MessageViewModel.identityForImage(from: message)
@@ -156,8 +156,12 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     class func getSummary(fromMessage msg: Message) -> String {
         var body: String?
-        if let text = msg.longMessage {
-            body = text.replaceNewLinesWith(" ").trimmed()
+        if var text = msg.longMessage {
+            text = text
+                .stringCleanedFromNSAttributedStingAttributes()
+                .replaceNewLinesWith(" ")
+                .trimmed()
+            body = text
         } else if let html = msg.longMessageFormatted {
             // Limit the size of HTML to parse
             // That might result in a messy preview but valid messages use to offer a plaintext
@@ -167,6 +171,11 @@ class MessageViewModel: CustomDebugStringConvertible {
             let numChars = maxBodyPreviewCharacters * factorHtmlTags
             let truncatedHtml = html.prefix(ofLength: numChars)
             body = truncatedHtml.extractTextFromHTML()
+
+            //IOS-1347:
+            // We might want to cleans when displaying instead of when saving.
+            // Waiting for details. See IOS-1347.
+
             body = body?.replaceNewLinesWith(" ").trimmed()
         }
         guard let saveBody = body else {

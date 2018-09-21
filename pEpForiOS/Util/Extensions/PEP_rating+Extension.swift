@@ -25,6 +25,13 @@ extension PEP_rating {
                                                        PEP_rating_cannot_decrypt,
                                                        PEP_rating_have_no_key]
 
+    static let neverShowAttachmentsForRatings: [PEP_rating] = [PEP_rating_cannot_decrypt,
+                                                               PEP_rating_have_no_key]
+
+    func dontShowAttachments() -> Bool {
+        return PEP_rating.neverShowAttachmentsForRatings.contains(self)
+    }
+
     /** Does the given pEp rating mean the user is under attack? */
     func isUnderAttack() -> Bool {
         switch self {

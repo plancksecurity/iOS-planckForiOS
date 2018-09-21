@@ -92,6 +92,9 @@ extension Message {
      - Returns: An array of attachments that can be viewed.
      */
     public func viewableAttachments() -> [Attachment] {
+        guard ratingIsOkToShowAttachments else {
+            return []
+        }
         let viewable = attachments.filter() { return $0.isViewable() }
         let parentMessageAssured = viewable.map { attachment -> (Attachment) in
             attachment.message = self
@@ -99,6 +102,14 @@ extension Message {
         }
         
         return parentMessageAssured
+    }
+
+    private var ratingIsOkToShowAttachments: Bool {
+        var isOkToShowAttachments = true
+        if let msgRatingInt = pEpRatingInt, let rating = PEPUtil.pEpRatingFromInt(msgRatingInt) {
+            isOkToShowAttachments = !rating.dontShowAttachments()
+        }
+        return isOkToShowAttachments
     }
 
     /// - Returns: all attachments with mimeType "text/plain" and contentDisposition "inlined"

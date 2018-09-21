@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class Appearance {
-    static func pEp(_ color: UIColor = .pEpGreen) {
+    public static func pEp(_ color: UIColor = .pEpGreen) {
         UINavigationBar.appearance().backgroundColor = .white
         UINavigationBar.appearance().barTintColor = .white
         UINavigationBar.appearance().tintColor = color
@@ -31,10 +31,15 @@ class Appearance {
 
         setAlertControllerTintColor(color)
 
+        Appearance.configureSelectedBackgroundViewForPep(
+            tableViewCell: UITableViewCell.appearance())
+    }
+
+    public static func configureSelectedBackgroundViewForPep(tableViewCell: UITableViewCell) {
         let tableViewCellSelectedbackgroundView = UIView()
         tableViewCellSelectedbackgroundView.backgroundColor =
             UIColor.pEpGreen.withAlphaComponent(0.2)
-        UITableViewCell.appearance().selectedBackgroundView = tableViewCellSelectedbackgroundView
+        tableViewCell.selectedBackgroundView = tableViewCellSelectedbackgroundView
     }
 
     private static func setAlertControllerTintColor(_ color: UIColor = .pEpGreen) {

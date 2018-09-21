@@ -54,7 +54,7 @@ public class FilterViewModel {
                     FilterCellViewModel(image: icon, title: account.user.address,
                                         enabled: filters.contains(Address: account.user.address)
                                             ||
-                                            filters.isUnified(),
+                                            (filters.isUnified() && !filters.contains(type: AccountFilter.self)),
                                         filter: AccountFilter(address: account.user.address)))
             }
             break
@@ -107,14 +107,6 @@ public class FilterViewModel {
             }
         }
         return filter
-    }
-
-    func addOrRemoveUnified(){
-        if accountsEnabled() == Account.all().count {
-            filters.add(filter: UnifiedFilter())
-        } else {
-            filters.remove(filter: UnifiedFilter())
-        }
     }
 
     func accountsEnabled() -> Int{
