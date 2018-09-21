@@ -36,19 +36,33 @@ class PEPUtilTest: XCTestCase {
         assertReplaceWithHref(testee)
     }
 
+    func testSignature_none() {
+        let testee = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+        assertReplaceWithHref(testee)
+    }
+
     func testSignature_only() {
         let testee = plainSignature
-        assertReplaceWithHref(testee)
+        assertReplaceWithHref(testee, isIncluded: false)
     }
 
     // MARK: - Helper
 
-    private func assertReplaceWithHref(_ testee: String) {
+    private func assertReplaceWithHref(_ testee: String, isIncluded: Bool = true) {
+        if isIncluded {
         XCTAssertTrue(testee.contains(find: String.pepSignature))
+        } else {
+            XCTAssertFalse(testee.contains(find: String.pepSignature))
+        }
         XCTAssertFalse(testee.contains(find: String.pEpSignatureHtml))
 
         let href = testee.replacingOccurrencesOfPepSignatureWithHtmlVersion()
-        XCTAssertFalse(href.contains(find: String.pepSignature))
-        XCTAssertTrue(href.contains(find: String.pEpSignatureHtml))
+        if isIncluded {
+            XCTAssertFalse(href.contains(find: String.pepSignature))
+            XCTAssertTrue(href.contains(find: String.pEpSignatureHtml))
+        } else {
+            XCTAssertFalse(href.contains(find: String.pepSignature))
+            XCTAssertFalse(href.contains(find: String.pEpSignatureHtml))
+        }
     }
 }
