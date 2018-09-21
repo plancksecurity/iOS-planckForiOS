@@ -12,6 +12,8 @@ import XCTest
 @testable import MessageModel
 
 class StringHTMLExtensionTests: XCTestCase {
+    let pepSignatureTrimmed = String.pepSignature.trimmed()
+
     func testExtractTextFromHTML() {
         var html = "<html>\r\n  <head>\r\n\r\n"
             + "<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\r\n"
@@ -63,7 +65,7 @@ class StringHTMLExtensionTests: XCTestCase {
                 return
         }
         XCTAssertTrue(mdString.count > 0)
-        XCTAssertEqual(mdString, "2\n\n![alt0](src0)\n\n1\n\n![alt1](src1)\n\nSent with p≡p")
+        XCTAssertEqual(mdString, "2\n\n![alt0](src0)\n\n1\n\n![alt1](src1)\n\n\(pepSignatureTrimmed)")
         XCTAssertNotEqual(mdString, inputString)
     }
 
@@ -123,7 +125,7 @@ class StringHTMLExtensionTests: XCTestCase {
         let attributedString = input.htmlToAttributedString(attachmentDelegate: attachmentDelegate)
         XCTAssertEqual(
             attributedString.string,
-            "\n￼\n\nSent with p≡p\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n")
+            "\n￼\n\n\(pepSignatureTrimmed)\n\nTest 001 wrote on August 25, 2017 at 3:34:17 PM GMT+2:\n\n> Just some mind the gap text.\n> Blah!\n")
 
         XCTAssertEqual(attachmentDelegate.numberOfAttachmentsUsed, 1)
         XCTAssertEqual(attachmentDelegate.attachments[0].mimeType, theMimeType)
@@ -132,7 +134,7 @@ class StringHTMLExtensionTests: XCTestCase {
         XCTAssertEqual(attachments.count, 1)
 
         let patternImage = "!\\[[^]]+]\\([^)]+\\)"
-        let patternRest1 = "\n\nSent with p≡p\n\n"
+        let patternRest1 = "\n\n\(pepSignatureTrimmed)\n\n"
         let patternRest2 = "Test 001 wrote on August 25, 2017 at 3:34:17 PM GMT\\+2:\n\n"
         let patternRest3 = "> Just some mind the gap text.\n> Blah!"
         XCTAssertTrue(markdown.matches(
