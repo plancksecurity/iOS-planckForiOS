@@ -60,6 +60,14 @@ class SimplifiedKeyImporterTests: XCTestCase {
         msg.to = [ownIdentity]
 
         let pEpMessage = PEPMessage(dictionary: msg.pEpMessageDict(outgoing: true))
-        let encryptedMessage = try! session.encrypt(pEpMessage: pEpMessage)
+        let (status, encryptedMessage) = try! session.encrypt(pEpMessage: pEpMessage)
+        XCTAssertEqual(status, PEP_STATUS_OK)
+
+        guard let theEncryptedMessage = encryptedMessage else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertTrue(theEncryptedMessage.isLikelyPEPEncrypted())
     }
 }
