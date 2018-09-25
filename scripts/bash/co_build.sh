@@ -14,6 +14,7 @@ hg clone https://pep.foundation/dev/repos/libAccountSettings/
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
 
 pushd ldns && git co IOS-749 ; popd
+pushd SwipeCellKit && git co master ; popd
 
 touch pEp_for_iOS/pEpForiOS/secret.xcconfig
 
