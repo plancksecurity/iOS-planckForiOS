@@ -28,10 +28,6 @@ extension Message {
         return accountHasBeenCreatedInLocalNetwork || userDecidedToTrustServer
     }
 
-    public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
-        return PEPUtil.pEpDict(message: self)
-    }
-
     func outgoingMessageRating() -> PEP_rating {
         if !pEpProtected {
             return PEP_rating_unencrypted

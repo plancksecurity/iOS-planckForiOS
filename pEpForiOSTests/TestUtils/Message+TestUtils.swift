@@ -24,4 +24,28 @@ extension Message {
 
         return Message(uuid: uuid, parentFolder: fakeFolder)
     }
+
+    public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
+        var dict = PEPMessageDict()
+
+        if let subject = shortMessage {
+            dict[kPepShortMessage] = subject as NSString
+        }
+
+        dict[kPepTo] = NSArray(array: to.map() { return PEPUtil.pEp(identity: $0) })
+        dict[kPepCC] = NSArray(array: cc.map() { return PEPUtil.pEp(identity: $0) })
+        dict[kPepBCC] = NSArray(array: bcc.map() { return PEPUtil.pEp(identity: $0) })
+
+        dict[kPepFrom]  = PEPUtil.pEpOptional(identity: from) as AnyObject
+        dict[kPepID] = messageID as AnyObject
+        dict[kPepOutgoing] = outgoing as AnyObject?
+
+        dict[kPepAttachments] = NSArray(array: attachments.map() {
+            return PEPUtil.pEpAttachment(attachment: $0)
+        })
+
+        dict[kPepReferences] = references as AnyObject
+
+        return dict
+    }
 }

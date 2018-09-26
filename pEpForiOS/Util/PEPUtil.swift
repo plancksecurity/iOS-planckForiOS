@@ -151,30 +151,6 @@ open class PEPUtil {
                                 Int32(attachment.contentDisposition.rawValue)))
     }
 
-    public static func pEpDict(message: Message, outgoing: Bool = true) -> PEPMessageDict {
-        var dict = PEPMessageDict()
-
-        if let subject = message.shortMessage {
-            dict[kPepShortMessage] = subject as NSString
-        }
-
-        dict[kPepTo] = NSArray(array: message.to.map() { return pEp(identity: $0) })
-        dict[kPepCC] = NSArray(array: message.cc.map() { return pEp(identity: $0) })
-        dict[kPepBCC] = NSArray(array: message.bcc.map() { return pEp(identity: $0) })
-
-        dict[kPepFrom]  = pEpOptional(identity: message.from) as AnyObject
-        dict[kPepID] = message.messageID as AnyObject
-        dict[kPepOutgoing] = outgoing as AnyObject?
-
-        dict[kPepAttachments] = NSArray(array: message.attachments.map() {
-            return pEpAttachment(attachment: $0)
-        })
-
-        dict[kPepReferences] = message.references as AnyObject
-
-        return dict
-    }
-
     /**
      Converts a core data message into the format required by pEp.
      - Parameter message: The core data message to convert
@@ -392,13 +368,6 @@ open class PEPUtil {
      */
     public static func pantomime(cdMessage: CdMessage) -> CWIMAPMessage {
         return pantomime(pEpMessageDict: pEpDict(cdMessage: cdMessage))
-    }
-
-    /**
-     Converts a given `Message` into the equivalent `CWIMAPMessage`.
-     */
-    public static func pantomime(message: Message) -> CWIMAPMessage {
-        return pantomime(pEpMessageDict: pEpDict(message: message))
     }
 
     public static func pantomime(pEpMessageDict: PEPMessageDict,
