@@ -63,26 +63,32 @@ class SimplifiedKeyImporter {
      The fingerprint is returned separately, because in the identity it's optional.
      */
     private func parseOwnIdentityFromTextBody(message: PEPMessage) -> (PEPIdentity, String)? {
-        guard let (theEmail, theFingerprint) = emailAndFingerprintFromTextBody(
-            message: message) else {
-                return nil
+        let newlines = ["\r\n", "\n"]
+
+        for separator in newlines {
+            if let (theEmail, theFingerprint) = emailAndFingerprintFromTextBody(
+                message: message,
+                separator: separator) {
+                let theUserId = PEP_OWN_USERID
+
+                let theIdent = PEPIdentity(
+                    address: theEmail, userID: theUserId, userName: theUserId, isOwn: true)
+                theIdent.fingerPrint = theFingerprint
+
+                return (theIdent, theFingerprint)
+            }
         }
 
-        let theUserId = PEP_OWN_USERID
-
-        let theIdent = PEPIdentity(
-            address: theEmail, userID: theUserId, userName: theUserId, isOwn: true)
-        theIdent.fingerPrint = theFingerprint
-
-        return (theIdent, theFingerprint)
+        return nil
     }
 
-    private func emailAndFingerprintFromTextBody(message: PEPMessage) -> (String, String)? {
+    private func emailAndFingerprintFromTextBody(message: PEPMessage,
+                                                 separator: String) -> (String, String)? {
         guard let theText = message.longMessage else {
             return nil
         }
 
-        let theLines = theText.components(separatedBy: CharacterSet.newlines)
+        let theLines = theText.components(separatedBy: separator)
         guard theLines.count >= 2 else {
             return nil
         }
@@ -95,6 +101,10 @@ class SimplifiedKeyImporter {
 
         let theFingerprint = String(theLines[1])
 
-        return (theEmail, theFingerprint)
+        if theFingerprint.count == 40 {
+            return (theEmail, theFingerprint)
+        } else {
+            return nil
+        }
     }
 }
