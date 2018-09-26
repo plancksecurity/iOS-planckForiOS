@@ -110,7 +110,7 @@ open class ImapSync: Service {
 
     open override var comp: String { get { return "ImapSync" } }
 
-    static open let defaultImapInboxName = "INBOX"
+    static public let defaultImapInboxName = "INBOX"
 
     let nonExistantMailboxName = MessageID.generate()
 

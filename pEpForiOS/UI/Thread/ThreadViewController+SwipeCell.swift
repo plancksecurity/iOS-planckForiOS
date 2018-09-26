@@ -57,7 +57,7 @@ extension ThreadViewController: SwipeTableViewCellDelegate {
     }
 
     private func deleteAction() -> SwipeAction {
-        let defaultIsArchive = false
+        let defaultIsArchive = false //!!!: Looks wrong!
         let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
         let descriptorDestructive: SwipeActionDescriptor = defaultIsArchive ? .archive : .trash
         let archiveAction =

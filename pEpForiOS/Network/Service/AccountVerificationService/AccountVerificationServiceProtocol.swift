@@ -54,7 +54,7 @@ protocol AccountVerificationServiceDelegate: class {
 }
 
 protocol AccountVerificationServiceProtocol {
-    weak var delegate: AccountVerificationServiceDelegate? { get set }
+    var delegate: AccountVerificationServiceDelegate? { get set }
     var accountVerificationState: AccountVerificationState { get }
 
     /*

@@ -655,7 +655,7 @@ class ComposeTableViewController: BaseTableViewController {
     /// - Returns: attachment for given image
     private final func createAttachment(forAssetWithUrl assetUrl: URL,
                                         image: UIImage) -> Attachment {
-        var mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
+        let mimeType = assetUrl.mimeType() ?? MimeTypeUtil.defaultMimeType
         return Attachment.createFromAsset(mimeType: mimeType,
                                           assetUrl: assetUrl,
                                           image: image,

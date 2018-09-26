@@ -19,7 +19,7 @@ extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `NSNumber`
      */
-    static open func pantomimeFlagsFromNumber(_ flags: Int16) -> CWFlags {
+    static public func pantomimeFlagsFromNumber(_ flags: Int16) -> CWFlags {
         if let fl = PantomimeFlag(rawValue: UInt(flags)) {
             return CWFlags(flags: fl)
         }

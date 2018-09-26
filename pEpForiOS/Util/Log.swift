@@ -28,7 +28,7 @@ import MessageModel
         return createe
     }()
 
-    static open let shared: Log = {
+    static public let shared: Log = {
         let instance = Log()
         return instance
     }()
@@ -62,26 +62,26 @@ import MessageModel
         Log.shared.loggingQueue.cancelAllOperations()
     }
 
-    static open func disableLog() {
+    static public func disableLog() {
         Log.shared.loggingQueue.addOperation() {
             Log.shared.logEnabled = false
         }
     }
 
-    static open func enableLog() {
+    static public func enableLog() {
         Log.shared.loggingQueue.addOperation() {
             Log.shared.logEnabled = true
         }
     }
 
-    static open func checkEnabled(_ block: ((Bool) -> ())?) {
+    static public func checkEnabled(_ block: ((Bool) -> ())?) {
         Log.shared.loggingQueue.addOperation() {
             let b = Log.shared.logEnabled
             block?(b)
         }
     }
 
-    static open func checklog(_ block: ((String?) -> ())?) {
+    static public func checklog(_ block: ((String?) -> ())?) {
         Log.shared.loggingQueue.addOperation() {
             if let logString = try? PEPSession().getLog() {
                 block?(logString)
@@ -91,36 +91,36 @@ import MessageModel
         }
     }
 
-    static open func verbose(component: String, content: String) {
+    static public func verbose(component: String, content: String) {
         Log.shared.saveLog(severity:.verbose,
                            entity: component, description: content, comment: "verbose")
     }
 
     /** Somewhat verbose */
-    static open func info(component: String, content: String) {
+    static public func info(component: String, content: String) {
         Log.shared.saveLog(severity:.info,
                            entity: component, description: content, comment: "info")
     }
 
     /** More important */
-    static open func warn(component: String, content: String) {
+    static public func warn(component: String, content: String) {
         Log.shared.saveLog(severity:.warning,
                            entity: component, description: content, comment: "warn")
     }
 
-    static open func error(component: String, error: Error?) {
+    static public func error(component: String, error: Error?) {
         if let err = error {
             Log.shared.saveLog(severity:.error,
                                entity: component, description: " \(err)", comment: "error")
         }
     }
 
-    static open func error(component: String, errorString: String, error: Error) {
+    static public func error(component: String, errorString: String, error: Error) {
         Log.shared.saveLog(severity:.error,
             entity: component, description: "\(errorString) \(error)", comment: "error")
     }
 
-    static open func error(component: String, errorString: String) {
+    static public func error(component: String, errorString: String) {
         Log.shared.saveLog(severity:.error,
                            entity: component, description: errorString, comment: "error")
     }

@@ -16,8 +16,8 @@ protocol IEmailService {
 open class Service: IEmailService {
     open var comp: String { get { return "Service" } }
 
-    open let ErrorAuthenticationFailed = 10
-    open let ErrorConnectionTimedOut = 1001
+    public let ErrorAuthenticationFailed = 10
+    public let ErrorConnectionTimedOut = 1001
 
     let connectInfo: EmailConnectInfo
 
