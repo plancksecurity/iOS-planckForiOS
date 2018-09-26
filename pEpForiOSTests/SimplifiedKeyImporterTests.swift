@@ -55,6 +55,17 @@ class SimplifiedKeyImporterTests: XCTestCase {
         }
     }
 
+    func testCorrectImport() {
+        let decorator: (Message) -> () = { message in
+            message.longMessage =
+            "\(self.ownIdentity.address)\n8B691AD204E22FD1BF018E0D6C9EAD5A798018D1"
+        }
+
+        runTest(messageDecorator: decorator) { identities in
+            XCTAssertEqual(identities.count, 1)
+        }
+    }
+
     // MARK: - Helpers
 
     func runTest(messageDecorator: ((Message) -> ())?,
