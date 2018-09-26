@@ -59,6 +59,16 @@ class SimplifiedKeyImporterTests: XCTestCase {
         runTest(messageDecorator: nil) { identities in
             XCTAssertEqual(identities.count, 0)
         }
+
+        let pEpIdent = ownIdentity.pEpIdentity() // without fingerprint
+
+        let checkIdent1 = partialIdentityCopy(identity: pEpIdent)
+        try! session.update(checkIdent1)
+        XCTAssertNotEqual(checkIdent1.fingerPrint, fingerprint)
+
+        let checkIdent2 = partialIdentityCopy(identity: pEpIdent)
+        try! session.update(checkIdent2)
+        XCTAssertNotEqual(checkIdent2.fingerPrint, fingerprint)
     }
 
     func testCorrectImport() {
@@ -86,15 +96,32 @@ class SimplifiedKeyImporterTests: XCTestCase {
 
             XCTAssertEqual(theIdent.address, theSelf.ownIdentity.address)
             XCTAssertEqual(theIdent.fingerPrint, theSelf.fingerprint)
+
+
+            let checkIdent1 = theSelf.partialIdentityCopy(identity: theIdent)
+            try! theSelf.session.update(checkIdent1)
+            XCTAssertEqual(checkIdent1.fingerPrint, theSelf.fingerprint)
+
+            let checkIdent2 = theSelf.partialIdentityCopy(identity: theIdent)
+            try! theSelf.session.mySelf(checkIdent2)
+            XCTAssertEqual(checkIdent2.fingerPrint, theSelf.fingerprint)
         }
     }
 
     // MARK: - Helpers
 
+    func partialIdentityCopy(identity: PEPIdentity) -> PEPIdentity {
+        return PEPIdentity(address: identity.address,
+                           userID: identity.userID,
+                           userName: identity.userName,
+                           isOwn: identity.isOwn)
+    }
+
     func runTest(messageDecorator: ((Message) -> ())?,
                  verifier: (([PEPIdentity]) -> ())?) {
         let myPepIdentity = ownIdentity.pEpIdentity()
         try! session.mySelf(myPepIdentity)
+        XCTAssertNotNil(myPepIdentity.fingerPrint)
 
         guard let importFingerprint = myPepIdentity.fingerPrint else {
             XCTFail()
