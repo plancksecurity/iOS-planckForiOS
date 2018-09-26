@@ -56,7 +56,7 @@ class SimplifiedKeyImporterTests: XCTestCase {
     // MARK: - Tests
 
     func testNoImport() {
-        runTest(messageDecorator: nil) { identities in
+        runTest(messageDecorator: nil) { identities, _ in
             XCTAssertEqual(identities.count, 0)
         }
 
@@ -82,7 +82,7 @@ class SimplifiedKeyImporterTests: XCTestCase {
             "\(theSelf.ownIdentity.address)\n\(theSelf.fingerprint)"
         }
 
-        runTest(messageDecorator: decorator) { [weak self] identities in
+        runTest(messageDecorator: decorator) { [weak self] identities, originalFingerprint in
             guard let theSelf = self else {
                 XCTFail()
                 return
@@ -97,14 +97,15 @@ class SimplifiedKeyImporterTests: XCTestCase {
             XCTAssertEqual(theIdent.address, theSelf.ownIdentity.address)
             XCTAssertEqual(theIdent.fingerPrint, theSelf.fingerprint)
 
-
             let checkIdent1 = theSelf.partialIdentityCopy(identity: theIdent)
             try! theSelf.session.update(checkIdent1)
             XCTAssertEqual(checkIdent1.fingerPrint, theSelf.fingerprint)
+            XCTAssertNotEqual(checkIdent1.fingerPrint, originalFingerprint)
 
             let checkIdent2 = theSelf.partialIdentityCopy(identity: theIdent)
             try! theSelf.session.mySelf(checkIdent2)
             XCTAssertEqual(checkIdent2.fingerPrint, theSelf.fingerprint)
+            XCTAssertNotEqual(checkIdent2.fingerPrint, originalFingerprint)
         }
     }
 
@@ -118,10 +119,14 @@ class SimplifiedKeyImporterTests: XCTestCase {
     }
 
     func runTest(messageDecorator: ((Message) -> ())?,
-                 verifier: (([PEPIdentity]) -> ())?) {
+                 verifier: (([PEPIdentity], String) -> ())?) {
         let myPepIdentity = ownIdentity.pEpIdentity()
         try! session.mySelf(myPepIdentity)
-        XCTAssertNotNil(myPepIdentity.fingerPrint)
+
+        guard let originalFingerprint = myPepIdentity.fingerPrint else {
+            XCTFail()
+            return
+        }
 
         guard let importFingerprint = myPepIdentity.fingerPrint else {
             XCTFail()
@@ -184,7 +189,7 @@ class SimplifiedKeyImporterTests: XCTestCase {
         let identities = importer.process(message: decryptedMessage, keys: theExtraKeys)
 
         if let theVerifier = verifier {
-            theVerifier(identities)
+            theVerifier(identities, originalFingerprint)
         }
     }
 }
