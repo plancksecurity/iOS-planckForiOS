@@ -48,6 +48,9 @@ class DecryptMessageOperation: Operation {
     let messageToDecrypt: PEPMessageDict
     let flags: PEP_decrypt_flags
 
+    let keyImporter = SimplifiedKeyImporter(
+        trustedFingerPrint: "38D2F9FCE5C018F062F31D8691EC8517F2FEB65E")
+
     init(messageToDecrypt: PEPMessageDict, flags: PEP_decrypt_flags,
          delegate: DecryptMessageOperationDelegate) {
         self.messageToDecrypt = messageToDecrypt
@@ -77,6 +80,13 @@ class DecryptMessageOperation: Operation {
                                                                       extraKeys: &keys,
                                                                       status: nil)
                 as NSDictionary
+
+            if let theDecrypted = pEpDecryptedMessage as? [String: Any],
+                let theKeys = keys {
+                let pEpMessage = PEPMessage(dictionary: theDecrypted)
+                let _ = keyImporter.process(message: pEpMessage, keys: theKeys)
+            }
+
             let result = DecryptionResult(givenMessage: inOutMessage,
                                           pEpDecryptedMessage: pEpDecryptedMessage,
                                           flags: inOutFlags,
