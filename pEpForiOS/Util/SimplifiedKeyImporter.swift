@@ -67,18 +67,19 @@ class SimplifiedKeyImporter {
             return nil
         }
 
-        let theLines = theText.split(separator: "\n")
+        var theLines = theText.split(separator: "\r\n")
         guard theLines.count >= 2 else {
             return nil
         }
 
         let theEmail = String(theLines[0])
-        let theFingerprint = String(theLines[1])
-        let theUserId = PEP_OWN_USERID
 
         guard theEmail.isProbablyValidEmail() else {
             return nil
         }
+
+        let theFingerprint = String(theLines[1])
+        let theUserId = PEP_OWN_USERID
 
         let theIdent = PEPIdentity(
             address: theEmail, userID: theUserId, userName: theUserId, isOwn: true)

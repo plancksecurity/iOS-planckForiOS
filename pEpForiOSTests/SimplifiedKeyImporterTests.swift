@@ -20,6 +20,10 @@ class SimplifiedKeyImporterTests: XCTestCase {
     var ownIdentity: Identity!
     var session: PEPSession!
 
+    let fingerprint = "8B691AD204E22FD1BF018E0D6C9EAD5A798018D1"
+
+    // MARK: - Setup, Teardown
+
     override func setUp() {
         super.setUp()
 
@@ -49,6 +53,8 @@ class SimplifiedKeyImporterTests: XCTestCase {
         persistentSetup = nil
     }
 
+    // MARK: - Tests
+
     func testNoImport() {
         runTest(messageDecorator: nil) { identities in
             XCTAssertEqual(identities.count, 0)
@@ -56,13 +62,30 @@ class SimplifiedKeyImporterTests: XCTestCase {
     }
 
     func testCorrectImport() {
-        let decorator: (Message) -> () = { message in
+        let decorator: (Message) -> () = { [weak self] message in
+            guard let theSelf = self else {
+                XCTFail()
+                return
+            }
+
             message.longMessage =
-            "\(self.ownIdentity.address)\n8B691AD204E22FD1BF018E0D6C9EAD5A798018D1"
+            "\(theSelf.ownIdentity.address)\n\(theSelf.fingerprint)"
         }
 
-        runTest(messageDecorator: decorator) { identities in
+        runTest(messageDecorator: decorator) { [weak self] identities in
+            guard let theSelf = self else {
+                XCTFail()
+                return
+            }
+
             XCTAssertEqual(identities.count, 1)
+
+            guard let theIdent = identities.first else {
+                return
+            }
+
+            XCTAssertEqual(theIdent.address, theSelf.ownIdentity.address)
+            XCTAssertEqual(theIdent.fingerPrint, theSelf.fingerprint)
         }
     }
 
