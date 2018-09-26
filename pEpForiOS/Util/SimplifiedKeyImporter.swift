@@ -21,37 +21,19 @@ class SimplifiedKeyImporter {
                 return []
         }
 
-        let session = PEPSession()
-
         if let signingKey = keys.firstObject as? String,
-            signingKey == trustedFingerPrint,
-            let theAttachments = message.attachments {
-            for attachment in theAttachments {
-                if attachment.mimeType == MimeTypeUtil.defaultMimeType {
-                    if let string = String(data: attachment.data, encoding: .utf8) {
-                        do {
-                            // netpgp doesn't give us a list of imported keys, so ignore (mostly)
-                            let _ = try session.importKey(string)
-
-                            do {
-                                try session.setOwnKey(theOwnIdentity, fingerprint: theFingerprint)
-                                return [theOwnIdentity]
-                            } catch {
-                                // log, but otherwise ignore
-                                Log.shared.error(
-                                    component: #function,
-                                    errorString:
-                                    "Could not set own key on just imported key data",
-                                    error: error)
-                            }
-                        } catch {
-                            // log, but otherwise ignore
-                            Log.shared.error(component: #function,
-                                             errorString: "Could not import key data",
-                                             error: error)
-                        }
-                    }
-                }
+            signingKey == trustedFingerPrint {
+            do {
+                let session = PEPSession()
+                try session.setOwnKey(theOwnIdentity, fingerprint: theFingerprint)
+                return [theOwnIdentity]
+            } catch {
+                // log, but otherwise ignore
+                Log.shared.error(
+                    component: #function,
+                    errorString:
+                    "Could not set own key on just imported key data",
+                    error: error)
             }
         }
 
