@@ -63,22 +63,11 @@ class SimplifiedKeyImporter {
      The fingerprint is returned separately, because in the identity it's optional.
      */
     private func parseOwnIdentityFromTextBody(message: PEPMessage) -> (PEPIdentity, String)? {
-        guard let theText = message.longMessage else {
-            return nil
+        guard let (theEmail, theFingerprint) = emailAndFingerprintFromTextBody(
+            message: message) else {
+                return nil
         }
 
-        var theLines = theText.split(separator: "\r\n")
-        guard theLines.count >= 2 else {
-            return nil
-        }
-
-        let theEmail = String(theLines[0])
-
-        guard theEmail.isProbablyValidEmail() else {
-            return nil
-        }
-
-        let theFingerprint = String(theLines[1])
         let theUserId = PEP_OWN_USERID
 
         let theIdent = PEPIdentity(
@@ -86,5 +75,26 @@ class SimplifiedKeyImporter {
         theIdent.fingerPrint = theFingerprint
 
         return (theIdent, theFingerprint)
+    }
+
+    private func emailAndFingerprintFromTextBody(message: PEPMessage) -> (String, String)? {
+        guard let theText = message.longMessage else {
+            return nil
+        }
+
+        let theLines = theText.components(separatedBy: CharacterSet.newlines)
+        guard theLines.count >= 2 else {
+            return nil
+        }
+
+        let theEmail = theLines[0]
+
+        guard theEmail.isProbablyValidEmail() else {
+            return nil
+        }
+
+        let theFingerprint = String(theLines[1])
+
+        return (theEmail, theFingerprint)
     }
 }
