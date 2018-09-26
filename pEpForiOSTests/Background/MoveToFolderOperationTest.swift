@@ -13,6 +13,9 @@ import CoreData
 @testable import pEpForiOS
 
 class MoveToFolderOperationTest: CoreDataDrivenTestBase {
+
+    // MARK: - Trash message
+
     func testTrashMessage() {
         // Setup 2 accounts
         // the testee
@@ -33,11 +36,14 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         }
 
         // Sync
+        TestUtil.makeFolderInteresting(folderType: .trash, cdAccount: cdAccount)
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Assure deleted messages are in trash
-        checkExistance(ofMessages: receivedMsgs, inFolderOfType: .trash, mustExist: true)
+        checkExistance(ofMessages: receivedMsgs, inFolderOfType: .trash, in: cdAccount, mustExist: true)
     }
+
+    // MARK: - Move from inbox to different folder
 
     func testMoveInboxToSpam() {
         assureMoveFromInbox(toFolderOfType: .spam)
@@ -51,9 +57,25 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         assureMoveFromInbox(toFolderOfType: .archive)
     }
 
+    // MARK: - Move from inbox to different account
+
+    //IOS-1360
+    func testMoveToOtherAccount_inbox() {
+        assureMoveFromInbox(toFolderOfType: .inbox, inDifferentAccount: true)
+    }
+
+    func testMoveToOtherAccount_spam() {
+        assureMoveFromInbox(toFolderOfType: .spam, inDifferentAccount: true)
+    }
+
+    func testMoveToOtherAccount_archive() {
+        assureMoveFromInbox(toFolderOfType: .archive, inDifferentAccount: true)
+    }
+
     // MARK: - HELPER
 
-    private func assureMoveFromInbox(toFolderOfType targetFolderType: FolderType) {
+    private func assureMoveFromInbox(toFolderOfType targetFolderType: FolderType,
+                                     inDifferentAccount: Bool = false) {
         // Setup 2 accounts
         // the testee
         cdAccount.createRequiredFoldersAndWait(testCase: self)
@@ -67,23 +89,28 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         // Send (and receive) messages from 2nd account to 1st account
         let receivedMsgs = sendAndReceive(numMails: 1, fromAccount: cdAccount2)
 
+        let targetCdAccount: CdAccount = inDifferentAccount ? cdAccount2 : cdAccount
         // Move messages to target folder
-        move(messages: receivedMsgs, toFolerOfType: targetFolderType)
+        move(messages: receivedMsgs, toFolderOfType: targetFolderType, in: targetCdAccount.account())
 
+        TestUtil.makeFolderInteresting(folderType: targetFolderType, cdAccount: targetCdAccount)
         // Sync
         TestUtil.syncAndWait(numAccountsToSync: 2, testCase: self)
 
         // Assure messages are in target folder
-        checkExistance(ofMessages: receivedMsgs, inFolderOfType: targetFolderType, mustExist: true)
+        checkExistance(ofMessages: receivedMsgs,
+                       inFolderOfType: targetFolderType,
+                       in: targetCdAccount,
+                       mustExist: true)
     }
 
     private func isMandatoryFolderType(type: FolderType) -> Bool {
         return FolderType.requiredTypes.contains(type)
     }
 
-    private func move(messages:[Message], toFolerOfType type: FolderType) {
+    private func move(messages:[Message], toFolderOfType type: FolderType, in account: Account) {
         for msg in messages {
-            guard let targetFolder = msg.parent.account.folder(ofType: type) else {
+            guard let targetFolder = account.folder(ofType: type) else {
                 // Can't seem to find the target folder. If this is an optional test
                 // (working on for certain accounts), ignore it.
                 if isMandatoryFolderType(type: type) {
@@ -96,21 +123,25 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
     }
 
     private func messagesAreEqual(msg1: Message, msg2: Message) -> Bool {
-        // For this test we consider messages in a folder as equal if they have the same UUID and none of the
-        // comparees has been marked deleted.
-        return msg1.uuid == msg2.uuid && msg1.imapFlags?.deleted == msg2.imapFlags?.deleted
+        // For this test we consider messages in a folder as equal if they have the same UUID.
+        return msg1.uuid == msg2.uuid
     }
 
     private func messages(msgs: [Message], contain msg: Message) -> Bool {
-        if let idx = msgs.index(of: msg) {
-            let containedMsg = msgs[idx]
-            return messagesAreEqual(msg1: containedMsg, msg2: msg)
+        for testee in msgs {
+            if messagesAreEqual(msg1: testee, msg2: msg) {
+                return true
+            }
         }
-        return true
+        return false
     }
-    private func checkExistance(ofMessages msgs: [Message], inFolderOfType type: FolderType,
+
+    private func checkExistance(ofMessages msgs: [Message],
+                                inFolderOfType type: FolderType,
+                                in cdAccountToCheck: CdAccount,
                                 mustExist: Bool) {
-        let msgsInFolderToTest = cdAccount.allMessages(inFolderOfType: type).map { $0.message()! }
+        let msgsInFolderToTest = cdAccountToCheck.allMessages(inFolderOfType: type)
+            .map { $0.message()! }
         for msg in msgs {
             if mustExist {
                 XCTAssertTrue(messages(msgs: msgsInFolderToTest, contain: msg))
