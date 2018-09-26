@@ -101,5 +101,14 @@ class MailParsingTests: XCTestCase {
 
         XCTAssertEqual(pEpMessage.shortMessage, "Sendung von BlahTex BlahBlah AG - zugestellt")
         XCTAssertNil(pEpMessage.longMessage)
+
+        guard let htmlMessage = pEpMessage.longMessageFormatted else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertTrue(htmlMessage.contains("Guten Tag Herr Müller"))
+        XCTAssertTrue(htmlMessage.contains(find: "Sendungsnummer"))
+        XCTAssertTrue(htmlMessage.contains(find: "585862075329118547"))
     }
 }
