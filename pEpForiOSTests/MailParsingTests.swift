@@ -77,4 +77,29 @@ class MailParsingTests: XCTestCase {
         }
         XCTAssertTrue(foundXpEpVersion)
     }
+
+    func testParseUndisplayableHTMLMessage() {
+        let pEpMySelfIdentity = cdOwnAccount.pEpIdentity()
+
+        let session = PEPSession()
+        try! session.mySelf(pEpMySelfIdentity)
+        XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
+
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: "Undisplayable_HTML_Message.txt",
+            cdOwnAccount: cdOwnAccount) else {
+                XCTFail()
+                return
+        }
+
+        let pEpMessage = cdMessage.pEpMessage()
+
+        let theAttachments = pEpMessage.attachments ?? []
+        XCTAssertEqual(theAttachments.count, 2)
+        XCTAssertEqual(theAttachments[0].mimeType, "image/jpeg")
+        XCTAssertEqual(theAttachments[1].mimeType, "image/png")
+
+        XCTAssertEqual(pEpMessage.shortMessage, "Sendung von BlahTex BlahBlah AG - zugestellt")
+        XCTAssertNil(pEpMessage.longMessage)
+    }
 }

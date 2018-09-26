@@ -335,6 +335,7 @@
 		436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C23271E02948400071430 /* BackgroundTaskProtocol.swift */; };
 		436C232D1E02A2D900071430 /* KickOffMySelfProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C232C1E02A2D900071430 /* KickOffMySelfProtocol.swift */; };
 		436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */; };
+		436D0066215B5F3800966CC2 /* Undisplayable_HTML_Message.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43754AC71FCD7ABC009A8E63 /* ldns_xcode.framework */; };
 		43754AC81FCD8348009A8E63 /* ldns_xcode.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 43754AC71FCD7ABC009A8E63 /* ldns_xcode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -904,6 +905,7 @@
 		436C232C1E02A2D900071430 /* KickOffMySelfProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KickOffMySelfProtocol.swift; sourceTree = "<group>"; };
 		436C232E1E02A52D00071430 /* LimitedOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LimitedOperationQueue.swift; sourceTree = "<group>"; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
+		436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Undisplayable_HTML_Message.txt; sourceTree = "<group>"; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
 		43754AC71FCD7ABC009A8E63 /* ldns_xcode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ldns_xcode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		437671471D8FF2A5004DD205 /* DeleteFolderOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteFolderOperation.swift; sourceTree = "<group>"; };
@@ -2027,6 +2029,7 @@
 		43B2C3151D2280ED00A08557 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */,
 				43A384802153E4BF006AC8F8 /* 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt */,
 				15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */,
 				15EBE44120E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc */,
@@ -2671,6 +2674,7 @@
 				43C3B16820038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key in Resources */,
 				436795FB1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc in Resources */,
 				43628766213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt in Resources */,
+				436D0066215B5F3800966CC2 /* Undisplayable_HTML_Message.txt in Resources */,
 				430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */,
 				436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */,
