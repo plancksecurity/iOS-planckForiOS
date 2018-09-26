@@ -67,10 +67,10 @@ class moveToFolderViewModel {
         items = []
         self.acc = account
         self.messages = messages
-        generateAccountCells()
+        generateFolderCells()
     }
 
-    private func generateAccountCells() {
+    private func generateFolderCells() {
         for folder in acc.rootFolders {
             items.append(moveToFolderCellViewModel(folder: folder, level: 0))
             childFolder(root: folder, level: 1)
