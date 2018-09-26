@@ -16,7 +16,10 @@ class SimplifiedKeyImporter {
     }
 
     public func process(message: PEPMessage, keys: NSArray) -> [PEPIdentity] {
-        var result = [PEPIdentity]()
+        guard let (theOwnIdentity, theFingerprint) = parseOwnIdentityFromTextBody(
+            message: message) else {
+                return []
+        }
 
         let session = PEPSession()
 
@@ -27,26 +30,19 @@ class SimplifiedKeyImporter {
                 if attachment.mimeType == MimeTypeUtil.defaultMimeType {
                     if let string = String(data: attachment.data, encoding: .utf8) {
                         do {
-                            let identities = try session.importKey(string)
-                            for ident in identities {
-                                if let fpr = ident.fingerPrint {
-                                    do {
-                                        try session.setOwnKey(ident, fingerprint: fpr)
-                                        result.append(ident)
-                                    } catch {
-                                        // log, but otherwise ignore
-                                        Log.shared.error(
-                                            component: #function,
-                                            errorString:
-                                            "Could not set own key on just imported key data",
-                                            error: error)
-                                    }
-                                } else {
-                                    // log, but otherwise ignore
-                                    Log.shared.error(
-                                        component: #function,
-                                        errorString: "No fingerprint for imported identity")
-                                }
+                            // netpgp doesn't give us a list of imported keys, so ignore (mostly)
+                            let _ = try session.importKey(string)
+
+                            do {
+                                try session.setOwnKey(theOwnIdentity, fingerprint: theFingerprint)
+                                return [theOwnIdentity]
+                            } catch {
+                                // log, but otherwise ignore
+                                Log.shared.error(
+                                    component: #function,
+                                    errorString:
+                                    "Could not set own key on just imported key data",
+                                    error: error)
                             }
                         } catch {
                             // log, but otherwise ignore
@@ -59,6 +55,35 @@ class SimplifiedKeyImporter {
             }
         }
 
-        return result
+        return []
+    }
+
+    /**
+     Tries to parse a pEp own identity from the first 2 lines of the body text.
+     The fingerprint is returned separately, because in the identity it's optional.
+     */
+    private func parseOwnIdentityFromTextBody(message: PEPMessage) -> (PEPIdentity, String)? {
+        guard let theText = message.longMessage else {
+            return nil
+        }
+
+        let theLines = theText.split(separator: "\n")
+        guard theLines.count >= 2 else {
+            return nil
+        }
+
+        let theEmail = String(theLines[0])
+        let theFingerprint = String(theLines[1])
+        let theUserId = PEP_OWN_USERID
+
+        guard theEmail.isProbablyValidEmail() else {
+            return nil
+        }
+
+        let theIdent = PEPIdentity(
+            address: theEmail, userID: theUserId, userName: theUserId, isOwn: true)
+        theIdent.fingerPrint = theFingerprint
+
+        return (theIdent, theFingerprint)
     }
 }
