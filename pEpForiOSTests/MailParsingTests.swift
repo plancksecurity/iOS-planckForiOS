@@ -41,7 +41,7 @@ class MailParsingTests: XCTestCase {
         super.tearDown()
     }
 
-    func testMailParsing() {
+    func testParseUnencryptedMailWithPublicKey() {
         let pEpMySelfIdentity = cdOwnAccount.pEpIdentity()
 
         let session = PEPSession()
