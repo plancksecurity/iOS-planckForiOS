@@ -133,11 +133,15 @@ class SimplifiedKeyImporterTests: XCTestCase {
             return
         }
 
-        guard let secretPublicKeyData = TestUtil.loadData(
+        guard let secretPublicKeyString = TestUtil.loadString(
             fileName: "8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt") else {
                 XCTFail()
                 return
         }
+
+        // The engine should do this for attached keys automatically on decryption,
+        // so let's fake it.
+        try! session.importKey(secretPublicKeyString)
 
         let msg = Message(uuid: "001", uid: 1, parentFolder: inbox)
         msg.shortMessage = "Some Subject"
@@ -148,12 +152,6 @@ class SimplifiedKeyImporterTests: XCTestCase {
         if let decorator = messageDecorator {
             decorator(msg)
         }
-
-        let secretPublicKeyAttachment = Attachment(
-            data: secretPublicKeyData,
-            mimeType: MimeTypeUtil.defaultMimeType,
-            contentDisposition: .attachment)
-        msg.attachments = [secretPublicKeyAttachment]
 
         let pEpMessage = PEPMessage(dictionary: msg.pEpMessageDict(outgoing: true))
         let (encryptionStatus, encryptedMessage) = try! session.encrypt(pEpMessage: pEpMessage)
