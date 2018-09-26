@@ -14,7 +14,7 @@ class MoveToAccountViewController: BaseViewController {
     @IBOutlet var tableview: UITableView!
     var viewModel: MoveToAccountViewModel?
     private let cellId = "AccountCell"
-    private var selectedViewModel : moveToFolderViewModel?
+    private var selectedViewModel : MoveToFolderViewModel?
     weak var delegate : MoveToFolderDelegate?
 
     override func viewWillAppear(_ animated: Bool) {

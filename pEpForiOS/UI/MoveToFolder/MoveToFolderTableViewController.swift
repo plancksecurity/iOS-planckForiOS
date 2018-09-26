@@ -10,7 +10,7 @@ import UIKit
 
 class MoveToFolderTableViewController: BaseTableViewController {
 
-    var viewModel : moveToFolderViewModel?
+    var viewModel : MoveToFolderViewModel?
     let storyboardId = "MoveToFolderViewController"
     private let cellId = "FolderCell"
 

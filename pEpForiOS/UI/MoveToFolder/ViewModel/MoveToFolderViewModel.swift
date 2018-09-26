@@ -52,12 +52,12 @@ class MoveToAccountCellViewModel {
         self.messages = messages
     }
 
-    public func viewModel() -> moveToFolderViewModel {
-        return moveToFolderViewModel(account: account, messages: messages)
+    public func viewModel() -> MoveToFolderViewModel {
+        return MoveToFolderViewModel(account: account, messages: messages)
     }
 }
 
-class moveToFolderViewModel {
+class MoveToFolderViewModel {
     var items : [moveToFolderCellViewModel]
     var acc : Account
     var messages: [Message]
