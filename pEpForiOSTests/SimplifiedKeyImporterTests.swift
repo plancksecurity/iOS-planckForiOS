@@ -49,7 +49,16 @@ class SimplifiedKeyImporterTests: XCTestCase {
         persistentSetup = nil
     }
 
-    func testBasics() {
+    func testNoImport() {
+        runTest(messageDecorator: nil) { identities in
+            XCTAssertEqual(identities.count, 0)
+        }
+    }
+
+    // MARK: - Helpers
+
+    func runTest(messageDecorator: ((Message) -> ())?,
+                 verifier: (([PEPIdentity]) -> ())?) {
         let myPepIdentity = ownIdentity.pEpIdentity()
         try! session.mySelf(myPepIdentity)
 
@@ -69,6 +78,10 @@ class SimplifiedKeyImporterTests: XCTestCase {
         msg.longMessage = "Should contain a secret key"
         msg.from = ownIdentity
         msg.to = [ownIdentity]
+
+        if let decorator = messageDecorator {
+            decorator(msg)
+        }
 
         let secretPublicKeyAttachment = Attachment(
             data: secretPublicKeyData,
@@ -108,6 +121,9 @@ class SimplifiedKeyImporterTests: XCTestCase {
 
         let importer = SimplifiedKeyImporter(trustedFingerPrint: importFingerprint)
         let identities = importer.process(message: decryptedMessage, keys: theExtraKeys)
-        XCTAssertEqual(identities.count, 0) // netpgp doesn't report identities
+
+        if let theVerifier = verifier {
+            theVerifier(identities)
+        }
     }
 }
