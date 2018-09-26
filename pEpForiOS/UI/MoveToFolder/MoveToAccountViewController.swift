@@ -54,9 +54,6 @@ class MoveToAccountViewController: BaseViewController {
 // MARK: - UITableViewDataSource
 
 extension MoveToAccountViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let vm = viewModel {
@@ -73,11 +70,12 @@ extension MoveToAccountViewController: UITableViewDataSource {
         }
         return cell
     }
-
 }
 
 // MARK: - UITableViewDelegate
+
 extension MoveToAccountViewController: UITableViewDelegate {
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selectedViewModel = viewModel?[indexPath.row].viewModel()
         performSegue(withIdentifier: "showAccount", sender: self)
