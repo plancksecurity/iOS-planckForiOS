@@ -87,6 +87,16 @@ extension Message {
             // the message is in the target folder already. No need to move it.
             return
         }
+        if targetFolder.account != parent.account {
+            // The message must be moved to another account. Thus ...
+            // ... we save a copy for append in target accounts folder ...
+            let copy = Message(message: self)
+            copy.parent = targetFolder
+            copy.save()
+            // ... and delete the original.
+            self.imapMarkDeleted()
+            return
+        }
         self.targetFolder = targetFolder
         save()
     }
