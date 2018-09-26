@@ -716,7 +716,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
     }
 }
 
-// MARK: - EmailListModelDelegate
+// MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
     func showThreadView(for indexPath: IndexPath) {
