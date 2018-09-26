@@ -154,37 +154,9 @@ class SimplifiedKeyImporterTests: XCTestCase {
         }
 
         let pEpMessage = PEPMessage(dictionary: msg.pEpMessageDict(outgoing: true))
-        let (encryptionStatus, encryptedMessage) = try! session.encrypt(pEpMessage: pEpMessage)
-        XCTAssertEqual(encryptionStatus, PEP_STATUS_OK)
-
-        guard let theEncryptedMessage = encryptedMessage else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertTrue(theEncryptedMessage.isLikelyPEPEncrypted())
-
-        var flags = PEP_decrypt_flag_none
-        var rating = PEP_rating_b0rken
-        var extraKeys: NSArray?
-        var decryptionStatus = PEP_SYNC_NO_TRUST
-        let decryptedMessage = try! session.decryptMessage(
-            theEncryptedMessage,
-            flags: &flags,
-            rating: &rating,
-            extraKeys: &extraKeys,
-            status: &decryptionStatus)
-
-        guard let theExtraKeys = extraKeys else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertEqual((decryptedMessage.attachments ?? []).count, msg.attachments.count)
-        XCTAssertFalse(decryptedMessage.isLikelyPEPEncrypted())
 
         let importer = SimplifiedKeyImporter(trustedFingerPrint: importFingerprint)
-        let identities = importer.process(message: decryptedMessage, keys: theExtraKeys)
+        let identities = importer.process(message: pEpMessage, keys: [importFingerprint])
 
         if let theVerifier = verifier {
             theVerifier(identities, originalFingerprint)
