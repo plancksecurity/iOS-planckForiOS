@@ -32,6 +32,14 @@ extension Message {
             dict[kPepShortMessage] = subject as NSString
         }
 
+        if let text = longMessage {
+            dict[kPepLongMessage] = text as NSString
+        }
+
+        if let text = longMessageFormatted {
+            dict[kPepLongMessageFormatted] = text as NSString
+        }
+
         dict[kPepTo] = NSArray(array: to.map() { return PEPUtil.pEp(identity: $0) })
         dict[kPepCC] = NSArray(array: cc.map() { return PEPUtil.pEp(identity: $0) })
         dict[kPepBCC] = NSArray(array: bcc.map() { return PEPUtil.pEp(identity: $0) })
