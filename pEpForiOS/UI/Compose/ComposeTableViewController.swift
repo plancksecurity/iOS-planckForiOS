@@ -400,7 +400,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private final func addContactSuggestTable() {
         suggestTableView = storyboard?.instantiateViewController(
-            withIdentifier: "contactSuggestionTable").view as! SuggestTableView
+            withIdentifier: "contactSuggestionTable").view as? SuggestTableView
         suggestTableView.delegate = self
         suggestTableView.hide()
         updateSuggestTable(defaultCellHeight, true)
