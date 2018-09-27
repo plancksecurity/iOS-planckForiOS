@@ -1,12 +1,12 @@
-v0.0.38
-pEpEngine c4c1667c756a
-pEpObjCAdapter 96e86c16a23b
-netpgp-et 604df6478e6e
-MessageModel b3f6424bc783
-pantomime-iOS b5aa11e01953
+v0.0.39
+pEpEngine 23726372aea0
+pEpObjCAdapter 3a007d6c6c40
+netpgp-et 8848ce82014d
+MessageModel 093dbcb22a19
+pantomime-iOS e94405a03354
 libAccountSettings 3d94e78b587e
 ldns 70cfa2739c2a71db098e738d2fd16ae1025b2362
 OpenSSL-for-iPhone 10019638e80e8a8a5fc19642a840d8a69fac7349
 libetpan af2aad552dd0ecc6a943f78e5c77dc03ebbc0028
 AppAuth-iOS b9d3ce7f02d817beea002241c3de45dbe9504d16
-SwipeCellKit f8a53daa475770a05fa64cef4d42fb5b4362f32c
+SwipeCellKit 338db33b96fe79a4149844be0685d3614dac36a0
