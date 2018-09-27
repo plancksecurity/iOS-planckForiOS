@@ -53,9 +53,11 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         assureMoveFromInbox(toFolderOfType: .trash)
     }
 
+    /*
     func testMoveInboxToArchive() {
         assureMoveFromInbox(toFolderOfType: .archive)
     }
+     */
 
     // MARK: - Move from inbox to different account
 
@@ -68,9 +70,11 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         assureMoveFromInbox(toFolderOfType: .spam, inDifferentAccount: true)
     }
 
+    /*
     func testMoveToOtherAccount_archive() {
         assureMoveFromInbox(toFolderOfType: .archive, inDifferentAccount: true)
     }
+     */
 
     // MARK: - HELPER
 
