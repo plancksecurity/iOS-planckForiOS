@@ -189,7 +189,6 @@ public struct ReplyUtil {
     }
 
     static private func footer() -> String {
-        return NSLocalizedString("Sent with p≡p",
-                                 comment: "Message footer/default text")
+        return String.pepSignature
     }
 }
