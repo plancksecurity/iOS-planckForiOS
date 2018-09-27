@@ -91,7 +91,9 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
 
         let targetCdAccount: CdAccount = inDifferentAccount ? cdAccount2 : cdAccount
         // Move messages to target folder
-        move(messages: receivedMsgs, toFolderOfType: targetFolderType, in: targetCdAccount.account())
+        move(messages: receivedMsgs,
+             toFolderOfType: targetFolderType,
+             in: targetCdAccount.account())
 
         TestUtil.makeFolderInteresting(folderType: targetFolderType, cdAccount: targetCdAccount)
         // Sync
