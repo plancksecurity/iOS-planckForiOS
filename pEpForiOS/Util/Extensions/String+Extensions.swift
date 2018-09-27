@@ -407,4 +407,19 @@ extension String {
         let textRect = center(size: stringSize, inRect: wholeRect)
         nsString.draw(in: textRect, withAttributes: textAttributes)
     }
+
+    /**
+     - Returns: A string derived from the self with all spaces removed.
+     */
+    func despaced() -> String {
+        var newChars = [Character]()
+
+        for ch in self {
+            if ch != " " {
+                newChars.append(ch)
+            }
+        }
+
+        return String(newChars)
+    }
 }

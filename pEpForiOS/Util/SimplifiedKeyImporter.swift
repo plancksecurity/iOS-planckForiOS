@@ -12,7 +12,7 @@ class SimplifiedKeyImporter {
     let trustedFingerPrint: String
 
     init(trustedFingerPrint: String) {
-        self.trustedFingerPrint = trustedFingerPrint
+        self.trustedFingerPrint = trustedFingerPrint.despaced()
     }
 
     public func process(message: PEPMessage, keys: NSArray) -> [PEPIdentity] {
@@ -81,7 +81,7 @@ class SimplifiedKeyImporter {
             return nil
         }
 
-        let theFingerprint = String(theLines[1])
+        let theFingerprint = String(theLines[1]).despaced()
 
         if theFingerprint.count == 40 {
             return (theEmail, theFingerprint)

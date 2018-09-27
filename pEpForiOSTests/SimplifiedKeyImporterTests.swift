@@ -20,7 +20,7 @@ class SimplifiedKeyImporterTests: XCTestCase {
     var ownIdentity: Identity!
     var session: PEPSession!
 
-    let fingerprint = "8B691AD204E22FD1BF018E0D6C9EAD5A798018D1"
+    let fingerprint = "8B69 1AD2 04E2 2FD1 BF01  8E0D 6C9E AD5A 7980 18D1".despaced()
 
     // MARK: - Setup, Teardown
 
