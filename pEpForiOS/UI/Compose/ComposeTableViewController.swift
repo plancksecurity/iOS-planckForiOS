@@ -370,7 +370,7 @@ class ComposeTableViewController: BaseTableViewController {
     /// from original message.
     /// Does nothing otherwise
     private func takeOverAttachmentsIfRequired() {
-        guard shouldTakeOverAttachments(), isInitialSetup else {
+        guard shouldTakeOverAttachments(), isInitialSetup else { //IOS-1363 rm
             return // Nothing to do.
         }
         guard let om = originalMessage else {
@@ -380,7 +380,8 @@ class ComposeTableViewController: BaseTableViewController {
                 "We must take over attachments from original message, but original message is nil.")
             return
         }
-        let nonInlinedAttachments = om.viewableAttachments().filter { $0.contentDisposition == .attachment }
+        let nonInlinedAttachments = om.viewableAttachments()
+            .filter { $0.contentDisposition == .attachment }
         nonInlinedAttachmentData.add(attachments: nonInlinedAttachments)
     }
 
