@@ -83,11 +83,14 @@ extension Message {
     ///
     /// - Parameter targetFolder: folder to move the message to
     func move(to targetFolder:Folder) {
-        if parent == targetFolder {
+        guard parent != targetFolder else {
             // the message is in the target folder already. No need to move it.
             return
         }
-        if targetFolder.account != parent.account {
+        if targetFolder.account == parent.account {
+            self.targetFolder = targetFolder
+            save()
+        } else {
             // The message must be moved to another account. Thus ...
             // ... we save a copy for append in target accounts folder ...
             let copy = Message(message: self)
@@ -95,9 +98,6 @@ extension Message {
             copy.save()
             // ... and delete the original.
             self.imapMarkDeleted()
-            return
         }
-        self.targetFolder = targetFolder
-        save()
     }
 }
