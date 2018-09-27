@@ -110,7 +110,6 @@ class ComposeTableViewController: BaseTableViewController {
     private let attachmentCounter = AttachmentCounter()
     private let mimeTypeUtil = MimeTypeUtil()
     private var edited = false
-    private var hasBeenSetup = false
     /**
      A value of `true` means that the mail will be encrypted.
      */
@@ -162,11 +161,10 @@ class ComposeTableViewController: BaseTableViewController {
     // MARK: - Setup & Configuration
 
     private func setup() {
-        if hasBeenSetup {
+        if !isInitialSetup {
             // Init only once
             return
         }
-        hasBeenSetup = true
         composeData?.filterRows(message: nil)
         takeOverAttachmentsIfRequired()
         setInitialStatus()
