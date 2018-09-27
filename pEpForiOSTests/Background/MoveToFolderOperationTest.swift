@@ -45,19 +45,17 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
 
     // MARK: - Move from inbox to different folder
 
-    func testMoveInboxToSpam() {
-        assureMoveFromInbox(toFolderOfType: .spam)
+    func testMoveInboxToSent() {
+        assureMoveFromInbox(toFolderOfType: .sent)
     }
 
     func testMoveInboxToTrash() {
         assureMoveFromInbox(toFolderOfType: .trash)
     }
 
-    /*
-    func testMoveInboxToArchive() {
-        assureMoveFromInbox(toFolderOfType: .archive)
+    func testMoveInboxToInbox() {
+        assureMoveFromInbox(toFolderOfType: .inbox)
     }
-     */
 
     // MARK: - Move from inbox to different account
 
@@ -66,15 +64,13 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         assureMoveFromInbox(toFolderOfType: .inbox, inDifferentAccount: true)
     }
 
-    func testMoveToOtherAccount_spam() {
-        assureMoveFromInbox(toFolderOfType: .spam, inDifferentAccount: true)
+    func testMoveToOtherAccount_sent() {
+        assureMoveFromInbox(toFolderOfType: .sent, inDifferentAccount: true)
     }
 
-    /*
-    func testMoveToOtherAccount_archive() {
-        assureMoveFromInbox(toFolderOfType: .archive, inDifferentAccount: true)
+    func testMoveToOtherAccount_trash() {
+        assureMoveFromInbox(toFolderOfType: .trash, inDifferentAccount: true)
     }
-     */
 
     // MARK: - HELPER
 
