@@ -49,7 +49,7 @@ class DecryptMessageOperation: Operation {
     let flags: PEP_decrypt_flags
 
     let keyImporter = SimplifiedKeyImporter(
-        trustedFingerPrint: "38D2F9FCE5C018F062F31D8691EC8517F2FEB65E")
+        trustedFingerPrint: "38D2 F9FC E5C0 18F0 62F3 1D86 91EC 8517 F2FE B65E")
 
     init(messageToDecrypt: PEPMessageDict, flags: PEP_decrypt_flags,
          delegate: DecryptMessageOperationDelegate) {
