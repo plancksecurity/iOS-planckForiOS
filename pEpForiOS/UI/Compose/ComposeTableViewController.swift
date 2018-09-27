@@ -547,7 +547,10 @@ class ComposeTableViewController: BaseTableViewController {
         """
         let prefixHtml =
         """
-            <html><head><style>
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <style>
                         \(style)
                     </style></head><body><div>
         """
