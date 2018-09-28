@@ -111,4 +111,38 @@ class MailParsingTests: XCTestCase {
         XCTAssertTrue(htmlMessage.contains(find: "Sendungsnummer"))
         XCTAssertTrue(htmlMessage.contains(find: "585862075329118547"))
     }
+
+    /**
+     IOS-1364
+     */
+    func testParseUndisplayedAttachedJpegMessage() {
+        let pEpMySelfIdentity = cdOwnAccount.pEpIdentity()
+
+        let session = PEPSession()
+        try! session.mySelf(pEpMySelfIdentity)
+        XCTAssertNotNil(pEpMySelfIdentity.fingerPrint)
+
+        guard let cdMessage = TestUtil.cdMessage(
+            fileName: "1364_Mail_missing_attached_image.txt",
+            cdOwnAccount: cdOwnAccount) else {
+                XCTFail()
+                return
+        }
+
+        let pEpMessage = cdMessage.pEpMessage()
+
+        XCTAssertEqual(pEpMessage.shortMessage, "blah")
+        XCTAssertNotNil(pEpMessage.longMessage)
+
+        let theAttachments = pEpMessage.attachments ?? []
+        XCTAssertEqual(theAttachments.count, 2)
+        for i in 0..<theAttachments.count {
+            let theAttachment = theAttachments[i]
+            if i == 0 {
+                XCTAssertEqual(theAttachment.mimeType, "image/jpeg")
+            } else if i == 1 {
+                XCTAssertEqual(theAttachment.mimeType, "text/plain")
+            }
+        }
+    }
 }

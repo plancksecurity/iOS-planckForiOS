@@ -315,6 +315,7 @@
 		4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */; };
 		4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */; };
 		435B42411D211E5900119048 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435B42401D211E5900119048 /* MiscUtil.swift */; };
+		435F7C75215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt in Resources */ = {isa = PBXBuildFile; fileRef = 435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */; };
 		4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360282C1ED6F27600C95FC4 /* NetworkError.swift */; };
 		4360282F1ED6F33400C95FC4 /* ImapSyncError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4360282E1ED6F33400C95FC4 /* ImapSyncError.swift */; };
 		4362398C1EADD61B00BD2EB9 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */; };
@@ -884,6 +885,7 @@
 		4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleCheckerProtocol.swift; sourceTree = "<group>"; };
 		4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyAllPossibleCheckerTest.swift; sourceTree = "<group>"; };
 		435B42401D211E5900119048 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
+		435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1364_Mail_missing_attached_image.txt; sourceTree = "<group>"; };
 		4360282C1ED6F27600C95FC4 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		4360282E1ED6F33400C95FC4 /* ImapSyncError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncError.swift; sourceTree = "<group>"; };
 		4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
@@ -2059,6 +2061,7 @@
 				43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */,
 				43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */,
 				43628765213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt */,
+				435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -2690,6 +2693,7 @@
 				153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */,
 				4322E82F1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt in Resources */,
 				43C3B16720038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key in Resources */,
+				435F7C75215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt in Resources */,
 				43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */,
 				1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */,
 				153CA6E81FB61B53003C9629 /* IOS-815_pep_rating_zero.txt in Resources */,
