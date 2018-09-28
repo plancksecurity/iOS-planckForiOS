@@ -11,31 +11,6 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-protocol MimeProtocol {
-    func mimeTypeFunc() -> String?
-    func dataFunc() -> Data?
-}
-
-extension Attachment: MimeProtocol {
-    func mimeTypeFunc() -> String? {
-        return mimeType
-    }
-
-    func dataFunc() -> Data? {
-        return data
-    }
-}
-
-extension CdAttachment: MimeProtocol {
-    func mimeTypeFunc() -> String? {
-        return mimeType
-    }
-
-    func dataFunc() -> Data? {
-        return data
-    }
-}
-
 class DecryptImportedMessagesTests: XCTestCase {
     var persistentSetup: PersistentSetup!
     var session: PEPSession {
@@ -230,5 +205,32 @@ class DecryptImportedMessagesTests: XCTestCase {
         XCTAssertFalse(theSenderIdentity.isMySelf)
 
         return cdMessage
+    }
+}
+
+// MARK: - Protocols
+
+protocol MimeProtocol {
+    func mimeTypeFunc() -> String?
+    func dataFunc() -> Data?
+}
+
+extension Attachment: MimeProtocol {
+    func mimeTypeFunc() -> String? {
+        return mimeType
+    }
+
+    func dataFunc() -> Data? {
+        return data
+    }
+}
+
+extension CdAttachment: MimeProtocol {
+    func mimeTypeFunc() -> String? {
+        return mimeType
+    }
+
+    func dataFunc() -> Data? {
+        return data
     }
 }
