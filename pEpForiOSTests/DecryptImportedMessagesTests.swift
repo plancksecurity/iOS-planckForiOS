@@ -11,6 +11,31 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
+protocol MimeProtocol {
+    func mimeTypeFunc() -> String?
+    func dataFunc() -> Data?
+}
+
+extension Attachment: MimeProtocol {
+    func mimeTypeFunc() -> String? {
+        return mimeType
+    }
+
+    func dataFunc() -> Data? {
+        return data
+    }
+}
+
+extension CdAttachment: MimeProtocol {
+    func mimeTypeFunc() -> String? {
+        return mimeType
+    }
+
+    func dataFunc() -> Data? {
+        return data
+    }
+}
+
 class DecryptImportedMessagesTests: XCTestCase {
     var persistentSetup: PersistentSetup!
     var session: PEPSession {
@@ -173,21 +198,7 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 2)
-
-        for i in 0..<attachments.count {
-            let theAttachment = attachments[i]
-            if i == 0 {
-                XCTAssertEqual(theAttachment.mimeType, "image/jpeg")
-            } else if i == 1 {
-                XCTAssertEqual(theAttachment.mimeType, "text/plain")
-                guard let theData = theAttachment.data,
-                    let dataString = String(data: theData, encoding: .utf8)  else {
-                    XCTFail()
-                    continue
-                }
-                XCTAssertEqual(dataString, "\n\nSent from my iPhone")
-            }
-        }
+        check(attachments: attachments as [MimeProtocol])
 
         guard let msg = theCdMessage.message() else {
             XCTFail()
@@ -195,13 +206,19 @@ class DecryptImportedMessagesTests: XCTestCase {
         }
 
         XCTAssertEqual(msg.attachments.count, 2)
-        for i in 0..<msg.attachments.count {
+        check(attachments: msg.attachments as [MimeProtocol])
+    }
+
+    // MARK: - Helpers
+
+    func check(attachments: [MimeProtocol]) {
+        for i in 0..<attachments.count {
             let theAttachment = attachments[i]
             if i == 0 {
-                XCTAssertEqual(theAttachment.mimeType, "image/jpeg")
+                XCTAssertEqual(theAttachment.mimeTypeFunc(), "image/jpeg")
             } else if i == 1 {
-                XCTAssertEqual(theAttachment.mimeType, "text/plain")
-                guard let theData = theAttachment.data,
+                XCTAssertEqual(theAttachment.mimeTypeFunc(), "text/plain")
+                guard let theData = theAttachment.dataFunc(),
                     let dataString = String(data: theData, encoding: .utf8)  else {
                         XCTFail()
                         continue
