@@ -188,10 +188,11 @@ open class PEPUtil {
         }
         dict[kPepOutgoing] = NSNumber(booleanLiteral: outgoing)
 
-        dict[kPepAttachments] = NSArray(
+        let theAttachments = NSArray(
             array: (cdMessage.attachments?.array as? [CdAttachment] ?? []).map() {
                 return pEpAttachment(cdAttachment: $0)
         })
+        dict[kPepAttachments] = theAttachments
 
         var refs = [String]()
         for ref in cdMessage.references?.array as? [CdMessageReference] ?? [] {
