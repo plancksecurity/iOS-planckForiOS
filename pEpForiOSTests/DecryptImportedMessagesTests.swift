@@ -149,4 +149,65 @@ class DecryptImportedMessagesTests: XCTestCase {
         XCTAssertEqual(attachment1.mimeType, "application/vnd.oasis.opendocument.text")
         XCTAssertEqual(attachment1.fileName, "cid://253d226f-4e3a-b37f-4809-16cdc02f39e1@yahoo.com")
     }
+
+    /**
+     IOS-1364
+     */
+    func testDecryptUndisplayedAttachedJpegMessage() {
+        let cdOwnAccount = createLocalAccount(ownUserName: "ThisIsMe",
+                                              ownUserID: "User_Me",
+                                              ownEmailAddress: "iostest001@peptest.ch")
+
+        self.backgroundQueue = OperationQueue()
+        let cdMessage = decryptTheMessage(
+            cdOwnAccount: cdOwnAccount, fileName: "1364_Mail_missing_attached_image.txt")
+
+        guard let theCdMessage = cdMessage else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.shortMessage, "blah")
+        XCTAssertEqual(theCdMessage.longMessage, "\n\n")
+
+        let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
+        XCTAssertEqual(attachments.count, 2)
+
+        for i in 0..<attachments.count {
+            let theAttachment = attachments[i]
+            if i == 0 {
+                XCTAssertEqual(theAttachment.mimeType, "image/jpeg")
+            } else if i == 1 {
+                XCTAssertEqual(theAttachment.mimeType, "text/plain")
+                guard let theData = theAttachment.data,
+                    let dataString = String(data: theData, encoding: .utf8)  else {
+                    XCTFail()
+                    continue
+                }
+                XCTAssertEqual(dataString, "\n\nSent from my iPhone")
+            }
+        }
+
+        guard let msg = theCdMessage.message() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(msg.attachments.count, 2)
+        for i in 0..<msg.attachments.count {
+            let theAttachment = attachments[i]
+            if i == 0 {
+                XCTAssertEqual(theAttachment.mimeType, "image/jpeg")
+            } else if i == 1 {
+                XCTAssertEqual(theAttachment.mimeType, "text/plain")
+                guard let theData = theAttachment.data,
+                    let dataString = String(data: theData, encoding: .utf8)  else {
+                        XCTFail()
+                        continue
+                }
+                XCTAssertEqual(dataString, "\n\nSent from my iPhone")
+            }
+        }
+    }
 }
