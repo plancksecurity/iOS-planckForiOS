@@ -973,7 +973,8 @@ class ComposeTableViewController: BaseTableViewController {
         if let recipientCell = cell as? WrappedCell {
             ccEnabled = recipientCell.expand()
             WrappedCell.ccEnabled = ccEnabled
-            self.tableView.updateSize()
+            self.tableView.reloadData()
+
         }
     }
 

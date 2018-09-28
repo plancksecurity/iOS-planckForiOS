@@ -93,6 +93,7 @@ open class ComposeTextView: UITextView {
                 value: UIFont.pEpInput,
                 range: NSRange(location: 0, length: new.length)
             )
+            new.addAttribute(NSAttributedStringKey.baselineOffset, value: 3.0, range: NSRange(location: 0, length: new.length))
             attributedText = new
         }
     }

@@ -217,17 +217,17 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="57.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" translatesAutoresizingMaskIntoConstraints="NO" id="nMk-Vq-dms">
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nMk-Vq-dms">
                                             <rect key="frame" x="8" y="0.0" width="367" height="57.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwf-Sw-cKo">
-                                                    <rect key="frame" x="0.0" y="17" width="22" height="19.5"/>
+                                                    <rect key="frame" x="0.0" y="9" width="22" height="19.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text=" " adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Anc-8J-vDp" customClass="ComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="22" y="8" width="345" height="38"/>
+                                                    <rect key="frame" x="22" y="0.0" width="345" height="38"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
@@ -237,7 +237,7 @@
                                                 </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Anc-8J-vDp" firstAttribute="top" secondItem="nMk-Vq-dms" secondAttribute="top" constant="8" id="McU-zI-Lqb"/>
+                                                <constraint firstItem="Anc-8J-vDp" firstAttribute="top" secondItem="nMk-Vq-dms" secondAttribute="top" priority="750" id="TAx-hX-kuX"/>
                                             </constraints>
                                         </stackView>
                                     </subviews>
@@ -256,7 +256,7 @@
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="subjectCell" rowHeight="58" id="BXJ-Ko-ZUm" customClass="ComposeCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="86" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BXJ-Ko-ZUm" id="Pc9-7u-OeC">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" tableViewCell="BXJ-Ko-ZUm" id="Pc9-7u-OeC">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="57.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
@@ -264,13 +264,13 @@
                                             <rect key="frame" x="8" y="0.0" width="367" height="57.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Subject:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DWr-lq-DOL">
-                                                    <rect key="frame" x="0.0" y="17" width="60" height="19.5"/>
+                                                    <rect key="frame" x="0.0" y="9" width="60" height="19.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text=" " textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8ci-S4-tmv" customClass="SubjectComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="60" y="8" width="307" height="38"/>
+                                                    <rect key="frame" x="60" y="0.0" width="307" height="38"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -279,12 +279,10 @@
                                                     </connections>
                                                 </textView>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="8ci-S4-tmv" firstAttribute="top" secondItem="7Li-Zj-aqN" secondAttribute="top" constant="8" identifier="topConstraint" id="wDf-JC-0fy"/>
-                                            </constraints>
                                         </stackView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="8ci-S4-tmv" firstAttribute="top" secondItem="Pc9-7u-OeC" secondAttribute="top" priority="750" id="95m-N8-zGN"/>
                                         <constraint firstAttribute="trailing" secondItem="7Li-Zj-aqN" secondAttribute="trailing" id="Tiz-Ie-eby"/>
                                         <constraint firstItem="7Li-Zj-aqN" firstAttribute="top" secondItem="Pc9-7u-OeC" secondAttribute="top" id="Zf2-ie-BeP"/>
                                         <constraint firstItem="7Li-Zj-aqN" firstAttribute="leading" secondItem="Pc9-7u-OeC" secondAttribute="leading" constant="8" id="a4d-UL-w5v"/>
@@ -310,7 +308,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MnO-TW-ONu" customClass="SubjectComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                            <rect key="frame" x="72.5" y="10" width="292.5" height="39.5"/>
+                                            <rect key="frame" x="72.5" y="11.5" width="292.5" height="38"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -320,12 +318,12 @@
                                         </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="MnO-TW-ONu" secondAttribute="bottom" constant="8" id="7Ju-d3-kf8"/>
+                                        <constraint firstAttribute="bottom" secondItem="MnO-TW-ONu" secondAttribute="bottom" priority="250" constant="8" id="7Ju-d3-kf8"/>
                                         <constraint firstItem="cCa-EA-IIy" firstAttribute="leading" secondItem="JHU-BA-XRQ" secondAttribute="leading" constant="8" id="Ift-fP-0Tn"/>
                                         <constraint firstAttribute="trailing" secondItem="MnO-TW-ONu" secondAttribute="trailing" constant="10" id="mVd-8m-bN6"/>
                                         <constraint firstItem="MnO-TW-ONu" firstAttribute="leading" secondItem="cCa-EA-IIy" secondAttribute="trailing" constant="7.5" id="psZ-zz-syU"/>
                                         <constraint firstItem="cCa-EA-IIy" firstAttribute="top" secondItem="JHU-BA-XRQ" secondAttribute="top" constant="17" id="tLl-VO-clL"/>
-                                        <constraint firstItem="MnO-TW-ONu" firstAttribute="top" secondItem="JHU-BA-XRQ" secondAttribute="top" constant="10" id="tfY-Kg-9Wq"/>
+                                        <constraint firstItem="MnO-TW-ONu" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JHU-BA-XRQ" secondAttribute="top" priority="250" constant="10" id="tfY-Kg-9Wq"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -969,9 +967,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="d5O-Wk-gjZ"/>
+        <segue reference="RTR-We-Kc1"/>
         <segue reference="oPc-EL-W2c"/>
         <segue reference="ber-OQ-S16"/>
-        <segue reference="I15-Dm-oo1"/>
+        <segue reference="2fD-kL-Bvj"/>
     </inferredMetricsTieBreakers>
 </document>
