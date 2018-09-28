@@ -57,9 +57,8 @@ class MoveToFolderOperationTest: CoreDataDrivenTestBase {
         assureMoveFromInbox(toFolderOfType: .inbox)
     }
 
-    // MARK: - Move from inbox to different account
+    // MARK: - Move from inbox to different account (IOS-1360)
 
-    //IOS-1360
     func testMoveToOtherAccount_inbox() {
         assureMoveFromInbox(toFolderOfType: .inbox, inDifferentAccount: true)
     }
