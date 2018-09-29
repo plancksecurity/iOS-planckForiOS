@@ -126,6 +126,41 @@ class DecryptImportedMessagesTests: XCTestCase {
         check(attachments: msg.attachments as [MimeProtocol])
     }
 
+    /**
+     IOS-1351
+     */
+    func testSimplifiedKeyImport() {
+        let cdOwnAccount = createLocalAccount(ownUserName: "Rick Deckard",
+                                              ownUserID: "rick_deckard_uid",
+                                              ownEmailAddress: "iostest001@peptest.ch")
+
+        try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Secret.asc")
+
+        self.backgroundQueue = OperationQueue()
+        let cdMessage = decryptTheMessage(
+            cdOwnAccount: cdOwnAccount,
+            fileName: "SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt")
+
+        guard let theCdMessage = cdMessage else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
+        XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
+        XCTAssertEqual(theCdMessage.longMessage, "See the key of Leon.\n\n")
+
+        let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
+        XCTAssertEqual(attachments.count, 2)
+
+        guard let msg = theCdMessage.message() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(msg.attachments.count, 2)
+    }
+
     // MARK: - Helpers
 
     func check(attachments: [MimeProtocol]) {
