@@ -128,8 +128,11 @@ class DecryptImportedMessagesTests: XCTestCase {
 
     /**
      IOS-1351
-     - Note: If you need to verify something, the secret key of Leon Kowalski is in
-     Leon Kowalski (19B9EE3B) – Secret.asc.
+     - Note: If you need to manually verify something:
+       * The public/secret key pair of Leon Kowalski (subject)
+         is in Leon Kowalski (19B9EE3B) – Secret.asc.
+       * The public/secret key pair of Harry Bryant (sender) is in
+         Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc
      */
     func testSimplifiedKeyImport() {
         // Accept signed messages from Harry Bryant for simplified key import
