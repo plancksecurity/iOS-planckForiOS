@@ -134,6 +134,7 @@ class DecryptImportedMessagesTests: XCTestCase {
        * The public/secret key pair of Harry Bryant (sender) is in
          Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc
      */
+    /*
     func testSimplifiedKeyImport() {
         // Accept signed messages from Harry Bryant for simplified key import
         DecryptMessageOperation.overrideSimplifiedKeyImporter =
@@ -181,6 +182,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             print("*** \(attach)")
         }
     }
+     */
 
     // MARK: - Helpers
 
