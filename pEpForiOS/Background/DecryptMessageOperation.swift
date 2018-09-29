@@ -48,6 +48,12 @@ class DecryptMessageOperation: Operation {
     let messageToDecrypt: PEPMessageDict
     let flags: PEP_decrypt_flags
 
+    /**
+     Set this if you want to override the default one, `keyImporter`.
+     - Note: This is used in a test.
+     */
+    public static var overrideSimplifiedKeyImporter: SimplifiedKeyImporter?
+
     let keyImporter = SimplifiedKeyImporter(
         trustedFingerPrint: "38D2 F9FC E5C0 18F0 62F3 1D86 91EC 8517 F2FE B65E")
 
@@ -84,7 +90,9 @@ class DecryptMessageOperation: Operation {
             if let theDecrypted = pEpDecryptedMessage as? [String: Any],
                 let theKeys = keys {
                 let pEpMessage = PEPMessage(dictionary: theDecrypted)
-                let _ = keyImporter.process(message: pEpMessage, keys: theKeys)
+                let theKeyImporter =
+                    DecryptMessageOperation.overrideSimplifiedKeyImporter ?? keyImporter
+                let _ = theKeyImporter.process(message: pEpMessage, keys: theKeys)
             }
 
             let result = DecryptionResult(givenMessage: inOutMessage,
