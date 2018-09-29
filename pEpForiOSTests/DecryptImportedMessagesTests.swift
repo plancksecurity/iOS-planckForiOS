@@ -161,10 +161,14 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
-        XCTAssertEqual(theCdMessage.longMessage, "See the key of Leon.\n\n")
+        XCTAssertEqual(theCdMessage.longMessage, "See the key of Leon attached.\n\n")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 2)
+
+        for cdAttach in attachments {
+            print("*** \(cdAttach)")
+        }
 
         guard let msg = theCdMessage.message() else {
             XCTFail()
@@ -172,6 +176,10 @@ class DecryptImportedMessagesTests: XCTestCase {
         }
 
         XCTAssertEqual(msg.attachments.count, 2)
+
+        for attach in msg.attachments {
+            print("*** \(attach)")
+        }
     }
 
     // MARK: - Helpers
