@@ -130,6 +130,11 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1351
      */
     func testSimplifiedKeyImport() {
+        // Accept signed messages from Harry Bryant for simplified key import
+        DecryptMessageOperation.overrideSimplifiedKeyImporter =
+            SimplifiedKeyImporter(trustedFingerPrint:
+                "CF25 D0BF A6BB 6880 C437  AFD4 5716 EA2D 9AE3 2468")
+
         let cdOwnAccount = createLocalAccount(ownUserName: "Rick Deckard",
                                               ownUserID: "rick_deckard_uid",
                                               ownEmailAddress: "iostest001@peptest.ch")
