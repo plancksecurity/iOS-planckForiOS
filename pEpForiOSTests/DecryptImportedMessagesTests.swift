@@ -146,6 +146,9 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Secret.asc")
 
+        try! session.setOwnKey(cdOwnAccount.pEpIdentity(),
+                               fingerprint: "456B937ED6D5806935F63CE5548738CCEB50C250")
+
         self.backgroundQueue = OperationQueue()
         let cdMessage = decryptTheMessage(
             cdOwnAccount: cdOwnAccount,
