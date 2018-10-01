@@ -8,6 +8,8 @@
 
 import UIKit
 
+import MessageModel //IOS-1369: UIView should not know model
+
 open class ComposeTextView: UITextView {
     public var fieldModel: ComposeFieldModel?
     
@@ -98,7 +100,7 @@ open class ComposeTextView: UITextView {
         }
     }
 
-    public func toMarkdown() -> (String, [Attachment]) {
+    public func toMarkdown() -> (String, [Attachment]) { //IOS-1369: UIView should not know model
         return attributedText.convertToMarkDown()
     }
 
