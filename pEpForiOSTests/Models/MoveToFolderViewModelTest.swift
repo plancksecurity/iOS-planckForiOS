@@ -46,6 +46,17 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
 
     }
 
+    func testThereAreCorrectItems() {
+        XCTAssertEqual(viewmodel.count, folders.count)
+    }
+
+    func testSubscritIsWorking() {
+        XCTAssertEqual(viewmodel[0].title,
+                       moveToFolderCellViewModel(folder: folders[0], level: 0).title)
+        XCTAssertEqual(viewmodel[1].title,
+                       moveToFolderCellViewModel(folder: folders[1], level: 1).title)
+    }
+
 
 
 
