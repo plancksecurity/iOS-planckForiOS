@@ -172,6 +172,21 @@ class DecryptImportedMessagesTests: XCTestCase {
         }
 
         XCTAssertEqual(msg.attachments.count, 0)
+
+        // check that we now have leon as own identity
+
+        let leon = PEPIdentity(address: "iostest002@peptest.ch",
+                               userID: PEP_OWN_USERID,
+                               userName: "Leon Kowalski",
+                               isOwn: true)
+        try! session.update(leon)
+
+        guard let leonsFingerprint = leon.fingerPrint else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(leonsFingerprint, "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
     }
 
     // MARK: - Helpers
