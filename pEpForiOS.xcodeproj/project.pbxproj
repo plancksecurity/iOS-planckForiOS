@@ -1271,9 +1271,8 @@
 			children = (
 				15265943216230B0006A78DF /* cells */,
 				1526594E216230B0006A78DF /* Util */,
-				15265958216230B0006A78DF /* ComposeTableViewController.swift */,
-				15265959216230B0006A78DF /* ComposeViewControllers */,
 				1526595B216230B1006A78DF /* Refactor */,
+				15265958216230B0006A78DF /* ComposeTableViewController.swift */,
 			);
 			path = Compose;
 			sourceTree = "<group>";
@@ -1318,14 +1317,6 @@
 			path = Util;
 			sourceTree = "<group>";
 		};
-		15265959216230B0006A78DF /* ComposeViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				1526595A216230B0006A78DF /* SuggestTableView.swift */,
-			);
-			path = ComposeViewControllers;
-			sourceTree = "<group>";
-		};
 		1526595B216230B1006A78DF /* Refactor */ = {
 			isa = PBXGroup;
 			children = (
@@ -1340,6 +1331,14 @@
 			children = (
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		15265973216234C0006A78DF /* SuggestTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1526595A216230B0006A78DF /* SuggestTableView.swift */,
+			);
+			path = SuggestTableViewController;
 			sourceTree = "<group>";
 		};
 		1544BD0021524C6C0075C5A0 /* Filter */ = {
@@ -2033,6 +2032,7 @@
 		43AA82511E9B925000ABD5A8 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				15265973216234C0006A78DF /* SuggestTableViewController */,
 				49D292A220F3ABA600F33C78 /* CredentialTextField.swift */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
 				43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */,

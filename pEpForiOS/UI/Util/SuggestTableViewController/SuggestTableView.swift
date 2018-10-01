@@ -9,16 +9,16 @@ import Foundation
 import UIKit
 import MessageModel
 
-open class SuggestTableView: UITableView {
+
+
+class SuggestTableView: UITableView {
 
     private var identities = [Identity]()
 
-
     // MARK: - LIFE CYCLE
 
-    open override func awakeFromNib() {
+    override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.dataSource = self
     }
 
@@ -27,7 +27,7 @@ open class SuggestTableView: UITableView {
     public func updateContacts(_ string: String) -> Bool {
         hide()
         identities.removeAll()
-        
+
         let search = string.cleanAttachments
         if (search.count >= 3) {
             identities = Identity.by(snippet: search)
