@@ -25,7 +25,7 @@ class RecipientCell: ComposeCell {
     public func addIdentity(_ identity: Identity) {
         identities.append(identity)
         let width = self.textView.bounds.width
-        textView.insertImage(identity, true, maxWidth: width)
+        textView.insertImage(forName: identity.userName, address: identity.address, maxWidth: width)
         textView.removePlainText()
         if let fm = super.fieldModel {
             delegate?.composeCell(cell: self, didChangeEmailAddresses: identities.map{ $0.address }, forFieldType: fm.type)
@@ -130,7 +130,9 @@ extension RecipientCell {
             let identity = Identity.create(address: string.trimmed())
             identities.append(identity)
             let width = self.textView.bounds.width
-            cTextview.insertImage(identity, maxWidth: width)
+            cTextview.insertImage(forName: identity.userName,
+                                  address: identity.address,
+                                  maxWidth: width)
             cTextview.removePlainText()
             mail =  true
         }
