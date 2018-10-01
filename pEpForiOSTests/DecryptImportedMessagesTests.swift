@@ -130,9 +130,9 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1351
      - Note: If you need to manually verify something:
        * The public/secret key pair of Leon Kowalski (subject)
-         is in Leon Kowalski (19B9EE3B) – Secret.asc.
+         is in `Leon Kowalski (19B9EE3B) – Private.asc`.
        * The public/secret key pair of Harry Bryant (sender) is in
-         Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc
+         `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
     func testSimplifiedKeyImport() {
         // Accept signed messages from Harry Bryant for simplified key import
@@ -144,7 +144,7 @@ class DecryptImportedMessagesTests: XCTestCase {
                                               ownUserID: "rick_deckard_uid",
                                               ownEmailAddress: "iostest001@peptest.ch")
 
-        try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Secret.asc")
+        try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
         try! session.setOwnKey(cdOwnAccount.pEpIdentity(),
                                fingerprint: "456B937ED6D5806935F63CE5548738CCEB50C250")
