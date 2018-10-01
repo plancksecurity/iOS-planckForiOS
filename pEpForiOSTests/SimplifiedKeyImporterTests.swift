@@ -72,6 +72,8 @@ class SimplifiedKeyImporterTests: XCTestCase {
     }
 
     func testCorrectImport() {
+        let theUserName = ownIdentity.userName ?? "Not actually defined but usable"
+
         let decorator: (Message) -> () = { [weak self] message in
             guard let theSelf = self else {
                 XCTFail()
@@ -79,7 +81,7 @@ class SimplifiedKeyImporterTests: XCTestCase {
             }
 
             message.longMessage =
-            "\(theSelf.ownIdentity.address)\n\(theSelf.fingerprint)"
+            "\(theSelf.ownIdentity.address)\n\(theUserName)\n\(theSelf.fingerprint)"
         }
 
         runTest(messageDecorator: decorator) { [weak self] identities, originalFingerprint in
@@ -96,6 +98,7 @@ class SimplifiedKeyImporterTests: XCTestCase {
 
             XCTAssertEqual(theIdent.address, theSelf.ownIdentity.address)
             XCTAssertEqual(theIdent.fingerPrint, theSelf.fingerprint)
+            XCTAssertEqual(theIdent.userName, theUserName)
 
             let checkIdent1 = theSelf.partialIdentityCopy(identity: theIdent)
             try! theSelf.session.update(checkIdent1)
