@@ -15,6 +15,15 @@ class SuggestTableViewController: UITableViewController {
 
     let viewModel = SuggestViewModel()
 
+    // MARK: - API
+
+    public var hasSuggestions: Bool {
+        return !viewModel.isEmpty
+    }
+
+    public func updateSuggestions(searchString: String) {
+        viewModel.updateSuggestion(searchString: searchString)
+    }
 }
 
 // MARK: - UITableViewDelegate

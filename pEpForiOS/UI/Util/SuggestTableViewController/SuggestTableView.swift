@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 import MessageModel
 
+
+
 class SuggestTableView: UITableView {
 
     private var identities = [Identity]()
@@ -29,7 +31,7 @@ class SuggestTableView: UITableView {
         let search = string.cleanAttachments
         if (search.count >= 3) {
             identities = Identity.by(snippet: search)
-
+            
             if identities.count > 0 {
                 reloadData()
                 isHidden = false
@@ -46,10 +48,10 @@ class SuggestTableView: UITableView {
         isHidden = true
     }
     
-//    public func didSelectIdentity(index: IndexPath) -> Identity?  {
-//        hide()
-//        return identities[index.row]
-//    }
+    public func didSelectIdentity(index: IndexPath) -> Identity?  {
+        hide()
+        return identities[index.row]
+    }
 }
 
 // MARK: - UITableViewDataSource

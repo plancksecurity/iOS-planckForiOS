@@ -8,15 +8,16 @@
 
 import MessageModel
 
-protocol SuggestViewModelDelegate: class {
+protocol SuggestViewModelResultDelegate: class {
+    /// Will be called whenever an Identity has been selected
     func suggestViewModelDidSelectContact(identity: Identity)
 }
 
-class SuggestViewModel {
-    private var identities = [Identity]()
-    private let minNumberSearchStringChars: UInt
+protocol SuggestViewModelDelegate: class {
+    func suggestViewModelDidResetModel()
+}
 
-    // MARK: - API
+class SuggestViewModel {
 
     struct Row {
         public let name: String
@@ -33,9 +34,19 @@ class SuggestViewModel {
         }
     }
 
+    weak public var resultDelegate: SuggestViewModelResultDelegate?
     weak public var delegate: SuggestViewModelDelegate?
 
-    public init(minNumberSearchStringChars: UInt = 3, delegate: SuggestViewModelDelegate? = nil) {
+    private var identities = [Identity]()
+    private let minNumberSearchStringChars: UInt
+
+    // MARK: - API
+
+    public var isEmpty: Bool {
+        return identities.count == 0
+    }
+
+    public init(minNumberSearchStringChars: UInt = 3, delegate: SuggestViewModelResultDelegate? = nil) {
         self.minNumberSearchStringChars = minNumberSearchStringChars
     }
 
@@ -44,7 +55,7 @@ class SuggestViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "Out of bounds")
             return
         }
-        delegate?.suggestViewModelDidSelectContact(identity: identities[index])
+        resultDelegate?.suggestViewModelDidSelectContact(identity: identities[index])
     }
 
     public var numRows: Int {
@@ -61,22 +72,12 @@ class SuggestViewModel {
         return Row(identity: identity)
     }
 
-    public func updateSuggestion(_ string: String) {
-        //IOS-1369: hide()
+    public func updateSuggestion(searchString: String) {
         identities.removeAll()
-
-        let search = string.cleanAttachments
-        if (search.count < minNumberSearchStringChars) {
-            //IOS-1369: hide()
-            //IOS-1369: reloadData()
-        } else {
+        let search = searchString.cleanAttachments
+        if (search.count >= minNumberSearchStringChars) {
             identities = Identity.by(snippet: search)
-
-            if identities.count > 0 {
-                //IOS-1369: reloadData()
-                //IOS-1369: isHidden = false (show)
-                //IOS-1369: reloadData()
-            }
         }
+        delegate?.suggestViewModelDidResetModel()
     }
 }

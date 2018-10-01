@@ -399,12 +399,21 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     // MARK: - Address Suggstions
 
     private final func addContactSuggestTable() {
-        suggestionsChildViewController = storyboard?.instantiateViewController(
-            withIdentifier: SuggestTableViewController.storyboardId) as? SuggestTableViewController
-        suggestTableView.delegate = self
-        suggestTableView.hide()
+        guard
+            let suggestVc = storyboard?.instantiateViewController(
+                withIdentifier: SuggestTableViewController.storyboardId) as? SuggestTableViewController,
+            let suggestView = suggestVc.view
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No VC.")
+                return
+        }
+        suggestionsChildViewController = suggestVc
+        addChildViewController(suggestVc)
+        //IOS-1369 VM. Yet unclear precedure. In discussion.
+        suggestVc.viewModel.resultDelegate = self
+        suggestView.isHidden = true
         updateSuggestTable(defaultCellHeight, true)
-        tableView.addSubview(suggestTableView)
+        tableView.addSubview(suggestView)
     }
 
     private func assureSuggestionsAreNotHiddenBehindKeyboard(keyboardSize: CGSize) {
@@ -413,24 +422,27 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
                                         left: 0,
                                         bottom: keyboardSize.height + searchfieldHeight,
                                         right: 0)
-        suggestTableView.contentInset = contentInset
-        suggestTableView.scrollIndicatorInsets = contentInset
+        suggestionsChildViewController?.tableView.contentInset = contentInset
+        suggestionsChildViewController?.tableView.scrollIndicatorInsets = contentInset
     }
 
     private func resetSuggestionsKeyboardOffset() {
         let zeroOffset = UIEdgeInsets()
-        suggestTableView.contentInset = zeroOffset
-        suggestTableView.scrollIndicatorInsets = zeroOffset
+        suggestionsChildViewController?.tableView.contentInset = zeroOffset
+        suggestionsChildViewController?.tableView.scrollIndicatorInsets = zeroOffset
     }
-
-    // MARK: - Composing Mail
 
     private final func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
         var pos = position
-        if pos < defaultCellHeight && !start { pos = defaultCellHeight * (position + 1) + 2 }
-        suggestTableView.frame.origin.y = pos
-        suggestTableView.frame.size.height = tableView.bounds.size.height - pos + 2
+        if pos < defaultCellHeight && !start {
+            pos = defaultCellHeight * (position + 1) + 2
+        }
+        suggestionsChildViewController?.view.frame.origin.y = pos
+        suggestionsChildViewController?.view.frame.size.height =
+            tableView.bounds.size.height - pos + 2
     }
+
+    // MARK: - Composing Mail
 
     private final func populateMessageFromUserInput() -> Message? {
         let fromCells = allCells.filter { $0.fieldModel?.type == .from }
@@ -1241,7 +1253,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
 
 
 
-extension ComposeTableViewController_MVVM: SuggestViewModelDelegate {
+extension ComposeTableViewController_MVVM: SuggestViewModelResultDelegate {
 
     func suggestViewModelDidSelectContact(identity: Identity) {
         guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
@@ -1308,7 +1320,10 @@ extension ComposeTableViewController_MVVM: ComposeCellDelegate {
         }
 
         if suggestContacts {
-            if suggestTableView.updateContacts(textView.text) {
+            //IOS-1369: needs to go to VM
+            suggestionsChildViewController?.updateSuggestions(searchString: textView.text)
+            if suggestionsChildViewController?.hasSuggestions ?? false {
+                suggestionsChildViewController?.view.isHidden = false
                 tableView.scrollToTopOf(composeCell)
                 composeCell.textView.scrollToBottom()
                 updateSuggestTable(CGFloat(indexPath.row))
@@ -1323,7 +1338,7 @@ extension ComposeTableViewController_MVVM: ComposeCellDelegate {
 
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView) {
         tableView.updateSize()
-        suggestTableView.hide()
+        suggestionsChildViewController?.view.isHidden = true
     }
 
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {
