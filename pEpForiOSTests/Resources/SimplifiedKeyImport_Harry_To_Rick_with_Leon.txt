@@ -2,10 +2,10 @@ Return-Path: <iostest002@peptest.ch>
 X-Original-To: iostest001@peptest.ch
 Delivered-To: iostest001@peptest.ch
 Received: from macbookd.local (244.red-81-38-90.dynamicip.rima-tde.net [81.38.90.244])
-by peptest.ch (Postfix) with ESMTPSA id 71FC0A0CE5
-for <iostest001@peptest.ch>; Sat, 29 Sep 2018 15:42:08 +0200 (CEST)
+  by peptest.ch (Postfix) with ESMTPSA id 71FC0A0CE5
+  for <iostest001@peptest.ch>; Sat, 29 Sep 2018 15:42:08 +0200 (CEST)
 Authentication-Results: plesk.peptest.ch;
-spf=pass (sender IP is 81.38.90.244) smtp.mailfrom=iostest002@peptest.ch smtp.helo=macbookd.local
+  spf=pass (sender IP is 81.38.90.244) smtp.mailfrom=iostest002@peptest.ch smtp.helo=macbookd.local
 Received-SPF: pass (plesk.peptest.ch: connection is authenticated)
 To: Rick Deckard <iostest001@peptest.ch>
 From: Harry Bryant <iostest002@peptest.ch>
@@ -17,8 +17,8 @@ User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:52.0)
 Gecko/20100101 Thunderbird/52.9.1
 MIME-Version: 1.0
 Content-Type: multipart/encrypted;
-protocol="application/pgp-encrypted";
-boundary="yskGEQV82sE4wwn3ekO5jPj8QeM02ydvy"
+  protocol="application/pgp-encrypted";
+  boundary="yskGEQV82sE4wwn3ekO5jPj8QeM02ydvy"
 
 This is an OpenPGP/MIME encrypted message (RFC 4880 and 3156)
 --yskGEQV82sE4wwn3ekO5jPj8QeM02ydvy
