@@ -58,7 +58,7 @@ class MoveToAccountCellViewModel {
 }
 
 class MoveToFolderViewModel {
-    var items : [moveToFolderCellViewModel]
+    var items : [MoveToFolderCellViewModel]
     var acc : Account
     var messages: [Message]
     var delegate : MoveToFolderDelegate?
@@ -72,14 +72,14 @@ class MoveToFolderViewModel {
 
     private func generateFolderCells() {
         for folder in acc.rootFolders {
-            items.append(moveToFolderCellViewModel(folder: folder, level: 0))
+            items.append(MoveToFolderCellViewModel(folder: folder, level: 0))
             childFolder(root: folder, level: 1)
         }
     }
 
     private func childFolder(root folder: Folder, level: Int) {
         for subFolder in folder.subFolders() {
-            items.append(moveToFolderCellViewModel(folder: subFolder, level: level))
+            items.append(MoveToFolderCellViewModel(folder: subFolder, level: level))
             childFolder(root: subFolder, level: level + 1)
         }
     }
@@ -99,7 +99,7 @@ class MoveToFolderViewModel {
         return result
     }
 
-    subscript(index: Int) -> moveToFolderCellViewModel {
+    subscript(index: Int) -> MoveToFolderCellViewModel {
         get {
             return self.items[index]
         }
@@ -110,7 +110,7 @@ class MoveToFolderViewModel {
     }
 }
 
-class moveToFolderCellViewModel {
+class MoveToFolderCellViewModel {
     var folder: Folder
     var title: String
     var indentationLevel: Int
