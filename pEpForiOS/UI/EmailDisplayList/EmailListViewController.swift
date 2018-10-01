@@ -1155,7 +1155,7 @@ extension EmailListViewController: SegueHandlerType {
         let segueId = segueIdentifier(for: segue)
         guard
             let nav = segue.destination as? UINavigationController,
-            let composeVc = nav.topViewController as? ComposeTableViewController,
+            let composeVc = nav.topViewController as? ComposeTableViewController_MVVM,
             let composeMode = composeMode(for: segueId) else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "composeViewController setup issue")
@@ -1207,15 +1207,15 @@ extension EmailListViewController: LoginViewControllerDelegate {
 
 // MARK: - ComposeTableViewControllerDelegate
 
-extension EmailListViewController: ComposeTableViewControllerDelegate {
-    func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController) {
+extension EmailListViewController: ComposeTableViewControllerDelegate_MVVM {
+    func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController_MVVM) {
         if folderIsDraftsOrOutbox(folderToShow){
             // In outbox, a new mail must show up after composing it.
             model?.reloadData()
         }
     }
 
-    func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController) {
+    func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController_MVVM) {
         if folderIsOutbox(folderToShow) {
             // A message from outbox has been deleted in outbox
             // (e.g. because the user saved it to drafts).
@@ -1223,7 +1223,7 @@ extension EmailListViewController: ComposeTableViewControllerDelegate {
         }
     }
 
-    func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController) {
+    func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController_MVVM) {
         if folderIsDraft(folderToShow) {
             model?.reloadData()
         }
