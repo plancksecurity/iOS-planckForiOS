@@ -8,8 +8,6 @@
 
 import UIKit
 
-import MessageModel
-
 open class ComposeTextView: UITextView {
     public var fieldModel: ComposeFieldModel?
     
@@ -40,20 +38,23 @@ open class ComposeTextView: UITextView {
         contentOffset = .zero
     }
 
-    public func insertImage(_ identity: Identity, maxWidth: CGFloat = 0.0) {
+    public func insertImage(forName name: String?, address: String, maxWidth: CGFloat = 0.0) {
+        let text = name ?? address.trimmed()
+        insertImage(withText: text, maxWidth: maxWidth)
+    }
+
+    public func insertImage(withText text: String, maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
-        
-        let string = identity.userName ?? identity.address.trimmed()
-        let img = ComposeHelper.recepient(string, textColor: .pEpGreen, maxWidth: maxWidth-20.0)
+        let img = ComposeHelper.recepient(text, textColor: .pEpGreen, maxWidth: maxWidth - 20.0)
         let at = TextAttachment()
         at.image = img
         at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
-        
+
         let attachString = NSAttributedString(attachment: at)
         attrText.replaceCharacters(in: selectedRange, with: attachString)
         attrText.addAttribute(NSAttributedStringKey.font,
-            value: UIFont.pEpInput,
-            range: NSRange(location: 0, length: attrText.length)
+                              value: UIFont.pEpInput,
+                              range: NSRange(location: 0, length: attrText.length)
         )
         attributedText = attrText
     }
