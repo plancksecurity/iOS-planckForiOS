@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		000D3C2F20D12BFD006B11B2 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000D3C2E20D12BFD006B11B2 /* MessageViewModel.swift */; };
+		0017CD1B21621E2200F62F13 /* MoveToFolderViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0017CD1A21621E2200F62F13 /* MoveToFolderViewModelTest.swift */; };
 		001D365E20C56470002434EB /* MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001D365D20C56470002434EB /* MoveToFolderDelegate.swift */; };
 		001D366020C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001D365F20C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift */; };
 		001D366220C576BD002434EB /* EmailViewController+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001D366120C576BD002434EB /* EmailViewController+MoveToFolderDelegate.swift */; };
@@ -563,6 +564,7 @@
 
 /* Begin PBXFileReference section */
 		000D3C2E20D12BFD006B11B2 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
+		0017CD1A21621E2200F62F13 /* MoveToFolderViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModelTest.swift; sourceTree = "<group>"; };
 		001D365D20C56470002434EB /* MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderDelegate.swift; sourceTree = "<group>"; };
 		001D365F20C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewModel+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
 		001D366120C576BD002434EB /* EmailViewController+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
@@ -2209,6 +2211,7 @@
 			children = (
 				1544BD0021524C6C0075C5A0 /* Filter */,
 				B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */,
+				0017CD1A21621E2200F62F13 /* MoveToFolderViewModelTest.swift */,
 				4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */,
 				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
 				43504D4320E0DD0E00D11E52 /* EmailListViewModeTests+Threading.swift */,
@@ -3204,6 +3207,7 @@
 				15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */,
 				43A3847F2153E494006AC8F8 /* SimplifiedKeyImporterTests.swift in Sources */,
 				431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */,
+				0017CD1B21621E2200F62F13 /* MoveToFolderViewModelTest.swift in Sources */,
 				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
 				43FAA0D41EC9CBC0005BFC4B /* DecryptionTestsInternal.swift in Sources */,
 				15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */,
