@@ -49,7 +49,7 @@ class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
                    folderType: .inbox,
                    selectable: true)
         folder.save()
-        var drafts =
+        let drafts =
             Folder(name: "drafts",
                    parent: folder,
                    account: cdAccount.account(),
@@ -67,7 +67,7 @@ class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
                    folderType: .inbox,
                    selectable: true)
         folder.save()
-        var sent =
+        let sent =
             Folder(name: "sent",
                    parent: folder,
                    account: cdAccount.account(),
