@@ -37,7 +37,6 @@ extension ThreadViewController: SegueHandlerType {
             vc.messageId = indexPath.row
             vc.delegate = model
             model.currentDisplayedMessage = vc
-            break
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController else {
@@ -50,7 +49,6 @@ extension ThreadViewController: SegueHandlerType {
             }
             destination.delegate = model
             model.didMove()
-            break
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController_MVVM,
@@ -58,10 +56,7 @@ extension ThreadViewController: SegueHandlerType {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
-
-
             destination.appConfig = appConfig
-
             if segueId == .segueReplyFrom {
                 destination.composeMode = .replyFrom
                 destination.originalMessage = model.getMessageToReply()
@@ -72,10 +67,6 @@ extension ThreadViewController: SegueHandlerType {
                 destination.composeMode = .forward
                 destination.originalMessage =  model.getMessageToReply()
             }
-            break
-        default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
-            break
         }
     }
 
