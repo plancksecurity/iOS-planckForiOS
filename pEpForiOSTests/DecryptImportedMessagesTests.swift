@@ -161,7 +161,9 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
-        XCTAssertEqual(theCdMessage.longMessage, "See the key of Leon attached.\n")
+        XCTAssertEqual(
+            theCdMessage.longMessage,
+            "iostest003@peptest.ch\n63FC29205A57EB3AEB780E846F239B0F19B9EE3B\n\nSee the key of Leon attached.\n")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 0)
