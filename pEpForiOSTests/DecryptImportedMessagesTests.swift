@@ -152,27 +152,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         self.backgroundQueue = OperationQueue()
         let cdMessage = decryptTheMessage(
             cdOwnAccount: cdOwnAccount,
-            fileName: "SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt") { cdMessage in
-                guard let msg = cdMessage.message() else {
-                    XCTFail()
-                    return
-                }
-
-                var encryptedPartFound = false
-                for attach in msg.attachments {
-                    if attach.mimeType == "application/pgp-encrypted" {
-                        guard let theData = attach.data,
-                            let dataString = String(data: theData, encoding: .utf8) else {
-                                XCTFail()
-                                return
-                        }
-                        if dataString.startsWithBeginPgpMessage() {
-                            encryptedPartFound = true
-                        }
-                    }
-                }
-                XCTAssertTrue(encryptedPartFound)
-        }
+            fileName: "SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt")
 
         guard let theCdMessage = cdMessage else {
             XCTFail()
@@ -181,25 +161,17 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
-        XCTAssertEqual(theCdMessage.longMessage, "See the key of Leon attached.\n\n")
+        XCTAssertEqual(theCdMessage.longMessage, "See the key of Leon attached.\n")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
-        XCTAssertEqual(attachments.count, 2)
-
-        for cdAttach in attachments {
-            print("*** \(cdAttach)")
-        }
+        XCTAssertEqual(attachments.count, 0)
 
         guard let msg = theCdMessage.message() else {
             XCTFail()
             return
         }
 
-        XCTAssertEqual(msg.attachments.count, 2)
-
-        for attach in msg.attachments {
-            print("*** \(attach)")
-        }
+        XCTAssertEqual(msg.attachments.count, 0)
     }
 
     // MARK: - Helpers
