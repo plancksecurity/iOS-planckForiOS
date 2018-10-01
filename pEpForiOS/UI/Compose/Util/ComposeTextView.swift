@@ -40,8 +40,7 @@ open class ComposeTextView: UITextView {
         contentOffset = .zero
     }
 
-    public func insertImage(_ identity: Identity, _ hasName: Bool = false,
-                            maxWidth: CGFloat = 0.0) {
+    public func insertImage(_ identity: Identity, maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         
         let string = identity.userName ?? identity.address.trimmed()
