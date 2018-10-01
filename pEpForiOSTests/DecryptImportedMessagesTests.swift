@@ -134,7 +134,6 @@ class DecryptImportedMessagesTests: XCTestCase {
        * The public/secret key pair of Harry Bryant (sender) is in
          Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc
      */
-    /*
     func testSimplifiedKeyImport() {
         // Accept signed messages from Harry Bryant for simplified key import
         DecryptMessageOperation.overrideSimplifiedKeyImporter =
@@ -153,7 +152,27 @@ class DecryptImportedMessagesTests: XCTestCase {
         self.backgroundQueue = OperationQueue()
         let cdMessage = decryptTheMessage(
             cdOwnAccount: cdOwnAccount,
-            fileName: "SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt")
+            fileName: "SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt") { cdMessage in
+                guard let msg = cdMessage.message() else {
+                    XCTFail()
+                    return
+                }
+
+                var encryptedPartFound = false
+                for attach in msg.attachments {
+                    if attach.mimeType == "application/pgp-encrypted" {
+                        guard let theData = attach.data,
+                            let dataString = String(data: theData, encoding: .utf8) else {
+                                XCTFail()
+                                return
+                        }
+                        if dataString.startsWithBeginPgpMessage() {
+                            encryptedPartFound = true
+                        }
+                    }
+                }
+                XCTAssertTrue(encryptedPartFound)
+        }
 
         guard let theCdMessage = cdMessage else {
             XCTFail()
@@ -182,7 +201,6 @@ class DecryptImportedMessagesTests: XCTestCase {
             print("*** \(attach)")
         }
     }
-     */
 
     // MARK: - Helpers
 
@@ -219,12 +237,18 @@ class DecryptImportedMessagesTests: XCTestCase {
         return cdOwnAccount
     }
 
-    func decryptTheMessage(cdOwnAccount: CdAccount, fileName: String) -> CdMessage? {
+    func decryptTheMessage(cdOwnAccount: CdAccount,
+                           fileName: String,
+                           checkCdMessage: ((CdMessage) -> ())? = nil) -> CdMessage? {
         guard let cdMessage = TestUtil.cdMessage(
             fileName: fileName,
             cdOwnAccount: cdOwnAccount) else {
                 XCTFail()
                 return nil
+        }
+
+        if let theChecker = checkCdMessage {
+            theChecker(cdMessage)
         }
 
         let expDecrypted = expectation(description: "expDecrypted")
