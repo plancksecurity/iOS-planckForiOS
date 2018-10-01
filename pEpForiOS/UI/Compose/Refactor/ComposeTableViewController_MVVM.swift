@@ -72,7 +72,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     private let contactPicker = CNContactPickerViewController()
     private let imagePicker = UIImagePickerController()
     private let menuController = UIMenuController.shared
-    private var suggestTableView: SuggestTableView!
+    private var suggestionsChildViewController: SuggestTableViewController?
     private let composeSection = 0
     private let attachmentSection = 1
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
@@ -399,8 +399,8 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     // MARK: - Address Suggstions
 
     private final func addContactSuggestTable() {
-        suggestTableView = storyboard?.instantiateViewController(
-            withIdentifier: "contactSuggestionTable").view as? SuggestTableView
+        suggestionsChildViewController = storyboard?.instantiateViewController(
+            withIdentifier: SuggestTableViewController.storyboardId) as? SuggestTableViewController
         suggestTableView.delegate = self
         suggestTableView.hide()
         updateSuggestTable(defaultCellHeight, true)
@@ -955,18 +955,6 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     // MARK: - TableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if tableView is SuggestTableView {
-            guard let cell = self.tableView.cellForRow(
-                at: currentCellIndexPath) as? RecipientCell else {
-                    return
-            }
-            if let identity = suggestTableView.didSelectIdentity(index: indexPath) {
-                cell.addIdentity(identity)
-                cell.textView.scrollToTop()
-                self.tableView.updateSize()
-            }
-        }
-
         guard let cell = tableView.cellForRow(at: indexPath) as? ComposeCell else {
             return
         }
@@ -974,7 +962,6 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
             ccEnabled = recipientCell.expand()
             WrappedCell.ccEnabled = ccEnabled
             self.tableView.reloadData()
-
         }
     }
 
@@ -1245,6 +1232,27 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
 
     private func keyboardDidHide() {
         resetSuggestionsKeyboardOffset()
+    }
+}
+
+// MARK: - SuggestViewModelDelegate
+
+//IOS-1369: /!!!: The VM MUST go to ComposeViewModel.
+
+
+
+extension ComposeTableViewController_MVVM: SuggestViewModelDelegate {
+
+    func suggestViewModelDidSelectContact(identity: Identity) {
+        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
+            Log.shared.errorAndCrash(component: #function, errorString:
+                "I think this must not happen. Remove log if proven otherwize")
+            return
+        }
+        suggestionsChildViewController?.view.isHidden = true
+        cell.addIdentity(identity)
+        cell.textView.scrollToTop()
+        suggestionsChildViewController?.tableView.updateSize()
     }
 }
 
