@@ -59,9 +59,13 @@ struct Constants {
     /// Is not in ComposeViewController.swift as it is the ID of the NavigationController that
     /// holds the ViewController, which the ViewController has no knowledge of.
     static let composeSceneStoryboardId = "ReplyNavigation"
+
     /// Name of Storyboard that contains ComposeViewController.
     static let composeSceneStoryboard = "Main"
 
     /// Name of Storyboard that contains AddToContactsViewController.
     static let addToContactsStoryboard = "Reusable"
+
+    /// Name of Storyboard that contains SuggestTableViewController.
+    static let suggestionsStoryboard = "Reusable"
 }
