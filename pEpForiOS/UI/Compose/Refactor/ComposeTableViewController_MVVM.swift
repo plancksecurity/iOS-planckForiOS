@@ -399,8 +399,9 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     // MARK: - Address Suggstions
 
     private final func addContactSuggestTable() {
+         let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: nil)
         guard
-            let suggestVc = storyboard?.instantiateViewController(
+            let suggestVc = storyboard.instantiateViewController(
                 withIdentifier: SuggestTableViewController.storyboardId) as? SuggestTableViewController,
             let suggestView = suggestVc.view
             else {
@@ -1322,6 +1323,7 @@ extension ComposeTableViewController_MVVM: ComposeCellDelegate {
                 composeCell.textView.scrollToBottom()
                 updateSuggestTable(CGFloat(indexPath.row))
             } else {
+                suggestionsChildViewController?.view.isHidden = true
                 composeCell.textView.scrollToTop()
                 tableView.updateSize()
             }
