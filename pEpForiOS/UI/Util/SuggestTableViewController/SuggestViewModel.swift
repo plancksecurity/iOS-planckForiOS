@@ -46,7 +46,8 @@ class SuggestViewModel {
         return identities.count == 0
     }
 
-    public init(minNumberSearchStringChars: UInt = 3, delegate: SuggestViewModelResultDelegate? = nil) {
+    public init(minNumberSearchStringChars: UInt = 3,
+                delegate: SuggestViewModelResultDelegate? = nil) {
         self.minNumberSearchStringChars = minNumberSearchStringChars
     }
 
