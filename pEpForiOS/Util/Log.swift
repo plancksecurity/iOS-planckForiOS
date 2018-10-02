@@ -15,6 +15,32 @@ import MessageModel
         case info
         case warning
         case error
+
+        /**
+         Maps the internal criticality of a log  message into a subsystem of ASL levels.
+
+         ASL has the following:
+         * ASL_LEVEL_EMERG
+         * ASL_LEVEL_ALERT
+         * ASL_LEVEL_CRIT
+         * ASL_LEVEL_ERR
+         * ASL_LEVEL_WARNING
+         * ASL_LEVEL_NOTICE
+         * ASL_LEVEL_INFO
+         * ASL_LEVEL_DEBUG
+         */
+        func aslLevel() -> Int32 {
+            switch self {
+            case .verbose:
+                return ASL_LEVEL_DEBUG
+            case .info:
+                return ASL_LEVEL_NOTICE
+            case .warning:
+                return ASL_LEVEL_WARNING
+            case .error:
+                return ASL_LEVEL_ERR
+            }
+        }
     }
 
     static public let shared: Log = {
@@ -154,7 +180,7 @@ import MessageModel
             asl_set(logMessage, Log.keyEntityName, entity)
             asl_set(logMessage, ASL_KEY_FACILITY, Log.facilityName)
             asl_set(logMessage, ASL_KEY_MSG, description)
-            asl_set(logMessage, ASL_KEY_LEVEL, "\(ASL_LEVEL_INFO)")
+            asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
 
             asl_send(nil, logMessage)
         }
