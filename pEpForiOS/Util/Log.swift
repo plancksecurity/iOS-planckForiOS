@@ -43,11 +43,29 @@ import MessageModel
 
     static public func checklog(_ block: ((String?) -> ())?) {
         Log.shared.loggingQueue.addOperation() {
-            if let logString = try? PEPSession().getLog() {
-                block?(logString)
-            } else {
-                block?("")
+            let query = asl_new(UInt32(ASL_TYPE_QUERY))
+            var result: Int32 = 0
+
+            result = asl_set(query, ASL_KEY_FACILITY, facilityName)
+            checkASLSuccess(result: result, comment: "asl_set ASL_KEY_FACILITY")
+
+            let response = asl_search(nil, query)
+            var next = asl_next(response)
+            var logString = ""
+            while next != nil {
+                if let stringPointer = asl_get(next, ASL_KEY_MSG) {
+                    // TODO: Also retrieve ASL_KEY_LEVEL?
+                    let theString = String(cString: stringPointer)
+                    if logString.isEmpty {
+                        logString.append(theString)
+                    } else {
+                        logString.append("\(theString)\n")
+                    }
+                }
+                next = asl_next(response)
             }
+
+            block?(logString)
         }
     }
 
@@ -99,6 +117,8 @@ import MessageModel
         Log.shared.loggingQueue.cancelAllOperations()
     }
 
+    private static let facilityName = "security.pEp"
+
     private let title = "pEpForiOS"
     private var logEnabled = true
     private var paused = false
@@ -125,7 +145,8 @@ import MessageModel
         if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
             let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
 
-            asl_set(logMessage, ASL_KEY_FACILITY, "security.pEp.\(entity)")
+            // TODO: Store the entity
+            asl_set(logMessage, ASL_KEY_FACILITY, Log.facilityName)
             asl_set(logMessage, ASL_KEY_MSG, description)
             asl_set(logMessage, ASL_KEY_LEVEL, "\(ASL_LEVEL_INFO)")
 
@@ -133,7 +154,7 @@ import MessageModel
         }
     }
 
-    private func checkASLSuccess(result: Int32, comment: String) {
+    private static func checkASLSuccess(result: Int32, comment: String) {
         if result != 0 {
             print("error: \(comment)")
         }
