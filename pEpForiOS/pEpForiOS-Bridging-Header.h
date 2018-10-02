@@ -62,4 +62,8 @@
 
 #import "AppAuth/AppAuth.h"
 
+#pragma mark -- Apple System Log facility
+
+#import <asl.h>
+
 #endif /* pEpForiOS_Bridging_Header_h */
