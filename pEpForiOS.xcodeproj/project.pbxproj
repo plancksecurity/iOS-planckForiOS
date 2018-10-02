@@ -89,6 +89,7 @@
 		15265972216230B2006A78DF /* ComposeTableViewController_MVVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526595D216230B1006A78DF /* ComposeTableViewController_MVVM.swift */; };
 		1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
 		1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597921623652006A78DF /* SuggestViewModel.swift */; };
+		1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597C21637759006A78DF /* SuggestViewModelTest.swift */; };
 		153CA6E41FB60D99003C9629 /* DercyptMessagesOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */; };
 		153CA6E81FB61B53003C9629 /* IOS-815_pep_rating_zero.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E71FB61B53003C9629 /* IOS-815_pep_rating_zero.txt */; };
 		153CA6EA1FB62195003C9629 /* IOS-211-pdfEmail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */; };
@@ -648,6 +649,7 @@
 		1526595D216230B1006A78DF /* ComposeTableViewController_MVVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController_MVVM.swift; sourceTree = "<group>"; };
 		1526597721623637006A78DF /* SuggestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTableViewController.swift; sourceTree = "<group>"; };
 		1526597921623652006A78DF /* SuggestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModel.swift; sourceTree = "<group>"; };
+		1526597C21637759006A78DF /* SuggestViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModelTest.swift; sourceTree = "<group>"; };
 		153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DercyptMessagesOperationTest.swift; sourceTree = "<group>"; };
 		153CA6E71FB61B53003C9629 /* IOS-815_pep_rating_zero.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-815_pep_rating_zero.txt"; sourceTree = "<group>"; };
 		153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-pdfEmail.txt"; sourceTree = "<group>"; };
@@ -1348,6 +1350,14 @@
 			path = SuggestTableViewController;
 			sourceTree = "<group>";
 		};
+		1526597B2163772C006A78DF /* SuggestTableViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1526597C21637759006A78DF /* SuggestViewModelTest.swift */,
+			);
+			path = SuggestTableViewController;
+			sourceTree = "<group>";
+		};
 		1544BD0021524C6C0075C5A0 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -1797,6 +1807,7 @@
 		4356FFEA21356CB600804089 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				1526597B2163772C006A78DF /* SuggestTableViewController */,
 				4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */,
 			);
 			path = Util;
@@ -3237,6 +3248,7 @@
 				0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */,
 				0017CD1B21621E2200F62F13 /* MoveToFolderViewModelTest.swift in Sources */,
 				4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */,
+				1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */,
 				43FAA0D41EC9CBC0005BFC4B /* DecryptionTestsInternal.swift in Sources */,
 				15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
