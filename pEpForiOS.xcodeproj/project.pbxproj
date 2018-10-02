@@ -90,6 +90,7 @@
 		1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
 		1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597921623652006A78DF /* SuggestViewModel.swift */; };
 		1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597C21637759006A78DF /* SuggestViewModelTest.swift */; };
+		1526597F2163BE6F006A78DF /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597E2163BE6F006A78DF /* ComposeViewModel.swift */; };
 		153CA6E41FB60D99003C9629 /* DercyptMessagesOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */; };
 		153CA6E81FB61B53003C9629 /* IOS-815_pep_rating_zero.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E71FB61B53003C9629 /* IOS-815_pep_rating_zero.txt */; };
 		153CA6EA1FB62195003C9629 /* IOS-211-pdfEmail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */; };
@@ -650,6 +651,7 @@
 		1526597721623637006A78DF /* SuggestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTableViewController.swift; sourceTree = "<group>"; };
 		1526597921623652006A78DF /* SuggestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModel.swift; sourceTree = "<group>"; };
 		1526597C21637759006A78DF /* SuggestViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModelTest.swift; sourceTree = "<group>"; };
+		1526597E2163BE6F006A78DF /* ComposeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DercyptMessagesOperationTest.swift; sourceTree = "<group>"; };
 		153CA6E71FB61B53003C9629 /* IOS-815_pep_rating_zero.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-815_pep_rating_zero.txt"; sourceTree = "<group>"; };
 		153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-pdfEmail.txt"; sourceTree = "<group>"; };
@@ -1337,6 +1339,7 @@
 		1526595C216230B1006A78DF /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				1526597E2163BE6F006A78DF /* ComposeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -2871,6 +2874,7 @@
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				434BF39120C6B02100FCBCCA /* Message+ThreadAware.swift in Sources */,
 				439932291FEA7E7A00E92C35 /* String+Email.swift in Sources */,
+				1526597F2163BE6F006A78DF /* ComposeViewModel.swift in Sources */,
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
 				43F8D80A20C549120038ABD5 /* FolderThreading.swift in Sources */,
 				1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */,

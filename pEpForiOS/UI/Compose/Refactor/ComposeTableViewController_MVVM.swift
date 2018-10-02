@@ -14,6 +14,7 @@ import MessageModel
 import SwipeCellKit
 import Photos
 
+//IOS-1369: VMs should conform, *not* VCs (as implemented by me)
 protocol ComposeTableViewControllerDelegate_MVVM: class {
     /// Called after a valid mail has been composed and saved for sending.
     /// - Parameter sender: the sender
