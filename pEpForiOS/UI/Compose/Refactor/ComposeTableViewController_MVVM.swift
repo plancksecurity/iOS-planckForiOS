@@ -1246,8 +1246,6 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
 
 //IOS-1369: /!!!: The VM MUST go to ComposeViewModel.
 
-
-
 extension ComposeTableViewController_MVVM: SuggestViewModelResultDelegate {
 
     func suggestViewModelDidSelectContact(identity: Identity) {
