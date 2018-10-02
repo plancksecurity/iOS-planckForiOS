@@ -20,7 +20,7 @@ import MessageModel
     private let title = "pEpForiOS"
     private var logEnabled = true
     private var paused = false
-    private let session = PEPSession()
+
     private let loggingQueue: OperationQueue = {
        let createe = OperationQueue()
         createe.qualityOfService = .background
