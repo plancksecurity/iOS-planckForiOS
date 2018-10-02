@@ -23,9 +23,6 @@ import CocoaLumberjackSwift
         return instance
     }()
 
-    let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
-    let allowedSeverities = Set<Severity>([.error, .info])
-
     static public func disableLog() {
         Log.shared.loggingQueue.addOperation() {
             Log.shared.logEnabled = false
@@ -133,17 +130,30 @@ import CocoaLumberjackSwift
                          entity: String,
                          description: String,
                          comment: String) {
-        #if DEBUG_LOGGING
+        let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
+        let allowedSeverities = Set<Severity>([.error, .warning, .info])
+
         if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
-            DDLogVerbose(
-                "\(entity) \(description) \(comment)",
-                level: DDLogLevel.verbose,
-                context: 0,
-                tag: nil,
-                asynchronous: true,
-                ddlog: DDLog.sharedInstance)
+            let theMessage = "\(entity) \(description)"
+            switch severity {
+            case .verbose: DDLogVerbose(theMessage)
+            case .info: DDLogInfo(theMessage)
+            case .warning: DDLogWarn(theMessage)
+            case .error: DDLogError(theMessage)
+            }
         }
-        #endif
+    }
+
+    private func doLog(severity: Severity,
+                       entity: String,
+                       description: String,
+                       comment: String) {
+        switch severity {
+        case .verbose: DDLogVerbose("\(entity) \(description) \(comment)")
+        case .info: DDLogInfo("\(entity) \(description) \(comment)")
+        case .warning: DDLogWarn("\(entity) \(description) \(comment)")
+        case .error: DDLogError("\(entity) \(description) \(comment)")
+        }
     }
 }
 
