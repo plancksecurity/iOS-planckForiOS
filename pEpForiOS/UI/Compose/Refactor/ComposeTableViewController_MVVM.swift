@@ -399,7 +399,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     // MARK: - Address Suggstions
 
     private final func addContactSuggestTable() {
-         let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: nil)
         guard
             let suggestVc = storyboard.instantiateViewController(
                 withIdentifier: SuggestTableViewController.storyboardId) as? SuggestTableViewController,

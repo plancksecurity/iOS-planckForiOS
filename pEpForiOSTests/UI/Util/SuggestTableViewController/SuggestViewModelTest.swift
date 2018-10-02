@@ -119,21 +119,6 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
                       expectedSelection: existing1)
     }
 
-    /*
-     TOTEST
-
-     - searterm != 0
-     - gives results
-     - triggers reload
-
-     - searterm == 0
-     - gives 0 results
-     - triggers reload
-
-     select one:
-     - informa delegate
-     */
-
     // MARK: - Helper
 
     private func setupContacts(numContacts: Int = SuggestViewModelTest.defaultNumExistingContacts) {

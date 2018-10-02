@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 /// Suggests a list of Name & EmailAddress pairs for a given search string
 class SuggestTableViewController: UITableViewController {
     static let storyboardId = "SuggestTableViewController"
