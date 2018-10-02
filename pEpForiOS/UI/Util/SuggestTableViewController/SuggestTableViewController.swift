@@ -11,9 +11,16 @@ import Foundation
 
 /// Suggests a list of Name & EmailAddress pairs for a given search string
 class SuggestTableViewController: UITableViewController {
-    static let storyboardId = String(describing: self)
+    static let storyboardId = "SuggestTableViewController"
 
     let viewModel = SuggestViewModel()
+
+    // MARK: - Life Cycle
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.delegate = self
+    }
 
     // MARK: - API
 
@@ -23,6 +30,14 @@ class SuggestTableViewController: UITableViewController {
 
     public func updateSuggestions(searchString: String) {
         viewModel.updateSuggestion(searchString: searchString)
+    }
+}
+
+// MARK: - SuggestViewModelDelegate
+
+extension SuggestTableViewController: SuggestViewModelDelegate {
+    func suggestViewModelDidResetModel() {
+        tableView.reloadData()
     }
 }
 
