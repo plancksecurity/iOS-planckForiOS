@@ -45,8 +45,11 @@ import MessageModel
         Log.shared.loggingQueue.addOperation() {
             let query = asl_new(UInt32(ASL_TYPE_QUERY))
 
-            let result = asl_set(query, ASL_KEY_FACILITY, facilityName)
-            checkASLSuccess(result: result, comment: "asl_set ASL_KEY_FACILITY")
+            let result = asl_set_query(query,
+                                       ASL_KEY_FACILITY,
+                                       facilityName,
+                                       UInt32(ASL_QUERY_OP_EQUAL))
+            checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_FACILITY")
 
             let response = asl_search(nil, query)
             var next = asl_next(response)
