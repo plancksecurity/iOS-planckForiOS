@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import CocoaLumberjack
+import CocoaLumberjackSwift
 
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
@@ -135,8 +135,13 @@ import CocoaLumberjack
                          comment: String) {
         #if DEBUG_LOGGING
         if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
-            // If running in the debugger, dump to the console right away
-            print("\(entity): \(description)")
+            DDLogVerbose(
+                "\(entity) \(description) \(comment)",
+                level: DDLogLevel.verbose,
+                context: 0,
+                tag: nil,
+                asynchronous: true,
+                ddlog: DDLog.sharedInstance)
         }
         #endif
     }
