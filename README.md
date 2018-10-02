@@ -50,6 +50,7 @@ git clone https://github.com/fdik/libetpan.git
 git clone https://pep-security.lu/gitlab/iOS/OpenSSL-for-iPhone.git
 git clone https://pep-security.lu/gitlab/iOS/SwipeCellKit.git/
 git clone https://pep-security.lu/gitlab/iOS/AppAuth-iOS.git
+git clone https://pep-security.lu/gitlab/iOS/CocoaLumberjack.git
 
 hg clone https://pep.foundation/dev/repos/pantomime-iOS/
 hg clone https://pep.foundation/dev/repos/netpgp-et
