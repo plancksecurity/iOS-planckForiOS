@@ -9,7 +9,7 @@
 import MessageModel
 
 protocol SuggestViewModelResultDelegate: class {
-    /// Will be called whenever an Identity has been selected
+    /// Will be called whenever the user selects an Identity.
     func suggestViewModelDidSelectContact(identity: Identity)
 }
 
@@ -46,8 +46,7 @@ class SuggestViewModel {
         return identities.count == 0
     }
 
-    public init(minNumberSearchStringChars: UInt = 3,
-                delegate: SuggestViewModelResultDelegate? = nil) {
+    public init(minNumberSearchStringChars: UInt = 3, delegate: SuggestViewModelDelegate? = nil) {
         self.minNumberSearchStringChars = minNumberSearchStringChars
     }
 
