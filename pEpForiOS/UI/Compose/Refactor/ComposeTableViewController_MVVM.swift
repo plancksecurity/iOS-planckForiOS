@@ -794,7 +794,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
 
     override func tableView(
         _ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView.isEqual(suggestTableView) || indexPath.section == attachmentSection {
+        if indexPath.section == attachmentSection {
             return UITableViewAutomaticDimension
         }
         guard let row = composeData?.getRow(at: indexPath.row) else {
@@ -840,9 +840,6 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
 
     override func tableView(
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if tableView.isEqual(suggestTableView) {
-            return UITableViewAutomaticDimension
-        }
         if indexPath.section == attachmentSection  {
             return AttachmentCell.preferredHigh
         }
@@ -884,9 +881,6 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView.isEqual(suggestTableView) {
-            return suggestTableView.numberOfRows(inSection: section)
-        }
         switch section {
         case composeSection:
             return composeData?.numberOfRows() ?? 0
