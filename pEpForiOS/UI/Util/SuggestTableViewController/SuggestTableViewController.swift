@@ -22,15 +22,16 @@ class SuggestTableViewController: UITableViewController {
 
     // MARK: - Life Cycle
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setup()
     }
 
     // MARK: - Setup
 
     private func setup() {
         if viewModel == nil {
-            viewModel = SuggestViewModel()
+            viewModel = SuggestViewModel(delegate: self)
         }
     }
 
