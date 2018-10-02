@@ -107,6 +107,16 @@ import CocoaLumberjack
     private var logEnabled = true
     private var paused = false
 
+    override private init() {
+        DDLog.add(DDTTYLogger.sharedInstance) // TTY = Xcode console
+        DDLog.add(DDASLLogger.sharedInstance) // ASL = Apple System Logs
+
+        let fileLogger: DDFileLogger = DDFileLogger() // File Logger
+        fileLogger.rollingFrequency = TimeInterval(60*60*24)  // 24 hours
+        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
+        DDLog.add(fileLogger)
+    }
+
     private let loggingQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .background
