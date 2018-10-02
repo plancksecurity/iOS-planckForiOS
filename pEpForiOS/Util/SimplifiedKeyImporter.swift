@@ -48,13 +48,13 @@ class SimplifiedKeyImporter {
         let newlines = ["\r\n", "\n"]
 
         for separator in newlines {
-            if let (theEmail, theFingerprint) = emailAndFingerprintFromTextBody(
+            if let (theEmail, userName, theFingerprint) = emailAndFingerprintFromTextBody(
                 message: message,
                 separator: separator) {
                 let theUserId = PEP_OWN_USERID
 
                 let theIdent = PEPIdentity(
-                    address: theEmail, userID: theUserId, userName: theUserId, isOwn: true)
+                    address: theEmail, userID: theUserId, userName: userName, isOwn: true)
                 theIdent.fingerPrint = theFingerprint
 
                 return (theIdent, theFingerprint)
@@ -65,13 +65,13 @@ class SimplifiedKeyImporter {
     }
 
     private func emailAndFingerprintFromTextBody(message: PEPMessage,
-                                                 separator: String) -> (String, String)? {
+                                                 separator: String) -> (String, String, String)? {
         guard let theText = message.longMessage else {
             return nil
         }
 
         let theLines = theText.components(separatedBy: separator)
-        guard theLines.count >= 2 else {
+        guard theLines.count >= 3 else {
             return nil
         }
 
@@ -81,10 +81,12 @@ class SimplifiedKeyImporter {
             return nil
         }
 
-        let theFingerprint = String(theLines[1]).despaced()
+        let userName = theLines[1]
+
+        let theFingerprint = theLines[2].despaced()
 
         if theFingerprint.count == 40 {
-            return (theEmail, theFingerprint)
+            return (theEmail, userName, theFingerprint)
         } else {
             return nil
         }

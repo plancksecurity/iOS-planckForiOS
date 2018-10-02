@@ -130,11 +130,10 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1351
      - Note: If you need to manually verify something:
        * The public/secret key pair of Leon Kowalski (subject)
-         is in Leon Kowalski (19B9EE3B) – Secret.asc.
+         is in `Leon Kowalski (19B9EE3B) – Private.asc`.
        * The public/secret key pair of Harry Bryant (sender) is in
-         Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc
+         `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
-    /*
     func testSimplifiedKeyImport() {
         // Accept signed messages from Harry Bryant for simplified key import
         DecryptMessageOperation.overrideSimplifiedKeyImporter =
@@ -145,7 +144,7 @@ class DecryptImportedMessagesTests: XCTestCase {
                                               ownUserID: "rick_deckard_uid",
                                               ownEmailAddress: "iostest001@peptest.ch")
 
-        try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Secret.asc")
+        try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
         try! session.setOwnKey(cdOwnAccount.pEpIdentity(),
                                fingerprint: "456B937ED6D5806935F63CE5548738CCEB50C250")
@@ -160,29 +159,40 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
+        // TODO: That should be encrypted _and_ signed -> PEP_rating_reliable
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
+
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
-        XCTAssertEqual(theCdMessage.longMessage, "See the key of Leon attached.\n\n")
+        XCTAssertEqual(
+            theCdMessage.longMessage,
+            "iostest003@peptest.ch\nLeon Kowalski\n63FC29205A57EB3AEB780E846F239B0F19B9EE3B\n\nSee the key of Leon attached.\n")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
-        XCTAssertEqual(attachments.count, 2)
-
-        for cdAttach in attachments {
-            print("*** \(cdAttach)")
-        }
+        XCTAssertEqual(attachments.count, 0)
 
         guard let msg = theCdMessage.message() else {
             XCTFail()
             return
         }
 
-        XCTAssertEqual(msg.attachments.count, 2)
+        XCTAssertEqual(msg.attachments.count, 0)
 
-        for attach in msg.attachments {
-            print("*** \(attach)")
+        // check that we now have leon as own identity
+
+        let leon = PEPIdentity(address: "iostest002@peptest.ch",
+                               userID: PEP_OWN_USERID,
+                               userName: "Leon Kowalski",
+                               isOwn: true)
+        try! session.update(leon)
+
+        guard let leonsFingerprint = leon.fingerPrint else {
+            XCTFail()
+            return
         }
+
+        // TODO: We should be able to import the key
+        //XCTAssertEqual(leonsFingerprint, "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
     }
-     */
 
     // MARK: - Helpers
 
@@ -219,12 +229,18 @@ class DecryptImportedMessagesTests: XCTestCase {
         return cdOwnAccount
     }
 
-    func decryptTheMessage(cdOwnAccount: CdAccount, fileName: String) -> CdMessage? {
+    func decryptTheMessage(cdOwnAccount: CdAccount,
+                           fileName: String,
+                           checkCdMessage: ((CdMessage) -> ())? = nil) -> CdMessage? {
         guard let cdMessage = TestUtil.cdMessage(
             fileName: fileName,
             cdOwnAccount: cdOwnAccount) else {
                 XCTFail()
                 return nil
+        }
+
+        if let theChecker = checkCdMessage {
+            theChecker(cdMessage)
         }
 
         let expDecrypted = expectation(description: "expDecrypted")

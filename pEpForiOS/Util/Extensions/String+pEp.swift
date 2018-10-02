@@ -210,4 +210,21 @@ extension String {
         }
         return result
     }
+
+    static let pgpMessageTextRegex = try! NSRegularExpression(
+        pattern: "^(\\s)*-----BEGIN PGP MESSAGE-----",
+        options: [])
+
+    /**
+     Does this string start with "-----BEGIN PGP MESSAGE-----",
+     apart from any leading spaces?
+     */
+    public func startsWithBeginPgpMessage() -> Bool {
+        if let _ = String.pgpMessageTextRegex.firstMatch(
+            in: self, options: [],
+            range: wholeRange()) {
+            return true
+        }
+        return false
+    }
 }
