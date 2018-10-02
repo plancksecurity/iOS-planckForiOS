@@ -8,6 +8,31 @@
 
 import MessageModel
 
+extension Int32 {
+    func aslLevelString() -> String {
+        switch self {
+        case ASL_LEVEL_EMERG:
+            return "ASL_LEVEL_EMERG"
+        case ASL_LEVEL_ALERT:
+            return "ASL_LEVEL_ALERT"
+        case ASL_LEVEL_CRIT:
+            return "ASL_LEVEL_CRIT"
+        case ASL_LEVEL_ERR:
+            return "ASL_LEVEL_ERR"
+        case ASL_LEVEL_WARNING:
+            return "ASL_LEVEL_WARNING"
+        case ASL_LEVEL_NOTICE:
+            return "ASL_LEVEL_NOTICE"
+        case ASL_LEVEL_INFO:
+            return "ASL_LEVEL_INFO"
+        case ASL_LEVEL_DEBUG:
+            return "ASL_LEVEL_DEBUG"
+        default:
+            return "ASL_LEVEL_UNKNOWN"
+        }
+    }
+}
+
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
     enum Severity {
