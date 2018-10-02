@@ -84,7 +84,6 @@
 		1526596E216230B2006A78DF /* AttachmentCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265956216230B0006A78DF /* AttachmentCounter.swift */; };
 		1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265957216230B0006A78DF /* ComposeFieldModel.swift */; };
 		15265970216230B2006A78DF /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265958216230B0006A78DF /* ComposeTableViewController.swift */; };
-		15265971216230B2006A78DF /* SuggestTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526595A216230B0006A78DF /* SuggestTableView.swift */; };
 		15265972216230B2006A78DF /* ComposeTableViewController_MVVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526595D216230B1006A78DF /* ComposeTableViewController_MVVM.swift */; };
 		1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
 		1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597921623652006A78DF /* SuggestViewModel.swift */; };
@@ -642,7 +641,6 @@
 		15265956216230B0006A78DF /* AttachmentCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCounter.swift; sourceTree = "<group>"; };
 		15265957216230B0006A78DF /* ComposeFieldModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeFieldModel.swift; sourceTree = "<group>"; };
 		15265958216230B0006A78DF /* ComposeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
-		1526595A216230B0006A78DF /* SuggestTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestTableView.swift; sourceTree = "<group>"; };
 		1526595D216230B1006A78DF /* ComposeTableViewController_MVVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController_MVVM.swift; sourceTree = "<group>"; };
 		1526597721623637006A78DF /* SuggestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTableViewController.swift; sourceTree = "<group>"; };
 		1526597921623652006A78DF /* SuggestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModel.swift; sourceTree = "<group>"; };
@@ -1340,7 +1338,6 @@
 		15265973216234C0006A78DF /* SuggestTableViewController */ = {
 			isa = PBXGroup;
 			children = (
-				1526595A216230B0006A78DF /* SuggestTableView.swift */,
 				1526597721623637006A78DF /* SuggestTableViewController.swift */,
 				1526597921623652006A78DF /* SuggestViewModel.swift */,
 			);
@@ -3207,7 +3204,6 @@
 				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
 				492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */,
 				43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */,
-				15265971216230B2006A78DF /* SuggestTableView.swift in Sources */,
 				43ED53781CC77F95006AB156 /* SMTPSettingsTableViewController.swift in Sources */,
 				15874BC22127493E00A3A4A6 /* SettingCellViewModelProtocols.swift in Sources */,
 				43D755F61F262B37006F933A /* PantomimeError.swift in Sources */,

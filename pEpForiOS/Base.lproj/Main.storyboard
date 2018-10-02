@@ -449,54 +449,6 @@
             </objects>
             <point key="canvasLocation" x="4490" y="-8"/>
         </scene>
-        <!--Table View Controller-->
-        <scene sceneID="CA5-x5-bU5">
-            <objects>
-                <tableViewController storyboardIdentifier="contactSuggestionTable" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tKb-b9-qGd" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KkR-5p-iJB" customClass="SuggestTableView" customModule="pEpForiOS" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="contactCell" rowHeight="50" id="ilb-cY-EMj" customClass="ContactCell" customModule="pEpForiOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="50"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ilb-cY-EMj" id="rLG-jZ-OQD">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KgX-uf-geh">
-                                            <rect key="frame" x="14" y="5" width="353" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="E-Mail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jI7-eY-w2B">
-                                            <rect key="frame" x="14" y="24" width="353" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="emailLabel" destination="jI7-eY-w2B" id="VL5-OY-e5a"/>
-                                    <outlet property="nameLabel" destination="KgX-uf-geh" id="SHp-bV-J9I"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="tKb-b9-qGd" id="RyM-TN-SZI"/>
-                            <outlet property="delegate" destination="tKb-b9-qGd" id="xRG-0o-3vH"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1Bo-Mb-Gy6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6945" y="2173"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="jm1-97-n5e">
             <objects>
@@ -1198,7 +1150,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
-        <segue reference="JbP-D9-Vpg"/>
+        <segue reference="oPc-EL-W2c"/>
         <segue reference="ber-OQ-S16"/>
         <segue reference="2fD-kL-Bvj"/>
     </inferredMetricsTieBreakers>
