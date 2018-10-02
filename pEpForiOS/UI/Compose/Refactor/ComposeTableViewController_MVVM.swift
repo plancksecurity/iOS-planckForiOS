@@ -411,7 +411,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         suggestionsChildViewController = suggestVc
         addChildViewController(suggestVc)
         //IOS-1369 VM. Yet unclear precedure. In discussion.
-        suggestVc.viewModel.resultDelegate = self
+        suggestVc.viewModel?.resultDelegate = self
         suggestView.isHidden = true
         updateSuggestTable(defaultCellHeight)
         tableView.addSubview(suggestView)
