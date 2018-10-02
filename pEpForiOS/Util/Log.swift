@@ -25,15 +25,6 @@ import MessageModel
     let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
     let allowedSeverities = Set<Severity>([.error, .info])
 
-    public func resume() {
-        Log.shared.paused = false
-    }
-
-    public func pause() {
-        Log.shared.paused = true
-        Log.shared.loggingQueue.cancelAllOperations()
-    }
-
     static public func disableLog() {
         Log.shared.loggingQueue.addOperation() {
             Log.shared.logEnabled = false
@@ -97,9 +88,18 @@ import MessageModel
                            entity: component, description: errorString, comment: "error")
     }
 
-    static func log(comp: String, mySelf: AnyObject, functionName: String) {
+    public static func log(comp: String, mySelf: AnyObject, functionName: String) {
         let selfDesc = unsafeBitCast(mySelf, to: UnsafeRawPointer.self)
         Log.shared.info(component: comp, content: "\(functionName): \(selfDesc)")
+    }
+
+    public func resume() {
+        Log.shared.paused = false
+    }
+
+    public func pause() {
+        Log.shared.paused = true
+        Log.shared.loggingQueue.cancelAllOperations()
     }
 
     private let title = "pEpForiOS"
