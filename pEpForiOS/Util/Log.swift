@@ -17,17 +17,6 @@ import MessageModel
         case error
     }
 
-    private let title = "pEpForiOS"
-    private var logEnabled = true
-    private var paused = false
-
-    private let loggingQueue: OperationQueue = {
-       let createe = OperationQueue()
-        createe.qualityOfService = .background
-        createe.maxConcurrentOperationCount = 1
-        return createe
-    }()
-
     static public let shared: Log = {
         let instance = Log()
         return instance
@@ -36,28 +25,11 @@ import MessageModel
     let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
     let allowedSeverities = Set<Severity>([.error, .info])
 
-    /**
-     Prints or saves a log entry.
-     - Note: For a log to be printed, the entity must be contained in `allowedEntities`,
-     or the severity must be noted in `allowedSeverities`.
-     */
-    private func saveLog(severity: Severity,
-                         entity: String,
-                         description: String,
-                         comment: String) {
-        #if DEBUG_LOGGING
-            if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
-                // If running in the debugger, dump to the console right away
-                print("\(entity): \(description)")
-            }
-        #endif
-    }
-
-    func resume() {
+    public func resume() {
         Log.shared.paused = false
     }
 
-    func pause() {
+    public func pause() {
         Log.shared.paused = true
         Log.shared.loggingQueue.cancelAllOperations()
     }
@@ -128,6 +100,34 @@ import MessageModel
     static func log(comp: String, mySelf: AnyObject, functionName: String) {
         let selfDesc = unsafeBitCast(mySelf, to: UnsafeRawPointer.self)
         Log.shared.info(component: comp, content: "\(functionName): \(selfDesc)")
+    }
+
+    private let title = "pEpForiOS"
+    private var logEnabled = true
+    private var paused = false
+
+    private let loggingQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .background
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
+
+    /**
+     Prints or saves a log entry.
+     - Note: For a log to be printed, the entity must be contained in `allowedEntities`,
+     or the severity must be noted in `allowedSeverities`.
+     */
+    private func saveLog(severity: Severity,
+                         entity: String,
+                         description: String,
+                         comment: String) {
+        #if DEBUG_LOGGING
+        if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
+            // If running in the debugger, dump to the console right away
+            print("\(entity): \(description)")
+        }
+        #endif
     }
 }
 
