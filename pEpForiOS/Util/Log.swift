@@ -44,23 +44,25 @@ import MessageModel
     static public func checklog(_ block: ((String?) -> ())?) {
         Log.shared.loggingQueue.addOperation() {
             let query = asl_new(UInt32(ASL_TYPE_QUERY))
-            var result: Int32 = 0
 
-            result = asl_set(query, ASL_KEY_FACILITY, facilityName)
+            let result = asl_set(query, ASL_KEY_FACILITY, facilityName)
             checkASLSuccess(result: result, comment: "asl_set ASL_KEY_FACILITY")
 
             let response = asl_search(nil, query)
             var next = asl_next(response)
             var logString = ""
             while next != nil {
-                if let stringPointer = asl_get(next, ASL_KEY_MSG) {
+                if let stringPointer = asl_get(next, ASL_KEY_MSG),
+                    let entityNamePtr = asl_get(next, Log.keyEntityName) {
                     // TODO: Also retrieve ASL_KEY_LEVEL?
+
+                    let entityName = String(cString: entityNamePtr)
+
                     let theString = String(cString: stringPointer)
-                    if logString.isEmpty {
-                        logString.append(theString)
-                    } else {
-                        logString.append("\(theString)\n")
+                    if !logString.isEmpty {
+                        logString.append("\n")
                     }
+                    logString.append("*** \(entityName) \(theString)")
                 }
                 next = asl_next(response)
             }
@@ -118,6 +120,7 @@ import MessageModel
     }
 
     private static let facilityName = "security.pEp"
+    private static let keyEntityName = "keyComponentName"
 
     private let title = "pEpForiOS"
     private var logEnabled = true
@@ -145,7 +148,7 @@ import MessageModel
         if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
             let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
 
-            // TODO: Store the entity
+            asl_set(logMessage, Log.keyEntityName, entity)
             asl_set(logMessage, ASL_KEY_FACILITY, Log.facilityName)
             asl_set(logMessage, ASL_KEY_MSG, description)
             asl_set(logMessage, ASL_KEY_LEVEL, "\(ASL_LEVEL_INFO)")
