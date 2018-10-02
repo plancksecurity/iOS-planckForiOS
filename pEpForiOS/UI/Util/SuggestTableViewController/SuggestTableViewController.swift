@@ -8,13 +8,13 @@
 
 import Foundation
 
-/// Suggests a list of Name & EmailAddress pairs for a given search string
+/// Suggests a list of Identities that fit to a given sarch string
 class SuggestTableViewController: UITableViewController {
     static let storyboardId = "SuggestTableViewController"
 
     var viewModel: SuggestViewModel? {
         didSet {
-            // Make sure we are the delegate, even some some outter force is setting the VM.
+            // Make sure we are the delegate. Always.
             viewModel?.delegate = self
         }
     }
