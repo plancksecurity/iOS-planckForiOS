@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import CocoaLumberjack
 
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
