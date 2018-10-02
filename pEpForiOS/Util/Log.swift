@@ -7,7 +7,6 @@
 //
 
 import MessageModel
-import CocoaLumberjackSwift
 
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
@@ -104,16 +103,6 @@ import CocoaLumberjackSwift
     private var logEnabled = true
     private var paused = false
 
-    override private init() {
-        DDLog.add(DDTTYLogger.sharedInstance) // TTY = Xcode console
-        DDLog.add(DDASLLogger.sharedInstance) // ASL = Apple System Logs
-
-        let fileLogger: DDFileLogger = DDFileLogger() // File Logger
-        fileLogger.rollingFrequency = TimeInterval(60*60*24)  // 24 hours
-        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-        DDLog.add(fileLogger)
-    }
-
     private let loggingQueue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .background
@@ -134,25 +123,7 @@ import CocoaLumberjackSwift
         let allowedSeverities = Set<Severity>([.error, .warning, .info])
 
         if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
-            let theMessage = "\(entity) \(description)"
-            switch severity {
-            case .verbose: DDLogVerbose(theMessage)
-            case .info: DDLogInfo(theMessage)
-            case .warning: DDLogWarn(theMessage)
-            case .error: DDLogError(theMessage)
-            }
-        }
-    }
-
-    private func doLog(severity: Severity,
-                       entity: String,
-                       description: String,
-                       comment: String) {
-        switch severity {
-        case .verbose: DDLogVerbose("\(entity) \(description) \(comment)")
-        case .info: DDLogInfo("\(entity) \(description) \(comment)")
-        case .warning: DDLogWarn("\(entity) \(description) \(comment)")
-        case .error: DDLogError("\(entity) \(description) \(comment)")
+            print("\(entity): \(description)")
         }
     }
 }
