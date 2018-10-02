@@ -413,7 +413,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         //IOS-1369 VM. Yet unclear precedure. In discussion.
         suggestVc.viewModel.resultDelegate = self
         suggestView.isHidden = true
-        updateSuggestTable(defaultCellHeight, true)
+        updateSuggestTable(defaultCellHeight)
         tableView.addSubview(suggestView)
     }
 
@@ -433,9 +433,9 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         suggestionsChildViewController?.tableView.scrollIndicatorInsets = zeroOffset
     }
 
-    private final func updateSuggestTable(_ position: CGFloat, _ start: Bool = false) {
+    private final func updateSuggestTable(_ position: CGFloat) {
         var pos = position
-        if pos < defaultCellHeight && !start {
+        if pos < defaultCellHeight && !isInitialSetup {
             pos = defaultCellHeight * (position + 1) + 2
         }
         suggestionsChildViewController?.view.frame.origin.y = pos
