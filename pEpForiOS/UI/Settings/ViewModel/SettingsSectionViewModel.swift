@@ -67,7 +67,7 @@ public class SettingsSectionViewModel {
     }
 
     func cellIsValid(cell: Int) -> Bool {
-        return cell >= 0 && cell <= cells.count
+        return cell >= 0 && cell < cells.count
     }
 
     var count: Int {

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		000D3C2F20D12BFD006B11B2 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000D3C2E20D12BFD006B11B2 /* MessageViewModel.swift */; };
+		00172F432163AC110079B189 /* SettingsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00172F422163AC110079B189 /* SettingsViewModelTest.swift */; };
+		00172F462163C2EE0079B189 /* SettingsSectionViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00172F452163C2EE0079B189 /* SettingsSectionViewModelTest.swift */; };
 		0017CD1B21621E2200F62F13 /* MoveToFolderViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0017CD1A21621E2200F62F13 /* MoveToFolderViewModelTest.swift */; };
 		0017CD1D2162614400F62F13 /* MoveToFolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0017CD1C2162614400F62F13 /* MoveToFolderCellViewModelTests.swift */; };
 		001D365E20C56470002434EB /* MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001D365D20C56470002434EB /* MoveToFolderDelegate.swift */; };
@@ -566,6 +568,8 @@
 
 /* Begin PBXFileReference section */
 		000D3C2E20D12BFD006B11B2 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
+		00172F422163AC110079B189 /* SettingsViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModelTest.swift; sourceTree = "<group>"; };
+		00172F452163C2EE0079B189 /* SettingsSectionViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSectionViewModelTest.swift; sourceTree = "<group>"; };
 		0017CD1A21621E2200F62F13 /* MoveToFolderViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModelTest.swift; sourceTree = "<group>"; };
 		0017CD1C2162614400F62F13 /* MoveToFolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderCellViewModelTests.swift; sourceTree = "<group>"; };
 		001D365D20C56470002434EB /* MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderDelegate.swift; sourceTree = "<group>"; };
@@ -1157,6 +1161,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00172F442163C2D60079B189 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				00172F422163AC110079B189 /* SettingsViewModelTest.swift */,
+				00172F452163C2EE0079B189 /* SettingsSectionViewModelTest.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		003C0FAA20B57C2E0093A987 /* SplitView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2215,6 +2228,7 @@
 		4918EBF91E783C70006207FC /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				00172F442163C2D60079B189 /* Settings */,
 				1544BD0021524C6C0075C5A0 /* Filter */,
 				B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */,
 				0017CD1A21621E2200F62F13 /* MoveToFolderViewModelTest.swift */,
@@ -3252,6 +3266,8 @@
 				430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */,
 				431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */,
 				1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */,
+				00172F462163C2EE0079B189 /* SettingsSectionViewModelTest.swift in Sources */,
+				00172F432163AC110079B189 /* SettingsViewModelTest.swift in Sources */,
 				438281831E891B7E00087343 /* DateTests.swift in Sources */,
 				15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */,
 				151F71FB202A06760057C74D /* MockBackgrounder.swift in Sources */,
