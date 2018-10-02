@@ -121,6 +121,8 @@ extension Int32 {
                 next = asl_next(response)
             }
 
+            asl_free(query)
+
             block?(logString)
         }
     }
@@ -208,6 +210,8 @@ extension Int32 {
             asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
 
             asl_send(nil, logMessage)
+
+            asl_free(logMessage)
         }
     }
 
