@@ -123,25 +123,13 @@ import MessageModel
         let allowedSeverities = Set<Severity>([.error, .warning, .info])
 
         if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
-            #if DEBUG_LOGGING
-            //print("\(entity): \(description)")
-            #endif
-
             let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
 
-            var result: Int32 = 0 // for tracing success of ASL CALLS
+            asl_set(logMessage, ASL_KEY_FACILITY, "security.pEp.\(entity)")
+            asl_set(logMessage, ASL_KEY_MSG, description)
+            asl_set(logMessage, ASL_KEY_LEVEL, "\(ASL_LEVEL_INFO)")
 
-            result = asl_set(logMessage, ASL_KEY_FACILITY, "security.pEp.\(entity)")
-            checkASLSuccess(result: result, comment: "asl_set ASL_KEY_FACILITY")
-
-            result = asl_set(logMessage, ASL_KEY_MSG, description)
-            checkASLSuccess(result: result, comment: "asl_set ASL_KEY_MSG")
-
-            result = asl_set(logMessage, ASL_KEY_LEVEL, "\(ASL_LEVEL_INFO)")
-            checkASLSuccess(result: result, comment: "asl_set ASL_KEY_LEVEL")
-
-            result = asl_send(nil, logMessage)
-            checkASLSuccess(result: result, comment: "asl_send")
+            asl_send(nil, logMessage)
         }
     }
 
