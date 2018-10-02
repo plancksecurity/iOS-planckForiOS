@@ -11,7 +11,7 @@ import UIKit
 import MessageModel
 
 class ContactCell: UITableViewCell {
-    static let reuseId = String(describing: self)
+    static let reuseId = "ContactCell"
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
