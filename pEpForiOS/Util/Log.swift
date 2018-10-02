@@ -111,7 +111,7 @@ import MessageModel
     }()
 
     /**
-     Prints or saves a log entry.
+     Prints and/or saves a log entry.
      - Note: For a log to be printed, the entity must be contained in `allowedEntities`,
      or the severity must be noted in `allowedSeverities`.
      */
