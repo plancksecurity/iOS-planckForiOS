@@ -48,6 +48,7 @@ class SuggestViewModel {
 
     public init(minNumberSearchStringChars: UInt = 3, delegate: SuggestViewModelDelegate? = nil) {
         self.minNumberSearchStringChars = minNumberSearchStringChars
+        self.delegate = delegate
     }
 
     public func handleRowSelected(at index: Int) {
