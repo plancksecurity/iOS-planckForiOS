@@ -15,7 +15,7 @@ class SetOwnKeyViewModel {
 
     public var rawErrorString: String?
 
-    func setOwnKey() {
+    public func setOwnKey() {
         guard
             let theUserName = userName,
             let theEmail = email,
