@@ -23,6 +23,7 @@ class SetOwnKeyViewController: UIViewController {
     @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
         viewModel.userName = userNameTextField.text
         viewModel.fingerprint = fingerprintTextField.text
+        viewModel.email = emailTextField.text
         viewModel.setOwnKey()
     }
 
