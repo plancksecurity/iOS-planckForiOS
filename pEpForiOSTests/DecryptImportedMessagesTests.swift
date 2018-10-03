@@ -41,8 +41,10 @@ class DecryptImportedMessagesTests: XCTestCase {
     // MARK: - Tests
 
     func testDecrypt001() {
-        let cdOwnAccount = createLocalAccount(ownUserName: "test002", ownUserID: "test002",
-                                              ownEmailAddress: "iostest002@peptest.ch")
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+            ownUserName: "test002",
+            ownUserID: "test002",
+            ownEmailAddress: "iostest002@peptest.ch")
 
         // own keys
         try! TestUtil.importKeyByFileName(
@@ -55,8 +57,11 @@ class DecryptImportedMessagesTests: XCTestCase {
             session, fileName: "IOS-884_001_test010@peptest.ch.pub.key")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = decryptTheMessage(
-            cdOwnAccount: cdOwnAccount, fileName: "IOS-884_001_Mail_from_P4A.txt")
+        let cdMessage = DecryptionUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "IOS-884_001_Mail_from_P4A.txt")
 
         XCTAssertEqual(cdMessage?.pEpRating, Int16(PEP_rating_reliable.rawValue))
         XCTAssertEqual(cdMessage?.shortMessage, "Re:  ")
@@ -68,13 +73,16 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1300
      */
     func testDecrypt002() {
-        let cdOwnAccount = createLocalAccount(ownUserName: "Someonei",
-                                              ownUserID: "User_Someonei",
-                                              ownEmailAddress: "someone@gmx.de")
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(ownUserName: "Someonei",
+                                                             ownUserID: "User_Someonei",
+                                                             ownEmailAddress: "someone@gmx.de")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = decryptTheMessage(
-            cdOwnAccount: cdOwnAccount, fileName: "IOS-1300_odt_attachment.txt")
+        let cdMessage = DecryptionUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "IOS-1300_odt_attachment.txt")
 
         guard let theCdMessage = cdMessage else {
             XCTFail()
@@ -96,13 +104,17 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1364
      */
     func testDecryptUndisplayedAttachedJpegMessage() {
-        let cdOwnAccount = createLocalAccount(ownUserName: "ThisIsMe",
-                                              ownUserID: "User_Me",
-                                              ownEmailAddress: "iostest001@peptest.ch")
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+            ownUserName: "ThisIsMe",
+            ownUserID: "User_Me",
+            ownEmailAddress: "iostest001@peptest.ch")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = decryptTheMessage(
-            cdOwnAccount: cdOwnAccount, fileName: "1364_Mail_missing_attached_image.txt")
+        let cdMessage = DecryptionUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "1364_Mail_missing_attached_image.txt")
 
         guard let theCdMessage = cdMessage else {
             XCTFail()
@@ -127,22 +139,18 @@ class DecryptImportedMessagesTests: XCTestCase {
     }
 
     /**
-     IOS-1351
+     IOS-1378
      - Note: If you need to manually verify something:
        * The public/secret key pair of Leon Kowalski (subject)
          is in `Leon Kowalski (19B9EE3B) – Private.asc`.
        * The public/secret key pair of Harry Bryant (sender) is in
          `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
-    func testSimplifiedKeyImport() {
-        // Accept signed messages from Harry Bryant for simplified key import
-        DecryptMessageOperation.overrideSimplifiedKeyImporter =
-            SimplifiedKeyImporter(trustedFingerPrint:
-                "CF25 D0BF A6BB 6880 C437  AFD4 5716 EA2D 9AE3 2468")
-
-        let cdOwnAccount = createLocalAccount(ownUserName: "Rick Deckard",
-                                              ownUserID: "rick_deckard_uid",
-                                              ownEmailAddress: "iostest001@peptest.ch")
+    func testSetOwnKey() {
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+            ownUserName: "Rick Deckard",
+            ownUserID: "rick_deckard_uid",
+            ownEmailAddress: "iostest001@peptest.ch")
 
         try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
@@ -150,7 +158,9 @@ class DecryptImportedMessagesTests: XCTestCase {
                                fingerprint: "456B937ED6D5806935F63CE5548738CCEB50C250")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = decryptTheMessage(
+        let cdMessage = DecryptionUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
             cdOwnAccount: cdOwnAccount,
             fileName: "SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt")
 
@@ -159,7 +169,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        // TODO: That should be encrypted _and_ signed -> PEP_rating_reliable
+        // After ENGINE-465 is done, this should be PEP_rating_reliable
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
@@ -177,21 +187,13 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(msg.attachments.count, 0)
 
-        // check that we now have leon as own identity
-
         let leon = PEPIdentity(address: "iostest002@peptest.ch",
                                userID: PEP_OWN_USERID,
                                userName: "Leon Kowalski",
                                isOwn: true)
         try! session.update(leon)
 
-        guard let leonsFingerprint = leon.fingerPrint else {
-            XCTFail()
-            return
-        }
-
-        // TODO: We should be able to import the key
-        //XCTAssertEqual(leonsFingerprint, "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
+        try! session.setOwnKey(leon, fingerprint: "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
     }
 
     // MARK: - Helpers
@@ -211,74 +213,6 @@ class DecryptImportedMessagesTests: XCTestCase {
                 XCTAssertEqual(dataString, "\n\nSent from my iPhone")
             }
         }
-    }
-
-    func createLocalAccount(ownUserName: String, ownUserID: String,
-                            ownEmailAddress: String) -> CdAccount {
-        let cdOwnAccount = SecretTestData().createWorkingCdAccount(number: 0)
-        cdOwnAccount.identity?.userName = ownUserName
-        cdOwnAccount.identity?.userID = ownUserID
-        cdOwnAccount.identity?.address = ownEmailAddress
-
-        let cdInbox = CdFolder.create()
-        cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
-        cdInbox.account = cdOwnAccount
-        Record.saveAndWait()
-
-        return cdOwnAccount
-    }
-
-    func decryptTheMessage(cdOwnAccount: CdAccount,
-                           fileName: String,
-                           checkCdMessage: ((CdMessage) -> ())? = nil) -> CdMessage? {
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: fileName,
-            cdOwnAccount: cdOwnAccount) else {
-                XCTFail()
-                return nil
-        }
-
-        if let theChecker = checkCdMessage {
-            theChecker(cdMessage)
-        }
-
-        let expDecrypted = expectation(description: "expDecrypted")
-        let errorContainer = ErrorContainer()
-        let decryptOperation = DecryptMessagesOperation(
-            parentName: #function, errorContainer: errorContainer)
-        decryptOperation.completionBlock = {
-            decryptOperation.completionBlock = nil
-            expDecrypted.fulfill()
-        }
-        let decryptDelegate = DecryptionAttemptCounterDelegate()
-        decryptOperation.delegate = decryptDelegate
-        backgroundQueue.addOperation(decryptOperation)
-
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-
-        XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
-        Record.Context.main.refreshAllObjects()
-
-        guard
-            let cdRecipients = cdMessage.to?.array as? [CdIdentity],
-            cdRecipients.count == 1,
-            let recipientIdentity = cdRecipients[0].identity()
-            else {
-                XCTFail()
-                return cdMessage
-        }
-        XCTAssertTrue(recipientIdentity.isMySelf)
-
-        guard let theSenderIdentity = cdMessage.from?.identity() else {
-            XCTFail()
-            return cdMessage
-        }
-        XCTAssertFalse(theSenderIdentity.isMySelf)
-
-        return cdMessage
     }
 }
 

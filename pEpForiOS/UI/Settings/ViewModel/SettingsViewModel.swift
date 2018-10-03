@@ -23,7 +23,7 @@ class SettingsViewModel {
     }
 
     private func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section <= sections.count
+        return section >= 0 && section < sections.count
     }
 
     func delete(section: Int, cell: Int) {

@@ -16,6 +16,7 @@ extension SettingsCellViewModel {
         case credits
         case defaultAccount
         case trustedServer
+        case setOwnKey
     }
 }
 
@@ -70,6 +71,10 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                 return NSLocalizedString("Store Messages Securely",
                                          comment:
                     "Settings: Cell (button) title to view default account setting")
+            case .setOwnKey:
+                return NSLocalizedString("Set Own Key",
+                                         comment:
+                    "Settings: Cell (button) title for entering fingerprints that are made own keys")
             }
         }
     }
@@ -77,7 +82,7 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
     public var value : String? {
         get {
             switch self.type {
-            case .showLog, .account, .credits, .trustedServer:
+            case .showLog, .account, .credits, .trustedServer, .setOwnKey:
                 // Have no value.
                 return nil
             case .defaultAccount:

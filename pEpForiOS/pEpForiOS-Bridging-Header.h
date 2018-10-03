@@ -9,7 +9,7 @@
 #ifndef pEpForiOS_Bridging_Header_h
 #define pEpForiOS_Bridging_Header_h
 
-#pragma mark -- Pantomime headers
+#pragma mark - Pantomime headers
 
 #import "Pantomime/CWLogger.h"
 #import "Pantomime/CWConstants.h"
@@ -35,7 +35,7 @@
 #import "Pantomime/CWMIMEMultipart.h"
 #import "Pantomime/CWMIMEUtility.h"
 
-#pragma mark -- pEp Headers
+#pragma mark - pEp Headers
 
 #import "pEpObjCAdapter/PEPObjCAdapter.h"
 #import "pEpObjCAdapter/PEPSessionProtocol.h"
@@ -47,19 +47,23 @@
 #import "pEpObjCAdapter/PEPMessage.h"
 #import "pEpObjCAdapter/PEPAttachment.h"
 
-#pragma mark -- pEp AccountSettings Headers
+#pragma mark - pEp AccountSettings Headers
 
 #import "AccountSettings.h"
 #import "AccountSettingsServer.h"
 
-#pragma mark -- HTML/Markdown
+#pragma mark - HTML/Markdown
 
 #import "Axt.h"
 #import "cmark.h"
 #import "NSString+Markdown.h"
 
-#pragma mark -- AppAuth
+#pragma mark - AppAuth
 
 #import "AppAuth/AppAuth.h"
+
+#pragma mark - Apple System Log facility
+
+#import <asl.h>
 
 #endif /* pEpForiOS_Bridging_Header_h */

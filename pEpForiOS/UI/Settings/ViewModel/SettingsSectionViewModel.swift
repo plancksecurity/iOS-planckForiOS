@@ -52,6 +52,7 @@ public class SettingsSectionViewModel {
         self.cells.append(SettingsCellViewModel(type: .credits))
         self.cells.append(SettingsCellViewModel(type: .showLog))
         self.cells.append(SettingsCellViewModel(type: .trustedServer))
+        self.cells.append(SettingsCellViewModel(type: .setOwnKey))
         self.cells.append(PassiveModeViewModel())
     }
 
@@ -67,7 +68,7 @@ public class SettingsSectionViewModel {
     }
 
     func cellIsValid(cell: Int) -> Bool {
-        return cell >= 0 && cell <= cells.count
+        return cell >= 0 && cell < cells.count
     }
 
     var count: Int {

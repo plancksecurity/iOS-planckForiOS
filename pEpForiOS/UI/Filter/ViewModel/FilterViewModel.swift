@@ -109,10 +109,10 @@ public class FilterViewModel {
         return filter
     }
 
-    func accountsEnabled() -> Int{
+    func accountsEnabled() -> Int {
         var accountsSelected = 0
         for filter in items {
-        if(filter.enabled) {
+            if(filter.enabled) {
                 accountsSelected += 1
             }
         }

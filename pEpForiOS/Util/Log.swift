@@ -8,59 +8,31 @@
 
 import MessageModel
 
+enum LoggingSeverity {
+    case verbose
+    case info
+    case warning
+    case error
+}
+
+/**
+ Handling the actual logging.
+ */
+protocol ActualLoggerProtocol {
+    func saveLog(severity: LoggingSeverity,
+                 entity: String,
+                 description: String,
+                 comment: String)
+
+    func retrieveLog() -> String
+}
+
 /** Very primitive Logging class. */
 @objc open class Log: NSObject {
-    enum Severity {
-        case verbose
-        case info
-        case warning
-        case error
-    }
-
-    private let title = "pEpForiOS"
-    private var logEnabled = true
-    private var paused = false
-    private let session = PEPSession()
-    private let loggingQueue: OperationQueue = {
-       let createe = OperationQueue()
-        createe.qualityOfService = .background
-        createe.maxConcurrentOperationCount = 1
-        return createe
-    }()
-
     static public let shared: Log = {
         let instance = Log()
         return instance
     }()
-
-    let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
-    let allowedSeverities = Set<Severity>([.error, .info])
-
-    /**
-     Prints or saves a log entry.
-     - Note: For a log to be printed, the entity must be contained in `allowedEntities`,
-     or the severity must be noted in `allowedSeverities`.
-     */
-    private func saveLog(severity: Severity,
-                         entity: String,
-                         description: String,
-                         comment: String) {
-        #if DEBUG_LOGGING
-            if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
-                // If running in the debugger, dump to the console right away
-                print("\(entity): \(description)")
-            }
-        #endif
-    }
-
-    func resume() {
-        Log.shared.paused = false
-    }
-
-    func pause() {
-        Log.shared.paused = true
-        Log.shared.loggingQueue.cancelAllOperations()
-    }
 
     static public func disableLog() {
         Log.shared.loggingQueue.addOperation() {
@@ -83,11 +55,8 @@ import MessageModel
 
     static public func checklog(_ block: ((String?) -> ())?) {
         Log.shared.loggingQueue.addOperation() {
-            if let logString = try? PEPSession().getLog() {
-                block?(logString)
-            } else {
-                block?("")
-            }
+            let theLog = Log.shared.internalLogger.retrieveLog()
+            block?(theLog)
         }
     }
 
@@ -125,23 +94,51 @@ import MessageModel
                            entity: component, description: errorString, comment: "error")
     }
 
-    static func log(comp: String, mySelf: AnyObject, functionName: String) {
+    public static func log(comp: String, mySelf: AnyObject, functionName: String) {
         let selfDesc = unsafeBitCast(mySelf, to: UnsafeRawPointer.self)
         Log.shared.info(component: comp, content: "\(functionName): \(selfDesc)")
     }
-}
 
-extension Log: CWLogging {
-    @objc open func infoComponent(_ component: String, message: String) {
-        Log.info(component: component, content: message)
+    public func resume() {
+        Log.shared.paused = false
     }
 
-    @objc open func warnComponent(_ component: String, message: String) {
-        Log.warn(component: component, content: message)
+    public func pause() {
+        Log.shared.paused = true
+        Log.shared.loggingQueue.cancelAllOperations()
     }
 
-    @objc open func errorComponent(_ component: String, message: String) {
-        Log.error(component: component, errorString: message)
+    private let title = "pEpForiOS"
+    private var logEnabled = true
+    private var paused = false
+
+    private let loggingQueue: OperationQueue = {
+        let createe = OperationQueue()
+        createe.qualityOfService = .background
+        createe.maxConcurrentOperationCount = 1
+        return createe
+    }()
+
+    private let internalLogger = ASLLogger()
+
+    /**
+     Prints and/or saves a log entry.
+     - Note: For a log to be printed, the entity must be contained in `allowedEntities`,
+     or the severity must be noted in `allowedSeverities`.
+     */
+    private func saveLog(severity: LoggingSeverity,
+                         entity: String,
+                         description: String,
+                         comment: String) {
+        let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
+        let allowedSeverities = Set<LoggingSeverity>([.error, .warning, .info])
+
+        if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
+            internalLogger.saveLog(severity: severity,
+                                   entity: entity,
+                                   description: description,
+                                   comment: comment)
+        }
     }
 }
 
@@ -205,5 +202,19 @@ extension Log: MessageModelLogging {
     public func errorAndCrash(component: String, errorString: String) {
         Log.error(component: component, errorString: errorString)
         SystemUtils.crash("ERROR \(component): \(errorString)")
+    }
+}
+
+extension Log: CWLogging {
+    @objc open func infoComponent(_ component: String, message: String) {
+        Log.info(component: component, content: message)
+    }
+
+    @objc open func warnComponent(_ component: String, message: String) {
+        Log.warn(component: component, content: message)
+    }
+
+    @objc open func errorComponent(_ component: String, message: String) {
+        Log.error(component: component, errorString: message)
     }
 }
