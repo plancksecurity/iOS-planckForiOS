@@ -35,7 +35,7 @@ class SuggestViewModel {
     }
 
     weak public var resultDelegate: SuggestViewModelResultDelegate?
-    weak public var delegate: SuggestViewModelDelegate?
+    weak private var delegate: SuggestViewModelDelegate?
 
     private var identities = [Identity]()
     private let minNumberSearchStringChars: UInt
