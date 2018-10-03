@@ -20,8 +20,13 @@ class SetOwnKeyViewController: UIViewController {
     }
 
     @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
+        viewModel.userName = userNameTextField.text
+        viewModel.fingerprint = fingerprintTextField.text
+        viewModel.setOwnKey()
     }
-    
+
+    private let viewModel = SetOwnKeyViewModel()
+
     private func convertTopEp(button: UIButton) {
         button.backgroundColor = .white
         button.tintColor = .white
