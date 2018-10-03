@@ -41,8 +41,9 @@ class DecryptImportedMessagesTests: XCTestCase {
     // MARK: - Tests
 
     func testDecrypt001() {
-        let cdOwnAccount = createLocalAccount(ownUserName: "test002", ownUserID: "test002",
-                                              ownEmailAddress: "iostest002@peptest.ch")
+        let cdOwnAccount = TestUtil.createLocalAccount(ownUserName: "test002",
+                                                       ownUserID: "test002",
+                                                       ownEmailAddress: "iostest002@peptest.ch")
 
         // own keys
         try! TestUtil.importKeyByFileName(
@@ -71,9 +72,9 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1300
      */
     func testDecrypt002() {
-        let cdOwnAccount = createLocalAccount(ownUserName: "Someonei",
-                                              ownUserID: "User_Someonei",
-                                              ownEmailAddress: "someone@gmx.de")
+        let cdOwnAccount = TestUtil.createLocalAccount(ownUserName: "Someonei",
+                                                       ownUserID: "User_Someonei",
+                                                       ownEmailAddress: "someone@gmx.de")
 
         self.backgroundQueue = OperationQueue()
         let cdMessage = TestUtil.decryptTheMessage(
@@ -102,9 +103,9 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1364
      */
     func testDecryptUndisplayedAttachedJpegMessage() {
-        let cdOwnAccount = createLocalAccount(ownUserName: "ThisIsMe",
-                                              ownUserID: "User_Me",
-                                              ownEmailAddress: "iostest001@peptest.ch")
+        let cdOwnAccount = TestUtil.createLocalAccount(ownUserName: "ThisIsMe",
+                                                       ownUserID: "User_Me",
+                                                       ownEmailAddress: "iostest001@peptest.ch")
 
         self.backgroundQueue = OperationQueue()
         let cdMessage = TestUtil.decryptTheMessage(
@@ -144,9 +145,9 @@ class DecryptImportedMessagesTests: XCTestCase {
          `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
     func testSetOwnKey() {
-        let cdOwnAccount = createLocalAccount(ownUserName: "Rick Deckard",
-                                              ownUserID: "rick_deckard_uid",
-                                              ownEmailAddress: "iostest001@peptest.ch")
+        let cdOwnAccount = TestUtil.createLocalAccount(ownUserName: "Rick Deckard",
+                                                       ownUserID: "rick_deckard_uid",
+                                                       ownEmailAddress: "iostest001@peptest.ch")
 
         try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
@@ -209,22 +210,6 @@ class DecryptImportedMessagesTests: XCTestCase {
                 XCTAssertEqual(dataString, "\n\nSent from my iPhone")
             }
         }
-    }
-
-    func createLocalAccount(ownUserName: String, ownUserID: String,
-                            ownEmailAddress: String) -> CdAccount {
-        let cdOwnAccount = SecretTestData().createWorkingCdAccount(number: 0)
-        cdOwnAccount.identity?.userName = ownUserName
-        cdOwnAccount.identity?.userID = ownUserID
-        cdOwnAccount.identity?.address = ownEmailAddress
-
-        let cdInbox = CdFolder.create()
-        cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
-        cdInbox.account = cdOwnAccount
-        Record.saveAndWait()
-
-        return cdOwnAccount
     }
 }
 

@@ -745,7 +745,7 @@ class TestUtil {
         return mData as Data
     }
 
-    static func decryptTheMessage(
+    public static func decryptTheMessage(
         testCase: XCTestCase,
         backgroundQueue: OperationQueue,
         cdOwnAccount: CdAccount,
@@ -800,4 +800,19 @@ class TestUtil {
         return cdMessage
     }
 
+    public static func createLocalAccount(ownUserName: String, ownUserID: String,
+                                          ownEmailAddress: String) -> CdAccount {
+        let cdOwnAccount = SecretTestData().createWorkingCdAccount(number: 0)
+        cdOwnAccount.identity?.userName = ownUserName
+        cdOwnAccount.identity?.userID = ownUserID
+        cdOwnAccount.identity?.address = ownEmailAddress
+
+        let cdInbox = CdFolder.create()
+        cdInbox.name = ImapSync.defaultImapInboxName
+        cdInbox.uuid = MessageID.generate()
+        cdInbox.account = cdOwnAccount
+        Record.saveAndWait()
+
+        return cdOwnAccount
+    }
 }
