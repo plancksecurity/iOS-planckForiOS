@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MobileCoreServices //IOS-1369: obsolete?
 import MessageModel
 import SwipeCellKit
 import Photos
