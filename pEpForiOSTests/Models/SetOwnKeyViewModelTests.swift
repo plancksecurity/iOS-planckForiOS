@@ -55,7 +55,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
     func testSetOwnKeyViewModel() {
         doTestSetOwnKey() {
             let vm = SetOwnKeyViewModel()
-            vm.email = "iostest002@peptest.ch"
+            vm.email = "iostest003@peptest.ch"
             vm.fingerprint = "63FC29205A57EB3AEB780E846F239B0F19B9EE3B"
             vm.setOwnKey()
             XCTAssertEqual(vm.rawErrorString, nil)
