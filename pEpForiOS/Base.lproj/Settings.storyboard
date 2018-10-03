@@ -208,9 +208,60 @@
                     <view key="view" contentMode="scaleToFill" id="miw-EI-6rT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dcy-Hw-PhE">
+                                <rect key="frame" x="16" y="30" width="45" height="32"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fingerprint" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ib-BO-jFp">
+                                <rect key="frame" x="16" y="70" width="84" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9s3-e5-lqI">
+                                <rect key="frame" x="118" y="26.5" width="247" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WJx-kJ-kqt">
+                                <rect key="frame" x="118" y="66.5" width="247" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lzc-xZ-iKm">
+                                <rect key="frame" x="143.5" y="118" width="88" height="30"/>
+                                <state key="normal" title="Set Own Key"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="QuV-ZM-2vW" firstAttribute="trailing" secondItem="9s3-e5-lqI" secondAttribute="trailing" constant="10" id="0Kt-K9-le5"/>
+                            <constraint firstItem="9s3-e5-lqI" firstAttribute="firstBaseline" secondItem="Dcy-Hw-PhE" secondAttribute="firstBaseline" id="9yH-ng-voL"/>
+                            <constraint firstItem="Dcy-Hw-PhE" firstAttribute="top" secondItem="QuV-ZM-2vW" secondAttribute="top" constant="10" id="AHe-hy-cdK"/>
+                            <constraint firstItem="lzc-xZ-iKm" firstAttribute="centerX" secondItem="miw-EI-6rT" secondAttribute="centerX" id="An8-8P-yFd"/>
+                            <constraint firstItem="WJx-kJ-kqt" firstAttribute="trailing" secondItem="9s3-e5-lqI" secondAttribute="trailing" id="BHG-Zx-AF0"/>
+                            <constraint firstItem="WJx-kJ-kqt" firstAttribute="leading" secondItem="8ib-BO-jFp" secondAttribute="trailing" constant="18" id="KA1-sL-mjV"/>
+                            <constraint firstItem="8ib-BO-jFp" firstAttribute="leading" secondItem="Dcy-Hw-PhE" secondAttribute="leading" id="NOz-Rk-CaJ"/>
+                            <constraint firstItem="lzc-xZ-iKm" firstAttribute="top" secondItem="WJx-kJ-kqt" secondAttribute="bottom" constant="21.5" id="Uoa-0R-ucg"/>
+                            <constraint firstItem="9s3-e5-lqI" firstAttribute="leading" secondItem="Dcy-Hw-PhE" secondAttribute="trailing" constant="57" id="Wlg-wL-4nY"/>
+                            <constraint firstItem="8ib-BO-jFp" firstAttribute="top" secondItem="Dcy-Hw-PhE" secondAttribute="bottom" constant="8" id="bT7-ug-bEe"/>
+                            <constraint firstItem="Dcy-Hw-PhE" firstAttribute="leading" secondItem="QuV-ZM-2vW" secondAttribute="leading" constant="16" id="gEs-A4-h92"/>
+                            <constraint firstItem="WJx-kJ-kqt" firstAttribute="firstBaseline" secondItem="8ib-BO-jFp" secondAttribute="firstBaseline" id="jYw-Wy-cJh"/>
+                            <constraint firstItem="WJx-kJ-kqt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="9s3-e5-lqI" secondAttribute="bottom" constant="10" id="u0d-3a-Gqv"/>
+                            <constraint firstItem="9s3-e5-lqI" firstAttribute="leading" secondItem="WJx-kJ-kqt" secondAttribute="leading" id="v0t-UG-qsd"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="QuV-ZM-2vW"/>
                     </view>
+                    <connections>
+                        <outlet property="fingerprintTextField" destination="WJx-kJ-kqt" id="2UF-xq-VHs"/>
+                        <outlet property="setOwnKeyButton" destination="lzc-xZ-iKm" id="pHa-Jq-XTL"/>
+                        <outlet property="userNameTextField" destination="9s3-e5-lqI" id="MNe-pD-r7J"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pfo-Jp-fmH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
