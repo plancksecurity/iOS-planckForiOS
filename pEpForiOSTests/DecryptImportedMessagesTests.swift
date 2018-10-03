@@ -135,11 +135,6 @@ class DecryptImportedMessagesTests: XCTestCase {
          `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
     func testSimplifiedKeyImport() {
-        // Accept signed messages from Harry Bryant for simplified key import
-        DecryptMessageOperation.overrideSimplifiedKeyImporter =
-            SimplifiedKeyImporter(trustedFingerPrint:
-                "CF25 D0BF A6BB 6880 C437  AFD4 5716 EA2D 9AE3 2468")
-
         let cdOwnAccount = createLocalAccount(ownUserName: "Rick Deckard",
                                               ownUserID: "rick_deckard_uid",
                                               ownEmailAddress: "iostest001@peptest.ch")
@@ -160,6 +155,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         }
 
         // TODO: That should be encrypted _and_ signed -> PEP_rating_reliable
+        // Part of ENGINE-465
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
@@ -177,7 +173,7 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(msg.attachments.count, 0)
 
-        // check that we now have leon as own identity
+        // TODO: Check that we now have leon as own identity, and we can set_own_key it
 
         let leon = PEPIdentity(address: "iostest002@peptest.ch",
                                userID: PEP_OWN_USERID,
