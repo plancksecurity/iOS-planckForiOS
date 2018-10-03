@@ -26,7 +26,7 @@ open class ComposeCell: UITableViewCell, CellProtocol {
 
     func setInitial(text: String) {
         if text.isEmpty {
-            textView.text = " "
+            textView.text = " " //IOS-1369: why?
         } else {
             textView.text = text
         }
