@@ -33,41 +33,51 @@ extension Int32 {
     }
 }
 
-/** Very primitive Logging class. */
-@objc open class Log: NSObject {
-    enum Severity {
-        case verbose
-        case info
-        case warning
-        case error
+enum LoggingSeverity {
+    case verbose
+    case info
+    case warning
+    case error
 
-        /**
-         Maps the internal criticality of a log  message into a subsystem of ASL levels.
+    /**
+     Maps the internal criticality of a log  message into a subsystem of ASL levels.
 
-         ASL has the following:
-         * ASL_LEVEL_EMERG
-         * ASL_LEVEL_ALERT
-         * ASL_LEVEL_CRIT
-         * ASL_LEVEL_ERR
-         * ASL_LEVEL_WARNING
-         * ASL_LEVEL_NOTICE
-         * ASL_LEVEL_INFO
-         * ASL_LEVEL_DEBUG
-         */
-        func aslLevel() -> Int32 {
-            switch self {
-            case .verbose:
-                return ASL_LEVEL_DEBUG
-            case .info:
-                return ASL_LEVEL_NOTICE
-            case .warning:
-                return ASL_LEVEL_WARNING
-            case .error:
-                return ASL_LEVEL_ERR
-            }
+     ASL has the following:
+     * ASL_LEVEL_EMERG
+     * ASL_LEVEL_ALERT
+     * ASL_LEVEL_CRIT
+     * ASL_LEVEL_ERR
+     * ASL_LEVEL_WARNING
+     * ASL_LEVEL_NOTICE
+     * ASL_LEVEL_INFO
+     * ASL_LEVEL_DEBUG
+     */
+    func aslLevel() -> Int32 {
+        switch self {
+        case .verbose:
+            return ASL_LEVEL_DEBUG
+        case .info:
+            return ASL_LEVEL_NOTICE
+        case .warning:
+            return ASL_LEVEL_WARNING
+        case .error:
+            return ASL_LEVEL_ERR
         }
     }
+}
 
+/**
+ Handling the actual logging.
+ */
+protocol ActualLoggerProtocol {
+    func saveLog(severity: LoggingSeverity,
+                 entity: String,
+                 description: String,
+                 comment: String)
+}
+
+/** Very primitive Logging class. */
+@objc open class Log: NSObject {
     static public let shared: Log = {
         let instance = Log()
         return instance
@@ -194,12 +204,12 @@ extension Int32 {
      - Note: For a log to be printed, the entity must be contained in `allowedEntities`,
      or the severity must be noted in `allowedSeverities`.
      */
-    private func saveLog(severity: Severity,
+    private func saveLog(severity: LoggingSeverity,
                          entity: String,
                          description: String,
                          comment: String) {
         let allowedEntities = Set<String>(["CWIMAPStore", "ImapSync"])
-        let allowedSeverities = Set<Severity>([.error, .warning, .info])
+        let allowedSeverities = Set<LoggingSeverity>([.error, .warning, .info])
 
         if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
             let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
