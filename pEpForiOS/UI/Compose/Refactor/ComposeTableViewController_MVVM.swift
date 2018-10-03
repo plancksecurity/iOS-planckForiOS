@@ -1255,8 +1255,7 @@ extension ComposeTableViewController_MVVM: ComposeViewModelDelegate {
     //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
     func userSelectedRecipient(identity: Identity) {
         guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
-            Log.shared.errorAndCrash(component: #function, errorString:
-                "I think this must not happen. Remove log if proven otherwize")
+            Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
             return
         }
         hideSuggestions()
