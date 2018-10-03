@@ -88,4 +88,8 @@ extension Identity {
         }
         return md
     }
+
+    public var displayString: String {
+        return userName ?? address.trimmed()
+    }
 }
