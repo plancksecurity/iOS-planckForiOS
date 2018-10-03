@@ -7,29 +7,12 @@
 //
 
 import UIKit
-import Contacts
-import ContactsUI
-import MobileCoreServices
+import Contacts //IOS-1369: obsolete?
+import ContactsUI //IOS-1369: obsolete?
+import MobileCoreServices //IOS-1369: obsolete?
 import MessageModel
 import SwipeCellKit
 import Photos
-
-//IOS-1369: VMs should conform, *not* VCs (as implemented by me)
-protocol ComposeTableViewControllerDelegate_MVVM: class {
-    /// Called after a valid mail has been composed and saved for sending.
-    /// - Parameter sender: the sender
-    func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController_MVVM)
-
-    /// Called after saving a modified version of the original message.
-    /// (E.g. after editing a drafted message)
-    /// - Parameter sender: the sender
-    func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController_MVVM)
-
-    /// Called after permanentaly deleting the original message.
-    /// (E.g. saving an edited oubox mail to drafts. It's permanentaly deleted from outbox.)
-    /// - Parameter sender: the sender
-    func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController_MVVM)
-}
 
 class ComposeTableViewController_MVVM: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
@@ -38,8 +21,6 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     var isInitialSetup = true
 
     private var scrollUtil = TextViewInTableViewScrollUtil()
-
-    weak var delegate: ComposeTableViewControllerDelegate_MVVM?
 
     /// Recipient to set as "To:".
     /// Is ignored if a originalMessage is set.
@@ -73,7 +54,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     private let contactPicker = CNContactPickerViewController()
     private let imagePicker = UIImagePickerController()
     private let menuController = UIMenuController.shared
-    private var suggestionsChildViewController: SuggestTableViewController?
+
     private let composeSection = 0
     private let attachmentSection = 1
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
@@ -138,14 +119,15 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         super.viewDidLoad()
         title = ""
         registerXibs()
-        addContactSuggestTable()
         prepareFields()
         addKeyboardObservers()
+        setupModel()
+        setupContactSuggestionsTableViewController()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setup()
+        setupView()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -161,7 +143,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
 
     // MARK: - Setup & Configuration
 
-    private func setup() {
+    private func setupView() {
         if !isInitialSetup {
             // Init only once
             return
@@ -398,25 +380,6 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     }
 
     // MARK: - Address Suggstions
-
-    private final func addContactSuggestTable() {
-        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: nil)
-        guard
-            let suggestVc = storyboard.instantiateViewController(
-                withIdentifier: SuggestTableViewController.storyboardId) as? SuggestTableViewController,
-            let suggestView = suggestVc.view
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No VC.")
-                return
-        }
-        suggestionsChildViewController = suggestVc
-        addChildViewController(suggestVc)
-        //IOS-1369 VM. Yet unclear precedure. In discussion.
-        suggestVc.viewModel?.resultDelegate = self
-        suggestView.isHidden = true
-        updateSuggestTable(defaultCellHeight)
-        tableView.addSubview(suggestView)
-    }
 
     private func assureSuggestionsAreNotHiddenBehindKeyboard(keyboardSize: CGSize) {
         let searchfieldHeight = defaultCellHeight
@@ -1001,6 +964,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         tableView.register(nib, forCellReuseIdentifier: AttachmentCell.storyboardID)
     }
 
+    //IOS-1369: Must go to VM
     private func saveDraft() {
         if isOriginalMessageInDraftsOrOutbox {
             // We are in drafts folder and, from user perespective, are editing a drafted mail.
@@ -1010,7 +974,8 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
             if originalMessageIsOutbox {
                 // Message will be saved (moved from user perspective) to drafts, but we are in
                 // outbox folder.
-                delegate?.composeTableViewControllerDidDeleteMessage(sender: self)
+                //IOS-1369: Must go to VM
+                viewModel?.resultDelegate?.composeViewModelDidDeleteMessage()
             }
         }
 
@@ -1028,7 +993,8 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         if originalMessageIsDrafts {
             // We save a modified version of a drafted message. The UI might want to updtate
             // its model.
-            delegate?.composeTableViewControllerDidModifyMessage(sender: self)
+            //IOS-1369: Must go to VM
+            viewModel?.resultDelegate?.composeViewModelDidModifyMessage()
         }
     }
 
@@ -1065,6 +1031,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         present(alertCtrl, animated: true, completion: nil)
     }
 
+//IOS-1369: Must go to VM
     private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
         let action: UIAlertAction
         let text: String
@@ -1085,7 +1052,8 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
             }
             if me.originalMessageIsOutbox {
                 me.originalMessage?.delete()
-                me.delegate?.composeTableViewControllerDidDeleteMessage(sender: me)
+                //IOS-1369: Must go to VM
+                me.viewModel?.resultDelegate?.composeViewModelDidDeleteMessage()
             }
             me.dismiss()
         }
@@ -1142,6 +1110,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     }
 
     @IBAction func send() {
+        //IOS-1369: Must go to VM
         guard let msg = populateMessageFromUserInput() else {
             Log.error(component: #function, errorString: "No message for sending")
             dismiss(animated: true, completion: nil)
@@ -1154,7 +1123,8 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
             // delete the original, previously drafted one.
             deleteOriginalMessage()
         }
-        delegate?.composeTableViewControllerDidComposeNewMail(sender: self)
+        //IOS-1369: Must go to VM
+        viewModel?.resultDelegate?.composeViewModelDidComposeNewMail()
         dismiss(animated: true, completion: nil)
     }
 
@@ -1241,15 +1211,43 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     private func keyboardDidHide() {
         resetSuggestionsKeyboardOffset()
     }
+
+    // MARK: - IOS-1369 BRAND NEW SHIT
+
+    var viewModel: ComposeViewModel? {
+        didSet {
+            // Make sure we are the delegate. Always.
+            viewModel?.delegate = self
+        }
+    }
+
+    private var suggestionsChildViewController: SuggestTableViewController?
+
+    // MARK: - Setup & Configuration
+
+    private func setupModel() {
+        viewModel = ComposeViewModel(delegate: self)
+    }
+
+    private final func setupContactSuggestionsTableViewController() {
+        guard
+            let vm = viewModel,
+            let suggestVc = SuggestSceneConfigurator.suggestTableViewController(resultDelegate: vm),
+            let suggestView = suggestVc.view else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No VC.")
+                return
+        }
+        suggestionsChildViewController = suggestVc
+        addChildViewController(suggestVc)
+        suggestView.isHidden = true
+        updateSuggestTable(defaultCellHeight)
+        tableView.addSubview(suggestView)
+    }
 }
 
-// MARK: - SuggestViewModelDelegate
-
-//IOS-1369: /!!!: The VM MUST go to ComposeViewModel.
-
-extension ComposeTableViewController_MVVM: SuggestViewModelResultDelegate {
-
-    func suggestViewModelDidSelectContact(identity: Identity) {
+extension ComposeTableViewController_MVVM: ComposeViewModelDelegate {
+    //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
+    func userSelectedRecipient(identity: Identity) {
         guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
             Log.shared.errorAndCrash(component: #function, errorString:
                 "I think this must not happen. Remove log if proven otherwize")
@@ -1260,7 +1258,11 @@ extension ComposeTableViewController_MVVM: SuggestViewModelResultDelegate {
         cell.textView.scrollToTop()
         suggestionsChildViewController?.tableView.updateSize()
     }
+
+    // WILL GROW!
 }
+
+// MARK: - IOS-1369 TIHS WEN DNARB
 
 // MARK: - ComposeCellDelegate
 
