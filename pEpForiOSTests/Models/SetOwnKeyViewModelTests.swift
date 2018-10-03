@@ -18,6 +18,11 @@ class SetOwnKeyViewModelTests: XCTestCase {
     }
     var backgroundQueue: OperationQueue!
 
+    /**
+     The fingerprint that will be part of the call to set_own_key.
+     */
+    let leonsFingerprint = "63FC29205A57EB3AEB780E846F239B0F19B9EE3B"
+
     // MARK: - setUp, tearDown
 
     override func setUp() {
@@ -42,13 +47,13 @@ class SetOwnKeyViewModelTests: XCTestCase {
 
     func testSetOwnKeyDirectly() {
         doTestSetOwnKey() {
-            let leon = PEPIdentity(address: "iostest002@peptest.ch",
+            let leon = PEPIdentity(address: "iostest003@peptest.ch",
                                    userID: PEP_OWN_USERID,
                                    userName: "Leon Kowalski",
                                    isOwn: true)
             try! session.update(leon)
 
-            try! session.setOwnKey(leon, fingerprint: "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
+            try! session.setOwnKey(leon, fingerprint: leonsFingerprint)
         }
     }
 
@@ -56,7 +61,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
         doTestSetOwnKey() {
             let vm = SetOwnKeyViewModel()
             vm.email = "iostest003@peptest.ch"
-            vm.fingerprint = "63FC29205A57EB3AEB780E846F239B0F19B9EE3B"
+            vm.fingerprint = leonsFingerprint
             vm.setOwnKey()
             XCTAssertEqual(vm.rawErrorString, nil)
         }
@@ -89,6 +94,8 @@ class SetOwnKeyViewModelTests: XCTestCase {
         let leonIdent = cdOwnAccount2.account().user
         let leonPepIdent = leonIdent.pEpIdentity()
         try! session.mySelf(leonPepIdent)
+        XCTAssertNotNil(leonPepIdent)
+        XCTAssertNotEqual(leonPepIdent.fingerPrint, leonsFingerprint)
 
         self.backgroundQueue = OperationQueue()
         let cdMessage = DecryptionUtil.decryptTheMessage(
@@ -108,7 +115,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
         XCTAssertEqual(
             theCdMessage.longMessage,
-            "iostest003@peptest.ch\nLeon Kowalski\n63FC29205A57EB3AEB780E846F239B0F19B9EE3B\n\nSee the key of Leon attached.\n")
+            "iostest003@peptest.ch\nLeon Kowalski\n\(leonsFingerprint)\n\nSee the key of Leon attached.\n")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
         XCTAssertEqual(attachments.count, 0)
