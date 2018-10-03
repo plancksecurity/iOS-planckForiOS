@@ -48,21 +48,29 @@ class SetOwnKeyViewModelTests: XCTestCase {
      `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
     func testSetOwnKey() {
-        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+        let cdOwnAccount1 = DecryptionUtil.createLocalAccount(
             ownUserName: "Rick Deckard",
             ownUserID: "rick_deckard_uid",
             ownEmailAddress: "iostest001@peptest.ch")
 
         try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
-        try! session.setOwnKey(cdOwnAccount.pEpIdentity(),
+        try! session.setOwnKey(cdOwnAccount1.pEpIdentity(),
                                fingerprint: "456B937ED6D5806935F63CE5548738CCEB50C250")
+
+        let cdOwnAccount2 = DecryptionUtil.createLocalAccount(
+            ownUserName: "Leon Kowalski",
+            ownUserID: "leon_kowalski_uid",
+            ownEmailAddress: "iostest003@peptest.ch")
+        let leonIdent = cdOwnAccount2.account().user
+        let leonPepIdent = leonIdent.pEpIdentity()
+        try! session.mySelf(leonPepIdent)
 
         self.backgroundQueue = OperationQueue()
         let cdMessage = DecryptionUtil.decryptTheMessage(
             testCase: self,
             backgroundQueue: backgroundQueue,
-            cdOwnAccount: cdOwnAccount,
+            cdOwnAccount: cdOwnAccount1,
             fileName: "SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt")
 
         guard let theCdMessage = cdMessage else {
