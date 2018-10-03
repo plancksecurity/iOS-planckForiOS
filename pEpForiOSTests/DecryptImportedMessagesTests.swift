@@ -55,8 +55,11 @@ class DecryptImportedMessagesTests: XCTestCase {
             session, fileName: "IOS-884_001_test010@peptest.ch.pub.key")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = decryptTheMessage(
-            cdOwnAccount: cdOwnAccount, fileName: "IOS-884_001_Mail_from_P4A.txt")
+        let cdMessage = TestUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "IOS-884_001_Mail_from_P4A.txt")
 
         XCTAssertEqual(cdMessage?.pEpRating, Int16(PEP_rating_reliable.rawValue))
         XCTAssertEqual(cdMessage?.shortMessage, "Re:  ")
@@ -73,8 +76,11 @@ class DecryptImportedMessagesTests: XCTestCase {
                                               ownEmailAddress: "someone@gmx.de")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = decryptTheMessage(
-            cdOwnAccount: cdOwnAccount, fileName: "IOS-1300_odt_attachment.txt")
+        let cdMessage = TestUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "IOS-1300_odt_attachment.txt")
 
         guard let theCdMessage = cdMessage else {
             XCTFail()
@@ -101,8 +107,11 @@ class DecryptImportedMessagesTests: XCTestCase {
                                               ownEmailAddress: "iostest001@peptest.ch")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = decryptTheMessage(
-            cdOwnAccount: cdOwnAccount, fileName: "1364_Mail_missing_attached_image.txt")
+        let cdMessage = TestUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "1364_Mail_missing_attached_image.txt")
 
         guard let theCdMessage = cdMessage else {
             XCTFail()
@@ -145,7 +154,9 @@ class DecryptImportedMessagesTests: XCTestCase {
                                fingerprint: "456B937ED6D5806935F63CE5548738CCEB50C250")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = decryptTheMessage(
+        let cdMessage = TestUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
             cdOwnAccount: cdOwnAccount,
             fileName: "SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt")
 
@@ -214,58 +225,6 @@ class DecryptImportedMessagesTests: XCTestCase {
         Record.saveAndWait()
 
         return cdOwnAccount
-    }
-
-    func decryptTheMessage(cdOwnAccount: CdAccount,
-                           fileName: String,
-                           checkCdMessage: ((CdMessage) -> ())? = nil) -> CdMessage? {
-        guard let cdMessage = TestUtil.cdMessage(
-            fileName: fileName,
-            cdOwnAccount: cdOwnAccount) else {
-                XCTFail()
-                return nil
-        }
-
-        if let theChecker = checkCdMessage {
-            theChecker(cdMessage)
-        }
-
-        let expDecrypted = expectation(description: "expDecrypted")
-        let errorContainer = ErrorContainer()
-        let decryptOperation = DecryptMessagesOperation(
-            parentName: #function, errorContainer: errorContainer)
-        decryptOperation.completionBlock = {
-            decryptOperation.completionBlock = nil
-            expDecrypted.fulfill()
-        }
-        let decryptDelegate = DecryptionAttemptCounterDelegate()
-        decryptOperation.delegate = decryptDelegate
-        backgroundQueue.addOperation(decryptOperation)
-
-        waitForExpectations(timeout: TestUtil.waitTime) { error in
-            XCTAssertNil(error)
-        }
-
-        XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
-        Record.Context.main.refreshAllObjects()
-
-        guard
-            let cdRecipients = cdMessage.to?.array as? [CdIdentity],
-            cdRecipients.count == 1,
-            let recipientIdentity = cdRecipients[0].identity()
-            else {
-                XCTFail()
-                return cdMessage
-        }
-        XCTAssertTrue(recipientIdentity.isMySelf)
-
-        guard let theSenderIdentity = cdMessage.from?.identity() else {
-            XCTFail()
-            return cdMessage
-        }
-        XCTAssertFalse(theSenderIdentity.isMySelf)
-
-        return cdMessage
     }
 }
 
