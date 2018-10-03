@@ -127,14 +127,14 @@ class DecryptImportedMessagesTests: XCTestCase {
     }
 
     /**
-     IOS-1351
+     IOS-1378
      - Note: If you need to manually verify something:
        * The public/secret key pair of Leon Kowalski (subject)
          is in `Leon Kowalski (19B9EE3B) – Private.asc`.
        * The public/secret key pair of Harry Bryant (sender) is in
          `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
-    func testSimplifiedKeyImport() {
+    func testSetOwnKey() {
         let cdOwnAccount = createLocalAccount(ownUserName: "Rick Deckard",
                                               ownUserID: "rick_deckard_uid",
                                               ownEmailAddress: "iostest001@peptest.ch")
@@ -154,8 +154,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        // TODO: That should be encrypted _and_ signed -> PEP_rating_reliable
-        // Part of ENGINE-465
+        // After ENGINE-465 is done, this should be PEP_rating_reliable
         XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
@@ -173,21 +172,13 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(msg.attachments.count, 0)
 
-        // TODO: Check that we now have leon as own identity, and we can set_own_key it
-
         let leon = PEPIdentity(address: "iostest002@peptest.ch",
                                userID: PEP_OWN_USERID,
                                userName: "Leon Kowalski",
                                isOwn: true)
         try! session.update(leon)
 
-        guard let leonsFingerprint = leon.fingerPrint else {
-            XCTFail()
-            return
-        }
-
-        // TODO: We should be able to import the key
-        //XCTAssertEqual(leonsFingerprint, "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
+        try! session.setOwnKey(leon, fingerprint: "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
     }
 
     // MARK: - Helpers
