@@ -9,7 +9,6 @@
 import UIKit
 
 class SetOwnKeyViewController: UIViewController {
-    @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var fingerprintTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var errorTextField: UILabel!
@@ -31,7 +30,6 @@ class SetOwnKeyViewController: UIViewController {
     // MARK: - Actions
 
     @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
-        viewModel.userName = userNameTextField.text
         viewModel.fingerprint = fingerprintTextField.text
         viewModel.email = emailTextField.text
         viewModel.setOwnKey()
