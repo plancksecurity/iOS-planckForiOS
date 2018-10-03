@@ -204,7 +204,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
         case .trustedServer:
             performSegue(withIdentifier: .segueShowSettingTrustedServers, sender: self)
         case .setOwnKey:
-            break
+            performSegue(withIdentifier: .segueSetOwnKey, sender: self)
         }
     }
 }
@@ -219,6 +219,7 @@ extension SettingsTableViewController: SegueHandlerType {
         case segueShowLog
         case sequeShowCredits
         case segueShowSettingTrustedServers
+        case segueSetOwnKey
         case noAccounts
         case noSegue
     }
@@ -256,6 +257,8 @@ extension SettingsTableViewController: SegueHandlerType {
                     return
             }
             viewController.appConfig = self.appConfig
+        case .segueSetOwnKey:
+            break
         case .noSegue:
             // does not need preperation
             break
