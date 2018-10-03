@@ -41,9 +41,10 @@ class DecryptImportedMessagesTests: XCTestCase {
     // MARK: - Tests
 
     func testDecrypt001() {
-        let cdOwnAccount = TestUtil.createLocalAccount(ownUserName: "test002",
-                                                       ownUserID: "test002",
-                                                       ownEmailAddress: "iostest002@peptest.ch")
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+            ownUserName: "test002",
+            ownUserID: "test002",
+            ownEmailAddress: "iostest002@peptest.ch")
 
         // own keys
         try! TestUtil.importKeyByFileName(
@@ -56,7 +57,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             session, fileName: "IOS-884_001_test010@peptest.ch.pub.key")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = TestUtil.decryptTheMessage(
+        let cdMessage = DecryptionUtil.decryptTheMessage(
             testCase: self,
             backgroundQueue: backgroundQueue,
             cdOwnAccount: cdOwnAccount,
@@ -72,12 +73,12 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1300
      */
     func testDecrypt002() {
-        let cdOwnAccount = TestUtil.createLocalAccount(ownUserName: "Someonei",
-                                                       ownUserID: "User_Someonei",
-                                                       ownEmailAddress: "someone@gmx.de")
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(ownUserName: "Someonei",
+                                                             ownUserID: "User_Someonei",
+                                                             ownEmailAddress: "someone@gmx.de")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = TestUtil.decryptTheMessage(
+        let cdMessage = DecryptionUtil.decryptTheMessage(
             testCase: self,
             backgroundQueue: backgroundQueue,
             cdOwnAccount: cdOwnAccount,
@@ -103,12 +104,13 @@ class DecryptImportedMessagesTests: XCTestCase {
      IOS-1364
      */
     func testDecryptUndisplayedAttachedJpegMessage() {
-        let cdOwnAccount = TestUtil.createLocalAccount(ownUserName: "ThisIsMe",
-                                                       ownUserID: "User_Me",
-                                                       ownEmailAddress: "iostest001@peptest.ch")
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+            ownUserName: "ThisIsMe",
+            ownUserID: "User_Me",
+            ownEmailAddress: "iostest001@peptest.ch")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = TestUtil.decryptTheMessage(
+        let cdMessage = DecryptionUtil.decryptTheMessage(
             testCase: self,
             backgroundQueue: backgroundQueue,
             cdOwnAccount: cdOwnAccount,
@@ -145,9 +147,10 @@ class DecryptImportedMessagesTests: XCTestCase {
          `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
     func testSetOwnKey() {
-        let cdOwnAccount = TestUtil.createLocalAccount(ownUserName: "Rick Deckard",
-                                                       ownUserID: "rick_deckard_uid",
-                                                       ownEmailAddress: "iostest001@peptest.ch")
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+            ownUserName: "Rick Deckard",
+            ownUserID: "rick_deckard_uid",
+            ownEmailAddress: "iostest001@peptest.ch")
 
         try! TestUtil.importKeyByFileName(fileName: "Rick Deckard (EB50C250) – Private.asc")
 
@@ -155,7 +158,7 @@ class DecryptImportedMessagesTests: XCTestCase {
                                fingerprint: "456B937ED6D5806935F63CE5548738CCEB50C250")
 
         self.backgroundQueue = OperationQueue()
-        let cdMessage = TestUtil.decryptTheMessage(
+        let cdMessage = DecryptionUtil.decryptTheMessage(
             testCase: self,
             backgroundQueue: backgroundQueue,
             cdOwnAccount: cdOwnAccount,
