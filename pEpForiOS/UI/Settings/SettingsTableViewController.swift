@@ -203,6 +203,8 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             performSegue(withIdentifier: .sequeShowCredits, sender: self)
         case .trustedServer:
             performSegue(withIdentifier: .segueShowSettingTrustedServers, sender: self)
+        case .setOwnKey:
+            break
         }
     }
 }
