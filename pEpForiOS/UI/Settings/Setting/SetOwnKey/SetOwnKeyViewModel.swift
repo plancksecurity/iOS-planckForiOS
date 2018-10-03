@@ -10,18 +10,22 @@ import Foundation
 
 class SetOwnKeyViewModel {
     public var userName: String?
+    public var email: String?
     public var fingerprint: String?
+
     public var rawErrorString: String?
 
     func setOwnKey() {
         guard
             let theUserName = userName,
+            let theEmail = email,
             let theFingerprint = fingerprint,
             !theUserName.isEmpty,
+            !theEmail.isEmpty,
             !theFingerprint.isEmpty
             else {
                 rawErrorString = NSLocalizedString(
-                    "Please provide a user name and a fingerprint",
+                    "Please provide user name, email and a fingerprint",
                     comment: "Validation error for set_own_key UI")
                 return
         }
@@ -30,7 +34,7 @@ class SetOwnKeyViewModel {
 
         do {
             let someIdent = PEPIdentity(
-                address: "",
+                address: theEmail,
                 userID: PEP_OWN_USERID,
                 userName: theUserName,
                 isOwn: true)
