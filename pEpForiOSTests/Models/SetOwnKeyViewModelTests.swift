@@ -40,6 +40,20 @@ class SetOwnKeyViewModelTests: XCTestCase {
 
     // MARK: - Tests
 
+    func testSetOwnKeyDirectly() {
+        doTestSetOwnKey() {
+            let leon = PEPIdentity(address: "iostest002@peptest.ch",
+                                   userID: PEP_OWN_USERID,
+                                   userName: "Leon Kowalski",
+                                   isOwn: true)
+            try! session.update(leon)
+
+            try! session.setOwnKey(leon, fingerprint: "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
+        }
+    }
+
+    // MARK: - Helpers
+
     /**
      - Note: If you need to manually verify something:
      * The public/secret key pair of Leon Kowalski (subject)
@@ -47,7 +61,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
      * The public/secret key pair of Harry Bryant (sender) is in
      `Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc`.
      */
-    func testSetOwnKey() {
+    private func doTestSetOwnKey(afterDecryption: () -> ()) {
         let cdOwnAccount1 = DecryptionUtil.createLocalAccount(
             ownUserName: "Rick Deckard",
             ownUserID: "rick_deckard_uid",
@@ -96,12 +110,6 @@ class SetOwnKeyViewModelTests: XCTestCase {
 
         XCTAssertEqual(msg.attachments.count, 0)
 
-        let leon = PEPIdentity(address: "iostest002@peptest.ch",
-                               userID: PEP_OWN_USERID,
-                               userName: "Leon Kowalski",
-                               isOwn: true)
-        try! session.update(leon)
-
-        try! session.setOwnKey(leon, fingerprint: "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
+        afterDecryption()
     }
 }
