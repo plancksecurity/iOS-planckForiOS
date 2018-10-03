@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Contacts //IOS-1369: obsolete?
-import ContactsUI //IOS-1369: obsolete?
 import MobileCoreServices //IOS-1369: obsolete?
 import MessageModel
 import SwipeCellKit
@@ -51,7 +49,6 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
     var pickerEmailAdresses = [String]()
     var accountCell: AccountCell?
 
-    private let contactPicker = CNContactPickerViewController()
     private let imagePicker = UIImagePickerController()
     private let menuController = UIMenuController.shared
 
@@ -122,7 +119,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         prepareFields()
         addKeyboardObservers()
         setupModel()
-        setupContactSuggestionsTableViewController()
+        setupRecipientSuggestionsTableViewController()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -1229,7 +1226,7 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         viewModel = ComposeViewModel(delegate: self)
     }
 
-    private final func setupContactSuggestionsTableViewController() {
+    private final func setupRecipientSuggestionsTableViewController() {
         guard
             let vm = viewModel,
             let suggestVc = SuggestSceneConfigurator.suggestTableViewController(resultDelegate: vm),
