@@ -1240,6 +1240,16 @@ class ComposeTableViewController_MVVM: BaseTableViewController {
         updateSuggestTable(defaultCellHeight)
         tableView.addSubview(suggestView)
     }
+
+    // MARK: - Address Suggestions
+
+    private func hideSuggestions() {
+        suggestionsChildViewController?.view.isHidden = true
+    }
+
+    private func showSuggestions() {
+        suggestionsChildViewController?.view.isHidden = false
+    }
 }
 
 extension ComposeTableViewController_MVVM: ComposeViewModelDelegate {
@@ -1250,7 +1260,7 @@ extension ComposeTableViewController_MVVM: ComposeViewModelDelegate {
                 "I think this must not happen. Remove log if proven otherwize")
             return
         }
-        suggestionsChildViewController?.view.isHidden = true
+        hideSuggestions()
         cell.addIdentity(identity)
         cell.textView.scrollToTop()
         suggestionsChildViewController?.tableView.updateSize()
@@ -1316,12 +1326,12 @@ extension ComposeTableViewController_MVVM: ComposeCellDelegate {
             //IOS-1369: needs to go to VM
             suggestionsChildViewController?.updateSuggestions(searchString: textView.text)
             if suggestionsChildViewController?.hasSuggestions ?? false {
-                suggestionsChildViewController?.view.isHidden = false
+                showSuggestions()
                 tableView.scrollToTopOf(composeCell)
                 composeCell.textView.scrollToBottom()
                 updateSuggestTable(CGFloat(indexPath.row))
             } else {
-                suggestionsChildViewController?.view.isHidden = true
+                hideSuggestions()
                 composeCell.textView.scrollToTop()
                 tableView.updateSize()
             }
@@ -1332,7 +1342,7 @@ extension ComposeTableViewController_MVVM: ComposeCellDelegate {
 
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView) {
         tableView.updateSize()
-        suggestionsChildViewController?.view.isHidden = true
+        hideSuggestions()
     }
 
     func textShouldReturn(at indexPath: IndexPath, textView: ComposeTextView) {
