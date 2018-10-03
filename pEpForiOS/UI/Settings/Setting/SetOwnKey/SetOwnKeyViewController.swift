@@ -15,6 +15,8 @@ class SetOwnKeyViewController: UIViewController {
     @IBOutlet weak var errorTextField: UILabel!
     @IBOutlet weak var setOwnKeyButton: UIButton!
 
+    // MARK: - View life cycle etc.
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,12 +28,16 @@ class SetOwnKeyViewController: UIViewController {
         errorTextField.text = nil
     }
 
+    // MARK: - Actions
+
     @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
         viewModel.userName = userNameTextField.text
         viewModel.fingerprint = fingerprintTextField.text
         viewModel.email = emailTextField.text
         viewModel.setOwnKey()
     }
+
+    // MARK: - Private
 
     private let viewModel = SetOwnKeyViewModel()
 
