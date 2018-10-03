@@ -85,7 +85,6 @@
 		1526596D216230B1006A78DF /* ComposeMessageBodyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265955216230B0006A78DF /* ComposeMessageBodyTextView.swift */; };
 		1526596E216230B2006A78DF /* AttachmentCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265956216230B0006A78DF /* AttachmentCounter.swift */; };
 		1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265957216230B0006A78DF /* ComposeFieldModel.swift */; };
-		15265970216230B2006A78DF /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265958216230B0006A78DF /* ComposeTableViewController.swift */; };
 		15265972216230B2006A78DF /* ComposeTableViewController_MVVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526595D216230B1006A78DF /* ComposeTableViewController_MVVM.swift */; };
 		1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
 		1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597921623652006A78DF /* SuggestViewModel.swift */; };
@@ -646,7 +645,6 @@
 		15265955216230B0006A78DF /* ComposeMessageBodyTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeMessageBodyTextView.swift; sourceTree = "<group>"; };
 		15265956216230B0006A78DF /* AttachmentCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCounter.swift; sourceTree = "<group>"; };
 		15265957216230B0006A78DF /* ComposeFieldModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeFieldModel.swift; sourceTree = "<group>"; };
-		15265958216230B0006A78DF /* ComposeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
 		1526595D216230B1006A78DF /* ComposeTableViewController_MVVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController_MVVM.swift; sourceTree = "<group>"; };
 		1526597721623637006A78DF /* SuggestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTableViewController.swift; sourceTree = "<group>"; };
 		1526597921623652006A78DF /* SuggestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModel.swift; sourceTree = "<group>"; };
@@ -1282,7 +1280,6 @@
 				15265943216230B0006A78DF /* cells */,
 				1526594E216230B0006A78DF /* Util */,
 				1526595B216230B1006A78DF /* Refactor */,
-				15265958216230B0006A78DF /* ComposeTableViewController.swift */,
 			);
 			path = Compose;
 			sourceTree = "<group>";
@@ -3050,7 +3047,6 @@
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				15265972216230B2006A78DF /* ComposeTableViewController_MVVM.swift in Sources */,
 				43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */,
-				15265970216230B2006A78DF /* ComposeTableViewController.swift in Sources */,
 				43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */,
 				B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */,
 				15265964216230B1006A78DF /* MessageBodyCell.swift in Sources */,
