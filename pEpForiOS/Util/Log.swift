@@ -74,6 +74,8 @@ protocol ActualLoggerProtocol {
                  entity: String,
                  description: String,
                  comment: String)
+
+    func retrieveLog() -> String
 }
 
 /** Very primitive Logging class. */
@@ -104,36 +106,8 @@ protocol ActualLoggerProtocol {
 
     static public func checklog(_ block: ((String?) -> ())?) {
         Log.shared.loggingQueue.addOperation() {
-            let query = asl_new(UInt32(ASL_TYPE_QUERY))
-
-            let result = asl_set_query(query,
-                                       ASL_KEY_FACILITY,
-                                       facilityName,
-                                       UInt32(ASL_QUERY_OP_EQUAL))
-            checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_FACILITY")
-
-            let response = asl_search(nil, query)
-            var next = asl_next(response)
-            var logString = ""
-            while next != nil {
-                if let stringPointer = asl_get(next, ASL_KEY_MSG),
-                    let entityNamePtr = asl_get(next, Log.keyEntityName) {
-                    // TODO: Also retrieve ASL_KEY_LEVEL?
-
-                    let entityName = String(cString: entityNamePtr)
-
-                    let theString = String(cString: stringPointer)
-                    if !logString.isEmpty {
-                        logString.append("\n")
-                    }
-                    logString.append("*** \(entityName) \(theString)")
-                }
-                next = asl_next(response)
-            }
-
-            asl_free(query)
-
-            block?(logString)
+            let theLog = Log.shared.internalLogger.retrieveLog()
+            block?(theLog)
         }
     }
 
@@ -185,9 +159,6 @@ protocol ActualLoggerProtocol {
         Log.shared.loggingQueue.cancelAllOperations()
     }
 
-    private static let facilityName = "security.pEp"
-    private static let keyEntityName = "keyComponentName"
-
     private let title = "pEpForiOS"
     private var logEnabled = true
     private var paused = false
@@ -198,6 +169,8 @@ protocol ActualLoggerProtocol {
         createe.maxConcurrentOperationCount = 1
         return createe
     }()
+
+    private let internalLogger = ASLLogger()
 
     /**
      Prints and/or saves a log entry.
@@ -212,22 +185,10 @@ protocol ActualLoggerProtocol {
         let allowedSeverities = Set<LoggingSeverity>([.error, .warning, .info])
 
         if allowedSeverities.contains(severity) || allowedEntities.contains(entity) {
-            let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
-
-            asl_set(logMessage, Log.keyEntityName, entity)
-            asl_set(logMessage, ASL_KEY_FACILITY, Log.facilityName)
-            asl_set(logMessage, ASL_KEY_MSG, description)
-            asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
-
-            asl_send(nil, logMessage)
-
-            asl_free(logMessage)
-        }
-    }
-
-    private static func checkASLSuccess(result: Int32, comment: String) {
-        if result != 0 {
-            print("error: \(comment)")
+            internalLogger.saveLog(severity: severity,
+                                   entity: entity,
+                                   description: description,
+                                   comment: comment)
         }
     }
 }
