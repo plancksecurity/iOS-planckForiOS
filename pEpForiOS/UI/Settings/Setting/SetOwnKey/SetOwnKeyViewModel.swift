@@ -25,14 +25,14 @@ class SetOwnKeyViewModel {
             !theFingerprint.isEmpty
             else {
                 rawErrorString = NSLocalizedString(
-                    "Please provide an email and a fingerprint. The email must match an existing account",
+                    "Please provide an email and a fingerprint. The email must match an existing account.",
                     comment: "Validation error for set_own_key UI")
                 return
         }
 
         guard let theIdent = ownIdentityBy(email: theEmail) else {
             rawErrorString = NSLocalizedString(
-                "No account found with the given email",
+                "No account found with the given email.",
                 comment: "Error when no account found for set_own_key UI")
             return
         }
