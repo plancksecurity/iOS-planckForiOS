@@ -8,8 +8,6 @@
 
 import Foundation
 
-import MessageModel
-
 class SetOwnKeyViewModel {
     public var userName: String?
     public var email: String?
@@ -19,29 +17,26 @@ class SetOwnKeyViewModel {
 
     func setOwnKey() {
         guard
+            let theUserName = userName,
+            let theEmail = email,
             let theFingerprint = fingerprint,
+            !theUserName.isEmpty,
+            !theEmail.isEmpty,
             !theFingerprint.isEmpty
             else {
                 rawErrorString = NSLocalizedString(
-                    "Please provide a fingerprint",
+                    "Please provide user name, email and a fingerprint",
                     comment: "Validation error for set_own_key UI")
                 return
-        }
-
-        guard let foundIdentity = Identity.by(fingerprint: theFingerprint) else {
-            rawErrorString = NSLocalizedString(
-                "Could not find the fingerprint in the DB",
-                comment: "Could not find an Identity by the fingerprint for set_own_key UI")
-            return
         }
 
         let session = PEPSession()
 
         do {
             let someIdent = PEPIdentity(
-                address: foundIdentity.address,
+                address: theEmail,
                 userID: PEP_OWN_USERID,
-                userName: foundIdentity.userName,
+                userName: theUserName,
                 isOwn: true)
             try session.setOwnKey(someIdent, fingerprint: theFingerprint.despaced())
         } catch {
