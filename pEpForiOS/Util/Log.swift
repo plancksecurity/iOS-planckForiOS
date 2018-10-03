@@ -8,62 +8,11 @@
 
 import MessageModel
 
-extension Int32 {
-    func aslLevelString() -> String {
-        switch self {
-        case ASL_LEVEL_EMERG:
-            return "ASL_LEVEL_EMERG"
-        case ASL_LEVEL_ALERT:
-            return "ASL_LEVEL_ALERT"
-        case ASL_LEVEL_CRIT:
-            return "ASL_LEVEL_CRIT"
-        case ASL_LEVEL_ERR:
-            return "ASL_LEVEL_ERR"
-        case ASL_LEVEL_WARNING:
-            return "ASL_LEVEL_WARNING"
-        case ASL_LEVEL_NOTICE:
-            return "ASL_LEVEL_NOTICE"
-        case ASL_LEVEL_INFO:
-            return "ASL_LEVEL_INFO"
-        case ASL_LEVEL_DEBUG:
-            return "ASL_LEVEL_DEBUG"
-        default:
-            return "ASL_LEVEL_UNKNOWN"
-        }
-    }
-}
-
 enum LoggingSeverity {
     case verbose
     case info
     case warning
     case error
-
-    /**
-     Maps the internal criticality of a log  message into a subsystem of ASL levels.
-
-     ASL has the following:
-     * ASL_LEVEL_EMERG
-     * ASL_LEVEL_ALERT
-     * ASL_LEVEL_CRIT
-     * ASL_LEVEL_ERR
-     * ASL_LEVEL_WARNING
-     * ASL_LEVEL_NOTICE
-     * ASL_LEVEL_INFO
-     * ASL_LEVEL_DEBUG
-     */
-    func aslLevel() -> Int32 {
-        switch self {
-        case .verbose:
-            return ASL_LEVEL_DEBUG
-        case .info:
-            return ASL_LEVEL_NOTICE
-        case .warning:
-            return ASL_LEVEL_WARNING
-        case .error:
-            return ASL_LEVEL_ERR
-        }
-    }
 }
 
 /**
