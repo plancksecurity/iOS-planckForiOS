@@ -43,6 +43,7 @@ class SetOwnKeyViewModel {
         do {
             let session = PEPSession()
             try session.setOwnKey(someIdent, fingerprint: theFingerprint.despaced())
+            rawErrorString = nil
         } catch {
             rawErrorString = error.localizedDescription
         }
