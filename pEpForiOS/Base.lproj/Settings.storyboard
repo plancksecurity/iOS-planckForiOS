@@ -246,6 +246,12 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="set_own_key Error" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ujL-Pa-uXD">
+                                <rect key="frame" x="118.5" y="188" width="138" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WJx-kJ-kqt">
                                 <rect key="frame" x="118" y="98" width="247" height="30"/>
                                 <nil key="textColor"/>
@@ -266,10 +272,12 @@
                             <constraint firstItem="lzc-xZ-iKm" firstAttribute="top" secondItem="WJx-kJ-kqt" secondAttribute="bottom" constant="10" id="Mef-XD-q3t"/>
                             <constraint firstItem="8ib-BO-jFp" firstAttribute="leading" secondItem="Dcy-Hw-PhE" secondAttribute="leading" id="NOz-Rk-CaJ"/>
                             <constraint firstItem="jey-z5-Oqb" firstAttribute="leading" secondItem="9s3-e5-lqI" secondAttribute="leading" id="Ol8-5U-XGu"/>
+                            <constraint firstItem="ujL-Pa-uXD" firstAttribute="top" secondItem="lzc-xZ-iKm" secondAttribute="bottom" constant="20" id="Plu-v2-mCq"/>
                             <constraint firstItem="9s3-e5-lqI" firstAttribute="leading" secondItem="Dcy-Hw-PhE" secondAttribute="trailing" constant="57" id="Wlg-wL-4nY"/>
                             <constraint firstItem="Dcy-Hw-PhE" firstAttribute="leading" secondItem="QuV-ZM-2vW" secondAttribute="leading" constant="16" id="gEs-A4-h92"/>
                             <constraint firstItem="jey-z5-Oqb" firstAttribute="trailing" secondItem="9s3-e5-lqI" secondAttribute="trailing" id="h9u-Ga-XzG"/>
                             <constraint firstItem="WJx-kJ-kqt" firstAttribute="firstBaseline" secondItem="8ib-BO-jFp" secondAttribute="firstBaseline" id="jYw-Wy-cJh"/>
+                            <constraint firstItem="ujL-Pa-uXD" firstAttribute="centerX" secondItem="miw-EI-6rT" secondAttribute="centerX" id="t9f-lW-FCD"/>
                             <constraint firstItem="9s3-e5-lqI" firstAttribute="leading" secondItem="WJx-kJ-kqt" secondAttribute="leading" id="v0t-UG-qsd"/>
                             <constraint firstItem="7Lp-ph-4lC" firstAttribute="top" secondItem="Dcy-Hw-PhE" secondAttribute="bottom" constant="15" id="yEx-ax-K9H"/>
                             <constraint firstItem="7Lp-ph-4lC" firstAttribute="leading" secondItem="Dcy-Hw-PhE" secondAttribute="leading" id="yon-9d-CjO"/>
@@ -279,6 +287,7 @@
                     </view>
                     <connections>
                         <outlet property="emailTextField" destination="jey-z5-Oqb" id="BMq-xJ-3KH"/>
+                        <outlet property="errorTextField" destination="ujL-Pa-uXD" id="8nz-8s-Z3V"/>
                         <outlet property="fingerprintTextField" destination="WJx-kJ-kqt" id="2UF-xq-VHs"/>
                         <outlet property="setOwnKeyButton" destination="lzc-xZ-iKm" id="pHa-Jq-XTL"/>
                         <outlet property="userNameTextField" destination="9s3-e5-lqI" id="MNe-pD-r7J"/>

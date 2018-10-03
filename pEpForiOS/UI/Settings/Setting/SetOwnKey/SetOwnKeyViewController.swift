@@ -12,12 +12,18 @@ class SetOwnKeyViewController: UIViewController {
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var fingerprintTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
+    @IBOutlet weak var errorTextField: UILabel!
     @IBOutlet weak var setOwnKeyButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         convertTopEp(button: setOwnKeyButton)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        errorTextField.text = nil
     }
 
     @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
