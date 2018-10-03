@@ -11,6 +11,7 @@ import UIKit
 class SetOwnKeyViewController: UIViewController {
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var fingerprintTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var setOwnKeyButton: UIButton!
 
     override func viewDidLoad() {

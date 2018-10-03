@@ -278,6 +278,7 @@
                         <viewLayoutGuide key="safeArea" id="QuV-ZM-2vW"/>
                     </view>
                     <connections>
+                        <outlet property="emailTextField" destination="jey-z5-Oqb" id="BMq-xJ-3KH"/>
                         <outlet property="fingerprintTextField" destination="WJx-kJ-kqt" id="2UF-xq-VHs"/>
                         <outlet property="setOwnKeyButton" destination="lzc-xZ-iKm" id="pHa-Jq-XTL"/>
                         <outlet property="userNameTextField" destination="9s3-e5-lqI" id="MNe-pD-r7J"/>
