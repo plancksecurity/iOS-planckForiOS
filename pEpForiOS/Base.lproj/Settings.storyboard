@@ -230,6 +230,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lzc-xZ-iKm">
                                 <rect key="frame" x="143.5" y="138" width="88" height="30"/>
                                 <state key="normal" title="Set Own Key"/>
+                                <connections>
+                                    <action selector="setOwnKeyButtonTapped:" destination="cMW-fr-EKn" eventType="touchUpInside" id="tgw-KH-8Fx"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Lp-ph-4lC">
                                 <rect key="frame" x="16" y="65.5" width="41" height="21"/>

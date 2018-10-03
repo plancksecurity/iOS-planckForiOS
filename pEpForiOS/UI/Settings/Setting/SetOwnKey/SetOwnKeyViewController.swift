@@ -19,6 +19,9 @@ class SetOwnKeyViewController: UIViewController {
         convertTopEp(button: setOwnKeyButton)
     }
 
+    @IBAction func setOwnKeyButtonTapped(_ sender: Any) {
+    }
+    
     private func convertTopEp(button: UIButton) {
         button.backgroundColor = .white
         button.tintColor = .white
