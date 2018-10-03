@@ -35,6 +35,7 @@ class SetOwnKeyViewController: UIViewController {
         viewModel.fingerprint = fingerprintTextField.text
         viewModel.email = emailTextField.text
         viewModel.setOwnKey()
+        errorTextField.text = viewModel.rawErrorString
     }
 
     // MARK: - Private
