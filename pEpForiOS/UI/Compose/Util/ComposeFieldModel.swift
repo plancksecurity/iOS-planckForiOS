@@ -36,7 +36,7 @@ public class ComposeFieldModel {
     }
 
     enum FieldDisplayType: String {
-        case always, conditional, never
+        case always, conditional
     }
 
     var type: FieldType = .to
