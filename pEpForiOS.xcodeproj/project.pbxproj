@@ -38,6 +38,7 @@
 		00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */; };
 		00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */; };
 		00D3CD3E20B58976009ABBC9 /* PrimarySplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */; };
+		00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00DF2C3A2164C53F004EBA6C /* FolderViewModelTest.swift */; };
 		00EB89AB20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */; };
 		00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */; };
 		00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */; };
@@ -597,6 +598,7 @@
 		00AEB2F520DBA7DA00DA185A /* NeedsRefreshDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedsRefreshDelegate.swift; sourceTree = "<group>"; };
 		00BEC89620B85FD300A36E60 /* NoMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMessagesViewController.swift; sourceTree = "<group>"; };
 		00D3CD3D20B58976009ABBC9 /* PrimarySplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimarySplitViewController.swift; sourceTree = "<group>"; };
+		00DF2C3A2164C53F004EBA6C /* FolderViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModelTest.swift; sourceTree = "<group>"; };
 		00EB89AA20E3A27C00CDFA0D /* ThreadViewcontroller+SizeClasses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewcontroller+SizeClasses.swift"; sourceTree = "<group>"; };
 		00EB89AC20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadedEmailViewModel+MoveToFolderDelegate.swift"; sourceTree = "<group>"; };
 		00EB89AE20E3E4A000CDFA0D /* ReplyAlertCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyAlertCreator.swift; sourceTree = "<group>"; };
@@ -2235,6 +2237,7 @@
 				431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */,
 				43504D4320E0DD0E00D11E52 /* EmailListViewModeTests+Threading.swift */,
 				4335002D212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift */,
+				00DF2C3A2164C53F004EBA6C /* FolderViewModelTest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3279,6 +3282,7 @@
 				4335002E212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift in Sources */,
 				4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
+				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
 				43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */,
