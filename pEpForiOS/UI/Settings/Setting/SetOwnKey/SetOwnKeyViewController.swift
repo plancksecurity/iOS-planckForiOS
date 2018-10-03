@@ -9,7 +9,6 @@
 import UIKit
 
 class SetOwnKeyViewController: UIViewController {
-
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var fingerprintTextField: UITextField!
     @IBOutlet weak var setOwnKeyButton: UIButton!
@@ -25,5 +24,4 @@ class SetOwnKeyViewController: UIViewController {
         button.tintColor = .white
         button.setTitleColor(.pEpGreen, for: .normal)
     }
-
 }
