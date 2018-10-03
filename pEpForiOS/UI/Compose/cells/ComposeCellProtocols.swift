@@ -19,7 +19,7 @@ public protocol ComposeCellDelegate: class {
     func textDidChange(at indexPath: IndexPath, textView: ComposeTextView)
     func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView)
 
-    func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
+    func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String], //IOS-1369: UIView shouldn't know email addresses
                      forFieldType type: ComposeFieldModel.FieldType)
 }
 

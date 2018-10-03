@@ -672,10 +672,10 @@
             </objects>
             <point key="canvasLocation" x="6321" y="-909"/>
         </scene>
-        <!--ComposeTableViewController_MVVM-->
+        <!--ComposeTableViewController-->
         <scene sceneID="6gr-JE-uNa">
             <objects>
-                <tableViewController id="hAk-L8-fYy" userLabel="ComposeTableViewController_MVVM" customClass="ComposeTableViewController_MVVM" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="hAk-L8-fYy" userLabel="ComposeTableViewController" customClass="ComposeTableViewController" customModule="pEpForiOS" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="F0A-gK-Ftf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -920,7 +920,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
-        <segue reference="0zl-tV-6Kr"/>
+        <segue reference="JbP-D9-Vpg"/>
         <segue reference="ber-OQ-S16"/>
         <segue reference="2fD-kL-Bvj"/>
     </inferredMetricsTieBreakers>

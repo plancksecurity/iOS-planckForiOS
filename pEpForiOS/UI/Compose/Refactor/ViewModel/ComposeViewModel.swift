@@ -22,8 +22,7 @@ protocol ComposeViewModelResultDelegate: class {
 
 protocol ComposeViewModelDelegate: class {
     //Will grow BIG :-/
-    //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
-    func userSelectedRecipient(identity: Identity)
+    //IOS-1369: //TODO handle func userSelectedRecipient(identity: Identity)
 }
 
 class ComposeViewModel {
@@ -39,7 +38,7 @@ class ComposeViewModel {
 
 extension ComposeViewModel: SuggestViewModelResultDelegate {
     func suggestViewModelDidSelectContact(identity: Identity) {
-        //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
-        delegate?.userSelectedRecipient(identity: identity)
+        //IOS-1369:
+        //TODO:
     }
 }

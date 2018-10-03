@@ -51,7 +51,7 @@ extension ThreadViewController: SegueHandlerType {
             model.didMove()
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController_MVVM,
+                let destination = nav.topViewController as? ComposeTableViewController,
                 let appConfig = appConfig else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break

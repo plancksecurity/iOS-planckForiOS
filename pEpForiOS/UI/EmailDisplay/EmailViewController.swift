@@ -523,7 +523,7 @@ extension EmailViewController: SegueHandlerType {
         switch theId {
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? ComposeTableViewController_MVVM else {
+                let destination = nav.topViewController as? ComposeTableViewController else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
