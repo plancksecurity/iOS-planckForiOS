@@ -1175,7 +1175,8 @@ extension EmailListViewController: SegueHandlerType {
             }
             composeVc.originalMessage = message
         }
-        composeVc.delegate = self
+        //IOS-1369: EmaiListViewMoldel MUST be the delegate
+        composeVc.viewModel?.resultDelegate = self
     }
 
     private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode? {
@@ -1206,16 +1207,16 @@ extension EmailListViewController: LoginViewControllerDelegate {
 }
 
 // MARK: - ComposeTableViewControllerDelegate
-
-extension EmailListViewController: ComposeTableViewControllerDelegate_MVVM {
-    func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController_MVVM) {
+//IOS-1369: this has to go to EmaiListViewMoldel !
+extension EmailListViewController: ComposeViewModelResultDelegate {
+    func composeViewModelDidComposeNewMail() {
         if folderIsDraftsOrOutbox(folderToShow){
             // In outbox, a new mail must show up after composing it.
             model?.reloadData()
         }
     }
 
-    func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController_MVVM) {
+    func composeViewModelDidDeleteMessage() {
         if folderIsOutbox(folderToShow) {
             // A message from outbox has been deleted in outbox
             // (e.g. because the user saved it to drafts).
@@ -1223,7 +1224,7 @@ extension EmailListViewController: ComposeTableViewControllerDelegate_MVVM {
         }
     }
 
-    func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController_MVVM) {
+    func composeViewModelDidModifyMessage() {
         if folderIsDraft(folderToShow) {
             model?.reloadData()
         }
