@@ -878,7 +878,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="New Email" id="ain-Ih-o8h">
+                    <navigationItem key="navigationItem" id="ain-Ih-o8h">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="NoQ-uw-dGp">
                             <connections>
                                 <action selector="cancel:" destination="hAk-L8-fYy" id="KKO-gj-3Nf"/>
@@ -892,7 +892,6 @@
                     </navigationItem>
                     <size key="freeformSize" width="375" height="800"/>
                     <connections>
-                        <outlet property="dismissButton" destination="NoQ-uw-dGp" id="zQ3-PN-nz3"/>
                         <outlet property="sendButton" destination="yQg-rY-YPK" id="lhg-qw-PDF"/>
                         <outlet property="view" destination="F0A-gK-Ftf" id="n0A-Pn-XJs"/>
                         <segue destination="Dbs-KG-RkX" kind="presentation" identifier="segueHandshake" id="JbP-D9-Vpg"/>

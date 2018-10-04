@@ -29,8 +29,15 @@ class ComposeViewModel {
     weak var resultDelegate: ComposeViewModelResultDelegate?
     weak var delegate: ComposeViewModelDelegate?
 
-    init(delegate: ComposeViewModelDelegate) {
-        self.delegate = delegate
+    /// Recipient to set as "To:".
+    /// Is ignored if a originalMessage is set.
+    var prefilledTo: Identity?
+    /// Original message to compute content and recipients from (e.g. a message we reply to).
+    var originalMessage: Message?
+
+    init(resultDelegate: ComposeViewModelResultDelegate? = nil, originalMessage: Message? = nil) {
+        self.resultDelegate = resultDelegate
+        self.originalMessage = originalMessage
     }
 }
 

@@ -204,26 +204,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Other
 
-    private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
-            return false
-        }
-        return folder.folderType == .drafts
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
-            return false
-        }
-        return folder.folderType == .outbox
-    }
-
-    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
-        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
-    }
-
     private func weCameBackFromAPushedView() -> Bool {
         return model != nil
     }
@@ -533,7 +513,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                    editActionsForRowAt
         indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return nil
+        }
         // Create swipe actions, taking the currently displayed folder into account
         var swipeActions = [SwipeAction]()
 
@@ -544,8 +527,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             parentFolder = folder
         } else {
             // folderToShow is unified inbox, fetch parent folder from DB.
-            guard let vm = model,
-                let folder = vm.message(representedByRowAt: indexPath)?.parent else {
+            guard let folder = vm.message(representedByRowAt: indexPath)?.parent else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
                     return nil
             }
@@ -556,7 +538,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         let defaultIsArchive = parentFolder.defaultDestructiveActionIsArchive
         let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
         let usedDescriptor =
-            folderIsOutbox(parentFolder) ?
+            vm.folderIsOutbox(parentFolder) ?
             SwipeActionDescriptor.trash :
                 (defaultIsArchive ? .archive : .trash)
         let descriptorDestructive: SwipeActionDescriptor = usedDescriptor
@@ -575,7 +557,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         swipeActions.append(archiveAction)
 
         // Flag
-        if !folderIsDraftsOrOutbox(parentFolder) {
+        if !vm.folderIsDraftsOrOutbox(parentFolder) {
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
@@ -595,7 +577,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         // More (reply++)
-        if !folderIsDraftsOrOutbox(parentFolder) {
+        if !vm.folderIsDraftsOrOutbox(parentFolder) {
             // Do not add "more" actions (reply...) to drafts or outbox.
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
@@ -1167,16 +1149,14 @@ extension EmailListViewController: SegueHandlerType {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
             guard
-                let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "No original message")
+                let vm = model,
+                let indexPath = lastSelectedIndexPath else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return
             }
-            composeVc.originalMessage = message
+
+            composeVc.viewModel = vm.composeViewModel(withOriginalMessageAt: indexPath)
         }
-        //IOS-1369: EmaiListViewMoldel MUST be the delegate
-        composeVc.viewModel?.resultDelegate = self
     }
 
     private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode? {
@@ -1206,27 +1186,3 @@ extension EmailListViewController: LoginViewControllerDelegate {
     }
 }
 
-// MARK: - ComposeTableViewControllerDelegate
-//IOS-1369: this has to go to EmaiListViewMoldel !
-extension EmailListViewController: ComposeViewModelResultDelegate {
-    func composeViewModelDidComposeNewMail() {
-        if folderIsDraftsOrOutbox(folderToShow){
-            // In outbox, a new mail must show up after composing it.
-            model?.reloadData()
-        }
-    }
-
-    func composeViewModelDidDeleteMessage() {
-        if folderIsOutbox(folderToShow) {
-            // A message from outbox has been deleted in outbox
-            // (e.g. because the user saved it to drafts).
-            model?.reloadData()
-        }
-    }
-
-    func composeViewModelDidModifyMessage() {
-        if folderIsDraft(folderToShow) {
-            model?.reloadData()
-        }
-    }
-}

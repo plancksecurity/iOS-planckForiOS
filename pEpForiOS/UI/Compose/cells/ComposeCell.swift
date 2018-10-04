@@ -21,7 +21,7 @@ open class ComposeCell: UITableViewCell, CellProtocol {
     
     override open func awakeFromNib() {
         super.awakeFromNib()
-        selectionStyle = .none        
+        selectionStyle = .none
     }
 
     func setInitial(text: String) {

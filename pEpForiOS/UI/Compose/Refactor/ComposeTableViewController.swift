@@ -23,10 +23,12 @@ extension ComposeTableViewController {
 }
 
 class ComposeTableViewController: BaseTableViewController {
-    @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
-    // MARK: - IOS-1369 BRAND NEW SHIT
+    var isInitialSetup = true
+    var composeMode = ComposeUtil.ComposeMode.normal
+    private var currentCellIndexPath: IndexPath?
+
 
     var viewModel: ComposeViewModel? {
         didSet {
@@ -37,10 +39,17 @@ class ComposeTableViewController: BaseTableViewController {
 
     private var suggestionsChildViewController: SuggestTableViewController?
 
+    // MARK: - Life Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupModel()
+    }
+
     // MARK: - Setup & Configuration
 
     private func setupModel() {
-        viewModel = ComposeViewModel(delegate: self)
+        viewModel = ComposeViewModel()
     }
 
     private final func setupRecipientSuggestionsTableViewController() {
@@ -54,29 +63,45 @@ class ComposeTableViewController: BaseTableViewController {
         suggestionsChildViewController = suggestVc
         addChildViewController(suggestVc)
         suggestView.isHidden = true
-        updateSuggestTable(defaultCellHeight)
+        updateSuggestTable()
         tableView.addSubview(suggestView)
     }
 
-    // MARK: - Address Suggestions
+    // MARK: - IBActions
 
-    private func hideSuggestions() {
-        suggestionsChildViewController?.view.isHidden = true
+    @IBAction func cancel(_ sender: Any) {
+        //IOS-1369:
+        //        if edited {
+        //            showAlertControllerWithOptionsForCanceling(sender: sender)
+        //        } else {
+                    dismiss()
+        //        }
     }
 
-    private func showSuggestions() {
-        suggestionsChildViewController?.view.isHidden = false
+    func dismiss() {
+        dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction func send() {
+        //IOS-1369:
+    }
+
+    /**
+     Shows a menu where user can choose to make a handshake, or toggle force unprotected.
+     */
+    @IBAction func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
+        //IOS-1369:
     }
 }
-
-// MARK: - IOS-1369 BRAND NEW SHIT
 
 extension ComposeTableViewController: ComposeViewModelDelegate {
     //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
     func userSelectedRecipient(identity: Identity) {
-        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-            return
+        guard
+            let indexPath = currentCellIndexPath,
+            let cell = tableView.cellForRow(at: indexPath) as? RecipientCell else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                return
         }
         hideSuggestions()
         cell.addIdentity(identity)
@@ -87,4 +112,24 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     // WILL GROW!
 }
 
-// MARK: - IOS-1369 TIHS WEN DNARB
+// MARK: - Address Suggestions
+
+extension ComposeTableViewController {
+    private final func updateSuggestTable() {
+        var pos = defaultCellHeight
+        if pos < defaultCellHeight && !isInitialSetup {
+            pos = defaultCellHeight * (defaultCellHeight + 1) + 2
+        }
+        suggestionsChildViewController?.view.frame.origin.y = pos
+        suggestionsChildViewController?.view.frame.size.height =
+            tableView.bounds.size.height - pos + 2
+    }
+
+    private func hideSuggestions() {
+        suggestionsChildViewController?.view.isHidden = true
+    }
+
+    private func showSuggestions() {
+        suggestionsChildViewController?.view.isHidden = false
+    }
+}

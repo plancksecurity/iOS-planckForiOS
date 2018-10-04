@@ -88,7 +88,7 @@ struct UIUtils {
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.composeSceneStoryboardId) as? UINavigationController,
             let composeVc = composeNavigationController.rootViewController
-                as? ComposeTableViewController
+                as? ComposeTableViewController_Old
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Missing required data")
                 return

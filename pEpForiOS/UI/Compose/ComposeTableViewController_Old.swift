@@ -1,5 +1,5 @@
 //
-//  ComposeTableViewController_MVVM.swift
+//  ComposeTableViewController_Old.swift
 //  pEp
 //
 //  Created by Andreas Buff on 01.10.18.
@@ -11,6 +11,7 @@ import MessageModel
 import SwipeCellKit
 import Photos
 
+//IOS-1369: has to be replaced everywhere
 class ComposeTableViewController_Old: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
@@ -117,8 +118,8 @@ class ComposeTableViewController_Old: BaseTableViewController {
         registerXibs()
         prepareFields()
         addKeyboardObservers()
-        setupModel()
-        setupRecipientSuggestionsTableViewController()
+//        setupModel()
+//        setupRecipientSuggestionsTableViewController()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -971,7 +972,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
                 // Message will be saved (moved from user perspective) to drafts, but we are in
                 // outbox folder.
                 //IOS-1369: Must go to VM
-                viewModel?.resultDelegate?.composeViewModelDidDeleteMessage()
+//                viewModel?.resultDelegate?.composeViewModelDidDeleteMessage()
             }
         }
 
@@ -990,7 +991,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
             // We save a modified version of a drafted message. The UI might want to updtate
             // its model.
             //IOS-1369: Must go to VM
-            viewModel?.resultDelegate?.composeViewModelDidModifyMessage()
+//            viewModel?.resultDelegate?.composeViewModelDidModifyMessage()
         }
     }
 
@@ -1049,7 +1050,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
             if me.originalMessageIsOutbox {
                 me.originalMessage?.delete()
                 //IOS-1369: Must go to VM
-                me.viewModel?.resultDelegate?.composeViewModelDidDeleteMessage()
+//                me.viewModel?.resultDelegate?.composeViewModelDidDeleteMessage()
             }
             me.dismiss()
         }
@@ -1120,7 +1121,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
             deleteOriginalMessage()
         }
         //IOS-1369: Must go to VM
-        viewModel?.resultDelegate?.composeViewModelDidComposeNewMail()
+//        viewModel?.resultDelegate?.composeViewModelDidComposeNewMail()
         dismiss(animated: true, completion: nil)
     }
 
@@ -1210,35 +1211,35 @@ class ComposeTableViewController_Old: BaseTableViewController {
 
     // MARK: - IOS-1369 BRAND NEW SHIT
 
-    var viewModel: ComposeViewModel? {
-        didSet {
-            // Make sure we are the delegate. Always.
-            viewModel?.delegate = self
-        }
-    }
+//    var viewModel: ComposeViewModel? {
+//        didSet {
+//            // Make sure we are the delegate. Always.
+//            viewModel?.delegate = self
+//        }
+//    }
 
     private var suggestionsChildViewController: SuggestTableViewController?
 
     // MARK: - Setup & Configuration
 
-    private func setupModel() {
-        viewModel = ComposeViewModel(delegate: self)
-    }
+//    private func setupModel() {
+//        viewModel = ComposeViewModel(delegate: self)
+//    }
 
-    private final func setupRecipientSuggestionsTableViewController() {
-        guard
-            let vm = viewModel,
-            let suggestVc = SuggestSceneConfigurator.suggestTableViewController(resultDelegate: vm),
-            let suggestView = suggestVc.view else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No VC.")
-                return
-        }
-        suggestionsChildViewController = suggestVc
-        addChildViewController(suggestVc)
-        suggestView.isHidden = true
-        updateSuggestTable(defaultCellHeight)
-        tableView.addSubview(suggestView)
-    }
+//    private final func setupRecipientSuggestionsTableViewController() {
+//        guard
+//            let vm = viewModel,
+//            let suggestVc = SuggestSceneConfigurator.suggestTableViewController(resultDelegate: vm),
+//            let suggestView = suggestVc.view else {
+//                Log.shared.errorAndCrash(component: #function, errorString: "No VC.")
+//                return
+//        }
+//        suggestionsChildViewController = suggestVc
+//        addChildViewController(suggestVc)
+//        suggestView.isHidden = true
+//        updateSuggestTable(defaultCellHeight)
+//        tableView.addSubview(suggestView)
+//    }
 
     // MARK: - Address Suggestions
 
@@ -1251,7 +1252,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
     }
 }
 
-extension ComposeTableViewController_MVVM: ComposeViewModelDelegate {
+extension ComposeTableViewController_Old: ComposeViewModelDelegate {
     //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
     func userSelectedRecipient(identity: Identity) {
         guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
@@ -1271,7 +1272,7 @@ extension ComposeTableViewController_MVVM: ComposeViewModelDelegate {
 
 // MARK: - ComposeCellDelegate
 
-extension ComposeTableViewController_MVVM: ComposeCellDelegate {
+extension ComposeTableViewController_Old: ComposeCellDelegate {
 
     func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
                      forFieldType type: ComposeFieldModel.FieldType) {
@@ -1353,7 +1354,7 @@ extension ComposeTableViewController_MVVM: ComposeCellDelegate {
 
 // MARK: - MessageBodyCellDelegate
 
-extension ComposeTableViewController_MVVM: MessageBodyCellDelegate {
+extension ComposeTableViewController_Old: MessageBodyCellDelegate {
     func didStartEditing(at indexPath: IndexPath, composeTextView: ComposeMessageBodyTextView) {
         currentCellIndexPath = indexPath
         let media = UIMenuItem(
@@ -1377,7 +1378,7 @@ extension ComposeTableViewController_MVVM: MessageBodyCellDelegate {
 
 // MARK: - UIImagePickerControllerDelegate
 
-extension ComposeTableViewController_MVVM: UIImagePickerControllerDelegate {
+extension ComposeTableViewController_Old: UIImagePickerControllerDelegate {
     public func imagePickerController( _ picker: UIImagePickerController,
                                        didFinishPickingMediaWithInfo info: [String: Any]) {
 
@@ -1402,7 +1403,7 @@ extension ComposeTableViewController_MVVM: UIImagePickerControllerDelegate {
 
 // MARK: - UIDocumentPickerDelegate
 
-extension ComposeTableViewController_MVVM: UIDocumentPickerDelegate {
+extension ComposeTableViewController_Old: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController,
                         didPickDocumentsAt urls: [URL]) {
         for url in urls {
@@ -1428,7 +1429,7 @@ extension ComposeTableViewController_MVVM: UIDocumentPickerDelegate {
 
 // MARK: - UINavigationControllerDelegate
 
-extension ComposeTableViewController_MVVM: UINavigationControllerDelegate {
+extension ComposeTableViewController_Old: UINavigationControllerDelegate {
     // We have to conform to UINavigationControllerDelegate to be able to set our self as
     // UIImagePickerController delegate, which is defined as
     // (UIImagePickerControllerDelegate & UINavigationControllerDelegate)?
@@ -1436,7 +1437,7 @@ extension ComposeTableViewController_MVVM: UINavigationControllerDelegate {
 
 // MARK: - SegueHandlerType
 
-extension ComposeTableViewController_MVVM: SegueHandlerType {
+extension ComposeTableViewController_Old: SegueHandlerType {
 
     enum SegueIdentifier: String {
         case segueHandshake
@@ -1463,7 +1464,7 @@ extension ComposeTableViewController_MVVM: SegueHandlerType {
 
 // MARK: - SwipeTableViewCellDelegate
 
-extension ComposeTableViewController_MVVM: SwipeTableViewCellDelegate {
+extension ComposeTableViewController_Old: SwipeTableViewCellDelegate {
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
@@ -1480,7 +1481,7 @@ extension ComposeTableViewController_MVVM: SwipeTableViewCellDelegate {
 
 // MARK: - HtmlToAttributedTextSaxParserAttachmentDelegate
 
-extension ComposeTableViewController_MVVM: HtmlToAttributedTextSaxParserAttachmentDelegate {
+extension ComposeTableViewController_Old: HtmlToAttributedTextSaxParserAttachmentDelegate {
     func imageAttachment(src: String?, alt: String?) -> Attachment? {
         guard let origAttachments = originalMessage?.attachments else {
             return nil
@@ -1517,7 +1518,7 @@ extension ComposeTableViewController_MVVM: HtmlToAttributedTextSaxParserAttachme
 
 // MARK: - Address Validation
 
-extension ComposeTableViewController_MVVM {
+extension ComposeTableViewController_Old {
 
     private var hasInvalidRecipients: Bool {
         for cell in allCells where cell is RecipientCell {
@@ -1552,7 +1553,7 @@ extension ComposeTableViewController_MVVM {
 
 // MARK: - UIPickerViewDelegate, UIPickerViewDataSource
 
-extension ComposeTableViewController_MVVM: UIPickerViewDelegate, UIPickerViewDataSource  {
+extension ComposeTableViewController_Old: UIPickerViewDelegate, UIPickerViewDataSource  {
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
