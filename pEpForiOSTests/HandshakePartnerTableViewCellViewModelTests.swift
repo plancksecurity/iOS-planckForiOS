@@ -131,19 +131,6 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         try! session.keyMistrusted(partnerIdent)
         try! session.update(partnerIdent)
         XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
-
-        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        try! session.undoLastMistrust()
-        try! session.update(partnerIdent)
-        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
-
-        partnerIdent = PEPIdentity(identity: partnerIdentOrig) // restore backup
-        // The partner (restored from the backup) is still a pEp user
-        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
-        try! session.trustPersonalKey(partnerIdent)
-        try! session.update(partnerIdent)
-
-        XCTAssertTrue(try! session.isPEPUser(partnerIdent).boolValue)
     }
 
     /**

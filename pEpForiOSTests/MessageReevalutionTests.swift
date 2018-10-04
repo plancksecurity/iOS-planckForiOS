@@ -212,13 +212,6 @@ class MessageReevalutionTests: XCTestCase {
                 infoMessage: "after mistrust")
             try! session.update(senderIdent)
             XCTAssertFalse(senderIdent.isConfirmed)
-
-            try! session.undoLastMistrust()
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_trusted)
-            reevaluateMessage(
-                expectedRating: PEP_rating_reliable,
-                inBackground: runReevaluationInBackground,
-                infoMessage: "after reset trust")
         }
     }
 }
