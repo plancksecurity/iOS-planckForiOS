@@ -11,7 +11,7 @@ import MessageModel
 import SwipeCellKit
 import Photos
 
-class ComposeTableViewController_MVVM: BaseTableViewController {
+class ComposeTableViewController_Old: BaseTableViewController {
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     @IBOutlet var sendButton: UIBarButtonItem!
 
