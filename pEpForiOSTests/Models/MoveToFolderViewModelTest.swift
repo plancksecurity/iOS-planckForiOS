@@ -7,8 +7,9 @@
 //
 
 import XCTest
+
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
     var messagesToMove =  [Message]()
@@ -57,10 +58,7 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
                        MoveToFolderCellViewModel(folder: folders[1], level: 1).title)
     }
 
-
-
-
-//MARK: Initialization
+    //MARK: Initialization
     
     func givenWeWantToMove(aNumberOfMessages: Int, currentlyInFolder: Folder){
         for i in 0..<aNumberOfMessages {
@@ -89,9 +87,6 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
         folders.append(folder)
         folders.append(trashFolder)
     }
-
-
-
 }
 
 //MARK: Delegate Expectations
@@ -115,6 +110,4 @@ class MoveToFolderExpectations: MoveToFolderDelegate {
         }
         expectation.fulfill()
     }
-
-
 }
