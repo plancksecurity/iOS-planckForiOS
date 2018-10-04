@@ -115,7 +115,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         if let bodyPeek = internalBoddyPeek {
            self.bodyPeek = bodyPeek
         } else {
-            let operation = bodyPeekPrefetch(for: message) { bodyPeek in
+            let operation = getBodyPeekOperation(for: message) { bodyPeek in
                 self.bodyPeek = bodyPeek
             }
             if(!operation.isFinished){
@@ -136,7 +136,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         if let messageCount = internalMessageCount {
             completion(messageCount)
         } else {
-            let operation =  messageCountPrefetch { count in
+            let operation =  getMessageCountOperation { count in
                 completion(count)
             }
             if(!operation.isFinished){
