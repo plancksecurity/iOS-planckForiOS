@@ -100,18 +100,18 @@ class ComposeTableViewController: BaseTableViewController {
 
 extension ComposeTableViewController: ComposeViewModelDelegate {
     //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
-    func userSelectedRecipient(identity: Identity) {
-        guard
-            let indexPath = currentCellIndexPath,
-            let cell = tableView.cellForRow(at: indexPath) as? RecipientCell else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-                return
-        }
-        hideSuggestions()
-        cell.addIdentity(identity)
-        cell.textView.scrollToTop()
-        suggestionsChildViewController?.tableView.updateSize()
-    }
+//    func userSelectedRecipient(identity: Identity) {
+//        guard
+//            let indexPath = currentCellIndexPath,
+//            let cell = tableView.cellForRow(at: indexPath) as? RecipientCell else {
+//                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+//                return
+//        }
+//        hideSuggestions()
+//        cell.addIdentity(identity)
+//        cell.textView.scrollToTop()
+//        suggestionsChildViewController?.tableView.updateSize()
+//    }
 
     // WILL GROW!
 }
