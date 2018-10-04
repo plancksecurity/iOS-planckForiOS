@@ -41,7 +41,13 @@ class ComposeViewModel {
     }
 }
 
- // MARK: - SuggestTableViewController
+ // MARK: - Suggestions
+
+extension ComposeViewModel {
+    func suggestViewModel() -> SuggestViewModel {
+        return SuggestViewModel(resultDelegate: self)
+    }
+}
 
 extension ComposeViewModel: SuggestViewModelResultDelegate {
     func suggestViewModelDidSelectContact(identity: Identity) {

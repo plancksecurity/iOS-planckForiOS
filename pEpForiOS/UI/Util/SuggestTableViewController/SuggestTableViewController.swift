@@ -12,7 +12,11 @@ import Foundation
 class SuggestTableViewController: UITableViewController {
     static let storyboardId = "SuggestTableViewController"
 
-    fileprivate var viewModel: SuggestViewModel?
+    var viewModel: SuggestViewModel? {
+        didSet {
+            viewModel?.delegate = self
+        }
+    }
 
     // MARK: - API
 
@@ -80,26 +84,5 @@ extension SuggestTableViewController {
         cell.nameLabel.text = row.name
         cell.emailLabel.text = row.email
         return cell
-    }
-}
-
-// MARK: - Configuration
-
-struct SuggestSceneConfigurator {
-
-    public static func suggestTableViewController(
-        resultDelegate: SuggestViewModelResultDelegate) -> SuggestTableViewController? {
-        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: nil)
-        guard
-            let suggestVc = storyboard.instantiateViewController(
-                withIdentifier: SuggestTableViewController.storyboardId) as? SuggestTableViewController
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No VC.")
-                return nil
-        }
-        let vm = SuggestViewModel(delegate: suggestVc)
-        vm.resultDelegate = resultDelegate
-        suggestVc.viewModel = vm
-        return suggestVc
     }
 }

@@ -53,14 +53,18 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private final func setupRecipientSuggestionsTableViewController() {
+        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: nil)
         guard
             let vm = viewModel,
-            let suggestVc = SuggestSceneConfigurator.suggestTableViewController(resultDelegate: vm),
+            let suggestVc = storyboard.instantiateViewController(
+                withIdentifier: SuggestTableViewController.storyboardId)
+                as? SuggestTableViewController,
             let suggestView = suggestVc.view else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No VC.")
                 return
         }
         suggestionsChildViewController = suggestVc
+        suggestionsChildViewController?.viewModel = vm.suggestViewModel()
         addChildViewController(suggestVc)
         suggestView.isHidden = true
         updateSuggestTable()

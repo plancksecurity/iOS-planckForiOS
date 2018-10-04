@@ -35,7 +35,7 @@ class SuggestViewModel {
     }
 
     weak public var resultDelegate: SuggestViewModelResultDelegate?
-    weak private var delegate: SuggestViewModelDelegate?
+    weak public var delegate: SuggestViewModelDelegate?
 
     private var identities = [Identity]()
     private let minNumberSearchStringChars: UInt
@@ -46,9 +46,10 @@ class SuggestViewModel {
         return identities.count == 0
     }
 
-    public init(minNumberSearchStringChars: UInt = 3, delegate: SuggestViewModelDelegate? = nil) {
+    public init(minNumberSearchStringChars: UInt = 3,
+                resultDelegate: SuggestViewModelResultDelegate? = nil) {
         self.minNumberSearchStringChars = minNumberSearchStringChars
-        self.delegate = delegate
+        self.resultDelegate = resultDelegate
     }
 
     public func handleRowSelected(at index: Int) {
