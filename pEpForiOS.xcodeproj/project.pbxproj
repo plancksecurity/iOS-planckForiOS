@@ -1305,6 +1305,7 @@
 		15265942216230B0006A78DF /* Compose */ = {
 			isa = PBXGroup;
 			children = (
+				1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */,
 				15265943216230B0006A78DF /* cells */,
 				1526594E216230B0006A78DF /* Util */,
 				1526595B216230B1006A78DF /* Refactor */,
@@ -1356,7 +1357,6 @@
 			isa = PBXGroup;
 			children = (
 				1526595C216230B1006A78DF /* ViewModel */,
-				1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */,
 				15D2A59721651312003711BA /* ComposeTableViewController.swift */,
 			);
 			path = Refactor;
