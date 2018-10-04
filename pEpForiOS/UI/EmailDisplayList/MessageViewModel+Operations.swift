@@ -9,24 +9,9 @@
 import Foundation
 import MessageModel
 
-extension MessageViewModel: PrefetchableViewModel {
+extension MessageViewModel {
 
-    func loadData() {
-//        let summaryOperation = bodyPeekPrefetch(completion: { sumary in
-//            self.internalBoddyPeek = sumary
-//        })
-//        if(!summaryOperation.isFinished){
-//            queue.addOperation(summaryOperation)
-//        }
-//        let messageOperation = messageCountPrefetch(completion: { count in
-//            self.internalMessageCount = count
-//        })
-//        if(!messageOperation.isFinished){
-//            queue.addOperation(messageOperation)
-//        }
-    }
-
-    func messageCountPrefetch(completion: @escaping (Int)->()) -> SelfReferencingOperation {
+    func getMessageCountOperation(completion: @escaping (Int)->()) -> SelfReferencingOperation {
        
         let prefetchOperation = SelfReferencingOperation {  [weak self] operation in
             guard let me = self else {
@@ -51,7 +36,7 @@ extension MessageViewModel: PrefetchableViewModel {
         return prefetchOperation
     }
 
-    func bodyPeekPrefetch(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
+    func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
         let prefetchOperation = SelfReferencingOperation {operation in
             guard

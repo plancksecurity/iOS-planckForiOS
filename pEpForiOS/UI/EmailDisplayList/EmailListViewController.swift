@@ -21,7 +21,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         saveFolder.updateLastLookAt()
     }
-    var viewModels = [IndexPath : PrefetchableViewModel]()
 
     var model: EmailListViewModel?
 
