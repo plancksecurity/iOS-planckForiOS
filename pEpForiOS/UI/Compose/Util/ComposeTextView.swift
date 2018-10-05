@@ -19,6 +19,8 @@ open class ComposeTextView: UITextView {
 
     let scrollUtil = TextViewInTableViewScrollUtil()
 
+    //IOS-1369: should (all?) go to UITextViewExtention
+
     public var fieldHeight: CGFloat {
         get {
             let size = sizeThatFits(CGSize(width: frame.size.width,
@@ -26,7 +28,7 @@ open class ComposeTextView: UITextView {
             return size.height + textBottomMargin
         }
     }
-    
+
     public func scrollToBottom() {
         if fieldHeight >= imageFieldHeight {
             setContentOffset(CGPoint(x: 0.0, y: fieldHeight - imageFieldHeight), animated: true)
@@ -37,6 +39,7 @@ open class ComposeTextView: UITextView {
         contentOffset = .zero
     }
 
+    //IOS-1369: most of that should go to AttributedText Utils
     public func insertImage(with text: String, maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         let img = ComposeHelper.recepient(text, textColor: .pEpGreen, maxWidth: maxWidth - 20.0)
