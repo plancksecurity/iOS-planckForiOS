@@ -1,5 +1,5 @@
 //
-//  RecipientCell.swift
+//  RecipientCell_old.swift
 //  pEpForiOS
 //
 //  Created by Yves Landert on 11/3/16.
@@ -10,7 +10,8 @@ import UIKit
 import Contacts
 import MessageModel
 
-class RecipientCell: ComposeCell {
+/// No-MVVM cell. Replace with RecipientCell
+class RecipientCell_old: ComposeCell {
     @IBOutlet weak var addButton: UIButton!
     public var identities = [Identity]()
     var ccEnabled = false
@@ -52,7 +53,7 @@ class RecipientCell: ComposeCell {
 
 // MARK: - UITextViewDelegate
 
-extension RecipientCell {
+extension RecipientCell_old {
     public override func textViewDidBeginEditing(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
 

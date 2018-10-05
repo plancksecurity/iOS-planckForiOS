@@ -179,9 +179,9 @@ class ComposeTableViewController_Old: BaseTableViewController {
     }
 
     /**
-     Updates the given `RecipientCell` with available data, if this is a suitable `ComposeMode`.
+     Updates the given `RecipientCell_old` with available data, if this is a suitable `ComposeMode`.
      */
-    private func updateInitialContent(recipientCell: RecipientCell) {
+    private func updateInitialContent(recipientCell: RecipientCell_old) {
         guard let fm = recipientCell.fieldModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "No model")
             return
@@ -219,10 +219,10 @@ class ComposeTableViewController_Old: BaseTableViewController {
             // Don't set firstResponder when comming back from e.g. image picker.
             return
         }
-        var toCell: RecipientCell?
+        var toCell: RecipientCell_old?
         var bodyCell: MessageBodyCell?
         for cell in tableView.visibleCells {
-            if let safeCell = cell as? RecipientCell,
+            if let safeCell = cell as? RecipientCell_old,
                 let model = safeCell.fieldModel,
                 model.type == .to {
                 toCell = safeCell
@@ -427,7 +427,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
         message.from = account.user
 
         allCells.forEach() { cell in
-            if let recipientCell = cell as? RecipientCell, let fm = cell.fieldModel {
+            if let recipientCell = cell as? RecipientCell_old, let fm = cell.fieldModel {
                 recipientCell.generateContact(recipientCell.textView)
                 let addresses = (recipientCell).identities
 
@@ -819,7 +819,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
             return height
         }
 
-        if let tempCell = cell as? RecipientCell{
+        if let tempCell = cell as? RecipientCell_old{
             WrappedCell.ccEnabled = ccEnabled
             tempCell.ccEnabled = ccEnabled
         }
@@ -888,7 +888,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
 
             if !allCells.contains(cell) {
                 allCells.append(cell)
-                if let rc = cell as? RecipientCell, let type = rc.fieldModel?.type {
+                if let rc = cell as? RecipientCell_old, let type = rc.fieldModel?.type {
                     updateInitialContent(recipientCell: rc)
                     cells[type] = rc
                 } else if let mc = cell as? MessageBodyCell, let type = mc.fieldModel?.type {
@@ -1255,7 +1255,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
 extension ComposeTableViewController_Old: ComposeViewModelDelegate {
     //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
     func userSelectedRecipient(identity: Identity) {
-        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell else {
+        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell_old else {
             Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
             return
         }
@@ -1521,8 +1521,8 @@ extension ComposeTableViewController_Old: HtmlToAttributedTextSaxParserAttachmen
 extension ComposeTableViewController_Old {
 
     private var hasInvalidRecipients: Bool {
-        for cell in allCells where cell is RecipientCell {
-            guard let recipientCell = cell as? RecipientCell else {
+        for cell in allCells where cell is RecipientCell_old {
+            guard let recipientCell = cell as? RecipientCell_old else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
                 continue
             }
@@ -1534,8 +1534,8 @@ extension ComposeTableViewController_Old {
     }
 
     private var atLeastOneRecipientIsSet: Bool {
-        for cell in allCells where cell is RecipientCell {
-            guard let recipientCell = cell as? RecipientCell else {
+        for cell in allCells where cell is RecipientCell_old {
+            guard let recipientCell = cell as? RecipientCell_old else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
                 continue
             }
