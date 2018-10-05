@@ -8,11 +8,10 @@
 
 import UIKit
 
-/// No-MVVM cell. Replace with RecipientCell
 class RecipientCell: UITableViewCell {
-    @IBOutlet weak public var textView: ComposeTextView!
+    static let storyboardID = "RecipientCell"
+    @IBOutlet weak public var textView: UITextView!
     @IBOutlet weak public var titleLabel: UILabel!
-
 
 //    public var identities = [Identity]()
 //    var ccEnabled = false

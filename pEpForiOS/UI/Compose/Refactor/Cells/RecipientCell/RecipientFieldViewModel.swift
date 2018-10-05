@@ -13,7 +13,6 @@ class RecipientFieldViewModel {
     public var content: NSAttributedString
     private var recipients = [Identity]()
 
-
     init(title: String, content: NSAttributedString) {
         self.title = title
         self.content = content

@@ -132,6 +132,11 @@
 		1569DDB8215395BE007A0398 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */; };
 		1571B46A216760DE00D59DAD /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B469216760DE00D59DAD /* RecipientCell.swift */; };
 		1571B4702167693A00D59DAD /* RecipientFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B46F2167693A00D59DAD /* RecipientFieldViewModel.swift */; };
+		1571B4772167708900D59DAD /* SubjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B4762167708900D59DAD /* SubjectCell.swift */; };
+		1571B479216775D900D59DAD /* SubjectFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B478216775D900D59DAD /* SubjectFieldViewModel.swift */; };
+		1571B47C21677B1100D59DAD /* BodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B47B21677B1100D59DAD /* BodyCell.swift */; };
+		1571B47E21677EE900D59DAD /* BodyFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B47D21677EE900D59DAD /* BodyFieldViewModel.swift */; };
+		1571B4812167828900D59DAD /* AttachmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B4802167828900D59DAD /* AttachmentViewModel.swift */; };
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
@@ -702,6 +707,11 @@
 		1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Extension.swift"; path = "pEpForiOS/Util/NSAttributedString+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		1571B469216760DE00D59DAD /* RecipientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
 		1571B46F2167693A00D59DAD /* RecipientFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientFieldViewModel.swift; sourceTree = "<group>"; };
+		1571B4762167708900D59DAD /* SubjectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCell.swift; sourceTree = "<group>"; };
+		1571B478216775D900D59DAD /* SubjectFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectFieldViewModel.swift; sourceTree = "<group>"; };
+		1571B47B21677B1100D59DAD /* BodyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCell.swift; sourceTree = "<group>"; };
+		1571B47D21677EE900D59DAD /* BodyFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyFieldViewModel.swift; sourceTree = "<group>"; };
+		1571B4802167828900D59DAD /* AttachmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewModel.swift; sourceTree = "<group>"; };
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
@@ -1431,6 +1441,9 @@
 			isa = PBXGroup;
 			children = (
 				1571B46B2167619500D59DAD /* RecipientCell */,
+				1571B47321676FCE00D59DAD /* SubjectCell */,
+				1571B47A21677AD100D59DAD /* BodyCell */,
+				1571B47F216781FD00D59DAD /* AttachmentCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1449,6 +1462,32 @@
 			children = (
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		1571B47321676FCE00D59DAD /* SubjectCell */ = {
+			isa = PBXGroup;
+			children = (
+				1571B4762167708900D59DAD /* SubjectCell.swift */,
+				1571B478216775D900D59DAD /* SubjectFieldViewModel.swift */,
+			);
+			path = SubjectCell;
+			sourceTree = "<group>";
+		};
+		1571B47A21677AD100D59DAD /* BodyCell */ = {
+			isa = PBXGroup;
+			children = (
+				1571B47B21677B1100D59DAD /* BodyCell.swift */,
+				1571B47D21677EE900D59DAD /* BodyFieldViewModel.swift */,
+			);
+			path = BodyCell;
+			sourceTree = "<group>";
+		};
+		1571B47F216781FD00D59DAD /* AttachmentCell */ = {
+			isa = PBXGroup;
+			children = (
+				1571B4802167828900D59DAD /* AttachmentViewModel.swift */,
+			);
+			path = AttachmentCell;
 			sourceTree = "<group>";
 		};
 		1574D07B2114694F00FEDC93 /* Extensions */ = {
@@ -3028,6 +3067,7 @@
 				49C2750120C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift in Sources */,
 				43E657D11F3C33C30014CBEC /* String+HTML.swift in Sources */,
 				15265968216230B1006A78DF /* TextViewInTableViewScrollUtil.swift in Sources */,
+				1571B4812167828900D59DAD /* AttachmentViewModel.swift in Sources */,
 				437671481D8FF2A5004DD205 /* DeleteFolderOperation.swift in Sources */,
 				1571B46A216760DE00D59DAD /* RecipientCell.swift in Sources */,
 				432DA7461EE027EB00B30BAA /* MessageSyncService.swift in Sources */,
@@ -3095,6 +3135,7 @@
 				1526595E216230B1006A78DF /* AttachmentCell.swift in Sources */,
 				432142641E8FD66900FBE987 /* FetchNumberOfNewMailsService.swift in Sources */,
 				4351C2C81F4441190053381F /* blocks.c in Sources */,
+				1571B47E21677EE900D59DAD /* BodyFieldViewModel.swift in Sources */,
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
 				43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */,
 				00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */,
@@ -3112,7 +3153,9 @@
 				B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */,
 				001D366020C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift in Sources */,
 				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
+				1571B47C21677B1100D59DAD /* BodyCell.swift in Sources */,
 				4307C4721ED826E400A276A4 /* SmtpSendError.swift in Sources */,
+				1571B4772167708900D59DAD /* SubjectCell.swift in Sources */,
 				15DD3F75211EC68D00A8714D /* DecryptMessageOperation.swift in Sources */,
 				432198ED1DF6B66800318A74 /* SharedObjects.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
@@ -3169,6 +3212,7 @@
 				1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,
+				1571B479216775D900D59DAD /* SubjectFieldViewModel.swift in Sources */,
 				1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
 				496C0EE720BC2A880009B5B9 /* EmailDisplayDelegate.swift in Sources */,
 				1526596E216230B2006A78DF /* AttachmentCounter.swift in Sources */,
