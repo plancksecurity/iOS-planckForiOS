@@ -8,7 +8,7 @@
 
 import MessageModel
 
-class BodyFieldViewModel {
+class BodyFieldViewModel: CellViewModel {
     public var content: NSMutableAttributedString = NSMutableAttributedString(string: "")
     //IOS-1369: attachments go here?
 }

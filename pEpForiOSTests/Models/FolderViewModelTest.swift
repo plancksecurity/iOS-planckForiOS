@@ -12,7 +12,6 @@ import MessageModel
 
 class FolderViewModelTest: CoreDataDrivenTestBase {
 
-
     func testAccountCreation() {
         let viewmodel = FolderViewModel(withFordersIn: [account])
         XCTAssertEqual(viewmodel.count, 2)

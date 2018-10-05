@@ -8,7 +8,6 @@
 
 import MessageModel
 
-//IOS-1369: VMs should conform, *not* VCs (as implemented by me)
 protocol ComposeViewModelResultDelegate: class {
     /// Called after a valid mail has been composed and saved for sending.
     func composeViewModelDidComposeNewMail()
@@ -28,6 +27,8 @@ protocol ComposeViewModelDelegate: class {
 class ComposeViewModel {
     weak var resultDelegate: ComposeViewModelResultDelegate?
     weak var delegate: ComposeViewModelDelegate?
+    public private(set) var sections = [ComposeViewModel.Section]()
+
 
     /// Recipient to set as "To:".
     /// Is ignored if a originalMessage is set.
@@ -38,6 +39,71 @@ class ComposeViewModel {
     init(resultDelegate: ComposeViewModelResultDelegate? = nil, originalMessage: Message? = nil) {
         self.resultDelegate = resultDelegate
         self.originalMessage = originalMessage
+        setup()
+    }
+
+    private func setup() {
+        //IOS-1369: origMessage ignored for now, same with compose mode (always .normal)
+        resetSections()
+
+    }
+
+    private func resetSections() {
+        var newSections = [ComposeViewModel.Section]()
+        for type in ComposeViewModel.Section.SectionType.allCases {
+            newSections.append(ComposeViewModel.Section(type: type))
+        }
+        self.sections = newSections
+    }
+}
+
+// MARK: - CellViewModels
+
+extension ComposeViewModel {
+    class Section {
+        enum SectionType: CaseIterable {
+            case recipients, account, subject, body, attachments
+        }
+        let type: SectionType
+        fileprivate(set) public var rows = [CellViewModel]()
+
+        init(type: SectionType) {
+            self.type = type
+        }
+
+        private func resetViewModels() {
+            rows = [CellViewModel]()
+            switch type {
+            case .recipients:
+                rows.append(RecipientFieldViewModel(type: .to))
+                rows.append(RecipientFieldViewModel(type: .wraped))
+                rows.append(RecipientFieldViewModel(type: .to))
+            case .account:
+                rows.append(AccountFieldViewModel())
+            case .subject:
+                rows.append(SubjectFieldViewModel())
+            case .body:
+                rows.append(BodyFieldViewModel())
+            case .attachments:
+                setupAttchmentRows()
+            }
+        }
+
+        private func setupAttchmentRows() {
+            //IOS-1369: //!!!: add later for mode != .normal
+            //
+//            rows.append(AttachmentViewModel)
+        }
+    }
+
+    private func section(
+        `for` type: ComposeViewModel.Section.SectionType) -> ComposeViewModel.Section? {
+        for section in sections {
+            if section.type == type {
+                return section
+            }
+        }
+        return nil
     }
 }
 

@@ -11,17 +11,6 @@ import MessageModel
 import SwipeCellKit
 import Photos
 
-extension ComposeTableViewController {
-    class Row {
-        let title: String? = nil
-        let content: NSAttributedString? = nil
-    }
-
-    class Section {
-
-    }
-}
-
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
 
@@ -135,5 +124,98 @@ extension ComposeTableViewController {
 
     private func showSuggestions() {
         suggestionsChildViewController?.view.isHidden = false
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension ComposeTableViewController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return 0
+        }
+        return vm.sections.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell = cellForIndexPath(indexPath, in: tableView)
+        return cell ?? UITableViewCell()
+    }
+
+    private func cellForIndexPath(_ indexPath: IndexPath,
+                                  in tableView: UITableView) -> UITableViewCell? {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return UITableViewCell()
+        }
+
+        var result: UITableViewCell?
+        let section = vm.sections[indexPath.section]
+        if section.type == .recipients {
+            guard
+                let cell = tableView.dequeueReusableCell(withIdentifier: RecipientCell.reuseId)
+                    as? RecipientCell,
+                let rowVm = section.rows[indexPath.row] as? RecipientFieldViewModel
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    return nil
+            }
+            cell.titleLabel.text = rowVm.title
+            cell.textView.attributedText = rowVm.content
+        } else if section.type == .account {
+            guard
+                let cell = tableView.dequeueReusableCell(withIdentifier: AccountCell_mvvm.reuseId)
+                    as? AccountCell_mvvm,
+                let rowVm = section.rows[indexPath.row] as? AccountFieldViewModel
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    return nil
+            }
+            cell.titleLabel.text = rowVm.title
+            cell.textView.attributedText = rowVm.content
+            result = cell
+        } else if section.type == .subject {
+            guard
+                let cell = tableView.dequeueReusableCell(withIdentifier: SubjectCell.reuseId)
+                    as? SubjectCell,
+                let rowVm = section.rows[indexPath.row] as? SubjectFieldViewModel
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    return nil
+            }
+            cell.titleLabel.text = rowVm.title
+            cell.textView.attributedText = rowVm.content
+            result = cell
+        }
+
+
+        else if section.type == .body {
+            guard
+                let cell = tableView.dequeueReusableCell(withIdentifier: BodyCell.reuseId)
+                    as? BodyCell,
+                let rowVm = section.rows[indexPath.row] as? BodyFieldViewModel
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    return nil
+            }
+            cell.textView.attributedText = rowVm.content
+            result = cell
+        } else if section.type == .attachments {
+            guard
+                let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentCell.reuseId)
+                    as? AttachmentCell,
+                let rowVm = section.rows[indexPath.row] as? AttachmentViewModel
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    return nil
+            }
+            cell.fileName.text = rowVm.fileName
+            cell.fileExtension.text = rowVm.fileExtension
+            result = cell
+        }
+
+        return result
     }
 }

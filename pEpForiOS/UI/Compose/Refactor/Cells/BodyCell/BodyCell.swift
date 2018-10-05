@@ -10,7 +10,7 @@ import UIKit
 
 /// No-MVVM cell. Replace with RecipientCell
 class BodyCell: UITableViewCell {
-    static let storyboardID = "BodyCell"
+    static let reuseId = "BodyCell"
     @IBOutlet weak public var textView: UITextView!
 }
 

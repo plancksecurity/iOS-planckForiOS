@@ -9,7 +9,7 @@
 import UIKit
 
 class RecipientCell: UITableViewCell {
-    static let storyboardID = "RecipientCell"
+    static let reuseId = "RecipientCell"
     @IBOutlet weak public var textView: UITextView!
     @IBOutlet weak public var titleLabel: UILabel!
 

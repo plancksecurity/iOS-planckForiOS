@@ -906,7 +906,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
         } else if indexPath.section == attachmentSection {
             guard
                 let cell = tableView.dequeueReusableCell(
-                    withIdentifier: AttachmentCell.storyboardID) as? AttachmentCell
+                    withIdentifier: AttachmentCell.reuseId) as? AttachmentCell
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Wrong cell")
                     return UITableViewCell()
@@ -957,8 +957,8 @@ class ComposeTableViewController_Old: BaseTableViewController {
     // MARK: - Other
 
     private func registerXibs() {
-        let nib = UINib(nibName: AttachmentCell.storyboardID, bundle: nil)
-        tableView.register(nib, forCellReuseIdentifier: AttachmentCell.storyboardID)
+        let nib = UINib(nibName: AttachmentCell.reuseId, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: AttachmentCell.reuseId)
     }
 
     //IOS-1369: Must go to VM

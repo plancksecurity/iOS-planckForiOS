@@ -10,7 +10,7 @@ import SwipeCellKit
 
 //IOS-1369: Old & new are currently using it !! (move to refactor group when done).
 class AttachmentCell: SwipeTableViewCell {
-    static let storyboardID = "AttachmentCell"
+    static let reuseId = "AttachmentCell"
     static let preferredHigh: CGFloat = 114.0
 
     @IBOutlet weak var fileName: UILabel!

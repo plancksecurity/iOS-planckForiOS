@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+//IOS-1369: try to get rid ogf the whole thing
 public class ComposeFieldModel {
     public enum FieldType: String {
         case to, cc, bcc, from, subject, content, mailingList, none, attachment, wraped

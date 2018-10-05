@@ -1,5 +1,5 @@
 //
-//  SubjectCell.swift
+//  AccountCell_mvvm.swift
 //  pEp
 //
 //  Created by Andreas Buff on 05.10.18.
@@ -8,8 +8,9 @@
 
 import UIKit
 
-class SubjectCell: UITableViewCell {
-    static let reuseId = "SubjectCell"
+//IOS-1369: rename and get rid of other
+class AccountCell_mvvm: UITableViewCell {
+    static let reuseId = "AccountCell_mvvm"
     @IBOutlet weak public var textView: UITextView!
     @IBOutlet weak public var titleLabel: UILabel!
 }

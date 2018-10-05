@@ -8,13 +8,33 @@
 
 import MessageModel
 
-class RecipientFieldViewModel {
+class RecipientFieldViewModel: CellViewModel {
     public let title: String
-    public var content: NSAttributedString
+    public var content = NSMutableAttributedString(string: "")
+    public let type: FieldType
     private var recipients = [Identity]()
 
-    init(title: String, content: NSAttributedString) {
-        self.title = title
-        self.content = content
+    init(type: FieldType) {
+        self.type = type
+        self.title = type.localizedTitle()
+    }
+}
+
+extension RecipientFieldViewModel {
+    public enum FieldType: String {
+        case to, cc, bcc, wraped
+
+        func localizedTitle() -> String {
+            switch self {
+            case .to:
+                return NSLocalizedString("To:", comment: "Compose field title")
+            case .cc:
+                return NSLocalizedString("CC:", comment: "Compose field title")
+            case .bcc:
+                return NSLocalizedString("BCC:", comment: "Compose field title")
+            case .wraped:
+                return NSLocalizedString("Cc/Bcc:", comment: "Compose field title")
+            }
+        }
     }
 }

@@ -1,17 +1,16 @@
 //
-//  SubjectFieldViewModel.swift
+//  AccountFieldViewModel.swift
 //  pEp
 //
 //  Created by Andreas Buff on 05.10.18.
 //  Copyright © 2018 p≡p Security S.A. All rights reserved.
 //
 
-import MessageModel
+import Foundation
 
-class SubjectFieldViewModel: CellViewModel {
-    public let title = NSLocalizedString("Subject:",
+class AccountFieldViewModel: CellViewModel {
+    public let title = NSLocalizedString("From:",
                                          comment:
-        "Title of subject field when composing a message")
+        "Title of account picker when composing a message")
     public var content: NSMutableAttributedString = NSMutableAttributedString(string: "")
-    private var recipients = [Identity]()
 }
