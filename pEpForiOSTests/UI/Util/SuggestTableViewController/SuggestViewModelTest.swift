@@ -159,8 +159,9 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let testViewModelDelegate =
             TestViewModelDelegate(shouldCallDidReset: shouldCallDidReset,
                                   expectationDidResetCalled: expectationDidResetCalled)
-        let vm = SuggestViewModel(delegate: testViewModelDelegate)
+        let vm = SuggestViewModel()
         viewModel = vm
+        vm.delegate = testViewModelDelegate
         vm.resultDelegate = testResultDelegate
         vm.updateSuggestion(searchString: searchTerm)
         XCTAssertEqual(vm.numRows, numExpectedResults)
