@@ -132,6 +132,7 @@
 		1569DDB8215395BE007A0398 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */; };
 		1571B46A216760DE00D59DAD /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B469216760DE00D59DAD /* RecipientCell.swift */; };
 		1571B46E2167648300D59DAD /* CellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B46D2167648300D59DAD /* CellViewModel.swift */; };
+		1571B4702167693A00D59DAD /* RecipientFieldViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B46F2167693A00D59DAD /* RecipientFieldViewModel.swift */; };
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
@@ -702,6 +703,7 @@
 		1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Extension.swift"; path = "pEpForiOS/Util/NSAttributedString+Extension.swift"; sourceTree = SOURCE_ROOT; };
 		1571B469216760DE00D59DAD /* RecipientCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientCell.swift; sourceTree = "<group>"; };
 		1571B46D2167648300D59DAD /* CellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewModel.swift; sourceTree = "<group>"; };
+		1571B46F2167693A00D59DAD /* RecipientFieldViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientFieldViewModel.swift; sourceTree = "<group>"; };
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
@@ -1439,6 +1441,7 @@
 			isa = PBXGroup;
 			children = (
 				1571B469216760DE00D59DAD /* RecipientCell.swift */,
+				1571B46F2167693A00D59DAD /* RecipientFieldViewModel.swift */,
 			);
 			path = RecipientCell;
 			sourceTree = "<group>";
@@ -3145,6 +3148,7 @@
 				0033C08120D7F3C600224E61 /* ThreadViewController+ViewModelDelegate.swift in Sources */,
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
+				1571B4702167693A00D59DAD /* RecipientFieldViewModel.swift in Sources */,
 				495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */,
 				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
 				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
