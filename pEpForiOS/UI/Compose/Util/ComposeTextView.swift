@@ -17,9 +17,6 @@ open class ComposeTextView: UITextView {
     final var textBottomMargin: CGFloat = 25.0
     private final var imageFieldHeight: CGFloat = 66.0
 
-    private let newLinePaddingRegEx = try! NSRegularExpression(
-        pattern: ".*[^\n]+(\n){2,}$", options: [])
-
     let scrollUtil = TextViewInTableViewScrollUtil()
 
     public var fieldHeight: CGFloat {
