@@ -10,6 +10,7 @@ import UIKit
 
 /// No-MVVM cell. Replace with RecipientCell
 class RecipientCell: UITableViewCell {
-   
+    @IBOutlet weak public var textView: ComposeTextView!
+    @IBOutlet weak public var titleLabel: UILabel!
 }
 
