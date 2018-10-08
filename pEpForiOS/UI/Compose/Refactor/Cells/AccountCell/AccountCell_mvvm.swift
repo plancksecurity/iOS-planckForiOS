@@ -10,6 +10,5 @@ import UIKit
 
 //IOS-1369: rename and get rid of other
 class AccountCell_mvvm: TextViewContainingTableViewCell {
-    let minHeigth: CGFloat = 64.0
     static let reuseId = "AccountCell_mvvm"
 }

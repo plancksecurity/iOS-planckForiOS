@@ -9,7 +9,7 @@
 import Foundation
 
 class AccountFieldViewModel: CellViewModel {
-    let minHeigth: CGFloat = 64.0
+    let minHeigth: CGFloat = 58.0
     public let title = NSLocalizedString("From:",
                                          comment:
         "Title of account picker when composing a message")

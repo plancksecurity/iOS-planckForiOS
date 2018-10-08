@@ -13,7 +13,7 @@ protocol RecipientFieldViewModelDelegate {
 }
 
 class RecipientFieldViewModel: CellViewModel {
-    let minHeigth: CGFloat = 64.0
+    let minHeigth: CGFloat = 58.0
     public let title: String
     public var content = NSMutableAttributedString(string: "")
     public let type: FieldType
