@@ -106,58 +106,6 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     // WILL GROW!
 }
 
-// MARK: - TextViewContainingTableViewCellDelegate
-
-extension ComposeTableViewController: TextViewContainingTableViewCellDelegate {
-    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell, textViewDidChange textView: UITextView) {
-        guard
-            let vm = viewModel,
-            let indexPath = tableView.indexPath(for: cell)
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Non existing cell changed?")
-                return
-        }
-        let cellVM = vm.viewModel(for: indexPath)
-
-
-
-
-    }
-
-    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell, textViewDidBeginEditing textView: UITextView) {
-        guard
-            let vm = viewModel,
-            let indexPath = tableView.indexPath(for: cell)
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Non existing cell changed?")
-                return
-        }
-        let cellVM = vm.viewModel(for: indexPath)
-    }
-
-    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell, textViewDidChangeSelection textView: UITextView) {
-        guard
-            let vm = viewModel,
-            let indexPath = tableView.indexPath(for: cell)
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Non existing cell changed?")
-                return
-        }
-        let cellVM = vm.viewModel(for: indexPath)
-    }
-
-    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell, textViewDidEndEditing textView: UITextView) {
-        guard
-            let vm = viewModel,
-            let indexPath = tableView.indexPath(for: cell)
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Non existing cell changed?")
-                return
-        }
-        let cellVM = vm.viewModel(for: indexPath)
-    }
-}
-
 // MARK: - Address Suggestions
 
 extension ComposeTableViewController {
@@ -204,9 +152,6 @@ extension ComposeTableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = setupCellForIndexPath(indexPath, in: tableView)
-        if var textViewContainingCell = cell as?  TextViewContainingTableViewCellProtocol {
-            textViewContainingCell.delegate = self
-        }
         return cell!
     }
 
