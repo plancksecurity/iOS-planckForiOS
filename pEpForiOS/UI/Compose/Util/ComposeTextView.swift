@@ -21,6 +21,21 @@ open class ComposeTextView: UITextView {
 
     //IOS-1369: should (all?) go to UITextViewExtention
 
+    public func insertImage(with text: String, maxWidth: CGFloat = 0.0) {
+        let attrText = NSMutableAttributedString(attributedString: attributedText)
+        let img = ComposeHelper.recepient(text, textColor: .pEpGreen, maxWidth: maxWidth - 20.0)
+        let at = TextAttachment()
+        at.image = img
+        at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
+        let attachString = NSAttributedString(attachment: at)
+        attrText.replaceCharacters(in: selectedRange, with: attachString)
+        attrText.addAttribute(NSAttributedStringKey.font,
+                              value: UIFont.pEpInput,
+                              range: NSRange(location: 0, length: attrText.length)
+        )
+        attributedText = attrText
+    }
+
     public var fieldHeight: CGFloat {
         get {
             let size = sizeThatFits(CGSize(width: frame.size.width,
