@@ -72,7 +72,7 @@ extension MessageBodyCell {
     }
 
     public final func allInlinedAttachments() -> [Attachment] {
-        let attachments = textView.textAttachments()
+        let attachments = textView.attributedText.textAttachments()
         var mailAttachments = [Attachment]()
         attachments.forEach { (attachment) in
             if let attch = attachment.attachment {

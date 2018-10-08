@@ -27,7 +27,7 @@ class RecipientCell_old: ComposeCell {
         identities.append(identity)
         let width = self.textView.bounds.width
         textView.insertImage(with: identity.displayString, maxWidth: width)
-        textView.removePlainText()
+        textView.attributedText = textView.attributedText.plainTextRemoved()
         if let fm = super.fieldModel {
             delegate?.composeCell(cell: self, didChangeEmailAddresses: identities.map{ $0.address }, forFieldType: fm.type)
         }
@@ -76,7 +76,7 @@ extension RecipientCell_old {
             
             // Extract text attachments form selection
             if let theSelected = selected {
-                let attachments = cTextview.textAttachments(string: theSelected)
+                let attachments = cTextview.attributedText.textAttachments(string: theSelected)
                 if attachments.count > 0 {
                     recipients.append(textView.selectedRange.location)
                 }
@@ -132,7 +132,7 @@ extension RecipientCell_old {
             identities.append(identity)
             let width = self.textView.bounds.width
             cTextview.insertImage(with: identity.displayString, maxWidth: width)
-            cTextview.removePlainText()
+            cTextview.attributedText = cTextview.attributedText.plainTextRemoved()
             mail =  true
         }
         delegate?.textDidEndEditing(at: index, textView: cTextview)

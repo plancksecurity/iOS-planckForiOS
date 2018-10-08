@@ -34,69 +34,9 @@ open class ComposeTextView: UITextView {
             setContentOffset(CGPoint(x: 0.0, y: fieldHeight - imageFieldHeight), animated: true)
         }
     }
-    
+
     public func scrollToTop() {
         contentOffset = .zero
-    }
-
-    //IOS-1369: most of that should go to AttributedText Utils
-    public func insertImage(with text: String, maxWidth: CGFloat = 0.0) {
-        let attrText = NSMutableAttributedString(attributedString: attributedText)
-        let img = ComposeHelper.recepient(text, textColor: .pEpGreen, maxWidth: maxWidth - 20.0)
-        let at = TextAttachment()
-        at.image = img
-        at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
-
-        let attachString = NSAttributedString(attachment: at)
-        attrText.replaceCharacters(in: selectedRange, with: attachString)
-        attrText.addAttribute(NSAttributedStringKey.font,
-                              value: UIFont.pEpInput,
-                              range: NSRange(location: 0, length: attrText.length)
-        )
-        attributedText = attrText
-    }
-
-    public func textAttachments(range: NSRange? = nil) -> [TextAttachment] {
-        let theRange = range ?? NSMakeRange(0, attributedText.length)
-        var allAttachments = [TextAttachment]()
-        if theRange.location != NSNotFound {
-            attributedText.enumerateAttribute(
-                NSAttributedStringKey.attachment, in: theRange,
-                options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
-                    value, range, stop in
-                    if let attachment = value as? TextAttachment {
-                        allAttachments.append(attachment)
-                    }
-            }
-        }
-
-        return allAttachments
-    }
-
-    public func textAttachments(string: String) -> [TextAttachment] {
-        return textAttachments(range: NSMakeRange(0, string.count))
-    }
-    
-    public func removePlainText() {
-        let attachments = textAttachments()
-        if attachments.count > 0  {
-            let new = NSMutableAttributedString()
-            for at in attachments {
-                let attachString = NSAttributedString(attachment: at)
-                new.append(attachString)
-            }
-            
-            new.addAttribute(NSAttributedStringKey.font,
-                value: UIFont.pEpInput,
-                range: NSRange(location: 0, length: new.length)
-            )
-            new.addAttribute(NSAttributedStringKey.baselineOffset, value: 3.0, range: NSRange(location: 0, length: new.length))
-            attributedText = new
-        }
-    }
-
-    public func toMarkdown() -> (String, [Attachment]) { //IOS-1369: UIView should not know model
-        return attributedText.convertToMarkDown()
     }
 
     public func addNewlinePadding() {

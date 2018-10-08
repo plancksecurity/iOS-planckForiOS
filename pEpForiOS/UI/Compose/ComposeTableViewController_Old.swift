@@ -459,7 +459,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
                 // movie thumbnails or such, we have to re-think and re-write the code for
                 // inlined attachments, as for instance only the movies thumbnail would be send
                 // instead of the movie itself.
-                let (markdownText, attachments) = cell.textView.toMarkdown()
+                let (markdownText, attachments) = cell.textView.attributedText.convertToMarkDown()
                 // Set longMessage (plain text)
                 if inlinedAttachments.count > 0 {
                     message.longMessage = markdownText
