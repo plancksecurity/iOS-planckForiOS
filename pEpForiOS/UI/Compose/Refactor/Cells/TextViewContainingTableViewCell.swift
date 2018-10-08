@@ -8,17 +8,6 @@
 
 import UIKit
 
-//IOS-1369: move
-protocol TextViewManagingViewModelProtocol {
-    func handleTextDidChange(textView: NSAttributedString)
-    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell,
-                                         textViewDidBeginEditing textView: UITextView)
-    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell,
-                                         textViewDidChangeSelection textView: UITextView)
-    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell,
-                                         textViewDidEndEditing textView: UITextView)
-}
-
 protocol TextViewContainingTableViewCellProtocol {
     var textView: UITextView! { get set }
 }
