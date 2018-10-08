@@ -8,7 +8,12 @@
 
 import MessageModel
 
+protocol RecipientFieldViewModelDelegate {
+    //IOS-1369: TODO
+}
+
 class RecipientFieldViewModel: CellViewModel {
+    let minHeigth: CGFloat = 64.0
     public let title: String
     public var content = NSMutableAttributedString(string: "")
     public let type: FieldType

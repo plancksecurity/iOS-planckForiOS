@@ -9,6 +9,7 @@
 import MessageModel
 
 class BodyFieldViewModel: CellViewModel {
+    let minHeigth: CGFloat = 240.0
     public var content: NSMutableAttributedString = NSMutableAttributedString(string: "")
     //IOS-1369: attachments go here?
 }

@@ -23,6 +23,7 @@ class ComposeTableViewController: BaseTableViewController {
         didSet {
             // Make sure we are the delegate. Always.
             viewModel?.delegate = self
+            tableView.reloadData()
         }
     }
 
@@ -130,6 +131,7 @@ extension ComposeTableViewController {
 // MARK: - UITableViewDataSource
 
 extension ComposeTableViewController {
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "No VM")
@@ -138,13 +140,22 @@ extension ComposeTableViewController {
         return vm.sections.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let cell = cellForIndexPath(indexPath, in: tableView)
-        return cell ?? UITableViewCell()
+    override func tableView(_ tableView: UITableView,
+                            numberOfRowsInSection section: Int) -> Int {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return 0
+        }
+        return vm.sections[section].rows.count
     }
 
-    private func cellForIndexPath(_ indexPath: IndexPath,
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = setupCellForIndexPath(indexPath, in: tableView)
+        return cell!
+    }
+
+    private func setupCellForIndexPath(_ indexPath: IndexPath,
                                   in tableView: UITableView) -> UITableViewCell? {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "No VM")
@@ -153,7 +164,7 @@ extension ComposeTableViewController {
 
         var result: UITableViewCell?
         let section = vm.sections[indexPath.section]
-        if section.type == .recipients {
+        if section.type == .recipients { //IOS-1369: inherit from TitleAndTextViewCell
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: RecipientCell.reuseId)
                     as? RecipientCell,
@@ -164,6 +175,7 @@ extension ComposeTableViewController {
             }
             cell.titleLabel.text = rowVm.title
             cell.textView.attributedText = rowVm.content
+            result = cell
         } else if section.type == .account {
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: AccountCell_mvvm.reuseId)
@@ -173,7 +185,6 @@ extension ComposeTableViewController {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
             }
-            cell.titleLabel.text = rowVm.title
             cell.textView.attributedText = rowVm.content
             result = cell
         } else if section.type == .subject {
@@ -185,7 +196,6 @@ extension ComposeTableViewController {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
             }
-            cell.titleLabel.text = rowVm.title
             cell.textView.attributedText = rowVm.content
             result = cell
         }
@@ -217,5 +227,14 @@ extension ComposeTableViewController {
         }
 
         return result
+    }
+
+    override func tableView(_ tableView: UITableView,
+                            heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return 0.0
+        }
+        return vm.minimumCellHeight(forCellAt: indexPath)
     }
 }

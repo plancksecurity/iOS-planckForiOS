@@ -8,7 +8,12 @@
 
 import MessageModel
 
+protocol SubjectFieldViewModelDelegate {
+    //IOS-1369: TODO
+}
+
 class SubjectFieldViewModel: CellViewModel {
+    let minHeigth: CGFloat = 64.0
     public let title = NSLocalizedString("Subject:",
                                          comment:
         "Title of subject field when composing a message")

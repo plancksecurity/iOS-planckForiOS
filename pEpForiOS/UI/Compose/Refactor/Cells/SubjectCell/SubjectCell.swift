@@ -8,8 +8,6 @@
 
 import UIKit
 
-class SubjectCell: UITableViewCell {
+class SubjectCell: TextViewContainingTableViewCell {
     static let reuseId = "SubjectCell"
-    @IBOutlet weak public var textView: UITextView!
-    @IBOutlet weak public var titleLabel: UILabel!
 }

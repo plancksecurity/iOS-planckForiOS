@@ -44,6 +44,7 @@
 		00FD0CE82102014C00BA0C56 /* PrimarySplitViewcontroller+ScreenComposerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FD0CE72102014C00BA0C56 /* PrimarySplitViewcontroller+ScreenComposerProtocol.swift */; };
 		1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */; };
 		1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */; };
+		1503B69B216B6C5C008B992A /* TextViewContainingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1503B69A216B6C5C008B992A /* TextViewContainingTableViewCell.swift */; };
 		150707DA20FFC31E00AA213F /* ComposeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150707D920FFC31E00AA213F /* ComposeUtil.swift */; };
 		150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150707DB21006CD000AA213F /* ComposeUtilTest.swift */; };
 		1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1508AEA91F862C85001D5230 /* SortedSetTest.swift */; };
@@ -621,6 +622,7 @@
 		00FD0CE72102014C00BA0C56 /* PrimarySplitViewcontroller+ScreenComposerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrimarySplitViewcontroller+ScreenComposerProtocol.swift"; sourceTree = "<group>"; };
 		1500199C1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+CWServiceClientNotificationParsing.swift"; sourceTree = "<group>"; };
 		1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperationTest.swift; sourceTree = "<group>"; };
+		1503B69A216B6C5C008B992A /* TextViewContainingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewContainingTableViewCell.swift; sourceTree = "<group>"; };
 		150707D920FFC31E00AA213F /* ComposeUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeUtil.swift; sourceTree = "<group>"; };
 		150707DB21006CD000AA213F /* ComposeUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeUtilTest.swift; sourceTree = "<group>"; };
 		1508AEA91F862C85001D5230 /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
@@ -1452,6 +1454,7 @@
 				1571B47A21677AD100D59DAD /* BodyCell */,
 				1571B47F216781FD00D59DAD /* AttachmentCell */,
 				154A9EED2167B211009345B6 /* CellViewModel.swift */,
+				1503B69A216B6C5C008B992A /* TextViewContainingTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -3161,6 +3164,7 @@
 				B761A80A20F5F0A6000832C2 /* UIBarButtonItem+Extension.swift in Sources */,
 				43F84CD21CD899760092FCAE /* SyncFoldersFromServerOperation.swift in Sources */,
 				431C6E041FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift in Sources */,
+				1503B69B216B6C5C008B992A /* TextViewContainingTableViewCell.swift in Sources */,
 				1541D7ED1FC81D4200D52A5D /* URL+Extensions.swift in Sources */,
 				43C322071EA8E7AD005073FB /* UIButton+Extension.swift in Sources */,
 				4362399D1EAE0CE800BD2EB9 /* OperationQueue+Extension.swift in Sources */,

@@ -8,9 +8,7 @@
 
 import UIKit
 
-/// No-MVVM cell. Replace with RecipientCell
-class BodyCell: UITableViewCell {
+class BodyCell: TextViewContainingTableViewCell {
     static let reuseId = "BodyCell"
-    @IBOutlet weak public var textView: UITextView!
 }
 

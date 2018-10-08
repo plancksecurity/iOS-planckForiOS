@@ -9,6 +9,7 @@
 import MessageModel
 
 class AttachmentViewModel: CellViewModel {
+    let minHeigth: CGFloat = 114.0
     //    static let preferredHigh: CGFloat = 114.0 //IOS-1369: from cell
     public var fileName: String {
         return attachment.fileName ?? NSLocalizedString("unknown",

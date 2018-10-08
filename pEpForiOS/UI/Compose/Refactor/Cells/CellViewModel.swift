@@ -8,5 +8,7 @@
 
 import Foundation
 
-/// Conform to this if you are a view model that repreesents a cell.
-protocol CellViewModel {}
+/// Conform to this if you are a view model that represents a cell.
+protocol CellViewModel {
+    var minHeigth: CGFloat { get }
+}

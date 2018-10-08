@@ -702,9 +702,6 @@
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                                    <connections>
-                                                        <outlet property="delegate" destination="HyN-Ks-bgk" id="xGI-7T-4gW"/>
-                                                    </connections>
                                                 </textView>
                                             </subviews>
                                             <constraints>
@@ -719,6 +716,10 @@
                                         <constraint firstAttribute="trailing" secondItem="XHB-or-DzF" secondAttribute="trailing" id="ngL-Rg-CuY"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textView" destination="4nS-8y-LLg" id="J3V-Sh-V5D"/>
+                                    <outlet property="titleLabel" destination="Bd2-Nr-sTF" id="WoI-jq-9H9"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SubjectCell" rowHeight="58" id="mAI-2I-ayV" customClass="SubjectCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="86" width="375" height="58"/>
@@ -755,7 +756,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="textView" destination="3ee-yP-4gA" id="P3K-f9-Kng"/>
-                                    <outlet property="titleLabel" destination="NTc-GH-Ell" id="Yyu-GD-hpu"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="BodyCell" rowHeight="260" id="VJv-Wk-Bqe" customClass="BodyCell" customModule="pEpForiOS" customModuleProvider="target">
@@ -899,7 +899,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="textView" destination="Ks2-qF-ske" id="UWe-2L-YRK"/>
-                                    <outlet property="titleLabel" destination="Wy6-W0-KLA" id="Rzp-1E-CoX"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="subjectCell" rowHeight="58" id="y0s-Jg-w3j" customClass="ComposeCell" customModule="pEpForiOS" customModuleProvider="target">

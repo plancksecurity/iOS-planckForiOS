@@ -51,9 +51,26 @@ class ComposeViewModel {
     private func resetSections() {
         var newSections = [ComposeViewModel.Section]()
         for type in ComposeViewModel.Section.SectionType.allCases {
-            newSections.append(ComposeViewModel.Section(type: type))
+            if let section = ComposeViewModel.Section(type: type) {
+                newSections.append(section)
+            }
         }
         self.sections = newSections
+    }
+}
+
+// MARK: - Layout
+
+extension ComposeViewModel {
+    public func minimumCellHeight(forCellAt indexPath: IndexPath) -> CGFloat {
+        guard
+            indexPath.section < sections.count,
+            indexPath.row < sections[indexPath.section].rows.count else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                return 0.0
+        }
+        let rowVM = sections[indexPath.section].rows[indexPath.row]
+        return rowVM.minHeigth
     }
 }
 
@@ -67,8 +84,13 @@ extension ComposeViewModel {
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
 
-        init(type: SectionType) {
+        init?(type: SectionType) {
             self.type = type
+            resetViewModels()
+            if rows.count == 0 {
+                // We want to show non-empty sections only
+                return nil
+            }
         }
 
         private func resetViewModels() {
@@ -77,7 +99,6 @@ extension ComposeViewModel {
             case .recipients:
                 rows.append(RecipientFieldViewModel(type: .to))
                 rows.append(RecipientFieldViewModel(type: .wraped))
-                rows.append(RecipientFieldViewModel(type: .to))
             case .account:
                 rows.append(AccountFieldViewModel())
             case .subject:
