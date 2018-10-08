@@ -47,6 +47,11 @@ class CoreDataDrivenTestBase: XCTestCase {
     }
 
     override func tearDown() {
+
+        //IOS-1382:
+        /// Dirty hack to prove the the supect. See IOS-1382.
+        CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 1.0, false); //!!!: remove after [dis]proved
+
         imapSyncData?.sync?.close()
         persistentSetup.tearDownCoreDataStack()
         persistentSetup = nil
