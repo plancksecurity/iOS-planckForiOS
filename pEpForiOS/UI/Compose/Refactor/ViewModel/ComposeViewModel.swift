@@ -42,6 +42,10 @@ class ComposeViewModel {
         setup()
     }
 
+    public func viewModel(for indexPath: IndexPath) -> CellViewModel {
+        return sections[indexPath.section].rows[indexPath.row]
+    }
+
     private func setup() {
         //IOS-1369: origMessage ignored for now, same with compose mode (always .normal)
         resetSections()
