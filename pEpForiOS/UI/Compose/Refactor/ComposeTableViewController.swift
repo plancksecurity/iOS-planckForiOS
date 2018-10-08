@@ -106,6 +106,38 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     // WILL GROW!
 }
 
+// MARK: - TextViewContainingTableViewCellDelegate
+
+extension ComposeTableViewController: TextViewContainingTableViewCellDelegate {
+    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell, textViewDidChange textView: UITextView) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Non existing cell changed?")
+            return
+        }
+    }
+
+    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell, textViewDidBeginEditing textView: UITextView) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Non existing cell changed?")
+            return
+        }
+    }
+
+    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell, textViewDidChangeSelection textView: UITextView) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Non existing cell changed?")
+            return
+        }
+    }
+
+    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell, textViewDidEndEditing textView: UITextView) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Non existing cell changed?")
+            return
+        }
+    }
+}
+
 // MARK: - Address Suggestions
 
 extension ComposeTableViewController {
@@ -152,6 +184,9 @@ extension ComposeTableViewController {
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = setupCellForIndexPath(indexPath, in: tableView)
+        if let textViewContainingCell = cell as?  TextViewContainingTableViewCellProtocol {
+            textViewContainingCell.delegate = self
+        }
         return cell!
     }
 
