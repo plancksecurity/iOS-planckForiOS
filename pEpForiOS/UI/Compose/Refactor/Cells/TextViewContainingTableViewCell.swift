@@ -10,9 +10,47 @@ import UIKit
 
 protocol TextViewContainingTableViewCellProtocol {
     var textView: UITextView! { get set }
+    var delegate: TextViewContainingTableViewCellDelegate? { get set }
+}
+
+protocol TextViewContainingTableViewCellDelegate: class {
+    // MARK: - Forwarding UITextViewDelegate
+    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell,
+                                         textViewDidChange textView: UITextView)
+    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell,
+                                         textViewDidBeginEditing textView: UITextView)
+    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell,
+                                         textViewDidChangeSelection textView: UITextView)
+    func textViewContainingTableViewCell(_ cell: TextViewContainingTableViewCell,
+                                         textViewDidEndEditing textView: UITextView)
 }
 
 class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableViewCellProtocol {
 
     @IBOutlet weak public var textView: UITextView!
+    weak var delegate: TextViewContainingTableViewCellDelegate?
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        textView.delegate = self
+    }
+}
+
+extension TextViewContainingTableViewCell: UITextViewDelegate {
+
+    func textViewDidChange(_ textView: UITextView) {
+        delegate?.textViewContainingTableViewCell(self, textViewDidChange: textView)
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        delegate?.textViewContainingTableViewCell(self, textViewDidBeginEditing: textView)
+    }
+
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        delegate?.textViewContainingTableViewCell(self, textViewDidChangeSelection: textView)
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        delegate?.textViewContainingTableViewCell(self, textViewDidEndEditing: textView)
+    }
 }
