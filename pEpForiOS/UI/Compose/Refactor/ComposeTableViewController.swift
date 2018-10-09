@@ -33,10 +33,16 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
         setupModel()
     }
 
     // MARK: - Setup & Configuration
+
+    private func setupView() {
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 164 //IOS-1369 an arbitrary value that works well for subject
+    }
 
     private func setupModel() {
         viewModel = ComposeViewModel()
@@ -199,7 +205,7 @@ extension ComposeTableViewController {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
             }
-            cell.textView.attributedText = rowVm.content
+            cell.textView.attributedText = rowVm.content//NSAttributedString(string: "IOS-1369: Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test ") //rowVm.content
             result = cell
         }
 
@@ -232,12 +238,12 @@ extension ComposeTableViewController {
         return result
     }
 
-    override func tableView(_ tableView: UITableView,
-                            heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
-            return 0.0
-        }
-        return vm.minimumCellHeight(forCellAt: indexPath)
-    }
+//    override func tableView(_ tableView: UITableView,
+//                            heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        guard let vm = viewModel else {
+//            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+//            return 0.0
+//        }
+//        return vm.minimumCellHeight(forCellAt: indexPath)
+//    }
 }

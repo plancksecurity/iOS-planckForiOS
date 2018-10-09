@@ -36,6 +36,28 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
 
     }
 
+    func testNoMessageAreMoved() {
+        givenThereIsAMoveToFolderDelegate(checkCall: false)
+        givenWeWantToMove(aNumberOfMessages: 0, currentlyInFolder: folders[0])
+
+        let moved = viewmodel.moveMessagesTo(index: 1)
+
+        XCTAssertFalse(moved)
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+    }
+
+    func testInexistentFolderIndexReturnFalse() {
+        givenThereIsAMoveToFolderDelegate(checkCall: false)
+        givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[0])
+
+        let moved = viewmodel.moveMessagesTo(index: 3)
+
+        XCTAssertFalse(moved)
+        waitForExpectations(timeout: TestUtil.waitTime)
+
+    }
+
     func testMessageAreNotMovedIfTheyBelongToTheDestinationFolder() {
         givenThereIsAMoveToFolderDelegate(checkCall: false)
         givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[0])
@@ -51,7 +73,7 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(viewmodel.count, folders.count)
     }
 
-    func testSubscritIsWorking() {
+    func testSubscriptIsWorking() {
         XCTAssertEqual(viewmodel[0].title,
                        MoveToFolderCellViewModel(folder: folders[0], level: 0).title)
         XCTAssertEqual(viewmodel[1].title,

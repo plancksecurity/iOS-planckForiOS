@@ -8,17 +8,56 @@
 
 import XCTest
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class FolderViewModelTest: CoreDataDrivenTestBase {
 
-    func testAccountCreation() {
-        let viewmodel = FolderViewModel(withFordersIn: [account])
-        XCTAssertEqual(viewmodel.count, 2)
+    var viewmodel: FolderViewModel!
+
+    func testAccountSectionsWithUnifiedFolderShouldBeOnePlusAccountNumber) {
+        for accountNumber in 0...2 {
+            let accounts = givenThereIs(numberOfAccounts: accountNumber)
+            givenThereIsAViewModel(withUniFiedInBox: true, and: accounts )
+
+            let viewmodelSections = viewmodel.count
+
+            //If is unified inbox it should have accounts.count + 1 section
+            XCTAssertEqual(viewmodelSections, accounts.count + 1)
+        }
     }
 
-    func testAccountCreationWithoutUnified() {
-        let viewmodel = FolderViewModel(withFordersIn: [account], includeUnifiedInbox: false)
-        XCTAssertEqual(viewmodel.count, 1)
+    func testAccountSectionsWithoutUnifiedFolderShouldBeAccountNumber() {
+        for accountNumber in 0...2 {
+
+            let accounts = givenThereIs(numberOfAccounts: accountNumber)
+            givenThereIsAViewModel(withUniFiedInBox: false, and: accounts )
+
+            let viewmodelSections = viewmodel.count
+
+            //If it is not unified inbox it should have accounts.count section
+            XCTAssertEqual(viewmodelSections, accounts.count)
+        }
     }
+
+    //MARK: Initialization
+
+    func givenThereIs(numberOfAccounts: Int) -> [Account] {
+        if numberOfAccounts > 2  || numberOfAccounts < 0 {
+            XCTFail("Modify test to have more fake accounts")
+        }
+        var accounts = [Account]()
+
+        for i in 0..<numberOfAccounts {
+            let account = SecretTestData().createWorkingAccount(number: i)
+            accounts.append(account)
+        }
+
+        return accounts
+    }
+
+    func givenThereIsAViewModel(withUniFiedInBox: Bool, and accounts: [Account]){
+        viewmodel = FolderViewModel(withFoldersIn: accounts, includeUnifiedInbox: withUniFiedInBox)
+    }
+
+
 }

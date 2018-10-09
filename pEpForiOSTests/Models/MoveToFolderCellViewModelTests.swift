@@ -15,7 +15,7 @@ class MoveToFolderCellViewModelTests: CoreDataDrivenTestBase {
 
     var viewmodel: MoveToFolderCellViewModel!
 
-    func testIsValidFoldeR() {
+    func testIsValidFolder() {
         givenThereIsAValidFolder()
         XCTAssertTrue(viewmodel.isSelectable)
     }

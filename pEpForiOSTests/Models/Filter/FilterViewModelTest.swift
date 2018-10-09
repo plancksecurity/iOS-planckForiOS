@@ -20,18 +20,21 @@ class FilterViewModelTest: CoreDataDrivenTestBase {
 
     func testCreateCorrectAccountCell() {
         givenThereAreTwoAccounts()
+        let accountNumber = 2
         let viewmodel = FilterViewModel(type: .accouts)
-        XCTAssertEqual(2, viewmodel.count)
+        XCTAssertEqual(accountNumber, viewmodel.count)
     }
 
     func testCreateCorrectIncludeCells() {
+        let includeFilters = [UnreadFilter.self, FlaggedFilter.self]
         let viewmodel = FilterViewModel(type: .include)
-        XCTAssertEqual(2, viewmodel.count)
+        XCTAssertEqual(includeFilters.count, viewmodel.count)
     }
 
     func testCreateCorrectOtherCells() {
+        let otherFilters = [AttachmentFilterTest.self]
         let viewmodel = FilterViewModel(type: .other)
-        XCTAssertEqual(1, viewmodel.count)
+        XCTAssertEqual(otherFilters.count, viewmodel.count)
     }
 
 

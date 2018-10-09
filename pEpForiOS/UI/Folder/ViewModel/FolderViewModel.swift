@@ -18,7 +18,7 @@ public class FolderViewModel {
     /// One row per folder
     /// If no account is given, all accounts found in the store are taken into account.
     /// - Parameter accounts: accounts to to create folder hierarchy view model for.
-    public init(withFordersIn accounts: [Account]? = nil, includeUnifiedInbox: Bool = true) {
+    public init(withFoldersIn accounts: [Account]? = nil, includeUnifiedInbox: Bool = true) {
         items = [FolderSectionViewModel]()
         let accountsToUse: [Account]
         if let safeAccounts = accounts {
