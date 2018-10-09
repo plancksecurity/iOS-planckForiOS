@@ -1252,21 +1252,21 @@ class ComposeTableViewController_Old: BaseTableViewController {
     }
 }
 
-extension ComposeTableViewController_Old: ComposeViewModelDelegate {
-    //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
-    func userSelectedRecipient(identity: Identity) {
-        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell_old else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-            return
-        }
-        hideSuggestions()
-        cell.addIdentity(identity)
-        cell.textView.scrollToTop()
-        suggestionsChildViewController?.tableView.updateSize()
-    }
-
-    // WILL GROW!
-}
+//extension ComposeTableViewController_Old: ComposeViewModelDelegate {
+//    //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
+//    func userSelectedRecipient(identity: Identity) {
+//        guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? RecipientCell_old else {
+//            Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+//            return
+//        }
+//        hideSuggestions()
+//        cell.addIdentity(identity)
+//        cell.textView.scrollToTop()
+//        suggestionsChildViewController?.tableView.updateSize()
+//    }
+//
+//    // WILL GROW!
+//}
 
 // MARK: - IOS-1369 TIHS WEN DNARB
 
