@@ -732,13 +732,13 @@
                                             <rect key="frame" x="8" y="0.0" width="367" height="57.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Subject:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NTc-GH-Ell">
-                                                    <rect key="frame" x="0.0" y="9" width="60" height="19.5"/>
+                                                    <rect key="frame" x="0.0" y="8" width="60" height="19.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ee-yP-4gA" customClass="SubjectComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="60" y="0.0" width="307" height="36.5"/>
+                                                    <rect key="frame" x="60" y="-1" width="307" height="36.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <attributedString key="attributedText">
                                                         <fragment content=" ">
@@ -751,6 +751,7 @@
                                                 </textView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="NTc-GH-Ell" firstAttribute="top" secondItem="XSz-Mv-3Ch" secondAttribute="top" constant="8" id="UKB-Ix-wGQ"/>
                                                 <constraint firstAttribute="height" priority="500" constant="57.5" id="fB8-NA-VHp"/>
                                             </constraints>
                                         </stackView>
