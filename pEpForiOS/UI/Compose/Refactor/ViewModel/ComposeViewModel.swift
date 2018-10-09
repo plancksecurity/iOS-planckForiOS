@@ -8,7 +8,7 @@
 
 import MessageModel
 
-/// Informs the
+/// Informs the one that triggered the segued to here.
 protocol ComposeViewModelResultDelegate: class {
     /// Called after a valid mail has been composed and saved for sending.
     func composeViewModelDidComposeNewMail()
