@@ -54,6 +54,19 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListVM.rowCount, 0)
     }
 
+    func testLastLookAtIsUpdated(){
+        setupViewModel()
+
+        emailListVM.updateLastLookAt()
+        let lastLookAtBeforeUpdate: Date = folder!.lastLookedAt! as Date
+        emailListVM.updateLastLookAt()
+        let lastLookAtAfterUpdate: Date = folder!.lastLookedAt! as Date
+
+        //Check dates are diferent and after is greater than before. 
+        let comparison = lastLookAtBeforeUpdate.compare(lastLookAtAfterUpdate)
+        XCTAssertEqual(comparison, ComparisonResult.orderedAscending)
+    }
+
     //mark: Search section
 
     func testSetSearchFilterWith0results() {
