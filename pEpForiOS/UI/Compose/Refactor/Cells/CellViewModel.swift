@@ -10,5 +10,5 @@ import Foundation
 
 /// Conform to this if you are a view model that represents a cell.
 protocol CellViewModel {
-    var minHeigth: CGFloat { get }
+//    var minHeigth: CGFloat { get } //IOS.1369
 }

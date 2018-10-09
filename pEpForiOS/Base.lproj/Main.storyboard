@@ -740,6 +740,9 @@
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ee-yP-4gA" customClass="SubjectComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
                                                     <rect key="frame" x="60" y="0.0" width="307" height="36.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="307" id="4xO-cj-Z95"/>
+                                                    </constraints>
                                                     <attributedString key="attributedText">
                                                         <fragment content=" ">
                                                             <attributes>
@@ -753,6 +756,7 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="3ee-yP-4gA" secondAttribute="trailing" id="Ord-qg-5zW"/>
                                         <constraint firstAttribute="bottom" secondItem="XSz-Mv-3Ch" secondAttribute="bottom" id="Q13-QV-ppg"/>
                                         <constraint firstItem="XSz-Mv-3Ch" firstAttribute="leading" secondItem="ZEp-Hs-KCU" secondAttribute="leading" constant="8" id="T8J-8k-FVe"/>
                                         <constraint firstItem="3ee-yP-4gA" firstAttribute="top" secondItem="ZEp-Hs-KCU" secondAttribute="top" priority="750" id="kWe-nt-b9D"/>

@@ -66,18 +66,19 @@ class ComposeViewModel {
 
 // MARK: - Layout
 
-extension ComposeViewModel {
-    public func minimumCellHeight(forCellAt indexPath: IndexPath) -> CGFloat {
-        guard
-            indexPath.section < sections.count,
-            indexPath.row < sections[indexPath.section].rows.count else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-                return 0.0
-        }
-        let rowVM = sections[indexPath.section].rows[indexPath.row]
-        return rowVM.minHeigth
-    }
-}
+//IOS-1369: SELF size
+//extension ComposeViewModel {
+//    public func minimumCellHeight(forCellAt indexPath: IndexPath) -> CGFloat {
+//        guard
+//            indexPath.section < sections.count,
+//            indexPath.row < sections[indexPath.section].rows.count else {
+//                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+//                return 0.0
+//        }
+//        let rowVM = sections[indexPath.section].rows[indexPath.row]
+//        return rowVM.minHeigth
+//    }
+//}
 
 // MARK: - CellViewModels
 

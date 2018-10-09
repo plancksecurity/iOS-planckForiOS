@@ -205,7 +205,7 @@ extension ComposeTableViewController {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
             }
-            cell.textView.attributedText = rowVm.content//NSAttributedString(string: "IOS-1369: Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test ") //rowVm.content
+            cell.setup(with: rowVm)
             result = cell
         }
 
