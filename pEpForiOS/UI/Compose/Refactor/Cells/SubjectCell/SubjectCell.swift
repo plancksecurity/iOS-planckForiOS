@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol SubjectCellDelegate: class {
-    func subjectCellSizeChanged()
-}
-
 class SubjectCell: TextViewContainingTableViewCell {
     static let reuseId = "SubjectCell"
     var viewModel: SubjectCellViewModel?
@@ -28,9 +24,6 @@ class SubjectCell: TextViewContainingTableViewCell {
 
 extension SubjectCell: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-////        textView.sizeToFit()
-//        sizeToFit()
-//        print("textViewDidChange")
         viewModel?.handleTextChanged(to: textView.attributedText)
     }
 }
