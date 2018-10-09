@@ -94,7 +94,14 @@ class ComposeTableViewController: BaseTableViewController {
     }
 }
 
+// MARK: - ComposeViewModelDelegate
+
 extension ComposeTableViewController: ComposeViewModelDelegate {
+    func contentChanged(inCellAt indexPath: IndexPath) {
+        //IOS-1369: indexPath currently unused.
+        tableView.updateSize()
+    }
+
     //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
 //    func userSelectedRecipient(identity: Identity) {
 //        guard

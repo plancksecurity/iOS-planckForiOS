@@ -20,9 +20,12 @@ class SubjectCellViewModel: CellViewModel {
     public var content: NSMutableAttributedString = NSMutableAttributedString(string: "")
     public weak var resultDelegate: SubjectCellViewModelResultDelegate?
 
+    init(resultDelegate: SubjectCellViewModelResultDelegate) {
+        self.resultDelegate = resultDelegate
+    }
+
     public func handleTextChanged(to text: NSAttributedString) {
         content = NSMutableAttributedString(attributedString: text)
-        
-
+        resultDelegate?.SubjectCellViewModelDidChangeSubject(self)
     }
 }

@@ -22,7 +22,8 @@ protocol ComposeViewModelResultDelegate: class {
 
 protocol ComposeViewModelDelegate: class {
     //Will grow BIG :-/
-    //IOS-1369: //TODO handle func userSelectedRecipient(identity: Identity)
+    //IOS-1369: //TODO handle func userSelectedRecipient(identity: Identity) suggestion
+    func contentChanged(inCellAt indexPath: IndexPath)
 }
 
 class ComposeViewModel {
@@ -56,29 +57,26 @@ class ComposeViewModel {
     private func resetSections() {
         var newSections = [ComposeViewModel.Section]()
         for type in ComposeViewModel.Section.SectionType.allCases {
-            if let section = ComposeViewModel.Section(type: type) {
+            if let section = ComposeViewModel.Section(type: type, cellVmDelegate: self) {
                 newSections.append(section)
             }
         }
         self.sections = newSections
     }
+
+    private func indexPath(for cellViewModel: CellViewModel) -> IndexPath? {
+        for s in 0..<sections.count {
+            let section = sections[s]
+            for r in 0..<section.rows.count {
+                let row = section.rows[r]
+                if row === cellViewModel {
+                    return IndexPath(row: r, section: s)
+                }
+            }
+        }
+        return nil
+    }
 }
-
-// MARK: - Layout
-
-//IOS-1369: SELF size
-//extension ComposeViewModel {
-//    public func minimumCellHeight(forCellAt indexPath: IndexPath) -> CGFloat {
-//        guard
-//            indexPath.section < sections.count,
-//            indexPath.row < sections[indexPath.section].rows.count else {
-//                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-//                return 0.0
-//        }
-//        let rowVM = sections[indexPath.section].rows[indexPath.row]
-//        return rowVM.minHeigth
-//    }
-//}
 
 // MARK: - CellViewModels
 
@@ -90,16 +88,16 @@ extension ComposeViewModel {
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
 
-        init?(type: SectionType) {
+        init?(type: SectionType, cellVmDelegate: ComposeViewModel) {
             self.type = type
-            resetViewModels()
+            resetViewModels(cellVmDelegate: cellVmDelegate)
             if rows.count == 0 {
                 // We want to show non-empty sections only
                 return nil
             }
         }
 
-        private func resetViewModels() {
+        private func resetViewModels(cellVmDelegate: ComposeViewModel) {
             rows = [CellViewModel]()
             switch type {
 //            case .recipients:
@@ -108,7 +106,7 @@ extension ComposeViewModel {
 //            case .account:
 //                rows.append(AccountFieldViewModel())
             case .subject:
-                rows.append(SubjectCellViewModel())
+                rows.append(SubjectCellViewModel(resultDelegate: cellVmDelegate))
 //            case .body:
 //                rows.append(BodyFieldViewModel())
 //            case .attachments:
@@ -146,5 +144,20 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
     func suggestViewModelDidSelectContact(identity: Identity) {
         //IOS-1369:
         //TODO:
+    }
+}
+
+// MARK: - SubjectCellViewModelResultDelegate
+
+extension ComposeViewModel: SubjectCellViewModelResultDelegate {
+
+    func SubjectCellViewModelDidChangeSubject(_ subjectCellViewModel: SubjectCellViewModel) {
+        //IOS-1369: YAGNI
+        guard let idxPath = indexPath(for: subjectCellViewModel) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We got called by a non-existing VM?")
+            return
+        }
+        delegate?.contentChanged(inCellAt: idxPath)
     }
 }

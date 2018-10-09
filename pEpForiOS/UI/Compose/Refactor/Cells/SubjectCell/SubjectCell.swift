@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol SubjectCellDelegate: class {
+    func subjectCellSizeChanged()
+}
+
 class SubjectCell: TextViewContainingTableViewCell {
     static let reuseId = "SubjectCell"
     var viewModel: SubjectCellViewModel?
