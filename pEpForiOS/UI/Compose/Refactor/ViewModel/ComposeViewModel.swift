@@ -8,6 +8,7 @@
 
 import MessageModel
 
+/// Informs the
 protocol ComposeViewModelResultDelegate: class {
     /// Called after a valid mail has been composed and saved for sending.
     func composeViewModelDidComposeNewMail()
@@ -83,7 +84,7 @@ extension ComposeViewModel {
 extension ComposeViewModel {
     class Section {
         enum SectionType: CaseIterable {
-            case recipients, account, subject, body, attachments
+            case /*recipients, account, */subject/*, body, attachments*/
         }
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
@@ -100,17 +101,17 @@ extension ComposeViewModel {
         private func resetViewModels() {
             rows = [CellViewModel]()
             switch type {
-            case .recipients:
-                rows.append(RecipientFieldViewModel(type: .to))
-                rows.append(RecipientFieldViewModel(type: .wraped))
-            case .account:
-                rows.append(AccountFieldViewModel())
+//            case .recipients:
+//                rows.append(RecipientFieldViewModel(type: .to))
+//                rows.append(RecipientFieldViewModel(type: .wraped))
+//            case .account:
+//                rows.append(AccountFieldViewModel())
             case .subject:
-                rows.append(SubjectFieldViewModel())
-            case .body:
-                rows.append(BodyFieldViewModel())
-            case .attachments:
-                setupAttchmentRows()
+                rows.append(SubjectCellViewModel())
+//            case .body:
+//                rows.append(BodyFieldViewModel())
+//            case .attachments:
+//                setupAttchmentRows()
             }
         }
 

@@ -1,5 +1,5 @@
 //
-//  SubjectFieldViewModel.swift
+//  SubjectCellViewModel.swift
 //  pEp
 //
 //  Created by Andreas Buff on 05.10.18.
@@ -8,11 +8,11 @@
 
 import MessageModel
 
-protocol SubjectFieldViewModelDelegate {
+protocol SubjectCellViewModelDelegate {
     //IOS-1369: TODO
 }
 
-class SubjectFieldViewModel: CellViewModel {
+class SubjectCellViewModel: CellViewModel {
     let minHeigth: CGFloat = 58.0
     public let title = NSLocalizedString("Subject:",
                                          comment:

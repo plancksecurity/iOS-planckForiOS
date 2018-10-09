@@ -164,6 +164,7 @@ extension ComposeTableViewController {
 
         var result: UITableViewCell?
         let section = vm.sections[indexPath.section]
+/*
         if section.type == .recipients { //IOS-1369: inherit from TitleAndTextViewCell
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: RecipientCell.reuseId)
@@ -187,11 +188,13 @@ extension ComposeTableViewController {
             }
             cell.textView.attributedText = rowVm.content
             result = cell
-        } else if section.type == .subject {
+        } else
+*/
+        if section.type == .subject {
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: SubjectCell.reuseId)
                     as? SubjectCell,
-                let rowVm = section.rows[indexPath.row] as? SubjectFieldViewModel
+                let rowVm = section.rows[indexPath.row] as? SubjectCellViewModel
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
@@ -201,30 +204,30 @@ extension ComposeTableViewController {
         }
 
 
-        else if section.type == .body {
-            guard
-                let cell = tableView.dequeueReusableCell(withIdentifier: BodyCell.reuseId)
-                    as? BodyCell,
-                let rowVm = section.rows[indexPath.row] as? BodyFieldViewModel
-                else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-                    return nil
-            }
-            cell.textView.attributedText = rowVm.content
-            result = cell
-        } else if section.type == .attachments {
-            guard
-                let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentCell.reuseId)
-                    as? AttachmentCell,
-                let rowVm = section.rows[indexPath.row] as? AttachmentViewModel
-                else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-                    return nil
-            }
-            cell.fileName.text = rowVm.fileName
-            cell.fileExtension.text = rowVm.fileExtension
-            result = cell
-        }
+//        else if section.type == .body {
+//            guard
+//                let cell = tableView.dequeueReusableCell(withIdentifier: BodyCell.reuseId)
+//                    as? BodyCell,
+//                let rowVm = section.rows[indexPath.row] as? BodyFieldViewModel
+//                else {
+//                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+//                    return nil
+//            }
+//            cell.textView.attributedText = rowVm.content
+//            result = cell
+//        } else if section.type == .attachments {
+//            guard
+//                let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentCell.reuseId)
+//                    as? AttachmentCell,
+//                let rowVm = section.rows[indexPath.row] as? AttachmentViewModel
+//                else {
+//                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+//                    return nil
+//            }
+//            cell.fileName.text = rowVm.fileName
+//            cell.fileExtension.text = rowVm.fileExtension
+//            result = cell
+//        }
 
         return result
     }

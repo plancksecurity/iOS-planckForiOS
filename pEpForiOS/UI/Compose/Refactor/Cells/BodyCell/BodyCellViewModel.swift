@@ -1,5 +1,5 @@
 //
-//  BodyFieldViewModel.swift
+//  BodyCellViewModel.swift
 //  pEp
 //
 //  Created by Andreas Buff on 05.10.18.
@@ -8,7 +8,7 @@
 
 import MessageModel
 
-class BodyFieldViewModel: CellViewModel {
+class BodyCellViewModel: CellViewModel {
     let minHeigth: CGFloat = 240.0
     public var content: NSMutableAttributedString = NSMutableAttributedString(string: "")
     //IOS-1369: attachments go here?

@@ -10,6 +10,7 @@ import UIKit
 
 class RecipientCell: TextViewContainingTableViewCell {
     static let reuseId = "RecipientCell"
+    var viewModel: RecipientCellViewModel?
     @IBOutlet weak public var titleLabel: UILabel!
 
 //    public var identities = [Identity]()

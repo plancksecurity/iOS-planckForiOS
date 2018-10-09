@@ -1,5 +1,5 @@
 //
-//  AccountFieldViewModel.swift
+//  AccountCellViewModel.swift
 //  pEp
 //
 //  Created by Andreas Buff on 05.10.18.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AccountFieldViewModel: CellViewModel {
+class AccountCellViewModel: CellViewModel {
     let minHeigth: CGFloat = 58.0
     public let title = NSLocalizedString("From:",
                                          comment:

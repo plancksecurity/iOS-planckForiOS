@@ -8,11 +8,11 @@
 
 import UIKit
 
+//IUOS-1369: Maybe obsolete.
 protocol TextViewContainingTableViewCellProtocol {
     var textView: UITextView! { get set }
 }
 
 class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableViewCellProtocol {
-
     @IBOutlet weak public var textView: UITextView!
 }

@@ -1,5 +1,5 @@
 //
-//  RecipientFieldViewModel.swift
+//  RecipientCellViewModel.swift
 //  pEp
 //
 //  Created by Andreas Buff on 05.10.18.
@@ -8,11 +8,11 @@
 
 import MessageModel
 
-protocol RecipientFieldViewModelDelegate {
+protocol RecipientCellViewModelDelegate {
     //IOS-1369: TODO
 }
 
-class RecipientFieldViewModel: CellViewModel {
+class RecipientCellViewModel: CellViewModel {
     let minHeigth: CGFloat = 58.0
     public let title: String
     public var content = NSMutableAttributedString(string: "")
@@ -25,7 +25,7 @@ class RecipientFieldViewModel: CellViewModel {
     }
 }
 
-extension RecipientFieldViewModel {
+extension RecipientCellViewModel {
     public enum FieldType: String {
         case to, cc, bcc, wraped
 
