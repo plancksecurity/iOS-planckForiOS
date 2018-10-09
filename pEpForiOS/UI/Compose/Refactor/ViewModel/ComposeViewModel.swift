@@ -31,17 +31,16 @@ class ComposeViewModel {
     weak var resultDelegate: ComposeViewModelResultDelegate?
     weak var delegate: ComposeViewModelDelegate?
     public private(set) var sections = [ComposeViewModel.Section]()
-    public private(set) var isValidatedForSending = false
+    public private(set) var state = ComposeViewModelState()
+    public let initData: ComposeViewModel.InitData
 
-    /// Recipient to set as "To:".
-    /// Is ignored if a originalMessage is set.
-    var prefilledTo: Identity?
-    /// Original message to compute content and recipients from (e.g. a message we reply to).
-    var originalMessage: Message?
 
-    init(resultDelegate: ComposeViewModelResultDelegate? = nil, originalMessage: Message? = nil) {
+    init(resultDelegate: ComposeViewModelResultDelegate? = nil,
+         prefilledTo: Identity? = nil,
+         originalMessage: Message? = nil) {
         self.resultDelegate = resultDelegate
-        self.originalMessage = originalMessage
+        self.initData = ComposeViewModel.InitData(prefilledTo: prefilledTo,
+                                                  originalMessage: originalMessage)
         setup()
     }
 
@@ -64,15 +63,41 @@ class ComposeViewModel {
         }
         self.sections = newSections
     }
+}
 
-    // MARK: - Validation
+// MARK: - InitData
+
+extension ComposeViewModel {
+    /// Wraps properties used for initial setup
+    struct InitData {
+        /// Recipient to set as "To:".
+        /// Is ignored if a originalMessage is set.
+        public let prefilledTo: Identity?
+        /// Original message to compute content and recipients from (e.g. a message we reply to).
+        public let originalMessage: Message?
+    }
+}
+
+// MARK: - State
+
+extension ComposeViewModel {
+    /// Wraps bookholding properties
+    struct ComposeViewModelState {
+        fileprivate var isValidatedForSending = false
+        public fileprivate(set) var edited = false
+    }
+
+    private func updateState() {
+        state.edited = true
+        validateInput()
+    }
 
     private func validateInput() {
-        let before = isValidatedForSending
+        let before = state.isValidatedForSending
         //IOS-1369: unimplemented stub") //IOS-1369:
         //TODO: validate!
-        if before != isValidatedForSending {
-            delegate?.validatedStateChanged(to: isValidatedForSending)
+        if before != state.isValidatedForSending {
+            delegate?.validatedStateChanged(to: state.isValidatedForSending)
         }
     }
 }
@@ -99,24 +124,24 @@ extension ComposeViewModel {
         private func resetViewModels(cellVmDelegate: ComposeViewModel) {
             rows = [CellViewModel]()
             switch type {
-//            case .recipients:
-//                rows.append(RecipientFieldViewModel(type: .to))
-//                rows.append(RecipientFieldViewModel(type: .wraped))
-//            case .account:
-//                rows.append(AccountFieldViewModel())
+                //            case .recipients:
+                //                rows.append(RecipientFieldViewModel(type: .to))
+                //                rows.append(RecipientFieldViewModel(type: .wraped))
+                //            case .account:
+            //                rows.append(AccountFieldViewModel())
             case .subject:
                 rows.append(SubjectCellViewModel(resultDelegate: cellVmDelegate))
-//            case .body:
-//                rows.append(BodyFieldViewModel())
-//            case .attachments:
-//                setupAttchmentRows()
+                //            case .body:
+                //                rows.append(BodyFieldViewModel())
+                //            case .attachments:
+                //                setupAttchmentRows()
             }
         }
 
         private func setupAttchmentRows() {
             //IOS-1369: //!!!: add later for mode != .normal
             //
-//            rows.append(AttachmentViewModel)
+            //            rows.append(AttachmentViewModel)
         }
     }
 
@@ -144,7 +169,7 @@ extension ComposeViewModel {
     }
 }
 
- // MARK: - Suggestions
+// MARK: - Suggestions
 
 extension ComposeViewModel {
     func suggestViewModel() -> SuggestViewModel {
@@ -171,6 +196,6 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             return
         }
         delegate?.contentChanged(inCellAt: idxPath)
-        validateInput()
+        updateState()
     }
 }
