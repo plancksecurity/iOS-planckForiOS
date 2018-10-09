@@ -740,9 +740,6 @@
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ee-yP-4gA" customClass="SubjectComposeTextView" customModule="pEpForiOS" customModuleProvider="target">
                                                     <rect key="frame" x="60" y="0.0" width="307" height="36.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="307" id="4xO-cj-Z95"/>
-                                                    </constraints>
                                                     <attributedString key="attributedText">
                                                         <fragment content=" ">
                                                             <attributes>
@@ -753,6 +750,9 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                                 </textView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" priority="500" constant="57.5" id="fB8-NA-VHp"/>
+                                            </constraints>
                                         </stackView>
                                     </subviews>
                                     <constraints>
