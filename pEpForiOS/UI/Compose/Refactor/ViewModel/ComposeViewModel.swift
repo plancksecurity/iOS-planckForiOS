@@ -24,13 +24,14 @@ protocol ComposeViewModelDelegate: class {
     //Will grow BIG :-/
     //IOS-1369: //TODO handle func userSelectedRecipient(identity: Identity) suggestion
     func contentChanged(inCellAt indexPath: IndexPath)
+    func validatedStateChanged(to isValidated: Bool)
 }
 
 class ComposeViewModel {
     weak var resultDelegate: ComposeViewModelResultDelegate?
     weak var delegate: ComposeViewModelDelegate?
     public private(set) var sections = [ComposeViewModel.Section]()
-
+    public private(set) var isValidatedForSending = false
 
     /// Recipient to set as "To:".
     /// Is ignored if a originalMessage is set.
@@ -64,17 +65,15 @@ class ComposeViewModel {
         self.sections = newSections
     }
 
-    private func indexPath(for cellViewModel: CellViewModel) -> IndexPath? {
-        for s in 0..<sections.count {
-            let section = sections[s]
-            for r in 0..<section.rows.count {
-                let row = section.rows[r]
-                if row === cellViewModel {
-                    return IndexPath(row: r, section: s)
-                }
-            }
+    // MARK: - Validation
+
+    private func validateInput() {
+        let before = isValidatedForSending
+        //IOS-1369: unimplemented stub") //IOS-1369:
+        //TODO: validate!
+        if before != isValidatedForSending {
+            delegate?.validatedStateChanged(to: isValidatedForSending)
         }
-        return nil
     }
 }
 
@@ -130,6 +129,19 @@ extension ComposeViewModel {
         }
         return nil
     }
+
+    private func indexPath(for cellViewModel: CellViewModel) -> IndexPath? {
+        for s in 0..<sections.count {
+            let section = sections[s]
+            for r in 0..<section.rows.count {
+                let row = section.rows[r]
+                if row === cellViewModel {
+                    return IndexPath(row: r, section: s)
+                }
+            }
+        }
+        return nil
+    }
 }
 
  // MARK: - Suggestions
@@ -159,5 +171,6 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             return
         }
         delegate?.contentChanged(inCellAt: idxPath)
+        validateInput()
     }
 }

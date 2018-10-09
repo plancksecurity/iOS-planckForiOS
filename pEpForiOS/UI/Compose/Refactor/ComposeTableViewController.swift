@@ -14,11 +14,10 @@ import Photos
 class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
 
-    var isInitialSetup = true
+    private var suggestionsChildViewController: SuggestTableViewController?
+    private var isInitialSetup = true
     var composeMode = ComposeUtil.ComposeMode.normal
     private var currentCellIndexPath: IndexPath?
-
-
     var viewModel: ComposeViewModel? {
         didSet {
             // Make sure we are the delegate. Always.
@@ -26,8 +25,6 @@ class ComposeTableViewController: BaseTableViewController {
             tableView.reloadData()
         }
     }
-
-    private var suggestionsChildViewController: SuggestTableViewController?
 
     // MARK: - Life Cycle
 
@@ -97,6 +94,12 @@ class ComposeTableViewController: BaseTableViewController {
 // MARK: - ComposeViewModelDelegate
 
 extension ComposeTableViewController: ComposeViewModelDelegate {
+    // WILL GROW!
+
+    func validatedStateChanged(to isValidated: Bool) {
+        sendButton.isEnabled = isValidated
+    }
+
     func contentChanged(inCellAt indexPath: IndexPath) {
         //IOS-1369: indexPath currently unused.
         tableView.updateSize()
@@ -115,8 +118,6 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 //        cell.textView.scrollToTop()
 //        suggestionsChildViewController?.tableView.updateSize()
 //    }
-
-    // WILL GROW!
 }
 
 // MARK: - Address Suggestions
