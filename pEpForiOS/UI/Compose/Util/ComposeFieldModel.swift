@@ -42,7 +42,7 @@ public class ComposeFieldModel {
 
     var type: FieldType = .to
     var display: FieldDisplayType = .always
-    var height: CGFloat = defaultCellHeight
+    var height: CGFloat = ComposeHelpers.defaultCellHeight
     var expanded: CGFloat = 0
     var identifier = "recipientCell"
     var title = String()

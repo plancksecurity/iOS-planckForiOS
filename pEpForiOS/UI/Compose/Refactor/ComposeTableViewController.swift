@@ -124,9 +124,9 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 
 extension ComposeTableViewController {
     private final func updateSuggestTable() {
-        var pos = defaultCellHeight
-        if pos < defaultCellHeight && !isInitialSetup {
-            pos = defaultCellHeight * (defaultCellHeight + 1) + 2
+        var pos = ComposeHelpers.defaultCellHeight
+        if pos < ComposeHelpers.defaultCellHeight && !isInitialSetup {
+            pos = ComposeHelpers.defaultCellHeight * (ComposeHelpers.defaultCellHeight + 1) + 2
         }
         suggestionsChildViewController?.view.frame.origin.y = pos
         suggestionsChildViewController?.view.frame.size.height =
@@ -245,13 +245,4 @@ extension ComposeTableViewController {
 
         return result
     }
-
-//    override func tableView(_ tableView: UITableView,
-//                            heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        guard let vm = viewModel else {
-//            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
-//            return 0.0
-//        }
-//        return vm.minimumCellHeight(forCellAt: indexPath)
-//    }
 }

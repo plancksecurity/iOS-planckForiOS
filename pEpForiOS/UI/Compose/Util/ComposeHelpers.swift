@@ -9,8 +9,10 @@
 import UIKit
 import MessageModel
 
-let defaultCellHeight: CGFloat = 64.0
-let defaultFilenameLength = 20
+struct ComposeHelpers {
+    static let defaultCellHeight: CGFloat = 64.0
+    static let defaultFilenameLength = 20
+}
 
 extension String {
     static let textAttachmentCharacter: UInt32 = 65532
@@ -35,8 +37,9 @@ extension String {
     
     var truncate: String {
         let length = self.count
-        if length > defaultFilenameLength {
-            let index: String.Index = self.index(self.startIndex, offsetBy: defaultFilenameLength)
+        if length > ComposeHelpers.defaultFilenameLength {
+            let index: String.Index = self.index(self.startIndex,
+                                                 offsetBy: ComposeHelpers.defaultFilenameLength)
             return String(prefix(upTo: index))
         }
         return self

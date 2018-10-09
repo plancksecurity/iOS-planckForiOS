@@ -379,7 +379,7 @@ class ComposeTableViewController_Old: BaseTableViewController {
     // MARK: - Address Suggstions
 
     private func assureSuggestionsAreNotHiddenBehindKeyboard(keyboardSize: CGSize) {
-        let searchfieldHeight = defaultCellHeight
+        let searchfieldHeight = ComposeHelpers.defaultCellHeight
         let contentInset = UIEdgeInsets(top: 0,
                                         left: 0,
                                         bottom: keyboardSize.height + searchfieldHeight,
@@ -396,8 +396,8 @@ class ComposeTableViewController_Old: BaseTableViewController {
 
     private final func updateSuggestTable(_ position: CGFloat) {
         var pos = position
-        if pos < defaultCellHeight && !isInitialSetup {
-            pos = defaultCellHeight * (position + 1) + 2
+        if pos < ComposeHelpers.defaultCellHeight && !isInitialSetup {
+            pos = ComposeHelpers.defaultCellHeight * (position + 1) + 2
         }
         suggestionsChildViewController?.view.frame.origin.y = pos
         suggestionsChildViewController?.view.frame.size.height =
