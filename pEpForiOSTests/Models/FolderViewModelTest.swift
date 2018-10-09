@@ -14,7 +14,7 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
 
     var viewmodel: FolderViewModel!
 
-    func testAccountSectionsWithUnifiedFolderShouldBeOnePlusAccountNumber) {
+    func testAccountSectionsWithUnifiedFolderShouldBeOnePlusAccountNumber() {
         for accountNumber in 0...2 {
             let accounts = givenThereIs(numberOfAccounts: accountNumber)
             givenThereIsAViewModel(withUniFiedInBox: true, and: accounts )

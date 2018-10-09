@@ -86,7 +86,7 @@ class MoveToFolderViewModel {
 
     func moveMessagesTo(index: Int) -> Bool {
         if !(index >= 0 && index < items.count) {
-            Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
+            Log.shared.error(component: #function, errorString: "Index out of bounds")
             return false
         }
         let targetFolder = items[index].folder
