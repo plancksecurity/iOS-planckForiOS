@@ -18,7 +18,9 @@ class SubjectCell: TextViewContainingTableViewCell {
 
     public func setup(with viewModel: SubjectCellViewModel) {
         self.viewModel = viewModel
-        self.textView.attributedText = viewModel.content
+        if viewModel.content != nil {
+            self.textView.attributedText = viewModel.content
+        }
     }
 }
 

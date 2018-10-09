@@ -17,7 +17,7 @@ class SubjectCellViewModel: CellViewModel {
     public let title = NSLocalizedString("Subject:",
                                          comment:
         "Title of subject field when composing a message")
-    public var content: NSMutableAttributedString = NSMutableAttributedString(string: "")
+    public var content: NSMutableAttributedString?
     public weak var resultDelegate: SubjectCellViewModelResultDelegate?
 
     init(resultDelegate: SubjectCellViewModelResultDelegate) {
