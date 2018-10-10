@@ -9,9 +9,8 @@
 import Foundation
 
 class AccountCellViewModel: CellViewModel {
-    let minHeigth: CGFloat = 58.0
     public let title = NSLocalizedString("From:",
                                          comment:
         "Title of account picker when composing a message")
-    public var content: NSMutableAttributedString = NSMutableAttributedString(string: "")
+    public var content: String?
 }

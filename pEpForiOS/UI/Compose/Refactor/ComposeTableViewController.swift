@@ -192,26 +192,25 @@ extension ComposeTableViewController {
             cell.titleLabel.text = rowVm.title
             cell.textView.attributedText = rowVm.content
             result = cell
-        } else if section.type == .account {
+        } else */
+        if section.type == .account {
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: AccountCell_mvvm.reuseId)
                     as? AccountCell_mvvm,
-                let rowVm = section.rows[indexPath.row] as? AccountFieldViewModel
+                let rowVm = section.rows[indexPath.row] as? AccountCellViewModel
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
             }
-            cell.textView.attributedText = rowVm.content
+            cell.setup(with: rowVm)
             result = cell
-        } else
-*/
-        if section.type == .subject {
-            guard
-                let cell = tableView.dequeueReusableCell(withIdentifier: SubjectCell.reuseId)
-                    as? SubjectCell,
-                let rowVm = section.rows[indexPath.row] as? SubjectCellViewModel
-                else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+        } else if section.type == .subject {
+                guard
+                    let cell = tableView.dequeueReusableCell(withIdentifier: SubjectCell.reuseId)
+                        as? SubjectCell,
+                    let rowVm = section.rows[indexPath.row] as? SubjectCellViewModel
+                    else {
+                        Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
             }
             cell.setup(with: rowVm)
