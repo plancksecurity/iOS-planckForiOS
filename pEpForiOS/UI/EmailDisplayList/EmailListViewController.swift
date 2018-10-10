@@ -1143,7 +1143,6 @@ extension EmailListViewController: SegueHandlerType {
                 return
         }
         composeVc.appConfig = appConfig
-        composeVc.composeMode = composeMode
         if segueId != .segueCompose {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
@@ -1154,7 +1153,8 @@ extension EmailListViewController: SegueHandlerType {
                     return
             }
 
-            composeVc.viewModel = vm.composeViewModel(withOriginalMessageAt: indexPath)
+            composeVc.viewModel = vm.composeViewModel(withOriginalMessageAt: indexPath,
+                                                      composeMode: composeMode)
         }
     }
 

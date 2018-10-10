@@ -42,6 +42,7 @@ class ComposeViewModel {
                                            orForOriginalMessage: originalMessage,
                                            composeMode: composeMode)
         setup()
+        validateInput()
     }
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
@@ -57,7 +58,9 @@ class ComposeViewModel {
     private func resetSections() {
         var newSections = [ComposeViewModel.Section]()
         for type in ComposeViewModel.Section.SectionType.allCases {
-            if let section = ComposeViewModel.Section(type: type, cellVmDelegate: self) {
+            if let section = ComposeViewModel.Section(type: type,
+                                                      initData: state.initData,
+                                                      cellVmDelegate: self) {
                 newSections.append(section)
             }
         }
@@ -127,6 +130,10 @@ extension ComposeViewModel {
             return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
         }
 
+        var subject: String? {
+            return originalMessage?.shortMessage
+        }
+
         init(withPrefilledToRecipient prefilledTo: Identity? = nil,
              orForOriginalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
@@ -143,8 +150,8 @@ extension ComposeViewModel {
     /// Wraps bookholding properties
     struct ComposeViewModelState {
         public let initData: ComposeViewModel.InitData
-        fileprivate var isValidatedForSending = false
         public fileprivate(set) var edited = false
+        var isValidatedForSending = false
 
         init(withPrefilledToRecipient prefilledTo: Identity? = nil,
              orForOriginalMessage om: Message? = nil,
@@ -180,16 +187,16 @@ extension ComposeViewModel {
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
 
-        init?(type: SectionType, cellVmDelegate: ComposeViewModel) {
+        init?(type: SectionType, initData: InitData? = nil, cellVmDelegate: ComposeViewModel) {
             self.type = type
-            resetViewModels(cellVmDelegate: cellVmDelegate)
+            resetViewModels(cellVmDelegate: cellVmDelegate, initData: initData)
             if rows.count == 0 {
                 // We want to show non-empty sections only
                 return nil
             }
         }
 
-        private func resetViewModels(cellVmDelegate: ComposeViewModel) {
+        private func resetViewModels(cellVmDelegate: ComposeViewModel, initData: InitData? = nil) {
             rows = [CellViewModel]()
             switch type {
                 //            case .recipients:
@@ -198,7 +205,11 @@ extension ComposeViewModel {
                 //            case .account:
             //                rows.append(AccountFieldViewModel())
             case .subject:
-                rows.append(SubjectCellViewModel(resultDelegate: cellVmDelegate))
+                let rowModel = SubjectCellViewModel(resultDelegate: cellVmDelegate)
+                if let subject = initData?.subject {
+                    rowModel.content = subject
+                }
+                rows.append(rowModel)
                 //            case .body:
                 //                rows.append(BodyFieldViewModel())
                 //            case .attachments:

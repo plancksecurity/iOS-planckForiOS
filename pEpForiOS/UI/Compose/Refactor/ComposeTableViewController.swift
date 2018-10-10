@@ -16,7 +16,6 @@ class ComposeTableViewController: BaseTableViewController {
 
     private var suggestionsChildViewController: SuggestTableViewController?
     private var isInitialSetup = true
-    var composeMode = ComposeUtil.ComposeMode.normal
     private var currentCellIndexPath: IndexPath?
     var viewModel: ComposeViewModel? {
         didSet {
@@ -31,7 +30,9 @@ class ComposeTableViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        setupModel()
+        if viewModel == nil {
+            setupModel()
+        }
     }
 
     // MARK: - Setup & Configuration

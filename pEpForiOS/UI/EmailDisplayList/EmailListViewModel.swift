@@ -560,9 +560,12 @@ extension EmailListViewModel: ReplyAllPossibleCheckerProtocol {
 // MARK: - ComposeViewModel
 
 extension EmailListViewModel {
-    func composeViewModel(withOriginalMessageAt indexPath: IndexPath) -> ComposeViewModel {
+    func composeViewModel(withOriginalMessageAt indexPath: IndexPath,
+                          composeMode: ComposeUtil.ComposeMode? = nil) -> ComposeViewModel {
         let message = messages.object(at: indexPath.row)?.message()
-        let composeVM = ComposeViewModel(resultDelegate: self, originalMessage: message)
+        let composeVM = ComposeViewModel(resultDelegate: self,
+                                         composeMode: composeMode,
+                                         originalMessage: message)
         return composeVM
     }
 }
