@@ -32,15 +32,15 @@ class ComposeViewModel {
     weak var delegate: ComposeViewModelDelegate?
     public private(set) var sections = [ComposeViewModel.Section]()
     public private(set) var state = ComposeViewModelState()
-    public let initData: ComposeViewModel.InitData
-
 
     init(resultDelegate: ComposeViewModelResultDelegate? = nil,
+         composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
          originalMessage: Message? = nil) {
         self.resultDelegate = resultDelegate
-        self.initData = ComposeViewModel.InitData(prefilledTo: prefilledTo,
-                                                  originalMessage: originalMessage)
+        self.state = ComposeViewModelState(withPrefilledToRecipient: prefilledTo,
+                                           orForOriginalMessage: originalMessage,
+                                           composeMode: composeMode)
         setup()
     }
 
@@ -75,6 +75,65 @@ extension ComposeViewModel {
         public let prefilledTo: Identity?
         /// Original message to compute content and recipients from (e.g. a message we reply to).
         public let originalMessage: Message?
+
+        public let composeMode: ComposeUtil.ComposeMode
+
+        /// Whether or not the original message is in Drafts or Outbox
+        var isDraftsOrOutbox: Bool {
+            return isDrafts || isOutbox
+        }
+
+        /// Whether or not the original message is in Drafts folder
+        var isDrafts: Bool {
+            if let om = originalMessage {
+                return om.parent.folderType == .drafts
+            }
+            return false
+        }
+
+        /// Whether or not the original message is in Outbox
+        var isOutbox: Bool {
+            if let om = originalMessage {
+                return om.parent.folderType == .outbox
+            }
+            return false
+        }
+
+        var from: Identity? {
+            return ComposeUtil.initialFrom(composeMode: composeMode,
+                                           originalMessage: originalMessage)
+        }
+
+        var toRecipients: [Identity] {
+            if let om = originalMessage {
+                return ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
+            } else if let presetTo = prefilledTo {
+                return [presetTo]
+            }
+            return []
+        }
+
+        var ccRecipients: [Identity] {
+            guard let om = originalMessage else {
+                return []
+            }
+            return ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
+        }
+
+        var bccRecipients: [Identity] {
+            guard let om = originalMessage else {
+                return []
+            }
+            return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
+        }
+
+        init(withPrefilledToRecipient prefilledTo: Identity? = nil,
+             orForOriginalMessage om: Message? = nil,
+             composeMode: ComposeUtil.ComposeMode? = nil) {
+            self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
+            self.originalMessage = om
+            self.prefilledTo = om == nil ? prefilledTo : nil
+        }
     }
 }
 
@@ -83,8 +142,17 @@ extension ComposeViewModel {
 extension ComposeViewModel {
     /// Wraps bookholding properties
     struct ComposeViewModelState {
+        public let initData: ComposeViewModel.InitData
         fileprivate var isValidatedForSending = false
         public fileprivate(set) var edited = false
+
+        init(withPrefilledToRecipient prefilledTo: Identity? = nil,
+             orForOriginalMessage om: Message? = nil,
+             composeMode: ComposeUtil.ComposeMode? = nil) {
+            initData = InitData(withPrefilledToRecipient: prefilledTo,
+                                orForOriginalMessage: om,
+                                composeMode: composeMode)
+        }
     }
 
     private func updateState() {

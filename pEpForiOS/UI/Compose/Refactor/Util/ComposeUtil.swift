@@ -103,7 +103,7 @@ struct ComposeUtil {
                     om.parent.folderType == .outbox  {
                 return om.from
             }
-            return Account.defaultAccount()?.user
+            return Account.defaultAccount()?.user  //IOS-1369: bug: default only in unified inbox (?)
         }
     }
 }

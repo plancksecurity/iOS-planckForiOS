@@ -1471,6 +1471,7 @@
 		1571B46C2167646300D59DAD /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				150707D920FFC31E00AA213F /* ComposeUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2139,7 +2140,6 @@
 				15C5F2451F823752007DE086 /* SortedSet.swift */,
 				15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */,
 				155050EF1FE82356009CEAD2 /* UserNotificationTool.swift */,
-				150707D920FFC31E00AA213F /* ComposeUtil.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
