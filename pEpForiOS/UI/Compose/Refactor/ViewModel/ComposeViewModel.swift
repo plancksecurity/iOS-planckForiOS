@@ -171,6 +171,7 @@ extension ComposeViewModel {
         let before = state.isValidatedForSending
         //IOS-1369: unimplemented stub") //IOS-1369:
         //TODO: validate!
+        state.isValidatedForSending = !state.isValidatedForSending 
         if before != state.isValidatedForSending {
             delegate?.validatedStateChanged(to: state.isValidatedForSending)
         }
