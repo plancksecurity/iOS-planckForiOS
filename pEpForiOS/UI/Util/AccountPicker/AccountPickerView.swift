@@ -17,6 +17,8 @@ class AccountPickerView: UIPickerView {
     }
 }
 
+// MARK: - UIPickerViewDelegate
+
 extension AccountPickerView: UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
