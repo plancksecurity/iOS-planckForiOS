@@ -54,6 +54,20 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(emailListVM.rowCount, 0)
     }
 
+    func testLastLookAtIsUpdated(){
+        setupViewModel()
+
+        emailListVM.updateLastLookAt()
+
+        let lastLookAtBeforeUpdate: Date = getSafeLastLookAt()
+        emailListVM.updateLastLookAt()
+        let lastLookAtAfterUpdate: Date = getSafeLastLookAt()
+
+        //Check dates are diferent and after is greater than before. 
+        let comparison = lastLookAtBeforeUpdate.compare(lastLookAtAfterUpdate)
+        XCTAssertEqual(comparison, ComparisonResult.orderedAscending)
+    }
+
     //mark: Search section
 
     func testSetSearchFilterWith0results() {
@@ -367,6 +381,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         }
         return msg
     }
+
+    fileprivate func getSafeLastLookAt() -> Date {
+        guard let safeLastLookedAt = folder?.lastLookedAt as Date? else {
+            XCTFail()
+            return Date()
+        }
+        return safeLastLookedAt
+    }
 }
 
 class TestMasterViewController: EmailListViewModelDelegate {
@@ -488,4 +510,3 @@ class TestDetailsViewController {
         self.emailDisplayDelegate.emailDisplayDidUnflag(message: message)
     }
 }
-

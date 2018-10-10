@@ -98,6 +98,10 @@ class EmailListViewModel {
         resetViewModel()
         
     }
+
+    func updateLastLookAt() {
+        folderToShow.updateLastLookAt()
+    }
     
     //check if there are some important settings that have changed to force a reload
     func checkIfSettingsChanged() -> Bool {

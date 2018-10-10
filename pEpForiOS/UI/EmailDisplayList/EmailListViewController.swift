@@ -15,13 +15,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     var folderToShow: Folder?
 
-    func updateLastLookAt() {
-        guard let saveFolder = folderToShow else {
-            return
-        }
-        saveFolder.updateLastLookAt()
-    }
-
     var model: EmailListViewModel?
 
     public static let storyboardId = "EmailListViewController"
@@ -67,10 +60,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         setUpTextFilter()
         // Mark this folder as having been looked at by the user
-        updateLastLookAt()
 
         if let vm = model {
             updateFilterButtonView()
+            vm.updateLastLookAt()
             if vm.checkIfSettingsChanged() {
                 settingsChanged()
             }
