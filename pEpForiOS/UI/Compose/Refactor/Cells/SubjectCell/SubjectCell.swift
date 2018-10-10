@@ -19,13 +19,13 @@ class SubjectCell: TextViewContainingTableViewCell {
     public func setup(with viewModel: SubjectCellViewModel) {
         self.viewModel = viewModel
         if viewModel.content != nil {
-            self.textView.attributedText = viewModel.content
+            self.textView.text = viewModel.content
         }
     }
 }
 
 extension SubjectCell: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        viewModel?.handleTextChanged(to: textView.attributedText)
+        viewModel?.handleTextChanged(to: textView.text)
     }
 }

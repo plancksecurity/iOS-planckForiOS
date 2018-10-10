@@ -17,15 +17,16 @@ class SubjectCellViewModel: CellViewModel {
     public let title = NSLocalizedString("Subject:",
                                          comment:
         "Title of subject field when composing a message")
-    public var content: NSMutableAttributedString?
+    public var content: String?
+
     public weak var resultDelegate: SubjectCellViewModelResultDelegate?
 
     init(resultDelegate: SubjectCellViewModelResultDelegate) {
         self.resultDelegate = resultDelegate
     }
 
-    public func handleTextChanged(to text: NSAttributedString) {
-        content = NSMutableAttributedString(attributedString: text)
+    public func handleTextChanged(to text: String) {
+        content = text
         resultDelegate?.SubjectCellViewModelDidChangeSubject(self)
     }
 }
