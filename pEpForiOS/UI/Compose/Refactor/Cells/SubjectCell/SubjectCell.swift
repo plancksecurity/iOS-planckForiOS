@@ -12,10 +12,6 @@ class SubjectCell: TextViewContainingTableViewCell {
     static let reuseId = "SubjectCell"
     var viewModel: SubjectCellViewModel?
 
-    override func awakeFromNib() {
-        textView.delegate = self
-    }
-
     public func setup(with viewModel: SubjectCellViewModel) {
         self.viewModel = viewModel
         if viewModel.content != nil {
@@ -24,7 +20,9 @@ class SubjectCell: TextViewContainingTableViewCell {
     }
 }
 
-extension SubjectCell: UITextViewDelegate {
+// MARK: - UITextViewDelegate
+
+extension SubjectCell {
     func textViewDidChange(_ textView: UITextView) {
         viewModel?.handleTextChanged(to: textView.text)
     }

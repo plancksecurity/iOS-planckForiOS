@@ -13,6 +13,11 @@ protocol TextViewContainingTableViewCellProtocol {
     var textView: UITextView! { get set }
 }
 
-class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableViewCellProtocol {
+class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableViewCellProtocol, UITextViewDelegate {
     @IBOutlet weak public var textView: UITextView!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        textView.delegate = self
+    }
 }

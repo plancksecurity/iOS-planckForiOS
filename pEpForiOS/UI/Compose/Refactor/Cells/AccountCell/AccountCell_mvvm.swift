@@ -8,7 +8,7 @@
 
 import UIKit
 
-//IOS-1369: rename and get rid of other
+//IOS-1369: rename and get rid of the other
 class AccountCell_mvvm: TextViewContainingTableViewCell {
     static let reuseId = "AccountCell_mvvm"
     var viewModel: AccountCellViewModel?
@@ -18,5 +18,14 @@ class AccountCell_mvvm: TextViewContainingTableViewCell {
         if viewModel.content != nil {
             self.textView.text = viewModel.content
         }
+    }
+}
+
+// MARK: - UITextViewDelegate
+
+extension AccountCell_mvvm {
+    func textViewDidChange(_ textView: UITextView) {
+        //IOS-1369. TODO
+//        viewModel?.handleTextChanged(to: textView.text)
     }
 }
