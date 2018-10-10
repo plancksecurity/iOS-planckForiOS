@@ -85,7 +85,7 @@ class EmailListViewModel {
     
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
-         folderToShow: Folder) {
+         folderToShow: Folder = UnifiedInbox()) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
