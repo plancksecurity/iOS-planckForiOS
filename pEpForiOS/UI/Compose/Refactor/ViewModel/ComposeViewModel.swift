@@ -162,7 +162,7 @@ extension ComposeViewModel {
         }
     }
 
-    private func updateState() {
+    private func updateStateAfterUserChangedContent() {
         state.edited = true
         validateInput()
     }
@@ -276,6 +276,6 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             return
         }
         delegate?.contentChanged(inCellAt: idxPath)
-        updateState()
+        updateStateAfterUserChangedContent()
     }
 }
