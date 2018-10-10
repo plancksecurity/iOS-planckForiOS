@@ -15,11 +15,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     var folderToShow: Folder?
 
-    var model: EmailListViewModel?{
-        didSet {
-            model?.emailListViewModelDelegate = self
-        }
-    }
+    var model: EmailListViewModel?
 
     public static let storyboardId = "EmailListViewController"
     private var lastSelectedIndexPath: IndexPath?
@@ -91,7 +87,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             }
             model?.screenComposer =  screenComposer
         }
-        model?.reloadData()
     }
 
     private func setup() {
@@ -99,8 +94,17 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
             return
+        } else if folderToShow == nil {
+            // We have not been created to show a specific folder, thus we show unified inbox
+            folderToShow = UnifiedInbox()
+            resetModel()
+        } else if model == nil {
+            // We still got no model, because:
+            // - We are not coming back from a pushed view (for instance ComposeEmailView)
+            // - We are not a UnifiedInbox
+            // So we have been created to show a specific folder. Show it!
+            resetModel()
         }
-        model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
 
         title = folderToShow?.localizedName
         let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),

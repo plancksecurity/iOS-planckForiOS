@@ -175,11 +175,9 @@ class FolderTableViewController: BaseTableViewController {
                     return
         }
         vc.appConfig = appConfig
-        let emailListViewModel =
-            folderVM?.createEmailListViewModel(forAccountAt: indexPath?.section,
-                                               andFolderAt: indexPath?.row,
-                                               messageSyncService: appConfig.messageSyncService)
-        vc.model = emailListViewModel
+        if let vm = folderVM, let ip = indexPath {
+            vc.folderToShow = vm[ip.section][ip.row].folder
+        }
         vc.hidesBottomBarWhenPushed = false
 
         let animated =  showNext ? false : true
