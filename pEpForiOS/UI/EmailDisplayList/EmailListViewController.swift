@@ -80,20 +80,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Setup
 
-   /* private func resetModel() {
-        if let theFolder = folderToShow {
-            model = EmailListViewModel(emailListViewModelDelegate: self,
-                                       messageSyncService: appConfig.messageSyncService,
-                                       folderToShow: theFolder)
-
-            guard let screenComposer = splitViewController as? ScreenComposerProtocol else {
-                return
-            }
-            model?.screenComposer =  screenComposer
-        }
-        model?.reloadData()
-    }*/
-
     private func setup() {
         if noAccountsExist() {
             // No account exists. Show account setup.
@@ -104,7 +90,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
         }
 
-        title = folderToShow?.localizedName
+        title = model?.getFolderName()
         let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
                                                 target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(

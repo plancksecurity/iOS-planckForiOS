@@ -102,6 +102,10 @@ class EmailListViewModel {
     func updateLastLookAt() {
         folderToShow.updateLastLookAt()
     }
+
+    func getFolderName() -> String {
+        return folderToShow.localizedName
+    }
     
     //check if there are some important settings that have changed to force a reload
     func checkIfSettingsChanged() -> Bool {

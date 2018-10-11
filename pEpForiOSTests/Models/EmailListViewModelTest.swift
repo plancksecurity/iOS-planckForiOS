@@ -68,6 +68,11 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(comparison, ComparisonResult.orderedAscending)
     }
 
+    func testGetFolderName() {
+        setupViewModel()
+        XCTAssertEqual(folder.localizedName, emailListVM.getFolderName())
+    }
+
     //mark: Search section
 
     func testSetSearchFilterWith0results() {
