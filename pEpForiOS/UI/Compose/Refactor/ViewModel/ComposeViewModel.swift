@@ -204,7 +204,7 @@ extension ComposeViewModel {
                 //                rows.append(RecipientFieldViewModel(type: .to))
                 //                rows.append(RecipientFieldViewModel(type: .wraped))
             case .account:
-                rows.append(AccountCellViewModel())
+                rows.append(AccountCellViewModel(resultDelegate: cellVmDelegate))
             case .subject:
                 let rowModel = SubjectCellViewModel(resultDelegate: cellVmDelegate)
                 if let subject = initData?.subject {
@@ -261,6 +261,17 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
     func suggestViewModelDidSelectContact(identity: Identity) {
         //IOS-1369:
         //TODO:
+    }
+}
+
+// MARK: - Cell-ViewModels
+
+// MARK: - AccountCellViewModelResultDelegate
+
+extension ComposeViewModel: AccountCellViewModelResultDelegate {
+    func accountChanged(newAccount: Account) {
+        //IOS-1369: TODO
+        print("newAccount: \(newAccount)")
     }
 }
 

@@ -9,17 +9,25 @@
 import UIKit
 
 class AccountPickerView: UIPickerView {
-    private var viewModel = AccountPickerViewModel()
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        delegate = self
+    public var viewModel = AccountPickerViewModel() {
+        didSet {
+            dataSource = self
+            delegate = self
+        }
     }
 }
 
 // MARK: - UIPickerViewDelegate
 
 extension AccountPickerView: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        viewModel.handleUserSelected(row: row)
+    }
+}
+
+// MARK: - UIPickerViewDataSource
+
+extension AccountPickerView: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
@@ -31,9 +39,5 @@ extension AccountPickerView: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int,
                     forComponent component: Int) -> String? {
         return viewModel.account(at: row)
-    }
-
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        viewModel.handleUserSelected(row: row)
     }
 }

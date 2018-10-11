@@ -9,7 +9,7 @@
 import MessageModel
 
 protocol AccountPickerViewModelResultDelegate: class {
-    func SubjectCellViewModelDidChangeSubject(_ subjectCellViewModel: SubjectCellViewModel)
+    func accountPickerViewModel(_ vm: AccountPickerViewModel, didSelect account: Account)
 }
 
 class AccountPickerViewModel {
@@ -17,7 +17,7 @@ class AccountPickerViewModel {
 
     lazy public private(set) var content = accounts.map { $0.user.address }
     public var numAccounts: Int {
-        return content.count
+        return accounts.count
     }
 
     public weak var resultDelegate: AccountPickerViewModelResultDelegate?
@@ -31,6 +31,6 @@ class AccountPickerViewModel {
     }
 
     public func handleUserSelected(row: Int) {
-        fatalError("unimplemented stub")
+        resultDelegate?.accountPickerViewModel(self, didSelect: accounts[row])
     }
 }
