@@ -80,7 +80,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Setup
 
-    private func resetModel() {
+   /* private func resetModel() {
         if let theFolder = folderToShow {
             model = EmailListViewModel(emailListViewModelDelegate: self,
                                        messageSyncService: appConfig.messageSyncService,
@@ -92,7 +92,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             model?.screenComposer =  screenComposer
         }
         model?.reloadData()
-    }
+    }*/
 
     private func setup() {
         if noAccountsExist() {
@@ -100,7 +100,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
             return
         }
-        model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
+        if (model == nil) {
+            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
+        }
 
         title = folderToShow?.localizedName
         let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
@@ -1009,8 +1011,7 @@ extension EmailListViewController {
      Enables manual account setup to unwind to the unified inbox.
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
-        folderToShow = UnifiedInbox()
-        resetModel()
+        setup()
     }
 }
 

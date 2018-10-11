@@ -125,7 +125,6 @@ class EmailListViewModel {
         self.stopListeningToChanges()
 
         queue.cancelAllOperations()
-
         let op = BlockOperation()
         weak var weakOp = op
         op.addExecutionBlock { [weak self] in

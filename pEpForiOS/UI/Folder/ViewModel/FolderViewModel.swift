@@ -46,7 +46,7 @@ public class FolderViewModel {
                                   messageSyncService: MessageSyncServiceProtocol)
         -> EmailListViewModel {
             guard let safeAccountIndex = accountIndex,
-                let safeFolderIndex = accountIndex else {
+                let safeFolderIndex = folderIndex else {
                     return EmailListViewModel(messageSyncService: messageSyncService)
             }
             return EmailListViewModel(messageSyncService: messageSyncService,
