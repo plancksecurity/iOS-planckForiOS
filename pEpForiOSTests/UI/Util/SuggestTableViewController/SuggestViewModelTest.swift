@@ -172,53 +172,59 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
     }
 }
 
-// MARK: - SuggestViewModelDelegate
+// MARK: - SuggestViewModelResultDelegate
 
-class TestViewModelDelegate: SuggestViewModelDelegate {
-    let shouldCallDidReset: Bool
-    let expectationDidResetCalled: XCTestExpectation?
+extension SuggestViewModelTest {
 
-    init(shouldCallDidReset: Bool = true,
-         expectationDidResetCalled: XCTestExpectation? = nil) {
-        self.shouldCallDidReset = shouldCallDidReset
-        self.expectationDidResetCalled = expectationDidResetCalled
-    }
+    class TestResultDelegate: SuggestViewModelResultDelegate {
+        let shouldCallDidSelectContact: Bool
+        let expectedSelection: Identity?
+        let expectationDidSelectCalled: XCTestExpectation?
 
-    //  SuggestViewModelDelegate
-
-    func suggestViewModelDidResetModel() {
-        guard shouldCallDidReset else {
-            XCTFail("Should not be called")
-            return
+        init(shouldCallDidSelectContact: Bool = true,
+             expectedSelection: Identity? = nil,
+             expectationDidSelectCalled: XCTestExpectation? = nil) {
+            self.shouldCallDidSelectContact = shouldCallDidSelectContact
+            self.expectedSelection = expectedSelection
+            self.expectationDidSelectCalled = expectationDidSelectCalled
         }
-        expectationDidResetCalled?.fulfill()
+
+        // SuggestViewModelResultDelegate
+
+        func suggestViewModelDidSelectContact(identity: Identity) {
+            guard shouldCallDidSelectContact else {
+                XCTFail("Should not be called")
+                return
+            }
+            expectationDidSelectCalled?.fulfill()
+            XCTAssertEqual(expectedSelection?.address.lowercased(),
+                           identity.address.lowercased())
+        }
     }
 }
 
-// MARK: - SuggestViewModelResultDelegate
+// MARK: - SuggestViewModelDelegate
 
-class TestResultDelegate: SuggestViewModelResultDelegate {
-    let shouldCallDidSelectContact: Bool
-    let expectedSelection: Identity?
-    let expectationDidSelectCalled: XCTestExpectation?
+extension SuggestViewModelTest {
 
-    init(shouldCallDidSelectContact: Bool = true,
-         expectedSelection: Identity? = nil,
-         expectationDidSelectCalled: XCTestExpectation? = nil) {
-        self.shouldCallDidSelectContact = shouldCallDidSelectContact
-        self.expectedSelection = expectedSelection
-        self.expectationDidSelectCalled = expectationDidSelectCalled
-    }
+    class TestViewModelDelegate: SuggestViewModelDelegate {
+        let shouldCallDidReset: Bool
+        let expectationDidResetCalled: XCTestExpectation?
 
-    // SuggestViewModelResultDelegate
-
-    func suggestViewModelDidSelectContact(identity: Identity) {
-        guard shouldCallDidSelectContact else {
-            XCTFail("Should not be called")
-            return
+        init(shouldCallDidReset: Bool = true,
+             expectationDidResetCalled: XCTestExpectation? = nil) {
+            self.shouldCallDidReset = shouldCallDidReset
+            self.expectationDidResetCalled = expectationDidResetCalled
         }
-        expectationDidSelectCalled?.fulfill()
-        XCTAssertEqual(expectedSelection?.address.lowercased(),
-                       identity.address.lowercased())
+
+        //  SuggestViewModelDelegate
+
+        func suggestViewModelDidResetModel() {
+            guard shouldCallDidReset else {
+                XCTFail("Should not be called")
+                return
+            }
+            expectationDidResetCalled?.fulfill()
+        }
     }
 }
