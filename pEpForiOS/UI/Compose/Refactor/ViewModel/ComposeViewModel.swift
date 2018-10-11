@@ -153,6 +153,16 @@ extension ComposeViewModel {
         public fileprivate(set) var edited = false
         var isValidatedForSending = false
 
+        //Recipients
+        var toRecipients = [Identity]()
+        var ccRecipients = [Identity]()
+        var bccRecipients = [Identity]()
+
+        var from: Identity? = nil
+        var subject = ""
+        var body = ""
+        var attachments = [Attachment]()
+
         init(withPrefilledToRecipient prefilledTo: Identity? = nil,
              orForOriginalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
@@ -275,9 +285,16 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
 // MARK: - AccountCellViewModelResultDelegate
 
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
-    func accountChanged(newAccount: Account) {
-        //IOS-1369: TODO
-        print("newAccount: \(newAccount.user.address)")
+    func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {
+        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
+        guard let idxPath = indexPath(for: vm) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We got called by a non-existing VM?")
+            return
+        }
+        state.from = account.user
+        delegate?.contentChanged(inCellAt: idxPath)
+        updateStateAfterUserChangedContent()
     }
 }
 
@@ -286,12 +303,13 @@ extension ComposeViewModel: AccountCellViewModelResultDelegate {
 extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 
     func SubjectCellViewModelDidChangeSubject(_ subjectCellViewModel: SubjectCellViewModel) {
-        //IOS-1369: YAGNI
+        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
         guard let idxPath = indexPath(for: subjectCellViewModel) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We got called by a non-existing VM?")
             return
         }
+        state.subject = subjectCellViewModel.content ?? ""
         delegate?.contentChanged(inCellAt: idxPath)
         updateStateAfterUserChangedContent()
     }

@@ -9,7 +9,7 @@
 import MessageModel
 
 protocol AccountCellViewModelResultDelegate: class {
-    func accountChanged(newAccount: Account)
+    func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account)
 }
 
 protocol AccountCellViewModelDelegate: class {
@@ -46,6 +46,6 @@ extension AccountCellViewModel: AccountPickerViewModelResultDelegate {
     func accountPickerViewModel(_ vm: AccountPickerViewModel, didSelect account: Account) {
         selectedAccount = account
         delegate?.accountChanged(newValue: account.user.address)
-        resultDelegate?.accountChanged(newAccount: account)
+        resultDelegate?.accountCellViewModel(self, accountChangedTo: account)
     }
 }
