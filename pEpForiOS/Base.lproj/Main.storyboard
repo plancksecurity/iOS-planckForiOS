@@ -746,7 +746,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="NTc-GH-Ell" firstAttribute="top" secondItem="XSz-Mv-3Ch" secondAttribute="top" constant="8" id="UKB-Ix-wGQ"/>
-                                                <constraint firstAttribute="height" priority="500" constant="57.5" id="fB8-NA-VHp"/>
+                                                <constraint firstAttribute="height" priority="500" constant="20" id="fB8-NA-VHp"/>
                                             </constraints>
                                         </stackView>
                                     </subviews>
@@ -786,36 +786,41 @@
                                     <outlet property="textView" destination="rdT-E5-6x9" id="4EG-Ab-7Gm"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AccountCell_mvvm" rowHeight="58" id="38V-GT-YCW" userLabel="AccountCell" customClass="AccountCell_mvvm" customModule="pEpForiOS" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountCell_mvvm" rowHeight="58" id="38V-GT-YCW" userLabel="AccountCell" customClass="AccountCell_mvvm" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="404" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="38V-GT-YCW" id="tFc-q8-Uuy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="57.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkd-ua-DYh">
-                                            <rect key="frame" x="8" y="17" width="42" height="20"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
-                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Yc-bK-xf6">
-                                            <rect key="frame" x="57.5" y="10" width="308.5" height="30"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="firstBaseline" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qEF-lG-eaS">
+                                            <rect key="frame" x="8" y="0.0" width="367" height="57.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkd-ua-DYh">
+                                                    <rect key="frame" x="0.0" y="8" width="42" height="19.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text=" " textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Yc-bK-xf6">
+                                                    <rect key="frame" x="42" y="-1" width="325" height="38"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES"/>
+                                                </textView>
+                                            </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="30" id="zjA-xk-AzV"/>
+                                                <constraint firstItem="pkd-ua-DYh" firstAttribute="top" secondItem="qEF-lG-eaS" secondAttribute="top" constant="8" id="LGW-op-DyC"/>
+                                                <constraint firstAttribute="height" priority="500" constant="20" id="oiS-Hi-1fE"/>
                                             </constraints>
-                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" enablesReturnKeyAutomatically="YES"/>
-                                        </textView>
+                                        </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="1Yc-bK-xf6" firstAttribute="leading" secondItem="pkd-ua-DYh" secondAttribute="trailing" constant="7.5" id="2UQ-df-zdQ"/>
-                                        <constraint firstItem="pkd-ua-DYh" firstAttribute="top" secondItem="tFc-q8-Uuy" secondAttribute="top" constant="17" id="MMa-Xl-5tR"/>
-                                        <constraint firstItem="pkd-ua-DYh" firstAttribute="leading" secondItem="tFc-q8-Uuy" secondAttribute="leading" constant="8" id="SHB-kZ-YFt"/>
-                                        <constraint firstAttribute="trailing" secondItem="1Yc-bK-xf6" secondAttribute="trailing" constant="9" id="SPZ-h9-yjD"/>
-                                        <constraint firstItem="1Yc-bK-xf6" firstAttribute="top" secondItem="tFc-q8-Uuy" secondAttribute="top" constant="10" id="dw8-ci-cKq"/>
+                                        <constraint firstItem="qEF-lG-eaS" firstAttribute="top" secondItem="tFc-q8-Uuy" secondAttribute="top" id="Ngf-u5-kXg"/>
+                                        <constraint firstAttribute="trailing" secondItem="qEF-lG-eaS" secondAttribute="trailing" id="s8p-ai-2xG"/>
+                                        <constraint firstAttribute="bottom" secondItem="qEF-lG-eaS" secondAttribute="bottom" id="z82-IA-LZv"/>
+                                        <constraint firstItem="qEF-lG-eaS" firstAttribute="leading" secondItem="tFc-q8-Uuy" secondAttribute="leading" constant="8" id="zlo-2t-1iL"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
