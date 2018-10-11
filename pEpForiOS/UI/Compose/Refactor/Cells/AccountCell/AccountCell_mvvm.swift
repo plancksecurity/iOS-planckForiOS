@@ -47,12 +47,3 @@ extension AccountCell_mvvm: AccountCellViewModelDelegate {
         textView.text = newValue
     }
 }
-
-// MARK: - UITextViewDelegate
-
-extension AccountCell_mvvm {
-    func textViewDidChange(_ textView: UITextView) {
-        //IOS-1369. TODO
-//        viewModel?.handleTextChanged(to: textView.text)
-    }
-}
