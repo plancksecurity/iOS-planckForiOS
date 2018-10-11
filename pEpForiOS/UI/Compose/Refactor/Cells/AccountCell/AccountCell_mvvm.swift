@@ -14,6 +14,8 @@ class AccountCell_mvvm: TextViewContainingTableViewCell {
     private var viewModel: AccountCellViewModel? {
         didSet {
             viewModel?.delegate = self
+            textView.text = viewModel?.displayAccount
+
         }
     }
     private var picker: AccountPickerView?
@@ -53,6 +55,4 @@ extension AccountCell_mvvm {
         //IOS-1369. TODO
 //        viewModel?.handleTextChanged(to: textView.text)
     }
-
- 
 }

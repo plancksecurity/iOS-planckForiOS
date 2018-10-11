@@ -25,10 +25,14 @@ class AccountCellViewModel: CellViewModel {
     weak public var resultDelegate: AccountCellViewModelResultDelegate?
     weak public var delegate: AccountCellViewModelDelegate?
 
-    public private(set) var selectedAccount: Account?
+    private var selectedAccount: Account?
+    public var displayAccount: String? {
+        return selectedAccount?.user.address
+    }
 
-    init(resultDelegate: AccountCellViewModelResultDelegate) {
+    init(resultDelegate: AccountCellViewModelResultDelegate, initialAccount: Account? = nil) {
         self.resultDelegate = resultDelegate
+        selectedAccount = initialAccount
     }
 
     public var accountPickerViewModel: AccountPickerViewModel {
