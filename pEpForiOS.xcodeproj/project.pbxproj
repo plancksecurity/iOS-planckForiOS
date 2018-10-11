@@ -503,6 +503,7 @@
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
 		490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA62100EAD500E8579C /* SelfDismissable.swift */; };
 		490CEBA921020BF900E8579C /* LoginViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA821020BF900E8579C /* LoginViewController+Keyboard.swift */; };
+		491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */; };
 		4918EBFC1E783C70006207FC /* CdMessage+PantomimeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */; };
 		491B656220CFE0FD00C2ADDA /* Thread.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 491B656020CFE0FD00C2ADDA /* Thread.storyboard */; };
 		49228A5320D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49228A5220D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift */; };
@@ -1114,6 +1115,7 @@
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
 		490CEBA62100EAD500E8579C /* SelfDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfDismissable.swift; sourceTree = "<group>"; };
 		490CEBA821020BF900E8579C /* LoginViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Keyboard.swift"; sourceTree = "<group>"; };
+		491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModelTests.swift; sourceTree = "<group>"; };
 		4918EBFA1E783C70006207FC /* CdMessage+PantomimeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdMessage+PantomimeTest.swift"; sourceTree = "<group>"; };
 		491B656120CFE0FD00C2ADDA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Thread.storyboard; sourceTree = "<group>"; };
 		49228A5220D3D29900A51E9D /* ThreadViewController+SegueHandlerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreadViewController+SegueHandlerType.swift"; sourceTree = "<group>"; };
@@ -2418,6 +2420,7 @@
 				4335002D212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift */,
 				00DF2C3A2164C53F004EBA6C /* FolderViewModelTest.swift */,
 				43EC75B42164F19B00048CFE /* SetOwnKeyViewModelTests.swift */,
+				491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3399,6 +3402,7 @@
 				151F7201202A06760057C74D /* CdAccount+TestUtils.swift in Sources */,
 				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
 				4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */,
+				491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */,
 				438BA0F5214F89CD001A4A82 /* MailParsingTests.swift in Sources */,
 				15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */,
 				431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */,
