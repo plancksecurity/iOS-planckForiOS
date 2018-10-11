@@ -191,6 +191,8 @@
 		15D2A59821651313003711BA /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D2A59721651312003711BA /* ComposeTableViewController.swift */; };
 		15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D43999216E697700EB3933 /* AccountPickerView.swift */; };
 		15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */; };
+		15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */; };
+		15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A6216FB77600EB3933 /* UnitTestUtils.swift */; };
 		15DD3F75211EC68D00A8714D /* DecryptMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */; };
 		15EBE43B20E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */; };
 		15EBE43E20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */; };
@@ -773,6 +775,8 @@
 		15D2A59721651312003711BA /* ComposeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
 		15D43999216E697700EB3933 /* AccountPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerView.swift; sourceTree = "<group>"; };
 		15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerViewModel.swift; sourceTree = "<group>"; };
+		15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerViewModelTest.swift; sourceTree = "<group>"; };
+		15D439A6216FB77600EB3933 /* UnitTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestUtils.swift; sourceTree = "<group>"; };
 		15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptMessageOperation.swift; sourceTree = "<group>"; };
 		15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc; sourceTree = "<group>"; };
 		15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc; sourceTree = "<group>"; };
@@ -1245,6 +1249,7 @@
 		150707DD21006D0200AA213F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				15D4399D216F703100EB3933 /* Compose */,
 				150707DE21006D0C00AA213F /* MessageThreading */,
 				4356FFEA21356CB600804089 /* Util */,
 			);
@@ -1303,6 +1308,7 @@
 				151F71F5202A06750057C74D /* TestUtil.swift */,
 				43EC75B22164E97800048CFE /* DecryptionUtil.swift */,
 				437795C72154D6FD00CC62C2 /* PEPMessage+TestExtension.swift */,
+				15D439A6216FB77600EB3933 /* UnitTestUtils.swift */,
 			);
 			path = TestUtils;
 			sourceTree = "<group>";
@@ -1686,6 +1692,21 @@
 			path = AccountPicker;
 			sourceTree = "<group>";
 		};
+		15D4399D216F703100EB3933 /* Compose */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Compose;
+			sourceTree = "<group>";
+		};
+		15D439A1216F7DCA00EB3933 /* AccountPickerViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */,
+			);
+			path = AccountPickerViewModel;
+			sourceTree = "<group>";
+		};
 		15F0F7AB21359372002BE853 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -1940,6 +1961,7 @@
 		4356FFEA21356CB600804089 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				15D439A1216F7DCA00EB3933 /* AccountPickerViewModel */,
 				1526597B2163772C006A78DF /* SuggestTableViewController */,
 				4356FFEB21356CB600804089 /* ReplyAllPossibleCheckerTest.swift */,
 			);
@@ -3458,6 +3480,7 @@
 				43F7F07A1F6AD44600BDF151 /* HandshakeTests.swift in Sources */,
 				1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */,
 				150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */,
+				15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
 				4335002E212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift in Sources */,
 				4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */,
@@ -3466,6 +3489,7 @@
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
 				43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */,
+				15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */,
 				1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */,
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
 				43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */,
