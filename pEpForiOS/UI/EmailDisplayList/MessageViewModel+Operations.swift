@@ -13,7 +13,7 @@ extension MessageViewModel {
 
     func getMessageCountOperation(completion: @escaping (Int)->()) -> SelfReferencingOperation {
        
-        let prefetchOperation = SelfReferencingOperation {  [weak self] operation in
+        let getMessageCountOperation = SelfReferencingOperation {  [weak self] operation in
             guard let me = self else {
                 return
             }
@@ -33,12 +33,12 @@ extension MessageViewModel {
                 }
             }
         }
-        return prefetchOperation
+        return getMessageCountOperation
     }
 
     func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
 
-        let prefetchOperation = SelfReferencingOperation {operation in
+        let getBodyPeekOperation = SelfReferencingOperation {operation in
             guard
                 let operation = operation,
                 !operation.isCancelled else {
@@ -57,12 +57,12 @@ extension MessageViewModel {
                 }
             }
         }
-        return prefetchOperation
+        return getBodyPeekOperation
     }
 
     func getSecurityBadgeOperation(
         completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
-        let prefetchOperation = SelfReferencingOperation { [weak self] operation in
+        let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
             guard let me = self else {
                 return
             }
@@ -79,7 +79,7 @@ extension MessageViewModel {
                 }
             }
         }
-        return prefetchOperation
+        return getSecurityBadgeOperation
     }
 
 }

@@ -107,11 +107,11 @@ class MessageViewModel: CustomDebugStringConvertible {
         cancelLoad()
     }
 
-    func cancelLoad() {
+    private func cancelLoad() {
         queue.cancelAllOperations()
     }
 
-    func setBodyPeek(for message:Message) {
+    private func setBodyPeek(for message:Message) {
         if let bodyPeek = internalBoddyPeek {
            self.bodyPeek = bodyPeek
         } else {
@@ -124,7 +124,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
     }
 
-    func informIfBodyPeekCompleted() {
+    private func informIfBodyPeekCompleted() {
         guard let bodyPeek = bodyPeek else {
             return
         }
