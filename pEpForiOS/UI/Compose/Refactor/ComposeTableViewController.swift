@@ -180,21 +180,19 @@ extension ComposeTableViewController {
 
         var result: UITableViewCell?
         let section = vm.sections[indexPath.section]
-/*
-        if section.type == .recipients { //IOS-1369: inherit from TitleAndTextViewCell
+
+        if section.type == .recipients {
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: RecipientCell.reuseId)
                     as? RecipientCell,
-                let rowVm = section.rows[indexPath.row] as? RecipientFieldViewModel
+                let rowVm = section.rows[indexPath.row] as? RecipientCellViewModel
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
             }
-            cell.titleLabel.text = rowVm.title
             cell.textView.attributedText = rowVm.content
             result = cell
-        } else */
-        if section.type == .account {
+        } else if section.type == .account {
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: AccountCell_mvvm.reuseId)
                     as? AccountCell_mvvm,

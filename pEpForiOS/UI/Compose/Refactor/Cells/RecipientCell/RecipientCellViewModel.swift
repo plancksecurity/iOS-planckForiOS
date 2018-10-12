@@ -18,8 +18,9 @@ class RecipientCellViewModel: CellViewModel {
     public let type: FieldType
     private var recipients = [Identity]()
 
-    init(type: FieldType) {
+    init(type: FieldType, recipients: [Identity] = []) {
         self.type = type
+        self.recipients = recipients
         self.title = type.localizedTitle()
     }
 }

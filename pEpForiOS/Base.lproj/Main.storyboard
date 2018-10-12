@@ -692,20 +692,21 @@
                                             <rect key="frame" x="8" y="0.0" width="367" height="57.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="To:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bd2-Nr-sTF">
-                                                    <rect key="frame" x="0.0" y="9" width="22" height="19.5"/>
+                                                    <rect key="frame" x="0.0" y="8" width="22" height="19.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text=" " adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nS-8y-LLg">
-                                                    <rect key="frame" x="22" y="0.0" width="345" height="38"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text=" " adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nS-8y-LLg" userLabel="RecipientTextView" customClass="RecipientTextView" customModule="pEpForiOSTests">
+                                                    <rect key="frame" x="22" y="-1" width="345" height="38"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                                 </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="4nS-8y-LLg" firstAttribute="top" secondItem="XHB-or-DzF" secondAttribute="top" priority="750" id="MJr-au-dq6"/>
+                                                <constraint firstItem="Bd2-Nr-sTF" firstAttribute="top" secondItem="XHB-or-DzF" secondAttribute="top" constant="8" id="H1n-iz-t08"/>
+                                                <constraint firstAttribute="height" priority="500" constant="20" id="Jw9-iW-SoD"/>
                                             </constraints>
                                         </stackView>
                                     </subviews>
@@ -718,7 +719,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="textView" destination="4nS-8y-LLg" id="J3V-Sh-V5D"/>
-                                    <outlet property="titleLabel" destination="Bd2-Nr-sTF" id="WoI-jq-9H9"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SubjectCell" rowHeight="58" id="mAI-2I-ayV" customClass="SubjectCell" customModule="pEpForiOS" customModuleProvider="target">
