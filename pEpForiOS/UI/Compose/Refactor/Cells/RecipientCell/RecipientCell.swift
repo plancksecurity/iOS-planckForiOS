@@ -15,14 +15,7 @@ class RecipientCell: UITableViewCell {
 
     public func setup(with viewModel: RecipientCellViewModel) {
         self.viewModel = viewModel
-        //TODO: recipientTextView
-    }
-}
-
-// MARK: - UITextViewDelegate
-
-extension RecipientCell {
-    func textViewDidChange(_ textView: UITextView) {
-        //IOS
+        recipientTextView.viewModel = self.viewModel?.recipientTextViewModel()
+        //TODO: recipientTextView initial recipients
     }
 }

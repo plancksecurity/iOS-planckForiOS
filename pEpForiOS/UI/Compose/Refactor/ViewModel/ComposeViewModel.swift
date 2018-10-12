@@ -283,8 +283,8 @@ extension ComposeViewModel {
             rows = [CellViewModel]()
             switch type {
             case .recipients:
-                rows.append(RecipientCellViewModel(type: .to))
-                rows.append(RecipientCellViewModel(type: .wraped))
+                rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .to))
+                rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .wraped))
             case .account:
                 var fromAccount: Account? = nil
                 if let fromIdentity = state?.from {
@@ -354,6 +354,40 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
 
 // MARK: - Cell-ViewModels
 
+// MARK: - RecipientCellViewModelResultDelegate
+
+extension ComposeViewModel: RecipientCellViewModelResultDelegate {
+    func recipientCellViewModel(_ vm: RecipientCellViewModel,
+                                didChangeRecipients newRecipients: [Identity]) {
+        //IOS-1369: handle!
+        print("newRecipients: \(newRecipients)")
+        switch vm.type {
+        case .to:
+            state.toRecipients = newRecipients
+        case .cc:
+            state.ccRecipients = newRecipients
+        case .bcc:
+            state.bccRecipients = newRecipients
+        case .wraped:
+            //IOS-1369: handle wrapped. Maybe specialize recipientCell/VM with dead impl?
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Wraped cellVM should never have recipients")
+            break
+        }
+    }
+
+    func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
+        //IOS-1369: handle!
+        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
+        guard let idxPath = indexPath(for: vm) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We got called by a non-existing VM?")
+            return
+        }
+        delegate?.contentChanged(inCellAt: idxPath)
+    }
+}
+
 // MARK: - AccountCellViewModelResultDelegate
 
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
@@ -373,14 +407,14 @@ extension ComposeViewModel: AccountCellViewModelResultDelegate {
 
 extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 
-    func subjectCellViewModelDidChangeSubject(_ subjectCellViewModel: SubjectCellViewModel) {
+    func subjectCellViewModelDidChangeSubject(_ vm: SubjectCellViewModel) {
         //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
-        guard let idxPath = indexPath(for: subjectCellViewModel) else {
+        guard let idxPath = indexPath(for: vm) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We got called by a non-existing VM?")
             return
         }
-        state.subject = subjectCellViewModel.content ?? ""
+        state.subject = vm.content ?? ""
         delegate?.contentChanged(inCellAt: idxPath)
     }
 }

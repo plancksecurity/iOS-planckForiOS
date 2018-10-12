@@ -9,7 +9,7 @@
 import MessageModel
 
 protocol SubjectCellViewModelResultDelegate: class {
-    func subjectCellViewModelDidChangeSubject(_ subjectCellViewModel: SubjectCellViewModel)
+    func subjectCellViewModelDidChangeSubject(_ vm: SubjectCellViewModel)
 }
 
 protocol SubjectCellViewModelDelegate: class {

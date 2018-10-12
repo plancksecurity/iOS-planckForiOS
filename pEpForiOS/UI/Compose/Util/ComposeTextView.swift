@@ -22,7 +22,7 @@ open class ComposeTextView: UITextView {
 
     //IOS-1369: should (all?) go to UITextViewExtention
 
-    public func insertImage(with text: String, maxWidth: CGFloat = 0.0) {
+    public func insertImage(withText text: String, maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
         let img = ComposeHelper.recipient(text, textColor: .pEpGreen, maxWidth: maxWidth - 20.0)
         let at = TextAttachment()

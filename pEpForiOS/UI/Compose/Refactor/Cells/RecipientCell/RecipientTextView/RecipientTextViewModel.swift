@@ -8,11 +8,34 @@
 
 import MessageModel
 
-protocol RecipientTextViewModelResultDelegate {
-    //IOS-1369: TODO:
+protocol RecipientTextViewModelResultDelegate: class {
+
+    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
+                                didChangeRecipients newRecipients: [Identity])
+
+    func recipientTextViewModelDidEndEditing(recipientTextViewModel: RecipientTextViewModel)
 }
+
+protocol RecipientTextViewModelDelegate: class {
+    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
+                                didChangeAttributedText newText: NSAttributedString)
+}
+
 class RecipientTextViewModel {
-    //IOS-1369: TODO:
+    var maxTextattachmentWidth: CGFloat = 20.0 // arbitrary value to avoid optional
+    private var identities = [Identity]() {
+        didSet {
+            resultDelegate?.recipientTextViewModel(recipientTextViewModel: self,
+                                                   didChangeRecipients: identities)
+        }
+    }
+
+    public weak var resultDelegate: RecipientTextViewModelResultDelegate?
+    public weak var delegate: RecipientTextViewModelDelegate?
+
+    init(resultDelegate: RecipientTextViewModelResultDelegate? = nil) {
+        self.resultDelegate = resultDelegate
+    }
 
     public func shouldInteract(WithTextAttachment attachment: NSTextAttachment) -> Bool {
         if let _ = attachment.image {
@@ -24,8 +47,63 @@ class RecipientTextViewModel {
         return true
     }
 
-    public func handleDidEndEditing() {
+    public func handleDidEndEditing(range: NSRange,
+                                    of text: NSAttributedString) {
+        parseAndHandleValidEmailAddresses(inRange: range, of: text)
+    }
 
+    /// Parses a text for one new valid email address (and handles it if found).
+    ///
+    /// - Parameter text: Text thet might alread contain contact-image-text-attachments.
+    /// - Returns: true if a valid address has been found, false otherwize
+    @discardableResult private func parseAndHandleValidEmailAddresses(
+        inRange range: NSRange, of text: NSAttributedString) -> Bool {
+        var identityGenerated = false
+        let stringWithoutTextAttachments = text.string.cleanAttachments
+        if stringWithoutTextAttachments.isProbablyValidEmail() {
+            let identity = Identity.create(address: stringWithoutTextAttachments.trimmed())
+            identities.append(identity)
+            var newText = text.imageInserted(with: identity.displayString,
+                                             in: range,
+                                             maxWidth: maxTextattachmentWidth)
+            newText = newText.plainTextRemoved()
+            delegate?.recipientTextViewModel(recipientTextViewModel: self,
+                                             didChangeAttributedText: newText)
+            identityGenerated =  true
+        }
+        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
+        //        delegate?.textDidEndEditing(at: index, textView: cTextview)//IOS-1369: //!!!
+        /*
+         ->
+         func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView) {
+         tableView.updateSize()
+         hideSuggestions()
+         }
+         */
+        //        if let fm = super.fieldModel {
+        //            delegate?.composeCell(cell: self, didChangeEmailAddresses: identities.map{ $0.address }, forFieldType: fm.type) //IOS-1369: //!!!:
+        /*
+         ->
+         func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
+         forFieldType type: ComposeFieldModel.FieldType) {
+         let identities = changedAddresses.map { Identity.by(address: $0) ?? Identity(address: $0) }
+         switch type {
+         case .to:
+         destinyTo = identities
+         case .cc:
+         destinyCc = identities
+         case .bcc:
+         destinyBcc = identities
+         case .from:
+         origin = identities.last
+         default:
+         break
+         }
+         calculateComposeColorAndInstallTapGesture()
+         recalculateSendButtonStatus()
+         }*/
+        //        }
+        return identityGenerated
     }
 }
 

@@ -10,34 +10,19 @@ import UIKit
 
 class RecipientTextView: UITextView {
     //IOS-1369: TODO:
-    public var viewModel = RecipientTextViewModel() {
+    public var viewModel: RecipientTextViewModel?{
         didSet {
+            viewModel?.delegate = self
             delegate = self
         }
     }
-
-    public func insertImage(with text: String, maxWidth: CGFloat = 0.0) {
-        let attrText = NSMutableAttributedString(attributedString: attributedText)
-        let img = ComposeHelper.recipient(text, textColor: .pEpGreen, maxWidth: maxWidth - 20.0)
-        let at = TextAttachment()
-        at.image = img
-        let fontDescender: CGFloat = -7.0
-        at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
-        let attachString = NSAttributedString(attachment: at)
-        attrText.replaceCharacters(in: selectedRange, with: attachString)
-        attrText.addAttribute(NSAttributedStringKey.font,
-                              value: UIFont.pEpInput,
-                              range: NSRange(location: 0, length: attrText.length)
-        )
-        attributedText = attrText
-    }
-
 }
 
 // MARK: - UITextViewDelegate
 
 extension RecipientTextView: UITextViewDelegate {
     public func textViewDidBeginEditing(_ textView: UITextView) {
+        viewModel?.maxTextattachmentWidth = bounds.width
 //        guard let cTextview = textView as? ComposeTextView else { return }
 //
 //        delegate?.textDidStartEditing(at: index, textView: cTextview)
@@ -56,6 +41,10 @@ extension RecipientTextView: UITextViewDelegate {
 //        delegate?.textDidChange(at: index, textView: cTextview)
 
     }
+
+    /*
+ //IOS-1369: Next !!
+
 
     public func textViewDidChangeSelection(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
@@ -76,7 +65,7 @@ extension RecipientTextView: UITextViewDelegate {
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                                   replacementText text: String) -> Bool {
         if (text == .returnKey || text == .space) {
-            let result = generateContact(textView)
+            let result = generateContact()
             return result
         }
 
@@ -109,28 +98,6 @@ extension RecipientTextView: UITextViewDelegate {
         return true
     }
 
-    @discardableResult func generateContact(_ textView: UITextView) -> Bool {
-        guard let cTextview = textView as? ComposeTextView else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
-            return false
-        }
-        var mail = false
-        let string = cTextview.attributedText.string.cleanAttachments
-        if string.isProbablyValidEmail() {
-            let identity = Identity.create(address: string.trimmed())
-            identities.append(identity)
-            let width = self.textView.bounds.width
-            cTextview.insertImage(with: identity.displayString, maxWidth: width)
-            cTextview.attributedText = cTextview.attributedText.plainTextRemoved()
-            mail =  true
-        }
-        delegate?.textDidEndEditing(at: index, textView: cTextview)
-        if let fm = super.fieldModel {
-            delegate?.composeCell(cell: self, didChangeEmailAddresses: identities.map{ $0.address }, forFieldType: fm.type)
-        }
-        return mail
-    }
-
     /// Wheter or not textView.attributedText.string is empty after removing all attachments
     var containsNothingButValidAddresses: Bool {
         // Only addresses that became an attachment are considered valid ...
@@ -143,12 +110,14 @@ extension RecipientTextView: UITextViewDelegate {
     var isEmpty: Bool {
         // UITextView places this character if you delete an attachment, which leads to a
         // non-empty string.
-        return textView.attributedText.string.trimObjectReplacementCharacters() == ""
+        return self.attributedText.string.trimObjectReplacementCharacters() == ""
     }
+     //IOS-1369: Next !!
+ */
 
-    public override func textViewDidEndEditing(_ textView: UITextView) {
-        viewModel.handleDidEndEditing()
-        let _ = generateContact(textView)
+    //IOS-1369: WIP
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        viewModel?.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
     }
 
     //IOS-1369:  !! DONE !!
@@ -156,6 +125,17 @@ extension RecipientTextView: UITextViewDelegate {
     func textView(_ textView: UITextView,
                   shouldInteractWith textAttachment: NSTextAttachment,
                   in characterRange: NSRange) -> Bool {
-        return viewModel.shouldInteract(WithTextAttachment: textAttachment)
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return true
+        }
+        return vm.shouldInteract(WithTextAttachment: textAttachment)
+    }
+}
+
+extension RecipientTextView: RecipientTextViewModelDelegate {
+    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
+                                didChangeAttributedText newText: NSAttributedString) {
+        self.attributedText = newText
     }
 }

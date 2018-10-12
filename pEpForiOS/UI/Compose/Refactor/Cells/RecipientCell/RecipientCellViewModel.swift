@@ -8,13 +8,16 @@
 
 import MessageModel
 
-protocol RecipientCellViewModelResultDelegate {
-    //IOS-1369: TODO
+protocol RecipientCellViewModelResultDelegate: class {
+    func recipientCellViewModel(_ vm: RecipientCellViewModel,
+                                didChangeRecipients newRecipients: [Identity])
+
+    func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel)
 }
 
-protocol RecipientCellViewModelDelegate {
-    //IOS-1369: TODO
-}
+//protocol RecipientCellViewModelDelegate {
+//    //IOS-1369: TODO
+//}
 
 class RecipientCellViewModel: CellViewModel {
     public let title: String
@@ -22,9 +25,30 @@ class RecipientCellViewModel: CellViewModel {
     public let type: FieldType
     private var initialRecipients = [Identity]()
 
-    init(type: FieldType, recipients: [Identity] = []) {
+    weak public var resultDelegate: RecipientCellViewModelResultDelegate?
+
+    init(resultDelegate: RecipientCellViewModelResultDelegate,
+         type: FieldType,
+         recipients: [Identity] = []) {
+        self.resultDelegate = resultDelegate
         self.type = type
         self.initialRecipients = recipients
         self.title = type.localizedTitle()
+    }
+
+    func recipientTextViewModel() -> RecipientTextViewModel {
+        return RecipientTextViewModel(resultDelegate: self)
+    }
+}
+
+// MARK: - RecipientTextViewModelResultDelegate
+
+extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
+    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity]) {
+        resultDelegate?.recipientCellViewModel(self, didChangeRecipients: newRecipients)
+    }
+
+    func recipientTextViewModelDidEndEditing(recipientTextViewModel: RecipientTextViewModel) {
+        resultDelegate?.recipientCellViewModelDidEndEditing(self)
     }
 }
