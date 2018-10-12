@@ -190,7 +190,7 @@ extension ComposeTableViewController {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return nil
             }
-            cell.textView.attributedText = rowVm.content
+            cell.setup(with: rowVm)
             result = cell
         } else if section.type == .account {
             guard

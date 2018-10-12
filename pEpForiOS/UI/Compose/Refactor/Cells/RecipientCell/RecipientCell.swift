@@ -8,8 +8,21 @@
 
 import UIKit
 
-class RecipientCell: TextViewContainingTableViewCell {
+class RecipientCell: UITableViewCell {
     static let reuseId = "RecipientCell"
+    @IBOutlet var recipientTextView: RecipientTextView!
     var viewModel: RecipientCellViewModel?
+
+    public func setup(with viewModel: RecipientCellViewModel) {
+        self.viewModel = viewModel
+        //TODO: recipientTextView
+    }
 }
 
+// MARK: - UITextViewDelegate
+
+extension RecipientCell {
+    func textViewDidChange(_ textView: UITextView) {
+        //IOS
+    }
+}
