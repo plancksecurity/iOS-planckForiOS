@@ -10,7 +10,11 @@ import UIKit
 
 class SubjectCell: TextViewContainingTableViewCell {
     static let reuseId = "SubjectCell"
-    var viewModel: SubjectCellViewModel?
+    var viewModel: SubjectCellViewModel? {
+        didSet {
+            viewModel?.delegate = self
+        }
+    }
 
     public func setup(with viewModel: SubjectCellViewModel) {
         self.viewModel = viewModel
@@ -20,10 +24,27 @@ class SubjectCell: TextViewContainingTableViewCell {
     }
 }
 
+// MARK: - SubjectCellViewModelDelegate
+
+extension SubjectCell: SubjectCellViewModelDelegate {
+    func subjectCellViewModelDelegate(_ subjectCellViewModelDelegate: SubjectCellViewModelDelegate,
+                                      requireFirstResponder: Bool) {
+        if requireFirstResponder {
+            resignFirstResponder()
+        }
+    }
+}
+
 // MARK: - UITextViewDelegate
 
 extension SubjectCell {
     func textViewDidChange(_ textView: UITextView) {
         viewModel?.handleTextChanged(to: textView.text)
+    }
+
+    public func textView(_ textView: UITextView,
+                         shouldChangeTextIn range: NSRange,
+                         replacementText text: String) -> Bool {
+       return viewModel?.shouldChangeText(to: text) ?? true
     }
 }
