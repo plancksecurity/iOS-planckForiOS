@@ -139,6 +139,8 @@
 		1571B47C21677B1100D59DAD /* BodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B47B21677B1100D59DAD /* BodyCell.swift */; };
 		1571B47E21677EE900D59DAD /* BodyCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B47D21677EE900D59DAD /* BodyCellViewModel.swift */; };
 		1571B4812167828900D59DAD /* AttachmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B4802167828900D59DAD /* AttachmentViewModel.swift */; };
+		15721AB12170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15721AB02170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift */; };
+		15721AB22170BA4500F1EA7A /* RecipientTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439AC2170AF1C00EB3933 /* RecipientTextView.swift */; };
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
@@ -194,7 +196,6 @@
 		15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */; };
 		15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A6216FB77600EB3933 /* UnitTestUtils.swift */; };
 		15D439AA21708CA000EB3933 /* Message+ComposeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A8216FDE7800EB3933 /* Message+ComposeUtils.swift */; };
-		15D439AD2170AF1C00EB3933 /* RecipientTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439AC2170AF1C00EB3933 /* RecipientTextView.swift */; };
 		15D439AF2170AF3100EB3933 /* RecipientTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439AE2170AF3100EB3933 /* RecipientTextViewModel.swift */; };
 		15DD3F75211EC68D00A8714D /* DecryptMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */; };
 		15EBE43B20E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */; };
@@ -726,6 +727,7 @@
 		1571B47B21677B1100D59DAD /* BodyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCell.swift; sourceTree = "<group>"; };
 		1571B47D21677EE900D59DAD /* BodyCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCellViewModel.swift; sourceTree = "<group>"; };
 		1571B4802167828900D59DAD /* AttachmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewModel.swift; sourceTree = "<group>"; };
+		15721AB02170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipientCellViewModel+FieldType.swift"; sourceTree = "<group>"; };
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
@@ -1483,6 +1485,7 @@
 				15D439AB2170AF0100EB3933 /* RecipientTextView */,
 				1571B469216760DE00D59DAD /* RecipientCell.swift */,
 				1571B46F2167693A00D59DAD /* RecipientCellViewModel.swift */,
+				15721AB02170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift */,
 			);
 			path = RecipientCell;
 			sourceTree = "<group>";
@@ -3362,6 +3365,7 @@
 				15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */,
 				A1014DA71D1173CD00C472A8 /* UIHelper.swift in Sources */,
 				4388A0E42008F8F4008CB98D /* OAuth2AccessTokenProtocol.swift in Sources */,
+				15721AB22170BA4500F1EA7A /* RecipientTextView.swift in Sources */,
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				492EF92A20C18C6C004EAE14 /* DisplayedMessage.swift in Sources */,
@@ -3408,6 +3412,7 @@
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */,
 				B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */,
+				15721AB12170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift in Sources */,
 				15874BC32127493E00A3A4A6 /* SettingsViewModel.swift in Sources */,
 				434BF38F20C6AFAF00FCBCCA /* Folder+ThreadAware.swift in Sources */,
 				001D366220C576BD002434EB /* EmailViewController+MoveToFolderDelegate.swift in Sources */,
@@ -3470,7 +3475,6 @@
 				15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */,
 				15BA537020A0A4350090F126 /* Log.swift in Sources */,
 				15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */,
-				15D439AD2170AF1C00EB3933 /* RecipientTextView.swift in Sources */,
 				436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */,
 				43AABD3920EF3DE400FBD5D0 /* ThreadedFolderTests.swift in Sources */,
 				154F0A8220874B3E00C77D72 /* ContentDispositionTest.swift in Sources */,
