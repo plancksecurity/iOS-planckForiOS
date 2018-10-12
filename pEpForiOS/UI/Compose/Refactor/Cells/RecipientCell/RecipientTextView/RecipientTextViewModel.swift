@@ -13,15 +13,28 @@ protocol RecipientTextViewModelResultDelegate {
 }
 class RecipientTextViewModel {
     //IOS-1369: TODO:
-}
 
+    public func shouldInteract(WithTextAttachment attachment: NSTextAttachment) -> Bool {
+        if let _ = attachment.image {
+            // Suppress default image handling. Our recipient names are actually displayed as
+            // images and we do not want to offer "save to camera roll" aciont sheet or other image
+            // actions to the user.
+            return false
+        }
+        return true
+    }
+
+    public func handleDidEndEditing() {
+
+    }
+}
 
 // //COMPOSE TEXT VIEW
 // public var fieldModel: ComposeFieldModel?
 //
 // private final var fontDescender: CGFloat = -7.0
 // final var textBottomMargin: CGFloat = 25.0
-// private final var imageFieldHeight: CGFloat = 66.0
+//          // private final var imageFieldHeight: CGFloat = 66.0
 //
 // let scrollUtil = TextViewInTableViewScrollUtil()
 //
