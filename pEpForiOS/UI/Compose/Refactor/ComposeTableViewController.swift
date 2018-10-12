@@ -39,7 +39,8 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func setupView() {
         tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 164 //IOS-1369 an arbitrary value that works well for subject
+         //IOS-1369 an arbitrary value auto resize seems to require for some reason.
+        tableView.estimatedRowHeight = 1000
     }
 
     private func setupModel() {
