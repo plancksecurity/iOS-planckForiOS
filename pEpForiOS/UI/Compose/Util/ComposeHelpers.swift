@@ -84,7 +84,7 @@ extension UIImage {
 // MARK: - Compose Helper Class
 
 open class ComposeHelper {
-    public static func recepient(_ text: String, textColor: UIColor = .pEpGreen, maxWidth: CGFloat = 0.0) -> UIImage {
+    public static func recipient(_ text: String, textColor: UIColor = .pEpGreen, maxWidth: CGFloat = 0.0) -> UIImage {
         let attributes = [
             NSAttributedStringKey.foregroundColor: textColor,
             NSAttributedStringKey.font: UIFont.pEpInput

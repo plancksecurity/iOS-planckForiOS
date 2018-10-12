@@ -10,6 +10,7 @@ import UIKit
 
 import MessageModel //IOS-1369: UIView should not know model
 
+//IOS-1369: try to get rid of
 open class ComposeTextView: UITextView {
     public var fieldModel: ComposeFieldModel?
     
@@ -23,7 +24,7 @@ open class ComposeTextView: UITextView {
 
     public func insertImage(with text: String, maxWidth: CGFloat = 0.0) {
         let attrText = NSMutableAttributedString(attributedString: attributedText)
-        let img = ComposeHelper.recepient(text, textColor: .pEpGreen, maxWidth: maxWidth - 20.0)
+        let img = ComposeHelper.recipient(text, textColor: .pEpGreen, maxWidth: maxWidth - 20.0)
         let at = TextAttachment()
         at.image = img
         at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)

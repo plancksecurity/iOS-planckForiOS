@@ -373,7 +373,7 @@ extension ComposeViewModel: AccountCellViewModelResultDelegate {
 
 extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 
-    func SubjectCellViewModelDidChangeSubject(_ subjectCellViewModel: SubjectCellViewModel) {
+    func subjectCellViewModelDidChangeSubject(_ subjectCellViewModel: SubjectCellViewModel) {
         //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
         guard let idxPath = indexPath(for: subjectCellViewModel) else {
             Log.shared.errorAndCrash(component: #function,
