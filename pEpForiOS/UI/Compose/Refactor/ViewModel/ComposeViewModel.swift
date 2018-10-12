@@ -60,7 +60,7 @@ class ComposeViewModel {
         var newSections = [ComposeViewModel.Section]()
         for type in ComposeViewModel.Section.SectionType.allCases {
             if let section = ComposeViewModel.Section(type: type,
-                                                      initData: state.initData,
+                                                      for: state,
                                                       cellVmDelegate: self) {
                 newSections.append(section)
             }
@@ -197,6 +197,7 @@ extension ComposeViewModel {
                 validateForSending()
             }
         }
+
         var subject = "" {
             didSet {
                 edited = true
@@ -230,7 +231,7 @@ extension ComposeViewModel {
             ccRecipients = initData.ccRecipients
             bccRecipients = initData.bccRecipients
             from = initData.from
-            subject = initData.subject ?? ""
+            subject = initData.subject ?? " " // Set space to work around autolayout first baseline not recognized
             //            body = initD //IOS-1369: TODO
             attachments = initData.nonInlinedAttachments
         }
@@ -268,16 +269,17 @@ extension ComposeViewModel {
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
 
-        init?(type: SectionType, initData: InitData? = nil, cellVmDelegate: ComposeViewModel) {
+        init?(type: SectionType, for state: ComposeViewModelState?, cellVmDelegate: ComposeViewModel) {
             self.type = type
-            resetViewModels(cellVmDelegate: cellVmDelegate, initData: initData)
+            setupViewModels(cellVmDelegate: cellVmDelegate, for: state)
             if rows.count == 0 {
                 // We want to show non-empty sections only
                 return nil
             }
         }
 
-        private func resetViewModels(cellVmDelegate: ComposeViewModel, initData: InitData? = nil) {
+        private func setupViewModels(cellVmDelegate: ComposeViewModel,
+                                     for state: ComposeViewModelState?) {
             rows = [CellViewModel]()
             switch type {
                 //            case .recipients:
@@ -285,7 +287,7 @@ extension ComposeViewModel {
                 //                rows.append(RecipientFieldViewModel(type: .wraped))
             case .account:
                 var fromAccount: Account? = nil
-                if let fromIdentity = initData?.from {
+                if let fromIdentity = state?.from {
                     fromAccount = Account.by(address: fromIdentity.address)
                 }
                 let rowModel = AccountCellViewModel(resultDelegate: cellVmDelegate,
@@ -293,7 +295,7 @@ extension ComposeViewModel {
                 rows.append(rowModel)
             case .subject:
                 let rowModel = SubjectCellViewModel(resultDelegate: cellVmDelegate)
-                if let subject = initData?.subject {
+                if let subject = state?.subject {
                     rowModel.content = subject
                 }
                 rows.append(rowModel)
