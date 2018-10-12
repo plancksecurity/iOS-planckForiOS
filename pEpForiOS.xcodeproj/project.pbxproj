@@ -141,6 +141,8 @@
 		1571B4812167828900D59DAD /* AttachmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1571B4802167828900D59DAD /* AttachmentViewModel.swift */; };
 		15721AB12170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15721AB02170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift */; };
 		15721AB22170BA4500F1EA7A /* RecipientTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439AC2170AF1C00EB3933 /* RecipientTextView.swift */; };
+		15721AB32170CF0700F1EA7A /* RecipientTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439AE2170AF3100EB3933 /* RecipientTextViewModel.swift */; };
+		15721AB52170E0BA00F1EA7A /* NSAttributedString+RecipientTextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15721AB42170E0BA00F1EA7A /* NSAttributedString+RecipientTextUtils.swift */; };
 		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
@@ -196,7 +198,6 @@
 		15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */; };
 		15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A6216FB77600EB3933 /* UnitTestUtils.swift */; };
 		15D439AA21708CA000EB3933 /* Message+ComposeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A8216FDE7800EB3933 /* Message+ComposeUtils.swift */; };
-		15D439AF2170AF3100EB3933 /* RecipientTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439AE2170AF3100EB3933 /* RecipientTextViewModel.swift */; };
 		15DD3F75211EC68D00A8714D /* DecryptMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */; };
 		15EBE43B20E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */; };
 		15EBE43E20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */; };
@@ -728,6 +729,7 @@
 		1571B47D21677EE900D59DAD /* BodyCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyCellViewModel.swift; sourceTree = "<group>"; };
 		1571B4802167828900D59DAD /* AttachmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentViewModel.swift; sourceTree = "<group>"; };
 		15721AB02170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RecipientCellViewModel+FieldType.swift"; sourceTree = "<group>"; };
+		15721AB42170E0BA00F1EA7A /* NSAttributedString+RecipientTextUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+RecipientTextUtils.swift"; sourceTree = "<group>"; };
 		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
@@ -1723,6 +1725,7 @@
 			children = (
 				15D439AC2170AF1C00EB3933 /* RecipientTextView.swift */,
 				15D439AE2170AF3100EB3933 /* RecipientTextViewModel.swift */,
+				15721AB42170E0BA00F1EA7A /* NSAttributedString+RecipientTextUtils.swift */,
 			);
 			path = RecipientTextView;
 			sourceTree = "<group>";
@@ -3250,6 +3253,7 @@
 				B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */,
 				15265964216230B1006A78DF /* MessageBodyCell.swift in Sources */,
 				005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */,
+				15721AB52170E0BA00F1EA7A /* NSAttributedString+RecipientTextUtils.swift in Sources */,
 				15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */,
 				436C23281E02948400071430 /* BackgroundTaskProtocol.swift in Sources */,
 				4351C2DC1F4441190053381F /* xml.c in Sources */,
@@ -3274,6 +3278,7 @@
 				4351C2DB1F4441190053381F /* utf8.c in Sources */,
 				4348EF0D1E27ABA100F441A9 /* LoginSmtpOperation.swift in Sources */,
 				1571B4702167693A00D59DAD /* RecipientCellViewModel.swift in Sources */,
+				15721AB32170CF0700F1EA7A /* RecipientTextViewModel.swift in Sources */,
 				495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */,
 				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
 				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
@@ -3448,7 +3453,6 @@
 				432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */,
 				4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */,
 				491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */,
-				15D439AF2170AF3100EB3933 /* RecipientTextViewModel.swift in Sources */,
 				438BA0F5214F89CD001A4A82 /* MailParsingTests.swift in Sources */,
 				15A8B8FC20908D2300D2B0B6 /* Keychain+TestUtils.swift in Sources */,
 				431E58FC1ED5926B00EFA77F /* AccountVerificationServiceTests.swift in Sources */,
