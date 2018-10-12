@@ -264,7 +264,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
 extension ComposeViewModel {
     class Section {
         enum SectionType: CaseIterable {
-            case /*recipients, */account, subject/*, body, attachments*/
+            case recipients, account, subject/*, body, attachments*/
         }
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
@@ -282,9 +282,9 @@ extension ComposeViewModel {
                                      for state: ComposeViewModelState?) {
             rows = [CellViewModel]()
             switch type {
-                //            case .recipients:
-                //                rows.append(RecipientFieldViewModel(type: .to))
-                //                rows.append(RecipientFieldViewModel(type: .wraped))
+            case .recipients:
+                rows.append(RecipientCellViewModel(type: .to))
+                rows.append(RecipientCellViewModel(type: .wraped))
             case .account:
                 var fromAccount: Account? = nil
                 if let fromIdentity = state?.from {

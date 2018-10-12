@@ -13,7 +13,6 @@ protocol SubjectCellViewModelResultDelegate: class {
 }
 
 class SubjectCellViewModel: CellViewModel {
-//    let minHeigth: CGFloat = 58.0 //IOS-1369
     public let title = NSLocalizedString("Subject:",
                                          comment:
         "Title of subject field when composing a message")
