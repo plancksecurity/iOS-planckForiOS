@@ -106,4 +106,31 @@ struct ComposeUtil {
             return Account.defaultAccount()?.user  //IOS-1369: bug: default only in unified inbox (?)
         }
     }
+
+     /// - Returns: Noninlined attachments appropriate for the given compose mode
+    static func initialNonInlinedAttachments(composeMode: ComposeMode,
+                                             originalMessage om: Message?) -> [Attachment] {
+        guard shouldTakeOverAttachments(composeMode: composeMode, originalMessage: om ) else {
+            return []
+        }
+        guard let om = om else {
+            // No om, no initial attachments
+            return []
+        }
+        let nonInlinedAttachments = om.viewableAttachments()
+            .filter { $0.contentDisposition == .attachment }
+        return nonInlinedAttachments
+    }
+
+    /// Computes whether or not attachments must be taken over in current compose mode
+    ///
+    /// - Returns: true if we must take over attachments from the original message, false otherwize
+    static private func shouldTakeOverAttachments(composeMode: ComposeMode,
+                                                  originalMessage om: Message?) -> Bool {
+        var isInDraftsOrOutbox = false
+        if let om = om {
+            isInDraftsOrOutbox = om.isInDraftsOrOutbox //BUFF: HERE: init attachments
+        }
+        return composeMode == .forward || isInDraftsOrOutbox
+    }
 }

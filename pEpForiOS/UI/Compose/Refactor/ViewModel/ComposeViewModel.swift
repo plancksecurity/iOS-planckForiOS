@@ -31,18 +31,19 @@ class ComposeViewModel {
     weak var resultDelegate: ComposeViewModelResultDelegate?
     weak var delegate: ComposeViewModelDelegate?
     public private(set) var sections = [ComposeViewModel.Section]()
-    public private(set) var state = ComposeViewModelState()
+    public private(set) var state: ComposeViewModelState
 
     init(resultDelegate: ComposeViewModelResultDelegate? = nil,
          composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
          originalMessage: Message? = nil) {
         self.resultDelegate = resultDelegate
-        self.state = ComposeViewModelState(withPrefilledToRecipient: prefilledTo,
-                                           orForOriginalMessage: originalMessage,
-                                           composeMode: composeMode)
+        let initData = InitData(withPrefilledToRecipient: prefilledTo,
+                                orForOriginalMessage: originalMessage,
+                                composeMode: composeMode)
+        self.state = ComposeViewModelState(initData: initData)
+        self.state.delegate = self
         setup()
-        validateInput()
     }
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
@@ -52,7 +53,7 @@ class ComposeViewModel {
     private func setup() {
         //IOS-1369: origMessage ignored for now, same with compose mode (always .normal)
         resetSections()
-
+        //        validateInput() //IOS-1369:
     }
 
     private func resetSections() {
@@ -134,6 +135,15 @@ extension ComposeViewModel {
             return originalMessage?.shortMessage
         }
 
+        //IOS-1369: body needs before 9pm brain
+
+        var nonInlinedAttachments: [Attachment] {
+            return ComposeUtil.initialNonInlinedAttachments(composeMode: composeMode,
+                                                            originalMessage: originalMessage)
+        }
+
+
+
         init(withPrefilledToRecipient prefilledTo: Identity? = nil,
              orForOriginalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
@@ -146,45 +156,105 @@ extension ComposeViewModel {
 
 // MARK: - State
 
+protocol ComposeViewModelStateDelegate: class {
+    func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
+                               didChangeValidationStateTo isValid: Bool)
+}
+
 extension ComposeViewModel {
+
     /// Wraps bookholding properties
-    struct ComposeViewModelState {
-        public let initData: ComposeViewModel.InitData
-        public fileprivate(set) var edited = false
-        var isValidatedForSending = false
+    class ComposeViewModelState {
+        let initData: ComposeViewModel.InitData?
+        private var edited = false
+        private var isValidatedForSending = false
+
+        weak var delegate: ComposeViewModelStateDelegate?
 
         //Recipients
-        var toRecipients = [Identity]()
-        var ccRecipients = [Identity]()
-        var bccRecipients = [Identity]()
+        var toRecipients = [Identity]() {
+            didSet {
+                edited = true
+                validateForSending()
+            }
+        }
+        var ccRecipients = [Identity]() {
+            didSet {
+                edited = true
+                validateForSending()
+            }
+        }
+        var bccRecipients = [Identity]() {
+            didSet {
+                edited = true
+                validateForSending()
+            }
+        }
 
-        var from: Identity? = nil
-        var subject = ""
-        var body = ""
-        var attachments = [Attachment]()
+        var from: Identity? {
+            didSet {
+                edited = true
+                validateForSending()
+            }
+        }
+        var subject = "" {
+            didSet {
+                edited = true
+            }
+        }
 
-        init(withPrefilledToRecipient prefilledTo: Identity? = nil,
-             orForOriginalMessage om: Message? = nil,
-             composeMode: ComposeUtil.ComposeMode? = nil) {
-            initData = InitData(withPrefilledToRecipient: prefilledTo,
-                                orForOriginalMessage: om,
-                                composeMode: composeMode)
+        var body = "" {
+            didSet {
+                edited = true
+            }
+        }
+
+        var attachments = [Attachment]() {
+            didSet {
+                edited = true
+            }
+        }
+
+        init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
+            self.initData = initData
+            self.delegate = delegate
+            setup()
+        }
+
+        private func setup() {
+            guard let initData = initData else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No data")
+                return
+            }
+            toRecipients = initData.toRecipients
+            ccRecipients = initData.ccRecipients
+            bccRecipients = initData.bccRecipients
+            from = initData.from
+            subject = initData.subject ?? ""
+            //            body = initD //IOS-1369: TODO
+            attachments = initData.nonInlinedAttachments
+        }
+
+        private func validateForSending() {
+            let before = isValidatedForSending
+            //IOS-1369: unimplemented stub") //IOS-1369:
+            //TODO: validate!
+            //atLeastOneRecipientIsSet && !hasInvalidRecipients && from != nil
+            isValidatedForSending = !isValidatedForSending
+            if before != isValidatedForSending {
+                delegate?.composeViewModelState(self,
+                                                didChangeValidationStateTo: isValidatedForSending)
+            }
         }
     }
+}
 
-    private func updateStateAfterUserChangedContent() {
-        state.edited = true
-        validateInput()
-    }
+// MARK: - ComposeViewModelStateDelegate
 
-    private func validateInput() {
-        let before = state.isValidatedForSending
-        //IOS-1369: unimplemented stub") //IOS-1369:
-        //TODO: validate!
-        state.isValidatedForSending = !state.isValidatedForSending 
-        if before != state.isValidatedForSending {
-            delegate?.validatedStateChanged(to: state.isValidatedForSending)
-        }
+extension ComposeViewModel: ComposeViewModelStateDelegate {
+    func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
+                               didChangeValidationStateTo isValid: Bool) {
+        delegate?.validatedStateChanged(to: isValid)
     }
 }
 
@@ -294,7 +364,6 @@ extension ComposeViewModel: AccountCellViewModelResultDelegate {
         }
         state.from = account.user
         delegate?.contentChanged(inCellAt: idxPath)
-        updateStateAfterUserChangedContent()
     }
 }
 
@@ -311,6 +380,5 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
         }
         state.subject = subjectCellViewModel.content ?? ""
         delegate?.contentChanged(inCellAt: idxPath)
-        updateStateAfterUserChangedContent()
     }
 }
