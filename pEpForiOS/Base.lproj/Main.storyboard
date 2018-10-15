@@ -745,7 +745,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="QgY-uq-4qZ" firstAttribute="top" secondItem="Eor-Hd-1l7" secondAttribute="top" constant="8" id="GSy-Fs-MhW"/>
-                                                <constraint firstAttribute="height" priority="500" constant="20" id="LkX-Tz-BO0"/>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36.5" id="brQ-fC-cr4"/>
                                             </constraints>
                                         </stackView>
                                     </subviews>
