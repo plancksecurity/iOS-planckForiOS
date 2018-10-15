@@ -722,7 +722,7 @@
                                     <outlet property="title" destination="Bd2-Nr-sTF" id="3Df-Pu-hFO"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WrappedCell" rowHeight="58" id="QY1-za-ty2" userLabel="WrappedCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WrappedCell" rowHeight="58" id="QY1-za-ty2" userLabel="WrappedCell">
                                 <rect key="frame" x="0.0" y="86" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="top" tableViewCell="QY1-za-ty2" id="xXE-7I-TSL">
