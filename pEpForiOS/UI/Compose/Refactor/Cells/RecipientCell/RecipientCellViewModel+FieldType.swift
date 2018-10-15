@@ -10,7 +10,7 @@ import Foundation
 
 extension RecipientCellViewModel {
     public enum FieldType: String {
-        case to, cc, bcc, wraped
+        case to, cc, bcc
 
         func localizedTitle() -> String {
             switch self {
@@ -20,8 +20,6 @@ extension RecipientCellViewModel {
                 return NSLocalizedString("CC:", comment: "Compose field title")
             case .bcc:
                 return NSLocalizedString("BCC:", comment: "Compose field title")
-            case .wraped:
-                return NSLocalizedString("Cc/Bcc:", comment: "Compose field title")
             }
         }
     }

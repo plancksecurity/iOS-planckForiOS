@@ -55,18 +55,6 @@ class ComposeViewModel {
         resetSections()
         //        validateInput() //IOS-1369:
     }
-
-    private func resetSections() {
-        var newSections = [ComposeViewModel.Section]()
-        for type in ComposeViewModel.Section.SectionType.allCases {
-            if let section = ComposeViewModel.Section(type: type,
-                                                      for: state,
-                                                      cellVmDelegate: self) {
-                newSections.append(section)
-            }
-        }
-        self.sections = newSections
-    }
 }
 
 // MARK: - ComposeViewModelStateDelegate
@@ -83,7 +71,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
 extension ComposeViewModel {
     class Section {
         enum SectionType: CaseIterable {
-            case recipients, account, subject/*, body, attachments*/
+            case recipients, wrapped, account, subject/*, body, attachments*/
         }
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
@@ -103,7 +91,14 @@ extension ComposeViewModel {
             switch type {
             case .recipients:
                 rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .to))
-                rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .wraped))
+                if let wrapped = state?.bccWrapped, !wrapped {
+                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .cc))
+                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .bcc))
+                }
+            case .wrapped:
+                if let wrapped = state?.bccWrapped, wrapped {
+                    rows.append(WrappedBccViewModel())
+                }
             case .account:
                 var fromAccount: Account? = nil
                 if let fromIdentity = state?.from {
@@ -130,6 +125,18 @@ extension ComposeViewModel {
             //
             //            rows.append(AttachmentViewModel)
         }
+    }
+
+    private func resetSections() {
+        var newSections = [ComposeViewModel.Section]()
+        for type in ComposeViewModel.Section.SectionType.allCases {
+            if let section = ComposeViewModel.Section(type: type,
+                                                      for: state,
+                                                      cellVmDelegate: self) {
+                newSections.append(section)
+            }
+        }
+        self.sections = newSections
     }
 
     private func section(
@@ -187,12 +194,15 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
             state.ccRecipients = newRecipients
         case .bcc:
             state.bccRecipients = newRecipients
-        case .wraped:
-            //IOS-1369: handle wrapped. Own section please.
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Wraped cellVM should never have recipients")
-            break
         }
+
+        /*
+         tableView.updateSize()
+         hideSuggestions()
+
+         calculateComposeColorAndInstallTapGesture()
+         recalculateSendButtonStatus()
+ */
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {

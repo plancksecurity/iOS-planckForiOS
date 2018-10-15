@@ -20,6 +20,7 @@ class ComposeViewModelState {
     let initData: InitData?
     private var edited = false
     private var isValidatedForSending = false
+    public private(set) var bccWrapped = true
 
     weak var delegate: ComposeViewModelStateDelegate?
 
@@ -72,6 +73,10 @@ class ComposeViewModelState {
         self.initData = initData
         self.delegate = delegate
         setup()
+    }
+
+    public func setBccUnwrapped() {
+        bccWrapped = true
     }
 
     private func setup() {

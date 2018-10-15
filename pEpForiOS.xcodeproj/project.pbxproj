@@ -194,6 +194,7 @@
 		15C5F2461F823752007DE086 /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2451F823752007DE086 /* SortedSet.swift */; };
 		15CC24A12174888600FAF905 /* ComposeViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CC24A02174888600FAF905 /* ComposeViewModelState.swift */; };
 		15CC24A32174896F00FAF905 /* ComposeViewModel+InitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CC24A22174896E00FAF905 /* ComposeViewModel+InitData.swift */; };
+		15CC24A62174932000FAF905 /* WrappedBccViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CC24A52174932000FAF905 /* WrappedBccViewModel.swift */; };
 		15D2A59821651313003711BA /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D2A59721651312003711BA /* ComposeTableViewController.swift */; };
 		15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D43999216E697700EB3933 /* AccountPickerView.swift */; };
 		15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */; };
@@ -783,6 +784,7 @@
 		15C5F2451F823752007DE086 /* SortedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		15CC24A02174888600FAF905 /* ComposeViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewModelState.swift; sourceTree = "<group>"; };
 		15CC24A22174896E00FAF905 /* ComposeViewModel+InitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComposeViewModel+InitData.swift"; sourceTree = "<group>"; };
+		15CC24A52174932000FAF905 /* WrappedBccViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedBccViewModel.swift; sourceTree = "<group>"; };
 		15D2A59721651312003711BA /* ComposeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
 		15D43999216E697700EB3933 /* AccountPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerView.swift; sourceTree = "<group>"; };
 		15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerViewModel.swift; sourceTree = "<group>"; };
@@ -1476,6 +1478,7 @@
 		1571B468216760BD00D59DAD /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				15CC24A4217492E700FAF905 /* WrappedBccCell */,
 				15848D372167B7EC00D8CBA4 /* AccountCell */,
 				1571B46B2167619500D59DAD /* RecipientCell */,
 				1571B47321676FCE00D59DAD /* SubjectCell */,
@@ -1700,6 +1703,14 @@
 				15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		15CC24A4217492E700FAF905 /* WrappedBccCell */ = {
+			isa = PBXGroup;
+			children = (
+				15CC24A52174932000FAF905 /* WrappedBccViewModel.swift */,
+			);
+			path = WrappedBccCell;
 			sourceTree = "<group>";
 		};
 		15D43998216E695500EB3933 /* AccountPicker */ = {
@@ -3041,6 +3052,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15CC24A62174932000FAF905 /* WrappedBccViewModel.swift in Sources */,
 				002375D420DCF59D00663961 /* MoveToAccountViewController.swift in Sources */,
 				496C0EEB20BC4B370009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift in Sources */,
 				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,

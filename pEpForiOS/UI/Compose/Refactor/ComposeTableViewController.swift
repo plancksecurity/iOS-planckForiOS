@@ -192,6 +192,8 @@ extension ComposeTableViewController {
             }
             cell.setup(with: rowVm)
             result = cell
+        } else if section.type == .wrapped {
+            result = tableView.dequeueReusableCell(withIdentifier: "WrappedCell")
         } else if section.type == .account {
             guard
                 let cell = tableView.dequeueReusableCell(withIdentifier: AccountCell_mvvm.reuseId)
@@ -243,5 +245,13 @@ extension ComposeTableViewController {
 //        }
 
         return result
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension ComposeTableViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("asdf")
     }
 }
