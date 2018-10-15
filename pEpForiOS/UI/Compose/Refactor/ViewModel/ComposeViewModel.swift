@@ -21,11 +21,24 @@ protocol ComposeViewModelResultDelegate: class {
 }
 
 protocol ComposeViewModelDelegate: class {
-    //Will grow BIG :-/
     //IOS-1369: //TODO handle func userSelectedRecipient(identity: Identity) suggestion
-    func contentChanged(inCellAt indexPath: IndexPath)
+
+
+    /// Called when the user changes the contetn of a row.
+    /// E.g. edited the subject.
+    ///
+    /// - Parameter indexPath: indexPath of changed row
+    func contentChanged(inRowAt indexPath: IndexPath)
+
+    /// The status of whether or not the message has been validated for sending changed.
+    ///
+    /// - Parameter isValidated: new value
     func validatedStateChanged(to isValidated: Bool)
+
+    /// The model changed / has been resetted
     func modelChanged()
+
+    func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool)
 }
 
 class ComposeViewModel {
@@ -59,6 +72,10 @@ class ComposeViewModel {
         }
     }
 
+    public func handleUserChangedProtectionStatus(to protected: Bool) {
+        state.pEpProtection = protected
+    }
+
     private func setup() {
         //IOS-1369: origMessage ignored for now, same with compose mode (always .normal)
         resetSections()
@@ -69,9 +86,20 @@ class ComposeViewModel {
 // MARK: - ComposeViewModelStateDelegate
 
 extension ComposeViewModel: ComposeViewModelStateDelegate {
+
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool) {
         delegate?.validatedStateChanged(to: isValid)
+    }
+
+    func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
+                               didChangePEPRatingTo newRating: PEP_rating) {
+        delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
+    }
+
+    func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
+                               didChangeProtection newValue: Bool) {
+        delegate?.colorBatchNeedsUpdate(for: state.rating, protectionEnabled: newValue)
     }
 }
 
@@ -190,7 +218,7 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
 
 // MARK: - Cell-ViewModels
 
-// MARK: - RecipientCellViewModelResultDelegate
+// MARK: RecipientCellViewModelResultDelegate
 
 extension ComposeViewModel: RecipientCellViewModelResultDelegate {
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
@@ -205,11 +233,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         case .bcc:
             state.bccRecipients = newRecipients
         }
-
-        /*
-         tableView.updateSize()
-         hideSuggestions()
-
+/*
          calculateComposeColorAndInstallTapGesture()
          recalculateSendButtonStatus()
  */
@@ -223,11 +247,15 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
                                      errorString: "We got called by a non-existing VM?")
             return
         }
-        delegate?.contentChanged(inCellAt: idxPath)
+        delegate?.contentChanged(inRowAt: idxPath)
+        /*
+         tableView.updateSize()
+         hideSuggestions()
+         */
     }
 }
 
-// MARK: - AccountCellViewModelResultDelegate
+// MARK: AccountCellViewModelResultDelegate
 
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
     func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {
@@ -238,11 +266,11 @@ extension ComposeViewModel: AccountCellViewModelResultDelegate {
             return
         }
         state.from = account.user
-        delegate?.contentChanged(inCellAt: idxPath)
+        delegate?.contentChanged(inRowAt: idxPath)
     }
 }
 
-// MARK: - SubjectCellViewModelResultDelegate
+// MARK: SubjectCellViewModelResultDelegate
 
 extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 
@@ -254,6 +282,6 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             return
         }
         state.subject = vm.content ?? ""
-        delegate?.contentChanged(inCellAt: idxPath)
+        delegate?.contentChanged(inRowAt: idxPath)
     }
 }

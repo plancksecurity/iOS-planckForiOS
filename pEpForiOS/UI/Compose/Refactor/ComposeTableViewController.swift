@@ -84,12 +84,73 @@ class ComposeTableViewController: BaseTableViewController {
     @IBAction func send() {
         //IOS-1369:
     }
+}
 
-    /**
-     Shows a menu where user can choose to make a handshake, or toggle force unprotected.
-     */
-    @IBAction func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
-        //IOS-1369:
+// MARK: - PEP Color View
+
+extension ComposeTableViewController {
+    private func setupPepColorView(for pEpRating: PEP_rating, pEpProtected: Bool) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
+        }
+
+        //IOS-1369: Not so nice. The view(controller) should not know about state and protection.
+        if let view = showPepRating(pEpRating: pEpRating, pEpProtection: pEpProtected) {
+            if vm.state.canHandshake() || vm.state.canToggleProtection() {
+                let tapGestureRecognizer = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(actionHandshakeOrForceUnprotected))
+                view.addGestureRecognizer(tapGestureRecognizer)
+            }
+        }
+    }
+
+    /// Shows a menu where user can choose to make a handshake, or toggle force unprotected.
+    @objc func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
+        }
+        let theCanHandshake = vm.state.canHandshake()
+        let theCanToggleProtection = vm.state.canToggleProtection()
+
+        if theCanHandshake || theCanToggleProtection {
+            let alert = UIAlertController.pEpAlertController()
+
+            if theCanHandshake {
+                let actionReply = UIAlertAction(
+                    title: NSLocalizedString("Handshake",
+                                             comment: "possible privacy status action"),
+                    style: .default) {/*[weak self]*/ (action) in
+                        fatalError("IOS-1369: push handshake view. Need to get viewModeled first though")
+//                        self?.performSegue(withIdentifier: .segueHandshake, sender: self)
+                }
+                alert.addAction(actionReply)
+            }
+
+            if theCanToggleProtection {
+                let originalValueOfProtection = vm.state.pEpProtection
+                let title = vm.state.pEpProtection ?
+                    NSLocalizedString("Disable Protection",
+                                      comment: "possible private status action") :
+                    NSLocalizedString("Enable Protection",
+                                      comment: "possible private status action")
+                let actionToggleProtection = UIAlertAction(
+                    title: title,
+                    style: .default) { (action) in
+                        vm.handleUserChangedProtectionStatus(to: !originalValueOfProtection)
+                }
+                alert.addAction(actionToggleProtection)
+            }
+
+            let cancelAction = UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: "possible private status action"),
+                style: .cancel) { (action) in }
+            alert.addAction(cancelAction)
+
+            present(alert, animated: true, completion: nil)
+        }
     }
 }
 
@@ -101,7 +162,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         sendButton.isEnabled = isValidated
     }
 
-    func contentChanged(inCellAt indexPath: IndexPath) {
+    func contentChanged(inRowAt indexPath: IndexPath) {
         //IOS-1369: indexPath currently unused.
         tableView.updateSize()
     }
@@ -110,7 +171,9 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.reloadData()
     }
 
-
+    func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
+        setupPepColorView(for: rating, pEpProtected: protectionEnabled)
+    }
 
     //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
 //    func userSelectedRecipient(identity: Identity) {

@@ -11,6 +11,14 @@ import MessageModel
 protocol ComposeViewModelStateDelegate: class {
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
+
+    func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
+                               didChangePEPRatingTo newRating: PEP_rating)
+
+    func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
+                               didChangeProtection newValue: Bool)
+
+
 }
 //IOS-1369: wrap in extention when done to not polute the namespace
 //extension ComposeViewModel {
@@ -19,7 +27,31 @@ protocol ComposeViewModelStateDelegate: class {
 class ComposeViewModelState {
     let initData: InitData?
     private var edited = false
-    private var isValidatedForSending = false
+    private var isValidatedForSending = false {
+        didSet{
+            if isValidatedForSending != oldValue {
+                delegate?.composeViewModelState(self,
+                                                didChangeValidationStateTo: isValidatedForSending)
+            }
+        }
+    }
+
+    public private(set) var rating = PEP_rating_undefined {
+        didSet{
+            if rating != oldValue {
+                delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
+            }
+        }
+    }
+
+    public var pEpProtection = true {
+        didSet {
+            if pEpProtection != oldValue {
+                delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
+            }
+        }
+    }
+
     public private(set) var bccWrapped = true
 
     weak var delegate: ComposeViewModelStateDelegate?
@@ -95,20 +127,76 @@ class ComposeViewModelState {
     }
 
     private func validate() {
-        //calculateComposeColorAndInstallTapGesture()
+        calculatePepRating()
         validateForSending()
     }
 
     private func validateForSending() {
-        let before = isValidatedForSending
-        //IOS-1369: unimplemented stub") //IOS-1369:
+        //IOS-1369: unimplemented stub")
         //TODO: validate!
         //atLeastOneRecipientIsSet && !hasInvalidRecipients && from != nil
         isValidatedForSending = !isValidatedForSending
-        if before != isValidatedForSending {
-            delegate?.composeViewModelState(self,
-                                            didChangeValidationStateTo: isValidatedForSending)
+    }
+}
+
+// MARK: - pEp Protections
+
+extension ComposeViewModelState {
+
+    public func canToggleProtection() -> Bool {
+        if isForceUnprotectedDueToBccSet {
+            return false
+        }
+        let outgoingRatingColor = rating.pEpColor()
+        return outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green
+    }
+}
+
+// MARK: - PEP_Color
+
+extension ComposeViewModelState {
+    //NEW
+
+    private var isForceUnprotectedDueToBccSet: Bool {
+        return bccRecipients.count > 0
+    }
+
+    private func calculatePepRating() {
+        guard !isForceUnprotectedDueToBccSet else {
+            rating = PEP_rating_unencrypted
+            return
+        }
+
+        let session = PEPSession()
+        if let from = from {
+            rating = session.outgoingMessageRating(from: from,
+                                                   to: toRecipients,
+                                                   cc: ccRecipients,
+                                                   bcc: bccRecipients)
+        } else {
+            rating = PEP_rating_undefined
         }
     }
 }
-//}
+
+// MARK: - Handshake
+
+extension ComposeViewModelState {
+
+    public func canHandshake() -> Bool {
+        return !handshakeActionCombinations().isEmpty
+    }
+
+    private func handshakeActionCombinations() -> [HandshakeCombination] {
+        if let from = from {
+            var allIdenties = [Identity]()
+            allIdenties.append(from)
+            allIdenties.append(contentsOf: toRecipients)
+            allIdenties.append(contentsOf: ccRecipients)
+            allIdenties.append(contentsOf: bccRecipients)
+            return Message.handshakeActionCombinations(identities: allIdenties)
+        } else {
+            return []
+        }
+    }
+}
