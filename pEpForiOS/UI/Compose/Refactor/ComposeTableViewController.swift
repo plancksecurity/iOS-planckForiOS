@@ -96,7 +96,6 @@ class ComposeTableViewController: BaseTableViewController {
 // MARK: - ComposeViewModelDelegate
 
 extension ComposeTableViewController: ComposeViewModelDelegate {
-    // WILL GROW!
 
     func validatedStateChanged(to isValidated: Bool) {
         sendButton.isEnabled = isValidated
@@ -106,6 +105,12 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         //IOS-1369: indexPath currently unused.
         tableView.updateSize()
     }
+
+    func modelChanged() {
+        tableView.reloadData()
+    }
+
+
 
     //IOS-1369: tmp. has to change. The receiver ComposeVC must not know Identity
 //    func userSelectedRecipient(identity: Identity) {
@@ -252,6 +257,6 @@ extension ComposeTableViewController {
 
 extension ComposeTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("asdf")
+        viewModel?.handleUserSelectedRow(at: indexPath)
     }
 }

@@ -76,7 +76,7 @@ class ComposeViewModelState {
     }
 
     public func setBccUnwrapped() {
-        bccWrapped = true
+        bccWrapped = false
     }
 
     private func setup() {
@@ -87,6 +87,7 @@ class ComposeViewModelState {
         toRecipients = initData.toRecipients
         ccRecipients = initData.ccRecipients
         bccRecipients = initData.bccRecipients
+        bccWrapped = ccRecipients.isEmpty && bccRecipients.isEmpty
         from = initData.from
         subject = initData.subject ?? " " // Set space to work around autolayout first baseline not recognized
         //            body = initD //IOS-1369: TODO

@@ -25,6 +25,7 @@ protocol ComposeViewModelDelegate: class {
     //IOS-1369: //TODO handle func userSelectedRecipient(identity: Identity) suggestion
     func contentChanged(inCellAt indexPath: IndexPath)
     func validatedStateChanged(to isValidated: Bool)
+    func modelChanged()
 }
 
 class ComposeViewModel {
@@ -48,6 +49,14 @@ class ComposeViewModel {
 
     public func viewModel(for indexPath: IndexPath) -> CellViewModel {
         return sections[indexPath.section].rows[indexPath.row]
+    }
+
+    public func handleUserSelectedRow(at indexPath: IndexPath) {
+        let section = sections[indexPath.section]
+        if section.type == .wrapped {
+            state.setBccUnwrapped()
+            resetSections()
+        }
     }
 
     private func setup() {
@@ -137,6 +146,7 @@ extension ComposeViewModel {
             }
         }
         self.sections = newSections
+        delegate?.modelChanged()
     }
 
     private func section(
