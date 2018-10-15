@@ -106,6 +106,14 @@ class EmailListViewModel {
     func getFolderName() -> String {
         return folderToShow.localizedName
     }
+
+    func shouldEditMessage() -> Bool {
+        if folderToShow.folderType == .drafts || folderToShow.folderType == .outbox {
+            return true
+        } else {
+            return false
+        }
+    }
     
     //check if there are some important settings that have changed to force a reload
     func checkIfSettingsChanged() -> Bool {

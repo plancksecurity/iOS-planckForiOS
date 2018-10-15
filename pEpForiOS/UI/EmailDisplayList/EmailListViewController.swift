@@ -611,14 +611,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 vm.updatedItems(indexPaths: selectedIndexPaths)
             }
         } else {
-            guard let folder = folderToShow else {
+            guard let model = model else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No folder")
                 return
             }
             lastSelectedIndexPath = indexPath
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-
-            if folder.folderType == .drafts || folder.folderType == .outbox {
+            if model.shouldEditMessage() {
                 showComposeView()
             } else {
                 showEmail(forCellAt: indexPath)
