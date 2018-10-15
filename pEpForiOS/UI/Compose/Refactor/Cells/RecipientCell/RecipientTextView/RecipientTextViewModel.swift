@@ -22,7 +22,8 @@ protocol RecipientTextViewModelDelegate: class {
 }
 
 class RecipientTextViewModel {
-    var maxTextattachmentWidth: CGFloat = 20.0 // arbitrary value to avoid optional
+    var maxTextattachmentWidth: CGFloat = 0.0 // arbitrary value to avoid optional
+    private var isDirty = false
     private var identities = [Identity]() {
         didSet {
             resultDelegate?.recipientTextViewModel(recipientTextViewModel: self,
@@ -49,7 +50,8 @@ class RecipientTextViewModel {
 
     public func handleDidEndEditing(range: NSRange,
                                     of text: NSAttributedString) {
-        parseAndHandleValidEmailAddresses(inRange: range, of: text)
+        let validEmailaddressHandled = parseAndHandleValidEmailAddresses(inRange: range, of: text)
+        isDirty = !validEmailaddressHandled
     }
 
     /// Parses a text for one new valid email address (and handles it if found).
