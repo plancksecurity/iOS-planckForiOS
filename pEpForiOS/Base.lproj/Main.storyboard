@@ -719,6 +719,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="recipientTextView" destination="4nS-8y-LLg" id="MrS-GK-eT5"/>
+                                    <outlet property="title" destination="Bd2-Nr-sTF" id="3Df-Pu-hFO"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SubjectCell" rowHeight="58" id="mAI-2I-ayV" customClass="SubjectCell" customModule="pEpForiOS" customModuleProvider="target">
