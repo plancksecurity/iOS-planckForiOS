@@ -192,6 +192,8 @@
 		15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */; };
 		15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152130531FD00B7A00688DF2 /* DisplayUserError.swift */; };
 		15C5F2461F823752007DE086 /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15C5F2451F823752007DE086 /* SortedSet.swift */; };
+		15CC24A12174888600FAF905 /* ComposeViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CC24A02174888600FAF905 /* ComposeViewModelState.swift */; };
+		15CC24A32174896F00FAF905 /* ComposeViewModel+InitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15CC24A22174896E00FAF905 /* ComposeViewModel+InitData.swift */; };
 		15D2A59821651313003711BA /* ComposeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D2A59721651312003711BA /* ComposeTableViewController.swift */; };
 		15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D43999216E697700EB3933 /* AccountPickerView.swift */; };
 		15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */; };
@@ -779,6 +781,8 @@
 		15BBBC671FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingErrorContainerTest.swift; sourceTree = "<group>"; };
 		15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayUserErrorTest.swift; sourceTree = "<group>"; };
 		15C5F2451F823752007DE086 /* SortedSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
+		15CC24A02174888600FAF905 /* ComposeViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewModelState.swift; sourceTree = "<group>"; };
+		15CC24A22174896E00FAF905 /* ComposeViewModel+InitData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComposeViewModel+InitData.swift"; sourceTree = "<group>"; };
 		15D2A59721651312003711BA /* ComposeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController.swift; sourceTree = "<group>"; };
 		15D43999216E697700EB3933 /* AccountPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerView.swift; sourceTree = "<group>"; };
 		15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerViewModel.swift; sourceTree = "<group>"; };
@@ -1409,6 +1413,8 @@
 			isa = PBXGroup;
 			children = (
 				1526597E2163BE6F006A78DF /* ComposeViewModel.swift */,
+				15CC24A02174888600FAF905 /* ComposeViewModelState.swift */,
+				15CC24A22174896E00FAF905 /* ComposeViewModel+InitData.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -3302,6 +3308,7 @@
 				1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */,
 				43ED53701CC77F95006AB156 /* EmailListViewController.swift in Sources */,
 				432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */,
+				15CC24A12174888600FAF905 /* ComposeViewModelState.swift in Sources */,
 				1571B479216775D900D59DAD /* SubjectCellViewModel.swift in Sources */,
 				1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
 				496C0EE720BC2A880009B5B9 /* EmailDisplayDelegate.swift in Sources */,
@@ -3417,6 +3424,7 @@
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */,
 				B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */,
+				15CC24A32174896F00FAF905 /* ComposeViewModel+InitData.swift in Sources */,
 				15721AB12170B8EB00F1EA7A /* RecipientCellViewModel+FieldType.swift in Sources */,
 				15874BC32127493E00A3A4A6 /* SettingsViewModel.swift in Sources */,
 				434BF38F20C6AFAF00FCBCCA /* Folder+ThreadAware.swift in Sources */,
