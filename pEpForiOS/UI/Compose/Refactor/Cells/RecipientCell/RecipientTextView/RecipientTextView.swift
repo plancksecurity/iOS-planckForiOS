@@ -21,6 +21,7 @@ class RecipientTextView: UITextView {
 // MARK: - UITextViewDelegate
 
 extension RecipientTextView: UITextViewDelegate {
+
     public func textViewDidBeginEditing(_ textView: UITextView) {
         viewModel?.maxTextattachmentWidth = bounds.width
 //        guard let cTextview = textView as? ComposeTextView else { return }
@@ -45,7 +46,6 @@ extension RecipientTextView: UITextViewDelegate {
     /*
  //IOS-1369: Next !!
 
-
     public func textViewDidChangeSelection(_ textView: UITextView) {
         guard let cTextview = textView as? ComposeTextView else { return }
 
@@ -60,42 +60,6 @@ extension RecipientTextView: UITextViewDelegate {
                 }
             }
         }
-    }
-
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
-                                  replacementText text: String) -> Bool {
-        if (text == .returnKey || text == .space) {
-            let result = generateContact()
-            return result
-        }
-
-        if text.utf8.count == 0 && range.location != NSNotFound && !hasSelection {
-            let selectedRange = textView.selectedTextRange!
-
-            if let newPos = textView.position(from: selectedRange.start, offset: -1) {
-                let newRange = textView.textRange(from: newPos, to: selectedRange.start)
-
-                // Check if text is Attachment and select it
-                if textView.text(in: newRange!)!.isAttachment {
-                    textView.selectedTextRange = newRange
-                    hasSelection = true
-                    return false
-                }
-            }
-        }
-
-        if range.location != NSNotFound {
-            removeRecepients()
-        }
-
-        hasSelection = false
-
-        let last = textView.text.last
-        if "\n" == last && text == "\n" {
-            return false
-        }
-
-        return true
     }
 
     /// Wheter or not textView.attributedText.string is empty after removing all attachments
@@ -116,11 +80,46 @@ extension RecipientTextView: UITextViewDelegate {
  */
 
     //IOS-1369: WIP
-    public func textViewDidEndEditing(_ textView: UITextView) {
-        viewModel?.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
+
+    public func textView(_ textView: UITextView,
+                         shouldChangeTextIn range: NSRange,
+                         replacementText text: String) -> Bool {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return true
+        }
+        if vm.isAddressDeliminator(str: text) {
+            let result = vm.handleAddressDelimiterTyped(range: range, of: textView.attributedText)
+            return result
+        }
+
+        let hasSelection = !(selectedTextRange?.isEmpty ?? true)
+        if text.utf8.count == 0 && range.location != NSNotFound && !hasSelection {
+            guard
+                let selectedRange = textView.selectedTextRange,
+                let newPos = textView.position(from: selectedRange.start, offset: -1),
+                let newRange = textView.textRange(from: newPos, to: selectedRange.start) else {
+                    return true
+            }
+            // Check if text is Attachment and select it
+            if textView.text(in: newRange)!.isAttachment {
+                textView.selectedTextRange = newRange
+                return false
+            }
+        } else if hasSelection {
+            // user deletes a selected attachment
+            let attachments = attributedText.recipientTextAttachments(range: selectedRange)
+            vm.handleSelectedAttachment(attachments)
+            return true
+        }
+        return true
     }
 
     //IOS-1369:  !! DONE !!
+
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        viewModel?.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
+    }
 
     func textView(_ textView: UITextView,
                   shouldInteractWith textAttachment: NSTextAttachment,

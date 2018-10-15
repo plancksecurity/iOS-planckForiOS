@@ -72,8 +72,26 @@ extension NSAttributedString {
         return textAttachments(range: NSMakeRange(0, string.count))
     }
 
+    public func recipientTextAttachments(
+        range: NSRange? = nil) -> [RecipientTextViewTextAttachment] {
+        let theRange = range ?? NSMakeRange(0, length)
+        var allAttachments = [RecipientTextViewTextAttachment]()
+        if theRange.location != NSNotFound {
+            enumerateAttribute(
+                NSAttributedStringKey.attachment, in: theRange,
+                options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
+                    value, range, stop in
+                    if let attachment = value as? RecipientTextViewTextAttachment {
+                        allAttachments.append(attachment)
+                    }
+            }
+        }
+        return allAttachments
+    }
+
     public func plainTextRemoved() -> NSAttributedString {
-        let attachments = textAttachments()
+        var attachments: [NSTextAttachment] = textAttachments()
+        attachments.append(contentsOf: recipientTextAttachments())
         var result = self
         if attachments.count > 0 {
             let new = NSMutableAttributedString()

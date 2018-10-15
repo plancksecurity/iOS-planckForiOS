@@ -24,10 +24,12 @@ protocol RecipientTextViewModelDelegate: class {
 class RecipientTextViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0 // arbitrary value to avoid optional
     private var isDirty = false
-    private var identities = [Identity]() {
+    //    public var hasSelectedAttachment = false //IOS-1369: obsolete?
+    private var recipientAttachments = [RecipientTextViewTextAttachment]() {
         didSet {
+            let recipients = recipientAttachments.map { $0.recipient }
             resultDelegate?.recipientTextViewModel(recipientTextViewModel: self,
-                                                   didChangeRecipients: identities)
+                                                   didChangeRecipients: recipients)
         }
     }
 
@@ -50,8 +52,38 @@ class RecipientTextViewModel {
 
     public func handleDidEndEditing(range: NSRange,
                                     of text: NSAttributedString) {
+        tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
+    }
+
+    public func isAddressDeliminator(str: String) -> Bool {
+        return addressDeliminators.contains(str)
+    }
+
+    public func handleAddressDelimiterTyped(range: NSRange,
+                                            of text: NSAttributedString) -> Bool {
+        return tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
+    }
+
+    public func handleSelectedAttachment(_ attachments: [RecipientTextViewTextAttachment]) {
+        for attachment in attachments {
+            removeRecipientAttachment(attachment: attachment)
+        }
+    }
+
+    private func removeRecipientAttachment(attachment: RecipientTextViewTextAttachment) {
+        recipientAttachments = recipientAttachments
+            .filter { $0.recipient.address != attachment.recipient.address }
+    }
+
+     @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
+                                                        of text: NSAttributedString) -> Bool {
         let validEmailaddressHandled = parseAndHandleValidEmailAddresses(inRange: range, of: text)
         isDirty = !validEmailaddressHandled
+        return validEmailaddressHandled
+    }
+
+    private var addressDeliminators: [String] {
+        return [String.returnKey, String.space]
     }
 
     /// Parses a text for one new valid email address (and handles it if found).
@@ -64,47 +96,16 @@ class RecipientTextViewModel {
         let stringWithoutTextAttachments = text.string.cleanAttachments
         if stringWithoutTextAttachments.isProbablyValidEmail() {
             let identity = Identity.create(address: stringWithoutTextAttachments.trimmed())
-            identities.append(identity)
-            var newText = text.imageInserted(with: identity.displayString,
+            var (newText, attachment) = text.imageInserted(withAddressOf: identity,
                                              in: range,
                                              maxWidth: maxTextattachmentWidth)
+            recipientAttachments.append(attachment)
             newText = newText.plainTextRemoved()
             delegate?.recipientTextViewModel(recipientTextViewModel: self,
                                              didChangeAttributedText: newText)
             identityGenerated =  true
         }
         resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
-        //        delegate?.textDidEndEditing(at: index, textView: cTextview)//IOS-1369: //!!!
-        /*
-         ->
-         func textDidEndEditing(at indexPath: IndexPath, textView: ComposeTextView) {
-         tableView.updateSize()
-         hideSuggestions()
-         }
-         */
-        //        if let fm = super.fieldModel {
-        //            delegate?.composeCell(cell: self, didChangeEmailAddresses: identities.map{ $0.address }, forFieldType: fm.type) //IOS-1369: //!!!:
-        /*
-         ->
-         func composeCell(cell: ComposeCell, didChangeEmailAddresses changedAddresses: [String],
-         forFieldType type: ComposeFieldModel.FieldType) {
-         let identities = changedAddresses.map { Identity.by(address: $0) ?? Identity(address: $0) }
-         switch type {
-         case .to:
-         destinyTo = identities
-         case .cc:
-         destinyCc = identities
-         case .bcc:
-         destinyBcc = identities
-         case .from:
-         origin = identities.last
-         default:
-         break
-         }
-         calculateComposeColorAndInstallTapGesture()
-         recalculateSendButtonStatus()
-         }*/
-        //        }
         return identityGenerated
     }
 }
