@@ -369,7 +369,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         case .bcc:
             state.bccRecipients = newRecipients
         case .wraped:
-            //IOS-1369: handle wrapped. Maybe specialize recipientCell/VM with dead impl?
+            //IOS-1369: handle wrapped. Own section please.
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "Wraped cellVM should never have recipients")
             break
