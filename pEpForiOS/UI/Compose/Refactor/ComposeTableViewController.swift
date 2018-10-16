@@ -35,6 +35,11 @@ class ComposeTableViewController: BaseTableViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupRecipientSuggestionsTableViewController()
+    }
+
     // MARK: - Setup & Configuration
 
     private func setupView() {
@@ -62,7 +67,6 @@ class ComposeTableViewController: BaseTableViewController {
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
         addChildViewController(suggestVc)
         suggestView.isHidden = true
-        updateSuggestTable()
         tableView.addSubview(suggestView)
     }
 
@@ -158,6 +162,15 @@ extension ComposeTableViewController {
 
 extension ComposeTableViewController: ComposeViewModelDelegate {
 
+    func hideSuggestions() {
+        suggestionsChildViewController?.view.isHidden = true
+    }
+
+    func showSuggestions(forRowAt indexPath: IndexPath) {
+        suggestionsChildViewController?.view.isHidden = false
+        updateSuggestTable(suggestionsForCellAt: indexPath)
+    }
+
     func validatedStateChanged(to isValidated: Bool) {
         sendButton.isEnabled = isValidated
     }
@@ -193,22 +206,12 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 // MARK: - Address Suggestions
 
 extension ComposeTableViewController {
-    private final func updateSuggestTable() {
-        var pos = ComposeHelpers.defaultCellHeight
-        if pos < ComposeHelpers.defaultCellHeight && !isInitialSetup {
-            pos = ComposeHelpers.defaultCellHeight * (ComposeHelpers.defaultCellHeight + 1) + 2
-        }
-        suggestionsChildViewController?.view.frame.origin.y = pos
+    private final func updateSuggestTable(suggestionsForCellAt indexPath: IndexPath) {
+        let rectCell = tableView.rectForRow(at: indexPath)
+        let position = rectCell.origin.y + rectCell.height
+        suggestionsChildViewController?.view.frame.origin.y = position
         suggestionsChildViewController?.view.frame.size.height =
-            tableView.bounds.size.height - pos + 2
-    }
-
-    private func hideSuggestions() {
-        suggestionsChildViewController?.view.isHidden = true
-    }
-
-    private func showSuggestions() {
-        suggestionsChildViewController?.view.isHidden = false
+            tableView.bounds.size.height - position + 2 //IOS-1369: whats 2?
     }
 }
 

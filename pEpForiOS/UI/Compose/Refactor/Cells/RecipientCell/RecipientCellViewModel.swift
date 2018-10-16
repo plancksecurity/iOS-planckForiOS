@@ -26,6 +26,7 @@ class RecipientCellViewModel: CellViewModel {
     public var content = NSMutableAttributedString(string: "")
     public let type: FieldType
     private var initialRecipients = [Identity]()
+    private var textViewModel: RecipientTextViewModel?
 
     weak public var resultDelegate: RecipientCellViewModelResultDelegate?
 
@@ -38,8 +39,14 @@ class RecipientCellViewModel: CellViewModel {
         self.title = type.localizedTitle()
     }
 
+    public func add(recipient: Identity) {
+        textViewModel?.add(recipient: recipient)
+    }
+
     func recipientTextViewModel() -> RecipientTextViewModel {
-        return RecipientTextViewModel(resultDelegate: self)
+        let createe = RecipientTextViewModel(resultDelegate: self)
+        textViewModel = createe
+        return createe
     }
 }
 

@@ -22,6 +22,8 @@ protocol RecipientTextViewModelResultDelegate: class {
 protocol RecipientTextViewModelDelegate: class {
     func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
                                 didChangeAttributedText newText: NSAttributedString)
+
+    func add(recipient: String)
 }
 
 class RecipientTextViewModel {
@@ -41,6 +43,10 @@ class RecipientTextViewModel {
 
     init(resultDelegate: RecipientTextViewModelResultDelegate? = nil) {
         self.resultDelegate = resultDelegate
+    }
+
+    public func add(recipient: Identity) {
+        delegate?.add(recipient: recipient.address)
     }
 
     public func shouldInteract(WithTextAttachment attachment: NSTextAttachment) -> Bool {

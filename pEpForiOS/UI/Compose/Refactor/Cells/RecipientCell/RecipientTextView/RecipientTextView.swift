@@ -136,9 +136,20 @@ extension RecipientTextView: UITextViewDelegate {
     }
 }
 
+// MARK: - RecipientTextViewModelDelegate
+
 extension RecipientTextView: RecipientTextViewModelDelegate {
+
     func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
                                 didChangeAttributedText newText: NSAttributedString) {
-        self.attributedText = newText
+        attributedText = newText
+    }
+
+    func add(recipient: String) {
+        attributedText = attributedText.plainTextRemoved()
+        let createe = NSMutableAttributedString(attributedString: attributedText)
+        createe.append(NSAttributedString(string: recipient))
+        attributedText = NSAttributedString(attributedString: createe)
+        viewModel?.handleDidEndEditing(range: selectedRange, of: attributedText)
     }
 }

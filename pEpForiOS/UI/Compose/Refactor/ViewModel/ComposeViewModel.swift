@@ -39,6 +39,10 @@ protocol ComposeViewModelDelegate: class {
     func modelChanged()
 
     func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool)
+
+    func hideSuggestions()
+
+    func showSuggestions(forRowAt indexPath: IndexPath)
 }
 
 class ComposeViewModel {
@@ -48,6 +52,7 @@ class ComposeViewModel {
     public private(set) var state: ComposeViewModelState
 
     private var suggestionsVM: SuggestViewModel?
+    private var lastRowWithSuggestions: IndexPath?
 
     init(resultDelegate: ComposeViewModelResultDelegate? = nil,
          composeMode: ComposeUtil.ComposeMode? = nil,
@@ -215,9 +220,14 @@ extension ComposeViewModel {
 
 extension ComposeViewModel: SuggestViewModelResultDelegate {
     func suggestViewModelDidSelectContact(identity: Identity) {
-        //IOS-1369:
-        //TODO:
-        fatalError()
+        guard
+            let idxPath = lastRowWithSuggestions,
+            let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No row VM")
+            return
+        }
+        recipientVM.add(recipient: identity)
     }
 }
 
@@ -253,25 +263,27 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
             return
         }
         delegate?.contentChanged(inRowAt: idxPath)
+        delegate?.hideSuggestions()
         /*
          tableView.updateSize()
          hideSuggestions()
          */
+
     }
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
         let minNumCharsForSuggestions = 3
         if newText.count < minNumCharsForSuggestions {
-            fatalError()
-            // Hide suggestions
+            delegate?.hideSuggestions()
         } else {
             guard let idxPath = indexPath(for: vm) else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "We got called by a non-existing VM?")
                 return
             }
+            lastRowWithSuggestions = idxPath
             suggestionsVM?.updateSuggestion(searchString: newText)
-            // show suggestions for cell at
+            delegate?.showSuggestions(forRowAt: idxPath)
         }
     }
 }
