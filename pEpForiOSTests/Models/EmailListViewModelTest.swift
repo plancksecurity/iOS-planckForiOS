@@ -73,6 +73,65 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(folder.localizedName, emailListVM.getFolderName())
     }
 
+    func testGetDestructiveAction() {
+        _ = createMessages(number: 1, engineProccesed: true, inFolder: folder)
+        setupViewModel()
+        let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
+
+        XCTAssertEqual(destructiveAction, .trash)
+    }
+
+    func testGetDestructiveActionInOutgoingFolderIsTrash() {
+        _ = givenThereIsAMessageIn(folderType: .outbox)
+        setupViewModel()
+
+        let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
+
+        XCTAssertEqual(destructiveAction, .trash)
+    }
+
+    func testGetFlagAndMoreAction() {
+        let messages = createMessages(number: 1, engineProccesed: true, inFolder: folder)
+        setupViewModel()
+
+        var flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, .flag)
+        XCTAssertEqual(moreAction, .more)
+
+        messages[0].imapFlags?.flagged = true
+        messages[0].save()
+
+        flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, .unflag)
+
+    }
+
+    func testGetFlagAndMoreActionInOutgoingFolderIsNil() {
+        _ = givenThereIsAMessageIn(folderType: .outbox)
+        setupViewModel()
+
+        let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, nil)
+        XCTAssertEqual(moreAction, nil)
+    }
+
+    func testGetFlagAndMoreActionInDraftFolderIsNil() {
+        _ = givenThereIsAMessageIn(folderType: .drafts)
+        setupViewModel()
+
+        let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, nil)
+        XCTAssertEqual(moreAction, nil)
+
+    }
+
     //mark: Search section
 
     func testSetSearchFilterWith0results() {
@@ -393,6 +452,12 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             return Date()
         }
         return safeLastLookedAt
+    }
+
+    private func givenThereIsAMessageIn(folderType: FolderType)-> Message? {
+        folder = Folder(name: "outgoing", parent: folder, account: account, folderType: folderType)
+        folder.save()
+        return createMessages(number: 1, engineProccesed: true, inFolder: folder).first
     }
 }
 

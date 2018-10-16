@@ -411,6 +411,62 @@ class EmailListViewModel {
         resetViewModel()
     }
 
+    public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        let defaultDestructiveAction: SwipeActionDescriptor
+            = parentFolder.defaultDestructiveActionIsArchive
+                ? .archive
+                : .trash
+
+        return folderIsOutbox(parentFolder) ? .trash : defaultDestructiveAction
+    }
+
+    public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftOrOutbox(parentFolder) {
+            return nil
+        } else {
+            let flagged = messages.object(at: index)?.message()?.imapFlags?.flagged ?? false
+            return flagged ? .unflag : .flag
+        }
+    }
+
+    public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftOrOutbox(parentFolder) {
+            return nil
+        } else {
+           return .more
+        }
+    }
+
+    private func getParentFolder(forMessageAt index: Int) -> Folder {
+        var parentFolder: Folder
+
+        if folderToShow is UnifiedInbox {
+            // folderToShow is unified inbox, fetch parent folder from DB.
+            guard let folder = messages.object(at: index)?.message()?.parent else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
+                    return folderToShow
+            }
+            parentFolder = folder
+        } else {
+            // Do not bother our imperformant MessageModel if we already know the parent folder
+            // folderToShow is unified inbox, fetch parent folder from DB.
+            parentFolder = folderToShow
+        }
+
+        return parentFolder
+    }
+
+    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .outbox
+    }
+
+    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
+        return parentFoldder.folderType == .drafts || parentFoldder.folderType == .outbox
+    }
+
     // MARK: - Filter
     
     public var isFilterEnabled = false {

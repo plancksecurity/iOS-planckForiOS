@@ -513,31 +513,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Create swipe actions, taking the currently displayed folder into account
         var swipeActions = [SwipeAction]()
 
-        // Get messages parent folder
-        let parentFolder: Folder
-        if let folder = folderToShow, !(folder is UnifiedInbox) {
-            // Do not bother our imperformant MessageModel if we already know the parent folder
-            parentFolder = folder
-        } else {
-            // folderToShow is unified inbox, fetch parent folder from DB.
-            guard let vm = model,
-                let folder = vm.message(representedByRowAt: indexPath)?.parent else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
-                    return nil
-            }
-            parentFolder = folder
+        guard let model = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Should have VM")
+            return nil
         }
 
         // Delete or Archive
-        let defaultIsArchive = parentFolder.defaultDestructiveActionIsArchive
-        let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
-        let usedDescriptor =
-            folderIsOutbox(parentFolder) ?
-            SwipeActionDescriptor.trash :
-                (defaultIsArchive ? .archive : .trash)
-        let descriptorDestructive: SwipeActionDescriptor = usedDescriptor
+        let destructiveAction = model.getDestructiveActtion(forMessageAt: indexPath.row)
         let archiveAction =
-            SwipeAction(style: .destructive, title: titleDestructive) {
+            SwipeAction(style: .destructive,
+                        title: destructiveAction.title(forDisplayMode: .titleAndImage)) {
                 [weak self] action, indexPath in
                 guard let me = self else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
@@ -547,11 +532,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 me.deleteAction(forCellAt: indexPath)
                 me.swipeDelete = action
         }
-        configure(action: archiveAction, with: descriptorDestructive)
+        configure(action: archiveAction, with: destructiveAction)
         swipeActions.append(archiveAction)
 
         // Flag
-        if !folderIsDraftsOrOutbox(parentFolder) {
+        let flagActionDescription = model.getFlagAction(forMessageAt: indexPath.row)
+        if let flagActionDescription = flagActionDescription {
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
@@ -562,16 +548,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             }
 
             flagAction.hidesWhenSelected = true
-            
-            let flagged = model?.message(representedByRowAt: indexPath)?.imapFlags?.flagged ?? false
-            let actionDescriptor: SwipeActionDescriptor = flagged == true ? .unflag : .flag
 
-            configure(action: flagAction, with: actionDescriptor)
+            configure(action: flagAction, with: flagActionDescription)
             swipeActions.append(flagAction)
         }
 
         // More (reply++)
-        if !folderIsDraftsOrOutbox(parentFolder) {
+        let moreActionDescription = model.getMoreAction(forMessageAt: indexPath.row)
+
+        if let moreActionDescription = moreActionDescription {
             // Do not add "more" actions (reply...) to drafts or outbox.
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
@@ -582,7 +567,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 me.moreAction(forCellAt: indexPath)
             }
             moreAction.hidesWhenSelected = true
-            configure(action: moreAction, with: .more)
+            configure(action: moreAction, with: moreActionDescription)
             swipeActions.append(moreAction)
         }
         return (orientation == .right ?   swipeActions : nil)
