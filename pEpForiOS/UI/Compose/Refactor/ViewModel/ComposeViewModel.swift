@@ -47,6 +47,8 @@ class ComposeViewModel {
     public private(set) var sections = [ComposeViewModel.Section]()
     public private(set) var state: ComposeViewModelState
 
+    private var suggestionsVM: SuggestViewModel?
+
     init(resultDelegate: ComposeViewModelResultDelegate? = nil,
          composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
@@ -205,7 +207,9 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     func suggestViewModel() -> SuggestViewModel {
-        return SuggestViewModel(resultDelegate: self)
+        let createe = SuggestViewModel(resultDelegate: self)
+        suggestionsVM = createe
+        return createe
     }
 }
 
@@ -213,6 +217,7 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
     func suggestViewModelDidSelectContact(identity: Identity) {
         //IOS-1369:
         //TODO:
+        fatalError()
     }
 }
 
@@ -253,9 +258,25 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
          hideSuggestions()
          */
     }
+
+    func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
+        let minNumCharsForSuggestions = 3
+        if newText.count < minNumCharsForSuggestions {
+            fatalError()
+            // Hide suggestions
+        } else {
+            guard let idxPath = indexPath(for: vm) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "We got called by a non-existing VM?")
+                return
+            }
+            suggestionsVM?.updateSuggestion(searchString: newText)
+            // show suggestions for cell at
+        }
+    }
 }
 
-// MARK: AccountCellViewModelResultDelegate
+    // MARK: AccountCellViewModelResultDelegate
 
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
     func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {

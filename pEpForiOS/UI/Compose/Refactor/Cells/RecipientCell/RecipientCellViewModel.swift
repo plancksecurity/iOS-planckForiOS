@@ -13,6 +13,8 @@ protocol RecipientCellViewModelResultDelegate: class {
                                 didChangeRecipients newRecipients: [Identity])
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel)
+
+    func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String)
 }
 
 //protocol RecipientCellViewModelDelegate {
@@ -50,5 +52,9 @@ extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
 
     func recipientTextViewModelDidEndEditing(recipientTextViewModel: RecipientTextViewModel) {
         resultDelegate?.recipientCellViewModelDidEndEditing(self)
+    }
+
+    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel, textChanged newText: String) {
+        resultDelegate?.recipientCellViewModel(self, textChanged: newText)
     }
 }

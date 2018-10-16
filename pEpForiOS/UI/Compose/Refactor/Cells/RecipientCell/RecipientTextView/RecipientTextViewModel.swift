@@ -14,6 +14,9 @@ protocol RecipientTextViewModelResultDelegate: class {
                                 didChangeRecipients newRecipients: [Identity])
 
     func recipientTextViewModelDidEndEditing(recipientTextViewModel: RecipientTextViewModel)
+
+    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
+                                textChanged newText: String)
 }
 
 protocol RecipientTextViewModelDelegate: class {
@@ -53,6 +56,10 @@ class RecipientTextViewModel {
     public func handleDidEndEditing(range: NSRange,
                                     of text: NSAttributedString) {
         tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
+    }
+
+    public func handleTextChange(newText: String) {
+        resultDelegate?.recipientTextViewModel(recipientTextViewModel: self, textChanged: newText)
     }
 
     public func isAddressDeliminator(str: String) -> Bool {

@@ -37,6 +37,7 @@ extension RecipientTextView: UITextViewDelegate {
     }
 
     public func textViewDidChange(_ textView: UITextView) {
+        viewModel?.handleTextChange(newText: textView.text)
         //IOS-1369: scroll? suggestions?
 //        guard let cTextview = textView as? ComposeTextView else { return }
 //
