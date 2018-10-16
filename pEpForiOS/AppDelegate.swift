@@ -95,7 +95,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
         Log.shared.resume()
-        networkService?.start()
+//        networkService?.start()
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.

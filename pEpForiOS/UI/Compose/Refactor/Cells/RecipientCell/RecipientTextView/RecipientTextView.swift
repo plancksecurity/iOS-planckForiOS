@@ -46,22 +46,6 @@ extension RecipientTextView: UITextViewDelegate {
     /*
  //IOS-1369: Next !!
 
-    public func textViewDidChangeSelection(_ textView: UITextView) {
-        guard let cTextview = textView as? ComposeTextView else { return }
-
-        if textView.selectedRange.location != NSNotFound, let range = textView.selectedTextRange {
-            let selected = textView.text(in: range)
-
-            // Extract text attachments form selection
-            if let theSelected = selected {
-                let attachments = cTextview.attributedText.textAttachments(string: theSelected)
-                if attachments.count > 0 {
-                    recipients.append(textView.selectedRange.location)
-                }
-            }
-        }
-    }
-
     /// Wheter or not textView.attributedText.string is empty after removing all attachments
     var containsNothingButValidAddresses: Bool {
         // Only addresses that became an attachment are considered valid ...
@@ -80,6 +64,24 @@ extension RecipientTextView: UITextViewDelegate {
  */
 
     //IOS-1369: WIP
+
+    public func textViewDidChangeSelection(_ textView: UITextView) {
+//        guard let cTextview = textView as? ComposeTextView else { return }
+//
+//        if textView.selectedRange.location != NSNotFound, let range = textView.selectedTextRange {
+//            let selected = textView.text(in: range)
+//
+//            // Extract text attachments form selection
+//            if let theSelected = selected {
+//                let attachments = cTextview.attributedText.textAttachments(string: theSelected)
+//                if attachments.count > 0 {
+//                    recipients.append(textView.selectedRange.location)
+//                }
+//            }
+//        }
+    }
+
+    //IOS-1369: DONE
 
     public func textView(_ textView: UITextView,
                          shouldChangeTextIn range: NSRange,
@@ -114,8 +116,6 @@ extension RecipientTextView: UITextViewDelegate {
         }
         return true
     }
-
-    //IOS-1369:  !! DONE !!
 
     public func textViewDidEndEditing(_ textView: UITextView) {
         viewModel?.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
