@@ -81,7 +81,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Setup
 
     private func setup() {
-        if noAccountsExist() {
+        if let accountExists = model?.noAccountsExist(),
+            accountExists {
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
             return
@@ -181,10 +182,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Other
     private func weCameBackFromAPushedView() -> Bool {
         return model != nil
-    }
-
-    private func noAccountsExist() -> Bool {
-        return Account.all().isEmpty
     }
 
     private func showComposeView() {

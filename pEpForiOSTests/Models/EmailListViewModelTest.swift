@@ -178,6 +178,21 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     }
 
+    func testAccountExists() {
+        setupViewModel()
+
+        var noAccounts = emailListVM.noAccountsExist()
+
+        XCTAssertFalse(noAccounts)
+
+        cdAccount.delete()
+        setupViewModel()
+
+        noAccounts = emailListVM.noAccountsExist()
+
+        XCTAssertTrue(noAccounts)
+    }
+
     //mark: Search section
 
     func testSetSearchFilterWith0results() {

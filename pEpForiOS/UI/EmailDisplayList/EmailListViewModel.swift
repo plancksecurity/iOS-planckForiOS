@@ -444,6 +444,18 @@ class EmailListViewModel {
         }
     }
 
+    public func noAccountsExist() -> Bool {
+        return Account.all().isEmpty
+    }
+
+    public func folderIsDraft() -> Bool {
+        return folderIsDraft( folderToShow)
+    }
+
+    public func folderIsOutbox() -> Bool {
+        return folderIsOutbox(folderToShow)
+    }
+
     private func getParentFolder(forMessageAt index: Int) -> Folder {
         var parentFolder: Folder
 
@@ -461,14 +473,6 @@ class EmailListViewModel {
         }
 
         return parentFolder
-    }
-
-    public func folderIsDraft() -> Bool {
-        return folderIsDraft( folderToShow)
-    }
-
-    public func folderIsOutbox() -> Bool {
-        return folderIsOutbox(folderToShow)
     }
 
     private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
