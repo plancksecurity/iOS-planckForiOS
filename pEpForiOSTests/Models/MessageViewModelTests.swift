@@ -39,8 +39,9 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
 
     func testToFieldOneRecipientFormat() {
         givenViewModelRepresentsOneRecipientMessage()
-        let toString = "To:" + Defaults.toAddress
-        XCTAssert(viewModel.getTo().string == toString)
+        let toExpectedString = "To:" + Defaults.toAddress
+        let toString = viewModel.getTo().string
+        XCTAssertEqual(toString, toExpectedString)
     }
 
     func testToFieldContainsAllRecipients() {
@@ -53,32 +54,38 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
                 break
             }
         }
-        XCTAssert(addressesArePresent, "All Addresses should be contained in the to field")
+        XCTAssertTrue(addressesArePresent)
     }
 
     func testFromField() {
         givenViewModelRepresentsOneRecipientMessage()
-        XCTAssert(viewModel.from == Defaults.fromAddress)
+        let from = viewModel.from
+        XCTAssertEqual(from, Defaults.fromAddress)
+
     }
 
     func testSubjectField() {
         givenViewModelRepresentsASubjectAndBodyMessage()
-        XCTAssert(viewModel.subject == Defaults.shortMessage)
+        let subject = viewModel.subject
+        XCTAssertEqual(subject, Defaults.shortMessage)
     }
 
     func testBodyField() {
         givenViewModelRepresentsASubjectAndBodyMessage()
-        XCTAssert(viewModel.body.string == Defaults.longMessage)
+        let bodyString = viewModel.body.string
+        XCTAssertEqual(bodyString, Defaults.longMessage)
     }
 
     func testIsFlagged() {
         givenViewModelRepresentOneFlaggedAndSeenMessage()
-        XCTAssert(viewModel.isFlagged)
+        let isFlagged = viewModel.isFlagged
+        XCTAssertTrue(isFlagged)
     }
 
     func testIsSeen() {
         givenViewModelRepresentOneFlaggedAndSeenMessage()
-        XCTAssert(viewModel.isSeen)
+        let isSeen = viewModel.isSeen
+        XCTAssertTrue(isSeen)
     }
 
     private func givenViewModelRepresentOneFlaggedAndSeenMessage() {
