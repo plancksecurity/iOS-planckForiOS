@@ -456,6 +456,11 @@ class EmailListViewModel {
         return folderIsOutbox(folderToShow)
     }
 
+    public func activeFilterEnabled() -> Bool {
+        return isFilterEnabled &&
+            activeFilter?.contains(type: UnreadFilter.self) ?? false
+    }
+
     private func getParentFolder(forMessageAt index: Int) -> Folder {
         var parentFolder: Folder
 
