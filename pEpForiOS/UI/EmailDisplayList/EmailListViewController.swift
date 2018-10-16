@@ -680,7 +680,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
     func showThreadView(for indexPath: IndexPath) {
-        guard let splitViewController = splitViewController else {
+       /* guard let splitViewController = splitViewController else {
             return
         }
 
@@ -706,7 +706,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
             nav.viewControllers[nav.viewControllers.count - 1] = vc
         } else {
             showEmail(forCellAt: indexPath)
-        }
+        }*/
     }
 
     func toolbarIs(enabled: Bool) {
