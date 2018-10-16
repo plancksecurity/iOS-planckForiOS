@@ -1028,8 +1028,8 @@ extension EmailListViewController: SegueHandlerType {
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model
             model?.currentDisplayedMessage = vc
-        case .segueShowThreadedEmail:
-            guard let nav = segue.destination as? UINavigationController,
+      //  case .segueShowThreadedEmail:
+        /*    guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? ThreadViewController,
                 let indexPath = lastSelectedIndexPath,
                 let folder = folderToShow else {
@@ -1044,7 +1044,7 @@ extension EmailListViewController: SegueHandlerType {
             viewModel.emailDisplayDelegate = model
             vc.model = viewModel
             model?.currentDisplayedMessage = viewModel
-            model?.updateThreadListDelegate = viewModel
+            model?.updateThreadListDelegate = viewModel*/
         case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
