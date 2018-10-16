@@ -710,7 +710,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func toolbarIs(enabled: Bool) {
-        if let type = folderToShow?.folderType, type != .outbox {
+        if model?.shouldShowToolbarEditButtons() ?? true {
             // Never enable those for outbox
             flagToolbarButton?.isEnabled = enabled
             unflagToolbarButton?.isEnabled = enabled

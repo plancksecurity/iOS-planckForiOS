@@ -411,6 +411,10 @@ class EmailListViewModel {
         resetViewModel()
     }
 
+    public func shouldShowToolbarEditButtons() -> Bool {
+        return !folderIsOutbox(folderToShow)
+    }
+
     public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
         let parentFolder = getParentFolder(forMessageAt: index)
         let defaultDestructiveAction: SwipeActionDescriptor

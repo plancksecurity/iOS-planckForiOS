@@ -90,6 +90,20 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(destructiveAction, .trash)
     }
 
+    func testShouldShowToolbarEditButtonsIfItsNotOutboxFolder() {
+        setupViewModel()
+
+        var showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
+        XCTAssertTrue(showToolbarButtons)
+
+        givenThereIsA(folderType: .outbox)
+        setupViewModel()
+
+        showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
+        XCTAssertFalse(showToolbarButtons)
+
+    }
+
     func testGetFlagAndMoreAction() {
         let messages = createMessages(number: 1, engineProccesed: true, inFolder: folder)
         setupViewModel()
@@ -454,9 +468,13 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         return safeLastLookedAt
     }
 
-    private func givenThereIsAMessageIn(folderType: FolderType)-> Message? {
-        folder = Folder(name: "outgoing", parent: folder, account: account, folderType: folderType)
+    private func givenThereIsA(folderType: FolderType) {
+        folder = Folder(name: "-", parent: folder, account: account, folderType: folderType)
         folder.save()
+    }
+
+    private func givenThereIsAMessageIn(folderType: FolderType)-> Message? {
+        givenThereIsA(folderType: folderType)
         return createMessages(number: 1, engineProccesed: true, inFolder: folder).first
     }
 }
