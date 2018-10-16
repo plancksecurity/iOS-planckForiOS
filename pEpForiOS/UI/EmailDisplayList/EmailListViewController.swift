@@ -179,27 +179,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     // MARK: - Other
-
-    private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
-            return false
-        }
-        return folder.folderType == .drafts
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
-            return false
-        }
-        return folder.folderType == .outbox
-    }
-
-    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
-        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
-    }
-
     private func weCameBackFromAPushedView() -> Bool {
         return model != nil
     }
