@@ -92,7 +92,7 @@ extension NSAttributedString {
     public func plainTextRemoved() -> NSAttributedString {
         var attachments: [NSTextAttachment] = textAttachments()
         attachments.append(contentsOf: recipientTextAttachments())
-        var result = self
+        let result: NSAttributedString
         if attachments.count > 0 {
             let new = NSMutableAttributedString()
             for at in attachments {
@@ -108,6 +108,9 @@ extension NSAttributedString {
                              value: 3.0,
                              range: NSRange(location: 0, length: new.length))
             result = new
+        } else {
+            // There are no attachments, so all it can hold is plan text
+            result = NSAttributedString(string: "")
         }
 
         return result
