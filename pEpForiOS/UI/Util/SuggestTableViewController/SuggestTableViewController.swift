@@ -27,20 +27,13 @@ class SuggestTableViewController: UITableViewController {
         }
         return !viewModel.isEmpty
     }
-
-    public func updateSuggestions(searchString: String) {
-        guard let viewModel = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
-            return
-        }
-        viewModel.updateSuggestion(searchString: searchString)
-    }
 }
 
 // MARK: - SuggestViewModelDelegate
 
 extension SuggestTableViewController: SuggestViewModelDelegate {
-    func suggestViewModelDidResetModel() {
+    func suggestViewModelDidResetModel(showResults: Bool) {
+        view.isHidden = !showResults
         tableView.reloadData()
     }
 }

@@ -231,7 +231,7 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
     }
 }
 
-// MARK: - Cell-ViewModels
+// MARK: - Cell-ViewModel Delegates
 
 // MARK: RecipientCellViewModelResultDelegate
 
@@ -272,19 +272,16 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
     }
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
-        let minNumCharsForSuggestions = 3
-        if newText.count < minNumCharsForSuggestions {
-            delegate?.hideSuggestions()
-        } else {
-            guard let idxPath = indexPath(for: vm) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "We got called by a non-existing VM?")
-                return
-            }
-            lastRowWithSuggestions = idxPath
-            suggestionsVM?.updateSuggestion(searchString: newText)
-            delegate?.showSuggestions(forRowAt: idxPath)
+        guard let idxPath = indexPath(for: vm) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We got called by a non-existing VM?")
+            return
         }
+        lastRowWithSuggestions = idxPath
+
+        delegate?.contentChanged(inRowAt: idxPath)
+        delegate?.showSuggestions(forRowAt: idxPath)
+        suggestionsVM?.updateSuggestion(searchString: newText)
     }
 }
 

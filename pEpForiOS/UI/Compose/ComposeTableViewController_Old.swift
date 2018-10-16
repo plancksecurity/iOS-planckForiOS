@@ -1323,7 +1323,7 @@ extension ComposeTableViewController_Old: ComposeCellDelegate {
 
         if suggestContacts {
             //IOS-1369: needs to go to VM
-            suggestionsChildViewController?.updateSuggestions(searchString: textView.text)
+//            suggestionsChildViewController?.updateSuggestions(searchString: textView.text)
             if suggestionsChildViewController?.hasSuggestions ?? false {
                 showSuggestions()
                 tableView.scrollToTopOf(composeCell)

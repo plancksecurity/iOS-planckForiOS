@@ -14,7 +14,7 @@ protocol SuggestViewModelResultDelegate: class {
 }
 
 protocol SuggestViewModelDelegate: class {
-    func suggestViewModelDidResetModel()
+    func suggestViewModelDidResetModel(showResults: Bool)
 }
 
 class SuggestViewModel {
@@ -39,6 +39,7 @@ class SuggestViewModel {
 
     private var identities = [Identity]()
     private let minNumberSearchStringChars: UInt
+    private let showEmptyList = false
 
     // MARK: - API
 
@@ -47,7 +48,8 @@ class SuggestViewModel {
     }
 
     public init(minNumberSearchStringChars: UInt = 3,
-                resultDelegate: SuggestViewModelResultDelegate? = nil) {
+                resultDelegate: SuggestViewModelResultDelegate? = nil,
+                showEmptyList: Bool = false) {
         self.minNumberSearchStringChars = minNumberSearchStringChars
         self.resultDelegate = resultDelegate
     }
@@ -80,6 +82,7 @@ class SuggestViewModel {
         if (search.count >= minNumberSearchStringChars) {
             identities = Identity.by(snippet: search)
         }
-        delegate?.suggestViewModelDidResetModel()
+        let showResults = identities.count > 0 || showEmptyList
+        delegate?.suggestViewModelDidResetModel(showResults: showResults)
     }
 }

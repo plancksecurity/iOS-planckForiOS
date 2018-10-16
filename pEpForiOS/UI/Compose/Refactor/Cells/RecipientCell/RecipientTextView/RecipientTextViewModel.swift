@@ -65,7 +65,8 @@ class RecipientTextViewModel {
     }
 
     public func handleTextChange(newText: String) {
-        resultDelegate?.recipientTextViewModel(recipientTextViewModel: self, textChanged: newText)
+        let textOnly = newText.trimObjectReplacementCharacters().trimmed()
+        resultDelegate?.recipientTextViewModel(recipientTextViewModel: self, textChanged: textOnly)
     }
 
     public func isAddressDeliminator(str: String) -> Bool {
