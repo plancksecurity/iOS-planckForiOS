@@ -463,12 +463,24 @@ class EmailListViewModel {
         return parentFolder
     }
 
+    public func folderIsDraft() -> Bool {
+        return folderIsDraft( folderToShow)
+    }
+
+    public func folderIsOutbox() -> Bool {
+        return folderIsOutbox(folderToShow)
+    }
+
     private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
         return parentFolder.folderType == .outbox
     }
 
+    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .drafts
+    }
+
     private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
-        return parentFoldder.folderType == .drafts || parentFoldder.folderType == .outbox
+        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
     }
 
     // MARK: - Filter

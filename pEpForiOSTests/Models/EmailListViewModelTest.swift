@@ -146,6 +146,38 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     }
 
+    func testIsDraftFolder() {
+        setupViewModel()
+
+        var isDraft = emailListVM.folderIsDraft()
+
+        XCTAssertFalse(isDraft)
+
+        givenThereIsA(folderType: .drafts)
+        setupViewModel()
+
+        isDraft = emailListVM.folderIsDraft()
+
+        XCTAssertTrue(isDraft)
+    }
+
+    func testIsOutboxFolder() {
+        setupViewModel()
+
+        var isOutBox = emailListVM.folderIsOutbox()
+
+        XCTAssertFalse(isOutBox)
+
+        givenThereIsA(folderType: .outbox)
+        setupViewModel()
+
+        isOutBox = emailListVM.folderIsOutbox()
+
+        XCTAssertTrue(isOutBox)
+
+
+    }
+
     //mark: Search section
 
     func testSetSearchFilterWith0results() {

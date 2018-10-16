@@ -1168,23 +1168,27 @@ extension EmailListViewController: LoginViewControllerDelegate {
 
 extension EmailListViewController: ComposeTableViewControllerDelegate {
     func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController) {
-        if folderIsDraftsOrOutbox(folderToShow){
+        if let model = model,
+            model.folderIsOutbox() || model.folderIsDraft(){
             // In outbox, a new mail must show up after composing it.
-            model?.reloadData()
+            model.reloadData()
         }
     }
 
     func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController) {
-        if folderIsOutbox(folderToShow) {
+
+        if let model = model,
+            model.folderIsOutbox() {
             // A message from outbox has been deleted in outbox
             // (e.g. because the user saved it to drafts).
-            model?.reloadData()
+            model.reloadData()
         }
     }
 
     func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController) {
-        if folderIsDraft(folderToShow) {
-            model?.reloadData()
+        if let model = model,
+            model.folderIsDraft() {
+            model.reloadData()
         }
     }
 }
