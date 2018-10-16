@@ -28,16 +28,14 @@ class ComposeViewModelState {
     let initData: InitData?
     private var edited = false
     private var isValidatedForSending = false {
-        didSet{
-            if isValidatedForSending != oldValue {
+        didSet {
                 delegate?.composeViewModelState(self,
                                                 didChangeValidationStateTo: isValidatedForSending)
-            }
         }
     }
 
     public private(set) var rating = PEP_rating_undefined {
-        didSet{
+        didSet {
             if rating != oldValue {
                 delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
             }
@@ -111,6 +109,11 @@ class ComposeViewModelState {
         bccWrapped = false
     }
 
+    public func validate() {
+        calculatePepRating()
+        validateForSending()
+    }
+
     private func setup() {
         guard let initData = initData else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data")
@@ -126,16 +129,14 @@ class ComposeViewModelState {
         attachments = initData.nonInlinedAttachments
     }
 
-    private func validate() {
-        calculatePepRating()
-        validateForSending()
-    }
-
     private func validateForSending() {
-        //IOS-1369: unimplemented stub")
-        //TODO: validate!
-        //atLeastOneRecipientIsSet && !hasInvalidRecipients && from != nil
-        isValidatedForSending = !isValidatedForSending
+        let atLeastOneRecipientIsSet =
+            (!toRecipients.isEmpty ||
+            !ccRecipients.isEmpty ||
+            !bccRecipients.isEmpty)
+        let fromIsSet = from != nil
+
+        isValidatedForSending = atLeastOneRecipientIsSet && fromIsSet
     }
 }
 
@@ -189,9 +190,8 @@ extension ComposeViewModelState {
 
     private func handshakeActionCombinations() -> [HandshakeCombination] {
         if let from = from {
-            var allIdenties = [Identity]()
+            var allIdenties = toRecipients
             allIdenties.append(from)
-            allIdenties.append(contentsOf: toRecipients)
             allIdenties.append(contentsOf: ccRecipients)
             allIdenties.append(contentsOf: bccRecipients)
             return Message.handshakeActionCombinations(identities: allIdenties)

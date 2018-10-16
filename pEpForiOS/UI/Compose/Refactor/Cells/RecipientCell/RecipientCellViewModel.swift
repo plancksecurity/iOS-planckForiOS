@@ -27,6 +27,9 @@ class RecipientCellViewModel: CellViewModel {
     public let type: FieldType
     private var initialRecipients = [Identity]()
     private var textViewModel: RecipientTextViewModel?
+    public var isDirty: Bool {
+        return textViewModel?.isDirty ?? false
+    }
 
     weak public var resultDelegate: RecipientCellViewModelResultDelegate?
 

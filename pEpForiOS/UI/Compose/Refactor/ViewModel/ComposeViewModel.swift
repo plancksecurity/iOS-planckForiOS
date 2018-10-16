@@ -88,6 +88,21 @@ class ComposeViewModel {
         resetSections()
         //        validateInput() //IOS-1369:
     }
+
+    private func existsDirtyRecipientCell() -> Bool {
+        for section in sections where section.type == .recipients {
+            for row  in section.rows where row is RecipientCellViewModel {
+                guard let recipientVM = row as? RecipientCellViewModel else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
+                    return false
+                }
+                if recipientVM.isDirty {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 }
 
 // MARK: - ComposeViewModelStateDelegate
@@ -96,7 +111,8 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool) {
-        delegate?.validatedStateChanged(to: isValid)
+        let userSeemsTyping = existsDirtyRecipientCell()
+        delegate?.validatedStateChanged(to: isValid && !userSeemsTyping)
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
@@ -264,11 +280,11 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         }
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.hideSuggestions()
+        state.validate()
         /*
          tableView.updateSize()
          hideSuggestions()
          */
-
     }
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
@@ -282,6 +298,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         delegate?.contentChanged(inRowAt: idxPath)
         delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText)
+        state.validate()
     }
 }
 

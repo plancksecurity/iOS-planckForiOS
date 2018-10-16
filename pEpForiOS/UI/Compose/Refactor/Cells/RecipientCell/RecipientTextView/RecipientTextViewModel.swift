@@ -28,7 +28,7 @@ protocol RecipientTextViewModelDelegate: class {
 
 class RecipientTextViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0 // arbitrary value to avoid optional
-    private var isDirty = false
+    public private(set) var isDirty = false
     //    public var hasSelectedAttachment = false //IOS-1369: obsolete?
     private var recipientAttachments = [RecipientTextViewTextAttachment]() {
         didSet {
@@ -62,10 +62,12 @@ class RecipientTextViewModel {
     public func handleDidEndEditing(range: NSRange,
                                     of text: NSAttributedString) {
         tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
+        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
     }
 
     public func handleTextChange(newText: String) {
         let textOnly = newText.trimObjectReplacementCharacters().trimmed()
+        isDirty = !textOnly.isEmpty
         resultDelegate?.recipientTextViewModel(recipientTextViewModel: self, textChanged: textOnly)
     }
 
@@ -75,7 +77,9 @@ class RecipientTextViewModel {
 
     public func handleAddressDelimiterTyped(range: NSRange,
                                             of text: NSAttributedString) -> Bool {
-        return tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
+        let valid = tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
+        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
+        return valid
     }
 
     public func handleSelectedAttachment(_ attachments: [RecipientTextViewTextAttachment]) {
@@ -91,8 +95,9 @@ class RecipientTextViewModel {
 
      @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
                                                         of text: NSAttributedString) -> Bool {
+        let containsNothingButAttachments = text.plainTextRemoved().length == text.length
         let validEmailaddressHandled = parseAndHandleValidEmailAddresses(inRange: range, of: text)
-        isDirty = !validEmailaddressHandled
+        isDirty = !validEmailaddressHandled && !containsNothingButAttachments
         return validEmailaddressHandled
     }
 
@@ -109,17 +114,22 @@ class RecipientTextViewModel {
         var identityGenerated = false
         let stringWithoutTextAttachments = text.string.cleanAttachments
         if stringWithoutTextAttachments.isProbablyValidEmail() {
-            let identity = Identity.create(address: stringWithoutTextAttachments.trimmed())
+            let address = stringWithoutTextAttachments.trimmed()
+            let identity: Identity
+            if let existing = Identity.by(address: address) {
+                identity = existing
+            } else {
+                identity = Identity.create(address: address)
+            }
             var (newText, attachment) = text.imageInserted(withAddressOf: identity,
-                                             in: range,
-                                             maxWidth: maxTextattachmentWidth)
+                                                           in: range,
+                                                           maxWidth: maxTextattachmentWidth)
             recipientAttachments.append(attachment)
             newText = newText.plainTextRemoved()
             delegate?.recipientTextViewModel(recipientTextViewModel: self,
                                              didChangeAttributedText: newText)
             identityGenerated =  true
         }
-        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
         return identityGenerated
     }
 }
