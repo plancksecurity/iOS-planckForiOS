@@ -110,6 +110,7 @@ extension ComposeTableViewController {
         }
     }
 
+    //IOS-1369: can we move to ComposeUtils or such?
     /// Shows a menu where user can choose to make a handshake, or toggle force unprotected.
     @objc func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
         guard let vm = viewModel else {

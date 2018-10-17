@@ -8,7 +8,8 @@
 
 import MessageModel
 
-/// Utils for composing (reply, replyAll ...) a message. Helps finding out the correct recipients.
+/// Utils for composing a message. Helps finding out values depending on the original message
+/// (the correct recipients, cancle actions ...).
 struct ComposeUtil {
 
     enum ComposeMode {
@@ -17,6 +18,8 @@ struct ComposeUtil {
         case replyAll
         case forward
     }
+
+    // MARK: - Recipients
 
     static func initialTos(composeMode: ComposeMode, originalMessage om: Message) -> [Identity] {
         var result = [Identity]()
@@ -106,6 +109,8 @@ struct ComposeUtil {
             return Account.defaultAccount()?.user  //IOS-1369: bug: default only in unified inbox (?)
         }
     }
+
+    // MARK: - Attachments
 
      /// - Returns: Noninlined attachments appropriate for the given compose mode
     static func initialNonInlinedAttachments(composeMode: ComposeMode,
