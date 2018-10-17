@@ -131,7 +131,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
 extension ComposeViewModel {
     class Section {
         enum SectionType: CaseIterable {
-            case recipients, wrapped, account, subject/*, body, attachments*/
+            case recipients, wrapped, account, subject, body/*, attachments*/
         }
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
@@ -150,10 +150,10 @@ extension ComposeViewModel {
             rows = [CellViewModel]()
             switch type {
             case .recipients:
-                rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .to))
+                rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .to)) //IOS-1369: set initial
                 if let wrapped = state?.bccWrapped, !wrapped {
-                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .cc))
-                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .bcc))
+                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .cc)) //IOS-1369: set initial
+                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .bcc)) //IOS-1369: set initial
                 }
             case .wrapped:
                 if let wrapped = state?.bccWrapped, wrapped {
@@ -173,8 +173,8 @@ extension ComposeViewModel {
                     rowModel.content = subject
                 }
                 rows.append(rowModel)
-                //            case .body:
-                //                rows.append(BodyFieldViewModel())
+            case .body:
+                rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate)) //IOS-1369: set initial
                 //            case .attachments:
                 //                setupAttchmentRows()
             }
@@ -329,6 +329,22 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
             return
         }
         state.subject = vm.content ?? ""
+        delegate?.contentChanged(inRowAt: idxPath)
+    }
+}
+
+// MARK: - BodyCellViewModelResultDelegate
+
+extension ComposeViewModel: BodyCellViewModelResultDelegate {
+    //IOS-1369:
+    func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String) {
+        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
+        guard let idxPath = indexPath(for: vm) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We got called by a non-existing VM?")
+            return
+        }
+        //IOS-1369: What to save to state? attributedText? markdown? ...
         delegate?.contentChanged(inRowAt: idxPath)
     }
 }

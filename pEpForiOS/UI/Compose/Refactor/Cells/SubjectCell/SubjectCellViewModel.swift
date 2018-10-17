@@ -13,7 +13,7 @@ protocol SubjectCellViewModelResultDelegate: class {
 }
 
 protocol SubjectCellViewModelDelegate: class {
-    func subjectCellViewModelDelegate(_ subjectCellViewModelDelegate: SubjectCellViewModel,
+    func subjectCellViewModel(_ subjectCellViewModel: SubjectCellViewModel,
                                       requireFirstResponder: Bool)
 }
 
@@ -37,7 +37,7 @@ class SubjectCellViewModel: CellViewModel {
 
     public func shouldChangeText(to replacementText: String) -> Bool {
         if replacementText == "\n" {
-            delegate?.subjectCellViewModelDelegate(self, requireFirstResponder: false)
+            delegate?.subjectCellViewModel(self, requireFirstResponder: false)
             return false
         }
         return true

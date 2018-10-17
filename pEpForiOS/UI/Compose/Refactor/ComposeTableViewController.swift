@@ -274,21 +274,19 @@ extension ComposeTableViewController {
             }
             cell.setup(with: rowVm)
             result = cell
+        } else if section.type == .body {
+            guard
+                let cell = tableView.dequeueReusableCell(withIdentifier: BodyCell.reuseId)
+                    as? BodyCell,
+                let rowVm = section.rows[indexPath.row] as? BodyCellViewModel
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    return nil
+            }
+            cell.setup(with: rowVm)
+            result = cell
         }
-
-
-//        else if section.type == .body {
-//            guard
-//                let cell = tableView.dequeueReusableCell(withIdentifier: BodyCell.reuseId)
-//                    as? BodyCell,
-//                let rowVm = section.rows[indexPath.row] as? BodyFieldViewModel
-//                else {
-//                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-//                    return nil
-//            }
-//            cell.textView.attributedText = rowVm.content
-//            result = cell
-//        } else if section.type == .attachments {
+//        else if section.type == .attachments {
 //            guard
 //                let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentCell.reuseId)
 //                    as? AttachmentCell,

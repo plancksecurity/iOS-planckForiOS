@@ -8,7 +8,31 @@
 
 import MessageModel
 
+
+protocol BodyCellViewModelResultDelegate: class {
+    func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String)
+}
+
+protocol BodyCellViewModelDelegate: class {
+    //IOS-1369:
+}
+
 class BodyCellViewModel: CellViewModel {
-    public var content: NSMutableAttributedString = NSMutableAttributedString(string: "")
+    public weak var resultDelegate: BodyCellViewModelResultDelegate?
+    public weak var delegate: BodyCellViewModelDelegate?
+     public private(set) var isDirty = false
     //IOS-1369: attachments go here?
+
+    init(resultDelegate: BodyCellViewModelResultDelegate,
+         initialText: String? = nil,
+         initialAttributedText: NSAttributedString? = nil) {
+        self.resultDelegate = resultDelegate
+        //IOS-1369: set initial
+    }
+
+    public func handleTextChange(newText: String) {
+//        let textOnly = newText.trimObjectReplacementCharacters().trimmed()
+        isDirty = true
+        resultDelegate?.bodyCellViewModel(self, textChanged: newText)
+    }
 }

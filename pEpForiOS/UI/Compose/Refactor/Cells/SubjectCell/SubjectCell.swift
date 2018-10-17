@@ -27,7 +27,7 @@ class SubjectCell: TextViewContainingTableViewCell {
 // MARK: - SubjectCellViewModelDelegate
 
 extension SubjectCell: SubjectCellViewModelDelegate {
-    func subjectCellViewModelDelegate(_ subjectCellViewModelDelegate: SubjectCellViewModel,
+    func subjectCellViewModel(_ subjectCellViewModel: SubjectCellViewModel,
                                       requireFirstResponder: Bool) {
         if requireFirstResponder {
             resignFirstResponder()
