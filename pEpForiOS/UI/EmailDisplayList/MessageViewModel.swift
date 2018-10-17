@@ -24,7 +24,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     let dateSent: Date
     let longMessageFormatted: String?
     var senderContactImage: UIImage?
-    var ratingImage: UIImage?
+    private var ratingImage: UIImage?
     var showAttchmentIcon: Bool = false
     let from: String
     let subject: String

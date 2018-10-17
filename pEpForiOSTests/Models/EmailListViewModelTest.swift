@@ -43,13 +43,13 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func test10MessagesInInitialSetup() {
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
 
     func test10MessagesThatEngineHasNotProcessedYet() {
-        _ = createMessages(number: 10, engineProccesed: false, inFolder: folder)
+        _ = TestUtil.createMessages(number: 10, engineProccesed: false, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 0)
     }
@@ -71,7 +71,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     //mark: Search section
 
     func testSetSearchFilterWith0results() {
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         setSearchFilter(text: "blabla@blabla.com")
         XCTAssertEqual(emailListVM.rowCount, 0)
@@ -79,7 +79,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
 
     func testRemoveSearchFilterAfter0Results() {
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
         setSearchFilter(text: "blabla@blabla.com")
@@ -90,14 +90,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testSetSearchFilterAddressWith3results() {
         let textToSearch = "searchTest@mail.com"
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        createMessage(inFolder: folder,
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: textToSearch),
                       tos: [folder.account.user]).save()
-        createMessage(inFolder: folder,
+        TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: textToSearch),
                       tos: [folder.account.user]).save()
-        createMessage(inFolder: folder,
+        TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: textToSearch),
                       tos: [folder.account.user]).save()
         setupViewModel()
@@ -108,8 +108,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testSetSearchFilterShortMessageWith1results() {
         let textToSearch = "searchTest"
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        createMessage(inFolder: folder,
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: "mail@mail.com"),
                       tos: [folder.account.user],
                       shortMessage: textToSearch).save()
@@ -122,11 +122,11 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testSetSearchMultipleSitesMatchInMessagesWith2results() {
         let textToSearch = "searchTest"
         let longText = "bla " + textToSearch + " bla"
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        createMessage(inFolder: folder,
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: "mail@mail.com"),
                       shortMessage: textToSearch).save()
-        createMessage(inFolder: folder,
+        TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: "mail@mail.com"),
                       tos: [folder.account.user],
                       longMessage: longText).save()
@@ -147,7 +147,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     //mark: cell for row
 
     func testIndexFromMessage() {
-        let msgs = createMessages(number: 10, inFolder: folder)
+        let msgs = TestUtil.createMessages(number: 10, inFolder: folder)
         setupViewModel()
         var index = emailListVM.index(of: msgs[0])
         XCTAssertEqual(index, 9)
@@ -156,7 +156,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testViewModel() {
-        let msg = createMessage(inFolder: folder, from: folder.account.user)
+        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
         msg.save()
         setupViewModel()
         let index = emailListVM.index(of: msg)
@@ -180,20 +180,20 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(filterEnabled, emailListVM.isFilterEnabled)
     }
 
-    func testNewMessageRecibedAndDisplayedInTheCorrectPosition() {
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
+    func testNewMessageReceivedAndDisplayedInTheCorrectPosition() {
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
         setUpMessageFolderDelegate()
         setUpViewModelExpectations(expectationDidInsertDataAt: true)
-        let msg = createMessage(inFolder: folder, from: folder.account.user)
+        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
         msg.save()
         server.insertData(message: msg)
         waitForExpectations(timeout: TestUtil.waitTime)
         XCTAssertEqual(emailListVM.rowCount, 11)
         var index = emailListVM.index(of: msg)
         XCTAssertEqual(index, 0)
-        let nonShownMsg = createMessage(inFolder: trashFolder, from: folder.account.user)
+        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: folder.account.user)
         nonShownMsg.save()
         server.insertData(message: nonShownMsg)
         XCTAssertEqual(emailListVM.rowCount, 11)
@@ -201,9 +201,9 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(index, 0)
     }
 
-    func testNewMessageUpdateRecibedAndDisplayed() {
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        let msg = createMessage(inFolder: folder, from: folder.account.user)
+    func testNewMessageUpdateReceivedAndDisplayed() {
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
         msg.imapFlags?.flagged = false
         msg.save()
         XCTAssertFalse((msg.imapFlags?.flagged)!)
@@ -223,7 +223,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             XCTFail()
         }
 
-        let nonShownMsg = createMessage(inFolder: trashFolder, from: folder.account.user)
+        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: folder.account.user)
         nonShownMsg.save()
         server.insertData(message: nonShownMsg)
         XCTAssertEqual(emailListVM.rowCount, 11)
@@ -231,9 +231,9 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertNil(index)
     }
 
-    func testNewMessageDeleteRecibedAndDisplayed() {
-        _ = createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        let msg = createMessage(inFolder: folder, from: folder.account.user)
+    func testNewMessageDeleteReceivedAndDisplayed() {
+        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
         msg.imapFlags?.flagged = false
         msg.save()
         XCTAssertFalse((msg.imapFlags?.flagged)!)
@@ -248,7 +248,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertNil(index)
         XCTAssertEqual(emailListVM.rowCount, 10)
 
-        let nonShownMsg = createMessage(inFolder: trashFolder, from: folder.account.user)
+        let nonShownMsg = TestUtil.createMessage(inFolder: trashFolder, from: folder.account.user)
         nonShownMsg.save()
         server.insertData(message: nonShownMsg)
         nonShownMsg.delete()
@@ -340,46 +340,6 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             expectationDidInsertDataAt: excpectationDidInsertDataAtCalled,
             expectationDidUpdateDataAt: excpectationDidUpdateDataAtCalled,
             expectationDidRemoveDataAt: excpectationDidDeleteDataAtCalled)
-    }
-
-    fileprivate func createMessages(number: Int,
-                                engineProccesed: Bool = true,
-                                inFolder: Folder) -> [Message]{
-        var messages : [Message] = []
-        for _ in 0..<number {
-            let msg = createMessage(inFolder: inFolder,
-                                    from: Identity.create(address: "mail@mail.com"),
-                                    tos: [inFolder.account.user],
-                                    engineProccesed: engineProccesed)
-            messages.append(msg)
-            msg.save()
-        }
-        return messages
-    }
-
-    fileprivate func createMessage(inFolder folder: Folder,
-                                       from: Identity,
-                                       tos: [Identity] = [],
-                                       ccs: [Identity] = [],
-                                       bccs: [Identity] = [],
-                                       engineProccesed: Bool = true,
-                                       shortMessage: String = "",
-                                       longMessage: String = "") -> Message {
-        let msg = Message(uuid: MessageID.generate(), parentFolder: folder)
-        msg.from = from
-        msg.to = tos
-        msg.cc = ccs
-        msg.bcc = bccs
-        msg.messageID = MessageID.generate()
-        msg.shortMessage = shortMessage
-        msg.longMessage = longMessage
-        let minute:TimeInterval = 60.0
-        msg.sent = Date()
-        msg.received = Date(timeIntervalSinceNow: minute)
-        if engineProccesed {
-            msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
-        }
-        return msg
     }
 
     fileprivate func getSafeLastLookAt() -> Date {
