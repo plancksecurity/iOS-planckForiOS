@@ -9,7 +9,7 @@
 
 import XCTest
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class EmailListViewModelTest: CoreDataDrivenTestBase {
     var folder: Folder!
@@ -43,13 +43,13 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func test10MessagesInInitialSetup() {
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
 
     func test10MessagesThatEngineHasNotProcessedYet() {
-        _ = TestUtil.createMessages(number: 10, engineProccesed: false, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: false, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 0)
     }
@@ -71,7 +71,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     //mark: Search section
 
     func testSetSearchFilterWith0results() {
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         setSearchFilter(text: "blabla@blabla.com")
         XCTAssertEqual(emailListVM.rowCount, 0)
@@ -79,7 +79,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
 
     func testRemoveSearchFilterAfter0Results() {
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
         setSearchFilter(text: "blabla@blabla.com")
@@ -90,7 +90,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testSetSearchFilterAddressWith3results() {
         let textToSearch = "searchTest@mail.com"
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: textToSearch),
                       tos: [folder.account.user]).save()
@@ -108,7 +108,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testSetSearchFilterShortMessageWith1results() {
         let textToSearch = "searchTest"
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: "mail@mail.com"),
                       tos: [folder.account.user],
@@ -122,7 +122,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testSetSearchMultipleSitesMatchInMessagesWith2results() {
         let textToSearch = "searchTest"
         let longText = "bla " + textToSearch + " bla"
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: "mail@mail.com"),
                       shortMessage: textToSearch).save()
@@ -181,7 +181,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testNewMessageReceivedAndDisplayedInTheCorrectPosition() {
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
         setUpMessageFolderDelegate()
@@ -202,7 +202,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testNewMessageUpdateReceivedAndDisplayed() {
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
         msg.imapFlags?.flagged = false
         msg.save()
@@ -232,7 +232,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testNewMessageDeleteReceivedAndDisplayed() {
-        _ = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
         msg.imapFlags?.flagged = false
         msg.save()

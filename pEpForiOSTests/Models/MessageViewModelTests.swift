@@ -13,21 +13,37 @@ import XCTest
 
 
 class MessageViewModelTests: CoreDataDrivenTestBase {
+
+    //SUT
     var viewModel: MessageViewModel!
 
     var workingAccount: Account!
     var folder: Folder!
 
     struct Defaults {
-        static let fromAddress = "miguel@helm.cat"
-        static let toAddresses = ["borja@helm.cat", "borja@pep-project.org", "miguel@pep-project.org"]
-        static let toAddress = toAddresses[0]
-        static let fromIdentity = Identity.create(address: fromAddress)
-        static let toIdentities = toAddresses.map { Identity.create(address: $0) }
-        static let toIdentity = Identity.create(address: toAddress)
-        static let shortMessage = "Hey Borja"
-        static let longMessage = "Hey Borja, How is it going?"
-        static let longMessageFormated = "<h1>Long HTML</h1>"
+
+        struct Inputs {
+            static let fromAddress = "miguel@helm.cat"
+            static let toAddresses = ["borja@helm.cat", "borja@pep-project.org", "miguel@pep-project.org"]
+            static let toAddress = toAddresses[0]
+            static let fromIdentity = Identity.create(address: fromAddress)
+            static let toIdentities = toAddresses.map { Identity.create(address: $0) }
+            static let toIdentity = Identity.create(address: toAddress)
+            static let shortMessage = "Hey Borja"
+            static let longMessage = "Hey Borja, How is it going?"
+            static let longlongMessage = """
+                        Hey Borja, How is it going? Are you okay? I was wondering if we
+                        could meet sometime this afternoon. I would like to discuss some points
+                        about clean architecture
+                        """
+            static let longMessageFormated = "<h1>Long HTML</h1>"
+        }
+
+        struct Outputs {
+            static let toField = "To:borja@helm.cat"
+            static let longLongMessage = "Hey Borja, How is it going? Are you okay? I was wondering"
+                + " if we could meet sometime this afternoon. I would like to disc"
+        }
     }
 
     override func setUp() {
@@ -39,16 +55,15 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
 
     func testToFieldOneRecipientFormat() {
         givenViewModelRepresentsOneRecipientMessage()
-        let toExpectedString = "To:" + Defaults.toAddress
         let toString = viewModel.getTo().string
-        XCTAssertEqual(toString, toExpectedString)
+        XCTAssertEqual(toString, Defaults.Outputs.toField)
     }
 
     func testToFieldContainsAllRecipients() {
         givenViewModelRepresentsMultipleRecipientMessage()
         let toString = viewModel.getTo().string
         var addressesArePresent = true
-        for address in Defaults.toAddresses {
+        for address in Defaults.Inputs.toAddresses {
             if !toString.contains(find: address) {
                 addressesArePresent = false
                 break
@@ -60,35 +75,110 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
     func testFromField() {
         givenViewModelRepresentsOneRecipientMessage()
         let from = viewModel.from
-        XCTAssertEqual(from, Defaults.fromAddress)
+        XCTAssertEqual(from, Defaults.Inputs.fromAddress)
 
     }
 
     func testSubjectField() {
         givenViewModelRepresentsASubjectAndBodyMessage()
         let subject = viewModel.subject
-        XCTAssertEqual(subject, Defaults.shortMessage)
+        XCTAssertEqual(subject, Defaults.Inputs.shortMessage)
     }
 
     func testBodyField() {
         givenViewModelRepresentsASubjectAndBodyMessage()
         let bodyString = viewModel.body.string
-        XCTAssertEqual(bodyString, Defaults.longMessage)
+        XCTAssertEqual(bodyString, Defaults.Inputs.longMessage)
     }
 
     func testIsFlagged() {
-        givenViewModelRepresentOneFlaggedAndSeenMessage()
+        givenViewModelRepresentsOneFlaggedAndSeenMessage()
         let isFlagged = viewModel.isFlagged
         XCTAssertTrue(isFlagged)
     }
 
+    func testIsUnflagged() {
+        givenViewModelRepresentsUnflaggedMessage()
+        let isUnflagged = !viewModel.isFlagged
+        XCTAssertTrue(isUnflagged)
+    }
+
     func testIsSeen() {
-        givenViewModelRepresentOneFlaggedAndSeenMessage()
+        givenViewModelRepresentsOneFlaggedAndSeenMessage()
         let isSeen = viewModel.isSeen
         XCTAssertTrue(isSeen)
     }
 
-    private func givenViewModelRepresentOneFlaggedAndSeenMessage() {
+    func testIsUnseen() {
+        givenViewModelRepresentsUnflaggedMessage()
+        let isUnseen = !viewModel.isSeen
+        XCTAssertTrue(isUnseen)
+    }
+
+    func testShortBodyPeek() {
+        givenViewModelRepresentsASubjectAndBodyMessage()
+        let expectation = XCTestExpectation(description: "body Peek is received")
+        viewModel.bodyPeekCompletion = { bodyPeek in
+            XCTAssertEqual(bodyPeek, Defaults.Inputs.longMessage)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: TestUtil.waitTime)
+    }
+
+    func testLongBodyPeek() {
+        givenViewModelRepresentsASubjectAndLongBodyMessage()
+        let expectation = XCTestExpectation(description: "body Peek is received")
+        viewModel.bodyPeekCompletion = { bodyPeek in
+            XCTAssertEqual(bodyPeek, Defaults.Outputs.longLongMessage)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: TestUtil.waitTime)
+    }
+
+    func testBodyPeekNotReceivedWhenCancellingUpdates() {
+        givenViewModelRepresentsASubjectAndBodyMessage()
+        let expectation = XCTestExpectation(description: "body Peek is not called")
+        expectation.isInverted = true
+        viewModel.bodyPeekCompletion = { bodyPeek in
+            expectation.fulfill()
+        }
+        viewModel.unsubscribeForUpdates()
+        wait(for: [expectation], timeout: TestUtil.waitTimeLocal)
+    }
+
+    //PRAGMA - MARK: BUSINESS
+    //business public methods (should be private in the future or moved to another component,
+    //some refactor would be needed)
+
+    func testFlagsDiffer() {
+        givenViewModelRepresentsOneFlaggedAndSeenMessage()
+        let otherViewModel = givenAViewModelRepresentingUnflaggedMessage()
+        let flagsDiffer = viewModel.flagsDiffer(from: otherViewModel)
+        XCTAssertTrue(flagsDiffer)
+    }
+
+    func testFlagsAreTheSame() {
+        let message = givenThereIsAFlaggedAndSeenMessage()
+        viewModel = MessageViewModel(with: message)
+        let otherViewModel = MessageViewModel(with: message)
+        let flagsAreTheSame = !viewModel.flagsDiffer(from: otherViewModel)
+        XCTAssertTrue(flagsAreTheSame)
+    }
+
+    func testMessageIsTheSame() {
+        let message = givenThereIsAOneRecipientMessage()
+        viewModel = MessageViewModel(with: message)
+        let retrievedMessage = viewModel.message()!
+        XCTAssertEqual(message, retrievedMessage)
+    }
+
+    //PRAGMA - MARK: GIVEN
+
+    private func givenViewModelRepresentsUnflaggedMessage() {
+        viewModel = givenAViewModelRepresentingUnflaggedMessage()
+    }
+
+    private func givenViewModelRepresentsOneFlaggedAndSeenMessage() {
         let message = givenThereIsAFlaggedAndSeenMessage()
         viewModel = MessageViewModel(with: message)
     }
@@ -108,14 +198,24 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         viewModel = MessageViewModel(with: message)
     }
 
+    private func givenViewModelRepresentsASubjectAndLongBodyMessage() {
+        let message = givenThereIsAMessageWithSubjectAndLongBody()
+        viewModel = MessageViewModel(with: message)
+    }
+
+    private func givenAViewModelRepresentingUnflaggedMessage() -> MessageViewModel {
+        let message = givenThereIsAOneRecipientMessage()
+        return MessageViewModel(with: message)
+    }
+
     private func givenThereIsAOneRecipientMessage() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.fromIdentity, tos: [Defaults.toIdentity])
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: [Defaults.Inputs.toIdentity])
         message.save()
         return message
     }
 
     private func givenThereIsAFlaggedAndSeenMessage() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.fromIdentity)
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity)
         message.imapFlags?.seen = true
         message.imapFlags?.flagged = true
         message.save()
@@ -123,15 +223,20 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
     }
 
     private func givenThereIsAMessageWithSubjectAndBody() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.fromIdentity, shortMessage: Defaults.shortMessage, longMessage: Defaults.longMessage)
-        message.imapFlags?.seen = true
-        message.imapFlags?.flagged = true
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessage: Defaults.Inputs.longMessage)
         message.save()
         return message
     }
 
+    private func givenThereIsAMessageWithSubjectAndLongBody() -> Message {
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessage: Defaults.Inputs.longlongMessage)
+        message.save()
+        return message
+    }
+
+
     private func givenThereIsAMultipleRecipientMessage() -> Message {
-        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.fromIdentity, tos: Defaults.toIdentities)
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: Defaults.Inputs.toIdentities)
         message.save()
         return message
     }

@@ -443,7 +443,7 @@ class TestUtil {
         return messagesInTheQueue
     }
 
-    static func createMessages(number: Int,
+    @discardableResult static func createMessages(number: Int,
                                     engineProccesed: Bool = true,
                                     inFolder: Folder) -> [Message]{
         var messages : [Message] = []
