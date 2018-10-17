@@ -51,10 +51,10 @@ class CoreDataDrivenTestBase: XCTestCase {
         persistentSetup.tearDownCoreDataStack()
         persistentSetup = nil
         PEPSession.cleanup()
-        XCTAssertTrue(PEPUtil.pEpClean())
+  //      XCTAssertTrue(PEPUtil.pEpClean())
         //IOS-1382:
         /// Dirty hack to [dis]prove what exactly?. See IOS-1382.
-        CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 1.0, false); //!!!: remove after [dis]proved
+    //    CFRunLoopRunInMode(CFRunLoopMode.defaultMode, 1.0, false); //!!!: remove after [dis]proved
         super.tearDown()
     }
 

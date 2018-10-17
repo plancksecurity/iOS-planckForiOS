@@ -456,7 +456,7 @@ class EmailListViewModel {
         return folderIsOutbox(folderToShow)
     }
 
-    public func activeFilterEnabled() -> Bool {
+    public func unreadFilterEnabled() -> Bool {
         return isFilterEnabled &&
             activeFilter?.contains(type: UnreadFilter.self) ?? false
     }

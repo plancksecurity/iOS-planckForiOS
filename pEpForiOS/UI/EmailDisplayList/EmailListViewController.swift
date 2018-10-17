@@ -210,7 +210,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                 return
             }
-            let unreadFilterActive = vm.activeFilterEnabled()
+            let unreadFilterActive = vm.unreadFilterEnabled()
             if navigationController?.topViewController != self && !unreadFilterActive {
                 navigationController?.popViewController(animated: true)
             }
@@ -772,8 +772,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
             return
         }
 
-        let unreadFilterActive = vm.isFilterEnabled &&
-            vm.activeFilter?.contains(type: UnreadFilter.self) ?? false
+        let unreadFilterActive = vm.unreadFilterEnabled()
 
         // If unread filter is active, /seen state updates require special handling ...
 

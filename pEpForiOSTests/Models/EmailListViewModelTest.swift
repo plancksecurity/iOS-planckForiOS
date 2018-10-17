@@ -101,6 +101,27 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
         showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
         XCTAssertFalse(showToolbarButtons)
+    }
+
+    func testUnreadFilterActive() {
+        setupViewModel()
+
+        var unreadActive = emailListVM.unreadFilterEnabled()
+
+        XCTAssertFalse(unreadActive)
+
+        setupViewModel()
+
+        let filter = CompositeFilter<FilterBase>()
+        filter.add(filter: UnreadFilter())
+        emailListVM.addFilter(filter)
+        setUpViewModelExpectations(expectedUpdateView: true)
+        emailListVM.isFilterEnabled = true
+
+        waitForExpectations(timeout: TestUtil.waitTime)
+        unreadActive = emailListVM.unreadFilterEnabled()
+
+        XCTAssertTrue(unreadActive)
 
     }
 
