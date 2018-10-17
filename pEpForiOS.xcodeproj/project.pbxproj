@@ -553,7 +553,6 @@
 		B7365CDE1EAF45F30036ECC7 /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7365CDD1EAF45F30036ECC7 /* UITextField+Extension.swift */; };
 		B740B75D1E4B1C2D002585E1 /* jsonMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */; };
 		B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */; };
-		B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74940021ECB3BEB001A710B /* UILabel+Extension.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
 		B761A80A20F5F0A6000832C2 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */; };
@@ -1175,7 +1174,6 @@
 		B7365CDD1EAF45F30036ECC7 /* UITextField+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		B740B75C1E4B1C2D002585E1 /* jsonMimeType.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jsonMimeType.txt; sourceTree = "<group>"; };
 		B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypeUtil.swift; sourceTree = "<group>"; };
-		B74940021ECB3BEB001A710B /* UILabel+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
 		B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
@@ -2264,7 +2262,6 @@
 				4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */,
 				4362399E1EAE2F0A00BD2EB9 /* UITableView+Extension.swift */,
 				B7365CDD1EAF45F30036ECC7 /* UITextField+Extension.swift */,
-				B74940021ECB3BEB001A710B /* UILabel+Extension.swift */,
 				1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */,
 				4330278D1F7BABFF00D685F8 /* GradientView.swift */,
 				15B2204F1FBF5D6E00CA52BA /* InfoPlist.swift */,
@@ -3271,7 +3268,6 @@
 				15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */,
 				43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */,
 				43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */,
-				B74940031ECB3BEB001A710B /* UILabel+Extension.swift in Sources */,
 				15265964216230B1006A78DF /* MessageBodyCell.swift in Sources */,
 				005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */,
 				15721AB52170E0BA00F1EA7A /* NSAttributedString+RecipientTextUtils.swift in Sources */,
