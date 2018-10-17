@@ -7,15 +7,12 @@
 //
 
 import UIKit
-import MessageModel
 import SwipeCellKit
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let FILTER_TITLE_MAX_XAR = 20
 
-    var folderToShow: Folder?
-
-    var model: EmailListViewModel?{
+    var model: EmailListViewModel? {
         didSet {
             model?.emailListViewModelDelegate = self
         }
@@ -788,11 +785,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            didUpdateUndisplayedMessage message: Message) {
-        // ignore
-    }
-
     func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
 
@@ -998,7 +990,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.message = message
-            vc.folderShow = folderToShow
+            vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model
             model?.currentDisplayedMessage = vc
@@ -1026,8 +1018,8 @@ extension EmailListViewController: SegueHandlerType {
             }
             destiny.appConfig = appConfig
             destiny.filterDelegate = model
-            destiny.inFolder = self.folderToShow is UnifiedInbox
-            destiny.filterEnabled = folderToShow?.filter
+            destiny.inFolder = model?.getFolderIsUnified() ?? false
+            destiny.filterEnabled = model?.getFolderFilters()
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
             guard
@@ -1058,16 +1050,14 @@ extension EmailListViewController: SegueHandlerType {
             }
 
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToAccountViewController,
-                let messages = model?.messagesToMove(indexPaths: selectedRows)
+                let destination = nav.topViewController as? MoveToAccountViewController
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
-            if let msgs = messages as? [Message] {
-                let destinationvm = MoveToAccountViewModel(messages: msgs)
-                destination.viewModel = destinationvm
-            }
+
+            destination.viewModel
+                = model?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
             destination.delegate = model
             destination.appConfig = appConfig
             break

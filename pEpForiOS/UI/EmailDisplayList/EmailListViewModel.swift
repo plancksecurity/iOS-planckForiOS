@@ -18,9 +18,6 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
                             didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            didUpdateUndisplayedMessage message: Message)
-
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
@@ -490,6 +487,30 @@ class EmailListViewModel {
 
     private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
         return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
+    }
+
+    public func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
+        -> MoveToAccountViewModel? {
+            let messages = messagesToMove(indexPaths: forSelectedMessages)
+            if let msgs = messages as? [Message] {
+                return MoveToAccountViewModel(messages: msgs)
+            }
+            return nil
+    }
+
+    //TODO: remove when Segues of EmailListViewController are refactored.
+    public func getFolderToShow() -> Folder {
+        return folderToShow
+    }
+
+    //TODO: remove when Segues of EmailListViewController are refactored.
+    public func getFolderIsUnified() -> Bool {
+        return folderToShow is UnifiedInbox
+    }
+
+    //TODO: remove when Segues of EmailListViewController are refactored.
+    public func getFolderFilters() -> CompositeFilter<FilterBase>? {
+        return folderToShow.filter
     }
 
     // MARK: - Filter

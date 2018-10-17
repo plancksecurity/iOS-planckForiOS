@@ -404,6 +404,17 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertNil(index)
     }
 
+    func testgetMoveToFolderViewModel() {
+        let preMessages = createMessages(number: 4, inFolder: folder)
+        let index: [IndexPath] = [IndexPath(row:0,section:1), IndexPath(row:0,section:2)]
+        setupViewModel()
+
+        let accountvm = emailListVM.getMoveToFolderViewModel(forSelectedMessages: index)
+
+        let postMessages = accountvm!.items[0].messages
+        XCTAssertEqual(index.count, postMessages.count)
+    }
+
     // Mark: setting up
 
     fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
