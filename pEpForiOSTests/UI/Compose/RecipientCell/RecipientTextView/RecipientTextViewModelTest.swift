@@ -164,6 +164,42 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         XCTAssertFalse(vm.isDirty)
     }
 
+    // MARK: - handleAddressDelimiterTyped(range:of text:)
+
+    func testHandleAddressDelimiterTyped_validAddressOnly() {
+        let identitiy = validId
+        let text = validId.address
+        let attributedText = NSAttributedString(string: text)
+        assert(resultDelegateCalledDidChangeRecipients: [identitiy],
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false)
+        let addressFound = vm.handleAddressDelimiterTyped(range: emptyRange, of: attributedText)
+        XCTAssertTrue(addressFound)
+        XCTAssertFalse(vm.isDirty)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleAddressDelimiterTyped_empty() {
+        let text = ""
+        let attributedText = NSAttributedString(string: text)
+        assert(resultDelegateCalledDidChangeRecipients: nil,
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false)
+        let addressFound = vm.handleAddressDelimiterTyped(range: emptyRange, of: attributedText)
+        XCTAssertFalse(addressFound)
+        XCTAssertFalse(vm.isDirty)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleAddressDelimiterTyped_randomText() {
+        let text = randomText
+        let attributedText = NSAttributedString(string: text)
+        assert(resultDelegateCalledDidChangeRecipients: nil,
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false)
+        let addressFound = vm.handleAddressDelimiterTyped(range: emptyRange, of: attributedText)
+        XCTAssertFalse(addressFound)
+        XCTAssertTrue(vm.isDirty)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: - Helper
 
     private func assert(addRecipientValue: String? = nil,
@@ -398,6 +434,5 @@ wip
  }
  */
 
-/*
 
- */
+
