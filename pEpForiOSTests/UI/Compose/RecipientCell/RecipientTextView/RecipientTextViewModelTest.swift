@@ -64,10 +64,6 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         XCTAssertFalse(vm.isAddressDeliminator(str: no))
     }
 
-    /*
-     public func handleAddressDelimiterTyped(range: NSRange,
-     of text: NSAttributedString) -> Bool {
-     */
     // MARK: - add(recipient:)
     
     func testAddRecipientCalled() {
@@ -200,6 +196,30 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - handleReplaceSelectedAttachments
+
+    func testHandleReplaceSelectedAttachments_noPrevious() {
+        let attachment = RecipientTextViewTextAttachment(recipient: validId)
+        assert(resultDelegateCalledDidChangeRecipients: [],
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false)
+        vm.handleReplaceSelectedAttachments([attachment])
+        XCTAssertFalse(vm.isDirty)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleReplaceSelectedAttachments_onePrevious() {
+        assert(addRecipientValue: validId.address, ignoreCallsToAddRecipient: false)
+        vm.add(recipient: validId)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+
+        let attachment = RecipientTextViewTextAttachment(recipient: validId)
+        assert(resultDelegateCalledDidChangeRecipients: [],
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false)
+        vm.handleReplaceSelectedAttachments([attachment])
+        XCTAssertFalse(vm.isDirty)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: - Helper
 
     private func assert(addRecipientValue: String? = nil,
@@ -264,14 +284,14 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
                       handleTextChange: Bool = true,
                       isAddressDeliminator: Bool = true,
                       handleAddressDelimiterTyped: Bool = true,
-                      handleSelectedAttachment: Bool = true) {
+                      handleReplaceSelectedAttachments: Bool = true) {
         call(addRecipient: addRecipient,
              shouldInteractWithTextAttachment: shouldInteractWithTextAttachment,
              handleDidEndEditing: handleDidEndEditing,
              handleTextChange: handleTextChange,
              isAddressDeliminator: isAddressDeliminator,
              handleAddressDelimiterTyped: handleAddressDelimiterTyped,
-             handleSelectedAttachment: handleSelectedAttachment)
+             handleReplaceSelectedAttachments: handleReplaceSelectedAttachments)
     }
 
     /// Helper to call a bunch of, or all, public methods.
@@ -283,7 +303,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
                       handleTextChange: Bool = false,
                       isAddressDeliminator: Bool = false,
                       handleAddressDelimiterTyped: Bool = false,
-                      handleSelectedAttachment: Bool = false) {
+                      handleReplaceSelectedAttachments: Bool = false) {
 
         if addRecipient {
             vm.add(recipient: validId)
@@ -300,13 +320,9 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         if handleAddressDelimiterTyped {
             _ = vm.handleAddressDelimiterTyped(range: emptyRange, of: randomAttributedText)
         }
-        if handleSelectedAttachment {
-            vm.handleSelectedAttachment([])
+        if handleReplaceSelectedAttachments {
+            vm.handleReplaceSelectedAttachments([])
         }
-
-
-
-
     }
 }
 
@@ -415,24 +431,3 @@ class TestRecipientTextViewModelDelegate: RecipientTextViewModelDelegate {
         XCTAssertEqual(recipient, addRecipientValue)
     }
 }
-
-/*
-
-wip
-
- public func handleAddressDelimiterTyped(range: NSRange,
- of text: NSAttributedString) -> Bool {
- let valid = tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
- resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
- return valid
- }
-
- public func handleSelectedAttachment(_ attachments: [RecipientTextViewTextAttachment]) {
- for attachment in attachments {
- removeRecipientAttachment(attachment: attachment)
- }
- }
- */
-
-
-
