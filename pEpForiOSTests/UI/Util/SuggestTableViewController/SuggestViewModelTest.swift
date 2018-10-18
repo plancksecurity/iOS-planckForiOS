@@ -219,7 +219,7 @@ extension SuggestViewModelTest {
 
         //  SuggestViewModelDelegate
 
-        func suggestViewModelDidResetModel() {
+        func suggestViewModelDidResetModel(showResults: Bool) {
             guard shouldCallDidReset else {
                 XCTFail("Should not be called")
                 return
