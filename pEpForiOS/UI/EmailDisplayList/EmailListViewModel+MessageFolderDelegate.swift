@@ -303,11 +303,11 @@ extension EmailListViewModel: MessageFolderDelegate {
                     // in case it's a top message that now fulfills some filters
                     // it did not before.
                     self.didCreateInternal(messageFolder: messageFolder)
-                } else {
+                } /*else {
                     emailListViewModelDelegate?.emailListViewModel(
                         viewModel: self,
                         didUpdateUndisplayedMessage: message)
-                }
+                }*/
                 return
             }
         }
