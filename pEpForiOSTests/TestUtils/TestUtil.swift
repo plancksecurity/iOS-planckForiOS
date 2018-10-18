@@ -443,6 +443,49 @@ class TestUtil {
         return messagesInTheQueue
     }
 
+    @discardableResult static func createMessages(number: Int,
+                                    engineProccesed: Bool = true,
+                                    inFolder: Folder) -> [Message]{
+        var messages : [Message] = []
+        for _ in 0..<number {
+            let msg = createMessage(inFolder: inFolder,
+                                    from: Identity.create(address: "mail@mail.com"),
+                                    tos: [inFolder.account.user],
+                                    engineProccesed: engineProccesed)
+            messages.append(msg)
+            msg.save()
+        }
+        return messages
+    }
+
+
+    static func createMessage(inFolder folder: Folder,
+                                   from: Identity,
+                                   tos: [Identity] = [],
+                                   ccs: [Identity] = [],
+                                   bccs: [Identity] = [],
+                                   engineProccesed: Bool = true,
+                                   shortMessage: String = "",
+                                   longMessage: String = "",
+                                   longMessageFormatted: String = "") -> Message {
+        let msg = Message(uuid: MessageID.generate(), parentFolder: folder)
+        msg.from = from
+        msg.to = tos
+        msg.cc = ccs
+        msg.bcc = bccs
+        msg.messageID = MessageID.generate()
+        msg.shortMessage = shortMessage
+        msg.longMessage = longMessage
+        msg.longMessageFormatted = longMessageFormatted
+        let minute:TimeInterval = 60.0
+        msg.sent = Date()
+        msg.received = Date(timeIntervalSinceNow: minute)
+        if engineProccesed {
+            msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        }
+        return msg
+    }
+
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
         let msg = Message(uuid: "\(uid)", uid: UInt(uid), parentFolder: folder)
         XCTAssertEqual(msg.uid, UInt(uid))
