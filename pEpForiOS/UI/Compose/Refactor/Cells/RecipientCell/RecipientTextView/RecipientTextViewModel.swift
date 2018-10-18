@@ -78,7 +78,6 @@ class RecipientTextViewModel {
     public func handleAddressDelimiterTyped(range: NSRange,
                                             of text: NSAttributedString) -> Bool {
         let valid = tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
-        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
         return valid
     }
 
