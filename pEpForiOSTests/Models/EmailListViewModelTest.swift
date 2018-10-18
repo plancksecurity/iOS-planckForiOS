@@ -68,6 +68,152 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(comparison, ComparisonResult.orderedAscending)
     }
 
+    func testGetFolderName() {
+        setupViewModel()
+        XCTAssertEqual(folder.localizedName, emailListVM.getFolderName())
+    }
+
+    func testGetDestructiveAction() {
+        TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
+        setupViewModel()
+        let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
+
+        XCTAssertEqual(destructiveAction, .trash)
+    }
+
+    func testGetDestructiveActionInOutgoingFolderIsTrash() {
+        _ = givenThereIsAMessageIn(folderType: .outbox)
+        setupViewModel()
+
+        let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
+
+        XCTAssertEqual(destructiveAction, .trash)
+    }
+
+    func testShouldShowToolbarEditButtonsIfItsNotOutboxFolder() {
+        setupViewModel()
+
+        var showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
+        XCTAssertTrue(showToolbarButtons)
+
+        givenThereIsA(folderType: .outbox)
+        setupViewModel()
+
+        showToolbarButtons = emailListVM.shouldShowToolbarEditButtons()
+        XCTAssertFalse(showToolbarButtons)
+    }
+
+    func testUnreadFilterActive() {
+        setupViewModel()
+
+        var unreadActive = emailListVM.unreadFilterEnabled()
+
+        XCTAssertFalse(unreadActive)
+
+        setupViewModel()
+
+        let filter = CompositeFilter<FilterBase>()
+        filter.add(filter: UnreadFilter())
+        emailListVM.addFilter(filter)
+        setUpViewModelExpectations(expectedUpdateView: true)
+        emailListVM.isFilterEnabled = true
+
+        waitForExpectations(timeout: TestUtil.waitTime)
+        unreadActive = emailListVM.unreadFilterEnabled()
+
+        XCTAssertTrue(unreadActive)
+
+    }
+
+    func testGetFlagAndMoreAction() {
+        let messages = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
+        setupViewModel()
+
+        var flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, .flag)
+        XCTAssertEqual(moreAction, .more)
+
+        messages[0].imapFlags?.flagged = true
+        messages[0].save()
+
+        flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, .unflag)
+
+    }
+
+    func testGetFlagAndMoreActionInOutgoingFolderIsNil() {
+        _ = givenThereIsAMessageIn(folderType: .outbox)
+        setupViewModel()
+
+        let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, nil)
+        XCTAssertEqual(moreAction, nil)
+    }
+
+    func testGetFlagAndMoreActionInDraftFolderIsNil() {
+        _ = givenThereIsAMessageIn(folderType: .drafts)
+        setupViewModel()
+
+        let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
+        let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
+
+        XCTAssertEqual(flagAction, nil)
+        XCTAssertEqual(moreAction, nil)
+
+    }
+
+    func testIsDraftFolder() {
+        setupViewModel()
+
+        var isDraft = emailListVM.folderIsDraft()
+
+        XCTAssertFalse(isDraft)
+
+        givenThereIsA(folderType: .drafts)
+        setupViewModel()
+
+        isDraft = emailListVM.folderIsDraft()
+
+        XCTAssertTrue(isDraft)
+    }
+
+    func testIsOutboxFolder() {
+        setupViewModel()
+
+        var isOutBox = emailListVM.folderIsOutbox()
+
+        XCTAssertFalse(isOutBox)
+
+        givenThereIsA(folderType: .outbox)
+        setupViewModel()
+
+        isOutBox = emailListVM.folderIsOutbox()
+
+        XCTAssertTrue(isOutBox)
+
+
+    }
+
+    func testAccountExists() {
+        setupViewModel()
+
+        var noAccounts = emailListVM.noAccountsExist()
+
+        XCTAssertFalse(noAccounts)
+
+        cdAccount.delete()
+        setupViewModel()
+
+        noAccounts = emailListVM.noAccountsExist()
+
+        XCTAssertTrue(noAccounts)
+    }
+
     //mark: Search section
 
     func testSetSearchFilterWith0results() {
@@ -258,6 +404,17 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertNil(index)
     }
 
+    func testgetMoveToFolderViewModel() {
+        let preMessages = TestUtil.createMessages(number: 4, inFolder: folder)
+        let index: [IndexPath] = [IndexPath(row:0,section:1), IndexPath(row:0,section:2)]
+        setupViewModel()
+
+        let accountvm = emailListVM.getMoveToFolderViewModel(forSelectedMessages: index)
+
+        let postMessages = accountvm!.items[0].messages
+        XCTAssertEqual(index.count, postMessages.count)
+    }
+
     // Mark: setting up
 
     fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
@@ -348,6 +505,16 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             return Date()
         }
         return safeLastLookedAt
+    }
+
+    private func givenThereIsA(folderType: FolderType) {
+        folder = Folder(name: "-", parent: folder, account: account, folderType: folderType)
+        folder.save()
+    }
+
+    private func givenThereIsAMessageIn(folderType: FolderType)-> Message? {
+        givenThereIsA(folderType: folderType)
+        return TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder).first
     }
 }
 

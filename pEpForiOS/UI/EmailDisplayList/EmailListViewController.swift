@@ -7,15 +7,16 @@
 //
 
 import UIKit
-import MessageModel
 import SwipeCellKit
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let FILTER_TITLE_MAX_XAR = 20
 
-    var folderToShow: Folder?
-
-    var model: EmailListViewModel?
+    var model: EmailListViewModel? {
+        didSet {
+            model?.emailListViewModelDelegate = self
+        }
+    }
 
     public static let storyboardId = "EmailListViewController"
     private var lastSelectedIndexPath: IndexPath?
@@ -76,37 +77,18 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     // MARK: - Setup
 
-    private func resetModel() {
-        if let theFolder = folderToShow {
-            model = EmailListViewModel(emailListViewModelDelegate: self,
-                                       messageSyncService: appConfig.messageSyncService,
-                                       folderToShow: theFolder)
-
-            guard let screenComposer = splitViewController as? ScreenComposerProtocol else {
-                return
-            }
-            model?.screenComposer =  screenComposer
-        }
-    }
-
     private func setup() {
-        if noAccountsExist() {
+        if let accountExists = model?.noAccountsExist(),
+            accountExists {
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
             return
-        } else if folderToShow == nil {
-            // We have not been created to show a specific folder, thus we show unified inbox
-            folderToShow = UnifiedInbox()
-            resetModel()
-        } else if model == nil {
-            // We still got no model, because:
-            // - We are not coming back from a pushed view (for instance ComposeEmailView)
-            // - We are not a UnifiedInbox
-            // So we have been created to show a specific folder. Show it!
-            resetModel()
+        }
+        if (model == nil) {
+            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
         }
 
-        title = folderToShow?.localizedName
+        title = model?.getFolderName()
         let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
                                                 target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
@@ -195,33 +177,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     // MARK: - Other
-
-    private func folderIsDraft(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
-            return false
-        }
-        return folder.folderType == .drafts
-    }
-
-    private func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
-        guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
-            return false
-        }
-        return folder.folderType == .outbox
-    }
-
-    private func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
-        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
-    }
-
     private func weCameBackFromAPushedView() -> Bool {
         return model != nil
-    }
-
-    private func noAccountsExist() -> Bool {
-        return Account.all().isEmpty
     }
 
     private func showComposeView() {
@@ -250,8 +207,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                 return
             }
-            let unreadFilterActive = vm.isFilterEnabled &&
-                vm.activeFilter?.contains(type: UnreadFilter.self) ?? false
+            let unreadFilterActive = vm.unreadFilterEnabled()
             if navigationController?.topViewController != self && !unreadFilterActive {
                 navigationController?.popViewController(animated: true)
             }
@@ -529,31 +485,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         // Create swipe actions, taking the currently displayed folder into account
         var swipeActions = [SwipeAction]()
 
-        // Get messages parent folder
-        let parentFolder: Folder
-        if let folder = folderToShow, !(folder is UnifiedInbox) {
-            // Do not bother our imperformant MessageModel if we already know the parent folder
-            parentFolder = folder
-        } else {
-            // folderToShow is unified inbox, fetch parent folder from DB.
-            guard let vm = model,
-                let folder = vm.message(representedByRowAt: indexPath)?.parent else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
-                    return nil
-            }
-            parentFolder = folder
+        guard let model = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Should have VM")
+            return nil
         }
 
         // Delete or Archive
-        let defaultIsArchive = parentFolder.defaultDestructiveActionIsArchive
-        let titleDestructive = defaultIsArchive ? "Archive" : "Delete"
-        let usedDescriptor =
-            folderIsOutbox(parentFolder) ?
-            SwipeActionDescriptor.trash :
-                (defaultIsArchive ? .archive : .trash)
-        let descriptorDestructive: SwipeActionDescriptor = usedDescriptor
+        let destructiveAction = model.getDestructiveActtion(forMessageAt: indexPath.row)
         let archiveAction =
-            SwipeAction(style: .destructive, title: titleDestructive) {
+            SwipeAction(style: .destructive,
+                        title: destructiveAction.title(forDisplayMode: .titleAndImage)) {
                 [weak self] action, indexPath in
                 guard let me = self else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
@@ -563,11 +504,12 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 me.deleteAction(forCellAt: indexPath)
                 me.swipeDelete = action
         }
-        configure(action: archiveAction, with: descriptorDestructive)
+        configure(action: archiveAction, with: destructiveAction)
         swipeActions.append(archiveAction)
 
         // Flag
-        if !folderIsDraftsOrOutbox(parentFolder) {
+        let flagActionDescription = model.getFlagAction(forMessageAt: indexPath.row)
+        if let flagActionDescription = flagActionDescription {
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
@@ -578,16 +520,15 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             }
 
             flagAction.hidesWhenSelected = true
-            
-            let flagged = model?.message(representedByRowAt: indexPath)?.imapFlags?.flagged ?? false
-            let actionDescriptor: SwipeActionDescriptor = flagged == true ? .unflag : .flag
 
-            configure(action: flagAction, with: actionDescriptor)
+            configure(action: flagAction, with: flagActionDescription)
             swipeActions.append(flagAction)
         }
 
         // More (reply++)
-        if !folderIsDraftsOrOutbox(parentFolder) {
+        let moreActionDescription = model.getMoreAction(forMessageAt: indexPath.row)
+
+        if let moreActionDescription = moreActionDescription {
             // Do not add "more" actions (reply...) to drafts or outbox.
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
@@ -598,7 +539,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 me.moreAction(forCellAt: indexPath)
             }
             moreAction.hidesWhenSelected = true
-            configure(action: moreAction, with: .more)
+            configure(action: moreAction, with: moreActionDescription)
             swipeActions.append(moreAction)
         }
         return (orientation == .right ?   swipeActions : nil)
@@ -627,14 +568,13 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                 vm.updatedItems(indexPaths: selectedIndexPaths)
             }
         } else {
-            guard let folder = folderToShow else {
+            guard let model = model else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No folder")
                 return
             }
             lastSelectedIndexPath = indexPath
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-
-            if folder.folderType == .drafts || folder.folderType == .outbox {
+            if model.shouldEditMessage() {
                 showComposeView()
             } else {
                 showEmail(forCellAt: indexPath)
@@ -712,7 +652,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
 extension EmailListViewController: EmailListViewModelDelegate {
     func showThreadView(for indexPath: IndexPath) {
-        guard let splitViewController = splitViewController else {
+       /* guard let splitViewController = splitViewController else {
             return
         }
 
@@ -738,11 +678,11 @@ extension EmailListViewController: EmailListViewModelDelegate {
             nav.viewControllers[nav.viewControllers.count - 1] = vc
         } else {
             showEmail(forCellAt: indexPath)
-        }
+        }*/
     }
 
     func toolbarIs(enabled: Bool) {
-        if let type = folderToShow?.folderType, type != .outbox {
+        if model?.shouldShowToolbarEditButtons() ?? true {
             // Never enable those for outbox
             flagToolbarButton?.isEnabled = enabled
             unflagToolbarButton?.isEnabled = enabled
@@ -829,8 +769,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
             return
         }
 
-        let unreadFilterActive = vm.isFilterEnabled &&
-            vm.activeFilter?.contains(type: UnreadFilter.self) ?? false
+        let unreadFilterActive = vm.unreadFilterEnabled()
 
         // If unread filter is active, /seen state updates require special handling ...
 
@@ -844,11 +783,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
             //  ... otherwize we forward to update
             emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
         }
-    }
-
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            didUpdateUndisplayedMessage message: Message) {
-        // ignore
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
@@ -1013,8 +947,7 @@ extension EmailListViewController {
      Enables manual account setup to unwind to the unified inbox.
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
-        folderToShow = UnifiedInbox()
-        resetModel()
+        setup()
     }
 }
 
@@ -1057,12 +990,12 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.message = message
-            vc.folderShow = folderToShow
+            vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model
             model?.currentDisplayedMessage = vc
-        case .segueShowThreadedEmail:
-            guard let nav = segue.destination as? UINavigationController,
+      //  case .segueShowThreadedEmail:
+        /*    guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? ThreadViewController,
                 let indexPath = lastSelectedIndexPath,
                 let folder = folderToShow else {
@@ -1077,7 +1010,7 @@ extension EmailListViewController: SegueHandlerType {
             viewModel.emailDisplayDelegate = model
             vc.model = viewModel
             model?.currentDisplayedMessage = viewModel
-            model?.updateThreadListDelegate = viewModel
+            model?.updateThreadListDelegate = viewModel*/
         case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
@@ -1085,8 +1018,8 @@ extension EmailListViewController: SegueHandlerType {
             }
             destiny.appConfig = appConfig
             destiny.filterDelegate = model
-            destiny.inFolder = self.folderToShow is UnifiedInbox
-            destiny.filterEnabled = folderToShow?.filter
+            destiny.inFolder = model?.getFolderIsUnified() ?? false
+            destiny.filterEnabled = model?.getFolderFilters()
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
             guard
@@ -1117,16 +1050,14 @@ extension EmailListViewController: SegueHandlerType {
             }
 
             guard  let nav = segue.destination as? UINavigationController,
-                let destination = nav.topViewController as? MoveToAccountViewController,
-                let messages = model?.messagesToMove(indexPaths: selectedRows)
+                let destination = nav.topViewController as? MoveToAccountViewController
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
-            if let msgs = messages as? [Message] {
-                let destinationvm = MoveToAccountViewModel(messages: msgs)
-                destination.viewModel = destinationvm
-            }
+
+            destination.viewModel
+                = model?.getMoveToFolderViewModel(forSelectedMessages: selectedRows)
             destination.delegate = model
             destination.appConfig = appConfig
             break
@@ -1201,23 +1132,27 @@ extension EmailListViewController: LoginViewControllerDelegate {
 
 extension EmailListViewController: ComposeTableViewControllerDelegate {
     func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController) {
-        if folderIsDraftsOrOutbox(folderToShow){
+        if let model = model,
+            model.folderIsOutbox() || model.folderIsDraft(){
             // In outbox, a new mail must show up after composing it.
-            model?.reloadData()
+            model.reloadData()
         }
     }
 
     func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController) {
-        if folderIsOutbox(folderToShow) {
+
+        if let model = model,
+            model.folderIsOutbox() {
             // A message from outbox has been deleted in outbox
             // (e.g. because the user saved it to drafts).
-            model?.reloadData()
+            model.reloadData()
         }
     }
 
     func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController) {
-        if folderIsDraft(folderToShow) {
-            model?.reloadData()
+        if let model = model,
+            model.folderIsDraft() {
+            model.reloadData()
         }
     }
 }

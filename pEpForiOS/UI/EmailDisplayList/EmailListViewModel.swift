@@ -18,9 +18,6 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
                             didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
-    func emailListViewModel(viewModel: EmailListViewModel,
-                            didUpdateUndisplayedMessage message: Message)
-
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
@@ -85,7 +82,7 @@ class EmailListViewModel {
     
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
-         folderToShow: Folder) {
+         folderToShow: Folder = UnifiedInbox()) {
         self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
@@ -101,6 +98,18 @@ class EmailListViewModel {
 
     func updateLastLookAt() {
         folderToShow.updateLastLookAt()
+    }
+
+    func getFolderName() -> String {
+        return folderToShow.localizedName
+    }
+
+    func shouldEditMessage() -> Bool {
+        if folderToShow.folderType == .drafts || folderToShow.folderType == .outbox {
+            return true
+        } else {
+            return false
+        }
     }
     
     //check if there are some important settings that have changed to force a reload
@@ -125,7 +134,6 @@ class EmailListViewModel {
         self.stopListeningToChanges()
 
         queue.cancelAllOperations()
-
         let op = BlockOperation()
         weak var weakOp = op
         op.addExecutionBlock { [weak self] in
@@ -398,6 +406,111 @@ class EmailListViewModel {
 
     public func reloadData() {
         resetViewModel()
+    }
+
+    public func shouldShowToolbarEditButtons() -> Bool {
+        return !folderIsOutbox(folderToShow)
+    }
+
+    public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        let defaultDestructiveAction: SwipeActionDescriptor
+            = parentFolder.defaultDestructiveActionIsArchive
+                ? .archive
+                : .trash
+
+        return folderIsOutbox(parentFolder) ? .trash : defaultDestructiveAction
+    }
+
+    public func getFlagAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftOrOutbox(parentFolder) {
+            return nil
+        } else {
+            let flagged = messages.object(at: index)?.message()?.imapFlags?.flagged ?? false
+            return flagged ? .unflag : .flag
+        }
+    }
+
+    public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
+        let parentFolder = getParentFolder(forMessageAt: index)
+        if folderIsDraftOrOutbox(parentFolder) {
+            return nil
+        } else {
+           return .more
+        }
+    }
+
+    public func noAccountsExist() -> Bool {
+        return Account.all().isEmpty
+    }
+
+    public func folderIsDraft() -> Bool {
+        return folderIsDraft( folderToShow)
+    }
+
+    public func folderIsOutbox() -> Bool {
+        return folderIsOutbox(folderToShow)
+    }
+
+    public func unreadFilterEnabled() -> Bool {
+        return isFilterEnabled &&
+            activeFilter?.contains(type: UnreadFilter.self) ?? false
+    }
+
+    private func getParentFolder(forMessageAt index: Int) -> Folder {
+        var parentFolder: Folder
+
+        if folderToShow is UnifiedInbox {
+            // folderToShow is unified inbox, fetch parent folder from DB.
+            guard let folder = messages.object(at: index)?.message()?.parent else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
+                    return folderToShow
+            }
+            parentFolder = folder
+        } else {
+            // Do not bother our imperformant MessageModel if we already know the parent folder
+            // folderToShow is unified inbox, fetch parent folder from DB.
+            parentFolder = folderToShow
+        }
+
+        return parentFolder
+    }
+
+    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .outbox
+    }
+
+    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
+        return parentFolder.folderType == .drafts
+    }
+
+    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
+        return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
+    }
+
+    public func getMoveToFolderViewModel(forSelectedMessages: [IndexPath])
+        -> MoveToAccountViewModel? {
+            let messages = messagesToMove(indexPaths: forSelectedMessages)
+            if let msgs = messages as? [Message] {
+                return MoveToAccountViewModel(messages: msgs)
+            }
+            return nil
+    }
+
+    //TODO: remove when Segues of EmailListViewController are refactored.
+    public func getFolderToShow() -> Folder {
+        return folderToShow
+    }
+
+    //TODO: remove when Segues of EmailListViewController are refactored.
+    public func getFolderIsUnified() -> Bool {
+        return folderToShow is UnifiedInbox
+    }
+
+    //TODO: remove when Segues of EmailListViewController are refactored.
+    public func getFolderFilters() -> CompositeFilter<FilterBase>? {
+        return folderToShow.filter
     }
 
     // MARK: - Filter
