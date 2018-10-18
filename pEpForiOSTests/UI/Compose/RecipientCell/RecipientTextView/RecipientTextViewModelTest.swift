@@ -29,6 +29,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     // MARK: - add(recipient:)
+    
     func testAddRecipientCalled() {
         assert(addRecipientValue: validId.address, ignoreCallsToAddRecipient: false)
         vm.add(recipient: validId)
@@ -63,7 +64,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         assert(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
-               ignoreCallsresultDelegateCalledDidEndEditing: false)
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
         vm.handleDidEndEditing(range: emptyRange, of: emptyAttributedString)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -72,7 +73,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         assert(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
-               ignoreCallsresultDelegateCalledDidEndEditing: false)
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
         vm.handleDidEndEditing(range: emptyRange, of: randomAttributedText)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -81,7 +82,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         assert(resultDelegateCalledDidChangeRecipients: [validId],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
-               ignoreCallsresultDelegateCalledDidEndEditing: false)
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
         let address = NSAttributedString(string: validId.address)
         vm.handleDidEndEditing(range: emptyRange, of: address)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
@@ -91,17 +92,37 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         assert(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: false,
-               ignoreCallsresultDelegateCalledDidEndEditing: false)
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
         callAll(handleDidEndEditing: false)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+// MARK: - handleTextChange
 
-    /*
-     //        assert(addRecipientValue: <#T##String?#>, ignoreCallsToAddRecipient: <#T##Bool#>, didChangeAttributedText: <#T##NSAttributedString?#>, ignoreCallsDidChangeAttributedText: <#T##Bool#>, resultDelegateCalledDidChangeRecipients: <#T##[Identity]?#>, ignoreCallsResultDelegateCalledDidChangeRecipients: <#T##Bool#>, resultDelegateCalledDidEndEditing: <#T##Bool#>, ignoreCallsresultDelegateCalledDidEndEditing: <#T##Bool#>, resultDelegateCalledTextChanged: <#T##String?#>, ignoreResultDelegateCalledTextChanged: <#T##Bool#>)
-     */
+    func testHandleTextChange_called() {
+        let text = randomText
+        assert(resultDelegateCalledTextChanged: text,
+               ignoreResultDelegateCalledTextChanged: false)
+        vm.handleTextChange(newText: text)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
+    func testHandleTextChange_notCalled() {
+        assert(resultDelegateCalledTextChanged: nil,
+               ignoreResultDelegateCalledTextChanged: false)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
+    func testHandleTextChange_isDirty() {
+        let text = randomText
+        vm.handleTextChange(newText: text)
+        XCTAssertTrue(vm.isDirty)
+    }
+
+    func testHandleTextChange_isNotDirty() {
+        callAll(addRecipient: false, handleTextChange: false, handleAddressDelimiterTyped: false)
+        XCTAssertFalse(vm.isDirty)
+    }
 
     // MARK: - Helper
 
@@ -112,8 +133,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
                         resultDelegateCalledDidChangeRecipients: [Identity]? = nil,
                         ignoreCallsResultDelegateCalledDidChangeRecipients: Bool = true,
                         resultDelegateCalledDidEndEditingCalled: Bool = false,
-                        resultDelegateCalledDidEndEditing: Bool = false,
-                        ignoreCallsresultDelegateCalledDidEndEditing: Bool = true,
+                        ignoreCallsresultDelegateCalledDidEndEditingCalled: Bool = true,
                         resultDelegateCalledTextChanged: String? = nil,
                         ignoreResultDelegateCalledTextChanged: Bool = true
         ) {
@@ -151,7 +171,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
                 expectDidChangeRecipientsCalled: ignoreCallsResultDelegateCalledDidChangeRecipients ?
                     nil : expectResultDelegateCalledDidChangeRecipients,
                 didChangeRecipients: resultDelegateCalledDidChangeRecipients,
-                expectDidEndEditingCalled: ignoreCallsresultDelegateCalledDidEndEditing ?
+                expectDidEndEditingCalled: ignoreCallsresultDelegateCalledDidEndEditingCalled ?
                     nil : expectresultDelegateCalledDidEndEditingCalled,
                 expectTextChangedCalled: ignoreResultDelegateCalledTextChanged ?
                     nil : expectResultDelegateCalledTextChanged,
@@ -337,31 +357,6 @@ class TestRecipientTextViewModelDelegate: RecipientTextViewModelDelegate {
  self.resultDelegate = resultDelegate
  }
 
- public func add(recipient: Identity) {
- delegate?.add(recipient: recipient.address)
- }
-
- public func shouldInteract(WithTextAttachment attachment: NSTextAttachment) -> Bool {
- if let _ = attachment.image {
- // Suppress default image handling. Our recipient names are actually displayed as
- // images and we do not want to offer "save to camera roll" aciont sheet or other image
- // actions to the user.
- return false
- }
- return true
- }
-
- public func handleDidEndEditing(range: NSRange,
- of text: NSAttributedString) {
- tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
- resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
- }
-
- public func handleTextChange(newText: String) {
- let textOnly = newText.trimObjectReplacementCharacters().trimmed()
- isDirty = !textOnly.isEmpty
- resultDelegate?.recipientTextViewModel(recipientTextViewModel: self, textChanged: textOnly)
- }
 
  public func isAddressDeliminator(str: String) -> Bool {
  return addressDeliminators.contains(str)
