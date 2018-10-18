@@ -45,23 +45,27 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     // MARK: - isAddressDeliminator
 
     func testIsAddressDeliminator_space() {
-        let space = " "
-        XCTAssertTrue(vm.isAddressDeliminator(str: space))
+        assertAddressDeliminator(testee: " ", isDelimiter: true)
     }
 
     func testIsAddressDeliminator_nl() {
-        let nl = "\n"
-        XCTAssertTrue(vm.isAddressDeliminator(str: nl))
+        assertAddressDeliminator(testee: "\n", isDelimiter: true)
     }
 
     func testIsAddressDeliminator_no_tab() {
-        let no = "\t"
-        XCTAssertFalse(vm.isAddressDeliminator(str: no))
+        assertAddressDeliminator(testee: "\t", isDelimiter: false)
     }
 
     func testIsAddressDeliminator_no_empty() {
-        let no = ""
-        XCTAssertFalse(vm.isAddressDeliminator(str: no))
+       assertAddressDeliminator(testee: "", isDelimiter: false)
+    }
+
+    private func assertAddressDeliminator(testee: String, isDelimiter: Bool) {
+        if isDelimiter {
+            XCTAssertTrue(vm.isAddressDeliminator(str: testee))
+        } else {
+            XCTAssertFalse(vm.isAddressDeliminator(str: testee))
+        }
     }
 
     // MARK: - add(recipient:)
