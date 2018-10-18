@@ -81,7 +81,7 @@ class RecipientTextViewModel {
         return valid
     }
 
-    public func handleSelectedAttachment(_ attachments: [RecipientTextViewTextAttachment]) {
+    public func handleReplaceSelectedAttachments(_ attachments: [RecipientTextViewTextAttachment]) {
         for attachment in attachments {
             removeRecipientAttachment(attachment: attachment)
         }

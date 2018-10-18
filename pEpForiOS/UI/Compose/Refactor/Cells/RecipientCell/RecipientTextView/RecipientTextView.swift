@@ -115,7 +115,7 @@ extension RecipientTextView: UITextViewDelegate {
         } else if hasSelection {
             // user deletes a selected attachment
             let attachments = attributedText.recipientTextAttachments(range: selectedRange)
-            vm.handleSelectedAttachment(attachments)
+            vm.handleReplaceSelectedAttachments(attachments)
             return true
         }
         return true
