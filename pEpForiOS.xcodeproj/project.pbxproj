@@ -148,6 +148,7 @@
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
 		1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */; };
 		1574D09B21186A1D00FEDC93 /* AddToContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D09A21186A1D00FEDC93 /* AddToContactsViewController.swift */; };
+		157743B8217885EA0007222C /* RecipientTextViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157743B7217885EA0007222C /* RecipientTextViewModelTest.swift */; };
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		15848D392167B85700D8CBA4 /* AccountCell_mvvm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15848D382167B85700D8CBA4 /* AccountCell_mvvm.swift */; };
 		15848D3D2167B9B100D8CBA4 /* AccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15848D3C2167B9B100D8CBA4 /* AccountCellViewModel.swift */; };
@@ -738,6 +739,7 @@
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
 		1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailToTest.swift"; sourceTree = "<group>"; };
 		1574D09A21186A1D00FEDC93 /* AddToContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddToContactsViewController.swift; path = AddToContactsViewController/AddToContactsViewController.swift; sourceTree = "<group>"; };
+		157743B7217885EA0007222C /* RecipientTextViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientTextViewModelTest.swift; sourceTree = "<group>"; };
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		15848D382167B85700D8CBA4 /* AccountCell_mvvm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell_mvvm.swift; sourceTree = "<group>"; };
 		15848D3C2167B9B100D8CBA4 /* AccountCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellViewModel.swift; sourceTree = "<group>"; };
@@ -1544,6 +1546,22 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		157743B52178857D0007222C /* RecipientCell */ = {
+			isa = PBXGroup;
+			children = (
+				157743B6217885C20007222C /* RecipientTextView */,
+			);
+			path = RecipientCell;
+			sourceTree = "<group>";
+		};
+		157743B6217885C20007222C /* RecipientTextView */ = {
+			isa = PBXGroup;
+			children = (
+				157743B7217885EA0007222C /* RecipientTextViewModelTest.swift */,
+			);
+			path = RecipientTextView;
+			sourceTree = "<group>";
+		};
 		15848D372167B7EC00D8CBA4 /* AccountCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1725,6 +1743,7 @@
 		15D4399D216F703100EB3933 /* Compose */ = {
 			isa = PBXGroup;
 			children = (
+				157743B52178857D0007222C /* RecipientCell */,
 			);
 			path = Compose;
 			sourceTree = "<group>";
@@ -3508,6 +3527,7 @@
 				43C3B1602003851100ED48A4 /* DecryptImportedMessagesTests.swift in Sources */,
 				1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
+				157743B8217885EA0007222C /* RecipientTextViewModelTest.swift in Sources */,
 				151F7205202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */,
 				43504D4420E0DD0E00D11E52 /* EmailListViewModeTests+Threading.swift in Sources */,
 				43E74C741E38DE2200A2F7A6 /* ImapFlagsTests.swift in Sources */,
