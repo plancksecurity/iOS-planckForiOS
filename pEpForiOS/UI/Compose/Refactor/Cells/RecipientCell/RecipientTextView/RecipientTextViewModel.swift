@@ -59,7 +59,6 @@ class RecipientTextViewModel {
         return true
     }
 
-    //IOS-1369: do we need that @all?
     public func handleDidEndEditing(range: NSRange,
                                     of text: NSAttributedString) {
         tryGenerateValidAddressAndUpdateStatus(range: range, of: text)

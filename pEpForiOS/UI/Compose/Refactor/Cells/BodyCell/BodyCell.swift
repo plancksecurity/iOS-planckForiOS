@@ -47,16 +47,18 @@ extension BodyCell {
     // WIP
     /*
 
- */
+     */
     //
 
-    func textViewDidBeginEditing(_ textView: UITextView) { //IOS-1369: extract Image and Document selector
+    func textViewDidBeginEditing(_ textView: UITextView) {
         textView.becomeFirstResponder()
-       viewModel?.handleDidBeginEditing()
+//        viewModel?.handleDidBeginEditing() //IOS-1369: obsolete?
+        setupContextMenu()
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {
-        viewModel?.handleDidEndEditing()
+        tearDownContextMenu()
+        //        viewModel?.handleDidEndEditing() //IOS-1369: obsolete?
     }
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
@@ -69,5 +71,31 @@ extension BodyCell {
         }
 
         return super.canPerformAction(action, withSender: sender)
+    }
+}
+
+// MARK: - Context Menu
+
+extension BodyCell {
+    private func setupContextMenu() {
+        let media = UIMenuItem(title: viewModel?.contextMenuItemTitleAttachMedia ?? "",
+                               action: #selector(userClickedSelectMedia))
+        let attachment = UIMenuItem(title: viewModel?.contextMenuItemTitleAttachFile ?? "",
+                                    action: #selector(userClickedSelectDocument))
+        UIMenuController.shared.menuItems = [media, attachment]
+    }
+
+    private func tearDownContextMenu() {
+        UIMenuController.shared.menuItems = nil
+    }
+
+    @objc //required for usage in selector
+    private func userClickedSelectMedia() {
+        viewModel?.handleUserClickedSelectMedia()
+    }
+
+    @objc //required for usage in selector
+    private func userClickedSelectDocument() {
+        viewModel?.handleUserClickedSelectDocument()
     }
 }
