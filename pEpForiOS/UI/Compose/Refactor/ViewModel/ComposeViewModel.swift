@@ -347,4 +347,12 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         //IOS-1369: What to save to state? attributedText? markdown? ...
         delegate?.contentChanged(inRowAt: idxPath)
     }
+
+    func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel) {
+        fatalError()
+    }
+
+    func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel) {
+        fatalError()
+    }
 }

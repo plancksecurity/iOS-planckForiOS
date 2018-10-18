@@ -31,46 +31,43 @@ extension BodyCell: BodyCellViewModelDelegate {
 // MARK: - UITextViewDelegate
 
 extension BodyCell {
-    public func textViewDidBeginEditing(_ textView: UITextView) {
-//        viewModel?.maxTextattachmentWidth = bounds.width
-        //IOS-1369: scroll?
-    }
 
+    /*
+     //IOS-1369: Next !!
+
+
+
+     */
     public func textViewDidChange(_ textView: UITextView) {
         //IOS-1369: scroll?
         viewModel?.handleTextChange(newText: textView.text)
     }
 
+
+    // WIP
     /*
-     //IOS-1369: Next !!
 
-     */
+ */
+    //
 
-
-    public func textView(_ textView: UITextView,
-                         shouldChangeTextIn range: NSRange,
-                         replacementText text: String) -> Bool {
-        //IOS-21369:
-//        guard let vm = viewModel else {
-//            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
-//            return true
-//        }
-        return true
+    func textViewDidBeginEditing(_ textView: UITextView) { //IOS-1369: extract Image and Document selector
+        textView.becomeFirstResponder()
+       viewModel?.handleDidBeginEditing()
     }
 
-    public func textViewDidEndEditing(_ textView: UITextView) {
-//        viewModel?.handleDidEndEditing(range: textView.selectedRange, of: textView.attributedText)
+    func textViewDidEndEditing(_ textView: UITextView) {
+        viewModel?.handleDidEndEditing()
     }
 
-    func textView(_ textView: UITextView,
-                  shouldInteractWith textAttachment: NSTextAttachment,
-                  in characterRange: NSRange) -> Bool {
-        //IOS-21369:
-//        guard let vm = viewModel else {
-//            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
-//            return true
-//        }
-//        return vm.shouldInteract(WithTextAttachment: textAttachment)
-        return true
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        guard let customItems: [UIMenuItem] = UIMenuController.shared.menuItems else {
+            return super.canPerformAction(action, withSender: sender)
+        }
+        let actions = customItems.map { $0.action }
+        if actions.contains(action) {
+            return true
+        }
+
+        return super.canPerformAction(action, withSender: sender)
     }
 }

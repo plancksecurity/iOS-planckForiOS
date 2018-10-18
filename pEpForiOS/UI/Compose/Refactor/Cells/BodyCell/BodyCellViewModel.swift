@@ -11,6 +11,9 @@ import MessageModel
 
 protocol BodyCellViewModelResultDelegate: class {
     func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String)
+
+    func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
+    func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
 }
 
 protocol BodyCellViewModelDelegate: class {
@@ -20,7 +23,7 @@ protocol BodyCellViewModelDelegate: class {
 class BodyCellViewModel: CellViewModel {
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
-     public private(set) var isDirty = false
+    public private(set) var isDirty = false
     //IOS-1369: attachments go here?
 
     init(resultDelegate: BodyCellViewModelResultDelegate,
@@ -30,9 +33,94 @@ class BodyCellViewModel: CellViewModel {
         //IOS-1369: set initial
     }
 
+    func handleDidBeginEditing() {
+        setupContextMenu()
+    }
+
+    func handleDidEndEditing() {
+        tearDownContextMenu()
+    }
+
     public func handleTextChange(newText: String) {
-//        let textOnly = newText.trimObjectReplacementCharacters().trimmed()
+        //        let textOnly = newText.trimObjectReplacementCharacters().trimmed()
         isDirty = true
         resultDelegate?.bodyCellViewModel(self, textChanged: newText)
     }
+
+    @objc //required for usage in selector
+    private func handleUserWantsSelectMedia() {
+        resultDelegate?.bodyCellViewModelUserWantsToAddMedia(self)
+    }
+
+    @objc //required for usage in selector
+    private func handleUserWantsSelectDocument() {
+        resultDelegate?.bodyCellViewModelUserWantsToAddDocument(self)
+    }
+
+    // MARK: - Context Menu
+
+    private func setupContextMenu() {
+        let media = UIMenuItem(
+            title: NSLocalizedString("Attach media",
+                                     comment: "Attach photo/video (message text context menu)"),
+            action: #selector(handleUserWantsSelectMedia))
+        let attachment = UIMenuItem(
+            title: NSLocalizedString("Attach file",
+                                     comment: "Insert document in message text context menu"),
+            action: #selector(handleUserWantsSelectDocument))
+        UIMenuController.shared.menuItems = [media, attachment]
+    }
+
+    private func tearDownContextMenu() {
+        UIMenuController.shared.menuItems = nil
+    }
+    /*
+    extension MessageBodyCell {
+         public final func inline(attachment: Attachment) {
+         guard let image = attachment.image else {
+         Log.shared.errorAndCrash(component: #function, errorString: "No image")
+         return
+         }
+         // Workaround: If the image has a higher resolution than that, UITextView has serious
+         // performance issues (delay typing). I suspect we are causing them elswhere though.
+         guard let scaledImage = image.resized(newWidth: frame.size.width / 2, useAlpha: false)
+         else {
+         Log.shared.errorAndCrash(component: #function, errorString: "Error resizing")
+         return
+         }
+
+         let textAttachment = TextAttachment()
+         textAttachment.image = scaledImage
+         textAttachment.attachment = attachment
+         textAttachment.bounds = CGRect.rect(withWidth: textView.bounds.width,
+         ratioOf: scaledImage.size)
+         let imageString = NSAttributedString(attachment: textAttachment)
+
+         let selectedRange = textView.selectedRange
+         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
+         attrText.replaceCharacters(in: selectedRange, with: imageString)
+         textView.attributedText = attrText
+         }
+
+        public final func allInlinedAttachments() -> [Attachment] {
+            let attachments = textView.attributedText.textAttachments()
+            var mailAttachments = [Attachment]()
+            attachments.forEach { (attachment) in
+                if let attch = attachment.attachment {
+                    attch.contentDisposition = .inline
+                    mailAttachments.append(attch)
+                }
+            }
+            return mailAttachments
+        }
+
+        public func hasInlinedAttatchments() -> Bool {
+            return allInlinedAttachments().count > 0
+        }
+    }
+ */
+
+    //WIP
+
+
 }
