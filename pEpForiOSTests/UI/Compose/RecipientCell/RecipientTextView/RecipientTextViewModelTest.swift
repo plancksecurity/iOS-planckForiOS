@@ -28,6 +28,46 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         vm = RecipientTextViewModel()
     }
 
+    // MARK: - init(resultDelegate:
+
+    func testInitWithResultDelegate() {
+        let resultDelegate =
+            TestRecipientTextViewModelResultDelegate(expectDidChangeRecipientsCalled: nil,
+                                                     didChangeRecipients: nil,
+                                                     expectDidEndEditingCalled: nil,
+                                                     expectTextChangedCalled: nil,
+                                                     textChanged: nil)
+        let testeeVM = RecipientTextViewModel(resultDelegate: resultDelegate)
+        XCTAssertNotNil(testeeVM.resultDelegate)
+        XCTAssertTrue(testeeVM.resultDelegate === resultDelegate)
+    }
+
+    // MARK: - isAddressDeliminator
+
+    func testIsAddressDeliminator_space() {
+        let space = " "
+        XCTAssertTrue(vm.isAddressDeliminator(str: space))
+    }
+
+    func testIsAddressDeliminator_nl() {
+        let nl = "\n"
+        XCTAssertTrue(vm.isAddressDeliminator(str: nl))
+    }
+
+    func testIsAddressDeliminator_no_tab() {
+        let no = "\t"
+        XCTAssertFalse(vm.isAddressDeliminator(str: no))
+    }
+
+    func testIsAddressDeliminator_no_empty() {
+        let no = ""
+        XCTAssertFalse(vm.isAddressDeliminator(str: no))
+    }
+
+    /*
+     public func handleAddressDelimiterTyped(range: NSRange,
+     of text: NSAttributedString) -> Bool {
+     */
     // MARK: - add(recipient:)
     
     func testAddRecipientCalled() {
@@ -257,7 +297,8 @@ class TestRecipientTextViewModelResultDelegate: RecipientTextViewModelResultDele
         self.textChanged = textChanged
     }
 
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity]) {
+    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
+                                didChangeRecipients newRecipients: [Identity]) {
         guard let exp = expectDidChangeRecipientsCalled else {
             // We ignore called or not
             return
@@ -340,27 +381,8 @@ class TestRecipientTextViewModelDelegate: RecipientTextViewModelDelegate {
 }
 
 /*
- public private(set) var isDirty = false
- //    public var hasSelectedAttachment = false //IOS-1369: obsolete?
- private var recipientAttachments = [RecipientTextViewTextAttachment]() {
- didSet {
- let recipients = recipientAttachments.map { $0.recipient }
- resultDelegate?.recipientTextViewModel(recipientTextViewModel: self,
- didChangeRecipients: recipients)
- }
- }
 
- public weak var resultDelegate: RecipientTextViewModelResultDelegate?
- public weak var delegate: RecipientTextViewModelDelegate?
-
- init(resultDelegate: RecipientTextViewModelResultDelegate? = nil) {
- self.resultDelegate = resultDelegate
- }
-
-
- public func isAddressDeliminator(str: String) -> Bool {
- return addressDeliminators.contains(str)
- }
+wip
 
  public func handleAddressDelimiterTyped(range: NSRange,
  of text: NSAttributedString) -> Bool {
