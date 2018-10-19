@@ -25,6 +25,8 @@
 		0038494A20D25576008000EA /* ProfilePictureComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0038494920D25576008000EA /* ProfilePictureComposer.swift */; };
 		0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0038494B20D2587F008000EA /* PepPictureComposer.swift */; };
 		003C0FA720B5581A0093A987 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003C0FA620B5581A0093A987 /* SecretTestData.swift */; };
+		004422C82179E3C500BDF6DF /* SettingsCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422C72179E3C500BDF6DF /* SettingsCellViewModelTest.swift */; };
+		004422CA2179ECD600BDF6DF /* PassiveModeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */; };
 		004A8C552112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C542112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift */; };
 		004A8C592113056900203143 /* MessageViewModel+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C582113056900203143 /* MessageViewModel+Operations.swift */; };
 		004A8C5B211316E100203143 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C5A211316E100203143 /* SelfReferencingOperation.swift */; };
@@ -590,6 +592,8 @@
 		0038494920D25576008000EA /* ProfilePictureComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePictureComposer.swift; sourceTree = "<group>"; };
 		0038494B20D2587F008000EA /* PepPictureComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PepPictureComposer.swift; sourceTree = "<group>"; };
 		003C0FA620B5581A0093A987 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretTestData.swift; sourceTree = "<group>"; };
+		004422C72179E3C500BDF6DF /* SettingsCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellViewModelTest.swift; sourceTree = "<group>"; };
+		004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassiveModeViewModelTest.swift; sourceTree = "<group>"; };
 		004A8C542112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListView+UITableViewDataSourcePrefetching.swift"; sourceTree = "<group>"; };
 		004A8C582113056900203143 /* MessageViewModel+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageViewModel+Operations.swift"; sourceTree = "<group>"; };
 		004A8C5A211316E100203143 /* SelfReferencingOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfReferencingOperation.swift; sourceTree = "<group>"; };
@@ -1177,6 +1181,8 @@
 			children = (
 				00172F422163AC110079B189 /* SettingsViewModelTest.swift */,
 				00172F452163C2EE0079B189 /* SettingsSectionViewModelTest.swift */,
+				004422C72179E3C500BDF6DF /* SettingsCellViewModelTest.swift */,
+				004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3241,6 +3247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				438D253C1D4B9E7500BFF7AA /* MimeTests.swift in Sources */,
+				004422CA2179ECD600BDF6DF /* PassiveModeViewModelTest.swift in Sources */,
 				003C0FA720B5581A0093A987 /* SecretTestData.swift in Sources */,
 				1555361B207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift in Sources */,
 				154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */,
@@ -3305,6 +3312,7 @@
 				151F71F9202A06760057C74D /* NetworkServiceObserver.swift in Sources */,
 				43F7F07A1F6AD44600BDF151 /* HandshakeTests.swift in Sources */,
 				1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */,
+				004422C82179E3C500BDF6DF /* SettingsCellViewModelTest.swift in Sources */,
 				150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
 				4335002E212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift in Sources */,

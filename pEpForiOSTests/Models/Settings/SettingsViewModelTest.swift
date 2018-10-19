@@ -13,10 +13,11 @@ import XCTest
 class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
-    
+
+    //Number of sections corresponding to SettingsSectionViewModel.SectionType count
+    let sections = 3
+
     func testNumberOfSections() {
-        //Number of sections corresponding to SettingsSectionViewModel.SectionType count
-        let sections = 3
 
         setupViewModel()
 
@@ -59,6 +60,9 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         rowType = settingsVM.rowType(for: IndexPath(row: 0, section: 1))
         XCTAssertEqual(rowType, .defaultAccount)
 
+        rowType = settingsVM.rowType(for: IndexPath(row: 1, section: 1))
+        XCTAssertEqual(rowType, .credits)
+
         rowType = settingsVM.rowType(for: IndexPath(row: 2, section: 1))
         XCTAssertEqual(rowType, .showLog)
 
@@ -68,12 +72,8 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         rowType = settingsVM.rowType(for: IndexPath(row: 4, section: 1))
         XCTAssertEqual(rowType, .setOwnKey)
 
-
-        
-    }
-
-    func testIsValidSection() {
-        setupViewModel()
+        rowType = settingsVM.rowType(for: IndexPath(row: 5, section: 1))
+        XCTAssertEqual(rowType, nil)
     }
 
     fileprivate func setupViewModel() {
