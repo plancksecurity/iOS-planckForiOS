@@ -52,11 +52,11 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         assertAddressDeliminator(testee: "\n", isDelimiter: true)
     }
 
-    func testIsAddressDeliminator_no_tab() {
+    func testIsAddressDeliminator_tab() {
         assertAddressDeliminator(testee: "\t", isDelimiter: false)
     }
 
-    func testIsAddressDeliminator_no_empty() {
+    func testIsAddressDeliminator_empty() {
        assertAddressDeliminator(testee: "", isDelimiter: false)
     }
 
@@ -109,7 +109,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    func testHandleDidEndEditing_noAddress() {
+    func testHandleDidEndEditing_randomText() {
         assert(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
@@ -124,6 +124,61 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
         let address = NSAttributedString(string: validId.address)
+        vm.handleDidEndEditing(range: emptyRange, of: address)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleDidEndEditing_validAddress_prefixedSpace() {
+        assert(resultDelegateCalledDidChangeRecipients: [validId],
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false,
+               resultDelegateCalledDidEndEditingCalled: true,
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
+        let addressBuilder = " " + "\(validId.address)"
+        let address = NSAttributedString(string: addressBuilder)
+        vm.handleDidEndEditing(range: emptyRange, of: address)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleDidEndEditing_validAddress_postfixedSpace() {
+        assert(resultDelegateCalledDidChangeRecipients: [validId],
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false,
+               resultDelegateCalledDidEndEditingCalled: true,
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
+        let addressBuilder = "\(validId.address)" + " "
+        let address = NSAttributedString(string: addressBuilder)
+        vm.handleDidEndEditing(range: emptyRange, of: address)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleDidEndEditing_validAddress_preAndPostfixedSpace() {
+        assert(resultDelegateCalledDidChangeRecipients: [validId],
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false,
+               resultDelegateCalledDidEndEditingCalled: true,
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
+        let addressBuilder = " " + "\(validId.address)" + " "
+        let address = NSAttributedString(string: addressBuilder)
+        vm.handleDidEndEditing(range: emptyRange, of: address)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleDidEndEditing_validAddressPostfixRandomText() {
+        assert(resultDelegateCalledDidChangeRecipients: nil,
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false,
+               resultDelegateCalledDidEndEditingCalled: true,
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
+        let addressBuilder = "\(validId.address)" + " " + randomText
+        let address = NSAttributedString(string: addressBuilder)
+        vm.handleDidEndEditing(range: emptyRange, of: address)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleDidEndEditing_validAddressPrefixRandomText() {
+        assert(resultDelegateCalledDidChangeRecipients: nil,
+               ignoreCallsResultDelegateCalledDidChangeRecipients: false,
+               resultDelegateCalledDidEndEditingCalled: true,
+               ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
+        let addressBuilder = randomText + " " + "\(validId.address)"
+        let address = NSAttributedString(string: addressBuilder)
         vm.handleDidEndEditing(range: emptyRange, of: address)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
