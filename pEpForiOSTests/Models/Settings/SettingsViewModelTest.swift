@@ -8,23 +8,67 @@
 
 import XCTest
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     var settingsVM : SettingsViewModel!
     
     func testNumberOfSections() {
+        //Number of sections corresponding to SettingsSectionViewModel.SectionType count
+        let sections = 3
+
         setupViewModel()
-        XCTAssertEqual(settingsVM.count, 3)
+
+        XCTAssertEqual(settingsVM.count, sections)
     }
     
-    func testDeleteAccount() {
+    func testDeleteAccountWithOnlyOneAccount() {
         setupViewModel()
         let cellsBefore = settingsVM[0].count
+
         settingsVM.delete(section: 0, cell: 0)
         let cellsAfter = settingsVM[0].count
+
         XCTAssertEqual(cellsAfter, cellsBefore - 1)
+
+        let thereIsNoAccount = settingsVM.noAccounts()
+
+        XCTAssertTrue(thereIsNoAccount)
+
+    }
+
+    func testDeleteAccountWithMoreThanOneAccount() {
+        givenThereAreTwoAccounts()
+        setupViewModel()
+
+        settingsVM.delete(section: 0, cell: 0)
+
+        let thereIsNoAccount = settingsVM.noAccounts()
+
+        XCTAssertFalse(thereIsNoAccount)
+    }
+
+    func testRowTypeIsCorrect() {
+        setupViewModel()
+
+        var rowType: SettingsCellViewModel.SettingType?
+            = settingsVM.rowType(for: IndexPath(row: 0, section: 0))
+        XCTAssertEqual(rowType, .account)
+
+        rowType = settingsVM.rowType(for: IndexPath(row: 0, section: 1))
+        XCTAssertEqual(rowType, .defaultAccount)
+
+        rowType = settingsVM.rowType(for: IndexPath(row: 2, section: 1))
+        XCTAssertEqual(rowType, .showLog)
+
+        rowType = settingsVM.rowType(for: IndexPath(row: 3, section: 1))
+        XCTAssertEqual(rowType, .trustedServer)
+
+        rowType = settingsVM.rowType(for: IndexPath(row: 4, section: 1))
+        XCTAssertEqual(rowType, .setOwnKey)
+
+
         
     }
 
@@ -34,5 +78,10 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
 
     fileprivate func setupViewModel() {
         settingsVM = SettingsViewModel()
+    }
+
+    func givenThereAreTwoAccounts() {
+        _ = SecretTestData().createWorkingCdAccount(number: 1)
+        Record.saveAndWait()
     }
 }

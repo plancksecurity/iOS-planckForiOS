@@ -78,14 +78,16 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     // MARK: - Setup
 
     private func setup() {
+
+        if (model == nil) {
+            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
+        }
+
         if let accountExists = model?.noAccountsExist(),
             accountExists {
             // No account exists. Show account setup.
             performSegue(withIdentifier:.segueAddNewAccount, sender: self)
             return
-        }
-        if (model == nil) {
-            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
         }
 
         title = model?.getFolderName()

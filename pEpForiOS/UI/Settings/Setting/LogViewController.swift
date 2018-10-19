@@ -15,10 +15,6 @@ class LogViewController: BaseViewController {
     @IBOutlet weak var switchLabel: UILabel!
     @IBOutlet weak var enableLogSwitch: UISwitch!
 
-    override func viewDidAppear(_ animated: Bool) {
-        print("MAO")
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Log.checkEnabled() { enabled in
