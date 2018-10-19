@@ -15,6 +15,13 @@ class ComposeTableViewController: BaseTableViewController {
     @IBOutlet var sendButton: UIBarButtonItem!
 
     private var suggestionsChildViewController: SuggestTableViewController?
+    lazy private var mediaAttachmentPickerProvider: MediaAttachmentPickerProvider? = {
+        guard let pickerVm = viewModel?.mediaAttachmentPickerProviderViewModel() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+            return nil
+        }
+        return MediaAttachmentPickerProvider(with: pickerVm)
+    }()
     private var isInitialSetup = true
     private var currentCellIndexPath: IndexPath?
     var viewModel: ComposeViewModel? {
@@ -188,6 +195,10 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
     }
+
+    func showMediaAttachmentPicker() {
+        presentMediaAttachmentPickerProvider()
+    }
 }
 
 // MARK: - Address Suggestions
@@ -199,6 +210,27 @@ extension ComposeTableViewController {
         suggestionsChildViewController?.view.frame.origin.y = position
         suggestionsChildViewController?.view.frame.size.height =
             tableView.bounds.size.height - position + 2 //IOS-1369: whats 2?
+    }
+}
+
+// MARK: - MediaAttachmentPickerProvider
+
+extension ComposeTableViewController {
+
+    private func presentMediaAttachmentPickerProvider() {
+        let media = Capability.media
+        media.requestAndInformUserInErrorCase(viewController: self)  {
+            [weak self] (permissionsGranted: Bool, error: Capability.AccessError?) in
+            guard permissionsGranted else {
+                return
+            }
+            guard let me = self,
+            let picker = me.mediaAttachmentPickerProvider?.imagePicker else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost somthing")
+                return
+            }
+            me.present(picker, animated: true)
+        }
     }
 }
 

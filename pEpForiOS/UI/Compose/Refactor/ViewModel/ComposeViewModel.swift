@@ -43,6 +43,8 @@ protocol ComposeViewModelDelegate: class {
     func hideSuggestions()
 
     func showSuggestions(forRowAt indexPath: IndexPath)
+
+    func showMediaAttachmentPicker()
 }
 
 class ComposeViewModel {
@@ -247,6 +249,22 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
     }
 }
 
+// MARK: - MediaAttachmentPickerProviderViewModel[ResultDelegate]
+
+extension ComposeViewModel {
+    func mediaAttachmentPickerProviderViewModel() -> MediaAttachmentPickerProviderViewModel {
+        return MediaAttachmentPickerProviderViewModel(resultDelegate: self)
+    }
+}
+
+extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate {
+    func mediaAttachmentPickerProviderViewModel(
+        _ vm: MediaAttachmentPickerProviderViewModel,
+        didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
+        fatalError()
+    }
+}
+
 // MARK: - Cell-ViewModel Delegates
 
 // MARK: RecipientCellViewModelResultDelegate
@@ -349,7 +367,8 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
     }
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel) {
-        fatalError()
+        delegate?.showMediaAttachmentPicker()
+//        fatalError()  //IOS-1369
     }
 
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel) {

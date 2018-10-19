@@ -10,7 +10,7 @@ import UIKit
 
 /// Enables the user to move an IMAP message to a folder of her choice
 class MoveToAccountViewController: BaseViewController {
-    let storyboardId = "MoveToAccountViewController"
+    static let storyboardId = "MoveToAccountViewController"
     @IBOutlet var tableview: UITableView!
     var viewModel: MoveToAccountViewModel?
     private let cellId = "AccountCell"

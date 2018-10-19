@@ -53,6 +53,21 @@ class BodyCellViewModel: CellViewModel {
 
     public func handleUserClickedSelectMedia() {
         resultDelegate?.bodyCellViewModelUserWantsToAddMedia(self)
+
+        /*
+         private func inline(image: UIImage, forMediaWithInfo info: [String: Any]) {
+         guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? MessageBodyCell,
+         let url = info[UIImagePickerControllerReferenceURL] as? URL
+         else {
+         Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
+         return
+         }
+
+         let attachment = createAttachment(forAssetWithUrl: url, image: image)
+         cell.inline(attachment: attachment)
+         tableView.updateSize()
+         }
+         */
     }
 
     public func handleUserClickedSelectDocument() {
