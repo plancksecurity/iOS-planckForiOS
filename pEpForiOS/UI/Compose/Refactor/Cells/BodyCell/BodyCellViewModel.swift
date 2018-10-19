@@ -14,13 +14,17 @@ protocol BodyCellViewModelResultDelegate: class {
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
+
+    func bodyCellViewModel(_ vm: BodyCellViewModel, didInsertAttachment att: Attachment)
 }
 
 protocol BodyCellViewModelDelegate: class {
     //IOS-1369:
+    func insert(text: NSAttributedString)
 }
 
 class BodyCellViewModel: CellViewModel {
+    var maxTextattachmentWidth: CGFloat = 0.0
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
     public private(set) var isDirty = false
@@ -73,34 +77,38 @@ class BodyCellViewModel: CellViewModel {
     public func handleUserClickedSelectDocument() {
         resultDelegate?.bodyCellViewModelUserWantsToAddDocument(self)
     }
+}
+
+// MARK: - Attachments
+
+extension BodyCellViewModel {
+    //    extension MessageBodyCell {
+    public final func inline(attachment: Attachment) {
+        guard let image = attachment.image else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No image")
+            return
+        }
+        // Workaround: If the image has a higher resolution than that, UITextView has serious
+        // performance issues (delay typing). I suspect we are causing them elswhere though.
+        // IOS-1369: doulve check the performance issues persist. rm if they do not.
+        guard let scaledImage = image.resized(newWidth: maxTextattachmentWidth / 2, useAlpha: false)
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error resizing")
+                return
+        }
+        let textAttachment = TextAttachment()
+        textAttachment.image = scaledImage
+        textAttachment.attachment = attachment
+        textAttachment.bounds = CGRect.rect(withWidth: maxTextattachmentWidth,
+                                            ratioOf: scaledImage.size)
+        let imageString = NSAttributedString(attachment: textAttachment)
+
+        delegate?.insert(text: imageString)
+        resultDelegate?.bodyCellViewModel(self, didInsertAttachment: attachment)
+    }
+}
 
     /*
-     extension MessageBodyCell {
-     public final func inline(attachment: Attachment) {
-     guard let image = attachment.image else {
-     Log.shared.errorAndCrash(component: #function, errorString: "No image")
-     return
-     }
-     // Workaround: If the image has a higher resolution than that, UITextView has serious
-     // performance issues (delay typing). I suspect we are causing them elswhere though.
-     guard let scaledImage = image.resized(newWidth: frame.size.width / 2, useAlpha: false)
-     else {
-     Log.shared.errorAndCrash(component: #function, errorString: "Error resizing")
-     return
-     }
-
-     let textAttachment = TextAttachment()
-     textAttachment.image = scaledImage
-     textAttachment.attachment = attachment
-     textAttachment.bounds = CGRect.rect(withWidth: textView.bounds.width,
-     ratioOf: scaledImage.size)
-     let imageString = NSAttributedString(attachment: textAttachment)
-
-     let selectedRange = textView.selectedRange
-     let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
-     attrText.replaceCharacters(in: selectedRange, with: imageString)
-     textView.attributedText = attrText
-     }
 
      public final func allInlinedAttachments() -> [Attachment] {
      let attachments = textView.attributedText.textAttachments()
@@ -118,9 +126,8 @@ class BodyCellViewModel: CellViewModel {
      return allInlinedAttachments().count > 0
      }
      }
-     */
+
 
     //WIP
 
-
-}
+*/

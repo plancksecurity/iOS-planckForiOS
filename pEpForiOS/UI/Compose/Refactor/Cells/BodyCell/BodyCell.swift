@@ -25,7 +25,12 @@ class BodyCell: TextViewContainingTableViewCell {
 // MARK: - BodyCellViewModelDelegate
 
 extension BodyCell: BodyCellViewModelDelegate {
-    //IOS-1369:
+    func insert(text: NSAttributedString) {
+        let selectedRange = textView.selectedRange
+        let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
+        attrText.replaceCharacters(in: selectedRange, with: text)
+        textView.attributedText = attrText
+    }
 }
 
 // MARK: - UITextViewDelegate
@@ -35,24 +40,15 @@ extension BodyCell {
     /*
      //IOS-1369: Next !!
 
-
-
      */
     public func textViewDidChange(_ textView: UITextView) {
         //IOS-1369: scroll?
         viewModel?.handleTextChange(newText: textView.text)
     }
 
-
-    // WIP
-    /*
-
-     */
-    //
-
     func textViewDidBeginEditing(_ textView: UITextView) {
+        viewModel?.maxTextattachmentWidth = bounds.width
         textView.becomeFirstResponder()
-//        viewModel?.handleDidBeginEditing() //IOS-1369: obsolete?
         setupContextMenu()
     }
 

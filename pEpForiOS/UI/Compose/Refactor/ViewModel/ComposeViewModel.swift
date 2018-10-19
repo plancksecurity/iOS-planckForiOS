@@ -21,8 +21,6 @@ protocol ComposeViewModelResultDelegate: class {
 }
 
 protocol ComposeViewModelDelegate: class {
-    //IOS-1369: //TODO handle func userSelectedRecipient(identity: Identity) suggestion
-
 
     /// Called when the user changes the contetn of a row.
     /// E.g. edited the subject.
@@ -45,6 +43,8 @@ protocol ComposeViewModelDelegate: class {
     func showSuggestions(forRowAt indexPath: IndexPath)
 
     func showMediaAttachmentPicker()
+
+    func hideMediaAttachmentPicker()
 }
 
 class ComposeViewModel {
@@ -258,10 +258,23 @@ extension ComposeViewModel {
 }
 
 extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate {
+
     func mediaAttachmentPickerProviderViewModel(
         _ vm: MediaAttachmentPickerProviderViewModel,
         didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
-        fatalError()
+
+        if mediaAttachment.type == .image {
+            //IOS-1369: TODO: add inlined attachment to state? I think so.
+            guard let bodyViewModel = bodyVM else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "No dodyVM. Maybe valid as picking is async.")
+                return
+            }
+            bodyViewModel.inline(attachment: mediaAttachment.attachment)
+        } else {
+            //Add attachment
+            fatalError()
+        }
     }
 }
 
@@ -354,7 +367,13 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 // MARK: - BodyCellViewModelResultDelegate
 
 extension ComposeViewModel: BodyCellViewModelResultDelegate {
-    //IOS-1369:
+    var bodyVM: BodyCellViewModel? {
+        for section in sections where section.type == .body {
+            return section.rows.first as? BodyCellViewModel
+        }
+        return nil
+    }
+
     func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String) {
         //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
         guard let idxPath = indexPath(for: vm) else {
@@ -368,10 +387,21 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel) {
         delegate?.showMediaAttachmentPicker()
-//        fatalError()  //IOS-1369
     }
 
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel) {
         fatalError()
+    }
+
+    func bodyCellViewModel(_ vm: BodyCellViewModel, didInsertAttachment att: Attachment) {
+        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
+        guard let idxPath = indexPath(for: vm) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We got called by a non-existing VM?")
+            return
+        }
+        //IOS-1369: What to save to state? attributedText? markdown? ...
+        delegate?.hideMediaAttachmentPicker()
+        delegate?.contentChanged(inRowAt: idxPath)
     }
 }

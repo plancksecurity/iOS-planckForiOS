@@ -27,7 +27,7 @@ protocol RecipientTextViewModelDelegate: class {
 }
 
 class RecipientTextViewModel {
-    var maxTextattachmentWidth: CGFloat = 0.0 // arbitrary value to avoid optional
+    var maxTextattachmentWidth: CGFloat = 0.0
     public private(set) var isDirty = false
     //    public var hasSelectedAttachment = false //IOS-1369: obsolete?
     private var recipientAttachments = [RecipientTextViewTextAttachment]() {

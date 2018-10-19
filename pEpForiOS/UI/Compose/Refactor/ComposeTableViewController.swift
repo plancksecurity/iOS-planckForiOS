@@ -199,6 +199,10 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     func showMediaAttachmentPicker() {
         presentMediaAttachmentPickerProvider()
     }
+
+    func hideMediaAttachmentPicker() {
+        mediaAttachmentPickerProvider?.imagePicker.dismiss(animated: true)
+    }
 }
 
 // MARK: - Address Suggestions
