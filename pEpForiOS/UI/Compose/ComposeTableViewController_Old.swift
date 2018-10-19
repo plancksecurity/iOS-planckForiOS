@@ -1553,6 +1553,7 @@ extension ComposeTableViewController_Old {
 
 // MARK: - UIPickerViewDelegate, UIPickerViewDataSource
 
+//IOS-1369: Account Picker. MVVMed (done).
 extension ComposeTableViewController_Old: UIPickerViewDelegate, UIPickerViewDataSource  {
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
