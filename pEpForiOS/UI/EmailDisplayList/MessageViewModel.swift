@@ -12,7 +12,7 @@ import MessageModel
 class MessageViewModel: CustomDebugStringConvertible {
 
     static var maxBodyPreviewCharacters = 120
-    let queue = OperationQueue()
+    var queue: OperationQueue
 
     let uid: UInt
     private let uuid: MessageID
@@ -55,8 +55,10 @@ class MessageViewModel: CustomDebugStringConvertible {
     //Only to use internally, external use should call public message()
     private var internalMessage: Message
 
-    init(with message: Message) {
+    init(with message: Message, operationQueue: OperationQueue = OperationQueue()) {
         internalMessage = message
+
+        queue = operationQueue
         queue.qualityOfService = .userInitiated
         queue.maxConcurrentOperationCount = 3
 
