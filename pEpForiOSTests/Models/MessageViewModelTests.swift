@@ -143,7 +143,23 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
             expectation.fulfill()
         }
         viewModel.unsubscribeForUpdates()
-        wait(for: [expectation], timeout: TestUtil.waitTimeLocal)
+        wait(for: [expectation], timeout: TestUtil.waitTime)
+    }
+
+    func testProfilePictureIsCalled() {
+        givenViewModelHasAProfilePictureComposer()
+        viewModel.getProfilePicture { _ in
+            //do nothing
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
+    func testSecurityBadgeIsCalled() {
+        givenViewModelHasASecurityBadgePictureComposer()
+        viewModel.getSecurityBadge { _ in
+            //do nothing
+        }
+        waitForExpectations(timeout: TestUtil.waitTime)
     }
 
     //PRAGMA - MARK: BUSINESS
@@ -203,6 +219,18 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         viewModel = MessageViewModel(with: message)
     }
 
+    private func givenViewModelHasAProfilePictureComposer() {
+        viewModel = givenAViewModelRepresentingUnflaggedMessage()
+        let profilePictureExpectation = expectation(description: PepProfilePictureComposerSpy.PROFILE_PICTURE_EXPECTATION_DESCRIPTION)
+        viewModel.profilePictureComposer = PepProfilePictureComposerSpy(profilePictureExpectation: profilePictureExpectation)
+    }
+
+    private func givenViewModelHasASecurityBadgePictureComposer() {
+        viewModel = givenAViewModelRepresentingUnflaggedMessage()
+        let securityBadgeExpectation = expectation(description: PepProfilePictureComposerSpy.SECURITY_BADGE_EXPECTATION_DESCRIPTION)
+        viewModel.profilePictureComposer = PepProfilePictureComposerSpy(securityBadgeExpectation: securityBadgeExpectation)
+    }
+
     private func givenAViewModelRepresentingUnflaggedMessage() -> MessageViewModel {
         let message = givenThereIsAOneRecipientMessage()
         return MessageViewModel(with: message)
@@ -241,4 +269,37 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         return message
     }
 
+    struct PepProfilePictureComposerSpy: ProfilePictureComposer {
+
+        static let PROFILE_PICTURE_EXPECTATION_DESCRIPTION = "PROFILE_PICTURE_CALLED"
+        static let SECURITY_BADGE_EXPECTATION_DESCRIPTION = "SECURITY_BADGE_CALLED"
+
+        let profilePictureExpectation: XCTestExpectation?
+        let securityBadgeExpectation: XCTestExpectation?
+
+        init(profilePictureExpectation: XCTestExpectation? = nil, securityBadgeExpectation: XCTestExpectation? = nil) {
+            self.profilePictureExpectation = profilePictureExpectation
+            self.securityBadgeExpectation = securityBadgeExpectation
+        }
+
+
+        func profilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ()) {
+            guard let safeProfilePictureExpectation = profilePictureExpectation else {
+                XCTFail()
+                return
+            }
+            safeProfilePictureExpectation.fulfill()
+        }
+
+        func securityBadge(for message: Message, completion: @escaping (UIImage?) -> ()) {
+            guard let safeSecurityBadgeExpectation = securityBadgeExpectation else {
+                XCTFail()
+                return
+            }
+            safeSecurityBadgeExpectation.fulfill()
+        }
+
+    }
 }
+
+
