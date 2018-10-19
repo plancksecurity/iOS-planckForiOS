@@ -122,28 +122,56 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
             XCTAssertEqual(bodyPeek, Defaults.Inputs.longMessage)
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: TestUtil.waitTime)
+        wait(for: [expectation], timeout: UnitTestUtils.waitTime)
     }
 
     func testLongBodyPeek() {
         givenViewModelRepresentsASubjectAndLongBodyMessage()
+        let specificWaitTime = UnitTestUtils.waitTime * 5
         let expectation = XCTestExpectation(description: "body Peek is received")
         viewModel.bodyPeekCompletion = { bodyPeek in
             XCTAssertEqual(bodyPeek, Defaults.Outputs.longLongMessage)
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: TestUtil.waitTime)
+        wait(for: [expectation], timeout: specificWaitTime)
     }
 
-    func testBodyPeekNotReceivedWhenCancellingUpdates() {
-        givenViewModelRepresentsASubjectAndBodyMessage()
-        let expectation = XCTestExpectation(description: "body Peek is not called")
-        expectation.isInverted = true
-        viewModel.bodyPeekCompletion = { bodyPeek in
-            expectation.fulfill()
+    func testSecurityBadgeIsAddedToQueue() {
+        givenViewModelHasAnAddingExpectationOperationQueue()
+        viewModel.getSecurityBadge { _ in
+            //do nothing
         }
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyPeekIsAddedToQueue() {
+        givenViewModelHasAnInitialAddingExpectationOperationQueue()
+        viewModel.bodyPeekCompletion = { _ in
+            //do nothing
+        }
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testQueueCancelledWhenStoppingUpdates() {
+        givenViewModelHasACancellingExpectationOperationQueue()
         viewModel.unsubscribeForUpdates()
-        wait(for: [expectation], timeout: TestUtil.waitTimeLocal)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testProfilePictureIsCalled() {
+        givenViewModelHasAProfilePictureComposer()
+        viewModel.getProfilePicture { _ in
+            //do nothing
+        }
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testSecurityBadgeIsCalled() {
+        givenViewModelHasASecurityBadgePictureComposer()
+        viewModel.getSecurityBadge { _ in
+            //do nothing
+        }
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     //PRAGMA - MARK: BUSINESS
@@ -174,6 +202,8 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
 
     //PRAGMA - MARK: GIVEN
 
+    //PRAGMA MARK: ViewModels
+
     private func givenViewModelRepresentsUnflaggedMessage() {
         viewModel = givenAViewModelRepresentingUnflaggedMessage()
     }
@@ -203,10 +233,51 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         viewModel = MessageViewModel(with: message)
     }
 
+    private func givenViewModelHasAProfilePictureComposer() {
+        viewModel = givenAViewModelRepresentingUnflaggedMessage()
+        let profilePictureExpectation = expectation(description: PepProfilePictureComposerSpy.PROFILE_PICTURE_EXPECTATION_DESCRIPTION)
+        viewModel.profilePictureComposer = PepProfilePictureComposerSpy(profilePictureExpectation: profilePictureExpectation)
+    }
+
+    private func givenViewModelHasASecurityBadgePictureComposer() {
+        viewModel = givenAViewModelRepresentingUnflaggedMessage()
+        let securityBadgeExpectation = expectation(description: PepProfilePictureComposerSpy.SECURITY_BADGE_EXPECTATION_DESCRIPTION)
+        viewModel.profilePictureComposer = PepProfilePictureComposerSpy(securityBadgeExpectation: securityBadgeExpectation)
+    }
+
+    private func givenViewModelHasAnInitialAddingExpectationOperationQueue() {
+        let addOperationExpectation = expectation(description: OperationQueueSpy.ADD_OPERATION_EXPECTATION_DESCRIPTION)
+        let operationQueue = OperationQueueSpy(addOperationExpectation: addOperationExpectation)
+        viewModel = givenAViewModelWith(operationQueue: operationQueue)
+    }
+
+
+    private func givenViewModelHasACancellingExpectationOperationQueue() {
+        viewModel = givenAViewModelRepresentingUnflaggedMessage()
+        let cancelAllExpectation = expectation(description: OperationQueueSpy.CANCEL_ALL_EXPECTATION_DESCRIPTION)
+        let operationQueue = OperationQueueSpy(cancelAllExpectation: cancelAllExpectation)
+        viewModel.queue = operationQueue
+    }
+
+    private func givenViewModelHasAnAddingExpectationOperationQueue() {
+        viewModel = givenAViewModelRepresentingUnflaggedMessage()
+        let addOperationExpectation = expectation(description: OperationQueueSpy.ADD_OPERATION_EXPECTATION_DESCRIPTION)
+        let operationQueue = OperationQueueSpy(addOperationExpectation: addOperationExpectation)
+        viewModel.queue = operationQueue
+    }
+
     private func givenAViewModelRepresentingUnflaggedMessage() -> MessageViewModel {
         let message = givenThereIsAOneRecipientMessage()
         return MessageViewModel(with: message)
     }
+
+    private func givenAViewModelWith(operationQueue: OperationQueue) -> MessageViewModel {
+        let message = givenThereIsAOneRecipientMessage()
+        return MessageViewModel(with: message, operationQueue: operationQueue)
+    }
+
+
+    //PRAGMA MARK: Messages
 
     private func givenThereIsAOneRecipientMessage() -> Message {
         let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: [Defaults.Inputs.toIdentity])
@@ -241,4 +312,70 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         return message
     }
 
+    //PRAGMA MARK: Mocks
+
+    struct PepProfilePictureComposerSpy: ProfilePictureComposer {
+
+        static let PROFILE_PICTURE_EXPECTATION_DESCRIPTION = "PROFILE_PICTURE_CALLED"
+        static let SECURITY_BADGE_EXPECTATION_DESCRIPTION = "SECURITY_BADGE_CALLED"
+
+        let profilePictureExpectation: XCTestExpectation?
+        let securityBadgeExpectation: XCTestExpectation?
+
+        init(profilePictureExpectation: XCTestExpectation? = nil, securityBadgeExpectation: XCTestExpectation? = nil) {
+            self.profilePictureExpectation = profilePictureExpectation
+            self.securityBadgeExpectation = securityBadgeExpectation
+        }
+
+
+        func profilePicture(for identity: Identity, completion: @escaping (UIImage?) -> ()) {
+            guard let safeProfilePictureExpectation = profilePictureExpectation else {
+                XCTFail()
+                return
+            }
+            safeProfilePictureExpectation.fulfill()
+        }
+
+        func securityBadge(for message: Message, completion: @escaping (UIImage?) -> ()) {
+            guard let safeSecurityBadgeExpectation = securityBadgeExpectation else {
+                XCTFail()
+                return
+            }
+            safeSecurityBadgeExpectation.fulfill()
+        }
+
+    }
+
+    class OperationQueueSpy: OperationQueue {
+
+        static let CANCEL_ALL_EXPECTATION_DESCRIPTION = "CANCELL_ALL_CALLED"
+        static let ADD_OPERATION_EXPECTATION_DESCRIPTION = "ADD_OPERATION_CALLED"
+
+        let cancelAllExpectation: XCTestExpectation?
+        let addOperationExpectation: XCTestExpectation?
+
+
+        init(cancelAllExpectation: XCTestExpectation? = nil, addOperationExpectation: XCTestExpectation? = nil) {
+            self.cancelAllExpectation = cancelAllExpectation
+            self.addOperationExpectation = addOperationExpectation
+        }
+
+        override func cancelAllOperations() {
+            guard let safeCancelAllExpectation = cancelAllExpectation else {
+                XCTFail()
+                return
+            }
+            safeCancelAllExpectation.fulfill()
+        }
+
+        override func addOperation(_ op: Operation) {
+            guard let safeAddOperationExpectation = addOperationExpectation else {
+                XCTFail()
+                return
+            }
+            safeAddOperationExpectation.fulfill()
+        }
+    }
 }
+
+

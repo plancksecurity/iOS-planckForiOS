@@ -49,6 +49,9 @@ extension MessageViewModel {
                     return
                 }
                 let summary = MessageViewModel.getSummary(fromMessage: message)
+                guard !operation.isCancelled else {
+                    return
+                }
                 self.internalBoddyPeek = summary
                 if(!operation.isCancelled){
                     DispatchQueue.main.async {
