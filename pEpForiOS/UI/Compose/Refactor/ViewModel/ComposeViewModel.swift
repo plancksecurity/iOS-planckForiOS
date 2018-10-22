@@ -368,6 +368,7 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 // MARK: - BodyCellViewModelResultDelegate
 
 extension ComposeViewModel: BodyCellViewModelResultDelegate {
+
     var bodyVM: BodyCellViewModel? {
         for section in sections where section.type == .body {
             return section.rows.first as? BodyCellViewModel
@@ -405,5 +406,12 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         state.inlinedAttachments = inlinedAttachments
         delegate?.hideMediaAttachmentPicker()
         delegate?.contentChanged(inRowAt: idxPath)
+    }
+
+    func bodyCellViewModel(_ vm: BodyCellViewModel,
+                           bodyChangedToPlaintext plain: String,
+                           html: String) {
+        state.bodyHtml = html
+        state.bodyPlaintext = plain
     }
 }

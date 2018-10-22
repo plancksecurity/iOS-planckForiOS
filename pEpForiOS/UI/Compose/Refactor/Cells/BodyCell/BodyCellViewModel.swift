@@ -10,17 +10,20 @@ import MessageModel
 
 
 protocol BodyCellViewModelResultDelegate: class {
-    func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String)
+    func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String) //IOS-1369:
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
                            inlinedAttachmentsChanged inlinedAttachments: [Attachment])
+
+    func bodyCellViewModel(_ vm: BodyCellViewModel,
+                           bodyChangedToPlaintext plain: String,
+                           html: String)
 }
 
 protocol BodyCellViewModelDelegate: class {
-    //IOS-1369:
     func insert(text: NSAttributedString)
 }
 
@@ -29,6 +32,8 @@ class BodyCellViewModel: CellViewModel {
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
     public private(set) var isDirty = false
+    private var plaintext = ""
+    private var html = NSAttributedString(string: "")
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -48,7 +53,8 @@ class BodyCellViewModel: CellViewModel {
     //IOS-1369: obsolete?
     //    func handleDidEndEditing() { }
 
-    public func handleTextChange(newText: String) {
+    public func handleTextChange(newText: String, newAttributedText attrText: NSAttributedString) {
+        createHtmlVersionAndInformDelegate(newText: newText, newAttributedText: attrText)
         isDirty = true
         resultDelegate?.bodyCellViewModel(self, textChanged: newText)
     }
@@ -115,6 +121,23 @@ extension BodyCellViewModel {
     }
 }
 
+// MARK: - HTML
+
+extension BodyCellViewModel {
+
+    private func createHtmlVersionAndInformDelegate(
+        newText: String,
+        newAttributedText attrText: NSAttributedString) {
+
+        let (markdownText, _) = attrText.convertToMarkDown()
+        let plaintext = markdownText
+        guard let html = markdownText.markdownToHtml() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No HTML")
+            return
+        }
+        resultDelegate?.bodyCellViewModel(self, bodyChangedToPlaintext: plaintext, html: html)
+    }
+}
     /*
  //IOS-1369:
 

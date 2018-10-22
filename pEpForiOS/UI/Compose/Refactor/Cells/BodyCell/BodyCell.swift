@@ -31,6 +31,8 @@ extension BodyCell: BodyCellViewModelDelegate {
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
         attrText.replaceCharacters(in: selectedRange, with: text)
         textView.attributedText = attrText
+        viewModel?.handleTextChange(newText: textView.text,
+                                    newAttributedText: textView.attributedText)
     }
 }
 
@@ -40,7 +42,8 @@ extension BodyCell {
 
     public func textViewDidChange(_ textView: UITextView) {
         //IOS-1369: scroll?
-        viewModel?.handleTextChange(newText: textView.text)
+        viewModel?.handleTextChange(newText: textView.text,
+                                    newAttributedText: textView.attributedText)
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {

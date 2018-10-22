@@ -87,7 +87,13 @@ class ComposeViewModelState {
         }
     }
 
-    var body = "" {
+    var bodyPlaintext = "" {
+        didSet {
+            edited = true
+        }
+    }
+
+    var bodyHtml = "" {
         didSet {
             edited = true
         }

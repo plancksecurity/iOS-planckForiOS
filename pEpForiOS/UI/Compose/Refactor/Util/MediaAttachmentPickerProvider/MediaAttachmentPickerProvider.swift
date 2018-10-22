@@ -39,7 +39,6 @@ extension MediaAttachmentPickerProvider: UIImagePickerControllerDelegate {
     }
 }
 
-
 // MARK: - UINavigationControllerDelegate
 
 extension MediaAttachmentPickerProvider: UINavigationControllerDelegate {
