@@ -215,7 +215,7 @@ extension ComposeViewModelState {
 
 extension ComposeViewModelState {
 
-    private final func message() -> Message? {
+    public var  message: Message? {
         guard let from = from,
             let account = Account.by(address: from.address) else {
                 Log.shared.errorAndCrash(component: #function,

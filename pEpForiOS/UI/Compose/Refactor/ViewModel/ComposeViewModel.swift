@@ -85,6 +85,33 @@ class ComposeViewModel {
         state.pEpProtection = protected
     }
 
+    public func handleUserClickedSendButton() {
+        guard let msg = state.message else {
+            Log.error(component: #function, errorString: "No message for sending")
+            return
+        }
+        msg.save()
+        if state.initData?.isDraftsOrOutbox ?? false {
+            // From user perspective, we have edited a drafted message and will send it.
+            // Technically we are creating and sending a new message (msg), thus we have to
+            // delete the original, previously drafted one.
+            deleteOriginalMessage()
+        }
+        resultDelegate?.composeViewModelDidComposeNewMail()
+    }
+
+    private func deleteOriginalMessage() {
+        guard let om = state.initData?.originalMessage else {
+            // That might happen. Message might be sent already and thus has been moved to
+            // Sent folder.
+            return
+        }
+        // Make sure the "draft" flag is not set to avoid the original msg will keep in virtual
+        // mailboxes, that show all flagged messages.
+        om.imapFlags?.draft = false
+        om.imapMarkDeleted()
+    }
+
     private func setup() {
         //IOS-1369: origMessage ignored for now, same with compose mode (always .normal)
         resetSections()

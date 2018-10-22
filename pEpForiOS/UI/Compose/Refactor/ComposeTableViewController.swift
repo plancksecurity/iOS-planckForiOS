@@ -93,7 +93,8 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     @IBAction func send() {
-        //IOS-1369:
+        viewModel?.handleUserClickedSendButton()
+        dismiss()
     }
 }
 
