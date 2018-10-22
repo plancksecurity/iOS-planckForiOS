@@ -93,7 +93,13 @@ class ComposeViewModelState {
         }
     }
 
-    var attachments = [Attachment]() {
+    var inlinedAttachments = [Attachment]() {
+        didSet {
+            edited = true
+        }
+    }
+
+    var nonInlinedAttachments = [Attachment]() {
         didSet {
             edited = true
         }
@@ -103,6 +109,7 @@ class ComposeViewModelState {
         self.initData = initData
         self.delegate = delegate
         setup()
+        edited = false
     }
 
     public func setBccUnwrapped() {
@@ -126,7 +133,7 @@ class ComposeViewModelState {
         from = initData.from
         subject = initData.subject ?? " " // Set space to work around autolayout first baseline not recognized
         //            body = initD //IOS-1369: TODO
-        attachments = initData.nonInlinedAttachments
+        nonInlinedAttachments = initData.nonInlinedAttachments
     }
 
     private func validateForSending() {

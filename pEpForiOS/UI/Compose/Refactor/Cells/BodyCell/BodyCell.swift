@@ -25,6 +25,7 @@ class BodyCell: TextViewContainingTableViewCell {
 // MARK: - BodyCellViewModelDelegate
 
 extension BodyCell: BodyCellViewModelDelegate {
+
     func insert(text: NSAttributedString) {
         let selectedRange = textView.selectedRange
         let attrText = NSMutableAttributedString(attributedString: textView.attributedText)
@@ -37,10 +38,6 @@ extension BodyCell: BodyCellViewModelDelegate {
 
 extension BodyCell {
 
-    /*
-     //IOS-1369: Next !!
-
-     */
     public func textViewDidChange(_ textView: UITextView) {
         //IOS-1369: scroll?
         viewModel?.handleTextChange(newText: textView.text)
@@ -50,6 +47,16 @@ extension BodyCell {
         viewModel?.maxTextattachmentWidth = bounds.width
         textView.becomeFirstResponder()
         setupContextMenu()
+    }
+
+    func textView(_ textView: UITextView,
+                         shouldChangeTextIn range: NSRange,
+                         replacementText text: String) -> Bool {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return true
+        }
+       return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {

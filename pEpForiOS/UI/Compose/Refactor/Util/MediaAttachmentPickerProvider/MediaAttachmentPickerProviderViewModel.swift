@@ -65,7 +65,9 @@ class MediaAttachmentPickerProviderViewModel {
                 return
             }
             let result = MediaAttachment(type: .movie, attachment: att)
-            me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
+            DispatchQueue.main.async {
+                me.resultDelegate?.mediaAttachmentPickerProviderViewModel(me, didSelect: result)
+            }
         }
     }
 

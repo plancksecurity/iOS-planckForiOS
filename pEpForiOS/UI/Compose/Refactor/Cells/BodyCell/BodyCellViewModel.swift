@@ -15,7 +15,8 @@ protocol BodyCellViewModelResultDelegate: class {
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
 
-    func bodyCellViewModel(_ vm: BodyCellViewModel, didInsertAttachment att: Attachment)
+    func bodyCellViewModel(_ vm: BodyCellViewModel,
+                           inlinedAttachmentsChanged inlinedAttachments: [Attachment])
 }
 
 protocol BodyCellViewModelDelegate: class {
@@ -28,7 +29,11 @@ class BodyCellViewModel: CellViewModel {
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
     public private(set) var isDirty = false
-    //IOS-1369: attachments go here?
+    private var inlinedAttachments = [Attachment]() {
+        didSet {
+            resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
+        }
+    }
 
     init(resultDelegate: BodyCellViewModelResultDelegate,
          initialText: String? = nil,
@@ -48,6 +53,16 @@ class BodyCellViewModel: CellViewModel {
         resultDelegate?.bodyCellViewModel(self, textChanged: newText)
     }
 
+    public func shouldReplaceText(in range: NSRange,
+                                  of text: NSAttributedString,
+                                  with replaceText: String) -> Bool {
+        let attachments = text.textAttachments(range: range)
+            .map { $0.attachment }
+            .compactMap { $0 }
+        removeInlinedAttachments(attachments)
+        return true
+    }
+
     // MARK: - Context Menu
 
     public let contextMenuItemTitleAttachMedia =
@@ -57,21 +72,6 @@ class BodyCellViewModel: CellViewModel {
 
     public func handleUserClickedSelectMedia() {
         resultDelegate?.bodyCellViewModelUserWantsToAddMedia(self)
-
-        /*
-         private func inline(image: UIImage, forMediaWithInfo info: [String: Any]) {
-         guard let cell = tableView.cellForRow(at: currentCellIndexPath) as? MessageBodyCell,
-         let url = info[UIImagePickerControllerReferenceURL] as? URL
-         else {
-         Log.shared.errorAndCrash(component: #function, errorString: "Problem!")
-         return
-         }
-
-         let attachment = createAttachment(forAssetWithUrl: url, image: image)
-         cell.inline(attachment: attachment)
-         tableView.updateSize()
-         }
-         */
     }
 
     public func handleUserClickedSelectDocument() {
@@ -82,15 +82,15 @@ class BodyCellViewModel: CellViewModel {
 // MARK: - Attachments
 
 extension BodyCellViewModel {
-    //    extension MessageBodyCell {
-    public final func inline(attachment: Attachment) {
+    //    extension MessageBodyCell { //IOS-1369: cleanup
+    public func inline(attachment: Attachment) {
         guard let image = attachment.image else {
             Log.shared.errorAndCrash(component: #function, errorString: "No image")
             return
         }
         // Workaround: If the image has a higher resolution than that, UITextView has serious
         // performance issues (delay typing). I suspect we are causing them elswhere though.
-        // IOS-1369: doulve check the performance issues persist. rm if they do not.
+        // IOS-1369: double check the performance issues persist. rm if they do not.
         guard let scaledImage = image.resized(newWidth: maxTextattachmentWidth / 2, useAlpha: false)
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error resizing")
@@ -104,30 +104,22 @@ extension BodyCellViewModel {
         let imageString = NSAttributedString(attachment: textAttachment)
 
         delegate?.insert(text: imageString)
-        resultDelegate?.bodyCellViewModel(self, didInsertAttachment: attachment)
+        inlinedAttachments.append(attachment)
+    }
+
+    private func removeInlinedAttachments(_ removees: [Attachment]) {
+        if removees.count > 0 {
+            inlinedAttachments = inlinedAttachments.filter { !removees.contains($0) }
+        }
     }
 }
 
     /*
-
-     public final func allInlinedAttachments() -> [Attachment] {
-     let attachments = textView.attributedText.textAttachments()
-     var mailAttachments = [Attachment]()
-     attachments.forEach { (attachment) in
-     if let attch = attachment.attachment {
-     attch.contentDisposition = .inline
-     mailAttachments.append(attch)
-     }
-     }
-     return mailAttachments
-     }
+ //IOS-1369:
 
      public func hasInlinedAttatchments() -> Bool {
      return allInlinedAttachments().count > 0
      }
      }
-
-
-    //WIP
 
 */

@@ -98,7 +98,7 @@ extension RecipientTextView: UITextViewDelegate {
             let result = vm.handleAddressDelimiterTyped(range: range, of: textView.attributedText)
             return result
         }
-
+        //IOS-1369: looks over complicated. Double check. See body cell 
         let hasSelection = !(selectedTextRange?.isEmpty ?? true)
         if text.utf8.count == 0 && range.location != NSNotFound && !hasSelection {
             guard
@@ -107,8 +107,12 @@ extension RecipientTextView: UITextViewDelegate {
                 let newRange = textView.textRange(from: newPos, to: selectedRange.start) else {
                     return true
             }
+            guard let potentiallyReplacedText = textView.text(in: newRange) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                return true
+            }
             // Check if text is Attachment and select it
-            if textView.text(in: newRange)!.isAttachment {
+            if potentiallyReplacedText.isAttachment {
                 textView.selectedTextRange = newRange
                 return false
             }

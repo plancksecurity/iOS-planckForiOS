@@ -262,18 +262,19 @@ extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate
     func mediaAttachmentPickerProviderViewModel(
         _ vm: MediaAttachmentPickerProviderViewModel,
         didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
-
         if mediaAttachment.type == .image {
             //IOS-1369: TODO: add inlined attachment to state? I think so.
             guard let bodyViewModel = bodyVM else {
                 Log.shared.errorAndCrash(component: #function,
-                                         errorString: "No dodyVM. Maybe valid as picking is async.")
+                                         errorString: "No bodyVM. Maybe valid as picking is async.")
                 return
             }
             bodyViewModel.inline(attachment: mediaAttachment.attachment)
         } else {
-            //Add attachment
-            fatalError()
+            state.nonInlinedAttachments.append(mediaAttachment.attachment)
+            delegate?.hideMediaAttachmentPicker()
+            //IOS-1369: update attachment section
+            //IOS-1369: update TV.
         }
     }
 }
@@ -393,14 +394,15 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         fatalError()
     }
 
-    func bodyCellViewModel(_ vm: BodyCellViewModel, didInsertAttachment att: Attachment) {
+    func bodyCellViewModel(_ vm: BodyCellViewModel,
+                           inlinedAttachmentsChanged inlinedAttachments: [Attachment]) {
         //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
         guard let idxPath = indexPath(for: vm) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We got called by a non-existing VM?")
             return
         }
-        //IOS-1369: What to save to state? attributedText? markdown? ...
+        state.inlinedAttachments = inlinedAttachments
         delegate?.hideMediaAttachmentPicker()
         delegate?.contentChanged(inRowAt: idxPath)
     }
