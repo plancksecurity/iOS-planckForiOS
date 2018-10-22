@@ -22,18 +22,21 @@ struct TrustedServerSettingsViewModel {
     }
 
     mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
-        for i in 0...rows.count {
-            let row = rows[i]
-            if row.address == address {
-                rows[i] = Row(address: row.address, storeMessagesSecurely: newValue)
-                break
+        if(serversAllowedToManuallyTrust().contains(address)) {
+            for i in 0..<rows.count {
+                let row = rows[i]
+                if row.address == address {
+                    rows[i] = Row(address: row.address, storeMessagesSecurely: newValue)
+                    break
+                }
             }
-        }
-        let isTruestedServer = !newValue
-        if isTruestedServer {
-            AppSettings.addToManuallyTrustedServers(address: address)
-        } else {
-            AppSettings.removeFromManuallyTrustedServers(address: address)
+
+            let isTruestedServer = !newValue
+            if isTruestedServer {
+                AppSettings.addToManuallyTrustedServers(address: address)
+            } else {
+                AppSettings.removeFromManuallyTrustedServers(address: address)
+            }
         }
     }
 
