@@ -88,6 +88,7 @@ extension BodyCellViewModel {
             Log.shared.errorAndCrash(component: #function, errorString: "No image")
             return
         }
+        attachment.contentDisposition = .inline
         // Workaround: If the image has a higher resolution than that, UITextView has serious
         // performance issues (delay typing). I suspect we are causing them elswhere though.
         // IOS-1369: double check the performance issues persist. rm if they do not.

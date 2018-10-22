@@ -174,7 +174,6 @@ extension ComposeViewModelState {
             rating = PEP_rating_unencrypted
             return
         }
-
         let session = PEPSession()
         if let from = from {
             rating = session.outgoingMessageRating(from: from,
@@ -205,5 +204,73 @@ extension ComposeViewModelState {
         } else {
             return []
         }
+    }
+}
+
+extension ComposeViewModelState {
+
+    private final func message() -> Message? {
+        guard let from = from,
+            let account = Account.by(address: from.address) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString:
+                    "We have a problem here getting the senders account.")
+                return nil
+        }
+        guard let f = Folder.by(account: account, folderType: .outbox) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No outbox")
+            return nil
+        }
+
+        let message = Message(uuid: MessageID.generate(), parentFolder: f)
+        message.from = from
+        message.to = toRecipients
+        message.cc = ccRecipients
+        message.bcc = bccRecipients
+        message.shortMessage = subject
+        message.attachments = inlinedAttachments + nonInlinedAttachments
+        message.pEpProtected = pEpProtection
+
+        //IOS-1369: BODY!
+        
+        /*
+         let (markdownText, attachments) = cell.textView.attributedText.convertToMarkDown()
+         // Set longMessage (plain text)
+         if inlinedAttachments.count > 0 {
+         message.longMessage = markdownText
+         message.attachments = message.attachments + attachments
+         } else {
+         message.longMessage = cell.textView.text
+         }
+         // Set longMessageFormatted (HTML)
+         var longMessageFormatted = markdownText.markdownToHtml()
+         if let safeHtml = longMessageFormatted {
+         longMessageFormatted = wrappedInHtmlStyle(toWrap: safeHtml)
+         }
+         message.longMessageFormatted = longMessageFormatted
+         } else if let fm = cell.fieldModel, fm.type == .subject {
+         message.shortMessage = cell.textView.text.trimmingCharacters(
+         in: .whitespacesAndNewlines).replaceNewLinesWith(" ")
+         }
+         */
+
+
+
+        //IOS-1369: todo:
+//        if composeMode == .replyFrom || composeMode == .replyAll,
+//            let om = originalMessage {
+//            // According to https://cr.yp.to/immhf/thread.html
+//            var refs = om.references
+//            refs.append(om.messageID)
+//            if refs.count > 11 {
+//                refs.remove(at: 1)
+//            }
+//            message.references = refs
+//        }
+
+
+
+        message.setOriginalRatingHeader(rating: rating) // This should be moved. Algo did change. Currently we set it here and remove it when sending. We should set it where it should be set instead. Probalby in append OP
+        return message
     }
 }
