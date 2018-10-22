@@ -37,12 +37,15 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
                         about clean architecture
                         """
             static let longMessageFormated = "<h1>Long HTML</h1>"
+            static let sentDate = Date(timeIntervalSince1970: 662786656)
+            static let numberOfAttachments = 2
         }
 
         struct Outputs {
             static let toField = "To:borja@helm.cat"
             static let longLongMessage = "Hey Borja, How is it going? Are you okay? I was wondering"
                 + " if we could meet sometime this afternoon. I would like to disc"
+            static let expectedDateText = "Jan 2, 1991"
         }
     }
 
@@ -52,6 +55,8 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         folder = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         folder.save()
     }
+
+    //PRAGMA - MARK: TESTS
 
     func testToFieldOneRecipientFormat() {
         givenViewModelRepresentsOneRecipientMessage()
@@ -136,6 +141,36 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         wait(for: [expectation], timeout: specificWaitTime)
     }
 
+    func testFormattedBody() {
+        givenViewModelRepresentsMessageWithFormattedBody()
+        let formattedMessage = viewModel.longMessageFormatted
+        XCTAssertEqual(formattedMessage, Defaults.Inputs.longMessageFormated)
+    }
+
+    func testDateSent() {
+        givenViewModelRepresentsMessageWithDate()
+        let dateSent = viewModel.dateSent
+        XCTAssertEqual(dateSent, Defaults.Inputs.sentDate)
+    }
+
+    func testDateSentText() {
+        givenViewModelRepresentsMessageWithDate()
+        let dateSentText = viewModel.dateText
+        XCTAssertEqual(dateSentText, Defaults.Outputs.expectedDateText)
+    }
+
+    func testShouldShowAttachmentIcon() {
+        givenViewModelRepresentsMessageWithAttachments()
+        let shouldShowAttachmentIcon = viewModel.showAttchmentIcon
+        XCTAssertTrue(shouldShowAttachmentIcon)
+    }
+
+    func testShouldNotShowAttachmentIcon() {
+        givenViewModelRepresentsASubjectAndBodyMessage()
+        let shouldShowAttachmentIcon = viewModel.showAttchmentIcon
+        XCTAssertFalse(shouldShowAttachmentIcon)
+    }
+
     func testSecurityBadgeIsAddedToQueue() {
         givenViewModelHasAnAddingExpectationOperationQueue()
         viewModel.getSecurityBadge { _ in
@@ -175,7 +210,7 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
     }
 
     //PRAGMA - MARK: BUSINESS
-    //business public methods (should be private in the future or moved to another component,
+    //business public methods (should be private in the future or moved to another component but
     //some refactor would be needed)
 
     func testFlagsDiffer() {
@@ -233,6 +268,21 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         viewModel = MessageViewModel(with: message)
     }
 
+    private func givenViewModelRepresentsMessageWithDate() {
+        let message = givenThereIsAMessageWithASentDate()
+        viewModel = MessageViewModel(with: message)
+    }
+
+    private func givenViewModelRepresentsMessageWithFormattedBody() {
+        let message = givenThereIsAmessageWithFormattedBody()
+        viewModel = MessageViewModel(with: message)
+    }
+
+    private func givenViewModelRepresentsMessageWithAttachments() {
+        let message = givenThereIsAMessageWithAttachments()
+        viewModel = MessageViewModel(with: message)
+    }
+
     private func givenViewModelHasAProfilePictureComposer() {
         viewModel = givenAViewModelRepresentingUnflaggedMessage()
         let profilePictureExpectation = expectation(description: PepProfilePictureComposerSpy.PROFILE_PICTURE_EXPECTATION_DESCRIPTION)
@@ -250,7 +300,6 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         let operationQueue = OperationQueueSpy(addOperationExpectation: addOperationExpectation)
         viewModel = givenAViewModelWith(operationQueue: operationQueue)
     }
-
 
     private func givenViewModelHasACancellingExpectationOperationQueue() {
         viewModel = givenAViewModelRepresentingUnflaggedMessage()
@@ -305,9 +354,26 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         return message
     }
 
+    private func givenThereIsAmessageWithFormattedBody() -> Message {
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, shortMessage: Defaults.Inputs.shortMessage, longMessageFormatted: Defaults.Inputs.longMessageFormated)
+        message.save()
+        return message
+    }
+
+    private func givenThereIsAMessageWithASentDate() -> Message {
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, dateSent: Defaults.Inputs.sentDate)
+        message.save()
+        return message
+    }
 
     private func givenThereIsAMultipleRecipientMessage() -> Message {
         let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, tos: Defaults.Inputs.toIdentities)
+        message.save()
+        return message
+    }
+
+    private func givenThereIsAMessageWithAttachments() -> Message {
+        let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity, attachments: Defaults.Inputs.numberOfAttachments)
         message.save()
         return message
     }

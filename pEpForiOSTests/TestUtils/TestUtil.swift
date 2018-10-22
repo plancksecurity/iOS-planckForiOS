@@ -386,12 +386,6 @@ class TestUtil {
             to = toWithKey
         }
 
-        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
-        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
-            XCTAssertTrue(false)
-            return []
-        }
-
         // Build emails
         var messagesInTheQueue = [CdMessage]()
         for i in 1...numberOfMails {
@@ -414,14 +408,7 @@ class TestUtil {
 
             // add attachments
             if withAttachments {
-                let contentDisposition =
-                    attachmentsInlined ? Attachment.ContentDispositionType.inline : .attachment
-                let attachment = Attachment.create(data: imageData,
-                                                   mimeType: MimeTypeUtil.jpegMimeType,
-                                                   fileName: imageFileName,
-                                                   contentDisposition: contentDisposition)
-                let cdAttachment = CdAttachment.create(attachment: attachment)
-                message.addAttachment(cdAttachment: cdAttachment)
+                message.addAttachment(cdAttachment: createCdAttachment(inlined: attachmentsInlined))
             }
 
             messagesInTheQueue.append(message)
@@ -467,7 +454,9 @@ class TestUtil {
                                    engineProccesed: Bool = true,
                                    shortMessage: String = "",
                                    longMessage: String = "",
-                                   longMessageFormatted: String = "") -> Message {
+                                   longMessageFormatted: String = "",
+                                   dateSent: Date = Date(),
+                                   attachments: Int = 0) -> Message {
         let msg = Message(uuid: MessageID.generate(), parentFolder: folder)
         msg.from = from
         msg.to = tos
@@ -478,11 +467,13 @@ class TestUtil {
         msg.longMessage = longMessage
         msg.longMessageFormatted = longMessageFormatted
         let minute:TimeInterval = 60.0
-        msg.sent = Date()
+        msg.sent = dateSent
         msg.received = Date(timeIntervalSinceNow: minute)
         if engineProccesed {
             msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         }
+        msg.attachments = createAttachments(number: attachments)
+
         return msg
     }
 
@@ -493,6 +484,36 @@ class TestUtil {
         msg.received = Date(timeIntervalSince1970: Double(uid))
         msg.sent = msg.received
         return msg
+    }
+
+    static func createCdAttachment(inlined: Bool = true) -> CdAttachment {
+        let attachment = createAttachment()
+        return CdAttachment.create(attachment: attachment)
+    }
+
+    static func createAttachments(number: Int) -> [Attachment] {
+        var attachments: [Attachment] = []
+
+        for _ in 0..<number {
+            attachments.append(createAttachment())
+        }
+        return attachments
+    }
+
+    static func createAttachment(inlined: Bool = true) -> Attachment {
+
+        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
+        guard let imageData = TestUtil.loadData(fileName: imageFileName) else {
+            XCTAssertTrue(false)
+            return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
+        }
+
+        let contentDisposition = inlined ? Attachment.ContentDispositionType.inline : .attachment
+
+        return Attachment.create(data: imageData,
+                          mimeType: MimeTypeUtil.jpegMimeType,
+                          fileName: imageFileName,
+                          contentDisposition: contentDisposition)
     }
 
     /**
