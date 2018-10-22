@@ -234,33 +234,10 @@ extension ComposeViewModelState {
         message.cc = ccRecipients
         message.bcc = bccRecipients
         message.shortMessage = subject
+        message.longMessage = bodyPlaintext
+        message.longMessageFormatted = bodyHtml
         message.attachments = inlinedAttachments + nonInlinedAttachments
         message.pEpProtected = pEpProtection
-
-        //IOS-1369: BODY!
-        
-        /*
-         let (markdownText, attachments) = cell.textView.attributedText.convertToMarkDown()
-         // Set longMessage (plain text)
-         if inlinedAttachments.count > 0 {
-         message.longMessage = markdownText
-         message.attachments = message.attachments + attachments
-         } else {
-         message.longMessage = cell.textView.text
-         }
-         // Set longMessageFormatted (HTML)
-         var longMessageFormatted = markdownText.markdownToHtml()
-         if let safeHtml = longMessageFormatted {
-         longMessageFormatted = wrappedInHtmlStyle(toWrap: safeHtml)
-         }
-         message.longMessageFormatted = longMessageFormatted
-         } else if let fm = cell.fieldModel, fm.type == .subject {
-         message.shortMessage = cell.textView.text.trimmingCharacters(
-         in: .whitespacesAndNewlines).replaceNewLinesWith(" ")
-         }
-         */
-
-
 
         //IOS-1369: todo:
 //        if composeMode == .replyFrom || composeMode == .replyAll,
@@ -273,8 +250,6 @@ extension ComposeViewModelState {
 //            }
 //            message.references = refs
 //        }
-
-
 
         message.setOriginalRatingHeader(rating: rating) // This should be moved. Algo did change. Currently we set it here and remove it when sending. We should set it where it should be set instead. Probalby in append OP
         return message
