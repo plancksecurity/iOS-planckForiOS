@@ -32,8 +32,7 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
         let moved = viewmodel.moveMessagesTo(index: 1)
 
         XCTAssertTrue(moved)
-        waitForExpectations(timeout: TestUtil.waitTime)
-
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testNoMessageAreMoved() {
@@ -43,8 +42,7 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
         let moved = viewmodel.moveMessagesTo(index: 1)
 
         XCTAssertFalse(moved)
-        waitForExpectations(timeout: TestUtil.waitTime)
-
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testInexistentFolderIndexReturnFalse() {
@@ -54,8 +52,7 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
         let moved = viewmodel.moveMessagesTo(index: 3)
 
         XCTAssertFalse(moved)
-        waitForExpectations(timeout: TestUtil.waitTime)
-
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testMessageAreNotMovedIfTheyBelongToTheDestinationFolder() {
@@ -65,7 +62,7 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
         let moved = viewmodel.moveMessagesTo(index: 0)
 
         XCTAssertFalse(moved)
-        waitForExpectations(timeout: TestUtil.waitTime)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
 
     }
 
