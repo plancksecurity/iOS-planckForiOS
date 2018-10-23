@@ -11,6 +11,6 @@ import Foundation
 /// Unit test (in contrast to integration test) specific utils.
 struct UnitTestUtils {
 
-     /// The maximum wait time for unit tests
-    static let waitTime: TimeInterval = 0.1
+    /// The maximum wait time for unit tests that are synchronous.
+    static let waitTime: TimeInterval = 0.001
 }
