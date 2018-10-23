@@ -134,8 +134,50 @@ struct ComposeUtil {
                                                   originalMessage om: Message?) -> Bool {
         var isInDraftsOrOutbox = false
         if let om = om {
-            isInDraftsOrOutbox = om.isInDraftsOrOutbox //BUFF: HERE: init attachments
+            isInDraftsOrOutbox = om.isInDraftsOrOutbox //IOS-1369: HERE: init attachments
         }
         return composeMode == .forward || isInDraftsOrOutbox
+    }
+
+    // MARK: - Message to send
+
+    static public func messageToSend(withDataFrom state: ComposeViewModelState) -> Message? {
+        guard let from = state.from,
+            let account = Account.by(address: from.address) else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString:
+                    "We have a problem here getting the senders account.")
+                return nil
+        }
+        guard let f = Folder.by(account: account, folderType: .outbox) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No outbox")
+            return nil
+        }
+
+        let message = Message(uuid: MessageID.generate(), parentFolder: f)
+        message.from = from
+        message.to = state.toRecipients
+        message.cc = state.ccRecipients
+        message.bcc = state.bccRecipients
+        message.shortMessage = state.subject
+        message.longMessage = state.bodyPlaintext
+        message.longMessageFormatted = state.bodyHtml
+        message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
+        message.pEpProtected = state.pEpProtection
+
+        //IOS-1369: todo:
+        //        if composeMode == .replyFrom || composeMode == .replyAll,
+        //            let om = originalMessage {
+        //            // According to https://cr.yp.to/immhf/thread.html
+        //            var refs = om.references
+        //            refs.append(om.messageID)
+        //            if refs.count > 11 {
+        //                refs.remove(at: 1)
+        //            }
+        //            message.references = refs
+        //        }
+
+        message.setOriginalRatingHeader(rating: state.rating) // This should be moved. Algo did change. Currently we set it here and remove it when sending. We should set it where it should be set instead. Probalby in append OP
+        return message
     }
 }

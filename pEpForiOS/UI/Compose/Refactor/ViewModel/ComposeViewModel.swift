@@ -86,7 +86,7 @@ class ComposeViewModel {
     }
 
     public func handleUserClickedSendButton() {
-        guard let msg = state.message else {
+        guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
             Log.error(component: #function, errorString: "No message for sending")
             return
         }
