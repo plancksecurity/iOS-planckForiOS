@@ -131,10 +131,8 @@ extension BodyCellViewModel {
 
         let (markdownText, _) = attrText.convertToMarkDown()
         let plaintext = markdownText
-        guard let html = markdownText.markdownToHtml() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No HTML")
-            return
-        }
-        resultDelegate?.bodyCellViewModel(self, bodyChangedToPlaintext: plaintext, html: html)
+        let html = markdownText.markdownToHtml()
+        resultDelegate?.bodyCellViewModel(self, bodyChangedToPlaintext: plaintext,
+                                          html: html ?? "")
     }
 }
