@@ -25,7 +25,7 @@ protocol ComposeViewModelStateDelegate: class {
 
 /// Wraps bookholding properties
 class ComposeViewModelState {
-    let initData: InitData?
+    private(set) var initData: InitData?
     private var edited = false
     private var isValidatedForSending = false {
         didSet {
@@ -139,7 +139,8 @@ class ComposeViewModelState {
         from = initData.from
         subject = initData.subject ?? " " // Set space to work around autolayout first baseline not recognized
         //            body = initD //IOS-1369: TODO
-        nonInlinedAttachments = initData.nonInlinedAttachments
+        inlinedAttachments =  initData.inlinedAttachments
+        nonInlinedAttachments =  initData.nonInlinedAttachments
     }
 
     private func validateForSending() {
