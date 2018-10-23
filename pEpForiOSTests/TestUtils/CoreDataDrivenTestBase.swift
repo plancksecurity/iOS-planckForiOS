@@ -51,8 +51,7 @@ class CoreDataDrivenTestBase: XCTestCase {
         persistentSetup.tearDownCoreDataStack()
         persistentSetup = nil
         PEPSession.cleanup()
-  //      XCTAssertTrue(PEPUtil.pEpClean())
-
+        XCTAssertTrue(PEPUtil.pEpClean())
         super.tearDown()
     }
 

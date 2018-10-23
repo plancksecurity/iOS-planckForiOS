@@ -15,21 +15,16 @@ class TrustedServerSettingsViewModelTest: CoreDataDrivenTestBase {
     var viewModel: TrustedServerSettingsViewModel!
 
     public func testSetStoreSecurely() {
+        let account = cdAccount.account()
         setUpViewModel()
 
-        viewModel.setStoreSecurely(forAccountWith: "fakeAccount", toValue: false)
-        var accountInTrustedServer = AppSettings.isManuallyTrustedServer(address: "fakeAccount")
-        XCTAssertFalse(accountInTrustedServer)
-
         viewModel.setStoreSecurely(forAccountWith: account.user.address, toValue: false)
-        accountInTrustedServer = AppSettings.isManuallyTrustedServer(address: "iostest006@peptest.ch")
+        var accountInTrustedServer = AppSettings.isManuallyTrustedServer(address: account.user.address)
         XCTAssertTrue(accountInTrustedServer)
 
         viewModel.setStoreSecurely(forAccountWith: account.user.address, toValue: true)
-        accountInTrustedServer = AppSettings.isManuallyTrustedServer(address: "iostest006@peptest.ch")
+        accountInTrustedServer = AppSettings.isManuallyTrustedServer(address: account.user.address)
         XCTAssertFalse(accountInTrustedServer)
-
-
     }
 
     private func setUpViewModel() {
