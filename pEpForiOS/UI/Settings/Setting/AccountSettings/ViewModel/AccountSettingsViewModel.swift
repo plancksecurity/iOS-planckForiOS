@@ -31,7 +31,7 @@ public class AccountSettingsViewModel {
         }
     }
 
-    private var account: Account
+    private (set) var account: Account
     private let headers = [
         NSLocalizedString("Account", comment: "Account settings"),
         NSLocalizedString("IMAP Settings", comment: "Account settings title IMAP"),
@@ -136,7 +136,7 @@ public class AccountSettingsViewModel {
     }
 
     func sectionIsValid(section: Int) -> Bool {
-        return section >= 0 && section <= headers.count
+        return section >= 0 && section < headers.count
     }
 
     var count: Int {
