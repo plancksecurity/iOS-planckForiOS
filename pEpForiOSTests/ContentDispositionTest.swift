@@ -17,9 +17,9 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         attchmentRoundTrip(attachmentsInlined: true)
     }
 
-    func testNonInlinedAttachmentRoundTrip() {
-        attchmentRoundTrip(attachmentsInlined: false)
-    }
+//    func testNonInlinedAttachmentRoundTrip() {
+//        attchmentRoundTrip(attachmentsInlined: false)
+//    }
 
     // MARK: - HELPER
 
