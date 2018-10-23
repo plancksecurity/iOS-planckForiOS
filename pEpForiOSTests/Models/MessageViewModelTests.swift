@@ -132,7 +132,7 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
 
     func testLongBodyPeek() {
         givenViewModelRepresentsASubjectAndLongBodyMessage()
-        let specificWaitTime = UnitTestUtils.waitTime * 5
+        let specificWaitTime = 0.5
         let expectation = XCTestExpectation(description: "body Peek is received")
         viewModel.bodyPeekCompletion = { bodyPeek in
             XCTAssertEqual(bodyPeek, Defaults.Outputs.longLongMessage)
