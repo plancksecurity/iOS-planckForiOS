@@ -36,7 +36,6 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        registerXibs()
         setupView()
         if viewModel == nil {
             setupModel()
@@ -51,6 +50,7 @@ class ComposeTableViewController: BaseTableViewController {
     // MARK: - Setup & Configuration
 
     private func setupView() {
+        registerXibs()
         tableView.rowHeight = UITableViewAutomaticDimension
          //IOS-1369 an arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
@@ -333,6 +333,7 @@ extension ComposeTableViewController {
                     return nil
             }
             cell.setup(with: rowVm)
+            cell.delegate = self //SwipeKitDelegate
             result = cell
         }
 
@@ -349,10 +350,51 @@ extension ComposeTableViewController {
 }
 
 // MARK: - XIBs
+
 extension ComposeTableViewController {
     private func registerXibs() {
         let nib = UINib(nibName: AttachmentCell.reuseId, bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: AttachmentCell.reuseId)
+    }
+}
+
+// MARK: - SwipeAction
+
+extension ComposeTableViewController {
+    // MARK: - SwipeTableViewCell
+
+    private func deleteAction(forCellAt indexPath: IndexPath) {
+        viewModel?.handleRemovedRow(at: indexPath)
+        tableView.beginUpdates()
+        tableView.deleteRows(at: [indexPath], with: .automatic)
+        tableView.endUpdates()
+    }
+}
+
+// MARK: - SwipeTableViewCellDelegate
+
+extension ComposeTableViewController: SwipeTableViewCellDelegate {
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath,
+                   for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        guard
+            let vm = viewModel,
+            vm.isAttachmentSection(indexPath: indexPath) else {
+                return nil
+        }
+        let deleteAction = SwipeAction(style: .destructive, title: "Delete") {
+            [weak self] action, indexPath in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.deleteAction(forCellAt: indexPath)
+        }
+        deleteAction.title = NSLocalizedString("Remove", comment:
+            "ComposeTableView: Label of swipe left. Removing of attachment."
+        )
+        deleteAction.backgroundColor = SwipeActionDescriptor.trash.color
+        return (orientation == .right ?   [deleteAction] : nil)
     }
 }
 

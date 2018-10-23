@@ -22,6 +22,11 @@ class AttachmentCell: SwipeTableViewCell {
      }
      }*/
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        selectionStyle = .none
+    }
+
     public func setup(with viewModel: AttachmentViewModel) {
         self.viewModel = viewModel
         fileName.text = viewModel.fileName

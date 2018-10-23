@@ -100,6 +100,19 @@ class ComposeViewModel {
         resultDelegate?.composeViewModelDidComposeNewMail()
     }
 
+    public func isAttachmentSection(indexPath: IndexPath) -> Bool {
+        return sections[indexPath.section].type == .attachments
+    }
+
+    public func handleRemovedRow(at indexPath: IndexPath) {
+        guard let removeeVM = viewModel(for: indexPath) as? AttachmentViewModel else {
+                Log.shared.errorAndCrash(component: #function,
+                                         errorString: "Only attachmnets can be removed by the user")
+                return
+        }
+        removeNonInlinedAttachment(removeeVM.attachment)
+    }
+
     private func deleteOriginalMessage() {
         guard let om = state.initData?.originalMessage else {
             // That might happen. Message might be sent already and thus has been moved to
@@ -189,6 +202,10 @@ extension ComposeViewModel {
                     rows.append(WrappedBccViewModel())
                 }
             case .account:
+                if Account.all().count == 1 {
+                    // Accountpicker only for multi account setup
+                    break
+                }
                 var fromAccount: Account? = nil
                 if let fromIdentity = state?.from {
                     fromAccount = Account.by(address: fromIdentity.address)
@@ -249,6 +266,54 @@ extension ComposeViewModel {
     }
 }
 
+// MARK: - Attachments
+
+extension ComposeViewModel {
+    private func removeNonInlinedAttachment(_ removee: Attachment) {
+        guard let section = section(for: .attachments) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "Only attachmnets can be removed by the user")
+            return
+        }
+        // Remove from section
+        var newAttachmentVMs = [AttachmentViewModel]()
+        for vm in section.rows {
+            guard let aVM = vm as? AttachmentViewModel else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                return
+            }
+            if aVM.attachment != removee {
+                newAttachmentVMs.append(aVM)
+            }
+        }
+        section.rows = newAttachmentVMs
+        // Remove from state
+        var newNonInlinedAttachments = [Attachment]()
+        for att in state.nonInlinedAttachments {
+            if att != removee {
+                newNonInlinedAttachments.append(att)
+            }
+        }
+        state.nonInlinedAttachments = newNonInlinedAttachments
+    }
+
+    private func addNonInlinedAttachment(_ att: Attachment) {
+        // Add to state
+        state.nonInlinedAttachments.append(att)
+        // add section
+        if let existing = section(for: .attachments) {
+            existing.rows.append(AttachmentViewModel(attachment: att))
+        } else {
+            guard let new = Section(type: .attachments, for: state, cellVmDelegate: self) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                return
+            }
+            sections.append(new)
+        }
+        delegate?.modelChanged()
+    }
+}
+
 // MARK: - Suggestions
 
 extension ComposeViewModel {
@@ -286,7 +351,6 @@ extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate
         _ vm: MediaAttachmentPickerProviderViewModel,
         didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
         if mediaAttachment.type == .image {
-            //IOS-1369: TODO: add inlined attachment to state? I think so.
             guard let bodyViewModel = bodyVM else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "No bodyVM. Maybe valid as picking is async.")
@@ -294,7 +358,7 @@ extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate
             }
             bodyViewModel.inline(attachment: mediaAttachment.attachment)
         } else {
-            state.nonInlinedAttachments.append(mediaAttachment.attachment)
+            addNonInlinedAttachment(mediaAttachment.attachment)
             delegate?.hideMediaAttachmentPicker()
             //IOS-1369: update attachment section
             //IOS-1369: update TV.
