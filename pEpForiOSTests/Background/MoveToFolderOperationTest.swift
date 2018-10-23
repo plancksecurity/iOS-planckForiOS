@@ -12,6 +12,7 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
+    // Commented as randomly failing. See IOS-1382.
 //class MoveToFolderOperationTest: CoreDataDrivenTestBase {
 //
 //    // MARK: - Trash message

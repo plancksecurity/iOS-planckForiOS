@@ -12,6 +12,8 @@ import CoreData
 @testable import MessageModel
 @testable import pEpForiOS
 
+    // Commented as randomly failing. See IOS-1382.
+
 ///// Test suite for re-uploading (or not) messages.
 ///// Find details here: https://dev.pep.security/Common%20App%20Documentation/Trusted_Untrusted_Server_Demystified
 //class ReUploadTest: CoreDataDrivenTestBase {

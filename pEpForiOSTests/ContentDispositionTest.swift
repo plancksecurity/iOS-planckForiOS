@@ -17,6 +17,7 @@ class ContentDispositionTest: CoreDataDrivenTestBase {
         attchmentRoundTrip(attachmentsInlined: true)
     }
 
+    // Commented as randomly failing. See IOS-1382.
 //    func testNonInlinedAttachmentRoundTrip() {
 //        attchmentRoundTrip(attachmentsInlined: false)
 //    }
