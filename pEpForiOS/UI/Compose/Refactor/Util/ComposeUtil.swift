@@ -164,20 +164,28 @@ struct ComposeUtil {
         message.longMessageFormatted = state.bodyHtml
         message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
         message.pEpProtected = state.pEpProtection
+        message.setOriginalRatingHeader(rating: state.rating)
 
-        //IOS-1369: todo:
-        //        if composeMode == .replyFrom || composeMode == .replyAll,
-        //            let om = originalMessage {
-        //            // According to https://cr.yp.to/immhf/thread.html
-        //            var refs = om.references
-        //            refs.append(om.messageID)
-        //            if refs.count > 11 {
-        //                refs.remove(at: 1)
-        //            }
-        //            message.references = refs
-        //        }
+        updateReferences(of: message, accordingTo: state)
 
-        message.setOriginalRatingHeader(rating: state.rating) // This should be moved. Algo did change. Currently we set it here and remove it when sending. We should set it where it should be set instead. Probalby in append OP
         return message
+    }
+
+    static private func updateReferences(of message: Message,
+                                         accordingTo composeState: ComposeViewModelState) {
+        guard let composeMode = composeState.initData?.composeMode else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No init data")
+            return
+        }
+        if composeMode == .replyFrom || composeMode == .replyAll,
+            let om = composeState.initData?.originalMessage {
+            // According to https://cr.yp.to/immhf/thread.html
+            var refs = om.references
+            refs.append(om.messageID)
+            if refs.count > 11 {
+                refs.remove(at: 1)
+            }
+            message.references = refs
+        }
     }
 }
