@@ -802,9 +802,9 @@ class ComposeTableViewController_Old: BaseTableViewController {
 
     override func tableView(
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == attachmentSection  {
-            return AttachmentCell.preferredHigh
-        }
+//        if indexPath.section == attachmentSection  {
+//            return AttachmentCell.preferredHigh
+//        }
         guard let row = composeData?.getRow(at: indexPath.row) else {
             return UITableViewAutomaticDimension
         }

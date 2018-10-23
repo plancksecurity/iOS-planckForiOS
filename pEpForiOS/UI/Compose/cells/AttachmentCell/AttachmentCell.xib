@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,33 +18,32 @@
                 <rect key="frame" x="0.0" y="0.0" width="518" height="113.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XYZ_FILENAME" textAlignment="center" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHx-WG-6zf">
-                        <rect key="frame" x="20" y="8" width="478" height="18"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" image="attachment-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Z1J-Jb-tos">
-                        <rect key="frame" x="240" y="34" width="38" height="51"/>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XYZ_EXTENSION" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAY-uV-WrY">
-                        <rect key="frame" x="20" y="93" width="478" height="18"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                        <nil key="textColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="qg7-YW-B23">
+                        <rect key="frame" x="8" y="8" width="502" height="97.5"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="XYZ_FILENAME" textAlignment="center" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nHx-WG-6zf">
+                                <rect key="frame" x="197.5" y="0.0" width="107.5" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" ambiguous="YES" image="attachment-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Z1J-Jb-tos">
+                                <rect key="frame" x="232" y="26" width="38" height="51"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="XYZ_EXTENSION" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAY-uV-WrY">
+                                <rect key="frame" x="191.5" y="85" width="119" height="12.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="PAY-uV-WrY" secondAttribute="trailing" id="37w-G7-jbU"/>
-                    <constraint firstItem="nHx-WG-6zf" firstAttribute="centerX" secondItem="OB4-gi-sqr" secondAttribute="centerX" id="6BG-bn-5bc"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="nHx-WG-6zf" secondAttribute="trailing" id="FVh-F9-W3k"/>
-                    <constraint firstItem="nHx-WG-6zf" firstAttribute="top" secondItem="OB4-gi-sqr" secondAttribute="top" constant="8" id="Kxm-83-CDP"/>
-                    <constraint firstItem="PAY-uV-WrY" firstAttribute="leading" secondItem="OB4-gi-sqr" secondAttribute="leadingMargin" id="U6a-Ju-KSW"/>
-                    <constraint firstItem="Z1J-Jb-tos" firstAttribute="top" secondItem="nHx-WG-6zf" secondAttribute="bottom" constant="8" id="WuY-Cb-xgc"/>
-                    <constraint firstItem="PAY-uV-WrY" firstAttribute="top" secondItem="Z1J-Jb-tos" secondAttribute="bottom" constant="8" id="ZzP-Cd-uOm"/>
-                    <constraint firstItem="nHx-WG-6zf" firstAttribute="leading" secondItem="OB4-gi-sqr" secondAttribute="leadingMargin" id="bMB-i6-pyr"/>
-                    <constraint firstItem="PAY-uV-WrY" firstAttribute="centerX" secondItem="OB4-gi-sqr" secondAttribute="centerX" id="foO-Fh-0tP"/>
-                    <constraint firstItem="Z1J-Jb-tos" firstAttribute="centerX" secondItem="nHx-WG-6zf" secondAttribute="centerX" id="tzG-h9-8du"/>
+                    <constraint firstAttribute="bottom" secondItem="qg7-YW-B23" secondAttribute="bottom" constant="8" id="1AS-oq-6Jf"/>
+                    <constraint firstItem="qg7-YW-B23" firstAttribute="top" secondItem="OB4-gi-sqr" secondAttribute="top" constant="8" id="5tE-1S-xct"/>
+                    <constraint firstAttribute="trailing" secondItem="qg7-YW-B23" secondAttribute="trailing" constant="8" id="HYR-zV-utk"/>
+                    <constraint firstItem="qg7-YW-B23" firstAttribute="leading" secondItem="OB4-gi-sqr" secondAttribute="leading" constant="8" id="o8S-KK-yxs"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
