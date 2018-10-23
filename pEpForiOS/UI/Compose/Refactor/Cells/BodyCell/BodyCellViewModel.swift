@@ -8,7 +8,6 @@
 
 import MessageModel
 
-
 protocol BodyCellViewModelResultDelegate: class {
     func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String) //IOS-1369:
 
@@ -73,6 +72,7 @@ class BodyCellViewModel: CellViewModel {
 
     public let contextMenuItemTitleAttachMedia =
         NSLocalizedString("Attach media", comment: "Attach photo/video (message text context menu)")
+
     public let contextMenuItemTitleAttachFile =
         NSLocalizedString("Attach file",   comment: "Insert document in message text context menu")
 
@@ -138,12 +138,3 @@ extension BodyCellViewModel {
         resultDelegate?.bodyCellViewModel(self, bodyChangedToPlaintext: plaintext, html: html)
     }
 }
-    /*
- //IOS-1369:
-
-     public func hasInlinedAttatchments() -> Bool {
-     return allInlinedAttachments().count > 0
-     }
-     }
-
-*/
