@@ -85,4 +85,22 @@ extension MessageViewModel {
         return getSecurityBadgeOperation
     }
 
+    func getProfilePictureOperation(
+        completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
+        let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
+            guard let me = self else {
+                return
+            }
+            MessageModel.performAndWait {
+                guard
+                    let operation = operation,
+                    !operation.isCancelled else {
+                        return
+                }
+                me.profilePictureComposer.profilePicture(for: me.displayedImageIdentity, completion: completion)
+            }
+        }
+        return getSecurityBadgeOperation
+    }
+
 }
