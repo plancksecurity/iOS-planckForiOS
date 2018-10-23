@@ -11,6 +11,7 @@ import UIKit
 
 import MessageModel
 
+//IOS-1369: should be obsolete
 class ComposeDataSource: NSObject {
     var originalRows = [ComposeFieldModel]()
     var filteredRows = [ComposeFieldModel]()
