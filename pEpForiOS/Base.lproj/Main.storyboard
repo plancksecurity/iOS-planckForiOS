@@ -807,13 +807,16 @@
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rdT-E5-6x9">
                                             <rect key="frame" x="20" y="20" width="335" height="219.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="219.5" id="y0r-tR-i0h"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="rdT-E5-6x9" firstAttribute="top" secondItem="F1w-CO-KDO" secondAttribute="top" constant="20" symbolic="YES" id="CeM-gx-USd"/>
-                                        <constraint firstAttribute="bottom" secondItem="rdT-E5-6x9" secondAttribute="bottom" constant="20" symbolic="YES" id="qVP-Mt-WDw"/>
+                                        <constraint firstAttribute="bottom" secondItem="rdT-E5-6x9" secondAttribute="bottom" priority="900" constant="20" symbolic="YES" id="qVP-Mt-WDw"/>
                                         <constraint firstAttribute="trailing" secondItem="rdT-E5-6x9" secondAttribute="trailing" constant="20" symbolic="YES" id="qbh-7j-X1s"/>
                                         <constraint firstItem="rdT-E5-6x9" firstAttribute="leading" secondItem="F1w-CO-KDO" secondAttribute="leading" constant="20" symbolic="YES" id="xAp-Ga-eGA"/>
                                     </constraints>
