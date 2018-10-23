@@ -36,6 +36,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerXibs()
         setupView()
         if viewModel == nil {
             setupModel()
@@ -322,20 +323,18 @@ extension ComposeTableViewController {
             }
             cell.setup(with: rowVm)
             result = cell
+        } else if section.type == .attachments {
+            guard
+                let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentCell.reuseId)
+                    as? AttachmentCell,
+                let rowVm = section.rows[indexPath.row] as? AttachmentViewModel
+                else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                    return nil
+            }
+            cell.setup(with: rowVm)
+            result = cell
         }
-//        else if section.type == .attachments {
-//            guard
-//                let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentCell.reuseId)
-//                    as? AttachmentCell,
-//                let rowVm = section.rows[indexPath.row] as? AttachmentViewModel
-//                else {
-//                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
-//                    return nil
-//            }
-//            cell.fileName.text = rowVm.fileName
-//            cell.fileExtension.text = rowVm.fileExtension
-//            result = cell
-//        }
 
         return result
     }
@@ -348,3 +347,61 @@ extension ComposeTableViewController {
         viewModel?.handleUserSelectedRow(at: indexPath)
     }
 }
+
+// MARK: - XIBs
+extension ComposeTableViewController {
+    private func registerXibs() {
+        let nib = UINib(nibName: AttachmentCell.reuseId, bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: AttachmentCell.reuseId)
+    }
+}
+
+/*
+ func add(nonInlinedAttachment attachment: Attachment) {
+ let indexInserted = nonInlinedAttachmentData.add(attachment: attachment)
+ let indexPath = IndexPath(row: indexInserted, section: attachmentSection)
+ tableView.beginUpdates()
+ tableView.insertRows(at: [indexPath], with: .automatic)
+ tableView.endUpdates()
+ }
+
+
+ // MARK: - SwipeTableViewCellDelegate
+
+ extension ComposeTableViewController_Old: SwipeTableViewCellDelegate {
+
+ func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath,
+ for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+ guard indexPath.section == attachmentSection else {
+ return nil
+ }
+ let deleteAction = SwipeAction(style: .destructive, title: "Delete") { action, indexPath in
+ self.deleteAction(forCellAt: indexPath)
+ }
+ configure(action: deleteAction, with: .trash)
+ return (orientation == .right ?   [deleteAction] : nil)
+ }
+ }
+ 
+
+ // MARK: - SwipeTableViewCell
+
+ private func deleteAction(forCellAt indexPath: IndexPath) {
+ guard indexPath.section == attachmentSection else {
+ Log.shared.errorAndCrash(component: #function,
+ errorString: "only attachments have delete actions")
+ return
+ }
+ nonInlinedAttachmentData.remove(at: indexPath.row)
+ tableView.beginUpdates()
+ tableView.deleteRows(at: [indexPath], with: .automatic)
+ tableView.endUpdates()
+ }
+
+ private func configure(action: SwipeAction, with descriptor: SwipeActionDescriptor) {
+ action.title = NSLocalizedString("Remove", comment:
+ "ComposeTableView: Label of swipe left. Removing of attachment."
+ )
+ action.backgroundColor = descriptor.color
+ }
+ */

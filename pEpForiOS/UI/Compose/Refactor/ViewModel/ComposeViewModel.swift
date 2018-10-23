@@ -160,7 +160,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
 extension ComposeViewModel {
     class Section {
         enum SectionType: CaseIterable {
-            case recipients, wrapped, account, subject, body/*, attachments*/
+            case recipients, wrapped, account, subject, body, attachments
         }
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
@@ -204,15 +204,11 @@ extension ComposeViewModel {
                 rows.append(rowModel)
             case .body:
                 rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate)) //IOS-1369: set initial
-                //            case .attachments:
-                //                setupAttchmentRows()
+            case .attachments:
+                for att in state?.nonInlinedAttachments ?? [] {
+                    rows.append(AttachmentViewModel(attachment: att))
+                }
             }
-        }
-
-        private func setupAttchmentRows() {
-            //IOS-1369: //!!!: add later for mode != .normal
-            //
-            //            rows.append(AttachmentViewModel)
         }
     }
 
