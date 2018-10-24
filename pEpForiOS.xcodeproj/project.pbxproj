@@ -157,6 +157,8 @@
 		1574D09B21186A1D00FEDC93 /* AddToContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D09A21186A1D00FEDC93 /* AddToContactsViewController.swift */; };
 		157743B8217885EA0007222C /* RecipientTextViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157743B7217885EA0007222C /* RecipientTextViewModelTest.swift */; };
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
+		157C0541218059C200E530DE /* DocumentAttachmentPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157C0540218059C200E530DE /* DocumentAttachmentPickerViewModel.swift */; };
+		157C0543218059DC00E530DE /* DocumentAttachmentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157C0542218059DC00E530DE /* DocumentAttachmentPickerViewController.swift */; };
 		15848D392167B85700D8CBA4 /* AccountCell_mvvm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15848D382167B85700D8CBA4 /* AccountCell_mvvm.swift */; };
 		15848D3D2167B9B100D8CBA4 /* AccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15848D3C2167B9B100D8CBA4 /* AccountCellViewModel.swift */; };
 		15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */; };
@@ -757,6 +759,8 @@
 		1574D09A21186A1D00FEDC93 /* AddToContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddToContactsViewController.swift; path = AddToContactsViewController/AddToContactsViewController.swift; sourceTree = "<group>"; };
 		157743B7217885EA0007222C /* RecipientTextViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientTextViewModelTest.swift; sourceTree = "<group>"; };
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
+		157C0540218059C200E530DE /* DocumentAttachmentPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentPickerViewModel.swift; sourceTree = "<group>"; };
+		157C0542218059DC00E530DE /* DocumentAttachmentPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentPickerViewController.swift; sourceTree = "<group>"; };
 		15848D382167B85700D8CBA4 /* AccountCell_mvvm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell_mvvm.swift; sourceTree = "<group>"; };
 		15848D3C2167B9B100D8CBA4 /* AccountCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellViewModel.swift; sourceTree = "<group>"; };
 		15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+pEp.swift"; sourceTree = "<group>"; };
@@ -1529,6 +1533,7 @@
 		1571B46C2167646300D59DAD /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				157C053F2180597E00E530DE /* DocumentAttachmentPickerViewController */,
 				15737D72217A016000794AFA /* MediaAttachmentPickerProvider */,
 				150707D920FFC31E00AA213F /* ComposeUtil.swift */,
 				15D439A8216FDE7800EB3933 /* Message+ComposeUtils.swift */,
@@ -1593,6 +1598,15 @@
 				157743B7217885EA0007222C /* RecipientTextViewModelTest.swift */,
 			);
 			path = RecipientTextView;
+			sourceTree = "<group>";
+		};
+		157C053F2180597E00E530DE /* DocumentAttachmentPickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				157C0540218059C200E530DE /* DocumentAttachmentPickerViewModel.swift */,
+				157C0542218059DC00E530DE /* DocumentAttachmentPickerViewController.swift */,
+			);
+			path = DocumentAttachmentPickerViewController;
 			sourceTree = "<group>";
 		};
 		15848D372167B7EC00D8CBA4 /* AccountCell */ = {
@@ -3238,6 +3252,7 @@
 				43122B3C1DF5B75000610253 /* NetworkService.swift in Sources */,
 				1594C1D021281FCD00CB06E2 /* Server+Fetching.swift in Sources */,
 				43ED53711CC77F95006AB156 /* IMAPSettingsTableViewController.swift in Sources */,
+				157C0543218059DC00E530DE /* DocumentAttachmentPickerViewController.swift in Sources */,
 				43EC75AE2164D03500048CFE /* SetOwnKeyViewModel.swift in Sources */,
 				43257C891F50683600DDC7F0 /* NSAttributedString+pEp.swift in Sources */,
 				154F0A842087779200C77D72 /* ContentDispositionType + Conversion.swift in Sources */,
@@ -3434,6 +3449,7 @@
 				001D365E20C56470002434EB /* MoveToFolderDelegate.swift in Sources */,
 				1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */,
 				1574D09B21186A1D00FEDC93 /* AddToContactsViewController.swift in Sources */,
+				157C0541218059C200E530DE /* DocumentAttachmentPickerViewModel.swift in Sources */,
 				15FE1F761FE122D900CC2D97 /* CreditsViewController.swift in Sources */,
 				B7365CDE1EAF45F30036ECC7 /* UITextField+Extension.swift in Sources */,
 				154F0A802085FC7D00C77D72 /* CdAttachment+Pantomime.swift in Sources */,

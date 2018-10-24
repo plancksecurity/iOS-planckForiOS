@@ -22,6 +22,10 @@ class ComposeTableViewController: BaseTableViewController {
         }
         return MediaAttachmentPickerProvider(with: pickerVm)
     }()
+    lazy private var documentAttachmentPicker: DocumentAttachmentPickerViewController = {
+        return DocumentAttachmentPickerViewController(
+            viewModel: viewModel?.documentAttachmentPickerViewModel())
+    }()
     private var isInitialSetup = true
     private var currentCellIndexPath: IndexPath?
     var viewModel: ComposeViewModel? {
@@ -205,6 +209,10 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     func hideMediaAttachmentPicker() {
         mediaAttachmentPickerProvider?.imagePicker.dismiss(animated: true)
     }
+
+    func showDocumentAttachmentPicker() {
+        presentDocumentAttachmentPicker()
+    }
 }
 
 // MARK: - Address Suggestions
@@ -216,6 +224,7 @@ extension ComposeTableViewController {
         suggestionsChildViewController?.view.frame.origin.y = position
         suggestionsChildViewController?.view.frame.size.height =
             tableView.bounds.size.height - position + 2 //IOS-1369: whats 2?
+        //IOS-1369: not behind keyboard
     }
 }
 
@@ -237,6 +246,14 @@ extension ComposeTableViewController {
             }
             me.present(picker, animated: true)
         }
+    }
+}
+
+// MARK: - DocumentAttachmentPickerViewController
+
+extension ComposeTableViewController {
+    private func presentDocumentAttachmentPicker() {
+        present(documentAttachmentPicker, animated: true, completion: nil)
     }
 }
 

@@ -45,6 +45,8 @@ protocol ComposeViewModelDelegate: class {
     func showMediaAttachmentPicker()
 
     func hideMediaAttachmentPicker()
+
+    func showDocumentAttachmentPicker()
 }
 
 class ComposeViewModel {
@@ -337,6 +339,23 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
     }
 }
 
+// MARK: - DocumentAttachmentPickerViewModel[ResultDelegate]
+
+extension ComposeViewModel {
+    func documentAttachmentPickerViewModel() -> DocumentAttachmentPickerViewModel {
+        return DocumentAttachmentPickerViewModel(resultDelegate: self)
+    }
+}
+
+extension ComposeViewModel: DocumentAttachmentPickerViewModelResultDelegate {
+    func documentAttachmentPickerViewModel(_ vm: DocumentAttachmentPickerViewModel,
+                                           didPick attachment: Attachment) {
+        addNonInlinedAttachment(attachment)
+        //        delegate?.hideMediaAttachmentPicker() //IOS-1369:
+    }
+
+}
+
 // MARK: - MediaAttachmentPickerProviderViewModel[ResultDelegate]
 
 extension ComposeViewModel {
@@ -479,7 +498,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
     }
 
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel) {
-        fatalError()
+        delegate?.showDocumentAttachmentPicker()
     }
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
