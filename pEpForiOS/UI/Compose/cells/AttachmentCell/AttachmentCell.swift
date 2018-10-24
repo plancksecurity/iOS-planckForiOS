@@ -15,12 +15,6 @@ class AttachmentCell: SwipeTableViewCell {
     @IBOutlet weak var fileExtension: UILabel!
 
     var viewModel: AttachmentViewModel?
-    //IOS-1369:
-    /*{
-     didSet {
-     viewModel?.delegate = self
-     }
-     }*/
 
     override func awakeFromNib() {
         super.awakeFromNib()
