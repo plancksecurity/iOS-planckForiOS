@@ -17,16 +17,6 @@ class SuggestTableViewController: UITableViewController {
             viewModel?.delegate = self
         }
     }
-
-    // MARK: - API
-
-    public var hasSuggestions: Bool {
-        guard let viewModel = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
-            return false
-        }
-        return !viewModel.isEmpty
-    }
 }
 
 // MARK: - SuggestViewModelDelegate
