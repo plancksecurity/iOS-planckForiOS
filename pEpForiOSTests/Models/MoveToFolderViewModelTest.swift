@@ -17,6 +17,10 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
     var viewmodel: MoveToFolderViewModel!
     var folders = [Folder]()
 
+    let currentFolderIndex = 0
+    let nextFolderIndex = 1
+    let inexistentFolderIndex = 3
+
     override func setUp() {
         super.setUp()
         let account = cdAccount.account()
@@ -26,38 +30,38 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
 
 
     func testMessageAreMoved() {
-        givenThereIsAMoveToFolderDelegate(checkCall: true)
-        givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[0])
-
-        let moved = viewmodel.moveMessagesTo(index: 1)
+        givenWeHaveTenMessagesInCurrentFolder()
+        givenWeExpectToCallDelegate()
+        
+        let moved = viewmodel.moveMessagesTo(index: nextFolderIndex)
 
         XCTAssertTrue(moved)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testNoMessageAreMoved() {
-        givenThereIsAMoveToFolderDelegate(checkCall: false)
-        givenWeWantToMove(aNumberOfMessages: 0, currentlyInFolder: folders[0])
+        givenWeHaveZeroMessageInCurrentFolder()
+        givenWeDontExpectToCallDelegate()
 
-        let moved = viewmodel.moveMessagesTo(index: 1)
+        let moved = viewmodel.moveMessagesTo(index: nextFolderIndex)
 
         XCTAssertFalse(moved)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testInexistentFolderIndexReturnFalse() {
-        givenThereIsAMoveToFolderDelegate(checkCall: false)
-        givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[0])
+        givenWeHaveTenMessagesInCurrentFolder()
+        givenWeDontExpectToCallDelegate()
 
-        let moved = viewmodel.moveMessagesTo(index: 3)
+        let moved = viewmodel.moveMessagesTo(index: inexistentFolderIndex)
 
         XCTAssertFalse(moved)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testMessageAreNotMovedIfTheyBelongToTheDestinationFolder() {
-        givenThereIsAMoveToFolderDelegate(checkCall: false)
-        givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[0])
+        givenWeHaveTenMessagesInCurrentFolder()
+        givenWeDontExpectToCallDelegate()
 
         let moved = viewmodel.moveMessagesTo(index: 0)
 
@@ -78,6 +82,22 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
     }
 
     //MARK: Initialization
+
+    func givenWeHaveTenMessagesInCurrentFolder() {
+        givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[currentFolderIndex])
+    }
+
+    func givenWeExpectToCallDelegate() {
+        givenThereIsAMoveToFolderDelegate(checkCall: true)
+    }
+
+    func givenWeDontExpectToCallDelegate() {
+        givenThereIsAMoveToFolderDelegate(checkCall: false)
+    }
+
+    func givenWeHaveZeroMessageInCurrentFolder() {
+        givenWeWantToMove(aNumberOfMessages: 0, currentlyInFolder: folders[currentFolderIndex])
+    }
     
     func givenWeWantToMove(aNumberOfMessages: Int, currentlyInFolder: Folder){
         for i in 0..<aNumberOfMessages {
