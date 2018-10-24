@@ -16,10 +16,10 @@ class MessageViewModel: CustomDebugStringConvertible {
 
     let uid: UInt
     private let uuid: MessageID
-    private let displayedImageIdentity: Identity
     private let parentFolderName: String
     private let accountAddress: String
 
+    let displayedImageIdentity: Identity
     let identity:Identity
     let dateSent: Date
     let longMessageFormatted: String?
@@ -235,7 +235,8 @@ class MessageViewModel: CustomDebugStringConvertible {
     }
 
     func getProfilePicture(completion: @escaping (UIImage?) -> ()) {
-        profilePictureComposer.profilePicture(for: displayedImageIdentity, completion: completion)
+        let operation = getProfilePictureOperation(completion: completion)
+        queue.addOperation(operation)
     }
 
     func getSecurityBadge(completion: @escaping (UIImage?) ->()) {

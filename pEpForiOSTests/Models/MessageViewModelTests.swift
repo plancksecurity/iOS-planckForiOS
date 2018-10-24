@@ -132,7 +132,7 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
 
     func testLongBodyPeek() {
         givenViewModelRepresentsASubjectAndLongBodyMessage()
-        let specificWaitTime = 0.5
+        let specificWaitTime = UnitTestUtils.waitTime * 10000
         let expectation = XCTestExpectation(description: "body Peek is received")
         viewModel.bodyPeekCompletion = { bodyPeek in
             XCTAssertEqual(bodyPeek, Defaults.Outputs.longLongMessage)
@@ -182,6 +182,14 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
     func testBodyPeekIsAddedToQueue() {
         givenViewModelHasAnInitialAddingExpectationOperationQueue()
         viewModel.bodyPeekCompletion = { _ in
+            //do nothing
+        }
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testProfilePictureIsAddedToQueue() {
+        givenViewModelHasAnAddingExpectationOperationQueue()
+        viewModel.getProfilePicture { _ in
             //do nothing
         }
         waitForExpectations(timeout: UnitTestUtils.waitTime)
