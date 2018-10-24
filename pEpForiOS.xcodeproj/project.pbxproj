@@ -159,6 +159,7 @@
 		1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */; };
 		157C0541218059C200E530DE /* DocumentAttachmentPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157C0540218059C200E530DE /* DocumentAttachmentPickerViewModel.swift */; };
 		157C0543218059DC00E530DE /* DocumentAttachmentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157C0542218059DC00E530DE /* DocumentAttachmentPickerViewController.swift */; };
+		157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157C05472180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift */; };
 		15848D392167B85700D8CBA4 /* AccountCell_mvvm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15848D382167B85700D8CBA4 /* AccountCell_mvvm.swift */; };
 		15848D3D2167B9B100D8CBA4 /* AccountCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15848D3C2167B9B100D8CBA4 /* AccountCellViewModel.swift */; };
 		15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */; };
@@ -761,6 +762,7 @@
 		1579397A1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		157C0540218059C200E530DE /* DocumentAttachmentPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentPickerViewModel.swift; sourceTree = "<group>"; };
 		157C0542218059DC00E530DE /* DocumentAttachmentPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentPickerViewController.swift; sourceTree = "<group>"; };
+		157C05472180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentPickerViewModelTest.swift; sourceTree = "<group>"; };
 		15848D382167B85700D8CBA4 /* AccountCell_mvvm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell_mvvm.swift; sourceTree = "<group>"; };
 		15848D3C2167B9B100D8CBA4 /* AccountCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellViewModel.swift; sourceTree = "<group>"; };
 		15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+pEp.swift"; sourceTree = "<group>"; };
@@ -1609,6 +1611,30 @@
 			path = DocumentAttachmentPickerViewController;
 			sourceTree = "<group>";
 		};
+		157C05442180752300E530DE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				157743B52178857D0007222C /* RecipientCell */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		157C05452180753400E530DE /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				157C05462180754100E530DE /* DocumentAttachmentPickerViewController */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		157C05462180754100E530DE /* DocumentAttachmentPickerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				157C05472180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift */,
+			);
+			path = DocumentAttachmentPickerViewController;
+			sourceTree = "<group>";
+		};
 		15848D372167B7EC00D8CBA4 /* AccountCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1789,7 +1815,8 @@
 		15D4399D216F703100EB3933 /* Compose */ = {
 			isa = PBXGroup;
 			children = (
-				157743B52178857D0007222C /* RecipientCell */,
+				157C05452180753400E530DE /* Util */,
+				157C05442180752300E530DE /* Cells */,
 			);
 			path = Compose;
 			sourceTree = "<group>";
@@ -3612,6 +3639,7 @@
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
+				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
 				43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */,
 				15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */,

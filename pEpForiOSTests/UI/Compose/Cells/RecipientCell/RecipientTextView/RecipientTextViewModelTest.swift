@@ -69,7 +69,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     // MARK: - add(recipient:)
-    
+
     func testAddRecipientCalled() {
         assert(addRecipientValue: validId.address, ignoreCallsToAddRecipient: false)
         vm.add(recipient: validId)
