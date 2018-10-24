@@ -14,8 +14,7 @@ import MessageModel
 class DocumentAttachmentPickerViewModelTest: XCTestCase {
 
     func testInit() {
-        let resultDelegate = TestDocumentAttachmentPickerViewModelResultDelegate()
-        let testee = DocumentAttachmentPickerViewModel(resultDelegate: resultDelegate)
+        let testee = DocumentAttachmentPickerViewModel()
         XCTAssertNotNil(testee)
     }
 
