@@ -1324,16 +1324,16 @@ extension ComposeTableViewController_Old: ComposeCellDelegate {
         if suggestContacts {
             //IOS-1369: needs to go to VM
 //            suggestionsChildViewController?.updateSuggestions(searchString: textView.text)
-            if suggestionsChildViewController?.hasSuggestions ?? false {
-                showSuggestions()
-                tableView.scrollToTopOf(composeCell)
-                composeCell.textView.scrollToBottom()
-                updateSuggestTable(CGFloat(indexPath.row))
-            } else {
-                hideSuggestions()
-                composeCell.textView.scrollToTop()
-                tableView.updateSize()
-            }
+//            if suggestionsChildViewController?.hasSuggestions ?? false {
+//                showSuggestions()
+//                tableView.scrollToTopOf(composeCell)
+//                composeCell.textView.scrollToBottom()
+//                updateSuggestTable(CGFloat(indexPath.row))
+//            } else {
+//                hideSuggestions()
+//                composeCell.textView.scrollToTop()
+//                tableView.updateSize()
+//            }
         } else {
             textView.layoutAfterTextDidChange(tableView: tableView)
         }
