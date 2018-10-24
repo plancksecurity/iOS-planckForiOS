@@ -63,30 +63,37 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testUpdate() {
+        let address = "fakeAddress"
+        let login = "fakelogin"
+        let name = "fakeName"
+        let password = "fakePassword"
+
         setUpViewModel()
-        let server = AccountSettingsViewModel.ServerViewModel(address: "fakeAddress",
+
+        let server = AccountSettingsViewModel.ServerViewModel(address: address,
                                                               port: "123",
                                                               transport: "StartTls")
 
-
-        viewModel.update(loginName: "fakelogin",
-                         name: "fakeName",
-                         password: "fakePassword",
+        viewModel.update(loginName: login,
+                         name: name,
+                         password: password,
                          imap: server,
                          smtp: server)
+        let smtp = viewModel.account.smtpServer
+        let imap = viewModel.account.imapServer
 
-        XCTAssertEqual(viewModel.account.smtpServer?.credentials.loginName, "fakelogin")
-        XCTAssertEqual(viewModel.account.smtpServer?.credentials.password, "fakePassword")
-        XCTAssertEqual(viewModel.account.imapServer?.credentials.loginName, "fakelogin")
-        XCTAssertEqual(viewModel.account.imapServer?.credentials.password, "fakePassword")
+        XCTAssertEqual(smtp?.credentials.loginName, login)
+        XCTAssertEqual(smtp?.credentials.password, password)
+        XCTAssertEqual(imap?.credentials.loginName, login)
+        XCTAssertEqual(imap?.credentials.password, password)
 
-        XCTAssertEqual(viewModel.account.imapServer?.address, "fakeAddress")
-        XCTAssertEqual(viewModel.account.imapServer?.port, 123)
-        XCTAssertEqual(viewModel.account.imapServer?.transport, .startTls)
+        XCTAssertEqual(imap?.address, address)
+        XCTAssertEqual(imap?.port, 123)
+        XCTAssertEqual(imap?.transport, .startTls)
 
-        XCTAssertEqual(viewModel.account.smtpServer?.address, "fakeAddress")
-        XCTAssertEqual(viewModel.account.smtpServer?.port, 123)
-        XCTAssertEqual(viewModel.account.smtpServer?.transport, .startTls)
+        XCTAssertEqual(smtp?.address, address)
+        XCTAssertEqual(smtp?.port, 123)
+        XCTAssertEqual(smtp?.transport, .startTls)
 
     }
 
