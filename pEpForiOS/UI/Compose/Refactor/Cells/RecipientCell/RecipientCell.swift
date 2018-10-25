@@ -18,6 +18,5 @@ class RecipientCell: UITableViewCell {
         self.viewModel = viewModel
         recipientTextView.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
-        //TODO: recipientTextView initial recipients
     }
 }

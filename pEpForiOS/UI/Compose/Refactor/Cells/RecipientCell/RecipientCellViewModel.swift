@@ -47,7 +47,7 @@ class RecipientCellViewModel: CellViewModel {
     }
 
     func recipientTextViewModel() -> RecipientTextViewModel {
-        let createe = RecipientTextViewModel(resultDelegate: self)
+        let createe = RecipientTextViewModel(resultDelegate: self, recipients: initialRecipients)
         textViewModel = createe
         return createe
     }

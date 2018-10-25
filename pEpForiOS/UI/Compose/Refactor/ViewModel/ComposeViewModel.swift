@@ -194,10 +194,16 @@ extension ComposeViewModel {
             rows = [CellViewModel]()
             switch type {
             case .recipients:
-                rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .to)) //IOS-1369: set initial
+                rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate,
+                                                   type: .to,
+                                                   recipients: state?.toRecipients ?? []))
                 if let wrapped = state?.bccWrapped, !wrapped {
-                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .cc)) //IOS-1369: set initial
-                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate, type: .bcc)) //IOS-1369: set initial
+                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate,
+                                                       type: .cc,
+                                                       recipients: state?.ccRecipients ?? []))
+                    rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate,
+                                                       type: .bcc,
+                                                       recipients: state?.bccRecipients ?? []))
                 }
             case .wrapped:
                 if let wrapped = state?.bccWrapped, wrapped {

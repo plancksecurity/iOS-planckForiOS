@@ -20,14 +20,15 @@ protocol RecipientTextViewModelResultDelegate: class {
 }
 
 protocol RecipientTextViewModelDelegate: class {
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
-                                didChangeAttributedText newText: NSAttributedString)
+    
+    func textChanged(newText: NSAttributedString)
 
     func add(recipient: String)
 }
 
 class RecipientTextViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0
+    private var initialRecipients = [Identity]()
     public private(set) var isDirty = false
     //    public var hasSelectedAttachment = false //IOS-1369: obsolete?
     private var recipientAttachments = [RecipientTextViewTextAttachment]() {
@@ -39,10 +40,15 @@ class RecipientTextViewModel {
     }
 
     public weak var resultDelegate: RecipientTextViewModelResultDelegate?
-    public weak var delegate: RecipientTextViewModelDelegate?
+    public weak var delegate: RecipientTextViewModelDelegate? {
+        didSet {
+            setInitialRecipients()
+        }
+    }
 
-    init(resultDelegate: RecipientTextViewModelResultDelegate? = nil) {
+    init(resultDelegate: RecipientTextViewModelResultDelegate? = nil, recipients: [Identity] = []) {
         self.resultDelegate = resultDelegate
+        self.initialRecipients = recipients
     }
 
     public func add(recipient: Identity) {
@@ -125,11 +131,16 @@ class RecipientTextViewModel {
                                                            maxWidth: maxTextattachmentWidth)
             recipientAttachments.append(attachment)
             newText = newText.plainTextRemoved()
-            delegate?.recipientTextViewModel(recipientTextViewModel: self,
-                                             didChangeAttributedText: newText)
+            delegate?.textChanged(newText: newText)
             identityGenerated =  true
         }
         return identityGenerated
+    }
+
+    private func setInitialRecipients() {
+        for recipient in initialRecipients {
+            delegate?.add(recipient: recipient.address)
+        }
     }
 }
 

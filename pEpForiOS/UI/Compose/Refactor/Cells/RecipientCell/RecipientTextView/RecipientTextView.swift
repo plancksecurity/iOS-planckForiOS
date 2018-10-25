@@ -9,12 +9,17 @@
 import UIKit
 
 class RecipientTextView: UITextView {
-    //IOS-1369: TODO:
     public var viewModel: RecipientTextViewModel?{
         didSet {
+            reportWidthChange()
             viewModel?.delegate = self
             delegate = self
         }
+    }
+
+    private func reportWidthChange() {
+    let margin: CGFloat = 20.0
+    viewModel?.maxTextattachmentWidth = bounds.width - margin
     }
 }
 
@@ -23,7 +28,7 @@ class RecipientTextView: UITextView {
 extension RecipientTextView: UITextViewDelegate {
 
     public func textViewDidBeginEditing(_ textView: UITextView) {
-        viewModel?.maxTextattachmentWidth = bounds.width
+        reportWidthChange()
         //IOS-1369: scroll? suggestions?
 //        guard let cTextview = textView as? ComposeTextView else { return }
 //
@@ -144,8 +149,7 @@ extension RecipientTextView: UITextViewDelegate {
 
 extension RecipientTextView: RecipientTextViewModelDelegate {
 
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
-                                didChangeAttributedText newText: NSAttributedString) {
+    func textChanged(newText: NSAttributedString) {
         attributedText = newText
     }
 
