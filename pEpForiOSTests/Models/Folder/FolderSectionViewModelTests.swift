@@ -13,6 +13,13 @@ import XCTest
 class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     
     var viewModel: FolderSectionViewModel!
+    var folder: Folder!
+    
+    override func setUp() {
+        super.setUp()
+        self.folder = Folder(name: "Escafoides", parent: nil, account: account, folderType: .inbox)
+        self.folder.save()
+    }
     
     func testHiddenWhenUnifiedInbox() {
         givenThereIsAViewModelWithAccount(withUnifiedInbox: true)
@@ -20,7 +27,7 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func testCountIsOneWhenUnifiedInbox() {
-        givenThereIsAViewModelWithAccount(withUnifiedInbox: true)
+        givenThereIsAViewModelWithoutAccount(withUnifiedInbox: true)
         XCTAssertEqual(viewModel.count, 1)
     }
     
@@ -68,9 +75,12 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
         XCTAssertEqual(type, "Email")
     }
     
-//    func testSubscript() {
-//          Cannot test subscript because items array is private
-//    }
+    func testSubscript() {
+        givenThereIsAViewModelWithAccount(withUnifiedInbox: false)
+        let firstFolderName = viewModel[0].folder.name
+        let myFolderName = folder.name
+        XCTAssertEqual(firstFolderName, myFolderName)
+    }
     
     func testCollapse() {
         givenThereIsAViewModelWithoutAccount(withUnifiedInbox: true)
@@ -81,7 +91,6 @@ class FolderSectionViewModelTests: CoreDataDrivenTestBase {
     }
     
     func givenThereIsAViewModelWithAccount(withUnifiedInbox: Bool) {
-        let account = SecretTestData().createWorkingAccount()
         givenThereIsAViewModel(withUnifiedInbox: withUnifiedInbox, and: account)
     }
     
