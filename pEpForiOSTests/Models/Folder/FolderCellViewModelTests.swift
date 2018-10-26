@@ -70,7 +70,7 @@ class FolderCellViewModelTests: CoreDataDrivenTestBase {
     }
 
     func givenAViewModelWithSelectableFolder() {
-        folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .outbox, selectable = false)
+        folder = Folder(name: Input.folderName, parent: nil, account: account, folderType:.outbox, selectable: false)
         viewModel = FolderCellViewModel(folder: folder, level: 0)
     }
     
