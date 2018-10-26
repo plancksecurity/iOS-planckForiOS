@@ -71,9 +71,7 @@ struct InitData {
         return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
     }
 
-    var subject: String? {
-        return originalMessage?.shortMessage
-    }
+    var subject = ""
 
     var bodyPlaintext = ""
     var bodyHtml: NSAttributedString?
@@ -97,10 +95,29 @@ struct InitData {
         self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
         self.originalMessage = om
         self.prefilledTo = om == nil ? prefilledTo : nil
+        setupInitialSubject()
         setupInitialBody()
     }
 
-    //IOS-1369: rethink. Move to BodyTextView(?)
+    mutating private func setupInitialSubject() {
+        guard let om = originalMessage else {
+            // We have no original message. That's OK for compose mode .normal.
+            return
+        }
+        switch composeMode {
+        case .replyFrom,
+             .replyAll:
+            subject = ReplyUtil.replySubject(message: om)
+        case .forward:
+            subject = ReplyUtil.forwardSubject(message: om)
+        case .normal:
+            if isDraftsOrOutbox {
+                subject = om.shortMessage ?? " "
+            }
+            // .normal is intentionally ignored here for other folder types
+        }
+    }
+
     mutating private func setupInitialBody() {
         guard let om = originalMessage else {
             // We have no original message. That's OK for compose mode .normal.
