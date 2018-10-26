@@ -561,7 +561,10 @@ extension EmailViewController: SegueHandlerType {
 
             nv.popoverPresentationController?.delegate = self
             nv.popoverPresentationController?.sourceView = titleView
-            nv.popoverPresentationController?.sourceRect = CGRect(x: titleView.bounds.midX,                                                                           y:titleView.bounds.midY,                                                                           width:0,                                                                           height:0)
+            nv.popoverPresentationController?.sourceRect = CGRect(x: titleView.bounds.midX,
+                                                                  y: titleView.bounds.midY,
+                                                                  width: 0,
+                                                                  height: 0)
             vc.appConfig = appConfig
             vc.message = message
             vc.ratingReEvaluator = ratingReEvaluator

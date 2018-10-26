@@ -228,7 +228,10 @@ extension ComposeViewModel {
                 }
                 rows.append(rowModel)
             case .body:
-                rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate)) //IOS-1369: set initial
+                rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
+                                              initialPlaintext: state?.initData?.bodyPlaintext,
+                                              initialAttributedText: state?.initData?.bodyHtml,
+                                              inlinedAttachments: state?.initData?.inlinedAttachments))
             case .attachments:
                 for att in state?.nonInlinedAttachments ?? [] {
                     rows.append(AttachmentViewModel(attachment: att))

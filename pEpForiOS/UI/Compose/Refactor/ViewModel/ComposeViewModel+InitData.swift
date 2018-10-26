@@ -75,7 +75,7 @@ struct InitData {
         return originalMessage?.shortMessage
     }
 
-    var bodyPlaintext = " "
+    var bodyPlaintext = ""
     var bodyHtml: NSAttributedString?
 
     //IOS-1369: all lazy private set?
@@ -114,40 +114,9 @@ struct InitData {
             setInitialBody(text: ReplyUtil.quotedMessageText(message: om, replyAll: true))
         case .forward:
             setBodyPotetionallyTakingOverAttachments()
-            //                setBodyText(forMessage: om, to: messageBodyCell)
-            /*
-             private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell) {
-             guard isOriginalMessageInDraftsOrOutbox || composeMode == .forward else {
-             Log.shared.errorAndCrash(component: #function,
-             errorString: "Unsupported mode or message")
-             return
-             }
-             if let html = msg.longMessageFormatted {
-             // We have HTML content. Parse it taking inlined attachments into account.
-             let attributedString = html.htmlToAttributedString(attachmentDelegate: self)
-             var result = attributedString
-             if composeMode == .forward {
-             // forwarded messges must have a cite header ("yxz wrote on ...")
-             result = ReplyUtil.citedMessageText(textToCite: attributedString,
-             fromMessage: msg)
-             }
-             cell.setInitial(text:result)
-             } else {
-             // No HTML available.
-             var result = msg.longMessage ?? ""
-             if composeMode == .forward {
-             // forwarded messges must have a cite header ("yxz wrote on ...")
-             result = ReplyUtil.citedMessageText(textToCite: msg.longMessage ?? "",
-             fromMessage: msg)
-             }
-             cell.setInitial(text: result)
-             }
-             }
-             */
         case .normal:
             if isDraftsOrOutbox {
                 setBodyPotetionallyTakingOverAttachments()
-                //                setBodyText(forMessage: om, to: messageBodyCell)
             }
             // do nothing.
         }
@@ -211,18 +180,11 @@ class InitDataHtmlToAttributedTextSaxParserAttachmentDelegate: HtmlToAttributedT
     init(inlinedAttachments: [Attachment]) {
         self.inlinedAttachments = inlinedAttachments
     }
-
     func imageAttachment(src: String?, alt: String?) -> Attachment? {
         for attachment in inlinedAttachments {
             if attachment.contentID == src?.extractCid() {
                 // The attachment is inlined.
                 assertImage(inAttachment: attachment)
-                //IOS-1369: should not be contained
-                // Remove from non-inlined attachments if contained.
-                //                if let _ = nonInlinedAttachmentData.remove(attachment: attachment) {
-                //                    // dataSource has changed. Refresh tableView.
-                //                    tableView.reloadData()
-                //                }
                 return attachment
             }
         }
@@ -230,7 +192,7 @@ class InitDataHtmlToAttributedTextSaxParserAttachmentDelegate: HtmlToAttributedT
     }
 
     private func assertImage(inAttachment attachment: Attachment) {
-        // Assure the image is set ...
+        // Assure the image is set.
         if attachment.image == nil {
             guard let safeData = attachment.data else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No data")
@@ -238,7 +200,5 @@ class InitDataHtmlToAttributedTextSaxParserAttachmentDelegate: HtmlToAttributedT
             }
             attachment.image = UIImage(data: safeData)
         }
-        // ... and adjust its size.
-        //        attachment.image = attachment.image?.resized(newWidth: tableView.contentSize.width) //IOS-1369: Problem. Lets see.
     }
 }

@@ -139,6 +139,9 @@ class ComposeViewModelState {
         from = initData.from
         subject = initData.subject ?? " " // Set space to work around autolayout first baseline not recognized
         //            body = initD //IOS-1369: TODO
+//        bodyPlaintext = initData.bodyPlaintext
+//        bodyHtml = initData.bodyHtml
+
         inlinedAttachments =  initData.inlinedAttachments
         nonInlinedAttachments =  initData.nonInlinedAttachments
     }

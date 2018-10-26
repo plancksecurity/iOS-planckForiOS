@@ -14,11 +14,29 @@ class BodyCell: TextViewContainingTableViewCell {
     var viewModel: BodyCellViewModel? {
         didSet {
             viewModel?.delegate = self
+            viewModel?.maxTextattachmentWidth = textView.contentSize.width
+            setupInitialText()
         }
     }
 
     public func setup(with viewModel: BodyCellViewModel) {
         self.viewModel = viewModel
+    }
+
+    private func setupInitialText() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "No VM")
+            return
+        }
+        let (text, attrText) = vm.inititalText()
+        if let attr = attrText {
+            textView.attributedText = attr
+        } else {
+            textView.text = text
+        }
+        viewModel?.handleTextChange(newText: textView.text,
+                                    newAttributedText: textView.attributedText)
     }
 }
 
@@ -47,14 +65,13 @@ extension BodyCell {
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {
-        viewModel?.maxTextattachmentWidth = bounds.width
-        textView.becomeFirstResponder()
+        viewModel?.maxTextattachmentWidth = textView.bounds.width
         setupContextMenu()
     }
 
     func textView(_ textView: UITextView,
-                         shouldChangeTextIn range: NSRange,
-                         replacementText text: String) -> Bool {
+                  shouldChangeTextIn range: NSRange,
+                  replacementText text: String) -> Bool {
         guard let vm = viewModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "No VM")
             return true

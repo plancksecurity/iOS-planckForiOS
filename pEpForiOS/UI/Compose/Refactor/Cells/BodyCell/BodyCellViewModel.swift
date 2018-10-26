@@ -31,8 +31,8 @@ class BodyCellViewModel: CellViewModel {
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
     public private(set) var isDirty = false
-    private var plaintext = ""
-    private var html = NSAttributedString(string: "")
+    private var initialPlaintext = ""
+    private var initialAttributedText: NSAttributedString?
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -40,10 +40,17 @@ class BodyCellViewModel: CellViewModel {
     }
 
     init(resultDelegate: BodyCellViewModelResultDelegate,
-         initialText: String? = nil,
-         initialAttributedText: NSAttributedString? = nil) {
+         initialPlaintext: String? = nil,
+         initialAttributedText: NSAttributedString? = nil,
+         inlinedAttachments: [Attachment]?) {
         self.resultDelegate = resultDelegate
-        //IOS-1369: set initial
+        self.initialPlaintext = initialPlaintext ?? ""
+        self.initialAttributedText = initialAttributedText
+    }
+
+    func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
+        assureCorrectTextAtatchmentImageWidth()
+        return (initialPlaintext, initialAttributedText)
     }
 
     //IOS-1369: obsolete?
@@ -55,7 +62,7 @@ class BodyCellViewModel: CellViewModel {
     public func handleTextChange(newText: String, newAttributedText attrText: NSAttributedString) {
         createHtmlVersionAndInformDelegate(newText: newText, newAttributedText: attrText)
         isDirty = true
-        resultDelegate?.bodyCellViewModel(self, textChanged: newText)
+        resultDelegate?.bodyCellViewModel(self, textChanged: newText) //IOS-1369: I still think we AGNI. Double check.
     }
 
     public func shouldReplaceText(in range: NSRange,
@@ -117,6 +124,22 @@ extension BodyCellViewModel {
     private func removeInlinedAttachments(_ removees: [Attachment]) {
         if removees.count > 0 {
             inlinedAttachments = inlinedAttachments.filter { !removees.contains($0) }
+        }
+    }
+
+    private func assureCorrectTextAtatchmentImageWidth() {
+        guard let attributedText = initialAttributedText else {
+            // Empty body. That's perfictly fine.
+            return
+        }
+        for textAttachment in attributedText.textAttachments() {
+            guard let image = textAttachment.image else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No image?")
+                return
+            }
+            if image.size.width > maxTextattachmentWidth {
+                textAttachment.image = image.resized(newWidth: maxTextattachmentWidth)
+            }
         }
     }
 }

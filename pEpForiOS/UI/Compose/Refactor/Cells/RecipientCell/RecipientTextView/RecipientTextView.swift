@@ -18,8 +18,7 @@ class RecipientTextView: UITextView {
     }
 
     private func reportWidthChange() {
-    let margin: CGFloat = 20.0
-    viewModel?.maxTextattachmentWidth = bounds.width - margin
+    viewModel?.maxTextattachmentWidth = bounds.width
     }
 }
 
