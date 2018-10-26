@@ -45,15 +45,47 @@ class FolderCellViewModelTests: CoreDataDrivenTestBase {
         XCTAssertEqual(icon, inputIcon)
     }
     
-    func testIsSelectable() {
+    func testIsNotSelectable() {
         givenAViewModelWithFolderAndLevel()
         let isSelectable = viewModel.isSelectable
-        let inputSelectable = folder.isLocalFolder || folder.selectable
-        XCTAssertEqual(isSelectable, inputSelectable)
+        XCTAssertFalse(isSelectable)
+    }
+
+    func testIsSelectableFolderIfIsUnified(){
+        givenAviewModelWithUnifiedFolder()
+        let isSelectable = viewModel.isSelectable
+        XCTAssertTrue(isSelectable)
+    }
+
+    func testIsSelectableFolderIfIsLocal() {
+        givenAViewModelWithLocalFolder()
+        let isSelectable = viewModel.isSelectable
+        XCTAssertTrue(isSelectable)
+    }
+
+    func testSelectableFolderIsSelectable() {
+        givenAViewModelWithSelectableFolder()
+        let isSelectable = viewModel.isSelectable
+        XCTAssertTrue(isSelectable)
+    }
+
+    func givenAViewModelWithSelectableFolder() {
+        folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .outbox, selectable = false)
+        viewModel = FolderCellViewModel(folder: folder, level: 0)
     }
     
+    func givenAviewModelWithUnifiedFolder() {
+        viewModel = FolderCellViewModel(folder: UnifiedInbox(), level: 0)
+    }
+
+    func givenAViewModelWithLocalFolder() {
+        folder = Folder(name: Input.folderName, parent: nil, account: account, folderType: .outbox)
+        viewModel = FolderCellViewModel(folder: folder, level: 0)
+
+    }
+
     func givenAViewModelWithFolderAndLevel() {
-        
+
         let level = Input.level
         viewModel = FolderCellViewModel(folder: folder, level: level)
     }
