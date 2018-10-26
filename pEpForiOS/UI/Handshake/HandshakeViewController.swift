@@ -33,7 +33,9 @@ class HandshakeViewController: BaseTableViewController {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        let img = UIImage(named: "grid-globe")
+
+
+        let img = UIImage(named: "pEpForiOS-icon-languagechange")
 
         let item = UIBarButtonItem(image: img,
                         style: UIBarButtonItemStyle.plain,
