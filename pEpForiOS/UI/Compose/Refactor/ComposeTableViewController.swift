@@ -26,6 +26,7 @@ class ComposeTableViewController: BaseTableViewController {
         return DocumentAttachmentPickerViewController(
             viewModel: viewModel?.documentAttachmentPickerViewModel())
     }()
+
     private var isInitialSetup = true
     private var currentCellIndexPath: IndexPath?
     var viewModel: ComposeViewModel? {
@@ -85,12 +86,11 @@ class ComposeTableViewController: BaseTableViewController {
     // MARK: - IBActions
 
     @IBAction func cancel(_ sender: Any) {
-        //IOS-1369:
-        //        if edited {
-        //            showAlertControllerWithOptionsForCanceling(sender: sender)
-        //        } else {
-                    dismiss()
-        //        }
+        if viewModel?.showCancelActions ?? false {
+            showAlertControllerWithOptionsForCanceling(sender: sender)
+        } else {
+            dismiss()
+        }
     }
 
     func dismiss() {
@@ -448,6 +448,87 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         )
         deleteAction.backgroundColor = SwipeActionDescriptor.trash.color
         return (orientation == .right ?   [deleteAction] : nil)
+    }
+}
+
+// MARK: - Cancel UIAlertController
+
+extension ComposeTableViewController {
+
+    private func showAlertControllerWithOptionsForCanceling(sender: Any) {
+        let actionSheetController = UIAlertController.pEpAlertController(preferredStyle: .actionSheet)
+        if let popoverPresentationController = actionSheetController.popoverPresentationController {
+            popoverPresentationController.barButtonItem = sender as? UIBarButtonItem
+        }
+        actionSheetController.addAction(cancelAction(forAlertController: actionSheetController))
+        actionSheetController.addAction(deleteAction(forAlertController: actionSheetController))
+        actionSheetController.addAction(saveAction(forAlertController: actionSheetController))
+        if viewModel?.showKeepInOutbox ?? false {
+            actionSheetController.addAction(
+                keepInOutboxAction(forAlertController: actionSheetController))
+        }
+        present(actionSheetController, animated: true)
+    }
+
+    private func deleteAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return UIAlertAction()
+        }
+        let action: UIAlertAction
+        let text = vm.deleteActionTitle
+        action = ac.action(text, .destructive) {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            vm.handleDeleteActionTriggered()
+            me.dismiss()
+        }
+        return action
+    }
+
+    private func saveAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return UIAlertAction()
+        }
+        let action: UIAlertAction
+        let text = vm.saveActionTitle
+        action = ac.action(text, .default) { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            vm.handleSaveActionTriggered()
+            me.dismiss()
+        }
+        return action
+    }
+
+    private func keepInOutboxAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return UIAlertAction()
+        }
+        let action: UIAlertAction
+        let text = vm.keepInOutboxActionTitle
+        action = ac.action(text, .default) {[weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.dismiss()
+        }
+        return action
+    }
+
+    private func cancelAction(forAlertController ac: UIAlertController) -> UIAlertAction {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return UIAlertAction()
+        }
+        return ac.action(vm.cancelActionTitle, .cancel)
     }
 }
 

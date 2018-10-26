@@ -95,7 +95,11 @@ class ComposeViewModel {
             return
         }
         msg.save()
-        if state.initData?.isDraftsOrOutbox ?? false {
+        guard let data = state.initData else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            return
+        }
+        if data.isDraftsOrOutbox {
             // From user perspective, we have edited a drafted message and will send it.
             // Technically we are creating and sending a new message (msg), thus we have to
             // delete the original, previously drafted one.
@@ -118,7 +122,11 @@ class ComposeViewModel {
     }
 
     private func deleteOriginalMessage() {
-        guard let om = state.initData?.originalMessage else {
+        guard let data = state.initData else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            return
+        }
+        guard let om = data.originalMessage else {
             // That might happen. Message might be sent already and thus has been moved to
             // Sent folder.
             return
@@ -403,6 +411,108 @@ extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate
             delegate?.hideMediaAttachmentPicker()
             //IOS-1369: update attachment section
             //IOS-1369: update TV.
+        }
+    }
+}
+
+// MARK: - Cancel Actions
+
+extension ComposeViewModel {
+
+    public var showKeepInOutbox: Bool {
+        return state.initData?.isOutbox ?? false
+    }
+
+    public var showCancelActions: Bool {
+        return state.edited
+    }
+
+    public var deleteActionTitle: String {
+        guard let data = state.initData else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            return ""
+        }
+        let title: String
+        if data.isDrafts {
+            title = NSLocalizedString("Discharge changes", comment:
+                "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
+        } else if data.isOutbox {
+            title = NSLocalizedString("Delete", comment:
+                "ComposeTableView: button to decide to delete a message from Outbox after " +
+                "making changes.")
+        } else {
+            title = NSLocalizedString("Delete", comment: "compose email delete")
+        }
+        return title
+    }
+
+    public var saveActionTitle: String {
+        guard let data = state.initData else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            return ""
+        }
+        let title: String
+        if data.isDrafts {
+            title = NSLocalizedString("Save changes", comment:
+                "ComposeTableView: button to decide to save changes made on a drafted mail.")
+        } else {
+            title = NSLocalizedString("Save Draft", comment: "compose email save")
+        }
+        return title
+    }
+
+    public var keepInOutboxActionTitle: String {
+        return NSLocalizedString("Keep in Outbox", comment:
+            "ComposeTableView: button to decide to Discharge changes made on a mail in outbox.")
+    }
+
+    public var cancelActionTitle: String {
+        return NSLocalizedString("Cancel", comment: "compose email cancel")
+    }
+
+    public func handleDeleteActionTriggered() {
+        guard let data = state.initData else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            return
+        }
+        if data.isOutbox {
+            data.originalMessage?.delete()
+            resultDelegate?.composeViewModelDidDeleteMessage()
+        }
+    }
+
+    public func handleSaveActionTriggered() {
+        guard let data = state.initData else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No data")
+            return
+        }
+        if data.isDraftsOrOutbox {
+            // We are in drafts folder and, from user perespective, are editing a drafted mail.
+            // Technically we have to create a new one and delete the original message, as the
+            // mail is already synced with the IMAP server and thus we must not modify it.
+            deleteOriginalMessage()
+            if data.isOutbox {
+                // Message will be saved (moved from user perspective) to drafts, but we are in
+                // outbox folder.
+                resultDelegate?.composeViewModelDidDeleteMessage()
+            }
+        }
+
+        guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No message")
+            return
+        }
+        let acc = msg.parent.account
+        if let f = Folder.by(account:acc, folderType: .drafts) {
+            msg.parent = f
+            msg.imapFlags?.draft = true
+            msg.sent = Date()
+            msg.save()
+        }
+        if data.isDrafts {
+            // We save a modified version of a drafted message. The UI might want to updtate
+            // its model.
+            resultDelegate?.composeViewModelDidModifyMessage()
         }
     }
 }

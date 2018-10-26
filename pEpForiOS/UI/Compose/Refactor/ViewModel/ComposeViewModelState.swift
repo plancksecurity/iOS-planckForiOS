@@ -26,14 +26,13 @@ protocol ComposeViewModelStateDelegate: class {
 /// Wraps bookholding properties
 class ComposeViewModelState {
     private(set) var initData: InitData?
-    private var edited = false
     private var isValidatedForSending = false {
         didSet {
                 delegate?.composeViewModelState(self,
                                                 didChangeValidationStateTo: isValidatedForSending)
         }
     }
-
+    public private(set) var edited = false
     public private(set) var rating = PEP_rating_undefined {
         didSet {
             if rating != oldValue {
