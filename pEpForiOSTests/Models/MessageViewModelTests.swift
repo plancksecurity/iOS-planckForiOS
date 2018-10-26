@@ -46,6 +46,7 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
             static let longLongMessage = "Hey Borja, How is it going? Are you okay? I was wondering"
                 + " if we could meet sometime this afternoon. I would like to disc"
             static let expectedDateText = "Jan 2, 1991"
+            static let expectedNumberOfMessages = 0
         }
     }
 
@@ -141,6 +142,17 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         wait(for: [expectation], timeout: specificWaitTime)
     }
 
+    func testMessageCountIsReceived() {
+        givenViewModelRepresentsASubjectAndBodyMessage()
+        let specificWaitTime = UnitTestUtils.waitTime * 5000
+        let expectation = XCTestExpectation(description: "Message count is received")
+        viewModel.messageCount { (numberOfMessages) in
+            XCTAssertEqual(numberOfMessages, Defaults.Outputs.expectedNumberOfMessages)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: specificWaitTime)
+    }
+
     func testFormattedBody() {
         givenViewModelRepresentsMessageWithFormattedBody()
         let formattedMessage = viewModel.longMessageFormatted
@@ -195,6 +207,14 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    func testMessageCountIsAddedToQueue() {
+        givenViewModelHasAnAddingExpectationOperationQueue()
+        viewModel.messageCount { _ in
+            //do nothing
+        }
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     func testQueueCancelledWhenStoppingUpdates() {
         givenViewModelHasACancellingExpectationOperationQueue()
         viewModel.unsubscribeForUpdates()
@@ -241,6 +261,17 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         viewModel = MessageViewModel(with: message)
         let retrievedMessage = viewModel.message()!
         XCTAssertEqual(message, retrievedMessage)
+    }
+
+    func testFromIdentity() {
+        let message = givenThereIsAOneRecipientMessage()
+        viewModel = MessageViewModel(with: message)
+        guard let identity = message.from else {
+            XCTFail("No identity")
+            return
+        }
+        let retrievedIdentity = viewModel.identity
+        XCTAssertEqual(identity, retrievedIdentity)
     }
 
     //PRAGMA - MARK: GIVEN
