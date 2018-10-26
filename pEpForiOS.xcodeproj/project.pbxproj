@@ -31,7 +31,6 @@
 		004422CA2179ECD600BDF6DF /* PassiveModeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */; };
 		004422D9217A25AD00BDF6DF /* UnecryptedSubjectViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422D8217A25AD00BDF6DF /* UnecryptedSubjectViewModelTest.swift */; };
 		004A8C552112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C542112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift */; };
-		004A8C592113056900203143 /* MessageViewModel+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C582113056900203143 /* MessageViewModel+Operations.swift */; };
 		004A8C5B211316E100203143 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C5A211316E100203143 /* SelfReferencingOperation.swift */; };
 		005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */; };
 		0069DCFB2110679200846EB1 /* EmailViewController+UIPopoverPresentationControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0069DCFA2110679200846EB1 /* EmailViewController+UIPopoverPresentationControllerDelegate.swift */; };
@@ -636,7 +635,6 @@
 		004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassiveModeViewModelTest.swift; sourceTree = "<group>"; };
 		004422D8217A25AD00BDF6DF /* UnecryptedSubjectViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnecryptedSubjectViewModelTest.swift; sourceTree = "<group>"; };
 		004A8C542112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListView+UITableViewDataSourcePrefetching.swift"; sourceTree = "<group>"; };
-		004A8C582113056900203143 /* MessageViewModel+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageViewModel+Operations.swift"; sourceTree = "<group>"; };
 		004A8C5A211316E100203143 /* SelfReferencingOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfReferencingOperation.swift; sourceTree = "<group>"; };
 		005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadedEmailViewModel.swift; sourceTree = "<group>"; };
 		0069DCFA2110679200846EB1 /* EmailViewController+UIPopoverPresentationControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+UIPopoverPresentationControllerDelegate.swift"; sourceTree = "<group>"; };
@@ -1287,7 +1285,6 @@
 			isa = PBXGroup;
 			children = (
 				000D3C2E20D12BFD006B11B2 /* MessageViewModel.swift */,
-				004A8C582113056900203143 /* MessageViewModel+Operations.swift */,
 				0038494920D25576008000EA /* ProfilePictureComposer.swift */,
 				0038494B20D2587F008000EA /* PepPictureComposer.swift */,
 			);
@@ -3415,7 +3412,6 @@
 				434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */,
 				15F0F7AD213594FC002BE853 /* Folder+Imap.swift in Sources */,
 				15D2A59821651313003711BA /* ComposeTableViewController.swift in Sources */,
-				004A8C592113056900203143 /* MessageViewModel+Operations.swift in Sources */,
 				430D73651E9CBD4E00EA6FA9 /* AttachmentsViewOperation.swift in Sources */,
 				495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */,
 				43313DFC1DEC7F6000C111C8 /* DeleteFoldersOperation.swift in Sources */,

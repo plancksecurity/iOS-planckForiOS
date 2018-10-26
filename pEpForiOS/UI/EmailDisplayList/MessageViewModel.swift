@@ -18,8 +18,8 @@ class MessageViewModel: CustomDebugStringConvertible {
     private let uuid: MessageID
     private let parentFolderName: String
     private let accountAddress: String
+    private let displayedImageIdentity: Identity
 
-    let displayedImageIdentity: Identity
     let identity:Identity
     let dateSent: Date
     let longMessageFormatted: String?
@@ -309,4 +309,102 @@ extension MessageViewModel: MessageIdentitfying {
     var messageIdentifier: MessageID {
         return uuid
     }
+}
+
+//PRAGMA MARK: Message View Model + Operations
+
+extension MessageViewModel {
+
+    private func getMessageCountOperation(completion: @escaping (Int)->()) -> SelfReferencingOperation {
+
+        let getMessageCountOperation = SelfReferencingOperation {  [weak self] operation in
+            guard let me = self else {
+                return
+            }
+            MessageModel.performAndWait {
+                guard
+                    let operation = operation,
+                    !operation.isCancelled,
+                    let message = me.message() else {
+                        return
+                }
+                let messageCount = message.numberOfMessagesInThread()
+                me.internalMessageCount = messageCount
+                if (!operation.isCancelled){
+                    DispatchQueue.main.async {
+                        completion(messageCount)
+                    }
+                }
+            }
+        }
+        return getMessageCountOperation
+    }
+
+    private func getBodyPeekOperation(for message: Message, completion: @escaping (String)->()) -> SelfReferencingOperation {
+
+        let getBodyPeekOperation = SelfReferencingOperation {operation in
+            guard
+                let operation = operation,
+                !operation.isCancelled else {
+                    return
+            }
+            MessageModel.performAndWait {
+                guard !operation.isCancelled else {
+                    return
+                }
+                let summary = MessageViewModel.getSummary(fromMessage: message)
+                guard !operation.isCancelled else {
+                    return
+                }
+                self.internalBoddyPeek = summary
+                if(!operation.isCancelled){
+                    DispatchQueue.main.async {
+                        completion(summary)
+                    }
+                }
+            }
+        }
+        return getBodyPeekOperation
+    }
+
+    private func getSecurityBadgeOperation(
+        completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
+        let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
+            guard let me = self else {
+                return
+            }
+            MessageModel.performAndWait {
+                guard
+                    let operation = operation,
+                    !operation.isCancelled,
+                    let message = me.message() else {
+                        return
+                }
+
+                if (!operation.isCancelled) {
+                    me.profilePictureComposer.securityBadge(for: message, completion: completion)
+                }
+            }
+        }
+        return getSecurityBadgeOperation
+    }
+
+    private func getProfilePictureOperation(
+        completion: @escaping (UIImage?) -> ()) -> SelfReferencingOperation {
+        let getSecurityBadgeOperation = SelfReferencingOperation { [weak self] operation in
+            guard let me = self else {
+                return
+            }
+            MessageModel.performAndWait {
+                guard
+                    let operation = operation,
+                    !operation.isCancelled else {
+                        return
+                }
+                me.profilePictureComposer.profilePicture(for: me.displayedImageIdentity, completion: completion)
+            }
+        }
+        return getSecurityBadgeOperation
+    }
+
 }
