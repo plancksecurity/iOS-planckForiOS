@@ -123,7 +123,6 @@ extension ComposeTableViewController {
         }
     }
 
-    //IOS-1369: can we move to ComposeUtils or such?
     /// Shows a menu where user can choose to make a handshake, or toggle force unprotected.
     @objc func actionHandshakeOrForceUnprotected(gestureRecognizer: UITapGestureRecognizer) {
         guard let vm = viewModel else {
@@ -140,9 +139,8 @@ extension ComposeTableViewController {
                 let actionReply = UIAlertAction(
                     title: NSLocalizedString("Handshake",
                                              comment: "possible privacy status action"),
-                    style: .default) {/*[weak self]*/ (action) in
-                        fatalError("IOS-1369: push handshake view. Need to get viewModeled first though")
-//                        self?.performSegue(withIdentifier: .segueHandshake, sender: self)
+                    style: .default) {[weak self] (action) in
+                        self?.performSegue(withIdentifier: .segueHandshake, sender: self)
                 }
                 alert.addAction(actionReply)
             }
@@ -223,6 +221,33 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 
     func showDocumentAttachmentPicker() {
         presentDocumentAttachmentPicker()
+    }
+}
+
+// MARK: - SegueHandlerType
+
+extension ComposeTableViewController: SegueHandlerType {
+
+    enum SegueIdentifier: String {
+        case segueHandshake
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segueIdentifier(for: segue) {
+        case .segueHandshake:
+            guard
+                let nc = segue.destination as? UINavigationController,
+                let destination = nc.rootViewController as? HandshakeViewController else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                    return
+            }
+            destination.appConfig = appConfig
+            viewModel?.setup(handshakeViewController: destination)
+        }
+    }
+
+    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
+        // nothing to do.
     }
 }
 
