@@ -25,7 +25,7 @@ class Appearance {
         UITextField.appearance().tintColor = color
 
         UISearchBar.appearance().barTintColor = .white
-        UISearchBar.appearance().backgroundColor = .white
+        UISearchBar.appearance().backgroundColor = .pEpNavigation
         UISearchBar.appearance().tintColor = color
 
         setAlertControllerTintColor(color)
