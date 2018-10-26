@@ -50,6 +50,7 @@ class HandshakeViewController: BaseTableViewController {
     override func viewDidLoad() {
         let newBackButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(HandshakeViewController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
+        self.showPepRating(pEpRating: PEP_rating.init(0))
     }
 
     @objc func back(sender: UIBarButtonItem) {
