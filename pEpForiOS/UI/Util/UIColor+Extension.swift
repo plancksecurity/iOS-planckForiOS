@@ -15,12 +15,14 @@ extension UIColor {
     static let pEpGreyHex = "#8e8e93"
     static let pEpYellowHex = "#FFCC00"
     static let pEpLightBackgroundHex = "#F2F2F2"
+    static let pEpNavigationBarColor = "#f7f7f7"
 
     public static var pEpGreen = UIColor(hexString: pEpGreenHex)
     public static var pEpDarkGreen = UIColor(hexString: pEpDarkGreenHex)
     public static var pEpRed = UIColor(hexString: pEpRedHex)
     public static var pEpGray = UIColor(hexString: pEpGreyHex)
     public static var pEpYellow = UIColor(hexString: pEpYellowHex)
+    public static var pEpNavigation = UIColor(hexString: pEpNavigationBarColor)
 
     /**
      Example use: In trustwords table view cells.

@@ -12,9 +12,8 @@ import UIKit
 class Appearance {
     public static func pEp(_ color: UIColor = .pEpGreen) {
         UINavigationBar.appearance().backgroundColor = .white
-        UINavigationBar.appearance().barTintColor = .white
+        UINavigationBar.appearance().barTintColor = .pEpNavigation
         UINavigationBar.appearance().tintColor = color
-        UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().titleTextAttributes =
             [NSAttributedStringKey.foregroundColor: color]
 
