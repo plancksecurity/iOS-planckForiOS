@@ -123,7 +123,6 @@ struct InitData {
             // We have no original message. That's OK for compose mode .normal.
             return
         }
-
         switch composeMode {
         case .replyFrom:
             setInitialBody(text: ReplyUtil.quotedMessageText(message: om, replyAll: false))

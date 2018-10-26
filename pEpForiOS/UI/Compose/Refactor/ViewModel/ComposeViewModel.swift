@@ -36,6 +36,8 @@ protocol ComposeViewModelDelegate: class {
     /// The model changed / has been resetted
     func modelChanged()
 
+    func sectionChanged(section: Int)
+
     func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool)
 
     func hideSuggestions()
@@ -253,6 +255,15 @@ extension ComposeViewModel {
         delegate?.modelChanged()
     }
 
+    private func index(ofSectionWithType type: ComposeViewModel.Section.SectionType) -> Int? {
+        for i in 0..<sections.count {
+            if sections[i].type == type {
+                return i
+            }
+        }
+        return nil
+    }
+
     private func section(
         `for` type: ComposeViewModel.Section.SectionType) -> ComposeViewModel.Section? {
         for section in sections {
@@ -321,7 +332,9 @@ extension ComposeViewModel {
             }
             sections.append(new)
         }
-        delegate?.modelChanged()
+        if let attachmenttSection = index(ofSectionWithType: .attachments) {
+            delegate?.sectionChanged(section: attachmenttSection)
+        }
     }
 }
 

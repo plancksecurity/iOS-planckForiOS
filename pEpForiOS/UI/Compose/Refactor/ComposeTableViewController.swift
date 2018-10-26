@@ -198,6 +198,17 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.reloadData()
     }
 
+    func sectionChanged(section: Int) {
+        tableView.beginUpdates()
+        if section < tableView.numberOfSections {
+            tableView.reloadSections(IndexSet(integer: section), with: .automatic)
+        } else {
+            // The section did not exist previously
+            tableView.insertSections(IndexSet(integer: section), with: .automatic)
+        }
+        tableView.endUpdates()
+    }
+
     func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
     }
