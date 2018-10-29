@@ -56,16 +56,19 @@ class ComposeViewModelState {
     //Recipients
     var toRecipients = [Identity]() {
         didSet {
+            edited = true
             validate()
         }
     }
     var ccRecipients = [Identity]() {
         didSet {
+            edited = true
             validate()
         }
     }
     var bccRecipients = [Identity]() {
         didSet {
+            edited = true
             validate()
         }
     }
@@ -135,6 +138,8 @@ class ComposeViewModelState {
         from = initData.from
         subject = initData.subject
 
+        pEpProtection = initData.pEpProtection
+
         inlinedAttachments =  initData.inlinedAttachments
         nonInlinedAttachments =  initData.nonInlinedAttachments
     }
@@ -173,7 +178,7 @@ extension ComposeViewModelState {
     }
 
     private func calculatePepRating() {
-        guard !isForceUnprotectedDueToBccSet else {
+        guard !isForceUnprotectedDueToBccSet && pEpProtection else {
             rating = PEP_rating_unencrypted
             return
         }

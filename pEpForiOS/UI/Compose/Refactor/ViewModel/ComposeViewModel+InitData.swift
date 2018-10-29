@@ -43,6 +43,10 @@ struct InitData {
         return false
     }
 
+    var pEpProtection: Bool {
+        return originalMessage?.pEpProtected ?? true
+    }
+
     var from: Identity? {
         return ComposeUtil.initialFrom(composeMode: composeMode,
                                        originalMessage: originalMessage)

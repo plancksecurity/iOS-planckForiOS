@@ -72,8 +72,8 @@ class RecipientTextViewModel {
     }
 
     public func handleTextChange(newText: String) {
-        isDirty = true
         let textOnly = newText.trimObjectReplacementCharacters().trimmed()
+        isDirty = !textOnly.isEmpty
         resultDelegate?.recipientTextViewModel(recipientTextViewModel: self, textChanged: textOnly)
     }
 
@@ -102,6 +102,7 @@ class RecipientTextViewModel {
                                                         of text: NSAttributedString) -> Bool {
         let containsNothingButAttachments = text.plainTextRemoved().length == text.length
         let validEmailaddressHandled = parseAndHandleValidEmailAddresses(inRange: range, of: text)
+        isDirty = !validEmailaddressHandled && !containsNothingButAttachments
         return validEmailaddressHandled
     }
 
