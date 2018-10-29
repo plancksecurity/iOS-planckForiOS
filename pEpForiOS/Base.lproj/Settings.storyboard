@@ -189,7 +189,7 @@
                     <connections>
                         <segue destination="Eri-pJ-T3J" kind="showDetail" identifier="segueEditAccount" id="WKY-VX-I5i"/>
                         <segue destination="9LH-QE-79O" kind="showDetail" identifier="sequeShowCredits" id="H2d-0I-oCO"/>
-                        <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindAccountAddedWithSegue:" id="dbj-Gx-Exo"/>
+                        <segue destination="1at-88-jou" kind="unwind" identifier="noAccounts" unwindAction="segueUnwindLastAccountDeletedWithSegue:" id="dbj-Gx-Exo"/>
                         <segue destination="pQb-5p-QId" kind="showDetail" identifier="segueShowSettingDefaultAccount" id="qiY-7g-nll"/>
                         <segue destination="01V-rr-Nt1" kind="showDetail" identifier="segueShowLog" id="U6Q-tx-u4b"/>
                         <segue destination="95U-QI-nlr" kind="showDetail" identifier="segueShowSettingTrustedServers" id="tvG-bN-ITt"/>

@@ -340,6 +340,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     @IBAction func flagToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
             model?.markSelectedAsFlagged(indexPaths: selectedItems)
+            selectedItems.forEach { (ip) in
+                if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
+                    cell.isFlagged = true
+                }
+            }
         }
         cancelToolbar(sender)
     }
@@ -347,6 +352,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     @IBAction func unflagToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
             model?.markSelectedAsUnFlagged(indexPaths: selectedItems)
+            selectedItems.forEach { (ip) in
+                if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
+                    cell.isFlagged = false
+                }
+            }
         }
         cancelToolbar(sender)
     }
@@ -354,6 +364,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     @IBAction func readToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
             model?.markSelectedAsRead(indexPaths: selectedItems)
+            selectedItems.forEach { (ip) in
+                if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
+                    cell.isSeen = true
+                }
+            }
         }
         cancelToolbar(sender)
     }
@@ -361,6 +376,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     @IBAction func unreadToolbar(_ sender:UIBarButtonItem!) {
         if let selectedItems = tableView.indexPathsForSelectedRows {
             model?.markSelectedAsUnread(indexPaths: selectedItems)
+            selectedItems.forEach { (ip) in
+                if let cell = self.tableView.cellForRow(at: ip) as? EmailListViewCell {
+                    cell.isSeen = false
+                }
+            }
         }
         cancelToolbar(sender)
     }
@@ -926,10 +946,16 @@ extension EmailListViewController {
             Log.shared.errorAndCrash(component: #function, errorString: "No data for indexPath!")
             return
         }
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No cell for indexPath!")
+            return
+        }
         if row.isFlagged {
             model?.unsetFlagged(forIndexPath: indexPath)
+            cell.isFlagged = false
         } else {
             model?.setFlagged(forIndexPath: indexPath)
+            cell.isFlagged = true
         }
     }
 
@@ -949,6 +975,10 @@ extension EmailListViewController {
      Enables manual account setup to unwind to the unified inbox.
      */
     @IBAction func segueUnwindAfterAccountCreation(segue:UIStoryboardSegue) {
+        setup()
+    }
+
+    @IBAction func segueUnwindLastAccountDeleted(segue:UIStoryboardSegue) {
         setup()
     }
 }
