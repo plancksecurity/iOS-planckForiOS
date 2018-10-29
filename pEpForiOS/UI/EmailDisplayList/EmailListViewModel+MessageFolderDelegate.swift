@@ -352,7 +352,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     private func update(topMessage: Message,
                         previewMessage: MessageViewModel,
                         atIndex indexExisting: Int) {
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.sync { [weak self] in
             guard let me = self else {
                 // Assumtion taken over from original implementaion: It's ok here.
                 return
