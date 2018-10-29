@@ -86,7 +86,7 @@ class ComposeViewModel {
         let section = sections[indexPath.section]
         if section.type == .wrapped {
             state.setBccUnwrapped()
-            resetSections()
+            unwrapRecipientSection()
         }
     }
 
@@ -265,6 +265,26 @@ extension ComposeViewModel {
         }
         self.sections = newSections
         delegate?.modelChanged()
+    }
+
+    private func unwrapRecipientSection() {
+        let maybeWrappedIdx = 1
+        if sections[maybeWrappedIdx].type == .wrapped {
+            let wrappedSection = sections[maybeWrappedIdx]
+            wrappedSection.rows.removeAll()
+            delegate?.sectionChanged(section: maybeWrappedIdx)
+        }
+
+        guard let newRecipientsSection = ComposeViewModel.Section(type: .recipients,
+                                                               for: state,
+                                                               cellVmDelegate: self)
+            else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No VMs")
+                return
+        }
+        let idxRecipients = 0
+        self.sections[idxRecipients] = newRecipientsSection
+        delegate?.sectionChanged(section: 0)
     }
 
     private func index(ofSectionWithType type: ComposeViewModel.Section.SectionType) -> Int? {
