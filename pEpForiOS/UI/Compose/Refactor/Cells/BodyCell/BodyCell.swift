@@ -40,6 +40,8 @@ class BodyCell: TextViewContainingTableViewCell {
     }
 }
 
+//IOS-1369: extract to BodyTextView
+
 // MARK: - BodyCellViewModelDelegate
 
 extension BodyCell: BodyCellViewModelDelegate {
