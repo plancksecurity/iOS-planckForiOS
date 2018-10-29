@@ -8,20 +8,22 @@
 
 import UIKit
 
-class RecipientCell: UITableViewCell {
+class RecipientCell: TextViewContainingTableViewCell {
     static let reuseId = "RecipientCell"
     @IBOutlet weak var title: UILabel!
-    @IBOutlet var recipientTextView: RecipientTextView!
     var viewModel: RecipientCellViewModel?
+    private var recipientTextView: RecipientTextView? {
+        return textView as? RecipientTextView
+    }
 
     public func setup(with viewModel: RecipientCellViewModel) {
         self.viewModel = viewModel
-        recipientTextView.viewModel = self.viewModel?.recipientTextViewModel()
+        recipientTextView?.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        recipientTextView.text = ""
+        recipientTextView?.text = ""
     }
 }

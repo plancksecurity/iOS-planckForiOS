@@ -718,7 +718,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="recipientTextView" destination="4nS-8y-LLg" id="MrS-GK-eT5"/>
+                                    <outlet property="textView" destination="4nS-8y-LLg" id="ejK-Dq-T14"/>
                                     <outlet property="title" destination="Bd2-Nr-sTF" id="3Df-Pu-hFO"/>
                                 </connections>
                             </tableViewCell>
@@ -1142,7 +1142,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="RTR-We-Kc1"/>
-        <segue reference="mZj-Mg-VzM"/>
+        <segue reference="JbP-D9-Vpg"/>
         <segue reference="anx-J8-OKE"/>
         <segue reference="2fD-kL-Bvj"/>
     </inferredMetricsTieBreakers>
