@@ -138,6 +138,11 @@ class RecipientTextViewModel {
     }
 
     private func setInitialRecipients() {
+        if recipientAttachments.count > 0 {
+            // We seem to be reused, so we reuse our existing data.
+            initialRecipients = Array(Set(recipientAttachments.map { $0.recipient }))
+            recipientAttachments.removeAll()
+        }
         for recipient in initialRecipients {
             delegate?.add(recipient: recipient.address)
         }
