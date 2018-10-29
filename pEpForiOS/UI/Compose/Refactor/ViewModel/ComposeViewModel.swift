@@ -143,7 +143,7 @@ class ComposeViewModel {
         //        validateInput() //IOS-1369:
     }
 
-    private func existsDirtyRecipientCell() -> Bool {
+    private func existsDirtyCell() -> Bool {
         for section in sections where section.type == .recipients {
             for row  in section.rows where row is RecipientCellViewModel {
                 guard let recipientVM = row as? RecipientCellViewModel else {
@@ -165,7 +165,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool) {
-        let userSeemsTyping = existsDirtyRecipientCell()
+        let userSeemsTyping = existsDirtyCell()
         delegate?.validatedStateChanged(to: isValid && !userSeemsTyping)
     }
 
@@ -424,7 +424,7 @@ extension ComposeViewModel {
     }
 
     public var showCancelActions: Bool {
-        return state.edited
+        return existsDirtyCell() || state.edited
     }
 
     public var deleteActionTitle: String {

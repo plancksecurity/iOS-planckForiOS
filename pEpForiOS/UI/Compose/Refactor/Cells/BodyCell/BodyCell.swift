@@ -35,8 +35,6 @@ class BodyCell: TextViewContainingTableViewCell {
         } else {
             textView.text = text
         }
-        viewModel?.handleTextChange(newText: textView.text,
-                                    newAttributedText: textView.attributedText)
     }
 }
 

@@ -56,19 +56,16 @@ class ComposeViewModelState {
     //Recipients
     var toRecipients = [Identity]() {
         didSet {
-            edited = true
             validate()
         }
     }
     var ccRecipients = [Identity]() {
         didSet {
-            edited = true
             validate()
         }
     }
     var bccRecipients = [Identity]() {
         didSet {
-            edited = true
             validate()
         }
     }
@@ -136,10 +133,7 @@ class ComposeViewModelState {
         bccRecipients = initData.bccRecipients
         bccWrapped = ccRecipients.isEmpty && bccRecipients.isEmpty
         from = initData.from
-        subject = initData.subject ?? " " // Set space to work around autolayout first baseline not recognized
-        //            body = initD //IOS-1369: TODO
-//        bodyPlaintext = initData.bodyPlaintext
-//        bodyHtml = initData.bodyHtml
+        subject = initData.subject
 
         inlinedAttachments =  initData.inlinedAttachments
         nonInlinedAttachments =  initData.nonInlinedAttachments

@@ -30,7 +30,6 @@ class BodyCellViewModel: CellViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
-    public private(set) var isDirty = false
     private var initialPlaintext = ""
     private var initialAttributedText: NSAttributedString?
     private var inlinedAttachments = [Attachment]() {
@@ -61,7 +60,6 @@ class BodyCellViewModel: CellViewModel {
 
     public func handleTextChange(newText: String, newAttributedText attrText: NSAttributedString) {
         createHtmlVersionAndInformDelegate(newText: newText, newAttributedText: attrText)
-        isDirty = true
         resultDelegate?.bodyCellViewModel(self, textChanged: newText) //IOS-1369: I still think we AGNI. Double check.
     }
 
