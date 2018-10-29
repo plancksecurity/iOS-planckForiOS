@@ -88,17 +88,22 @@ struct UIUtils {
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
                 Constants.composeSceneStoryboardId) as? UINavigationController,
             let composeVc = composeNavigationController.rootViewController
-                as? ComposeTableViewController_Old
+                as? ComposeTableViewController
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Missing required data")
                 return
         }
+        var prefilledTo: Identity? = nil
         if let address = address {
             let to = Identity(address: address)
-            composeVc.prefilledTo = to
+            prefilledTo = to
         }
+        let composeVM = ComposeViewModel(resultDelegate: nil,
+                                         composeMode: .normal,
+                                         prefilledTo: prefilledTo,
+                                         originalMessage: nil)
+        composeVc.viewModel = composeVM
         composeVc.appConfig = appConfig
-        composeVc.composeMode = .normal
 
         viewController.present(composeNavigationController, animated: true)
     }
