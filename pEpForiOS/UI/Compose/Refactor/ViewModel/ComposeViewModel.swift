@@ -53,7 +53,12 @@ protocol ComposeViewModelDelegate: class {
 
 class ComposeViewModel {
     weak var resultDelegate: ComposeViewModelResultDelegate?
-    weak var delegate: ComposeViewModelDelegate?
+    weak var delegate: ComposeViewModelDelegate? {
+        didSet {
+            delegate?.colorBatchNeedsUpdate(for: state.rating,
+                                            protectionEnabled: state.pEpProtection)
+        }
+    }
     public private(set) var sections = [ComposeViewModel.Section]()
     public private(set) var state: ComposeViewModelState
 
@@ -138,7 +143,6 @@ class ComposeViewModel {
     }
 
     private func setup() {
-        //IOS-1369: origMessage ignored for now, same with compose mode (always .normal)
         resetSections()
         //        validateInput() //IOS-1369:
     }
