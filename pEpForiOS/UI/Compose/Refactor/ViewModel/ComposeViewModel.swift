@@ -206,12 +206,15 @@ extension ComposeViewModel {
         private func setupViewModels(cellVmDelegate: ComposeViewModel,
                                      for state: ComposeViewModelState?) {
             rows = [CellViewModel]()
+            let isWrapped = state?.bccWrapped ?? false
+            let hasCcOrBcc = (state?.ccRecipients.count ?? 0 > 0) ||
+                (state?.bccRecipients.count ?? 0 > 0)
             switch type {
             case .recipients:
                 rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate,
                                                    type: .to,
                                                    recipients: state?.toRecipients ?? []))
-                if let wrapped = state?.bccWrapped, !wrapped {
+                if !isWrapped || hasCcOrBcc {
                     rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate,
                                                        type: .cc,
                                                        recipients: state?.ccRecipients ?? []))
@@ -220,7 +223,7 @@ extension ComposeViewModel {
                                                        recipients: state?.bccRecipients ?? []))
                 }
             case .wrapped:
-                if let wrapped = state?.bccWrapped, wrapped {
+                if isWrapped && !hasCcOrBcc {
                     rows.append(WrappedBccViewModel())
                 }
             case .account:
@@ -274,17 +277,17 @@ extension ComposeViewModel {
             wrappedSection.rows.removeAll()
             delegate?.sectionChanged(section: maybeWrappedIdx)
         }
+        // Add Cc and Bcc VMs
 
-        guard let newRecipientsSection = ComposeViewModel.Section(type: .recipients,
-                                                               for: state,
-                                                               cellVmDelegate: self)
-            else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No VMs")
-                return
-        }
+        let recipientsSection = section(for: .recipients)
+        recipientsSection?.rows.append(RecipientCellViewModel(resultDelegate: self,
+                                           type: .cc,
+                                           recipients: []))
+        recipientsSection?.rows.append(RecipientCellViewModel(resultDelegate: self,
+                                           type: .bcc,
+                                           recipients: []))
         let idxRecipients = 0
-        self.sections[idxRecipients] = newRecipientsSection
-        delegate?.sectionChanged(section: 0)
+        delegate?.sectionChanged(section: idxRecipients)
     }
 
     private func index(ofSectionWithType type: ComposeViewModel.Section.SectionType) -> Int? {
