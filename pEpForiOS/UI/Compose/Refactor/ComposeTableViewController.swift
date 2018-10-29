@@ -77,6 +77,7 @@ class ComposeTableViewController: BaseTableViewController {
                 return
         }
         suggestionsChildViewController = suggestVc
+        suggestionsChildViewController?.appConfig = appConfig
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
         addChildViewController(suggestVc)
         suggestView.isHidden = true
@@ -246,9 +247,10 @@ extension ComposeTableViewController: SegueHandlerType {
         }
     }
 
-    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
-        // nothing to do.
-    }
+    //IOS-1369: I can not think of a use case for this. Remove if obsolete.
+//    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
+//        // nothing to do.
+//    }
 }
 
 // MARK: - Address Suggestions
@@ -259,8 +261,7 @@ extension ComposeTableViewController {
         let position = rectCell.origin.y + rectCell.height
         suggestionsChildViewController?.view.frame.origin.y = position
         suggestionsChildViewController?.view.frame.size.height =
-            tableView.bounds.size.height - position + 2 //IOS-1369: whats 2?
-        //IOS-1369: not behind keyboard
+            tableView.bounds.size.height - position
     }
 }
 
