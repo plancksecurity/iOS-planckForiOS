@@ -13,11 +13,13 @@ import Foundation
  in table views (basically "scroll-to-caret-on-edit").
  */
 class TextViewInTableViewScrollUtil {
+    //IOS-1369: Assume obsolete
     typealias Height = NSNumber
+    //IOS-1369: Assume obsolete
     /// Caches height for TextView.
     private var sizeCache = NSMapTable<UITextView, Height>(keyOptions: .weakMemory,
                                                            valueOptions: .strongMemory)
-
+//IOS-1369: Assume obsolete
     func layoutAfterTextDidChange(tableView: UITableView, textView: UITextView) {
         if heightDidChange(for: textView) {
             tableView.updateSize()
@@ -25,6 +27,7 @@ class TextViewInTableViewScrollUtil {
         self.scrollCaretToVisible(tableView: tableView, textView: textView)
     }
 
+    //IOS-1369: Assume obsolete
     /**
      Makes sure that the given text view's cursor (if any) is visible, given that it is
      contained in the given table view.
@@ -45,6 +48,27 @@ class TextViewInTableViewScrollUtil {
         tableView.scrollRectToVisible(tvRect, animated: false)
     }
 
+    /**
+     Makes sure that the given text view's cursor (if any) is visible, given that it is
+     contained in the given table view.
+     */
+    static func scrollCaretToVisible(tableView: UITableView, textView: UITextView) {
+        guard let uiRange = textView.selectedTextRange, uiRange.isEmpty else {
+            // No selection, nothing to scroll to.
+            return
+        }
+        let selectedRect = textView.caretRect(for: uiRange.end)
+        var tvRect = tableView.convert(selectedRect, from: textView)
+
+        // Extend the rectangle in both directions vertically,
+        // to both include 1 line above and below.
+        tvRect.origin.y -= tvRect.size.height
+        tvRect.size.height *= 3
+
+        tableView.scrollRectToVisible(tvRect, animated: false)
+    }
+
+    //IOS-1369: Assume obsolete
     /// Tracks text view heights.
     ///
     /// - Parameter textView: text view to check

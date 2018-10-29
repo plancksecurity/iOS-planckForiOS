@@ -189,7 +189,13 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func contentChanged(inRowAt indexPath: IndexPath) {
-        //IOS-1369: indexPath currently unused.
+
+        if let bodyCell = tableView.cellForRow(at: indexPath) as? BodyCell {
+            // Make sure the cursor always is in visible area.
+            TextViewInTableViewScrollUtil.scrollCaretToVisible(tableView: tableView,
+                                                               textView: bodyCell.textView)
+        }
+        // Auto-resize cells
         tableView.updateSize()
     }
 

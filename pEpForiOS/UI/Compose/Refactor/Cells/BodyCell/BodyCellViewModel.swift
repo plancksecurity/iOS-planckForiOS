@@ -31,6 +31,7 @@ class BodyCellViewModel: CellViewModel {
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
     private var initialPlaintext = ""
+    private var initialized = false
     private var initialAttributedText: NSAttributedString?
     private var inlinedAttachments = [Attachment]() {
         didSet {
@@ -45,6 +46,11 @@ class BodyCellViewModel: CellViewModel {
         self.resultDelegate = resultDelegate
         self.initialPlaintext = initialPlaintext ?? ""
         self.initialAttributedText = initialAttributedText
+        initialized = true
+    }
+
+    func takeOverInitialData() -> Bool {
+        return !initialized
     }
 
     func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
