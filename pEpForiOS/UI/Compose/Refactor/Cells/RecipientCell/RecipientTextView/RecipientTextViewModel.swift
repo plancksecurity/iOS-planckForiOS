@@ -65,10 +65,10 @@ class RecipientTextViewModel {
         return true
     }
 
-    public func handleDidEndEditing(range: NSRange,
-                                    of text: NSAttributedString) {
-        tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
-        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)//IOS-1369: might be obsolete
+    public func handleDidEndEditing(range: NSRange, of text: NSAttributedString) {
+        if tryGenerateValidAddressAndUpdateStatus(range: range, of: text) {
+            resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
+        }
     }
 
     public func handleTextChange(newText: String) {
