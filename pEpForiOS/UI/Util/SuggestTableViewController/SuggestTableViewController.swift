@@ -9,7 +9,7 @@
 import Foundation
 
 /// Suggests a list of Identities that fit to a given sarch string
-class SuggestTableViewController: UITableViewController {
+class SuggestTableViewController: BaseTableViewController {
     static let storyboardId = "SuggestTableViewController"
 
     var viewModel: SuggestViewModel? {
