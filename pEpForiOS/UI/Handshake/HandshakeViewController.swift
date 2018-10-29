@@ -116,8 +116,13 @@ class HandshakeViewController: BaseTableViewController {
      */
     func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
                                indexPath: IndexPath) {
-        if indexPath.row == 0 {
+        /*if indexPath.row % 2 == 0 {
+            viewModel.backgroundColorDark = false
+        } else {
             viewModel.backgroundColorDark = true
+        }*/
+        if indexPath.row == 0 {
+            viewModel.backgroundColorDark = false
         } else {
             let prevRow = indexPath.row - 1
             let handshakeCombo = handshakeCombinations[prevRow]
