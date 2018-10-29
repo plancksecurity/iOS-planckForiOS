@@ -295,19 +295,18 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         // DELEGATE
         let expectAddRecipientCalled = expectation(description: "expectAddRecipientCalled")
         expectAddRecipientCalled.isInverted = addRecipientValue == nil
-        let expectdidChangeAttributedTextCalled = expectation(
-            description: "expectdidChangeAttributedTextCalled")
-        expectdidChangeAttributedTextCalled.isInverted =  didChangeAttributedText == nil
+        let expectTextChangedCalled = expectation(
+            description: "expectTextChangedCalled")
+        expectTextChangedCalled.isInverted =  didChangeAttributedText == nil
 
         delegate = TestRecipientTextViewModelDelegate(
             expectAddRecipientCalled: ignoreCallsToAddRecipient ? nil : expectAddRecipientCalled,
             addRecipientValue: addRecipientValue,
-            expectdidChangeAttributedTextCalled: ignoreCallsDidChangeAttributedText ? nil : expectdidChangeAttributedTextCalled,
+            expectTextChangedCalled: ignoreCallsDidChangeAttributedText ? nil : expectTextChangedCalled,
             didChangeAttributedText: didChangeAttributedText)
         vm.delegate = delegate
 
         // RESULT DELEGATE
-
         let expectResultDelegateCalledDidChangeRecipients =
             expectation(description: "expectResultDelegateCalledDidChangeRecipients")
         expectResultDelegateCalledDidChangeRecipients.isInverted =
@@ -455,24 +454,23 @@ class TestRecipientTextViewModelDelegate: RecipientTextViewModelDelegate {
     let expectAddRecipientCalled: XCTestExpectation?
     let addRecipientValue: String?
     //didChangeAttributedText
-    let expectdidChangeAttributedTextCalled: XCTestExpectation?
+    let expectTextChangedCalled: XCTestExpectation?
     let didChangeAttributedText: NSAttributedString?
 
     init(expectAddRecipientCalled: XCTestExpectation?,
          addRecipientValue: String?,
-         expectdidChangeAttributedTextCalled: XCTestExpectation?,
+         expectTextChangedCalled: XCTestExpectation?,
          didChangeAttributedText: NSAttributedString?) {
         //add(recipient:)
         self.addRecipientValue = addRecipientValue
         self.expectAddRecipientCalled = expectAddRecipientCalled
         //didChangeAttributedText
-        self.expectdidChangeAttributedTextCalled = expectdidChangeAttributedTextCalled
+        self.expectTextChangedCalled = expectTextChangedCalled
         self.didChangeAttributedText = didChangeAttributedText
     }
 
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
-                                didChangeAttributedText newText: NSAttributedString) {
-        guard let exp = expectdidChangeAttributedTextCalled else {
+    func textChanged(newText: NSAttributedString) {
+        guard let exp = expectTextChangedCalled else {
             // We ignore called or not
             return
         }
