@@ -19,4 +19,9 @@ class RecipientCell: UITableViewCell {
         recipientTextView.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        recipientTextView.text = ""
+    }
 }
