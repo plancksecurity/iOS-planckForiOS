@@ -43,8 +43,11 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         UIUtils.presentComposeView(forRecipientInUrl: url, on: actor, appConfig: appConfig)
     }
 
-    private func presentAvailableMailtoUrlHandlingChoices(for url: URL) {
-        UIUtils.presentActionSheetWithContactOptions(forUrl: url, on: actor, appConfig: appConfig)
+    private func presentAvailableMailtoUrlHandlingChoices(for url: URL, at view: UIView) {
+        UIUtils.presentActionSheetWithContactOptions(forUrl: url,
+                                                     on: actor,
+                                                     at: view,
+                                                     appConfig: appConfig)
     }
 
     // MARK: - UITextViewDelegate
@@ -69,7 +72,7 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         }
         if scheme == .mailto && interaction == .presentActions  {
             // User long-pressed on mailto url
-            presentAvailableMailtoUrlHandlingChoices(for: URL)
+            presentAvailableMailtoUrlHandlingChoices(for: URL, at: textView)
             return false
         } else if scheme == .mailto && interaction == .invokeDefaultAction {
             // User clicked on mailto url

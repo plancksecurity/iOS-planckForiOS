@@ -442,16 +442,17 @@ extension UISplitViewController {
         }
 
         let alertTitle = alertController.title ?? ""
-
         if alertTitle.isProbablyValidEmail(),
             let appConfig = SecureWebViewController.appConfigDirtyHack {
             // It *is* an Action Sheet shown due to long-press on mailto: URL and we know the
             // clicked address.
             // Forward for custom handling.
             let mailAddress = alertTitle
+         //   self.view.gestureRecognizers
             UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
                                                          on: self,
-                                                         appConfig: appConfig)
+                                                         at: self.view,
+                                                        appConfig: appConfig)
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.
