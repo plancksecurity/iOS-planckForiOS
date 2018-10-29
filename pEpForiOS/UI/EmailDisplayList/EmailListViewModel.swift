@@ -316,17 +316,11 @@ class EmailListViewModel {
         guard let previewMessage = messages.object(at: indexPath.row) else {
             return
         }
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
+        DispatchQueue.main.async { [] in
             previewMessage.isSeen = true
             let message = previewMessage.message()
             message?.imapFlags?.seen = true
             message?.save()
-            me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                              didUpdateDataAt: [indexPath])
         }
     }
 
@@ -334,18 +328,11 @@ class EmailListViewModel {
         guard let previewMessage = messages.object(at: indexPath.row) else {
             return
         }
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
+        DispatchQueue.main.async { [] in
             previewMessage.isSeen = false
             let message = previewMessage.message()
             message?.imapFlags?.seen = false
             message?.save()
-            me.emailListViewModelDelegate?.emailListViewModel(
-                viewModel: me,
-                didUpdateDataAt: [indexPath])
         }
     }
 
@@ -398,7 +385,6 @@ class EmailListViewModel {
                 return
         }
         message.imapFlags?.flagged = flagged
-        didUpdate(messageFolder: message)
         DispatchQueue.main.async {
             message.save()
         }

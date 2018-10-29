@@ -125,7 +125,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
 
     private var viewModel: MessageViewModel?
 
-    private var isSeen:Bool = false {
+    public var isSeen:Bool = false {
         didSet {
             if isSeen {
                 setSeen()

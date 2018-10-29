@@ -33,7 +33,9 @@ class HandshakeViewController: BaseTableViewController {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        let img = UIImage(named: "grid-globe")
+
+
+        let img = UIImage(named: "pEpForiOS-icon-languagechange")
 
         let item = UIBarButtonItem(image: img,
                         style: UIBarButtonItemStyle.plain,
@@ -50,6 +52,7 @@ class HandshakeViewController: BaseTableViewController {
     override func viewDidLoad() {
         let newBackButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(HandshakeViewController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
+        self.showPepRating(pEpRating: PEP_rating.init(0))
     }
 
     @objc func back(sender: UIBarButtonItem) {
@@ -113,8 +116,13 @@ class HandshakeViewController: BaseTableViewController {
      */
     func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
                                indexPath: IndexPath) {
-        if indexPath.row == 0 {
+        /*if indexPath.row % 2 == 0 {
+            viewModel.backgroundColorDark = false
+        } else {
             viewModel.backgroundColorDark = true
+        }*/
+        if indexPath.row == 0 {
+            viewModel.backgroundColorDark = false
         } else {
             let prevRow = indexPath.row - 1
             let handshakeCombo = handshakeCombinations[prevRow]
