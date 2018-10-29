@@ -38,6 +38,7 @@ extension SubjectCell: SubjectCellViewModelDelegate {
 // MARK: - UITextViewDelegate
 
 extension SubjectCell {
+
     func textViewDidChange(_ textView: UITextView) {
         viewModel?.handleTextChanged(to: textView.text)
     }

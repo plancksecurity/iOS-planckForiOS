@@ -80,7 +80,7 @@ class ComposeViewModelState {
         }
     }
 
-    var subject = "" {
+    var subject = " " {
         didSet {
             edited = true
         }

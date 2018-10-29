@@ -71,7 +71,7 @@ struct InitData {
         return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
     }
 
-    var subject = ""
+    var subject = " "
 
     var bodyPlaintext = ""
     var bodyHtml: NSAttributedString?

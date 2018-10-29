@@ -31,7 +31,7 @@ class SubjectCellViewModel: CellViewModel {
     }
 
     public func handleTextChanged(to text: String) {
-        content = text != "" ? text : " "
+        content = text
         resultDelegate?.subjectCellViewModelDidChangeSubject(self)
     }
 
