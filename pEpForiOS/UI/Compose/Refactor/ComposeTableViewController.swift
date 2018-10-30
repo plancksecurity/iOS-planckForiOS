@@ -352,8 +352,8 @@ extension ComposeTableViewController {
             result = tableView.dequeueReusableCell(withIdentifier: "WrappedCell")
         } else if section.type == .account {
             guard
-                let cell = tableView.dequeueReusableCell(withIdentifier: AccountCell_mvvm.reuseId)
-                    as? AccountCell_mvvm,
+                let cell = tableView.dequeueReusableCell(withIdentifier: AccountCell.reuseId)
+                    as? AccountCell,
                 let rowVm = section.rows[indexPath.row] as? AccountCellViewModel
                 else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
