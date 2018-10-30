@@ -8,7 +8,6 @@
 
 import SwipeCellKit
 
-//IOS-1369: Old & new are currently using it !! (move to refactor group when done).
 class AttachmentCell: SwipeTableViewCell {
     static let reuseId = "AttachmentCell"
     @IBOutlet weak var fileName: UILabel!
