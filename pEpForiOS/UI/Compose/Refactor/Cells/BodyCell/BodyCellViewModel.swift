@@ -53,6 +53,8 @@ class BodyCellViewModel: CellViewModel {
 
     func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
         attributedText?.assureMaxTextAttachmentImageWidth(maxTextattachmentWidth)
+        createHtmlVersionAndInformDelegate(newText: plaintext,
+                                           newAttributedText: attributedText ?? NSAttributedString())
         return (plaintext, attributedText)
     }
 
