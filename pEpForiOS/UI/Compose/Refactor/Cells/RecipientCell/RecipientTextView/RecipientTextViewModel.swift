@@ -49,7 +49,9 @@ class RecipientTextViewModel {
     }
 
     public func inititalText() -> NSAttributedString? {
-        setupInitialText()
+        if attributedText == nil {
+            setupInitialText()
+        }
         isDirty = false
         return attributedText
     }
