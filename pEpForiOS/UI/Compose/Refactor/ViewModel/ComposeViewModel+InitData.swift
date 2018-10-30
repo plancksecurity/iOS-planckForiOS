@@ -144,7 +144,7 @@ struct InitData {
 
     mutating private func setInitialBody(text: String) {
         if text.isEmpty {
-            bodyPlaintext = " " //Workaround initial base line bug
+            bodyPlaintext = ""
         } else {
             bodyPlaintext = text
         }
