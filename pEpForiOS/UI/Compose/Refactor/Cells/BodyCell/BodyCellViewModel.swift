@@ -52,7 +52,7 @@ class BodyCellViewModel: CellViewModel {
     }
 
     func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
-        assureCorrectTextAtatchmentImageWidth()
+        attributedText?.assureMaxTextAttachmentImageWidth(maxTextattachmentWidth)
         return (plaintext, attributedText)
     }
 
@@ -128,22 +128,6 @@ extension BodyCellViewModel {
     private func removeInlinedAttachments(_ removees: [Attachment]) {
         if removees.count > 0 {
             inlinedAttachments = inlinedAttachments.filter { !removees.contains($0) }
-        }
-    }
-
-    private func assureCorrectTextAtatchmentImageWidth() {
-        guard let attributedText = attributedText else {
-            // Empty body. That's perfictly fine.
-            return
-        }
-        for textAttachment in attributedText.textAttachments() {
-            guard let image = textAttachment.image else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No image?")
-                return
-            }
-            if image.size.width > maxTextattachmentWidth {
-                textAttachment.image = image.resized(newWidth: maxTextattachmentWidth)
-            }
         }
     }
 }

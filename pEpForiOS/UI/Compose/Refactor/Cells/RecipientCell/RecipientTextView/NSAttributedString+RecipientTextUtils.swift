@@ -8,8 +8,6 @@
 
 import MessageModel
 
-//IOS-1369: obsolete?
-
 // MARK: - RecipientTextUtils
 
 extension NSAttributedString {

@@ -60,6 +60,7 @@
 		150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */; };
 		150DF6D32052ED4800A9DCF7 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */; };
 		15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15175CEB205929FB00A8D9D0 /* CidHandler.swift */; };
+		1517C8F6218880B200AECD07 /* NSAttributedString+BodyTextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1517C8F5218880B200AECD07 /* NSAttributedString+BodyTextUtils.swift */; };
 		151DE7DE1FC5D3E200CDC273 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E01FC5D3E200CDC273 /* Settings.storyboard */; };
 		151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E31FC5D3FA00CDC273 /* Handshake.storyboard */; };
 		151DE7E41FC5D41600CDC273 /* FolderViews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 151DE7E61FC5D41600CDC273 /* FolderViews.storyboard */; };
@@ -664,6 +665,7 @@
 		150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewController.swift; sourceTree = "<group>"; };
 		150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		15175CEB205929FB00A8D9D0 /* CidHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CidHandler.swift; sourceTree = "<group>"; };
+		1517C8F5218880B200AECD07 /* NSAttributedString+BodyTextUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+BodyTextUtils.swift"; sourceTree = "<group>"; };
 		151DE7DF1FC5D3E200CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		151DE7E21FC5D3FA00CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Handshake.storyboard; sourceTree = "<group>"; };
 		151DE7E51FC5D41600CDC273 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/FolderViews.storyboard; sourceTree = "<group>"; };
@@ -1556,6 +1558,7 @@
 			children = (
 				1571B47B21677B1100D59DAD /* BodyCell.swift */,
 				1571B47D21677EE900D59DAD /* BodyCellViewModel.swift */,
+				1517C8F5218880B200AECD07 /* NSAttributedString+BodyTextUtils.swift */,
 			);
 			path = BodyCell;
 			sourceTree = "<group>";
@@ -3462,6 +3465,7 @@
 				430E5F201EBC87A700E5D5D3 /* LanguageListTableViewCell.swift in Sources */,
 				434BF39320C6B6D300FCBCCA /* ThreadAwareFolderProtocol.swift in Sources */,
 				431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */,
+				1517C8F6218880B200AECD07 /* NSAttributedString+BodyTextUtils.swift in Sources */,
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
 				43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */,
 				1526596A216230B1006A78DF /* ComposeDataSource.swift in Sources */,
