@@ -82,6 +82,22 @@ class ComposeViewModel {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
+    public func initialFocus() -> IndexPath {
+        if state.initData?.toRecipients.isEmpty ?? false {
+            let to = IndexPath(row: 0, section: 0)
+            return to
+        } else {
+            let bodySection = section(for: .body)
+            guard
+                let vm = bodySection?.rows.first,
+                let body = indexPath(for: vm) else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "No body")
+                    return IndexPath(row: 0, section: 0)
+            }
+            return body
+        }
+    }
+
     public func handleUserSelectedRow(at indexPath: IndexPath) {
         let section = sections[indexPath.section]
         if section.type == .wrapped {

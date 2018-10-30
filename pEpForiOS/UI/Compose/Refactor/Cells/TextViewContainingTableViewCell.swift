@@ -11,6 +11,7 @@ import UIKit
 //IUOS-1369: Maybe obsolete.
 protocol TextViewContainingTableViewCellProtocol {
     var textView: UITextView! { get set }
+    func setFocus()
 }
 
 class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableViewCellProtocol, UITextViewDelegate {
@@ -19,5 +20,10 @@ class TextViewContainingTableViewCell: UITableViewCell, TextViewContainingTableV
     override func awakeFromNib() {
         super.awakeFromNib()
         textView.delegate = self
+    }
+
+    func setFocus() {
+        textView.selectedRange = NSRange(location: 0, length: 0)
+        textView.becomeFirstResponder()
     }
 }

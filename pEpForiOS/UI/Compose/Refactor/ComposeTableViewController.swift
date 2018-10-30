@@ -456,6 +456,45 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         deleteAction.backgroundColor = SwipeActionDescriptor.trash.color
         return (orientation == .right ?   [deleteAction] : nil)
     }
+
+    override func tableView(_ tableView: UITableView,
+                            willDisplay cell: UITableViewCell,
+                            forRowAt indexPath: IndexPath) {
+        if isLastRow(indexPath: indexPath) {
+            DispatchQueue.main.async {
+                self.setFocus()
+            }
+        }
+    }
+}
+
+// MARK: - First Responder / Focus
+
+extension ComposeTableViewController {
+
+    private func setFocus() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
+        }
+        let idxPath = vm.initialFocus()
+        guard let cellToFocus = tableView.cellForRow(at: idxPath)
+            as? TextViewContainingTableViewCell else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                return
+        }
+        cellToFocus.setFocus()
+    }
+
+    private func isLastRow(indexPath: IndexPath) -> Bool {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return false
+        }
+        let idxLastSection = vm.sections.count - 1
+        return indexPath.section == idxLastSection &&
+            indexPath.row == vm.sections[idxLastSection].rows.count - 1
+    }
 }
 
 // MARK: - Cancel UIAlertController
