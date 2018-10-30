@@ -29,6 +29,7 @@ protocol RecipientTextViewModelDelegate: class {
 class RecipientTextViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0
     private var initialRecipients = [Identity]()
+    private var attributedText: NSAttributedString?
     public private(set) var isDirty = false
     //    public var hasSelectedAttachment = false //IOS-1369: obsolete?
     private var recipientAttachments = [RecipientTextViewTextAttachment]() {
@@ -40,23 +41,25 @@ class RecipientTextViewModel {
     }
 
     public weak var resultDelegate: RecipientTextViewModelResultDelegate?
-    public weak var delegate: RecipientTextViewModelDelegate? {
-        didSet {
-            setInitialRecipients()
-        }
-    }
+    public weak var delegate: RecipientTextViewModelDelegate?
 
     init(resultDelegate: RecipientTextViewModelResultDelegate? = nil, recipients: [Identity] = []) {
         self.resultDelegate = resultDelegate
         self.initialRecipients = recipients
     }
 
+    public func inititalText() -> NSAttributedString? {
+        setupInitialText()
+        isDirty = false
+        return attributedText
+    }
+
     public func add(recipient: Identity) {
         delegate?.add(recipient: recipient.address)
     }
 
-    public func shouldInteract(WithTextAttachment attachment: NSTextAttachment) -> Bool {
-        if let _ = attachment.image {
+    public func shouldInteract(with textAttachment: NSTextAttachment) -> Bool {
+        if let _ = textAttachment.image {
             // Suppress default image handling. Our recipient names are actually displayed as
             // images and we do not want to offer "save to camera roll" aciont sheet or other image
             // actions to the user.
@@ -66,12 +69,14 @@ class RecipientTextViewModel {
     }
 
     public func handleDidEndEditing(range: NSRange, of text: NSAttributedString) {
+        attributedText = text
         if tryGenerateValidAddressAndUpdateStatus(range: range, of: text) {
             resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
         }
     }
 
-    public func handleTextChange(newText: String) {
+    public func handleTextChange(newText: String, newAttributedText: NSAttributedString) {
+        attributedText = newAttributedText
         let textOnly = newText.trimObjectReplacementCharacters().trimmed()
         isDirty = !textOnly.isEmpty
         resultDelegate?.recipientTextViewModel(recipientTextViewModel: self, textChanged: textOnly)
@@ -115,7 +120,7 @@ class RecipientTextViewModel {
     /// - Parameter text: Text thet might alread contain contact-image-text-attachments.
     /// - Returns: true if a valid address has been found, false otherwize
     @discardableResult private func parseAndHandleValidEmailAddresses(
-        inRange range: NSRange, of text: NSAttributedString) -> Bool {
+        inRange range: NSRange, of text: NSAttributedString, informDelegate: Bool = true) -> Bool {
         var identityGenerated = false
         let stringWithoutTextAttachments = text.string.cleanAttachments
         if stringWithoutTextAttachments.isProbablyValidEmail() {
@@ -131,20 +136,28 @@ class RecipientTextViewModel {
                                                            maxWidth: maxTextattachmentWidth)
             recipientAttachments.append(attachment)
             newText = newText.plainTextRemoved()
-            delegate?.textChanged(newText: newText)
+            attributedText = newText
+            if informDelegate {
+                delegate?.textChanged(newText: newText)
+            }
             identityGenerated =  true
         }
         return identityGenerated
     }
 
-    private func setInitialRecipients() {
-        if recipientAttachments.count > 0 {
-            // We seem to be reused, so we reuse our existing data.
-            initialRecipients = Array(Set(recipientAttachments.map { $0.recipient }))
-            recipientAttachments.removeAll()
-        }
+    private func setupInitialText() {
+
         for recipient in initialRecipients {
-            delegate?.add(recipient: recipient.address)
+             let textBuilder =
+                NSMutableAttributedString(attributedString: attributedText ?? NSAttributedString())
+            let range = NSRange(location: max(textBuilder.length, 0),
+                                length: 0)
+            textBuilder.append(NSAttributedString(string: .space))
+            textBuilder.append(NSAttributedString(string: recipient.address))
+
+            parseAndHandleValidEmailAddresses(inRange: range,
+                                              of: textBuilder,
+                                              informDelegate: false)
         }
     }
 }

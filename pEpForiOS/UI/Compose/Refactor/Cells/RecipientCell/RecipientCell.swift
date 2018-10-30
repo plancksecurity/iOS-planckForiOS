@@ -20,6 +20,7 @@ class RecipientCell: TextViewContainingTableViewCell {
         self.viewModel = viewModel
         recipientTextView?.viewModel = self.viewModel?.recipientTextViewModel()
         title.text = viewModel.type.localizedTitle()
+        recipientTextView?.setInitialText()
     }
 
     override func prepareForReuse() {

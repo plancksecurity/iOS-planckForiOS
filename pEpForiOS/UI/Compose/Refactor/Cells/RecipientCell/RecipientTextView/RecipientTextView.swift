@@ -11,14 +11,22 @@ import UIKit
 class RecipientTextView: UITextView {
     public var viewModel: RecipientTextViewModel?{
         didSet {
-            reportWidthChange()
             viewModel?.delegate = self
             delegate = self
         }
     }
 
     private func reportWidthChange() {
-    viewModel?.maxTextattachmentWidth = bounds.width
+        viewModel?.maxTextattachmentWidth = bounds.width
+    }
+
+    public func setInitialText() {
+        reportWidthChange()
+        if let attr = viewModel?.inititalText() {
+            attributedText = attr
+        } else {
+            text = " " //IOS-1369: rm after setup. See subject
+        }
     }
 }
 
@@ -41,7 +49,7 @@ extension RecipientTextView: UITextViewDelegate {
     }
 
     public func textViewDidChange(_ textView: UITextView) {
-        viewModel?.handleTextChange(newText: textView.text)
+        viewModel?.handleTextChange(newText: textView.text, newAttributedText: attributedText)
         //IOS-1369: scroll? suggestions?
 //        guard let cTextview = textView as? ComposeTextView else { return }
 //
@@ -140,7 +148,7 @@ extension RecipientTextView: UITextViewDelegate {
             Log.shared.errorAndCrash(component: #function, errorString: "No VM")
             return true
         }
-        return vm.shouldInteract(WithTextAttachment: textAttachment)
+        return vm.shouldInteract(with: textAttachment)
     }
 }
 
