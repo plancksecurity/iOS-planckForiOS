@@ -29,6 +29,7 @@ class BodyCell: TextViewContainingTableViewCell {
                                      errorString: "No VM")
             return
         }
+        textView.text.append(vm.defaultBodyText())
         if vm.takeOverInitialData() {
             let (text, attrText) = vm.inititalText()
             if let attr = attrText {

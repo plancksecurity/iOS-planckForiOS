@@ -178,7 +178,7 @@ struct ComposeUtil {
         message.bcc = state.bccRecipients
         message.shortMessage = state.subject
         message.longMessage = state.bodyPlaintext
-        message.longMessageFormatted = state.bodyHtml
+        message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
         message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
         message.pEpProtected = state.pEpProtection
         message.setOriginalRatingHeader(rating: state.rating)

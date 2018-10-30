@@ -49,6 +49,10 @@ class BodyCellViewModel: CellViewModel {
         initialized = true
     }
 
+    func defaultBodyText() -> String {
+        return .pepSignature
+    }
+
     func takeOverInitialData() -> Bool {
         return !initialized
     }
