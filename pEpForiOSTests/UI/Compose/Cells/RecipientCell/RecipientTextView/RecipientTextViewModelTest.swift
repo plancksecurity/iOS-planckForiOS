@@ -87,14 +87,14 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     func testSuppressDefaultLongPressMenu_yes() {
         let attachmentWithImage = RecipientTextViewTextAttachment(recipient: validId)
         attachmentWithImage.image = UIImage()
-        let shouldInteract = vm.shouldInteract(WithTextAttachment: attachmentWithImage)
+        let shouldInteract = vm.shouldInteract(with: attachmentWithImage)
         XCTAssertFalse(shouldInteract)
     }
 
     func testSuppressDefaultLongPressMenu_no() {
         let attachmentWithoutImage = RecipientTextViewTextAttachment(recipient: validId)
         attachmentWithoutImage.image = nil
-        let shouldInteract = vm.shouldInteract(WithTextAttachment: attachmentWithoutImage)
+        let shouldInteract = vm.shouldInteract(with: attachmentWithoutImage)
         XCTAssertTrue(shouldInteract)
     }
 
@@ -198,7 +198,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         let text = randomText
         assert(resultDelegateCalledTextChanged: text,
                ignoreResultDelegateCalledTextChanged: false)
-        vm.handleTextChange(newText: text)
+        vm.handleTextChange(newText: text, newAttributedText: randomAttributedText)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -210,7 +210,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleTextChange_isDirty() {
         let text = randomText
-        vm.handleTextChange(newText: text)
+        vm.handleTextChange(newText: text, newAttributedText: randomAttributedText)
         XCTAssertTrue(vm.isDirty)
     }
 
@@ -367,10 +367,10 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
             vm.add(recipient: validId)
         }
         if shouldInteractWithTextAttachment {
-           _ = vm.shouldInteract(WithTextAttachment: NSTextAttachment(data: nil, ofType: nil))
+           _ = vm.shouldInteract(with: NSTextAttachment(data: nil, ofType: nil))
         }
         if handleTextChange {
-            vm.handleTextChange(newText: randomText)
+            vm.handleTextChange(newText: randomText, newAttributedText: randomAttributedText)
         }
         if isAddressDeliminator {
             _ = vm.isAddressDeliminator(str: randomText)
