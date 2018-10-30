@@ -47,14 +47,11 @@ class BodyCellViewModel: CellViewModel {
         self.attributedText = initialAttributedText
     }
 
-    func defaultBodyText() -> String {
-        return .pepSignature
-    }
-
     func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
+        if plaintext.isEmpty {
+            plaintext.append(.pepSignature)
+        }
         attributedText?.assureMaxTextAttachmentImageWidth(maxTextattachmentWidth)
-        createHtmlVersionAndInformDelegate(newText: plaintext,
-                                           newAttributedText: attributedText ?? NSAttributedString())
         return (plaintext, attributedText)
     }
 
@@ -67,7 +64,7 @@ class BodyCellViewModel: CellViewModel {
     public func handleTextChange(newText: String, newAttributedText attrText: NSAttributedString) {
         plaintext = newText
         attributedText = attrText
-        createHtmlVersionAndInformDelegate(newText: newText, newAttributedText: attrText)
+        createHtmlVersionAndInformDelegate(newAttributedText: attrText)
         resultDelegate?.bodyCellViewModel(self, textChanged: newText) //IOS-1369: I still think we AGNI. Double check.
     }
 
@@ -138,9 +135,7 @@ extension BodyCellViewModel {
 
 extension BodyCellViewModel {
 
-    private func createHtmlVersionAndInformDelegate(
-        newText: String,
-        newAttributedText attrText: NSAttributedString) {
+    private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
 
         let (markdownText, _) = attrText.convertToMarkDown()
         let plaintext = markdownText

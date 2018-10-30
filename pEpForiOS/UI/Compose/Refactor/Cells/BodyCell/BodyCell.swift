@@ -29,13 +29,13 @@ class BodyCell: TextViewContainingTableViewCell {
                                      errorString: "No VM")
             return
         }
-        textView.text.append(vm.defaultBodyText())
         let (text, attrText) = vm.inititalText()
         if let attr = attrText {
             textView.attributedText = attr
         } else {
             textView.text = text
         }
+        vm.handleTextChange(newText: textView.text, newAttributedText: textView.attributedText)
     }
 }
 
