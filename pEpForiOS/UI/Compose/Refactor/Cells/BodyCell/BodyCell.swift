@@ -30,13 +30,11 @@ class BodyCell: TextViewContainingTableViewCell {
             return
         }
         textView.text.append(vm.defaultBodyText())
-        if vm.takeOverInitialData() {
-            let (text, attrText) = vm.inititalText()
-            if let attr = attrText {
-                textView.attributedText = attr
-            } else {
-                textView.text = text
-            }
+        let (text, attrText) = vm.inititalText()
+        if let attr = attrText {
+            textView.attributedText = attr
+        } else {
+            textView.text = text
         }
     }
 }

@@ -30,9 +30,8 @@ class BodyCellViewModel: CellViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
-    private var initialPlaintext = ""
-    private var initialized = false
-    private var initialAttributedText: NSAttributedString?
+    private var plaintext = ""
+    private var attributedText: NSAttributedString?
     private var inlinedAttachments = [Attachment]() {
         didSet {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
@@ -44,22 +43,17 @@ class BodyCellViewModel: CellViewModel {
          initialAttributedText: NSAttributedString? = nil,
          inlinedAttachments: [Attachment]?) {
         self.resultDelegate = resultDelegate
-        self.initialPlaintext = initialPlaintext ?? ""
-        self.initialAttributedText = initialAttributedText
-        initialized = true
+        self.plaintext = initialPlaintext ?? ""
+        self.attributedText = initialAttributedText
     }
 
     func defaultBodyText() -> String {
         return .pepSignature
     }
 
-    func takeOverInitialData() -> Bool {
-        return !initialized
-    }
-
     func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
         assureCorrectTextAtatchmentImageWidth()
-        return (initialPlaintext, initialAttributedText)
+        return (plaintext, attributedText)
     }
 
     //IOS-1369: obsolete?
@@ -69,6 +63,8 @@ class BodyCellViewModel: CellViewModel {
     //    func handleDidEndEditing() { }
 
     public func handleTextChange(newText: String, newAttributedText attrText: NSAttributedString) {
+        plaintext = newText
+        attributedText = attrText
         createHtmlVersionAndInformDelegate(newText: newText, newAttributedText: attrText)
         resultDelegate?.bodyCellViewModel(self, textChanged: newText) //IOS-1369: I still think we AGNI. Double check.
     }
@@ -136,7 +132,7 @@ extension BodyCellViewModel {
     }
 
     private func assureCorrectTextAtatchmentImageWidth() {
-        guard let attributedText = initialAttributedText else {
+        guard let attributedText = attributedText else {
             // Empty body. That's perfictly fine.
             return
         }
