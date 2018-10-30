@@ -160,7 +160,7 @@ struct InitData {
             Log.shared.errorAndCrash(component: #function, errorString: "Inconsitant state")
             return
         }
-        //        private func setBodyText(forMessage msg: Message, to cell: MessageBodyCell) {
+
         guard isDraftsOrOutbox || composeMode == .forward else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "Unsupported mode or message")

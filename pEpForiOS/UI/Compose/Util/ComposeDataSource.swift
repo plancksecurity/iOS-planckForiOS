@@ -11,7 +11,7 @@ import UIKit
 
 import MessageModel
 
-//IOS-1369: should be obsolete
+//IOS-1369: should be obsolete -> is used by emailView
 class ComposeDataSource: NSObject {
     var originalRows = [ComposeFieldModel]()
     var filteredRows = [ComposeFieldModel]()

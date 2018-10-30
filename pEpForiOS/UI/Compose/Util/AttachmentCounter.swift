@@ -8,6 +8,7 @@
 
 import UIKit
 
+//IOS-1369: looks good. Reuse!
 class AttachmentCounter {
     var attachmentCount = 0
 

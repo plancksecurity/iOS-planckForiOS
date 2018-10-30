@@ -80,18 +80,10 @@
 		151F7201202A06760057C74D /* CdAccount+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F71F6202A06750057C74D /* CdAccount+TestUtils.swift */; };
 		151F7205202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151F7204202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift */; };
 		15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */; };
-		15265960216230B1006A78DF /* ComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265947216230B0006A78DF /* ComposeCell.swift */; };
-		15265961216230B1006A78DF /* RecipientCell_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265948216230B0006A78DF /* RecipientCell_old.swift */; };
 		15265962216230B1006A78DF /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265949216230B0006A78DF /* ContactCell.swift */; };
-		15265963216230B1006A78DF /* WrappedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526594A216230B0006A78DF /* WrappedCell.swift */; };
-		15265964216230B1006A78DF /* MessageBodyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526594B216230B0006A78DF /* MessageBodyCell.swift */; };
-		15265966216230B1006A78DF /* ComposeCellProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526594D216230B0006A78DF /* ComposeCellProtocols.swift */; };
-		15265967216230B1006A78DF /* SubjectComposeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526594F216230B0006A78DF /* SubjectComposeTextView.swift */; };
 		15265968216230B1006A78DF /* TextViewInTableViewScrollUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265950216230B0006A78DF /* TextViewInTableViewScrollUtil.swift */; };
 		1526596A216230B1006A78DF /* ComposeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265952216230B0006A78DF /* ComposeDataSource.swift */; };
-		1526596B216230B1006A78DF /* ComposeTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265953216230B0006A78DF /* ComposeTextView.swift */; };
 		1526596C216230B1006A78DF /* ComposeData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15265954216230B0006A78DF /* ComposeData.plist */; };
-		1526596D216230B1006A78DF /* ComposeMessageBodyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265955216230B0006A78DF /* ComposeMessageBodyTextView.swift */; };
 		1526596E216230B2006A78DF /* AttachmentCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265956216230B0006A78DF /* AttachmentCounter.swift */; };
 		1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265957216230B0006A78DF /* ComposeFieldModel.swift */; };
 		15265972216230B2006A78DF /* ComposeTableViewController_Old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */; };
@@ -686,18 +678,10 @@
 		151F7204202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PantomimeFolderAttribute+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		152130531FD00B7A00688DF2 /* DisplayUserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayUserError.swift; sourceTree = "<group>"; };
 		15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityImageTool.swift; sourceTree = "<group>"; };
-		15265947216230B0006A78DF /* ComposeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeCell.swift; sourceTree = "<group>"; };
-		15265948216230B0006A78DF /* RecipientCell_old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCell_old.swift; sourceTree = "<group>"; };
 		15265949216230B0006A78DF /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
-		1526594A216230B0006A78DF /* WrappedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WrappedCell.swift; sourceTree = "<group>"; };
-		1526594B216230B0006A78DF /* MessageBodyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageBodyCell.swift; sourceTree = "<group>"; };
-		1526594D216230B0006A78DF /* ComposeCellProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeCellProtocols.swift; sourceTree = "<group>"; };
-		1526594F216230B0006A78DF /* SubjectComposeTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubjectComposeTextView.swift; sourceTree = "<group>"; };
 		15265950216230B0006A78DF /* TextViewInTableViewScrollUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewInTableViewScrollUtil.swift; sourceTree = "<group>"; };
 		15265952216230B0006A78DF /* ComposeDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeDataSource.swift; sourceTree = "<group>"; };
-		15265953216230B0006A78DF /* ComposeTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTextView.swift; sourceTree = "<group>"; };
 		15265954216230B0006A78DF /* ComposeData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ComposeData.plist; sourceTree = "<group>"; };
-		15265955216230B0006A78DF /* ComposeMessageBodyTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeMessageBodyTextView.swift; sourceTree = "<group>"; };
 		15265956216230B0006A78DF /* AttachmentCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCounter.swift; sourceTree = "<group>"; };
 		15265957216230B0006A78DF /* ComposeFieldModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeFieldModel.swift; sourceTree = "<group>"; };
 		1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController_Old.swift; sourceTree = "<group>"; };
@@ -1385,34 +1369,18 @@
 			isa = PBXGroup;
 			children = (
 				1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */,
-				15265943216230B0006A78DF /* cells */,
 				1526594E216230B0006A78DF /* Util */,
 				1526595B216230B1006A78DF /* Refactor */,
 			);
 			path = Compose;
 			sourceTree = "<group>";
 		};
-		15265943216230B0006A78DF /* cells */ = {
-			isa = PBXGroup;
-			children = (
-				15265947216230B0006A78DF /* ComposeCell.swift */,
-				15265948216230B0006A78DF /* RecipientCell_old.swift */,
-				1526594A216230B0006A78DF /* WrappedCell.swift */,
-				1526594B216230B0006A78DF /* MessageBodyCell.swift */,
-				1526594D216230B0006A78DF /* ComposeCellProtocols.swift */,
-			);
-			path = cells;
-			sourceTree = "<group>";
-		};
 		1526594E216230B0006A78DF /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				1526594F216230B0006A78DF /* SubjectComposeTextView.swift */,
 				15265950216230B0006A78DF /* TextViewInTableViewScrollUtil.swift */,
 				15265952216230B0006A78DF /* ComposeDataSource.swift */,
-				15265953216230B0006A78DF /* ComposeTextView.swift */,
 				15265954216230B0006A78DF /* ComposeData.plist */,
-				15265955216230B0006A78DF /* ComposeMessageBodyTextView.swift */,
 				15265956216230B0006A78DF /* AttachmentCounter.swift */,
 				15265957216230B0006A78DF /* ComposeFieldModel.swift */,
 			);
@@ -3193,7 +3161,6 @@
 				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
 				15848D3D2167B9B100D8CBA4 /* AccountCellViewModel.swift in Sources */,
-				1526596D216230B1006A78DF /* ComposeMessageBodyTextView.swift in Sources */,
 				4362399F1EAE2F0A00BD2EB9 /* UITableView+Extension.swift in Sources */,
 				1517C9052188D8FE00AECD07 /* ComposeHelpers.swift in Sources */,
 				15874BC92127493E00A3A4A6 /* PassiveModeViewModel.swift in Sources */,
@@ -3221,7 +3188,6 @@
 				15874BCD2127493E00A3A4A6 /* AccountSettingsError.swift in Sources */,
 				15484B6A2105D5C500F9D962 /* EmailConnectInfo.swift in Sources */,
 				15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */,
-				15265966216230B1006A78DF /* ComposeCellProtocols.swift in Sources */,
 				1554756C213FE139005A52D0 /* UnifiedFilter.swift in Sources */,
 				15F0F7AF2135984C002BE853 /* Array+SortingAndSearching.swift in Sources */,
 				49D292A320F3ABA600F33C78 /* CredentialTextField.swift in Sources */,
@@ -3245,7 +3211,6 @@
 				43C322101EA91764005073FB /* UIImage+Extension.swift in Sources */,
 				15865A8920319ADC00F7A4B5 /* Folder+pEp.swift in Sources */,
 				1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */,
-				1526596B216230B1006A78DF /* ComposeTextView.swift in Sources */,
 				43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */,
 				43EC75AC2164C26100048CFE /* SetOwnKeyViewController.swift in Sources */,
 				43122B1B1DF5B48B00610253 /* SmtpService.swift in Sources */,
@@ -3366,7 +3331,6 @@
 				15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */,
 				43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */,
 				43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */,
-				15265964216230B1006A78DF /* MessageBodyCell.swift in Sources */,
 				005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */,
 				15721AB52170E0BA00F1EA7A /* NSAttributedString+RecipientTextUtils.swift in Sources */,
 				15874BD12127493E00A3A4A6 /* TrustedServerSettingsViewModel.swift in Sources */,
@@ -3426,7 +3390,6 @@
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */,
-				15265960216230B1006A78DF /* ComposeCell.swift in Sources */,
 				4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */,
 				153FC45D202A263D0053CCF1 /* FolderType+IMAP.swift in Sources */,
 				15BA536A20A08B100090F126 /* Account+Extentions.swift in Sources */,
@@ -3494,7 +3457,6 @@
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				492EF92A20C18C6C004EAE14 /* DisplayedMessage.swift in Sources */,
-				15265963216230B1006A78DF /* WrappedCell.swift in Sources */,
 				15AA6016207CD71D00D57DB4 /* ImapFlags+Pantomime.swift in Sources */,
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,
 				43497B38211C62DE00AC42B0 /* MessageIdentitfying.swift in Sources */,
@@ -3509,14 +3471,12 @@
 				15BBBC631FD0496800B9DCC8 /* ReportingErrorContainer.swift in Sources */,
 				43985D0A2044296D0080FA9A /* OAuth2AuthViewModel.swift in Sources */,
 				150B8E981FCDACBB00374438 /* ErrorPropagator.swift in Sources */,
-				15265967216230B1006A78DF /* SubjectComposeTextView.swift in Sources */,
 				49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */,
 				15484B682105D5AA00F9D962 /* ConnectInfo.swift in Sources */,
 				0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */,
 				4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */,
 				43980EE01CBD24B000A7FC3C /* Log.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
-				15265961216230B1006A78DF /* RecipientCell_old.swift in Sources */,
 				157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */,
 				4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */,
 				433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */,
