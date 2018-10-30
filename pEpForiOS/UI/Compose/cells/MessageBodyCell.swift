@@ -9,11 +9,6 @@
 import UIKit
 import MessageModel
 
-public class TextAttachment: NSTextAttachment {
-    var attachment: Attachment?
-    var identifier: String?
-}
-
 class MessageBodyCell: ComposeCell {
     override func awakeFromNib() {
         super.awakeFromNib()
