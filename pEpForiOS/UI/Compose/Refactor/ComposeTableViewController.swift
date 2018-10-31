@@ -191,7 +191,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.updateSize()
         if let cell = tableView.cellForRow(at: indexPath) as? TextViewContainingTableViewCell {
             // Make sure the cursor always is in visible area.
-            TextViewInTableViewScrollUtil.scrollCaretToVisible(tableView: tableView,
+            TextViewInTableViewScrollUtil.assureCaretVisibility(tableView: tableView,
                                                                textView: cell.textView)
         }
     }
@@ -228,10 +228,8 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
             // Picker is not shown. Nothing to do.
             return
         }
-        mediaAttachmentPickerProvider?.imagePicker.dismiss(animated: true) {
-            self.setPreviousFocusAfterPicker()
-        }
-
+        mediaAttachmentPickerProvider?.imagePicker.dismiss(animated: true)
+        self.setPreviousFocusAfterPicker()
     }
 
     func showDocumentAttachmentPicker() {

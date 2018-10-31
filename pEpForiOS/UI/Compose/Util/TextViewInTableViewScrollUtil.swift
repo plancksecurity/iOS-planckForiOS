@@ -18,18 +18,28 @@ class TextViewInTableViewScrollUtil {
      Makes sure that the given text view's cursor (if any) is visible, given that it is
      contained in the given table view.
      */
-    static func scrollCaretToVisible(tableView: UITableView, textView: UITextView) {
+    static func assureCaretVisibility(tableView: UITableView, textView: UITextView) {
         guard let uiRange = textView.selectedTextRange, uiRange.isEmpty else {
             // No selection, nothing to scroll to.
             return
         }
-        let selectedRect = textView.caretRect(for: uiRange.end)
-        var tvRect = tableView.convert(selectedRect, from: textView)
+        let caretRect = textView.caretRect(for: uiRange.end)
+        let tvCaretRect = tableView.convert(caretRect, from: textView)
+
 
         // Extend the rectangle in both directions vertically,
         // to both include 1 line above and below.
-        tvRect.origin.y -= tvRect.size.height
-        tvRect.size.height *= 3
+        var adjusted = tvCaretRect
+        adjusted.origin.y -= adjusted.size.height
+        adjusted.size.height *= 3
+
+        // The offset must not be negative
+        var tvRect = adjusted.origin.y >= 0 ? adjusted : tvCaretRect
+
+        // A cursor might be big. E.g. height of an image text attachments.
+        // Do not take adjusted rect in this case. It will explode.
+        let maxCursorHeight: CGFloat = 100.0
+        tvRect = tvRect.size.height <= maxCursorHeight ? adjusted : tvCaretRect
 
         tableView.scrollRectToVisible(tvRect, animated: false)
     }

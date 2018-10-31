@@ -696,14 +696,8 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
                            inlinedAttachmentsChanged inlinedAttachments: [Attachment]) {
-        guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
-            return
-        }
         state.inlinedAttachments = inlinedAttachments
         delegate?.hideMediaAttachmentPicker()
-        delegate?.contentChanged(inRowAt: idxPath)
     }
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
