@@ -22,11 +22,13 @@ protocol ComposeViewModelResultDelegate: class {
 
 protocol ComposeViewModelDelegate: class {
 
-    /// Called when the user changes the contetn of a row.
+    /// Called when the user changes the content of a row.
     /// E.g. edited the subject.
     ///
     /// - Parameter indexPath: indexPath of changed row
     func contentChanged(inRowAt indexPath: IndexPath)
+
+    func focusSwitched()
 
     /// The status of whether or not the message has been validated for sending changed.
     ///
@@ -606,16 +608,10 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
     }
 
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
-        //IOS-1369: handle!
-        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
-        guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
-            return
-        }
-        delegate?.contentChanged(inRowAt: idxPath)
-        delegate?.hideSuggestions()
         state.validate()
+        delegate?.focusSwitched()
+        delegate?.hideSuggestions()
+
         /*
          tableView.updateSize()
          hideSuggestions()

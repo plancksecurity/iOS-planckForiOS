@@ -188,14 +188,16 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func contentChanged(inRowAt indexPath: IndexPath) {
-        // Auto-resize cells
         tableView.updateSize()
-
         if let cell = tableView.cellForRow(at: indexPath) as? TextViewContainingTableViewCell {
             // Make sure the cursor always is in visible area.
             TextViewInTableViewScrollUtil.scrollCaretToVisible(tableView: tableView,
                                                                textView: cell.textView)
         }
+    }
+
+    func focusSwitched() {
+        tableView.updateSize()
     }
 
     func modelChanged() {
