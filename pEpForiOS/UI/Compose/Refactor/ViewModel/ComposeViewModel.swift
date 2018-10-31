@@ -696,7 +696,6 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
                            inlinedAttachmentsChanged inlinedAttachments: [Attachment]) {
-        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
         guard let idxPath = indexPath(for: vm) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We got called by a non-existing VM?")
