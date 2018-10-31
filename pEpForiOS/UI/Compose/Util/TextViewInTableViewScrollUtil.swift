@@ -34,12 +34,12 @@ class TextViewInTableViewScrollUtil {
         adjusted.size.height *= 3
 
         // The offset must not be negative
-        var tvRect = adjusted.origin.y >= 0 ? adjusted : tvCaretRect
+        var tvRect = adjusted.origin.y >= 0.0 ? adjusted : tvCaretRect
 
         // A cursor might be big. E.g. height of an image text attachments.
         // Do not take adjusted rect in this case. It will explode.
         let maxCursorHeight: CGFloat = 100.0
-        tvRect = tvRect.size.height <= maxCursorHeight ? adjusted : tvCaretRect
+        tvRect = tvRect.size.height <= maxCursorHeight ? tvRect : tvCaretRect
 
         tableView.scrollRectToVisible(tvRect, animated: false)
     }
