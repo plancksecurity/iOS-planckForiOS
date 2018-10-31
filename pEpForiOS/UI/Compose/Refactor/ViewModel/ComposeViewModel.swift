@@ -51,6 +51,8 @@ protocol ComposeViewModelDelegate: class {
     func hideMediaAttachmentPicker()
 
     func showDocumentAttachmentPicker()
+
+    func documentAttachmentPickerDone()
 }
 
 class ComposeViewModel {
@@ -433,9 +435,12 @@ extension ComposeViewModel: DocumentAttachmentPickerViewModelResultDelegate {
     func documentAttachmentPickerViewModel(_ vm: DocumentAttachmentPickerViewModel,
                                            didPick attachment: Attachment) {
         addNonInlinedAttachment(attachment)
-        //        delegate?.hideMediaAttachmentPicker() //IOS-1369:
+        delegate?.documentAttachmentPickerDone()
     }
 
+    func documentAttachmentPickerViewModelDidCancel(_ vm: DocumentAttachmentPickerViewModel) {
+        delegate?.documentAttachmentPickerDone()
+    }
 }
 
 // MARK: - MediaAttachmentPickerProviderViewModel[ResultDelegate]

@@ -11,6 +11,8 @@ import MessageModel
 protocol DocumentAttachmentPickerViewModelResultDelegate: class {
     func documentAttachmentPickerViewModel(_ vm: DocumentAttachmentPickerViewModel,
                                            didPick attachment: Attachment)
+
+    func documentAttachmentPickerViewModelDidCancel(_ vm: DocumentAttachmentPickerViewModel)
 }
 
 class DocumentAttachmentPickerViewModel {
@@ -42,6 +44,10 @@ class DocumentAttachmentPickerViewModel {
                 }
             }
         }
+    }
+
+    public func handleDidCancel() {
+        resultDelegate?.documentAttachmentPickerViewModelDidCancel(self)
     }
 
     /// Used to create an Attachment from security scoped resources.

@@ -235,6 +235,10 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     func showDocumentAttachmentPicker() {
         presentDocumentAttachmentPicker()
     }
+
+    func documentAttachmentPickerDone() {
+        self.setPreviousFocusAfterPicker()
+    }
 }
 
 // MARK: - SegueHandlerType

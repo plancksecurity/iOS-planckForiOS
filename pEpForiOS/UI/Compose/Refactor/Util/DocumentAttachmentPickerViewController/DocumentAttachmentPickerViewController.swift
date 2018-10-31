@@ -32,4 +32,7 @@ extension DocumentAttachmentPickerViewController: UIDocumentPickerDelegate {
                         didPickDocumentsAt urls: [URL]) {
         viewModel?.handleDidPickDocuments(at: urls)
     }
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        viewModel?.handleDidCancel()
+    }
 }
