@@ -37,6 +37,11 @@ class BodyCellViewModel: CellViewModel {
             resultDelegate?.bodyCellViewModel(self, inlinedAttachmentsChanged: inlinedAttachments)
         }
     }
+    private var lastKnownCursorPosition = 0
+    private var restoreCursorPosition = 0
+    var cursorPosition: Int {
+        return restoreCursorPosition
+    }
 
     init(resultDelegate: BodyCellViewModelResultDelegate,
          initialPlaintext: String? = nil,
@@ -87,11 +92,27 @@ class BodyCellViewModel: CellViewModel {
         NSLocalizedString("Attach file",   comment: "Insert document in message text context menu")
 
     public func handleUserClickedSelectMedia() {
+        let potetialImage = 1
+        rememberCursorPosition(offset: potetialImage)
         resultDelegate?.bodyCellViewModelUserWantsToAddMedia(self)
     }
 
     public func handleUserClickedSelectDocument() {
+        rememberCursorPosition()
         resultDelegate?.bodyCellViewModelUserWantsToAddDocument(self)
+    }
+}
+
+// MARK: - Cursor Position / Selection
+
+extension BodyCellViewModel {
+
+    public func handleCursorPositionChange(newPosition: Int) {
+        lastKnownCursorPosition = newPosition
+    }
+
+    private func rememberCursorPosition(offset: Int = 0) {
+        restoreCursorPosition = lastKnownCursorPosition + offset
     }
 }
 

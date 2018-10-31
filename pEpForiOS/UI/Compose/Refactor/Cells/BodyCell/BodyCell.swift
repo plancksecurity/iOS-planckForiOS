@@ -37,9 +37,24 @@ class BodyCell: TextViewContainingTableViewCell {
         }
         vm.handleTextChange(newText: textView.text, newAttributedText: textView.attributedText)
     }
-}
 
-//IOS-1369: extract to BodyTextView
+    // MARK: - TextViewContainingTableViewCell
+
+    // Set cursor and show keyboard
+    override func setFocus() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
+        }
+        if let rangeStart = textView.position(from: textView.beginningOfDocument,
+                                              offset: vm.cursorPosition),
+            let rangeEnd = textView.position(from: rangeStart, offset: 0) {
+            textView.selectedTextRange = textView.textRange(from: rangeStart,
+                                                            to: rangeEnd)
+        }
+        textView.becomeFirstResponder()
+    }
+}
 
 // MARK: - BodyCellViewModelDelegate
 
@@ -58,6 +73,16 @@ extension BodyCell: BodyCellViewModelDelegate {
 // MARK: - UITextViewDelegate
 
 extension BodyCell {
+
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        guard let textRange = textView.selectedTextRange else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No selection")
+            return
+        }
+        let cursorPosition = textView.offset(from: textView.beginningOfDocument,
+                                             to: textRange.start)
+        viewModel?.handleCursorPositionChange(newPosition: cursorPosition)
+    }
 
     public func textViewDidChange(_ textView: UITextView) {
         //IOS-1369: scroll?

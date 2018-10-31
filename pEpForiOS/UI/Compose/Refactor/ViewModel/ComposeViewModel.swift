@@ -64,6 +64,16 @@ class ComposeViewModel {
 
     private var suggestionsVM: SuggestViewModel?
     private var lastRowWithSuggestions: IndexPath?
+    private var indexPathBodyVm: IndexPath {
+        let bodySection = section(for: .body)
+        guard
+            let vm = bodySection?.rows.first,
+            let body = indexPath(for: vm) else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No body")
+                return IndexPath(row: 0, section: 0)
+        }
+        return body
+    }
 
     init(resultDelegate: ComposeViewModelResultDelegate? = nil,
          composeMode: ComposeUtil.ComposeMode? = nil,
@@ -87,15 +97,12 @@ class ComposeViewModel {
             let to = IndexPath(row: 0, section: 0)
             return to
         } else {
-            let bodySection = section(for: .body)
-            guard
-                let vm = bodySection?.rows.first,
-                let body = indexPath(for: vm) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No body")
-                    return IndexPath(row: 0, section: 0)
-            }
-            return body
+            return indexPathBodyVm
         }
+    }
+
+    public func beforePickerFocus() -> IndexPath {
+        return indexPathBodyVm
     }
 
     public func handleUserSelectedRow(at indexPath: IndexPath) {

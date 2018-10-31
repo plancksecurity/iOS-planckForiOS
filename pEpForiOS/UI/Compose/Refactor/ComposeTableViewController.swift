@@ -26,9 +26,8 @@ class ComposeTableViewController: BaseTableViewController {
         return DocumentAttachmentPickerViewController(
             viewModel: viewModel?.documentAttachmentPickerViewModel())
     }()
+    private var isInitialFocusSet = false
 
-    private var isInitialSetup = true
-    private var currentCellIndexPath: IndexPath?
     var viewModel: ComposeViewModel? {
         didSet {
             // Make sure we are the delegate. Always.
@@ -223,7 +222,14 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func hideMediaAttachmentPicker() {
-        mediaAttachmentPickerProvider?.imagePicker.dismiss(animated: true)
+        guard isModalViewCurrentlyShown else {
+            // Picker is not shown. Nothing to do.
+            return
+        }
+        mediaAttachmentPickerProvider?.imagePicker.dismiss(animated: true) {
+            self.setPreviousFocusAfterPicker()
+        }
+
     }
 
     func showDocumentAttachmentPicker() {
@@ -461,9 +467,13 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
                             willDisplay cell: UITableViewCell,
                             forRowAt indexPath: IndexPath) {
         if isLastRow(indexPath: indexPath) {
-            DispatchQueue.main.async {
-                // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
-                self.setFocus()
+            // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
+            DispatchQueue.main.async { [weak self] in
+                guard let me = self else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    return
+                }
+                me.setInitialFocus()
             }
         }
     }
@@ -473,12 +483,31 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
 
 extension ComposeTableViewController {
 
-    private func setFocus() {
+    private func setInitialFocus() {
+        guard !isInitialFocusSet else {
+            // We want to init once only
+            return
+        }
+        isInitialFocusSet = true
         guard let vm = viewModel else {
             Log.shared.errorAndCrash(component: #function, errorString: "No VM")
             return
         }
         let idxPath = vm.initialFocus()
+        guard let cellToFocus = tableView.cellForRow(at: idxPath)
+            as? TextViewContainingTableViewCell else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                return
+        }
+        cellToFocus.setFocus()
+    }
+
+    private func setPreviousFocusAfterPicker() {
+        guard let vm = viewModel else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return
+        }
+        let idxPath = vm.beforePickerFocus()
         guard let cellToFocus = tableView.cellForRow(at: idxPath)
             as? TextViewContainingTableViewCell else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
