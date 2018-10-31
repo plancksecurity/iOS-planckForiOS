@@ -462,6 +462,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
                             forRowAt indexPath: IndexPath) {
         if isLastRow(indexPath: indexPath) {
             DispatchQueue.main.async {
+                // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
                 self.setFocus()
             }
         }
