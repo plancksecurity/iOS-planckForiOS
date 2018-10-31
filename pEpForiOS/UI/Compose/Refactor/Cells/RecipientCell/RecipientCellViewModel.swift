@@ -12,6 +12,8 @@ protocol RecipientCellViewModelResultDelegate: class {
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
                                 didChangeRecipients newRecipients: [Identity])
 
+    func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String)
+
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel)
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String)
@@ -59,15 +61,20 @@ class RecipientCellViewModel: CellViewModel {
 // MARK: - RecipientTextViewModelResultDelegate
 
 extension RecipientCellViewModel: RecipientTextViewModelResultDelegate {
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity]) {
+
+    func recipientTextViewModel(_ vm: RecipientTextViewModel, didChangeRecipients newRecipients: [Identity]) {
         resultDelegate?.recipientCellViewModel(self, didChangeRecipients: newRecipients)
     }
 
-    func recipientTextViewModelDidEndEditing(recipientTextViewModel: RecipientTextViewModel) {
+    func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String) {
+        resultDelegate?.recipientCellViewModel(self, didBeginEditing: text)
+    }
+
+    func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel) {
         resultDelegate?.recipientCellViewModelDidEndEditing(self)
     }
 
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel, textChanged newText: String) {
+    func recipientTextViewModel(_ vm: RecipientTextViewModel, textChanged newText: String) {
         resultDelegate?.recipientCellViewModel(self, textChanged: newText)
     }
 }

@@ -36,6 +36,7 @@ extension RecipientTextView: UITextViewDelegate {
 
     public func textViewDidBeginEditing(_ textView: UITextView) {
         reportWidthChange()
+        viewModel?.handleDidBeginEditing(text: textView.text)
         //IOS-1369: scroll? suggestions?
 //        guard let cTextview = textView as? ComposeTextView else { return }
 //

@@ -10,13 +10,14 @@ import MessageModel
 
 protocol RecipientTextViewModelResultDelegate: class {
 
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
+    func recipientTextViewModel(_ vm: RecipientTextViewModel,
                                 didChangeRecipients newRecipients: [Identity])
 
-    func recipientTextViewModelDidEndEditing(recipientTextViewModel: RecipientTextViewModel)
+    func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String)
 
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
-                                textChanged newText: String)
+    func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel)
+
+    func recipientTextViewModel(_ vm: RecipientTextViewModel, textChanged newText: String)
 }
 
 protocol RecipientTextViewModelDelegate: class {
@@ -35,7 +36,7 @@ class RecipientTextViewModel {
     private var recipientAttachments = [RecipientTextViewTextAttachment]() {
         didSet {
             let recipients = recipientAttachments.map { $0.recipient }
-            resultDelegate?.recipientTextViewModel(recipientTextViewModel: self,
+            resultDelegate?.recipientTextViewModel(self,
                                                    didChangeRecipients: recipients)
         }
     }
@@ -70,17 +71,21 @@ class RecipientTextViewModel {
         return true
     }
 
+    public func handleDidBeginEditing(text: String) {
+        resultDelegate?.recipientTextViewModel(self, didBeginEditing: text)
+    }
+
     public func handleDidEndEditing(range: NSRange, of text: NSAttributedString) {
         attributedText = text
         tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
-        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self) //seperate and and changed!
+        resultDelegate?.recipientTextViewModelDidEndEditing(self)
     }
 
     public func handleTextChange(newText: String, newAttributedText: NSAttributedString) {
         attributedText = newAttributedText
         let textOnly = newText.trimObjectReplacementCharacters().trimmed()
         isDirty = !textOnly.isEmpty
-        resultDelegate?.recipientTextViewModel(recipientTextViewModel: self, textChanged: textOnly)
+        resultDelegate?.recipientTextViewModel(self, textChanged: textOnly)
     }
 
     public func isAddressDeliminator(str: String) -> Bool {

@@ -607,6 +607,17 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
  */
     }
 
+    func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String) {
+        guard let idxPath = indexPath(for: vm) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We got called by a non-existing VM?")
+            return
+        }
+        lastRowWithSuggestions = idxPath
+        delegate?.showSuggestions(forRowAt: idxPath)
+        suggestionsVM?.updateSuggestion(searchString: text)
+    }
+
     func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
         state.validate()
         delegate?.focusSwitched()
