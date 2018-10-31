@@ -171,8 +171,7 @@ extension ComposeViewModelState {
 // MARK: - PEP_Color
 
 extension ComposeViewModelState {
-    //NEW
-
+    
     private var isForceUnprotectedDueToBccSet: Bool {
         return bccRecipients.count > 0
     }
@@ -182,14 +181,24 @@ extension ComposeViewModelState {
             rating = PEP_rating_unencrypted
             return
         }
-        let session = PEPSession()
-        if let from = from {
-            rating = session.outgoingMessageRating(from: from,
-                                                   to: toRecipients,
-                                                   cc: ccRecipients,
-                                                   bcc: bccRecipients)
-        } else {
-            rating = PEP_rating_undefined
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            let newRating: PEP_rating
+            let session = PEPSession()
+            if let from = me.from {
+                newRating = session.outgoingMessageRating(from: from,
+                                                       to: me.toRecipients,
+                                                       cc: me.ccRecipients,
+                                                       bcc: me.bccRecipients)
+            } else {
+                newRating = PEP_rating_undefined
+            }
+            DispatchQueue.main.async {
+                me.rating = newRating
+            }
         }
     }
 }
