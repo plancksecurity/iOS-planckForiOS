@@ -825,7 +825,7 @@
                                     <outlet property="textView" destination="rdT-E5-6x9" id="4EG-Ab-7Gm"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountCell_mvvm" rowHeight="58" id="38V-GT-YCW" userLabel="AccountCell" customClass="AccountCell" customModule="pEpForiOS" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountCell" rowHeight="58" id="38V-GT-YCW" userLabel="AccountCell" customClass="AccountCell" customModule="pEpForiOS" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="462" width="375" height="58"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="38V-GT-YCW" id="tFc-q8-Uuy">
