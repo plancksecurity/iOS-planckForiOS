@@ -442,6 +442,11 @@ extension ComposeViewModel {
     func mediaAttachmentPickerProviderViewModel() -> MediaAttachmentPickerProviderViewModel {
         return MediaAttachmentPickerProviderViewModel(resultDelegate: self)
     }
+
+    func mediaAttachmentPickerProviderViewModelDidCancel(
+        _ vm: MediaAttachmentPickerProviderViewModel) {
+        delegate?.hideMediaAttachmentPicker()
+    }
 }
 
 extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate {

@@ -37,6 +37,10 @@ extension MediaAttachmentPickerProvider: UIImagePickerControllerDelegate {
                                        didFinishPickingMediaWithInfo info: [String: Any]) {
         viewModel?.handleDidFinishPickingMedia(info: info)
     }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        viewModel?.handleDidCancel()
+    }
 }
 
 // MARK: - UINavigationControllerDelegate

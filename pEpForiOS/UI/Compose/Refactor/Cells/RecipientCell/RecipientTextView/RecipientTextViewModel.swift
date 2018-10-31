@@ -73,7 +73,7 @@ class RecipientTextViewModel {
     public func handleDidEndEditing(range: NSRange, of text: NSAttributedString) {
         attributedText = text
         tryGenerateValidAddressAndUpdateStatus(range: range, of: text)
-        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self)
+        resultDelegate?.recipientTextViewModelDidEndEditing(recipientTextViewModel: self) //seperate and and changed!
     }
 
     public func handleTextChange(newText: String, newAttributedText: NSAttributedString) {

@@ -12,6 +12,9 @@ protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
     func mediaAttachmentPickerProviderViewModel(_ vm: MediaAttachmentPickerProviderViewModel,
                                                 didSelect mediaAttachment:
         MediaAttachmentPickerProviderViewModel.MediaAttachment)
+
+    func mediaAttachmentPickerProviderViewModelDidCancel(
+        _ vm: MediaAttachmentPickerProviderViewModel)
 }
 
 class MediaAttachmentPickerProviderViewModel {
@@ -34,6 +37,10 @@ class MediaAttachmentPickerProviderViewModel {
             // We got something from picker that is not an image. Probalby video/movie.
             createMovieAttchmentAndInformResultDelegate(info: info)
         }
+    }
+
+    public func handleDidCancel() {
+        resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
     }
 
     private func createImageAttchmentAndInformResultDelegate(info: [String: Any]) {
