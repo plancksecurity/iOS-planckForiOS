@@ -127,8 +127,7 @@ extension BodyCellViewModel {
         }
         attachment.contentDisposition = .inline
         // Workaround: If the image has a higher resolution than that, UITextView has serious
-        // performance issues (delay typing). I suspect we are causing them elswhere though.
-        // IOS-1369: double check the performance issues persist. rm if they do not.
+        // performance issues (delay typing).
         guard let scaledImage = image.resized(newWidth: maxTextattachmentWidth / 2, useAlpha: false)
             else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Error resizing")
@@ -137,7 +136,8 @@ extension BodyCellViewModel {
         let textAttachment = TextAttachment()
         textAttachment.image = scaledImage
         textAttachment.attachment = attachment
-        textAttachment.bounds = CGRect.rect(withWidth: maxTextattachmentWidth,
+        let margin: CGFloat = 10.0
+        textAttachment.bounds = CGRect.rect(withWidth: maxTextattachmentWidth - margin,
                                             ratioOf: scaledImage.size)
         let imageString = NSAttributedString(attachment: textAttachment)
 
