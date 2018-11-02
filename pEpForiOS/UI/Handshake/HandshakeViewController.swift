@@ -33,8 +33,6 @@ class HandshakeViewController: BaseTableViewController {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableViewAutomaticDimension
 
-
-
         let img = UIImage(named: "pEpForiOS-icon-languagechange")
 
         let item = UIBarButtonItem(image: img,
@@ -49,10 +47,18 @@ class HandshakeViewController: BaseTableViewController {
         identityViewModelCache.removeAllObjects()
     }
 
+    fileprivate func updateStatusBadge() {
+        self.showPepRating(pEpRating: message?.pEpRating())
+    }
+
     override func viewDidLoad() {
         let newBackButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(HandshakeViewController.back(sender:)))
         self.navigationItem.leftBarButtonItem = newBackButton
-        self.showPepRating(pEpRating: PEP_rating.init(0))
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        updateStatusBadge()
     }
 
     @objc func back(sender: UIBarButtonItem) {
@@ -116,11 +122,6 @@ class HandshakeViewController: BaseTableViewController {
      */
     func adjustBackgroundColor(viewModel: HandshakePartnerTableViewCellViewModel,
                                indexPath: IndexPath) {
-        /*if indexPath.row % 2 == 0 {
-            viewModel.backgroundColorDark = false
-        } else {
-            viewModel.backgroundColorDark = true
-        }*/
         if indexPath.row == 0 {
             viewModel.backgroundColorDark = false
         } else {
@@ -200,6 +201,7 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
             }
         }
         tableView.reloadRows(at: paths, with: .automatic)
+        updateStatusBadge()
     }
 
     func resetTrustOrUndoMistrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
