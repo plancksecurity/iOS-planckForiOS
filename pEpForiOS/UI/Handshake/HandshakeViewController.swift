@@ -188,7 +188,13 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
         action()
         cell.updateView()
         tableView.updateSize()
+        if #available(iOS 10.0, *) {
+            kdebug_signpost_start(SignPostCode.start.rawValue, 0, 0, 0, SignPostColor.orange.rawValue)
+        } else {
+            // Fallback on earlier versions
+        }
 
+        ratingReEvaluator?.delegate = self
         ratingReEvaluator?.reevaluateRating()
 
         // reload cells after that one, to ensure the alternating colors are upheld
@@ -201,7 +207,6 @@ extension HandshakeViewController: HandshakePartnerTableViewCellDelegate {
             }
         }
         tableView.reloadRows(at: paths, with: .automatic)
-        updateStatusBadge()
     }
 
     func resetTrustOrUndoMistrust(sender: UIButton, cell: HandshakePartnerTableViewCell,
@@ -301,4 +306,38 @@ extension HandshakeViewController: SegueHandlerType {
             destination.languages = []
         }
     }
+}
+
+extension HandshakeViewController : RatingReEvaluatorDelegate {
+    func ratingChanged(message: Message) {
+        DispatchQueue.main.async {
+            self.updateStatusBadge()
+            if #available(iOS 10.0, *) {
+                kdebug_signpost_start(SignPostCode.start.rawValue, 0, 0, 0, SignPostColor.orange.rawValue)
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+
+    }
+
+
+}
+
+/*kdebug_signpost_start(SignPostCode.download.rawValue, UInt(index), 0, 0, SignPostColor.orange.rawValue)
+ // perform download
+ kdebug_signpost_end(SignPostCode.download.rawValue, UInt(index), 0, 0, SignPostColor.orange.rawValue)*/
+
+
+enum SignPostCode: UInt32 {   // some custom constants that I'll reference in Instruments
+    case start = 0
+    case end = 1
+}
+
+enum SignPostColor: UInt {    // standard color scheme for signposts in Instruments
+    case blue = 0
+    case green = 1
+    case purple = 2
+    case orange = 3
+    case red = 4
 }
