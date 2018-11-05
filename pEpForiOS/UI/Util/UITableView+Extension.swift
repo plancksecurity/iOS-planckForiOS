@@ -25,12 +25,6 @@ extension UITableView {
             }
         }
     }
-
-    public final func scrollToTopOf(_ cell: UITableViewCell) {
-        var center = contentOffset
-        center.y = cell.frame.origin.y - ComposeHelpers.defaultCellHeight
-        contentOffset = center
-    }
 }
 
 protocol TableViewUpdate {
