@@ -10,7 +10,7 @@ import UIKit
 import MessageModel
 
 struct ComposeHelpers {
-    static let defaultFilenameLength = 20
+    static fileprivate let defaultFilenameLength = 20
 }
 
 extension String {
