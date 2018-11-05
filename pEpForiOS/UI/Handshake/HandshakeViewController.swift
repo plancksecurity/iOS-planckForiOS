@@ -33,14 +33,7 @@ class HandshakeViewController: BaseTableViewController {
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableViewAutomaticDimension
 
-        let img = UIImage(named: "pEpForiOS-icon-languagechange")
 
-        let item = UIBarButtonItem(image: img,
-                        style: UIBarButtonItemStyle.plain,
-                        target: self,
-                        action: #selector(self.languageSelectedAction(_:)))
-
-        navigationItem.rightBarButtonItems = [item]
     }
 
     override func didReceiveMemoryWarning() {
@@ -52,13 +45,44 @@ class HandshakeViewController: BaseTableViewController {
     }
 
     override func viewDidLoad() {
-        let newBackButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: self, action: #selector(HandshakeViewController.back(sender:)))
-        self.navigationItem.leftBarButtonItem = newBackButton
+
+        let item = UIBarButtonItem(customView: languageButton())
+
+        self.navigationItem.rightBarButtonItems = [item]
+
+        let leftItem = UIBarButtonItem(customView: backButton())
+        
+        self.navigationItem.leftBarButtonItem = leftItem
 
     }
 
     override func viewWillAppear(_ animated: Bool) {
         updateStatusBadge()
+    }
+
+    func languageButton() -> UIButton {
+        //language button
+        let img = UIImage(named: "pEpForiOS-icon-languagechange")
+        let button = UIButton(type: UIButtonType.custom)
+        button.imageEdgeInsets = UIEdgeInsetsMake(10.0, 0.0, 10.0, 0.0)
+        button.setImage(img, for: .normal)
+        button.imageView?.contentMode = .scaleAspectFit
+        button.addTarget(self, action: #selector(self.languageSelectedAction(_:)), for: .touchUpInside)
+        return button
+    }
+
+    func backButton() -> UIButton {
+        let img2 = UIImage(named: "arrow-rgt-active")
+        let tintedimage = img2?.withRenderingMode(.alwaysTemplate)
+        let buttonLeft = UIButton(type: UIButtonType.custom)
+        buttonLeft.setImage(tintedimage, for: .normal)
+        buttonLeft.imageView?.contentMode = .scaleToFill
+        buttonLeft.imageView?.tintColor = UIColor.pEpGreen
+        buttonLeft.setTitle(" Message", for: .normal)
+        buttonLeft.addTarget(self, action: #selector(self.back(sender:)), for: .touchUpInside)
+        buttonLeft.tintColor = UIColor.pEpGreen
+        buttonLeft.setTitleColor(UIColor.pEpGreen, for: .normal)
+        return buttonLeft
     }
 
     @objc func back(sender: UIBarButtonItem) {
