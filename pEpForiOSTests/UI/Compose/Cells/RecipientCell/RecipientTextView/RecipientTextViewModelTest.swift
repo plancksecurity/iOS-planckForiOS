@@ -427,7 +427,7 @@ class TestRecipientTextViewModelResultDelegate: RecipientTextViewModelResultDele
     }
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String) {
-        //IOS-1369: needs to be handled?
+        //Do nothing
     }
 
     func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel) {

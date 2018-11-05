@@ -80,7 +80,6 @@ struct InitData {
     var bodyPlaintext = ""
     var bodyHtml: NSAttributedString?
 
-    //IOS-1369: all lazy private set?
     public var nonInlinedAttachments: [Attachment] {
         return ComposeUtil.initialAttachments(composeMode: composeMode,
                                               contentDisposition: .attachment,

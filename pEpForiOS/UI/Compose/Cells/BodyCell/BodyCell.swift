@@ -85,7 +85,6 @@ extension BodyCell {
     }
 
     public func textViewDidChange(_ textView: UITextView) {
-        //IOS-1369: scroll?
         viewModel?.handleTextChange(newText: textView.text,
                                     newAttributedText: textView.attributedText)
     }
