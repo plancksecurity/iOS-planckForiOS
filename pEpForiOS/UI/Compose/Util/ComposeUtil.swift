@@ -112,22 +112,6 @@ struct ComposeUtil {
 
     // MARK: - Attachments
 
-    //IOS-1369: obsolete. remove
-    /// - Returns: Noninlined attachments appropriate for the given compose mode
-    static func initialNonInlinedAttachments(composeMode: ComposeMode,
-                                             originalMessage om: Message?) -> [Attachment] {
-        guard shouldTakeOverAttachments(composeMode: composeMode, originalMessage: om ) else {
-            return []
-        }
-        guard let om = om else {
-            // No om, no initial attachments
-            return []
-        }
-        let nonInlinedAttachments = om.viewableAttachments()
-            .filter { $0.contentDisposition == .attachment }
-        return nonInlinedAttachments
-    }
-
     /// - Returns: attachments appropriate for the given compose mode
     static func initialAttachments(composeMode: ComposeMode,
                                    contentDisposition: Attachment.ContentDispositionType,
@@ -151,7 +135,7 @@ struct ComposeUtil {
                                                   originalMessage om: Message?) -> Bool {
         var isInDraftsOrOutbox = false
         if let om = om {
-            isInDraftsOrOutbox = om.isInDraftsOrOutbox //IOS-1369: HERE: init attachments
+            isInDraftsOrOutbox = om.isInDraftsOrOutbox
         }
         return composeMode == .forward || isInDraftsOrOutbox
     }
