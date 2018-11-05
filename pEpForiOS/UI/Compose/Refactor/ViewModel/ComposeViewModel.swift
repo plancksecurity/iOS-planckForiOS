@@ -596,8 +596,6 @@ extension ComposeViewModel {
 extension ComposeViewModel: RecipientCellViewModelResultDelegate {
     func recipientCellViewModel(_ vm: RecipientCellViewModel,
                                 didChangeRecipients newRecipients: [Identity]) {
-        //IOS-1369: handle!
-        print("newRecipients: \(newRecipients)")
         switch vm.type {
         case .to:
             state.toRecipients = newRecipients
