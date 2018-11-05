@@ -48,4 +48,21 @@ extension SubjectCell {
                          replacementText text: String) -> Bool {
        return viewModel?.shouldChangeText(to: text) ?? true
     }
+
+    // MARK: First Baseline Alignment Workaround
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.text = firstBaselineAlingIssueWorkaroundRemoved(text: textView.text)
+    }
+
+    /// Out auto-layout is based on UIStackView's "First Baseline" alignment, which does not what
+    /// we are expecting if the textview's text is empty. As a workaround we are setting the
+    /// initital text to " " and remove it on text change.
+    private func firstBaselineAlingIssueWorkaroundRemoved(text: String) -> String {
+        if text.hasPrefix(" ") {
+            return String(text.dropFirst())
+        } else {
+            return text
+        }
+    }
 }
