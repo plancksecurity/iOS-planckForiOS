@@ -142,7 +142,8 @@ struct ComposeUtil {
 
     // MARK: - Message to send
 
-    static public func messageToSend(withDataFrom state: ComposeViewModelState) -> Message? {
+    static public func messageToSend(
+        withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
         guard let from = state.from,
             let account = Account.by(address: from.address) else {
                 Log.shared.errorAndCrash(component: #function,
@@ -173,7 +174,8 @@ struct ComposeUtil {
     }
 
     static private func updateReferences(of message: Message,
-                                         accordingTo composeState: ComposeViewModelState) {
+                                         accordingTo composeState:
+        ComposeViewModel.ComposeViewModelState) {
         guard let composeMode = composeState.initData?.composeMode else {
             Log.shared.errorAndCrash(component: #function, errorString: "No init data")
             return

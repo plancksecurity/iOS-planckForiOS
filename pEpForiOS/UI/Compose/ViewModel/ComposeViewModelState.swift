@@ -9,155 +9,154 @@
 import MessageModel
 
 protocol ComposeViewModelStateDelegate: class {
-    func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
+    func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
-    func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
+    func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangePEPRatingTo newRating: PEP_rating)
 
-    func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
+    func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeProtection newValue: Bool)
-
-
 }
-//IOS-1369: wrap in extention when done to not polute the namespace
-//extension ComposeViewModel {
+
+extension ComposeViewModel {
 
 /// Wraps bookholding properties
-class ComposeViewModelState {
-    private(set) var initData: InitData?
-    private var isValidatedForSending = false {
-        didSet {
+    class ComposeViewModelState {
+        private(set) var initData: InitData?
+        private var isValidatedForSending = false {
+            didSet {
                 delegate?.composeViewModelState(self,
                                                 didChangeValidationStateTo: isValidatedForSending)
-        }
-    }
-    public private(set) var edited = false
-    public private(set) var rating = PEP_rating_undefined {
-        didSet {
-            if rating != oldValue {
-                delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
             }
         }
-    }
-
-    public var pEpProtection = true {
-        didSet {
-            if pEpProtection != oldValue {
-                delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
+        public private(set) var edited = false
+        public private(set) var rating = PEP_rating_undefined {
+            didSet {
+                if rating != oldValue {
+                    delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
+                }
             }
         }
-    }
 
-    public private(set) var bccWrapped = true
-
-    weak var delegate: ComposeViewModelStateDelegate?
-
-    //Recipients
-    var toRecipients = [Identity]() {
-        didSet {
-            edited = true
-            validate()
+        public var pEpProtection = true {
+            didSet {
+                if pEpProtection != oldValue {
+                    delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
+                }
+            }
         }
-    }
-    var ccRecipients = [Identity]() {
-        didSet {
-            edited = true
-            validate()
+
+        public private(set) var bccWrapped = true
+
+        weak var delegate: ComposeViewModelStateDelegate?
+
+        //Recipients
+        var toRecipients = [Identity]() {
+            didSet {
+                edited = true
+                validate()
+            }
         }
-    }
-    var bccRecipients = [Identity]() {
-        didSet {
-            edited = true
-            validate()
+        var ccRecipients = [Identity]() {
+            didSet {
+                edited = true
+                validate()
+            }
         }
-    }
-
-    var from: Identity? {
-        didSet {
-            edited = true
-            validate()
+        var bccRecipients = [Identity]() {
+            didSet {
+                edited = true
+                validate()
+            }
         }
-    }
 
-    var subject = " " {
-        didSet {
-            edited = true
+        var from: Identity? {
+            didSet {
+                edited = true
+                validate()
+            }
         }
-    }
 
-    var bodyPlaintext = "" {
-        didSet {
-            edited = true
+        var subject = " " {
+            didSet {
+                edited = true
+            }
         }
-    }
 
-    var bodyHtml = "" {
-        didSet {
-            edited = true
+        var bodyPlaintext = "" {
+            didSet {
+                edited = true
+            }
         }
-    }
 
-    var inlinedAttachments = [Attachment]() {
-        didSet {
-            edited = true
+        var bodyHtml = "" {
+            didSet {
+                edited = true
+            }
         }
-    }
 
-    var nonInlinedAttachments = [Attachment]() {
-        didSet {
-            edited = true
+        var inlinedAttachments = [Attachment]() {
+            didSet {
+                edited = true
+            }
         }
-    }
 
-    init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
-        self.initData = initData
-        self.delegate = delegate
-        setup()
-        edited = false
-    }
-
-    public func setBccUnwrapped() {
-        bccWrapped = false
-    }
-
-    public func validate() {
-        calculatePepRating()
-        validateForSending()
-    }
-
-    private func setup() {
-        guard let initData = initData else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No data")
-            return
+        var nonInlinedAttachments = [Attachment]() {
+            didSet {
+                edited = true
+            }
         }
-        toRecipients = initData.toRecipients
-        ccRecipients = initData.ccRecipients
-        bccRecipients = initData.bccRecipients
-        bccWrapped = ccRecipients.isEmpty && bccRecipients.isEmpty
-        from = initData.from
-        subject = initData.subject
 
-        pEpProtection = initData.pEpProtection
+        init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
+            self.initData = initData
+            self.delegate = delegate
+            setup()
+            edited = false
+        }
 
-        inlinedAttachments =  initData.inlinedAttachments
-        nonInlinedAttachments =  initData.nonInlinedAttachments
-    }
+        public func setBccUnwrapped() {
+            bccWrapped = false
+        }
 
-    private func validateForSending() {
-        let atLeastOneRecipientIsSet =
-            (!toRecipients.isEmpty ||
-            !ccRecipients.isEmpty ||
-            !bccRecipients.isEmpty)
-        let fromIsSet = from != nil
+        public func validate() {
+            calculatePepRating()
+            validateForSending()
+        }
 
-        isValidatedForSending = atLeastOneRecipientIsSet && fromIsSet
+        private func setup() {
+            guard let initData = initData else {
+                Log.shared.errorAndCrash(component: #function, errorString: "No data")
+                return
+            }
+            toRecipients = initData.toRecipients
+            ccRecipients = initData.ccRecipients
+            bccRecipients = initData.bccRecipients
+            bccWrapped = ccRecipients.isEmpty && bccRecipients.isEmpty
+            from = initData.from
+            subject = initData.subject
+
+            pEpProtection = initData.pEpProtection
+
+            inlinedAttachments =  initData.inlinedAttachments
+            nonInlinedAttachments =  initData.nonInlinedAttachments
+        }
+
+        private func validateForSending() {
+            let atLeastOneRecipientIsSet =
+                (!toRecipients.isEmpty ||
+                    !ccRecipients.isEmpty ||
+                    !bccRecipients.isEmpty)
+            let fromIsSet = from != nil
+
+            isValidatedForSending = atLeastOneRecipientIsSet && fromIsSet
+        }
     }
 }
 
 // MARK: - pEp Protections
 
-extension ComposeViewModelState {
+extension ComposeViewModel.ComposeViewModelState {
 
     public func canToggleProtection() -> Bool {
         if isForceUnprotectedDueToBccSet {
@@ -170,7 +169,7 @@ extension ComposeViewModelState {
 
 // MARK: - PEP_Color
 
-extension ComposeViewModelState {
+extension ComposeViewModel.ComposeViewModelState {
     
     private var isForceUnprotectedDueToBccSet: Bool {
         return bccRecipients.count > 0
@@ -205,7 +204,7 @@ extension ComposeViewModelState {
 
 // MARK: - Handshake
 
-extension ComposeViewModelState {
+extension ComposeViewModel.ComposeViewModelState {
 
     public func canHandshake() -> Bool {
         return !handshakeActionCombinations().isEmpty
