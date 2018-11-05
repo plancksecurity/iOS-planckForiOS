@@ -10,7 +10,6 @@ import UIKit
 import MessageModel
 
 struct ComposeHelpers {
-    static let defaultCellHeight: CGFloat = 64.0
     static let defaultFilenameLength = 20
 }
 

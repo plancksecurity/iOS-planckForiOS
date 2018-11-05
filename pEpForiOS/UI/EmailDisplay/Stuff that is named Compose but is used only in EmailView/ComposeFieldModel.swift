@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 public class ComposeFieldModel {
+    static let defaultCellHeight: CGFloat = 64.0
     public enum FieldType: String {
         case to, cc, bcc, from, subject, content, mailingList, none, attachment, wraped
 
@@ -41,7 +42,7 @@ public class ComposeFieldModel {
 
     var type: FieldType = .to
     var display: FieldDisplayType = .always
-    var height: CGFloat = ComposeHelpers.defaultCellHeight
+    var height: CGFloat = defaultCellHeight
     var expanded: CGFloat = 0
     var identifier = "recipientCell"
     var title = String()
