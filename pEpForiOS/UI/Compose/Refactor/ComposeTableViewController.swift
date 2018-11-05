@@ -188,11 +188,16 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func contentChanged(inRowAt indexPath: IndexPath) {
-        tableView.updateSize()
-        if let cell = tableView.cellForRow(at: indexPath) as? TextViewContainingTableViewCell {
-            // Make sure the cursor always is in visible area.
-            TextViewInTableViewScrollUtil.assureCaretVisibility(tableView: tableView,
-                                                               textView: cell.textView)
+        tableView.updateSize() { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            if let cell = me.tableView.cellForRow(at: indexPath) as? TextViewContainingTableViewCell {
+                // Make sure the cursor always is in visible area.
+                TextViewInTableViewScrollUtil.assureCaretVisibility(tableView: me.tableView,
+                                                                    textView: cell.textView)
+            }
         }
     }
 
@@ -228,8 +233,9 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
             // Picker is not shown. Nothing to do.
             return
         }
-        mediaAttachmentPickerProvider?.imagePicker.dismiss(animated: true)
-        self.setPreviousFocusAfterPicker()
+        mediaAttachmentPickerProvider?.imagePicker.dismiss(animated: true) {
+            self.setPreviousFocusAfterPicker()
+        }
     }
 
     func showDocumentAttachmentPicker() {
