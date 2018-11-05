@@ -85,7 +85,6 @@
 		1526596A216230B1006A78DF /* ComposeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265952216230B0006A78DF /* ComposeDataSource.swift */; };
 		1526596C216230B1006A78DF /* ComposeData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15265954216230B0006A78DF /* ComposeData.plist */; };
 		1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265957216230B0006A78DF /* ComposeFieldModel.swift */; };
-		15265972216230B2006A78DF /* ComposeTableViewController_Old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */; };
 		1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
 		1526597A21623652006A78DF /* SuggestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597921623652006A78DF /* SuggestViewModel.swift */; };
 		1526597D21637759006A78DF /* SuggestViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597C21637759006A78DF /* SuggestViewModelTest.swift */; };
@@ -682,7 +681,6 @@
 		15265952216230B0006A78DF /* ComposeDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeDataSource.swift; sourceTree = "<group>"; };
 		15265954216230B0006A78DF /* ComposeData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ComposeData.plist; sourceTree = "<group>"; };
 		15265957216230B0006A78DF /* ComposeFieldModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeFieldModel.swift; sourceTree = "<group>"; };
-		1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController_Old.swift; sourceTree = "<group>"; };
 		1526597721623637006A78DF /* SuggestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTableViewController.swift; sourceTree = "<group>"; };
 		1526597921623652006A78DF /* SuggestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModel.swift; sourceTree = "<group>"; };
 		1526597C21637759006A78DF /* SuggestViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestViewModelTest.swift; sourceTree = "<group>"; };
@@ -1366,7 +1364,6 @@
 		15265942216230B0006A78DF /* Compose */ = {
 			isa = PBXGroup;
 			children = (
-				1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */,
 				1526594E216230B0006A78DF /* Util */,
 				1526595B216230B1006A78DF /* Refactor */,
 			);
@@ -3324,7 +3321,6 @@
 				15DD3F75211EC68D00A8714D /* DecryptMessageOperation.swift in Sources */,
 				432198ED1DF6B66800318A74 /* SharedObjects.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
-				15265972216230B2006A78DF /* ComposeTableViewController_Old.swift in Sources */,
 				15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */,
 				43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */,
 				43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */,

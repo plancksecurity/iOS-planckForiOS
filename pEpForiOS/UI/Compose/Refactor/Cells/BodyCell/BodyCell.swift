@@ -107,7 +107,6 @@ extension BodyCell {
 
     func textViewDidEndEditing(_ textView: UITextView) {
         tearDownContextMenu()
-        //        viewModel?.handleDidEndEditing() //IOS-1369: obsolete?
     }
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {

@@ -56,7 +56,7 @@ class ComposeTableViewController: BaseTableViewController {
     private func setupView() {
         registerXibs()
         tableView.rowHeight = UITableViewAutomaticDimension
-         //IOS-1369 an arbitrary value auto resize seems to require for some reason.
+         //An arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
     }
 
@@ -112,7 +112,7 @@ extension ComposeTableViewController {
             return
         }
 
-        //IOS-1369: Not so nice. The view(controller) should not know about state and protection.
+        //Not so nice. The view(controller) should not know about state and protection.
         if let view = showPepRating(pEpRating: pEpRating, pEpProtection: pEpProtected) {
             if vm.state.canHandshake() || vm.state.canToggleProtection() {
                 let tapGestureRecognizer = UITapGestureRecognizer(
@@ -268,11 +268,6 @@ extension ComposeTableViewController: SegueHandlerType {
             viewModel?.setup(handshakeViewController: destination)
         }
     }
-
-    //IOS-1369: I can not think of a use case for this. Remove if obsolete.
-//    @IBAction func segueUnwindAccountAdded(segue: UIStoryboardSegue) {
-//        // nothing to do.
-//    }
 }
 
 // MARK: - Address Suggestions

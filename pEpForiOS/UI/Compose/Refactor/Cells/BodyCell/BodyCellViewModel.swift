@@ -9,7 +9,7 @@
 import MessageModel
 
 protocol BodyCellViewModelResultDelegate: class {
-    func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String) //IOS-1369:
+    func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String)
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
@@ -60,17 +60,11 @@ class BodyCellViewModel: CellViewModel {
         return (plaintext, attributedText)
     }
 
-    //IOS-1369: obsolete?
-    //    func handleDidBeginEditing() { }
-
-    //IOS-1369: obsolete?
-    //    func handleDidEndEditing() { }
-
     public func handleTextChange(newText: String, newAttributedText attrText: NSAttributedString) {
         plaintext = newText
         attributedText = attrText
         createHtmlVersionAndInformDelegate(newAttributedText: attrText)
-        resultDelegate?.bodyCellViewModel(self, textChanged: newText) //IOS-1369: I still think we AGNI. Double check.
+        resultDelegate?.bodyCellViewModel(self, textChanged: newText)
     }
 
     public func shouldReplaceText(in range: NSRange,
@@ -119,7 +113,7 @@ extension BodyCellViewModel {
 // MARK: - Attachments
 
 extension BodyCellViewModel {
-    //    extension MessageBodyCell { //IOS-1369: cleanup
+    
     public func inline(attachment: Attachment) {
         guard let image = attachment.image else {
             Log.shared.errorAndCrash(component: #function, errorString: "No image")

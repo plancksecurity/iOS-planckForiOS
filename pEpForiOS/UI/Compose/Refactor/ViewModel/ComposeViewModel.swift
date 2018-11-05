@@ -171,7 +171,6 @@ class ComposeViewModel {
 
     private func setup() {
         resetSections()
-        //        validateInput() //IOS-1369:
     }
 
     private func existsDirtyCell() -> Bool {
@@ -471,8 +470,6 @@ extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate
         } else {
             addNonInlinedAttachment(mediaAttachment.attachment)
             delegate?.hideMediaAttachmentPicker()
-            //IOS-1369: update attachment section
-            //IOS-1369: update TV.
         }
     }
 }
@@ -651,7 +648,6 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
     func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {
-        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
         guard let idxPath = indexPath(for: vm) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We got called by a non-existing VM?")
@@ -667,7 +663,6 @@ extension ComposeViewModel: AccountCellViewModelResultDelegate {
 extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 
     func subjectCellViewModelDidChangeSubject(_ vm: SubjectCellViewModel) {
-        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
         guard let idxPath = indexPath(for: vm) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We got called by a non-existing VM?")
@@ -690,13 +685,11 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
     }
 
     func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String) {
-        //IOS-1369: YAGNIl. TableView currently updates size and does not need the index path.
         guard let idxPath = indexPath(for: vm) else {
             Log.shared.errorAndCrash(component: #function,
                                      errorString: "We got called by a non-existing VM?")
             return
         }
-        //IOS-1369: What to save to state? attributedText? markdown? ...
         delegate?.contentChanged(inRowAt: idxPath)
     }
 

@@ -22,7 +22,7 @@ extension NSAttributedString {
                                           textColor: .pEpGreen,
                                           maxWidth: maxWidth - margin)
         let at = RecipientTextViewTextAttachment(recipient: identity)
-        at.image = img //IOS-1369: move to compose helpers?
+        at.image = img
         at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
         let attachString = NSAttributedString(attachment: at)
         attrText.replaceCharacters(in: selectedRange, with: attachString)

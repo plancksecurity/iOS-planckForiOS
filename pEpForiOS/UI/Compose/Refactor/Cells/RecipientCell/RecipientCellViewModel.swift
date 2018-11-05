@@ -19,10 +19,6 @@ protocol RecipientCellViewModelResultDelegate: class {
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String)
 }
 
-//protocol RecipientCellViewModelDelegate {
-//    //IOS-1369: TODO
-//}
-
 class RecipientCellViewModel: CellViewModel {
     public let title: String
     public var content = NSMutableAttributedString(string: "")
