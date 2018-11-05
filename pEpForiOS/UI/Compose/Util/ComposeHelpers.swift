@@ -45,45 +45,12 @@ extension String {
     }
 }
 
-extension UIImage {
-    public final func attachment(_ text: String, textColor: UIColor = .gray) -> UIImage {
-        let attributes = [
-            NSAttributedStringKey.foregroundColor: textColor,
-            NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: 12.0)
-        ]
-        
-        let textMargin: CGFloat = 3.0
-        let textSize = text.size(withAttributes: attributes)
-        var textFrame = CGRect(x: 0, y: 0, width: textSize.width, height: textSize.height)
-        var imageSize = size
-        let iconWidth = imageSize.width
-        var imagePosX: CGFloat = 0.0
-        var textPosX = round((iconWidth - textSize.width) / 2)
-        
-        if textSize.width > imageSize.width {
-            imageSize.width = textSize.width
-            imagePosX = round((textSize.width - iconWidth) / 2)
-            textPosX = 0.0
-        }
-        
-        textFrame.origin = CGPoint(x: textPosX, y: imageSize.height + textMargin)
-        imageSize.height = imageSize.height + textSize.height + textMargin
-        
-        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
-        draw(in: CGRect(x: imagePosX, y: 0, width: iconWidth, height: imageSize.height - textSize.height - textMargin))
-        text.draw(in: textFrame, withAttributes: attributes)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return image!
-    }
-}
-
 // MARK: - Compose Helper Class
 
 open class ComposeHelper {
-    public static func recipient(_ text: String, textColor: UIColor = .pEpGreen, maxWidth: CGFloat = 0.0) -> UIImage {
+    public static func recipient(_ text: String,
+                                 textColor: UIColor = .pEpGreen,
+                                 maxWidth: CGFloat = 0.0) -> UIImage {
         let attributes = [
             NSAttributedStringKey.foregroundColor: textColor,
             NSAttributedStringKey.font: UIFont.pEpInput
