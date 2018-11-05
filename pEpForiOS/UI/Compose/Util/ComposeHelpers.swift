@@ -86,10 +86,13 @@ open class ComposeHelper {
             NSStringDrawingOptions.usesLineFragmentOrigin
             ], attributes: attributes, context: nil)
 
-        let image = UIGraphicsGetImageFromCurrentImageContext()
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No img")
+            return UIImage()
+        }
         UIGraphicsEndImageContext()
 
-        return image!
+        return image
     }
 }
 
