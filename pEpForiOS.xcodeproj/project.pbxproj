@@ -84,7 +84,6 @@
 		15265968216230B1006A78DF /* TextViewInTableViewScrollUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265950216230B0006A78DF /* TextViewInTableViewScrollUtil.swift */; };
 		1526596A216230B1006A78DF /* ComposeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265952216230B0006A78DF /* ComposeDataSource.swift */; };
 		1526596C216230B1006A78DF /* ComposeData.plist in Resources */ = {isa = PBXBuildFile; fileRef = 15265954216230B0006A78DF /* ComposeData.plist */; };
-		1526596E216230B2006A78DF /* AttachmentCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265956216230B0006A78DF /* AttachmentCounter.swift */; };
 		1526596F216230B2006A78DF /* ComposeFieldModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15265957216230B0006A78DF /* ComposeFieldModel.swift */; };
 		15265972216230B2006A78DF /* ComposeTableViewController_Old.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */; };
 		1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1526597721623637006A78DF /* SuggestTableViewController.swift */; };
@@ -682,7 +681,6 @@
 		15265950216230B0006A78DF /* TextViewInTableViewScrollUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewInTableViewScrollUtil.swift; sourceTree = "<group>"; };
 		15265952216230B0006A78DF /* ComposeDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeDataSource.swift; sourceTree = "<group>"; };
 		15265954216230B0006A78DF /* ComposeData.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ComposeData.plist; sourceTree = "<group>"; };
-		15265956216230B0006A78DF /* AttachmentCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCounter.swift; sourceTree = "<group>"; };
 		15265957216230B0006A78DF /* ComposeFieldModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeFieldModel.swift; sourceTree = "<group>"; };
 		1526595D216230B1006A78DF /* ComposeTableViewController_Old.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeTableViewController_Old.swift; sourceTree = "<group>"; };
 		1526597721623637006A78DF /* SuggestTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestTableViewController.swift; sourceTree = "<group>"; };
@@ -1381,7 +1379,6 @@
 				15265950216230B0006A78DF /* TextViewInTableViewScrollUtil.swift */,
 				15265952216230B0006A78DF /* ComposeDataSource.swift */,
 				15265954216230B0006A78DF /* ComposeData.plist */,
-				15265956216230B0006A78DF /* AttachmentCounter.swift */,
 				15265957216230B0006A78DF /* ComposeFieldModel.swift */,
 			);
 			path = Util;
@@ -3385,7 +3382,6 @@
 				1571B479216775D900D59DAD /* SubjectCellViewModel.swift in Sources */,
 				1500199D1F2B2C73003E670A /* Notification+CWServiceClientNotificationParsing.swift in Sources */,
 				496C0EE720BC2A880009B5B9 /* EmailDisplayDelegate.swift in Sources */,
-				1526596E216230B2006A78DF /* AttachmentCounter.swift in Sources */,
 				1579397B1F4E00AF00A2A6CF /* UINavigationController+Extensions.swift in Sources */,
 				43306EC21FE129840045DD00 /* OAuth2Type.swift in Sources */,
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
