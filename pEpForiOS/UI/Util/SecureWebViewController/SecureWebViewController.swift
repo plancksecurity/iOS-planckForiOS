@@ -451,6 +451,9 @@ extension UISplitViewController {
          //   self.view.gestureRecognizers
             UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
                                                          on: self,
+                                                         at: CGRect(x: self.view.frame.midX,
+                                                                    y: self.view.frame.midY,
+                                                                    width: 0, height: 0),
                                                          at: self.view,
                                                         appConfig: appConfig)
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {

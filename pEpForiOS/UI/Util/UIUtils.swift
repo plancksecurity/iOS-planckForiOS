@@ -137,6 +137,7 @@ struct UIUtils {
     ///   - appConfig: AppConfig to forward to potentionally created viewControllers
     static func presentActionSheetWithContactOptions(forUrl url: URL,
                                                      on viewController: UIViewController,
+                                                     at rect: CGRect,
                                                      at view: UIView,
                                                      appConfig: AppConfig) {
         guard let _ = UrlClickHandler.Scheme(for: url) else {
@@ -149,6 +150,7 @@ struct UIUtils {
         }
         presentActionSheetWithContactOptions(forContactWithEmailAddress: address,
                                              on: viewController,
+                                             at: rect,
                                              at: view,
                                              appConfig: appConfig)
     }
@@ -159,25 +161,12 @@ struct UIUtils {
     ///   - actionSheet: popover to set anchor to
     ///   - presentingViewController: view controller the popover should be presented on
     static private func setIPadAnchor(for actionSheet: UIAlertController,
-                               in targetView: UIView) {
-        var touchPoint: CGPoint? = nil
-        for gestureRecognicer in targetView.gestureRecognizers ?? [UIGestureRecognizer]() {
-            if(gestureRecognicer is UILongPressGestureRecognizer) {
-                touchPoint = gestureRecognicer.location(in: targetView)
-            }
-        }
-        if let point = touchPoint {
-            actionSheet.popoverPresentationController?.sourceRect = CGRect(x: point.x,
-                                                                           y: point.y,
-                                                                           width: 0,
-                                                                           height: 0)
-        } else {
-            actionSheet.popoverPresentationController?.sourceRect = CGRect(x: targetView.bounds.midX,
-                                                                           y: targetView.bounds.midY,
-                                                                           width: 0,
-                                                                           height: 0)
-        }
-        actionSheet.popoverPresentationController?.sourceView = targetView
+                               in rect: CGRect,
+                               at view: UIView) {
+
+            actionSheet.popoverPresentationController?.sourceRect = rect
+
+        actionSheet.popoverPresentationController?.sourceView = view
         actionSheet.popoverPresentationController?.permittedArrowDirections
             = UIPopoverArrowDirection.up
 
@@ -194,6 +183,7 @@ struct UIUtils {
     ///   - appConfig: AppConfig to forward to potentionally created viewControllers
     static func presentActionSheetWithContactOptions(forContactWithEmailAddress address: String,
                                                      on viewController: UIViewController,
+                                                     at rect: CGRect,
                                                      at view: UIView,
                                                      appConfig: AppConfig) {
         let contact = Identity(address: address)
@@ -202,7 +192,7 @@ struct UIUtils {
                                                message: nil,
                                                preferredStyle: .actionSheet)
 
-        setIPadAnchor(for: alertSheet, in: view)
+        setIPadAnchor(for: alertSheet, in: rect, at: view)
 
         alertSheet.view.tintColor = UIColor.pEpDarkGreen
         //
