@@ -33,6 +33,10 @@ extension EmailListViewModel: EmailDisplayDelegate {
     func emailDisplayDidChangeMarkSeen(message: Message) {
         updateRow(for: message, isSeenStateChange: true)
     }
+    
+    func emailDisplayDidChangeRating(message: Message) {
+        updateRow(for: message)
+    }
 
     private func deleteRow(for message: Message) {
         stopListeningToChanges()

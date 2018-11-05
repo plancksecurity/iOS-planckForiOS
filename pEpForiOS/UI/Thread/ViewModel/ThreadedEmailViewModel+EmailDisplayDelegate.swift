@@ -32,4 +32,9 @@ extension ThreadedEmailViewModel: EmailDisplayDelegate {
         //FIXME: when implementing message threading
         fatalError("Unimplemented stub")
     }
+    
+    func emailDisplayDidChangeRating(message: Message) {
+        updateInternal(message: message)
+        emailDisplayDelegate?.emailDisplayDidChangeRating(message: message)
+    }
 }
