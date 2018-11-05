@@ -65,19 +65,20 @@ open class ComposeHelper {
         var textFrame = CGRect(x: 0, y: 0, width: width, height: textSize.height)
 
         let label = UILabel()
+        label.font = UIFont.pEpInput
         label.text = "Hello"
         label.sizeToFit()
 
         var imageSize = label.bounds.size
         imageSize.width = 0
-        let textPosX = imageSize.width + textMargin
-        let imageWidth = imageSize.width + textFrame.width + (textMargin * 2)
+        let textPosX = textMargin
+        let imageWidth = textFrame.width + (textMargin * 2)
 
         textFrame.origin = CGPoint(x: textPosX,
                                    y: round((imageSize.height - textFrame.size.height) / 2))
         imageSize.width = imageWidth
-        imageSize.height += 2.0
 
+        imageSize.height = textFrame.size.height
         UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
 
         text.draw(with: textFrame, options: [
