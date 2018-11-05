@@ -14,16 +14,16 @@ extension NSAttributedString {
 
     public func imageInserted(withAddressOf identity: Identity,
                               in selectedRange: NSRange,
-                              fontDescender: CGFloat = -7.0,
                               maxWidth: CGFloat = 0.0,
-                              margin: CGFloat = 20.0) -> (newString: NSAttributedString,  attachment: RecipientTextViewTextAttachment) {
+                              margin: CGFloat = 20.0)
+        -> (newString: NSAttributedString,  attachment: RecipientTextViewTextAttachment) {
         let attrText = NSMutableAttributedString(attributedString: self)
         let img = ComposeHelper.recipient(identity.address,
                                           textColor: .pEpGreen,
                                           maxWidth: maxWidth - margin)
         let at = RecipientTextViewTextAttachment(recipient: identity)
         at.image = img
-        at.bounds = CGRect(x: 0, y: fontDescender, width: img.size.width, height: img.size.height)
+        at.fontDescender = UIFont.pEpInput.descender
         let attachString = NSAttributedString(attachment: at)
         attrText.replaceCharacters(in: selectedRange, with: attachString)
         attrText.addAttribute(NSAttributedStringKey.font,
