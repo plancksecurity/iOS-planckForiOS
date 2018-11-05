@@ -26,7 +26,7 @@ public class FolderViewModel {
         } else {
             accountsToUse = Account.all()
         }
-        generateSections(accounts: accountsToUse, includeUnifiedInbox: includeUnifiedInbox)
+        generateSections(accounts: accountsToUse, includeUnifiedInbox:   includeUnifiedInbox)
     }
 
     private func generateSections(accounts: [Account], includeUnifiedInbox: Bool = true) {

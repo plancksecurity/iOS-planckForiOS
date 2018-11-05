@@ -43,8 +43,12 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         UIUtils.presentComposeView(forRecipientInUrl: url, on: actor, appConfig: appConfig)
     }
 
-    private func presentAvailableMailtoUrlHandlingChoices(for url: URL) {
-        UIUtils.presentActionSheetWithContactOptions(forUrl: url, on: actor, appConfig: appConfig)
+    private func presentAvailableMailtoUrlHandlingChoices(for url: URL, at rect: CGRect, at view: UIView) {
+        UIUtils.presentActionSheetWithContactOptions(forUrl: url,
+                                                     on: actor,
+                                                     at: rect,
+                                                     at: view,
+                                                     appConfig: appConfig)
     }
 
     // MARK: - UITextViewDelegate
@@ -69,7 +73,8 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         }
         if scheme == .mailto && interaction == .presentActions  {
             // User long-pressed on mailto url
-            presentAvailableMailtoUrlHandlingChoices(for: URL)
+            let urlRect = getUrlRect(textView: textView, in: characterRange)
+            presentAvailableMailtoUrlHandlingChoices(for: URL, at: urlRect, at: textView)
             return false
         } else if scheme == .mailto && interaction == .invokeDefaultAction {
             // User clicked on mailto url
@@ -79,10 +84,30 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         return true
     }
 
+    private func getUrlRect(textView: UITextView,
+                            in characterRange: NSRange) -> CGRect {
+        let begining = textView.beginningOfDocument
+        let start = textView.position(from: begining, offset: characterRange.location)!
+        let end = textView.position(from: start, offset: characterRange.length)!
+        let range = textView.textRange(from: start, to: end)!
+        return textView.firstRect(for:range)
+    }
+
     // MARK: - SecureWebViewUrlClickHandlerProtocol
 
     func secureWebViewController(_ webViewController: SecureWebViewController,
                                  didClickMailToUrlLink url: URL) {
         presentComposeView(forRecipientInUrl: url)
+    }
+}
+extension UITextInput {
+    var selectedRange: NSRange? {
+        guard let range = self.selectedTextRange else {
+            return nil
+
+        }
+        let location = offset(from: beginningOfDocument, to: range.start)
+        let length = offset(from: range.start, to: range.end)
+        return NSRange(location: location, length: length)
     }
 }
