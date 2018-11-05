@@ -407,7 +407,7 @@ class TestRecipientTextViewModelResultDelegate: RecipientTextViewModelResultDele
         self.textChanged = textChanged
     }
 
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
+    func recipientTextViewModel(_ vm: RecipientTextViewModel,
                                 didChangeRecipients newRecipients: [Identity]) {
         guard let exp = expectDidChangeRecipientsCalled else {
             // We ignore called or not
@@ -426,7 +426,11 @@ class TestRecipientTextViewModelResultDelegate: RecipientTextViewModelResultDele
         }
     }
 
-    func recipientTextViewModelDidEndEditing(recipientTextViewModel: RecipientTextViewModel) {
+    func recipientTextViewModel(_ vm: RecipientTextViewModel, didBeginEditing text: String) {
+        //IOS-1369: needs to be handled?
+    }
+
+    func recipientTextViewModelDidEndEditing(_ vm: RecipientTextViewModel) {
         guard let exp = expectDidEndEditingCalled else {
             // We ignore called or not
             return
@@ -434,7 +438,7 @@ class TestRecipientTextViewModelResultDelegate: RecipientTextViewModelResultDele
         exp.fulfill()
     }
 
-    func recipientTextViewModel(recipientTextViewModel: RecipientTextViewModel,
+    func recipientTextViewModel(_ vm: RecipientTextViewModel,
                                 textChanged newText: String) {
         guard let exp = expectTextChangedCalled else {
             // We ignore called or not
