@@ -66,7 +66,7 @@ open class ComposeHelper {
 
         let label = UILabel()
         label.font = UIFont.pEpInput
-        label.text = "Hello"
+        label.text = "Some text to get a height"
         label.sizeToFit()
 
         var imageSize = label.bounds.size
