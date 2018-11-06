@@ -601,10 +601,6 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         case .bcc:
             state.bccRecipients = newRecipients
         }
-/*
-         calculateComposeColorAndInstallTapGesture()
-         recalculateSendButtonStatus()
- */
     }
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String) {
@@ -622,11 +618,6 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         state.validate()
         delegate?.focusSwitched()
         delegate?.hideSuggestions()
-
-        /*
-         tableView.updateSize()
-         hideSuggestions()
-         */
     }
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
