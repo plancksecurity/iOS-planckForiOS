@@ -44,15 +44,14 @@ extension RecipientTextViewModel {
         private func setupRecipientImage(for recipient: Identity,
                                          font:  UIFont,
                                          textColor: UIColor = .pEpGreen,
-                                         maxWidth: CGFloat = 0.0){
-            //IOS-1383: the implementation looks over complicated. Simple snapshot shoud work imo.
+                                         maxWidth: CGFloat = 0.0) {
             let text = recipient.address
             let attributes = [
                 NSAttributedStringKey.foregroundColor: textColor,
                 NSAttributedStringKey.font: font
             ]
 
-            let textMargin: CGFloat = 4.0
+            let textMargin: CGFloat = 3.0
             let textSize = text.size(withAttributes: attributes)
             let width = textSize.width > maxWidth ? maxWidth : textSize.width
             var textFrame = CGRect(x: 0, y: 0, width: width, height: textSize.height)
