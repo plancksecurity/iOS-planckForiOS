@@ -58,16 +58,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return dirs.first
     }
 
-    func dumpFontSizes() {
-        let styles = [UIFontTextStyle.body, UIFontTextStyle.caption1, UIFontTextStyle.caption2,
-                      UIFontTextStyle.footnote, UIFontTextStyle.headline,
-                      UIFontTextStyle.subheadline]
-        for sty in styles {
-            let font = UIFont.preferredFont(forTextStyle: sty)
-            print("\(sty) \(font)")
-        }
-    }
-
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
             Log.shared.errorAndCrash(component: #function, errorString: "No AppConfig")
@@ -259,6 +249,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // and pretty much don't do anything.
             return false
         }
+
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
         Appearance.pEp()
