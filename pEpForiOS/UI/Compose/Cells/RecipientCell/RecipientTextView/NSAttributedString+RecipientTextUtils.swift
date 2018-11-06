@@ -24,8 +24,7 @@ extension NSAttributedString {
             attrText.replaceCharacters(in: selectedRange, with: attachString)
             attrText.addAttribute(NSAttributedStringKey.font,
                                   value: UIFont.pEpInput,
-                                  range: NSRange(location: 0, length: attrText.length)
-            )
+                                  range: NSRange(location: 0, length: attrText.length))
             return (NSAttributedString(attributedString: attrText), textAttachment)
     }
 }
