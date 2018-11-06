@@ -8,21 +8,25 @@
 
 import MessageModel
 
+//IOS-1383 wrp in extension if possible
 public class RecipientTextViewTextAttachment: NSTextAttachment {
-    public var recipient: Identity
-    public var fontDescender: CGFloat?
+    public private(set) var recipient: Identity
+    private var font: UIFont
 
-    init(recipient: Identity) {
+    init(recipient: Identity,
+         font:  UIFont = UIFont.pEpInput,
+         textColor: UIColor = .pEpGreen,
+         maxWidth: CGFloat = 0.0) {
         self.recipient = recipient
+        self.font = font
         super.init(data: nil, ofType: nil)
+        setupRecipientImage(for: recipient, font: font, textColor: textColor, maxWidth: maxWidth)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // Makes sure text aligns with text attachment.
-    // From: http://petehare.com/inline-nstextattachment-rendering-in-uitextview/
     public override func attachmentBounds(for textContainer: NSTextContainer?,
                                           proposedLineFragment lineFrag: CGRect,
                                           glyphPosition position: CGPoint,
@@ -31,9 +35,54 @@ public class RecipientTextViewTextAttachment: NSTextAttachment {
                                                proposedLineFragment: lineFrag,
                                                glyphPosition: position,
                                                characterIndex: charIndex)
-        if let descender = fontDescender {
-            superRect.origin.y = descender
-        }
+        //Make sure typed text aligns well with the characters in the text attachment's image
+        superRect.origin.y += font.descender
         return superRect
+    }
+
+    private func setupRecipientImage(for recipient: Identity,
+                           font:  UIFont,
+                           textColor: UIColor = .pEpGreen,
+                           maxWidth: CGFloat = 0.0){
+        //IOS-1383: the implementation looks over complicated. Simple snapshot shoud work imo.
+        let text = recipient.address
+        let attributes = [
+            NSAttributedStringKey.foregroundColor: textColor,
+            NSAttributedStringKey.font: font
+        ]
+
+        let textMargin: CGFloat = 4.0
+        let textSize = text.size(withAttributes: attributes)
+        let width = textSize.width > maxWidth ? maxWidth : textSize.width
+        var textFrame = CGRect(x: 0, y: 0, width: width, height: textSize.height)
+
+        let label = UILabel()
+        label.font = font
+        label.text = "Some text to get a height"
+        label.sizeToFit()
+
+        var imageSize = label.bounds.size
+        imageSize.width = 0
+        let textPosX = textMargin
+        let imageWidth = textFrame.width + (textMargin * 2)
+
+        textFrame.origin = CGPoint(x: textPosX,
+                                   y: round((imageSize.height - textFrame.size.height) / 2))
+        imageSize.width = imageWidth
+        imageSize.height = textFrame.size.height
+        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
+
+        text.draw(with: textFrame,
+                  options: [NSStringDrawingOptions.truncatesLastVisibleLine,
+                            NSStringDrawingOptions.usesLineFragmentOrigin],
+                  attributes: attributes, context: nil)
+
+        guard let createe = UIGraphicsGetImageFromCurrentImageContext() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No img")
+            return
+        }
+        UIGraphicsEndImageContext()
+
+        image = createe
     }
 }

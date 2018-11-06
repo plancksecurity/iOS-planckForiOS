@@ -33,7 +33,7 @@ extension String {
         }
         return false
     }
-    
+
     var truncate: String {
         let length = self.count
         if length > ComposeHelpers.defaultFilenameLength {
@@ -44,55 +44,3 @@ extension String {
         return self
     }
 }
-
-// MARK: - Compose Helper Class
-
-open class ComposeHelper {
-    public static func recipient(_ text: String,
-                                 textColor: UIColor = .pEpGreen,
-                                 maxWidth: CGFloat = 0.0) -> UIImage {
-        let attributes = [
-            NSAttributedStringKey.foregroundColor: textColor,
-            NSAttributedStringKey.font: UIFont.pEpInput
-        ]
-        
-        let textMargin: CGFloat = 4.0
-        let textSize = text.size(withAttributes: attributes)
-        var width = textSize.width
-        if width > maxWidth {
-            width = maxWidth
-        }
-        var textFrame = CGRect(x: 0, y: 0, width: width, height: textSize.height)
-
-        let label = UILabel()
-        label.font = UIFont.pEpInput
-        label.text = "Some text to get a height"
-        label.sizeToFit()
-
-        var imageSize = label.bounds.size
-        imageSize.width = 0
-        let textPosX = textMargin
-        let imageWidth = textFrame.width + (textMargin * 2)
-
-        textFrame.origin = CGPoint(x: textPosX,
-                                   y: round((imageSize.height - textFrame.size.height) / 2))
-        imageSize.width = imageWidth
-
-        imageSize.height = textFrame.size.height
-        UIGraphicsBeginImageContextWithOptions(imageSize, false, 0)
-
-        text.draw(with: textFrame, options: [
-            NSStringDrawingOptions.truncatesLastVisibleLine,
-            NSStringDrawingOptions.usesLineFragmentOrigin
-            ], attributes: attributes, context: nil)
-
-        guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No img")
-            return UIImage()
-        }
-        UIGraphicsEndImageContext()
-
-        return image
-    }
-}
-
