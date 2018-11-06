@@ -72,8 +72,8 @@
                                                 </imageView>
                                             </subviews>
                                         </stackView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="YqR-ga-Tf9" userLabel="Contact Image">
-                                            <rect key="frame" x="15" y="15" width="50" height="50"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty-avatar" translatesAutoresizingMaskIntoConstraints="NO" id="YqR-ga-Tf9" userLabel="Contact Image">
+                                            <rect key="frame" x="16" y="15" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="50" id="LB6-wZ-6Bh"/>
                                                 <constraint firstAttribute="width" secondItem="YqR-ga-Tf9" secondAttribute="height" multiplier="1:1" id="b42-e4-yZf"/>
@@ -103,12 +103,11 @@
                                                 </label>
                                             </subviews>
                                         </stackView>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pEp-status-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="m0u-Jn-mQU">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" image="pEp-status-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="m0u-Jn-mQU">
                                             <rect key="frame" x="56" y="50" width="20" height="20"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="4Pu-ac-G9n"/>
-                                                <constraint firstAttribute="width" constant="20" id="eCE-oP-1de"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
@@ -126,6 +125,7 @@
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" constant="3" id="acU-9j-7hJ"/>
                                         <constraint firstItem="m0u-Jn-mQU" firstAttribute="leading" secondItem="YqR-ga-Tf9" secondAttribute="trailing" constant="-10" id="cBb-jj-QAm"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="bottom" secondItem="8QD-qP-0hS" secondAttribute="bottom" id="dxm-I0-Sij"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="m0u-Jn-mQU" secondAttribute="bottom" constant="1" id="fh8-Hb-h3l"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" id="hA7-ed-KYt"/>
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="centerY" secondItem="jgQ-nZ-h1r" secondAttribute="centerY" id="kzK-1E-vdU"/>
                                         <constraint firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" constant="8" id="n5I-Yb-okr"/>
