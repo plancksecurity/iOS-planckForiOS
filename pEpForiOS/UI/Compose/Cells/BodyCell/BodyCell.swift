@@ -76,7 +76,7 @@ extension BodyCell {
 
     func textViewDidChangeSelection(_ textView: UITextView) {
         guard let textRange = textView.selectedTextRange else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No selection")
+            // For some reason that happens sometimes when initializing the view.
             return
         }
         let cursorPosition = textView.offset(from: textView.beginningOfDocument,
