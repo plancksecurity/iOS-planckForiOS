@@ -140,8 +140,11 @@ class RecipientTextViewModel {
                                                            in: range,
                                                            maxWidth: maxTextattachmentWidth)
             recipientAttachments.append(attachment)
+
             newText = newText.plainTextRemoved()
+            newText = newText.baselineOffsetRemoved()
             attributedText = newText
+
             if informDelegate {
                 delegate?.textChanged(newText: newText)
             }

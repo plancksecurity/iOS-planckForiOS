@@ -115,6 +115,16 @@ extension NSAttributedString {
 
         return result
     }
+
+    public func baselineOffsetRemoved() -> NSAttributedString {
+        let createe = NSMutableAttributedString(attributedString: self)
+        createe.addAttribute(NSAttributedStringKey.baselineOffset,
+                                                   value: 0.0,
+                                                   range: NSRange(location: 0,
+                                                                  length: createe.length)
+        )
+        return createe
+    }
 }
 
 extension NSMutableAttributedString {
