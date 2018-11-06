@@ -8,7 +8,7 @@
 
 import MessageModel
 
-protocol RecipientTextViewModelResultDelegate: class {
+public protocol RecipientTextViewModelResultDelegate: class {
 
     func recipientTextViewModel(_ vm: RecipientTextViewModel,
                                 didChangeRecipients newRecipients: [Identity])
@@ -20,19 +20,19 @@ protocol RecipientTextViewModelResultDelegate: class {
     func recipientTextViewModel(_ vm: RecipientTextViewModel, textChanged newText: String)
 }
 
-protocol RecipientTextViewModelDelegate: class {
+public protocol RecipientTextViewModelDelegate: class {
     
     func textChanged(newText: NSAttributedString)
 
     func add(recipient: String)
 }
 
-class RecipientTextViewModel {
+public class RecipientTextViewModel {
     var maxTextattachmentWidth: CGFloat = 0.0
     private var initialRecipients = [Identity]()
     private var attributedText: NSAttributedString?
     public private(set) var isDirty = false
-    private var recipientAttachments = [RecipientTextViewTextAttachment]() {
+    private var recipientAttachments = [TextAttachment]() {
         didSet {
             let recipients = recipientAttachments.map { $0.recipient }
             resultDelegate?.recipientTextViewModel(self,
@@ -97,13 +97,13 @@ class RecipientTextViewModel {
         return valid
     }
 
-    public func handleReplaceSelectedAttachments(_ attachments: [RecipientTextViewTextAttachment]) {
+    public func handleReplaceSelectedAttachments(_ attachments: [TextAttachment]) {
         for attachment in attachments {
             removeRecipientAttachment(attachment: attachment)
         }
     }
 
-    private func removeRecipientAttachment(attachment: RecipientTextViewTextAttachment) {
+    private func removeRecipientAttachment(attachment: TextAttachment) {
         recipientAttachments = recipientAttachments
             .filter { $0.recipient.address != attachment.recipient.address }
     }

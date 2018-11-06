@@ -15,10 +15,10 @@ extension NSAttributedString {
     public func imageInserted(withAddressOf identity: Identity,
                               in selectedRange: NSRange,
                               maxWidth: CGFloat = 0.0)
-        -> (newString: NSAttributedString,  attachment: RecipientTextViewTextAttachment) {
+        -> (newString: NSAttributedString,  attachment: RecipientTextViewModel.TextAttachment) {
             let margin: CGFloat = 20.0
             let attrText = NSMutableAttributedString(attributedString: self)
-            let textAttachment = RecipientTextViewTextAttachment(recipient: identity,
+            let textAttachment = RecipientTextViewModel.TextAttachment(recipient: identity,
                                                                  maxWidth: maxWidth - margin)
             let attachString = NSAttributedString(attachment: textAttachment)
             attrText.replaceCharacters(in: selectedRange, with: attachString)

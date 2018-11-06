@@ -85,14 +85,14 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     // MARK: - shouldInteract(WithTextAttachment:)
 
     func testSuppressDefaultLongPressMenu_yes() {
-        let attachmentWithImage = RecipientTextViewTextAttachment(recipient: validId)
+        let attachmentWithImage = RecipientTextViewModel.TextAttachment(recipient: validId)
         attachmentWithImage.image = UIImage()
         let shouldInteract = vm.shouldInteract(with: attachmentWithImage)
         XCTAssertFalse(shouldInteract)
     }
 
     func testSuppressDefaultLongPressMenu_no() {
-        let attachmentWithoutImage = RecipientTextViewTextAttachment(recipient: validId)
+        let attachmentWithoutImage = RecipientTextViewModel.TextAttachment(recipient: validId)
         attachmentWithoutImage.image = nil
         let shouldInteract = vm.shouldInteract(with: attachmentWithoutImage)
         XCTAssertTrue(shouldInteract)
@@ -258,7 +258,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     // MARK: - handleReplaceSelectedAttachments
 
     func testHandleReplaceSelectedAttachments_noPrevious() {
-        let attachment = RecipientTextViewTextAttachment(recipient: validId)
+        let attachment = RecipientTextViewModel.TextAttachment(recipient: validId)
         assert(resultDelegateCalledDidChangeRecipients: [],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false)
         vm.handleReplaceSelectedAttachments([attachment])
@@ -271,7 +271,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         vm.add(recipient: validId)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
 
-        let attachment = RecipientTextViewTextAttachment(recipient: validId)
+        let attachment = RecipientTextViewModel.TextAttachment(recipient: validId)
         assert(resultDelegateCalledDidChangeRecipients: [],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false)
         vm.handleReplaceSelectedAttachments([attachment])

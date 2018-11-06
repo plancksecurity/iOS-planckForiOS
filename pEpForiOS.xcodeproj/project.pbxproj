@@ -110,7 +110,7 @@
 		152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39BC21905C3D00D9F8E4 /* RecipientCellViewModel+FieldType.swift */; };
 		152A39E321905C3E00D9F8E4 /* RecipientTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39BF21905C3D00D9F8E4 /* RecipientTextView.swift */; };
 		152A39E421905C3E00D9F8E4 /* NSAttributedString+RecipientTextUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39C021905C3D00D9F8E4 /* NSAttributedString+RecipientTextUtils.swift */; };
-		152A39E621905C3E00D9F8E4 /* RecipientTextViewTextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39C221905C3D00D9F8E4 /* RecipientTextViewTextAttachment.swift */; };
+		152A39E621905C3E00D9F8E4 /* RecipientTextViewModel+TextAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39C221905C3D00D9F8E4 /* RecipientTextViewModel+TextAttachment.swift */; };
 		152A39E721905C3E00D9F8E4 /* RecipientTextViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39C321905C3D00D9F8E4 /* RecipientTextViewModel.swift */; };
 		152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152A39C421905C3D00D9F8E4 /* RecipientCellViewModel.swift */; };
 		153CA6E41FB60D99003C9629 /* DercyptMessagesOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */; };
@@ -706,7 +706,7 @@
 		152A39BC21905C3D00D9F8E4 /* RecipientCellViewModel+FieldType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecipientCellViewModel+FieldType.swift"; sourceTree = "<group>"; };
 		152A39BF21905C3D00D9F8E4 /* RecipientTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientTextView.swift; sourceTree = "<group>"; };
 		152A39C021905C3D00D9F8E4 /* NSAttributedString+RecipientTextUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+RecipientTextUtils.swift"; sourceTree = "<group>"; };
-		152A39C221905C3D00D9F8E4 /* RecipientTextViewTextAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientTextViewTextAttachment.swift; sourceTree = "<group>"; };
+		152A39C221905C3D00D9F8E4 /* RecipientTextViewModel+TextAttachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RecipientTextViewModel+TextAttachment.swift"; sourceTree = "<group>"; };
 		152A39C321905C3D00D9F8E4 /* RecipientTextViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientTextViewModel.swift; sourceTree = "<group>"; };
 		152A39C421905C3D00D9F8E4 /* RecipientCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecipientCellViewModel.swift; sourceTree = "<group>"; };
 		153CA6E31FB60D99003C9629 /* DercyptMessagesOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DercyptMessagesOperationTest.swift; sourceTree = "<group>"; };
@@ -1518,7 +1518,7 @@
 			children = (
 				152A39BF21905C3D00D9F8E4 /* RecipientTextView.swift */,
 				152A39C021905C3D00D9F8E4 /* NSAttributedString+RecipientTextUtils.swift */,
-				152A39C221905C3D00D9F8E4 /* RecipientTextViewTextAttachment.swift */,
+				152A39C221905C3D00D9F8E4 /* RecipientTextViewModel+TextAttachment.swift */,
 				152A39C321905C3D00D9F8E4 /* RecipientTextViewModel.swift */,
 			);
 			path = RecipientTextView;
@@ -3480,7 +3480,7 @@
 				432A5E261EB344C3007CB670 /* PEP_color+Extension.swift in Sources */,
 				43980E271CBD0BC900A7FC3C /* AppDelegate.swift in Sources */,
 				4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */,
-				152A39E621905C3E00D9F8E4 /* RecipientTextViewTextAttachment.swift in Sources */,
+				152A39E621905C3E00D9F8E4 /* RecipientTextViewModel+TextAttachment.swift in Sources */,
 				B7D1EEC81E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift in Sources */,
 				15874BC32127493E00A3A4A6 /* SettingsViewModel.swift in Sources */,
 				434BF38F20C6AFAF00FCBCCA /* Folder+ThreadAware.swift in Sources */,

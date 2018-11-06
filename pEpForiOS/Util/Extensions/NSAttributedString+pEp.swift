@@ -73,15 +73,15 @@ extension NSAttributedString {
     }
 
     public func recipientTextAttachments(
-        range: NSRange? = nil) -> [RecipientTextViewTextAttachment] {
+        range: NSRange? = nil) -> [RecipientTextViewModel.TextAttachment] {
         let theRange = range ?? NSMakeRange(0, length)
-        var allAttachments = [RecipientTextViewTextAttachment]()
+        var allAttachments = [RecipientTextViewModel.TextAttachment]()
         if theRange.location != NSNotFound {
             enumerateAttribute(
                 NSAttributedStringKey.attachment, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
                     value, range, stop in
-                    if let attachment = value as? RecipientTextViewTextAttachment {
+                    if let attachment = value as? RecipientTextViewModel.TextAttachment {
                         allAttachments.append(attachment)
                     }
             }
