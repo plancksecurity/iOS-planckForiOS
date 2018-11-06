@@ -31,4 +31,10 @@ protocol EmailDisplayDelegate: class {
     func emailDisplayDidDelete(message: Message)
 
     func emailDisplayDidChangeMarkSeen(message: Message)
+    
+    /**
+     The email detail changed the rating
+     */
+    
+    func emailDisplayDidChangeRating(message: Message)
 }

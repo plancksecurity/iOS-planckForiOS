@@ -152,6 +152,10 @@ class EmailViewController: BaseTableViewController {
                 self.delegate?.emailDisplayDidChangeMarkSeen(message: message)
             }
 
+            if let message = self.message {
+                self.delegate?.emailDisplayDidChangeRating(message: message)
+            }
+            
             if let total = self.folderShow?.messageCount(), self.messageId >= total - 1 {
                 self.nextMessage.isEnabled = false
             } else {
