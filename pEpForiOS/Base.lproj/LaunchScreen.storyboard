@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,18 +22,28 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" image="splash-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Ajc-Np-QDu">
-                                <rect key="frame" x="15" y="282" width="345" height="116"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="116" id="9Cd-tt-Jhb"/>
-                                    <constraint firstAttribute="width" constant="345" id="XR9-dL-UCE"/>
-                                </constraints>
-                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="N5F-E2-wGn">
+                                <rect key="frame" x="106.5" y="268" width="162" height="131"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="p≡p" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P2o-sk-iq2">
+                                        <rect key="frame" x="0.0" y="0.0" width="162" height="96"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="82"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privacy by Default." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B07-SI-2dt">
+                                        <rect key="frame" x="0.0" y="108" width="162" height="23"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Ajc-Np-QDu" firstAttribute="centerX" secondItem="pxm-Hy-l9O" secondAttribute="centerX" id="Loj-tH-68w"/>
-                            <constraint firstItem="Ajc-Np-QDu" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="6.5" id="Med-6j-uvi"/>
+                            <constraint firstItem="N5F-E2-wGn" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4MW-5L-lZe"/>
+                            <constraint firstItem="N5F-E2-wGn" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Twf-Kr-Gae"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pxm-Hy-l9O"/>
                     </view>
@@ -44,7 +54,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="splash-logo" width="228" height="77"/>
         <image name="splashscreen" width="228" height="404"/>
     </resources>
 </document>
