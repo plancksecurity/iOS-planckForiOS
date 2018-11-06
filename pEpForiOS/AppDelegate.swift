@@ -250,8 +250,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return false
         }
 
-        checkFonts()
-
         application.setMinimumBackgroundFetchInterval(60.0 * 10)
 
         Appearance.pEp()
@@ -361,38 +359,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
-    }
-
-    private func checkFonts() {
-        dumpFonts()
-        checkUniversFont()
-    }
-
-    private func checkUniversFont() {
-        guard let _ = UIFont(name: "UniversLTStd", size: UIFont.labelFontSize) else {
-            fatalError("""
-    Failed to load the "CustomFont-Light" font.
-    Make sure the font file is included in the project and the font name is spelled correctly.
-    """
-            )
-        }
-    }
-
-    private func dumpFonts() {
-        for family in UIFont.familyNames.sorted() {
-            let names = UIFont.fontNames(forFamilyName: family)
-            print("Family: \(family) Font names: \(names)")
-        }
-    }
-
-    private func dumpFontSizes() {
-        let styles = [UIFontTextStyle.body, UIFontTextStyle.caption1, UIFontTextStyle.caption2,
-                      UIFontTextStyle.footnote, UIFontTextStyle.headline,
-                      UIFontTextStyle.subheadline]
-        for sty in styles {
-            let font = UIFont.preferredFont(forTextStyle: sty)
-            print("\(sty) \(font)")
-        }
     }
 }
 
