@@ -188,17 +188,12 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func contentChanged(inRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else {
-            // This is OK. It happens if a cell reports content changes while its being setup.
-            return
-        }
-        cell.sizeToFit()
         tableView.updateSize() { [weak self] in
             guard let me = self else {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            if let cell = cell as? TextViewContainingTableViewCell {
+            if let cell = me.tableView.cellForRow(at: indexPath) as? TextViewContainingTableViewCell {
                 // Make sure the cursor always is in visible area.
                 TextViewInTableViewScrollUtil.assureCaretVisibility(tableView: me.tableView,
                                                                     textView: cell.textView)
