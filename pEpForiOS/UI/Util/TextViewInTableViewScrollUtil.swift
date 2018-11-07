@@ -41,6 +41,6 @@ class TextViewInTableViewScrollUtil {
         let maxCursorHeight: CGFloat = 100.0
         tvRect = tvRect.size.height <= maxCursorHeight ? tvRect : tvCaretRect
 
-        tableView.scrollRectToVisible(tvRect, animated: true)
+        tableView.scrollRectToVisible(tvRect, animated: false)
     }
 }
