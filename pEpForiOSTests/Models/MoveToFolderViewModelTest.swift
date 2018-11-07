@@ -24,60 +24,58 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
         viewmodel = MoveToFolderViewModel(account: account, messages: [Message]())
     }
 
+    // MARK: - Move
 
     func testMessageAreMoved() {
-        givenThereIsAMoveToFolderDelegate(checkCall: true)
-        givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[0])
-
-        let moved = viewmodel.moveMessagesTo(index: 1)
-
-        XCTAssertTrue(moved)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
+        assertMoved(expDidMoveCalled: true,
+                    numMessagesToMove: 10,
+                    messageSourceFolder: folders[0],
+                    idxMessageTargetFolder: 1,
+                    moveMustHappen: true)
     }
 
     func testNoMessageAreMoved() {
-        givenThereIsAMoveToFolderDelegate(checkCall: false)
-        givenWeWantToMove(aNumberOfMessages: 0, currentlyInFolder: folders[0])
-
-        let moved = viewmodel.moveMessagesTo(index: 1)
-
-        XCTAssertFalse(moved)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
+        assertMoved(expDidMoveCalled: false,
+                    numMessagesToMove: 0,
+                    messageSourceFolder: folders[0],
+                    idxMessageTargetFolder: 1,
+                    moveMustHappen: false)
     }
 
     func testInexistentFolderIndexReturnFalse() {
-        givenThereIsAMoveToFolderDelegate(checkCall: false)
-        givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[0])
-
-        let moved = viewmodel.moveMessagesTo(index: 3)
-
-        XCTAssertFalse(moved)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
+        assertMoved(expDidMoveCalled: false,
+                    numMessagesToMove: 10,
+                    messageSourceFolder: folders[0],
+                    idxMessageTargetFolder: 3,
+                    moveMustHappen: false)
     }
 
     func testMessageAreNotMovedIfTheyBelongToTheDestinationFolder() {
-        givenThereIsAMoveToFolderDelegate(checkCall: false)
-        givenWeWantToMove(aNumberOfMessages: 10, currentlyInFolder: folders[0])
-
-        let moved = viewmodel.moveMessagesTo(index: 0)
-
-        XCTAssertFalse(moved)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
-
+        assertMoved(expDidMoveCalled: false,
+                    numMessagesToMove: 10,
+                    messageSourceFolder: folders[0],
+                    idxMessageTargetFolder: 0,
+                    moveMustHappen: false)
     }
 
-    func testThereAreCorrectItems() {
-        XCTAssertEqual(viewmodel.count, folders.count)
-    }
+    // MARK: - Subscript
 
     func testSubscriptIsWorking() {
         XCTAssertEqual(viewmodel[0].title,
                        MoveToFolderCellViewModel(folder: folders[0], level: 0).title)
         XCTAssertEqual(viewmodel[1].title,
                        MoveToFolderCellViewModel(folder: folders[1], level: 1).title)
+        XCTAssertNotEqual(viewmodel[0].title,
+                       MoveToFolderCellViewModel(folder: folders[1], level: 0).title)
     }
 
-    //MARK: Initialization
+    // MARK: - Test Setup Correct
+
+    func testThereAreCorrectItems() {
+        XCTAssertEqual(viewmodel.count, folders.count)
+    }
+
+    //MARK: - Helper
     
     func givenWeWantToMove(aNumberOfMessages: Int, currentlyInFolder: Folder){
         for i in 0..<aNumberOfMessages {
@@ -106,9 +104,23 @@ class MoveToFolderViewModelTest: CoreDataDrivenTestBase {
         folders.append(folder)
         folders.append(trashFolder)
     }
+
+    private func assertMoved(expDidMoveCalled: Bool, numMessagesToMove: Int, messageSourceFolder: Folder, idxMessageTargetFolder: Int, moveMustHappen: Bool) {
+        givenThereIsAMoveToFolderDelegate(checkCall: expDidMoveCalled)
+        givenWeWantToMove(aNumberOfMessages: numMessagesToMove, currentlyInFolder: messageSourceFolder)
+
+        let moved = viewmodel.moveMessagesTo(index: idxMessageTargetFolder)
+
+        if moveMustHappen {
+            XCTAssertTrue(moved)
+        } else {
+            XCTAssertFalse(moved)
+        }
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 }
 
-//MARK: Delegate Expectations
+//MARK: - MoveToFolderTestDelegate
 
 class MoveToFolderExpectations: MoveToFolderDelegate {
     static let DID_MOVE_EXPECTATION_DESCRIPTION = "DID_MOVE_CALLED"
