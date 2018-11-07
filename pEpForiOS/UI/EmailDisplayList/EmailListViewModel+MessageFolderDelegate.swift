@@ -86,7 +86,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         let referencedIndices = threadedMessageFolder.referenced(
             messageIdentifiers: messages.array(), message: message)
 
-        DispatchQueue.main.sync { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             if let theSelf = self {
                 func insertAsTopMessage() {
                     if !theSelf.isInFolderToShow(message: message){
