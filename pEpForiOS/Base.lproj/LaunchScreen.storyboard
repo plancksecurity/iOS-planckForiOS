@@ -9,11 +9,6 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="UniversLTStd.otf">
-            <string>UniversLTStd</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
@@ -27,28 +22,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="N5F-E2-wGn">
-                                <rect key="frame" x="95" y="267.5" width="185.5" height="132"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="p≡p" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P2o-sk-iq2">
-                                        <rect key="frame" x="0.0" y="0.0" width="185.5" height="100"/>
-                                        <fontDescription key="fontDescription" name="UniversLTStd" family="Univers LT Std" pointSize="100"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Privacy by Default." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B07-SI-2dt">
-                                        <rect key="frame" x="0.0" y="112" width="185.5" height="20"/>
-                                        <fontDescription key="fontDescription" name="UniversLTStd" family="Univers LT Std" pointSize="20"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-logo" translatesAutoresizingMaskIntoConstraints="NO" id="iHI-pO-7v4">
+                                <rect key="frame" x="73.5" y="262.5" width="228" height="142"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="N5F-E2-wGn" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4MW-5L-lZe"/>
-                            <constraint firstItem="N5F-E2-wGn" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Twf-Kr-Gae"/>
+                            <constraint firstItem="iHI-pO-7v4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="3KW-li-r8l"/>
+                            <constraint firstItem="iHI-pO-7v4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ktf-mu-gf9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="pxm-Hy-l9O"/>
                     </view>
@@ -59,6 +40,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="splash-logo" width="228" height="142"/>
         <image name="splashscreen" width="228" height="404"/>
     </resources>
 </document>
