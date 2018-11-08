@@ -295,8 +295,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         // DELEGATE
         let expectAddRecipientCalled = expectation(description: "expectAddRecipientCalled")
         expectAddRecipientCalled.isInverted = addRecipientValue == nil
-        let expectTextChangedCalled = expectation(
-            description: "expectTextChangedCalled")
+        let expectTextChangedCalled = expectation(description: "expectTextChangedCalled")
         expectTextChangedCalled.isInverted =  didChangeAttributedText == nil
 
         delegate = TestRecipientTextViewModelDelegate(
