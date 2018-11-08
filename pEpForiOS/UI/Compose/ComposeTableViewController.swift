@@ -27,6 +27,7 @@ class ComposeTableViewController: BaseTableViewController {
             viewModel: viewModel?.documentAttachmentPickerViewModel())
     }()
     private var isInitialFocusSet = false
+    private var scrollUtil = TextViewInTableViewScrollUtil()
 
     var viewModel: ComposeViewModel? {
         didSet {
@@ -188,16 +189,30 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
     }
 
     func contentChanged(inRowAt indexPath: IndexPath) {
-        tableView.updateSize() { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+        guard
+            let cell = tableView.cellForRow(at: indexPath) as? TextViewContainingTableViewCell
+            else {
+                // Either we are in initial setup (no cellForRow_at:) or the sender is not
+                // editable (can not change size).
                 return
+        }
+        if cell is RecipientCell {
+            cell.sizeToFit()
+            // We intentionally do not scroll recipinet fields (causes issues).
+            tableView.updateSize {
+                if !(self.suggestionsChildViewController?.view.isHidden ?? true) {
+                    // Asure suggestions are still below the recipient cell after updating the
+                    // cells size.
+                    // It would be more elegant to let auto layout do it (setting constraints).
+                    self.updateSuggestTable(suggestionsForCellAt: indexPath)
+                }
             }
-            if let cell = me.tableView.cellForRow(at: indexPath) as? TextViewContainingTableViewCell {
-                // Make sure the cursor always is in visible area.
-                TextViewInTableViewScrollUtil.assureCaretVisibility(tableView: me.tableView,
-                                                                    textView: cell.textView)
-            }
+        } else if cell is BodyCell {
+            cell.textView.sizeToFit()
+            scrollUtil.layoutAfterTextDidChange(tableView: tableView, textView: cell.textView)
+        } else {
+            // We intentionally do not scroll recipinet fields (causes issues).
+            tableView.updateSize()
         }
     }
 
@@ -334,8 +349,11 @@ extension ComposeTableViewController {
 
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = setupCellForIndexPath(indexPath, in: tableView)
-        return cell!
+        guard let cell = setupCellForIndexPath(indexPath, in: tableView) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No cell")
+            return UITableViewCell()
+        }
+        return cell
     }
 
     private func setupCellForIndexPath(_ indexPath: IndexPath,
