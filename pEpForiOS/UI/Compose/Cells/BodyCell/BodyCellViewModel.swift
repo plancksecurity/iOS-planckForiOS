@@ -9,7 +9,7 @@
 import MessageModel
 
 protocol BodyCellViewModelResultDelegate: class {
-    func bodyCellViewModel(_ vm: BodyCellViewModel, textChanged newText: String)
+    func bodyCellViewModelTextChanged(_ vm: BodyCellViewModel)
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
@@ -52,7 +52,7 @@ class BodyCellViewModel: CellViewModel {
         self.attributedText = initialAttributedText
     }
 
-    func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
+    public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
         if plaintext.isEmpty {
             plaintext.append(.pepSignature)
         }
@@ -64,7 +64,7 @@ class BodyCellViewModel: CellViewModel {
         plaintext = newText
         attributedText = attrText
         createHtmlVersionAndInformDelegate(newAttributedText: attrText)
-        resultDelegate?.bodyCellViewModel(self, textChanged: newText)
+        resultDelegate?.bodyCellViewModelTextChanged(self)
     }
 
     public func shouldReplaceText(in range: NSRange,
