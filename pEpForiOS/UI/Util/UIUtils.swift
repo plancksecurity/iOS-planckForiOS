@@ -166,10 +166,10 @@ struct UIUtils {
     ///   - actionSheet: popover to set anchor to
     ///   - presentingViewController: view controller the popover should be presented on
     static private func setIPadAnchor(for actionSheet: UIAlertController,
-                               in rect: CGRect,
-                               at view: UIView) {
+                                      in rect: CGRect,
+                                      at view: UIView) {
 
-            actionSheet.popoverPresentationController?.sourceRect = rect
+        actionSheet.popoverPresentationController?.sourceRect = rect
 
         actionSheet.popoverPresentationController?.sourceView = view
         actionSheet.popoverPresentationController?.permittedArrowDirections
@@ -194,15 +194,15 @@ struct UIUtils {
         let contact = Identity(address: address)
 
         let alertSheet = UIAlertController.init(title: nil,
-                                               message: nil,
-                                               preferredStyle: .actionSheet)
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
 
         setIPadAnchor(for: alertSheet, in: rect, at: view)
 
         alertSheet.view.tintColor = UIColor.pEpDarkGreen
         //
         let newMailtitle = NSLocalizedString("New Mail Message",
-                                              comment:
+                                             comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message")
         alertSheet.addAction(UIAlertAction(title: newMailtitle, style: .default) { (action) in
             presentComposeView(forRecipientWithAddress: address,
@@ -211,21 +211,21 @@ struct UIUtils {
         })
         //
         let addTitle = NSLocalizedString("Add to Contacts",
-                                              comment:
+                                         comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts")
         alertSheet.addAction(UIAlertAction(title: addTitle, style: .default) { (action) in
             presentAddToContactsView(for: contact, on: viewController, appConfig: appConfig)
         })
         //
         let copyTitle = NSLocalizedString("Copy Email",
-                                         comment:
+                                          comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Copy Email")
         alertSheet.addAction(UIAlertAction(title: copyTitle, style: .default) { (action) in
             UIPasteboard.general.string = address
         })
         //
         let cancelTitle = NSLocalizedString("Cancel",
-                                          comment:
+                                            comment:
             "UIUtils.presentActionSheetWithContactOptions.button.title Cancel")
         alertSheet.addAction(UIAlertAction(title: cancelTitle, style: .cancel) { (action) in
             print("cancel action")
