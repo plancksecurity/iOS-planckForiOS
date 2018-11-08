@@ -675,15 +675,6 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         return nil
     }
 
-    func bodyCellViewModelTextChanged(_ vm: BodyCellViewModel) {
-        guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
-            return
-        }
-        delegate?.contentChanged(inRowAt: idxPath)
-    }
-
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel) {
         delegate?.showMediaAttachmentPicker()
     }
@@ -703,5 +694,11 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
                            html: String) {
         state.bodyHtml = html
         state.bodyPlaintext = plain
+        guard let idxPath = indexPath(for: vm) else {
+            Log.shared.errorAndCrash(component: #function,
+                                     errorString: "We got called by a non-existing VM?")
+            return
+        }
+        delegate?.contentChanged(inRowAt: idxPath)
     }
 }

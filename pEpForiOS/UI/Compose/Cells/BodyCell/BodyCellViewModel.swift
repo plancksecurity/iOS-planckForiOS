@@ -9,7 +9,6 @@
 import MessageModel
 
 protocol BodyCellViewModelResultDelegate: class {
-    func bodyCellViewModelTextChanged(_ vm: BodyCellViewModel)
 
     func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel)
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel)
@@ -64,7 +63,6 @@ class BodyCellViewModel: CellViewModel {
         plaintext = newText
         attributedText = attrText
         createHtmlVersionAndInformDelegate(newAttributedText: attrText)
-        resultDelegate?.bodyCellViewModelTextChanged(self)
     }
 
     public func shouldReplaceText(in range: NSRange,
