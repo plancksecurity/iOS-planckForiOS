@@ -71,13 +71,13 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     // MARK: - add(recipient:)
 
     func testAddRecipientCalled() {
-        assert(addRecipientValue: validId.address, ignoreCallsToAddRecipient: false)
+        setupAssertionDelegates(addRecipientValue: validId.address, ignoreCallsToAddRecipient: false)
         vm.add(recipient: validId)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testAddRecipientNotCalled() {
-        assert(addRecipientValue: nil, ignoreCallsToAddRecipient: false)
+        setupAssertionDelegates(addRecipientValue: nil, ignoreCallsToAddRecipient: false)
         callAll(addRecipient: false)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -101,7 +101,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     // MARK: - handleDidEndEditing(range:text:)
 
     func testHandleDidEndEditing_noText() {
-        assert(resultDelegateCalledDidChangeRecipients: nil,
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -110,7 +110,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleDidEndEditing_randomText() {
-        assert(resultDelegateCalledDidChangeRecipients: nil,
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -119,7 +119,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleDidEndEditing_validAddress() {
-        assert(resultDelegateCalledDidChangeRecipients: [validId],
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: [validId],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -129,7 +129,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleDidEndEditing_validAddress_prefixedSpace() {
-        assert(resultDelegateCalledDidChangeRecipients: [validId],
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: [validId],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -140,7 +140,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleDidEndEditing_validAddress_postfixedSpace() {
-        assert(resultDelegateCalledDidChangeRecipients: [validId],
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: [validId],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -151,7 +151,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleDidEndEditing_validAddress_preAndPostfixedSpace() {
-        assert(resultDelegateCalledDidChangeRecipients: [validId],
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: [validId],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -162,7 +162,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleDidEndEditing_validAddressPostfixRandomText() {
-        assert(resultDelegateCalledDidChangeRecipients: nil,
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -173,7 +173,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleDidEndEditing_validAddressPrefixRandomText() {
-        assert(resultDelegateCalledDidChangeRecipients: nil,
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: true,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -184,7 +184,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleDidEndEditing_notCalledAsSideEffect() {
-        assert(resultDelegateCalledDidChangeRecipients: nil,
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false,
                resultDelegateCalledDidEndEditingCalled: false,
                ignoreCallsresultDelegateCalledDidEndEditingCalled: false)
@@ -196,14 +196,14 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleTextChange_called() {
         let text = randomText
-        assert(resultDelegateCalledTextChanged: text,
+        setupAssertionDelegates(resultDelegateCalledTextChanged: text,
                ignoreResultDelegateCalledTextChanged: false)
         vm.handleTextChange(newText: text, newAttributedText: randomAttributedText)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     func testHandleTextChange_notCalled() {
-        assert(resultDelegateCalledTextChanged: nil,
+        setupAssertionDelegates(resultDelegateCalledTextChanged: nil,
                ignoreResultDelegateCalledTextChanged: false)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
@@ -225,7 +225,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
         let identitiy = validId
         let text = validId.address
         let attributedText = NSAttributedString(string: text)
-        assert(resultDelegateCalledDidChangeRecipients: [identitiy],
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: [identitiy],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false)
         let addressFound = vm.handleAddressDelimiterTyped(range: emptyRange, of: attributedText)
         XCTAssertTrue(addressFound)
@@ -236,7 +236,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     func testHandleAddressDelimiterTyped_empty() {
         let text = ""
         let attributedText = NSAttributedString(string: text)
-        assert(resultDelegateCalledDidChangeRecipients: nil,
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false)
         let addressFound = vm.handleAddressDelimiterTyped(range: emptyRange, of: attributedText)
         XCTAssertFalse(addressFound)
@@ -247,7 +247,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     func testHandleAddressDelimiterTyped_randomText() {
         let text = randomText
         let attributedText = NSAttributedString(string: text)
-        assert(resultDelegateCalledDidChangeRecipients: nil,
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: nil,
                ignoreCallsResultDelegateCalledDidChangeRecipients: false)
         let addressFound = vm.handleAddressDelimiterTyped(range: emptyRange, of: attributedText)
         XCTAssertFalse(addressFound)
@@ -259,7 +259,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleReplaceSelectedAttachments_noPrevious() {
         let attachment = RecipientTextViewModel.TextAttachment(recipient: validId)
-        assert(resultDelegateCalledDidChangeRecipients: [],
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: [],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false)
         vm.handleReplaceSelectedAttachments([attachment])
         XCTAssertFalse(vm.isDirty)
@@ -267,12 +267,12 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testHandleReplaceSelectedAttachments_onePrevious() {
-        assert(addRecipientValue: validId.address, ignoreCallsToAddRecipient: false)
+        setupAssertionDelegates(addRecipientValue: validId.address, ignoreCallsToAddRecipient: false)
         vm.add(recipient: validId)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
 
         let attachment = RecipientTextViewModel.TextAttachment(recipient: validId)
-        assert(resultDelegateCalledDidChangeRecipients: [],
+        setupAssertionDelegates(resultDelegateCalledDidChangeRecipients: [],
                ignoreCallsResultDelegateCalledDidChangeRecipients: false)
         vm.handleReplaceSelectedAttachments([attachment])
         XCTAssertFalse(vm.isDirty)
@@ -281,7 +281,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
 
     // MARK: - Helper
 
-    private func assert(addRecipientValue: String? = nil,
+    private func setupAssertionDelegates(addRecipientValue: String? = nil,
                         ignoreCallsToAddRecipient: Bool = true,
                         didChangeAttributedText: NSAttributedString? = nil,
                         ignoreCallsDidChangeAttributedText: Bool = true,
