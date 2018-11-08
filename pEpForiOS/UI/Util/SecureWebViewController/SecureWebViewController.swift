@@ -449,13 +449,23 @@ extension UISplitViewController {
             // clicked address.
             // Forward for custom handling.
             let mailAddress = alertTitle
+
+            var alertRect: CGRect
+
+            //If is tablet we have a popover source rect, else we don't care because it will
+            // show as action sheet
+            if let rect = alertController.popoverPresentationController?.sourceRect {
+                alertRect = rect
+            } else {
+                alertRect =  CGRect(x: 0, y: 0, width: 0, height: 0)
+            }
+
             UIUtils.presentActionSheetWithContactOptions(forContactWithEmailAddress: mailAddress,
                                                          on: self,
-                                                         at: CGRect(x: self.view.frame.midX,
-                                                                    y: self.view.frame.midY,
-                                                                    width: 0, height: 0),
+                                                         at: alertRect,
                                                          at: self.view,
                                                         appConfig: appConfig)
+            
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.
