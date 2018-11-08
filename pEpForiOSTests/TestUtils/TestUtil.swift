@@ -19,7 +19,7 @@ class TestUtil {
     static let waitTimeLocal: TimeInterval = 3
 
     /**
-     The maximum time most tests are allowed to run.
+     The maximum time most intergationtests are allowed to run.
      */
     static let waitTime: TimeInterval = 30
 

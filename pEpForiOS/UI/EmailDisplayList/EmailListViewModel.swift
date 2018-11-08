@@ -585,6 +585,28 @@ class EmailListViewModel {
         return folderFilter
     }
 
+    // MARK: - Util
+
+    func folderIsDraft(_ parentFolder: Folder?) -> Bool {
+        guard let folder = parentFolder else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
+            return false
+        }
+        return folder.folderType == .drafts
+    }
+
+    func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
+        guard let folder = parentFolder else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
+            return false
+        }
+        return folder.folderType == .outbox
+    }
+
+    func folderIsDraftsOrOutbox(_ parentFolder: Folder?) -> Bool {
+        return folderIsDraft(parentFolder) || folderIsOutbox(parentFolder)
+    }
+
     // MARK: - Fetch Older Messages
 
     /// The number of rows (not yet displayed to the user) before we want to fetch older messages.
@@ -635,5 +657,43 @@ extension EmailListViewModel: ReplyAllPossibleCheckerProtocol {
 
     func isReplyAllPossible(forRowAt indexPath: IndexPath) -> Bool {
         return isReplyAllPossible(forMessage: message(representedByRowAt: indexPath))
+    }
+}
+
+// MARK: - ComposeViewModel
+
+extension EmailListViewModel {
+    func composeViewModel(withOriginalMessageAt indexPath: IndexPath,
+                          composeMode: ComposeUtil.ComposeMode? = nil) -> ComposeViewModel {
+        let message = messages.object(at: indexPath.row)?.message()
+        let composeVM = ComposeViewModel(resultDelegate: self,
+                                         composeMode: composeMode,
+                                         originalMessage: message)
+        return composeVM
+    }
+}
+
+// MARK: - ComposeViewModelResultDelegate
+
+extension EmailListViewModel: ComposeViewModelResultDelegate {
+    func composeViewModelDidComposeNewMail() {
+        if folderIsDraftsOrOutbox(folderToShow){
+            // In outbox, a new mail must show up after composing it.
+            reloadData()
+        }
+    }
+
+    func composeViewModelDidDeleteMessage() {
+        if folderIsOutbox(folderToShow) {
+            // A message from outbox has been deleted in outbox
+            // (e.g. because the user saved it to drafts).
+            reloadData()
+        }
+    }
+
+    func composeViewModelDidModifyMessage() {
+        if folderIsDraft(folderToShow) {
+            reloadData()
+        }
     }
 }

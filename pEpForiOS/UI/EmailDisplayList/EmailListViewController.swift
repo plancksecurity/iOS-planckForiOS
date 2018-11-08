@@ -179,6 +179,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     // MARK: - Other
+
     private func weCameBackFromAPushedView() -> Bool {
         return model != nil
     }
@@ -503,7 +504,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                    editActionsForRowAt
         indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-
+        guard let vm = model else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            return nil
+        }
         // Create swipe actions, taking the currently displayed folder into account
         var swipeActions = [SwipeAction]()
 
@@ -1117,20 +1121,19 @@ extension EmailListViewController: SegueHandlerType {
                 return
         }
         composeVc.appConfig = appConfig
-        composeVc.composeMode = composeMode
         if segueId != .segueCompose {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
             guard
-                let indexPath = lastSelectedIndexPath,
-                let message = model?.message(representedByRowAt: indexPath) else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "No original message")
+                let vm = model,
+                let indexPath = lastSelectedIndexPath else {
+                    Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return
             }
-            composeVc.originalMessage = message
+
+            composeVc.viewModel = vm.composeViewModel(withOriginalMessageAt: indexPath,
+                                                      composeMode: composeMode)
         }
-        composeVc.delegate = self
     }
 
     private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode? {
@@ -1160,31 +1163,3 @@ extension EmailListViewController: LoginViewControllerDelegate {
     }
 }
 
-// MARK: - ComposeTableViewControllerDelegate
-
-extension EmailListViewController: ComposeTableViewControllerDelegate {
-    func composeTableViewControllerDidComposeNewMail(sender: ComposeTableViewController) {
-        if let model = model,
-            model.folderIsOutbox() || model.folderIsDraft(){
-            // In outbox, a new mail must show up after composing it.
-            model.reloadData()
-        }
-    }
-
-    func composeTableViewControllerDidDeleteMessage(sender: ComposeTableViewController) {
-
-        if let model = model,
-            model.folderIsOutbox() {
-            // A message from outbox has been deleted in outbox
-            // (e.g. because the user saved it to drafts).
-            model.reloadData()
-        }
-    }
-
-    func composeTableViewControllerDidModifyMessage(sender: ComposeTableViewController) {
-        if let model = model,
-            model.folderIsDraft() {
-            model.reloadData()
-        }
-    }
-}

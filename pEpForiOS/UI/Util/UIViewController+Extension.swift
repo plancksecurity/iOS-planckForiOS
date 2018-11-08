@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 
 extension UIViewController {
+    var isModalViewCurrentlyShown: Bool {
+        return presentedViewController != nil
+    }
+
     @discardableResult func showPepRating(pEpRating: PEP_rating?, pEpProtection: Bool = true) -> UIView? {
         if let img = pEpRating?.pEpColor().statusIcon(enabled: pEpProtection) {
             // according to apple's design guidelines ('Hit Targets'):

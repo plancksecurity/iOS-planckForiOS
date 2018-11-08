@@ -453,7 +453,6 @@ class EmailViewController: BaseTableViewController {
 
         } else {
             performSegue(withIdentifier: .segueHandshake, sender: self)
-
         }
     }
 }
@@ -532,17 +531,10 @@ extension EmailViewController: SegueHandlerType {
                     break
             }
             destination.appConfig = appConfig
-
-            if theId == .segueReplyFrom {
-                destination.composeMode = .replyFrom
-                destination.originalMessage = message
-            } else if theId == .segueReplyAllForm {
-                destination.composeMode = .replyAll
-                destination.originalMessage = message
-            } else if theId == .segueForward {
-                destination.composeMode = .forward
-                destination.originalMessage = message
-            }
+            destination.viewModel = ComposeViewModel(resultDelegate: nil,
+                                                     composeMode: composeMode(for: theId),
+                                                     prefilledTo: nil,
+                                                     originalMessage: message)
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController else {
@@ -565,7 +557,10 @@ extension EmailViewController: SegueHandlerType {
 
             nv.popoverPresentationController?.delegate = self
             nv.popoverPresentationController?.sourceView = titleView
-            nv.popoverPresentationController?.sourceRect = CGRect(x: titleView.bounds.midX,                                                                           y:titleView.bounds.midY,                                                                           width:0,                                                                           height:0)
+            nv.popoverPresentationController?.sourceRect = CGRect(x: titleView.bounds.midX,
+                                                                  y: titleView.bounds.midY,
+                                                                  width: 0,
+                                                                  height: 0)
             vc.appConfig = appConfig
             vc.message = message
             vc.ratingReEvaluator = ratingReEvaluator
@@ -575,7 +570,20 @@ extension EmailViewController: SegueHandlerType {
         }
     }
 
-    internal func removePepButton(){
+    private func composeMode(for segueId: SegueIdentifier) -> ComposeUtil.ComposeMode {
+        if segueId == .segueReplyFrom {
+            return .replyFrom
+        } else if segueId == .segueReplyAllForm {
+            return  .replyAll
+        } else if segueId == .segueForward {
+            return  .forward
+        } else {
+            Log.shared.errorAndCrash(component: #function, errorString: "Unsupported input")
+            return .replyFrom
+        }
+    }
+
+    private func removePepButton() {
         var items: [UIBarButtonItem]!
         if traitCollection.verticalSizeClass == .regular {
             guard let auxItems = navigationItem.rightBarButtonItems else {
@@ -603,12 +611,10 @@ extension EmailViewController: SegueHandlerType {
             if items.last?.tag == BarButtonType.space.rawValue {
                 items.removeLast()
             }
-
         }
 
         if traitCollection.verticalSizeClass == .regular {
             navigationItem.rightBarButtonItems = items
-
         } else {
             toolbarItems = items
         }

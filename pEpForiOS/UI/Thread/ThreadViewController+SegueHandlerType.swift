@@ -22,7 +22,6 @@ extension ThreadViewController: SegueHandlerType {
         let segueId = segueIdentifier(for: segue)
         switch segueId {
         case .segueShowEmail, .segueShowEmailExpanding:
-//            guard let nav = segue.destination as? UINavigationController,
                 guard let vc = segue.destination as? EmailViewController,
                 let appConfig = self.appConfig,
                 let indexPath = tableView.indexPathForSelectedRow,
@@ -37,7 +36,6 @@ extension ThreadViewController: SegueHandlerType {
             vc.messageId = indexPath.row
             vc.delegate = model
             model.currentDisplayedMessage = vc
-            break
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController else {
@@ -50,7 +48,6 @@ extension ThreadViewController: SegueHandlerType {
             }
             destination.delegate = model
             model.didMove()
-            break
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController,
@@ -58,24 +55,20 @@ extension ThreadViewController: SegueHandlerType {
                     Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
                     break
             }
-
-
             destination.appConfig = appConfig
 
-            if segueId == .segueReplyFrom {
-                destination.composeMode = .replyFrom
-                destination.originalMessage = model.getMessageToReply()
-            } else if segueId == .segueReplyAllForm {
-                destination.composeMode = .replyAll
-                destination.originalMessage =  model.getMessageToReply()
-            } else if segueId == .segueForward {
-                destination.composeMode = .forward
-                destination.originalMessage =  model.getMessageToReply()
-            }
-            break
-        default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unhandled segue")
-            break
+            // Commented as it does not fit new MVVM ComposeVC any more.
+            // See Email[List]ViewController.
+//            if segueId == .segueReplyFrom {
+//                destination.composeMode = .replyFrom
+//                destination.originalMessage = model.getMessageToReply()
+//            } else if segueId == .segueReplyAllForm {
+//                destination.composeMode = .replyAll
+//                destination.originalMessage =  model.getMessageToReply()
+//            } else if segueId == .segueForward {
+//                destination.composeMode = .forward
+//                destination.originalMessage =  model.getMessageToReply()
+//            }
         }
     }
 
