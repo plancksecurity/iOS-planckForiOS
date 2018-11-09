@@ -519,7 +519,7 @@ extension ComposeTableViewController {
         let idxPath = vm.initialFocus()
         guard let cellToFocus = tableView.cellForRow(at: idxPath)
             as? TextViewContainingTableViewCell else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
+                // This (no tableView.cellForRowAt...) can happen. Ignore
                 return
         }
         cellToFocus.setFocus()
