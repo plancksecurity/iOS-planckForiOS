@@ -205,10 +205,52 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - inline(attachment:
 
+    func testInlineAttachment_called() {
+        guard let attachment = testAttachments(addImage: true).first else {
+            XCTFail("Argh ...")
+            return
+        }
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: true),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: nil,
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: true),
+                                inlined: [attachment],
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let nonZeroValue: CGFloat = 300.0
+        vm.maxTextattachmentWidth = nonZeroValue
+        vm.inline(attachment: attachment)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testInlineAttachment_notCalled() {
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: nil,
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let nonZeroValue: CGFloat = 300.0
+        vm.maxTextattachmentWidth = nonZeroValue
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     /*
      // PUBLIC API TO TEST
+
 
      public func shouldReplaceText(in range: NSRange, of text: NSAttributedString, with replaceText: String) -> Bool {
              let attachments = text.textAttachments(range: range)
@@ -237,12 +279,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
      public func handleCursorPositionChange(newPosition: Int) {
              lastKnownCursorPosition = newPosition
              }
-
-
-     // MARK: - Attachments
-
-     public func inline(attachment: Attachment) {
-     */
+ */
 
     // MARK: - Helpers
 
@@ -277,22 +314,30 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                  fileName: String? = nil,
                                  size: Int? = nil,
                                  url: URL? = nil,
-                                 image: UIImage? = nil,
+                                 addImage: Bool = false,
                                  assetUrl: URL? = nil,
                                  contentDisposition: Attachment.ContentDispositionType = .inline)
         -> [Attachment] {
-        var attachments = [Attachment]()
-        for i in 0..<numAttachments {
-            attachments.append(Attachment(data: data,
-                                          mimeType: mimeType,
-                                          fileName: "\(i)",
-                                          size: size,
-                                          url: url,
-                                          image: image,
-                                          assetUrl: assetUrl,
-                                          contentDisposition: contentDisposition))
-        }
-        return attachments
+            var attachments = [Attachment]()
+            let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
+            guard
+                let imageData = TestUtil.loadData(fileName: imageFileName),
+                let image = UIImage(data: imageData) else {
+                    XCTFail("No img")
+                    return []
+            }
+
+            for i in 0..<numAttachments {
+                attachments.append(Attachment(data: data,
+                                              mimeType: mimeType,
+                                              fileName: "\(i)",
+                    size: size,
+                    url: url,
+                    image: addImage ? image : nil,
+                    assetUrl: assetUrl,
+                    contentDisposition: contentDisposition))
+            }
+            return attachments
     }
 
     private func htmlVersion(of string: String) -> String {
