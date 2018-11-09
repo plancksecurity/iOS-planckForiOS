@@ -452,7 +452,7 @@ extension UISplitViewController {
 
             var alertRect: CGRect
 
-            //If is tablet we have a popover source rect, else we don't care because it will
+            // On tablets we have a popover source rect, else we don't care because it will
             // show as action sheet
             if let rect = alertController.popoverPresentationController?.sourceRect {
                 alertRect = rect
@@ -465,7 +465,6 @@ extension UISplitViewController {
                                                          at: alertRect,
                                                          at: self.view,
                                                         appConfig: appConfig)
-            
         } else if alertTitle.hasPrefix(UrlClickHandler.Scheme.mailto.rawValue) {
             // It *is* an Action Sheet shown due to long-press on mailto: URL, but we do not know
             // the clicked address.
