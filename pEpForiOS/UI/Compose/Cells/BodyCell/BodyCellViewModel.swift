@@ -49,6 +49,9 @@ class BodyCellViewModel: CellViewModel {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
+        if let inlAtt = inlinedAttachments {
+            self.inlinedAttachments = inlAtt
+        }
     }
 
     public func inititalText() -> (text: String?, attributedText: NSAttributedString?) {
@@ -149,7 +152,6 @@ extension BodyCellViewModel {
 extension BodyCellViewModel {
 
     private func createHtmlVersionAndInformDelegate(newAttributedText attrText: NSAttributedString) {
-
         let (markdownText, _) = attrText.convertToMarkDown()
         let plaintext = markdownText
         let html = markdownText.markdownToHtml()
