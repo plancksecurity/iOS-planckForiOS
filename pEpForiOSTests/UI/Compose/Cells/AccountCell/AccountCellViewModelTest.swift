@@ -11,7 +11,33 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-class AccountCellViewModelTest: XCTestCase {
+class AccountCellViewModelTest: CoreDataDrivenTestBase {
+    private var vm: AccountCellViewModel!
+
+    // MARK: - displayAccount
+
+    func testDisplayAccount() {
+        let initialAccount = account
+        assert(initialAccount: initialAccount,
+               accountChangedMustBeCalled: false,
+               expectedAccount: nil)
+        let testee = vm.displayAccount
+        XCTAssertEqual(testee, initialAccount.user.address)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testDisplayAccount_unknownAccount() {
+        let initialAccount = account
+        let anotherAccount = SecretTestData().createWorkingAccount(number: 1)
+        assert(initialAccount: initialAccount,
+               accountChangedMustBeCalled: false,
+               expectedAccount: nil)
+        let testee = vm.displayAccount
+        XCTAssertNotEqual(testee, anotherAccount.user.address)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - accountPickerViewModel(_:didSelect:)
 
     /*
      PUBLIC API
@@ -29,6 +55,12 @@ class AccountCellViewModelTest: XCTestCase {
      return AccountPickerViewModel(resultDelegate: self)
      }
 
+     func accountPickerViewModel(_ vm: AccountPickerViewModel, didSelect account: Account) {
+     selectedAccount = account
+     delegate?.accountChanged(newValue: account.user.address)
+     resultDelegate?.accountCellViewModel(self, accountChangedTo: account)
+     }
+
      */
 
    // MARK: - Helper
@@ -38,15 +70,15 @@ class AccountCellViewModelTest: XCTestCase {
                         expectedAccount: Account?) {
         var expAccountChangedToCalled: XCTestExpectation? = nil
         var expAccountChangedCalled: XCTestExpectation? = nil
-        if let weCare = accountChangedMustBeCalled {
-            expAccountChangedToCalled = expectation(inverted: weCare)
-            expAccountChangedCalled = expectation(inverted: weCare)
+        if let mustBeCalled = accountChangedMustBeCalled {
+            expAccountChangedToCalled = expectation(inverted: !mustBeCalled)
+            expAccountChangedCalled = expectation(inverted: !mustBeCalled)
         }
         let resultDelegate = TestResultDelegate(expAccountChangedToCalled: expAccountChangedToCalled,
                                                 expectedAccount: expectedAccount ?? nil)
         let delegate = TestDelegate(expAccountChangedCalled: expAccountChangedCalled,
                                     expectedAddress: expectedAccount?.user.address ?? nil)
-        let vm = AccountCellViewModel(resultDelegate: resultDelegate,
+        vm = AccountCellViewModel(resultDelegate: resultDelegate,
                                       initialAccount: initialAccount)
         vm.delegate = delegate
     }
@@ -91,5 +123,9 @@ class AccountCellViewModelTest: XCTestCase {
                 XCTAssertEqual(newValue, expected)
             }
         }
+    }
+
+    private class TestAccountPickerViewModel: AccountPickerViewModel {
+        //Dummy to pass.
     }
 }
