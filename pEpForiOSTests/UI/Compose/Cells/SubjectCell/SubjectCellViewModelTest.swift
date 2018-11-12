@@ -9,7 +9,6 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
 
 class SubjectCellViewModelTest: XCTestCase {
 
