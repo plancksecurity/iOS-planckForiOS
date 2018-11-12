@@ -10,12 +10,6 @@ import XCTest
 import MessageModel
 
 class AttachmentViewModelTest: XCTestCase {
-//    lazy private var attachment: Attachment = {
-//        return TestUtil.createAttachment(inlined: false)
-//    }()
-//    lazy private var vm: AttachmentViewModel = {
-//        return AttachmentViewModel(attachment: attachment)
-//    }()
 
     // MARK: - fileName
 
@@ -51,19 +45,19 @@ class AttachmentViewModelTest: XCTestCase {
 
     func testFileExtension_noHave() {
         let attachment = TestUtil.createAttachment(inlined: false)
-        attachment.mimeType = "we should not have a mime type for this"
+        attachment.mimeType = "we should not have a file extension type for this"
         let vm = AttachmentViewModel(attachment: attachment)
         let expected = ""
         let testee = vm.fileExtension
         XCTAssertEqual(testee, expected)
     }
 
-    /*
+    // MARK: - attachment & init
 
-     public let attachment: Attachment
-
-     init(attachment: Attachment) {
-     self.attachment = attachment
-     }
-     */
+    func testAttachment() {
+        let attachment = TestUtil.createAttachment(inlined: false)
+        let vm = AttachmentViewModel(attachment: attachment)
+        let testee = vm.attachment
+        XCTAssertEqual(testee, attachment)
+    }
 }
