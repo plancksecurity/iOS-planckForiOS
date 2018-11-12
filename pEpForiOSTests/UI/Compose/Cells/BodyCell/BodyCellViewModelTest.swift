@@ -625,13 +625,6 @@ class BodyCellViewModelTest: XCTestCase {
         attrText.replaceCharacters(in: range, with: insertText)
         return attrText
     }
-
-    private func expectation(named name: String = #function, inverted: Bool = false) -> XCTestExpectation {
-        let description = name + " \(inverted)"
-        let createe = expectation(description: description)
-        createe.isInverted = inverted
-        return createe
-    }
 }
 
 class TestBodyCellViewModelDelegate: BodyCellViewModelDelegate {
