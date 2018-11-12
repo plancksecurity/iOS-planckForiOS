@@ -13,8 +13,8 @@ import MessageModel
 
 class BodyCellViewModelTest: XCTestCase {
     var vm: BodyCellViewModel!
-    var testDelegate: TestBodyCellViewModelDelegate?
-    var testResultDelegate: TestBodyCellViewModelResultDelegate?
+    private var testDelegate: TestDelegate?
+    private var testResultDelegate: TestResultDelegate?
 
     // MARK: - inititalText
 
@@ -501,11 +501,11 @@ class BodyCellViewModelTest: XCTestCase {
         expInlinedAttachmentsCalled: XCTestExpectation? = nil, inlined: [Attachment]? = nil,
         expBodyChangedCalled: XCTestExpectation? = nil, exectedPlain: String? = nil, exectedHtml: String? = nil) {
         // Delegate
-        testDelegate = TestBodyCellViewModelDelegate(expectInsertCalled: expectInsertCalled, inserted: inserted)
+        testDelegate = TestDelegate(expectInsertCalled: expectInsertCalled, inserted: inserted)
 
         // Result Delegate
         let newTestResultDelegate =
-            TestBodyCellViewModelResultDelegate(
+            TestResultDelegate(
                 expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled, expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled,
                 expInlinedAttachmentsCalled: expInlinedAttachmentsCalled, inlined: inlined,
                 expBodyChangedCalled: expBodyChangedCalled, exectedPlain: exectedPlain, exectedHtml: exectedHtml)
@@ -625,103 +625,105 @@ class BodyCellViewModelTest: XCTestCase {
         attrText.replaceCharacters(in: range, with: insertText)
         return attrText
     }
-}
 
-class TestBodyCellViewModelDelegate: BodyCellViewModelDelegate {
-    //insert
-    let expectInsertCalled: XCTestExpectation?
-    let inserted: NSAttributedString?
+    // MARK: BodyCellViewModelDelegate
 
-    init(expectInsertCalled: XCTestExpectation?, inserted: NSAttributedString?) {
-        self.expectInsertCalled = expectInsertCalled
-        self.inserted = inserted
-    }
+    private class TestDelegate: BodyCellViewModelDelegate {
+        //insert
+        let expectInsertCalled: XCTestExpectation?
+        let inserted: NSAttributedString?
 
-    // BodyCellViewModelDelegate
-
-    func insert(text: NSAttributedString) {
-        guard let exp = expectInsertCalled else {
-            // We ignore called or not
-            return
+        init(expectInsertCalled: XCTestExpectation?, inserted: NSAttributedString?) {
+            self.expectInsertCalled = expectInsertCalled
+            self.inserted = inserted
         }
-        exp.fulfill()
-        if let expected = inserted {
-            XCTAssertEqual(text, expected)
-        }
-    }
-}
 
-// MARK: BodyCellViewModelResultDelegate
+        // BodyCellViewModelDelegate
 
-class TestBodyCellViewModelResultDelegate: BodyCellViewModelResultDelegate {
-    // context menu
-    let expUserWantsToAddMediaCalled: XCTestExpectation?
-    let expUserWantsToAddDocumentCalled: XCTestExpectation?
-    // inlined image
-    let expInlinedAttachmentsCalled: XCTestExpectation?
-    let inlined: [Attachment]?
-    // content change
-    let expBodyChangedCalled: XCTestExpectation?
-    let exectedPlain: String?
-    let exectedHtml: String?
-
-    init(expUserWantsToAddMediaCalled: XCTestExpectation?,
-         expUserWantsToAddDocumentCalled: XCTestExpectation?,
-         expInlinedAttachmentsCalled: XCTestExpectation?, inlined: [Attachment]?,
-         expBodyChangedCalled: XCTestExpectation?, exectedPlain: String?, exectedHtml: String?) {
-        self.expUserWantsToAddMediaCalled = expUserWantsToAddMediaCalled
-        self.expUserWantsToAddDocumentCalled = expUserWantsToAddDocumentCalled
-        self.expInlinedAttachmentsCalled = expInlinedAttachmentsCalled
-        self.inlined = inlined
-        self.expBodyChangedCalled = expBodyChangedCalled
-        self.exectedPlain = exectedPlain
-        self.exectedHtml = exectedHtml
-    }
-
-    func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel) {
-        guard let exp = expUserWantsToAddMediaCalled else {
-            // We ignore called or not
-            return
-        }
-        exp.fulfill()
-    }
-
-    func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel) {
-        guard let exp = expUserWantsToAddDocumentCalled else {
-            // We ignore called or not
-            return
-        }
-        exp.fulfill()
-    }
-
-    func bodyCellViewModel(_ vm: BodyCellViewModel,
-                           inlinedAttachmentsChanged inlinedAttachments: [Attachment]) {
-        guard let exp = expInlinedAttachmentsCalled else {
-            // We ignore called or not
-            return
-        }
-        exp.fulfill()
-        if let expected = inlined {
-            XCTAssertEqual(inlinedAttachments.count, expected.count)
-            for testee in inlinedAttachments {
-                XCTAssertTrue(expected.contains(testee))
+        func insert(text: NSAttributedString) {
+            guard let exp = expectInsertCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = inserted {
+                XCTAssertEqual(text, expected)
             }
         }
     }
 
-    func bodyCellViewModel(_ vm: BodyCellViewModel,
-                           bodyChangedToPlaintext plain: String,
-                           html: String) {
-        guard let exp = expBodyChangedCalled else {
-            // We ignore called or not
-            return
+    // MARK: BodyCellViewModelResultDelegate
+
+    private class TestResultDelegate: BodyCellViewModelResultDelegate {
+        // context menu
+        let expUserWantsToAddMediaCalled: XCTestExpectation?
+        let expUserWantsToAddDocumentCalled: XCTestExpectation?
+        // inlined image
+        let expInlinedAttachmentsCalled: XCTestExpectation?
+        let inlined: [Attachment]?
+        // content change
+        let expBodyChangedCalled: XCTestExpectation?
+        let exectedPlain: String?
+        let exectedHtml: String?
+
+        init(expUserWantsToAddMediaCalled: XCTestExpectation?,
+             expUserWantsToAddDocumentCalled: XCTestExpectation?,
+             expInlinedAttachmentsCalled: XCTestExpectation?, inlined: [Attachment]?,
+             expBodyChangedCalled: XCTestExpectation?, exectedPlain: String?, exectedHtml: String?) {
+            self.expUserWantsToAddMediaCalled = expUserWantsToAddMediaCalled
+            self.expUserWantsToAddDocumentCalled = expUserWantsToAddDocumentCalled
+            self.expInlinedAttachmentsCalled = expInlinedAttachmentsCalled
+            self.inlined = inlined
+            self.expBodyChangedCalled = expBodyChangedCalled
+            self.exectedPlain = exectedPlain
+            self.exectedHtml = exectedHtml
         }
-        exp.fulfill()
-        if let expected1 = exectedPlain {
-            XCTAssertEqual(plain, expected1)
+
+        func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel) {
+            guard let exp = expUserWantsToAddMediaCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
-        if let expected2 = exectedHtml {
-            XCTAssertEqual(html, expected2)
+
+        func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel) {
+            guard let exp = expUserWantsToAddDocumentCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+        }
+
+        func bodyCellViewModel(_ vm: BodyCellViewModel,
+                               inlinedAttachmentsChanged inlinedAttachments: [Attachment]) {
+            guard let exp = expInlinedAttachmentsCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = inlined {
+                XCTAssertEqual(inlinedAttachments.count, expected.count)
+                for testee in inlinedAttachments {
+                    XCTAssertTrue(expected.contains(testee))
+                }
+            }
+        }
+
+        func bodyCellViewModel(_ vm: BodyCellViewModel,
+                               bodyChangedToPlaintext plain: String,
+                               html: String) {
+            guard let exp = expBodyChangedCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected1 = exectedPlain {
+                XCTAssertEqual(plain, expected1)
+            }
+            if let expected2 = exectedHtml {
+                XCTAssertEqual(html, expected2)
+            }
         }
     }
 }
