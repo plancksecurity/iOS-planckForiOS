@@ -38,10 +38,27 @@ class AttachmentViewModelTest: XCTestCase {
         XCTAssertEqual(testee, expected)
     }
 
+    // MARK: - fileExtension
+
+    func testFileExtension_have() {
+        let attachment = TestUtil.createAttachment(inlined: false)
+        XCTAssertEqual(attachment.mimeType, "image/jpeg")
+        let vm = AttachmentViewModel(attachment: attachment)
+        let expected = "jpg"
+        let testee = vm.fileExtension
+        XCTAssertEqual(testee, expected)
+    }
+
+    func testFileExtension_noHave() {
+        let attachment = TestUtil.createAttachment(inlined: false)
+        attachment.mimeType = "we should not have a mime type for this"
+        let vm = AttachmentViewModel(attachment: attachment)
+        let expected = ""
+        let testee = vm.fileExtension
+        XCTAssertEqual(testee, expected)
+    }
+
     /*
-     public var fileExtension: String {
-     return mimeTypeUtil?.fileExtension(mimeType: attachment.mimeType) ?? ""
-     }
 
      public let attachment: Attachment
 
