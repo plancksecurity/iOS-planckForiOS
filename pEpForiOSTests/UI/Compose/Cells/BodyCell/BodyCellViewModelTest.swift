@@ -613,8 +613,6 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
         let textAttachment = TextAttachment()
         textAttachment.image = image
         textAttachment.attachment = attachment
-//        textAttachment.bounds = CGRect.rect(withWidth: 300.0,
-//                                            ratioOf: image.size)
         let imageString = NSAttributedString(attachment: textAttachment)
         return imageString
     }
@@ -627,15 +625,12 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
         return attrText
     }
 
-    //!!!: Move to Utils
     private func expectation(named name: String = #function, inverted: Bool = false) -> XCTestExpectation {
         let description = name + " \(inverted)"
         let createe = expectation(description: description)
         createe.isInverted = inverted
         return createe
     }
-
-    //MOVE:
 }
 
 class TestBodyCellViewModelDelegate: BodyCellViewModelDelegate {
@@ -695,7 +690,6 @@ class TestBodyCellViewModelResultDelegate: BodyCellViewModelResultDelegate {
             return
         }
         exp.fulfill()
-//        delegate?.showMediaAttachmentPicker()
     }
 
     func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel) {
@@ -704,7 +698,6 @@ class TestBodyCellViewModelResultDelegate: BodyCellViewModelResultDelegate {
             return
         }
         exp.fulfill()
-//        delegate?.showDocumentAttachmentPicker()
     }
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
@@ -720,8 +713,6 @@ class TestBodyCellViewModelResultDelegate: BodyCellViewModelResultDelegate {
                 XCTAssertTrue(expected.contains(testee))
             }
         }
-//        state.inlinedAttachments = inlinedAttachments
-//        delegate?.hideMediaAttachmentPicker()
     }
 
     func bodyCellViewModel(_ vm: BodyCellViewModel,
@@ -738,7 +729,5 @@ class TestBodyCellViewModelResultDelegate: BodyCellViewModelResultDelegate {
         if let expected2 = exectedHtml {
             XCTAssertEqual(html, expected2)
         }
-//        state.bodyHtml = html
-//        state.bodyPlaintext = plain
     }
 }
