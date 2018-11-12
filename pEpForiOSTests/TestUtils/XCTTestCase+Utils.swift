@@ -8,10 +8,16 @@
 
 import XCTest
 
+// MARK: - Expectation
+
 extension XCTestCase {
 
-    // MARK: - Expectation
-
+    /// Easy expectation creation.
+    ///
+    /// - Parameters:
+    ///   - name: description to use. Default is name of calling method
+    ///   - inverted: value of expectations `isInverted` value
+    /// - Returns: expectation with given values
     public func expectation(named name: String = #function,
                             inverted: Bool = false) -> XCTestExpectation {
         let description = name + " \(inverted)"
