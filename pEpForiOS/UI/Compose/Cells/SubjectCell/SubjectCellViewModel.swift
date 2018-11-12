@@ -13,9 +13,6 @@ protocol SubjectCellViewModelResultDelegate: class {
 }
 
 class SubjectCellViewModel: CellViewModel {
-    public let title = NSLocalizedString("Subject:",
-                                         comment:
-        "Title of subject field when composing a message")
     public var content: String?
 
     public weak var resultDelegate: SubjectCellViewModelResultDelegate?
