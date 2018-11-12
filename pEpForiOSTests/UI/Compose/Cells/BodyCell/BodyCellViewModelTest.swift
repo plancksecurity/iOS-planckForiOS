@@ -20,7 +20,9 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
 
     func testInititalText_plain() {
         let intitialPlain = "intitial text"
-        setupAssertionDelegates(initialPlaintext: intitialPlain, initialAttributedText: nil, initialInlinedAttachments: nil)
+        setupAssertionDelegates(initialPlaintext: intitialPlain,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil)
         let (text, _) = vm.inititalText()
         guard let testee = text else {
             XCTFail()
@@ -63,7 +65,9 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
 
     func testInititalText_noHtml() {
         let intitialPlain = "intitial text"
-        setupAssertionDelegates(initialPlaintext: intitialPlain, initialAttributedText: nil, initialInlinedAttachments: nil)
+        setupAssertionDelegates(initialPlaintext: intitialPlain,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil)
         let (_, html) = vm.inititalText()
         XCTAssertNil(html)
     }
@@ -89,9 +93,6 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
 
     func testInitialAttachments() {
         let inlinedAttachments = createTestAttachments(numAttachments: 1)
-        let expInlinedAttachmentsChangeNotCalledWhenInitializing =
-            expInlinedAttachmentChanged(mustBeCalled: false)
-
         setupAssertionDelegates(initialPlaintext: nil,
                                 initialAttributedText: nil,
                                 initialInlinedAttachments: inlinedAttachments,
@@ -99,7 +100,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                 inserted: nil,
                                 expUserWantsToAddMediaCalled: nil,
                                 expUserWantsToAddDocumentCalled: nil,
-                                expInlinedAttachmentsCalled: expInlinedAttachmentsChangeNotCalledWhenInitializing,
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
                                 inlined: nil,
                                 expBodyChangedCalled: nil,
                                 exectedPlain: nil,
