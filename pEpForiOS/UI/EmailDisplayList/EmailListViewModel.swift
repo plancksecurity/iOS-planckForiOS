@@ -293,7 +293,7 @@ class EmailListViewModel {
             delete(message: message)
             messages.remove(object: pvm)
         }
-        emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPaths)
+        //emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPaths)
     }
 
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
