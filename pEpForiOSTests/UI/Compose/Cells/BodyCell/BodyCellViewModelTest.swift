@@ -11,7 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-class BodyCellViewModelTest: CoreDataDrivenTestBase {
+class BodyCellViewModelTest: XCTestCase {
     var vm: BodyCellViewModel!
     var testDelegate: TestBodyCellViewModelDelegate?
     var testResultDelegate: TestBodyCellViewModelResultDelegate?
