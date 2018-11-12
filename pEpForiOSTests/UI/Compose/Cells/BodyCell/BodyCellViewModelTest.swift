@@ -208,10 +208,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
     // MARK: - inline(attachment:
 
     func testInlineAttachment_called() {
-        guard let attachment = testAttachments(addImage: true).first else {
-            XCTFail("Argh ...")
-            return
-        }
+        let attachment = testAttachment(addImage: true)
         setupAssertionDelegates(initialPlaintext: nil,
                                 initialAttributedText: nil,
                                 initialInlinedAttachments: nil,
@@ -248,17 +245,39 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - shouldReplaceText(in range:of text:with replaceText:)
+
+    func shouldReplaceText() {
+        let testText = NSAttributedString(string: "Test text")
+        let testTextAttachment = testAttachment(addImage: true)
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: nil,
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let nonZeroValue: CGFloat = 300.0
+        vm.maxTextattachmentWidth = nonZeroValue
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     /*
      // PUBLIC API TO TEST
 
-
-     public func shouldReplaceText(in range: NSRange, of text: NSAttributedString, with replaceText: String) -> Bool {
-             let attachments = text.textAttachments(range: range)
-             .map { $0.attachment }
-             .compactMap { $0 }
-             removeInlinedAttachments(attachments)
-             return true
-             }
+                 public func shouldReplaceText(in range: NSRange, of text: NSAttributedString, with replaceText: String) -> Bool {
+                         let attachments = text.textAttachments(range: range)
+                         .map { $0.attachment }
+                         .compactMap { $0 }
+                         removeInlinedAttachments(attachments)
+                         return true
+                         }
 
      // MARK: - Context Menu
 
@@ -306,6 +325,29 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                initialAttributedText: initialAttributedText,
                                inlinedAttachments: initialInlinedAttachments)
         vm.delegate = testDelegate
+    }
+
+    private func testAttachment(data: Data? = nil,
+                                mimeType: String = "test/mimeType",
+                                fileName: String? = nil,
+                                size: Int? = nil,
+                                url: URL? = nil,
+                                addImage: Bool = false,
+                                assetUrl: URL? = nil,
+                                contentDisposition: Attachment.ContentDispositionType = .inline) -> Attachment {
+        guard let att = testAttachments(numAttachments: 1,
+                                        data: data,
+                                        mimeType: mimeType,
+                                        fileName: fileName,
+                                        size: size,
+                                        url: url,
+                                        addImage: addImage,
+                                        assetUrl: assetUrl,
+                                        contentDisposition: contentDisposition).first else {
+            XCTFail()
+            return Attachment(data: Data(), mimeType: "", contentDisposition: .other)
+        }
+        return att
     }
 
     private func testAttachments(numAttachments: Int = 1,
