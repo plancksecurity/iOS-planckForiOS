@@ -9,10 +9,11 @@
 import MessageModel
 
 class AttachmentViewModel: CellViewModel {
+    static let defaultFileName = NSLocalizedString("unknown",
+                                            comment:
+        "Displayed attachment filename if unknown")
     public var fileName: String {
-        return attachment.fileName ?? NSLocalizedString("unknown",
-                                                        comment:
-            "Displayed attachment filename if unknown")
+        return attachment.fileName ?? AttachmentViewModel.defaultFileName
     }
     public var fileExtension: String {
         return mimeTypeUtil?.fileExtension(mimeType: attachment.mimeType) ?? ""
