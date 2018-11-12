@@ -404,23 +404,49 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: handleUserClickedSelectMedia
+
+    func testHandleUserClickedSelectMedia() {
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: true),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+       vm.handleUserClickedSelectMedia()
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: handleUserClickedSelectDocument
+
+    func testHandleUserClickedSelectDocument() {
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: true),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        vm.handleUserClickedSelectDocument()
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     /*
      // PUBLIC API TO TEST
 
      // MARK: - Context Menu
 
-     public func handleUserClickedSelectMedia() {
-             let potentialImage = 1
-             rememberCursorPosition(offset: potentialImage)
-             resultDelegate?.bodyCellViewModelUserWantsToAddMedia(self)
-             }
-
-     public func handleUserClickedSelectDocument() {
-             rememberCursorPosition()
-             resultDelegate?.bodyCellViewModelUserWantsToAddDocument(self)
-             }
-             }
 
      // MARK: - Cursor Position / Selection
 
