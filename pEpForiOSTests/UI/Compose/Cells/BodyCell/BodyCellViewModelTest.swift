@@ -442,18 +442,52 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    /*
-     // PUBLIC API TO TEST
+    // MARK: handleCursorPositionChange
 
-     // MARK: - Context Menu
+    func testHandleCursorPositionChange_cursorBehindInlinedAttachment() {
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: nil,
+                                expUserWantsToAddDocumentCalled: nil,
+                                expInlinedAttachmentsCalled: nil,
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let testPosition = 1
+        vm.handleCursorPositionChange(newPosition: testPosition)
+        vm.handleUserClickedSelectMedia()
+        let inlinedImage = 1
+        let expectedPosition = testPosition + inlinedImage
+        XCTAssertEqual(vm.cursorPosition, expectedPosition,
+                       "cursor should be placed behind inlined image")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
-
-     // MARK: - Cursor Position / Selection
-
-     public func handleCursorPositionChange(newPosition: Int) {
-             lastKnownCursorPosition = newPosition
-             }
- */
+    func testHandleCursorPositionChange_noChangeAddingAttachment() {
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: nil,
+                                expUserWantsToAddDocumentCalled: nil,
+                                expInlinedAttachmentsCalled: nil,
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let testPosition = 1
+        vm.handleCursorPositionChange(newPosition: testPosition)
+        vm.handleUserClickedSelectDocument()
+        let expectedPosition = testPosition
+        XCTAssertEqual(vm.cursorPosition, expectedPosition,
+                       "cursor position does not change attaching an non-ilined image")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     // MARK: - Helpers
 
