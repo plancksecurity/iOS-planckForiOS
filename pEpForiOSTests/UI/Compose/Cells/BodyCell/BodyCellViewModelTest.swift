@@ -88,7 +88,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
     // MARK: - Initial Inlined Attachents
 
     func testInitialAttachments() {
-        let inlinedAttachments = testAttachments(numAttachments: 1)
+        let inlinedAttachments = createTestAttachments(numAttachments: 1)
         let expInlinedAttachmentsChangeNotCalledWhenInitializing =
             expInlinedAttachmentChanged(mustBeCalled: false)
 
@@ -124,7 +124,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                 expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
                                 inserted: nil,
                                 expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
-                                expUserWantsToAddDocumentCalled: nil,
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
                                 expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
                                 inlined: nil,
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: true),
@@ -153,7 +153,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                 expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
                                 inserted: nil,
                                 expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
-                                expUserWantsToAddDocumentCalled: nil,
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
                                 expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
                                 inlined: nil,
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: true),
@@ -178,7 +178,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                 expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
                                 inserted: nil,
                                 expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
-                                expUserWantsToAddDocumentCalled: nil,
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
                                 expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
                                 inlined: nil,
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: true),
@@ -195,7 +195,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                 expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
                                 inserted: nil,
                                 expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
-                                expUserWantsToAddDocumentCalled: nil,
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
                                 expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
                                 inlined: nil,
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
@@ -208,14 +208,14 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
     // MARK: - inline(attachment:
 
     func testInlineAttachment_called() {
-        let attachment = testAttachment(addImage: true)
+        let attachment = createTestAttachment(addImage: true)
         setupAssertionDelegates(initialPlaintext: nil,
                                 initialAttributedText: nil,
                                 initialInlinedAttachments: nil,
                                 expectInsertCalled: expInsertTextCalled(mustBeCalled: true),
                                 inserted: nil,
                                 expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
-                                expUserWantsToAddDocumentCalled: nil,
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
                                 expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: true),
                                 inlined: [attachment],
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
@@ -234,7 +234,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                 expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
                                 inserted: nil,
                                 expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
-                                expUserWantsToAddDocumentCalled: nil,
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
                                 expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
                                 inlined: nil,
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
@@ -247,9 +247,10 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
 
     // MARK: - shouldReplaceText(in range:of text:with replaceText:)
 
-    func shouldReplaceText() {
+    func testShouldReplaceText_noAttachment_replacetextEmpty() {
         let testText = NSAttributedString(string: "Test text")
-        let testTextAttachment = testAttachment(addImage: true)
+        let testRange = NSRange(location: 0, length: "Test".count)
+        let testReplaceText = ""
 
         setupAssertionDelegates(initialPlaintext: nil,
                                 initialAttributedText: nil,
@@ -257,27 +258,155 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                 expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
                                 inserted: nil,
                                 expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
-                                expUserWantsToAddDocumentCalled: nil,
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
                                 expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
                                 inlined: nil,
                                 expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
                                 exectedPlain: nil,
                                 exectedHtml: nil)
-        let nonZeroValue: CGFloat = 300.0
-        vm.maxTextattachmentWidth = nonZeroValue
+        let shouldReplace = vm.shouldReplaceText(in: testRange, of: testText, with: testReplaceText)
+        XCTAssertTrue(shouldReplace, "Should alway be true")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    func testShouldReplaceText_noAttachment_replacetextNonEmpty() {
+        let testText = NSAttributedString(string: "Test text")
+        let testRange = NSRange(location: 0, length: "Test".count)
+        let testReplaceText = "Replace"
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let shouldReplace = vm.shouldReplaceText(in: testRange, of: testText, with: testReplaceText)
+        XCTAssertTrue(shouldReplace, "Should alway be true")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testShouldReplaceText_noAttachment_replacetextNewLine() {
+        let testText = NSAttributedString(string: "Test text")
+        let testRange = NSRange(location: 0, length: "Test".count)
+        let testReplaceText = "\n"
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let shouldReplace = vm.shouldReplaceText(in: testRange, of: testText, with: testReplaceText)
+        XCTAssertTrue(shouldReplace, "Should alway be true")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testShouldReplaceText_attachment_removeNone() {
+        let textBuilder = NSAttributedString(string: "Test text")
+        let replaceText = ""
+
+        let insertRange = NSRange(location: "Test".count, length: 1)
+        let testAttachment = createTestAttachment(addImage: true)
+        let testText = insertTextattachment(for: testAttachment, in: insertRange, of: textBuilder)
+        let testRange = NSRange(location: 0, length: "Test".count)
+        XCTAssertTrue(testText.textAttachments(range: testRange).count == 0)
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: [testAttachment],
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: false),
+                                inlined: nil,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let shouldReplace = vm.shouldReplaceText(in: testRange, of: testText, with: replaceText)
+        XCTAssertTrue(shouldReplace, "Should alway be true")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testShouldReplaceText_attachment_removeAll() {
+        var textBuilder = NSAttributedString(string: "Test text")
+        let replaceText = ""
+        let replaceRange = NSRange(location: 0, length: "Test".count)
+
+        let testAttachment1 = createTestAttachment(addImage: true)
+        textBuilder = insertTextattachment(for: testAttachment1, in: replaceRange, of: textBuilder)
+        let testAttachment2 = createTestAttachment(addImage: true)
+        let testText = insertTextattachment(for: testAttachment2, in: replaceRange, of: textBuilder)
+        let attachmentRange = NSRange(location: 0, length: testText.length)
+        XCTAssertTrue(testText.textAttachments(range: attachmentRange).count == 1)
+
+        let expectNoAttachmentLeft = [Attachment]()
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: nil,
+                                expectInsertCalled: expInsertTextCalled(mustBeCalled: false),
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: true),
+                                inlined: expectNoAttachmentLeft,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let shouldReplace = vm.shouldReplaceText(in: attachmentRange, of: testText, with: replaceText)
+        XCTAssertTrue(shouldReplace, "Should alway be true")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testShouldReplaceText_attachment_removeOne() {
+        var textBuilder = NSAttributedString(string: "Test text")
+        let replaceText = ""
+        let replaceRange = NSRange(location: 0, length: 0)
+
+        let testAttachment1 = createTestAttachment(fileName: "1", addImage: true)
+        textBuilder = insertTextattachment(for: testAttachment1, in: replaceRange, of: textBuilder)
+        let testAttachment2 = createTestAttachment(fileName: "2", addImage: true)
+        let testText = insertTextattachment(for: testAttachment2, in: replaceRange, of: textBuilder)
+        let attachmentToRemoveRange = NSRange(location: 0, length: 1)
+
+        let expectedAttachmentsLeft = [testAttachment1]
+        XCTAssertTrue(testText.textAttachments(range: attachmentToRemoveRange).count == 1)
+
+        setupAssertionDelegates(initialPlaintext: nil,
+                                initialAttributedText: nil,
+                                initialInlinedAttachments: [testAttachment1, testAttachment2],
+                                expectInsertCalled: nil,
+                                inserted: nil,
+                                expUserWantsToAddMediaCalled: expUserWantsToAddMediaCalled(mustBeCalled: false),
+                                expUserWantsToAddDocumentCalled: expUserWantsToAddDocumentCalled(mustBeCalled: false),
+                                expInlinedAttachmentsCalled: expInlinedAttachmentChanged(mustBeCalled: true),
+                                inlined: expectedAttachmentsLeft,
+                                expBodyChangedCalled: expBodyChangedCalled(mustBeCalled: false),
+                                exectedPlain: nil,
+                                exectedHtml: nil)
+        let shouldReplace = vm.shouldReplaceText(in: attachmentToRemoveRange,
+                                                 of: testText,
+                                                 with: replaceText)
+        XCTAssertTrue(shouldReplace, "Should alway be true")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+
     /*
      // PUBLIC API TO TEST
-
-                 public func shouldReplaceText(in range: NSRange, of text: NSAttributedString, with replaceText: String) -> Bool {
-                         let attachments = text.textAttachments(range: range)
-                         .map { $0.attachment }
-                         .compactMap { $0 }
-                         removeInlinedAttachments(attachments)
-                         return true
-                         }
 
      // MARK: - Context Menu
 
@@ -325,9 +454,11 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                initialAttributedText: initialAttributedText,
                                inlinedAttachments: initialInlinedAttachments)
         vm.delegate = testDelegate
+        let aNonNullValue: CGFloat = 300.0
+        vm.maxTextattachmentWidth = aNonNullValue
     }
 
-    private func testAttachment(data: Data? = nil,
+    private func createTestAttachment(data: Data? = nil,
                                 mimeType: String = "test/mimeType",
                                 fileName: String? = nil,
                                 size: Int? = nil,
@@ -335,7 +466,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
                                 addImage: Bool = false,
                                 assetUrl: URL? = nil,
                                 contentDisposition: Attachment.ContentDispositionType = .inline) -> Attachment {
-        guard let att = testAttachments(numAttachments: 1,
+        guard let att = createTestAttachments(numAttachments: 1,
                                         data: data,
                                         mimeType: mimeType,
                                         fileName: fileName,
@@ -350,7 +481,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
         return att
     }
 
-    private func testAttachments(numAttachments: Int = 1,
+    private func createTestAttachments(numAttachments: Int = 1,
                                  data: Data? = nil,
                                  mimeType: String = "test/mimeType",
                                  fileName: String? = nil,
@@ -372,7 +503,7 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
             for i in 0..<numAttachments {
                 attachments.append(Attachment(data: data,
                                               mimeType: mimeType,
-                                              fileName: "\(i)",
+                                              fileName: fileName == nil ? "\(i)" : fileName,
                     size: size,
                     url: url,
                     image: addImage ? image : nil,
@@ -404,6 +535,36 @@ class BodyCellViewModelTest: CoreDataDrivenTestBase {
 
     private func expBodyChangedCalled(mustBeCalled: Bool) -> XCTestExpectation {
         return expectation(inverted: !mustBeCalled)
+    }
+
+    private func insertTextattachment(for attachment: Attachment,
+                                      in range: NSRange,
+                                      of string: NSAttributedString) -> NSAttributedString {
+        let attachmentString = textAttachmentString(for: attachment)
+        return insert(text: attachmentString, in: range, of: string)
+    }
+
+    private func textAttachmentString(for attachment: Attachment) -> NSAttributedString {
+        guard let image = attachment.image else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No image")
+            return NSAttributedString()
+        }
+        attachment.contentDisposition = .inline
+        let textAttachment = TextAttachment()
+        textAttachment.image = image
+        textAttachment.attachment = attachment
+//        textAttachment.bounds = CGRect.rect(withWidth: 300.0,
+//                                            ratioOf: image.size)
+        let imageString = NSAttributedString(attachment: textAttachment)
+        return imageString
+    }
+
+    private func insert(text insertText: NSAttributedString,
+                        in range: NSRange,
+                        of text: NSAttributedString) -> NSAttributedString {
+        let attrText = NSMutableAttributedString(attributedString: text)
+        attrText.replaceCharacters(in: range, with: insertText)
+        return attrText
     }
 
     //!!!: Move to Utils
