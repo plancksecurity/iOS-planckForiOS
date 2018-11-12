@@ -12,11 +12,6 @@ protocol SubjectCellViewModelResultDelegate: class {
     func subjectCellViewModelDidChangeSubject(_ vm: SubjectCellViewModel)
 }
 
-protocol SubjectCellViewModelDelegate: class {
-    func subjectCellViewModel(_ subjectCellViewModel: SubjectCellViewModel,
-                                      requireFirstResponder: Bool)
-}
-
 class SubjectCellViewModel: CellViewModel {
     public let title = NSLocalizedString("Subject:",
                                          comment:
@@ -24,7 +19,6 @@ class SubjectCellViewModel: CellViewModel {
     public var content: String?
 
     public weak var resultDelegate: SubjectCellViewModelResultDelegate?
-    public weak var delegate: SubjectCellViewModelDelegate?
 
     init(resultDelegate: SubjectCellViewModelResultDelegate) {
         self.resultDelegate = resultDelegate
@@ -37,7 +31,6 @@ class SubjectCellViewModel: CellViewModel {
 
     public func shouldChangeText(to replacementText: String) -> Bool {
         if replacementText == "\n" {
-            delegate?.subjectCellViewModel(self, requireFirstResponder: false)
             return false
         }
         return true

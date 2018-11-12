@@ -10,27 +10,12 @@ import UIKit
 
 class SubjectCell: TextViewContainingTableViewCell {
     static let reuseId = "SubjectCell"
-    var viewModel: SubjectCellViewModel? {
-        didSet {
-            viewModel?.delegate = self
-        }
-    }
+    var viewModel: SubjectCellViewModel?
 
     public func setup(with viewModel: SubjectCellViewModel) {
         self.viewModel = viewModel
         if viewModel.content != nil {
             self.textView.text = viewModel.content
-        }
-    }
-}
-
-// MARK: - SubjectCellViewModelDelegate
-
-extension SubjectCell: SubjectCellViewModelDelegate {
-    func subjectCellViewModel(_ subjectCellViewModel: SubjectCellViewModel,
-                                      requireFirstResponder: Bool) {
-        if requireFirstResponder {
-            resignFirstResponder()
         }
     }
 }
