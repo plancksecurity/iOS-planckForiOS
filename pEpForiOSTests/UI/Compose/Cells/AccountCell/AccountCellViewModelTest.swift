@@ -75,17 +75,14 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(testee)
     }
 
+    // MARK: - init
 
-    /*
-     PUBLIC API
-
-
-     init(resultDelegate: AccountCellViewModelResultDelegate, initialAccount: Account? = nil) {
-     self.resultDelegate = resultDelegate
-     selectedAccount = initialAccount
-     }
-
-     */
+    func testInit() {
+        let dumbResultDelegate = TestResultDelegate(expAccountChangedToCalled: nil,
+                                                    expectedAccount: nil)
+        let testee = AccountCellViewModel(resultDelegate: dumbResultDelegate)
+        XCTAssertNotNil(testee)
+    }
 
    // MARK: - Helper
 
