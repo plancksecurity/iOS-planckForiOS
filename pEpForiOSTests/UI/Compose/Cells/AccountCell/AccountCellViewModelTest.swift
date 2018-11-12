@@ -65,26 +65,24 @@ class AccountCellViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - accountPickerViewModel
+
+    func testAccountPickerViewModel() {
+        assert(initialAccount: nil,
+               accountChangedMustBeCalled: nil,
+               expectedAccount: nil)
+        let testee = vm.accountPickerViewModel
+        XCTAssertNotNil(testee)
+    }
+
+
     /*
      PUBLIC API
 
-     public var displayAccount: String? {
-     return selectedAccount?.user.address
-     }
 
      init(resultDelegate: AccountCellViewModelResultDelegate, initialAccount: Account? = nil) {
      self.resultDelegate = resultDelegate
      selectedAccount = initialAccount
-     }
-
-     public var accountPickerViewModel: AccountPickerViewModel {
-     return AccountPickerViewModel(resultDelegate: self)
-     }
-
-     func accountPickerViewModel(_ vm: AccountPickerViewModel, didSelect account: Account) {
-     selectedAccount = account
-     delegate?.accountChanged(newValue: account.user.address)
-     resultDelegate?.accountCellViewModel(self, accountChangedTo: account)
      }
 
      */
