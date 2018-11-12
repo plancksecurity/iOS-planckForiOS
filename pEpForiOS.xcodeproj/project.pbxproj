@@ -119,6 +119,7 @@
 		153CA6EA1FB62195003C9629 /* IOS-211-pdfEmail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */; };
 		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
 		153FC45D202A263D0053CCF1 /* FolderType+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */; };
+		15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15410D1C2199C2E500BBF65F /* SubjectCellViewModelTest.swift */; };
 		1541D7ED1FC81D4200D52A5D /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */; };
 		1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */; };
 		1541D7F31FC8292D00D52A5D /* URL+MIME.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1541D7F21FC8292D00D52A5D /* URL+MIME.swift */; };
@@ -718,6 +719,7 @@
 		153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-pdfEmail.txt"; sourceTree = "<group>"; };
 		153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
 		153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderType+IMAP.swift"; sourceTree = "<group>"; };
+		15410D1C2199C2E500BBF65F /* SubjectCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCellViewModelTest.swift; sourceTree = "<group>"; };
 		1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		1541D7EF1FC81ED900D52A5D /* URL+ExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+ExtensionsTest.swift"; sourceTree = "<group>"; };
 		1541D7F21FC8292D00D52A5D /* URL+MIME.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MIME.swift"; sourceTree = "<group>"; };
@@ -1537,6 +1539,14 @@
 			path = BodyCell;
 			sourceTree = "<group>";
 		};
+		15410D1B2199C2CC00BBF65F /* SubjectCell */ = {
+			isa = PBXGroup;
+			children = (
+				15410D1C2199C2E500BBF65F /* SubjectCellViewModelTest.swift */,
+			);
+			path = SubjectCell;
+			sourceTree = "<group>";
+		};
 		1544BD0021524C6C0075C5A0 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -1601,6 +1611,7 @@
 		157C05442180752300E530DE /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				15410D1B2199C2CC00BBF65F /* SubjectCell */,
 				153B21862194727C00497D3D /* BodyCell */,
 				157743B52178857D0007222C /* RecipientCell */,
 			);
@@ -3589,6 +3600,7 @@
 				49A6114E2179F3A1006BA3C5 /* UnitTestUtils.swift in Sources */,
 				43EC75B52164F19B00048CFE /* SetOwnKeyViewModelTests.swift in Sources */,
 				15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */,
+				15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */,
 				430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */,
 				43EC75A92164AC1900048CFE /* Log+ASL.swift in Sources */,
 				431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */,
