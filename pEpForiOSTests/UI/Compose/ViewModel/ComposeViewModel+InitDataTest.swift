@@ -50,95 +50,77 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         super.tearDown()
     }
 
-    /// Asserts the testee for the given values. Optional arguments set to `nil` are ignored.
-    private func assertTesteeForExpectedValues( composeMode: ComposeUtil.ComposeMode? = nil,
-                                                isDraftsOrOutbox: Bool? = nil,
-                                                isDrafts: Bool? = nil,
-                                                isOutbox: Bool? = nil,
-                                                pEpProtection: Bool? = nil,
-                                                from: Identity? = nil,
-                                                toRecipients: [Identity]? = nil,
-                                                ccRecipients: [Identity]? = nil,
-                                                bccRecipients: [Identity]? = nil,
-                                                subject: String? = nil,
-                                                bodyPlaintext: String? = nil,
-                                                bodyHtml: NSAttributedString? = nil,
-                                                nonInlinedAttachments: [Attachment]? = nil,
-                                                inlinedAttachments: [Attachment]? = nil) {
-        guard let testee = testee else {
-            XCTFail("No testee")
-            return
-        }
-        if let exp = composeMode {
-            XCTAssertEqual(testee.composeMode, exp)
-        }
-        if let exp = isDraftsOrOutbox {
-            XCTAssertEqual(testee.isDraftsOrOutbox, exp)
-        }
-        if let exp = isDrafts {
-            XCTAssertEqual(testee.isDrafts, exp)
-        }
-        if let exp = isOutbox {
-            XCTAssertEqual(testee.isOutbox, exp)
-        }
-        if let exp = pEpProtection {
-            XCTAssertEqual(testee.pEpProtection, exp)
-        }
-        if let exp = from {
-            XCTAssertEqual(testee.from, exp)
-        }
-        if let exp = toRecipients {
-            XCTAssertEqual(testee.toRecipients, exp)
-            XCTAssertEqual(testee.toRecipients.count, exp.count)
-            for to in testee.toRecipients {
-                XCTAssertTrue(exp.contains(to))
-            }
-        }
-        if let exp = ccRecipients {
-            XCTAssertEqual(testee.ccRecipients, exp)
-            XCTAssertEqual(testee.ccRecipients.count, exp.count)
-            for to in testee.ccRecipients {
-                XCTAssertTrue(exp.contains(to))
-            }
-        }
-        if let exp = bccRecipients {
-            XCTAssertEqual(testee.bccRecipients, exp)
-            XCTAssertEqual(testee.bccRecipients.count, exp.count)
-            for to in testee.bccRecipients {
-                XCTAssertTrue(exp.contains(to))
-            }
-        }
-        if let exp = subject {
-            XCTAssertEqual(testee.subject, exp)
-        }
-        if let exp = bodyPlaintext {
-            XCTAssertEqual(testee.bodyPlaintext, exp)
-        }
-        if let exp = bodyHtml {
-            XCTAssertEqual(testee.bodyHtml, exp)
-        }
-        if let exp = nonInlinedAttachments {
-            XCTAssertEqual(testee.nonInlinedAttachments, exp)
-            XCTAssertEqual(testee.nonInlinedAttachments.count, exp.count)
-            for to in testee.nonInlinedAttachments {
-                XCTAssertTrue(exp.contains(to))
-            }
-        }
-        if let exp = inlinedAttachments {
-            XCTAssertEqual(testee.inlinedAttachments, exp)
-            XCTAssertEqual(testee.inlinedAttachments.count, exp.count)
-            for to in testee.inlinedAttachments {
-                XCTAssertTrue(exp.contains(to))
-            }
-        }
+    // MARK: - prefilledTo
+
+    func testPrefilledTo_set() {
+        let someone = Identity(address: "testPrefilledTo@testPrefilledTo.testPrefilledTo")
+        let mode = ComposeUtil.ComposeMode.normal
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
+                                           orForOriginalMessage: nil,
+                                           composeMode: .normal)
+        let expectedTo = [someone]
+        assertTesteeForExpectedValues(composeMode: mode,
+                                      isDraftsOrOutbox: false,
+                                      isDrafts: false,
+                                      isOutbox: false,
+                                      pEpProtection: true,
+                                      from: account.user,
+                                      toRecipients: expectedTo,
+                                      ccRecipients: [],
+                                      bccRecipients: [],
+                                      subject: " ",
+                                      bodyPlaintext: "",
+                                      bodyHtml: nil,
+                                      nonInlinedAttachments: [],
+                                      inlinedAttachments: [])
+    }
+
+    func testPrefilledTo_notSet() {
+        let mode = ComposeUtil.ComposeMode.normal
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                           orForOriginalMessage: nil,
+                                           composeMode: .normal)
+        let expectedTo = [Identity]()
+        assertTesteeForExpectedValues(composeMode: mode,
+                                      isDraftsOrOutbox: false,
+                                      isDrafts: false,
+                                      isOutbox: false,
+                                      pEpProtection: true,
+                                      from: account.user,
+                                      toRecipients: expectedTo,
+                                      ccRecipients: [],
+                                      bccRecipients: [],
+                                      subject: " ",
+                                      bodyPlaintext: "",
+                                      bodyHtml: nil,
+                                      nonInlinedAttachments: [],
+                                      inlinedAttachments: [])
+    }
+
+    func testPrefilledTo_originalMessageWins() {
+        let mode = ComposeUtil.ComposeMode.normal
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                           orForOriginalMessage: messageAllButBccSet,
+                                           composeMode: .normal)
+        let expectedTo = [Identity]()
+        assertTesteeForExpectedValues(composeMode: mode,
+                                      isDraftsOrOutbox: false,
+                                      isDrafts: false,
+                                      isOutbox: false,
+                                      pEpProtection: true,
+                                      from: account.user,
+                                      toRecipients: expectedTo,
+                                      ccRecipients: [],
+                                      bccRecipients: [],
+                                      subject: " ",
+                                      bodyPlaintext: "",
+                                      bodyHtml: nil,
+                                      nonInlinedAttachments: [],
+                                      inlinedAttachments: [])
     }
 
     /*
 
-     /// Recipient to set as "To:".
-     /// Is ignored if a originalMessage is set.
-     public let prefilledTo: Identity?
-     /// Original message to compute content and recipients from (e.g. a message we reply to).
      public let originalMessage: Message?
 
      public let composeMode: ComposeUtil.ComposeMode
@@ -222,7 +204,90 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
      setupInitialSubject()
      setupInitialBody()
      }
-
      */
 
+    // MARK: - Helper
+
+    /// Asserts the testee for the given values. Optional arguments set to `nil` are ignored.
+    private func assertTesteeForExpectedValues( composeMode: ComposeUtil.ComposeMode? = nil,
+                                                isDraftsOrOutbox: Bool? = nil,
+                                                isDrafts: Bool? = nil,
+                                                isOutbox: Bool? = nil,
+                                                pEpProtection: Bool? = nil,
+                                                from: Identity? = nil,
+                                                toRecipients: [Identity]? = nil,
+                                                ccRecipients: [Identity]? = nil,
+                                                bccRecipients: [Identity]? = nil,
+                                                subject: String? = nil,
+                                                bodyPlaintext: String? = nil,
+                                                bodyHtml: NSAttributedString? = nil,
+                                                nonInlinedAttachments: [Attachment]? = nil,
+                                                inlinedAttachments: [Attachment]? = nil) {
+        guard let testee = testee else {
+            XCTFail("No testee")
+            return
+        }
+        if let exp = composeMode {
+            XCTAssertEqual(testee.composeMode, exp)
+        }
+        if let exp = isDraftsOrOutbox {
+            XCTAssertEqual(testee.isDraftsOrOutbox, exp)
+        }
+        if let exp = isDrafts {
+            XCTAssertEqual(testee.isDrafts, exp)
+        }
+        if let exp = isOutbox {
+            XCTAssertEqual(testee.isOutbox, exp)
+        }
+        if let exp = pEpProtection {
+            XCTAssertEqual(testee.pEpProtection, exp)
+        }
+        if let exp = from {
+            XCTAssertEqual(testee.from, exp)
+        }
+        if let exp = toRecipients {
+            XCTAssertEqual(testee.toRecipients, exp)
+            XCTAssertEqual(testee.toRecipients.count, exp.count)
+            for to in testee.toRecipients {
+                XCTAssertTrue(exp.contains(to))
+            }
+        }
+        if let exp = ccRecipients {
+            XCTAssertEqual(testee.ccRecipients, exp)
+            XCTAssertEqual(testee.ccRecipients.count, exp.count)
+            for to in testee.ccRecipients {
+                XCTAssertTrue(exp.contains(to))
+            }
+        }
+        if let exp = bccRecipients {
+            XCTAssertEqual(testee.bccRecipients, exp)
+            XCTAssertEqual(testee.bccRecipients.count, exp.count)
+            for to in testee.bccRecipients {
+                XCTAssertTrue(exp.contains(to))
+            }
+        }
+        if let exp = subject {
+            XCTAssertEqual(testee.subject, exp)
+        }
+        if let exp = bodyPlaintext {
+            XCTAssertEqual(testee.bodyPlaintext, exp)
+        }
+        if let exp = bodyHtml {
+            XCTAssertEqual(testee.bodyHtml, exp)
+        }
+        if let exp = nonInlinedAttachments {
+            XCTAssertEqual(testee.nonInlinedAttachments, exp)
+            XCTAssertEqual(testee.nonInlinedAttachments.count, exp.count)
+            for to in testee.nonInlinedAttachments {
+                XCTAssertTrue(exp.contains(to))
+            }
+        }
+        if let exp = inlinedAttachments {
+            XCTAssertEqual(testee.inlinedAttachments, exp)
+            XCTAssertEqual(testee.inlinedAttachments.count, exp.count)
+            for to in testee.inlinedAttachments {
+                XCTAssertTrue(exp.contains(to))
+            }
+        }
+    }
 }
