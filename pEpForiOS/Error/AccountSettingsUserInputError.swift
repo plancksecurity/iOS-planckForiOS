@@ -35,16 +35,3 @@ extension AccountSettingsUserInputError: LocalizedError {
         }
     }
 }
-
-public enum testErrorLog: Error {
-    case testError
-}
-
-extension testErrorLog: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .testError:
-            return NSLocalizedString("this error is only for testing purposes", comment: "test error")
-        }
-    }
-}
