@@ -81,27 +81,22 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         waitForExpectations(timeout: 0.5) // Async file access
     }
 
-    /*
+    // MARK: - handleDidCancel
 
-     public func handleDidCancel() {
-     resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
-     }
+    func testHandleDidCancel() {
+        assert(didSelectMediaAttachmentMustBeCalledCalled: false,
+               expectedMediaAttachment: nil,
+               didCancelMustBeCalled: true)
+        vm?.handleDidCancel()
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
-     }
-
-     // MARK: - MediaAttachment
-
-     extension MediaAttachmentPickerProviderViewModel {
-     struct MediaAttachment {
-     enum MediaAttachmentType {
-     case image
-     case movie
-     }
-     let type: MediaAttachmentType
-     let attachment: Attachment
-     }
-     */
-
+    func testHandleDidCancel_notCalled() {
+        assert(didSelectMediaAttachmentMustBeCalledCalled: false,
+               expectedMediaAttachment: nil,
+               didCancelMustBeCalled: false)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     // MARK: - Helper
 
