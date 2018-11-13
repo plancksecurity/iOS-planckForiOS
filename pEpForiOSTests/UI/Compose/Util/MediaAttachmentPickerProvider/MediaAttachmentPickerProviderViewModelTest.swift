@@ -11,6 +11,8 @@ import XCTest
 import MessageModel
 
 class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
+    private var vm:  MediaAttachmentPickerProviderViewModel?
+    private var resultDelegate:TestResultDelegate?
 
     // MARK: - init & resultDelegate
 
@@ -28,30 +30,33 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         XCTAssertTrue(testeeResultDelegate === resultDelegate)
     }
 
-    
+    // MARK: - test assert helper method
 
-
-
+    func testAssertHelperMethod() {
+        assert(didSelectMediaAttachmentMustBeCalledCalled: nil,
+               expectedMediaAttachment: nil,
+               didCancelMustBeCalled: nil)
+        XCTAssertNotNil(vm)
+        guard let testeeResultDelegate = vm?.resultDelegate else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(testeeResultDelegate === resultDelegate)
+    }
 
 
     /*
 
-     weak public var resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
-
-     public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?) {
-     self.resultDelegate = resultDelegate
-     }
-
-     public func handleDidFinishPickingMedia(info: [String: Any]) {
-     let isImage = (info[UIImagePickerControllerOriginalImage] as? UIImage) != nil
-     if isImage {
-     // We got an image.
-     createImageAttchmentAndInformResultDelegate(info: info)
-     } else {
-     // We got something from picker that is not an image. Probalby video/movie.
-     createMovieAttchmentAndInformResultDelegate(info: info)
-     }
-     }
+             public func handleDidFinishPickingMedia(info: [String: Any]) {
+             let isImage = (info[UIImagePickerControllerOriginalImage] as? UIImage) != nil
+             if isImage {
+             // We got an image.
+             createImageAttchmentAndInformResultDelegate(info: info)
+             } else {
+             // We got something from picker that is not an image. Probalby video/movie.
+             createMovieAttchmentAndInformResultDelegate(info: info)
+             }
+             }
 
      public func handleDidCancel() {
      resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
@@ -74,6 +79,30 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
 
 
     // MARK: - Helper
+
+    private func assert(didSelectMediaAttachmentMustBeCalledCalled: Bool?,
+                        expectedMediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment?,
+                        didCancelMustBeCalled: Bool?) {
+        var expDidSelectMediaAttachmentCalled: XCTestExpectation? = nil
+        if let mustBeCalled = didSelectMediaAttachmentMustBeCalledCalled {
+            expDidSelectMediaAttachmentCalled =
+                expectation(named: "expDidSelectMediaAttachmentCalled",
+                            inverted: mustBeCalled)
+        }
+
+        var expDidCancelCalled: XCTestExpectation? = nil
+        if let mustBeCalled = didCancelMustBeCalled {
+            expDidCancelCalled = expectation(named: "expDidCancelCalled",
+                                             inverted: mustBeCalled)
+        }
+
+
+        resultDelegate =
+            TestResultDelegate(expDidSelectMediaAttachmentCalled: expDidSelectMediaAttachmentCalled,
+                               expectedMediaAttachment: expectedMediaAttachment,
+                               expDidCancelCalled: expDidCancelCalled)
+        vm = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate)
+    }
 
     private class TestResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate {
         let expDidSelectMediaAttachmentCalled: XCTestExpectation?
