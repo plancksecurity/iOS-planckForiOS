@@ -57,7 +57,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         let mode = ComposeUtil.ComposeMode.normal
         testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
                                            orForOriginalMessage: nil,
-                                           composeMode: .normal)
+                                           composeMode: mode)
         let expectedTo = [someone]
         assertTesteeForExpectedValues(composeMode: mode,
                                       isDraftsOrOutbox: false,
@@ -79,7 +79,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         let mode = ComposeUtil.ComposeMode.normal
         testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
                                            orForOriginalMessage: nil,
-                                           composeMode: .normal)
+                                           composeMode: mode)
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
                                       isDraftsOrOutbox: false,
@@ -101,9 +101,60 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         let mode = ComposeUtil.ComposeMode.normal
         testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
                                            orForOriginalMessage: messageAllButBccSet,
-                                           composeMode: .normal)
+                                           composeMode: mode)
         let expectedTo = [Identity]()
         assertTesteeForExpectedValues(composeMode: mode,
+                                      isDraftsOrOutbox: false,
+                                      isDrafts: false,
+                                      isOutbox: false,
+                                      pEpProtection: true,
+                                      from: account.user,
+                                      toRecipients: expectedTo,
+                                      ccRecipients: [],
+                                      bccRecipients: [],
+                                      subject: " ",
+                                      bodyPlaintext: "",
+                                      bodyHtml: nil,
+                                      nonInlinedAttachments: [],
+                                      inlinedAttachments: [])
+    }
+
+    // MARK: - originalMessage
+
+    func testOriginalMessage_isSet() {
+        let mode = ComposeUtil.ComposeMode.normal
+        let originalMessage = messageAllButBccSet
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                           orForOriginalMessage: originalMessage,
+                                           composeMode: mode)
+        let expectedTo = [Identity]()
+        assertTesteeForExpectedValues(composeMode: mode,
+                                      originalMessage: originalMessage,
+                                      isDraftsOrOutbox: false,
+                                      isDrafts: false,
+                                      isOutbox: false,
+                                      pEpProtection: true,
+                                      from: account.user,
+                                      toRecipients: expectedTo,
+                                      ccRecipients: [],
+                                      bccRecipients: [],
+                                      subject: " ",
+                                      bodyPlaintext: "",
+                                      bodyHtml: nil,
+                                      nonInlinedAttachments: [],
+                                      inlinedAttachments: [])
+    }
+
+    func testOriginalMessage_alsoSetWithGivenPrefilledTo() {
+        let someone = Identity(address: "testPrefilledTo@testPrefilledTo.testPrefilledTo")
+        let mode = ComposeUtil.ComposeMode.normal
+        let originalMessage = messageAllButBccSet
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
+                                           orForOriginalMessage: originalMessage,
+                                           composeMode: mode)
+        let expectedTo = [Identity]()
+        assertTesteeForExpectedValues(composeMode: mode,
+                                      originalMessage: originalMessage,
                                       isDraftsOrOutbox: false,
                                       isDrafts: false,
                                       isOutbox: false,
@@ -210,6 +261,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     /// Asserts the testee for the given values. Optional arguments set to `nil` are ignored.
     private func assertTesteeForExpectedValues( composeMode: ComposeUtil.ComposeMode? = nil,
+                                                originalMessage: Message? = nil,
                                                 isDraftsOrOutbox: Bool? = nil,
                                                 isDrafts: Bool? = nil,
                                                 isOutbox: Bool? = nil,
@@ -229,6 +281,9 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         }
         if let exp = composeMode {
             XCTAssertEqual(testee.composeMode, exp)
+        }
+        if let exp = originalMessage {
+            XCTAssertEqual(testee.originalMessage, exp)
         }
         if let exp = isDraftsOrOutbox {
             XCTAssertEqual(testee.isDraftsOrOutbox, exp)
