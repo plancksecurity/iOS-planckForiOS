@@ -81,44 +81,6 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         waitForExpectations(timeout: 0.5) // Async file access
     }
 
-    private func infoDict(mediaType: MediaAttachmentPickerProviderViewModel.MediaAttachment.MediaAttachmentType)
-        -> (infoDict: [String: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
-        var createe = [String:Any]()
-        let testBundle = Bundle(for: type(of:self))
-        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
-        guard let keyPath = testBundle.path(forResource: imageFileName, ofType: nil) else {
-            XCTFail()
-            return nil
-        }
-        let url = URL(fileURLWithPath: keyPath)
-        guard
-            let data = try? Data(contentsOf: url),
-            let img = UIImage(data: data)
-            else {
-                XCTFail()
-                return nil
-        }
-
-        if mediaType == .movie {
-            createe[UIImagePickerControllerMediaURL] = url
-        } else {
-            createe[UIImagePickerControllerReferenceURL] = url
-            createe[UIImagePickerControllerOriginalImage] = img
-        }
-        let attachment = Attachment(data: data,
-                                    mimeType: "image/jpeg",
-                                    fileName:
-            "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
-                                    size: data.count, url: nil,
-                                    image: img,
-                                    assetUrl: url,
-                                    contentDisposition: .inline)
-        let mediaAttachment =
-            MediaAttachmentPickerProviderViewModel.MediaAttachment(type: mediaType,
-                                                                   attachment: attachment)
-        return (createe, mediaAttachment)
-    }
-
     /*
 
      public func handleDidCancel() {
@@ -165,6 +127,44 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                                expectedMediaAttachment: expectedMediaAttachment,
                                expDidCancelCalled: expDidCancelCalled)
         vm = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate)
+    }
+
+    private func infoDict(mediaType: MediaAttachmentPickerProviderViewModel.MediaAttachment.MediaAttachmentType)
+        -> (infoDict: [String: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
+            var createe = [String:Any]()
+            let testBundle = Bundle(for: type(of:self))
+            let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
+            guard let keyPath = testBundle.path(forResource: imageFileName, ofType: nil) else {
+                XCTFail()
+                return nil
+            }
+            let url = URL(fileURLWithPath: keyPath)
+            guard
+                let data = try? Data(contentsOf: url),
+                let img = UIImage(data: data)
+                else {
+                    XCTFail()
+                    return nil
+            }
+
+            if mediaType == .movie {
+                createe[UIImagePickerControllerMediaURL] = url
+            } else {
+                createe[UIImagePickerControllerReferenceURL] = url
+                createe[UIImagePickerControllerOriginalImage] = img
+            }
+            let attachment = Attachment(data: data,
+                                        mimeType: "image/jpeg",
+                                        fileName:
+                "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
+                                        size: data.count, url: nil,
+                                        image: img,
+                                        assetUrl: url,
+                                        contentDisposition: .inline)
+            let mediaAttachment =
+                MediaAttachmentPickerProviderViewModel.MediaAttachment(type: mediaType,
+                                                                       attachment: attachment)
+            return (createe, mediaAttachment)
     }
 
     private class TestResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate {
