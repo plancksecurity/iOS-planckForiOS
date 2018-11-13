@@ -209,6 +209,7 @@
 		15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */; };
 		15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A6216FB77600EB3933 /* UnitTestUtils.swift */; };
 		15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D98F219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift */; };
+		15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */; };
 		15DD3F75211EC68D00A8714D /* DecryptMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */; };
 		15EBE43B20E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */; };
 		15EBE43E20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */; };
@@ -812,6 +813,7 @@
 		15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerViewModelTest.swift; sourceTree = "<group>"; };
 		15D439A6216FB77600EB3933 /* UnitTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitTestUtils.swift; sourceTree = "<group>"; };
 		15D7D98F219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaAttachmentPickerProviderViewModelTest.swift; sourceTree = "<group>"; };
+		15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+Extensions.swift"; sourceTree = "<group>"; };
 		15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptMessageOperation.swift; sourceTree = "<group>"; };
 		15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc; sourceTree = "<group>"; };
 		15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc; sourceTree = "<group>"; };
@@ -2485,6 +2487,7 @@
 				15F0F7A921358B33002BE853 /* CdMessagePredicateFactory+Imap.swift */,
 				15F0F7B52136F6D1002BE853 /* CdFolderPredicateFactory+IMAP.swift */,
 				15547567213931BC005A52D0 /* Folder+Threading.swift */,
+				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3414,6 +3417,7 @@
 				495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */,
 				4351C2CF1F4441190053381F /* houdini_href_e.c in Sources */,
 				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
+				15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */,
 				15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */,
 				43FAA0D21EC9972B005BFC4B /* Tuple.swift in Sources */,
 				430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */,
