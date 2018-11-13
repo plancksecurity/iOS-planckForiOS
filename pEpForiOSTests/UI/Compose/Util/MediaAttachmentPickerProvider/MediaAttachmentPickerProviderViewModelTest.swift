@@ -128,7 +128,7 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
         -> (infoDict: [String: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
             var createe = [String:Any]()
             let testBundle = Bundle(for: type(of:self))
-            let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg" //IOS-1399: move to Utils
+            let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
             guard let keyPath = testBundle.path(forResource: imageFileName, ofType: nil) else {
                 XCTFail()
                 return nil
