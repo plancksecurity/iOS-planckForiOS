@@ -81,11 +81,11 @@ class TestUtil {
     static func loadData(fileName: String) -> Data? {
         let testBundle = Bundle(for: PEPSessionTest.self)
         guard let keyPath = testBundle.path(forResource: fileName, ofType: nil) else {
-            XCTAssertTrue(false, "Could not find file named \(fileName)")
+            XCTFail("Could not find file named \(fileName)")
             return nil
         }
         guard let data = try? Data(contentsOf: URL(fileURLWithPath: keyPath)) else {
-            XCTAssertTrue(false, "Could not load file named \(fileName)")
+            XCTFail("Could not load file named \(fileName)")
             return nil
         }
         return data
