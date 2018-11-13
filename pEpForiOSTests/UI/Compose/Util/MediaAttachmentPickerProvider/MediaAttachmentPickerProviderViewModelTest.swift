@@ -12,6 +12,67 @@ import MessageModel
 
 class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
 
+    // MARK: - init & resultDelegate
+
+    func testInitAndResultDelegate() {
+        let resultDelegate = TestResultDelegate(expDidSelectMediaAttachmentCalled: nil,
+                                                expectedMediaAttachment: nil,
+                                                expDidCancelCalled: nil)
+            as MediaAttachmentPickerProviderViewModelResultDelegate
+        let testeeVM = MediaAttachmentPickerProviderViewModel(resultDelegate: resultDelegate)
+        XCTAssertNotNil(testeeVM)
+        guard let testeeResultDelegate = testeeVM.resultDelegate else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(testeeResultDelegate === resultDelegate)
+    }
+
+    
+
+
+
+
+
+    /*
+
+     weak public var resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?
+
+     public init(resultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate?) {
+     self.resultDelegate = resultDelegate
+     }
+
+     public func handleDidFinishPickingMedia(info: [String: Any]) {
+     let isImage = (info[UIImagePickerControllerOriginalImage] as? UIImage) != nil
+     if isImage {
+     // We got an image.
+     createImageAttchmentAndInformResultDelegate(info: info)
+     } else {
+     // We got something from picker that is not an image. Probalby video/movie.
+     createMovieAttchmentAndInformResultDelegate(info: info)
+     }
+     }
+
+     public func handleDidCancel() {
+     resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
+     }
+
+     }
+
+     // MARK: - MediaAttachment
+
+     extension MediaAttachmentPickerProviderViewModel {
+     struct MediaAttachment {
+     enum MediaAttachmentType {
+     case image
+     case movie
+     }
+     let type: MediaAttachmentType
+     let attachment: Attachment
+     }
+     */
+
+
     // MARK: - Helper
 
     private class TestResultDelegate: MediaAttachmentPickerProviderViewModelResultDelegate {
