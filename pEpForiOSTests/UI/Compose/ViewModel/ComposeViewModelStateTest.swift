@@ -36,11 +36,30 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(testee?.delegate)
     }
 
+    // MARK: - bccWrapped
+
+    func testBccWrapped_initial() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        guard let wrapped = testee?.bccWrapped else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(wrapped)
+    }
+
+    func testBccWrapped_unwrapped() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee?.setBccUnwrapped()
+        guard let wrapped = testee?.bccWrapped else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(wrapped)
+    }
+
     /*
-     public private(set) var bccWrapped = true
-
-
-
 
      private var isValidatedForSending = false {
      didSet {
