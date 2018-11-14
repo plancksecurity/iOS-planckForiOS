@@ -38,9 +38,11 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         msg.shortMessage = "shortMessage"
         msg.longMessage = "longMessage"
         msg.longMessageFormatted = "longMessageFormatted"
-        msg.attachments = [Attachment(data: Data(), mimeType: "image/jpg",
+        msg.attachments = [Attachment(data: Data(),
+                                      mimeType: "image/jpg",
                                       contentDisposition: .attachment)]
-        msg.attachments.append(Attachment(data: Data(), mimeType: "image/jpg",
+        msg.attachments.append(Attachment(data: Data(),
+                                          mimeType: "image/jpg",
                                           contentDisposition: .inline))
         msg.save()
         messageAllButBccSet = msg
@@ -337,44 +339,36 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         assertIsDraftsAndOrOutbox(forOriginalMessageWithParentFolder: parent)
     }
 
+    // MARK: - from, toRecipients, ccRecipients, bccRecipients, subject, body, inlinedAttachments & nonInlinedAttachments
+    // are already tested in compos mode tests
+
+    // MARK: - pEpProtection
+
+    func testPEpProtection_noOriginalMessage() {
+        let mode = ComposeUtil.ComposeMode.normal
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                           orForOriginalMessage: nil,
+                                           composeMode: mode)
+        let expectedProtected = true
+        assertTesteeForExpectedValues(pEpProtection: expectedProtected)
+    }
+
+    func testPEpProtection_originalMessage() {
+        let mode = ComposeUtil.ComposeMode.normal
+        guard let om = messageAllButBccSet else {
+            XCTFail("No message")
+            return
+        }
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                           orForOriginalMessage: om,
+                                           composeMode: mode)
+        let expectedProtected = om.pEpProtected
+        assertTesteeForExpectedValues(pEpProtection: expectedProtected)
+    }
+
     /*
 
-     var pEpProtection: Bool {
-     return originalMessage?.pEpProtected ?? true
-     }
 
-     var from: Identity? {
-     return ComposeUtil.initialFrom(composeMode: composeMode,
-     originalMessage: originalMessage)
-     }
-
-     var toRecipients: [Identity] {
-     if let om = originalMessage {
-     return ComposeUtil.initialTos(composeMode: composeMode, originalMessage: om)
-     } else if let presetTo = prefilledTo {
-     return [presetTo]
-     }
-     return []
-     }
-
-     var ccRecipients: [Identity] {
-     guard let om = originalMessage else {
-     return []
-     }
-     return ComposeUtil.initialCcs(composeMode: composeMode, originalMessage: om)
-     }
-
-     var bccRecipients: [Identity] {
-     guard let om = originalMessage else {
-     return []
-     }
-     return ComposeUtil.initialBccs(composeMode: composeMode, originalMessage: om)
-     }
-
-     var subject = " "
-
-     var bodyPlaintext = ""
-     var bodyHtml: NSAttributedString?
 
      public var nonInlinedAttachments: [Attachment] {
      return ComposeUtil.initialAttachments(composeMode: composeMode,
@@ -388,15 +382,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
      originalMessage: originalMessage)
      }
 
-     init(withPrefilledToRecipient prefilledTo: Identity? = nil,
-     orForOriginalMessage om: Message? = nil,
-     composeMode: ComposeUtil.ComposeMode? = nil) {
-     self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
-     self.originalMessage = om
-     self.prefilledTo = om == nil ? prefilledTo : nil
-     setupInitialSubject()
-     setupInitialBody()
-     }
+
      */
 
     // MARK: - Helper
