@@ -303,31 +303,41 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                           expectedHtmlBody: expectedHtmlBody)
     }
 
+    // MARK: - isDraftsOrOutbox isDrafts isOutbox
+
+    func testIsDraftsOrOutbox_noOrigMessage() {
+        let mode = ComposeUtil.ComposeMode.normal
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                           orForOriginalMessage: nil,
+                                           composeMode: mode)
+        assertTesteeIsDraftsAndOrOutbox(originalMessage: nil)
+    }
+
+    func testIsDraftsOrOutbox_inbox() {
+        guard let parent = inbox else {
+            XCTFail("No folder")
+            return
+        }
+        assertIsDraftsAndOrOutbox(forOriginalMessageWithParentFolder: parent)
+    }
+
+    func testIsDraftsOrOutbox_drafts() {
+        guard let parent = drafts else {
+            XCTFail("No folder")
+            return
+        }
+        assertIsDraftsAndOrOutbox(forOriginalMessageWithParentFolder: parent)
+    }
+
+    func testIsDraftsOrOutbox_outbox() {
+        guard let parent = outbox else {
+            XCTFail("No folder")
+            return
+        }
+        assertIsDraftsAndOrOutbox(forOriginalMessageWithParentFolder: parent)
+    }
 
     /*
-
-     public let composeMode: ComposeUtil.ComposeMode
-
-     /// Whether or not the original message is in Drafts or Outbox
-     var isDraftsOrOutbox: Bool {
-     return isDrafts || isOutbox
-     }
-
-     /// Whether or not the original message is in Drafts folder
-     var isDrafts: Bool {
-     if let om = originalMessage {
-     return om.parent.folderType == .drafts
-     }
-     return false
-     }
-
-     /// Whether or not the original message is in Outbox
-     var isOutbox: Bool {
-     if let om = originalMessage {
-     return om.parent.folderType == .outbox
-     }
-     return false
-     }
 
      var pEpProtection: Bool {
      return originalMessage?.pEpProtected ?? true
@@ -390,6 +400,33 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
      */
 
     // MARK: - Helper
+
+    private func assertIsDraftsAndOrOutbox(forOriginalMessageWithParentFolder folder: Folder) {
+        let mode = ComposeUtil.ComposeMode.normal
+        messageAllButBccSet?.parent = folder
+        let originalMessage = messageAllButBccSet
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                           orForOriginalMessage: originalMessage,
+                                           composeMode: mode)
+        assertTesteeIsDraftsAndOrOutbox(originalMessage: originalMessage)
+    }
+
+    private func assertTesteeIsDraftsAndOrOutbox(originalMessage: Message?) {
+        var expectedIsDrafts = false
+        var expectedIsOutbox = false
+        var expectedIsDraftsOrOutbox = false
+        if let om = originalMessage  {
+            if om.parent.folderType == .drafts {
+                expectedIsDrafts = true
+            } else if om.parent.folderType == .outbox {
+                expectedIsOutbox = true
+            }
+            expectedIsDraftsOrOutbox = expectedIsDrafts || expectedIsOutbox
+        }
+        assertTesteeForExpectedValues(isDraftsOrOutbox: expectedIsDraftsOrOutbox,
+                                      isDrafts: expectedIsDrafts,
+                                      isOutbox: expectedIsOutbox)
+    }
 
     private func assertComposeMode(_ composeMode: ComposeUtil.ComposeMode,
                                    originalMessage: Message,
