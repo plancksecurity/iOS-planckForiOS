@@ -1,3 +1,6 @@
+/* Bundle name */
+"CFBundleName" = "p≡p";
+
 /* Privacy - Camera Usage Description */
 "NSCameraUsageDescription" = "Kamera verwenden";
 
