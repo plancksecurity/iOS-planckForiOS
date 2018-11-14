@@ -138,10 +138,99 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
     }
 
+    // MARK: - edited
+
+    func testEdited_noChange() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        guard let edited = testee?.edited else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(edited)
+    }
+
+    func testEdited_dirty_changedTos() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee?.toRecipients = [someone]
+        guard let edited = testee?.edited else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(edited)
+    }
+
+    func testEdited_dirty_changedCcs() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee?.ccRecipients = [someone]
+        guard let edited = testee?.edited else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(edited)
+    }
+
+    func testEdited_dirty_changedBccs() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee?.bccRecipients = [someone]
+        guard let edited = testee?.edited else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(edited)
+    }
+
+    func testEdited_dirty_changedSubject() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee?.subject = #function
+        guard let edited = testee?.edited else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(edited)
+    }
+
+    func testEdited_dirty_changedBodyPlaintext() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee?.bodyPlaintext = #function
+        guard let edited = testee?.edited else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(edited)
+    }
+
+    func testEdited_dirty_changedBodyHtml() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee?.bodyHtml = #function
+        guard let edited = testee?.edited else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(edited)
+    }
+
+    func testEdited_dirty_changedNonInlinedAttachments() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        testee?.nonInlinedAttachments = [Attachment(data: nil,
+                                                    mimeType: #function,
+                                                    contentDisposition: .attachment)]
+        guard let edited = testee?.edited else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(edited)
+    }
 
     /*
 
-     public private(set) var edited = false
 
      public var pEpProtection = true {
      didSet {
@@ -150,38 +239,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
      }
      }
      }
-
-     var subject = " " {
-     didSet {
-     edited = true
-     }
-     }
-
-     var bodyPlaintext = "" {
-     didSet {
-     edited = true
-     }
-     }
-
-     var bodyHtml = "" {
-     didSet {
-     edited = true
-     }
-     }
-
-     var inlinedAttachments = [Attachment]() {
-     didSet {
-     edited = true
-     }
-     }
-
-     var nonInlinedAttachments = [Attachment]() {
-     didSet {
-     edited = true
-     }
-     }
-
-
 
      */
 
