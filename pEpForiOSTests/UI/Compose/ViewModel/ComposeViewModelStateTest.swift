@@ -11,11 +11,25 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-class ComposeViewModelStateTest: XCTestCase {
+class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
+    var testee: ComposeViewModel.ComposeViewModelState?
+
+    // MARK: - initData
+
+    func testInitData() {
+        let initData = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                                 orForOriginalMessage: nil,
+                                                 composeMode: nil)
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+        guard let testeeInitData = testee?.initData else {
+            XCTFail("No testee")
+            return
+        }
+        XCTAssertNotNil(testeeInitData)
+    }
 
     /*
-     private(set) var initData: InitData?
      private var isValidatedForSending = false {
      didSet {
      delegate?.composeViewModelState(self,
