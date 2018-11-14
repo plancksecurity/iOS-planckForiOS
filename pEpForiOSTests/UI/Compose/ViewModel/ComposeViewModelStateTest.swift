@@ -12,8 +12,33 @@ import XCTest
 import MessageModel
 
 class ComposeViewModelStateTest: CoreDataDrivenTestBase {
+    /// Async PEPSession calls that take quite some time
+    let asyncPEPSessionCallWaitTime = 1.5
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
+    var draftedMessageAllButBccSet: Message?
+    let someone = Identity(address: "someone@someone.someone")
+
+    override func setUp() {
+        super.setUp()
+        let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
+        drafts.save()
+        let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
+        msg.from = account.user
+        msg.to = [account.user, someone]
+        msg.cc = [someone]
+        msg.shortMessage = "shortMessage"
+        msg.longMessage = "longMessage"
+        msg.longMessageFormatted = "longMessageFormatted"
+        msg.attachments = [Attachment(data: Data(),
+                                      mimeType: "image/jpg",
+                                      contentDisposition: .attachment)]
+        msg.attachments.append(Attachment(data: Data(),
+                                          mimeType: "image/jpg",
+                                          contentDisposition: .inline))
+        msg.save()
+        draftedMessageAllButBccSet = msg
+    }
 
     // MARK: - initData
 
@@ -59,58 +84,70 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         XCTAssertFalse(wrapped)
     }
 
+    // MARK: - Validation ( recipient changes )
+
+    func testValidate() {
+        let expectedStateIsValid = false
+        assert(ignoreDelegateCallsWhileInitializing: false,
+               didChangeValidationStateMustBeCalled: true,
+               expectedStateIsValid: expectedStateIsValid,
+               didChangePEPRatingMustBeCalled: false,
+               expectedNewRating: nil,
+               didChangeProtectionMustBeCalled: false,
+               expectedNewProtection: nil)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testValidate_changeTos_noRecipients() {
+        let recipients = [Identity]()
+        assertValidatation(expectedStateIsValid: false,
+                           expectedNewRating: nil)
+        testee?.toRecipients = recipients
+        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+    }
+
+    func testValidate_changeTos_grey() {
+        let recipients = [someone, account.user]
+        assertValidatation(expectedStateIsValid: true,
+                           expectedNewRating: PEP_rating_unencrypted)
+        testee?.toRecipients = recipients
+        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+    }
+
+    func testValidate_changeTos_green() {
+        let recipients = [account.user]
+        assertValidatation(expectedStateIsValid: true,
+                           expectedNewRating: PEP_rating_trusted_and_anonymized)
+        testee?.toRecipients = recipients
+        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+    }
+
+    func testValidate_changeCcs_grey() {
+        let recipients = [someone, account.user]
+        assertValidatation(expectedStateIsValid: true,
+                           expectedNewRating: PEP_rating_unencrypted)
+        testee?.ccRecipients = recipients
+        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+    }
+
+    func testValidate_changeCCs_green() {
+        let recipients = [account.user]
+        assertValidatation(expectedStateIsValid: true,
+                           expectedNewRating: PEP_rating_trusted_and_anonymized)
+        testee?.ccRecipients = recipients
+        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+    }
+
+
     /*
 
-     private var isValidatedForSending = false {
-     didSet {
-     delegate?.composeViewModelState(self,
-     didChangeValidationStateTo: isValidatedForSending)
-     }
-     }
      public private(set) var edited = false
-     public private(set) var rating = PEP_rating_undefined {
-     didSet {
-     if rating != oldValue {
-     delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
-     }
-     }
-     }
 
      public var pEpProtection = true {
      didSet {
      if pEpProtection != oldValue {
      delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
      }
-     }
-     }
-
-
-
-
-             //Recipients
-             var toRecipients = [Identity]() {
-             didSet {
-             edited = true
-             validate()
-             }
-     }
-     var ccRecipients = [Identity]() {
-     didSet {
-     edited = true
-     validate()
-     }
-     }
-     var bccRecipients = [Identity]() {
-     didSet {
-     edited = true
-     validate()
-     }
-     }
-
-     var from: Identity? {
-     didSet {
-     edited = true
-     validate()
      }
      }
 
@@ -144,24 +181,71 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
      }
      }
 
-     init(initData: InitData? = nil, delegate: ComposeViewModelStateDelegate? = nil) {
-     self.initData = initData
-     self.delegate = delegate
-     setup()
-     edited = false
-     }
 
-     public func setBccUnwrapped() {
-     bccWrapped = false
-     }
 
-     public func validate() {
-     calculatePepRating()
-     validateForSending()
-     }
      */
 
     // MARK: - HELPER
+
+    private func assertValidatation(didChangeValidationStateMustBeCalled: Bool = true,
+                                    expectedStateIsValid: Bool,
+                                    expectedNewRating: PEP_rating? = nil) {
+        try! PEPSession().mySelf(account.user.pEpIdentity())
+        assert(ignoreDelegateCallsWhileInitializing: true,
+               didChangeValidationStateMustBeCalled: true,
+               expectedStateIsValid: expectedStateIsValid,
+               didChangePEPRatingMustBeCalled: expectedNewRating != nil,
+               expectedNewRating: expectedNewRating,
+               didChangeProtectionMustBeCalled: false)
+    }
+
+    private func assert(ignoreDelegateCallsWhileInitializing: Bool = true,
+                        didChangeValidationStateMustBeCalled: Bool? = nil,
+                        expectedStateIsValid: Bool? = nil,
+                        didChangePEPRatingMustBeCalled: Bool? = nil,
+                        expectedNewRating: PEP_rating? = nil,
+                        didChangeProtectionMustBeCalled: Bool? = nil,
+                        expectedNewProtection: Bool? = nil) {
+        var expDidChangeValidationStateToCalled: XCTestExpectation? = nil
+        if let exp = didChangeValidationStateMustBeCalled {
+            expDidChangeValidationStateToCalled =
+                expectation(description: "expDidChangeValidationStateToCalled")
+            expDidChangeValidationStateToCalled?.isInverted = !exp
+            expDidChangeValidationStateToCalled?.assertForOverFulfill = false
+        }
+
+        var expDidChangePEPRatingToCalled: XCTestExpectation? = nil
+        if let exp = didChangePEPRatingMustBeCalled {
+            expDidChangePEPRatingToCalled =
+                expectation(description: "expDidChangePEPRatingToCalled")
+            expDidChangePEPRatingToCalled?.isInverted = !exp
+            expDidChangePEPRatingToCalled?.assertForOverFulfill = false
+        }
+
+        var expDidChangeProtectionCalled: XCTestExpectation? = nil
+        if let exp = didChangeProtectionMustBeCalled {
+            expDidChangeProtectionCalled =
+                expectation(description: "expDidChangeProtectionCalled")
+            expDidChangeProtectionCalled?.isInverted = !exp
+            expDidChangeProtectionCalled?.assertForOverFulfill = false
+        }
+
+        testDelegate =
+            TestDelegate(expDidChangeValidationStateToCalled: expDidChangeValidationStateToCalled,
+                         expectedStateIsValid: expectedStateIsValid,
+                         expDidChangePEPRatingToCalled: expDidChangePEPRatingToCalled,
+                         expectedNewRating: expectedNewRating,
+                         expDidChangeProtectionCalled: expDidChangeProtectionCalled,
+                         expectedNewProtection: expectedNewProtection)
+        let initData = ComposeViewModel.InitData(composeMode: .normal)
+        if ignoreDelegateCallsWhileInitializing {
+            testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
+            testee?.delegate = testDelegate
+        } else {
+            testee = ComposeViewModel.ComposeViewModelState(initData: initData,
+                                                            delegate: testDelegate)
+        }
+    }
 
     class TestDelegate: ComposeViewModelStateDelegate {
         let expDidChangeValidationStateToCalled: XCTestExpectation?
