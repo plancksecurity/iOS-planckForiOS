@@ -158,7 +158,7 @@ extension ComposeViewModel {
 
 extension ComposeViewModel.ComposeViewModelState {
 
-    public func canToggleProtection() -> Bool {
+    public func userCanToggleProtection() -> Bool {
         if isForceUnprotectedDueToBccSet {
             return false
         }

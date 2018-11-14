@@ -115,7 +115,7 @@ extension ComposeTableViewController {
 
         //Not so nice. The view(controller) should not know about state and protection.
         if let view = showPepRating(pEpRating: pEpRating, pEpProtection: pEpProtected) {
-            if vm.state.canHandshake() || vm.state.canToggleProtection() {
+            if vm.state.canHandshake() || vm.state.userCanToggleProtection() {
                 let tapGestureRecognizer = UITapGestureRecognizer(
                     target: self,
                     action: #selector(actionHandshakeOrForceUnprotected))
@@ -131,7 +131,7 @@ extension ComposeTableViewController {
             return
         }
         let theCanHandshake = vm.state.canHandshake()
-        let theCanToggleProtection = vm.state.canToggleProtection()
+        let theCanToggleProtection = vm.state.userCanToggleProtection()
 
         if theCanHandshake || theCanToggleProtection {
             let alert = UIAlertController.pEpAlertController()
