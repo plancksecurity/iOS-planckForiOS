@@ -1,0 +1,18 @@
+/* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "1VH-Wt-Y7U"; */
+"1VH-Wt-Y7U.title" = "Weiter";
+
+/* Class = "UILabel"; text = "Username"; ObjectID = "3ti-b6-5l8"; */
+"3ti-b6-5l8.text" = "Benutzername";
+
+/* Class = "UITextField"; accessibilityLabel = "Username"; ObjectID = "5Mt-BZ-h4K"; */
+"5Mt-BZ-h4K.accessibilityLabel" = "Benutzername";
+
+/* Class = "UITextField"; placeholder = "Username"; ObjectID = "mKi-gF-bu9"; */
+"mKi-gF-bu9.placeholder" = "Benutzername";
+
+/* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "OEI-dm-im4"; */
+"OEI-dm-im4.title" = "Weiter";
+
+/* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "Tr2-5h-6JD"; */
+"Tr2-5h-6JD.title" = "Weiter";
+

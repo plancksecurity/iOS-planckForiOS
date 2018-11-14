@@ -468,6 +468,7 @@
 		43C3B16820038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
+		43C98AC3219C275E006418B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC1219C275E006418B0 /* Localizable.strings */; };
 		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
 		43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */; };
 		43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63D01DE8866C00FAC505 /* Message+pEp.swift */; };
@@ -1101,6 +1102,10 @@
 		43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_test010@peptest.ch.pub.key"; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
+		43C98ABF219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AccountCreation.strings; sourceTree = "<group>"; };
+		43C98AC0219C22E8006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Settings.strings; sourceTree = "<group>"; };
+		43C98AC2219C275E006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		43C98AC4219C275E006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main.strings; sourceTree = "<group>"; };
 		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
 		43CE63D01DE8866C00FAC505 /* Message+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+pEp.swift"; sourceTree = "<group>"; };
@@ -2224,6 +2229,7 @@
 				43980E301CBD0BCA00A7FC3C /* Assets.xcassets */,
 				43980EEA1CBD24F100A7FC3C /* pEpForiOS-Bridging-Header.h */,
 				43980E351CBD0BCA00A7FC3C /* Info.plist */,
+				43C98AC1219C275E006418B0 /* Localizable.strings */,
 				4388A0E02008AF61008CB98D /* public.xcconfig */,
 				43B044412007683E007BCE3F /* secret.xcconfig */,
 				433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */,
@@ -3051,6 +3057,7 @@
 				430C80D51D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
 				B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */,
 				431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */,
+				43C98AC3219C275E006418B0 /* Localizable.strings in Resources */,
 				151DE7E11FC5D3FA00CDC273 /* Handshake.storyboard in Resources */,
 				43980E2C1CBD0BC900A7FC3C /* Main.storyboard in Resources */,
 				432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */,
@@ -3725,6 +3732,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				151DE7DF1FC5D3E200CDC273 /* Base */,
+				43C98AC0219C22E8006418B0 /* de */,
 			);
 			name = Settings.storyboard;
 			sourceTree = "<group>";
@@ -3757,6 +3765,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				43980E2B1CBD0BC900A7FC3C /* Base */,
+				43C98AC4219C275E006418B0 /* de */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -3767,6 +3776,14 @@
 				43980E331CBD0BCA00A7FC3C /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		43C98AC1219C275E006418B0 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				43C98AC2219C275E006418B0 /* de */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		491B656020CFE0FD00C2ADDA /* Thread.storyboard */ = {
@@ -3781,6 +3798,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				B78309C71EAA09040051A2E0 /* Base */,
+				43C98ABF219C22E8006418B0 /* de */,
 			);
 			name = AccountCreation.storyboard;
 			sourceTree = "<group>";
