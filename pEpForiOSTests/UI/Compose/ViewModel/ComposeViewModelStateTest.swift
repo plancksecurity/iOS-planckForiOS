@@ -38,6 +38,8 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
                                           contentDisposition: .inline))
         msg.save()
         draftedMessageAllButBccSet = msg
+
+        setupSimpleTestee()
     }
 
     // MARK: - initData
@@ -64,8 +66,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     // MARK: - bccWrapped
 
     func testBccWrapped_initial() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         guard let wrapped = testee?.bccWrapped else {
             XCTFail()
             return
@@ -74,8 +74,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testBccWrapped_unwrapped() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         testee?.setBccUnwrapped()
         guard let wrapped = testee?.bccWrapped else {
             XCTFail()
@@ -141,8 +139,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     // MARK: - edited
 
     func testEdited_noChange() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         guard let edited = testee?.edited else {
             XCTFail()
             return
@@ -151,8 +147,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testEdited_dirty_changedTos() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         testee?.toRecipients = [someone]
         guard let edited = testee?.edited else {
             XCTFail()
@@ -162,8 +156,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testEdited_dirty_changedCcs() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         testee?.ccRecipients = [someone]
         guard let edited = testee?.edited else {
             XCTFail()
@@ -173,8 +165,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testEdited_dirty_changedBccs() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         testee?.bccRecipients = [someone]
         guard let edited = testee?.edited else {
             XCTFail()
@@ -184,8 +174,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testEdited_dirty_changedSubject() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         testee?.subject = #function
         guard let edited = testee?.edited else {
             XCTFail()
@@ -195,8 +183,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testEdited_dirty_changedBodyPlaintext() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         testee?.bodyPlaintext = #function
         guard let edited = testee?.edited else {
             XCTFail()
@@ -206,8 +192,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testEdited_dirty_changedBodyHtml() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         testee?.bodyHtml = #function
         guard let edited = testee?.edited else {
             XCTFail()
@@ -217,8 +201,6 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testEdited_dirty_changedNonInlinedAttachments() {
-        let initData = ComposeViewModel.InitData()
-        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         testee?.nonInlinedAttachments = [Attachment(data: nil,
                                                     mimeType: #function,
                                                     contentDisposition: .attachment)]
@@ -228,7 +210,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         }
         XCTAssertTrue(edited)
     }
-
+    
     /*
 
 
@@ -302,6 +284,11 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
             testee = ComposeViewModel.ComposeViewModelState(initData: initData,
                                                             delegate: testDelegate)
         }
+    }
+
+    private func setupSimpleTestee() {
+        let initData = ComposeViewModel.InitData()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
     }
 
     class TestDelegate: ComposeViewModelStateDelegate {
