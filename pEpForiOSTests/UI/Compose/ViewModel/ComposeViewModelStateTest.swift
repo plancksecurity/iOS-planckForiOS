@@ -210,19 +210,51 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         }
         XCTAssertTrue(edited)
     }
-    
-    /*
 
+    // MARK: - userCanToggleProtection
 
-     public var pEpProtection = true {
-     didSet {
-     if pEpProtection != oldValue {
-     delegate?.composeViewModelState(self, didChangeProtection: pEpProtection)
-     }
-     }
-     }
+    func testUserCanToggleProtection_grey() {
+        guard let canToggleProtection = testee?.userCanToggleProtection() else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(canToggleProtection)
+    }
 
-     */
+    func testUserCanToggleProtection_green() {
+        // Setup green state ...
+        let recipients = [account.user]
+        assertValidatation(expectedStateIsValid: true,
+                           expectedNewRating: PEP_rating_trusted_and_anonymized)
+        testee?.toRecipients = recipients
+        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        // ... and assert can toggle works correctly
+        guard let canToggleProtection = testee?.userCanToggleProtection() else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(canToggleProtection)
+    }
+
+    // testUserCanToggleProtection: state yellow is untested. To expensive.
+
+    func testUserCanToggleProtection_green_bccSet() {
+        // Setup green state ...
+        let recipients = [account.user]
+        assertValidatation(expectedStateIsValid: true,
+                           expectedNewRating: PEP_rating_trusted_and_anonymized)
+        testee?.toRecipients = recipients
+        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        // ... set BCC ...
+        testDelegate?.ignoreAll = true
+        testee?.bccRecipients = recipients
+        // ... and assert can toggle works correctly
+        guard let canToggleProtection = testee?.userCanToggleProtection() else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(canToggleProtection)
+    }
 
     // MARK: - HELPER
 
@@ -292,6 +324,8 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     class TestDelegate: ComposeViewModelStateDelegate {
+        var ignoreAll = false
+
         let expDidChangeValidationStateToCalled: XCTestExpectation?
         let expectedStateIsValid: Bool?
 
@@ -317,7 +351,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
 
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                    didChangeValidationStateTo isValid: Bool) {
-            guard let exp = expDidChangeValidationStateToCalled else {
+            guard let exp = expDidChangeValidationStateToCalled, !ignoreAll  else {
                 // We ignore called or not
                 return
             }
@@ -329,7 +363,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
 
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                    didChangePEPRatingTo newRating: PEP_rating) {
-            guard let exp = expDidChangePEPRatingToCalled else {
+            guard let exp = expDidChangePEPRatingToCalled, !ignoreAll  else {
                 // We ignore called or not
                 return
             }
@@ -341,7 +375,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
 
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                    didChangeProtection newValue: Bool) {
-            guard let exp = expDidChangeProtectionCalled else {
+            guard let exp = expDidChangeProtectionCalled, !ignoreAll else {
                 // We ignore called or not
                 return
             }
