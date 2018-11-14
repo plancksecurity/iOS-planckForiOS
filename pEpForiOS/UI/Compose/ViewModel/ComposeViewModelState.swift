@@ -96,11 +96,7 @@ extension ComposeViewModel {
             }
         }
 
-        var inlinedAttachments = [Attachment]() {
-            didSet {
-                edited = true
-            }
-        }
+        var inlinedAttachments = [Attachment]()
 
         var nonInlinedAttachments = [Attachment]() {
             didSet {
