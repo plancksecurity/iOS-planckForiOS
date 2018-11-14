@@ -4,15 +4,63 @@
 /* Class = "UILabel"; text = "Username"; ObjectID = "3ti-b6-5l8"; */
 "3ti-b6-5l8.text" = "Benutzername";
 
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "3wB-RC-5fz"; */
+"3wB-RC-5fz.placeholder" = "Passwort";
+
 /* Class = "UITextField"; accessibilityLabel = "Username"; ObjectID = "5Mt-BZ-h4K"; */
 "5Mt-BZ-h4K.accessibilityLabel" = "Benutzername";
+
+/* Class = "UITextField"; placeholder = "Email Address"; ObjectID = "36s-Iw-b58"; */
+"36s-Iw-b58.placeholder" = "E-Mail Adresse";
+
+/* Class = "UITextField"; accessibilityLabel = "Password"; ObjectID = "91l-1l-FuW"; */
+"91l-1l-FuW.accessibilityLabel" = "Passwort";
+
+/* Class = "UILabel"; text = "TransportSecurity"; ObjectID = "b0p-Pv-I3v"; */
+"b0p-Pv-I3v.text" = "Transport Verschlüsselung";
+
+/* Class = "UIButton"; accessibilityLabel = "Transport Security"; ObjectID = "Cjb-ue-OdU"; */
+"Cjb-ue-OdU.accessibilityLabel" = "Transport Verschlüsselung";
+
+/* Class = "UIButton"; normalTitle = "Plain >"; ObjectID = "Cjb-ue-OdU"; */
+"Cjb-ue-OdU.normalTitle" = "Klartext";
+
+/* Class = "UIButton"; normalTitle = "Cancel"; ObjectID = "cUk-RH-Yos"; */
+"cUk-RH-Yos.normalTitle" = "Abbrechen";
+
+/* Class = "UIButton"; accessibilityLabel = "Transport Security"; ObjectID = "H6H-wM-1tb"; */
+"H6H-wM-1tb.accessibilityLabel" = "Transport Verschlüsselung";
+
+/* Class = "UIButton"; normalTitle = "Plain >"; ObjectID = "H6H-wM-1tb"; */
+"H6H-wM-1tb.normalTitle" = "Klartext";
+
+/* Class = "UILabel"; text = "TransportSecurity"; ObjectID = "HKb-4V-2g6"; */
+"HKb-4V-2g6.text" = "Transport Verschlüsselung";
+
+/* Class = "UILabel"; accessibilityLabel = "Name of the user"; ObjectID = "hUQ-RI-kfE"; */
+"hUQ-RI-kfE.accessibilityLabel" = "Name des Benutzers";
+
+/* Class = "UIButton"; normalTitle = "Sign In"; ObjectID = "lTY-gw-zK9"; */
+"lTY-gw-zK9.normalTitle" = "Einloggen";
 
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "mKi-gF-bu9"; */
 "mKi-gF-bu9.placeholder" = "Benutzername";
 
+/* Class = "UIButton"; normalTitle = "Advanced"; ObjectID = "O4c-eF-dJT"; */
+"O4c-eF-dJT.normalTitle" = "Erweitert";
+
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "OEI-dm-im4"; */
 "OEI-dm-im4.title" = "Weiter";
 
+/* Class = "UILabel"; text = "Email"; ObjectID = "SCr-eb-mdn"; */
+"SCr-eb-mdn.text" = "E-Mail";
+
+/* Class = "UITextField"; accessibilityLabel = "Email"; ObjectID = "TPZ-TM-PaG"; */
+"TPZ-TM-PaG.accessibilityLabel" = "E-Mail";
+
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "Tr2-5h-6JD"; */
 "Tr2-5h-6JD.title" = "Weiter";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "xbE-mW-hjW"; */
+"xbE-mW-hjW.text" = "Passwort";
 

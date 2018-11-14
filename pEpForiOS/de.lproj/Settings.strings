@@ -1,3 +1,33 @@
+/* Class = "UILabel"; text = "Email"; ObjectID = "7Lp-ph-4lC"; */
+"7Lp-ph-4lC.text" = "E-Mail";
+
+/* Class = "UILabel"; text = "Fingerprint"; ObjectID = "8ib-BO-jFp"; */
+"8ib-BO-jFp.text" = "Fingerabruck";
+
+/* Class = "UIButton"; normalTitle = "Copy Log"; ObjectID = "AzW-rt-GWz"; */
+"AzW-rt-GWz.normalTitle" = "Log kopieren";
+
+/* Class = "UILabel"; text = "Password:"; ObjectID = "En6-h6-xZD"; */
+"En6-h6-xZD.text" = "Passwort:";
+
+/* Class = "UILabel"; text = "Enable/Disable Logging"; ObjectID = "Imh-fw-p8J"; */
+"Imh-fw-p8J.text" = "Protokollierung Aktivieren/Deaktivieren";
+
+/* Class = "UIButton"; normalTitle = "Set Own Key"; ObjectID = "lzc-xZ-iKm"; */
+"lzc-xZ-iKm.normalTitle" = "Eigenen Schlüssel festlegen";
+
+/* Class = "UILabel"; text = "Email:"; ObjectID = "Ne5-6o-O4F"; */
+"Ne5-6o-O4F.text" = "E-Mail:";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "vjp-2e-dTM"; */
+"vjp-2e-dTM.text" = "Titel";
+
+/* Class = "UILabel"; text = "OAuth2 Reauthorization"; ObjectID = "wxK-W7-y8D"; */
+"wxK-W7-y8D.text" = "OAuth2 Re-Authorisierung";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "xiv-OD-YNL"; */
+"xiv-OD-YNL.text" = "Titel";
+
 /* Class = "UILabel"; text = "Username:"; ObjectID = "YGG-ns-Pes"; */
-"YGG-ns-Pes.text" = "Benutzername";
+"YGG-ns-Pes.text" = "Benutzername:";
 

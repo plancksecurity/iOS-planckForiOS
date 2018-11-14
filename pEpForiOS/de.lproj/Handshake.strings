@@ -1,0 +1,15 @@
+/* Class = "UILabel"; text = "Privacy Status: Mistrusted"; ObjectID = "5RJ-Gx-qBT"; */
+"5RJ-Gx-qBT.text" = "Datenschutzstatus: Nicht vertrauenswürdig";
+
+/* Class = "UIButton"; normalTitle = "Wrong Trustwords"; ObjectID = "dbO-2K-SpB"; */
+"dbO-2K-SpB.normalTitle" = "Falsche Trustwords";
+
+/* Class = "UILabel"; text = "Your communication partner is mistrusted."; ObjectID = "eaF-0u-kGb"; */
+"eaF-0u-kGb.text" = "Ihr Kommunikationspartner ist nicht vertrauenswürdig.";
+
+/* Class = "UIButton"; normalTitle = "Confirm Trustwords"; ObjectID = "Jgi-7k-Ymf"; */
+"Jgi-7k-Ymf.normalTitle" = "Trustwords bestätigen";
+
+/* Class = "UIButton"; normalTitle = "Stop Trusting"; ObjectID = "Y4f-BW-EI0"; */
+"Y4f-BW-EI0.normalTitle" = "Vertrauen aufheben";
+

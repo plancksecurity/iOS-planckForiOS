@@ -1,3 +1,63 @@
+/* Class = "UITableViewController"; title = "Show email"; ObjectID = "3bx-34-vLD"; */
+"3bx-34-vLD.title" = "E-Mail anzeigen";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "5Py-55-oem"; */
+"5Py-55-oem.text" = "Betreff";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "Bd2-Nr-sTF"; */
+"Bd2-Nr-sTF.text" = "An:";
+
+/* Class = "UINavigationItem"; title = "Inbox"; ObjectID = "bgm-ua-A0f"; */
+"bgm-ua-A0f.title" = "Posteingang";
+
+/* Class = "UILabel"; text = "Diese E-Mail ist von einer Mailing-Liste."; ObjectID = "BjL-CL-0Cu"; */
+"BjL-CL-0Cu.text" = "Diese E-Mail ist von einer Mailing-Liste.";
+
+/* Class = "UILabel"; text = "Summary"; ObjectID = "BvI-Zi-zU6"; */
+"BvI-Zi-zU6.text" = "Zusammenfassung";
+
+/* Class = "UIViewController"; title = "Move to Account"; ObjectID = "EmS-3d-sKb"; */
+"EmS-3d-sKb.title" = "Zum Konto verschieben";
+
 /* Class = "UIBarButtonItem"; title = "Edit"; ObjectID = "hax-OT-dfL"; */
 "hax-OT-dfL.title" = "Bearbeiten";
+
+/* Class = "UITableViewController"; title = "Email List"; ObjectID = "kcA-RK-9Xg"; */
+"kcA-RK-9Xg.title" = "E-Mail Liste";
+
+/* Class = "UILabel"; text = "To: Recipients"; ObjectID = "Mfx-AS-hpP"; */
+"Mfx-AS-hpP.text" = "An: Empfänger";
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "NoQ-uw-dGp"; */
+"NoQ-uw-dGp.title" = "Abbrechen";
+
+/* Class = "UILabel"; text = "Subject:"; ObjectID = "NTc-GH-Ell"; */
+"NTc-GH-Ell.text" = "Betreff:";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "OLo-8A-CCo"; */
+"OLo-8A-CCo.text" = "Titel";
+
+/* Class = "UIButton"; normalTitle = "Abmelden"; ObjectID = "oWA-cC-IZF"; */
+"oWA-cC-IZF.normalTitle" = "Abmelden";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "pkd-ua-DYh"; */
+"pkd-ua-DYh.text" = "Von:";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "riI-qM-PeJ"; */
+"riI-qM-PeJ.text" = "Titel";
+
+/* Class = "UILabel"; text = "No Message Selected"; ObjectID = "Rk5-l1-Vt8"; */
+"Rk5-l1-Vt8.text" = "Keine Nachricht markiert";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "Swb-L2-8yp"; */
+"Swb-L2-8yp.text" = "Datum";
+
+/* Class = "UILabel"; text = "Date"; ObjectID = "Wkg-wf-Dbd"; */
+"Wkg-wf-Dbd.text" = "Datum";
+
+/* Class = "UILabel"; text = "Subject"; ObjectID = "xrz-WN-2Dg"; */
+"xrz-WN-2Dg.text" = "Betreff";
+
+/* Class = "UIBarButtonItem"; title = "Send"; ObjectID = "yQg-rY-YPK"; */
+"yQg-rY-YPK.title" = "Senden";
 

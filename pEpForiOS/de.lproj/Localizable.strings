@@ -1,6 +1,522 @@
+/* Disabled attachments for a message with status 'under attack'. Placeholders: title, explanation, suggestion. */
+"
+%@
+
+%@
+
+%@
+
+Attachments are disabled.
+
+" = "
+%1$@
+
+%2$@
+
+%3$@
+
+Anhänge sind ausgeschaltet.
+
+";
+
+/* Title for notification show on lock screen for new mails */
+"(numMails) new messages received" = "(numMails) neue Nachrichten erhalten";
+
+/* Reply to multiple contacts, with date
+   Reply to single contact, with date */
+"%@ wrote on %@:" = "%1$@ schrieb am %2$@:";
+
+/* Reply to multiple contacts, without date
+   Reply to single contact, without date */
+"%@ wrote:" = "%@ schrieb:";
+
+/* error message for .missingPassword */
+"A non-empty password is required" = "Ein nicht-leeres Passwort wird benötigt";
+
+/* error message for .missingUsername */
+"A non-empty username is required" = "Ein nicht-leerer Benutzername wird benötigt";
+
+/* error message for .invalidEmail
+   error message for .missingEmail */
+"A valid email is required" = "Eine gültige E-Mail Adresse wird benötigt";
+
+/* Account settings
+   Title for manual account setup */
+"Account" = "Konto";
+
+/* Error description detecting account settings */
+"Account detection timed out" = "Zeitlimite zur Konto Erkennung abgelaufen";
+
+/* Empty account name message */
+"Account name must not be empty." = "Konto Name darf nicht leer sein";
+
+/* Tableview section  header */
+"Accounts" = "Konten";
+
+/* UIUtils.presentActionSheetWithContactOptions.button.title Add to Contacts */
+"Add to Contacts" = "Zu Kontakten hinzufügen";
+
 /* Name of unified inbox (showing messages of all accoounts */
 "All" = "Alle";
 
+/* Error message shown to the user in case an error in the app occured that is not caused or related to the server */
+"An internal error occured. Sorry, that should not happen." = "Es ist ein interner Fehler aufgetreten.";
+
+/* error message for .noConnectData */
+"An internal error occurred" = "Es ist ein interner Fehler aufgetreten.";
+
+/* Archive button in slide-left menu */
+"Archive" = "Archivieren";
+
+/* delete account message */
+"Are you sure you want to delete the account?" = "Wollen Sie das Konto wirklich löschen?";
+
+/* Insert document in message text context menu */
+"Attach file" = "Anhang hinzufügen";
+
+/* Attach photo/video (message text context menu) */
+"Attach media" = "Foto / Video einfügen";
+
+/* image attachment name */
+"Attached Image %1d (%2@)" = "Bild %1$d (%2$@) angehängt";
+
+/* title attachments filter cell */
+"Attachments" = "Anhänge";
+
+/* Privacy status title */
+"Broken" = "Defekt";
+
+/* Cancel for an alert view
+   compose email cancel
+   EmailList action title
+   Login NavigationBar canel button title
+   Message actions
+   MoveToFolderViewController NavigationBar canel button title
+   possible private status action
+   UIUtils.presentActionSheetWithContactOptions.button.title Cancel */
+"Cancel" = "Abbrechen";
+
+/* Privacy status title */
+"Cannot Decrypt" = "Entschlüsselung ist nicht möglich";
+
+/* to me image text */
+"CC" = "Kopie:";
+
+/* Compose field title */
+"CC:" = "Kopie:";
+
+/* UI alert message for transport protocol */
+"Choose a Security protocol for your accont" = "Wählen Sie ein Sicherheitsprotokoll für Ihr Konto";
+
+/* Empty IMAP transport security method */
+"Choose IMAP transport security method." = "Wählen Sie die IMAP Transportverschlüsselung.";
+
+/* Empty SMTP transport security method */
+"Choose SMTP transport security method." = "Wählen Sie die SMTP Transportverschlüsselung.";
+
+/* Privacy status suggestion */
+"Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication." = "Führen Sie einen Handshake mit dem Kommunikationspartner durch. Ein Handshake wird nur einmal pro Kommunikationspartner benötigt und stellt die Vertrauenswürdigkeit sicher.";
+
+/* Confirm correct fingerprint (PGP, long version) */
+"Confirm Fingerprint" = "Fingerabdruck verlgeichen";
+
+/* Confirm correct trustwords (pEp, long version) */
+"Confirm Trustwords" = "Trustwords bestätigen";
+
+/* UIUtils.presentActionSheetWithContactOptions.button.title Copy Email */
+"Copy Email" = "E-Mail kopieren";
+
+/* Error description detecting account settings */
+"Could not find servers. Please enter manually" = "Konnte keine Server finden. Bitte tragen Sie diese von Hand ein";
+
+/* Settings: Cell (button) title to view app credits */
+"Credits" = "Mitwirkung";
+
+/* Default Account Setting Section Title
+   Settings: Cell (button) title to view default account setting */
+"Default Account" = "Standard-Konto";
+
+/* compose email delete */
+"Delete" = "Löschen";
+
+/* possible private status action */
+"Disable Protection" = "Schutz ausschalten";
+
+/* ComposeTableView: button to decide to discharge changes made on a drafted mail. */
+"Discharge changes" = "Änderungen verwerfen";
+
+/* Alert message for empty e-mail address field */
+"E-mail must not be empty" = "Die E-Mail Adresse darf nicht leer sein";
+
+/* Email */
+"Email" = "E-Mail";
+
+/* Title of alert: a required field is empty */
+"Empty Field" = "Fehlende Eingabe";
+
+/* Passive mode title */
+"Enable passive mode" = "Passiven Modus aktivieren";
+
+/* title for subject protection */
+"Enable Protected Subject" = "Geschützten Betreff aktivieren";
+
+/* possible private status action */
+"Enable Protection" = "Schutz aktivieren";
+
+/* Title of error alert shown to the user in case a message could not be sent
+   Title of error alert shown to the user in case an unknown error occured. */
+"Error" = "Fehler";
+
+/* read button in slide-left menu */
+"Flag" = "Markieren";
+
+/* title unread filter cell */
+"Flagged" = "Markiert";
+
 /* FoldersView */
 "Folders" = "Ordner";
+
+/* EmailList action title
+   Message actions */
+"Forward" = "Weiterleiten";
+
+/* Compose field title
+   Title of account picker when composing a message */
+"From:" = "Von:";
+
+/* Tableview section header */
+"Global Settings" = "Globale Einstellungen";
+
+/* Tableview section footer */
+"If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert";
+
+/* Privacy status suggestion */
+"If this message was addressed to you, please inform the sender that you don't have the key." = "Wenn dies Nachricht an Sie adressiert wurde informieren Sie bitte den Empfänger, dass Sie den Schlüssel nicht haben.";
+
+/* Empty IMAP port server message */
+"IMAP Port must not be empty." = "IMAP Port muss angegeben werden.";
+
+/* Alert message for empty IMAP server */
+"IMAP server must not be empty" = "IMAP Server muss angegeben werden";
+
+/* Empty IMAP server message */
+"IMAP server must not be empty." = "IMAP Server muss angegeben werden";
+
+/* Account settings title IMAP */
+"IMAP Settings" = "IMAP Einstellungen";
+
+/* Name of INBOX mailbox (of one account) */
+"Inbox" = "Posteingang";
+
+/* title for the accounts section */
+"INCLUDE MAIL FROM:" = "Zeige Mails an von:";
+
+/* title for the include section */
+"INCLUDE:" = "Anzeigen:";
+
+/* Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server */
+"Internal Error" = "Internen Fehler";
+
+/* Title of invalid accout settings user input alert */
+"Invalid Input" = "Ungültige Eingabe.";
+
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to the server. Username or password is wrong." = "Kein Server-Login möglich. Benutzername oder Passwort ist falsch.";
+
+/* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
+"Keep in Outbox" = "Im Postausgang behalten";
+
+/* No comment provided by engineer. */
+"Logging" = "Protokollierung";
+
+/* Title of error alert shown to the user in case the authentication to IMAP or SMTP server failed. */
+"Login Failed" = "Einloggen gescheitert";
+
+/* Privacy status suggestion */
+"Make sure the privacy status for each communication partner listed is at least secure" = "Stellen Sie sicher dass der Datenschutzstatus für jeden Kommunikationspartner mindestens Sicher ist.";
+
+/* privacyStatusDescription yellow */
+"Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call" = "Stellen Sie sicher, dass Ihr Kommunikationspartner sicher und vertrauenswürdig ist, indem Sie die folgenden Trustwords telefonisch mit ihm vergleichen.";
+
+/* manual */
+"Manual configuration" = "Manuelle Konfiguration";
+
+/* Message view title */
+"Message" = "Nachricht";
+
+/* Privacy status title
+   privacyStatusTitle red */
+"Mistrusted" = "Nicht vertrauenswürdig";
+
+/* more button in slide-left menu */
+"More" = "Mehr";
+
+/* MoveToFolderViewController title */
+"Move To" = "Verschieben nach";
+
+/* EmailList action title */
+"Move to Folder" = "Zu Ordner verschieben";
+
+/* File name used for videos the user attaches. */
+"Movie" = "Film";
+
+/* UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message */
+"New Mail Message" = "Neue E-Mail";
+
+/* Title for notification show on lock screen for *one* new mail */
+"New message received" = "Neue E-Mail erhalten";
+
+/* Error when no account found for set_own_key UI */
+"No account found with the given email." = "Kein Konto für die E-Mail vorhanden";
+
+/* Privacy status suggestion */
+"No action needed!" = "Keine weiteren Schritte nötig!";
+
+/* Alert title shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"No Permissions" = "Keine Berechtigung";
+
+/* privacyStatusDescription no_color
+   privacyStatusTitle no_color */
+"None" = "Keine";
+
+/* Filter accept text
+   General alert positive button
+   UIAlertAction ok after error */
+"Ok" = "Ok";
+
+/* OK button for invalid accout settings user input alert */
+"OK" = "OK";
+
+/* Name of folder that holds yet unsend messages (outbox) */
+"Outbox" = "Postausgang";
+
+/* Alert message shown if user wants to add a photo attachment, but has denied to give the app permissions. */
+"p≡p has no permissions to access 
+the Photo Gallery. You can grand permissions in Settings App." = "p≡p hat keine Berechtigung für die Foto-Bibliothek. Das können Sie in den Einstellungen ändern.";
+
+/* password */
+"Password" = "Passwort";
+
+/* Tableview section header */
+"PGP Compatibility" = "Kompatibilität zu PGP";
+
+/* Privacy status suggestion */
+"Please add the necessary information." = "Bitte fügen Sie die notwendigen Informationen hinzu.";
+
+/* Privacy status suggestion */
+"Please ask your communication partner to use an encryption solution or install p≡p." = "Bitten Sie Ihren Kommunikationspartner, eine Verschlüsselungslösung einzusetzen oder p≡p zu installieren.";
+
+/* Validation error for set_own_key UI */
+"Please provide an email and a fingerprint. The email must match an existing account." = "Bitte geben Sie eine E-Mail und einen Fingerabruck ein. Die E-Mail muss zu einem existierenen Konto passen.";
+
+/* passive mode description */
+"public key is only attached if key is received from partner" = "Der öffentliche Schüssel wird nur angehängt wenn bereits einer von dem Partner erhalten wurde";
+
+/* Privacy status suggestion */
+"Re-establish the connection with your communication partner and try to complete another handshake." = "Verbinden Sie sich erneut mit Ihrem Kommunikationspartner und führen Sie einen weiteren Handshake durch.";
+
+/* read button in slide-left menu */
+"Read" = "Gelesen";
+
+/* ComposeTableView: Label of swipe left. Removing of attachment. */
+"Remove" = "Entfernen";
+
+/* EmailList action title
+   Message actions
+   read button in slide-left menu */
+"Reply" = "Antworten";
+
+/* EmailList action title
+   Message actions */
+"Reply All" = "Allen antworten";
+
+/* ComposeTableView: button to decide to save changes made on a drafted mail. */
+"Save changes" = "Änderungen speichern";
+
+/* compose email save */
+"Save Draft" = "Entwurf speichern";
+
+/* Privacy status title
+   privacyStatusTitle yellow */
+"Secure" = "Sicher";
+
+/* Privacy status title
+   privacyStatusTitle green */
+"Secure & Trusted" = "Sicher & Vertrauenswürdig";
+
+/* pEp mail signature. Newlines will be added by app */
+"sent with p≡p" = "Gesended mit p≡p";
+
+/* Privacy status suggestion */
+"Separately verify the content of this message with your communication partner." = "Überprüfen Sie zusammen mit Ihrem Kommunikationspartner den Inhalt dieser Nachricht.";
+
+/* Title of error alert shown to the user in case we can not connect to the IMAP server
+   Title of error alert shown to the user in case we can not connect to the SMTP server */
+"Server Unreachable" = "Server konnte nicht erreicht werden";
+
+/* Settings: Cell (button) title for entering fingerprints that are made own keys */
+"Set Own Key" = "Eigenen Schlüssel festlegen";
+
+/* Settings view title */
+"Settings" = "Einstellungen";
+
+/* Login */
+"Sign In" = "Einloggen";
+
+/* Body for notifications show on lock screen for new mail(s) */
+"Slide for more" = "Wischen um mehr zu sehen";
+
+/* Empty SMTP port server message */
+"SMTP Port must not be empty." = "SMTP Port muss angegeben werden.";
+
+/* Alert message for empty SMTP server */
+"SMTP server must not be empty" = "SMTP Server darf nicht leer sein";
+
+/* Empty SMTP server message */
+"SMTP server must not be empty." = "SMTP Server darf nicht leer sein";
+
+/* Account settings title SMTP */
+"SMTP Settings" = "SMTP Einstellungen";
+
+/* Reply to unknown sender with date */
+"Someone wrote on %@:" = "Jemand schrieb am %@:";
+
+/* Reply to unknown sender without date */
+"Someone wrote:" = "Jemand schrieb:";
+
+/* Stop/trust button in handshake overview */
+"Start Trusting" = "Vertrauen";
+
+/* Stop/trust button in handshake overview */
+"Stop Trusting" = "Vertrauen aufheben";
+
+/* Settings: Cell (button) title to view default account setting
+   Trusted Server Setting Section Title */
+"Store Messages Securely" = "Nachrichten vertraulich speichern";
+
+/* Compose field title */
+"Subject:" = "Betreff:";
+
+/* error message for .accountExistence */
+"The account already exists" = "Der Account existiert bereits";
+
+/* Error message shown to the user in case a message could not be sent. */
+"The message could not be sent. Please try again later." = "Die Nachricht konnte nicht versandt werden. Bitte versuchen Sie es später noch einmal.";
+
+/* error message for .minimumLengthUsername */
+"The username must contain more than 1 characters" = "Der Benutzername muss mindestens ein Zeichen enthalten";
+
+/* privacyStatusDescription red */
+"This communication partner is mistrusted" = "Ihr Kommunikationspartner ist nicht vertrauenswürdig";
+
+/* privacyStatusDescription green */
+"This communication partner is secure and trusted" = "Dieser Kommunikationspartner ist sicher & vertrauenswürdig";
+
+/* Privacy status explanation */
+"This message cannot be decrypted because the key is not available." = "Die Nachricht konnte nicht entschlüsselt werden, weil der Schlüssel fehlt.";
+
+/* Privacy status explanation */
+"This message cannot be decrypted." = "Die Nachricht konnte nicht entschlüsselt werden.";
+
+/* content that is shown for undecryptable messages */
+"This message could not be decrypted." = "Die Nachricht konnte nicht entschlüsselt werden.";
+
+/* Privacy status explanation */
+"This message does not contain enough information to determine if it is secure." = "Über diese Nachricht liegen nicht genügend Informationen vor, um überprüfen zu können, ob sie sicher übertragen wurde.";
+
+/* Privacy status explanation */
+"This message has a communication partner that has previously been marked as mistrusted." = "Mindestens ein Kommunikationspartner dieser Nachricht ist als nicht vertrauenswürdig eingestuft.";
+
+/* Privacy status suggestion */
+"This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p." = "Diese Nachricht besitzt keine zuverlässige Verschlüsselung oder keine digitale Signatur. Bitten Sie Ihren Kommunikationspartner, eine bessere Verschlüsselungslösung zu verwenden oder p≡p zu installieren.";
+
+/* Privacy status explanation */
+"This message has unreliable protection" = "Diese Nachricht wurde nicht zuverlässig geschützt.";
+
+/* Compose field title */
+"This message is from a mailing list." = "Diese E-Mail ist von einer Mailing-Liste.";
+
+/* Privacy status explanation */
+"This message is not secure and has been tampered with." = "Diese Nachricht ist nicht sicher und wurde manipuliert.";
+
+/* Privacy status explanation */
+"This message is secure and trusted." = "Diese Nachricht ist sicher und vertrauenswürdig.";
+
+/* Privacy status explanation */
+"This message is secure but you still need to verify the identity of your communication partner." = "Diese Nachricht ist sicher, aber Sie sollten die Identität Ihres Kommunikationspartners prüfen.";
+
+/* Privacy status explanation */
+"This message is unsecure for some communication partners." = "Diese Nachricht kann an einige Kommunikationspartner nicht sicher übertragen werden.";
+
+/* Privacy status explanation */
+"This message is unsecure." = "Diese Nachricht ist unsicher.";
+
+/* settings, enable thread view or not */
+"Thread Messages" = "Nachrichten als Konversation anzeigen";
+
+/* to me image text */
+"TO" = "An";
+
+/* Compose field title */
+"To:" = "An:";
+
+/* Compose field title */
+"To: " = "An: ";
+
+/* UI alert title for transport protocol */
+"Transport protocol" = "Transport-Protokoll";
+
+/* Trash button in slide-left menu */
+"Trash" = "Papierkorb";
+
+/* Privacy status title */
+"Under Attack" = "Manipuliert";
+
+/* read button in slide-left menu */
+"Unflag" = "De-Markieren";
+
+/* Displayed attachment filename if unknown */
+"unknown" = "unbekannt";
+
+/* Privacy status title */
+"Unknown" = "Unbekannt";
+
+/* file name used for unnamed attachments */
+"unnamed" = "ohne Namen";
+
+/* title unread filter cell */
+"Unread" = "Ungelesen";
+
+/* Privacy status title */
+"Unreliable Security" = "Unzuverlässig";
+
+/* Privacy status title */
+"Unsecure" = "Unsicher";
+
+/* Privacy status title */
+"Unsecure for Some" = "Teilweise unsicher";
+
+/* Alert message for empty username */
+"Username must not be empty" = "Der Benutzername darf nicht leer sein";
+
+/* Empty username message */
+"Username must not be empty." = "Der Benutzername darf nicht leer sein";
+
+/* Error title for validation errors on login screen */
+"Validation Error" = "Ungültige Eingabe";
+
+/* Error message shown to the user in case we can not connect to the IMAP server */
+"We could not connect to the IMAP server." = "Der IMAP Server konnte nicht erreicht werden.";
+
+/* Error message shown to the user in case we can not connect to the SMTP server */
+"We could not connect to the SMTP server." = "Der SMTP Server konnte nicht erreicht werden.";
+
+/* Title for attachments filter */
+"With attachments" = "Mit Anhängen";
+
+/* Incorrect fingerprint (PGP, long version) */
+"Wrong Fingerprint" = "Falscher Fingerabruck";
+
+/* Incorrect trustwords (pEp, long version) */
+"Wrong Trustwords" = "Falsche Trustwords";
 
