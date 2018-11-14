@@ -12,6 +12,7 @@ import XCTest
 import MessageModel
 
 class ComposeViewModelStateTest: XCTestCase {
+    private var testDelegate: TestDelegate?
 
     /*
      private(set) var initData: InitData?
@@ -118,21 +119,64 @@ class ComposeViewModelStateTest: XCTestCase {
 
     // MARK: - HELPER
 
-    class Delegate: ComposeViewModelStateDelegate {
+    class TestDelegate: ComposeViewModelStateDelegate {
+        let expDidChangeValidationStateToCalled: XCTestExpectation?
+        let expectedStateIsValid: Bool?
+
+        let expDidChangePEPRatingToCalled: XCTestExpectation?
+        let expectedNewRating: PEP_rating?
+
+        let expDidChangeProtectionCalled: XCTestExpectation?
+        let expectedNewProtection: Bool?
+
+        init(expDidChangeValidationStateToCalled: XCTestExpectation?,
+             expectedStateIsValid: Bool?,
+             expDidChangePEPRatingToCalled: XCTestExpectation?,
+             expectedNewRating: PEP_rating?,
+             expDidChangeProtectionCalled: XCTestExpectation?,
+             expectedNewProtection: Bool?) {
+            self.expDidChangeValidationStateToCalled = expDidChangeValidationStateToCalled
+            self.expectedStateIsValid = expectedStateIsValid
+            self.expDidChangePEPRatingToCalled = expDidChangePEPRatingToCalled
+            self.expectedNewRating = expectedNewRating
+            self.expDidChangeProtectionCalled = expDidChangeProtectionCalled
+            self.expectedNewProtection = expectedNewProtection
+        }
+
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                    didChangeValidationStateTo isValid: Bool) {
-            fatalError()
+            guard let exp = expDidChangeValidationStateToCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedStateIsValid {
+                XCTAssertEqual(isValid, expected)
+            }
         }
 
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                    didChangePEPRatingTo newRating: PEP_rating) {
-            fatalError()
+            guard let exp = expDidChangePEPRatingToCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedNewRating {
+                XCTAssertEqual(newRating, expected)
+            }
         }
 
         func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                    didChangeProtection newValue: Bool) {
-            fatalError()
+            guard let exp = expDidChangeProtectionCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedNewProtection {
+                XCTAssertEqual(newValue, expected)
+            }
         }
     }
-
 }
