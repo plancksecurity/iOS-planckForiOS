@@ -41,7 +41,7 @@ extension UIButton {
     }
 }
 
-public class handshakeButton: UIButton {
+public class HandshakeButton: UIButton {
 
     public func roundCorners(corners: UIRectCorner, radius: CGFloat){
         clipsToBounds = true
@@ -56,5 +56,4 @@ public class handshakeButton: UIButton {
 
         layer.mask = maskLayer
     }
-
 }

@@ -38,8 +38,8 @@ protocol HandshakePartnerTableViewCellDelegate: class {
 
 class HandshakePartnerTableViewCell: UITableViewCell {
     @IBOutlet weak var startStopTrustingButton: UIButton!
-    @IBOutlet weak var confirmButton: handshakeButton!
-    @IBOutlet weak var wrongButton: handshakeButton!
+    @IBOutlet weak var confirmButton: HandshakeButton!
+    @IBOutlet weak var wrongButton: HandshakeButton!
     @IBOutlet weak var partnerImageView: UIImageView!
     @IBOutlet weak var pEpStatusImageView: UIImageView!
     @IBOutlet weak var partnerNameLabel: UILabel!
