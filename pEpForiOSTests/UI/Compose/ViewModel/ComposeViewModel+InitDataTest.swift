@@ -366,26 +366,52 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         assertTesteeForExpectedValues(pEpProtection: expectedProtected)
     }
 
-    /*
+    // MARK: - nonInlinedAttachments
 
+    func testNonInlinedAttachments() {
+        ComposeUtil.ComposeMode.allCases.forEach {
+            assertNonInlinedAttachments(forComposeMode: $0)
+        }
+    }
 
+    // MARK: - inlinedAttachments
 
-     public var nonInlinedAttachments: [Attachment] {
-     return ComposeUtil.initialAttachments(composeMode: composeMode,
-     contentDisposition: .attachment,
-     originalMessage: originalMessage)
-     }
-
-     public var inlinedAttachments: [Attachment] {
-     return ComposeUtil.initialAttachments(composeMode: composeMode,
-     contentDisposition: .inline,
-     originalMessage: originalMessage)
-     }
-
-
-     */
+    func testInlinedAttachments() {
+        ComposeUtil.ComposeMode.allCases.forEach {
+            assertInlinedAttachments(forComposeMode: $0)
+        }
+    }
 
     // MARK: - Helper
+
+    private func assertNonInlinedAttachments(forComposeMode mode: ComposeUtil.ComposeMode) {
+        assertAttachments(orType: .attachment, forComposeMode: mode)
+    }
+
+    private func assertInlinedAttachments(forComposeMode mode: ComposeUtil.ComposeMode) {
+        assertAttachments(orType: .inline, forComposeMode: mode)
+    }
+
+    private func assertAttachments(orType contentDisposition: Attachment.ContentDispositionType,
+                                   forComposeMode mode: ComposeUtil.ComposeMode) {
+        guard let om = messageAllButBccSet else {
+            XCTFail("No message")
+            return
+        }
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
+                                           orForOriginalMessage: om,
+                                           composeMode: mode)
+        let expectedAttachments =
+            ComposeUtil.initialAttachments(composeMode: mode,
+                                           contentDisposition: contentDisposition,
+                                           originalMessage: om)
+        let expectedInlinedAttachments =
+            contentDisposition == .inline ? expectedAttachments : nil
+        let expectedNonInlinedAttachments =
+            contentDisposition == .attachment ? expectedAttachments : nil
+        assertTesteeForExpectedValues(nonInlinedAttachments: expectedNonInlinedAttachments,
+                                      inlinedAttachments: expectedInlinedAttachments)
+    }
 
     private func assertIsDraftsAndOrOutbox(forOriginalMessageWithParentFolder folder: Folder) {
         let mode = ComposeUtil.ComposeMode.normal
