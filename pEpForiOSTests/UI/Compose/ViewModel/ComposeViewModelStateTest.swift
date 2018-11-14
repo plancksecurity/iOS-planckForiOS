@@ -18,9 +18,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     // MARK: - initData
 
     func testInitData() {
-        let initData = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
-                                                 orForOriginalMessage: nil,
-                                                 composeMode: nil)
+        let initData = ComposeViewModel.InitData()
         testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: nil)
         guard let testeeInitData = testee?.initData else {
             XCTFail("No testee")
@@ -29,7 +27,21 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(testeeInitData)
     }
 
+    // MARK: - delegate
+
+    func testInitialDelegateIsSet() {
+        let initData = ComposeViewModel.InitData()
+        let delegate = TestDelegate()
+        testee = ComposeViewModel.ComposeViewModelState(initData: initData, delegate: delegate)
+        XCTAssertNotNil(testee?.delegate)
+    }
+
     /*
+     public private(set) var bccWrapped = true
+
+
+
+
      private var isValidatedForSending = false {
      didSet {
      delegate?.composeViewModelState(self,
@@ -53,16 +65,15 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
      }
      }
 
-     public private(set) var bccWrapped = true
 
-     weak var delegate: ComposeViewModelStateDelegate?
 
-     //Recipients
-     var toRecipients = [Identity]() {
-     didSet {
-     edited = true
-     validate()
-     }
+
+             //Recipients
+             var toRecipients = [Identity]() {
+             didSet {
+             edited = true
+             validate()
+             }
      }
      var ccRecipients = [Identity]() {
      didSet {
@@ -143,12 +154,12 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         let expDidChangeProtectionCalled: XCTestExpectation?
         let expectedNewProtection: Bool?
 
-        init(expDidChangeValidationStateToCalled: XCTestExpectation?,
-             expectedStateIsValid: Bool?,
-             expDidChangePEPRatingToCalled: XCTestExpectation?,
-             expectedNewRating: PEP_rating?,
-             expDidChangeProtectionCalled: XCTestExpectation?,
-             expectedNewProtection: Bool?) {
+        init(expDidChangeValidationStateToCalled: XCTestExpectation? = nil,
+             expectedStateIsValid: Bool? = nil,
+             expDidChangePEPRatingToCalled: XCTestExpectation? = nil,
+             expectedNewRating: PEP_rating? = nil,
+             expDidChangeProtectionCalled: XCTestExpectation? = nil,
+             expectedNewProtection: Bool? = nil) {
             self.expDidChangeValidationStateToCalled = expDidChangeValidationStateToCalled
             self.expectedStateIsValid = expectedStateIsValid
             self.expDidChangePEPRatingToCalled = expDidChangePEPRatingToCalled
