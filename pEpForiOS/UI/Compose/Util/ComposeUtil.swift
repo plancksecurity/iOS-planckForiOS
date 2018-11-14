@@ -12,7 +12,7 @@ import MessageModel
 /// (the correct recipients, cancle actions ...).
 struct ComposeUtil {
 
-    enum ComposeMode {
+    enum ComposeMode: CaseIterable {
         case normal
         case replyFrom
         case replyAll
