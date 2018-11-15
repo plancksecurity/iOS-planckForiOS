@@ -59,53 +59,187 @@ class ComposeViewModelTest: XCTestCase {
 
     }
     private class TestDelegate:  ComposeViewModelDelegate {
+        let expContentChangedCalled: XCTestExpectation?
+        let expectedContentChangedIndexPath: IndexPath?
+
+        let expFocusSwitchedCalled: XCTestExpectation?
+
+        let expValidatedStateChangedCalled: XCTestExpectation?
+        let expectedIsValidated: Bool?
+
+        let expModelChangedCalled: XCTestExpectation?
+
+        let expSectionChangedCalled: XCTestExpectation?
+        let expectedSection: Int?
+
+        let expColorBatchNeedsUpdateCalled: XCTestExpectation?
+        let expectedRating: PEP_rating?
+        let expectedProtectionEnabled: Bool?
+
+        let expHideSuggestionsCalled: XCTestExpectation?
+
+        let expShowSuggestionsCalled: XCTestExpectation?
+        let expectedShowSuggestionsIndexPath: IndexPath?
+
+        let expShowMediaAttachmentPickerCalled: XCTestExpectation?
+
+        let expHideMediaAttachmentPickerCalled: XCTestExpectation?
+
+        let expShowDocumentAttachmentPickerCalled: XCTestExpectation?
+
+        let expDocumentAttachmentPickerDonePickerCalled: XCTestExpectation?
+
+        init(expContentChangedCalled: XCTestExpectation?,
+             expectedContentChangedIndexPath: IndexPath?,
+             expFocusSwitchedCalled: XCTestExpectation?,
+             expValidatedStateChangedCalled: XCTestExpectation?,
+             expectedIsValidated: Bool?,
+             expModelChangedCalled: XCTestExpectation?,
+             expSectionChangedCalled: XCTestExpectation?,
+             expectedSection: Int?,
+             expColorBatchNeedsUpdateCalled: XCTestExpectation?,
+             expectedRating: PEP_rating?,
+             expectedProtectionEnabled: Bool?,
+             expHideSuggestionsCalled: XCTestExpectation?,
+             expShowSuggestionsCalled: XCTestExpectation?,
+             expectedShowSuggestionsIndexPath: IndexPath?,
+             expShowMediaAttachmentPickerCalled: XCTestExpectation?,
+             expHideMediaAttachmentPickerCalled: XCTestExpectation?,
+             expShowDocumentAttachmentPickerCalled: XCTestExpectation?,
+             expDocumentAttachmentPickerDonePickerCalled: XCTestExpectation?) {
+            self.expContentChangedCalled = expContentChangedCalled
+            self.expectedContentChangedIndexPath = expectedContentChangedIndexPath
+            self.expFocusSwitchedCalled = expFocusSwitchedCalled
+            self.expValidatedStateChangedCalled = expValidatedStateChangedCalled
+            self.expectedIsValidated = expectedIsValidated
+            self.expModelChangedCalled = expModelChangedCalled
+            self.expSectionChangedCalled = expSectionChangedCalled
+            self.expectedSection = expectedSection
+            self.expColorBatchNeedsUpdateCalled =  expColorBatchNeedsUpdateCalled
+            self.expectedRating = expectedRating
+            self.expectedProtectionEnabled = expectedProtectionEnabled
+            self.expHideSuggestionsCalled = expHideSuggestionsCalled
+            self.expShowSuggestionsCalled = expShowSuggestionsCalled
+            self.expectedShowSuggestionsIndexPath = expectedShowSuggestionsIndexPath
+            self.expShowMediaAttachmentPickerCalled = expShowMediaAttachmentPickerCalled
+            self.expHideMediaAttachmentPickerCalled = expHideMediaAttachmentPickerCalled
+            self.expShowDocumentAttachmentPickerCalled = expShowDocumentAttachmentPickerCalled
+            self.expDocumentAttachmentPickerDonePickerCalled =
+            expDocumentAttachmentPickerDonePickerCalled
+        }
+
         func contentChanged(inRowAt indexPath: IndexPath) {
-            fatalError()
+            guard let exp = expContentChangedCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedContentChangedIndexPath {
+                XCTAssertEqual(indexPath, expected)
+            }
         }
 
         func focusSwitched() {
-            fatalError()
+            guard let exp = expFocusSwitchedCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func validatedStateChanged(to isValidated: Bool) {
-            fatalError()
+            guard let exp = expValidatedStateChangedCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedIsValidated {
+                XCTAssertEqual(isValidated, expected)
+            }
         }
 
         func modelChanged() {
-            fatalError()
+            guard let exp = expModelChangedCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func sectionChanged(section: Int) {
-            fatalError()
+            guard let exp = expSectionChangedCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedSection {
+                XCTAssertEqual(section, expected)
+            }
         }
 
         func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
-            fatalError()
+            guard let exp = expColorBatchNeedsUpdateCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedRating {
+                XCTAssertEqual(rating, expected)
+            }
+            if let expectedProtection = expectedProtectionEnabled {
+                XCTAssertEqual(protectionEnabled, expectedProtection)
+            }
         }
 
         func hideSuggestions() {
-            fatalError()
+            guard let exp = expHideSuggestionsCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func showSuggestions(forRowAt indexPath: IndexPath) {
-            fatalError()
+            guard let exp = expShowSuggestionsCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedShowSuggestionsIndexPath {
+                XCTAssertEqual(indexPath, expected)
+            }
         }
 
         func showMediaAttachmentPicker() {
-            fatalError()
+            guard let exp = expShowMediaAttachmentPickerCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func hideMediaAttachmentPicker() {
-            fatalError()
+            guard let exp = expHideMediaAttachmentPickerCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func showDocumentAttachmentPicker() {
-            fatalError()
+            guard let exp = expShowDocumentAttachmentPickerCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func documentAttachmentPickerDone() {
-            fatalError()
+            guard let exp = expDocumentAttachmentPickerDonePickerCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
     }
-
 }
