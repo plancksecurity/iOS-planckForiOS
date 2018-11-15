@@ -1,10 +1,10 @@
 /* Disabled attachments for a message with status 'under attack'. Placeholders: title, explanation, suggestion. */
 "
-%@
+%1$@
 
-%@
+%2$@
 
-%@
+%3$@
 
 Attachments are disabled.
 
@@ -15,20 +15,22 @@ Attachments are disabled.
 
 %3$@
 
-Anhänge sind ausgeschaltet.
+Anhänge sind desaktiviert.
 
 ";
+
+/* Don't localize this. No privacy status explanation
+   No privacy status suggestion */
+"-" = "-";
 
 /* Title for notification show on lock screen for new mails */
 "(numMails) new messages received" = "(numMails) neue Nachrichten erhalten";
 
-/* Reply to multiple contacts, with date
-   Reply to single contact, with date */
-"%@ wrote on %@:" = "%1$@ schrieb am %2$@:";
+/* Reply to multiple contacts, with date */
+"%1$@ wrote on %@:" = "%1$@ schrieb am %@:";
 
-/* Reply to multiple contacts, without date
-   Reply to single contact, without date */
-"%@ wrote:" = "%@ schrieb:";
+/* Reply to single contact, with date */
+"%1$@ wrote on %2$@:" = "%1$@ schrieb %2$@:";
 
 /* error message for .missingPassword */
 "A non-empty password is required" = "Ein nicht-leeres Passwort wird benötigt";
@@ -77,11 +79,11 @@ Anhänge sind ausgeschaltet.
 /* Attach photo/video (message text context menu) */
 "Attach media" = "Foto / Video einfügen";
 
-/* image attachment name */
-"Attached Image %1d (%2@)" = "Bild %1$d (%2$@) angehängt";
-
 /* title attachments filter cell */
 "Attachments" = "Anhänge";
+
+/* Compose field title */
+"BCC:" = "BCC:";
 
 /* Privacy status title */
 "Broken" = "Defekt";
@@ -104,6 +106,9 @@ Anhänge sind ausgeschaltet.
 
 /* Compose field title */
 "CC:" = "Kopie:";
+
+/* Compose field title */
+"Cc/Bcc:" = "Cc/Bcc:";
 
 /* UI alert message for transport protocol */
 "Choose a Security protocol for your accont" = "Wählen Sie ein Sicherheitsprotokoll für Ihr Konto";
@@ -184,14 +189,23 @@ Anhänge sind ausgeschaltet.
    Title of account picker when composing a message */
 "From:" = "Von:";
 
+/* The 'Fwd:' that gets appended to the subject line */
+"Fwd: " = "Fwd: ";
+
 /* Tableview section header */
 "Global Settings" = "Globale Einstellungen";
+
+/* possible privacy status action */
+"Handshake" = "Handshake";
 
 /* Tableview section footer */
 "If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert";
 
 /* Privacy status suggestion */
 "If this message was addressed to you, please inform the sender that you don't have the key." = "Wenn dies Nachricht an Sie adressiert wurde informieren Sie bitte den Empfänger, dass Sie den Schlüssel nicht haben.";
+
+/* Manual account setup */
+"IMAP" = "IMAP";
 
 /* Empty IMAP port server message */
 "IMAP Port must not be empty." = "IMAP Port muss angegeben werden.";
@@ -217,8 +231,17 @@ Anhänge sind ausgeschaltet.
 /* Title of error alert shown to the user in case an error in the app occured that is not caused or related to the server */
 "Internal Error" = "Internen Fehler";
 
+/* Invalid input for account */
+"Invalid account name: %1$@" = "Ungültiger Kontoname: %1$@";
+
+/* Invalid input for e-mail address */
+"Invalid e-mail address: %1$@" = "Ungültige E-Mail-Adresse: %1$@";
+
 /* Title of invalid accout settings user input alert */
 "Invalid Input" = "Ungültige Eingabe.";
+
+/* Invalid input for por */
+"Invalid port: %1$@" = "Ungültiger Port: %1$@";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
 "It was impossible to login to the server. Username or password is wrong." = "Kein Server-Login möglich. Benutzername oder Passwort ist falsch.";
@@ -260,6 +283,9 @@ Anhänge sind ausgeschaltet.
 /* File name used for videos the user attaches. */
 "Movie" = "Film";
 
+/* username */
+"Name" = "Name";
+
 /* UIUtils.presentActionSheetWithContactOptions.button.title New Mail Message */
 "New Mail Message" = "Neue E-Mail";
 
@@ -281,10 +307,8 @@ Anhänge sind ausgeschaltet.
 
 /* Filter accept text
    General alert positive button
+   OK button for invalid accout settings user input alert
    UIAlertAction ok after error */
-"Ok" = "Ok";
-
-/* OK button for invalid accout settings user input alert */
 "OK" = "OK";
 
 /* Name of folder that holds yet unsend messages (outbox) */
@@ -310,7 +334,7 @@ the Photo Gallery. You can grand permissions in Settings App." = "p≡p hat kein
 "Please provide an email and a fingerprint. The email must match an existing account." = "Bitte geben Sie eine E-Mail und einen Fingerabruck ein. Die E-Mail muss zu einem existierenen Konto passen.";
 
 /* passive mode description */
-"public key is only attached if key is received from partner" = "Der öffentliche Schüssel wird nur angehängt wenn bereits einer von dem Partner erhalten wurde";
+"Public key material will only be attached to a message if p≡p detects that the recipient is also using p≡p." = "Öffentliche Schlüssel werden nur angehängt wenn p≡p festgestellt hat dass der Empfänger auch p≡p nutzt.";
 
 /* Privacy status suggestion */
 "Re-establish the connection with your communication partner and try to complete another handshake." = "Verbinden Sie sich erneut mit Ihrem Kommunikationspartner und führen Sie einen weiteren Handshake durch.";
@@ -366,6 +390,9 @@ the Photo Gallery. You can grand permissions in Settings App." = "p≡p hat kein
 /* Body for notifications show on lock screen for new mail(s) */
 "Slide for more" = "Wischen um mehr zu sehen";
 
+/* Manual account setup */
+"SMTP" = "SMTP";
+
 /* Empty SMTP port server message */
 "SMTP Port must not be empty." = "SMTP Port muss angegeben werden.";
 
@@ -379,13 +406,16 @@ the Photo Gallery. You can grand permissions in Settings App." = "p≡p hat kein
 "SMTP Settings" = "SMTP Einstellungen";
 
 /* Reply to unknown sender with date */
-"Someone wrote on %@:" = "Jemand schrieb am %@:";
+"Someone wrote on %1$@:" = "Jemand schrieb am %1$@:";
 
 /* Reply to unknown sender without date */
 "Someone wrote:" = "Jemand schrieb:";
 
 /* Stop/trust button in handshake overview */
 "Start Trusting" = "Vertrauen";
+
+/* No comment provided by engineer. */
+"StartTLS" = "StartTLS";
 
 /* Stop/trust button in handshake overview */
 "Stop Trusting" = "Vertrauen aufheben";
@@ -454,6 +484,9 @@ the Photo Gallery. You can grand permissions in Settings App." = "p≡p hat kein
 /* settings, enable thread view or not */
 "Thread Messages" = "Nachrichten als Konversation anzeigen";
 
+/* No comment provided by engineer. */
+"TLS" = "TLS";
+
 /* to me image text */
 "TO" = "An";
 
@@ -504,6 +537,9 @@ the Photo Gallery. You can grand permissions in Settings App." = "p≡p hat kein
 
 /* Error title for validation errors on login screen */
 "Validation Error" = "Ungültige Eingabe";
+
+/* AccountsView: Prefix for version. Shows up like this: \"Version: 2.0.1 build 234\" */
+"Version" = "Version";
 
 /* Error message shown to the user in case we can not connect to the IMAP server */
 "We could not connect to the IMAP server." = "Der IMAP Server konnte nicht erreicht werden.";
