@@ -40,7 +40,7 @@ extension String {
                                   comment: "Privacy status title"),
                 explanation:
                 NSLocalizedString("-",
-                                  comment: "No privacy status explanation"),
+                                  comment: "Don't localize this. No privacy status explanation"),
                 suggestion: NSLocalizedString("-", comment: "No privacy status suggestion")),
          PEP_rating_mistrust:
             PEPStatusText(
