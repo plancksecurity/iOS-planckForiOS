@@ -43,12 +43,14 @@ extension EmailListViewModel: EmailDisplayDelegate {
         defer {
             startListeningToChanges()
         }
-        guard let index = self.index(of: message) else {
-            return
+        DispatchQueue.main.async { [weak self] in
+            guard let index = self?.index(of: message) else {
+                return
+            }
+            self?.messages.removeObject(at: index)
+            self?.informDeleteRow(at: index)
         }
-        messages.removeObject(at: index)
-        informDeleteRow(at: index)
-        startListeningToChanges()
+
     }
 
     private func updateRow(for message: Message, isSeenStateChange: Bool = false) {
@@ -56,17 +58,19 @@ extension EmailListViewModel: EmailDisplayDelegate {
         defer {
             startListeningToChanges()
         }
-        guard let index = self.index(of: message) else {
-            return
-        }
-        
-        let previewMessage = MessageViewModel(with: message)
-        messages.removeObject(at: index)
-        messages.insert(object: previewMessage)
-        if isSeenStateChange {
-            informSeenStateChangeForRow(at: index)
-        } else {
-            informUpdateRow(at: index)
+        DispatchQueue.main.async { [weak self] in
+            guard let index = self?.index(of: message) else {
+                return
+            }
+
+            let previewMessage = MessageViewModel(with: message)
+            self?.messages.removeObject(at: index)
+            self?.messages.insert(object: previewMessage)
+            if isSeenStateChange {
+                self?.informSeenStateChangeForRow(at: index)
+            } else {
+                self?.informUpdateRow(at: index)
+            }
         }
     }
 

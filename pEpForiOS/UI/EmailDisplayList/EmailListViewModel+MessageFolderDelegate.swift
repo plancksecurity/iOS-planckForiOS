@@ -198,11 +198,15 @@ extension EmailListViewModel: MessageFolderDelegate {
             }
 
             if let replacementMessage = aReplacementMessage {
-                messages.replaceObject(
-                    at: indexExisting,
-                    with: MessageViewModel(with: replacementMessage))
+                DispatchQueue.main.sync { [weak self] in
+                    self?.messages.replaceObject(
+                        at: indexExisting,
+                        with: MessageViewModel(with: replacementMessage))
+                }
             } else {
-                messages.removeObject(at: indexExisting)
+                DispatchQueue.main.sync { [weak self] in
+                        self?.messages.removeObject(at: indexExisting)
+                }
             }
 
             func notifyUI(theModel: EmailListViewModel) {
@@ -233,9 +237,9 @@ extension EmailListViewModel: MessageFolderDelegate {
                 }
             }
         } else {
-            messages.removeObject(at: indexExisting)
             DispatchQueue.main.sync { [weak self] in
                 if let theSelf = self {
+                    theSelf.messages.removeObject(at: indexExisting)
                     let indexPath = IndexPath(row: indexExisting, section: 0)
                     emailListViewModelDelegate?.emailListViewModel(
                         viewModel: theSelf,
