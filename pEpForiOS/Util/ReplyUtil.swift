@@ -163,12 +163,14 @@ public struct ReplyUtil {
             if let rd = theDate {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "%1$@ wrote on %2$@:", comment: "Reply to single contact, with date"),
+                        "%1$@ wrote on %2$@:",
+                        comment: "Reply to single contact, with date. Placeholders: Name, date."),
                     theNames[0], dateFormatter.string(from: rd as Date))
             } else {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "%1$@ wrote:", comment: "Reply to single contact, without date"),
+                        "%1$@ wrote:",
+                        comment: "Reply to single contact, without date. Placeholder: Name."),
                     theNames[0])
             }
         } else {
@@ -177,12 +179,13 @@ public struct ReplyUtil {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
                         "%1$@ wrote on %@:",
-                        comment: "Reply to multiple contacts, with date"),
+                        comment: "Reply to multiple contacts, with date. Placeholder: Name."),
                     allNames, dateFormatter.string(from: rd as Date))
             } else {
                 return String.localizedStringWithFormat(
                     NSLocalizedString(
-                        "%1$@ wrote:", comment: "Reply to multiple contacts, without date"),
+                        "%1$@ wrote:",
+                        comment: "Reply to multiple contacts, without date. Placeholder: Names"),
                     allNames)
             }
         }

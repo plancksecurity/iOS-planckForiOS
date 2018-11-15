@@ -29,8 +29,9 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
             theAttachment.fileName = cidUrl
 
             let alt = String.localizedStringWithFormat(
-                NSLocalizedString("Attached Image %1$d (%2$@)",
-                                  comment: "image attachment name"),
+                NSLocalizedString(
+                    "Attached Image %1$d (%2$@)",
+                    comment: "Alt text for image attachment in markdown. Placeholders: Attachment number, extension."),
                 count, theExt)
 
             return "![\(alt)](\(cidSrc))"

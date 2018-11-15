@@ -27,7 +27,7 @@ open class MessageContentCell: MessageCell {
                 NSLocalizedString(
                     "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n",
                     comment: "Disabled attachments for a message with status 'under attack'. " +
-                    "Placeholders: title, explanation, suggestion."),
+                    "Placeholders: Title, explanation, suggestion."),
                 status.title, status.explanation, status.suggestion)
             finalText.bold(messageString)
         }
