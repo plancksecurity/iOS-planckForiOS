@@ -23,8 +23,8 @@ extension AccountSettingsUserInputError: LocalizedError {
         case .invalidInputEmailAddress(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid e-mail address: %1$@",
-                    comment: "Invalid input for e-mail address"), message)
+                    "Invalid email address: %1$@",
+                    comment: "Invalid input for email address"), message)
         case .invalidInputServer(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
