@@ -72,6 +72,23 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
                expectedNumRows: showsCcAndBccInsteadOfWrapper)
     }
 
+    // MARK: - subject
+
+    func testSubject() {
+        let allwaysShown = 1
+        assert(forSectionType: .subject,
+               expectedRowType: SubjectCellViewModel.self,
+               expectedNumRows: allwaysShown)
+    }
+
+    func testSubject_noMatterWhat() {
+        state?.setBccUnwrapped()
+        let allwaysShown = 1
+        assert(forSectionType: .subject,
+               expectedRowType: SubjectCellViewModel.self,
+               expectedNumRows: allwaysShown)
+    }
+
     // MARK: - account
 
     func testAccount_oneExisting() {
