@@ -151,9 +151,9 @@ public struct ReplyUtil {
 
         if theNames.count == 0 {
             if let rd = theDate {
-                return String(
-                    format: NSLocalizedString("Someone wrote on %@:",
-                                              comment: "Reply to unknown sender with date"),
+                return String.localizedStringWithFormat(
+                    NSLocalizedString("Someone wrote on %1$@:",
+                                      comment: "Reply to unknown sender with date"),
                     dateFormatter.string(from: rd as Date))
             } else {
                 return NSLocalizedString("Someone wrote:",
@@ -161,28 +161,28 @@ public struct ReplyUtil {
             }
         } else if theNames.count == 1 {
             if let rd = theDate {
-                return String(
-                    format: NSLocalizedString(
-                        "%@ wrote on %@:", comment: "Reply to single contact, with date"),
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "%1$@ wrote on %2$@:", comment: "Reply to single contact, with date"),
                     theNames[0], dateFormatter.string(from: rd as Date))
             } else {
-                return String(
-                    format: NSLocalizedString(
-                        "%@ wrote:", comment: "Reply to single contact, without date"),
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "%1$@ wrote:", comment: "Reply to single contact, without date"),
                     theNames[0])
             }
         } else {
             let allNames = theNames.joined(separator: nameSeparator)
             if let rd = theDate {
-                return String(
-                    format: NSLocalizedString(
-                        "%@ wrote on %@:",
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "%1$@ wrote on %@:",
                         comment: "Reply to multiple contacts, with date"),
                     allNames, dateFormatter.string(from: rd as Date))
             } else {
-                return String(
-                    format: NSLocalizedString(
-                        "%@ wrote:", comment: "Reply to multiple contacts, without date"),
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "%1$@ wrote:", comment: "Reply to multiple contacts, without date"),
                     allNames)
             }
         }

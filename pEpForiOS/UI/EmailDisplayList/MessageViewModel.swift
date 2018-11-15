@@ -252,9 +252,9 @@ class MessageViewModel: CustomDebugStringConvertible {
         let finalText = NSMutableAttributedString()
         if message.underAttack {
             let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
-            let messageString = String(
-                format: NSLocalizedString(
-                    "\n%@\n\n%@\n\n%@\n\nAttachments are disabled.\n\n",
+            let messageString = String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n",
                     comment: "Disabled attachments for a message with status 'under attack'. Placeholders: title, explanation, suggestion."),
                 status.title, status.explanation, status.suggestion)
             finalText.bold(messageString)
