@@ -12,6 +12,17 @@ import XCTest
 import MessageModel
 
 class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
+    var state: ComposeViewModel.ComposeViewModelState?
+
+    override func setUp() {
+        super.setUp()
+        state = simpleState()
+    }
+
+    override func tearDown() {
+        state = nil
+        super.tearDown()
+    }
 
    /*
      for type in ComposeViewModel.Section.SectionType.allCases {
@@ -24,22 +35,39 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
      */
 
     //case recipients, wrapped, account, subject, body, attachments
-    func test_recipients() {
-        let state = simpleState()
-        guard let testee = ComposeViewModel.Section(type: .recipients,
-                                                    for: state,
-                                                    cellVmDelegate: nil) else {
-            XCTFail("Section is expected non-empty")
-            return
-        }
+
+    func test_recipients_bccWrapped() {
         let to = 1
-        XCTAssertEqual(testee.rows.count, to)
-        for row in testee.rows {
-            XCTAssertTrue(row is RecipientCellViewModel, "row is correct type")
-        }
+        assert(forSectionType: .recipients,
+               expectedRowType: RecipientCellViewModel.self,
+               expectedNumRows: to)
     }
 
     // MARK: - Helper
+
+    private func assert(forSectionType sectionType: ComposeViewModel.Section.SectionType,
+                        expectedRowType: AnyClass,
+                        expectedNumRows: Int) {
+        guard let state = state else {
+            XCTFail("No State")
+            return
+        }
+        let createe = ComposeViewModel.Section(type: sectionType,
+                                               for: state,
+                                               cellVmDelegate: nil)
+        if expectedNumRows == 0 {
+            XCTAssertNil(createe)
+            return
+        }
+        guard let testee = createe else {
+            XCTFail("Section is expected non-empty (expectedNumRows != 0)")
+            return
+        }
+        XCTAssertEqual(testee.rows.count, expectedNumRows)
+        for row in testee.rows {
+            XCTAssertTrue(type(of:row) == expectedRowType, "row is correct type")
+        }
+    }
 
     private func simpleState(toRecipients: [Identity] = [],
                              ccRecipients: [Identity] = [],
