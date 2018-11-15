@@ -172,7 +172,7 @@ class LoginViewController: BaseViewController {
                                                              preferredStyle: .alert)
         alertView.addAction(UIAlertAction(
             title: NSLocalizedString(
-                "Ok",
+                "OK",
                 comment: "UIAlertAction ok after error"),
             style: .default, handler: {action in
                 if offerManualSetup {

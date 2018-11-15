@@ -20,7 +20,7 @@ class FilterTableViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.hidesBackButton = true
-        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: NSLocalizedString("Ok", comment: "Filter accept text"), style: .plain, target: self, action: #selector(ok(sender:)))
+        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: NSLocalizedString("OK", comment: "Filter accept text"), style: .plain, target: self, action: #selector(ok(sender:)))
 
     }
 

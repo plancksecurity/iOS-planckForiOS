@@ -41,7 +41,7 @@ struct UIUtils {
         let alertView = UIAlertController.pEpAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert)
-        alertView.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment:
+        alertView.addAction(UIAlertAction(title: NSLocalizedString("OK", comment:
             "General alert positive button"),
                                           style: .default,
                                           handler: nil))

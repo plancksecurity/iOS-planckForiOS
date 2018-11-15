@@ -239,7 +239,7 @@ class NewAccountSetupUITest: XCTestCase {
     func switchToManualConfig() {
         let theApp = app()
 
-        let alertOkButton = theApp.buttons["Ok"]
+        let alertOkButton = theApp.buttons["OK"]
         let exists = NSPredicate(format: "enabled == true")
         expectation(for: exists, evaluatedWith: alertOkButton, handler: nil)
         waitForExpectations(timeout: 5, handler: nil)
