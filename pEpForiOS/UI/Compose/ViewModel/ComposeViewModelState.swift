@@ -178,7 +178,7 @@ extension ComposeViewModel.ComposeViewModelState {
         }
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                // That is a valid case. Compose view is gone before this block started to run.
                 return
             }
             let newRating: PEP_rating
