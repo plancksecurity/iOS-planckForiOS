@@ -36,6 +36,8 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
 
     //case recipients, wrapped, account, subject, body, attachments
 
+    // MARK: - recipients
+
     func test_recipients_bccWrapped() {
         let to = 1
         assert(forSectionType: .recipients,
@@ -51,6 +53,23 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
         assert(forSectionType: .recipients,
                expectedRowType: RecipientCellViewModel.self,
                expectedNumRows: to + cc + bcc)
+    }
+
+    // MARK: - wrapped
+
+    func testWrapped_bccWrapped() {
+        let wrappedCcBcc = 1
+        assert(forSectionType: .wrapped,
+               expectedRowType: WrappedBccViewModel.self,
+               expectedNumRows: wrappedCcBcc)
+    }
+
+    func testWrapped_bccUnwrapped() {
+        state?.setBccUnwrapped()
+        let showsCcAndBccInsteadOfWrapper = 0
+        assert(forSectionType: .wrapped,
+               expectedRowType: WrappedBccViewModel.self,
+               expectedNumRows: showsCcAndBccInsteadOfWrapper)
     }
 
     // MARK: - Helper
