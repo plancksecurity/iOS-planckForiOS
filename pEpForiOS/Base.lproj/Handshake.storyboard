@@ -105,9 +105,6 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
-                                                    <attributedString key="userComments">
-                                                        <fragment content="Don't localize this (trustWordsLabel)"/>
-                                                    </attributedString>
                                                 </label>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O51-e1-VQJ" userLabel="TrustButtonsStackView">
                                                     <rect key="frame" x="0.0" y="277" width="324.5" height="33"/>
