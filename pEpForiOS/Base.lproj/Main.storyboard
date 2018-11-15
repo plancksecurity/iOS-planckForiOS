@@ -88,7 +88,7 @@
                                                     <color key="textColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                     <attributedString key="userComments">
-                                                        <fragment content="Don't localize this"/>
+                                                        <fragment content="Not user-visible"/>
                                                     </attributedString>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thread-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Aoj-3y-zwL">
@@ -706,7 +706,7 @@
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                                     <attributedString key="userComments">
-                                                        <fragment content="Don't localize this"/>
+                                                        <fragment content="Not user-visible"/>
                                                     </attributedString>
                                                 </textView>
                                             </subviews>
@@ -785,7 +785,7 @@
                                                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                                                     <attributedString key="userComments">
-                                                        <fragment content="Don't localize this"/>
+                                                        <fragment content="Not user-visible"/>
                                                     </attributedString>
                                                 </textView>
                                             </subviews>
