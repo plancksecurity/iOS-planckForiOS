@@ -11,18 +11,20 @@ import AddressBook
 import MessageModel
 
 class IdentityImageTool {
-    static private let lock = "lockObject"
+    static private let queue = DispatchQueue.global(qos: .userInitiated)
     static private var _imageCache = [Identity:UIImage]()
     static private var imageCache: [Identity:UIImage] {
         get {
-            objc_sync_enter(lock)
-            defer { objc_sync_exit(lock) }
-            return _imageCache
+            var result = [Identity:UIImage]()
+            queue.sync {
+                result = _imageCache
+            }
+            return result
         }
         set {
-            objc_sync_enter(lock)
-            defer { objc_sync_exit(lock) }
-            _imageCache = newValue
+            queue.sync {
+                _imageCache = newValue
+            }
         }
     }
 
