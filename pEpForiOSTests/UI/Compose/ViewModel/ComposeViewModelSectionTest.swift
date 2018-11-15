@@ -89,6 +89,23 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
                expectedNumRows: allwaysShown)
     }
 
+    // MARK: - body
+
+    func testbody() {
+        let allwaysShown = 1
+        assert(forSectionType: .body,
+               expectedRowType: BodyCellViewModel.self,
+               expectedNumRows: allwaysShown)
+    }
+
+    func testbody_noMatterWhat() {
+        state?.setBccUnwrapped()
+        let allwaysShown = 1
+        assert(forSectionType: .body,
+               expectedRowType: BodyCellViewModel.self,
+               expectedNumRows: allwaysShown)
+    }
+
     // MARK: - account
 
     func testAccount_oneExisting() {
