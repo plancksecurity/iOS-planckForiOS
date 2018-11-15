@@ -23,34 +23,34 @@ extension AccountSettingsUserInputError: LocalizedError {
         case .invalidInputEmailAddress(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid e-mail address: %@",
+                    "Invalid e-mail address: %1$@",
                     comment: "Invalid input for e-mail address"), message)
         case .invalidInputServer(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid server: %@", comment: "Invalid input for server"),
+                    "Invalid server: %1$@", comment: "Invalid input for server"),
                 message)
         case .invalidInputPort(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid port: %@", comment: "Invalid input for por"),
+                    "Invalid port: %1$@", comment: "Invalid input for por"),
                 message)
         case .invalidInputTransport(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid transport security: %@",
+                    "Invalid transport security: %1$@",
                     comment: "Invalid input for transport security"),
                 message)
         case .invalidInputAccountName(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid account name: %@",
+                    "Invalid account name: %1$@",
                     comment: "Invalid input for account"),
                 message)
         case .invalidInputUserName(let message):
             return String.localizedStringWithFormat(
                 NSLocalizedString(
-                    "Invalid username: %@",
+                    "Invalid username: %1$@",
                     comment: "Invalid input for username"),
                 message)
         }
