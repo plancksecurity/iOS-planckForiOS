@@ -19,16 +19,41 @@ class ComposeViewModelTest: XCTestCase {
     // MARK: - Helper
 
     private class TestResultDelegate: ComposeViewModelResultDelegate {
+        let expDidComposeNewMailCalled: XCTestExpectation?
+        let expDidModifyMessageCalled: XCTestExpectation?
+        let expDidDeleteMessageCalled: XCTestExpectation?
+
+        init(expDidComposeNewMailCalled: XCTestExpectation?,
+             expDidModifyMessageCalled: XCTestExpectation?,
+             expDidDeleteMessageCalled: XCTestExpectation?) {
+            self.expDidComposeNewMailCalled = expDidComposeNewMailCalled
+            self.expDidModifyMessageCalled = expDidModifyMessageCalled
+            self.expDidDeleteMessageCalled = expDidDeleteMessageCalled
+
+        }
+
         func composeViewModelDidComposeNewMail() {
-            fatalError()
+            guard let exp = expDidComposeNewMailCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func composeViewModelDidModifyMessage() {
-            fatalError()
+            guard let exp = expDidModifyMessageCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
         func composeViewModelDidDeleteMessage() {
-            fatalError()
+            guard let exp = expDidDeleteMessageCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
         }
 
 
