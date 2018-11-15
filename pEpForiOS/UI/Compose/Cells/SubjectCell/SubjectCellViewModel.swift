@@ -17,7 +17,7 @@ class SubjectCellViewModel: CellViewModel {
 
     public weak var resultDelegate: SubjectCellViewModelResultDelegate?
 
-    init(resultDelegate: SubjectCellViewModelResultDelegate) {
+    init(resultDelegate: SubjectCellViewModelResultDelegate?) {
         self.resultDelegate = resultDelegate
     }
 

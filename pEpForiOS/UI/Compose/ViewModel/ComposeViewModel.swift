@@ -220,7 +220,9 @@ extension ComposeViewModel {
         let type: SectionType
         fileprivate(set) public var rows = [CellViewModel]()
 
-        init?(type: SectionType, for state: ComposeViewModelState?, cellVmDelegate: ComposeViewModel) {
+        init?(type: SectionType,
+              for state: ComposeViewModelState,
+              cellVmDelegate: ComposeViewModel?) {
             self.type = type
             setupViewModels(cellVmDelegate: cellVmDelegate, for: state)
             if rows.count == 0 {
@@ -229,7 +231,7 @@ extension ComposeViewModel {
             }
         }
 
-        private func setupViewModels(cellVmDelegate: ComposeViewModel,
+        private func setupViewModels(cellVmDelegate: ComposeViewModel?,
                                      for state: ComposeViewModelState?) {
             rows = [CellViewModel]()
             let isWrapped = state?.bccWrapped ?? false

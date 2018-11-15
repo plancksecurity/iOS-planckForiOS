@@ -26,8 +26,19 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
     //case recipients, wrapped, account, subject, body, attachments
     func test_recipients() {
         let state = simpleState()
-        let testee = ComposeViewModel.Section(type: .recipients, for: state, cellVmDelegate: nil)
+        guard let testee = ComposeViewModel.Section(type: .recipients,
+                                                    for: state,
+                                                    cellVmDelegate: nil) else {
+            XCTFail("Section is expected non-empty")
+            return
+        }
+        let to = 1
+        XCTAssertEqual(testee.rows.count, to)
+        for row in testee.rows {
+            XCTAssertTrue(row is RecipientCellViewModel, "row is correct type")
+        }
     }
+
     // MARK: - Helper
 
     private func simpleState(toRecipients: [Identity] = [],

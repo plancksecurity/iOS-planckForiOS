@@ -42,7 +42,7 @@ class BodyCellViewModel: CellViewModel {
         return restoreCursorPosition
     }
 
-    init(resultDelegate: BodyCellViewModelResultDelegate,
+    init(resultDelegate: BodyCellViewModelResultDelegate?,
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
          inlinedAttachments: [Attachment]?) {

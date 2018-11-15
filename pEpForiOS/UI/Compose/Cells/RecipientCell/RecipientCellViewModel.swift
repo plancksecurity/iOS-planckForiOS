@@ -31,7 +31,7 @@ class RecipientCellViewModel: CellViewModel {
 
     weak public var resultDelegate: RecipientCellViewModelResultDelegate?
 
-    init(resultDelegate: RecipientCellViewModelResultDelegate,
+    init(resultDelegate: RecipientCellViewModelResultDelegate?,
          type: FieldType,
          recipients: [Identity] = []) {
         self.resultDelegate = resultDelegate

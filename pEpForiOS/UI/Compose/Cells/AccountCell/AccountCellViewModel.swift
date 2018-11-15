@@ -30,7 +30,7 @@ class AccountCellViewModel: CellViewModel {
         return selectedAccount?.user.address
     }
 
-    init(resultDelegate: AccountCellViewModelResultDelegate, initialAccount: Account? = nil) {
+    init(resultDelegate: AccountCellViewModelResultDelegate?, initialAccount: Account? = nil) {
         self.resultDelegate = resultDelegate
         selectedAccount = initialAccount
     }
