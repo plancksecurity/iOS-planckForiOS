@@ -697,11 +697,14 @@
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text=" " adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nS-8y-LLg" userLabel="RecipientTextView" customClass="RecipientTextView" customModule="pEpForiOS" customModuleProvider="target">
-                                                    <rect key="frame" x="22" y="-1" width="345" height="38"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4nS-8y-LLg" userLabel="RecipientTextView" customClass="RecipientTextView" customModule="pEpForiOS" customModuleProvider="target">
+                                                    <rect key="frame" x="22" y="23" width="345" height="34.5"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Don't localize this"/>
+                                                    </attributedString>
                                                 </textView>
                                             </subviews>
                                             <constraints>
