@@ -43,6 +43,16 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
                expectedNumRows: to)
     }
 
+    func test_recipients_bccUnwrapped() {
+        state?.setBccUnwrapped()
+        let to = 1
+        let cc = 1
+        let bcc = 1
+        assert(forSectionType: .recipients,
+               expectedRowType: RecipientCellViewModel.self,
+               expectedNumRows: to + cc + bcc)
+    }
+
     // MARK: - Helper
 
     private func assert(forSectionType sectionType: ComposeViewModel.Section.SectionType,
