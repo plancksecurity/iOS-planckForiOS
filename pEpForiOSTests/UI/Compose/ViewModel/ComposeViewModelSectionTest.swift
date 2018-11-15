@@ -72,7 +72,27 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
                expectedNumRows: showsCcAndBccInsteadOfWrapper)
     }
 
+    // MARK: - account
+
+    func testAccount_oneExisting() {
+        assertAccountSection()
+    }
+
+    func testAccount_twoExisting() {
+        let account = SecretTestData().createWorkingAccount(number: 1)
+        account.save()
+        assertAccountSection()
+    }
+
     // MARK: - Helper
+
+    func assertAccountSection() {
+        let numexistingAccounts = Account.all().count
+        let expectedAccountsRowShouldExist = numexistingAccounts == 1 ? 0 : 1
+        assert(forSectionType: .account,
+               expectedRowType: AccountCellViewModel.self,
+               expectedNumRows: expectedAccountsRowShouldExist)
+    }
 
     private func assert(forSectionType sectionType: ComposeViewModel.Section.SectionType,
                         expectedRowType: AnyClass,
