@@ -1,4 +1,4 @@
-/* Disabled attachments for a message with status 'under attack'. Placeholders: title, explanation, suggestion. */
+/* Disabled attachments for a message with status 'under attack'. Placeholders: Title, explanation, suggestion. */
 "
 %1$@
 
@@ -19,17 +19,17 @@ Anhänge sind desaktiviert.
 
 ";
 
-/* Don't localize this. No privacy status explanation
+/* No privacy status explanation
    No privacy status suggestion */
 "-" = "-";
 
 /* Title for notification show on lock screen for new mails */
 "(numMails) new messages received" = "(numMails) neue Nachrichten erhalten";
 
-/* Reply to multiple contacts, with date */
+/* Reply to multiple contacts, with date. Placeholder: Name. */
 "%1$@ wrote on %@:" = "%1$@ schrieb am %@:";
 
-/* Reply to single contact, with date */
+/* Reply to single contact, with date. Placeholders: Name, date. */
 "%1$@ wrote on %2$@:" = "%1$@ schrieb %2$@:";
 
 /* error message for .missingPassword */
@@ -234,14 +234,23 @@ Anhänge sind desaktiviert.
 /* Invalid input for account */
 "Invalid account name: %1$@" = "Ungültiger Kontoname: %1$@";
 
-/* Invalid input for e-mail address */
-"Invalid e-mail address: %1$@" = "Ungültige E-Mail-Adresse: %1$@";
+/* Invalid input for email address */
+"Invalid email address: %1$@" = "Ungültige E-Mail-Adresse: %1$@";
 
 /* Title of invalid accout settings user input alert */
 "Invalid Input" = "Ungültige Eingabe.";
 
 /* Invalid input for por */
 "Invalid port: %1$@" = "Ungültiger Port: %1$@";
+
+/* Invalid input for server */
+"Invalid server: %1$@" = "Ungültiger Server: %1$@";
+
+/* Invalid input for transport security */
+"Invalid transport security: %1$@" = "Ungültige Transport-Verschlüsselung: %1$@";
+
+/* Invalid input for username */
+"Invalid username: %1$@" = "Ungültiger Benutzername: %1$@";
 
 /* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
 "It was impossible to login to the server. Username or password is wrong." = "Kein Server-Login möglich. Benutzername oder Passwort ist falsch.";

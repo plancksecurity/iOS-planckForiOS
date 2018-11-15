@@ -19,7 +19,7 @@
 /* Class = "UILabel"; text = "Password:"; ObjectID = "En6-h6-xZD"; */
 "En6-h6-xZD.text" = "Passwort:";
 
-/* Class = "UILabel"; text = "TransportSecurity:"; ObjectID = "hAL-c1-ngD"; */
+/* Class = "UILabel"; text = "Transport Security:"; ObjectID = "hAL-c1-ngD"; */
 "hAL-c1-ngD.text" = "Transport-Verschlüsselung:";
 
 /* Class = "UILabel"; text = "Enable/Disable Logging"; ObjectID = "Imh-fw-p8J"; */

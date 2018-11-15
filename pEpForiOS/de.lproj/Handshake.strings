@@ -1,6 +1,9 @@
 /* Class = "UILabel"; text = "Privacy Status: Mistrusted"; ObjectID = "5RJ-Gx-qBT"; */
 "5RJ-Gx-qBT.text" = "Datenschutzstatus: Nicht vertrauenswürdig";
 
+/* Class = "UIButton"; accessibilityLabel = "wrongButton"; ObjectID = "dbO-2K-SpB"; */
+"dbO-2K-SpB.accessibilityLabel" = "falsch";
+
 /* Class = "UIButton"; normalTitle = "Wrong Trustwords"; ObjectID = "dbO-2K-SpB"; */
 "dbO-2K-SpB.normalTitle" = "Falsche Trustwords";
 
