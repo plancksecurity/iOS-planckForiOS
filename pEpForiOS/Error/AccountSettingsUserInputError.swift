@@ -21,17 +21,38 @@ extension AccountSettingsUserInputError: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case .invalidInputEmailAddress(let message):
-            return NSLocalizedString("Invalid e-mail address: \(message)", comment: "Invalid input for e-mail address")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Invalid e-mail address: %@",
+                    comment: "Invalid input for e-mail address"), message)
         case .invalidInputServer(let message):
-            return NSLocalizedString("Invalid server: \(message)", comment: "Invalid input for server")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Invalid server: %@", comment: "Invalid input for server"),
+                message)
         case .invalidInputPort(let message):
-            return NSLocalizedString("Invalid port: \(message)", comment: "Invalid input for por")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Invalid port: %@", comment: "Invalid input for por"),
+                message)
         case .invalidInputTransport(let message):
-            return NSLocalizedString("Invalid transport security: \(message)", comment: "Invalid input for transport security")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Invalid transport security: %@",
+                    comment: "Invalid input for transport security"),
+                message)
         case .invalidInputAccountName(let message):
-            return NSLocalizedString("Invalid account name: \(message)", comment: "Invalid input for account")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Invalid account name: %@",
+                    comment: "Invalid input for account"),
+                message)
         case .invalidInputUserName(let message):
-            return NSLocalizedString("Invalid username: \(message)", comment: "Invalid input for username")
+            return String.localizedStringWithFormat(
+                NSLocalizedString(
+                    "Invalid username: %@",
+                    comment: "Invalid input for username"),
+                message)
         }
     }
 }
