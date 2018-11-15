@@ -123,6 +123,9 @@
                                                             <accessibility key="accessibilityConfiguration" label="confirmButton"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <state key="normal" title="Confirm Trustwords"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="Don't localize this. (confirmButton)"/>
+                                                            </attributedString>
                                                             <connections>
                                                                 <action selector="confirmAction:" destination="amH-Dy-6D1" eventType="touchUpInside" id="0Ra-lN-sx4"/>
                                                             </connections>
@@ -144,6 +147,9 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <accessibility key="accessibilityConfiguration" identifier="handshakePartnerCell"/>
+                                <attributedString key="userComments">
+                                    <fragment content="Don't localize this. (confirmButton)"/>
+                                </attributedString>
                                 <connections>
                                     <outlet property="confirmButton" destination="Jgi-7k-Ymf" id="HLm-tc-MV5"/>
                                     <outlet property="headerView" destination="Hwo-n8-tYE" id="zNp-a3-bgC"/>
