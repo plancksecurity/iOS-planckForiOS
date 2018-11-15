@@ -1842,9 +1842,9 @@
 		15D4399D216F703100EB3933 /* Compose */ = {
 			isa = PBXGroup;
 			children = (
-				15D7D993219B2C1200A1A2B9 /* ViewModel */,
-				157C05452180753400E530DE /* Util */,
 				157C05442180752300E530DE /* Cells */,
+				157C05452180753400E530DE /* Util */,
+				15D7D993219B2C1200A1A2B9 /* ViewModel */,
 			);
 			path = Compose;
 			sourceTree = "<group>";
