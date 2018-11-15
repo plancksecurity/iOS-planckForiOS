@@ -16,25 +16,13 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
 
     override func setUp() {
         super.setUp()
-        state = simpleState()
+        state = setupSimpleState()
     }
 
     override func tearDown() {
         state = nil
         super.tearDown()
     }
-
-   /*
-     for type in ComposeViewModel.Section.SectionType.allCases {
-     if let section = ComposeViewModel.Section(type: type,
-     for: state,
-     cellVmDelegate: self) {
-     newSections.append(section)
-     }
-     }
-     */
-
-    //case recipients, wrapped, account, subject, body, attachments
 
     // MARK: - recipients
 
@@ -89,6 +77,18 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
                expectedNumRows: allwaysShown)
     }
 
+    // MARK: - account
+
+    func testAccount_oneExisting() {
+        assertAccountSection()
+    }
+
+    func testAccount_twoExisting() {
+        let account = SecretTestData().createWorkingAccount(number: 1)
+        account.save()
+        assertAccountSection()
+    }
+
     // MARK: - body
 
     func testbody() {
@@ -106,16 +106,65 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
                expectedNumRows: allwaysShown)
     }
 
-    // MARK: - account
+    // MARK: - attachments
 
-    func testAccount_oneExisting() {
-        assertAccountSection()
+    func testAttachments_none() {
+        assertAttchments(numInlinedAttachments: 0, numNonInlinedAttachments: 0)
     }
 
-    func testAccount_twoExisting() {
-        let account = SecretTestData().createWorkingAccount(number: 1)
-        account.save()
-        assertAccountSection()
+    func testAttachments_nonInllinedAttachment() {
+        assertAttchments(numInlinedAttachments: 0, numNonInlinedAttachments: 1)
+    }
+
+    func testAttachments_nonInllinedAttachments() {
+        assertAttchments(numInlinedAttachments: 0, numNonInlinedAttachments: 2)
+    }
+
+    func testAttachments_inllinedAttachment() {
+        assertAttchments(numInlinedAttachments: 1, numNonInlinedAttachments: 0)
+    }
+
+    func testAttachments_inllinedAttachments() {
+        assertAttchments(numInlinedAttachments: 2, numNonInlinedAttachments: 0)
+    }
+
+    func testAttachments_inllinedAndNonInlinedAttachments() {
+        assertAttchments(numInlinedAttachments: 1, numNonInlinedAttachments: 1)
+    }
+
+    func testAttachments_inllinedAndNonInlinedAttachments_2() {
+        assertAttchments(numInlinedAttachments: 2, numNonInlinedAttachments: 2)
+    }
+
+    private func assertAttchments(numInlinedAttachments: Int = 0,
+                                  numNonInlinedAttachments: Int = 0) {
+        guard let state = state else {
+            XCTFail("No State")
+            return
+        }
+        add(numAttachments: numNonInlinedAttachments, ofType: .attachment, to: state)
+        add(numAttachments: numInlinedAttachments, ofType: .inline, to: state)
+
+        let expectedNumAttachmentRows = numNonInlinedAttachments
+        assert(forSectionType: .attachments,
+               expectedRowType: AttachmentViewModel.self,
+               expectedNumRows: expectedNumAttachmentRows)
+    }
+
+    private func add(numAttachments: Int,
+                     ofType type: Attachment.ContentDispositionType,
+                     to state: ComposeViewModel.ComposeViewModelState) {
+        for i in 0..<numAttachments {
+            let createe = Attachment(data: Data(),
+                                     mimeType: "image/jpg",
+                                     contentDisposition: type)
+            createe.fileName = "fileName \(i)"
+            if type == .inline {
+                state.inlinedAttachments.append(createe)
+            } else {
+                state.nonInlinedAttachments.append(createe)
+            }
+        }
     }
 
     // MARK: - Helper
@@ -152,10 +201,12 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
         }
     }
 
-    private func simpleState(toRecipients: [Identity] = [],
-                             ccRecipients: [Identity] = [],
-                             bccRecipients: [Identity] = [],
-                             isWapped: Bool = true) -> ComposeViewModel.ComposeViewModelState {
+    // MARK: - Setup
+
+    private func setupSimpleState(toRecipients: [Identity] = [],
+                                  ccRecipients: [Identity] = [],
+                                  bccRecipients: [Identity] = [],
+                                  isWapped: Bool = true) -> ComposeViewModel.ComposeViewModelState {
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
         drafts.save()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
@@ -166,12 +217,7 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
         msg.shortMessage = "shortMessage"
         msg.longMessage = "longMessage"
         msg.longMessageFormatted = "longMessageFormatted"
-        msg.attachments = [Attachment(data: Data(),
-                                      mimeType: "image/jpg",
-                                      contentDisposition: .attachment)]
-        msg.attachments.append(Attachment(data: Data(),
-                                          mimeType: "image/jpg",
-                                          contentDisposition: .inline))
+        msg.attachments = []
         msg.save()
         let initData = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
                                                  orForOriginalMessage: msg,
@@ -182,5 +228,4 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
         }
         return createe
     }
-
 }
