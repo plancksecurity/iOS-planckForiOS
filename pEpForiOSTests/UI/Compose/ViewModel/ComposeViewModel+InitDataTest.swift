@@ -179,6 +179,15 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
 
     // MARK: - composeMode
 
+    func testComposeMode_default() {
+        let mode: ComposeUtil.ComposeMode? = nil
+        testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
+                                           orForOriginalMessage: nil,
+                                           composeMode: mode)
+        let defaultComposeMode = ComposeUtil.ComposeMode.normal
+        assertTesteeForExpectedValues(composeMode: defaultComposeMode)
+    }
+
     func testComposeMode_isSet_normal() {
         let mode = ComposeUtil.ComposeMode.normal
         testee = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
