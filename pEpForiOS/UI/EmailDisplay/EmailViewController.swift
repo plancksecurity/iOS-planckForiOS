@@ -110,6 +110,8 @@ class EmailViewController: BaseTableViewController {
             return
         }
 
+        removePEPButtons()
+
         if (isCollapsed || forceDrawing) {
             let item = UIBarButtonItem.getPEPButton(
                 action: #selector(showSettingsViewController),
@@ -122,8 +124,6 @@ class EmailViewController: BaseTableViewController {
             flexibleSpace.tag = BarButtonType.space.rawValue
 
             toolbarItems?.append(contentsOf: [flexibleSpace,item])
-        } else {
-            removePEPButton()
         }
     }
 
@@ -221,7 +221,7 @@ class EmailViewController: BaseTableViewController {
 
             break
         case .allVisible:
-            removePEPButton()
+            removePEPButtons()
             var leftBarButtonItems: [UIBarButtonItem] = []
             if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
                 leftBarButtonItems.append(unwrappedLeftBarButtonItems)
@@ -585,40 +585,44 @@ extension EmailViewController: SegueHandlerType {
         }
     }
 
-    private func removePEPButton() {
-        var items: [UIBarButtonItem]!
-        if traitCollection.verticalSizeClass == .regular {
-            guard let auxItems = navigationItem.rightBarButtonItems else {
-                return
-            }
-            items = auxItems
-        } else {
-            guard let auxItems = toolbarItems else {
-                return
-            }
-            items = auxItems
+    private func removePEPButtons() {
+        guard let isCollapsed = splitViewController?.isCollapsed else {
+            return
         }
 
-        if let collapsed = splitViewController?.isCollapsed,
-            collapsed == false {
-            var positionToRemove: Int? = nil
-            for i in 0..<items.count {
-                if items[i].tag == BarButtonType.settings.rawValue {
-                    positionToRemove = i
+        let useToolbarItemsDirectly = traitCollection.verticalSizeClass == .regular
+
+        var barButtonItems = useToolbarItemsDirectly ?
+            toolbarItems ?? [] : navigationItem.rightBarButtonItems ?? []
+
+        if !isCollapsed {
+            var itemsToRemove = [UIBarButtonItem]()
+            for item in barButtonItems {
+                if item.tag == BarButtonType.settings.rawValue {
+                    itemsToRemove.append(item)
                 }
             }
-            if let positionToRemove = positionToRemove {
-                items.remove(at: positionToRemove)
-            }
-            if items.last?.tag == BarButtonType.space.rawValue {
-                items.removeLast()
-            }
-        }
 
-        if traitCollection.verticalSizeClass == .regular {
-            navigationItem.rightBarButtonItems = items
-        } else {
-            toolbarItems = items
+            for itemToRemove in itemsToRemove {
+                var positionToRemove: Int? = nil
+
+                for i in 0..<barButtonItems.count {
+                    if barButtonItems[i] == itemToRemove {
+                        positionToRemove = i
+                        break
+                    }
+                }
+
+                if let thePosition = positionToRemove {
+                    barButtonItems.remove(at: thePosition)
+                }
+            }
+
+            if useToolbarItemsDirectly {
+                toolbarItems = barButtonItems
+            } else {
+                navigationItem.rightBarButtonItems = barButtonItems
+            }
         }
     }
 }
