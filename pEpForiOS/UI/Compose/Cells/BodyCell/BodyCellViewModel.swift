@@ -26,7 +26,7 @@ protocol BodyCellViewModelDelegate: class {
 }
 
 class BodyCellViewModel: CellViewModel {
-    var maxTextattachmentWidth: CGFloat = 0.0
+    var maxTextattachmentWidth: CGFloat = 100.0 // arbitrary non-null value
     public weak var resultDelegate: BodyCellViewModelResultDelegate?
     public weak var delegate: BodyCellViewModelDelegate?
     private var plaintext = ""

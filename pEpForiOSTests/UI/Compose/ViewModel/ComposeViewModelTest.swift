@@ -93,7 +93,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                        expectAttachmentSectionExists: true)
     }
 
-    // MARK: - DocumentAttachmentPicker
+    // MARK: - DocumentAttachmentPickerResultDelegate handling
 
     func testDocumentAttachmentPickerViewModel() {
         let testee = vm?.documentAttachmentPickerViewModel()
@@ -143,6 +143,75 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - MediaAttachmentPickerProviderViewModelResultDelegate handling
+
+    func testMediaAttachmentPickerProviderViewModelFactory() {
+        let testee = vm?.mediaAttachmentPickerProviderViewModel()
+        XCTAssertNotNil(testee)
+    }
+
+    func testDidSelectMediaAttachment_image() {
+        let msg = draftMessage()
+        let imageAttachment = attachment(ofType: .inline)
+        msg.attachments = [imageAttachment]
+        assert(originalMessage: msg,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let mediaAtt =
+            MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .image,
+                                                                   attachment: imageAttachment)
+        vm?.mediaAttachmentPickerProviderViewModel(
+            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
+            didSelect: mediaAtt)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testDidSelectMediaAttachment_video() {
+        let msg = draftMessage()
+        let imageAttachment = attachment(ofType: .inline)
+        msg.attachments = [imageAttachment]
+
+        let attachmentSectionSection = 4
+
+        assert(originalMessage: msg,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: true,
+               expectedSection: attachmentSectionSection,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let mediaAtt =
+            MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .movie,
+                                                                   attachment: imageAttachment)
+        vm?.mediaAttachmentPickerProviderViewModel(
+            TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
+            didSelect: mediaAtt)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: - Helper
 
     private func draftMessage(bccSet: Bool = false, attachmentsSet: Bool = false) -> Message {
@@ -161,11 +230,28 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     private func attachment(
-        of type: Attachment.ContentDispositionType = .attachment ) -> Attachment {
-        let createe = Attachment(data: Data(),
-                                 mimeType: "image/jpg",
-                                 image: UIImage(),
+        ofType type: Attachment.ContentDispositionType = .attachment ) -> Attachment {
+        let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
+        guard
+            let imageData = TestUtil.loadData(fileName: imageFileName),
+            let image = UIImage(data: imageData) else {
+            XCTFail()
+            return Attachment(data: nil, mimeType: "meh", contentDisposition: .attachment)
+        }
+        let createe: Attachment
+        if type == .inline {
+            createe = Attachment(data: imageData,
+                       mimeType: "image/jpg",
+                       size: imageData.count,
+                       image: image,
+                       contentDisposition: type)
+        } else {
+            createe = Attachment(data: imageData,
+                                 mimeType: "video/quicktime",
+                                 size: imageData.count,
                                  contentDisposition: type)
+        }
+
         return createe
     }
 
@@ -585,6 +671,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     // MARK: - DocumentAttachmentPickerViewModel
     class TestDocumentAttachmentPickerViewModel: DocumentAttachmentPickerViewModel {} // Dummy to pass something
+
+    // MARK: - MediaAttachmentPickerProviderViewModel
+    class TestMediaAttachmentPickerProviderViewModel: MediaAttachmentPickerProviderViewModel {} // Dummy to pass something
+
+
 }
 
 /*
@@ -712,25 +803,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  }
  }
 
-             // MARK: - DocumentAttachmentPickerViewModel[ResultDelegate]
-
-             extension ComposeViewModel {
-             func documentAttachmentPickerViewModel() -> DocumentAttachmentPickerViewModel {
-             return DocumentAttachmentPickerViewModel(resultDelegate: self)
-             }
-             }
-
-             extension ComposeViewModel: DocumentAttachmentPickerViewModelResultDelegate {
-             func documentAttachmentPickerViewModel(_ vm: DocumentAttachmentPickerViewModel,
-             didPick attachment: Attachment) {
-             addNonInlinedAttachment(attachment)
-             delegate?.documentAttachmentPickerDone()
-             }
-
-             func documentAttachmentPickerViewModelDidCancel(_ vm: DocumentAttachmentPickerViewModel) {
-             delegate?.documentAttachmentPickerDone()
-             }
-             }
 
  // MARK: - MediaAttachmentPickerProviderViewModel[ResultDelegate]
 
@@ -742,25 +814,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  func mediaAttachmentPickerProviderViewModelDidCancel(
  _ vm: MediaAttachmentPickerProviderViewModel) {
  delegate?.hideMediaAttachmentPicker()
- }
- }
-
- extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate {
-
- func mediaAttachmentPickerProviderViewModel(
- _ vm: MediaAttachmentPickerProviderViewModel,
- didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
- if mediaAttachment.type == .image {
- guard let bodyViewModel = bodyVM else {
- Log.shared.errorAndCrash(component: #function,
- errorString: "No bodyVM. Maybe valid as picking is async.")
- return
- }
- bodyViewModel.inline(attachment: mediaAttachment.attachment)
- } else {
- addNonInlinedAttachment(mediaAttachment.attachment)
- delegate?.hideMediaAttachmentPicker()
- }
  }
  }
 
