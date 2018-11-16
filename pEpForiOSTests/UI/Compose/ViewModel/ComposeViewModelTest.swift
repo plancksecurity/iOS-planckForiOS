@@ -436,7 +436,167 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - RecipientCellViewModelResultDelegate Handling
+
+    private func recipientCellViewModel(type: RecipientCellViewModel.FieldType) -> RecipientCellViewModel? {
+        guard let sections = vm?.sections else {
+            XCTFail()
+            return nil
+        }
+        for section in sections {
+            for row in section.rows where row is RecipientCellViewModel {
+                if let row = row as? RecipientCellViewModel, row.type == type {
+                    return row
+                }
+            }
+        }
+        return nil
+    }
+
+    func testRecipientCellViewModelDidChangeRecipients_to() {
+        assertRecipientCellViewModelDidChangeRecipients(fieldType: .to)
+    }
+
+    func testRecipientCellViewModelDidChangeRecipients_cc() {
+        assertRecipientCellViewModelDidChangeRecipients(fieldType: .cc)
+    }
+
+    func testRecipientCellViewModelDidChangeRecipients_bcc() {
+        assertRecipientCellViewModelDidChangeRecipients(fieldType: .bcc)
+    }
+
+    func testRecipientCellViewModelDidEndEditing() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: true,
+               validatedStateChangedMustBeCalled: true,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: true,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let recipientVm = recipientCellViewModel(type: .to) else {
+            XCTFail()
+            return
+        }
+        vm?.recipientCellViewModelDidEndEditing(recipientVm)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testRecipientCellViewModelDidBeginEditing() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: true,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let recipientVm = recipientCellViewModel(type: .to) else {
+            XCTFail()
+            return
+        }
+        let text = "testRecipientCellViewModelDidBeginEditing text"
+        vm?.recipientCellViewModel(recipientVm, didBeginEditing: text)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testRecipientCellViewModelTextChanged() {
+        assert(contentChangedMustBeCalled: true,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: true,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: true,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let recipientVm = recipientCellViewModel(type: .to) else {
+            XCTFail()
+            return
+        }
+        let text = "testRecipientCellViewModelDidBeginEditing text"
+        vm?.recipientCellViewModel(recipientVm, textChanged: text)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    /*
+
+    */
+
     // MARK: - Helper
+
+    private func assertRecipientCellViewModelDidChangeRecipients(
+        fieldType type: RecipientCellViewModel.FieldType) {
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
+        secondAccount.save()
+        let om = draftMessage(bccSet: true, attachmentsSet: false)
+        assert(originalMessage: om,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: true,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: true,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let recipientVm = recipientCellViewModel(type: type) else {
+            XCTFail()
+            return
+        }
+
+        let beforeCount: Int
+        switch type {
+        case .to:
+            beforeCount = vm?.state.toRecipients.count ?? -1
+        case .cc:
+            beforeCount = vm?.state.ccRecipients.count ?? -1
+        case .bcc:
+            beforeCount = vm?.state.bccRecipients.count ?? -1
+        }
+
+        let newRecipients = [account.user, secondAccount.user]
+        vm?.recipientCellViewModel(recipientVm, didChangeRecipients: newRecipients)
+
+        let afterCount: Int
+        switch type {
+        case .to:
+            afterCount = vm?.state.toRecipients.count ?? -1
+        case .cc:
+            afterCount = vm?.state.ccRecipients.count ?? -1
+        case .bcc:
+            afterCount = vm?.state.bccRecipients.count ?? -1
+        }
+        XCTAssertNotEqual(afterCount, beforeCount)
+        XCTAssertEqual(afterCount, newRecipients.count)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     private func viewmodel(ofType vmType: AnyClass) -> CellViewModel? {
         guard let sections = vm?.sections else {
