@@ -18,8 +18,7 @@ class EmailViewController: BaseTableViewController {
     @IBOutlet var nextMessage: UIBarButtonItem!
     @IBOutlet var moveToFolderButton: UIBarButtonItem!
     @IBOutlet var replyButton: UIBarButtonItem!
-    @IBOutlet var pepButton: UIBarButtonItem!
-    @IBOutlet var pepRating: UIBarButtonItem!
+
     var barItems: [UIBarButtonItem]?
 
     var message: Message?
