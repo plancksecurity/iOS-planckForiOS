@@ -24,6 +24,27 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                   originalMessage: nil)
     }
 
+    // MARK: - Test the Test Helper
+
+    func testAssertHelperTest_doNothing_noCallback() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: - init
 
     func testInit_resultDelegateSet() {
@@ -209,6 +230,128 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         vm?.mediaAttachmentPickerProviderViewModel(
             TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
             didSelect: mediaAtt)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    // MARK: - BodyCellViewModelResultDelegate handling
+
+    private var bodyVm: BodyCellViewModel {
+        return vm?.bodyVM ?? BodyCellViewModel(resultDelegate: nil)
+    }
+
+    func testBodyVM() {
+        let testee = vm?.bodyVM
+        XCTAssertNotNil(testee)
+    }
+
+    func testBodyCellViewModelUserWantsToAddMedia() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: true,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.bodyCellViewModelUserWantsToAddMedia(bodyVm)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyCellViewModelUserWantsToAddDocument() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: true,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.bodyCellViewModelUserWantsToAddDocument(bodyVm)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyCellViewModelInlinedAttachmentsChanged_moreAttachments() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.bodyCellViewModel(bodyVm,
+                              inlinedAttachmentsChanged: [attachment()])
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyCellViewModelInlinedAttachmentsChanged_lessAttachments() {
+        let msg = draftMessage()
+        let imageAttachment = attachment(ofType: .inline)
+        msg.attachments = [imageAttachment]
+        assert(originalMessage: msg,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let lessAttachments = [Attachment]()
+        vm?.bodyCellViewModel(bodyVm,
+                              inlinedAttachmentsChanged: lessAttachments)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testBodyChangedToPlaintextHtml() {
+        assert(contentChangedMustBeCalled: true,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let newPlaintext = "newPlaitext"
+        let newHtml = "<p>fake</p>"
+        vm?.bodyCellViewModel(bodyVm,
+                              bodyChangedToPlaintext: newPlaintext,
+                              html: newHtml)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -675,7 +818,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - MediaAttachmentPickerProviderViewModel
     class TestMediaAttachmentPickerProviderViewModel: MediaAttachmentPickerProviderViewModel {} // Dummy to pass something
 
-
+//    // MARK: - BodyCellViewModel
+//    class TestBodyCellViewModel: BodyCellViewModel {} // Dummy to pass something
 }
 
 /*
@@ -1007,42 +1151,5 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  }
  }
 
- // MARK: BodyCellViewModelResultDelegate
 
- extension ComposeViewModel: BodyCellViewModelResultDelegate {
-
- var bodyVM: BodyCellViewModel? {
- for section in sections where section.type == .body {
- return section.rows.first as? BodyCellViewModel
- }
- return nil
- }
-
- func bodyCellViewModelUserWantsToAddMedia(_ vm: BodyCellViewModel) {
- delegate?.showMediaAttachmentPicker()
- }
-
- func bodyCellViewModelUserWantsToAddDocument(_ vm: BodyCellViewModel) {
- delegate?.showDocumentAttachmentPicker()
- }
-
- func bodyCellViewModel(_ vm: BodyCellViewModel,
- inlinedAttachmentsChanged inlinedAttachments: [Attachment]) {
- state.inlinedAttachments = inlinedAttachments
- delegate?.hideMediaAttachmentPicker()
- }
-
- func bodyCellViewModel(_ vm: BodyCellViewModel,
- bodyChangedToPlaintext plain: String,
- html: String) {
- state.bodyHtml = html
- state.bodyPlaintext = plain
- guard let idxPath = indexPath(for: vm) else {
- Log.shared.errorAndCrash(component: #function,
- errorString: "We got called by a non-existing VM?")
- return
- }
- delegate?.contentChanged(inRowAt: idxPath)
- }
- }
  */

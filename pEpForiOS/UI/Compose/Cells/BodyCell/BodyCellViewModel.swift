@@ -45,7 +45,7 @@ class BodyCellViewModel: CellViewModel {
     init(resultDelegate: BodyCellViewModelResultDelegate?,
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
-         inlinedAttachments: [Attachment]?) {
+         inlinedAttachments: [Attachment]? = nil) {
         self.resultDelegate = resultDelegate
         self.plaintext = initialPlaintext ?? ""
         self.attributedText = initialAttributedText
