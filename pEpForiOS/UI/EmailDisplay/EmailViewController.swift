@@ -47,7 +47,7 @@ class EmailViewController: BaseTableViewController {
         configureOKButton()
 
         loadDatasource("MessageData")
-        setuptoolbar()
+        setupToolbar()
 
         tableView.estimatedRowHeight = 72.0
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -105,7 +105,7 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - SETUP
 
-    private func setuptoolbar(forceDrawing: Bool = false) {
+    private func setupToolbar(forceDrawing: Bool = false) {
         guard let isCollapsed = splitViewController?.isCollapsed else {
             return
         }
@@ -214,7 +214,7 @@ class EmailViewController: BaseTableViewController {
                 navigationItem.rightBarButtonItems?.append(item)
 
             } else {
-                setuptoolbar(forceDrawing: true)
+                setupToolbar(forceDrawing: true)
             }
             navigationItem.setLeftBarButtonItems(leftBarButtonItems.reversed(), animated: true)
 
@@ -648,7 +648,7 @@ extension EmailViewController: MessageAttachmentDelegate {
                 Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
                 return
             }
-            me.setuptoolbar()
+            me.setupToolbar()
         }
     }
 
