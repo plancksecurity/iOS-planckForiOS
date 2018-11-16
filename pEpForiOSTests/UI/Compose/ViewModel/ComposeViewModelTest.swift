@@ -243,6 +243,27 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    func testMediaPickerDidCancel() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: true,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+      vm?.mediaAttachmentPickerProviderViewModelDidCancel(
+        TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil))
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: - BodyCellViewModelResultDelegate handling
 
     private var bodyVm: BodyCellViewModel {
@@ -539,11 +560,118 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - Cancel Actions
+
+    func testShowKeepInOutbox() {
+        FolderType.allCases.forEach {
+            assertShowKeepInOutbox(forMessageInfolderOfType: $0)
+        }
+    }
+
+    func testShowCancelActionsv() {
+        let msg = message()
+        assert(originalMessage: msg)
+        guard let testee = vm?.showCancelActions else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(testee)
+    }
+
+    func testShowCancelActions_edited() {
+        let msg = message()
+        assert(originalMessage: msg)
+        vm?.state.toRecipients = [Identity(address: "testShow@Cancel.Actions")]
+        guard let testee = vm?.showCancelActions else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(testee)
+    }
+
     /*
+
+     // MARK: - Cancel Actions
+
+     extension ComposeViewModel {
+
+                 public func handleSaveActionTriggered() {
+                 guard let data = state.initData else {
+                 Log.shared.errorAndCrash(component: #function, errorString: "No data")
+                 return
+                 }
+                 if data.isDraftsOrOutbox {
+                 // We are in drafts folder and, from user perespective, are editing a drafted mail.
+                 // Technically we have to create a new one and delete the original message, as the
+                 // mail is already synced with the IMAP server and thus we must not modify it.
+                 deleteOriginalMessage()
+                 if data.isOutbox {
+                 // Message will be saved (moved from user perspective) to drafts, but we are in
+                 // outbox folder.
+                 resultDelegate?.composeViewModelDidDeleteMessage()
+                 }
+                 }
+
+
+     public func handleDeleteActionTriggered() {
+     guard let data = state.initData else {
+     Log.shared.errorAndCrash(component: #function, errorString: "No data")
+     return
+     }
+     if data.isOutbox {
+     data.originalMessage?.delete()
+     resultDelegate?.composeViewModelDidDeleteMessage()
+     }
+     }
+
+
+
+     guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
+     Log.shared.errorAndCrash(component: #function, errorString: "No message")
+     return
+     }
+     let acc = msg.parent.account
+     if let f = Folder.by(account:acc, folderType: .drafts) {
+     msg.parent = f
+     msg.imapFlags?.draft = true
+     msg.sent = Date()
+     msg.save()
+     }
+     if data.isDrafts {
+     // We save a modified version of a drafted message. The UI might want to updtate
+     // its model.
+     resultDelegate?.composeViewModelDidModifyMessage()
+     }
+     }
+     }
+
 
     */
 
     // MARK: - Helper
+
+    private func assertShowKeepInOutbox(forMessageInfolderOfType type: FolderType) {
+        let msg = message(inFolderOfType: type)
+        assert(originalMessage: msg,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let testee = vm?.showKeepInOutbox
+        XCTAssertEqual(testee, type == .outbox)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     private func assertRecipientCellViewModelDidChangeRecipients(
         fieldType type: RecipientCellViewModel.FieldType) {
@@ -615,7 +743,15 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     private func draftMessage(bccSet: Bool = false, attachmentsSet: Bool = false) -> Message {
-        let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
+        return message(inFolderOfType: .drafts, bccSet: bccSet, attachmentsSet: attachmentsSet)
+    }
+
+    private func message(inFolderOfType parentType: FolderType = .inbox,
+                         bccSet: Bool = false,
+                         attachmentsSet: Bool = false) -> Message {
+        let drafts = Folder(name: "\(parentType)",
+            parent: nil, account: account,
+            folderType: parentType)
         drafts.save()
         let createe = Message(uuid: UUID().uuidString, parentFolder: drafts)
         if bccSet {
@@ -701,7 +837,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                         documentAttachmentPickerDonePickerCalled: Bool? = nil,
                         didComposeNewMailMustBeCalled: Bool? = nil,/*TestResultDelegate realted params*/
                         didModifyMessageMustBeCalled: Bool? = nil,
-                        didDeleteMessageMustBeCalled: Bool?) {
+                        didDeleteMessageMustBeCalled: Bool? = nil) {
         // TestDelegate
         var expContentChangedCalled: XCTestExpectation? = nil
         if let exp = contentChangedMustBeCalled {
@@ -1203,133 +1339,5 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  recipientVM.add(recipient: identity)
  }
  }
-
-
- // MARK: - MediaAttachmentPickerProviderViewModel[ResultDelegate]
-
- extension ComposeViewModel {
- func mediaAttachmentPickerProviderViewModel() -> MediaAttachmentPickerProviderViewModel {
- return MediaAttachmentPickerProviderViewModel(resultDelegate: self)
- }
-
- func mediaAttachmentPickerProviderViewModelDidCancel(
- _ vm: MediaAttachmentPickerProviderViewModel) {
- delegate?.hideMediaAttachmentPicker()
- }
- }
-
- // MARK: - Cancel Actions
-
- extension ComposeViewModel {
-
- public var showKeepInOutbox: Bool {
- return state.initData?.isOutbox ?? false
- }
-
- public var showCancelActions: Bool {
- return existsDirtyCell() || state.edited
- }
-
- public var deleteActionTitle: String {
- guard let data = state.initData else {
- Log.shared.errorAndCrash(component: #function, errorString: "No data")
- return ""
- }
- let title: String
- if data.isDrafts {
- title = NSLocalizedString("Discharge changes", comment:
- "ComposeTableView: button to decide to discharge changes made on a drafted mail.")
- } else if data.isOutbox {
- title = NSLocalizedString("Delete", comment:
- "ComposeTableView: button to decide to delete a message from Outbox after " +
- "making changes.")
- } else {
- title = NSLocalizedString("Delete", comment: "compose email delete")
- }
- return title
- }
-
- public var saveActionTitle: String {
- guard let data = state.initData else {
- Log.shared.errorAndCrash(component: #function, errorString: "No data")
- return ""
- }
- let title: String
- if data.isDrafts {
- title = NSLocalizedString("Save changes", comment:
- "ComposeTableView: button to decide to save changes made on a drafted mail.")
- } else {
- title = NSLocalizedString("Save Draft", comment: "compose email save")
- }
- return title
- }
-
- public var keepInOutboxActionTitle: String {
- return NSLocalizedString("Keep in Outbox", comment:
- "ComposeTableView: button to decide to Discharge changes made on a mail in outbox.")
- }
-
- public var cancelActionTitle: String {
- return NSLocalizedString("Cancel", comment: "compose email cancel")
- }
-
- public func handleDeleteActionTriggered() {
- guard let data = state.initData else {
- Log.shared.errorAndCrash(component: #function, errorString: "No data")
- return
- }
- if data.isOutbox {
- data.originalMessage?.delete()
- resultDelegate?.composeViewModelDidDeleteMessage()
- }
- }
-
- public func handleSaveActionTriggered() {
- guard let data = state.initData else {
- Log.shared.errorAndCrash(component: #function, errorString: "No data")
- return
- }
- if data.isDraftsOrOutbox {
- // We are in drafts folder and, from user perespective, are editing a drafted mail.
- // Technically we have to create a new one and delete the original message, as the
- // mail is already synced with the IMAP server and thus we must not modify it.
- deleteOriginalMessage()
- if data.isOutbox {
- // Message will be saved (moved from user perspective) to drafts, but we are in
- // outbox folder.
- resultDelegate?.composeViewModelDidDeleteMessage()
- }
- }
-
- guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
- Log.shared.errorAndCrash(component: #function, errorString: "No message")
- return
- }
- let acc = msg.parent.account
- if let f = Folder.by(account:acc, folderType: .drafts) {
- msg.parent = f
- msg.imapFlags?.draft = true
- msg.sent = Date()
- msg.save()
- }
- if data.isDrafts {
- // We save a modified version of a drafted message. The UI might want to updtate
- // its model.
- resultDelegate?.composeViewModelDidModifyMessage()
- }
- }
- }
-
- // MARK: - HandshakeViewModel
-
- extension ComposeViewModel {
- // There is no view model for HandshakeViewController yet, thus we are setting up the VC itself
- // as a workaround to avoid letting the VC know MessageModel
- func setup(handshakeViewController: HandshakeViewController) {
- handshakeViewController.message = ComposeUtil.messageToSend(withDataFrom: state)
- }
- }
-
- // MARK: - Cell-ViewModel Delegates
 
  */
