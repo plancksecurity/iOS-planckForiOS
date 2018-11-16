@@ -31,7 +31,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(testee === resultDelegate)
     }
 
-    func testInit_resultDelegateSet_stateSetupCorrectly() {
+    func testInit_stateSetupCorrectly() {
         let mode = ComposeUtil.ComposeMode.replyAll
         let vm = ComposeViewModel(resultDelegate: nil,
                                   composeMode: mode,
@@ -51,7 +51,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     // MARK: Sections
 
-    func testInit_resultDelegateSet_sectionsSetupCorrectly() {
+    func testSections_setupCorrectly() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
@@ -59,7 +59,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                        expectAttachmentSectionExists: false)
     }
 
-    func testInit_resultDelegateSet_sectionsSetupCorrectly_unwrappedbcc() {
+    func testSections_unwrappedbcc() {
         let testOriginalMessage = draftMessage(bccSet: true, attachmentsSet: false)
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: false,
@@ -67,7 +67,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                        expectAttachmentSectionExists: false)
     }
 
-    func testInit_resultDelegateSet_sectionsSetupCorrectly_accountSelector() {
+    func testSections_accountSelector() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
         let secondAccound = SecretTestData().createWorkingAccount(number: 1)
         secondAccound.save()
@@ -77,7 +77,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                        expectAttachmentSectionExists: false)
     }
 
-    func testInit_resultDelegateSet_sectionsSetupCorrectly_attachments() {
+    func testSections_attachments() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: true)
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
@@ -627,89 +627,20 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
  // MARK: - CellViewModels
 
- extension ComposeViewModel {
- class Section {
- enum SectionType: CaseIterable {
- case recipients, wrapped, account, subject, body, attachments
- }
- let type: SectionType
- fileprivate(set) public var rows = [CellViewModel]()
 
- init?(type: SectionType, for state: ComposeViewModelState?, cellVmDelegate: ComposeViewModel) {
- self.type = type
- setupViewModels(cellVmDelegate: cellVmDelegate, for: state)
- if rows.count == 0 {
- // We want to show non-empty sections only
- return nil
- }
- }
 
- private func setupViewModels(cellVmDelegate: ComposeViewModel,
- for state: ComposeViewModelState?) {
- rows = [CellViewModel]()
- let isWrapped = state?.bccWrapped ?? false
- let hasCcOrBcc = (state?.ccRecipients.count ?? 0 > 0) ||
- (state?.bccRecipients.count ?? 0 > 0)
- switch type {
- case .recipients:
- rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate,
- type: .to,
- recipients: state?.toRecipients ?? []))
- if !isWrapped || hasCcOrBcc {
- rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate,
- type: .cc,
- recipients: state?.ccRecipients ?? []))
- rows.append(RecipientCellViewModel(resultDelegate: cellVmDelegate,
- type: .bcc,
- recipients: state?.bccRecipients ?? []))
- }
- case .wrapped:
- if isWrapped && !hasCcOrBcc {
- rows.append(WrappedBccViewModel())
- }
- case .account:
- if Account.all().count == 1 {
- // Accountpicker only for multi account setup
- break
- }
- var fromAccount: Account? = nil
- if let fromIdentity = state?.from {
- fromAccount = Account.by(address: fromIdentity.address)
- }
- let rowModel = AccountCellViewModel(resultDelegate: cellVmDelegate,
- initialAccount: fromAccount)
- rows.append(rowModel)
- case .subject:
- let rowModel = SubjectCellViewModel(resultDelegate: cellVmDelegate)
- if let subject = state?.subject {
- rowModel.content = subject
- }
- rows.append(rowModel)
- case .body:
- rows.append(BodyCellViewModel(resultDelegate: cellVmDelegate,
- initialPlaintext: state?.initData?.bodyPlaintext,
- initialAttributedText: state?.initData?.bodyHtml,
- inlinedAttachments: state?.initData?.inlinedAttachments))
- case .attachments:
- for att in state?.nonInlinedAttachments ?? [] {
- rows.append(AttachmentViewModel(attachment: att))
- }
- }
- }
- }
-
- private func resetSections() {
- var newSections = [ComposeViewModel.Section]()
- for type in ComposeViewModel.Section.SectionType.allCases {
- if let section = ComposeViewModel.Section(type: type,
- for: state,
- cellVmDelegate: self) {
- newSections.append(section)
- }
- }
- self.sections = newSections
- delegate?.modelChanged()
- }
+         private func resetSections() {
+         var newSections = [ComposeViewModel.Section]()
+         for type in ComposeViewModel.Section.SectionType.allCases {
+         if let section = ComposeViewModel.Section(type: type,
+         for: state,
+         cellVmDelegate: self) {
+         newSections.append(section)
+         }
+         }
+         self.sections = newSections
+         delegate?.modelChanged()
+         }
 
  private func unwrapRecipientSection() {
  let maybeWrappedIdx = 1
