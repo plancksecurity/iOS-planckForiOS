@@ -98,8 +98,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testSections_accountSelector() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
-        let secondAccound = SecretTestData().createWorkingAccount(number: 1)
-        secondAccound.save()
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
+        secondAccount.save()
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
                        expectAccountSectionExists: true,
@@ -358,16 +358,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - SubjectCellViewModelResultDelegate Handling
 
     private var subjectCellViewModel: SubjectCellViewModel? {
-        guard let sections = vm?.sections else {
-            XCTFail()
-            return nil
-        }
-        for section in sections {
-            if section.type == .subject {
-                return section.rows.first as? SubjectCellViewModel ?? nil
-            }
-        }
-        return nil
+        return viewmodel(ofType: SubjectCellViewModel.self) as? SubjectCellViewModel
     }
 
     func testSubjectCellViewModelDidChangeSubject() {
@@ -395,7 +386,55 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - AccountCellViewModelResultDelegate handling
+
+    private var accountCellViewModel: AccountCellViewModel? {
+        return viewmodel(ofType: AccountCellViewModel.self) as? AccountCellViewModel
+    }
+
+    func testAccountCellViewModelAccountChangedTo() {
+        let secondAccount = SecretTestData().createWorkingAccount(number: 1)
+        secondAccount.save()
+        assert(contentChangedMustBeCalled: true,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: true,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let accountVm = accountCellViewModel else {
+            XCTFail()
+            return
+        }
+        vm?.accountCellViewModel(accountVm, accountChangedTo: secondAccount)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     // MARK: - Helper
+
+    private func viewmodel(ofType vmType: AnyClass) -> CellViewModel? {
+        guard let sections = vm?.sections else {
+            XCTFail()
+            return nil
+        }
+        for section in sections {
+            guard let vm = section.rows.first else {
+                continue
+            }
+            if type(of: vm) == vmType {
+                return  section.rows.first
+            }
+        }
+        return nil
+    }
 
     private func draftMessage(bccSet: Bool = false, attachmentsSet: Bool = false) -> Message {
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
@@ -1161,21 +1200,4 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  state.validate()
  }
  }
-
- // MARK: AccountCellViewModelResultDelegate
-
- extension ComposeViewModel: AccountCellViewModelResultDelegate {
- func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {
- guard let idxPath = indexPath(for: vm) else {
- Log.shared.errorAndCrash(component: #function,
- errorString: "We got called by a non-existing VM?")
- return
- }
- state.from = account.user
- delegate?.contentChanged(inRowAt: idxPath)
- }
- }
-
-
-
  */
