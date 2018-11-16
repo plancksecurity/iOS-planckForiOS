@@ -14,7 +14,15 @@ import MessageModel
 class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
     private var testResultDelegate: TestResultDelegate?
-    var testee: ComposeViewModel?
+    var vm: ComposeViewModel?
+
+    override func setUp() {
+        super.setUp()
+        vm = ComposeViewModel(resultDelegate: nil,
+                                  composeMode: nil,
+                                  prefilledTo: nil,
+                                  originalMessage: nil)
+    }
 
     // MARK: - init
 
@@ -49,7 +57,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(vm === stateDelegate)
     }
 
-    // MARK: Sections
+    // MARK: - Sections
 
     func testSections_setupCorrectly() {
         let testOriginalMessage = draftMessage(bccSet: false, attachmentsSet: false)
@@ -82,7 +90,57 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         assertSections(forVMIniitaliizedWith: testOriginalMessage,
                        expectBccWrapperSectionExists: true,
                        expectAccountSectionExists: false,
-                       expectAttachmentSectionExists: false)
+                       expectAttachmentSectionExists: true)
+    }
+
+    // MARK: - DocumentAttachmentPicker
+
+    func testDocumentAttachmentPickerViewModel() {
+        let testee = vm?.documentAttachmentPickerViewModel()
+        XCTAssertNotNil(testee)
+    }
+
+    func testDidPickDocumentAttachment() {
+        let attachmentSectionSection = 4
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: true,
+               expectedSection: attachmentSectionSection,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: true,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let att = attachment()
+        vm?.documentAttachmentPickerViewModel(TestDocumentAttachmentPickerViewModel(), didPick: att)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testDocumentAttachmentPickerDone() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: true,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.documentAttachmentPickerViewModelDidCancel(TestDocumentAttachmentPickerViewModel())
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     // MARK: - Helper
@@ -95,11 +153,19 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             createe.bcc = [account.user]
         }
         if attachmentsSet {
-            createe.attachments = [Attachment(data: nil,
-                                              mimeType: "test/type",
-                                              contentDisposition: .attachment)]
+            let att = attachment()
+            createe.attachments = [att]
         }
         createe.save()
+        return createe
+    }
+
+    private func attachment(
+        of type: Attachment.ContentDispositionType = .attachment ) -> Attachment {
+        let createe = Attachment(data: Data(),
+                                 mimeType: "image/jpg",
+                                 image: UIImage(),
+                                 contentDisposition: type)
         return createe
     }
 
@@ -107,7 +173,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                 expectBccWrapperSectionExists: Bool = true,
                                 expectAccountSectionExists: Bool = false,
                                 expectAttachmentSectionExists: Bool = false) {
-
         let vm = ComposeViewModel(resultDelegate: nil,
                                   composeMode: .normal,
                                   prefilledTo: nil,
@@ -245,7 +310,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                          expModelChangedCalled: expModelChangedCalled,
                          expSectionChangedCalled: expSectionChangedCalled,
                          expectedSection: expectedSection,
-                         expColorBatchNeedsUpdateCalled: expColorBatchNeedsUpdateCalled,
+                         expColorBatchNeedsUpdateCalled: nil,
                          expectedRating: expectedRating,
                          expectedProtectionEnabled: expectedProtectionEnabled,
                          expHideSuggestionsCalled: expHideSuggestionsCalled,
@@ -284,10 +349,14 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             TestResultDelegate(expDidComposeNewMailCalled: expDidComposeNewMailCalled,
                                expDidModifyMessageCalled: expDidModifyMessageCalled,
                                expDidDeleteMessageCalled: expDidDeleteMessageCalled)
-        testee = ComposeViewModel(resultDelegate: testResultDelegate,
-                                  composeMode: composeMode,
-                                  prefilledTo: prefilledTo,
-                                  originalMessage: originalMessage)
+        vm = ComposeViewModel(resultDelegate: testResultDelegate,
+                              composeMode: composeMode,
+                              prefilledTo: prefilledTo,
+                              originalMessage: originalMessage)
+        vm?.delegate = testDelegate
+        // Set _after_ the delegate is set because at this point we are not interested in callbacks
+        // triggered by setting the delegate.
+        testDelegate?.expColorBatchNeedsUpdateCalled = expColorBatchNeedsUpdateCalled
     }
 
     private class TestResultDelegate: ComposeViewModelResultDelegate {
@@ -343,7 +412,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let expSectionChangedCalled: XCTestExpectation?
         let expectedSection: Int?
 
-        let expColorBatchNeedsUpdateCalled: XCTestExpectation?
+        var expColorBatchNeedsUpdateCalled: XCTestExpectation?
         let expectedRating: PEP_rating?
         let expectedProtectionEnabled: Bool?
 
@@ -513,34 +582,17 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             exp.fulfill()
         }
     }
+
+    // MARK: - DocumentAttachmentPickerViewModel
+    class TestDocumentAttachmentPickerViewModel: DocumentAttachmentPickerViewModel {} // Dummy to pass something
 }
 
-
-
-
 /*
- weak var resultDelegate: ComposeViewModelResultDelegate?
  weak var delegate: ComposeViewModelDelegate? {
  didSet {
  delegate?.colorBatchNeedsUpdate(for: state.rating,
  protectionEnabled: state.pEpProtection)
  }
- }
- public private(set) var sections = [ComposeViewModel.Section]()
- public private(set) var state: ComposeViewModelState
-
-
- init(resultDelegate: ComposeViewModelResultDelegate? = nil,
- composeMode: ComposeUtil.ComposeMode? = nil,
- prefilledTo: Identity? = nil,
- originalMessage: Message? = nil) {
- self.resultDelegate = resultDelegate
- let initData = InitData(withPrefilledToRecipient: prefilledTo,
- orForOriginalMessage: originalMessage,
- composeMode: composeMode)
- self.state = ComposeViewModelState(initData: initData)
- self.state.delegate = self
- setup()
  }
 
  public func viewModel(for indexPath: IndexPath) -> CellViewModel {
@@ -624,31 +676,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  delegate?.colorBatchNeedsUpdate(for: state.rating, protectionEnabled: newValue)
  }
  }
-
- // MARK: - CellViewModels
-
-
-
-         private func resetSections() {
-         var newSections = [ComposeViewModel.Section]()
-         for type in ComposeViewModel.Section.SectionType.allCases {
-         if let section = ComposeViewModel.Section(type: type,
-         for: state,
-         cellVmDelegate: self) {
-         newSections.append(section)
-         }
-         }
-         self.sections = newSections
-         delegate?.modelChanged()
-         }
-
- private func unwrapRecipientSection() {
- let maybeWrappedIdx = 1
- if sections[maybeWrappedIdx].type == .wrapped {
- let wrappedSection = sections[maybeWrappedIdx]
- wrappedSection.rows.removeAll()
- delegate?.sectionChanged(section: maybeWrappedIdx)
- }
  // Add Cc and Bcc VMs
 
  let recipientsSection = section(for: .recipients)
@@ -660,89 +687,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  recipients: []))
  let idxRecipients = 0
  delegate?.sectionChanged(section: idxRecipients)
- }
-
- private func index(ofSectionWithType type: ComposeViewModel.Section.SectionType) -> Int? {
- for i in 0..<sections.count {
- if sections[i].type == type {
- return i
- }
- }
- return nil
- }
-
- private func section(
- `for` type: ComposeViewModel.Section.SectionType) -> ComposeViewModel.Section? {
- for section in sections {
- if section.type == type {
- return section
- }
- }
- return nil
- }
-
- private func indexPath(for cellViewModel: CellViewModel) -> IndexPath? {
- for s in 0..<sections.count {
- let section = sections[s]
- for r in 0..<section.rows.count {
- let row = section.rows[r]
- if row === cellViewModel {
- return IndexPath(row: r, section: s)
- }
- }
- }
- return nil
- }
- }
-
- // MARK: - Attachments
-
- extension ComposeViewModel {
- private func removeNonInlinedAttachment(_ removee: Attachment) {
- guard let section = section(for: .attachments) else {
- Log.shared.errorAndCrash(component: #function,
- errorString: "Only attachmnets can be removed by the user")
- return
- }
- // Remove from section
- var newAttachmentVMs = [AttachmentViewModel]()
- for vm in section.rows {
- guard let aVM = vm as? AttachmentViewModel else {
- Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
- return
- }
- if aVM.attachment != removee {
- newAttachmentVMs.append(aVM)
- }
- }
- section.rows = newAttachmentVMs
- // Remove from state
- var newNonInlinedAttachments = [Attachment]()
- for att in state.nonInlinedAttachments {
- if att != removee {
- newNonInlinedAttachments.append(att)
- }
- }
- state.nonInlinedAttachments = newNonInlinedAttachments
- }
-
- private func addNonInlinedAttachment(_ att: Attachment) {
- // Add to state
- state.nonInlinedAttachments.append(att)
- // add section
- if let existing = section(for: .attachments) {
- existing.rows.append(AttachmentViewModel(attachment: att))
- } else {
- guard let new = Section(type: .attachments, for: state, cellVmDelegate: self) else {
- Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
- return
- }
- sections.append(new)
- }
- if let attachmenttSection = index(ofSectionWithType: .attachments) {
- delegate?.sectionChanged(section: attachmenttSection)
- }
- }
  }
 
  // MARK: - Suggestions
@@ -768,25 +712,25 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  }
  }
 
- // MARK: - DocumentAttachmentPickerViewModel[ResultDelegate]
+             // MARK: - DocumentAttachmentPickerViewModel[ResultDelegate]
 
- extension ComposeViewModel {
- func documentAttachmentPickerViewModel() -> DocumentAttachmentPickerViewModel {
- return DocumentAttachmentPickerViewModel(resultDelegate: self)
- }
- }
+             extension ComposeViewModel {
+             func documentAttachmentPickerViewModel() -> DocumentAttachmentPickerViewModel {
+             return DocumentAttachmentPickerViewModel(resultDelegate: self)
+             }
+             }
 
- extension ComposeViewModel: DocumentAttachmentPickerViewModelResultDelegate {
- func documentAttachmentPickerViewModel(_ vm: DocumentAttachmentPickerViewModel,
- didPick attachment: Attachment) {
- addNonInlinedAttachment(attachment)
- delegate?.documentAttachmentPickerDone()
- }
+             extension ComposeViewModel: DocumentAttachmentPickerViewModelResultDelegate {
+             func documentAttachmentPickerViewModel(_ vm: DocumentAttachmentPickerViewModel,
+             didPick attachment: Attachment) {
+             addNonInlinedAttachment(attachment)
+             delegate?.documentAttachmentPickerDone()
+             }
 
- func documentAttachmentPickerViewModelDidCancel(_ vm: DocumentAttachmentPickerViewModel) {
- delegate?.documentAttachmentPickerDone()
- }
- }
+             func documentAttachmentPickerViewModelDidCancel(_ vm: DocumentAttachmentPickerViewModel) {
+             delegate?.documentAttachmentPickerDone()
+             }
+             }
 
  // MARK: - MediaAttachmentPickerProviderViewModel[ResultDelegate]
 
