@@ -91,8 +91,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
 
         title = model?.getFolderName()
-        let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
-                                                target: self)
+        let item = UIBarButtonItem.getPEPButton(
+            action: #selector(showSettingsViewController),
+            target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
             target: nil,
@@ -307,8 +308,9 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         moveToolbarButton?.isEnabled = false
 
-        let pEp = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
-                                               target: self)
+        let pEp = UIBarButtonItem.getPEPButton(
+            action: #selector(showSettingsViewController),
+            target: self)
         toolbarItems = [flagToolbarButton, flexibleSpace, readToolbarButton,
                         flexibleSpace, deleteToolbarButton, flexibleSpace,
                         moveToolbarButton, flexibleSpace, pEp] as? [UIBarButtonItem]

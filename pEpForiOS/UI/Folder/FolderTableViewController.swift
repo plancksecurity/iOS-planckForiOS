@@ -43,8 +43,9 @@ class FolderTableViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        let item = UIBarButtonItem.getpEpButton(action:#selector(showSettingsViewController),
-                                                target: self)
+        let item = UIBarButtonItem.getPEPButton(
+            action:#selector(showSettingsViewController),
+            target: self)
         let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
             target: nil,

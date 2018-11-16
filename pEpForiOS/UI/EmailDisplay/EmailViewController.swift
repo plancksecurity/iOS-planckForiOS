@@ -110,8 +110,9 @@ class EmailViewController: BaseTableViewController {
             return
         }
         if(isCollapsed || forceDrawing){
-            let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
-                                                    target: self)
+            let item = UIBarButtonItem.getPEPButton(
+                action: #selector(showSettingsViewController),
+                target: self)
             item.tag = BarButtonType.settings.rawValue
             let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
@@ -206,8 +207,9 @@ class EmailViewController: BaseTableViewController {
                 leftBarButtonItems.append(contentsOf: unwrappedLeftBarButtonItems)
             }
             if(traitCollection.verticalSizeClass == .regular){
-                let item = UIBarButtonItem.getpEpButton(action: #selector(showSettingsViewController),
-                                                        target: self)
+                let item = UIBarButtonItem.getPEPButton(
+                    action: #selector(showSettingsViewController),
+                    target: self)
                 item.tag = BarButtonType.settings.rawValue
                 navigationItem.rightBarButtonItems?.append(item)
 

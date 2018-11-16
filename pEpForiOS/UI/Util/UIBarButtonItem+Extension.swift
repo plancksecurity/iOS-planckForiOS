@@ -9,7 +9,7 @@
 import Foundation
 
 extension UIBarButtonItem {
-    public static func getpEpButton(action: Selector, target: Any) -> UIBarButtonItem {
+    public static func getPEPButton(action: Selector, target: Any) -> UIBarButtonItem {
         let img = UIImage(named: "icon-settings")
         let pEpButton = UIBarButtonItem(image: img, style: .plain, target: target, action: action)
         return pEpButton
