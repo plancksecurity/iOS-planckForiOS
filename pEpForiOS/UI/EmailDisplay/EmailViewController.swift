@@ -109,7 +109,8 @@ class EmailViewController: BaseTableViewController {
         guard let isCollapsed = splitViewController?.isCollapsed else {
             return
         }
-        if(isCollapsed || forceDrawing){
+
+        if (isCollapsed || forceDrawing) {
             let item = UIBarButtonItem.getPEPButton(
                 action: #selector(showSettingsViewController),
                 target: self)
