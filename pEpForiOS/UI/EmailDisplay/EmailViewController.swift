@@ -123,7 +123,7 @@ class EmailViewController: BaseTableViewController {
 
             toolbarItems?.append(contentsOf: [flexibleSpace,item])
         } else {
-            removePepButton()
+            removePEPButton()
         }
     }
 
@@ -221,7 +221,7 @@ class EmailViewController: BaseTableViewController {
 
             break
         case .allVisible:
-            removePepButton()
+            removePEPButton()
             var leftBarButtonItems: [UIBarButtonItem] = []
             if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems?.first {
                 leftBarButtonItems.append(unwrappedLeftBarButtonItems)
@@ -585,7 +585,7 @@ extension EmailViewController: SegueHandlerType {
         }
     }
 
-    private func removePepButton() {
+    private func removePEPButton() {
         var items: [UIBarButtonItem]!
         if traitCollection.verticalSizeClass == .regular {
             guard let auxItems = navigationItem.rightBarButtonItems else {
