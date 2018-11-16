@@ -507,10 +507,10 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                    editActionsForRowAt
         indexPath: IndexPath,
                    for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
-        guard let vm = model else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+        if model == nil {
             return nil
         }
+
         // Create swipe actions, taking the currently displayed folder into account
         var swipeActions = [SwipeAction]()
 
