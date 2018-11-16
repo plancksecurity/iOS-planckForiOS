@@ -139,8 +139,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
+        let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
         let att = attachment()
         vm?.documentAttachmentPickerViewModel(TestDocumentAttachmentPickerViewModel(), didPick: att)
+        let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
+        XCTAssertEqual(countAfter, countBefore + 1)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -194,10 +197,14 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let mediaAtt =
             MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .image,
                                                                    attachment: imageAttachment)
+        let countBefore = vm?.state.inlinedAttachments.count ?? -1
         vm?.mediaAttachmentPickerProviderViewModel(
             TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
             didSelect: mediaAtt)
+        let countAfter = vm?.state.inlinedAttachments.count ?? -1
+        XCTAssertEqual(countAfter, countBefore + 1)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
+
     }
 
     func testDidSelectMediaAttachment_video() {
@@ -227,9 +234,12 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let mediaAtt =
             MediaAttachmentPickerProviderViewModel.MediaAttachment(type: .movie,
                                                                    attachment: imageAttachment)
+        let countBefore = vm?.state.nonInlinedAttachments.count ?? -1
         vm?.mediaAttachmentPickerProviderViewModel(
             TestMediaAttachmentPickerProviderViewModel(resultDelegate: nil),
             didSelect: mediaAtt)
+        let countAfter = vm?.state.nonInlinedAttachments.count ?? -1
+        XCTAssertEqual(countAfter, countBefore + 1)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -300,8 +310,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: false,
                didDeleteMessageMustBeCalled: false)
+        let countBefore = vm?.state.inlinedAttachments.count ?? -1
         vm?.bodyCellViewModel(bodyVm,
                               inlinedAttachmentsChanged: [attachment()])
+        let countAfter = vm?.state.inlinedAttachments.count ?? -1
+        XCTAssertEqual(countAfter, countBefore + 1)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -328,6 +341,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let lessAttachments = [Attachment]()
         vm?.bodyCellViewModel(bodyVm,
                               inlinedAttachmentsChanged: lessAttachments)
+        XCTAssertEqual(vm?.state.inlinedAttachments.count, lessAttachments.count)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -352,6 +366,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         vm?.bodyCellViewModel(bodyVm,
                               bodyChangedToPlaintext: newPlaintext,
                               html: newHtml)
+        XCTAssertEqual(vm?.state.bodyHtml, newHtml)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -381,8 +396,10 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        subjectVm.content = "testSubjectCellViewModelDidChangeSubject content"
+        let newSubject = "testSubjectCellViewModelDidChangeSubject content"
+        subjectVm.content = newSubject
         vm?.subjectCellViewModelDidChangeSubject(subjectVm)
+        XCTAssertEqual(vm?.state.subject, newSubject)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -415,6 +432,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             return
         }
         vm?.accountCellViewModel(accountVm, accountChangedTo: secondAccount)
+        XCTAssertEqual(vm?.state.from, secondAccount.user)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
@@ -1154,50 +1172,4 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
  // MARK: - Cell-ViewModel Delegates
 
- // MARK: RecipientCellViewModelResultDelegate
-
- extension ComposeViewModel: RecipientCellViewModelResultDelegate {
- func recipientCellViewModel(_ vm: RecipientCellViewModel,
- didChangeRecipients newRecipients: [Identity]) {
- switch vm.type {
- case .to:
- state.toRecipients = newRecipients
- case .cc:
- state.ccRecipients = newRecipients
- case .bcc:
- state.bccRecipients = newRecipients
- }
- }
-
- func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String) {
- guard let idxPath = indexPath(for: vm) else {
- Log.shared.errorAndCrash(component: #function,
- errorString: "We got called by a non-existing VM?")
- return
- }
- lastRowWithSuggestions = idxPath
- delegate?.showSuggestions(forRowAt: idxPath)
- suggestionsVM?.updateSuggestion(searchString: text)
- }
-
- func recipientCellViewModelDidEndEditing(_ vm: RecipientCellViewModel) {
- state.validate()
- delegate?.focusSwitched()
- delegate?.hideSuggestions()
- }
-
- func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
- guard let idxPath = indexPath(for: vm) else {
- Log.shared.errorAndCrash(component: #function,
- errorString: "We got called by a non-existing VM?")
- return
- }
- lastRowWithSuggestions = idxPath
-
- delegate?.contentChanged(inRowAt: idxPath)
- delegate?.showSuggestions(forRowAt: idxPath)
- suggestionsVM?.updateSuggestion(searchString: newText)
- state.validate()
- }
- }
  */
