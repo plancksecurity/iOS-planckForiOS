@@ -54,7 +54,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
 
         let _ = createMessages(in: f1,
                                numMessages: 3,
-                               pepRating: pEpRating)
+                               pEpRating: pEpRating)
 
         let cf = CompositeFilter<FilterBase>()
         cf.add(filter: AttachmentFilter())
@@ -69,7 +69,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
     }
 
     private func createMessages(in folder: Folder, numMessages: Int,
-                                pepRating: PEP_rating = PEP_rating_trusted) -> [Message] {
+                                pEpRating: PEP_rating = PEP_rating_trusted) -> [Message] {
         let id = Identity.create(address: "fake@mail.com")
         id.save()
 
@@ -79,7 +79,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
             message.from = id
             message.to = [account.user]
             message.imapFlags?.seen = false
-            message.pEpRatingInt = Int(pepRating.rawValue)
+            message.pEpRatingInt = Int(pEpRating.rawValue)
             message.save()
             messages.append(message)
         }
