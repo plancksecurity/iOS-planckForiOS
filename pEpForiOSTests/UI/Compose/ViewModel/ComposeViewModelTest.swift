@@ -844,10 +844,61 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    /*
+    // MARK: - isAttachmentSection
 
-     
+    func testIsAttachmentSection() {
+        let msgWithAttachment = draftMessage(attachmentsSet: true)
+        assert(originalMessage: msgWithAttachment)
+        guard
+            let lastSection = vm?.sections.last,
+            let numSections = vm?.sections.count else {
+                XCTFail()
+                return
+        }
+        let numRows = lastSection.rows.count
+        let idxPath = IndexPath(row: numRows - 1, section: numSections - 1)
+        XCTAssertTrue(vm?.isAttachmentSection(indexPath: idxPath) ?? false,
+                      "Last row in last section must be attachment")
+    }
+
+    // MARK: - handleRemovedRow
+
+    func testHandleRemovedRow_removeAttachment() {
+        let msgWithAttachments = draftMessage(attachmentsSet: true)
+        msgWithAttachments.attachments.append(attachment(ofType: .attachment))
+        msgWithAttachments.save()
+        assert(originalMessage: msgWithAttachments)
+        vm?.state.nonInlinedAttachments = msgWithAttachments.attachments
+        guard
+            let lastSectionBefore = vm?.sections.last,
+            let numSectionsBefore = vm?.sections.count,
+            let numNonIlinedAttachmentsBefore = vm?.state.nonInlinedAttachments.count
+            else {
+                XCTFail()
+                return
+        }
+        let numRowsBefore  = lastSectionBefore.rows.count
+        let attachmentIdxPath = IndexPath(row: numRowsBefore - 1,
+                                          section: numSectionsBefore - 1)
+        // Test
+        vm?.handleRemovedRow(at: attachmentIdxPath)
+        guard
+            let lastSectionAfter = vm?.sections.last,
+            let numSectionsAfter = vm?.sections.count,
+            let numNonIlinedAttachmentsAfter = vm?.state.nonInlinedAttachments.count
+            else {
+                XCTFail()
+                return
+        }
+        let numRowsAfter = lastSectionAfter.rows.count
+        XCTAssertEqual(numNonIlinedAttachmentsAfter, numNonIlinedAttachmentsBefore - 1)
+        XCTAssertEqual(numSectionsAfter, numSectionsBefore)
+        XCTAssertEqual(numRowsAfter, numRowsBefore - 1, "Attachment is removed")
+    }
+
+    /*
     */
+
 
     // MARK: - Helper
 
@@ -1008,7 +1059,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                  size: imageData.count,
                                  contentDisposition: type)
         }
-
+        createe.fileName = UUID().uuidString
         return createe
     }
 
@@ -1486,22 +1537,5 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  }
  resultDelegate?.composeViewModelDidComposeNewMail()
  }
-
- public func isAttachmentSection(indexPath: IndexPath) -> Bool {
- return sections[indexPath.section].type == .attachments
- }
-
- public func handleRemovedRow(at indexPath: IndexPath) {
- guard let removeeVM = viewModel(for: indexPath) as? AttachmentViewModel else {
- Log.shared.errorAndCrash(component: #function,
- errorString: "Only attachmnets can be removed by the user")
- return
- }
- removeNonInlinedAttachment(removeeVM.attachment)
- }
-
-
- /
-
 
  */
