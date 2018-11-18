@@ -818,8 +818,35 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - Delegate Setter Side Effect
+
+    func testDelegateSetter() {
+        let expectedRating = PEP_rating_undefined
+        let expectedProtection = true
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: true,
+               expectedRating: expectedRating,
+               expectedProtectionEnabled: expectedProtection,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.delegate = testDelegate
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     /*
 
+     
     */
 
     // MARK: - Helper
@@ -1410,12 +1437,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 }
 
 /*
- weak var delegate: ComposeViewModelDelegate? {
- didSet {
- delegate?.colorBatchNeedsUpdate(for: state.rating,
- protectionEnabled: state.pEpProtection)
- }
- }
+
 
  public func viewModel(for indexPath: IndexPath) -> CellViewModel {
  return sections[indexPath.section].rows[indexPath.row]
