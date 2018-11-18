@@ -15,6 +15,12 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
     private var testResultDelegate: TestResultDelegate?
     var vm: ComposeViewModel?
+    var outbox: Folder? {
+        return account.folder(ofType: .outbox)
+    }
+    var drafts: Folder? {
+        return account.folder(ofType: .drafts)
+    }
 
     override func setUp() {
         super.setUp()
@@ -22,6 +28,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                   composeMode: nil,
                                   prefilledTo: nil,
                                   originalMessage: nil)
+        assureOutboxExists()
+        assureDraftsExists()
     }
 
     // MARK: - Test the Test Helper
@@ -591,66 +599,185 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(testee)
     }
 
+    func testHandleSaveActionTriggered() {
+        assert(originalMessage: nil,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+
+        let testSubject = UUID().uuidString + "testSubject"
+        vm?.state.subject = testSubject
+
+        vm?.handleSaveActionTriggered()
+
+        guard
+            let draftsFolder = drafts,
+            let testeeDrafted = Message.by(uid: 0,
+                                       folderName: draftsFolder.name,
+                                       accountAddress: account.user.address)
+            else {
+                XCTFail("Message not saved to drafts")
+                return
+        }
+        XCTAssertEqual(testeeDrafted.shortMessage, testSubject)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleSaveActionTriggered_origOutbox() {
+        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
+        let originalMessage = message(inFolderOfType: .outbox)
+        originalMessage.messageID = testMessageId
+        originalMessage.from = account.user
+
+        assert(originalMessage: originalMessage,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: true)
+        vm?.handleSaveActionTriggered()
+        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+                                              uuid: originalMessage.uuid,
+                                              folderName: originalMessage.parent.name,
+                                              accountAddress: account.user.address)
+        XCTAssertNil(msgWithTestMessageId,
+                     "original message must be deleted, a copy is safed to drafts")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleSaveActionTriggered_origDrafts() {
+        let testMessageId = UUID().uuidString + "testHandleSaveActionTriggered"
+        let originalMessage = message(inFolderOfType: .drafts)
+        originalMessage.messageID = testMessageId
+        originalMessage.from = account.user
+
+        assert(originalMessage: originalMessage,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: true,
+               didDeleteMessageMustBeCalled: false)
+        vm?.handleSaveActionTriggered()
+        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+                                              uuid: originalMessage.uuid,
+                                              folderName: originalMessage.parent.name,
+                                              accountAddress: account.user.address)
+        XCTAssertTrue(msgWithTestMessageId?.imapFlags?.deleted ?? false,
+                     "The user edited draft. Technically we save a new message, thus the original" +
+            " must be deleted.")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleDeleteActionTriggered_normal() {
+        assert(originalMessage: nil,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.handleSaveActionTriggered()
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleDeleteActionTriggered_origOutbox() {
+        let testMessageId = UUID().uuidString + "testHandleDeleteActionTriggered_origOutbox"
+        let originalMessage = message(inFolderOfType: .outbox)
+        originalMessage.messageID = testMessageId
+        originalMessage.from = account.user
+
+        assert(originalMessage: originalMessage,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: true)
+        vm?.handleSaveActionTriggered()
+        let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
+                                              uuid: originalMessage.uuid,
+                                              folderName: originalMessage.parent.name,
+                                              accountAddress: account.user.address)
+        XCTAssertNil(msgWithTestMessageId,
+                     "original message must be deleted, a copy is safed to drafts")
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     /*
-
-     // MARK: - Cancel Actions
-
-     extension ComposeViewModel {
-
-                 public func handleSaveActionTriggered() {
-                 guard let data = state.initData else {
-                 Log.shared.errorAndCrash(component: #function, errorString: "No data")
-                 return
-                 }
-                 if data.isDraftsOrOutbox {
-                 // We are in drafts folder and, from user perespective, are editing a drafted mail.
-                 // Technically we have to create a new one and delete the original message, as the
-                 // mail is already synced with the IMAP server and thus we must not modify it.
-                 deleteOriginalMessage()
-                 if data.isOutbox {
-                 // Message will be saved (moved from user perspective) to drafts, but we are in
-                 // outbox folder.
-                 resultDelegate?.composeViewModelDidDeleteMessage()
-                 }
-                 }
-
-
-     public func handleDeleteActionTriggered() {
-     guard let data = state.initData else {
-     Log.shared.errorAndCrash(component: #function, errorString: "No data")
-     return
-     }
-     if data.isOutbox {
-     data.originalMessage?.delete()
-     resultDelegate?.composeViewModelDidDeleteMessage()
-     }
-     }
-
-
-
-     guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
-     Log.shared.errorAndCrash(component: #function, errorString: "No message")
-     return
-     }
-     let acc = msg.parent.account
-     if let f = Folder.by(account:acc, folderType: .drafts) {
-     msg.parent = f
-     msg.imapFlags?.draft = true
-     msg.sent = Date()
-     msg.save()
-     }
-     if data.isDrafts {
-     // We save a modified version of a drafted message. The UI might want to updtate
-     // its model.
-     resultDelegate?.composeViewModelDidModifyMessage()
-     }
-     }
-     }
 
 
     */
 
     // MARK: - Helper
+
+    private func assureOutboxExists() {
+        if outbox == nil {
+            let createe = Folder(name: "outbox", parent: nil, account: account, folderType: .outbox)
+            createe.save()
+        }
+        XCTAssertNotNil(outbox)
+    }
+
+    private func assureDraftsExists() {
+        if drafts == nil {
+            let createe = Folder(name: "drafts",
+                                 parent: nil,
+                                 account: account,
+                                 folderType: .drafts)
+            createe.save()
+        }
+        XCTAssertNotNil(drafts)
+    }
 
     private func assertShowKeepInOutbox(forMessageInfolderOfType type: FolderType) {
         let msg = message(inFolderOfType: type)
@@ -751,11 +878,12 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     private func message(inFolderOfType parentType: FolderType = .inbox,
                          bccSet: Bool = false,
                          attachmentsSet: Bool = false) -> Message {
-        let drafts = Folder(name: "\(parentType)",
-            parent: nil, account: account,
+        let folder = Folder(name: "\(parentType)",
+            parent: parentType == .inbox ? nil : account.folder(ofType: .inbox),
+            account: account,
             folderType: parentType)
-        drafts.save()
-        let createe = Message(uuid: UUID().uuidString, parentFolder: drafts)
+        folder.save()
+        let createe = Message(uuid: UUID().uuidString, parentFolder: folder)
         if bccSet {
             createe.bcc = [account.user]
         }
