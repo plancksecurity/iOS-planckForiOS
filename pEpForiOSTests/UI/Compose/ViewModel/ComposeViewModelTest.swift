@@ -122,7 +122,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                        expectAttachmentSectionExists: true)
     }
 
-    // MARK: - DocumentAttachmentPickerResultDelegate handling
+    // MARK: - DocumentAttachmentPickerResultDelegate Handling
 
     func testDocumentAttachmentPickerViewModel() {
         let testee = vm?.documentAttachmentPickerViewModel()
@@ -175,7 +175,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
-    // MARK: - MediaAttachmentPickerProviderViewModelResultDelegate handling
+    // MARK: - MediaAttachmentPickerProviderViewModelResultDelegate Handling
 
     func testMediaAttachmentPickerProviderViewModelFactory() {
         let testee = vm?.mediaAttachmentPickerProviderViewModel()
@@ -761,11 +761,64 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(testee?.resultDelegate === vm)
     }
 
+// MARK: - ComposeViewModelStateDelegate Handling
 
+    func testComposeViewModelStateDidChangeValidationStateTo() {
+        let expectedIsValid = true
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: true,
+               expectedIsValidated: expectedIsValid,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let state = vm?.state else {
+            XCTFail()
+            return
+        }
+        vm?.composeViewModelState(state, didChangeValidationStateTo: expectedIsValid)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
+    func testComposeViewModelDidChangePEPRatingTo() {
+        let expectedRating = PEP_rating_reliable
+        vm?.state.pEpProtection = true
+        let expectedProtection = vm?.state.pEpProtection ?? false
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: true,
+               expectedRating: expectedRating,
+               expectedProtectionEnabled: expectedProtection,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let state = vm?.state else {
+            XCTFail()
+            return
+        }
+        vm?.composeViewModelState(state, didChangePEPRatingTo: expectedRating)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     /*
-
 
     */
 
@@ -1425,38 +1478,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  removeNonInlinedAttachment(removeeVM.attachment)
  }
 
- // MARK: - ComposeViewModelStateDelegate
 
- extension ComposeViewModel: ComposeViewModelStateDelegate {
-
- func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
- didChangeValidationStateTo isValid: Bool) {
- let userSeemsTyping = existsDirtyCell()
- delegate?.validatedStateChanged(to: isValid && !userSeemsTyping)
- }
-
- func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
- didChangePEPRatingTo newRating: PEP_rating) {
- delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
- }
-
- func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
- didChangeProtection newValue: Bool) {
- delegate?.colorBatchNeedsUpdate(for: state.rating, protectionEnabled: newValue)
- }
- }
- // Add Cc and Bcc VMs
-
- let recipientsSection = section(for: .recipients)
- recipientsSection?.rows.append(RecipientCellViewModel(resultDelegate: self,
- type: .cc,
- recipients: []))
- recipientsSection?.rows.append(RecipientCellViewModel(resultDelegate: self,
- type: .bcc,
- recipients: []))
- let idxRecipients = 0
- delegate?.sectionChanged(section: idxRecipients)
- }
+ /
 
 
  */
