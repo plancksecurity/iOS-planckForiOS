@@ -753,6 +753,17 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - Suggestions
+
+    func testSuggestViewModel() {
+        let testee = vm?.suggestViewModel()
+        XCTAssertNotNil(testee)
+        XCTAssertTrue(testee?.resultDelegate === vm)
+    }
+
+
+
+
     /*
 
 
@@ -1447,27 +1458,5 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  delegate?.sectionChanged(section: idxRecipients)
  }
 
- // MARK: - Suggestions
-
- extension ComposeViewModel {
- func suggestViewModel() -> SuggestViewModel {
- let createe = SuggestViewModel(resultDelegate: self)
- suggestionsVM = createe
- return createe
- }
- }
-
- extension ComposeViewModel: SuggestViewModelResultDelegate {
- func suggestViewModelDidSelectContact(identity: Identity) {
- guard
- let idxPath = lastRowWithSuggestions,
- let recipientVM = sections[idxPath.section].rows[idxPath.row] as? RecipientCellViewModel
- else {
- Log.shared.errorAndCrash(component: #function, errorString: "No row VM")
- return
- }
- recipientVM.add(recipient: identity)
- }
- }
 
  */
