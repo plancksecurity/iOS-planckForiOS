@@ -564,12 +564,14 @@ extension ComposeViewModel {
             return
         }
         let acc = msg.parent.account
-        if let f = Folder.by(account:acc, folderType: .drafts) {
-            msg.parent = f
-            msg.imapFlags?.draft = true
-            msg.sent = Date()
-            msg.save()
+        guard let f = Folder.by(account:acc, folderType: .drafts) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No drafts")
+            return
         }
+        msg.parent = f
+        msg.imapFlags?.draft = true
+        msg.sent = Date()
+        msg.save()
         if data.isDrafts {
             // We save a modified version of a drafted message. The UI might want to updtate
             // its model.
