@@ -34,8 +34,12 @@ class AttachmentToLocalURLOperation: Operation {
             return
         }
         let fileName = (attachment.fileName ?? Constants.defaultFileName).extractFileNameOrCid()
-        let theURL = tmpDir.appendingPathComponent(fileName)
+        
+        var theURL = tmpDir.appendingPathComponent(fileName)
 
+        if attachment.mimeType == "application/pdf" {
+            theURL = theURL.appendingPathExtension("pdf")
+        }
         do {
             try data.write(to: theURL)
             fileURL = theURL

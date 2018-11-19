@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import QuickLook
 
 import MessageModel
 
@@ -36,6 +37,8 @@ class EmailViewController: BaseTableViewController {
     lazy var clickHandler: UrlClickHandler = {
         return UrlClickHandler(actor: self, appConfig: appConfig)
     }()
+    
+    private var selectedAttachmentURL: URL?
 
     weak var delegate: EmailDisplayDelegate?
 
@@ -659,11 +662,19 @@ extension EmailViewController: MessageAttachmentDelegate {
 
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,
                           inView: UIView?) {
-        documentInteractionController.url = url
-        let theView = inView ?? cell
-        let dim: CGFloat = 40
-        let rect = CGRect.rectAround(center: location, width: dim, height: dim)
-        documentInteractionController.presentOptionsMenu(from: rect, in: theView, animated: true)
+        if attachment.mimeType == "application/pdf" && QLPreviewController.canPreview(url as QLPreviewItem){
+                selectedAttachmentURL = url
+                let previewController = QLPreviewController()
+                previewController.dataSource = self
+                present(previewController, animated: true, completion: nil)
+        }
+        else {
+            documentInteractionController.url = url
+            let theView = inView ?? cell
+            let dim: CGFloat = 40
+            let rect = CGRect.rectAround(center: location, width: dim, height: dim)
+            documentInteractionController.presentOptionsMenu(from: rect, in: theView, animated: true)
+        }
     }
 
     func didTap(cell: MessageCell, attachment: Attachment, location: CGPoint, inView: UIView?) {
@@ -686,6 +697,21 @@ extension EmailViewController: MessageAttachmentDelegate {
         }
         backgroundQueue.addOperation(attachmentOp)
     }
+}
+
+extension EmailViewController: QLPreviewControllerDataSource {
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        guard let url = selectedAttachmentURL else {
+            fatalError("Could not load URL")
+        }
+        return url as QLPreviewItem
+    }
+    
+
 }
 
 // MARK: - SecureWebViewControllerDelegate
