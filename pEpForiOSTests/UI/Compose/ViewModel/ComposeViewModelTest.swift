@@ -1017,12 +1017,101 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
+    // MARK: - handleUserSelectedRow
+
+    func testHandleUserSelectedRow_ccWrapped_wrapperCellSelected() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: true,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard
+            let wrapperVM = viewmodel(ofType: WrappedBccViewModel.self),
+            let idxPath = indexPath(for: wrapperVM) else {
+                XCTFail("No VM")
+                return
+        }
+        vm?.handleUserSelectedRow(at: idxPath)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleUserSelectedRow_ccWrapped_recipientCellSelected() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let idxPathToRecipients = IndexPath(row: 0, section: 0)
+        vm?.handleUserSelectedRow(at: idxPathToRecipients)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleUserSelectedRow_ccUnwrapped_recipientCellSelected() {
+        let originalMessage = draftMessage()
+        assert(originalMessage: originalMessage,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let idxPathToRecipients = IndexPath(row: 0, section: 0)
+        vm?.handleUserSelectedRow(at: idxPathToRecipients)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
     /*
 
     */
 
 
     // MARK: - Helper
+
+    private func indexPath(for cellViewModel: CellViewModel) -> IndexPath? {
+        guard let vm = vm else {
+            XCTFail("No VM")
+            return nil
+        }
+        for s in 0..<vm.sections.count {
+            let section = vm.sections[s]
+            for r in 0..<section.rows.count {
+                let row = section.rows[r]
+                if row === cellViewModel {
+                    return IndexPath(row: r, section: s)
+                }
+            }
+        }
+        return nil
+    }
 
     private func assureOutboxExists() {
         if outbox == nil {
@@ -1106,11 +1195,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let beforeCount: Int
         switch type {
         case .to:
-            beforeCount = vm?.state.toRecipients.count ?? -1
+            beforeCount = vm?.state.toRecipients.count ?? -2
         case .cc:
-            beforeCount = vm?.state.ccRecipients.count ?? -1
+            beforeCount = vm?.state.ccRecipients.count ?? -2
         case .bcc:
-            beforeCount = vm?.state.bccRecipients.count ?? -1
+            beforeCount = vm?.state.bccRecipients.count ?? -2
         }
 
         let newRecipients = [account.user, secondAccount.user]
@@ -1119,15 +1208,15 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let afterCount: Int
         switch type {
         case .to:
-            afterCount = vm?.state.toRecipients.count ?? -1
+            afterCount = vm?.state.toRecipients.count ?? -2
         case .cc:
-            afterCount = vm?.state.ccRecipients.count ?? -1
+            afterCount = vm?.state.ccRecipients.count ?? -2
         case .bcc:
-            afterCount = vm?.state.bccRecipients.count ?? -1
+            afterCount = vm?.state.bccRecipients.count ?? -2
         }
         XCTAssertNotEqual(afterCount, beforeCount)
         XCTAssertEqual(afterCount, newRecipients.count)
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
+        waitForExpectations(timeout: 0.5) // Async calls involved (get pEp color)
     }
 
     private func viewmodel(ofType vmType: AnyClass) -> CellViewModel? {
@@ -1277,6 +1366,9 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             expSectionChangedCalled =
                 expectation(description: "expSectionChangedCalled")
             expSectionChangedCalled?.isInverted = !exp
+            // Overfulfill is espected. When unwrapping CcBcc fields, wrapper section AND
+            // recipinets section changes.
+            expSectionChangedCalled?.assertForOverFulfill = false
         }
 
         var expColorBatchNeedsUpdateCalled: XCTestExpectation? = nil
@@ -1640,11 +1732,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  return indexPathBodyVm
  }
 
- public func handleUserSelectedRow(at indexPath: IndexPath) {
- let section = sections[indexPath.section]
- if section.type == .wrapped {
- state.setBccUnwrapped()
- unwrapRecipientSection()
+
  }
  }
 
