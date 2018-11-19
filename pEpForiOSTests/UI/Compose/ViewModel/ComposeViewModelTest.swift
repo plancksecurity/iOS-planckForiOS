@@ -966,9 +966,55 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                               uuid: originalMessage.uuid,
                               folderName: originalMessage.parent.name,
                               accountAddress: account.user.address) {
-            XCTFail("original message must be deleted")
+            XCTFail("original message must not exist (must be deleted)")
             return
         }
+    }
+
+    // MARK: - handleUserChangedProtectionStatus
+
+    func testHandleUserChangedProtectionStatus_change() {
+        let expectedRating = PEP_rating_undefined
+        let expectedProtection = false
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: true,
+               expectedRating: expectedRating,
+               expectedProtectionEnabled: expectedProtection,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.handleUserChangedProtectionStatus(to: false)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testHandleUserChangedProtectionStatus_noChange() {
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        vm?.handleUserChangedProtectionStatus(to: true)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     /*
@@ -1602,9 +1648,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  }
  }
 
- public func handleUserChangedProtectionStatus(to protected: Bool) {
- state.pEpProtection = protected
- }
+
 
 
  */
