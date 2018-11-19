@@ -1150,12 +1150,70 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertNotEqual(testee, toRecipientsIndPath)
     }
 
-    /*
+    // MARK: - initialFocus
 
-     
+    func testInitialFocus_emptyTo() {
+        let originalMessage = draftMessage()
+        originalMessage.to = []
+        originalMessage.save()
+        assert(originalMessage: originalMessage,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard let testee = vm?.initialFocus() else {
+            XCTFail()
+            return
+        }
+        let toRecipientsIndPath = IndexPath(row: 0, section: 0)
+        XCTAssertEqual(testee, toRecipientsIndPath)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
-    */
-
+    func testInitialFocus_toSet() {
+        let originalMessage = draftMessage()
+        originalMessage.to = [account.user]
+        originalMessage.save()
+        assert(originalMessage: originalMessage,
+               contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        guard
+            let testee = vm?.initialFocus(),
+            let bodyVM = vm?.bodyVM,
+            let bodyIndexPath = indexPath(for: bodyVM)
+            else {
+                XCTFail()
+                return
+        }
+        let toRecipientsIndexPath = IndexPath(row: 0, section: 0)
+        XCTAssertEqual(testee, bodyIndexPath)
+        XCTAssertNotEqual(testee, toRecipientsIndexPath)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
 
     // MARK: - Helper
 
@@ -1770,21 +1828,4 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     // MARK: - MediaAttachmentPickerProviderViewModel
     class TestMediaAttachmentPickerProviderViewModel: MediaAttachmentPickerProviderViewModel {} // Dummy to pass something
-
-//    // MARK: - BodyCellViewModel
-//    class TestBodyCellViewModel: BodyCellViewModel {} // Dummy to pass something
 }
-
-/*
-
-
- public func initialFocus() -> IndexPath {
- if state.initData?.toRecipients.isEmpty ?? false {
- let to = IndexPath(row: 0, section: 0)
- return to
- } else {
- return indexPathBodyVm
- }
- }
-
- */
