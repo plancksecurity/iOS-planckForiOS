@@ -21,6 +21,9 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     var drafts: Folder? {
         return account.folder(ofType: .drafts)
     }
+    var sent: Folder? {
+        return account.folder(ofType: .sent)
+    }
 
     override func setUp() {
         super.setUp()
@@ -30,6 +33,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                   originalMessage: nil)
         assureOutboxExists()
         assureDraftsExists()
+        assureSentExists()
     }
 
     // MARK: - Test the Test Helper
@@ -896,7 +900,79 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(numRowsAfter, numRowsBefore - 1, "Attachment is removed")
     }
 
+    // MARK: - handleUserClickedSendButton
+
+    func testHandleUserClickedSendButton() {
+        assert()
+        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
+        vm?.state.toRecipients = [toRecipient]
+        vm?.state.from = account.user
+        let outMsgsBefore = Folder.by(account: account, folderType: .outbox)?
+            .allMessages()
+            .count ?? -1
+        vm?.handleUserClickedSendButton()
+        let outMsgsAfter = Folder.by(account: account, folderType: .outbox)?
+            .allMessages()
+            .count ?? -1
+        XCTAssertEqual(outMsgsAfter, outMsgsBefore + 1)
+        XCTAssertGreaterThan(outMsgsAfter, 0)
+    }
+
+    func testHandleUserClickedSendButton_origDraft() {
+        let testMessageId = UUID().uuidString + #function
+        let originalMessage = draftMessage()
+        originalMessage.messageID = testMessageId
+        originalMessage.from = account.user
+        originalMessage.save()
+        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
+                                   uuid: originalMessage.uuid,
+                                   folderName: originalMessage.parent.name,
+                                   accountAddress: account.user.address))
+        assert(originalMessage: originalMessage)
+        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
+        vm?.state.toRecipients = [toRecipient]
+        vm?.state.from = account.user
+        vm?.handleUserClickedSendButton()
+        guard
+            let originalDraftedMessageDeleted =
+            Message.by(uid: originalMessage.uid,
+                       uuid: originalMessage.uuid,
+                       folderName: originalMessage.parent.name,
+                       accountAddress: account.user.address)?.imapFlags?.deleted
+            else {
+                XCTFail()
+                return
+        }
+        XCTAssertTrue(originalDraftedMessageDeleted,
+                      "original drafted message must be flagged deleted")
+    }
+
+    func testHandleUserClickedSendButton_origOutbox() {
+        let testMessageId = UUID().uuidString + #function
+        let originalMessage = message(inFolderOfType: .outbox)
+        originalMessage.messageID = testMessageId
+        originalMessage.from = account.user
+        originalMessage.save()
+        XCTAssertNotNil(Message.by(uid: originalMessage.uid,
+                                   uuid: originalMessage.uuid,
+                                   folderName: originalMessage.parent.name,
+                                   accountAddress: account.user.address))
+        assert(originalMessage: originalMessage)
+        let toRecipient = Identity(address: "testHandleUserClickedSend@Butt.on")
+        vm?.state.toRecipients = [toRecipient]
+        vm?.state.from = account.user
+        vm?.handleUserClickedSendButton()
+        if let _ = Message.by(uid: originalMessage.uid,
+                              uuid: originalMessage.uuid,
+                              folderName: originalMessage.parent.name,
+                              accountAddress: account.user.address) {
+            XCTFail("original message must be deleted")
+            return
+        }
+    }
+
     /*
+
     */
 
 
@@ -919,6 +995,17 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             createe.save()
         }
         XCTAssertNotNil(drafts)
+    }
+
+    private func assureSentExists() {
+        if sent == nil {
+            let createe = Folder(name: "sent",
+                                 parent: nil,
+                                 account: account,
+                                 folderType: .sent)
+            createe.save()
+        }
+        XCTAssertNotNil(sent)
     }
 
     private func assertShowKeepInOutbox(forMessageInfolderOfType type: FolderType) {
@@ -1519,23 +1606,5 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  state.pEpProtection = protected
  }
 
- public func handleUserClickedSendButton() {
- guard let msg = ComposeUtil.messageToSend(withDataFrom: state) else {
- Log.error(component: #function, errorString: "No message for sending")
- return
- }
- msg.save()
- guard let data = state.initData else {
- Log.shared.errorAndCrash(component: #function, errorString: "No data")
- return
- }
- if data.isDraftsOrOutbox {
- // From user perspective, we have edited a drafted message and will send it.
- // Technically we are creating and sending a new message (msg), thus we have to
- // delete the original, previously drafted one.
- deleteOriginalMessage()
- }
- resultDelegate?.composeViewModelDidComposeNewMail()
- }
 
  */
