@@ -562,11 +562,13 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     // MARK: - Cancel Actions
 
+    /*
     func testShowKeepInOutbox() {
         FolderType.allCases.forEach {
             assertShowKeepInOutbox(forMessageInfolderOfType: $0)
         }
     }
+ */
 
     func testShowCancelActionsv() {
         let msg = message()
