@@ -1135,8 +1135,24 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertFalse(testee === wrapperVM)
     }
 
+    // MARK: - beforePickerFocus
+
+    func testBeforePickerFocus() {
+        assert()
+        guard let bodyVm = vm?.bodyVM else {
+            XCTFail()
+            return
+        }
+        let beforeFocus = indexPath(for: bodyVm)
+        let testee = vm?.beforePickerFocus()
+        XCTAssertEqual(testee, beforeFocus)
+        let toRecipientsIndPath = IndexPath(row: 0, section: 0)
+        XCTAssertNotEqual(testee, toRecipientsIndPath)
+    }
+
     /*
 
+     
 
     */
 
@@ -1762,8 +1778,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 /*
 
 
-
-
  public func initialFocus() -> IndexPath {
  if state.initData?.toRecipients.isEmpty ?? false {
  let to = IndexPath(row: 0, section: 0)
@@ -1771,10 +1785,6 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
  } else {
  return indexPathBodyVm
  }
- }
-
- public func beforePickerFocus() -> IndexPath {
- return indexPathBodyVm
  }
 
  */
