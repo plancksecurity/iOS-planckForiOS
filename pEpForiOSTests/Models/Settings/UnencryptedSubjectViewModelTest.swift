@@ -10,7 +10,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel
 
-class UnecryptedSubjectViewModelTest: CoreDataDrivenTestBase {
+class UnencryptedSubjectViewModelTest: CoreDataDrivenTestBase {
     var viewModel: UnecryptedSubjectViewModel!
 
     override func setUp() {
@@ -19,22 +19,16 @@ class UnecryptedSubjectViewModelTest: CoreDataDrivenTestBase {
     }
 
     public func testSwitch() {
-
         viewModel.setSwitch(value: true)
-
-        XCTAssertEqual(true, !AppSettings.unencryptedSubjectEnabled)
+        XCTAssertFalse(AppSettings.unencryptedSubjectEnabled)
 
         var switchValue = viewModel.switchValue()
-
-        XCTAssertEqual(true, switchValue)
+        XCTAssertTrue(switchValue)
 
         viewModel.setSwitch(value: false)
-
-        XCTAssertEqual(false, !AppSettings.unencryptedSubjectEnabled)
+        XCTAssertTrue(AppSettings.unencryptedSubjectEnabled)
 
         switchValue = viewModel.switchValue()
-
-        XCTAssertEqual(false, switchValue)
-
+        XCTAssertFalse(switchValue)
     }
 }

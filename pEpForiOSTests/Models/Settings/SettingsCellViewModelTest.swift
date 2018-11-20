@@ -16,11 +16,11 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
     var viewModel: SettingsCellViewModel!
 
     public func testDetail() {
-        givenThereIsAWiveModel(with: .showLog)
+        givenThereIsAViewModel(with: .showLog)
 
-        XCTAssertEqual(viewModel.value, nil)
+        XCTAssertNil(viewModel.detail)
 
-        givenThereIsAWiveModel(with: .defaultAccount)
+        givenThereIsAViewModel(with: .defaultAccount)
 
         let detail = viewModel.detail
 
@@ -28,17 +28,15 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
     }
 
     public func testDeleteAccount() {
-        setUpViewModel()
-
-        XCTAssertTrue(viewModel.account?.cdAccount() != nil)
+        givenThereIsAViewModelWithADeleteAccountSpy()
 
         viewModel.delete()
 
-        XCTAssertTrue(viewModel.account?.cdAccount() == nil)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 
     public func testTitleIsCorrectInShowLog() {
-        givenThereIsAWiveModel(with: .showLog)
+        givenThereIsAViewModel(with: .showLog)
 
         let title = viewModel.title
 
@@ -46,7 +44,7 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
     }
 
     public func testTitleIsCorrectInCredits() {
-        givenThereIsAWiveModel(with: .credits)
+        givenThereIsAViewModel(with: .credits)
 
         let title = viewModel.title
 
@@ -54,7 +52,7 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
     }
 
     public func testTitleIsCorrectInDefaultAccount() {
-        givenThereIsAWiveModel(with: .defaultAccount)
+        givenThereIsAViewModel(with: .defaultAccount)
 
         let title = viewModel.title
 
@@ -70,7 +68,7 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
     }
 
     public func testTitleIsCorrectInSetOwnKey() {
-        givenThereIsAWiveModel(with: .setOwnKey)
+        givenThereIsAViewModel(with: .setOwnKey)
 
         let title = viewModel.title
 
@@ -78,11 +76,11 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
     }
 
     public func testGetValue() {
-        givenThereIsAWiveModel(with: .showLog)
+        givenThereIsAViewModel(with: .showLog)
 
         XCTAssertEqual(viewModel.value, nil)
 
-        givenThereIsAWiveModel(with: .defaultAccount)
+        givenThereIsAViewModel(with: .defaultAccount)
 
         let value = viewModel.value
 
@@ -91,12 +89,33 @@ class SettingsCellViewModelTest: CoreDataDrivenTestBase {
 
 
     //MARK: Initialization
-    private func setUpViewModel() {
+    private func setUpViewModel(with account: Account) {
         viewModel = SettingsCellViewModel(account: account)
     }
 
-    private func givenThereIsAWiveModel(with type: SettingsCellViewModel.SettingType) {
+    private func setUpViewModel() {
+        setUpViewModel(with: account)
+    }
+
+    private func givenThereIsAViewModel(with type: SettingsCellViewModel.SettingType) {
         viewModel = SettingsCellViewModel(type: type)
+    }
+
+    private func givenThereIsAViewModelWithADeleteAccountSpy() {
+        let account = AccountSpy(withDataFrom: self.account)
+        account.didCallDeleteExpectation = expectation(description: AccountSpy.DELETE_ACCOUNT_DESCRIPTION)
+        setUpViewModel(with: account)
+    }
+
+    class AccountSpy: Account {
+
+        static let DELETE_ACCOUNT_DESCRIPTION = "DELETE CALLED"
+
+        var didCallDeleteExpectation: XCTestExpectation?
+
+        override func delete() {
+            didCallDeleteExpectation?.fulfill()
+        }
     }
 
 }

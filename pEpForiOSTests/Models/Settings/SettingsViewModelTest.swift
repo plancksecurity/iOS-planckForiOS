@@ -43,11 +43,14 @@ class SettingsViewModelTest: CoreDataDrivenTestBase {
         givenThereAreTwoAccounts()
         setupViewModel()
 
+        let accountCellsBefore = settingsVM[0].count
+
         settingsVM.delete(section: 0, cell: 0)
+        let accountCellsAfter = settingsVM[0].count
 
-        let thereIsNoAccount = settingsVM.noAccounts()
+        let thereIsOneLessAccount = accountCellsBefore - 1 == accountCellsAfter
 
-        XCTAssertFalse(thereIsNoAccount)
+        XCTAssertTrue(thereIsOneLessAccount)
     }
 
     func testRowTypeIsCorrect() {

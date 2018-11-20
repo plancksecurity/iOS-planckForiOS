@@ -29,7 +29,7 @@
 		003C0FA720B5581A0093A987 /* SecretTestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003C0FA620B5581A0093A987 /* SecretTestData.swift */; };
 		004422C82179E3C500BDF6DF /* SettingsCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422C72179E3C500BDF6DF /* SettingsCellViewModelTest.swift */; };
 		004422CA2179ECD600BDF6DF /* PassiveModeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */; };
-		004422D9217A25AD00BDF6DF /* UnecryptedSubjectViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422D8217A25AD00BDF6DF /* UnecryptedSubjectViewModelTest.swift */; };
+		004422D9217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004422D8217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift */; };
 		004A8C552112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C542112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift */; };
 		004A8C5B211316E100203143 /* SelfReferencingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004A8C5A211316E100203143 /* SelfReferencingOperation.swift */; };
 		005A21FB20CAA5F50082D19F /* ThreadedEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */; };
@@ -640,7 +640,7 @@
 		003C0FA620B5581A0093A987 /* SecretTestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretTestData.swift; sourceTree = "<group>"; };
 		004422C72179E3C500BDF6DF /* SettingsCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCellViewModelTest.swift; sourceTree = "<group>"; };
 		004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassiveModeViewModelTest.swift; sourceTree = "<group>"; };
-		004422D8217A25AD00BDF6DF /* UnecryptedSubjectViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnecryptedSubjectViewModelTest.swift; sourceTree = "<group>"; };
+		004422D8217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnencryptedSubjectViewModelTest.swift; sourceTree = "<group>"; };
 		004A8C542112FDD500203143 /* EmailListView+UITableViewDataSourcePrefetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListView+UITableViewDataSourcePrefetching.swift"; sourceTree = "<group>"; };
 		004A8C5A211316E100203143 /* SelfReferencingOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfReferencingOperation.swift; sourceTree = "<group>"; };
 		005A21FA20CAA5F50082D19F /* ThreadedEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadedEmailViewModel.swift; sourceTree = "<group>"; };
@@ -1276,7 +1276,7 @@
 				00172F452163C2EE0079B189 /* SettingsSectionViewModelTest.swift */,
 				004422C72179E3C500BDF6DF /* SettingsCellViewModelTest.swift */,
 				004422C92179ECD600BDF6DF /* PassiveModeViewModelTest.swift */,
-				004422D8217A25AD00BDF6DF /* UnecryptedSubjectViewModelTest.swift */,
+				004422D8217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift */,
 				00262055217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift */,
 				00262057217DE97100DDAFB5 /* AccountSettingsViewModelTest.swift */,
 			);
@@ -3719,7 +3719,7 @@
 				1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */,
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
 				43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */,
-				004422D9217A25AD00BDF6DF /* UnecryptedSubjectViewModelTest.swift in Sources */,
+				004422D9217A25AD00BDF6DF /* UnencryptedSubjectViewModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
