@@ -126,7 +126,9 @@ class EmailViewController: BaseTableViewController {
                 action: nil)
             flexibleSpace.tag = BarButtonType.space.rawValue
 
-            toolbarItems?.append(contentsOf: [flexibleSpace,item])
+            if toolbarItems?.last?.tag != BarButtonType.settings.rawValue {
+                toolbarItems?.append(contentsOf: [flexibleSpace,item])
+            }
         }
     }
 
