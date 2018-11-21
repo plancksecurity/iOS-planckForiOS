@@ -583,6 +583,10 @@
 		B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
+		F7C16A5721A56436004B44F2 /* FolderSyncServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C16A5621A56436004B44F2 /* FolderSyncServiceProtocol.swift */; };
+		F7C16A5921A56445004B44F2 /* FolderSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C16A5821A56445004B44F2 /* FolderSyncService.swift */; };
+		F7C16A5B21A56DBA004B44F2 /* FetchImapFoldersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C16A5A21A56DBA004B44F2 /* FetchImapFoldersService.swift */; };
+		F7C16A5D21A59187004B44F2 /* FolderViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C16A5C21A59186004B44F2 /* FolderViewModelDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1229,6 +1233,10 @@
 		B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModelTest.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
+		F7C16A5621A56436004B44F2 /* FolderSyncServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSyncServiceProtocol.swift; sourceTree = "<group>"; };
+		F7C16A5821A56445004B44F2 /* FolderSyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSyncService.swift; sourceTree = "<group>"; };
+		F7C16A5A21A56DBA004B44F2 /* FetchImapFoldersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchImapFoldersService.swift; sourceTree = "<group>"; };
+		F7C16A5C21A59186004B44F2 /* FolderViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModelDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1991,6 +1999,7 @@
 		43122B3A1DF5B75000610253 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				F7C16A5521A56412004B44F2 /* FolderSyncService */,
 				432DA7421EE01E1000B30BAA /* MessageSyncService */,
 				431E58F41ED57F4D00EFA77F /* AccountVerificationService */,
 				1587D1622049BE7D002C2157 /* ImapConnectionDataCache.swift */,
@@ -2003,6 +2012,7 @@
 				432198EC1DF6B66800318A74 /* SharedObjects.swift */,
 				4307C46F1ED81F3100A276A4 /* DefaultImapSyncDelegate.swift */,
 				1560D1711F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift */,
+				F7C16A5A21A56DBA004B44F2 /* FetchImapFoldersService.swift */,
 				4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */,
 				4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */,
 				43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */,
@@ -2863,6 +2873,7 @@
 				B722EC641E5B49BA00A2B9D5 /* FolderSectionViewModel.swift */,
 				B722EC791E5C879000A2B9D5 /* FolderUiProtocols.swift */,
 				B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */,
+				F7C16A5C21A59186004B44F2 /* FolderViewModelDelegate.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -2933,6 +2944,15 @@
 				F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */,
 			);
 			path = Folder;
+			sourceTree = "<group>";
+		};
+		F7C16A5521A56412004B44F2 /* FolderSyncService */ = {
+			isa = PBXGroup;
+			children = (
+				F7C16A5621A56436004B44F2 /* FolderSyncServiceProtocol.swift */,
+				F7C16A5821A56445004B44F2 /* FolderSyncService.swift */,
+			);
+			path = FolderSyncService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3259,6 +3279,7 @@
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
 				152A39C621905C3E00D9F8E4 /* ComposeViewModelState.swift in Sources */,
 				4362399F1EAE2F0A00BD2EB9 /* UITableView+Extension.swift in Sources */,
+				F7C16A5921A56445004B44F2 /* FolderSyncService.swift in Sources */,
 				15874BC92127493E00A3A4A6 /* PassiveModeViewModel.swift in Sources */,
 				4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */,
 				4356102C1DEF019400808C8E /* SyncMessagesOperation.swift in Sources */,
@@ -3360,6 +3381,7 @@
 				431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */,
 				00EB89AF20E3E4A000CDFA0D /* ReplyAlertCreator.swift in Sources */,
 				B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */,
+				F7C16A5B21A56DBA004B44F2 /* FetchImapFoldersService.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				4362398C1EADD61B00BD2EB9 /* CGSize+Extension.swift in Sources */,
 				43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */,
@@ -3542,6 +3564,7 @@
 				152A39942190587200D9F8E4 /* TextViewInTableViewScrollUtil.swift in Sources */,
 				154F0A802085FC7D00C77D72 /* CdAttachment+Pantomime.swift in Sources */,
 				43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */,
+				F7C16A5D21A59187004B44F2 /* FolderViewModelDelegate.swift in Sources */,
 				43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */,
 				15B220501FBF5D6E00CA52BA /* InfoPlist.swift in Sources */,
 				15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */,
@@ -3578,6 +3601,7 @@
 				4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */,
 				433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */,
 				4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */,
+				F7C16A5721A56436004B44F2 /* FolderSyncServiceProtocol.swift in Sources */,
 				B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */,
 				4380528B1FE3E2E800ACF729 /* OAuth2AuthorizationURLHandlerProtocol.swift in Sources */,
 				B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */,

@@ -8,10 +8,11 @@
 
 import UIKit
 
-class FolderTableViewController: BaseTableViewController {
+class FolderTableViewController: BaseTableViewController, FolderViewModelDelegate {
+    
+    
     var folderVM: FolderViewModel?
     var showNext: Bool = true
-
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -43,6 +44,12 @@ class FolderTableViewController: BaseTableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedSectionHeaderHeight = 80.0
         tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        refreshControl = UIRefreshControl()
+        refreshControl?.tintColor = UIColor.pEpGreen
+        if #available(iOS 10.0, *) {
+            tableView.refreshControl = refreshControl
+        }
+        refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
         let item = UIBarButtonItem.getPEPButton(
             action:#selector(showSettingsViewController),
             target: self)
@@ -52,7 +59,20 @@ class FolderTableViewController: BaseTableViewController {
             action: nil)
         self.toolbarItems = [flexibleSpace,item]
     }
-
+    
+    @objc private func pullToRefresh() {
+        folderVM?.delegate = self
+        folderVM?.refreshFolderList()
+    }
+    
+    func folderViewModelDidUpdateFolderList(viewModel: FolderViewModel) {
+        DispatchQueue.main.async {
+            self.folderVM =  FolderViewModel()
+            self.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+        }
+    }
+   
     // MARK: - Action
 
     @objc private func showSettingsViewController() {

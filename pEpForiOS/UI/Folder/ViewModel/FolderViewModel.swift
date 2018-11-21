@@ -9,8 +9,12 @@
 import Foundation
 import MessageModel
 
+
 /// View Model for folder hierarchy.
 public class FolderViewModel {
+    weak var delegate : FolderViewModelDelegate?
+    let folderSyncService = FolderSyncService()
+    
     var items: [FolderSectionViewModel]
 
     /// Instantiates a folder hierarchy model with:
@@ -52,6 +56,11 @@ public class FolderViewModel {
             return EmailListViewModel(messageSyncService: messageSyncService,
                                       folderToShow: self[safeAccountIndex][safeFolderIndex].folder)
     }
+    
+    func refreshFolderList() {
+        folderSyncService.delegate = self
+        folderSyncService.requestFolders(inAccounts: Account.all())
+    }
 
     subscript(index: Int) -> FolderSectionViewModel {
         get {
@@ -61,5 +70,11 @@ public class FolderViewModel {
 
     var count: Int {
         return self.items.count
+    }
+}
+
+extension FolderViewModel : FolderSyncServiceDelegate {
+    func finishedSyncingFolders() {
+        delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
     }
 }
