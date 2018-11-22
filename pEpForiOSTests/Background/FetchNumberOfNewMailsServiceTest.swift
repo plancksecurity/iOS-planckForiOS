@@ -23,19 +23,10 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
         fetchFoldersIMAP(imapSyncData: imapSyncData, queue: queue)
 
-        let expNumMails = expectation(description: "expNumMails")
-        var numMails: Int?
-        let fetchNumMailsOp = FetchNumberOfNewMailsService(
-            imapConnectionDataCache: nil, errorContainer: errorContainer)
-        fetchNumMailsOp.start() { theNumMails in
-            numMails = theNumMails
-            expNumMails.fulfill()
+        guard let numNewMail = fetchNumberOfNewMails(errorContainer: errorContainer) else {
+            XCTFail()
+            return
         }
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertNotNil(numMails)
-            XCTAssertNil(errorContainer.error)
-        })
+        XCTAssertEqual(numNewMail, 0)
     }
 }

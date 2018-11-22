@@ -78,4 +78,23 @@ extension XCTestCase {
             XCTAssertFalse(appendOp.hasErrors())
         })
     }
+
+    public func fetchNumberOfNewMails(errorContainer: ServiceErrorProtocol) -> Int? {
+        let expNumMails = expectation(description: "expNumMails")
+        var numMails: Int?
+        let fetchNumMailsOp = FetchNumberOfNewMailsService(
+            imapConnectionDataCache: nil, errorContainer: errorContainer)
+        fetchNumMailsOp.start() { theNumMails in
+            numMails = theNumMails
+            expNumMails.fulfill()
+        }
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertNotNil(numMails)
+            XCTAssertNil(errorContainer.error)
+        })
+
+        return numMails
+    }
 }
