@@ -19,10 +19,10 @@ class FetchNumberOfNewMailsService {
     private let workerQueue = DispatchQueue(
         label: "NetworkService", qos: .utility, target: nil)
     private let backgroundQueue = OperationQueue()
-    private var errorContainer: ErrorContainer?
+    private var errorContainer: ServiceErrorProtocol?
 
     init(imapConnectionDataCache: ImapConnectionDataCache? = nil,
-         errorContainer: ErrorContainer? = ErrorContainer()) {
+         errorContainer: ServiceErrorProtocol? = ErrorContainer()) {
         self.imapConnectionDataCache = imapConnectionDataCache ?? ImapConnectionDataCache()
         self.errorContainer = errorContainer
     }
