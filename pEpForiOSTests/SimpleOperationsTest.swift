@@ -477,13 +477,9 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
         let errorContainer = ErrorContainer()
 
-        let imapLogin = LoginImapOperation(
-            parentName: #function,
-            errorContainer: errorContainer, imapSyncData: imapSyncData)
-        imapLogin.completionBlock = {
-            imapLogin.completionBlock = nil
-            XCTAssertNotNil(imapSyncData.sync)
-        }
+        let queue = OperationQueue()
+
+        loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
 
         let expFoldersFetched = expectation(description: "expFoldersFetched")
         guard let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
@@ -492,19 +488,15 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
                 XCTFail()
                 return
         }
-        syncFoldersOp.addDependency(imapLogin)
         syncFoldersOp.completionBlock = {
             syncFoldersOp.completionBlock = nil
             expFoldersFetched.fulfill()
         }
 
-        let queue = OperationQueue()
-        queue.addOperation(imapLogin)
         queue.addOperation(syncFoldersOp)
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
-            XCTAssertFalse(imapLogin.hasErrors())
             XCTAssertFalse(syncFoldersOp.hasErrors())
         })
 
