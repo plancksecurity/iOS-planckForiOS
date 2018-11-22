@@ -480,25 +480,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let queue = OperationQueue()
 
         loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
-
-        let expFoldersFetched = expectation(description: "expFoldersFetched")
-        guard let syncFoldersOp = SyncFoldersFromServerOperation(parentName: #function,
-                                                                 imapSyncData: imapSyncData)
-            else {
-                XCTFail()
-                return
-        }
-        syncFoldersOp.completionBlock = {
-            syncFoldersOp.completionBlock = nil
-            expFoldersFetched.fulfill()
-        }
-
-        queue.addOperation(syncFoldersOp)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(syncFoldersOp.hasErrors())
-        })
+        fetchFoldersIMAP(imapSyncData: imapSyncData, queue: queue)
 
         guard let from = cdAccount.identity else {
             XCTFail()
