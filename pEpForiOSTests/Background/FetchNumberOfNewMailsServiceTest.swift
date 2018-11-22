@@ -14,12 +14,16 @@ import CoreData
 @testable import MessageModel
 
 class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
+    var errorContainer: ServiceErrorProtocol!
+    var queue: OperationQueue!
+
+    override func setUp() {
+        super.setUp()
+        errorContainer = ErrorContainer()
+        queue = OperationQueue()
+    }
+
     func testBaseCase() {
-        let imapSyncData = ImapSyncData(connectInfo: imapConnectInfo)
-        let errorContainer = ErrorContainer()
-
-        let queue = OperationQueue()
-
         loginIMAP(imapSyncData: imapSyncData, errorContainer: errorContainer, queue: queue)
         fetchFoldersIMAP(imapSyncData: imapSyncData, queue: queue)
 
