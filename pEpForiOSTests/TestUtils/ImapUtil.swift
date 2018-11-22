@@ -56,4 +56,26 @@ extension XCTestCase {
             XCTAssertFalse(syncFoldersOp.hasErrors())
         })
     }
+
+    public func appendMailsIMAP(folder: Folder,
+                                imapSyncData: ImapSyncData,
+                                errorContainer: ServiceErrorProtocol,
+                                queue: OperationQueue) {
+        let expSentAppended = expectation(description: "expSentAppended")
+        let appendOp = AppendMailsOperation(parentName: #function,
+                                            folder: folder,
+                                            imapSyncData: imapSyncData,
+                                            errorContainer: errorContainer)
+        appendOp.completionBlock = {
+            appendOp.completionBlock = nil
+            expSentAppended.fulfill()
+        }
+
+        queue.addOperation(appendOp)
+
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+            XCTAssertFalse(appendOp.hasErrors())
+        })
+    }
 }

@@ -519,22 +519,10 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
         }
 
-        let expSentAppended = expectation(description: "expSentAppended")
-        let appendOp = AppendMailsOperation(parentName: #function,
-                                            folder: folder.folder(),
-                                            imapSyncData: imapSyncData,
-                                            errorContainer: errorContainer)
-        appendOp.completionBlock = {
-            appendOp.completionBlock = nil
-            expSentAppended.fulfill()
-        }
-
-        queue.addOperation(appendOp)
-
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-            XCTAssertFalse(appendOp.hasErrors())
-        })
+        appendMailsIMAP(folder: folder.folder(),
+                        imapSyncData: imapSyncData,
+                        errorContainer: errorContainer,
+                        queue: queue)
 
         XCTAssertEqual((CdMessage.all() ?? []).count, 0)
     }
