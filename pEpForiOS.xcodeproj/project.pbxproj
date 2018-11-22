@@ -479,6 +479,7 @@
 		43D0702F2133DB3F0013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D0702E2133DB3F0013B120 /* AppSettings.swift */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* DefaultAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* DefaultAppSettings.swift */; };
+		43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3378F21A3F32500E40114 /* ImapUtil.swift */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
 		43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */; };
 		43D755F61F262B37006F933A /* PantomimeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755F51F262B37006F933A /* PantomimeError.swift */; };
@@ -1129,6 +1130,7 @@
 		43D0702E2133DB3F0013B120 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		43D070302133DB920013B120 /* AppSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsProtocol.swift; sourceTree = "<group>"; };
 		43D070322133DC500013B120 /* DefaultAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppSettings.swift; sourceTree = "<group>"; };
+		43D3378F21A3F32500E40114 /* ImapUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapUtil.swift; sourceTree = "<group>"; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
 		43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchUidToMsnOperation.swift; sourceTree = "<group>"; };
 		43D755F51F262B37006F933A /* PantomimeError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantomimeError.swift; sourceTree = "<group>"; };
@@ -1379,6 +1381,7 @@
 				151F71EE202A06750057C74D /* NetworkServiceObserver.swift */,
 				151F71EC202A06750057C74D /* TestDataBase.swift */,
 				151F71F5202A06750057C74D /* TestUtil.swift */,
+				43D3378F21A3F32500E40114 /* ImapUtil.swift */,
 				49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */,
 				43EC75B22164E97800048CFE /* DecryptionUtil.swift */,
 				437795C72154D6FD00CC62C2 /* PEPMessage+TestExtension.swift */,
@@ -3712,6 +3715,7 @@
 				15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */,
 				43EDCB84219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift in Sources */,
 				431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */,
+				43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */,
 				15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */,
 				1541D7F51FC82A4900D52A5D /* URL+MIME.swift in Sources */,
 				00172F462163C2EE0079B189 /* SettingsSectionViewModelTest.swift in Sources */,
