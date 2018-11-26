@@ -101,8 +101,10 @@ public class NetworkService {
      Start endlessly synchronizing in the background.
      */
     public func start() {
-        currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig,
-                                             imapConnectionDataCache: imapConnectionDataCache)
+        if currentWorker == nil {
+            currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig,
+                                                 imapConnectionDataCache: imapConnectionDataCache)
+        }
         currentWorker?.delegate = self
         currentWorker?.unitTestDelegate = self
         currentWorker?.start()
