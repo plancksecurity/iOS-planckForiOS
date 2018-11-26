@@ -588,11 +588,12 @@ open class NetworkServiceWorker {
                 // In case messages need to be re-uploaded (e.g. for trusted server or extra
                 // keys), we want do append, fetch and decrypt them in the same sync cycle.
                 let opAppendAndFetchReUploaded = SelfReferencingOperation() {
-                    [weak self, weak opDecrypt]  operation in
+                    [weak self, weak opDecrypt] operation in
                     guard
                         let me = self,
                         let decryptOp = opDecrypt,
                         let operation = operation else {
+                            Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
                             return
                     }
                     if operation.isCancelled {
