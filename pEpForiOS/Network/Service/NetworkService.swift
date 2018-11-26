@@ -132,7 +132,7 @@ public class NetworkService {
     }
 
     public func internalVerify(cdAccount account: CdAccount) {
-        cancel() // cancel the current worker
+        cancel() // cancel the current worker //!!!: We need to wait until the worker has finished all operations before nilling it!
         currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
         currentWorker?.start()
     }
