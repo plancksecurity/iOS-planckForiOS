@@ -290,7 +290,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    // Note: this is also called when swiping down the iOS system notification center!
+    // Note: this is also called when:
+    // - swiping down the iOS system notification center
+    // - iOS auto lock takes place
     func applicationDidBecomeActive(_ application: UIApplication) {
         if MiscUtil.isUnitTest() {
             // Do nothing if unit tests are running
