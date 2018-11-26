@@ -57,17 +57,7 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, CustomDebugStringC
 }
 
 class SendLayerObserver: SendLayerDelegate {
-    let expAccountVerified: XCTestExpectation?
     var messageIDs = [String]()
-
-    init(expAccountVerified: XCTestExpectation? = nil) {
-        self.expAccountVerified = expAccountVerified
-    }
-
-    func didVerify(cdAccount: CdAccount, error: Error?) {
-        XCTAssertNil(error)
-        expAccountVerified?.fulfill()
-    }
 
     func didFetch(cdMessage: CdMessage) {
         if let msg = cdMessage.message() {

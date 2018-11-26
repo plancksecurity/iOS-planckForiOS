@@ -131,12 +131,6 @@ public class NetworkService {
         newMailsService?.start(completionBlock: completionHandler)
     }
 
-    public func internalVerify(cdAccount account: CdAccount) {
-        cancel() // cancel the current worker //!!!: We need to wait until the worker has finished all operations before nilling it!
-        currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig)
-        currentWorker?.start()
-    }
-
     // MARK: -
 
     private func saveCurrentWorkersConfigAndImapConnectionCache() {
@@ -159,10 +153,6 @@ extension NetworkService: SendLayerProtocol {
         get {
             return serviceConfig.sendLayerDelegate
         }
-    }
-
-    public func verify(cdAccount: CdAccount) {
-        internalVerify(cdAccount: cdAccount)
     }
 }
 
