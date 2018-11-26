@@ -277,8 +277,7 @@ open class NetworkServiceWorker {
             if operation.isCancelled {
                 return
             }
-            queue.addOperations(operations, waitUntilFinished: false)
-            queue.waitUntilAllOperationsAreFinished()
+            queue.addOperations(operations, waitUntilFinished: true)
         }
         return resultOp
     }
@@ -316,8 +315,7 @@ open class NetworkServiceWorker {
             if operation.isCancelled {
                 return
             }
-            queue.addOperations(operations, waitUntilFinished: false)
-            queue.waitUntilAllOperationsAreFinished()
+            queue.addOperations(operations, waitUntilFinished: true)
         }
         return resultOp
     }
@@ -440,8 +438,7 @@ open class NetworkServiceWorker {
             if operation.isCancelled {
                 return
             }
-            queue.addOperations(operations, waitUntilFinished: false)
-            queue.waitUntilAllOperationsAreFinished()
+            queue.addOperations(operations, waitUntilFinished: true)
         }
         return resultOp
     }
@@ -634,8 +631,7 @@ open class NetworkServiceWorker {
                     lastOp = opDecrypt
                     reUploadOperations.append(opDecrypt)
 
-                    reUploadQueue.addOperations(reUploadOperations, waitUntilFinished: false)
-                    reUploadQueue.waitUntilAllOperationsAreFinished()
+                    reUploadQueue.addOperations(reUploadOperations, waitUntilFinished: true)
                 }
                 opAppendAndFetchReUploaded.addDependency(lastImapOp)
                 lastImapOp = opAppendAndFetchReUploaded
