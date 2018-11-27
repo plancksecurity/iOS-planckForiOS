@@ -192,11 +192,12 @@ public protocol NetworkServiceUnitTestDelegate: class {
 // MARK: NetworkServiceWorkerUnitTestDelegate
 
 extension NetworkService: NetworkServiceWorkerUnitTestDelegate {
-    public func networkServiceWorkerDidCancel(worker: NetworkServiceWorker) {
+
+    public func testWorkerDidCancel(worker: NetworkServiceWorker) {
         self.unitTestDelegate?.networkServiveDidCancel(service: self)
     }
     
-    public func networkServiceWorkerDidSync(worker: NetworkServiceWorker,
+    public func testWorkerDidSync(worker: NetworkServiceWorker,
                                             accountInfo: AccountConnectInfo,
                                             errorProtocol: ServiceErrorProtocol) {
         self.unitTestDelegate?.networkServiceDidSync(service: self,
