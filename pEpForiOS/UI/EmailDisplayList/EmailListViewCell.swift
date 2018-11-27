@@ -77,7 +77,7 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
             setContactImage(image: viewModel.senderContactImage)
         } else {
             viewModel.getProfilePicture { [weak self] image in
-                self?.setContactImage(image: image )
+                self?.setContactImage(image: image)
             }
         }
 
@@ -172,11 +172,8 @@ class EmailListViewCell: PEPSwipeTableViewCell, MessageViewModelConfigurable {
     }
 
     private func setPepRatingImage(image: UIImage?) {
-        guard image != nil else {
-            return
-        }
         self.ratingImage.image = image
-        self.ratingImage.isHidden = false
+        self.ratingImage.isHidden = (image == nil)
     }
 
     private func setContactImage(image: UIImage?) {
