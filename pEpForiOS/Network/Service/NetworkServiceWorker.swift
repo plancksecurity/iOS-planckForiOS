@@ -143,6 +143,7 @@ open class NetworkServiceWorker {
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
             me.backgroundQueue.removeObserver(observer, forKeyPath: me.operationCountKeyPath)
             me.unitTestDelegate?.networkServiceWorkerDidCancel(worker: me)
+            me.delegate?.networkServicWorkerDidCancel(worker: me)
         }
     }
 
