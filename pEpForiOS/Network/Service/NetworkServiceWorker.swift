@@ -17,12 +17,12 @@ public protocol NetworkServiceWorkerDelegate: class {
     /// All operations finished before this call.
     /// - Parameters:
     ///   - worker: sender
-    func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker)
+    func networkServiceWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker)
 
     /// Called after clean shutdown
     /// - Parameters:
     ///   - worker: sender
-    func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
+    func networkServiceWorkerDidCancel(worker: NetworkServiceWorker)
 
     /// Used to report errors in operation line.
     /// - Parameters:
@@ -143,12 +143,12 @@ open class NetworkServiceWorker {
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
             me.backgroundQueue.removeObserver(observer, forKeyPath: me.operationCountKeyPath)
             me.unitTestDelegate?.networkServiceWorkerDidCancel(worker: me)
-            me.delegate?.networkServicWorkerDidCancel(worker: me)
+            me.delegate?.networkServiceWorkerDidCancel(worker: me)
         }
     }
 
     /// Makes sure all local changes are synced to the server and then stops.
-    /// Calls delegate networkServicWorkerDidFinishLastSyncLoop when done.
+    /// Calls delegate networkServiceWorkerDidFinishLastSyncLoop when done.
     public func stop() {
         Log.info(component: #function, content: "\(String(describing: self))")
         syncLocalChangesWithServerAndStop()
@@ -178,7 +178,7 @@ open class NetworkServiceWorker {
             }
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
             // Inform delegate that we are done.
-            me.delegate?.networkServicWorkerDidFinishLastSyncLoop(worker: me)
+            me.delegate?.networkServiceWorkerDidFinishLastSyncLoop(worker: me)
         }
     }
 

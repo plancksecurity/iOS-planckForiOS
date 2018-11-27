@@ -164,11 +164,11 @@ extension NetworkService: SendLayerProtocol {
 // MARK: - NetworkServiceWorkerDelegate
 
 extension NetworkService: NetworkServiceWorkerDelegate {
-    public func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker) {
+    public func networkServiceWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker) {
         self.delegate?.networkServiceDidFinishLastSyncLoop(service: self)
     }
 
-    public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) {
+    public func networkServiceWorkerDidCancel(worker: NetworkServiceWorker) {
         delegate?.networkServiceDidCancel(service: self)
     }
     public func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error) {
