@@ -217,6 +217,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         CdAccount.sendLayer = networkService
     }
 
+    // Safely restarts all services
+    private func gracefullyRestartServices() {
+        // We cancel the Network Service to make sure it is idle and ready for a clean restart.
+        // The actual restart of the services happens in NetworkServiceDelegate callbacks.
+        networkService?.cancel()
+    }
+
     private func prepareUserNotifications() {
         UserNotificationTool.resetApplicationIconBadgeNumber()
         UserNotificationTool.askForPermissions() { granted in
@@ -301,7 +308,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         shouldDestroySession = false
 
-        startServices()
+        gracefullyRestartServices()
         kickOffMySelf()
         UserNotificationTool.resetApplicationIconBadgeNumber()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -380,16 +387,23 @@ extension AppDelegate: NetworkServiceDelegate {
         // Cleanup sessions.
         Log.shared.infoComponent(#function, message: "Clean up sessions.")
         PEPSession.cleanup()
-        DispatchQueue.main.async { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            if me.syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskInvalid {
-                return
-            }
-            me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
-            me.syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
+        if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskInvalid {
+            return
+        }
+        if UIApplication.shared.applicationState != .background {
+            // We got woken up again before we actually finished.
+            // No problem, start regular sync loop.
+            startServices()
+        }
+        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
+        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
+    }
+
+    func networkServiceDidCancel(service: NetworkService) {
+        if UIApplication.shared.applicationState == .background {
+            stopUsingPepSession()
+        } else {
+            startServices()
         }
     }
 }

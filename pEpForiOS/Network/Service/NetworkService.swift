@@ -98,6 +98,10 @@ public class NetworkService {
                                                          backgrounder: backgrounder),
                                       backgrounder: backgrounder,
                                       errorPropagator: errorPropagator)
+        currentWorker = NetworkServiceWorker(serviceConfig: serviceConfig,
+                             imapConnectionDataCache: nil)
+        currentWorker?.delegate = self
+        currentWorker?.unitTestDelegate = self
     }
 
     /**
@@ -165,15 +169,31 @@ extension NetworkService: SendLayerProtocol {
 
 extension NetworkService: NetworkServiceWorkerDelegate {
     public func networkServiceWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker) {
-        self.delegate?.networkServiceDidFinishLastSyncLoop(service: self)
+        GCD.onMain { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.delegate?.networkServiceDidFinishLastSyncLoop(service: me)
+        }
     }
 
     public func networkServiceWorkerDidCancel(worker: NetworkServiceWorker) {
-        delegate?.networkServiceDidCancel(service: self)
+        GCD.onMain { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.delegate?.networkServiceDidCancel(service: me)
+        }
     }
     public func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error) {
-        GCD.onMain {
-            self.serviceConfig.errorPropagator?.report(error: error)
+        GCD.onMain { [weak self] in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
+            me.serviceConfig.errorPropagator?.report(error: error)
         }
     }
 }
