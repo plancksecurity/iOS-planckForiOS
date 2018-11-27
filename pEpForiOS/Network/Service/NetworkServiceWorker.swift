@@ -19,6 +19,11 @@ public protocol NetworkServiceWorkerDelegate: class {
     ///   - worker: sender
     func networkServicWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker)
 
+    /// Called after clean shutdown
+    /// - Parameters:
+    ///   - worker: sender
+    func networkServicWorkerDidCancel(worker: NetworkServiceWorker)
+
     /// Used to report errors in operation line.
     /// - Parameters:
     ///   - worker: sender
@@ -133,6 +138,7 @@ open class NetworkServiceWorker {
             self.backgroundQueue.waitUntilAllOperationsAreFinished()
             self.backgroundQueue.removeObserver(observer, forKeyPath: self.operationCountKeyPath)
             self.unitTestDelegate?.networkServiceWorkerDidCancel(worker: self)
+
         }
     }
 

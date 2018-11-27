@@ -15,6 +15,9 @@ public protocol NetworkServiceDelegate: class {
     /// No further sync loop will be triggered after this call.
     /// All operations finished before this call.
     func networkServiceDidFinishLastSyncLoop(service:NetworkService)
+
+    /// Called after graceful shutdown.
+    func networkServiceDidCancel(service:NetworkService)
 }
 
 /**
@@ -165,6 +168,9 @@ extension NetworkService: NetworkServiceWorkerDelegate {
         self.delegate?.networkServiceDidFinishLastSyncLoop(service: self)
     }
 
+    public func networkServicWorkerDidCancel(worker: NetworkServiceWorker) {
+        delegate?.networkServiceDidCancel(service: self)
+    }
     public func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error) {
         GCD.onMain {
             self.serviceConfig.errorPropagator?.report(error: error)
