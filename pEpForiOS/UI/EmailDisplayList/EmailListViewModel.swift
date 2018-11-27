@@ -384,6 +384,7 @@ class EmailListViewModel {
             let message = previewMessage.message() else {
                 return
         }
+        previewMessage.isFlagged = flagged
         message.imapFlags?.flagged = flagged
         DispatchQueue.main.async {
             message.save()
