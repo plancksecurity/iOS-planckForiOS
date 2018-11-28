@@ -614,7 +614,16 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
             return
         }
         lastRowWithSuggestions = idxPath
-        delegate?.showSuggestions(forRowAt: idxPath)
+        
+        guard let minNumberOfSearchStringChars = suggestionsVM?.minNumberSearchStringChars else {
+            return
+        }
+        if text.count < minNumberOfSearchStringChars {
+            delegate?.hideSuggestions()
+        }
+        else {
+            delegate?.showSuggestions(forRowAt: idxPath)
+        }
         suggestionsVM?.updateSuggestion(searchString: text)
     }
 
@@ -633,7 +642,16 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         lastRowWithSuggestions = idxPath
 
         delegate?.contentChanged(inRowAt: idxPath)
-        delegate?.showSuggestions(forRowAt: idxPath)
+        
+        guard let minNumberOfSearchStringChars = suggestionsVM?.minNumberSearchStringChars else {
+            return
+        }
+        if newText.count < minNumberOfSearchStringChars {
+            delegate?.hideSuggestions()
+        }
+        else {
+            delegate?.showSuggestions(forRowAt: idxPath)
+        }
         suggestionsVM?.updateSuggestion(searchString: newText)
         state.validate()
     }

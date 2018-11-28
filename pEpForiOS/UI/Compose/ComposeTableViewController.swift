@@ -177,11 +177,13 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
 
     func hideSuggestions() {
         suggestionsChildViewController?.view.isHidden = true
+        tableView.isScrollEnabled = true
     }
 
     func showSuggestions(forRowAt indexPath: IndexPath) {
         suggestionsChildViewController?.view.isHidden = false
         updateSuggestTable(suggestionsForCellAt: indexPath)
+        tableView.isScrollEnabled = false
     }
 
     func validatedStateChanged(to isValidated: Bool) {
