@@ -108,28 +108,18 @@ class EmailViewController: BaseTableViewController {
 
     // MARK: - SETUP
 
-    private func setupToolbar(forceDrawing: Bool = false) {
-        guard let isCollapsed = splitViewController?.isCollapsed else {
-            return
-        }
+    private func setupToolbar() {
 
-        removePEPButtons()
-
-        if (isCollapsed || forceDrawing) {
-            let item = UIBarButtonItem.getPEPButton(
-                action: #selector(showSettingsViewController),
-                target: self)
-            item.tag = BarButtonType.settings.rawValue
-            let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
-                target: nil,
-                action: nil)
-            flexibleSpace.tag = BarButtonType.space.rawValue
-
-            if toolbarItems?.last?.tag != BarButtonType.settings.rawValue {
-                toolbarItems?.append(contentsOf: [flexibleSpace,item])
-            }
-        }
+        let item = UIBarButtonItem.getPEPButton(
+            action: #selector(showSettingsViewController),
+            target: self)
+        item.tag = BarButtonType.settings.rawValue
+        let flexibleSpace: UIBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace,
+            target: nil,
+            action: nil)
+        flexibleSpace.tag = BarButtonType.space.rawValue
+        toolbarItems?.append(contentsOf: [flexibleSpace,item])
     }
 
     func configureView() {
@@ -211,16 +201,6 @@ class EmailViewController: BaseTableViewController {
             var leftBarButtonItems: [UIBarButtonItem] = [nextMessage, previousMessage]
             if let unwrappedLeftBarButtonItems = navigationItem.leftBarButtonItems {
                 leftBarButtonItems.append(contentsOf: unwrappedLeftBarButtonItems)
-            }
-            if(traitCollection.verticalSizeClass == .regular){
-                let item = UIBarButtonItem.getPEPButton(
-                    action: #selector(showSettingsViewController),
-                    target: self)
-                item.tag = BarButtonType.settings.rawValue
-                navigationItem.rightBarButtonItems?.append(item)
-
-            } else {
-                setupToolbar(forceDrawing: true)
             }
             navigationItem.setLeftBarButtonItems(leftBarButtonItems.reversed(), animated: true)
 
@@ -654,11 +634,6 @@ extension EmailViewController: MessageAttachmentDelegate {
         splitViewController?.preferredDisplayMode = .allVisible
 
         coordinator.animate(alongsideTransition: nil){ [weak self] _ in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            me.setupToolbar()
         }
     }
 
