@@ -46,6 +46,8 @@ protocol ComposeViewModelDelegate: class {
 
     func showSuggestions(forRowAt indexPath: IndexPath)
 
+    func suggestions(haveScrollFocus: Bool)
+
     func showMediaAttachmentPicker()
 
     func hideMediaAttachmentPicker()
@@ -424,6 +426,10 @@ extension ComposeViewModel: SuggestViewModelResultDelegate {
         }
         recipientVM.add(recipient: identity)
     }
+
+    func suggestViewModel(_ vm: SuggestViewModel, didToggleVisibilityTo newValue: Bool) {
+        delegate?.suggestions(haveScrollFocus: newValue)
+    }
 }
 
 // MARK: - DocumentAttachmentPickerViewModel[ResultDelegate]
@@ -616,16 +622,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
             return
         }
         lastRowWithSuggestions = idxPath
-        
-        guard let minNumberOfSearchStringChars = suggestionsVM?.minNumberSearchStringChars else {
-            return
-        }
-        if text.count < minNumberOfSearchStringChars {
-            delegate?.hideSuggestions()
-        }
-        else {
-            delegate?.showSuggestions(forRowAt: idxPath)
-        }
+        delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: text)
     }
 
@@ -644,16 +641,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
         lastRowWithSuggestions = idxPath
 
         delegate?.contentChanged(inRowAt: idxPath)
-        
-        guard let minNumberOfSearchStringChars = suggestionsVM?.minNumberSearchStringChars else {
-            return
-        }
-        if newText.count < minNumberOfSearchStringChars {
-            delegate?.hideSuggestions()
-        }
-        else {
-            delegate?.showSuggestions(forRowAt: idxPath)
-        }
+        delegate?.showSuggestions(forRowAt: idxPath)
         suggestionsVM?.updateSuggestion(searchString: newText)
         state.validate()
     }

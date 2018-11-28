@@ -186,6 +186,10 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.isScrollEnabled = false
     }
 
+    func suggestions(haveScrollFocus: Bool) {
+        tableView.isScrollEnabled = !haveScrollFocus
+    }
+
     func validatedStateChanged(to isValidated: Bool) {
         sendButton.isEnabled = isValidated
     }

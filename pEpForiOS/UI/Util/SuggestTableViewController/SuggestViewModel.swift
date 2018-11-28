@@ -11,6 +11,8 @@ import MessageModel
 protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.
     func suggestViewModelDidSelectContact(identity: Identity)
+
+    func suggestViewModel(_ vm: SuggestViewModel, didToggleVisibilityTo newValue: Bool)
 }
 
 protocol SuggestViewModelDelegate: class {
@@ -38,7 +40,7 @@ class SuggestViewModel {
     weak public var delegate: SuggestViewModelDelegate?
 
     private var identities = [Identity]()
-    let minNumberSearchStringChars: UInt
+    private let minNumberSearchStringChars: UInt
     private let showEmptyList = false
 
     // MARK: - API
@@ -84,5 +86,6 @@ class SuggestViewModel {
         }
         let showResults = identities.count > 0 || showEmptyList
         delegate?.suggestViewModelDidResetModel(showResults: showResults)
+        resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
 }
