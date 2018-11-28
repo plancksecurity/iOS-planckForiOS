@@ -82,9 +82,11 @@ class ComposeViewModel {
     init(resultDelegate: ComposeViewModelResultDelegate? = nil,
          composeMode: ComposeUtil.ComposeMode? = nil,
          prefilledTo: Identity? = nil,
+         prefilledFrom: Identity? = nil,
          originalMessage: Message? = nil) {
         self.resultDelegate = resultDelegate
         let initData = InitData(withPrefilledToRecipient: prefilledTo,
+                                prefilledFromSender: prefilledFrom,
                                 orForOriginalMessage: originalMessage,
                                 composeMode: composeMode)
         self.state = ComposeViewModelState(initData: initData)

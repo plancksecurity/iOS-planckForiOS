@@ -16,6 +16,11 @@ extension ComposeViewModel {
         /// Recipient to set as "To:".
         /// Is ignored if a originalMessage is set.
         public let prefilledTo: Identity?
+
+        /// Sender to set as "From:".
+        /// If null it will be calculated from compose mode or set as default user.
+        public let prefilledFrom: Identity?
+
         /// Original message to compute content and recipients from (e.g. a message we reply to).
         public let originalMessage: Message?
 
@@ -47,7 +52,7 @@ extension ComposeViewModel {
         }
 
         var from: Identity? {
-            return ComposeUtil.initialFrom(composeMode: composeMode,
+            return prefilledFrom ?? ComposeUtil.initialFrom(composeMode: composeMode,
                                            originalMessage: originalMessage)
         }
 
@@ -92,11 +97,13 @@ extension ComposeViewModel {
         }
 
         init(withPrefilledToRecipient prefilledTo: Identity? = nil,
+             prefilledFromSender prefilledFrom: Identity? = nil,
              orForOriginalMessage om: Message? = nil,
              composeMode: ComposeUtil.ComposeMode? = nil) {
             self.composeMode = composeMode ?? ComposeUtil.ComposeMode.normal
             self.originalMessage = om
             self.prefilledTo = om == nil ? prefilledTo : nil
+            self.prefilledFrom = prefilledFrom
             setupInitialSubject()
             setupInitialBody()
         }

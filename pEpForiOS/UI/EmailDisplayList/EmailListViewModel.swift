@@ -672,6 +672,12 @@ extension EmailListViewModel {
                                          originalMessage: message)
         return composeVM
     }
+
+    func composeViewModelForNewMessage() -> ComposeViewModel {
+        let user = folderToShow.account.user
+        let composeVM = ComposeViewModel(prefilledFrom: user)
+        return composeVM
+    }
 }
 
 // MARK: - ComposeViewModelResultDelegate

@@ -1118,24 +1118,27 @@ extension EmailListViewController: SegueHandlerType {
         guard
             let nav = segue.destination as? UINavigationController,
             let composeVc = nav.topViewController as? ComposeTableViewController,
-            let composeMode = composeMode(for: segueId) else {
+            let composeMode = composeMode(for: segueId),
+            let vm = model else {
                 Log.shared.errorAndCrash(component: #function,
                                          errorString: "composeViewController setup issue")
                 return
         }
         composeVc.appConfig = appConfig
+
         if segueId != .segueCompose {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
-            guard
-                let vm = model,
-                let indexPath = lastSelectedIndexPath else {
+            guard let indexPath = lastSelectedIndexPath else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
                     return
             }
 
             composeVc.viewModel = vm.composeViewModel(withOriginalMessageAt: indexPath,
                                                       composeMode: composeMode)
+        }
+        else {
+            composeVc.viewModel = vm.composeViewModelForNewMessage()
         }
     }
 
