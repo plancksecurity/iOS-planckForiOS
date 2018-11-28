@@ -218,7 +218,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // Safely restarts all services
-    private func gracefullyRestartServices() {
+    private func shutdownAndPrepareServicesForRestart() {
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
         // The actual restart of the services happens in NetworkServiceDelegate callbacks.
         networkService?.cancel()
@@ -276,7 +276,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
-        gracefullyRestartServices()
+        shutdownAndPrepareServicesForRestart()
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
     }
@@ -309,7 +309,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         shouldDestroySession = false
 
-        gracefullyRestartServices()
+        shutdownAndPrepareServicesForRestart()
         kickOffMySelf()
         UserNotificationTool.resetApplicationIconBadgeNumber()
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
@@ -392,7 +392,7 @@ extension AppDelegate: NetworkServiceDelegate {
             return
         }
         if UIApplication.shared.applicationState != .background {
-            // We got woken up again before we actually finished.
+            // We got woken up again before syncUserActionsAndCleanupbackgroundTask finished.
             // No problem, start regular sync loop.
             startServices()
         }
@@ -401,13 +401,15 @@ extension AppDelegate: NetworkServiceDelegate {
     }
 
     func networkServiceDidCancel(service: NetworkService) {
-        if UIApplication.shared.applicationState == .background {
+        switch UIApplication.shared.applicationState {
+        case .background:
             // We have been cancelled because we are entering background.
             // Quickly sync local changes and clean up.
             stopUsingPepSession()
-        } else if UIApplication.shared.applicationState == .inactive {
+        case .inactive:
             // We re inactive. Keep services paused -> Do nothing
-        } else {
+            break
+        case .active:
             // We have been cancelled soley to assure a clean restart.
             startServices()
         }
