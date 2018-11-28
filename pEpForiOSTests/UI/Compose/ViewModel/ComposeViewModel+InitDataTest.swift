@@ -127,6 +127,25 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
                                       inlinedAttachments: [])
     }
 
+    func testPrefilledFrom_set() {
+        let mode = ComposeUtil.ComposeMode.normal
+        testee = ComposeViewModel.InitData(prefilledFromSender:someone)
+        let expectedFrom = someone
+        assertTesteeForExpectedValues(composeMode: mode,
+                                      isDraftsOrOutbox: false,
+                                      isDrafts: false,
+                                      isOutbox: false,
+                                      pEpProtection: true,
+                                      from: expectedFrom,
+                                      toRecipients: nil,
+                                      ccRecipients: [],
+                                      bccRecipients: [],
+                                      subject: " ",
+                                      bodyPlaintext: "",
+                                      bodyHtml: nil,
+                                      nonInlinedAttachments: [],
+                                      inlinedAttachments: [])
+    }
     // MARK: - originalMessage
 
     func testOriginalMessage_isSet() {
