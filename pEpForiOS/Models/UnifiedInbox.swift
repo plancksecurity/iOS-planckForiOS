@@ -76,17 +76,17 @@ public class UnifiedInbox: Folder {
 
     override open func contains(message: Message,
                                 deletedMessagesAreContained: Bool = false,
-                                markedForMoveToFolderArteContained: Bool = false) -> Bool {
+                                markedForMoveToFolderAreContained: Bool = false) -> Bool {
         guard let theFilter = filter else {
             return false
         }
 
-        if deletedMessagesAreContained && markedForMoveToFolderArteContained {
+        if deletedMessagesAreContained && markedForMoveToFolderAreContained {
             return theFilter.fulfillsFilter(message: message)
         }
 
         var result = !message.isGhost && message.parent.folderType == .inbox
-        if !markedForMoveToFolderArteContained {
+        if !markedForMoveToFolderAreContained {
             result =
                 result && (message.targetFolder == nil || message.targetFolder == message.parent)
         }
