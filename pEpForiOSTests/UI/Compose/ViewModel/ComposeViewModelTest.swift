@@ -11,7 +11,6 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-/*
 class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
     private var testResultDelegate: TestResultDelegate?
@@ -766,6 +765,58 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         XCTAssertTrue(testee?.resultDelegate === vm)
     }
 
+    // showSuggestions and hideSuggestions are tested altering recipients
+
+    func testShowSuggestionsScrollFocus_nonEmpty() {
+        let expectedSuggestionsVisibility = true
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               expectedIsValidated: nil,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               suggestionsScrollFocusChangedMustBeCalled: true,
+               expectedNewSuggestionsScrollFocusIsVisible: expectedSuggestionsVisibility,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let _ = vm?.suggestViewModel(SuggestViewModel(),
+                                     didToggleVisibilityTo: expectedSuggestionsVisibility)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
+    func testShowSuggestionsScrollFocus_empty() {
+        let expectedSuggestionsVisibility = false
+        assert(contentChangedMustBeCalled: false,
+               focusSwitchedMustBeCalled: false,
+               validatedStateChangedMustBeCalled: false,
+               expectedIsValidated: nil,
+               modelChangedMustBeCalled: false,
+               sectionChangedMustBeCalled: false,
+               colorBatchNeedsUpdateMustBeCalled: false,
+               hideSuggestionsMustBeCalled: false,
+               showSuggestionsMustBeCalled: false,
+               suggestionsScrollFocusChangedMustBeCalled: true,
+               expectedNewSuggestionsScrollFocusIsVisible: expectedSuggestionsVisibility,
+               showMediaAttachmentPickerMustBeCalled: false,
+               hideMediaAttachmentPickerMustBeCalled: false,
+               showDocumentAttachmentPickerMustBeCalled: false,
+               documentAttachmentPickerDonePickerCalled: false,
+               didComposeNewMailMustBeCalled: false,
+               didModifyMessageMustBeCalled: false,
+               didDeleteMessageMustBeCalled: false)
+        let _ = vm?.suggestViewModel(SuggestViewModel(),
+                                     didToggleVisibilityTo: expectedSuggestionsVisibility)
+        waitForExpectations(timeout: UnitTestUtils.waitTime)
+    }
+
 // MARK: - ComposeViewModelStateDelegate Handling
 
     func testComposeViewModelStateDidChangeValidationStateTo() {
@@ -1447,6 +1498,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                         hideSuggestionsMustBeCalled: Bool? = nil,
                         showSuggestionsMustBeCalled: Bool? = nil,
                         expectedShowSuggestionsIndexPath: IndexPath? = nil,
+                        suggestionsScrollFocusChangedMustBeCalled: Bool? = nil,
+                        expectedNewSuggestionsScrollFocusIsVisible: Bool? = nil,
                         showMediaAttachmentPickerMustBeCalled: Bool? = nil,
                         hideMediaAttachmentPickerMustBeCalled: Bool? = nil,
                         showDocumentAttachmentPickerMustBeCalled: Bool? = nil,
@@ -1507,6 +1560,13 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             expHideSuggestionsCalled?.isInverted = !exp
         }
 
+        var expSuggestionsScrollFocusChangedCalled: XCTestExpectation? = nil
+        if let exp = suggestionsScrollFocusChangedMustBeCalled {
+            expSuggestionsScrollFocusChangedCalled =
+                expectation(description: "expSuggestionsScrollFocusChangedCalled")
+            expSuggestionsScrollFocusChangedCalled?.isInverted = !exp
+        }
+
         var expShowSuggestionsCalled: XCTestExpectation? = nil
         if let exp = showSuggestionsMustBeCalled {
             expShowSuggestionsCalled =
@@ -1556,6 +1616,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                          expectedProtectionEnabled: expectedProtectionEnabled,
                          expHideSuggestionsCalled: expHideSuggestionsCalled,
                          expShowSuggestionsCalled: expShowSuggestionsCalled,
+                         expSuggestionsScrollFocusChangedCalled: expSuggestionsScrollFocusChangedCalled,
+                         expectedScrollFocus: expectedNewSuggestionsScrollFocusIsVisible,
                          expectedShowSuggestionsIndexPath: expectedShowSuggestionsIndexPath,
                          expShowMediaAttachmentPickerCalled: expShowMediaAttachmentPickerCalled,
                          expHideMediaAttachmentPickerCalled: expHideMediaAttachmentPickerCalled,
@@ -1662,6 +1724,9 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let expShowSuggestionsCalled: XCTestExpectation?
         let expectedShowSuggestionsIndexPath: IndexPath?
 
+        let expSuggestionsScrollFocusChangedCalled: XCTestExpectation?
+        let expectedScrollFocus: Bool?
+
         let expShowMediaAttachmentPickerCalled: XCTestExpectation?
 
         let expHideMediaAttachmentPickerCalled: XCTestExpectation?
@@ -1683,6 +1748,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
              expectedProtectionEnabled: Bool?,
              expHideSuggestionsCalled: XCTestExpectation?,
              expShowSuggestionsCalled: XCTestExpectation?,
+             expSuggestionsScrollFocusChangedCalled: XCTestExpectation?,
+             expectedScrollFocus: Bool?,
              expectedShowSuggestionsIndexPath: IndexPath?,
              expShowMediaAttachmentPickerCalled: XCTestExpectation?,
              expHideMediaAttachmentPickerCalled: XCTestExpectation?,
@@ -1701,6 +1768,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             self.expectedProtectionEnabled = expectedProtectionEnabled
             self.expHideSuggestionsCalled = expHideSuggestionsCalled
             self.expShowSuggestionsCalled = expShowSuggestionsCalled
+            self.expSuggestionsScrollFocusChangedCalled = expSuggestionsScrollFocusChangedCalled
+            self.expectedScrollFocus = expectedScrollFocus
             self.expectedShowSuggestionsIndexPath = expectedShowSuggestionsIndexPath
             self.expShowMediaAttachmentPickerCalled = expShowMediaAttachmentPickerCalled
             self.expHideMediaAttachmentPickerCalled = expHideMediaAttachmentPickerCalled
@@ -1791,6 +1860,17 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             }
         }
 
+        func suggestions(haveScrollFocus: Bool) {
+            guard let exp = expSuggestionsScrollFocusChangedCalled else {
+                // We ignore called or not
+                return
+            }
+            exp.fulfill()
+            if let expected = expectedScrollFocus {
+                XCTAssertEqual(haveScrollFocus, expected)
+            }
+        }
+
         func showMediaAttachmentPicker() {
             guard let exp = expShowMediaAttachmentPickerCalled else {
                 // We ignore called or not
@@ -1830,4 +1910,3 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - MediaAttachmentPickerProviderViewModel
     class TestMediaAttachmentPickerProviderViewModel: MediaAttachmentPickerProviderViewModel {} // Dummy to pass something
 }
-*/

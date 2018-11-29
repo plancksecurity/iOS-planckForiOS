@@ -114,6 +114,7 @@ class NetworkServiceTests: XCTestCase {
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         networkService.unitTestDelegate = del
+        networkService.delegate = del
 
         networkService.sendLayerDelegate = sendLayerDelegate
 
