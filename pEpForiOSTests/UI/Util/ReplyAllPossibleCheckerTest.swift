@@ -354,7 +354,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
         from: Identity?, to: [Identity], cc: [Identity], bcc: [Identity]) -> Bool {
         let msgNumber = nextMessageNumber(testName: testName)
 
-        let msg = Message.init(uuid: "\(msgNumber)", uid: UInt(msgNumber), parentFolder: folder)
+        let msg = Message.init(uuid: "\(msgNumber)", uid: msgNumber, parentFolder: folder)
 
         msg.from = from
 

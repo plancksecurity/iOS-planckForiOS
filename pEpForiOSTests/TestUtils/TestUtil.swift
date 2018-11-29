@@ -480,8 +480,8 @@ class TestUtil {
     }
 
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
-        let msg = Message(uuid: "\(uid)", uid: UInt(uid), parentFolder: folder)
-        XCTAssertEqual(msg.uid, UInt(uid))
+        let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
+        XCTAssertEqual(msg.uid, uid)
         msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg.received = Date(timeIntervalSince1970: Double(uid))
         msg.sent = msg.received
@@ -569,7 +569,7 @@ class TestUtil {
         let blueprint = blueprintData[number]
 
         let msg = Message(uuid: blueprint.uuid,
-                          uid: UInt(number + 1),
+                          uid: number + 1,
                           parentFolder: folder)
         msg.from = blueprint.from
         msg.to = [receiver]

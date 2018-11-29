@@ -421,7 +421,7 @@ open class NetworkServiceWorker {
                     if let folderID = fi.folderID,
                         let firstUID = fi.firstUID,
                         let lastUID = fi.lastUID,
-                        firstUID != 0, lastUID != 0, firstUID <= lastUID {
+                        firstUID != 0, lastUID != 0, firstUID <= lastUID { //IOS-647: double check semantic of firstUID != 0. We might
                         if !onlySyncChangesTriggeredByUser {
                             let syncMessagesOp =
                                 SyncMessagesOperation(parentName: me.description,

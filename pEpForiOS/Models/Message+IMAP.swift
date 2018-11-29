@@ -9,6 +9,8 @@
 import MessageModel
 
 extension Message {
+    static let uidNeedsAppend = 0
+    static let uidFakeResponsivenes = -1
 
     // MARK: - Deletion
 

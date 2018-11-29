@@ -70,7 +70,7 @@ extension CdMessage.PredicateFactory {
             "(imap.localFlags.flagDeleted != imap.serverFlags.flagDeleted)")
         predicates.append(pFlags)
 
-        let pUid = NSPredicate(format: "uid != 0")
+        let pUid = NSPredicate(format: "uid != %d", Message.uidNeedsAppend)
         predicates.append(pUid)
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }

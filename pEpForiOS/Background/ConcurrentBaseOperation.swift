@@ -89,6 +89,7 @@ public class ConcurrentBaseOperation: BaseOperation {
     }
 
     func handleIlligalStateErrorAndFinish(component: String = #function, hint: String? = nil) {
+        Log.shared.errorAndCrash(component: #function, errorString: hint ?? "")
         handleError(
             BackgroundError.GeneralError.illegalState(info: component + " - " + (hint ?? "")))
     }

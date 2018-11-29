@@ -14,7 +14,7 @@ class MessageViewModel: CustomDebugStringConvertible {
     static var maxBodyPreviewCharacters = 120
     var queue: OperationQueue
 
-    let uid: UInt
+    let uid: Int
     private let uuid: MessageID
     private let parentFolderName: String
     private let accountAddress: String
