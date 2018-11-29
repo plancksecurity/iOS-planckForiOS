@@ -252,6 +252,7 @@ class TestUtil {
                                          failOnError: true)
 
         networkService.unitTestDelegate = del
+        networkService.delegate = del
         networkService.start()
 
         let canTakeSomeTimeFactor = 3.0
@@ -267,6 +268,7 @@ class TestUtil {
         let del = NetworkServiceObserver(
             expCanceled: testCase.expectation(description: "expCanceled"))
         networkService.unitTestDelegate = del
+        networkService.delegate = del
         networkService.cancel()
 
         // Wait for cancellation

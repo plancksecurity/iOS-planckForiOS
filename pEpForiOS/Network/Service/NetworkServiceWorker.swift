@@ -143,7 +143,6 @@ open class NetworkServiceWorker {
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
             me.backgroundQueue.removeObserver(observer, forKeyPath: me.operationCountKeyPath)
             me.delegate?.networkServiceWorkerDidCancel(worker: me)
-            me.unitTestDelegate?.testWorkerDidCancel(worker: me)
         }
     }
 
@@ -787,11 +786,6 @@ extension NetworkServiceWorker: CustomStringConvertible {
 // MARK: - UNIT TEST ONLY
 
 protocol NetworkServiceWorkerUnitTestDelegate: class {
-    /// Called after all operations have been canceled
-    /// - Parameters:
-    ///   - worker: sender
-    func testWorkerDidCancel(worker: NetworkServiceWorker)
-
     /** Called after each account sync */
     func testWorkerDidSync(worker: NetworkServiceWorker,
                                      accountInfo: AccountConnectInfo,

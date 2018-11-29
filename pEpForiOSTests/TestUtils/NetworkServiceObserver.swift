@@ -11,7 +11,7 @@ import MessageModel
 import CoreData
 @testable import pEpForiOS
 
-class NetworkServiceObserver: NetworkServiceUnitTestDelegate, CustomDebugStringConvertible {
+class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDelegate, CustomDebugStringConvertible {
     let expAllSynced: XCTestExpectation?
     var expCanceled: XCTestExpectation?
     var accountInfo: AccountConnectInfo?
@@ -24,7 +24,9 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, CustomDebugStringC
 
     let failOnError: Bool
 
-    init(numAccountsToSync: Int = 1, expAccountsSynced: XCTestExpectation? = nil, expCanceled: XCTestExpectation? = nil,
+    init(numAccountsToSync: Int = 1,
+         expAccountsSynced: XCTestExpectation? = nil,
+         expCanceled: XCTestExpectation? = nil,
          failOnError: Bool = false) {
         self.numAccountsToBeSynced = numAccountsToSync
         self.expAllSynced = expAccountsSynced
@@ -50,8 +52,13 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, CustomDebugStringC
         }
     }
 
+    // MARK: - NetworkServiceDelegate
     
-    func networkServiveDidCancel(service: NetworkService) {
+    func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
+        // ignore
+    }
+
+    func networkServiceDidCancel(service: NetworkService) {
         expCanceled?.fulfill()
     }
 }

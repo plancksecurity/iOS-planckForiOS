@@ -187,6 +187,7 @@ extension NetworkService: NetworkServiceWorkerDelegate {
             me.delegate?.networkServiceDidCancel(service: me)
         }
     }
+
     public func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error) {
         GCD.onMain { [weak self] in
             guard let me = self else {
@@ -204,19 +205,11 @@ public protocol NetworkServiceUnitTestDelegate: class {
     /** Called after each account sync */
     func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
                                errorProtocol: ServiceErrorProtocol)
-
-    /** Called after all operations have been canceled */
-    func networkServiveDidCancel(service: NetworkService)
 }
 
 // MARK: NetworkServiceWorkerUnitTestDelegate
 
 extension NetworkService: NetworkServiceWorkerUnitTestDelegate {
-
-    public func testWorkerDidCancel(worker: NetworkServiceWorker) {
-        self.unitTestDelegate?.networkServiveDidCancel(service: self)
-    }
-    
     public func testWorkerDidSync(worker: NetworkServiceWorker,
                                             accountInfo: AccountConnectInfo,
                                             errorProtocol: ServiceErrorProtocol) {
