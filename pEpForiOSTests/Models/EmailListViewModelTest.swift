@@ -415,6 +415,54 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(index.count, postMessages.count)
     }
 
+    func testFlagMessage() {
+        _ = givenThereIsAMessageIn(folderType: .inbox)
+        setupViewModel()
+        let indexPath = IndexPath(row: 0, section: 0)
+        emailListVM.setFlagged(forIndexPath: indexPath)
+        guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(isFlagged)
+    }
+
+    func testUnflagMessage() {
+        _ = givenThereIsAMessageIn(folderType: .inbox)
+        setupViewModel()
+
+        let indexPath = IndexPath(row: 0, section: 0)
+
+        emailListVM.unsetFlagged(forIndexPath: indexPath)
+        guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
+            XCTFail()
+            return
+        }
+        XCTAssertFalse(isFlagged)
+    }
+
+    func testFlagUnflagMessageIsImmediate() {
+        _ = givenThereIsAMessageIn(folderType: .inbox)
+        setupViewModel()
+
+        let indexPath = IndexPath(row: 0, section: 0)
+
+        emailListVM.setFlagged(forIndexPath: indexPath)
+        guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
+            XCTFail()
+            return
+        }
+
+        emailListVM.unsetFlagged(forIndexPath: indexPath)
+        guard let isNotFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
+            XCTFail()
+            return
+        }
+
+        let isImmediate = isFlagged != isNotFlagged
+        XCTAssertTrue(isImmediate)
+    }
+
     // Mark: setting up
 
     fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
