@@ -142,8 +142,8 @@ open class NetworkServiceWorker {
                                              context: nil)
             me.backgroundQueue.waitUntilAllOperationsAreFinished()
             me.backgroundQueue.removeObserver(observer, forKeyPath: me.operationCountKeyPath)
-            me.unitTestDelegate?.testWorkerDidCancel(worker: me)
             me.delegate?.networkServiceWorkerDidCancel(worker: me)
+            me.unitTestDelegate?.testWorkerDidCancel(worker: me)
         }
     }
 
