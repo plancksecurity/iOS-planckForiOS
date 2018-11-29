@@ -32,7 +32,7 @@ extension Message {
             delete()
         }
     }
-    
+
     /// Sets flag "deleted".
     /// Use this method if you do not want the message to be moved to trash folder.
     /// Note: Use only for messages synced with an IMAP server.
@@ -47,7 +47,7 @@ extension Message {
         theFlags.deleted = true
         self.save()
     }
-    
+
     /// Triggers trashing of the message, taking everithing in account (provider specific constrains
     /// and such).
     /// Always use this method to handle "user has choosen to delete an e-mail".
@@ -64,7 +64,7 @@ extension Message {
                                      errorString: "We should have a trash folder at this point")
             return
         }
-        
+
         if parent.shouldUidMoveDeletedMessagesToTrash {
             move(to: trashFolder)
         } else {
