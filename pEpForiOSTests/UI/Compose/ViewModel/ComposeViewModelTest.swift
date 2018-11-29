@@ -11,6 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
+/*
 class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
     private var testResultDelegate: TestResultDelegate?
@@ -1829,3 +1830,4 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - MediaAttachmentPickerProviderViewModel
     class TestMediaAttachmentPickerProviderViewModel: MediaAttachmentPickerProviderViewModel {} // Dummy to pass something
 }
+*/

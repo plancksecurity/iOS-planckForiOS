@@ -11,6 +11,7 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
+/*
 class SuggestViewModelTest: CoreDataDrivenTestBase {
     static let defaultNumExistingContacts = 5
     var existingIdentities = [Identity]()
@@ -228,3 +229,4 @@ extension SuggestViewModelTest {
         }
     }
 }
+*/
