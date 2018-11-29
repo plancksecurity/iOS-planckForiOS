@@ -11,7 +11,6 @@ import XCTest
 @testable import pEpForiOS
 import MessageModel
 
-/*
 class SuggestViewModelTest: CoreDataDrivenTestBase {
     static let defaultNumExistingContacts = 5
     var existingIdentities = [Identity]()
@@ -87,7 +86,9 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         assertResults(for: existing.address,
                       simulateUserSelectedRow: selectRow,
                       numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existing)
+                      expectedSelection: existing,
+                      didToggleVisibilityMustBeCalled: true,
+                      expectedDidToggleVisibilityToValue: true)
     }
 
     func testUserSelection_selectLast() {
@@ -102,7 +103,9 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         assertResults(for: common,
                       simulateUserSelectedRow: selectRow,
                       numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existing2)
+                      expectedSelection: existing2,
+                      didToggleVisibilityMustBeCalled: true,
+                      expectedDidToggleVisibilityToValue: true)
     }
 
     func testUserSelection_selectFirst() {
@@ -117,7 +120,9 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         assertResults(for: common,
                       simulateUserSelectedRow: selectRow,
                       numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existing1)
+                      expectedSelection: existing1,
+                      didToggleVisibilityMustBeCalled: true,
+                      expectedDidToggleVisibilityToValue: true)
     }
 
     // MARK: - Helper
@@ -144,7 +149,9 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
     private func assertResults(for searchTerm: String,
                                simulateUserSelectedRow: Int? = nil,
                                numExpectedResults: Int,
-                               expectedSelection: Identity? = nil) {
+                               expectedSelection: Identity? = nil,
+                               didToggleVisibilityMustBeCalled: Bool? = nil,
+                               expectedDidToggleVisibilityToValue: Bool? = nil) {
         var expectationDidSelectCalled: XCTestExpectation? = nil
         var shouldCallDidSelectContact = false
         if expectedSelection != nil {
@@ -152,10 +159,20 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
             shouldCallDidSelectContact = true
         }
         let expectationDidResetCalled = expectation(description: "expectationDidResetCalled")
+
+        var expectationDidToggleVisibilityToCalled: XCTestExpectation? = nil
+        if let mustBeCalled = didToggleVisibilityMustBeCalled {
+             expectationDidToggleVisibilityToCalled =
+                expectation(description: "expectationDidToggleVisibilityToCalled")
+                expectationDidToggleVisibilityToCalled?.isInverted = !mustBeCalled
+        }
         let testResultDelegate =
-            TestResultDelegate(shouldCallDidSelectContact: shouldCallDidSelectContact,
-                               expectedSelection: expectedSelection,
-                               expectationDidSelectCalled: expectationDidSelectCalled)
+            TestResultDelegate(
+                shouldCallDidSelectContact: shouldCallDidSelectContact,
+                expectedSelection: expectedSelection,
+                expectationDidSelectCalled: expectationDidSelectCalled,
+                expectationDidToggleVisibilityToCalled: expectationDidToggleVisibilityToCalled,
+                expectedDidToggleVisibilityToValue: expectedDidToggleVisibilityToValue)
         let shouldCallDidReset = true
         let testViewModelDelegate =
             TestViewModelDelegate(shouldCallDidReset: shouldCallDidReset,
@@ -182,12 +199,19 @@ extension SuggestViewModelTest {
         let expectedSelection: Identity?
         let expectationDidSelectCalled: XCTestExpectation?
 
+        let expectationDidToggleVisibilityToCalled: XCTestExpectation?
+        let expectedDidToggleVisibilityToValue: Bool?
+
         init(shouldCallDidSelectContact: Bool = true,
              expectedSelection: Identity? = nil,
-             expectationDidSelectCalled: XCTestExpectation? = nil) {
+             expectationDidSelectCalled: XCTestExpectation? = nil,
+             expectationDidToggleVisibilityToCalled: XCTestExpectation? = nil,
+             expectedDidToggleVisibilityToValue: Bool? = nil) {
             self.shouldCallDidSelectContact = shouldCallDidSelectContact
             self.expectedSelection = expectedSelection
             self.expectationDidSelectCalled = expectationDidSelectCalled
+            self.expectationDidToggleVisibilityToCalled = expectationDidToggleVisibilityToCalled
+            self.expectedDidToggleVisibilityToValue = expectedDidToggleVisibilityToValue
         }
 
         // SuggestViewModelResultDelegate
@@ -200,6 +224,17 @@ extension SuggestViewModelTest {
             expectationDidSelectCalled?.fulfill()
             XCTAssertEqual(expectedSelection?.address.lowercased(),
                            identity.address.lowercased())
+        }
+
+        func suggestViewModel(_ vm: SuggestViewModel, didToggleVisibilityTo newValue: Bool) {
+            guard let exp = expectationDidToggleVisibilityToCalled else {
+                // We are not interested in whether or not this delegtae is called.
+                return
+            }
+            exp.fulfill()
+            if let expValue = expectedDidToggleVisibilityToValue {
+                XCTAssertEqual(newValue, expValue)
+            }
         }
     }
 }
@@ -229,4 +264,3 @@ extension SuggestViewModelTest {
         }
     }
 }
-*/
