@@ -13,7 +13,7 @@ import MessageModel
 
 class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     /// Async PEPSession calls that take quite some time
-    let asyncPEPSessionCallWaitTime = 1.5
+    let asyncPEPSessionCallWaitTime = 2.0
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
     var draftedMessageAllButBccSet: Message?
