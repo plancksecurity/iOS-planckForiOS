@@ -213,7 +213,10 @@ public extension CdFolder {
      even the deleted ones, so we don't fetch them again from the server.
      */
     public func allMessagesIncludingDeletedPredicate() -> NSPredicate {
-        return NSPredicate(format: "parent = %@", self)
+        let isNotFakeMessage = CdMessage.PredicateFactory.isNotFakeMessage()
+        let inParentFolder = NSPredicate(format: "parent = %@", self)
+        return NSCompoundPredicate(andPredicateWithSubpredicates: [isNotFakeMessage,
+                                                                   inParentFolder])
     }
 
     /**

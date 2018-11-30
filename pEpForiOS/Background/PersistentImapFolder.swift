@@ -134,8 +134,11 @@ class PersistentImapFolder: CWIMAPFolder {
     override func message(at theIndex: UInt) -> CWMessage? {
         var result: CWMessage?
         privateMOC.performAndWait({
-            let p = NSPredicate(
+            let isNotFake = CdMessage.PredicateFactory.isNotFakeMessage()
+            let msgAtIdx = NSPredicate(
                 format: "parent = %@ and imap.messageNumber = %d", self.folder, theIndex)
+            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [isNotFake,
+                                                                        msgAtIdx])
             let msg = CdMessage.first(predicate: p)
             result = msg?.pantomimeQuick(folder: self)
         })
@@ -300,6 +303,11 @@ extension PersistentImapFolder: CWIMAPCache {
 
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
+        
+
+
+
+
         let opStore = StorePrefetchedMailOperation(
             parentName: functionName(#function),
             accountID: accountID, message: message, messageUpdate: messageUpdate,

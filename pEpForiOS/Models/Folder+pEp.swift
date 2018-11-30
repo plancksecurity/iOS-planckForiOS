@@ -27,16 +27,18 @@ extension Folder{
     ///
     /// - Returns: the first message found that has to be moved if any, nil otherwize
     public func firstMessageThatHasToBeMoved() -> Message? {
-        let predicateBelongingAccount =
+        let isNotFakeMessage = CdMessage.PredicateFactory.isNotFakeMessage()
+        let belongingAccount =
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: account.user.address)
-        let predicateParentFolder =
+        let parentFolder =
             CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: name)
-        let predicateUndeleted = CdMessage.PredicateFactory.notImapFlagDeleted()
-        let predicateMarkedForMoveToFolder = CdMessage.PredicateFactory.markedForMoveToFolder()
-        let predicates = [predicateBelongingAccount,
-                          predicateParentFolder,
-                          predicateMarkedForMoveToFolder,
-                          predicateUndeleted]
+        let undeleted = CdMessage.PredicateFactory.notImapFlagDeleted()
+        let markedForMoveToFolder = CdMessage.PredicateFactory.markedForMoveToFolder()
+        let predicates = [isNotFakeMessage,
+                          belongingAccount,
+                          parentFolder,
+                          markedForMoveToFolder,
+                          undeleted]
         let compoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         let cdMessage = CdMessage.first(predicate: compoundPredicate)
 
