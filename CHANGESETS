@@ -1,9 +1,9 @@
-v0.0.40
-pEpEngine ed11f0fd856f
-pEpObjCAdapter c55dc5200704
+v0.0.41
+pEpEngine 9af7df5e89cd
+pEpObjCAdapter b0785b78c8e8
 netpgp-et 8848ce82014d
-MessageModel 5af95df5761
-pantomime-iOS c81f893d6553
+MessageModel 9675c5dabc4b
+pantomime-iOS b03f347f2576
 libAccountSettings 3d94e78b587e
 ldns 70cfa2739c2a71db098e738d2fd16ae1025b2362
 OpenSSL-for-iPhone 10019638e80e8a8a5fc19642a840d8a69fac7349
