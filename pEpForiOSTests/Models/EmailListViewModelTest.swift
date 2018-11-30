@@ -415,34 +415,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(index.count, postMessages.count)
     }
 
-    func testFlagMessage() {
-        _ = givenThereIsAMessageIn(folderType: .inbox)
-        setupViewModel()
-        let indexPath = IndexPath(row: 0, section: 0)
-        emailListVM.setFlagged(forIndexPath: indexPath)
-        guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
-            XCTFail()
-            return
-        }
-        XCTAssertTrue(isFlagged)
-    }
-
-    func testUnflagMessage() {
-        _ = givenThereIsAMessageIn(folderType: .inbox)
-        setupViewModel()
-
-        let indexPath = IndexPath(row: 0, section: 0)
-
-        emailListVM.unsetFlagged(forIndexPath: indexPath)
-        guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
-            XCTFail()
-            return
-        }
-        XCTAssertFalse(isFlagged)
-    }
-
     func testFlagUnflagMessageIsImmediate() {
-        _ = givenThereIsAMessageIn(folderType: .inbox)
+        givenThereIsAMessageIn(folderType: .inbox)
         setupViewModel()
 
         let indexPath = IndexPath(row: 0, section: 0)
@@ -458,9 +432,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
+        let expectationMain = expectation(description: "message is saved in main thread")
+        DispatchQueue.main.async {
+            expectationMain.fulfill()
+        }
 
         let isImmediate = isFlagged != isNotFlagged
         XCTAssertTrue(isImmediate)
+        wait(for: [expectationMain], timeout: TestUtil.waitTime)
     }
 
     // Mark: setting up
@@ -560,7 +539,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         folder.save()
     }
 
-    private func givenThereIsAMessageIn(folderType: FolderType)-> Message? {
+    @discardableResult private func givenThereIsAMessageIn(folderType: FolderType)-> Message? {
         givenThereIsA(folderType: folderType)
         return TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder).first
     }
