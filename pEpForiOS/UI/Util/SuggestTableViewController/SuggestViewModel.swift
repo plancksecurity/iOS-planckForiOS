@@ -45,10 +45,6 @@ class SuggestViewModel {
 
     // MARK: - API
 
-    public var isEmpty: Bool {
-        return identities.count == 0
-    }
-
     public init(minNumberSearchStringChars: UInt = 3,
                 resultDelegate: SuggestViewModelResultDelegate? = nil,
                 showEmptyList: Bool = false) {

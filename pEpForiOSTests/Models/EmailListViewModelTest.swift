@@ -415,6 +415,33 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(index.count, postMessages.count)
     }
 
+    func testFlagUnflagMessageIsImmediate() {
+        givenThereIsAMessageIn(folderType: .inbox)
+        setupViewModel()
+
+        let indexPath = IndexPath(row: 0, section: 0)
+
+        emailListVM.setFlagged(forIndexPath: indexPath)
+        guard let isFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
+            XCTFail()
+            return
+        }
+
+        emailListVM.unsetFlagged(forIndexPath: indexPath)
+        guard let isNotFlagged = emailListVM.viewModel(for: indexPath.row)?.isFlagged else {
+            XCTFail()
+            return
+        }
+        let expectationMain = expectation(description: "message is saved in main thread")
+        DispatchQueue.main.async {
+            expectationMain.fulfill()
+        }
+
+        let isImmediate = isFlagged != isNotFlagged
+        XCTAssertTrue(isImmediate)
+        wait(for: [expectationMain], timeout: TestUtil.waitTime)
+    }
+
     // Mark: setting up
 
     fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
@@ -512,7 +539,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         folder.save()
     }
 
-    private func givenThereIsAMessageIn(folderType: FolderType)-> Message? {
+    @discardableResult private func givenThereIsAMessageIn(folderType: FolderType)-> Message? {
         givenThereIsA(folderType: folderType)
         return TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder).first
     }
