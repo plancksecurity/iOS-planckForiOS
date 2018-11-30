@@ -303,10 +303,13 @@ extension PersistentImapFolder: CWIMAPCache {
 
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
-        
-
-
-
+        //HERE: currently weird crash
+        // expression produced error: error: /var/folders/mw/w6vs55nn56g8z2sb5hm9243m0000gn/T/expr61-231675..swift:1:78: error: 'CdFolder' is not a member type of 'MessageModel'
+        // Swift._DebuggerSupport.stringForPrintObject(Swift.UnsafePointer<MessageModel.CdFolder>(bitPattern: 0x1384a7ac0)!.pointee)
+        if Message.replaceFakeMessage(withRealMessage: message, in: folder.folder()) {
+            // We are done.
+            return
+        }
 
         let opStore = StorePrefetchedMailOperation(
             parentName: functionName(#function),
