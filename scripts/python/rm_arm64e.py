@@ -25,11 +25,11 @@ if __name__ == '__main__':
 
     os.chdir(args.archive_path)
 
-    files = glob.glob('*.dylib')
+    files = glob.glob('**/*.dylib', recursive=True)
     for file in files:
-        if file not in official_files:
-            print("Extra: " + file)
-        else:
-            subprocess.call(['lipo', file, '-remove', 'arm64e', '-output', file])
+        base_name = os.path.basename(file)
+        if base_name not in official_files:
+            print("*** unplanned: " + file)
+        subprocess.call(['lipo', file, '-remove', 'arm64e', '-output', file])
 
     os.chdir(current_dir)
