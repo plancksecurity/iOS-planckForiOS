@@ -27,7 +27,7 @@ def is_hg():
         return False
 
 def hg_changeset(name):
-    p = re.compile(r'parent: \d+:([^\n]+)\n.*')
+    p = re.compile(r'parent: \d+:([0-9a-fA-F]+).*')
     process = subprocess.Popen(['hg','sum'], stdout=subprocess.PIPE)
     all = process.stdout.read().decode('utf-8')
     m = p.match(all)
