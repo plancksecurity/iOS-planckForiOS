@@ -60,6 +60,7 @@ class EmailViewController: BaseTableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        configureTableRows()
         configureView()
     }
 
@@ -122,6 +123,10 @@ class EmailViewController: BaseTableViewController {
         toolbarItems?.append(contentsOf: [flexibleSpace,item])
     }
 
+    func configureTableRows() {
+        tableData?.filterRows(message: message)
+    }
+
     func configureView() {
         // Make sure the NavigationBar is shown, even if the previous view has hidden it.
         navigationController?.setNavigationBarHidden(false, animated: false)
@@ -129,8 +134,6 @@ class EmailViewController: BaseTableViewController {
         title = NSLocalizedString("Message", comment: "Message view title")
 
         setupDestructiveButtonIcon()
-
-        tableData?.filterRows(message: message)
 
         if messageId <= 0 {
             previousMessage.isEnabled = false
@@ -324,6 +327,8 @@ class EmailViewController: BaseTableViewController {
         if let m = folderShow?.messageAt(index: messageId) {
             message = m
         }
+
+        configureTableRows()
         tableView.reloadData()
         configureView()
     }
@@ -333,6 +338,8 @@ class EmailViewController: BaseTableViewController {
         if let m = folderShow?.messageAt(index: messageId) {
             message = m
         }
+
+        configureTableRows()
         tableView.reloadData()
         configureView()
     }
