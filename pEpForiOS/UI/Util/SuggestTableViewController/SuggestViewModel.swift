@@ -60,22 +60,13 @@ class SuggestViewModel {
         resultDelegate?.suggestViewModelDidSelectContact(identity: identities[index])
     }
 
-    private var threadId: String {
-        let threadName = Thread.current.name ?? "unknown"
-        if Thread.isMainThread {
-            return "main (\(threadName))"
-        } else {
-            return "other (\(threadName))"
-        }
-    }
-
     public var numRows: Int {
-        print("*** \(threadId) numRows \(identities.count)")
+        print("*** \(Thread.threadID) numRows \(identities.count)")
         return identities.count
     }
 
     public func row(at index: Int) -> Row {
-        print("*** \(threadId) row at \(index)")
+        print("*** \(Thread.threadID) row at \(index)")
         guard index < identities.count else {
             Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
             return Row(name: "Problem", email: "child")
@@ -92,7 +83,7 @@ class SuggestViewModel {
             identities = Identity.by(snippet: search)
         }
         let showResults = identities.count > 0 || showEmptyList
-        print("*** \(threadId) updateSuggestion() \(identities.count)")
+        print("*** \(Thread.threadID) updateSuggestion() \(identities.count)")
         delegate?.suggestViewModelDidResetModel(showResults: showResults)
         resultDelegate?.suggestViewModel(self, didToggleVisibilityTo: showResults)
     }
