@@ -33,12 +33,14 @@ class FetchNumberOfNewMailsService {
     ///                              Passes nil if we could not figure out whether or not
     ///                              there are new emails.
     public func start(completionBlock: @escaping (_ numNewMails: Int?) -> ()) {
-        workerQueue.async {
-            let numNewMails = self.numberOfNewMails()
-            if self.errorContainer?.hasErrors() ?? false {
-                completionBlock(nil)
-            } else {
-                completionBlock(numNewMails)
+        workerQueue.async { [weak self] in
+            if let theSelf = self {
+                let numNewMails = theSelf.numberOfNewMails()
+                if theSelf.errorContainer?.hasErrors() ?? false {
+                    completionBlock(nil)
+                } else {
+                    completionBlock(numNewMails)
+                }
             }
         }
     }

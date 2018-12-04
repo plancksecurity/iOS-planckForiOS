@@ -311,6 +311,7 @@
 		4334CF302020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4334CF2F2020CFFE00B3193E /* OAuth2Type+LibAccountSettings.swift */; };
 		4335002E212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4335002D212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift */; };
 		4336229E1DC76B8100133B3D /* MessageModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4336229D1DC76B8100133B3D /* MessageModelTests.swift */; };
+		4337E52A21B68FCA00826CAB /* Thread+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4337E52921B68FCA00826CAB /* Thread+Extension.swift */; };
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
 		433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D11E66CB9C00272E19 /* CreateRequiredFoldersOperation.swift */; };
 		4341980520AB037E0062F7F6 /* CGImageSource+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */; };
@@ -927,6 +928,7 @@
 		4335002D212D9A6A00BD5F2A /* EmailListViewModeTests+Threading_12_Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewModeTests+Threading_12_Messages.swift"; sourceTree = "<group>"; };
 		4336229D1DC76B8100133B3D /* MessageModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageModelTests.swift; sourceTree = "<group>"; };
 		433724FC1DA2C2B1005E8DF5 /* pEp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = pEp.entitlements; path = ../pEp.entitlements; sourceTree = "<group>"; };
+		4337E52921B68FCA00826CAB /* Thread+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Thread+Extension.swift"; sourceTree = "<group>"; };
 		433BCD941D5388C100DD98EF /* ReplyUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyUtil.swift; sourceTree = "<group>"; };
 		433C51D11E66CB9C00272E19 /* CreateRequiredFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRequiredFoldersOperation.swift; sourceTree = "<group>"; };
 		4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImageSource+Extension.swift"; sourceTree = "<group>"; };
@@ -2196,6 +2198,7 @@
 				439A23E420B40FAC00417AF5 /* PEP_rating+Extension.swift */,
 				1574D079211464CC00FEDC93 /* URL+MailTo.swift */,
 				15F0F7AE2135984C002BE853 /* Array+SortingAndSearching.swift */,
+				4337E52921B68FCA00826CAB /* Thread+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -3555,6 +3558,7 @@
 				15BA536C20A08D270090F126 /* UnifiedInbox.swift in Sources */,
 				152A39C521905C3E00D9F8E4 /* ComposeTableViewController.swift in Sources */,
 				150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */,
+				4337E52A21B68FCA00826CAB /* Thread+Extension.swift in Sources */,
 				43EC75A4216498AD00048CFE /* Log+ASL.swift in Sources */,
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
