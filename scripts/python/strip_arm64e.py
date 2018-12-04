@@ -1,3 +1,11 @@
+#
+# Strips arm64e from all *.dylibs of a given archive.
+#
+# Usage:
+#
+# python3 scripts/python/rm_arm64e.py <some.xcarchive>
+#
+
 import glob
 import os
 import subprocess
