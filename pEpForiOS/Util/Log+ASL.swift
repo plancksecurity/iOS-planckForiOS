@@ -19,6 +19,7 @@ class ASLLogger: ActualLoggerProtocol {
         asl_set(logMessage, ASL_KEY_FACILITY, ASLLogger.facilityName)
         asl_set(logMessage, ASL_KEY_MSG, description)
         asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
+        asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
         asl_send(nil, logMessage)
 
