@@ -7,10 +7,13 @@
 //
 
 import MessageModel
-
+/// Code related to fake messages.
+/// 
+/// We are saving fake messages locally for messages that take time to sync with server (e.g.
+/// when moving a message to another folder). Fake messages are marked with a special UID.
 extension Message {
 
-    private func saveFakeMessage(for msg: Message, in targetFolder: Folder) {
+    func saveFakeMessage(for msg: Message, in targetFolder: Folder) {
         let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
                               message: msg,
                               parentFolder: targetFolder)
