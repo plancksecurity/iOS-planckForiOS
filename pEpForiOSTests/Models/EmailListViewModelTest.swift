@@ -416,7 +416,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testFlagUnflagMessageIsImmediate() {
-        givenThereIsAMessageIn(folderType: .inbox)
+        let message = givenThereIsAMessageIn(folderType: .inbox)
+        let messageMoc = message?.cdMessage()?.managedObjectContext
         setupViewModel()
 
         let indexPath = IndexPath(row: 0, section: 0)
@@ -432,14 +433,16 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
-        let expectationMain = expectation(description: "message is saved in main thread")
-        DispatchQueue.main.async {
-            expectationMain.fulfill()
+        let messageDidSaveExpectation = expectation(description: "message is saved")
+        messageDidSaveExpectation.expectedFulfillmentCount = 2
+
+        NotificationCenter.default.addObserver(forName: Notification.Name.NSManagedObjectContextDidSave, object: messageMoc, queue: nil) { (notification) in
+            messageDidSaveExpectation.fulfill()
         }
 
         let isImmediate = isFlagged != isNotFlagged
         XCTAssertTrue(isImmediate)
-        wait(for: [expectationMain], timeout: TestUtil.waitTime)
+        wait(for: [messageDidSaveExpectation], timeout: UnitTestUtils.waitTime)
     }
 
     // Mark: setting up
