@@ -298,8 +298,13 @@ class MessageViewModel: CustomDebugStringConvertible {
 
 extension MessageViewModel: Equatable {
     static func ==(lhs: MessageViewModel, rhs: MessageViewModel) -> Bool {
+        let oneIsAFakeMessage =
+            lhs.uid == Message.uidFakeResponsivenes ||
+            rhs.uid == Message.uidFakeResponsivenes
         return lhs.uuid == rhs.uuid &&
-            lhs.uid == rhs.uid &&
+            // We conider two messages with different UIDs as equal if one is the fake message
+            // of the other.
+            (oneIsAFakeMessage || (lhs.uid == rhs.uid)) &&
             lhs.parentFolderName == rhs.parentFolderName &&
             lhs.accountAddress == rhs.accountAddress
     }
