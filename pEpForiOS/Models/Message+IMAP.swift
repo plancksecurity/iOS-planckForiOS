@@ -151,12 +151,10 @@ extension Message {
     static public func replaceFakeMessage(withRealMessage msg: CWIMAPMessage, in folder: Folder) -> Bool {
         if let existingFakeMessage = Message.existingFakeMessage(for: msg,
                                                                  in: folder) {
-//            let msgToReplaceFakeMsgWith = Message(uid: Int(msg.uid()),
-//                                                  message: existingFakeMessage)
-//            msgToReplaceFakeMsgWith.save()
             existingFakeMessage.updateUid(newValue: Int(msg.uid()))
             let isRealMessageNow = existingFakeMessage
             isRealMessageNow.save()
+            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: isRealMessageNow)
             return true
         } else {
             return false
