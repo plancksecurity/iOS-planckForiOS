@@ -332,17 +332,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        networkService.checkForNewMails() { (numMails: Int?) in
+        networkService.checkForNewMails() {[weak self] (numMails: Int?) in
+            guard let me = self else {
+                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                return
+            }
             guard let numMails = numMails else {
-                self.cleanupAndCall(completionHandler: completionHandler, result: .failed)
+                me.cleanupAndCall(completionHandler: completionHandler, result: .failed)
                 return
             }
             switch numMails {
             case 0:
-                self.cleanupAndCall(completionHandler: completionHandler, result: .noData)
+                me.cleanupAndCall(completionHandler: completionHandler, result: .noData)
             default:
-                self.informUser(numNewMails: numMails) {
-                    self.cleanupAndCall(completionHandler: completionHandler, result: .newData)
+                me.informUser(numNewMails: numMails) {
+                    me.cleanupAndCall(completionHandler: completionHandler, result: .newData)
                 }
             }
         }
