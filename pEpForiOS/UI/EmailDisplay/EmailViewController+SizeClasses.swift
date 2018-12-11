@@ -20,6 +20,8 @@ extension EmailViewController {
         else {
             adaptBarButtonItemsForAnyHeight()
         }
+        
+        self.tableView.updateSize()
     }
 
     private func adaptBarButtonItemsForAnyHeight() {
