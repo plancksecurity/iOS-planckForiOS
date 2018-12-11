@@ -15,7 +15,8 @@ class ASLLogger: ActualLoggerProtocol {
                  comment: String) {
     }
 
-    func retrieveLog(block: @escaping (String) -> Void) {
+    func retrieveLog() -> String {
+        return ""
     }
 
     private static let facilityName = "security.pEp"

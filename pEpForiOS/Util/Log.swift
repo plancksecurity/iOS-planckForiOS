@@ -24,7 +24,7 @@ protocol ActualLoggerProtocol {
                  description: String,
                  comment: String)
 
-    func retrieveLog(block: @escaping (String) -> Void)
+    func retrieveLog() -> String
 }
 
 /** Very primitive Logging class. */
@@ -55,9 +55,8 @@ protocol ActualLoggerProtocol {
 
     static public func checklog(_ block: ((String?) -> ())?) {
         Log.shared.loggingQueue.addOperation() {
-            Log.shared.internalLogger.retrieveLog() { logString in
-                block?(logString)
-            }
+            let logString = Log.shared.internalLogger.retrieveLog()
+            block?(logString)
         }
     }
 

@@ -15,19 +15,13 @@ class ASLLoggerTest: XCTestCase {
         let logger = ASLLogger()
         let logMessage = "*** more blah"
         logger.saveLog(severity: .error, entity: "blah", description: logMessage, comment: "ui")
-        let expLogReceived = expectation(description: "expLogReceived")
-        logger.retrieveLog() { logString in
-            XCTAssertFalse(logString.isEmpty)
-            XCTAssertTrue(logString.contains(find: logMessage))
-            if logString.isEmpty {
-                print("*** log is empty")
-            } else if !logString.contains(find: logMessage) {
-                print("*** have log but doesn't contain our stuff")
-            }
-            expLogReceived.fulfill()
+        let logString = logger.retrieveLog()
+        XCTAssertFalse(logString.isEmpty)
+        XCTAssertTrue(logString.contains(find: logMessage))
+        if logString.isEmpty {
+            print("*** log is empty")
+        } else if !logString.contains(find: logMessage) {
+            print("*** have log but doesn't contain our stuff")
         }
-        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
-            XCTAssertNil(error)
-        })
     }
 }
