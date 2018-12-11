@@ -487,7 +487,6 @@
 		43D755F61F262B37006F933A /* PantomimeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755F51F262B37006F933A /* PantomimeError.swift */; };
 		43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */; };
 		43D86EB821BE62DD00C18418 /* Log+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75A3216498AD00048CFE /* Log+ASL.swift */; };
-		43D86ECB21BE6C7B00C18418 /* CleanroomASL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D86ECA21BE6C7B00C18418 /* CleanroomASL.framework */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DB81331E2A56BE00A20902 /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DB81321E2A56BE00A20902 /* AppendMailsOperation.swift */; };
 		43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */; };
@@ -1252,7 +1251,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43D86ECB21BE6C7B00C18418 /* CleanroomASL.framework in Frameworks */,
 				439932301FEA9B7200E92C35 /* SwipeCellKit.framework in Frameworks */,
 				43B54F961FE02D02008EC427 /* AppAuth.framework in Frameworks */,
 				43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */,
