@@ -24,11 +24,6 @@ class ASLLoggerTest: XCTestCase {
                     entity: entity,
                     description: "\(logMessage) (\(num))",
                     comment: comment)
-                logger.saveLog(
-                    severity: sev,
-                    entity: entity,
-                    description: "\(logMessage) (\(num))",
-                    comment: comment)
             }
         }
 
