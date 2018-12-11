@@ -21,7 +21,7 @@ class ASLLogger: ActualLoggerProtocol {
 
         asl_set(logMessage, ASL_KEY_SENDER, sender)
         asl_set(logMessage, ASL_KEY_FACILITY, entity)
-        asl_set(logMessage, ASL_KEY_MSG, description)
+        asl_set(logMessage, ASL_KEY_MSG, "\(description) [\(comment)]")
         asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
         asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
