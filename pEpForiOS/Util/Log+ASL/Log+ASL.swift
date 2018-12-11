@@ -12,11 +12,11 @@ class ASLLogger: ActualLoggerProtocol {
     init() {
         if let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last {
             let logUrl = url.appendingPathComponent("ASLLog", isDirectory: false)
-            self.client = asl_open_path(
+            self.fileClient = asl_open_path(
                 logUrl.path,
                 UInt32(ASL_OPT_OPEN_WRITE | ASL_OPT_CREATE_STORE))
         } else {
-            self.client = nil
+            self.fileClient = nil
         }
     }
 
@@ -32,7 +32,7 @@ class ASLLogger: ActualLoggerProtocol {
         asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
         asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
-        asl_send(client, logMessage)
+        asl_send(fileClient, logMessage)
 
         asl_free(logMessage)
     }
@@ -46,7 +46,7 @@ class ASLLogger: ActualLoggerProtocol {
                                    UInt32(ASL_QUERY_OP_EQUAL))
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_SENDER")
 
-        let response = asl_search(client, query)
+        let response = asl_search(fileClient, query)
         var next = asl_next(response)
         var logString = ""
         while next != nil {
@@ -73,7 +73,7 @@ class ASLLogger: ActualLoggerProtocol {
 
     private let sender = "security.pEp.app.iOS"
 
-    private let client: aslclient?
+    private let fileClient: aslclient?
 
     private static func checkASLSuccess(result: Int32, comment: String) {
         if result != 0 {
