@@ -9,19 +9,30 @@
 import Foundation
 
 class ASLLogger: ActualLoggerProtocol {
+    init() {
+        if let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last {
+            let logUrl = url.appendingPathComponent("ASLLog", isDirectory: false)
+            self.client = asl_open_path(
+                logUrl.path,
+                UInt32(ASL_OPT_OPEN_WRITE | ASL_OPT_CREATE_STORE))
+        } else {
+            self.client = nil
+        }
+    }
+
     func saveLog(severity: LoggingSeverity,
                  entity: String,
                  description: String,
                  comment: String) {
         let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
 
-        asl_set(logMessage, ASLLogger.keyEntityName, entity)
-        asl_set(logMessage, ASL_KEY_FACILITY, ASLLogger.facilityName)
+        asl_set(logMessage, ASL_KEY_SENDER, sender)
+        asl_set(logMessage, ASL_KEY_FACILITY, entity)
         asl_set(logMessage, ASL_KEY_MSG, description)
         asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
         asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
-        asl_send(nil, logMessage)
+        asl_send(client, logMessage)
 
         asl_free(logMessage)
     }
@@ -30,17 +41,17 @@ class ASLLogger: ActualLoggerProtocol {
         let query = asl_new(UInt32(ASL_TYPE_QUERY))
 
         let result = asl_set_query(query,
-                                   ASL_KEY_FACILITY,
-                                   ASLLogger.facilityName,
+                                   ASL_KEY_SENDER,
+                                   sender,
                                    UInt32(ASL_QUERY_OP_EQUAL))
-        ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_FACILITY")
+        ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_SENDER")
 
-        let response = asl_search(nil, query)
+        let response = asl_search(client, query)
         var next = asl_next(response)
         var logString = ""
         while next != nil {
             if let stringPointer = asl_get(next, ASL_KEY_MSG),
-                let entityNamePtr = asl_get(next, ASLLogger.keyEntityName) {
+                let entityNamePtr = asl_get(next, ASL_KEY_FACILITY) {
                 // TODO: Also retrieve ASL_KEY_LEVEL?
 
                 let entityName = String(cString: entityNamePtr)
@@ -59,8 +70,9 @@ class ASLLogger: ActualLoggerProtocol {
         return logString
     }
 
-    private static let facilityName = "security.pEp"
-    private static let keyEntityName = "keyComponentName"
+    private let sender = "security.pEp.app.iOS"
+
+    private let client: aslclient?
 
     private static func checkASLSuccess(result: Int32, comment: String) {
         if result != 0 {
