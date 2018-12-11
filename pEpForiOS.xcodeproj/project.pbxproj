@@ -2350,6 +2350,7 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				43D86EA721BE5E5800C18418 /* Log+ASL */,
 				151F71D02029F9F80057C74D /* IMAP */,
 				4362398D1EAE08F400BD2EB9 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
@@ -2360,7 +2361,6 @@
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
 				439D40791CC79423009A4E7C /* GCD.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
-				43EC75A3216498AD00048CFE /* Log+ASL.swift */,
 				435B42401D211E5900119048 /* MiscUtil.swift */,
 				5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */,
 				431798761CF87FE6007DD655 /* ReferenceCounter.swift */,
@@ -2507,6 +2507,14 @@
 				43D0702E2133DB3F0013B120 /* AppSettings.swift */,
 			);
 			path = AppSettings;
+			sourceTree = "<group>";
+		};
+		43D86EA721BE5E5800C18418 /* Log+ASL */ = {
+			isa = PBXGroup;
+			children = (
+				43EC75A3216498AD00048CFE /* Log+ASL.swift */,
+			);
+			path = "Log+ASL";
 			sourceTree = "<group>";
 		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
