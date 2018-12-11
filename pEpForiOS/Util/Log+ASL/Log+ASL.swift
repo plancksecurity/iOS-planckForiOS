@@ -50,22 +50,23 @@ class ASLLogger: ActualLoggerProtocol {
         var next = asl_next(response)
         var logString = ""
         while next != nil {
-            if let stringPointer = asl_get(next, ASL_KEY_MSG),
+            if let stringMessage = asl_get(next, ASL_KEY_MSG),
                 let entityNamePtr = asl_get(next, ASL_KEY_FACILITY) {
                 // TODO: Also retrieve ASL_KEY_LEVEL?
 
                 let entityName = String(cString: entityNamePtr)
 
-                let theString = String(cString: stringPointer)
+                let theMessage = String(cString: stringMessage)
                 if !logString.isEmpty {
                     logString.append("\n")
                 }
-                logString.append("[\(entityName)] \(theString)")
+                logString.append("[\(entityName)] \(theMessage)")
             }
             next = asl_next(response)
         }
 
         asl_free(query)
+        asl_free(response)
 
         return logString
     }
