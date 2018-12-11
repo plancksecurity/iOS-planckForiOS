@@ -28,6 +28,7 @@ class ASLLogger: ActualLoggerProtocol {
         setupConsoleLogger()
         asl_send(self.consoleClient, logMessage)
 
+        /*
         loggingQueue.async { [weak self] in
             if let theSelf = self {
                 theSelf.setupFileLogger()
@@ -36,6 +37,7 @@ class ASLLogger: ActualLoggerProtocol {
 
             asl_free(logMessage)
         }
+         */
     }
 
     func retrieveLog() -> String {
