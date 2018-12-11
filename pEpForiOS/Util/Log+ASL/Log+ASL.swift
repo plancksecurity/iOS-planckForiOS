@@ -13,10 +13,30 @@ class ASLLogger: ActualLoggerProtocol {
                  entity: String,
                  description: String,
                  comment: String) {
+        NSLog("%@", description)
+        let msg = asl_new(UInt32(ASL_TYPE_MSG))
+        asl_set(msg, ASL_KEY_READ_UID, "-1")
+        asl_set(msg, ASL_KEY_MSG, description)
+        asl_set(msg, ASL_KEY_LEVEL, "\(ASL_LEVEL_EMERG)")
+        asl_append(nil, msg)
     }
 
     func retrieveLog() -> String {
-        return ""
+        let query = asl_new(UInt32(ASL_TYPE_QUERY))
+        let response = asl_search(nil, query)
+        asl_free(query)
+
+        var logString = ""
+
+        var message: aslmsg? = asl_next(response)
+        while message != nil {
+            if let msg = asl_get(message, ASL_KEY_MSG) {
+                logString = logString + (logString.isEmpty ? "" : "\n") + String(cString: msg)
+            }
+            message = asl_next(response)
+        }
+
+        return logString
     }
 
     private static let facilityName = "security.pEp"

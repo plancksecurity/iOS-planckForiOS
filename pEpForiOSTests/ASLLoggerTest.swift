@@ -18,6 +18,7 @@ class ASLLoggerTest: XCTestCase {
         let logString = logger.retrieveLog()
         XCTAssertFalse(logString.isEmpty)
         XCTAssertTrue(logString.contains(find: logMessage))
+        print("*** logString \(logString.split(separator: "\n"))")
         if logString.isEmpty {
             print("*** log is empty")
         } else if !logString.contains(find: logMessage) {
