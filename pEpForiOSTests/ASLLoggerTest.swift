@@ -13,7 +13,7 @@ import XCTest
 class ASLLoggerTest: XCTestCase {
     func testSimple() {
         let logger = ASLLogger()
-        let logMessage = "more blah"
+        let logMessage = "*** more blah ***"
         logger.saveLog(severity: .error, entity: "blah", description: logMessage, comment: "ui")
         let expLogReceived = expectation(description: "expLogReceived")
         logger.retrieveLog() { logString in
