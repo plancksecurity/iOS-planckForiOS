@@ -10,6 +10,8 @@ import Foundation
 
 class ASLLogger: ActualLoggerProtocol {
     init() {
+        self.consoleClient = asl_open(self.sender, "default", 0)
+
         if let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last {
             let logUrl = url.appendingPathComponent("ASLLog", isDirectory: false)
             self.fileClient = asl_open_path(
@@ -33,6 +35,7 @@ class ASLLogger: ActualLoggerProtocol {
         asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
         asl_send(fileClient, logMessage)
+        asl_send(consoleClient, logMessage)
 
         asl_free(logMessage)
     }
@@ -74,6 +77,7 @@ class ASLLogger: ActualLoggerProtocol {
     private let sender = "security.pEp.app.iOS"
 
     private let fileClient: aslclient?
+    private let consoleClient: aslclient?
 
     private static func checkASLSuccess(result: Int32, comment: String) {
         if result != 0 {
