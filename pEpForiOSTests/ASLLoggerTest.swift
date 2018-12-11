@@ -22,11 +22,5 @@ class ASLLoggerTest: XCTestCase {
         XCTAssertFalse(logString.isEmpty)
         XCTAssertTrue(logString.contains(find: logMessage1))
         XCTAssertTrue(logString.contains(find: logMessage2))
-        print("*** logString \(logString.split(separator: "\n"))")
-        if logString.isEmpty {
-            print("*** log is empty")
-        } else if !logString.contains(find: logMessage1) {
-            print("*** have log but doesn't contain our stuff")
-        }
     }
 }
