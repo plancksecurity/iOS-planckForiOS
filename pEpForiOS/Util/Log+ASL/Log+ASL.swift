@@ -47,7 +47,9 @@ class ASLLogger: ActualLoggerProtocol {
                                    UInt32(ASL_QUERY_OP_EQUAL))
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_SENDER")
 
-        let response = asl_search(fileClient, query)
+        let theClient = createFileLogger(readOrWrite: .read)
+
+        let response = asl_search(theClient, query)
         var next = asl_next(response)
         var logString = ""
         while next != nil {
@@ -68,6 +70,7 @@ class ASLLogger: ActualLoggerProtocol {
 
         asl_free(query)
         asl_free(response)
+        asl_free(theClient)
 
         return logString
     }
