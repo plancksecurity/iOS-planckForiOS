@@ -13,7 +13,6 @@ extension CdMessage.PredicateFactory {
 
     static public func existingMessages() -> NSPredicate {
         var predicates = [NSPredicate]()
-        predicates.append(NSPredicate(format: "bodyFetched = true"))
         predicates.append(notImapFlagDeleted())
         predicates.append(notMarkedForMoveToFolder())
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
