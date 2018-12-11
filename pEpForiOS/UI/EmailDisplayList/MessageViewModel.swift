@@ -302,7 +302,7 @@ extension MessageViewModel: Equatable {
             lhs.uid == Message.uidFakeResponsivenes ||
             rhs.uid == Message.uidFakeResponsivenes
         return lhs.uuid == rhs.uuid &&
-            // We conider two messages with different UIDs as equal if one is the fake message
+            // We consider two messages with different UIDs as equal if one is the fake message
             // of the other.
             (oneIsAFakeMessage || (lhs.uid == rhs.uid)) &&
             lhs.parentFolderName == rhs.parentFolderName &&
