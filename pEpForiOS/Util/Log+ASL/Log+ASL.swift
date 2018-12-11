@@ -22,6 +22,11 @@ class ASLLogger: ActualLoggerProtocol {
         }
     }
 
+    deinit {
+        asl_release(consoleClient)
+        asl_release(fileClient)
+    }
+
     func saveLog(severity: LoggingSeverity,
                  entity: String,
                  description: String,
