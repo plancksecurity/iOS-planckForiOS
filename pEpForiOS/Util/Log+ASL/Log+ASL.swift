@@ -9,69 +9,28 @@
 import Foundation
 
 class ASLLogger: ActualLoggerProtocol {
-    let client: asl_object_t?
-
-    init() {
-        client = asl_open("unspecified", "unspecified", 0)
-    }
+    let client = ASLClient()
 
     func saveLog(severity: LoggingSeverity,
                  entity: String,
                  description: String,
                  comment: String) {
-        let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
-
-        asl_set(logMessage, ASLLogger.keyEntityName, entity)
-        asl_set(logMessage, ASL_KEY_FACILITY, ASLLogger.facilityName)
-        asl_set(logMessage, ASL_KEY_MSG, description)
-        asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
-        asl_set(logMessage, ASL_KEY_READ_UID, "-1")
-
-        asl_send(client, logMessage)
-
-        asl_free(logMessage)
+        let message = ASLMessageObject(
+            priorityLevel: .notice,
+            message: "This is my message. There are many like it, but this one is mine.")
+        client.log(message)
     }
 
     func retrieveLog() -> String {
-        let query = asl_new(UInt32(ASL_TYPE_QUERY))
+        let query = ASLQueryObject()
 
-        let result = asl_set_query(query,
-                                   ASL_KEY_FACILITY,
-                                   ASLLogger.facilityName,
-                                   UInt32(ASL_QUERY_OP_EQUAL))
-        ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_FACILITY")
+        query.setQuery(key: .message, value: nil, operation: .keyExists, modifiers: .none)
 
-        let response = asl_search(client, query)
-        var next = asl_next(response)
-        var logString = ""
-        while next != nil {
-            if let stringPointer = asl_get(next, ASL_KEY_MSG),
-                let entityNamePtr = asl_get(next, ASLLogger.keyEntityName) {
-                // TODO: Also retrieve ASL_KEY_LEVEL?
-
-                let entityName = String(cString: entityNamePtr)
-
-                let theString = String(cString: stringPointer)
-                if !logString.isEmpty {
-                    logString.append("\n")
-                }
-                logString.append("*** \(entityName) \(theString)")
-            }
-            next = asl_next(response)
+        client.search(query) { record in
+            return true   // returning true to indicate we want more results if available
         }
 
-        asl_free(query)
-
-        return logString
-    }
-
-    private static let facilityName = "security.pEp"
-    private static let keyEntityName = "keyComponentName"
-
-    private static func checkASLSuccess(result: Int32, comment: String) {
-        if result != 0 {
-            print("error: \(comment)")
-        }
+        return ""
     }
 }
 
