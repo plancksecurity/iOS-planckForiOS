@@ -226,7 +226,7 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         viewModel.getProfilePicture { _ in
             //do nothing
         }
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testSecurityBadgeIsCalled() {
@@ -234,7 +234,7 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
         viewModel.getSecurityBadge { _ in
             //do nothing
         }
-        waitForExpectations(timeout: UnitTestUtils.waitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     //PRAGMA - MARK: BUSINESS
