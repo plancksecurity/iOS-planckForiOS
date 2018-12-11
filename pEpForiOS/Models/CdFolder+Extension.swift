@@ -202,7 +202,7 @@ public extension CdFolder {
      messages contained in that folder.
      */
     public func allMessagesPredicate() -> NSPredicate {
-        let p1 = allMessagesIncludingDeletedPredicate()
+        let p1 = allMessagesIncludingDeletedPredicate(fakeMessagesIncluded: true)
         let p2 = CdMessage.PredicateFactory.notImapFlagDeleted()
         let p3 = CdMessage.PredicateFactory.notMarkedForMoveToFolder()
         return NSCompoundPredicate(andPredicateWithSubpredicates: [p1, p2, p3])
@@ -212,11 +212,17 @@ public extension CdFolder {
      - Returns: The predicate (for CdMessage) to get all messages contained in that folder,
      even the deleted ones, so we don't fetch them again from the server.
      */
-    public func allMessagesIncludingDeletedPredicate() -> NSPredicate {
-        let isNotFakeMessage = CdMessage.PredicateFactory.isNotFakeMessage()
+    public func allMessagesIncludingDeletedPredicate(
+        fakeMessagesIncluded: Bool = false) -> NSPredicate {
+
         let inParentFolder = NSPredicate(format: "parent = %@", self)
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [isNotFakeMessage,
-                                                                   inParentFolder])
+        var p = [inParentFolder]
+        if !fakeMessagesIncluded {
+            let isNotFakeMessage = CdMessage.PredicateFactory.isNotFakeMessage()
+            p.append(isNotFakeMessage)
+        }
+
+        return NSCompoundPredicate(andPredicateWithSubpredicates: p)
     }
 
     /**
