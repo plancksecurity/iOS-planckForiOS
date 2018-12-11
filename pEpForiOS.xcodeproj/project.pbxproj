@@ -487,6 +487,7 @@
 		43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */; };
 		43D755F61F262B37006F933A /* PantomimeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755F51F262B37006F933A /* PantomimeError.swift */; };
 		43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */; };
+		43D86EB821BE62DD00C18418 /* Log+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75A3216498AD00048CFE /* Log+ASL.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DB81331E2A56BE00A20902 /* AppendMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DB81321E2A56BE00A20902 /* AppendMailsOperation.swift */; };
 		43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */; };
@@ -502,7 +503,6 @@
 		43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */; };
 		43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC03471F4AE28F0026E152 /* String+Attachment.swift */; };
 		43EC75A4216498AD00048CFE /* Log+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75A3216498AD00048CFE /* Log+ASL.swift */; };
-		43EC75A92164AC1900048CFE /* Log+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75A3216498AD00048CFE /* Log+ASL.swift */; };
 		43EC75AC2164C26100048CFE /* SetOwnKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75AB2164C26100048CFE /* SetOwnKeyViewController.swift */; };
 		43EC75AE2164D03500048CFE /* SetOwnKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75AD2164D03500048CFE /* SetOwnKeyViewModel.swift */; };
 		43EC75B32164E97800048CFE /* DecryptionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75B22164E97800048CFE /* DecryptionUtil.swift */; };
@@ -1141,6 +1141,7 @@
 		43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchUidToMsnOperation.swift; sourceTree = "<group>"; };
 		43D755F51F262B37006F933A /* PantomimeError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PantomimeError.swift; sourceTree = "<group>"; };
 		43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EmailConnectInfo+Extension.swift"; sourceTree = "<group>"; };
+		43D86ECA21BE6C7B00C18418 /* CleanroomASL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CleanroomASL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewAccountSetupUITest.swift; sourceTree = "<group>"; };
 		43DB81321E2A56BE00A20902 /* AppendMailsOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppendMailsOperation.swift; sourceTree = "<group>"; };
 		43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MessageHeapBufferOverflow.txt; sourceTree = "<group>"; };
@@ -2352,6 +2353,7 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				43D86EA721BE5E5800C18418 /* Log+ASL */,
 				151F71D02029F9F80057C74D /* IMAP */,
 				4362398D1EAE08F400BD2EB9 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
@@ -2362,7 +2364,6 @@
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
 				439D40791CC79423009A4E7C /* GCD.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
-				43EC75A3216498AD00048CFE /* Log+ASL.swift */,
 				435B42401D211E5900119048 /* MiscUtil.swift */,
 				5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */,
 				431798761CF87FE6007DD655 /* ReferenceCounter.swift */,
@@ -2509,6 +2510,14 @@
 				43D0702E2133DB3F0013B120 /* AppSettings.swift */,
 			);
 			path = AppSettings;
+			sourceTree = "<group>";
+		};
+		43D86EA721BE5E5800C18418 /* Log+ASL */ = {
+			isa = PBXGroup;
+			children = (
+				43EC75A3216498AD00048CFE /* Log+ASL.swift */,
+			);
+			path = "Log+ASL";
 			sourceTree = "<group>";
 		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
@@ -2688,6 +2697,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				43D86ECA21BE6C7B00C18418 /* CleanroomASL.framework */,
 				439932311FEA9B7200E92C35 /* SwipeCellKit.framework */,
 				43B54F971FE02D02008EC427 /* AppAuth.framework */,
 				43754AC71FCD7ABC009A8E63 /* ldns_xcode.framework */,
@@ -3723,7 +3733,6 @@
 				15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */,
 				15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */,
 				430BA229203438A3003B041C /* CdMessagePEPMessageTests.swift in Sources */,
-				43EC75A92164AC1900048CFE /* Log+ASL.swift in Sources */,
 				15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */,
 				43EDCB84219ED7F000771240 /* FetchNumberOfNewMailsServiceTest.swift in Sources */,
 				431F987F1F6FD3E300A1E4D2 /* HandshakePartnerTableViewCellViewModelTests.swift in Sources */,
@@ -3750,6 +3759,7 @@
 				4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
+				43D86EB821BE62DD00C18418 /* Log+ASL.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,

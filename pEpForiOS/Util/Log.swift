@@ -55,8 +55,8 @@ protocol ActualLoggerProtocol {
 
     static public func checklog(_ block: ((String?) -> ())?) {
         Log.shared.loggingQueue.addOperation() {
-            let theLog = Log.shared.internalLogger.retrieveLog()
-            block?(theLog)
+            let logString = Log.shared.internalLogger.retrieveLog()
+            block?(logString)
         }
     }
 

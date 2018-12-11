@@ -459,8 +459,8 @@ extension ComposeTableViewController {
     // MARK: - SwipeTableViewCell
 
     private func deleteAction(forCellAt indexPath: IndexPath) {
-        viewModel?.handleRemovedRow(at: indexPath)
         tableView.beginUpdates()
+        viewModel?.handleRemovedRow(at: indexPath)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }
