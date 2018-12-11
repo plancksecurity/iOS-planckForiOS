@@ -9,24 +9,6 @@
 import Foundation
 
 class ASLLogger: ActualLoggerProtocol {
-    init() {
-        self.consoleClient = asl_open(self.sender, "default", 0)
-
-        if let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last {
-            let logUrl = url.appendingPathComponent("ASLLog", isDirectory: false)
-            self.fileClient = asl_open_path(
-                logUrl.path,
-                UInt32(ASL_OPT_OPEN_WRITE | ASL_OPT_CREATE_STORE))
-        } else {
-            self.fileClient = nil
-        }
-    }
-
-    deinit {
-        asl_release(consoleClient)
-        asl_release(fileClient)
-    }
-
     func saveLog(severity: LoggingSeverity,
                  entity: String,
                  description: String,
@@ -39,10 +21,12 @@ class ASLLogger: ActualLoggerProtocol {
         asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
         asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
+        setupConsoleLogger()
         asl_send(self.consoleClient, logMessage)
 
         loggingQueue.async { [weak self] in
             if let theSelf = self {
+                theSelf.setupFileLogger()
                 asl_send(theSelf.fileClient, logMessage)
             }
 
@@ -86,9 +70,42 @@ class ASLLogger: ActualLoggerProtocol {
 
     private let sender = "security.pEp.app.iOS"
 
-    private let fileClient: aslclient?
-    private let consoleClient: aslclient?
+    private var fileClient: aslclient?
+    private var consoleClient: aslclient?
     private let loggingQueue = DispatchQueue(label: "security.pEp.logging")
+
+    enum ReadOrWriteSupport {
+        case write
+        case read
+    }
+
+    private func setupConsoleLogger() {
+        if consoleClient == nil {
+            consoleClient = asl_open(self.sender, "default", 0)
+        }
+    }
+
+    private func setupFileLogger() {
+        if fileClient == nil {
+            fileClient = createFileLogger(readOrWrite: .write)
+        }
+    }
+
+    private func createFileLogger(readOrWrite: ReadOrWriteSupport) -> aslclient? {
+        if let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last {
+            let logUrl = url.appendingPathComponent("ASLLog", isDirectory: false)
+            return asl_open_path(
+                logUrl.path,
+                readOrWrite == .write ? UInt32(ASL_OPT_OPEN_WRITE | ASL_OPT_CREATE_STORE) : 0)
+        } else {
+            return nil
+        }
+    }
+
+    deinit {
+        asl_release(consoleClient)
+        asl_release(fileClient)
+    }
 
     private static func checkASLSuccess(result: Int32, comment: String) {
         if result != 0 {
