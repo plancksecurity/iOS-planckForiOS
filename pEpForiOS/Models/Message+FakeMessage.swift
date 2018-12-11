@@ -8,10 +8,35 @@
 
 import MessageModel
 /// Code related to fake messages.
-/// 
+///
 /// We are saving fake messages locally for messages that take time to sync with server (e.g.
 /// when moving a message to another folder). Fake messages are marked with a special UID.
 extension Message {
+
+    static public func append(msg: Message, toFolder target: Folder? = nil) { //IOS-647: rename: saveForAppend
+        let folder: Folder?
+        if let f = target {
+            folder = f
+        } else {
+            folder = msg.parent
+        }
+        guard let safeFolder = folder else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+            return
+        }
+        let uuid = MessageID.generateUUID()
+        let appendMsg = Message(uid: uidNeedsAppend, message: msg, parentFolder: safeFolder)
+        appendMsg.uuid = uuid
+        appendMsg.messageID = uuid
+        CdMessage.create(withContentOf: appendMsg)
+
+        let fakeMsg = Message(uid: uidFakeResponsivenes, message: msg, parentFolder: safeFolder)
+        fakeMsg.uuid = uuid
+        fakeMsg.messageID = uuid
+        CdMessage.create(withContentOf: fakeMsg)
+        Record.saveAndWait()
+        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
+    }
 
     func saveFakeMessage(for msg: Message, in targetFolder: Folder) {
         let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
@@ -56,8 +81,7 @@ extension Message {
     /// - Returns:  true if a fake message with the give UUID has been found and updated,
     ///             false otherwize
     static public func replaceFakeMessage(withRealMessage msg: CWIMAPMessage, in folder: Folder) -> Bool {
-        if let existingFakeMessage = Message.existingFakeMessage(for: msg,
-                                                                 in: folder) {
+        if let existingFakeMessage = Message.existingFakeMessage(for: msg, in: folder) {
             existingFakeMessage.updateUid(newValue: Int(msg.uid()))
             let isRealMessageNow = existingFakeMessage
             isRealMessageNow.save()
