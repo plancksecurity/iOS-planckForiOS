@@ -9,6 +9,12 @@
 import Foundation
 
 class ASLLogger: ActualLoggerProtocol {
+    let client: asl_object_t?
+
+    init() {
+        client = asl_open("unspecified", "unspecified", 0)
+    }
+
     func saveLog(severity: LoggingSeverity,
                  entity: String,
                  description: String,
@@ -21,7 +27,7 @@ class ASLLogger: ActualLoggerProtocol {
         asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
         asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
-        asl_send(nil, logMessage)
+        asl_send(client, logMessage)
 
         asl_free(logMessage)
     }
@@ -35,7 +41,7 @@ class ASLLogger: ActualLoggerProtocol {
                                    UInt32(ASL_QUERY_OP_EQUAL))
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_FACILITY")
 
-        let response = asl_search(nil, query)
+        let response = asl_search(client, query)
         var next = asl_next(response)
         var logString = ""
         while next != nil {
