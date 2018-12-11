@@ -25,20 +25,20 @@ class ASLLogger: ActualLoggerProtocol {
         client.log(message)
     }
 
-    func retrieveLog() -> String {
+    func retrieveLog(block: @escaping (String) -> Void) {
         let query = ASLQueryObject()
 
         query.setQuery(key: .message, value: nil, operation: .keyExists, modifiers: .none)
 
         var theLog = ""
-        client.search(query) { result in
-            if let res = result {
-                theLog = theLog + (theLog.isEmpty ? "" : "\n") + "\(res.timestamp) \(res.message)"
+        client.search(query) { record in
+            if let rec = record {
+                theLog = theLog + (theLog.isEmpty ? "" : "\n") + "\(rec.timestamp) \(rec.message)"
+            } else {
+                block(theLog)
             }
             return true
         }
-
-        return theLog
     }
 
     private static let facilityName = "security.pEp"

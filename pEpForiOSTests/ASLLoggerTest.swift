@@ -13,8 +13,15 @@ import XCTest
 class ASLLoggerTest: XCTestCase {
     func testSimple() {
         let logger = ASLLogger()
-        logger.saveLog(severity: .error, entity: "blah", description: "more blah", comment: "ui")
-        let content = logger.retrieveLog()
-        XCTAssertTrue(content.isEmpty) // ideally, there would be content :)
+        let logMessage = "more blah"
+        logger.saveLog(severity: .error, entity: "blah", description: logMessage, comment: "ui")
+        let expLogReceived = expectation(description: "expLogReceived")
+        logger.retrieveLog() { logString in
+            //XCTAssertTrue(logString.contains(find: logMessage))
+            expLogReceived.fulfill()
+        }
+        waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
+            XCTAssertNil(error)
+        })
     }
 }
