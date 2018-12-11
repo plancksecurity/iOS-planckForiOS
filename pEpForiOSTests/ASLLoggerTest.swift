@@ -17,7 +17,7 @@ class ASLLoggerTest: XCTestCase {
         let logMessage2 = "more blah (2)"
         let entity = "WhatTheBlah"
         logger.saveLog(severity: .error, entity: entity, description: logMessage1, comment: "ui")
-        logger.saveLog(severity: .error, entity: entity, description: logMessage2, comment: "ui")
+        logger.saveLog(severity: .verbose, entity: entity, description: logMessage2, comment: "ui")
         let logString = logger.retrieveLog()
         XCTAssertFalse(logString.isEmpty)
         XCTAssertTrue(logString.contains(find: logMessage1))

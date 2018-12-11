@@ -58,12 +58,16 @@ class ASLLogger: ActualLoggerProtocol {
                 let levelPtr = asl_get(next, ASL_KEY_LEVEL) {
                 let entityName = String(cString: entityNamePtr)
                 let theMessage = String(cString: stringMessage)
+                let levelRawString = String(cString: levelPtr)
+                let level = levelRawString.aslLevelStringToASL()
+                let ownLevelString = level.criticalityString()
 
                 if !logString.isEmpty {
                     logString.append("\n")
                 }
 
-                logString.append("[\(entityName)] \(theMessage)")
+                let stringToLog = "[\(ownLevelString)] [\(entityName)] \(theMessage)"
+                logString.append(stringToLog)
             }
             next = asl_next(response)
         }
@@ -149,7 +153,56 @@ extension LoggingSeverity {
     }
 }
 
+extension String {
+    func aslLevelStringToASL() -> Int32 {
+        switch self {
+        case "0":
+            return ASL_LEVEL_EMERG
+        case "1":
+            return ASL_LEVEL_ALERT
+        case "2":
+            return ASL_LEVEL_CRIT
+        case "3":
+            return ASL_LEVEL_ERR
+        case "4":
+            return ASL_LEVEL_WARNING
+        case "5":
+            return ASL_LEVEL_NOTICE
+        case "6":
+            return ASL_LEVEL_INFO
+        case "7":
+            return ASL_LEVEL_DEBUG
+
+        default:
+            return ASL_LEVEL_DEBUG
+        }
+    }
+}
+
 extension Int32 {
+    func criticalityString() -> String {
+        switch self {
+        case ASL_LEVEL_EMERG:
+            return "EMERG"
+        case ASL_LEVEL_ALERT:
+            return "ALERT"
+        case ASL_LEVEL_CRIT:
+            return "CRIT"
+        case ASL_LEVEL_ERR:
+            return "ERR"
+        case ASL_LEVEL_WARNING:
+            return "WARNING"
+        case ASL_LEVEL_NOTICE:
+            return "NOTICE"
+        case ASL_LEVEL_INFO:
+            return "INFO"
+        case ASL_LEVEL_DEBUG:
+            return "DEBUG"
+        default:
+            return "UNKNOWN"
+        }
+    }
+
     func aslLevelString() -> String {
         switch self {
         case ASL_LEVEL_EMERG:
