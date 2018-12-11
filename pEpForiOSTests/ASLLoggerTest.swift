@@ -17,7 +17,8 @@ class ASLLoggerTest: XCTestCase {
         logger.saveLog(severity: .error, entity: "blah", description: logMessage, comment: "ui")
         let expLogReceived = expectation(description: "expLogReceived")
         logger.retrieveLog() { logString in
-            XCTAssertFalse(logString.contains(find: logMessage)) // TODO: This should be true
+            XCTAssertFalse(logString.isEmpty)
+            XCTAssertTrue(logString.contains(find: logMessage))
             expLogReceived.fulfill()
         }
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
