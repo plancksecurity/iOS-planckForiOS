@@ -60,7 +60,7 @@ class ASLLogger: ActualLoggerProtocol {
                 if !logString.isEmpty {
                     logString.append("\n")
                 }
-                logString.append("*** \(entityName) \(theString)")
+                logString.append("[\(entityName)] \(theString)")
             }
             next = asl_next(response)
         }
