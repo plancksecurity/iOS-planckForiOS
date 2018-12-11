@@ -13,28 +13,48 @@ class ASLLogger: ActualLoggerProtocol {
                  entity: String,
                  description: String,
                  comment: String) {
-        NSLog("%@", description)
-        let msg = asl_new(UInt32(ASL_TYPE_MSG))
-        asl_set(msg, ASL_KEY_READ_UID, "-1")
-        asl_set(msg, ASL_KEY_MSG, description)
-        asl_set(msg, ASL_KEY_LEVEL, "\(ASL_LEVEL_EMERG)")
-        asl_append(nil, msg)
+        let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
+
+        asl_set(logMessage, ASLLogger.keyEntityName, entity)
+        asl_set(logMessage, ASL_KEY_FACILITY, ASLLogger.facilityName)
+        asl_set(logMessage, ASL_KEY_MSG, description)
+        asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
+        asl_set(logMessage, ASL_KEY_READ_UID, "-1")
+
+        asl_send(nil, logMessage)
+
+        asl_free(logMessage)
     }
 
     func retrieveLog() -> String {
         let query = asl_new(UInt32(ASL_TYPE_QUERY))
+
+        let result = asl_set_query(query,
+                                   ASL_KEY_FACILITY,
+                                   ASLLogger.facilityName,
+                                   UInt32(ASL_QUERY_OP_EQUAL))
+        ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_FACILITY")
+
         let response = asl_search(nil, query)
-        asl_free(query)
-
+        var next = asl_next(response)
         var logString = ""
+        while next != nil {
+            if let stringPointer = asl_get(next, ASL_KEY_MSG),
+                let entityNamePtr = asl_get(next, ASLLogger.keyEntityName) {
+                // TODO: Also retrieve ASL_KEY_LEVEL?
 
-        var message: aslmsg? = asl_next(response)
-        while message != nil {
-            if let msg = asl_get(message, ASL_KEY_MSG) {
-                logString = logString + (logString.isEmpty ? "" : "\n") + String(cString: msg)
+                let entityName = String(cString: entityNamePtr)
+
+                let theString = String(cString: stringPointer)
+                if !logString.isEmpty {
+                    logString.append("\n")
+                }
+                logString.append("*** \(entityName) \(theString)")
             }
-            message = asl_next(response)
+            next = asl_next(response)
         }
+
+        asl_free(query)
 
         return logString
     }
