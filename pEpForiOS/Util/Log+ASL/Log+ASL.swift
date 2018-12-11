@@ -8,48 +8,14 @@
 
 import Foundation
 
-import CleanroomASL
-
 class ASLLogger: ActualLoggerProtocol {
-    let sender = "pEpForiOS"
-
-    let client: ASLClient
-
-    init() {
-        self.client = ASLClient(
-            sender: sender, facility: "defaultFacility",
-            useRawStdErr: false, openFileForWriting: true,
-            options: [.stdErr, .noDelay])
-    }
-
     func saveLog(severity: LoggingSeverity,
                  entity: String,
                  description: String,
                  comment: String) {
-        let message = ASLMessageObject(
-            priorityLevel: .error,
-            message: description)
-
-        message[.facility] = entity
-
-        client.log(message, logSynchronously: true)
     }
 
     func retrieveLog(block: @escaping (String) -> Void) {
-        let query = ASLQueryObject()
-
-        query.setQuery(key: .message, value: nil, operation: .keyExists, modifiers: .none)
-        query.setQuery(key: .sender, value: sender, operation: .equalTo, modifiers: .none)
-
-        var theLog = ""
-        client.search(query) { record in
-            if let rec = record {
-                theLog = theLog + (theLog.isEmpty ? "" : "\n") + "\(rec.timestamp) \(rec.message)"
-            } else {
-                block(theLog)
-            }
-            return true
-        }
     }
 
     private static let facilityName = "security.pEp"
