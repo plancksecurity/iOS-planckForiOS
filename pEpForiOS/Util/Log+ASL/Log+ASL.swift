@@ -8,6 +8,10 @@
 
 import Foundation
 
+/**
+ - Note: The log file is currently not bounded in size. It lives in the caches directory,
+ but still this will cause problems.
+ */
 class ASLLogger: ActualLoggerProtocol {
     func saveLog(severity: LoggingSeverity,
                  entity: String,
