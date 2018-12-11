@@ -18,7 +18,8 @@ class ASLLogger: ActualLoggerProtocol {
     init() {
         self.client = ASLClient(
             filePath: nil, sender: sender, facility: "defaultFacility",
-            filterMask: 0, useRawStdErr: false, openFileForWriting: false, options: .none)
+            filterMask: 0, useRawStdErr: false, openFileForWriting: false,
+            options: [.stdErr, .noDelay])
     }
 
     func saveLog(severity: LoggingSeverity,
@@ -31,7 +32,7 @@ class ASLLogger: ActualLoggerProtocol {
 
         message[.facility] = entity
 
-        client.log(message)
+        client.log(message, logSynchronously: true)
     }
 
     func retrieveLog(block: @escaping (String) -> Void) {
