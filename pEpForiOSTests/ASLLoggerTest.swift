@@ -13,8 +13,8 @@ import XCTest
 class ASLLoggerTest: XCTestCase {
     func testSimple() {
         let logger = ASLLogger()
-        let logMessage1 = "blah"
-        let logMessage2 = "more blah"
+        let logMessage1 = "blah (1)"
+        let logMessage2 = "more blah (2)"
         let entity = "WhatTheBlah"
         logger.saveLog(severity: .error, entity: entity, description: logMessage1, comment: "ui")
         logger.saveLog(severity: .error, entity: entity, description: logMessage2, comment: "ui")
