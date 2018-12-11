@@ -11,9 +11,15 @@ import Foundation
 import CleanroomASL
 
 class ASLLogger: ActualLoggerProtocol {
-    let client = ASLClient(
-        filePath: nil, sender: "defaultSender", facility: "defaultFacility",
-        filterMask: 0, useRawStdErr: false, openFileForWriting: false, options: .none)
+    let sender = "pEpForiOS"
+
+    let client: ASLClient
+
+    init() {
+        self.client = ASLClient(
+            filePath: nil, sender: sender, facility: "defaultFacility",
+            filterMask: 0, useRawStdErr: false, openFileForWriting: false, options: .none)
+    }
 
     func saveLog(severity: LoggingSeverity,
                  entity: String,
@@ -22,6 +28,9 @@ class ASLLogger: ActualLoggerProtocol {
         let message = ASLMessageObject(
             priorityLevel: .notice,
             message: description)
+
+        message[.facility] = entity
+
         client.log(message)
     }
 
@@ -29,6 +38,7 @@ class ASLLogger: ActualLoggerProtocol {
         let query = ASLQueryObject()
 
         query.setQuery(key: .message, value: nil, operation: .keyExists, modifiers: .none)
+        query.setQuery(key: .sender, value: sender, operation: .equalTo, modifiers: .none)
 
         var theLog = ""
         client.search(query) { record in
