@@ -39,10 +39,14 @@ class ASLLogger: ActualLoggerProtocol {
         asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
         asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
-        asl_send(fileClient, logMessage)
-        asl_send(consoleClient, logMessage)
+        loggingQueue.async { [weak self] in
+            if let theSelf = self {
+                asl_send(theSelf.fileClient, logMessage)
+                asl_send(theSelf.consoleClient, logMessage)
+            }
 
-        asl_free(logMessage)
+            asl_free(logMessage)
+        }
     }
 
     func retrieveLog() -> String {
@@ -83,6 +87,7 @@ class ASLLogger: ActualLoggerProtocol {
 
     private let fileClient: aslclient?
     private let consoleClient: aslclient?
+    private let loggingQueue = DispatchQueue(label: "security.pEp.logging")
 
     private static func checkASLSuccess(result: Int32, comment: String) {
         if result != 0 {
