@@ -56,6 +56,63 @@ extension CdMessage {
         return msg
     }
 
+    @discardableResult public static func create(withContentOf msg: Message) -> CdMessage? {
+        guard
+            let cdParentFolder = msg.parent.cdFolder(),
+            let from = msg.from?.cdIdentity() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No parent")
+            return nil
+        }
+        let createe = CdMessage.create()
+        createe.uid = Int32(msg.uid)
+        createe.uuid = msg.uuid
+        createe.parent = cdParentFolder
+
+        createe.imap = CdImapFields.create()
+        createe.imap?.imapFlags().answered = msg.imapFlags?.answered ?? false
+        createe.imap?.imapFlags().deleted = msg.imapFlags?.deleted ?? false
+        createe.imap?.imapFlags().draft = msg.imapFlags?.draft ?? false
+        createe.imap?.imapFlags().flagged = msg.imapFlags?.flagged ?? false
+        createe.imap?.imapFlags().recent = msg.imapFlags?.recent ?? false
+        createe.imap?.imapFlags().seen = msg.imapFlags?.seen ?? false
+        createe.imap?.imapFlags().uid = Int32(msg.uid)
+
+        createe.shortMessage = msg.shortMessage
+        createe.longMessage = msg.longMessage
+        createe.longMessageFormatted = msg.longMessageFormatted
+
+        let cdAttachments = msg.attachments.map { CdAttachment.create(attachment: $0) }
+        createe.attachments = NSOrderedSet(array: cdAttachments)
+
+        createe.sent = msg.sent
+        createe.received = msg.received
+        createe.from = from
+
+        let cdTos = msg.to.compactMap { $0.cdIdentity() }
+        createe.to = NSOrderedSet(array: cdTos)
+
+        let cdCcs = msg.cc.compactMap { $0.cdIdentity() }
+        createe.cc = NSOrderedSet(array: cdCcs)
+
+        let cdBccs = msg.bcc.compactMap { $0.cdIdentity() }
+        createe.bcc = NSOrderedSet(array: cdBccs)
+
+        createe.receivedBy = msg.receivedBy?.cdIdentity()
+
+        let cdReplyTo = msg.replyTo.compactMap { $0.cdIdentity() }
+        createe.replyTo = NSOrderedSet(array: cdReplyTo)
+
+        createe.references = NSOrderedSet(array: msg.references)
+        createe.keywords = NSSet(array: msg.keywords)
+        createe.comments = msg.comments
+
+        createe.pEpRating = Int16(msg.pEpRating().rawValue)
+
+        createe.keysFromDecryption = NSOrderedSet(array: msg.keyListFromDecryption)
+
+        return createe
+    }
+
     public static func countBy(predicate: NSPredicate) -> Int {
         let objs = all(predicate: predicate)
         return objs?.count ?? 0
