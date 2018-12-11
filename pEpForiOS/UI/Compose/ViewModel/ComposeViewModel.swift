@@ -130,6 +130,7 @@ class ComposeViewModel {
             Log.error(component: #function, errorString: "No message for sending")
             return
         }
+        //        Message.append(msg: msg) //IOS-647: tripple check: do we _really_ want to fake sent messages? of not, delete
         msg.save()
         guard let data = state.initData else {
             Log.shared.errorAndCrash(component: #function, errorString: "No data")
@@ -579,7 +580,7 @@ extension ComposeViewModel {
         msg.parent = f
         msg.imapFlags?.draft = true
         msg.sent = Date()
-        msg.save()
+        Message.append(msg: msg)
         if data.isDrafts {
             // We save a modified version of a drafted message. The UI might want to updtate
             // its model.
