@@ -17,8 +17,8 @@ class ASLLogger: ActualLoggerProtocol {
 
     init() {
         self.client = ASLClient(
-            filePath: nil, sender: sender, facility: "defaultFacility",
-            filterMask: 0, useRawStdErr: false, openFileForWriting: false,
+            sender: sender, facility: "defaultFacility",
+            useRawStdErr: false, openFileForWriting: true,
             options: [.stdErr, .noDelay])
     }
 
@@ -27,7 +27,7 @@ class ASLLogger: ActualLoggerProtocol {
                  description: String,
                  comment: String) {
         let message = ASLMessageObject(
-            priorityLevel: .notice,
+            priorityLevel: .error,
             message: description)
 
         message[.facility] = entity
