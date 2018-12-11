@@ -27,6 +27,8 @@ class ASLLoggerTest: XCTestCase {
             }
         }
 
+        logger.flush()
+
         let logString = logger.retrieveLog()
         XCTAssertFalse(logString.isEmpty)
         XCTAssertTrue(logString.contains(find: logMessage))

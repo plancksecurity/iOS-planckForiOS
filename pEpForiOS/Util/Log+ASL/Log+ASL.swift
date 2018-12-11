@@ -79,6 +79,15 @@ class ASLLogger: ActualLoggerProtocol {
         return logString
     }
 
+    /**
+     Use this in a test, to wait for writing all scheduled logs.
+     */
+    func flush() {
+        loggingQueue.sync {
+            // nothing
+        }
+    }
+
     private let sender = "security.pEp.app.iOS"
 
     private var fileClient: aslclient?
