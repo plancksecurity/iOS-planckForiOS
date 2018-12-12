@@ -101,7 +101,7 @@ class ASLLogger: ActualLoggerProtocol {
     }
 
     /**
-     Use this in a test, to wait for writing all scheduled logs.
+     TESTING: Wait for writing all scheduled logs.
      */
     func flush() {
         loggingQueue.sync {
