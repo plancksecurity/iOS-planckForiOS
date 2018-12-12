@@ -75,6 +75,8 @@ public class FolderViewModel {
 
 extension FolderViewModel : FolderSyncServiceDelegate {
     func finishedSyncingFolders() {
-        delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
+        DispatchQueue.main.async {
+            self.delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
+        }
     }
 }
