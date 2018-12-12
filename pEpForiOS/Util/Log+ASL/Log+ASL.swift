@@ -8,10 +8,6 @@
 
 import Foundation
 
-/**
- - Note: The log file is currently not bounded in size. It lives in the caches directory,
- but still this will cause problems.
- */
 class ASLLogger: ActualLoggerProtocol {
     func saveLog(severity: LoggingSeverity,
                  entity: String,
@@ -23,54 +19,63 @@ class ASLLogger: ActualLoggerProtocol {
         asl_set(logMessage, ASL_KEY_FACILITY, entity)
         asl_set(logMessage, ASL_KEY_MSG, "\(description) [\(comment)]")
         asl_set(logMessage, ASL_KEY_LEVEL, "\(severity.aslLevel())")
+
+        let nowDate = Date()
+        let dateString = "\(Int(nowDate.timeIntervalSince1970))"
+        asl_set(logMessage, ASL_KEY_TIME, dateString)
+
         asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
-        setupConsoleLogger()
         asl_send(self.consoleClient, logMessage)
-
-        /*
-        loggingQueue.async { [weak self] in
-            if let theSelf = self {
-                theSelf.setupFileLogger()
-                asl_send(theSelf.fileClient, logMessage)
-            }
-
-            asl_free(logMessage)
-        }
-         */
+        asl_free(logMessage)
     }
 
     func retrieveLog() -> String {
         let query = asl_new(UInt32(ASL_TYPE_QUERY))
 
-        let result = asl_set_query(query,
-                                   ASL_KEY_SENDER,
-                                   sender,
-                                   UInt32(ASL_QUERY_OP_EQUAL))
+        var result = asl_set_query(
+            query,
+            ASL_KEY_SENDER,
+            sender,
+            UInt32(ASL_QUERY_OP_EQUAL))
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_SENDER")
 
-        let theClient = createFileLogger(readOrWrite: .read)
+        let fromDate = Date(timeInterval: -600, since: Date())
+        let fromDateString = "\(Int(fromDate.timeIntervalSince1970))"
+        result = asl_set_query(
+            query,
+            ASL_KEY_TIME,
+            fromDateString,
+            UInt32(ASL_QUERY_OP_GREATER_EQUAL))
+        ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_TIME")
+
+        let theClient = createConsoleLogger()
 
         let response = asl_search(theClient, query)
         var next = asl_next(response)
         var logString = ""
         while next != nil {
-            if let stringMessage = asl_get(next, ASL_KEY_MSG),
-                let entityNamePtr = asl_get(next, ASL_KEY_FACILITY),
-                let levelPtr = asl_get(next, ASL_KEY_LEVEL) {
-                let entityName = String(cString: entityNamePtr)
-                let theMessage = String(cString: stringMessage)
-                let levelRawString = String(cString: levelPtr)
-                let level = levelRawString.aslLevelStringToASL()
-                let ownLevelString = level.criticalityString()
+            let timeString = String(cString: asl_get(next, ASL_KEY_TIME))
+            let messageString = String(cString: asl_get(next, ASL_KEY_MSG))
+            let facilityString = String(cString: asl_get(next, ASL_KEY_FACILITY))
+            let levelString = String(cString: asl_get(next, ASL_KEY_LEVEL))
 
-                if !logString.isEmpty {
-                    logString.append("\n")
-                }
+            let level = levelString.aslLevelStringToASL()
+            let ownLevelString = level.criticalityString()
 
-                let stringToLog = "[\(ownLevelString)] [\(entityName)] \(theMessage)"
-                logString.append(stringToLog)
+            var dateString = "<NoTime>"
+            if let dateInt = Int(timeString) {
+                let date = Date(timeIntervalSince1970: TimeInterval(dateInt))
+                dateString = "\(date)"
             }
+
+            if !logString.isEmpty {
+                logString.append("\n")
+            }
+
+            let stringToLog = "\(dateString) [\(ownLevelString)] [\(facilityString)] \(messageString)"
+            logString.append(stringToLog)
+
             next = asl_next(response)
         }
 
@@ -81,52 +86,20 @@ class ASLLogger: ActualLoggerProtocol {
         return logString
     }
 
-    /**
-     Use this in a test, to wait for writing all scheduled logs.
-     */
-    func flush() {
-        loggingQueue.sync {
-            // nothing
-        }
-    }
-
-    private let sender = "security.pEp.app.iOS"
-
-    private var fileClient: aslclient?
-    private var consoleClient: aslclient?
-    private let loggingQueue = DispatchQueue(label: "security.pEp.logging")
-
-    enum ReadOrWriteSupport {
-        case write
-        case read
-    }
-
-    private func setupConsoleLogger() {
-        if consoleClient == nil {
-            consoleClient = asl_open(self.sender, "default", 0)
-        }
-    }
-
-    private func setupFileLogger() {
-        if fileClient == nil {
-            fileClient = createFileLogger(readOrWrite: .write)
-        }
-    }
-
-    private func createFileLogger(readOrWrite: ReadOrWriteSupport) -> aslclient? {
-        if let url = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).last {
-            let logUrl = url.appendingPathComponent("ASLLog", isDirectory: false)
-            return asl_open_path(
-                logUrl.path,
-                readOrWrite == .write ? UInt32(ASL_OPT_OPEN_WRITE | ASL_OPT_CREATE_STORE) : 0)
-        } else {
-            return nil
-        }
+    init() {
+        self.consoleClient = createConsoleLogger()
     }
 
     deinit {
         asl_release(consoleClient)
-        asl_release(fileClient)
+    }
+
+    private let sender = "security.pEp.app.iOS"
+
+    private var consoleClient: aslclient?
+
+    private func createConsoleLogger() -> asl_object_t {
+        return asl_open(self.sender, "default", 0)
     }
 
     private static func checkASLSuccess(result: Int32, comment: String) {

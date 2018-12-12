@@ -34,6 +34,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     private func setup() {
         DispatchQueue.main.async {
             self.folderVM =  FolderViewModel()
+            self.folderVM?.delegate = self
             self.tableView.reloadData()
         }
     }
@@ -61,16 +62,12 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
     }
     
     @objc private func pullToRefresh() {
-        folderVM?.delegate = self
         folderVM?.refreshFolderList()
     }
     
     func folderViewModelDidUpdateFolderList(viewModel: FolderViewModel) {
-        DispatchQueue.main.async {
-            self.folderVM =  FolderViewModel()
+            setup()
             self.refreshControl?.endRefreshing()
-            self.tableView.reloadData()
-        }
     }
    
     // MARK: - Action

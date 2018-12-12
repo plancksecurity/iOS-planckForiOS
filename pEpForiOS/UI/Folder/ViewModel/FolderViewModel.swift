@@ -13,7 +13,7 @@ import MessageModel
 /// View Model for folder hierarchy.
 public class FolderViewModel {
     weak var delegate : FolderViewModelDelegate?
-    let folderSyncService = FolderSyncService()
+    let folderSyncService: FolderSyncService
     
     var items: [FolderSectionViewModel]
 
@@ -30,6 +30,8 @@ public class FolderViewModel {
         } else {
             accountsToUse = Account.all()
         }
+        folderSyncService = FolderSyncService()
+        folderSyncService.delegate = self
         generateSections(accounts: accountsToUse, includeUnifiedInbox: includeUnifiedInbox)
     }
 
@@ -58,8 +60,11 @@ public class FolderViewModel {
     }
     
     func refreshFolderList() {
-        folderSyncService.delegate = self
-        folderSyncService.requestFolders(inAccounts: Account.all())
+        DispatchQueue.global(qos: .userInitiated).async {
+            MessageModel.perform {
+                self.folderSyncService.requestFolders(inAccounts: Account.all())
+            }
+        }
     }
 
     subscript(index: Int) -> FolderSectionViewModel {
@@ -75,6 +80,8 @@ public class FolderViewModel {
 
 extension FolderViewModel : FolderSyncServiceDelegate {
     func finishedSyncingFolders() {
-        delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
+        DispatchQueue.main.async {
+            self.delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
+        }
     }
 }
