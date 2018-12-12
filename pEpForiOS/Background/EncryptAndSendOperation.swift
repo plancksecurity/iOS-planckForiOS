@@ -125,19 +125,9 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             Log.shared.errorAndCrash(component: #function, errorString: "No msg")
             return
         }
-        createFakeMessage(for: refreshedMsg)
+        Message.createCdFakeMessage(for: refreshedMsg)
         Log.info(component: #function,
                  content: "Sent message. messageID: \(String(describing: cdMessage.messageID))")
-    }
-
-    private func createFakeMessage(for msg: Message) { //IOS-647: DRY
-        let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
-                              message: msg,
-                              parentFolder: msg.parent)
-        fakeMsg.uuid = msg.uuid
-        CdMessage.create(withContentOf: fakeMsg)
-        Record.saveAndWait()
-        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
     }
 
     func handleNextMessage() {

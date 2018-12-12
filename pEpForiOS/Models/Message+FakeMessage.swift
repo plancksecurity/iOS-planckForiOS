@@ -33,14 +33,15 @@ extension Message {
         MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
     }
 
-//    public func saveFakeMessageCopy(inFolder folder: Folder) { //IOS-647 Keep for later DRY cleanup
-//        let fakeMsg = Message(uid: Message.uidFakeResponsivenes, message: self, parentFolder: folder)
-//        fakeMsg.uuid = uuid
-//        fakeMsg.messageID = uuid
-//        CdMessage.create(withContentOf: fakeMsg)
-//        Record.saveAndWait()
-//        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
-//    }
+    static public func createCdFakeMessage(for msg: Message) {
+        let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
+                              message: msg,
+                              parentFolder: msg.parent)
+        fakeMsg.uuid = msg.uuid
+        CdMessage.create(withContentOf: fakeMsg)
+        Record.saveAndWait()
+        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
+    }
 
     func saveFakeMessage(for msg: Message, in targetFolder: Folder) {
         let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
