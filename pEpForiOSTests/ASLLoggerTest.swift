@@ -12,9 +12,9 @@ import XCTest
 
 class ASLLoggerTest: XCTestCase {
     func testSimple() {
-        let logMessage = "Message_blah_uiae_trntrntrn_uiaeduiaterntrn____unique"
-        let entity = "Entity_WhatTheBlah_uiae_trntrntrn_uiaeduiaterntrn____unique"
-        let comment = "Comment_UI_uiae_trntrntrn_uiaeduiaterntrn____unique"
+        let logMessage = "Message_\(UUID())"
+        let entity = "Entity_\(UUID())"
+        let comment = "Comment_\(UUID())"
 
         let logger = ASLLogger()
 
@@ -32,9 +32,9 @@ class ASLLoggerTest: XCTestCase {
     }
 
     func testTooOld() {
-        let logMessage = "Message_blah_uiae_tr___ntrntrn_uiaeduiaterntrn____unique"
-        let entity = "Entity_WhatTheBlah_uiae_trnt___rntrn_uiaeduiaterntrn____unique"
-        let comment = "Comment_UI_uiae_trntrntrn_uiae___duiaterntrn____unique"
+        let logMessage = "Message_\(UUID())"
+        let entity = "Entity_\(UUID())"
+        let comment = "Comment_\(UUID())"
 
         let logger = ASLLogger()
         logger.constDate = Date(timeIntervalSinceNow: -3600)
