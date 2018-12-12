@@ -86,20 +86,20 @@ class ASLLogger: ActualLoggerProtocol {
         return logString
     }
 
-    private let sender = "security.pEp.app.iOS"
-
-    private var consoleClient: aslclient?
-
-    private func createConsoleLogger() -> asl_object_t {
-        return asl_open(self.sender, "default", 0)
-    }
-
     init() {
         self.consoleClient = createConsoleLogger()
     }
 
     deinit {
         asl_release(consoleClient)
+    }
+
+    private let sender = "security.pEp.app.iOS"
+
+    private var consoleClient: aslclient?
+
+    private func createConsoleLogger() -> asl_object_t {
+        return asl_open(self.sender, "default", 0)
     }
 
     private static func checkASLSuccess(result: Int32, comment: String) {
