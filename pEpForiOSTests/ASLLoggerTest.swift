@@ -31,6 +31,22 @@ class ASLLoggerTest: XCTestCase {
         XCTAssertTrue(logString.contains(find: entity))
     }
 
+    func testTooOld() {
+        let logMessage = "blah_uiae_tr___ntrntrn_uiaeduiaterntrn____unique"
+        let entity = "WhatTheBlah_uiae_trnt___rntrn_uiaeduiaterntrn____unique"
+        let comment = "UI_uiae_trntrntrn_uiae___duiaterntrn____unique"
+
+        let logger = ASLLogger()
+        logger.constDate = Date(timeIntervalSinceNow: -3600)
+
+        doTheLogging(logger: logger, logMessage: logMessage, entity: entity, comment: comment)
+
+        let logString = logger.retrieveLog()
+        XCTAssertFalse(logString.contains(find: logMessage))
+        XCTAssertTrue(logString.contains(find: comment))
+        XCTAssertTrue(logString.contains(find: entity))
+    }
+
     func doTheLogging(logger: ASLLogger, logMessage: String, entity: String, comment: String) {
         for num in 1..<5 {
             for sev in [LoggingSeverity.error, .warning, .info, .verbose] {
