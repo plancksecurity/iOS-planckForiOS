@@ -12,11 +12,26 @@ import XCTest
 
 class ASLLoggerTest: XCTestCase {
     func testSimple() {
-        let logger = ASLLogger()
         let logMessage = "some blah_uiae_trntrntrn_uiaeduiaterntrn____unique"
         let entity = "WhatTheBlah_uiae_trntrntrn_uiaeduiaterntrn____unique"
         let comment = "UI_uiae_trntrntrn_uiaeduiaterntrn____unique"
 
+        let logger = ASLLogger()
+
+        doTheLogging(logger: logger, logMessage: logMessage, entity: entity, comment: comment)
+
+        let logString = logger.retrieveLog()
+        XCTAssertFalse(logString.isEmpty)
+        XCTAssertTrue(logString.contains(find: logMessage))
+        XCTAssertTrue(logString.contains(find: "DEBUG"))
+        XCTAssertTrue(logString.contains(find: "NOTICE"))
+        XCTAssertTrue(logString.contains(find: "WARNING"))
+        XCTAssertTrue(logString.contains(find: "ERR"))
+        XCTAssertTrue(logString.contains(find: comment))
+        XCTAssertTrue(logString.contains(find: entity))
+    }
+
+    func doTheLogging(logger: ASLLogger, logMessage: String, entity: String, comment: String) {
         for num in [1..<5] {
             for sev in [LoggingSeverity.error, .warning, .info, .verbose] {
                 logger.saveLog(
@@ -28,15 +43,5 @@ class ASLLoggerTest: XCTestCase {
         }
 
         logger.flush()
-
-        let logString = logger.retrieveLog()
-        XCTAssertFalse(logString.isEmpty)
-        XCTAssertTrue(logString.contains(find: logMessage))
-        XCTAssertTrue(logString.contains(find: "DEBUG"))
-        XCTAssertTrue(logString.contains(find: "NOTICE"))
-        XCTAssertTrue(logString.contains(find: "WARNING"))
-        XCTAssertTrue(logString.contains(find: "ERR"))
-        XCTAssertTrue(logString.contains(find: comment))
-        XCTAssertTrue(logString.contains(find: entity))
     }
 }
