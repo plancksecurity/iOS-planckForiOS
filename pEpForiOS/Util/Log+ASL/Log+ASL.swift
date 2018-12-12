@@ -47,7 +47,7 @@ class ASLLogger: ActualLoggerProtocol {
                                    UInt32(ASL_QUERY_OP_EQUAL))
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_SENDER")
 
-        // TODO: Use ASL_KEY_TIME
+        // TODO: Use ASL_KEY_TIME for filtering
 
         let theClient = createFileLogger(readOrWrite: .read)
 
@@ -57,18 +57,28 @@ class ASLLogger: ActualLoggerProtocol {
         while next != nil {
             if let stringMessage = asl_get(next, ASL_KEY_MSG),
                 let entityNamePtr = asl_get(next, ASL_KEY_FACILITY),
-                let levelPtr = asl_get(next, ASL_KEY_LEVEL) {
+                let levelPtr = asl_get(next, ASL_KEY_LEVEL),
+                let timePtr = asl_get(next, ASL_KEY_TIME) {
                 let entityName = String(cString: entityNamePtr)
+
                 let theMessage = String(cString: stringMessage)
+
                 let levelRawString = String(cString: levelPtr)
                 let level = levelRawString.aslLevelStringToASL()
                 let ownLevelString = level.criticalityString()
+
+                var dateString = "<NoTime>"
+                let timeString = String(cString: timePtr)
+                if let dateInt = Int(timeString) {
+                    let date = Date(timeIntervalSince1970: TimeInterval(dateInt))
+                    dateString = "\(date)"
+                }
 
                 if !logString.isEmpty {
                     logString.append("\n")
                 }
 
-                let stringToLog = "[\(ownLevelString)] [\(entityName)] \(theMessage)"
+                let stringToLog = "\(dateString) [\(ownLevelString)] [\(entityName)] \(theMessage)"
                 logString.append(stringToLog)
             }
             next = asl_next(response)
