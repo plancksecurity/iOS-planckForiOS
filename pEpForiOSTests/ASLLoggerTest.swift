@@ -32,7 +32,7 @@ class ASLLoggerTest: XCTestCase {
     }
 
     func doTheLogging(logger: ASLLogger, logMessage: String, entity: String, comment: String) {
-        for num in [1..<5] {
+        for num in 1..<5 {
             for sev in [LoggingSeverity.error, .warning, .info, .verbose] {
                 logger.saveLog(
                     severity: sev,
