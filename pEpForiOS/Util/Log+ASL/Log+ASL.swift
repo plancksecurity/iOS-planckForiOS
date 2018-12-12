@@ -43,13 +43,20 @@ class ASLLogger: ActualLoggerProtocol {
     func retrieveLog() -> String {
         let query = asl_new(UInt32(ASL_TYPE_QUERY))
 
-        let result = asl_set_query(query,
-                                   ASL_KEY_SENDER,
-                                   sender,
-                                   UInt32(ASL_QUERY_OP_EQUAL))
+        var result = asl_set_query(
+            query,
+            ASL_KEY_SENDER,
+            sender,
+            UInt32(ASL_QUERY_OP_EQUAL))
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_SENDER")
 
-        // TODO: Use ASL_KEY_TIME for filtering
+        let fromDate = Date(timeInterval: -600, since: Date())
+        result = asl_set_query(
+            query,
+            ASL_KEY_TIME,
+            "\(Int(fromDate.timeIntervalSince1970))",
+            UInt32(ASL_QUERY_OP_GREATER_EQUAL))
+        ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_TIME")
 
         let theClient = createFileLogger(readOrWrite: .read)
 
