@@ -84,6 +84,12 @@ class ASLLogger: ActualLoggerProtocol {
                 let timeString = String(cString: timePtr)
                 if let dateInt = Int(timeString) {
                     let date = Date(timeIntervalSince1970: TimeInterval(dateInt))
+
+                    let dateComp = fromDate.compare(date)
+                    if dateComp == .orderedDescending {
+                        print("*** wrong")
+                    }
+
                     dateString = "\(date)"
                 }
 
