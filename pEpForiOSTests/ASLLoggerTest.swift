@@ -11,7 +11,6 @@ import XCTest
 @testable import pEpForiOS
 
 class ASLLoggerTest: XCTestCase {
-    /*
     func testSimple() {
         let logger = ASLLogger()
         let logMessage = "some blah_uiae_trntrntrn_uiaeduiaterntrn____unique"
@@ -40,5 +39,4 @@ class ASLLoggerTest: XCTestCase {
         XCTAssertTrue(logString.contains(find: comment))
         XCTAssertTrue(logString.contains(find: entity))
     }
-     */
 }
