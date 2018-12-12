@@ -118,7 +118,6 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                                          errorString: "Problem moving last message")
                 return
         }
-
         MessageModelConfig.messageFolderDelegate?.didDelete(messageFolder: message,
                                                             belongingToThread: Set())
         cdMessage.parent = sentFolder
