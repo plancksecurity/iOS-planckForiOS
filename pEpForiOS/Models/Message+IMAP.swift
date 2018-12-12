@@ -67,7 +67,7 @@ extension Message {
             return
         }
 
-        if parent.shouldUidMoveDeletedMessagesToTrash {
+        if parent.shouldUidMoveDeletedMessagesToTrash && !isFakeMessage {
             move(to: trashFolder)
         } else {
             imapMarkDeleted()
