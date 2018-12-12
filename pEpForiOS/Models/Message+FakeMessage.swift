@@ -15,21 +15,32 @@ import MessageModel
 /// when moving a message to another folder). Fake messages are marked with a special UID.
 extension Message {
 
+    public var isFakeMessage: Bool {
+        return uid == Message.uidFakeResponsivenes
+    }
+
     static public func append(msg: Message) { //IOS-647: rename: saveForAppend
         let folder = msg.parent
         let uuid = MessageID.generateUUID()
         let appendMsg = Message(uid: uidNeedsAppend, message: msg, parentFolder: folder)
         appendMsg.uuid = uuid
-        appendMsg.messageID = uuid
         CdMessage.create(withContentOf: appendMsg)
 
         let fakeMsg = Message(uid: uidFakeResponsivenes, message: msg, parentFolder: folder)
         fakeMsg.uuid = uuid
-        fakeMsg.messageID = uuid
         CdMessage.create(withContentOf: fakeMsg)
         Record.saveAndWait()
         MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
     }
+
+//    public func saveFakeMessageCopy(inFolder folder: Folder) { //IOS-647 Keep for later DRY cleanup
+//        let fakeMsg = Message(uid: Message.uidFakeResponsivenes, message: self, parentFolder: folder)
+//        fakeMsg.uuid = uuid
+//        fakeMsg.messageID = uuid
+//        CdMessage.create(withContentOf: fakeMsg)
+//        Record.saveAndWait()
+//        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
+//    }
 
     func saveFakeMessage(for msg: Message, in targetFolder: Folder) {
         let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
