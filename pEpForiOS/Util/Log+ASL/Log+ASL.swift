@@ -68,32 +68,27 @@ class ASLLogger: ActualLoggerProtocol {
         var next = asl_next(response)
         var logString = ""
         while next != nil {
-            if let stringMessage = asl_get(next, ASL_KEY_MSG),
-                let entityNamePtr = asl_get(next, ASL_KEY_FACILITY),
-                let levelPtr = asl_get(next, ASL_KEY_LEVEL),
-                let timePtr = asl_get(next, ASL_KEY_TIME) {
-                let entityName = String(cString: entityNamePtr)
+            let timeString = String(cString: asl_get(next, ASL_KEY_TIME))
+            let messageString = String(cString: asl_get(next, ASL_KEY_MSG))
+            let facilityString = String(cString: asl_get(next, ASL_KEY_FACILITY))
+            let levelString = String(cString: asl_get(next, ASL_KEY_LEVEL))
 
-                let theMessage = String(cString: stringMessage)
+            let level = levelString.aslLevelStringToASL()
+            let ownLevelString = level.criticalityString()
 
-                let levelRawString = String(cString: levelPtr)
-                let level = levelRawString.aslLevelStringToASL()
-                let ownLevelString = level.criticalityString()
-
-                var dateString = "<NoTime>"
-                let timeString = String(cString: timePtr)
-                if let dateInt = Int(timeString) {
-                    let date = Date(timeIntervalSince1970: TimeInterval(dateInt))
-                    dateString = "\(date)"
-                }
-
-                if !logString.isEmpty {
-                    logString.append("\n")
-                }
-
-                let stringToLog = "\(dateString) [\(ownLevelString)] [\(entityName)] \(theMessage)"
-                logString.append(stringToLog)
+            var dateString = "<NoTime>"
+            if let dateInt = Int(timeString) {
+                let date = Date(timeIntervalSince1970: TimeInterval(dateInt))
+                dateString = "\(date)"
             }
+
+            if !logString.isEmpty {
+                logString.append("\n")
+            }
+
+            let stringToLog = "\(dateString) [\(ownLevelString)] [\(facilityString)] \(messageString)"
+            logString.append(stringToLog)
+
             next = asl_next(response)
         }
 
