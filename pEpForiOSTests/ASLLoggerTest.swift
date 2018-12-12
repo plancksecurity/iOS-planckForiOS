@@ -12,9 +12,9 @@ import XCTest
 
 class ASLLoggerTest: XCTestCase {
     func testSimple() {
-        let logMessage = "some blah_uiae_trntrntrn_uiaeduiaterntrn____unique"
-        let entity = "WhatTheBlah_uiae_trntrntrn_uiaeduiaterntrn____unique"
-        let comment = "UI_uiae_trntrntrn_uiaeduiaterntrn____unique"
+        let logMessage = "Message_blah_uiae_trntrntrn_uiaeduiaterntrn____unique"
+        let entity = "Entity_WhatTheBlah_uiae_trntrntrn_uiaeduiaterntrn____unique"
+        let comment = "Comment_UI_uiae_trntrntrn_uiaeduiaterntrn____unique"
 
         let logger = ASLLogger()
 
@@ -32,9 +32,9 @@ class ASLLoggerTest: XCTestCase {
     }
 
     func testTooOld() {
-        let logMessage = "blah_uiae_tr___ntrntrn_uiaeduiaterntrn____unique"
-        let entity = "WhatTheBlah_uiae_trnt___rntrn_uiaeduiaterntrn____unique"
-        let comment = "UI_uiae_trntrntrn_uiae___duiaterntrn____unique"
+        let logMessage = "Message_blah_uiae_tr___ntrntrn_uiaeduiaterntrn____unique"
+        let entity = "Entity_WhatTheBlah_uiae_trnt___rntrn_uiaeduiaterntrn____unique"
+        let comment = "Comment_UI_uiae_trntrntrn_uiae___duiaterntrn____unique"
 
         let logger = ASLLogger()
         logger.constDate = Date(timeIntervalSinceNow: -3600)
@@ -43,8 +43,8 @@ class ASLLoggerTest: XCTestCase {
 
         let logString = logger.retrieveLog()
         XCTAssertFalse(logString.contains(find: logMessage))
-        XCTAssertTrue(logString.contains(find: comment))
-        XCTAssertTrue(logString.contains(find: entity))
+        XCTAssertFalse(logString.contains(find: comment))
+        XCTAssertFalse(logString.contains(find: entity))
     }
 
     func doTheLogging(logger: ASLLogger, logMessage: String, entity: String, comment: String) {
