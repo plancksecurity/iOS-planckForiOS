@@ -54,10 +54,11 @@ class ASLLogger: ActualLoggerProtocol {
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_SENDER")
 
         let fromDate = Date(timeInterval: -600, since: Date())
+        let fromDateString = "\(Int(fromDate.timeIntervalSince1970))"
         result = asl_set_query(
             query,
             ASL_KEY_TIME,
-            "\(Int(fromDate.timeIntervalSince1970))",
+            fromDateString,
             UInt32(ASL_QUERY_OP_GREATER_EQUAL))
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_TIME")
 
