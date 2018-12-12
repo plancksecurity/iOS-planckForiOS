@@ -90,11 +90,6 @@ class ASLLogger: ActualLoggerProtocol {
 
     private var consoleClient: aslclient?
 
-    enum ReadOrWriteSupport {
-        case write
-        case read
-    }
-
     private func createConsoleLogger() -> asl_object_t {
         return asl_open(self.sender, "default", 0)
     }
