@@ -47,6 +47,8 @@ class ASLLogger: ActualLoggerProtocol {
                                    UInt32(ASL_QUERY_OP_EQUAL))
         ASLLogger.checkASLSuccess(result: result, comment: "asl_set_query ASL_KEY_SENDER")
 
+        // TODO: Use ASL_KEY_TIME
+
         let theClient = createFileLogger(readOrWrite: .read)
 
         let response = asl_search(theClient, query)
