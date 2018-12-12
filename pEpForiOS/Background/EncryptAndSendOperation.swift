@@ -122,9 +122,23 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         MessageModelConfig.messageFolderDelegate?.didDelete(messageFolder: message,
                                                             belongingToThread: Set())
         cdMessage.parent = sentFolder
+        guard let refreshedMsg = cdMessage.message() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No msg")
+            return
+        }
+        createFakeMessage(for: refreshedMsg)
         Log.info(component: #function,
                  content: "Sent message. messageID: \(String(describing: cdMessage.messageID))")
-        context.saveAndLogErrors()
+    }
+
+    private func createFakeMessage(for msg: Message) { //IOS-647: DRY
+        let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
+                              message: msg,
+                              parentFolder: msg.parent)
+        fakeMsg.uuid = msg.uuid
+        CdMessage.create(withContentOf: fakeMsg)
+        Record.saveAndWait()
+        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
     }
 
     func handleNextMessage() {
@@ -179,7 +193,9 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     private func setOriginalRatingHeader(toMessageWithObjId objId: NSManagedObjectID,
                                          inContext moc: NSManagedObjectContext) {
-        guard let unencryptedMessage = CdMessage.message(withObjectID: objId) else {
+        guard
+            let unencryptedCdMessage = privateMOC.object(with: objId) as? CdMessage,
+            let unencryptedMessage = unencryptedCdMessage.message() else {
                 Log.shared.errorAndCrash(component: #function, errorString: "No Message")
                 handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
                 return
