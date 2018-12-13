@@ -62,32 +62,49 @@ extension Message {
         self.parent = parentFolder
     }
 
-    static func existingFakeMessage(for msg: CWIMAPMessage, in folder: Folder) -> Message? {
-        // need search for uid -1 uuid parent
-        if let uuid = msg.messageID() {
-            return Message.by(uid: Message.uidFakeResponsivenes,
-                              uuid: uuid,
-                              folderName: folder.name,
-                              accountAddress: folder.account.user.address)
+    /// Checks if a fake message for the given message exists and makes it a real message (by
+    /// updating its UID) if so.
+    ///
+    /// - Parameters:
+    ///   - folder: folder to search the fake message in
+    ///   - msg: message fetched from server to search/update fake message for
+    /// - Returns: true if a fake message with the give UUID has been found and updated,
+    ///             false otherwize
+    static
+        public
+        func fakeMessageExisted(in folder: Folder,
+                                andHasBeenUpdatedWithUidOfRealMessage msg: CWIMAPMessage) -> Bool {
+        guard let uuid = msg.messageID() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No UUID")
+            return false
         }
-        return nil
+        return checkExistanceOfFakeMessage(withUuid: uuid,
+                                           in: folder,
+                                           andUpdateItWithUidOfReceivedMessage: Int(msg.uid()))
     }
 
     /// We are saving fake messages locally for messages that take time to sync with server (e.g.
     /// when moving a message to another folder). Fake messages are marked with a special UID.
     ///
-    ///This method is looking for a fake message with the UUID of the given message (received from
-    /// server) and makes it a real message. This way we are trying to avoid replacing the fake
-    /// message and thus to avoid inconsitencies (uses has altered fake message, chages gone)
+    /// This method is looking for a fake message with/in the given UUID and folder and updates its
+    /// UID with the given, real UID that has been fetched from server. This way the fake message
+    /// becomes a real one. We are trying to avoid replacing the fake message and thus to avoid
+    /// inconsitencies (e.g. user marked fake message as SEEN, replacing the fake message would
+    /// loose this information.)
     ///
     /// - Parameters:
-    ///   - msg: real message to update fake message with
-    ///   - folder: parent folder
-    /// - Returns:  true if a fake message with the give UUID has been found and updated,
-    ///             false otherwize
-    static public func replaceFakeMessage(withRealMessage msg: CWIMAPMessage, in folder: Folder) -> Bool {
-        if let existingFakeMessage = Message.existingFakeMessage(for: msg, in: folder) {
-            existingFakeMessage.updateUid(newValue: Int(msg.uid()))
+    ///   - uuid: uuid to identify the fake message with
+    ///   - folder: folder to search in
+    ///   - realUid: UID of to update the fake message with
+    /// - Returns: true if a fake message with the give UUID has been found and updated,
+    ///            false otherwize
+    static
+        public
+        func checkExistanceOfFakeMessage(withUuid uuid: String,
+                                         in folder: Folder,
+                                         andUpdateItWithUidOfReceivedMessage realUid: Int) -> Bool {
+        if let existingFakeMessage = Message.existingFakeMessage(for: uuid, in: folder) {
+            existingFakeMessage.updateUid(newValue: realUid)
             let isRealMessageNow = existingFakeMessage
             isRealMessageNow.save()
             MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: isRealMessageNow)
@@ -95,5 +112,23 @@ extension Message {
         } else {
             return false
         }
+    }
+
+    //IOS-647 cleanup
+    //    static func existingFakeMessage(for msg: CWIMAPMessage, in folder: Folder) -> Message? {
+    //        if let uuid = msg.messageID() {
+    //            return Message.by(uid: Message.uidFakeResponsivenes,
+    //                              uuid: uuid,
+    //                              folderName: folder.name,
+    //                              accountAddress: folder.account.user.address)
+    //        }
+    //        return nil
+    //    }
+
+    static private func existingFakeMessage(for uuid: String, in folder: Folder) -> Message? {
+        return Message.by(uid: Message.uidFakeResponsivenes,
+                          uuid: uuid,
+                          folderName: folder.name,
+                          accountAddress: folder.account.user.address)
     }
 }
