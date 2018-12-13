@@ -148,8 +148,7 @@ public class AppendMailsOperation: ImapSyncOperation {
                                 message: "Error casting")
                     return
                 }
-                msgDict["id"] = uuidBeforeEngine //IOS-647 ask if this is OK. If not, do vise versa (save new uuid from engine to all msgs in CD with old uuid). Or replace faked msgs with decrypted (inner) msg instead of in write(..
-                // ...  and append.
+                msgDict["id"] = uuidBeforeEngine
                 appendMessage(pEpMessageDict: msgDict)
             } catch let err as NSError {
                 handleError(err, message: "Cannot encrypt message")
