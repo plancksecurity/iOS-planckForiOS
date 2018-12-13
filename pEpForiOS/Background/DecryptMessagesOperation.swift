@@ -126,6 +126,8 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                    rating: rating,
                                    cdMessage: cdMessage,
                                    keys: theKeys)
+                findDeleteAndHandleFakeMessage(forFetchedMessage: cdMessage,
+                                               pEpDecryptedMessage: pEpDecryptedMessage)
                 me.handleReUploadAndNotify(cdMessage: cdMessage, rating: rating)
             } else {
                 if rating.rawValue != ratingBeforeEngine {
@@ -134,6 +136,28 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                 }
             }
         }
+    }
+
+    /// Finds and deletes the local fake message (if exists) for a given message fetched from
+    /// server. It also takes over the imap flags of the fake message. The user might have changed
+    /// them (read or flagged the message) meanwhile.
+    ///
+    /// - Parameters:
+    ///   - cdMessage: the message fetched from server
+    ///   - pEpDecryptedMessage: decrypted message.
+    ///                             We need it as the uuid differs in Mesasge >=2.0
+    ///                             (inner message uui vs. outer message)
+    private func findDeleteAndHandleFakeMessage(forFetchedMessage cdMessage: CdMessage,
+                                                pEpDecryptedMessage: NSDictionary) {
+        guard
+            let uuid = pEpDecryptedMessage["id"] as? String,
+            let parentFolder = cdMessage.parent?.folder()  else {
+                Log.shared.errorAndCrash(component: #function, errorString:"Problem")
+                return
+        }
+        let imapFlagsFakeMessage = Message.findAndDeleteFakeMessage(withUuid: uuid,
+                                                                    in: parentFolder)
+        setFlags(imapFlagsFakeMessage, toCdMessage: cdMessage)
     }
 
     /**
@@ -146,12 +170,23 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                     keys: [String]) {
         cdMessage.underAttack = rating.isUnderAttack()
         guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
-            Log.shared.errorAndCrash(
-                component: #function,
-                errorString:"should update message with rating \(rating), but nil message")
-            return
+                Log.shared.errorAndCrash(component: #function, errorString:"Problem")
+                return
         }
         updateMessage(cdMessage: cdMessage, keys: keys, pEpMessageDict: decrypted, rating: rating)
+    }
+
+    private func setFlags(_ flags: Message.ImapFlags?,
+                          toCdMessage cdMessage: CdMessage) {
+        guard let imapFlags = flags else {
+            // That's OK.
+            // No fake message (und thus no flags) exists for the currently decrypted msg.
+            return
+        }
+        cdMessage.imap?.localFlags?.flagDraft = imapFlags.draft
+        cdMessage.imap?.localFlags?.flagAnswered = imapFlags.answered
+        cdMessage.imap?.localFlags?.flagDeleted = imapFlags.deleted
+        cdMessage.imap?.localFlags?.flagSeen = imapFlags.seen
     }
 
     private func handleReUploadAndNotify(cdMessage: CdMessage, rating: PEP_rating) {

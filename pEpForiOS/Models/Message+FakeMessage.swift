@@ -60,62 +60,38 @@ extension Message {
         self.parent = parentFolder
     }
 
-    /// Checks if a fake message for the given message exists and makes it a real message (by
-    /// updating its UID) if so.
+    /// This method is looking for a fake message with/in the given UUID and folder delets it and
+    /// returns its imap-flags.
     ///
-    /// - Parameters:
-    ///   - folder: folder to search the fake message in
-    ///   - msg: message fetched from server to search/update fake message for
-    /// - Returns: true if a fake message with the give UUID has been found and updated,
-    ///             false otherwize
-    static
-        public
-        func fakeMessageExisted(in folder: Folder,
-                                andHasBeenUpdatedWithUidOfRealMessage msg: CWIMAPMessage) -> Bool {
-        guard let uuid = msg.messageID() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No UUID")
-            return false
-        }
-        return checkExistanceOfFakeMessage(withUuid: uuid,
-                                           in: folder,
-                                           andUpdateItWithUidOfReceivedMessage: Int(msg.uid()))
-    }
-
-    /// We are saving fake messages locally for messages that take time to sync with server (e.g.
-    /// when moving a message to another folder). Fake messages are marked with a special UID.
-    ///
-    /// This method is looking for a fake message with/in the given UUID and folder and updates its
-    /// UID with the given, real UID that has been fetched from server. This way the fake message
-    /// becomes a real one. We are trying to avoid replacing the fake message and thus to avoid
-    /// inconsitencies (e.g. user marked fake message as SEEN, replacing the fake message would
-    /// loose this information.)
+    /// The falgs are of interest as the user might have chenged them while
+    /// we were fetching the original (e.g. read a mail with altered the "seen" flag).
     ///
     /// - Parameters:
     ///   - uuid: uuid to identify the fake message with
     ///   - folder: folder to search in
-    ///   - realUid: UID of to update the fake message with
-    /// - Returns: true if a fake message with the give UUID has been found and updated,
-    ///            false otherwize
-    static
-        public
-        func checkExistanceOfFakeMessage(withUuid uuid: String,
-                                         in folder: Folder,
-                                         andUpdateItWithUidOfReceivedMessage realUid: Int) -> Bool {
+    /// - Returns: imap flags of fake message if found, nil otherwize
+    static public func findAndDeleteFakeMessage(
+        withUuid uuid: String, in folder: Folder) -> ImapFlags? {
+        var flags: ImapFlags? = nil
         if let existingFakeMessage = Message.existingFakeMessage(for: uuid, in: folder) {
-            existingFakeMessage.updateUid(newValue: realUid)
-            let isRealMessageNow = existingFakeMessage
-            isRealMessageNow.save()
-            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: isRealMessageNow)
-            return true
-        } else {
-            return false
+            flags = existingFakeMessage.imapFlags
+            existingFakeMessage.delete()
         }
+        return flags
     }
 
     static private func existingFakeMessage(for uuid: String, in folder: Folder) -> Message? {
-        return Message.by(uid: Message.uidFakeResponsivenes,
-                          uuid: uuid,
-                          folderName: folder.name,
-                          accountAddress: folder.account.user.address)
+        guard
+            let fakeMsg =  Message.by(uid: Message.uidFakeResponsivenes,
+                                      uuid: uuid,
+                                      folderName: folder.name,
+                                      accountAddress: folder.account.user.address),
+            fakeMsg.uid == Message.uidFakeResponsivenes
+            else {
+                // pEp workaround factory:
+                // This works around the fact that this happens but shoud not.
+                return nil
+        }
+        return fakeMsg
     }
 }

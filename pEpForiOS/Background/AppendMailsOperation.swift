@@ -125,7 +125,6 @@ public class AppendMailsOperation: ImapSyncOperation {
             return
         }
         lastHandledMessageObjectID = objID
-        let uuidBeforeEngine = msg["id"]
 
         if folder.shouldNotAppendMessages {
             // We are not supposed to append messages to this forder.
@@ -142,13 +141,12 @@ public class AppendMailsOperation: ImapSyncOperation {
             do {
                 let session = PEPSession()
                 let (_, encMsg) = try encrypt(session: session, pEpMessageDict: msg, forSelf: ident)
-                guard var msgDict = encMsg as? PEPMessageDict else {
+                guard let msgDict = encMsg as? PEPMessageDict else {
                     Log.shared.errorAndCrash(component: #function, errorString: "Error casting")
                     handleError(BackgroundError.GeneralError.illegalState(info: "Eror casting"),
                                 message: "Error casting")
                     return
                 }
-                msgDict["id"] = uuidBeforeEngine
                 appendMessage(pEpMessageDict: msgDict)
             } catch let err as NSError {
                 handleError(err, message: "Cannot encrypt message")

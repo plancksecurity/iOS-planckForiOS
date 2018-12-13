@@ -303,19 +303,6 @@ extension PersistentImapFolder: CWIMAPCache {
 
     public func write(_ theRecord: CWCacheRecord?, message: CWIMAPMessage,
                       messageUpdate: CWMessageUpdate) {
-        privateMOC.performAndWait { [weak self] in
-            guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
-                return
-            }
-            if Message.fakeMessageExisted(in: me.folder.folder(),
-                                          andHasBeenUpdatedWithUidOfRealMessage: message) {
-                // We fetched a message we had a local copy (fake message) for already. No need to
-                // store something. The fake message has been updated. We are done.
-                return
-            }
-        }
-
         let opStore = StorePrefetchedMailOperation(
             parentName: functionName(#function),
             accountID: accountID, message: message, messageUpdate: messageUpdate,

@@ -170,20 +170,18 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         if let (msg, protected, cdMessageObjID) = EncryptAndSendOperation.retrieveNextMessage(
             context: context, cdAccount: cdAccount) {
             lastSentMessageObjectID = cdMessageObjID
-            let uuidBeforeEngine = msg["id"]
             let session = PEPSession()
             do {
                 let (_, encryptedMessageToSend) = try session.encrypt(
                     pEpMessageDict: msg, encryptionFormat: protected ? PEP_enc_PEP : PEP_enc_none)
                 guard
-                    var encrypted = encryptedMessageToSend?.mutableCopy()as? PEPMessageDict else {
+                    let encrypted = encryptedMessageToSend?.mutableCopy() as? PEPMessageDict else {
                     Log.shared.errorAndCrash(component: #function,
                                              errorString: "Could not encrypt but did not throw.")
                      handleError(BackgroundError.PepError.encryptionError(info:
                         "Could not encrypt but did not throw."))
                     return
                 }
-                encrypted["id"] = uuidBeforeEngine
                 setOriginalRatingHeader(toMessageWithObjId: cdMessageObjID, inContext: context)
                 send(pEpMessageDict: encrypted)
             } catch let err as NSError {
