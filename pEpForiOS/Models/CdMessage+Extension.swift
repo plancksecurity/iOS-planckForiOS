@@ -69,13 +69,14 @@ extension CdMessage {
         createe.parent = cdParentFolder
 
         createe.imap = CdImapFields.create()
-        createe.imap?.imapFlags().answered = msg.imapFlags?.answered ?? false
-        createe.imap?.imapFlags().deleted = msg.imapFlags?.deleted ?? false
-        createe.imap?.imapFlags().draft = msg.imapFlags?.draft ?? false
-        createe.imap?.imapFlags().flagged = msg.imapFlags?.flagged ?? false
-        createe.imap?.imapFlags().recent = msg.imapFlags?.recent ?? false
-        createe.imap?.imapFlags().seen = msg.imapFlags?.seen ?? false
         createe.imap?.imapFlags().uid = Int32(msg.uid)
+
+        createe.imap?.localFlags?.flagAnswered = msg.imapFlags?.answered ?? false
+        createe.imap?.localFlags?.flagDeleted = msg.imapFlags?.deleted ?? false
+        createe.imap?.localFlags?.flagDraft = msg.imapFlags?.draft ?? false
+        createe.imap?.localFlags?.flagFlagged = msg.imapFlags?.flagged ?? false
+        createe.imap?.localFlags?.flagRecent = msg.imapFlags?.recent ?? false
+        createe.imap?.localFlags?.flagSeen = msg.imapFlags?.seen ?? false
 
         createe.shortMessage = msg.shortMessage
         createe.longMessage = msg.longMessage
