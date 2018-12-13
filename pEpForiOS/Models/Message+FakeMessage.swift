@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+
 /// Code related to fake messages.
 ///
 /// We are saving fake messages locally for messages that take time to sync with server (e.g.
