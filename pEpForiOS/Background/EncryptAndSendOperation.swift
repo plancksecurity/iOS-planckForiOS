@@ -118,7 +118,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                                          errorString: "Problem moving last message")
                 return
         }
-        let rating = message.outgoingMessageRating().rawValue //IOS-647 ??
+        let rating = message.outgoingMessageRating().rawValue
         MessageModelConfig.messageFolderDelegate?.didDelete(messageFolder: message,
                                                             belongingToThread: Set())
         cdMessage.parent = sentFolder

@@ -7,8 +7,6 @@
 //
 
 import MessageModel
-//IOS-647: more docs. Please.
-
 /// Code related to fake messages.
 ///
 /// We are saving fake messages locally for messages that take time to sync with server (e.g.
@@ -19,7 +17,7 @@ extension Message {
         return uid == Message.uidFakeResponsivenes
     }
 
-    static public func append(msg: Message) { //IOS-647: rename: saveForAppend
+    static public func saveForAppend(msg: Message) {
         let folder = msg.parent
         let uuid = MessageID.generateUUID()
         let appendMsg = Message(uid: uidNeedsAppend, message: msg, parentFolder: folder)
@@ -113,17 +111,6 @@ extension Message {
             return false
         }
     }
-
-    //IOS-647 cleanup
-    //    static func existingFakeMessage(for msg: CWIMAPMessage, in folder: Folder) -> Message? {
-    //        if let uuid = msg.messageID() {
-    //            return Message.by(uid: Message.uidFakeResponsivenes,
-    //                              uuid: uuid,
-    //                              folderName: folder.name,
-    //                              accountAddress: folder.account.user.address)
-    //        }
-    //        return nil
-    //    }
 
     static private func existingFakeMessage(for uuid: String, in folder: Folder) -> Message? {
         return Message.by(uid: Message.uidFakeResponsivenes,

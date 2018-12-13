@@ -579,7 +579,7 @@ extension ComposeViewModel {
         msg.parent = f
         msg.imapFlags?.draft = true
         msg.sent = Date()
-        Message.append(msg: msg)
+        Message.saveForAppend(msg: msg)
         if data.isDrafts {
             // We save a modified version of a drafted message. The UI might want to updtate
             // its model.
