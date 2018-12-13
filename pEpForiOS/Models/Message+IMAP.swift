@@ -89,16 +89,11 @@ extension Message {
             // the message is in the target folder already. No need to move it.
             return
         }
+        saveFakeMessage(for: self, in: targetFolder)
         if targetFolder.account == parent.account {
-            //IOS-647
-            saveFakeMessage(for: self, in: targetFolder)
-
-            self.targetFolder = targetFolder
+           self.targetFolder = targetFolder
             save()
         } else {
-            //IOS-647
-            // Copying to another account impossible due to UID 0 and UID fake have the same UUID. Would need way more complex algo.
-
             // The message must be moved to another account. Thus ...
             // ... we save a copy for append in target accounts folder ...
             let copy = Message(message: self)
