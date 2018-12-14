@@ -20,10 +20,4 @@ class LogTest: XCTestCase {
             os_log("%d %@", 1, "direct blah")
         }
     }
-
-    func testLogService() {
-        let logger = LogService(subsystem: "sub", category: "cat")
-        logger.log("%d %@", 1, "logservice blah 1")
-        logger.log("%d %@", 1, "logservice blah 2")
-    }
 }

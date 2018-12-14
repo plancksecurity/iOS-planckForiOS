@@ -411,7 +411,6 @@
 		438F4EE5215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE4215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc */; };
 		438F4EE9215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE8215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc */; };
 		4393673921C26F3D00FF8BB4 /* LogTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4393673821C26F3D00FF8BB4 /* LogTest.swift */; };
-		4393673B21C2793E00FF8BB4 /* LogService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4393673A21C2793E00FF8BB4 /* LogService.swift */; };
 		4395CDEC20AAB2E9003FC5F1 /* UIImage+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */; };
 		4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */; };
 		4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */; };
@@ -1053,7 +1052,6 @@
 		438F4EE4215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc"; sourceTree = "<group>"; };
 		438F4EE8215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Leon Kowalski (19B9EE3B) – Private.asc"; sourceTree = "<group>"; };
 		4393673821C26F3D00FF8BB4 /* LogTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTest.swift; sourceTree = "<group>"; };
-		4393673A21C2793E00FF8BB4 /* LogService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogService.swift; sourceTree = "<group>"; };
 		4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+GIF.swift"; sourceTree = "<group>"; };
 		4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensionsTests.swift; sourceTree = "<group>"; };
 		4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_001.gif; sourceTree = "<group>"; };
@@ -2364,7 +2362,6 @@
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
 				439D40791CC79423009A4E7C /* GCD.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
-				4393673A21C2793E00FF8BB4 /* LogService.swift */,
 				435B42401D211E5900119048 /* MiscUtil.swift */,
 				5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */,
 				431798761CF87FE6007DD655 /* ReferenceCounter.swift */,
@@ -3547,7 +3544,6 @@
 				152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				439F127020C7BF2E002FF13E /* ThreadAwareFolderFactory.swift in Sources */,
 				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
-				4393673B21C2793E00FF8BB4 /* LogService.swift in Sources */,
 				152A39DB21905C3E00D9F8E4 /* CellViewModel.swift in Sources */,
 				432AC3061ECB0C44007DC418 /* CWIMAPMessage+pEp.swift in Sources */,
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
