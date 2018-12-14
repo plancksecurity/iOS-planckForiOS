@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import os.log
+
 import MessageModel
 
 enum LoggingSeverity {
@@ -13,6 +15,21 @@ enum LoggingSeverity {
     case info
     case warning
     case error
+}
+
+public func zlog(message: StaticString,
+                 function: String = #function,
+                 filePath: String = #file,
+                 fileLine: Int = #line) {
+    if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
+        os_log(message)
+    }
+}
+
+public func zlog(_ message: StaticString, _ args: CVarArg...) {
+    if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
+        os_log(message, args)
+    }
 }
 
 /**
