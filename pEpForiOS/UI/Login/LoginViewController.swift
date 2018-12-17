@@ -65,6 +65,7 @@ class LoginViewController: BaseViewController {
     @IBOutlet var user: UITextField!
     @IBOutlet var activityIndicatorView: UIActivityIndicatorView!
 
+    @IBOutlet var textFieldsContainerView: UIView!
     @IBOutlet var contentScrollView: UIScrollView!
 
     var isCurrentlyVerifying = false {
@@ -136,9 +137,6 @@ class LoginViewController: BaseViewController {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.backgroundColor = UIColor.clear
         
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: self, queue: nil) { (notification) in
-            print("hola")
-        }
     }
 
     @objc func backButton() {
