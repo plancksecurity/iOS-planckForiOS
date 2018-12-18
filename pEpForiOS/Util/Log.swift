@@ -17,18 +17,13 @@ enum LoggingSeverity {
     case error
 }
 
-public func zlog(message: String,
+public func zlog(_ message: StaticString,
                  function: String = #function,
                  filePath: String = #file,
-                 fileLine: Int = #line) {
-    if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
-        os_log("%@:%d %@ %{public}@", filePath, fileLine, function, message)
-    }
-}
-
-public func zlog(_ message: StaticString,
+                 fileLine: Int = #line,
                  _ args: CVarArg...) {
     if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
+        os_log("%@:%d %@:", filePath, fileLine, function)
         switch args.count {
         case 1:
             os_log(message, args[0])
