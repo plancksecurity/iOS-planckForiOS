@@ -52,10 +52,10 @@ public class Logger {
     /**
      Logs to default.
      */
-    public func log(_ message: StaticString,
-                    function: String = #function,
+    public func log(function: String = #function,
                     filePath: String = #file,
                     fileLine: Int = #line,
+                    _ message: StaticString,
                     _ args: CVarArg...) {
         saveLog(message: message,
                 severity: .default,
@@ -68,10 +68,10 @@ public class Logger {
     /**
      Logs to info.
      */
-    public func info(_ message: StaticString,
-                     function: String = #function,
+    public func info(function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
+                     _ message: StaticString,
                      _ args: CVarArg...) {
         saveLog(message: message,
                 severity: .info,
@@ -84,10 +84,10 @@ public class Logger {
     /**
      Logs to debug.
      */
-    public func debug(_ message: StaticString,
-                      function: String = #function,
+    public func debug(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
+                      _ message: StaticString,
                       _ args: CVarArg...) {
         saveLog(message: message,
                 severity: .debug,
@@ -100,10 +100,10 @@ public class Logger {
     /**
      Logs to error.
      */
-    public func error(_ message: StaticString,
-                      function: String = #function,
+    public func error(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
+                      _ message: StaticString,
                       _ args: CVarArg...) {
         saveLog(message: message,
                 severity: .error,
@@ -116,10 +116,10 @@ public class Logger {
     /**
      Logs to fault.
      */
-    public func fault(_ message: StaticString,
-                      function: String = #function,
+    public func fault(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
+                      _ message: StaticString,
                       _ args: CVarArg...) {
         saveLog(message: message,
                 severity: .fault,
