@@ -139,7 +139,7 @@ public class Logger {
                          function: String = #function,
                          filePath: String = #file,
                          fileLine: Int = #line,
-                         args: CVarArg...) {
+                         args: [CVarArg]) {
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
             let theLog = osLogger as! OSLog
             let theType = severity.osLogType()
