@@ -55,8 +55,8 @@ public class Logger {
     public func log(function: String = #function,
                     filePath: String = #file,
                     fileLine: Int = #line,
-                    message: StaticString,
-                    args: CVarArg) {
+                    _ message: StaticString,
+                    _ args: CVarArg...) {
         saveLog(severity: .default,
                 function: function,
                 filePath: filePath,
@@ -71,8 +71,8 @@ public class Logger {
     public func info(function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
-                     message: StaticString,
-                     args: CVarArg) {
+                     _ message: StaticString,
+                     _ args: CVarArg...) {
         saveLog(severity: .info,
                 function: function,
                 filePath: filePath,
@@ -87,8 +87,8 @@ public class Logger {
     public func debug(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
-                      message: StaticString,
-                      args: CVarArg) {
+                      _ message: StaticString,
+                      _ args: CVarArg...) {
         saveLog(severity: .debug,
                 function: function,
                 filePath: filePath,
@@ -103,8 +103,8 @@ public class Logger {
     public func error(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
-                      message: StaticString,
-                      args: CVarArg) {
+                      _ message: StaticString,
+                      _ args: CVarArg...) {
         saveLog(severity: .error,
                 function: function,
                 filePath: filePath,
@@ -119,8 +119,8 @@ public class Logger {
     public func fault(function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
-                      message: StaticString,
-                      args: CVarArg) {
+                      _ message: StaticString,
+                      _ args: CVarArg...) {
         saveLog(severity: .fault,
                 function: function,
                 filePath: filePath,
@@ -139,7 +139,7 @@ public class Logger {
                          filePath: String = #file,
                          fileLine: Int = #line,
                          message: StaticString,
-                         args: CVarArg) {
-        // TODO: Invoke os_log()
+                         args: CVarArg...) {
+        // TODO: Invoke os_log(), as_logging
     }
 }
