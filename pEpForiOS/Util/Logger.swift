@@ -49,6 +49,86 @@ public class Logger {
         }
     }
 
+    /**
+     Logs to default.
+     */
+    private func log(function: String = #function,
+                     filePath: String = #file,
+                     fileLine: Int = #line,
+                     message: StaticString,
+                     args: CVarArg) {
+        saveLog(severity: .default,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                message: message,
+                args: args)
+    }
+
+    /**
+     Logs to info.
+     */
+    private func info(function: String = #function,
+                      filePath: String = #file,
+                      fileLine: Int = #line,
+                      message: StaticString,
+                      args: CVarArg) {
+        saveLog(severity: .info,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                message: message,
+                args: args)
+    }
+
+    /**
+     Logs to debug.
+     */
+    private func debug(function: String = #function,
+                       filePath: String = #file,
+                       fileLine: Int = #line,
+                       message: StaticString,
+                       args: CVarArg) {
+        saveLog(severity: .debug,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                message: message,
+                args: args)
+    }
+
+    /**
+     Logs to error.
+     */
+    private func error(function: String = #function,
+                       filePath: String = #file,
+                       fileLine: Int = #line,
+                       message: StaticString,
+                       args: CVarArg) {
+        saveLog(severity: .error,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                message: message,
+                args: args)
+    }
+
+    /**
+     Logs to fault.
+     */
+    private func fault(function: String = #function,
+                       filePath: String = #file,
+                       fileLine: Int = #line,
+                       message: StaticString,
+                       args: CVarArg) {
+        saveLog(severity: .fault,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                message: message,
+                args: args)
+    }
+
     private let subsystem: String?
     private let category: String?
 
