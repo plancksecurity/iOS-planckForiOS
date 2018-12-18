@@ -33,6 +33,11 @@ class SettingsViewModel {
         }
     }
 
+    //temporal stub
+    func canBeShown(Message: Message? ) -> Bool{
+        return false
+    }
+
     func rowType(for indexPath: IndexPath) -> SettingsCellViewModel.SettingType? {
         guard let model = self[indexPath.section][indexPath.row] as?
             ComplexSettingCellViewModelProtocol else {

@@ -47,11 +47,12 @@ struct DisplayUserError: LocalizedError {
         var shouldBeShownToUser: Bool {
             switch self {
             case .internalError:
-                #if DEBUG
+                /*#if DEBUG
                     return true
                 #else
                     return false
-                #endif
+                #endif*/
+                return true
             case .authenticationFailed,
                  .brokenServerConnectionImap,
                  .brokenServerConnectionSmtp,
