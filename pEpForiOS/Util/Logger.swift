@@ -140,6 +140,79 @@ public class Logger {
                          fileLine: Int = #line,
                          message: StaticString,
                          args: CVarArg...) {
-        // TODO: Invoke os_log(), as_logging
+        if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
+            let theLog = osLogger as! OSLog
+            let theType = severity.osLogType()
+            os_log("%@:%d %@:",
+                   log: theLog,
+                   type: theType,
+                   filePath,
+                   fileLine,
+                   function)
+            switch args.count {
+            case 1:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0])
+            case 2:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1])
+            case 3:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1], args[2])
+            case 4:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1], args[2], args[3])
+            case 5:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1], args[2], args[3], args[4])
+            case 6:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1], args[2], args[3], args[4], args[5])
+            case 7:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1], args[2], args[3], args[4], args[5], args[6])
+            case 8:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+            case 9:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
+                       args[8])
+            case 10:
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
+                       args[8], args[9])
+            default:
+                os_log("Using more than 10 parameters",
+                       log: theLog,
+                       type: theType)
+                os_log(message,
+                       log: theLog,
+                       type: theType,
+                       args)
+            }
+        } else {
+            // TODO: use as_logging
+        }
     }
 }
