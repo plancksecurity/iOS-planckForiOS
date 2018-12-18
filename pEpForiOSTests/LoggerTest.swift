@@ -14,6 +14,8 @@ import XCTest
 class LoggerTest: XCTestCase {
     func testSimple() {
         let log1 = Logger(subsystem: "sys1", category: "cat1")
-        log1.log("hi")
+        log1.log("hi (standalone)")
+        log1.log("hi (one number): %d", 2)
+        log1.log("hi (one number plus string): %d %@", 2, "parameters")
     }
 }

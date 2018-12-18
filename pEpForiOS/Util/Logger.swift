@@ -52,80 +52,80 @@ public class Logger {
     /**
      Logs to default.
      */
-    public func log(function: String = #function,
+    public func log(_ message: StaticString,
+                    function: String = #function,
                     filePath: String = #file,
                     fileLine: Int = #line,
-                    _ message: StaticString,
                     _ args: CVarArg...) {
-        saveLog(severity: .default,
+        saveLog(message: message,
+                severity: .default,
                 function: function,
                 filePath: filePath,
                 fileLine: fileLine,
-                message: message,
                 args: args)
     }
 
     /**
      Logs to info.
      */
-    public func info(function: String = #function,
+    public func info(_ message: StaticString,
+                     function: String = #function,
                      filePath: String = #file,
                      fileLine: Int = #line,
-                     _ message: StaticString,
                      _ args: CVarArg...) {
-        saveLog(severity: .info,
+        saveLog(message: message,
+                severity: .info,
                 function: function,
                 filePath: filePath,
                 fileLine: fileLine,
-                message: message,
                 args: args)
     }
 
     /**
      Logs to debug.
      */
-    public func debug(function: String = #function,
+    public func debug(_ message: StaticString,
+                      function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
-                      _ message: StaticString,
                       _ args: CVarArg...) {
-        saveLog(severity: .debug,
+        saveLog(message: message,
+                severity: .debug,
                 function: function,
                 filePath: filePath,
                 fileLine: fileLine,
-                message: message,
                 args: args)
     }
 
     /**
      Logs to error.
      */
-    public func error(function: String = #function,
+    public func error(_ message: StaticString,
+                      function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
-                      _ message: StaticString,
                       _ args: CVarArg...) {
-        saveLog(severity: .error,
+        saveLog(message: message,
+                severity: .error,
                 function: function,
                 filePath: filePath,
                 fileLine: fileLine,
-                message: message,
                 args: args)
     }
 
     /**
      Logs to fault.
      */
-    public func fault(function: String = #function,
+    public func fault(_ message: StaticString,
+                      function: String = #function,
                       filePath: String = #file,
                       fileLine: Int = #line,
-                      _ message: StaticString,
                       _ args: CVarArg...) {
-        saveLog(severity: .fault,
+        saveLog(message: message,
+                severity: .fault,
                 function: function,
                 filePath: filePath,
                 fileLine: fileLine,
-                message: message,
                 args: args)
     }
 
@@ -134,11 +134,11 @@ public class Logger {
 
     private let osLogger: Any?
 
-    private func saveLog(severity: Severity,
+    private func saveLog(message: StaticString,
+                         severity: Severity,
                          function: String = #function,
                          filePath: String = #file,
                          fileLine: Int = #line,
-                         message: StaticString,
                          args: CVarArg...) {
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
             let theLog = osLogger as! OSLog
@@ -150,6 +150,10 @@ public class Logger {
                    fileLine,
                    function)
             switch args.count {
+            case 0:
+                os_log(message,
+                       log: theLog,
+                       type: theType)
             case 1:
                 os_log(message,
                        log: theLog,
