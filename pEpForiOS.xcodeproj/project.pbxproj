@@ -459,6 +459,7 @@
 		43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */; };
 		43BBB5E71E267A3800104070 /* EncryptAndSendOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */; };
 		43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43C046BE1CF48EA500BD0D9D /* AddressBook.framework */; };
+		43C273DB21C8F96D002EB4C8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C273DA21C8F96D002EB4C8 /* Logger.swift */; };
 		43C322051EA89EED005073FB /* HandshakePartnerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */; };
 		43C322071EA8E7AD005073FB /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C322061EA8E7AD005073FB /* UIButton+Extension.swift */; };
 		43C322091EA90192005073FB /* PEP+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C322081EA90192005073FB /* PEP+UI.swift */; };
@@ -1108,6 +1109,7 @@
 		43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+Extension.swift"; sourceTree = "<group>"; };
 		43BBB5E61E267A3800104070 /* EncryptAndSendOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptAndSendOperation.swift; sourceTree = "<group>"; };
 		43C046BE1CF48EA500BD0D9D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		43C273DA21C8F96D002EB4C8 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		43C322041EA89EED005073FB /* HandshakePartnerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandshakePartnerTableViewCell.swift; sourceTree = "<group>"; };
 		43C322061EA8E7AD005073FB /* UIButton+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
 		43C322081EA90192005073FB /* PEP+UI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEP+UI.swift"; sourceTree = "<group>"; };
@@ -2362,6 +2364,7 @@
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
 				439D40791CC79423009A4E7C /* GCD.swift */,
 				43980EDF1CBD24B000A7FC3C /* Log.swift */,
+				43C273DA21C8F96D002EB4C8 /* Logger.swift */,
 				435B42401D211E5900119048 /* MiscUtil.swift */,
 				5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */,
 				431798761CF87FE6007DD655 /* ReferenceCounter.swift */,
@@ -3597,6 +3600,7 @@
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,
 				43497B38211C62DE00AC42B0 /* MessageIdentitfying.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
+				43C273DB21C8F96D002EB4C8 /* Logger.swift in Sources */,
 				00FD0CE82102014C00BA0C56 /* PrimarySplitViewcontroller+ScreenComposerProtocol.swift in Sources */,
 				434E5A1B20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift in Sources */,
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
