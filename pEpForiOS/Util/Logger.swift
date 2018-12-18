@@ -52,11 +52,11 @@ public class Logger {
     /**
      Logs to default.
      */
-    private func log(function: String = #function,
-                     filePath: String = #file,
-                     fileLine: Int = #line,
-                     message: StaticString,
-                     args: CVarArg) {
+    public func log(function: String = #function,
+                    filePath: String = #file,
+                    fileLine: Int = #line,
+                    message: StaticString,
+                    args: CVarArg) {
         saveLog(severity: .default,
                 function: function,
                 filePath: filePath,
@@ -68,11 +68,11 @@ public class Logger {
     /**
      Logs to info.
      */
-    private func info(function: String = #function,
-                      filePath: String = #file,
-                      fileLine: Int = #line,
-                      message: StaticString,
-                      args: CVarArg) {
+    public func info(function: String = #function,
+                     filePath: String = #file,
+                     fileLine: Int = #line,
+                     message: StaticString,
+                     args: CVarArg) {
         saveLog(severity: .info,
                 function: function,
                 filePath: filePath,
@@ -84,11 +84,11 @@ public class Logger {
     /**
      Logs to debug.
      */
-    private func debug(function: String = #function,
-                       filePath: String = #file,
-                       fileLine: Int = #line,
-                       message: StaticString,
-                       args: CVarArg) {
+    public func debug(function: String = #function,
+                      filePath: String = #file,
+                      fileLine: Int = #line,
+                      message: StaticString,
+                      args: CVarArg) {
         saveLog(severity: .debug,
                 function: function,
                 filePath: filePath,
@@ -100,11 +100,11 @@ public class Logger {
     /**
      Logs to error.
      */
-    private func error(function: String = #function,
-                       filePath: String = #file,
-                       fileLine: Int = #line,
-                       message: StaticString,
-                       args: CVarArg) {
+    public func error(function: String = #function,
+                      filePath: String = #file,
+                      fileLine: Int = #line,
+                      message: StaticString,
+                      args: CVarArg) {
         saveLog(severity: .error,
                 function: function,
                 filePath: filePath,
@@ -116,11 +116,11 @@ public class Logger {
     /**
      Logs to fault.
      */
-    private func fault(function: String = #function,
-                       filePath: String = #file,
-                       fileLine: Int = #line,
-                       message: StaticString,
-                       args: CVarArg) {
+    public func fault(function: String = #function,
+                      filePath: String = #file,
+                      fileLine: Int = #line,
+                      message: StaticString,
+                      args: CVarArg) {
         saveLog(severity: .fault,
                 function: function,
                 filePath: filePath,
