@@ -192,6 +192,8 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                   service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
+            Log.info(component: String.bug1442, content: "Account: \(account.user.address) is stored for first time")
+            //remove obsolete code on EmailListViewController
             MessageModel.performAndWait {
                 account.save()
             }

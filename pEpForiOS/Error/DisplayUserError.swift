@@ -69,6 +69,10 @@ struct DisplayUserError: LocalizedError {
     /// errors differentelly or even ignore certain types.
     let type:ErrorType
 
+    /// Some error types have extra info to be used
+    var extraInfo: String?
+
+
     /// Creates a user friendly error to present in an alert or such. I case the error type is not
     /// suitable to display to the user (should fail silently), nil is returned.
     ///
@@ -76,12 +80,45 @@ struct DisplayUserError: LocalizedError {
     /// - Returns:  nil if you should not bother the user with this kind of error,
     ///             user friendly error otherwize.
     init?(withError error: Error) {
+        extraInfo = nil
         if let displayUserError = error as? DisplayUserError {
             self = displayUserError
         } else if let smtpError = error as? SmtpSendError {
             type = DisplayUserError.type(forError: smtpError)
+            switch smtpError {
+            case .authenticationFailed( _, let account):
+                extraInfo = account
+            case .illegalState(_):
+                break
+            case .connectionLost(_):
+                break
+            case .connectionTerminated(_):
+                break
+            case .connectionTimedOut(_):
+                break
+            case .badResponse(_):
+                break
+            }
         } else if let imapError = error as? ImapSyncError {
             type = DisplayUserError.type(forError: imapError)
+            switch imapError {
+            case .authenticationFailed(_, let account):
+                extraInfo = account
+            case .illegalState(_):
+                break
+            case .connectionLost(_):
+                break
+            case .connectionTerminated(_):
+                break
+            case .connectionTimedOut(_):
+                break
+            case .folderAppendFailed:
+                break
+            case .badResponse(_):
+                break
+            case .actionFailed:
+                break
+            }
         } else if let oauthInternalError = error as? OAuth2AuthViewModelError {
             type = DisplayUserError.type(forError: oauthInternalError)
         } else if let oauthError = error as? OAuth2AuthorizationError {
@@ -297,8 +334,14 @@ struct DisplayUserError: LocalizedError {
     public var errorDescription: String? {
         switch type {
         case .authenticationFailed:
+            var textToShow = ""
+            if let account = extraInfo {
+                textToShow = "It was impossible to login to \(String(describing: account)). Username or password is wrong."
+            } else {
+                textToShow = "It was impossible to login to the server. Username or password is wrong."
+            }
             return NSLocalizedString(
-                "It was impossible to login to the server. Username or password is wrong.",
+                textToShow,
                 comment:
                 "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
         case .messageNotSent:

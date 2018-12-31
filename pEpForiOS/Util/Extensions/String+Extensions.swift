@@ -9,6 +9,8 @@
 import UIKit
 
 public extension String {
+
+    static let bug1442 = "bug1442"
     static let returnKey = "\n"
     static let space = " "
 

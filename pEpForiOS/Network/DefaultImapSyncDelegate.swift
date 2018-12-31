@@ -43,7 +43,7 @@ class DefaultImapSyncDelegate: ImapSyncDelegate {
     }
 
     public func authenticationFailed(_ sync: ImapSync, notification: Notification?) {
-        forceErrorDelegate().handle(error: ImapSyncError.authenticationFailed(#function))
+        forceErrorDelegate().handle(error: ImapSyncError.authenticationFailed(#function, sync.connectInfo.account.user.address))
     }
 
     public func connectionLost(_ sync: ImapSync, notification: Notification?) {
