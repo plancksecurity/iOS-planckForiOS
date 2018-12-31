@@ -12,7 +12,7 @@ enum ImapSyncError: Error {
      */
     case illegalState(FunctionName)
 
-    case authenticationFailed(FunctionName)
+    case authenticationFailed(FunctionName, String)
     case connectionLost(FunctionName)
     case connectionTerminated(FunctionName)
     case connectionTimedOut(FunctionName)
