@@ -14,6 +14,8 @@ import MessageModel
 class AppConfig {
     let messageSyncService: MessageSyncServiceProtocol
 
+    var showedAccountsError: [String:Bool]
+
     let errorPropagator : ErrorPropagator
 
     /**
@@ -34,5 +36,6 @@ class AppConfig {
         self.mySelfer = mySelfer
         self.errorPropagator = errorPropagator
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
+        self.showedAccountsError = [:]
     }
 }
