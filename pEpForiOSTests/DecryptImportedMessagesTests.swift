@@ -196,6 +196,41 @@ class DecryptImportedMessagesTests: XCTestCase {
         try! session.setOwnKey(leon, fingerprint: "63FC29205A57EB3AEB780E846F239B0F19B9EE3B")
     }
 
+    // ENGINE-505
+    func testNullInnerMimeType() {
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+            ownUserName: "ThisIsMe",
+            ownUserID: "User_Me",
+            ownEmailAddress: "guile-user@gnu.org")
+
+        self.backgroundQueue = OperationQueue()
+        let cdMessage = DecryptionUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "ENGINE-505_Mail_NullInnerMimeType.txt")
+
+        guard let theCdMessage = cdMessage else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.shortMessage,
+                       "Re: Help needed debugging segfault with Guile 1.8.7")
+        XCTAssertNil(theCdMessage.longMessage)
+
+        let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
+        XCTAssertEqual(attachments.count, 2)
+
+        guard let msg = theCdMessage.message() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(msg.attachments.count, 1)
+    }
+
     // MARK: - Helpers
 
     func check(attachments: [MimeProtocol]) {
