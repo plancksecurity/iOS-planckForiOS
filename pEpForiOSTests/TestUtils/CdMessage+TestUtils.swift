@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+@testable import pEpForiOS
 
 extension CdMessage {
     func isValidMessage() -> Bool {
@@ -14,5 +15,21 @@ extension CdMessage {
             || self.longMessageFormatted != nil
             || self.attachments?.count ?? 0 > 0
             || self.shortMessage != nil
+    }
+
+    public static func search(byUUID uuid: MessageID, includeFakeMessages: Bool) -> [CdMessage] {
+        return by(uuid: uuid, includeFakeMessages: includeFakeMessages)
+    }
+
+    static func by(uuid: MessageID, includeFakeMessages: Bool) -> [CdMessage] {
+        if includeFakeMessages {
+            return CdMessage.all(predicate: NSPredicate(format: "uuid = %@", uuid))
+                as? [CdMessage] ?? []
+        } else {
+            return CdMessage.all(predicate: NSPredicate(format: "uuid = %@ AND uid != %d",
+                                                        uuid,
+                                                        Int32(Message.uidFakeResponsivenes)))
+                as? [CdMessage] ?? []
+        }
     }
 }
