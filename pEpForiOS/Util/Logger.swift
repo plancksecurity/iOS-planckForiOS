@@ -159,13 +159,13 @@ public class Logger {
 
     /**
      Testing only. If you want to test the fallback to ASL logging you may have to call
-     this, as all the logging is deferred to an async queue.
+     this, as all the logging is deferred to a serial queue.
      */
     public func testFlush() {
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
             // no sense on these versions
         } else {
-            aslLogQueue.async {
+            aslLogQueue.sync {
                 print("*** queue flushed")
             }
         }
