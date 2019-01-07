@@ -35,6 +35,34 @@ public class Logger {
                 return .fault
             }
         }
+
+        /**
+         Maps the internal criticality of a log  message into a subsystem of ASL levels.
+
+         ASL has the following:
+         * ASL_LEVEL_EMERG
+         * ASL_LEVEL_ALERT
+         * ASL_LEVEL_CRIT
+         * ASL_LEVEL_ERR
+         * ASL_LEVEL_WARNING
+         * ASL_LEVEL_NOTICE
+         * ASL_LEVEL_INFO
+         * ASL_LEVEL_DEBUG
+         */
+        public func aslLevelString() -> String {
+            switch self {
+            case .default:
+                return "ASL_LEVEL_NOTICE"
+            case .info:
+                return "ASL_LEVEL_INFO"
+            case .debug:
+                return "ASL_LEVEL_DEBUG"
+            case .error:
+                return "ASL_LEVEL_ERR"
+            case .fault:
+                return "ASL_LEVEL_CRIT"
+            }
+        }
     }
 
     public init(subsystem: String, category: String) {
