@@ -471,8 +471,6 @@
 		43C322111EA91764005073FB /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3220F1EA91764005073FB /* UIImageView+Extension.swift */; };
 		43C3B1602003851100ED48A4 /* DecryptImportedMessagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C3B15F2003851100ED48A4 /* DecryptImportedMessagesTests.swift */; };
 		43C3B1622003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B1612003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt */; };
-		43C3B16620038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B16320038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key */; };
-		43C3B16720038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B16420038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key */; };
 		43C3B16820038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key in Resources */ = {isa = PBXBuildFile; fileRef = 43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */; };
 		43C6F35B1CBE7496006A2A18 /* ConnectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */; };
 		43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43C7B9D01CEC4DDF007A612F /* MiscTests.swift */; };
@@ -1123,8 +1121,6 @@
 		43C3220F1EA91764005073FB /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		43C3B15F2003851100ED48A4 /* DecryptImportedMessagesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptImportedMessagesTests.swift; sourceTree = "<group>"; };
 		43C3B1612003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_Mail_from_P4A.txt"; sourceTree = "<group>"; };
-		43C3B16320038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_iostest002@peptest.ch.pub.key"; sourceTree = "<group>"; };
-		43C3B16420038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_iostest002@peptest.ch.sec.key"; sourceTree = "<group>"; };
 		43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-884_001_test010@peptest.ch.pub.key"; sourceTree = "<group>"; };
 		43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionManager.swift; sourceTree = "<group>"; };
 		43C7B9D01CEC4DDF007A612F /* MiscTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscTests.swift; sourceTree = "<group>"; };
@@ -2476,8 +2472,6 @@
 				15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */,
 				15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */,
 				4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */,
-				43C3B16320038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key */,
-				43C3B16420038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key */,
 				43C3B16520038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key */,
 				43C3B1612003896800ED48A4 /* IOS-884_001_Mail_from_P4A.txt */,
 				153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */,
@@ -3138,7 +3132,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4348EF151E27E37400F441A9 /* Unit 1 unittest.ios.1@peptest.ch (0x9CB8DBCC) pub.asc in Resources */,
-				43C3B16620038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.pub.key in Resources */,
 				431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */,
 				15EBE44220E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc in Resources */,
 				15EBE44320E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc in Resources */,
@@ -3166,7 +3159,6 @@
 				436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */,
 				153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */,
 				4322E82F1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt in Resources */,
-				43C3B16720038B2500ED48A4 /* IOS-884_001_iostest002@peptest.ch.sec.key in Resources */,
 				435F7C75215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt in Resources */,
 				43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */,
 				433F2E2A21E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt in Resources */,
