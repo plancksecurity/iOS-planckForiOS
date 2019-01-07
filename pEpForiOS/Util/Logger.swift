@@ -183,110 +183,139 @@ public class Logger {
                          fileLine: Int = #line,
                          args: [CVarArg]) {
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
-            let theLog = osLogger as! OSLog
-            let theType = severity.osLogType()
-            os_log("%@:%d %@:",
+            osLog(message: message,
+                  severity: severity,
+                  function: function,
+                  filePath: filePath,
+                  fileLine: fileLine,
+                  args: args)
+        } else {
+            aslLog(message: message,
+                   severity: severity,
+                   function: function,
+                   filePath: filePath,
+                   fileLine: fileLine,
+                   args: args)
+        }
+    }
+
+    @available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
+    private func osLog(message: StaticString,
+                       severity: Severity,
+                       function: String = #function,
+                       filePath: String = #file,
+                       fileLine: Int = #line,
+                       args: [CVarArg]) {
+        let theLog = osLogger as! OSLog
+        let theType = severity.osLogType()
+        os_log("%@:%d %@:",
+               log: theLog,
+               type: theType,
+               filePath,
+               fileLine,
+               function)
+        switch args.count {
+        case 0:
+            os_log(message,
+                   log: theLog,
+                   type: theType)
+        case 1:
+            os_log(message,
                    log: theLog,
                    type: theType,
-                   filePath,
-                   fileLine,
-                   function)
-            switch args.count {
-            case 0:
-                os_log(message,
-                       log: theLog,
-                       type: theType)
-            case 1:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0])
-            case 2:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1])
-            case 3:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1], args[2])
-            case 4:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1], args[2], args[3])
-            case 5:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1], args[2], args[3], args[4])
-            case 6:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1], args[2], args[3], args[4], args[5])
-            case 7:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1], args[2], args[3], args[4], args[5], args[6])
-            case 8:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
-            case 9:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
-                       args[8])
-            case 10:
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
-                       args[8], args[9])
-            default:
-                os_log("Using more than 10 parameters",
-                       log: theLog,
-                       type: theType)
-                os_log(message,
-                       log: theLog,
-                       type: theType,
-                       args)
-            }
-        } else {
-            aslLogQueue.async { [weak self] in
-                if let theSelf = self {
-                    let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
+                   args[0])
+        case 2:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1])
+        case 3:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1], args[2])
+        case 4:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1], args[2], args[3])
+        case 5:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1], args[2], args[3], args[4])
+        case 6:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1], args[2], args[3], args[4], args[5])
+        case 7:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1], args[2], args[3], args[4], args[5], args[6])
+        case 8:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+        case 9:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
+                   args[8])
+        case 10:
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7],
+                   args[8], args[9])
+        default:
+            os_log("Using more than 10 parameters",
+                   log: theLog,
+                   type: theType)
+            os_log(message,
+                   log: theLog,
+                   type: theType,
+                   args)
+        }
+    }
 
-                    if let theSub = theSelf.subsystem {
-                        theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_SENDER, theSub))
-                    }
+    private func aslLog(message: StaticString,
+                        severity: Severity,
+                        function: String = #function,
+                        filePath: String = #file,
+                        fileLine: Int = #line,
+                        args: [CVarArg]) {
+        aslLogQueue.async { [weak self] in
+            if let theSelf = self {
+                let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
 
-                    if let theCat = theSelf.category {
-                        theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_FACILITY, theCat))
-                    }
-
-                    theSelf.checkASLSuccess(asl_set(
-                        logMessage,
-                        ASL_KEY_MSG,
-                        "\(filePath):\(fileLine) \(function): \(message) \(args)"))
-
-                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_LEVEL, "ASL_LEVEL_ERROR"))
-
-                    let nowDate = Date()
-                    let dateString = "\(Int(nowDate.timeIntervalSince1970))"
-                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_TIME, dateString))
-
-                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_READ_UID, "-1"))
-
-                    theSelf.checkASLSuccess(asl_send(theSelf.consoleLogger(), logMessage))
-
-                    asl_free(logMessage)
+                if let theSub = theSelf.subsystem {
+                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_SENDER, theSub))
                 }
+
+                if let theCat = theSelf.category {
+                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_FACILITY, theCat))
+                }
+
+                theSelf.checkASLSuccess(asl_set(
+                    logMessage,
+                    ASL_KEY_MSG,
+                    "\(filePath):\(fileLine) \(function): \(message) \(args)"))
+
+                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_LEVEL, "ASL_LEVEL_ERROR"))
+
+                let nowDate = Date()
+                let dateString = "\(Int(nowDate.timeIntervalSince1970))"
+                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_TIME, dateString))
+
+                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_READ_UID, "-1"))
+
+                theSelf.checkASLSuccess(asl_send(theSelf.consoleLogger(), logMessage))
+
+                asl_free(logMessage)
             }
         }
     }
