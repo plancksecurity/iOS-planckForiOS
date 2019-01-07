@@ -166,7 +166,7 @@ public class Logger {
             // no sense on these versions
         } else {
             aslLogQueue.async {
-                // nothing
+                print("*** queue flushed")
             }
         }
     }
@@ -258,6 +258,7 @@ public class Logger {
                        args)
             }
         } else {
+            print("*** fall back to asl: \(message)")
             aslLogQueue.async { [weak self] in
                 if let theSelf = self {
                     let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
@@ -284,6 +285,8 @@ public class Logger {
 
                     asl_send(theSelf.consoleClient, logMessage)
                     asl_free(logMessage)
+
+                    print("*** asl sent: \(message)")
                 }
             }
         }
