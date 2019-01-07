@@ -14,9 +14,9 @@ import XCTest
 class LoggerTest: XCTestCase {
     func testSimple() {
         let log1 = Logger(subsystem: "sys1", category: "cat1")
-        log1.log("hi (standalone)")
-        log1.log("hi (one number): %d", 2)
-        log1.log("hi (one number plus string): %d %@", 2, "parameters")
+        log1.log("1 hi (standalone)")
+        log1.log("2 hi (one number): %d", 2)
+        log1.log("3 hi (one number plus string): %d %@", 2, "parameters")
         log1.testFlush() // wait for completion on iOS < 10
     }
 }
