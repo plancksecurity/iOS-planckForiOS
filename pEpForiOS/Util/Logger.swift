@@ -263,27 +263,27 @@ public class Logger {
                     let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
 
                     if let theSub = theSelf.subsystem {
-                        asl_set(logMessage, ASL_KEY_SENDER, theSub)
+                        theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_SENDER, theSub))
                     }
 
                     if let theCat = theSelf.category {
-                        asl_set(logMessage, ASL_KEY_FACILITY, theCat)
+                        theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_FACILITY, theCat))
                     }
 
-                    asl_set(
+                    theSelf.checkASLSuccess(asl_set(
                         logMessage,
                         ASL_KEY_MSG,
-                        "\(filePath):\(fileLine) \(function): \(message) \(args)")
+                        "\(filePath):\(fileLine) \(function): \(message) \(args)"))
 
-                    asl_set(logMessage, ASL_KEY_LEVEL, severity.aslLevelString())
+                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_LEVEL, "ASL_LEVEL_ERROR"))
 
                     let nowDate = Date()
                     let dateString = "\(Int(nowDate.timeIntervalSince1970))"
-                    asl_set(logMessage, ASL_KEY_TIME, dateString)
+                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_TIME, dateString))
 
-                    asl_set(logMessage, ASL_KEY_READ_UID, "-1")
+                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_READ_UID, "-1"))
 
-                    asl_send(theSelf.consoleClient, logMessage)
+                    theSelf.checkASLSuccess(asl_send(theSelf.consoleLogger(), logMessage))
 
                     asl_free(logMessage)
                 }
@@ -311,6 +311,12 @@ public class Logger {
     deinit {
         if consoleClient != nil {
             asl_free(consoleClient)
+        }
+    }
+
+    private func checkASLSuccess(_ result: Int32, comment: String = "no comment") {
+        if result != 0 {
+            print("error: \(comment)")
         }
     }
 }
