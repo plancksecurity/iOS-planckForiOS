@@ -66,13 +66,11 @@ public class Logger {
     }
 
     public init(subsystem: String, category: String) {
+        self.subsystem = subsystem
+        self.category = category
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
-            self.subsystem = nil
-            self.category = nil
             osLogger = OSLog(subsystem: subsystem, category: category)
         } else {
-            self.subsystem = subsystem
-            self.category = category
             osLogger = nil
         }
     }
@@ -171,8 +169,8 @@ public class Logger {
         }
     }
 
-    private let subsystem: String?
-    private let category: String?
+    private let subsystem: String
+    private let category: String
 
     private let osLogger: Any?
 
@@ -292,13 +290,9 @@ public class Logger {
             if let theSelf = self {
                 let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
 
-                if let theSub = theSelf.subsystem {
-                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_SENDER, theSub))
-                }
+                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_SENDER, theSelf.subsystem))
 
-                if let theCat = theSelf.category {
-                    theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_FACILITY, theCat))
-                }
+                theSelf.checkASLSuccess(asl_set(logMessage, ASL_KEY_FACILITY, theSelf.category))
 
                 theSelf.checkASLSuccess(asl_set(
                     logMessage,
@@ -327,7 +321,7 @@ public class Logger {
     private let sender = "security.pEp.app.iOS"
 
     private func createConsoleLogger() -> asl_object_t {
-        return asl_open(self.sender, "default", 0)
+        return asl_open(self.sender, subsystem, 0)
     }
 
     private func consoleLogger() -> aslclient? {
