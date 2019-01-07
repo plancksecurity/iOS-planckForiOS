@@ -40,35 +40,6 @@ class DecryptImportedMessagesTests: XCTestCase {
 
     // MARK: - Tests
 
-    func testDecrypt001() {
-        let cdOwnAccount = DecryptionUtil.createLocalAccount(
-            ownUserName: "test002",
-            ownUserID: "test002",
-            ownEmailAddress: "iostest002@peptest.ch")
-
-        // own keys
-        try! TestUtil.importKeyByFileName(
-            session, fileName: "IOS-884_001_iostest002@peptest.ch.pub.key")
-        try! TestUtil.importKeyByFileName(
-            session, fileName: "IOS-884_001_iostest002@peptest.ch.sec.key")
-
-        // partner
-        try! TestUtil.importKeyByFileName(
-            session, fileName: "IOS-884_001_test010@peptest.ch.pub.key")
-
-        self.backgroundQueue = OperationQueue()
-        let cdMessage = DecryptionUtil.decryptTheMessage(
-            testCase: self,
-            backgroundQueue: backgroundQueue,
-            cdOwnAccount: cdOwnAccount,
-            fileName: "IOS-884_001_Mail_from_P4A.txt")
-
-        XCTAssertEqual(cdMessage?.pEpRating, Int16(PEP_rating_reliable.rawValue))
-        XCTAssertEqual(cdMessage?.shortMessage, "Re:  ")
-        XCTAssertTrue(cdMessage?.longMessage?.startsWith("It is yellow?") ?? false)
-        XCTAssertEqual(cdMessage?.attachments?.count ?? 50, 0)
-    }
-
     /**
      IOS-1300
      */
