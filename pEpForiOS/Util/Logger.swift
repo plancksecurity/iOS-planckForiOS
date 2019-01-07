@@ -274,6 +274,7 @@ public class Logger {
                         logMessage,
                         ASL_KEY_MSG,
                         "\(filePath):\(fileLine) \(function): \(message) \(args)")
+
                     asl_set(logMessage, ASL_KEY_LEVEL, severity.aslLevelString())
 
                     let nowDate = Date()
@@ -283,6 +284,7 @@ public class Logger {
                     asl_set(logMessage, ASL_KEY_READ_UID, "-1")
 
                     asl_send(theSelf.consoleClient, logMessage)
+
                     asl_free(logMessage)
                 }
             }
