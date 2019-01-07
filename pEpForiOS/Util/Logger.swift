@@ -265,6 +265,7 @@ public class Logger {
                     if let theSub = theSelf.subsystem {
                         asl_set(logMessage, ASL_KEY_SENDER, theSub)
                     }
+
                     if let theCat = theSelf.category {
                         asl_set(logMessage, ASL_KEY_FACILITY, theCat)
                     }
@@ -303,5 +304,11 @@ public class Logger {
             consoleClient = createConsoleLogger()
         }
         return consoleClient
+    }
+
+    deinit {
+        if consoleClient != nil {
+            asl_free(consoleClient)
+        }
     }
 }
