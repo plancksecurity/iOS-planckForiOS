@@ -244,7 +244,50 @@ public class Logger {
                        args)
             }
         } else {
-            // TODO: use as_logging
+            aslLogQueue.async { [weak self] in
+                if let theSelf = self {
+                    let logMessage = asl_new(UInt32(ASL_TYPE_MSG))
+
+                    if let theSub = theSelf.subsystem {
+                        asl_set(logMessage, ASL_KEY_SENDER, theSub)
+                    }
+                    if let theCat = theSelf.category {
+                        asl_set(logMessage, ASL_KEY_FACILITY, theCat)
+                    }
+
+                    asl_set(
+                        logMessage,
+                        ASL_KEY_MSG,
+                        "\(filePath):\(fileLine) \(function): \(message) \(args)")
+                    asl_set(logMessage, ASL_KEY_LEVEL, severity.aslLevelString())
+
+                    let nowDate = Date()
+                    let dateString = "\(Int(nowDate.timeIntervalSince1970))"
+                    asl_set(logMessage, ASL_KEY_TIME, dateString)
+
+                    asl_set(logMessage, ASL_KEY_READ_UID, "-1")
+
+                    asl_send(theSelf.consoleClient, logMessage)
+                    asl_free(logMessage)
+                }
+            }
         }
+    }
+
+    private var consoleClient: aslclient?
+
+    private lazy var aslLogQueue = DispatchQueue(label: "security.pEp.asl.log")
+
+    private let sender = "security.pEp.app.iOS"
+
+    private func createConsoleLogger() -> asl_object_t {
+        return asl_open(self.sender, "default", 0)
+    }
+
+    private func consoleLogger() -> aslclient? {
+        if consoleClient == nil {
+            consoleClient = createConsoleLogger()
+        }
+        return consoleClient
     }
 }
