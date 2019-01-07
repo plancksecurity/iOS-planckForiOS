@@ -345,7 +345,7 @@ public class Logger {
 
     private func checkASLSuccess(_ result: Int32, comment: String = "no comment") {
         if result != 0 {
-            print("error: \(comment)")
+            print("*** error: \(comment)")
         }
     }
 }
