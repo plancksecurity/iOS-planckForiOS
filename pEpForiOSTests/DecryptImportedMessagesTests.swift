@@ -197,6 +197,7 @@ class DecryptImportedMessagesTests: XCTestCase {
     }
 
     // ENGINE-505
+    /*
     func testNullInnerMimeType() {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(
             ownUserName: "ThisIsMe",
@@ -230,6 +231,7 @@ class DecryptImportedMessagesTests: XCTestCase {
 
         XCTAssertEqual(msg.attachments.count, 1)
     }
+     */
 
     // MARK: - Helpers
 
