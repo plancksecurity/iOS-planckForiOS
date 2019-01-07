@@ -121,6 +121,12 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
 
     private func deleteRowAt(_ indexPath: IndexPath) {
         self.viewModel.delete(section: indexPath.section, cell: indexPath.row)
+
+        if let position =  navigationController?.viewControllers.count, let previousVc = navigationController?.viewControllers[position - 1] as? EmailViewController {
+            if viewModel.canBeShown(Message: previousVc.message) {
+                navigationController?.viewControllers.remove(at: position-1)
+            }
+        }
         if self.viewModel.noAccounts() {
             self.performSegue(withIdentifier: "noAccounts", sender: nil)
         }

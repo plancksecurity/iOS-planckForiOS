@@ -12,13 +12,13 @@ import XCTest
 
 class DisplayUserErrorTest: XCTestCase {
     let smtpSentErrors: [SmtpSendError] = [.illegalState(#function),
-                                           .authenticationFailed(#function),
+                                           .authenticationFailed(#function, "unknown"),
                                            .connectionLost(#function),
                                            .connectionTerminated(#function),
                                            .connectionTimedOut(#function),
                                            .badResponse(#function)]
     let imapSyncErrors: [ImapSyncError] = [.illegalState(#function),
-                                           .authenticationFailed(#function),
+                                           .authenticationFailed(#function, "unknown"),
                                            .connectionLost(#function),
                                            .connectionTerminated(#function),
                                            .connectionTimedOut(#function),

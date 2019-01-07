@@ -46,7 +46,7 @@ extension LoginSmtpOperation: SmtpSendDelegate {
     }
 
     public func authenticationFailed(_ smtp: SmtpSend, theNotification: Notification?) {
-        addError(SmtpSendError.authenticationFailed(#function))
+        addError(SmtpSendError.authenticationFailed(#function, smtp.connectInfo.account.user.address))
         markAsFinished()
     }
 

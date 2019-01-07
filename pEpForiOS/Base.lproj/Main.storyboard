@@ -110,6 +110,7 @@
                                             <rect key="frame" x="56" y="50" width="20" height="20"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" constant="20" id="Kc3-zI-6iP"/>
                                                 <constraint firstAttribute="width" secondItem="m0u-Jn-mQU" secondAttribute="height" multiplier="1:1" id="fnp-Yy-49g"/>
                                             </constraints>
                                         </imageView>

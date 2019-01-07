@@ -12,15 +12,15 @@ import Foundation
 extension LoginViewController: UIScrollViewDelegate {
 
     func configureKeyboardAwareness() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name:NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name:NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
-    @objc func keyboardWillShow(notification:NSNotification){
-
+    
+    @objc func keyboardWillChangeFrame(notification: NSNotification) {
         guard let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?
             .cgRectValue else {
-            return
+                return
         }
         if UIDevice.current.userInterfaceIdiom == .pad && self.traitCollection.verticalSizeClass == .regular {
             var loginButtonUnderSpace = loginButton.frame.maxY
@@ -35,7 +35,25 @@ extension LoginViewController: UIScrollViewDelegate {
             biggerLoginButtonFrame.size = CGSize(width: loginButton.frame.width, height: loginButton.frame.height + 20)
             contentScrollView.scrollRectToVisible(biggerLoginButtonFrame, animated: true)
             contentScrollView.isScrollEnabled = false
+            
+        }
+        else if self.traitCollection.verticalSizeClass == .compact {
+            var contentInset:UIEdgeInsets = contentScrollView.contentInset
+            contentInset.bottom = keyboardFrame.size.height
+            contentScrollView.contentInset = contentInset
+            contentScrollView.scrollIndicatorInsets = contentInset
+            self.contentScrollView.delegate = self
 
+            if self.password.isFirstResponder {
+                contentScrollView.isScrollEnabled = true
+                var textFieldsFrame = self.textFieldsContainerView.frame
+                textFieldsFrame.size = CGSize(width: textFieldsContainerView.frame.width, height: textFieldsContainerView.frame.height + 20)
+                self.contentScrollView.scrollRectToVisible(textFieldsFrame, animated: false)
+            }
+            else {
+                self.contentScrollView.scrollRectToVisible(self.loginButton.frame, animated: false)
+            }
+            
         }
         else {
             var contentInset:UIEdgeInsets = contentScrollView.contentInset
@@ -43,9 +61,8 @@ extension LoginViewController: UIScrollViewDelegate {
             contentScrollView.contentInset = contentInset
             contentScrollView.scrollIndicatorInsets = contentInset
             self.contentScrollView.delegate = self
-            self.contentScrollView.scrollRectToVisible(self.loginButton.frame, animated: true)
+            self.contentScrollView.scrollRectToVisible(self.loginButton.frame, animated: false)
         }
-
     }
 
     @objc func keyboardWillHide(notification:NSNotification){
