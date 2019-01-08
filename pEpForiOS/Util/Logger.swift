@@ -193,7 +193,7 @@ public class Logger {
     /**
      Logs an error.
      */
-    public func error(function: String = #function,
+    public func log(function: String = #function,
                     filePath: String = #file,
                     fileLine: Int = #line,
                     error: Error) {
