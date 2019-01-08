@@ -32,10 +32,6 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
-        let selfInfo = "\(unsafeBitCast(self, to: UnsafeRawPointer.self))"
-        let theComp = comp
-        let canceled = "\(self.isCancelled ? "" : "not") canceled"
-
         if isCancelled {
             markAsFinished()
             return
