@@ -89,7 +89,7 @@ extension Message {
             // the message is in the target folder already. No need to move it.
             return
         }
-        saveFakeMessage(for: self, in: targetFolder)
+        saveFakeMessage(in: targetFolder)
         if targetFolder.account == parent.account {
            self.targetFolder = targetFolder
             save()

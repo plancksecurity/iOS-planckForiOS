@@ -42,11 +42,11 @@ extension Message {
         MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
     }
 
-    func saveFakeMessage(for msg: Message, in targetFolder: Folder) {
+    func saveFakeMessage(in targetFolder: Folder) {
         let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
-                              message: msg,
+                              message: self,
                               parentFolder: targetFolder)
-        if let origFlags = msg.imapFlags {
+        if let origFlags = self.imapFlags {
             // Take over user editable flags
             fakeMsg.imapFlags?.flagged = origFlags.flagged
             fakeMsg.imapFlags?.seen = origFlags.seen
@@ -56,7 +56,7 @@ extension Message {
         fakeMsg.save()
     }
 
-    convenience init(uid: Int, message: Message, parentFolder: Folder) {
+    private convenience init(uid: Int, message: Message, parentFolder: Folder) {
         self.init(uid: uid, message: message)
         self.parent = parentFolder
     }
