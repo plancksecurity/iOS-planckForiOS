@@ -67,7 +67,7 @@ public class Logger {
         }
     }
 
-    public init(subsystem: String, category: String) {
+    public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
