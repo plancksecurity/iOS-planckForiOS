@@ -188,6 +188,7 @@ public class Logger {
     public static let frontend = "frontend"
     public static let backend = "backend"
     public static let util = "util"
+    public static let htmlParsing = "htmlParsing"
 
     public static func lostMySelf(category: String) {
         Logger.init(category: category).errorAndCrash("Lost MySelf")
