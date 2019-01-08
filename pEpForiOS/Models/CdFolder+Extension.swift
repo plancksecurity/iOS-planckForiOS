@@ -131,7 +131,6 @@ public extension CdFolder {
     static private func insert(
         folderName: String, folderType: FolderType?, account: CdAccount,
         context: NSManagedObjectContext) -> CdFolder {
-        Log.verbose(component: comp, content: "insert \(folderName)")
         // Reactivate if previously deleted
         if let folder = by(name: folderName, account: account, context: context) {
             if let type = folderType {
@@ -155,7 +154,6 @@ public extension CdFolder {
         }
         folder.folderType = guessFolderType(for: folder) ?? FolderType.normal
 
-        Log.verbose(component: comp, content: "insert \(folderName): \(folder.folderType)")
         return folder
     }
 

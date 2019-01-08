@@ -693,14 +693,10 @@ open class NetworkServiceWorker {
 
         if !self.cancelled {
             var myLines = operationLines
-            Log.verbose(component: theComp,
-                        content: "\(operationLines.count) left, repeat? \(repeatProcess)")
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
                 scheduleOperationLine(operationLine: ol, completionBlock: {
                     [weak self, weak ol] in
-                    Log.verbose(component: theComp,
-                                content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")
                     guard let me = self, let theOl = ol else {
                         return
                     }
@@ -723,8 +719,6 @@ open class NetworkServiceWorker {
                         }
                 }
             }
-        } else {
-            Log.verbose(component: theComp, content: "canceled with \(operationLines.count)")
         }
     }
 }
