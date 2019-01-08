@@ -64,7 +64,7 @@ class ThreadViewController: BaseViewController {
 
     func isSplitViewControllerCollapsed() -> Bool! {
         guard let splitViewController = self.splitViewController else {
-            Log.shared.errorAndCrash(component: #function, errorString: "We need a splitViewController here")
+            logger.errorAndCrash("We need a splitViewController here")
             return nil
         }
         return splitViewController.isCollapsed

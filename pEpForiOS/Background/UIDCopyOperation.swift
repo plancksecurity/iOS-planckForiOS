@@ -66,9 +66,11 @@ class UIDCopyOperation: ImapSyncOperation {
 class UIDCopyOperationSyncDelegate: DefaultImapSyncDelegate {
     // MARK: Success
 
+    private let logger = Logger(category: Logger.backend)
+
     override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let handler = errorHandler as? UIDCopyOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            logger.errorAndCrash("No handler")
             return
         }
         handler.handleMessage()
@@ -76,7 +78,7 @@ class UIDCopyOperationSyncDelegate: DefaultImapSyncDelegate {
 
     override func messagesCopyCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let handler = errorHandler as? UIDCopyOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            logger.errorAndCrash("No handler")
             return
         }
         handler.markAsFinished()
@@ -104,7 +106,7 @@ class UIDCopyOperationSyncDelegate: DefaultImapSyncDelegate {
 
     private func handle(error: Error, on errorHandler: ImapSyncDelegateErrorHandlerProtocol?) {
         guard let handler = errorHandler as? UIDCopyOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Wrong delegate called")
+            logger.errorAndCrash("Wrong delegate called")
             return
         }
         handler.addIMAPError(error)

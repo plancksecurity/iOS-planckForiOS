@@ -10,6 +10,7 @@ import UIKit
 
 class AccountCell: TextViewContainingTableViewCell {
     static let reuseId = "AccountCell"
+
     private var viewModel: AccountCellViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -18,6 +19,8 @@ class AccountCell: TextViewContainingTableViewCell {
         }
     }
     private var picker: AccountPickerView?
+
+    private let logger = Logger(category: Logger.frontend)
 
     public func setup(with viewModel: AccountCellViewModel) {
         self.viewModel = viewModel
@@ -29,7 +32,7 @@ class AccountCell: TextViewContainingTableViewCell {
 
     private func setupPickerView() {
         guard let viewModel = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            logger.errorAndCrash("No VM")
             return
         }
         picker = AccountPickerView()

@@ -159,13 +159,12 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
         if result == .ok {
             MessageModel.performAndWait { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 guard let account = me.currentlyVerifiedAccount else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "We verified an non-existing account? " +
-                        "Now what?")
+                    Logger(category: Logger.backend).errorAndCrash(
+                        "We verified an non-existing account? Now what?")
                     return
                 }
                 account.save()

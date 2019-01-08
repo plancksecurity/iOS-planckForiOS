@@ -17,6 +17,8 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     private var syncDelegate: FetchNumberOfNewMailsSyncDelegate?
     private var numNewMailsFetchedBlock: CompletionBlock?
 
+    private let logger = Logger(category: Logger.backend)
+
     init(parentName: String = #function,
          errorContainer: ServiceErrorProtocol = ErrorContainer(),
          imapSyncData: ImapSyncData,
@@ -38,7 +40,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
 
         privateMOC.perform() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "I lost me")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             me.process()
@@ -46,7 +48,6 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
     }
 
     public override func cancel() {
-        Log.info(component: comp, content: "cancel")
         if let sync = imapSyncData.sync {
             sync.cancel()
         }
@@ -108,7 +109,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
                 self.fetchUids(sync)
             }
         } else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No sync")
+            logger.errorAndCrash("No sync")
             markAsFinished()
         }
     }
@@ -140,7 +141,7 @@ class FetchNumberOfNewMailsOperation: ImapSyncOperation {
             return uids
         }
         guard let cdFolderToOpen = cdFolder() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder")
+            logger.errorAndCrash("No folder")
             return nil
         }
         guard let theOneAndOnlyUid = uids?.first else {

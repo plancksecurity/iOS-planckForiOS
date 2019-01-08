@@ -63,8 +63,9 @@ struct UserNotificationTool {
                                                 content: content, trigger: trigger)
             center.add(request) { (error) in
                 if let error = error {
-                    Log.shared.warn(component: #function,
-                                    content: "Error posting user notification: \(error)")
+                    Logger(category: Logger.util).warn(
+                        "Error posting user notification: %{public}@",
+                        error.localizedDescription)
                 }
             }
         } else {

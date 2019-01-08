@@ -40,8 +40,7 @@ extension Message {
     /// Note: Use only for messages synced with an IMAP server.
     private func internalImapMarkDeleted() {
         guard self.parent.folderType.isSyncedWithServer else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString:
+            Logger(category: Logger.model).errorAndCrash(
                 "This method must not be called for messages in local folders.")
             return
         }
@@ -56,14 +55,13 @@ extension Message {
     /// Note: Use only for messages synced with an IMAP server.
     private func internalImapDelete() {
         guard self.parent.folderType.isSyncedWithServer else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString:
+            Logger(category: Logger.model).errorAndCrash(
                 "This method must not be called for messages in local folders.")
             return
         }
         guard let trashFolder = parent.account.folder(ofType: .trash) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We should have a trash folder at this point")
+            Logger(category: Logger.model).errorAndCrash(
+                "We should have a trash folder at this point")
             return
         }
 

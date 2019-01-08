@@ -19,6 +19,8 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     let messageFetchedBlock: MessageFetchedBlock?
     let messageUpdate: CWMessageUpdate
 
+    private let logger = Logger(category: Logger.backend)
+
     public init(
         parentName: String = #function,
         accountID: NSManagedObjectID, message: CWIMAPMessage,
@@ -32,11 +34,6 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     }
 
     override public func main() {
-        let selfInfo = "\(unsafeBitCast(self, to: UnsafeRawPointer.self))"
-        let theComp = comp
-        let canceled = "\(self.isCancelled ? "" : "not") canceled"
-        Log.shared.info( component: theComp, content: "\(selfInfo) \(canceled)")
-
         if isCancelled {
             markAsFinished()
             return
@@ -44,13 +41,10 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
         let context = privateMOC
         context.perform() {
             if self.isCancelled {
-                Log.shared.info(component: theComp,
-                                content: "\(selfInfo) not stored: \(canceled)")
                 self.markAsFinished()
                 return
             }
             self.storeMessage(context: context)
-            Log.shared.info(component: theComp, content: "\(selfInfo) stored: \(canceled)")
             self.markAsFinished()
         }
     }
@@ -69,12 +63,7 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                 messageFetchedBlock?(msg)
             }
         } else {
-            Log.shared.warn(component: #function,
-                            content:
-                """
-We could not store the message. This can happen if the belonging account just has been deleted.
-"""
-            )
+            logger.log("We could not store the message. This can happen if the belonging account just has been deleted.")
             self.addError(BackgroundError.CoreDataError.couldNotStoreMessage(info: #function))
         }
     }

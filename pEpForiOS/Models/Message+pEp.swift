@@ -34,8 +34,8 @@ extension Message {
         }
 
         guard let sender = from else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "No sender for outgoing message?")
+            Logger(category: Logger.model).errorAndCrash(
+                "No sender for outgoing message?")
             return PEP_rating_undefined
         }
         return PEPSession().outgoingMessageRating(from:sender, to:to, cc:cc, bcc:bcc)
@@ -131,8 +131,8 @@ extension Message {
         var result = [Message]()
         for cdMessage in cdMessages {
             guard let message = cdMessage.message() else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "No Message for CdMesssage")
+                Logger(category: Logger.model).errorAndCrash(
+                    "No Message for CdMesssage")
                 continue
             }
             result.append(message)
@@ -146,8 +146,8 @@ extension Message {
         var result = [Message]()
         for cdMessage in cdMessages {
             guard let message = cdMessage.message() else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "No Message for CdMesssage")
+                Logger(category: Logger.model).errorAndCrash(
+                    "No Message for CdMesssage")
                 continue
             }
             result.append(message)

@@ -9,12 +9,16 @@
 import Foundation
 import os.log
 
+import MessageModel // For SystemUtils.crash only
+
 public class Logger {
     public enum Severity {
         /**
-         OSLog.default
+         This is the lowest priority that gets written to disk by default.
+         Used like WARN.
          */
         case `default`
+
         case info
         case debug
         case error
@@ -65,7 +69,7 @@ public class Logger {
         }
     }
 
-    public init(subsystem: String, category: String) {
+    public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category
         if #available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *) {
@@ -83,6 +87,23 @@ public class Logger {
                     fileLine: Int = #line,
                     _ message: StaticString,
                     _ args: CVarArg...) {
+        saveLog(message: message,
+                severity: .default,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: args)
+    }
+
+    /**
+     os_log doesn't have a warn per se, but default is coming close.
+     This is the same as log.
+     */
+    public func warn(function: String = #function,
+                     filePath: String = #file,
+                     fileLine: Int = #line,
+                     _ message: StaticString,
+                     _ args: CVarArg...) {
         saveLog(message: message,
                 severity: .default,
                 function: function,
@@ -155,6 +176,36 @@ public class Logger {
                 args: args)
     }
 
+    public func errorAndCrash(function: String = #function,
+                              filePath: String = #file,
+                              fileLine: Int = #line,
+                              _ message: StaticString,
+                              _ args: CVarArg...) {
+        saveLog(message: message,
+                severity: .fault,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: args)
+        SystemUtils.crash("\(message)")
+    }
+
+    /**
+     Logs an error.
+     */
+    public func log(function: String = #function,
+                    filePath: String = #file,
+                    fileLine: Int = #line,
+                    error: Error) {
+        saveLog(message: "%{public}@",
+                severity: .default,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                // TODO: Find a better way than localizedDescription
+                args: [error.localizedDescription])
+    }
+
     /**
      Testing only. If you want to test the fallback to ASL logging you may have to call
      this, as all the logging is deferred to a serial queue.
@@ -167,6 +218,16 @@ public class Logger {
                 // nothing
             }
         }
+    }
+
+    public static let frontend = "frontend"
+    public static let backend = "backend"
+    public static let util = "util"
+    public static let htmlParsing = "htmlParsing"
+    public static let model = "model"
+
+    public static func lostMySelf(category: String) {
+        Logger.init(category: category).errorAndCrash("Lost MySelf")
     }
 
     private let subsystem: String

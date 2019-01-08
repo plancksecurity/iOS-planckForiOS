@@ -38,7 +38,6 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
 
     func networkServiceDidSync(service: NetworkService, accountInfo: AccountConnectInfo,
                  errorProtocol: ServiceErrorProtocol) {
-        Log.info(component: #function, content: "\(self)")
         if errorProtocol.hasErrors() && failOnError {
             Log.error(component: #function, error: errorProtocol.error)
             XCTFail()

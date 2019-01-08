@@ -20,6 +20,8 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     /** The object ID of the last sent message, so we can move it on success */
     var lastSentMessageObjectID: NSManagedObjectID?
 
+    private let logger = Logger(category: Logger.backend)
+
     public init(parentName: String = #function, smtpSendData: SmtpSendData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.smtpSendData = smtpSendData
@@ -56,8 +58,8 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         var outgoingMsgs = [CdMessage]()
         context.performAndWait {
             guard let cdAccount = context.object(with: cdAccountObjectId) as? CdAccount else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "No NSManagedObject for NSManagedObjectID")
+                Logger(category: Logger.backend).errorAndCrash(
+                    "No NSManagedObject for NSManagedObjectID")
                 outgoingMsgs = []
                 return
             }
@@ -114,8 +116,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount),
             let message = cdMessage.message()
             else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Problem moving last message")
+                logger.errorAndCrash("Problem moving last message")
                 return
         }
         let rating = message.outgoingMessageRating().rawValue
@@ -150,7 +151,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         let moc = privateMOC
         moc.perform { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             me.moveLastMessageToSentFolder(context: moc)
@@ -197,9 +198,8 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         guard
             let unencryptedCdMessage = privateMOC.object(with: objId) as? CdMessage,
             let unencryptedMessage = unencryptedCdMessage.message() else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No Message")
-                handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
-                return
+            logger.errorAndCrash("No message")
+            return
         }
 
         let originalRating = unencryptedMessage.outgoingMessageRating()
@@ -297,7 +297,7 @@ extension Dictionary where Key == String {
                 if let newValue = newHeaders as? Value {
                     self[kPepOptFields] = newValue
                 } else {
-                    Log.shared.warn(component: #function, content: "can't cast to `Value`")
+                    Logger(category: Logger.util).errorAndCrash("Can't cast to `Value`")
                 }
             }
         }

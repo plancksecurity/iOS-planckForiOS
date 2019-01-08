@@ -12,6 +12,8 @@ import XCTest
 @testable import MessageModel
 
 class MessageReevalutionTests: XCTestCase {
+    private let logger = Logger(category: Logger.frontend)
+
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderIdentity: CdIdentity!
@@ -61,7 +63,7 @@ class MessageReevalutionTests: XCTestCase {
                                                     isMySelf: false)
         senderIdentityBuilder.save()
         guard let sender = CdIdentity.search(address: senderAddress) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Cant find ")
+            XCTFail("Can't find")
             return
         }
         Record.saveAndWait()

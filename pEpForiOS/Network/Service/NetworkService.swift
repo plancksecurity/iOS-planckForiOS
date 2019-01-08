@@ -171,7 +171,7 @@ extension NetworkService: NetworkServiceWorkerDelegate {
     public func networkServiceWorkerDidFinishLastSyncLoop(worker: NetworkServiceWorker) {
         GCD.onMain { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.delegate?.networkServiceDidFinishLastSyncLoop(service: me)
@@ -181,7 +181,7 @@ extension NetworkService: NetworkServiceWorkerDelegate {
     public func networkServiceWorkerDidCancel(worker: NetworkServiceWorker) {
         GCD.onMain { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.delegate?.networkServiceDidCancel(service: me)
@@ -191,7 +191,7 @@ extension NetworkService: NetworkServiceWorkerDelegate {
     public func networkServiceWorker(_ worker: NetworkServiceWorker, errorOccured error: Error) {
         GCD.onMain { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.serviceConfig.errorPropagator?.report(error: error)

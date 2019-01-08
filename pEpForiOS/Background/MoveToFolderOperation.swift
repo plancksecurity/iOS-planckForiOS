@@ -18,6 +18,8 @@ class MoveToFolderOperation: ImapSyncOperation {
     let folder: Folder
     var lastProcessedMessage: Message?
 
+    private let logger = Logger(category: Logger.backend)
+
     init(parentName: String = #function, imapSyncData: ImapSyncData,
          errorContainer: ServiceErrorProtocol = ErrorContainer(), folder: Folder) {
         self.folder = folder
@@ -47,7 +49,7 @@ class MoveToFolderOperation: ImapSyncOperation {
         var result: Message? = nil
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             guard let msg = me.folder.firstMessageThatHasToBeMoved() else {
@@ -102,7 +104,7 @@ class MoveToFolderOperation: ImapSyncOperation {
         }
         MessageModel.perform { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             guard !me.isCancelled else {
@@ -124,8 +126,7 @@ class MoveToFolderOperation: ImapSyncOperation {
                 return
             }
             if message.parent == message.targetFolder {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "I wounder why we are here then.")
+                me.logger.errorAndCrash("I wounder why we are here then.")
                 me.handleNextMessage()
                 return
             }
@@ -180,7 +181,7 @@ class MoveToFolderOperation: ImapSyncOperation {
             guard
                 let accountId = connectInfo.accountObjectID,
                 let cdAccount = Record.Context.background.object(with: accountId) as? CdAccount else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No account.")
+                    Logger(category: Logger.backend).errorAndCrash("No account")
                     return
             }
             let account = cdAccount.account()
@@ -195,11 +196,13 @@ class MoveToFolderOperation: ImapSyncOperation {
 // MARK: - MoveToFolderSyncDelegate
 
 class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
+    private let logger = Logger(category: Logger.backend)
+
     // MARK: Success
 
     override func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let handler = errorHandler as? MoveToFolderOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            logger.errorAndCrash("No handler")
             return
         }
         handler.handleNextMessage()
@@ -207,7 +210,7 @@ class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
 
     override func messageUidMoveCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let handler = errorHandler as? MoveToFolderOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            logger.errorAndCrash("No handler")
             return
         }
         handler.handleNextMessage()
@@ -215,7 +218,7 @@ class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
 
     override func messagesCopyCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let handler = errorHandler as? MoveToFolderOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            logger.errorAndCrash("No handler")
             return
         }
         handler.handleMessageCopyCompleted()
@@ -237,7 +240,7 @@ class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
 
     override func messageUidMoveFailed(_ sync: ImapSync, notification: Notification?) {
         guard let handler = errorHandler as? MoveToFolderOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No handler")
+            logger.errorAndCrash("No handler")
             return
         }
         // UID MOVE failed. We assume the server does not support it and use UID COPY as
@@ -253,7 +256,7 @@ class MoveToFolderSyncDelegate: DefaultImapSyncDelegate {
 
     private func handle(error: Error, on errorHandler: ImapSyncDelegateErrorHandlerProtocol?) {
         guard let handler = errorHandler as? MoveToFolderOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Wrong delegate called")
+            logger.errorAndCrash("Wrong delegate called")
             return
         }
         handler.handleError(error)

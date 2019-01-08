@@ -23,7 +23,7 @@ extension content_disposition_type {
         case PEP_CONTENT_DISP_OTHER:
             return PantomimeAttachmentDisposition
         default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unknown case")
+            Logger(category: Logger.model).errorAndCrash("Unknown case")
             return PantomimeAttachmentDisposition
         }
     }
@@ -48,7 +48,7 @@ extension Attachment.ContentDispositionType {
         case .inline:
             return PantomimeInlineDisposition
         default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unknown case")
+            Logger(category: Logger.model).errorAndCrash("Unknown case")
             return PantomimeAttachmentDisposition
         }
     }
@@ -66,7 +66,7 @@ extension Attachment.ContentDispositionType {
         case PEP_CONTENT_DISP_OTHER:
             self = .attachment // This is probably wrong. Semantic of other not clear
         default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unhandles case")
+            Logger(category: Logger.model).errorAndCrash("Unknown case")
             self = .attachment
         }
     }
@@ -78,7 +78,7 @@ extension Attachment.ContentDispositionType {
         case PantomimeInlineDisposition:
             self = .inline
         default:
-            Log.shared.errorAndCrash(component: #function, errorString: "Unhandles case")
+            Logger(category: Logger.model).errorAndCrash("Unknown case")
             self = .attachment
         }
     }

@@ -10,6 +10,8 @@ import Foundation
 import MessageModel
 
 public class FolderSectionViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     public var collapsed = false
     private var account: Account?
     public var hidden = false
@@ -33,7 +35,7 @@ public class FolderSectionViewModel {
 
     private func generateAccountCells() {
         guard let ac = account else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No account selected")
+            logger.errorAndCrash("No account selected")
             return
         }
         for folder in ac.rootFolders {
@@ -51,7 +53,7 @@ public class FolderSectionViewModel {
 
     func getImage(callback: @escaping (UIImage?)-> Void) {
         guard let ac = account else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No account selected")
+            logger.errorAndCrash("No account selected")
             return
         }
         if let cachedContactImage = contactImageTool.cachedIdentityImage(for: ac.user) {

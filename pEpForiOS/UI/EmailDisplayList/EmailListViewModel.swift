@@ -34,6 +34,8 @@ extension EmailListViewModel: FilterUpdateProtocol {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     let messageFolderDelegateHandlingQueue = DispatchQueue(label:
         "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
@@ -168,8 +170,7 @@ class EmailListViewModel {
 
     func viewModel(for index: Int) -> MessageViewModel? {
         guard let messageViewModel = messages.object(at: index) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "InconsistencyviewModel vs. model")
+            logger.errorAndCrash("InconsistencyviewModel vs. model")
             return nil
         }
         return messageViewModel
@@ -287,7 +288,7 @@ class EmailListViewModel {
 
         for pvm in deletees {
             guard let message = pvm.message() else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No mesage")
+                logger.errorAndCrash("No mesage")
                 return
             }
             delete(message: message)
@@ -338,9 +339,7 @@ class EmailListViewModel {
 
     func delete(forIndexPath indexPath: IndexPath) {
         guard let deletedMessage = deleteMessage(at: indexPath) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Not sure if this is a valid case. Remove this " +
-                "log if so.")
+            logger.errorAndCrash("Not sure if this is a valid case. Remove this log if so.")
             return
         }
         didDelete(messageFolder: deletedMessage, belongingToThread: Set())
@@ -451,7 +450,7 @@ class EmailListViewModel {
         if folderToShow is UnifiedInbox {
             // folderToShow is unified inbox, fetch parent folder from DB.
             guard let folder = messages.object(at: index)?.message()?.parent else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
+                    logger.errorAndCrash("Dangling Message")
                     return folderToShow
             }
             parentFolder = folder
@@ -564,7 +563,7 @@ class EmailListViewModel {
 
     public func removeSearchFilter() {
         guard let filter = folderToShow.filter else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
+            logger.errorAndCrash("No folder.")
             return
         }
         let filtersChanged = filter.removeSearchFilter()
@@ -579,8 +578,7 @@ class EmailListViewModel {
         }
 
         guard let folderFilter = folderToShow.filter else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We just set the filter but do not have one?")
+            logger.errorAndCrash("We just set the filter but do not have one?")
             return CompositeFilter<FilterBase>.defaultFilter()
         }
         return folderFilter
@@ -590,7 +588,7 @@ class EmailListViewModel {
 
     func folderIsDraft(_ parentFolder: Folder?) -> Bool {
         guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
+            logger.errorAndCrash("No parent.")
             return false
         }
         return folder.folderType == .drafts
@@ -598,7 +596,7 @@ class EmailListViewModel {
 
     func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
         guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
+            logger.errorAndCrash("No parent.")
             return false
         }
         return folder.folderType == .outbox

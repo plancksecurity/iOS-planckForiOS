@@ -13,6 +13,7 @@ public enum FilterSectionType {
     case accouts, include, other
 }
 public class FilterViewModel {
+    private let logger = Logger(category: Logger.frontend)
 
     private var items: [FilterCellViewModel]
     public var title: String
@@ -46,8 +47,7 @@ public class FilterViewModel {
         case .accouts:
             for account in Account.all() {
                 guard let icon = UIImage(named: "folders-icon-inbox") else {
-                    Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
-                        errorString: "Error Loading images")
+                    logger.errorAndCrash("Error Loading images")
                     return
                 }
                 items.append(
@@ -60,8 +60,7 @@ public class FilterViewModel {
             break
         case .include:
             guard let unreadIcon = UIImage(named: "icon-unread") else {
-                Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
-                    errorString: "Error Loading images")
+                logger.errorAndCrash("Error Loading images")
                 return
             }
             items.append(
@@ -72,8 +71,7 @@ public class FilterViewModel {
                                     filter: UnreadFilter()))
 
             guard let flaggedIcon = UIImage(named: "icon-flagged") else {
-                Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
-                    errorString: "Error Loading images")
+                logger.errorAndCrash("Error Loading images")
                 return
             }
             items.append(
@@ -85,8 +83,7 @@ public class FilterViewModel {
             break
         case .other:
             guard let attachIcon = UIImage(named: "attachment-list-icon") else {
-                Log.shared.errorAndCrash(component: "#file - \(#function)[\(#line)]",
-                    errorString: "Error Loading images")
+                logger.errorAndCrash("Error Loading images")
                 return
             }
             items.append(

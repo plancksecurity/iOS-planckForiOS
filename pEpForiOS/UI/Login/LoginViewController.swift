@@ -159,7 +159,7 @@ class LoginViewController: BaseViewController {
     }
 
     private func handleLoginError(error: Error, offerManualSetup: Bool) {
-        Log.shared.error(component: #function, error: error)
+        logger.error("%{public}@", error.localizedDescription)
         self.isCurrentlyVerifying = false
         guard let error = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.
@@ -309,7 +309,7 @@ extension LoginViewController: AccountVerificationResultDelegate {
     func didVerify(result: AccountVerificationResult, accountInput: AccountUserInput?) {
         GCD.onMain() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.lastAccountInput = nil

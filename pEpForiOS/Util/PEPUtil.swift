@@ -63,8 +63,8 @@ open class PEPUtil {
         if let id = account.identity {
             return pEpDict(cdIdentity: id)
         } else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "account without identity: \(account)")
+            Logger(category: Logger.util).errorAndCrash(
+                "account without identity: %{public}@", account)
             return PEPIdentity(address: "none")
         }
     }
@@ -96,8 +96,8 @@ open class PEPUtil {
                                userName: cdIdentity.userName, isOwn: cdIdentity.isMySelf,
                                fingerPrint: nil, commType: PEP_ct_unknown, language: nil)
         } else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "missing address: \(cdIdentity)")
+            Logger(category: Logger.util).errorAndCrash(
+                "missing address: %{public}@", cdIdentity)
             return PEPIdentity(address: "none")
         }
     }
@@ -458,8 +458,9 @@ open class PEPUtil {
         do {
             return try session.rating(for: pepC).pEpRating
         } catch {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Identity: \(identity) caused error: \(error)")
+            Logger(category: Logger.util).errorAndCrash(
+                "Identity: %{public}@ caused error: %{public}@",
+                identity.description, error.localizedDescription)
             return PEP_rating_undefined
         }
     }

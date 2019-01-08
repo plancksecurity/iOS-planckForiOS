@@ -34,7 +34,6 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
         self.folderInfo = folderInfo
         self.connectInfo = connectInfo
         super.init(parentName: parentName)
-        Log.verbose(component: comp, content: "init \(folderInfo.name)")
     }
 
     override public func main() {
@@ -42,7 +41,6 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
             markAsFinished()
             return
         }
-        Log.verbose(component: comp, content: "main \(folderInfo.name)")
         let context = privateMOC
         context.perform() {
             self.process(context: context)
@@ -50,7 +48,6 @@ public class StoreFolderOperation: ConcurrentBaseOperation {
     }
 
     func process(context: NSManagedObjectContext) {
-        Log.verbose(component: comp, content: "process \(folderInfo.name)")
         defer {
             markAsFinished()
         }

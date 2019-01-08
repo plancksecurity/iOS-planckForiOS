@@ -16,6 +16,8 @@ public class DeleteFolderOperation: ImapSyncOperation {
     var account: CdAccount!
     var syncDelegate: DeleteFolderSyncDelegate?
 
+    private let logger = Logger(category: Logger.backend)
+
     init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData, account: CdAccount,
                 folderName: String) {
@@ -33,7 +35,7 @@ public class DeleteFolderOperation: ImapSyncOperation {
 
         privateMOC.perform() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             me.account = me.privateMOC.object(with: me.accountID) as? CdAccount
@@ -51,7 +53,7 @@ public class DeleteFolderOperation: ImapSyncOperation {
     func deleteLocalFolderAndFinish() {
         privateMOC.perform { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if let folder = CdFolder.by(name: me.folderName, account: me.account) {
@@ -64,8 +66,7 @@ public class DeleteFolderOperation: ImapSyncOperation {
 
     func handleBadResponse(sync: ImapSync, response: String?) {
         let msg = response ?? "Bad Response"
-        Log.shared.errorComponent(#function,
-                                  message: "The folder could not be deleted: \(msg)")
+        logger.error("The folder could not be deleted: %{public}@", msg)
         self.markAsFinished()
     }
 

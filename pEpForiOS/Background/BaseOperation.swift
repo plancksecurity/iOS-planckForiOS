@@ -12,6 +12,8 @@
 open class BaseOperation: Operation, ServiceErrorProtocol {
     open var comp = "BaseOperation"
 
+    private let logger = Logger(category: "Background")
+
     let errorContainer: ServiceErrorProtocol
 
     static let moduleTitleRegex = try! NSRegularExpression(
@@ -48,10 +50,9 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
 
         comp = "\(comp) \(unsafeBitCast(self, to: UnsafeRawPointer.self)) [\(parentName)]"
         self.name = comp
-        Log.info(component: comp, content: "\(#function)")
     }
 
     func logSelf(functionName: String) {
-        Log.log(comp: comp, mySelf: self, functionName: functionName)
+        logger.log("%{public}@: %{public}@", comp, self)
     }
 }

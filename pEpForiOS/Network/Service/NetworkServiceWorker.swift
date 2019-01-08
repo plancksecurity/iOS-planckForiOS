@@ -32,6 +32,8 @@ public protocol NetworkServiceWorkerDelegate: class {
 }
 
 open class NetworkServiceWorker {
+    private let logger = Logger(category: Logger.backend)
+
     public struct FolderInfo {
         public let name: String
         public let folderType: FolderType
@@ -60,19 +62,10 @@ open class NetworkServiceWorker {
                 return
             }
             if keyPath == operationCountKeyPath {
-                let opCount = (newValue as? NSNumber)?.intValue
-                Log.shared.info(component: #function,
-                                content: "operationCount \(String(describing: opCount))")
-                dumpOperations()
+                let _ = (newValue as? NSNumber)?.intValue
             } else {
                 super.observeValue(forKeyPath: keyPath, of: object, change: change,
                                    context: context)
-            }
-        }
-
-        func dumpOperations() {
-            for op in self.backgroundQueue.operations {
-                Log.shared.info(component: #function, content: "Still running: \(op)")
             }
         }
     }
@@ -110,8 +103,6 @@ open class NetworkServiceWorker {
      Start endlessly synchronizing in the background.
      */
     public func start() {
-        Log.info(component: #function, content: "\(String(describing: self))")
-
         cancelled = false
         imapConnectionDataCache.reset()
         self.process()
@@ -125,12 +116,10 @@ open class NetworkServiceWorker {
 
         self.cancelled = true
         self.backgroundQueue.cancelAllOperations()
-        Log.info(component: myComp,
-                 content: "\(String(describing: self)): all operations cancelled")
 
         workerQueue.async {[weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             let observer = ObjectObserver(
@@ -149,7 +138,6 @@ open class NetworkServiceWorker {
     /// Makes sure all local changes are synced to the server and then stops.
     /// Calls delegate networkServiceWorkerDidFinishLastSyncLoop when done.
     public func stop() {
-        Log.info(component: #function, content: "\(String(describing: self))")
         syncLocalChangesWithServerAndStop()
     }
 
@@ -159,7 +147,7 @@ open class NetworkServiceWorker {
         cancelled = true
         workerQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             // Cancel the current sync loop ...
@@ -231,13 +219,8 @@ open class NetworkServiceWorker {
         let loginOp = LoginSmtpOperation(parentName: serviceConfig.parentName,
                                          smtpSendData: smtpSendData,
                                          errorContainer: errorContainer)
-        loginOp.completionBlock = { [weak self] in
+        loginOp.completionBlock = {
             loginOp.completionBlock = nil
-            if let me = self {
-                me.workerQueue.async {
-                    Log.info(component: #function, content: "opSmtpLogin finished")
-                }
-            }
         }
         if let lastOp = lastOperation {
             loginOp.addDependency(lastOp)
@@ -260,7 +243,7 @@ open class NetworkServiceWorker {
                               errorContainer: ServiceErrorProtocol) -> Operation {
         let resultOp = SelfReferencingOperation() { operation in
             guard let operation = operation else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if operation.isCancelled {
@@ -296,7 +279,7 @@ open class NetworkServiceWorker {
                                        errorContainer: ServiceErrorProtocol) -> Operation {
         let resultOp = SelfReferencingOperation() { operation in
             guard let operation = operation else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if operation.isCancelled {
@@ -403,7 +386,7 @@ open class NetworkServiceWorker {
                                        onlySyncChangesTriggeredByUser: Bool) -> Operation {
         let resultOp = SelfReferencingOperation() { [weak self] operation in
             guard let me = self, let operation = operation else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if operation.isCancelled {
@@ -464,38 +447,17 @@ open class NetworkServiceWorker {
     func buildOperationLine(accountInfo: AccountConnectInfo, onlySyncChangesTriggeredByUser: Bool = false) -> OperationLine {
         let errorContainer = ReportingErrorContainer(delegate: self)
         // Operation depending on all IMAP operations for this account
-        let opImapFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                Log.info(component: #function, content: "IMAP sync finished")
-            }
-        }
+        let opImapFinished = BlockOperation()
         // Operation depending on all SMTP operations for this account
-        let opSmtpFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                Log.info(component: #function, content: "SMTP sync finished")
-            }
-        }
-        #if DEBUG
-            var startTime = Date()
-        #endif
+        let opSmtpFinished = BlockOperation()
         // Operation depending on all IMAP and SMTP operations
-        let opAllFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                #if DEBUG
-                    Log.info(component: #function, content: "sync finished in \(-startTime.timeIntervalSinceNow) seconds")
-                #else
-                    Log.info(component: #function, content: "sync finished")
-                #endif
-            }
-        }
+        let opAllFinished = BlockOperation()
         opAllFinished.addDependency(opSmtpFinished)
         opAllFinished.addDependency(opImapFinished)
 
         var operations = [Operation]()
         #if DEBUG
-            let debugTimerOp = BlockOperation() {
-                startTime = Date()
-            }
+            let debugTimerOp = BlockOperation()
             opAllFinished.addDependency(debugTimerOp)
             operations.append(debugTimerOp)
         #endif
@@ -528,16 +490,12 @@ open class NetworkServiceWorker {
 
             if !onlySyncChangesTriggeredByUser {
                 // Fetch current list of interesting mailboxes
-                if let opSyncFolders = SyncFoldersFromServerOperation(parentName: description,
-                                                                      errorContainer: errorContainer,
-                                                                      imapSyncData: imapSyncData) {
-                    opSyncFolders.completionBlock = { [weak self] in
+                if let opSyncFolders = SyncFoldersFromServerOperation(
+                    parentName: description,
+                    errorContainer: errorContainer,
+                    imapSyncData: imapSyncData) {
+                    opSyncFolders.completionBlock = {
                         opSyncFolders.completionBlock = nil
-                        if let me = self {
-                            me.workerQueue.async {
-                                Log.info(component: #function, content: "opSyncFolders finished")
-                            }
-                        }
                     }
                     opSyncFolders.addDependency(lastImapOp)
                     lastImapOp = opSyncFolders
@@ -602,7 +560,7 @@ open class NetworkServiceWorker {
                         let me = self,
                         let decryptOp = opDecrypt,
                         let operation = operation else {
-                            Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                            Logger.lostMySelf(category: Logger.backend)
                             return
                     }
                     if operation.isCancelled {
@@ -712,7 +670,7 @@ open class NetworkServiceWorker {
         }
         workerQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if me.cancelled {
@@ -723,27 +681,20 @@ open class NetworkServiceWorker {
     }
 
     func processOperationLinesInternal(operationLines: [OperationLine], repeatProcess: Bool = true) {
-        let theComp = "\(#function) processOperationLinesInternal"
-
         if !self.cancelled {
             var myLines = operationLines
-            Log.verbose(component: theComp,
-                        content: "\(operationLines.count) left, repeat? \(repeatProcess)")
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
                 scheduleOperationLine(operationLine: ol, completionBlock: {
-                    [weak self, weak ol] in
-                    Log.verbose(component: theComp,
-                                content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")
-                    guard let me = self, let theOl = ol else {
+                    [weak self] in
+                    guard let me = self else {
                         return
                     }
-                    Log.info(component: theComp, content: "didSync")
                     // UNIT TEST ONLY
                     me.unitTestDelegate?
                         .testWorkerDidSync(worker: me,
-                                                     accountInfo: theOl.accountInfo,
-                                                     errorProtocol: theOl.errorContainer)
+                                           accountInfo: ol.accountInfo,
+                                           errorProtocol: ol.errorContainer)
                     // Process the rest
                     me.processOperationLines(operationLines: myLines)
                 })
@@ -758,8 +709,6 @@ open class NetworkServiceWorker {
                         }
                 }
             }
-        } else {
-            Log.verbose(component: theComp, content: "canceled with \(operationLines.count)")
         }
     }
 }

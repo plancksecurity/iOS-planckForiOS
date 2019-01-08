@@ -79,7 +79,7 @@ extension ThreadViewController: UITableViewDelegate, UITableViewDataSource {
 
     private func showEmail() {
 //        guard let splitViewController = self.splitViewController else {
-//            Log.shared.errorAndCrash(component: #function,
+//            logger.errorAndCrash(component: #function,
 //                                     errorString: "We must have a splitViewController here")
 //            return
 //        }

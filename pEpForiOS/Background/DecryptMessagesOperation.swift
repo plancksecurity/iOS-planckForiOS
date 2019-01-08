@@ -27,10 +27,12 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
     private var currentlyProcessedMessage: CdMessage?
     private var ratingBeforeEngine = Int16(PEP_rating_undefined.rawValue)
 
+    private let logger = Logger(category: Logger.backend)
+
     private func setupMessagesToDecrypt() {
         privateMOC.performAndWait {[weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             guard let cdMessages = CdMessage.all(
@@ -70,7 +72,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
 
         privateMOC.perform { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if me.isCancelled {
@@ -80,7 +82,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             let cdMsg = me.messagesToDecrypt.removeFirst()
             me.currentlyProcessedMessage = cdMsg
             guard let msg = cdMsg.message() else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No message")
+                me.logger.errorAndCrash("No message")
                 me.handleError(
                     BackgroundError.GeneralError.illegalState(info: "No Message for CdMessage"))
                 return
@@ -109,7 +111,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                          keys: NSArray?) {
         privateMOC.performAndWait {[weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             let theKeys = Array(keys ?? NSArray()) as? [String] ?? []
@@ -170,7 +172,9 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                     keys: [String]) {
         cdMessage.underAttack = rating.isUnderAttack()
         guard let decrypted = pEpDecryptedMessage as? PEPMessageDict else {
-                Log.shared.errorAndCrash(component: #function, errorString:"Problem")
+
+                logger.errorAndCrash("Should update message with rating %d, but nil message",
+                                 rating.rawValue)
                 return
         }
         updateMessage(cdMessage: cdMessage, keys: keys, pEpMessageDict: decrypted, rating: rating)
@@ -227,7 +231,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
 
     private func notifyDelegate(messageUpdated cdMessage: CdMessage) {
         guard let message = cdMessage.message() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Error converting CDMesage")
+            logger.errorAndCrash("Error converting CDMesage")
             return
         }
         MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
@@ -240,7 +244,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         guard
             let decrypted = result.pEpDecryptedMessage,
             let currentlyProcessedMessage = currentlyProcessedMessage else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid state")
+                logger.errorAndCrash("Invalid state")
                 handleError(BackgroundError.GeneralError.illegalState(info:
                     "Error handling decryption result"))
                 return
@@ -265,7 +269,7 @@ extension DecryptMessagesOperation {
     private func handleReUploadIfRequired(cdMessage: CdMessage,
                                           rating: PEP_rating) throws -> Bool {
         guard let message = cdMessage.message() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No Message")
+            logger.errorAndCrash("No message")
             throw BackgroundError.GeneralError.illegalState(info: "No Message")
         }
         if !message.isOnTrustedServer ||    // The only currently supported case for re-upload is trusted server.
@@ -281,7 +285,7 @@ extension DecryptMessagesOperation {
 
     private func setOriginalRatingHeader(rating: PEP_rating, toMessage cdMessage: CdMessage) {
         guard let message = cdMessage.message() else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No Message")
+            logger.errorAndCrash("No message")
             handleError(BackgroundError.GeneralError.illegalState(info: "No Message"))
             return
         }

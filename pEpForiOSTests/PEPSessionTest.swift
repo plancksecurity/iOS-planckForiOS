@@ -31,7 +31,6 @@ class PEPSessionTest: XCTestCase {
     //MARK: - Test
 
     func testPEPConversion() {
-        Log.info(component: "testPEPConversion", content: "test")
         let account = SecretTestData().createWorkingAccount()
         account.save()
 

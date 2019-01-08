@@ -26,6 +26,8 @@ class PersistentImapFolder: CWIMAPFolder {
 
     let privateMOC: NSManagedObjectContext
 
+    private let logger = Logger(category: Logger.backend)
+
     override var nextUID: UInt {
         get {
             var uid: UInt = 0
@@ -202,15 +204,12 @@ class PersistentImapFolder: CWIMAPFolder {
             let uid = cwImapMessage.uid()
             removeMessage(withUID: uid)
         } else {
-            Log.shared.warn(component: functionName(#function),
-                            content: "Should remove/expunge message that is not a CWIMAPMessage")
+            logger.log("Should remove/expunge message that is not a CWIMAPMessage")
         }
     }
 
     override func matchUID(_ uid: UInt, withMSN msn: UInt) {
         super.matchUID(uid, withMSN: msn)
-        Log.shared.info(component: functionName(#function),
-                        content: "\(msn): \(uid)")
         let opMatch = MatchUidToMsnOperation(
             parentName: functionName(#function),
             folderID: folderID, uid: uid, msn: msn)
@@ -223,7 +222,6 @@ class PersistentImapFolder: CWIMAPFolder {
 //MARK: - CWCache
 extension PersistentImapFolder: CWCache {
     func invalidate() {
-        Log.shared.errorAndCrash(component: #function, errorString: "Unimplemented stub")
         // if intentionally, please mark so
     }
 
@@ -262,8 +260,7 @@ extension PersistentImapFolder: CWIMAPCache {
                     Record.saveAndWait(context: privateMOC)
                 }
             } else {
-                Log.shared.warn(component: self.functionName(#function),
-                                content: "Could not find message by UID for expunging.")
+                logger.log("Could not find message by UID for expunging.")
             }
         }
     }
@@ -278,7 +275,7 @@ extension PersistentImapFolder: CWIMAPCache {
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
         guard let context = self.folder.managedObjectContext else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Dangling folder")
+            logger.errorAndCrash("Dangling folder")
             return
         }
         context.performAndWait() {
@@ -317,8 +314,5 @@ extension PersistentImapFolder: CWIMAPCache {
         // It might correctly work in-app, but can mess up the unit tests since they might signal
         // "finish" before all messages have been stored.
         opStore.waitUntilFinished()
-
-        Log.info(component: functionName(#function),
-                 content: "Wrote message \(message) for \(opID)")
     }
 }

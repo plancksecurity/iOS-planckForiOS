@@ -42,7 +42,6 @@ extension CdMessage {
 
         uuid = pEpMessageDict[kPepID] as? String
 
-        Log.info(component: #function, content: "before")
         let refsToConvert = MutableOrderedSet<String>()
         if let refs = pEpMessageDict[kPepReferences] as? [String] {
             for item in refs {
@@ -56,9 +55,6 @@ extension CdMessage {
             }
         }
         self.replace(referenceStrings: refsToConvert.array)
-        Log.info(component: #function, content: "after decryption")
-
-        Log.info(component: #function, content: "after deleting orphans")
 
         var attachments = [CdAttachment]()
         if let attachmentObjects = pEpMessageDict[kPepAttachments] as? NSArray {

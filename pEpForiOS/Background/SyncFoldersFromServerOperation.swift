@@ -73,8 +73,7 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
             // Check if the local folder list is fairly complete
             privateMOC.perform() { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "Lost myselft")
+                    Logger.lostMySelf(category: Logger.backend)
                     return
                 }
                 guard
@@ -131,7 +130,7 @@ public class SyncFoldersFromServerOperation: ImapSyncOperation {
     private func deleteLocalFoldersThatDoNotExistOnServerAnyMore() {
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             // Get all local folders that represent a remote mailbox

@@ -33,17 +33,14 @@ public class ConcurrentBaseOperation: BaseOperation {
 
     private var _state: OperationState = .ready
 
+    private let logger = Logger(category: "Background")
+
     // MARK: - LIFE CYCLE
 
     public override init(parentName: String = #function,
                          errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         backgroundQueue.name = "\(parentName) - background queue of ConcurrentBaseOperation"
         super.init(parentName: parentName, errorContainer: errorContainer)
-    }
-
-    deinit {
-        Log.shared.info(component: comp,
-                        content: "\(#function): \(unsafeBitCast(self, to: UnsafeRawPointer.self))")
     }
 
     // MARK: - OPERATION
@@ -59,7 +56,7 @@ public class ConcurrentBaseOperation: BaseOperation {
             cancel()
             return
         }
-        Log.verbose(component: comp, content: "\(#function)")
+
         main()
     }
 
@@ -97,9 +94,9 @@ public class ConcurrentBaseOperation: BaseOperation {
     func handleError(_ error: Error, message: String? = nil) {
         addError(error)
         if let theMessage = message {
-            Log.shared.error(component: comp, errorString: theMessage, error: error)
+            logger.error("%{public}@ %{public}@", error.localizedDescription, theMessage)
         } else {
-            Log.shared.error(component: comp, error: error)
+            logger.error("%{public}@ %{public}@", error.localizedDescription)
         }
         cancel()
     }
