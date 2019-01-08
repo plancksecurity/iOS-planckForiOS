@@ -691,7 +691,7 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
     }
 
     func composeViewModelDidDeleteMessage() {
-        if folderIsOutbox(folderToShow) {
+        if folderIsDraftOrOutbox(folderToShow) {
             // A message from outbox has been deleted in outbox
             // (e.g. because the user saved it to drafts).
             reloadData()

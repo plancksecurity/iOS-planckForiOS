@@ -171,6 +171,7 @@ class ComposeViewModel {
         // mailboxes, that show all flagged messages.
         om.imapFlags?.draft = false
         om.imapMarkDeleted()
+        resultDelegate?.composeViewModelDidDeleteMessage()
     }
 
     private func setup() {
