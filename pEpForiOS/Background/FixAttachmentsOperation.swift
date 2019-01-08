@@ -102,8 +102,6 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
         fixNilDataAttachments(context: context) { countFixedData in
             context.perform { [weak self] in
                 let countFixedSize = self?.fixZeroSizeAttachments(context: context) ?? 0
-                Log.info(component: #function,
-                         content: "Loaded \(countFixedData), fixed size for \(countFixedSize)")
                 if countFixedData + countFixedSize > 0 {
                     context.saveAndLogErrors()
                 }

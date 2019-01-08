@@ -197,7 +197,6 @@ open class ImapSync: Service {
                                        updateExistsCount: updateExistsCount) as? CWIMAPFolder
             imapState.currentFolder = fol
             if let folder = fol {
-                Log.info(component: comp, content: "openMailBox have to open \(folder.name())")
                 return true
             }
             return false
@@ -338,12 +337,6 @@ extension ImapSync: CWServiceClient {
 
     public func folderFetchCompleted(_ notification: Notification?) {
         dumpMethodName("folderFetchCompleted", notification: notification)
-        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
-            as? CWFolder) {
-            Log.info(component: comp, content: "fetched folder: \(folder.name())")
-        } else {
-            Log.info(component: comp, content: "folderFetchCompleted: \(String(describing: notification))")
-        }
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderFetchCompleted(self, notification: notification)
         }
@@ -351,12 +344,6 @@ extension ImapSync: CWServiceClient {
 
     public func folderSyncCompleted(_ notification: Notification?) {
         dumpMethodName("folderSyncCompleted", notification: notification)
-        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
-            as? CWFolder) {
-            Log.info(component: comp, content: "synced folder: \(folder.name())")
-        } else {
-            Log.info(component: comp, content: "folderSyncCompleted: \(String(describing: notification))")
-        }
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderSyncCompleted(self, notification: notification)
         }
@@ -561,10 +548,8 @@ extension ImapSync: PantomimeFolderDelegate {
     public func folderOpenCompleted(_ notification: Notification?) {
         if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
             as? CWFolder) {
-            Log.info(component: comp, content: "folderOpenCompleted: \(folder.name())")
             imapState.currentFolderName = folder.name()
         } else {
-            Log.info(component: comp, content: "folderOpenCompleted: \(String(describing: notification))")
             imapState.currentFolderName = nil
         }
         runOnDelegate(logName: #function) { theDelegate in
@@ -573,12 +558,6 @@ extension ImapSync: PantomimeFolderDelegate {
     }
 
     public func folderOpenFailed(_ notification: Notification?) {
-        if let folder: CWFolder = ((notification as NSNotification?)?.userInfo?["Folder"]
-            as? CWFolder) {
-            Log.info(component: comp, content: "folderOpenFailed: \(folder.name())")
-        } else {
-            Log.info(component: comp, content: "folderOpenFailed: \(String(describing: notification))")
-        }
         runOnDelegate(logName: #function) { theDelegate in
             theDelegate.folderOpenFailed(self, notification: notification)
         }

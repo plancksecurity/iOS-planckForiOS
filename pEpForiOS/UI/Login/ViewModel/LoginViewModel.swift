@@ -192,7 +192,6 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                   service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            Log.info(component: String.bug1442, content: "Account: \(account.user.address) is stored for first time")
             //remove obsolete code on EmailListViewController
             MessageModel.performAndWait {
                 account.save()
@@ -212,7 +211,6 @@ extension LoginViewModel: OAuth2AuthViewModelDelegate {
             loginViewModelOAuth2ErrorDelegate?.handle(oauth2Error: err)
         } else {
             if let token = accessToken {
-                Log.shared.info(component: #function, content: "received token \(token)")
                 guard let oauth2Params = lastOAuth2Parameters else {
                     loginViewModelOAuth2ErrorDelegate?.handle(
                         oauth2Error: OAuth2AuthViewModelError.noParametersForVerification)

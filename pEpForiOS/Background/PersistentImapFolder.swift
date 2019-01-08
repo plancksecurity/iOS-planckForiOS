@@ -314,8 +314,5 @@ extension PersistentImapFolder: CWIMAPCache {
         // It might correctly work in-app, but can mess up the unit tests since they might signal
         // "finish" before all messages have been stored.
         opStore.waitUntilFinished()
-
-        Log.info(component: functionName(#function),
-                 content: "Wrote message \(message) for \(opID)")
     }
 }

@@ -90,7 +90,6 @@ public class FetchMessagesOperation: ImapSyncOperation {
     }
 
     public override func cancel() {
-        Log.info(component: comp, content: "cancel")
         if let sync = imapSyncData.sync {
             sync.cancel()
         }

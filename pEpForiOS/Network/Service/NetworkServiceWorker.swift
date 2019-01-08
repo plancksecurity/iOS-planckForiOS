@@ -110,8 +110,6 @@ open class NetworkServiceWorker {
      Start endlessly synchronizing in the background.
      */
     public func start() {
-        Log.info(component: #function, content: "\(String(describing: self))")
-
         cancelled = false
         imapConnectionDataCache.reset()
         self.process()
@@ -125,8 +123,6 @@ open class NetworkServiceWorker {
 
         self.cancelled = true
         self.backgroundQueue.cancelAllOperations()
-        Log.info(component: myComp,
-                 content: "\(String(describing: self)): all operations cancelled")
 
         workerQueue.async {[weak self] in
             guard let me = self else {
@@ -149,7 +145,6 @@ open class NetworkServiceWorker {
     /// Makes sure all local changes are synced to the server and then stops.
     /// Calls delegate networkServiceWorkerDidFinishLastSyncLoop when done.
     public func stop() {
-        Log.info(component: #function, content: "\(String(describing: self))")
         syncLocalChangesWithServerAndStop()
     }
 
@@ -233,11 +228,6 @@ open class NetworkServiceWorker {
                                          errorContainer: errorContainer)
         loginOp.completionBlock = { [weak self] in
             loginOp.completionBlock = nil
-            if let me = self {
-                me.workerQueue.async {
-                    Log.info(component: #function, content: "opSmtpLogin finished")
-                }
-            }
         }
         if let lastOp = lastOperation {
             loginOp.addDependency(lastOp)
@@ -466,28 +456,15 @@ open class NetworkServiceWorker {
         let errorContainer = ReportingErrorContainer(delegate: self)
         // Operation depending on all IMAP operations for this account
         let opImapFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                Log.info(component: #function, content: "IMAP sync finished")
-            }
         }
         // Operation depending on all SMTP operations for this account
         let opSmtpFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                Log.info(component: #function, content: "SMTP sync finished")
-            }
         }
         #if DEBUG
             var startTime = Date()
         #endif
         // Operation depending on all IMAP and SMTP operations
         let opAllFinished = BlockOperation { [weak self] in
-            self?.workerQueue.async {
-                #if DEBUG
-                    Log.info(component: #function, content: "sync finished in \(-startTime.timeIntervalSinceNow) seconds")
-                #else
-                    Log.info(component: #function, content: "sync finished")
-                #endif
-            }
         }
         opAllFinished.addDependency(opSmtpFinished)
         opAllFinished.addDependency(opImapFinished)
@@ -535,9 +512,6 @@ open class NetworkServiceWorker {
                     opSyncFolders.completionBlock = { [weak self] in
                         opSyncFolders.completionBlock = nil
                         if let me = self {
-                            me.workerQueue.async {
-                                Log.info(component: #function, content: "opSyncFolders finished")
-                            }
                         }
                     }
                     opSyncFolders.addDependency(lastImapOp)
@@ -739,7 +713,6 @@ open class NetworkServiceWorker {
                     guard let me = self, let theOl = ol else {
                         return
                     }
-                    Log.info(component: theComp, content: "didSync")
                     // UNIT TEST ONLY
                     me.unitTestDelegate?
                         .testWorkerDidSync(worker: me,
