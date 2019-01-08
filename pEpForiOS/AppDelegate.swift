@@ -12,7 +12,7 @@ import MessageModel
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let comp = "AppDelegate"
+    private let logger = Logger(category: "AppDelegate")
 
     var window: UIWindow?
 
@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No AppConfig")
+            logger.errorAndCrash("No AppConfig")
             return false
         }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
@@ -68,8 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let navController = initialNVC.viewControllers.first as? UINavigationController,
             let rootVC = navController.rootViewController as? FolderTableViewController
             else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Problem initializing UI")
+                logger.errorAndCrash("Problem initializing UI")
                 return false
         }
         rootVC.appConfig = appConfig
@@ -84,7 +83,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        Log.shared.resume()
         networkService?.start()
     }
 
@@ -95,19 +93,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.init(category: "AppDelegate").errorAndCrash("Lost myself")
                     return
                 }
-                Log.shared.warn(component: #function,
-                                content: "syncUserActionsAndCleanupbackgroundTask with ID " +
-                    "\(me.syncUserActionsAndCleanupbackgroundTaskId) expired.")
+                Logger.init(category: "AppDelegate").errorAndCrash(
+                    "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
+                    me.syncUserActionsAndCleanupbackgroundTaskId)
                 // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
                 // that brutally shuts down everything.
                 me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
             })
         networkService?.processAllUserActionsAndstop()
-        // Stop logging to Engine. It would create new sessions.
-        Log.shared.pause()
     }
 
     func cleanupPEPSessionIfNeeded() {
@@ -119,11 +115,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func kickOffMySelf() {
         mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.init(category: "AppDelegate").errorAndCrash("Lost myself")
                 return
             }
-            Log.shared.warn(component: #function,
-                            content: "mySelfTaskId with ID \(me.mySelfTaskId) expired.")
+            Logger.init(category: "AppDelegate").log(
+                "mySelfTaskId with ID %{public}@ expired.",
+                me.mySelfTaskId)
             // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
             // that brutally shuts down everything.
             me.application.endBackgroundTask(me.mySelfTaskId)
@@ -131,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let op = MySelfOperation()
         op.completionBlock = { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.init(category: "AppDelegate").errorAndCrash("Lost myself")
                 return
             }
             // We might be the last service that finishes, so we have to cleanup.
@@ -155,7 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                          storeURL: nil,
                                          options: options)
         } catch {
-            Log.shared.errorAndCrash(component: comp, errorString: "Error while Loading DataStack")
+            logger.errorAndCrash("Error while Loading DataStack")
         }
     }
 
@@ -207,7 +204,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SecureWebViewController.appConfigDirtyHack = theAppConfig
 
         // set up logging for libraries
-        MessageModelConfig.logger = Log.shared
+
+        // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
 
@@ -242,8 +240,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Log.shared.warn(component: "UIApplicationDelegate",
-                        content: "applicationDidReceiveMemoryWarning")
+        logger.log("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -264,8 +261,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        Log.info(component: comp,
-                 content: "Library url: \(String(describing: applicationDirectory()))")
+        logger.log("Library url: %{public}@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         prepareUserNotifications()
@@ -282,7 +278,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        Log.info(component: comp, content: "applicationDidEnterBackground")
         shouldDestroySession = true
         // generate keys in the background
         kickOffMySelf()
@@ -328,13 +323,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         guard let networkService = networkService else {
-            Log.shared.error(component: #function, errorString: "no networkService")
+            logger.error("no networkService")
             return
         }
         
         networkService.checkForNewMails() {[weak self] (numMails: Int?) in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.init(category: "AppDelegate").errorAndCrash("Lost myself")
                 return
             }
             guard let numMails = numMails else {
@@ -390,7 +385,6 @@ extension AppDelegate: KickOffMySelfProtocol {
 extension AppDelegate: NetworkServiceDelegate {
     func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
         // Cleanup sessions.
-        Log.shared.infoComponent(#function, message: "Clean up sessions.")
         PEPSession.cleanup()
         if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskInvalid {
             return
