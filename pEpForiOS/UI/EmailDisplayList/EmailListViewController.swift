@@ -669,8 +669,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
     func didDismissSearchController(_ searchController: UISearchController) {
         guard let vm = model else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "No chance to remove filter, sorry.")
+            logger.errorAndCrash("No chance to remove filter, sorry.")
             return
         }
         vm.removeSearchFilter()
@@ -1116,8 +1115,7 @@ extension EmailListViewController: SegueHandlerType {
             let composeVc = nav.topViewController as? ComposeTableViewController,
             let composeMode = composeMode(for: segueId),
             let vm = model else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "composeViewController setup issue")
+                logger.errorAndCrash("composeViewController setup issue")
                 return
         }
         composeVc.appConfig = appConfig

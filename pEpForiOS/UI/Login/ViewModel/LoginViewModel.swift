@@ -104,7 +104,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                Log.shared.error(component: #function, error: error)
+                logger.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -138,7 +138,7 @@ class LoginViewModel {
             do {
                 try verifyAccount(model: newAccount)
             } catch {
-                Log.shared.error(component: #function, error: error)
+                logger.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
             }
         }

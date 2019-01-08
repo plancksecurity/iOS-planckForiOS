@@ -167,8 +167,7 @@ extension ComposeViewModel {
             }
 
             guard isDraftsOrOutbox || composeMode == .forward else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Unsupported mode or message")
+                Logger(category: Logger.frontend).errorAndCrash("Unsupported mode or message")
                 return
             }
             if let html = msg.longMessageFormatted {

@@ -101,8 +101,7 @@ public class AccountSettingsViewModel {
                 smtp: ServerViewModel) {
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Account misses imap or smtp server.")
+                logger.errorAndCrash("Account misses imap or smtp server.")
                 return
         }
         let pass : String?
@@ -159,8 +158,7 @@ public class AccountSettingsViewModel {
         guard let viewModelPort = viewModel.port,
             let port = UInt16(viewModelPort),
             let address = viewModel.address else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "viewModel misses required data.")
+                logger.errorAndCrash("viewModel misses required data.")
                 return nil
         }
         let transport = Server.Transport(fromString: viewModel.transport)

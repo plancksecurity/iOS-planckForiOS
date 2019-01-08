@@ -320,8 +320,8 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         // We do have this message in our (top message) model, so we do have to update it
         guard let existingMessage = messages.object(at: indexExisting) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We should have the message at this point")
+            Logger(category: Logger.frontend).errorAndCrash(
+                "We should have the message at this point")
             return
         }
 
@@ -377,13 +377,8 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The updated message has to be shown. Add it to the model ...
             let indexInserted = me.messages.insert(object: previewMessage)
             if indexExisting != indexInserted {
-                Log.shared.warn(
-                    component: #function,
-                    content:
-                    """
-When updating a message, the the new index of the message must be the same as the old index.
-Something is fishy here.
-"""
+                Logger(category: Logger.frontend).warn(
+                    "When updating a message, the the new index of the message must be the same as the old index. Something is fishy here."
                 )
             }
             // ...  and inform the delegate.

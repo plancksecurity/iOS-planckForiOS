@@ -36,8 +36,7 @@ class DocumentAttachmentPickerViewModel {
                     return
                 }
                 guard let safeAttachment = attachment else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "No attachment")
+                    Logger(category: Logger.frontend).errorAndCrash("No attachment")
                     return
                 }
                 GCD.onMain {

@@ -170,8 +170,7 @@ class EmailListViewModel {
 
     func viewModel(for index: Int) -> MessageViewModel? {
         guard let messageViewModel = messages.object(at: index) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "InconsistencyviewModel vs. model")
+            logger.errorAndCrash("InconsistencyviewModel vs. model")
             return nil
         }
         return messageViewModel
@@ -340,9 +339,7 @@ class EmailListViewModel {
 
     func delete(forIndexPath indexPath: IndexPath) {
         guard let deletedMessage = deleteMessage(at: indexPath) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Not sure if this is a valid case. Remove this " +
-                "log if so.")
+            logger.errorAndCrash("Not sure if this is a valid case. Remove this log if so.")
             return
         }
         didDelete(messageFolder: deletedMessage, belongingToThread: Set())
@@ -581,8 +578,7 @@ class EmailListViewModel {
         }
 
         guard let folderFilter = folderToShow.filter else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We just set the filter but do not have one?")
+            logger.errorAndCrash("We just set the filter but do not have one?")
             return CompositeFilter<FilterBase>.defaultFilter()
         }
         return folderFilter

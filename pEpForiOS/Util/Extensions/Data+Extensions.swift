@@ -38,7 +38,7 @@ extension Data {
                 withJSONObject: self, options: .prettyPrinted)
             jsonData.debugSave(basePath: basePath, fileName: fileName, ext: ext)
         } catch let err {
-            Log.shared.error(component: #function, error: err)
+            Logger(category: Logger.util).error("%{public}@", err.localizedDescription)
         }
     }
 }

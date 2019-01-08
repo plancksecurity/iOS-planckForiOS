@@ -147,8 +147,7 @@ struct ComposeUtil {
         withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
         guard let from = state.from,
             let account = Account.by(address: from.address) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString:
+                Logger(category: Logger.frontend).errorAndCrash(
                     "We have a problem here getting the senders account.")
                 return nil
         }

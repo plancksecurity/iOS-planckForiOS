@@ -152,8 +152,7 @@ class ComposeViewModel {
 
     public func handleRemovedRow(at indexPath: IndexPath) {
         guard let removeeVM = viewModel(for: indexPath) as? AttachmentViewModel else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Only attachmnets can be removed by the user")
+                logger.errorAndCrash("Only attachmnets can be removed by the user")
                 return
         }
         removeNonInlinedAttachment(removeeVM.attachment)
@@ -362,8 +361,7 @@ extension ComposeViewModel {
 extension ComposeViewModel {
     private func removeNonInlinedAttachment(_ removee: Attachment) {
         guard let section = section(for: .attachments) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "Only attachmnets can be removed by the user")
+            logger.errorAndCrash("Only attachmnets can be removed by the user")
             return
         }
         // Remove from section
@@ -474,8 +472,7 @@ extension ComposeViewModel: MediaAttachmentPickerProviderViewModelResultDelegate
         didSelect mediaAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment) {
         if mediaAttachment.type == .image {
             guard let bodyViewModel = bodyVM else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "No bodyVM. Maybe valid as picking is async.")
+                logger.errorAndCrash("No bodyVM. Maybe valid as picking is async.")
                 return
             }
             bodyViewModel.inline(attachment: mediaAttachment.attachment)
@@ -619,8 +616,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, didBeginEditing text: String) {
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            logger.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         lastRowWithSuggestions = idxPath
@@ -636,8 +632,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 
     func recipientCellViewModel(_ vm: RecipientCellViewModel, textChanged newText: String) {
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            logger.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         lastRowWithSuggestions = idxPath
@@ -654,8 +649,7 @@ extension ComposeViewModel: RecipientCellViewModelResultDelegate {
 extension ComposeViewModel: AccountCellViewModelResultDelegate {
     func accountCellViewModel(_ vm: AccountCellViewModel, accountChangedTo account: Account) {
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            logger.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         state.from = account.user
@@ -669,8 +663,7 @@ extension ComposeViewModel: SubjectCellViewModelResultDelegate {
 
     func subjectCellViewModelDidChangeSubject(_ vm: SubjectCellViewModel) {
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            logger.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         state.subject = vm.content ?? ""
@@ -709,8 +702,7 @@ extension ComposeViewModel: BodyCellViewModelResultDelegate {
         state.bodyHtml = html
         state.bodyPlaintext = plain
         guard let idxPath = indexPath(for: vm) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We got called by a non-existing VM?")
+            logger.errorAndCrash("We got called by a non-existing VM?")
             return
         }
         delegate?.contentChanged(inRowAt: idxPath)

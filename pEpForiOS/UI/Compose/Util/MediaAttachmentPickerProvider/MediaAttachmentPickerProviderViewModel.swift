@@ -88,8 +88,7 @@ class MediaAttachmentPickerProviderViewModel {
                 return
             }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Cound not get data for URL")
+                Logger(category: Logger.frontend).errorAndCrash("Cound not get data for URL")
                 completion(nil)
                 return
             }

@@ -163,9 +163,8 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
                     return
                 }
                 guard let account = me.currentlyVerifiedAccount else {
-                    Log.shared.errorAndCrash(component: #function,
-                                             errorString: "We verified an non-existing account? " +
-                        "Now what?")
+                    Logger(category: Logger.backend).errorAndCrash(
+                        "We verified an non-existing account? Now what?")
                     return
                 }
                 account.save()
