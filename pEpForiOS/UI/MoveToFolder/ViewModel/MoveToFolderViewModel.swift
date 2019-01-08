@@ -63,6 +63,8 @@ class MoveToFolderViewModel {
     var messages: [Message]
     var delegate : MoveToFolderDelegate?
 
+    private let logger = Logger(category: Logger.frontend)
+
     init(account: Account, messages: [Message]) {
         items = []
         self.acc = account
@@ -86,7 +88,7 @@ class MoveToFolderViewModel {
 
     func moveMessagesTo(index: Int) -> Bool {
         if !(index >= 0 && index < items.count) {
-            Log.shared.error(component: #function, errorString: "Index out of bounds")
+            logger.error("Index out of bounds")
             return false
         }
         let targetFolder = items[index].folder

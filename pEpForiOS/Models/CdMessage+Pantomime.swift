@@ -85,7 +85,7 @@ extension CdMessage {
         var dict: [AnyHashable: Any] = [PantomimeMessagesKey: NSArray.init(object: pantomimeMail)]
 
         guard let imap = imap else {
-            Log.shared.errorAndCrash(component:"\(#function)[\(#line)]", errorString: "imap == nil")
+            Logger(category: Logger.model).errorAndCrash("imap == nil")
             return [AnyHashable: Any]()
         }
 
@@ -427,8 +427,7 @@ extension CdMessage {
         // Bail out quickly if there is only a flag change needed
         if messageUpdate.isFlagsOnly() {
             guard isUpdate else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString:
+                Logger(category: Logger.model).errorAndCrash(
                     "If only flags did change, the message must have existed before. Thus it must be an update.")
                 return nil
             }
@@ -652,8 +651,8 @@ extension CdMessage {
         identity.save()
 
         guard let result = CdIdentity.search(address: theEmail) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We have just saved this identity. It has to exist.")
+            Logger(category: Logger.model).errorAndCrash(
+                "We have just saved this identity. It has to exist.")
             return CdIdentity.create()
         }
 

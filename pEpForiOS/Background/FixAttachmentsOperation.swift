@@ -22,6 +22,8 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
 
     var openFetchCount = 0
 
+    private let logger = Logger(category: Logger.backend)
+
     override public func main() {
         if isCancelled {
             markAsFinished()
@@ -92,9 +94,7 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
         let cdInvalidAttachments = CdAttachment.all(predicate: p, orderedBy: nil, in: context)
             as? [CdAttachment] ?? []
         if cdInvalidAttachments.count > 0 {
-            Log.shared.error(
-                component: #function,
-                errorString: "Still \(cdInvalidAttachments.count) invalid attachments")
+            logger.error("Still %d invalid attachments", cdInvalidAttachments.count)
         }
     }
 
@@ -117,7 +117,7 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
                 block(data)
                 return
             } catch let err {
-                Log.shared.error(component: #function, error: err)
+                Logger(category: Logger.backend).error("%@", err.localizedDescription)
             }
             let assets = PHAsset.fetchAssets(withALAssetURLs: [theURL], options: nil)
             if let theAsset = assets.firstObject {

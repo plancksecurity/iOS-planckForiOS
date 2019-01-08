@@ -11,6 +11,8 @@ import UIKit
 class BodyCell: TextViewContainingTableViewCell {
     static let reuseId = "BodyCell"
 
+    private let logger = Logger(category: Logger.frontend)
+
     var viewModel: BodyCellViewModel? {
         didSet {
             viewModel?.delegate = self
@@ -25,8 +27,7 @@ class BodyCell: TextViewContainingTableViewCell {
 
     private func setupInitialText() {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "No VM")
+            logger.errorAndCrash("No VM")
             return
         }
         let (text, attrText) = vm.inititalText()
@@ -43,7 +44,7 @@ class BodyCell: TextViewContainingTableViewCell {
     // Set cursor and show keyboard
     override func setFocus() {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            logger.errorAndCrash("No VM")
             return
         }
         if let rangeStart = textView.position(from: textView.beginningOfDocument,
@@ -101,7 +102,7 @@ extension BodyCell {
                   shouldChangeTextIn range: NSRange,
                   replacementText text: String) -> Bool {
         guard let vm = viewModel else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No VM")
+            logger.errorAndCrash("No VM")
             return true
         }
        return vm.shouldReplaceText(in: range, of: textView.attributedText, with: text)

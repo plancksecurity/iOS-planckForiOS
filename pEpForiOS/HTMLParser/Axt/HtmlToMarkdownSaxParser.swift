@@ -18,6 +18,8 @@ public protocol MarkdownImageDelegate: class {
 class HtmlToMarkdownSaxParser: BasicSaxParser {
     weak var imgDelegate: MarkdownImageDelegate?
 
+    private let logger = Logger(category: Logger.htmlParsing)
+
     var acceptCharacters = false
 
     func parse(string: String) {
@@ -62,6 +64,6 @@ extension HtmlToMarkdownSaxParser: AXHTMLParserDelegate {
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        Log.shared.error(component: #function, error: parseError)
+        logger.errorAndCrash("%@", parseError.localizedDescription)
     }
 }

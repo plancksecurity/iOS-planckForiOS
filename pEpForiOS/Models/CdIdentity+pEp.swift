@@ -30,8 +30,8 @@ extension CdIdentity {
         identity.save()
 
         guard let result = CdIdentity.search(address: pEpC.address) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We have just saved this identity. It has to exist.")
+            Logger(category: Logger.model).errorAndCrash(
+                "We have just saved this identity. It has to exist.")
             return CdIdentity.create()
         }
 

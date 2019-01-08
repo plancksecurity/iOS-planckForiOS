@@ -21,6 +21,8 @@ public class SyncMessagesOperation: ImapSyncOperation {
     let firstUID: UInt
     var syncDelegate: SyncMessagesSyncDelegate?
 
+    private let logger = Logger(category: Logger.backend)
+
     init(parentName: String = #function,
          errorContainer: ServiceErrorProtocol = ErrorContainer(),
          imapSyncData: ImapSyncData,
@@ -89,7 +91,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
         self.imapSyncData.sync?.folderBuilder = folderBuilder
 
         guard let sync = self.imapSyncData.sync else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No sync")
+            logger.errorAndCrash("No sync")
             handle(error: BackgroundError.GeneralError.illegalState(info: "No sync"))
             return
         }
@@ -102,7 +104,7 @@ public class SyncMessagesOperation: ImapSyncOperation {
 
     private func resetUidCache() {
         guard let sync = self.imapSyncData.sync else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No sync")
+            logger.errorAndCrash("No sync")
             handle(error: BackgroundError.GeneralError.illegalState(info: "No sync"))
             return
         }
@@ -164,10 +166,11 @@ public class SyncMessagesOperation: ImapSyncOperation {
 // MARK: - ImapSyncDelegate (actual delegate)
 
 class SyncMessagesSyncDelegate: DefaultImapSyncDelegate {
+    private let logger = Logger(category: Logger.backend)
+
     override public func folderSyncCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let _ = errorHandler else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We must have an errorHandler here!")
+            logger.errorAndCrash("We must have an errorHandler here")
             return
         }
         (errorHandler as? SyncMessagesOperation)?.folderSyncCompleted(
@@ -180,8 +183,7 @@ class SyncMessagesSyncDelegate: DefaultImapSyncDelegate {
 
     override public  func folderOpenCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let _ = errorHandler else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We must have an errorHandler here!")
+            logger.errorAndCrash("We must have an errorHandler here")
             return
         }
         (errorHandler as? SyncMessagesOperation)?.folderOpenCompleted(

@@ -46,12 +46,14 @@ class FolderInfoOperation: ConcurrentBaseOperation {
     let folderName: String
     var folderInfo = FolderUIDInfo()
 
+    private let logger = Logger(category: Logger.backend)
+
     public init?(parentName: String = #function,
                 errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 connectInfo: ConnectInfo,
                 folderName: String) {
         guard let accountId = connectInfo.accountObjectID else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No CdAccount ID")
+            logger.errorAndCrash("No CdAccound ID")
             return nil
         }
         self.accountObjectID = accountId

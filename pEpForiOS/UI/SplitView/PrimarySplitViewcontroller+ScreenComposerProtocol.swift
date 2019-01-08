@@ -9,7 +9,7 @@
 import Foundation
 import MessageModel
 
-extension PrimarySplitViewController: ScreenComposerProtocol{
+extension PrimarySplitViewController: ScreenComposerProtocol {
     func emailListViewModel(_ emailListViewModel: EmailListViewModel,
                             requestsShowThreadViewFor message: Message) {
         let storyboard = UIStoryboard(name: "Thread", bundle: nil)
@@ -25,7 +25,7 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
             storyboard.instantiateViewController(withIdentifier: "threadViewController")
                 as? ThreadViewController
             else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                logger.errorAndCrash("Segue issue")
                 return
         }
         vc.appConfig = singleViewController.appConfig
@@ -52,7 +52,7 @@ extension PrimarySplitViewController: ScreenComposerProtocol{
                 as? EmailViewController,
             let index = emailListViewModel.index(of: message)
             else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Segue issue")
+                logger.errorAndCrash("Segue issues")
                 return
         }
 

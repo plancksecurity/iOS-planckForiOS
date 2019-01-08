@@ -48,8 +48,7 @@ public extension CdFolder {
                                       selectable: Bool = true,
                                       account: CdAccount) -> (CdFolder, Bool)? {
         guard let moc = account.managedObjectContext else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "ManagedObject without context.")
+            Logger(category: Logger.model).errorAndCrash("ManagedObject without context")
             return nil
         }
         var result: (CdFolder, Bool)?
@@ -164,8 +163,7 @@ public extension CdFolder {
     /// - Returns: guessed type
     static private func guessFolderType(for folder: CdFolder) -> FolderType? {
         guard let folderName = folder.name else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We need the name to guess the type")
+            Logger(category: Logger.model).errorAndCrash("We need the name to guess the type")
             return nil
         }
         if folderName.uppercased() == ImapSync.defaultImapInboxName.uppercased() {

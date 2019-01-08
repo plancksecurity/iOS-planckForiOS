@@ -26,6 +26,8 @@ class PersistentImapFolder: CWIMAPFolder {
 
     let privateMOC: NSManagedObjectContext
 
+    private let logger = Logger(category: Logger.backend)
+
     override var nextUID: UInt {
         get {
             var uid: UInt = 0
@@ -199,8 +201,7 @@ class PersistentImapFolder: CWIMAPFolder {
             let uid = cwImapMessage.uid()
             removeMessage(withUID: uid)
         } else {
-            Log.shared.warn(component: functionName(#function),
-                            content: "Should remove/expunge message that is not a CWIMAPMessage")
+            logger.log("Should remove/expunge message that is not a CWIMAPMessage")
         }
     }
 
@@ -256,8 +257,7 @@ extension PersistentImapFolder: CWIMAPCache {
                     Record.saveAndWait(context: privateMOC)
                 }
             } else {
-                Log.shared.warn(component: self.functionName(#function),
-                                content: "Could not find message by UID for expunging.")
+                logger.log("Could not find message by UID for expunging.")
             }
         }
     }
@@ -272,7 +272,7 @@ extension PersistentImapFolder: CWIMAPCache {
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
         guard let context = self.folder.managedObjectContext else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Dangling folder")
+            logger.errorAndCrash("Dangling folder")
             return
         }
         context.performAndWait() {

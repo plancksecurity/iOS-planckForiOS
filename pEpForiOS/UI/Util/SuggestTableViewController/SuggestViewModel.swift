@@ -20,6 +20,7 @@ protocol SuggestViewModelDelegate: class {
 }
 
 class SuggestViewModel {
+    private let logger = Logger(category: Logger.frontend)
 
     struct Row {
         public let name: String
@@ -54,7 +55,7 @@ class SuggestViewModel {
 
     public func handleRowSelected(at index: Int) {
         guard index < identities.count else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Out of bounds")
+            logger.errorAndCrash("Out of bounds")
             return
         }
         resultDelegate?.suggestViewModelDidSelectContact(identity: identities[index])
@@ -66,7 +67,7 @@ class SuggestViewModel {
 
     public func row(at index: Int) -> Row {
         guard index < identities.count else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
+            logger.errorAndCrash("Index out of bounds")
             return Row(name: "Problem", email: "child")
         }
         let identity = identities[index]

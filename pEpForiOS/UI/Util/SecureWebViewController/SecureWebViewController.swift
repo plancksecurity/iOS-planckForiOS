@@ -84,6 +84,8 @@ class SecureWebViewController: UIViewController {
     /// Last time a size change has been reported to
     private var lastReportedSizeUpdate: Date?
 
+    private let logger = Logger(category: Logger.frontend)
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -167,14 +169,13 @@ class SecureWebViewController: UIViewController {
                 forIdentifier: "pep.security.SecureWebViewController.block_all_external_content",
                 encodedContentRuleList: blockRules) { (contentRuleList, error) in
                     if let error = error {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString: "Compile error: \(error)")
+                        Logger(category: Logger.frontend).errorAndCrash(
+                            "Compile error: %@", error.localizedDescription)
                         return
                     }
                     compiledBlockList = contentRuleList
                     guard let _ = compiledBlockList else {
-                        Log.shared.errorAndCrash(component: #function,
-                                                 errorString:
+                        Logger(category: Logger.frontend).errorAndCrash(
                             "Emergency exit. External content not blocked.")
                         completion()
                         return
@@ -376,8 +377,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             return
         case .linkActivated:
             guard let url = navigationAction.request.url else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Link to nonexisting URL has been clicked?")
+                logger.errorAndCrash("Link to nonexisting URL has been clicked?")
                 break
             }
             if url.scheme == "mailto" {

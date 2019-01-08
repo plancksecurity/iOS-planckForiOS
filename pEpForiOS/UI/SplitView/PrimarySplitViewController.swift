@@ -9,6 +9,7 @@
 import UIKit
 
 class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDelegate {
+    public let logger = Logger(category: Logger.frontend)
 
     override func viewDidLoad() {
         self.delegate = self
