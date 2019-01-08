@@ -191,6 +191,22 @@ public class Logger {
     }
 
     /**
+     Logs an error.
+     */
+    public func error(function: String = #function,
+                    filePath: String = #file,
+                    fileLine: Int = #line,
+                    error: Error) {
+        saveLog(message: "%{public}@",
+                severity: .default,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                // TODO: Find a better way than localizedDescription
+                args: [error.localizedDescription])
+    }
+
+    /**
      Testing only. If you want to test the fallback to ASL logging you may have to call
      this, as all the logging is deferred to a serial queue.
      */
