@@ -9,6 +9,8 @@
 import Foundation
 import os.log
 
+import MessageModel // For SystemUtils.crash only
+
 public class Logger {
     public enum Severity {
         /**
@@ -153,6 +155,20 @@ public class Logger {
                 filePath: filePath,
                 fileLine: fileLine,
                 args: args)
+    }
+
+    public func errorAndCrash(function: String = #function,
+                              filePath: String = #file,
+                              fileLine: Int = #line,
+                              _ message: StaticString,
+                              _ args: CVarArg...) {
+        saveLog(message: message,
+                severity: .fault,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: args)
+        SystemUtils.crash("\(message)")
     }
 
     /**
