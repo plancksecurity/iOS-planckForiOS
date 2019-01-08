@@ -696,17 +696,15 @@ open class NetworkServiceWorker {
             if myLines.first != nil {
                 let ol = myLines.removeFirst()
                 scheduleOperationLine(operationLine: ol, completionBlock: {
-                    [weak self, weak ol] in
-                    /*Log.verbose(component: theComp,
-                                content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")*/
-                    guard let me = self, let theOl = ol else {
+                    [weak self] in
+                    guard let me = self else {
                         return
                     }
                     // UNIT TEST ONLY
                     me.unitTestDelegate?
                         .testWorkerDidSync(worker: me,
-                                                     accountInfo: theOl.accountInfo,
-                                                     errorProtocol: theOl.errorContainer)
+                                           accountInfo: ol.accountInfo,
+                                           errorProtocol: ol.errorContainer)
                     // Process the rest
                     me.processOperationLines(operationLines: myLines)
                 })
