@@ -640,8 +640,7 @@ extension EmailViewController: MessageAttachmentDelegate {
 
         splitViewController?.preferredDisplayMode = .allVisible
 
-        coordinator.animate(alongsideTransition: nil){ [weak self] _ in
-        }
+        coordinator.animate(alongsideTransition: nil)
     }
 
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,

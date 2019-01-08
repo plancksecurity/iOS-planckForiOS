@@ -193,7 +193,7 @@ open class ImapSync: Service {
             let fol = imapStore.folder(forName: name,
                                        updateExistsCount: updateExistsCount) as? CWIMAPFolder
             imapState.currentFolder = fol
-            if let folder = fol {
+            if fol != nil {
                 return true
             }
             return false
