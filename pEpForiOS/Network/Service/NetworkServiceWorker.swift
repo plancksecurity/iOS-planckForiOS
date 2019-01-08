@@ -217,7 +217,7 @@ open class NetworkServiceWorker {
         let loginOp = LoginSmtpOperation(parentName: serviceConfig.parentName,
                                          smtpSendData: smtpSendData,
                                          errorContainer: errorContainer)
-        loginOp.completionBlock = { [weak self] in
+        loginOp.completionBlock = {
             loginOp.completionBlock = nil
         }
         if let lastOp = lastOperation {
@@ -446,25 +446,17 @@ open class NetworkServiceWorker {
     func buildOperationLine(accountInfo: AccountConnectInfo, onlySyncChangesTriggeredByUser: Bool = false) -> OperationLine {
         let errorContainer = ReportingErrorContainer(delegate: self)
         // Operation depending on all IMAP operations for this account
-        let opImapFinished = BlockOperation { [weak self] in
-        }
+        let opImapFinished = BlockOperation()
         // Operation depending on all SMTP operations for this account
-        let opSmtpFinished = BlockOperation { [weak self] in
-        }
-        #if DEBUG
-            var startTime = Date()
-        #endif
+        let opSmtpFinished = BlockOperation()
         // Operation depending on all IMAP and SMTP operations
-        let opAllFinished = BlockOperation { [weak self] in
-        }
+        let opAllFinished = BlockOperation()
         opAllFinished.addDependency(opSmtpFinished)
         opAllFinished.addDependency(opImapFinished)
 
         var operations = [Operation]()
         #if DEBUG
-            let debugTimerOp = BlockOperation() {
-                startTime = Date()
-            }
+            let debugTimerOp = BlockOperation()
             opAllFinished.addDependency(debugTimerOp)
             operations.append(debugTimerOp)
         #endif
@@ -500,10 +492,8 @@ open class NetworkServiceWorker {
                 if let opSyncFolders = SyncFoldersFromServerOperation(parentName: description,
                                                                       errorContainer: errorContainer,
                                                                       imapSyncData: imapSyncData) {
-                    opSyncFolders.completionBlock = { [weak self] in
+                    opSyncFolders.completionBlock = {
                         opSyncFolders.completionBlock = nil
-                        if let me = self {
-                        }
                     }
                     opSyncFolders.addDependency(lastImapOp)
                     lastImapOp = opSyncFolders
@@ -689,8 +679,6 @@ open class NetworkServiceWorker {
     }
 
     func processOperationLinesInternal(operationLines: [OperationLine], repeatProcess: Bool = true) {
-        let theComp = "\(#function) processOperationLinesInternal"
-
         if !self.cancelled {
             var myLines = operationLines
             if myLines.first != nil {
