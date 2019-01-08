@@ -24,7 +24,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     var sent: Folder? {
         return account.folder(ofType: .sent)
     }
-    
+
     override func setUp() {
         super.setUp()
         vm = ComposeViewModel(resultDelegate: nil,
@@ -692,7 +692,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                documentAttachmentPickerDonePickerCalled: false,
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: true,
-               didDeleteMessageMustBeCalled: false)
+               didDeleteMessageMustBeCalled: true)
         vm?.handleSaveActionTriggered()
         let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
                                               uuid: originalMessage.uuid,
@@ -1648,6 +1648,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             expDidDeleteMessageCalled =
                 expectation(description: "expDidDeleteMessageCalled")
             expDidDeleteMessageCalled?.isInverted = !exp
+            expDidDeleteMessageCalled?.assertForOverFulfill = false
         }
 
         testResultDelegate =
