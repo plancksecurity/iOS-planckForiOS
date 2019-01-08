@@ -32,14 +32,8 @@ class FilterTableViewController: BaseTableViewController {
         for section in sections {
             filters.with(filters: section.getFilters())
             filters.without(filters: section.getInvalidFilters())
-            Log.shared.info(component: #function, content: "valid filters")
-            Log.shared.info(component: #function, content: "\(section.getFilters().predicates)")
-            Log.shared.info(component: #function, content: "invalid filters")
-            Log.shared.info(component: #function, content: "\(section.getInvalidFilters().predicates)")
         }
-        Log.shared.info(component: #function, content: "\(filters.predicates)")
         filterEnabled = filters
-        Log.shared.info(component: #function, content: "\(String(describing: filterEnabled?.predicates))")
         filterDelegate?.addFilter(filters)
 
        _ = self.navigationController?.popViewController(animated: true)

@@ -206,8 +206,6 @@ class PersistentImapFolder: CWIMAPFolder {
 
     override func matchUID(_ uid: UInt, withMSN msn: UInt) {
         super.matchUID(uid, withMSN: msn)
-        Log.shared.info(component: functionName(#function),
-                        content: "\(msn): \(uid)")
         let opMatch = MatchUidToMsnOperation(
             parentName: functionName(#function),
             folderID: folderID, uid: uid, msn: msn)
@@ -220,7 +218,6 @@ class PersistentImapFolder: CWIMAPFolder {
 //MARK: - CWCache
 extension PersistentImapFolder: CWCache {
     func invalidate() {
-        Log.shared.errorAndCrash(component: #function, errorString: "Unimplemented stub")
         // if intentionally, please mark so
     }
 

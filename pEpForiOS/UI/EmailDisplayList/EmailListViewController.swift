@@ -753,7 +753,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath]) {
-        Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
         tableView.beginUpdates()
         tableView.insertRows(at: indexPaths, with: .automatic)
@@ -771,7 +770,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
             tableView.deleteRows(at: indexPaths, with: .automatic)
             tableView.endUpdates()
         }
-        Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
         if let lastSelectedIndexPath = lastSelectedIndexPath,
             indexPaths.contains(lastSelectedIndexPath) {
             showNoMessageSelectedIfNeeded()
@@ -779,8 +777,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
-        Log.shared.info(component: #function, content: "\(model?.rowCount ?? 0)")
-
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
 
         tableView.beginUpdates()

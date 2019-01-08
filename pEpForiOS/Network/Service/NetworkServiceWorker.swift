@@ -60,19 +60,10 @@ open class NetworkServiceWorker {
                 return
             }
             if keyPath == operationCountKeyPath {
-                let opCount = (newValue as? NSNumber)?.intValue
-                Log.shared.info(component: #function,
-                                content: "operationCount \(String(describing: opCount))")
-                dumpOperations()
+                let _ = (newValue as? NSNumber)?.intValue
             } else {
                 super.observeValue(forKeyPath: keyPath, of: object, change: change,
                                    context: context)
-            }
-        }
-
-        func dumpOperations() {
-            for op in self.backgroundQueue.operations {
-                Log.shared.info(component: #function, content: "Still running: \(op)")
             }
         }
     }

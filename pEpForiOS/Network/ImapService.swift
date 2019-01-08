@@ -52,11 +52,7 @@ open class ImapSync: Service {
             case idling
             case error
         }
-        var state: State = .initial {
-            didSet {
-                Log.shared.info(component: #function, content: "\(oldValue) -> \(state)")
-            }
-        }
+        var state: State = .initial
 
         var hasStartedTLS: Bool {
             get {
