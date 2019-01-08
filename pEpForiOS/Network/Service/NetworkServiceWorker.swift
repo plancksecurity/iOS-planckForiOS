@@ -697,6 +697,8 @@ open class NetworkServiceWorker {
                 let ol = myLines.removeFirst()
                 scheduleOperationLine(operationLine: ol, completionBlock: {
                     [weak self, weak ol] in
+                    /*Log.verbose(component: theComp,
+                                content: "finished \(operationLines.count) left, repeat? \(repeatProcess)")*/
                     guard let me = self, let theOl = ol else {
                         return
                     }
