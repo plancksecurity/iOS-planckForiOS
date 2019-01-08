@@ -96,8 +96,7 @@ open class ImapSync: Service {
                 if newValue {
                     state = .error
                 } else {
-                    Log.shared.error(component: #function,
-                                     errorString: "clearing hasError")
+                    Logger(category: Logger.backend).error("clearing hasError")
                 }
             }
         }
@@ -274,7 +273,7 @@ open class ImapSync: Service {
 
     private func runOnDelegate(logName: String = #function, block: (ImapSyncDelegate) -> ()) {
         guard let del = delegate else  {
-            Log.shared.warn(component: #function, content: "\(Date()): No delegate")
+            logger.warn("No delegate")
             return
         }
         block(del)

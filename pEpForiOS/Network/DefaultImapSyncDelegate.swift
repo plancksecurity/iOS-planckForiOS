@@ -15,14 +15,15 @@ protocol ImapSyncDelegateErrorHandlerProtocol: class {
  that considers everything to be an error ('illegal state').
  */
 class DefaultImapSyncDelegate: ImapSyncDelegate {
+    private let logger = Logger(category: Logger.backend)
+
     weak var errorHandler: ImapSyncDelegateErrorHandlerProtocol?
 
     class CrashingErrorHandler: ImapSyncDelegateErrorHandlerProtocol {
         func handle(error: Error) {
-            Log.shared.errorAndCrash(
-                component: #function,
-                errorString: "Error occurred, but no error handler defined",
-                error: error)
+            Logger(category: Logger.backend).errorAndCrash(
+                "Error occurred, but no error handler defined: %{public}@",
+                error.localizedDescription)
         }
     }
 

@@ -20,7 +20,7 @@ extension String {
             }
             return nil
         } catch {
-            Log.shared.errorAndCrash(component: #function, error: error)
+            Logger(category: Logger.util).errorAndCrash("%{public}@", error.localizedDescription)
             return nil
         }
     }
