@@ -28,6 +28,8 @@ public protocol RecipientTextViewModelDelegate: class {
 }
 
 public class RecipientTextViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     var maxTextattachmentWidth: CGFloat = 0.0
     private var initialRecipients = [Identity]()
     private var attributedText: NSAttributedString?

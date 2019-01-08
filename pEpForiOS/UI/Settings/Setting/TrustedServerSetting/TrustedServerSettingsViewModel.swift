@@ -10,6 +10,8 @@ import Foundation
 import MessageModel
 
 struct TrustedServerSettingsViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     struct Row: Equatable {
         let address: String
         let storeMessagesSecurely: Bool
@@ -23,7 +25,7 @@ struct TrustedServerSettingsViewModel {
 
     mutating func setStoreSecurely(forAccountWith address: String, toValue newValue: Bool) {
         guard serversAllowedToManuallyTrust().contains(address) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Address should be allowed")
+            logger.errorAndCrash("Address should be allowed")
             return
         }
 

@@ -16,6 +16,8 @@ protocol DocumentAttachmentPickerViewModelResultDelegate: class {
 }
 
 class DocumentAttachmentPickerViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
         "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
@@ -63,7 +65,7 @@ class DocumentAttachmentPickerViewModel {
             CFURLStartAccessingSecurityScopedResource(cfUrl)
             defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
             guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No data for URL.")
+                Logger(category: Logger.frontend).errorAndCrash("No data for URL.")
                 completion(nil)
                 return
             }

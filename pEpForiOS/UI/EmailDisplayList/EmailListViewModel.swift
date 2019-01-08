@@ -34,6 +34,8 @@ extension EmailListViewModel: FilterUpdateProtocol {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     let messageFolderDelegateHandlingQueue = DispatchQueue(label:
         "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
@@ -287,7 +289,7 @@ class EmailListViewModel {
 
         for pvm in deletees {
             guard let message = pvm.message() else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No mesage")
+                logger.errorAndCrash("No mesage")
                 return
             }
             delete(message: message)
@@ -451,7 +453,7 @@ class EmailListViewModel {
         if folderToShow is UnifiedInbox {
             // folderToShow is unified inbox, fetch parent folder from DB.
             guard let folder = messages.object(at: index)?.message()?.parent else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Dangling Message")
+                    logger.errorAndCrash("Dangling Message")
                     return folderToShow
             }
             parentFolder = folder
@@ -564,7 +566,7 @@ class EmailListViewModel {
 
     public func removeSearchFilter() {
         guard let filter = folderToShow.filter else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No folder.")
+            logger.errorAndCrash("No folder.")
             return
         }
         let filtersChanged = filter.removeSearchFilter()
@@ -590,7 +592,7 @@ class EmailListViewModel {
 
     func folderIsDraft(_ parentFolder: Folder?) -> Bool {
         guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
+            logger.errorAndCrash("No parent.")
             return false
         }
         return folder.folderType == .drafts
@@ -598,7 +600,7 @@ class EmailListViewModel {
 
     func folderIsOutbox(_ parentFolder: Folder?) -> Bool {
         guard let folder = parentFolder else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No parent.")
+            logger.errorAndCrash("No parent.")
             return false
         }
         return folder.folderType == .outbox

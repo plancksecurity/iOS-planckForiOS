@@ -23,7 +23,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
 
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "I am lost")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.didDelete(messageFolder: message, belongingToThread: message.threadMessageIdSet())

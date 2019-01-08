@@ -11,6 +11,7 @@ import MessageModel
 /// Utils for composing a message. Helps finding out values depending on the original message
 /// (the correct recipients, cancle actions ...).
 struct ComposeUtil {
+    private let logger = Logger(category: Logger.util)
 
     enum ComposeMode: CaseIterable {
         case normal
@@ -35,7 +36,7 @@ struct ComposeUtil {
                 result = om.to
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No from")
+                    Logger(category: Logger.util).errorAndCrash("No from")
                     return result
                 }
                 let origTos = om.to
@@ -62,7 +63,7 @@ struct ComposeUtil {
                 result = om.cc
             } else {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No from")
+                    Logger(category: Logger.util).errorAndCrash("No from")
                     return result
                 }
                 let origCcs = om.cc
@@ -152,7 +153,7 @@ struct ComposeUtil {
                 return nil
         }
         guard let f = Folder.by(account: account, folderType: .outbox) else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No outbox")
+            Logger(category: Logger.util).errorAndCrash("No outbox")
             return nil
         }
 
@@ -177,7 +178,7 @@ struct ComposeUtil {
                                          accordingTo composeState:
         ComposeViewModel.ComposeViewModelState) {
         guard let composeMode = composeState.initData?.composeMode else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No init data")
+            Logger(category: Logger.util).errorAndCrash("No init data")
             return
         }
         if composeMode == .replyFrom || composeMode == .replyAll,

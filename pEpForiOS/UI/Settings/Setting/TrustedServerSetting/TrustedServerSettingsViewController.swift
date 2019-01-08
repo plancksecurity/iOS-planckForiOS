@@ -57,7 +57,7 @@ extension TrustedServerSettingsViewController: TrustedServerSettingCellDelegate 
     func trustedServerSettingCell(sender: TrustedServerSettingCell,
                                   didChangeSwitchValue newValue: Bool) {
         guard let address = sender.address.text else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No address.")
+            logger.errorAndCrash("No address.")
             return
         }
         viewModel.setStoreSecurely(forAccountWith: address , toValue: newValue)

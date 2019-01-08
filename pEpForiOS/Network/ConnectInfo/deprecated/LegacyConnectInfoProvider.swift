@@ -20,7 +20,7 @@ extension ConnectInfo {
                 return
             }
             guard let cdAccount = CdAccount.search(account: me.account) else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No CdAccount")
+                Logger(category: Logger.util).errorAndCrash("No CdAccount")
                 return
             }
             result = cdAccount.objectID
@@ -40,7 +40,7 @@ extension ConnectInfo {
             guard
                 let cdAccount = CdAccount.search(account: me.account),
                 let cdServer = cdAccount.server(type: serverType) else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No CdAccount")
+                    Logger(category: Logger.util).errorAndCrash("No CdAccount")
                     return
             }
             result = cdServer.objectID

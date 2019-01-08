@@ -10,6 +10,8 @@ import Foundation
 import MessageModel
 
 public class AccountSettingsViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     public struct ServerViewModel {
         var address: String?
         var port: String?
@@ -119,7 +121,7 @@ public class AccountSettingsViewModel {
                                           password: pass,
                                           key: serverSmtp.credentials.key)
             else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid input.")
+                logger.errorAndCrash("Invalid input.")
                 return
         }
 
@@ -129,7 +131,7 @@ public class AccountSettingsViewModel {
         self.account.user.userName = name
 
         guard let ms = messageSyncService else {
-            Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
+            logger.errorAndCrash("no MessageSyncService")
             return
         }
         ms.requestVerification(account: account, delegate: self)
