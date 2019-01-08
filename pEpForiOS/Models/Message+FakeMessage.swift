@@ -71,7 +71,7 @@ extension Message {
     ///   - uuid: uuid to identify the fake message with
     ///   - folder: folder to search in
     /// - Returns: imap flags of fake message if found, nil otherwize
-    static public func findAndDeleteFakeMessage(
+    @discardableResult static public func findAndDeleteFakeMessage(
         withUuid uuid: String, in folder: Folder) -> ImapFlags? {
         var flags: ImapFlags? = nil
         if let existingFakeMessage = Message.existingFakeMessage(for: uuid, in: folder) {

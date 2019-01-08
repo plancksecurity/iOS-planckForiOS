@@ -12,11 +12,15 @@ import XCTest
 import MessageModel
 
 class FakeMessageTests: CoreDataDrivenTestBase {
+    let testUuid = UUID().uuidString + #file
 
     override func setUp() {
         super.setUp()
         cdAccount.createRequiredFoldersAndWait(testCase: self)
+        deleteAllMessages()
     }
+
+    // MARK: - Fake messages are shown
 
     func testFakeMsgIsShownInAllFolderTypes() {
         for folderTpe in FolderType.allCases {
@@ -25,7 +29,8 @@ class FakeMessageTests: CoreDataDrivenTestBase {
             guard
                 let folder = assureCleanFolderContainingExactlyOneFakeMessage(folderType: folderTpe),
                 let allCdMesgs = CdMessage.all() as? [CdMessage] else {
-                return
+                    // That is a valid case. E.g. folderType .normal has no
+                    return
             }
             XCTAssertEqual(allCdMesgs.count, 1, "Exactly one faked message exists in CD")
             let all = folder.allMessages()
@@ -38,7 +43,140 @@ class FakeMessageTests: CoreDataDrivenTestBase {
         }
     }
 
+    // MARK: - isFakeMessage
+
+    func testIsFakeMessage() {
+        for folderTpe in FolderType.allCases {
+            deleteAllMessages()
+            guard
+                let folder = assureCleanFolderContainingExactlyOneFakeMessage(folderType: folderTpe)
+                else {
+                    return
+            }
+            let all = folder.allMessages()
+            guard let testee = all.first else {
+                XCTFail()
+                return
+            }
+            XCTAssertTrue(testee.isFakeMessage,
+                          "All fake messages in all folder types MUST be recognized")
+        }
+    }
+
+    // MARK: - saveForAppend
+
+    func testSaveForAppend() {
+        for folderType in FolderType.allCases {
+            if folderType.isLocalFolder || !FolderType.requiredTypes.contains(folderType) {
+                continue
+            }
+            deleteAllMessages()
+            guard let folder = Folder.by(account: account, folderType: folderType) else {
+                    XCTFail()
+                    return
+            }
+            let msg = Message(uuid: testUuid, parentFolder: folder)
+            msg.from = account.user
+            Message.saveForAppend(msg: msg)
+            assureMessageToAppendExistence(in: folder)
+            assureFakeMessageExistence(in: folder)
+        }
+    }
+
+    // MARK: - createCdFakeMessage
+
+    func testCreateCdFakeMessage() {
+        let folderType = FolderType.inbox
+        guard let folder = Folder.by(account: account, folderType: folderType) else {
+            XCTFail()
+            return
+        }
+        let msg = Message(uuid: testUuid, parentFolder: folder)
+        msg.from = account.user
+        Message.createCdFakeMessage(for: msg)
+        assureFakeMessageExistence(in: folder)
+    }
+
+    // MARK: - saveFakeMessage
+
+    func testSaveFakeMessage() {
+        let folderType = FolderType.inbox
+        guard let folder = Folder.by(account: account, folderType: folderType) else {
+            XCTFail()
+            return
+        }
+        let msg = Message(uuid: testUuid, parentFolder: folder)
+        msg.from = account.user
+        msg.saveFakeMessage(in: folder)
+        assureFakeMessageExistence(in: folder)
+    }
+
+    // MARK: - findAndDeleteFakeMessage
+
+    func testFindAndDeleteFakeMessage() {
+        let folderType = FolderType.inbox
+        guard let folder = Folder.by(account: account, folderType: folderType) else {
+            XCTFail()
+            return
+        }
+        let msg = Message(uuid: testUuid, parentFolder: folder)
+        msg.from = account.user
+        msg.saveFakeMessage(in: folder)
+        guard let fakeMsg = assureFakeMessageExistence(mustExist: true, in: folder) else {
+            XCTFail()
+            return
+        }
+        Message.findAndDeleteFakeMessage(withUuid: fakeMsg.uuid, in: folder)
+        assureFakeMessageExistence(mustExist: false, in: folder)
+    }
+
     // MARK: - Helper
+
+    @discardableResult private func assureFakeMessageExistence(mustExist: Bool = true, in folder: Folder) -> Message? {
+        return assureMessagesExistence(mustExist: mustExist,
+                                       withUid: Message.uidFakeResponsivenes,
+                                       in: folder)
+    }
+
+    @discardableResult private func assureMessageToAppendExistence(mustExist: Bool = true, in folder: Folder)  -> Message? {
+        return assureMessagesExistence(mustExist: mustExist,
+                                       withUid: Message.uidNeedsAppend,
+                                       in: folder)
+    }
+
+    @discardableResult private func assureMessagesExistence(mustExist: Bool = true,
+                                         withUid uid: Int,
+                                         in folder: Folder) -> Message? {
+        var result: Message? = nil
+        let moc = Record.Context.main
+        moc.performAndWait {
+            guard let cdFolder =  folder.cdFolder() else {
+                XCTFail()
+                return
+            }
+            let p  = NSPredicate(format: "uid = %d AND parent = %@", uid, cdFolder)
+            guard
+                let allCdMesgs = CdMessage.all(predicate: p) as? [CdMessage],
+                let msg = allCdMesgs.first?.message()
+                else {
+                    if mustExist {
+                        XCTFail()
+                    }
+                    return
+            }
+            XCTAssertEqual(allCdMesgs.count, 1)
+            result = msg
+        }
+        return result
+    }
+
+    private func createMessage(inFolderOfType type: FolderType) -> Message? {
+        guard let folder = Folder.by(account: account, folderType: type) else {
+                XCTFail()
+                return nil
+        }
+        return Message(uuid: testUuid, parentFolder: folder)
+    }
 
     private func assureCleanFolderContainingExactlyOneFakeMessage(folderType: FolderType) -> Folder? {
         guard let folder = Folder.by(account: account, folderType: folderType) else {
