@@ -1,17 +1,18 @@
 //
-//  FakeMessageTests.swift
+//  Message+FakeMessageTest.swift
 //  pEpForiOSTests
 //
 //  Created by Andreas Buff on 08.01.19.
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
+
 import XCTest
 
 @testable import pEpForiOS
 import MessageModel
 
-class FakeMessageTests: CoreDataDrivenTestBase {
+class Message_FakeMessageTest: CoreDataDrivenTestBase {
     let testUuid = UUID().uuidString + #file
 
     override func setUp() {
@@ -29,7 +30,7 @@ class FakeMessageTests: CoreDataDrivenTestBase {
             guard
                 let folder = assureCleanFolderContainingExactlyOneFakeMessage(folderType: folderTpe),
                 let allCdMesgs = CdMessage.all() as? [CdMessage] else {
-                    // That is a valid case. E.g. folderType .normal has no
+                    // That is a valid case. E.g. folderType .normal.
                     return
             }
             XCTAssertEqual(allCdMesgs.count, 1, "Exactly one faked message exists in CD")
@@ -72,8 +73,8 @@ class FakeMessageTests: CoreDataDrivenTestBase {
             }
             deleteAllMessages()
             guard let folder = Folder.by(account: account, folderType: folderType) else {
-                    XCTFail()
-                    return
+                XCTFail()
+                return
             }
             let msg = Message(uuid: testUuid, parentFolder: folder)
             msg.from = account.user
@@ -145,8 +146,8 @@ class FakeMessageTests: CoreDataDrivenTestBase {
     }
 
     @discardableResult private func assureMessagesExistence(mustExist: Bool = true,
-                                         withUid uid: Int,
-                                         in folder: Folder) -> Message? {
+                                                            withUid uid: Int,
+                                                            in folder: Folder) -> Message? {
         var result: Message? = nil
         let moc = Record.Context.main
         moc.performAndWait {
@@ -172,8 +173,8 @@ class FakeMessageTests: CoreDataDrivenTestBase {
 
     private func createMessage(inFolderOfType type: FolderType) -> Message? {
         guard let folder = Folder.by(account: account, folderType: type) else {
-                XCTFail()
-                return nil
+            XCTFail()
+            return nil
         }
         return Message(uuid: testUuid, parentFolder: folder)
     }
