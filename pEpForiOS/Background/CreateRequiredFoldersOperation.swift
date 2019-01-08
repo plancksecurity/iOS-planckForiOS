@@ -157,9 +157,11 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
 }
 
 class CreateRequiredFoldersSyncDelegate: DefaultImapSyncDelegate {
+    private let logger = Logger(category: Logger.backend)
+
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Sorry, wrong number.")
+            logger.errorAndCrash("Sorry, wrong number.")
             return
         }
         op.numberOfFoldersCreated += 1
@@ -168,7 +170,7 @@ class CreateRequiredFoldersSyncDelegate: DefaultImapSyncDelegate {
 
     public override func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Sorry, wrong number.")
+            logger.errorAndCrash("Sorry, wrong number.")
             return
         }
         op.createFolderAgain(potentialError: ImapSyncError.illegalState(#function))
