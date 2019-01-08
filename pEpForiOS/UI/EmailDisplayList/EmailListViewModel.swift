@@ -675,7 +675,8 @@ extension EmailListViewModel {
 
     func composeViewModelForNewMessage() -> ComposeViewModel {
         let user = folderToShow.account.user
-        let composeVM = ComposeViewModel(prefilledFrom: user)
+        let composeVM = ComposeViewModel(resultDelegate: self,
+                                         prefilledFrom: user)
         return composeVM
     }
 }
