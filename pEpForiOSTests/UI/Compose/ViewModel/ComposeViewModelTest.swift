@@ -24,13 +24,13 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     var sent: Folder? {
         return account.folder(ofType: .sent)
     }
-
+    
     override func setUp() {
         super.setUp()
         vm = ComposeViewModel(resultDelegate: nil,
-                                  composeMode: nil,
-                                  prefilledTo: nil,
-                                  originalMessage: nil)
+                              composeMode: nil,
+                              prefilledTo: nil,
+                              originalMessage: nil)
         assureOutboxExists()
         assureDraftsExists()
         assureSentExists()
