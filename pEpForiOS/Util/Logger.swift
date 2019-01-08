@@ -185,6 +185,13 @@ public class Logger {
         }
     }
 
+    public static let frontend = "frontend"
+    public static let backend = "backend"
+
+    public static func lostMySelf(category: String) {
+        Logger.init(category: category).errorAndCrash("Lost MySelf")
+    }
+
     private let subsystem: String
     private let category: String
 
