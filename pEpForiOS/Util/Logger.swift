@@ -14,9 +14,11 @@ import MessageModel // For SystemUtils.crash only
 public class Logger {
     public enum Severity {
         /**
-         OSLog.default
+         This is the lowest priority that gets written to disk by default.
+         Used like WARN.
          */
         case `default`
+
         case info
         case debug
         case error
@@ -85,6 +87,23 @@ public class Logger {
                     fileLine: Int = #line,
                     _ message: StaticString,
                     _ args: CVarArg...) {
+        saveLog(message: message,
+                severity: .default,
+                function: function,
+                filePath: filePath,
+                fileLine: fileLine,
+                args: args)
+    }
+
+    /**
+     os_log doesn't have a warn per se, but default is coming close.
+     This is the same as log.
+     */
+    public func warn(function: String = #function,
+                     filePath: String = #file,
+                     fileLine: Int = #line,
+                     _ message: StaticString,
+                     _ args: CVarArg...) {
         saveLog(message: message,
                 severity: .default,
                 function: function,
