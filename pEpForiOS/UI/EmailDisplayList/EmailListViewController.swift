@@ -526,7 +526,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                         title: destructiveAction.title(forDisplayMode: .titleAndImage)) {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
 
@@ -542,7 +542,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 me.flagAction(forCellAt: indexPath)
@@ -562,7 +562,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 me.moreAction(forCellAt: indexPath)
@@ -872,7 +872,7 @@ extension EmailListViewController {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.performSegue(withIdentifier: .segueShowMoveToFolder, sender: me)
@@ -884,7 +884,7 @@ extension EmailListViewController {
         return  UIAlertAction(title: title, style: .cancel) {
             [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.tableView.beginUpdates()
@@ -898,7 +898,7 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.performSegue(withIdentifier: .segueReply, sender: me)
@@ -911,7 +911,7 @@ extension EmailListViewController {
             return UIAlertAction(title: title, style: .default) {
                 [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyAll, sender: me)
@@ -926,7 +926,7 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.performSegue(withIdentifier: .segueForward, sender: me)

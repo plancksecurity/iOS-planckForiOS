@@ -93,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [weak self] in
                 guard let me = self else {
-                    Logger.init(category: "AppDelegate").errorAndCrash("Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 Logger.init(category: "AppDelegate").errorAndCrash(
@@ -115,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func kickOffMySelf() {
         mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
             guard let me = self else {
-                Logger.init(category: "AppDelegate").errorAndCrash("Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             Logger.init(category: "AppDelegate").log(
@@ -128,7 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let op = MySelfOperation()
         op.completionBlock = { [weak self] in
             guard let me = self else {
-                Logger.init(category: "AppDelegate").errorAndCrash("Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             // We might be the last service that finishes, so we have to cleanup.
@@ -329,7 +329,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         networkService.checkForNewMails() {[weak self] (numMails: Int?) in
             guard let me = self else {
-                Logger.init(category: "AppDelegate").errorAndCrash("Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             guard let numMails = numMails else {

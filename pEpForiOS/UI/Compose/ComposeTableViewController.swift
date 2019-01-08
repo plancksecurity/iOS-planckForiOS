@@ -480,7 +480,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
         let deleteAction = SwipeAction(style: .destructive, title: "Delete") {
             [weak self] action, indexPath in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.deleteAction(forCellAt: indexPath)
@@ -499,7 +499,7 @@ extension ComposeTableViewController: SwipeTableViewCellDelegate {
             // The last cell is not yet displayed (as we are in "willDisplay ..."), thus async.
             DispatchQueue.main.async { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 me.setInitialFocus()
@@ -584,7 +584,7 @@ extension ComposeTableViewController {
         let text = vm.deleteActionTitle
         action = ac.action(text, .destructive) {[weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             vm.handleDeleteActionTriggered()
@@ -602,7 +602,7 @@ extension ComposeTableViewController {
         let text = vm.saveActionTitle
         action = ac.action(text, .default) { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             vm.handleSaveActionTriggered()
@@ -620,7 +620,7 @@ extension ComposeTableViewController {
         let text = vm.keepInOutboxActionTitle
         action = ac.action(text, .default) {[weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.dismiss()

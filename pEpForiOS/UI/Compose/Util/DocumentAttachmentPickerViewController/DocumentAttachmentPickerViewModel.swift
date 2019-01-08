@@ -30,7 +30,7 @@ class DocumentAttachmentPickerViewModel {
             createAttachment(forSecurityScopedResource: url) {
                 [weak self] (attachment: Attachment?) in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 guard let safeAttachment = attachment else {

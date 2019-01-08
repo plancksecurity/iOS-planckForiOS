@@ -142,7 +142,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         let moc = privateMOC
         moc.perform { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             me.moveLastMessageToSentFolder(context: moc)

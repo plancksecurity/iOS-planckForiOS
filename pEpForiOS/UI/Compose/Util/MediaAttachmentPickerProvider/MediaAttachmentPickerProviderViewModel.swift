@@ -64,7 +64,7 @@ class MediaAttachmentPickerProviderViewModel {
 
         createAttachment(forResource: url) {[weak self] (attachment)  in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             guard let att = attachment else {
@@ -82,7 +82,7 @@ class MediaAttachmentPickerProviderViewModel {
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {

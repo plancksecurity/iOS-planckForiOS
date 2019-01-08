@@ -51,7 +51,7 @@ public class AppendMailsOperation: ImapSyncOperation {
         var result: (PEPMessageDict, PEPIdentity, NSManagedObjectID)? = nil
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
-                Logger.init(category: "Background").errorAndCrash("Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             guard
@@ -77,7 +77,7 @@ public class AppendMailsOperation: ImapSyncOperation {
         if let msgID = lastHandledMessageObjectID {
             privateMOC.performAndWait { [weak self] in
                 guard let me = self else {
-                    Logger.init(category: "Background").errorAndCrash("Lost myself")
+                    Logger.lostMySelf(category: Logger.backend)
                     return
                 }
                 if let obj = me.privateMOC.object(with: msgID) as? CdMessage {

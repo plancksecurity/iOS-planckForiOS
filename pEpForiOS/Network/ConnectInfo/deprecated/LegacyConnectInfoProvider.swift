@@ -16,7 +16,7 @@ extension ConnectInfo {
         var result: NSManagedObjectID? = nil
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             guard let cdAccount = CdAccount.search(account: me.account) else {
@@ -33,7 +33,7 @@ extension ConnectInfo {
         var result: NSManagedObjectID? = nil
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             let serverType = me.server.serverType

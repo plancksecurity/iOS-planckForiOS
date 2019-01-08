@@ -130,7 +130,7 @@ open class NetworkServiceWorker {
 
         workerQueue.async {[weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             let observer = ObjectObserver(
@@ -159,7 +159,7 @@ open class NetworkServiceWorker {
         cancelled = true
         workerQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             // Cancel the current sync loop ...
@@ -713,7 +713,7 @@ open class NetworkServiceWorker {
         }
         workerQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if me.cancelled {

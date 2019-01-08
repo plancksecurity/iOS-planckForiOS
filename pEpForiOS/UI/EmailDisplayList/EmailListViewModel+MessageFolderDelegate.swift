@@ -17,7 +17,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didCreate(messageFolder: MessageFolder) {
         messageFolderDelegateHandlingQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.didCreateInternal(messageFolder: messageFolder)
@@ -27,7 +27,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didUpdate(messageFolder: MessageFolder) {
         messageFolderDelegateHandlingQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.didUpdateInternal(messageFolder: messageFolder)
@@ -37,7 +37,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
         messageFolderDelegateHandlingQueue.async { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.didDeleteInternal(

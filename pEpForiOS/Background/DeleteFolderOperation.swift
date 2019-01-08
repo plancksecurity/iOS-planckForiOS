@@ -33,7 +33,7 @@ public class DeleteFolderOperation: ImapSyncOperation {
 
         privateMOC.perform() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             me.account = me.privateMOC.object(with: me.accountID) as? CdAccount
@@ -51,7 +51,7 @@ public class DeleteFolderOperation: ImapSyncOperation {
     func deleteLocalFolderAndFinish() {
         privateMOC.perform { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if let folder = CdFolder.by(name: me.folderName, account: me.account) {

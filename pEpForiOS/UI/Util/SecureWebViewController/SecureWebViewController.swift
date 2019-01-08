@@ -228,7 +228,7 @@ class SecureWebViewController: UIViewController {
         let handler = {
             [weak self] (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
 

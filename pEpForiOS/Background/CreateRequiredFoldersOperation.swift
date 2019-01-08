@@ -45,7 +45,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         }
         privateMOC.perform { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             me.process()
@@ -93,7 +93,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         if let lastFolder = currentAttempt.folderToCreate {
             privateMOC.performAndWait { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.backend)
                     return
                 }
                 me.createLocal(folderToCreate: lastFolder, context: me.privateMOC)

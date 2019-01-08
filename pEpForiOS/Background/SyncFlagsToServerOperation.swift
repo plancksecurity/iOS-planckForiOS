@@ -101,7 +101,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     func syncNextMessage() {
         let op = BlockOperation() { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
 

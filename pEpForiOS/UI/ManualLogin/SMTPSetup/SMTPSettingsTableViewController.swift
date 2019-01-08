@@ -159,7 +159,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
         if result == .ok {
             MessageModel.performAndWait { [weak self] in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 guard let account = me.currentlyVerifiedAccount else {

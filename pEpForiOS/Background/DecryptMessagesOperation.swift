@@ -30,7 +30,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
     private func setupMessagesToDecrypt() {
         privateMOC.performAndWait {[weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             guard let cdMessages = CdMessage.all(
@@ -70,7 +70,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
 
         privateMOC.perform { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if me.isCancelled {
@@ -109,7 +109,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
                                          keys: NSArray?) {
         privateMOC.performAndWait {[weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             let theKeys = Array(keys ?? NSArray()) as? [String] ?? []

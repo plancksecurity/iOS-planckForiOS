@@ -198,7 +198,7 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
         }
         GCD.onMainWait { [weak self] in
             guard let me = self else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                Logger.lostMySelf(category: Logger.frontend)
                 return
             }
             me.delegate?.didVerify(result: result, accountInput: nil)

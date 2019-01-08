@@ -350,19 +350,19 @@ class EmailViewController: BaseTableViewController {
         let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
             .withReplyOption { [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
             }.withReplyAllOption(forMessage: message) { [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
             }.withFordwardOption { [weak self] action in
                 guard let me = self else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "Lost myself")
+                    Logger.lostMySelf(category: Logger.frontend)
                     return
                 }
                 me.performSegue(withIdentifier: .segueForward , sender: self)

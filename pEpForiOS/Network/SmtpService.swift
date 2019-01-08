@@ -218,8 +218,7 @@ extension SmtpSend: CWServiceClient {
                                 group.leave()
                             }
                         } else {
-                            Log.shared.errorAndCrash(component: #function,
-                                                     errorString: "Lost myself")
+                            Logger.lostMySelf(category: Logger.backend)
                             group.leave()
 
                         }
