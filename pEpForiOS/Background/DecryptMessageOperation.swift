@@ -48,6 +48,8 @@ class DecryptMessageOperation: Operation {
     let messageToDecrypt: PEPMessageDict
     let flags: PEP_decrypt_flags
 
+    private let logger = Logger(category: Logger.backend)
+
     init(messageToDecrypt: PEPMessageDict, flags: PEP_decrypt_flags,
          delegate: DecryptMessageOperationDelegate) {
         self.messageToDecrypt = messageToDecrypt
@@ -86,7 +88,7 @@ class DecryptMessageOperation: Operation {
             delegate?.decryptMessageOperation(sender: self, didDecryptMessageWithResult: result)
 
         } catch {
-            Log.shared.errorAndCrash(component: #function, errorString: "Error decrypting")
+            logger.errorAndCrash("Error decrypting")
             delegate?.decryptMessageOperation(sender: self, failed: error)
         }
     }
