@@ -43,7 +43,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func test10MessagesInInitialSetup() {
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
+        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
@@ -239,13 +239,16 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: textToSearch),
-                      tos: [folder.account.user]).save()
+                      tos: [folder.account.user],
+                      uid: 666).save()
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: textToSearch),
-                      tos: [folder.account.user]).save()
+                      tos: [folder.account.user],
+                      uid: 667).save()
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: textToSearch),
-                      tos: [folder.account.user]).save()
+                      tos: [folder.account.user],
+                      uid: 668).save()
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 13)
         setSearchFilter(text: "searchTest")
@@ -258,7 +261,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: "mail@mail.com"),
                       tos: [folder.account.user],
-                      shortMessage: textToSearch).save()
+                      shortMessage: textToSearch,
+                      uid: 666).save()
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 11)
         setSearchFilter(text: textToSearch)
@@ -271,11 +275,13 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: "mail@mail.com"),
-                      shortMessage: textToSearch).save()
+                      shortMessage: textToSearch,
+                      uid: 666).save()
         TestUtil.createMessage(inFolder: folder,
                       from: Identity.create(address: "mail@mail.com"),
                       tos: [folder.account.user],
-                      longMessage: longText).save()
+                      longMessage: longText,
+                      uid: 667).save()
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 12)
         setSearchFilter(text: textToSearch)
@@ -302,7 +308,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testViewModel() {
-        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
+        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user, uid: 1)
         msg.save()
         setupViewModel()
         let index = emailListVM.index(of: msg)
@@ -348,8 +354,11 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testNewMessageUpdateReceivedAndDisplayed() {
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
+        let numMails = 10
+        TestUtil.createMessages(number: numMails, engineProccesed: true, inFolder: folder)
+        let msg = TestUtil.createMessage(inFolder: folder,
+                                         from: folder.account.user,
+                                         uid: numMails + 1)
         msg.imapFlags?.flagged = false
         msg.save()
         XCTAssertFalse((msg.imapFlags?.flagged)!)
@@ -378,8 +387,11 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testNewMessageDeleteReceivedAndDisplayed() {
+        let numMails = 10
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
-        let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
+        let msg = TestUtil.createMessage(inFolder: folder,
+                                         from: folder.account.user,
+                                         uid: numMails + 1)
         msg.imapFlags?.flagged = false
         msg.save()
         XCTAssertFalse((msg.imapFlags?.flagged)!)
