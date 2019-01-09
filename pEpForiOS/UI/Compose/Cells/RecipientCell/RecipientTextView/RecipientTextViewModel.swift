@@ -111,8 +111,10 @@ public class RecipientTextViewModel {
     }
 
      @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
-                                                        of text: NSAttributedString) -> Bool {
-        let containsNothingButAttachments = text.plainTextRemoved().length == text.length
+                                                                            of text: NSAttributedString) -> Bool {
+        let containsNothingButAttachments =
+            text.plainTextRemoved().length == text.length ||
+                text.plainTextRemoved().string.trimObjectReplacementCharacters().isEmpty
         let validEmailaddressHandled = parseAndHandleValidEmailAddresses(inRange: range, of: text)
         isDirty = !validEmailaddressHandled && !containsNothingButAttachments
         return validEmailaddressHandled
