@@ -36,6 +36,7 @@ extension Message {
         let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
                               message: msg,
                               parentFolder: msg.parent)
+        fakeMsg.imapFlags = msg.imapFlags
         fakeMsg.uuid = msg.uuid
         CdMessage.create(withContentOf: fakeMsg)
         Record.saveAndWait()
