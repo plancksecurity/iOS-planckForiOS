@@ -485,10 +485,17 @@ extension CdMessage {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
         
-        guard let mail = quickInsertOrUpdate(
-            pantomimeMessage: pantomimeMessage, account: account, messageUpdate: messageUpdate)
-            else {
+        guard
+            let mail = quickInsertOrUpdate(pantomimeMessage: pantomimeMessage,
+                                           account: account,
+                                           messageUpdate: messageUpdate),
+            let mmMail = mail.message() else {
                 return nil
+        }
+
+        if mmMail.isFakeMessage {
+            //Update local fake message  with data from real, fetched message
+            mail.uid = Int32(pantomimeMessage.uid())
         }
 
         if messageUpdate.isFlagsOnly() || messageUpdate.isMsnOnly() {
