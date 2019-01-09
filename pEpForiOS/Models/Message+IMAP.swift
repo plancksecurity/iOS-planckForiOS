@@ -9,6 +9,8 @@
 import MessageModel
 
 extension Message {
+    static let uidNeedsAppend = 0
+    static let uidFakeResponsivenes = -1
 
     // MARK: - Deletion
 
@@ -32,7 +34,7 @@ extension Message {
             delete()
         }
     }
-    
+
     /// Sets flag "deleted".
     /// Use this method if you do not want the message to be moved to trash folder.
     /// Note: Use only for messages synced with an IMAP server.
@@ -46,7 +48,7 @@ extension Message {
         theFlags.deleted = true
         self.save()
     }
-    
+
     /// Triggers trashing of the message, taking everithing in account (provider specific constrains
     /// and such).
     /// Always use this method to handle "user has choosen to delete an e-mail".
@@ -62,8 +64,8 @@ extension Message {
                 "We should have a trash folder at this point")
             return
         }
-        
-        if parent.shouldUidMoveDeletedMessagesToTrash {
+
+        if parent.shouldUidMoveDeletedMessagesToTrash && !isFakeMessage {
             move(to: trashFolder)
         } else {
             imapMarkDeleted()
@@ -85,8 +87,9 @@ extension Message {
             // the message is in the target folder already. No need to move it.
             return
         }
+        saveFakeMessage(in: targetFolder)
         if targetFolder.account == parent.account {
-            self.targetFolder = targetFolder
+           self.targetFolder = targetFolder
             save()
         } else {
             // The message must be moved to another account. Thus ...

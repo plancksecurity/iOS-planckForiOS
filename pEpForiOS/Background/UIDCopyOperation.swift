@@ -50,7 +50,13 @@ class UIDCopyOperation: ImapSyncOperation {
         if let sync = imapSyncData.sync {
             imapFolder.setStore(sync.imapStore)
         }
-        imapFolder.copyMessage(withUid: originalMessage.uid,
+        guard originalMessage.uid > 0 else {
+            handle(error: BackgroundError.GeneralError.illegalState(info:
+                "Invalid UID for this action"))
+            return
+        }
+        let uid = UInt(originalMessage.uid)
+        imapFolder.copyMessage(withUid: uid,
                                toFolderNamed: targetFolder.name)
     }
 }

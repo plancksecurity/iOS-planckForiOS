@@ -74,8 +74,8 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
         id.save()
 
         var messages = [Message]()
-        for _ in 0..<numMessages {
-            let message = Message(uuid: UUID().uuidString, parentFolder: folder)
+        for i in 1...numMessages {
+            let message = Message(uuid: UUID().uuidString, uid: i, parentFolder: folder)
             message.from = id
             message.to = [account.user]
             message.imapFlags?.seen = false

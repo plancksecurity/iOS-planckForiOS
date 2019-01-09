@@ -458,7 +458,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         })
         // Check sent status of all sent mails
         for sentUuid in sentUUIDs {
-            let msgs = CdMessage.search(byUUID: sentUuid)
+            let msgs = CdMessage.search(byUUID: sentUuid, includeFakeMessages: false)
             XCTAssertEqual(msgs.count, 1)
             guard let msg = msgs.first else {
                 XCTFail("Missing sent message")

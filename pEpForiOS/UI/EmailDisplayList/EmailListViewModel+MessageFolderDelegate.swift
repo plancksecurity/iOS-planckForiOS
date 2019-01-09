@@ -48,12 +48,28 @@ extension EmailListViewModel: MessageFolderDelegate {
 
     // MARK: - MessageFolderDelegate (internal)
 
+    /// Figures out if we are currently displaying a fake version of the given message
+    ///
+    /// - Parameter msg: message to search faked version for
+    /// - Returns: true if we are currently displaying the given message (assumingly faked version)
+    ///            false otherwize
+    private func isFakeVersionCurrentlyShown(of msg: Message) -> Bool {
+        let existingIndex = messages.index(of: MessageViewModel(with: msg))
+        return existingIndex != nil
+    }
+
     private func didCreateInternal(messageFolder: MessageFolder) {
         guard let message = messageFolder as? Message else {
             // The createe is no message. Ignore.
             return
         }
         if !shouldBeDisplayed(message: message) {
+            return
+        }
+
+        if isFakeVersionCurrentlyShown(of: message) {
+            // We are already showing a fake version of this newly fetched message.
+            // Ignore.
             return
         }
 
@@ -392,7 +408,10 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
 
     private func shouldBeDisplayed(message: Message) -> Bool {
-            if (!message.parent.showsMessagesNeverSeenByEngine && message.isEncrypted) ||
+        if message.isFakeMessage {
+            return true
+        }
+        if (!message.parent.showsMessagesNeverSeenByEngine && message.isEncrypted) ||
             (!threadedMessageFolder.isThreaded && !isInFolderToShow(message: message)) {
             return false
         }

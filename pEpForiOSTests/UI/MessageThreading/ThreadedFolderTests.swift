@@ -36,7 +36,7 @@ class ThreadedFolderTests: CoreDataDrivenTestBase {
 
         XCTAssertEqual(topMessages[0].uid, 1)
         let inboxMessages = threaded.allMessages()
-        XCTAssertEqual(inboxMessages[0].uid, UInt(inboxCount))
+        XCTAssertEqual(inboxMessages[0].uid, inboxCount)
 
         for msg in topMessages {
             XCTAssertEqual(threaded.messagesInThread(message: msg).count, 0)

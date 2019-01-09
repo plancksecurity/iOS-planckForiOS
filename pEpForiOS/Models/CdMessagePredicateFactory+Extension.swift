@@ -13,7 +13,6 @@ extension CdMessage.PredicateFactory {
 
     static public func existingMessages() -> NSPredicate {
         var predicates = [NSPredicate]()
-        predicates.append(NSPredicate(format: "bodyFetched = true"))
         predicates.append(notImapFlagDeleted())
         predicates.append(notMarkedForMoveToFolder())
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
@@ -57,21 +56,18 @@ extension CdMessage.PredicateFactory {
      */
     public static func changedFlags(folder: CdFolder? = nil) -> NSPredicate {
         var predicates = [NSPredicate]()
-
         if let f = folder {
             predicates.append(NSPredicate(format: "parent = %@", f))
         }
-
-        let pFlags = NSPredicate(format:
+        predicates.append(NSPredicate(format:
             "(imap.localFlags.flagAnswered != imap.serverFlags.flagAnswered) OR " +
                 "(imap.localFlags.flagDraft != imap.serverFlags.flagDraft) OR " +
                 "(imap.localFlags.flagFlagged != imap.serverFlags.flagFlagged) OR " +
                 "(imap.localFlags.flagSeen != imap.serverFlags.flagSeen) OR " +
-            "(imap.localFlags.flagDeleted != imap.serverFlags.flagDeleted)")
-        predicates.append(pFlags)
+            "(imap.localFlags.flagDeleted != imap.serverFlags.flagDeleted)"))
+        predicates.append(NSPredicate(format: "uid != %d", Message.uidNeedsAppend))
+        predicates.append(isNotFakeMessage())
 
-        let pUid = NSPredicate(format: "uid != 0")
-        predicates.append(pUid)
         return NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
     }
 }

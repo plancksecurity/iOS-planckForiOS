@@ -434,19 +434,22 @@ class TestUtil {
 
     @discardableResult static func createMessages(number: Int,
                                     engineProccesed: Bool = true,
-                                    inFolder: Folder) -> [Message]{
+                                    inFolder: Folder,
+                                    setUids: Bool = true) -> [Message]{
         var messages : [Message] = []
-        for _ in 0..<number {
+        for i in 1...number {
+            let uid = setUids ? i : nil
+
             let msg = createMessage(inFolder: inFolder,
                                     from: Identity.create(address: "mail@mail.com"),
                                     tos: [inFolder.account.user],
-                                    engineProccesed: engineProccesed)
+                                    engineProccesed: engineProccesed,
+                                    uid: uid)
             messages.append(msg)
             msg.save()
         }
         return messages
     }
-
 
     static func createMessage(inFolder folder: Folder,
                                    from: Identity,
@@ -458,7 +461,8 @@ class TestUtil {
                                    longMessage: String = "",
                                    longMessageFormatted: String = "",
                                    dateSent: Date = Date(),
-                                   attachments: Int = 0) -> Message {
+                                   attachments: Int = 0,
+                                   uid: Int? = nil) -> Message {
         let msg = Message(uuid: MessageID.generate(), parentFolder: folder)
         msg.from = from
         msg.to = tos
@@ -475,13 +479,16 @@ class TestUtil {
             msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         }
         msg.attachments = createAttachments(number: attachments)
-
-        return msg
+        var result = msg
+        if let uid = uid {
+            result =  Message(uid: uid, message: msg)
+        }
+        return result
     }
 
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
-        let msg = Message(uuid: "\(uid)", uid: UInt(uid), parentFolder: folder)
-        XCTAssertEqual(msg.uid, UInt(uid))
+        let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
+        XCTAssertEqual(msg.uid, uid)
         msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
         msg.received = Date(timeIntervalSince1970: Double(uid))
         msg.sent = msg.received
@@ -569,7 +576,7 @@ class TestUtil {
         let blueprint = blueprintData[number]
 
         let msg = Message(uuid: blueprint.uuid,
-                          uid: UInt(number + 1),
+                          uid: number + 1,
                           parentFolder: folder)
         msg.from = blueprint.from
         msg.to = [receiver]

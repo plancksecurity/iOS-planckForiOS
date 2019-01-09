@@ -137,8 +137,11 @@ class PersistentImapFolder: CWIMAPFolder {
     override func message(at theIndex: UInt) -> CWMessage? {
         var result: CWMessage?
         privateMOC.performAndWait({
-            let p = NSPredicate(
+            let isNotFake = CdMessage.PredicateFactory.isNotFakeMessage()
+            let msgAtIdx = NSPredicate(
                 format: "parent = %@ and imap.messageNumber = %d", self.folder, theIndex)
+            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [isNotFake,
+                                                                        msgAtIdx])
             let msg = CdMessage.first(predicate: p)
             result = msg?.pantomimeQuick(folder: self)
         })

@@ -47,7 +47,6 @@ class DecryptImportedMessagesTests: XCTestCase {
         let cdOwnAccount = DecryptionUtil.createLocalAccount(ownUserName: "Someonei",
                                                              ownUserID: "User_Someonei",
                                                              ownEmailAddress: "someone@gmx.de")
-
         self.backgroundQueue = OperationQueue()
         let cdMessage = DecryptionUtil.decryptTheMessage(
             testCase: self,

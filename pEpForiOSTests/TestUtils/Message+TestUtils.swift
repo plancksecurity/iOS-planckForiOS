@@ -56,4 +56,15 @@ extension Message {
 
         return dict
     }
+
+    public static func by(uid: Int, folderName: String, accountAddress: String) -> Message? {
+        let pAccount =
+            CdMessage.PredicateFactory.belongingToAccountWithAddress(address: accountAddress)
+        let pUid = NSPredicate(format: "uid = %d", uid)
+        let pFolder =
+            CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: folderName)
+        let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pAccount, pUid, pFolder])
+        let cdMessage = CdMessage.all(predicate: p)?.first as? CdMessage
+        return cdMessage?.message()
+    }
 }

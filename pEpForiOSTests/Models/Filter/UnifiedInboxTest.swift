@@ -9,7 +9,6 @@
 import XCTest
 
 import MessageModel
-
 @testable import pEpForiOS
 
 class UnifiedInboxTest: CoreDataDrivenTestBase {
@@ -20,10 +19,8 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
 
         let f1 = Folder(name: "inbox1", parent: nil, account: acc, folderType: .inbox)
         f1.save()
-
         let f2 = Folder(name: "inbox2", parent: nil, account: acc, folderType: .inbox)
         f2.save()
-
         let f3 = Folder(name: "inbox3", parent: nil, account: acc, folderType: .inbox)
         f3.save()
 
@@ -35,10 +32,11 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
         var theDate = Date()
         for i in 1...numMails {
             for f in inboxes {
-                let message = Message(uuid: "\(i)", parentFolder: f)
+                let message = Message(uuid: "\(i)", uid: i, parentFolder: f)
                 message.longMessage = "long"
                 message.shortMessage = "short"
                 message.sent = theDate
+                message.pEpRatingInt = Int(PEP_rating_unencrypted.rawValue)
                 message.save()
                 theDate = Date(timeInterval: -1, since: theDate)
                 originalMessages.append(message)
@@ -56,16 +54,16 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
 
         let cdMessages = uf.allCdMessagesNonThreaded()
         for cdM in cdMessages {
-            cdM.uid = uid
             uid += 1
+            cdM.uid = uid
         }
         XCTAssertEqual(uid, Int32(numMailsTotal))
         Record.saveAndWait()
 
         let allTheCdMessages = uf.allCdMessagesNonThreaded()
-        for uidRun in 0..<uid {
-            let msg = uf.messageAt(index: Int(uidRun))
-            let cdMsg = allTheCdMessages[Int(uidRun)]
+        for uidRun in 1...uid {
+            let msg = uf.messageAt(index: Int(uidRun - 1))
+            let cdMsg = allTheCdMessages[Int(uidRun - 1)]
             XCTAssertEqual(cdMsg.uid, uidRun)
             XCTAssertEqual(msg?.imapFlags?.uid, uidRun)
         }

@@ -627,8 +627,14 @@ extension CdMessage {
     /// - Returns: existing message
     static func search(message: CWIMAPMessage, inAccount account: CdAccount) -> CdMessage? {
         let uid = Int32(message.uid())
-        return search(uid: uid, uuid: message.messageID(),
-                      folderName: message.folder()?.name(), inAccount: account)
+        guard let uuid = message.messageID() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No UUID")
+            return nil
+        }
+        return search(uid: uid,
+                      uuid: uuid,
+                      folderName: message.folder()?.name(),
+                      inAccount: account)
     }
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {

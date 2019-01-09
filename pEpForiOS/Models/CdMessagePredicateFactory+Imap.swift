@@ -25,9 +25,12 @@ extension CdMessage.PredicateFactory {
     }
 
     public static func outgoingMails(in cdAccount: CdAccount) -> NSPredicate {
-        return NSPredicate(
-            format: "parent.folderTypeRawValue = %d and parent.account = %@",
-            FolderType.outbox.rawValue, cdAccount)
+        return NSPredicate(format: "parent.folderTypeRawValue = %d and parent.account = %@",
+                           FolderType.outbox.rawValue, cdAccount)
+    }
+
+    public static func isNotFakeMessage() -> NSPredicate {
+        return NSPredicate(format: "uid != %d", Message.uidFakeResponsivenes)
     }
 
     /// Predicate to fetch all messages in a given account that need to be IMAP appended.

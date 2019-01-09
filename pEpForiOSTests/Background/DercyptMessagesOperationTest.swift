@@ -22,7 +22,7 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         folder.name = ImapSync.defaultImapInboxName
         folder.uuid = MessageID.generate()
         Record.saveAndWait()
-        
+
         guard
             let affectedMessage = TestUtil.loadData(fileName: "IOS-815_pep_rating_zero.txt"),
             let message = CWIMAPMessage(data: affectedMessage) else {
@@ -38,17 +38,17 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
                                                     XCTFail("error parsing message")
                                                     return
         }
-        
+
         guard let cur = CdMessage.search(message: message, inAccount: cdAccount) else {
             XCTFail("No message")
             return
         }
-        
+
         let notSeenByPepYet = Int16.min
         XCTAssertTrue(cur.pEpRating == notSeenByPepYet)
         let keyAttachment = 1
         XCTAssertEqual(cur.attachments?.count, keyAttachment)
-        
+
         let errorContainer = ErrorContainer()
         let decryptOP = DecryptMessagesOperation(errorContainer: errorContainer)
         let expOpFinishes = expectation(description: "expOpFinishes")
@@ -57,16 +57,16 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
             expOpFinishes.fulfill()
         }
         decryptOP.start()
-        
+
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in
             XCTAssertNil(error)
         })
-        
+
         guard let temp = msg.message(),  let testee = CdMessage.search(message: temp) else {
             XCTFail("No message")
             return
         }
-        
+
         XCTAssertTrue(testee.pEpRating != notSeenByPepYet)
     }
 }
