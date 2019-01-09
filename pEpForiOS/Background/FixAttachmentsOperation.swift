@@ -17,12 +17,12 @@ import MessageModel
  Use this operation to (down)load attachment content before sending such an image attachment.
  */
 public class FixAttachmentsOperation: ConcurrentBaseOperation {
+    private let logger = Logger(category: Logger.backend)
+
     let pInvalidLength = NSPredicate(format: "length = 0 and data != nil")
     let pInvalidData = NSPredicate(format: "data = nil and (fileName != nil or assetUrl != nil)")
 
     var openFetchCount = 0
-
-    private let logger = Logger(category: Logger.backend)
 
     override public func main() {
         if isCancelled {
@@ -79,7 +79,7 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
                         }
                     }
                 } else {
-                    Log.error(component: comp, errorString: "CdAttachment with invalid URL")
+                    logger.errorAndCrash("CdAttachment with invalid URL")
                     openFetchCount -= 1
                 }
             }

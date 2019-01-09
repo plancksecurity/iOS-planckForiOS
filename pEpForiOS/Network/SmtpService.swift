@@ -240,9 +240,11 @@ extension SmtpSend: CWServiceClient {
                 } else {
                     missingToken = "loginPassword"
                 }
-                Log.warn(
-                    component: #function,
-                    content: "Don't have \(missingToken) for \(connectInfo.networkAddress) (\(String(describing: connectInfo.emailProtocol)))")
+                logger.warn(
+                    "Don't have %{public}@ for %{public}@ (%{public}@)",
+                    missingToken,
+                    connectInfo.networkAddress,
+                    String(describing: connectInfo.emailProtocol))
                 authenticationFailed(nil)
             }
         }

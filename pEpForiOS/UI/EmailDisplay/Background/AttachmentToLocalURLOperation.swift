@@ -46,7 +46,7 @@ class AttachmentToLocalURLOperation: Operation {
             try data.write(to: theURL)
             fileURL = theURL
         } catch {
-            Log.error(component: #function, error: error)
+            logger.log(error: error)
         }
     }
 }

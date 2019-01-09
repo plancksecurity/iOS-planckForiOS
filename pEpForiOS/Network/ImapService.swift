@@ -431,10 +431,10 @@ extension ImapSync: CWServiceClient {
                 loginName, password: loginPassword, mechanism: bestAuthMethod().rawValue)
         } else {
             if connectInfo.loginPassword == nil {
-                Log.error(component: comp, errorString: "Want to login, but don't have a password")
+                logger.error("Want to login, but don't have a password")
             }
             if connectInfo.loginName == nil {
-                Log.error(component: comp, errorString: "Want to login, but don't have a login")
+                logger.error("Want to login, but don't have a login")
             }
             runOnDelegate(logName: #function) { theDelegate in
                 theDelegate.authenticationFailed(self, notification: notification)

@@ -23,9 +23,7 @@ extension CdMessage {
         if let fl = PantomimeFlag(rawValue: UInt(flags)) {
             return CWFlags(flags: fl)
         }
-        Log.error(component:
-            "Message", errorString:
-            "Could not convert \(flags) to PantomimeFlag")
+        Logger(category: Logger.model).error("Could not convert %d to PantomimeFlag", flags)
         return CWFlags()
     }
 
@@ -65,9 +63,7 @@ extension CdMessage {
         if let fl = PantomimeFlag(rawValue: UInt(flagsInt16)) {
             return CWFlags(flags: fl)
         }
-        Log.error(component:
-            "Message", errorString:
-            "Could not convert \(flagsInt16) to PantomimeFlag")
+        Logger(category: Logger.model).error("Could not convert %d to PantomimeFlag", flagsInt16)
         return CWFlags()
     }
 
@@ -504,8 +500,8 @@ extension CdMessage {
             // This is a contradiction in itself, a new message that already existed.
             // Can happen with yahoo IMAP servers when they send more messages in
             // FETCH responses than requested.
-            Log.warn(component: #function,
-                     content: "ignoring rfc2822 update for already decrypted message")
+            Logger(category: Logger.model).warn(
+                "ignoring rfc2822 update for already decrypted message")
             return mail
         }
 
@@ -528,9 +524,10 @@ extension CdMessage {
                 case .bccRecipient:
                     bccs.add(cdIdentity(pantomimeAddress: addr))
                 default:
-                    Log.warn(
-                        component: "Message",
-                        content: "Unsupported recipient type \(addr.type()) for \(addr.address())")
+                    Logger(category: Logger.model).warn(
+                        "Unsupported recipient type %d for %{public}@",
+                        addr.type().rawValue,
+                        addr.address())
                 }
             }
             mail.to = tos
