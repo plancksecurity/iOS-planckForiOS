@@ -60,9 +60,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
             XCTAssertNotNil(m.imap)
-            if m.sent == nil {
-                Log.warn(component: #function, content: "nil sent \(String(describing: m.shortMessage)) \(String(describing: m.uuid))")
-            }
             XCTAssertNotNil(m.sent)
             XCTAssertNotNil(m.received)
 

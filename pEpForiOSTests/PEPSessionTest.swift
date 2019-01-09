@@ -72,9 +72,6 @@ class PEPSessionTest: XCTestCase {
                                         status: nil)
         cdmessage2.update(pEpMessageDict: pepmessage)
         XCTAssertEqual(cdmessage2, cdmessage1)
-
-        Log.verbose(component: "testPEPConversion", content: "test")
-        Log.error(component: "testPEPConversion", errorString: "test")
     }
 
     func testMessageIDAndReferencesAfterEncrypt() {
