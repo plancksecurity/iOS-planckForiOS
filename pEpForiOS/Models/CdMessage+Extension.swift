@@ -103,7 +103,7 @@ extension CdMessage {
         let cdReplyTo = msg.replyTo.compactMap { $0.cdIdentity() }
         createe.replyTo = NSOrderedSet(array: cdReplyTo)
 
-        createe.references = NSOrderedSet(array: msg.references)
+        createe.replace(referenceStrings: msg.references)
         createe.keywords = NSSet(array: msg.keywords)
         createe.comments = msg.comments
 
