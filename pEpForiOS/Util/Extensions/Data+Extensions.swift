@@ -28,7 +28,7 @@ extension Data {
         do {
             try write(to: url)
         } catch {
-            Log.error(component: #function, errorString: "Could not save to \(url)")
+            Logger(category: Logger.util).error("Could not save to %{public}@", url.absoluteString)
         }
     }
 
