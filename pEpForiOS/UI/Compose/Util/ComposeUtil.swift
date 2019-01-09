@@ -166,7 +166,11 @@ struct ComposeUtil {
         message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
         message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
         message.pEpProtected = state.pEpProtection
-        message.setOriginalRatingHeader(rating: state.rating)
+        if !state.pEpProtection {
+            message.setOriginalRatingHeader(rating: PEP_rating_unencrypted)
+        } else {
+            message.setOriginalRatingHeader(rating: state.rating)
+        }
 
         updateReferences(of: message, accordingTo: state)
 
