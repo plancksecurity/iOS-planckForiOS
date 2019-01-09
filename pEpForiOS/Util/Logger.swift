@@ -333,7 +333,7 @@ public class Logger {
         default:
             os_log("Using more than 10 parameters",
                    log: theLog,
-                   type: theType)
+                   type: .error)
             os_log(message,
                    log: theLog,
                    type: theType,
