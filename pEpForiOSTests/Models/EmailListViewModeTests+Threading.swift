@@ -71,24 +71,25 @@ class EmailListViewModelTests_Threading: CoreDataDrivenTestBase {
             indexPathUpdated: indexOfTopMessageNewest)
     }
 
-    func testThreadedIncomingSentChildMessageToSingleUndisplayedParent() {
-        FolderThreading.override(factory: ThreadAwareFolderFactory())
-        setUpTopMessages()
-
-        let sentFolder = Folder(name: "Sent",
-                                     parent: nil,
-                                     account: account,
-                                     folderType: .sent)
-        sentFolder.save()
-
-        // topMessages[0] is the oldest, so it's last in the list
-        let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.createMessage([topMessages[1]], sentFolder),
-            indexPathUpdated: indexOfTopMessageNewest)
-        let _ = testIncomingMessage(
-            parameters: IncomingMessageParameters.createMessage([topMessages[0]], nil),
-            indexPathUpdated: indexOfTopMessageNewest)
-    }
+    // Commented out for IOS-1244
+//    func testThreadedIncomingSentChildMessageToSingleUndisplayedParent() {
+//        FolderThreading.override(factory: ThreadAwareFolderFactory())
+//        setUpTopMessages()
+//
+//        let sentFolder = Folder(name: "Sent",
+//                                     parent: nil,
+//                                     account: account,
+//                                     folderType: .sent)
+//        sentFolder.save()
+//
+//        // topMessages[0] is the oldest, so it's last in the list
+//        let _ = testIncomingMessage(
+//            parameters: IncomingMessageParameters.createMessage([topMessages[1]], sentFolder),
+//            indexPathUpdated: indexOfTopMessageNewest)
+//        let _ = testIncomingMessage(
+//            parameters: IncomingMessageParameters.createMessage([topMessages[0]], nil),
+//            indexPathUpdated: indexOfTopMessageNewest)
+//    }
 
     func testThreadedIncomingChildMessageToUndisplayedParents() {
         FolderThreading.override(factory: ThreadAwareFolderFactory())

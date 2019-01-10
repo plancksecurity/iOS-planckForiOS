@@ -412,7 +412,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             return true
         }
         if (!message.parent.showsMessagesNeverSeenByEngine && message.isEncrypted) ||
-            (!threadedMessageFolder.isThreaded && !isInFolderToShow(message: message)) {
+            (/*!threadedMessageFolder.isThreaded && /*commented out as possible cause for IOS-1244*/*/!isInFolderToShow(message: message)) {
             return false
         }
         return true
