@@ -45,9 +45,9 @@ extension TrustedServerSettingsViewController {
 
     override func tableView(_ tableView: UITableView,
                             titleForFooterInSection section: Int) -> String? {
-        return NSLocalizedString("If disabled, an unencrypted copy of each message is stored on " +
-            "the server.\n\nDo not disable if you are not sure what you are doing!",
-                                 comment: "Trusted Server Setting Section Footer")
+        return NSLocalizedString(
+            "If disabled, an unencrypted copy of each message is stored on the server.\n\nDo not disable if you are not sure what you are doing!",
+            comment: "Trusted Server Setting Section Footer")
     }
 }
 
