@@ -259,6 +259,12 @@ Nur auschalten wenn der Server tatsächlich vertrauenswürdig ist.";
 /* Invalid input for username */
 "Invalid username: %1$@" = "Ungültiger Benutzername: %1$@";
 
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to %1$@. Username or password is wrong." = "Kein Server-Login möglich (%1$@). Benutzername oder Passwort ist falsch.";
+
+/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
+"It was impossible to login to the server. Username or password is wrong." = "Kein Server-Login möglich. Benutzername oder Passwort ist falsch.";
+
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Im Postausgang behalten";
 
