@@ -198,6 +198,13 @@ Anhänge sind desaktiviert.
 /* possible privacy status action */
 "Handshake" = "Handshake";
 
+/* Trusted Server Setting Section Footer */
+"If disabled, an unencrypted copy of each message is stored on the server.
+
+Do not disable if you are not sure what you are doing!" = "Wenn ausgeschaltet, werden Nachrichten entschlüsselt auf dem Server gespeichert.
+
+Nur auschalten wenn der Server tatsächlich vertrauenswürdig ist.";
+
 /* Tableview section footer */
 "If enabled, message subjects are also protected." = "Schützt den Betreff, wenn aktiviert";
 
@@ -251,9 +258,6 @@ Anhänge sind desaktiviert.
 
 /* Invalid input for username */
 "Invalid username: %1$@" = "Ungültiger Benutzername: %1$@";
-
-/* Error message shown to the user in case the authentication to IMAP or SMTP server failed. */
-"It was impossible to login to the server. Username or password is wrong." = "Kein Server-Login möglich. Benutzername oder Passwort ist falsch.";
 
 /* ComposeTableView: button to decide to Discharge changes made on a mail in outbox. */
 "Keep in Outbox" = "Im Postausgang behalten";
