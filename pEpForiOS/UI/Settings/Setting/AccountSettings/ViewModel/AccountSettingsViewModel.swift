@@ -10,6 +10,8 @@ import Foundation
 import MessageModel
 
 public class AccountSettingsViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     public struct ServerViewModel {
         var address: String?
         var port: String?
@@ -99,8 +101,7 @@ public class AccountSettingsViewModel {
                 smtp: ServerViewModel) {
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Account misses imap or smtp server.")
+                logger.errorAndCrash("Account misses imap or smtp server.")
                 return
         }
         let pass : String?
@@ -119,7 +120,7 @@ public class AccountSettingsViewModel {
                                           password: pass,
                                           key: serverSmtp.credentials.key)
             else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Invalid input.")
+                logger.errorAndCrash("Invalid input.")
                 return
         }
 
@@ -129,7 +130,7 @@ public class AccountSettingsViewModel {
         self.account.user.userName = name
 
         guard let ms = messageSyncService else {
-            Log.shared.errorAndCrash(component: #function, errorString: "no MessageSyncService")
+            logger.errorAndCrash("no MessageSyncService")
             return
         }
         ms.requestVerification(account: account, delegate: self)
@@ -157,8 +158,7 @@ public class AccountSettingsViewModel {
         guard let viewModelPort = viewModel.port,
             let port = UInt16(viewModelPort),
             let address = viewModel.address else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "viewModel misses required data.")
+                logger.errorAndCrash("viewModel misses required data.")
                 return nil
         }
         let transport = Server.Transport(fromString: viewModel.transport)

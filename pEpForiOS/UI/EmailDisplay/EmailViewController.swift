@@ -185,7 +185,7 @@ class EmailViewController: BaseTableViewController {
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
     private func setupDestructiveButtonIcon() {
         guard let msg = message else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No message")
+            logger.errorAndCrash("No message")
             return
         }
 
@@ -235,7 +235,7 @@ class EmailViewController: BaseTableViewController {
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
                 as? SecureWebViewController
             else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Cast error")
+                logger.errorAndCrash("Cast error")
                 return SecureWebViewController()
         }
         vc.zoomingEnabled = true
@@ -266,7 +266,7 @@ class EmailViewController: BaseTableViewController {
 
     private func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No msg.")
+            logger.errorAndCrash("No msg.")
             return
         }
         if let htmlBody = htmlBody(message: m) {
@@ -481,7 +481,7 @@ extension EmailViewController {
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard
             let row = tableData?.getRow(at: indexPath.row) else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Missing data")
+                logger.errorAndCrash("Missing data")
                 return tableView.estimatedRowHeight
         }
 
@@ -521,7 +521,7 @@ extension EmailViewController: SegueHandlerType {
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    logger.errorAndCrash("No DVC?")
                     break
             }
             destination.appConfig = appConfig
@@ -532,7 +532,7 @@ extension EmailViewController: SegueHandlerType {
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController else {
-                    Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                    logger.errorAndCrash("No DVC?")
                     break
             }
             destination.appConfig = appConfig
@@ -545,7 +545,7 @@ extension EmailViewController: SegueHandlerType {
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? HandshakeViewController,
                 let titleView = navigationItem.titleView else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No DVC?")
+                logger.errorAndCrash("No DVC?")
                 break
             }
 
@@ -572,7 +572,7 @@ extension EmailViewController: SegueHandlerType {
         } else if segueId == .segueForward {
             return  .forward
         } else {
-            Log.shared.errorAndCrash(component: #function, errorString: "Unsupported input")
+            logger.errorAndCrash("Unsupported input")
             return .replyFrom
         }
     }
@@ -640,8 +640,7 @@ extension EmailViewController: MessageAttachmentDelegate {
 
         splitViewController?.preferredDisplayMode = .allVisible
 
-        coordinator.animate(alongsideTransition: nil){ [weak self] _ in
-        }
+        coordinator.animate(alongsideTransition: nil)
     }
 
     func didCreateLocally(attachment: Attachment, url: URL, cell: MessageCell, location: CGPoint,

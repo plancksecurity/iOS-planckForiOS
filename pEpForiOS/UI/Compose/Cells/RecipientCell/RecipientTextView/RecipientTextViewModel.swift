@@ -28,6 +28,8 @@ public protocol RecipientTextViewModelDelegate: class {
 }
 
 public class RecipientTextViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     var maxTextattachmentWidth: CGFloat = 0.0
     private var initialRecipients = [Identity]()
     private var attributedText: NSAttributedString?
@@ -109,8 +111,10 @@ public class RecipientTextViewModel {
     }
 
      @discardableResult private func tryGenerateValidAddressAndUpdateStatus(range: NSRange,
-                                                        of text: NSAttributedString) -> Bool {
-        let containsNothingButAttachments = text.plainTextRemoved().length == text.length
+                                                                            of text: NSAttributedString) -> Bool {
+        let containsNothingButAttachments =
+            text.plainTextRemoved().length == text.length ||
+                text.plainTextRemoved().string.trimObjectReplacementCharacters().isEmpty
         let validEmailaddressHandled = parseAndHandleValidEmailAddresses(inRange: range, of: text)
         isDirty = !validEmailaddressHandled && !containsNothingButAttachments
         return validEmailaddressHandled

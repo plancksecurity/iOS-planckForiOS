@@ -18,8 +18,8 @@ struct UIUtils {
     ///   - error: error to preset to user
     ///   - vc: ViewController to present the error on
     static func show(error: Error, inViewController vc: UIViewController) {
-        Logger(category: Logger.util).errorAndCrash("Will display error to user: %@",
-                                                    error.localizedDescription)
+//        Logger(category: Logger.util).errorAndCrash("Will display error to user: %@",
+//                                                    error.localizedDescription)
         guard let displayError = DisplayUserError(withError: error) else {
             // Do nothing. The error type is not suitable to bother the user with.
             return

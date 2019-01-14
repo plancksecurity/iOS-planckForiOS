@@ -26,71 +26,6 @@ class NetworkServiceTests: XCTestCase {
         super.tearDown()
     }
 
-    class MessageModelObserver: MessageFolderDelegate {
-        var messages: [Message] {
-            var messages = [Message]()
-            for ms in messagesByID.values {
-                for m in ms {
-                    messages.append(m)
-                }
-            }
-            return messages.sorted { m1, m2 in
-                if let d1 = m1.received, let d2 = m2.received {
-                    return areInIncreasingOrder(d1: d1, d2: d2)
-                } else if let d1 = m1.sent, let d2 = m2.sent {
-                    return areInIncreasingOrder(d1: d1, d2: d2)
-                }
-                return false
-            }
-        }
-        var messagesByID = [MessageID: [Message]]()
-        var changedMessagesByID = [MessageID: Message]()
-
-        var hasChangedMessages: Bool {
-            return !changedMessagesByID.isEmpty
-        }
-
-        func contains(messageID: MessageID) -> Bool {
-            return messagesByID[messageID] != nil
-        }
-
-        func areInIncreasingOrder(d1: Date, d2: Date) -> Bool {
-            switch d1.compare(d2 as Date) {
-            case .orderedAscending: return true
-            default: return false
-            }
-        }
-
-        func add(message: Message) {
-            if let existing = messagesByID[message.uuid] {
-                var news = existing
-                news.append(message)
-                messagesByID[message.uuid] = news
-            } else {
-                messagesByID[message.uuid] = [message]
-            }
-        }
-        
-        func didUpdate(messageFolder: MessageFolder) {
-            if let msg = messageFolder as? Message {
-                // messages has been changed during the test
-                XCTAssertNotNil(messagesByID[msg.messageID])
-                add(message: msg)
-                changedMessagesByID[msg.messageID] = msg
-            }
-        }
-
-        func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
-            // this message has been deleted from the start, ignore
-        }
-
-        func didCreate(messageFolder: MessageFolder) {
-            if let msg = messageFolder as? Message {
-                add(message: msg)
-            }
-        }
-    }
-
     func testSyncOutgoing() {
         testSyncOutgoing(useCorrectSmtpAccount: true)
     }
@@ -285,6 +220,71 @@ class NetworkServiceTests: XCTestCase {
         if useCorrectSmtpAccount {
             // those messages do not exist if we are using an incorrect account
             TestUtil.checkForExistanceAndUniqueness(uuids: outgoingMessageIDs)
+        }
+    }
+
+    class MessageModelObserver: MessageFolderDelegate {
+        var messages: [Message] {
+            var messages = [Message]()
+            for ms in messagesByID.values {
+                for m in ms {
+                    messages.append(m)
+                }
+            }
+            return messages.sorted { m1, m2 in
+                if let d1 = m1.received, let d2 = m2.received {
+                    return areInIncreasingOrder(d1: d1, d2: d2)
+                } else if let d1 = m1.sent, let d2 = m2.sent {
+                    return areInIncreasingOrder(d1: d1, d2: d2)
+                }
+                return false
+            }
+        }
+        var messagesByID = [MessageID: [Message]]()
+        var changedMessagesByID = [MessageID: Message]()
+
+        var hasChangedMessages: Bool {
+            return !changedMessagesByID.isEmpty
+        }
+
+        func contains(messageID: MessageID) -> Bool {
+            return messagesByID[messageID] != nil
+        }
+
+        func areInIncreasingOrder(d1: Date, d2: Date) -> Bool {
+            switch d1.compare(d2 as Date) {
+            case .orderedAscending: return true
+            default: return false
+            }
+        }
+
+        func add(message: Message) {
+            if let existing = messagesByID[message.uuid] {
+                var news = existing
+                news.append(message)
+                messagesByID[message.uuid] = news
+            } else {
+                messagesByID[message.uuid] = [message]
+            }
+        }
+
+        func didUpdate(messageFolder: MessageFolder) {
+            if let msg = messageFolder as? Message {
+                // messages has been changed during the test
+                XCTAssertNotNil(messagesByID[msg.messageID])
+                add(message: msg)
+                changedMessagesByID[msg.messageID] = msg
+            }
+        }
+
+        func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
+            // this message has been deleted from the start, ignore
+        }
+
+        func didCreate(messageFolder: MessageFolder) {
+            if let msg = messageFolder as? Message {
+                add(message: msg)
+            }
         }
     }
 }

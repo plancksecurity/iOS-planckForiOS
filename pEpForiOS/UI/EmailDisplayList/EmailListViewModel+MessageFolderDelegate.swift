@@ -48,12 +48,28 @@ extension EmailListViewModel: MessageFolderDelegate {
 
     // MARK: - MessageFolderDelegate (internal)
 
+    /// Figures out if we are currently displaying a fake version of the given message
+    ///
+    /// - Parameter msg: message to search faked version for
+    /// - Returns: true if we are currently displaying the given message (assumingly faked version)
+    ///            false otherwize
+    private func isFakeVersionCurrentlyShown(of msg: Message) -> Bool {
+        let existingIndex = messages.index(of: MessageViewModel(with: msg))
+        return existingIndex != nil
+    }
+
     private func didCreateInternal(messageFolder: MessageFolder) {
         guard let message = messageFolder as? Message else {
             // The createe is no message. Ignore.
             return
         }
         if !shouldBeDisplayed(message: message) {
+            return
+        }
+
+        if isFakeVersionCurrentlyShown(of: message) {
+            // We are already showing a fake version of this newly fetched message.
+            // Ignore.
             return
         }
 
@@ -320,8 +336,8 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         // We do have this message in our (top message) model, so we do have to update it
         guard let existingMessage = messages.object(at: indexExisting) else {
-            Log.shared.errorAndCrash(component: #function,
-                                     errorString: "We should have the message at this point")
+            Logger(category: Logger.frontend).errorAndCrash(
+                "We should have the message at this point")
             return
         }
 
@@ -377,13 +393,8 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The updated message has to be shown. Add it to the model ...
             let indexInserted = me.messages.insert(object: previewMessage)
             if indexExisting != indexInserted {
-                Log.shared.warn(
-                    component: #function,
-                    content:
-                    """
-When updating a message, the the new index of the message must be the same as the old index.
-Something is fishy here.
-"""
+                Logger(category: Logger.frontend).warn(
+                    "When updating a message, the the new index of the message must be the same as the old index. Something is fishy here."
                 )
             }
             // ...  and inform the delegate.
@@ -397,8 +408,11 @@ Something is fishy here.
     }
 
     private func shouldBeDisplayed(message: Message) -> Bool {
-            if (!message.parent.showsMessagesNeverSeenByEngine && message.isEncrypted) ||
-            (!threadedMessageFolder.isThreaded && !isInFolderToShow(message: message)) {
+        if message.isFakeMessage {
+            return true
+        }
+        if (!message.parent.showsMessagesNeverSeenByEngine && message.isEncrypted) ||
+            (/*!threadedMessageFolder.isThreaded && /*commented out as possible cause for IOS-1244*/*/!isInFolderToShow(message: message)) {
             return false
         }
         return true

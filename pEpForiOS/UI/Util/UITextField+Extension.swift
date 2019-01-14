@@ -33,7 +33,6 @@ extension UITextField {
     func enableOrDisableLoginField(enable: Bool) {
         let theColor = enable ? UIColor.white : UIColor.gray
         self.textColor = theColor
-//        self.layer.borderColor = theColor.cgColor
         if let ph = placeholder {
             self.attributedPlaceholder = NSAttributedString(
                 string: ph, attributes: [NSAttributedStringKey.foregroundColor: theColor])

@@ -44,6 +44,8 @@ public protocol ImapSyncDelegate: class {
 }
 
 open class ImapSync: Service {
+    private let logger = Logger(category: Logger.backend)
+
     public struct ImapState {
         enum State {
             case initial
@@ -94,8 +96,7 @@ open class ImapSync: Service {
                 if newValue {
                     state = .error
                 } else {
-                    Log.shared.error(component: #function,
-                                     errorString: "clearing hasError")
+                    Logger(category: Logger.backend).error("clearing hasError")
                 }
             }
         }
@@ -192,7 +193,7 @@ open class ImapSync: Service {
             let fol = imapStore.folder(forName: name,
                                        updateExistsCount: updateExistsCount) as? CWIMAPFolder
             imapState.currentFolder = fol
-            if let folder = fol {
+            if fol != nil {
                 return true
             }
             return false
@@ -272,7 +273,7 @@ open class ImapSync: Service {
 
     private func runOnDelegate(logName: String = #function, block: (ImapSyncDelegate) -> ()) {
         guard let del = delegate else  {
-            Log.shared.warn(component: #function, content: "\(Date()): No delegate")
+            logger.warn("No delegate")
             return
         }
         block(del)
@@ -404,7 +405,7 @@ extension ImapSync: CWServiceClient {
             group.enter()
             token.performAction() { [weak self] error, freshToken in
                 if let err = error {
-                    Log.shared.error(component: #function, error: err)
+                    Logger(category: Logger.backend).error("%{public}@", err.localizedDescription)
                     if let theSelf = self {
                         theSelf.runOnDelegate(logName: #function) { theDelegate in
                             theDelegate.authenticationFailed(theSelf, notification: nil)
@@ -430,10 +431,10 @@ extension ImapSync: CWServiceClient {
                 loginName, password: loginPassword, mechanism: bestAuthMethod().rawValue)
         } else {
             if connectInfo.loginPassword == nil {
-                Log.error(component: comp, errorString: "Want to login, but don't have a password")
+                logger.error("Want to login, but don't have a password")
             }
             if connectInfo.loginName == nil {
-                Log.error(component: comp, errorString: "Want to login, but don't have a login")
+                logger.error("Want to login, but don't have a login")
             }
             runOnDelegate(logName: #function) { theDelegate in
                 theDelegate.authenticationFailed(self, notification: notification)

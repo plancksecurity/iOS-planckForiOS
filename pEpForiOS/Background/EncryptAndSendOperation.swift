@@ -119,11 +119,21 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                 logger.errorAndCrash("Problem moving last message")
                 return
         }
-
+        let rating = message.outgoingMessageRating().rawValue
         MessageModelConfig.messageFolderDelegate?.didDelete(messageFolder: message,
                                                             belongingToThread: Set())
         cdMessage.parent = sentFolder
-        context.saveAndLogErrors()
+        cdMessage.imap?.localFlags?.flagSeen = true
+        cdMessage.pEpRating = Int16(rating)
+        Record.saveAndWait()
+
+        guard let refreshedMsg = cdMessage.message() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No msg")
+            return
+        }
+        Message.createCdFakeMessage(for: refreshedMsg)
+        Log.info(component: #function,
+                 content: "Sent message. messageID: \(String(describing: cdMessage.messageID))")
     }
 
     func handleNextMessage() {
@@ -165,9 +175,16 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             do {
                 let (_, encryptedMessageToSend) = try session.encrypt(
                     pEpMessageDict: msg, encryptionFormat: protected ? PEP_enc_PEP : PEP_enc_none)
-
+                guard
+                    let encrypted = encryptedMessageToSend?.mutableCopy() as? PEPMessageDict else {
+                    Log.shared.errorAndCrash(component: #function,
+                                             errorString: "Could not encrypt but did not throw.")
+                     handleError(BackgroundError.PepError.encryptionError(info:
+                        "Could not encrypt but did not throw."))
+                    return
+                }
                 setOriginalRatingHeader(toMessageWithObjId: cdMessageObjID, inContext: context)
-                send(pEpMessageDict: encryptedMessageToSend as? PEPMessageDict)
+                send(pEpMessageDict: encrypted)
             } catch let err as NSError {
                 handleError(err)
             }
@@ -178,7 +195,9 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
 
     private func setOriginalRatingHeader(toMessageWithObjId objId: NSManagedObjectID,
                                          inContext moc: NSManagedObjectContext) {
-        guard let unencryptedMessage = CdMessage.message(withObjectID: objId) else {
+        guard
+            let unencryptedCdMessage = privateMOC.object(with: objId) as? CdMessage,
+            let unencryptedMessage = unencryptedCdMessage.message() else {
             logger.errorAndCrash("No message")
             return
         }

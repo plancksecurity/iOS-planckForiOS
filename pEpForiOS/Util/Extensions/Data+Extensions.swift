@@ -28,7 +28,7 @@ extension Data {
         do {
             try write(to: url)
         } catch {
-            Log.error(component: #function, errorString: "Could not save to \(url)")
+            Logger(category: Logger.util).error("Could not save to %{public}@", url.absoluteString)
         }
     }
 
@@ -38,7 +38,7 @@ extension Data {
                 withJSONObject: self, options: .prettyPrinted)
             jsonData.debugSave(basePath: basePath, fileName: fileName, ext: ext)
         } catch let err {
-            Log.shared.error(component: #function, error: err)
+            Logger(category: Logger.util).error("%{public}@", err.localizedDescription)
         }
     }
 }

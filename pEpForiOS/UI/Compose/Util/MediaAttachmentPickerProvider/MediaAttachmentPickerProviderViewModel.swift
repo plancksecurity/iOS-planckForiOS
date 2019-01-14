@@ -18,6 +18,8 @@ protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
 }
 
 class MediaAttachmentPickerProviderViewModel {
+    private let logger = Logger(category: Logger.frontend)
+
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
         "security.pep.MediaAttachmentPickerProviderViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
@@ -47,7 +49,7 @@ class MediaAttachmentPickerProviderViewModel {
         guard
             let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
             let url = info[UIImagePickerControllerReferenceURL] as? URL else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No Data")
+                logger.errorAndCrash("No Data")
                 return
         }
 
@@ -58,7 +60,7 @@ class MediaAttachmentPickerProviderViewModel {
 
     private func createMovieAttchmentAndInformResultDelegate(info: [String: Any]) {
         guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No URL")
+            logger.errorAndCrash("No URL")
             return
         }
 
@@ -68,7 +70,7 @@ class MediaAttachmentPickerProviderViewModel {
                 return
             }
             guard let att = attachment else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No Attachment")
+                Logger(category: Logger.frontend).errorAndCrash("No Attachment")
                 return
             }
             let result = MediaAttachment(type: .movie, attachment: att)
@@ -86,8 +88,7 @@ class MediaAttachmentPickerProviderViewModel {
                 return
             }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
-                Log.shared.errorAndCrash(component: #function,
-                                         errorString: "Cound not get data for URL")
+                Logger(category: Logger.frontend).errorAndCrash("Cound not get data for URL")
                 completion(nil)
                 return
             }

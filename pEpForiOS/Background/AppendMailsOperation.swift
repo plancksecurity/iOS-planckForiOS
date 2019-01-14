@@ -148,7 +148,6 @@ public class AppendMailsOperation: ImapSyncOperation {
                                 message: "Error casting")
                     return
                 }
-                // ...  and append.
                 appendMessage(pEpMessageDict: msgDict)
             } catch let err as NSError {
                 handleError(err, message: "Cannot encrypt message")

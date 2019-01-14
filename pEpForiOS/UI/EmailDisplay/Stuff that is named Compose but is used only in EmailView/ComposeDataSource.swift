@@ -59,6 +59,8 @@ class ComposeDataSource: NSObject {
     // MARK: - AttachmentDataSource
 
     struct AttachmentDataSource {
+        private let logger = Logger(category: Logger.frontend)
+
         struct Row {
             let fileName: String?
             let fileExtesion: String?
@@ -72,7 +74,7 @@ class ComposeDataSource: NSObject {
 
         subscript(index: Int) -> Row? {
             if index < 0 || index > (attachments.count - 1) {
-                Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
+                logger.errorAndCrash("Index out of bounds")
                 return nil
             }
             let attachment = attachments[index]
@@ -113,7 +115,7 @@ class ComposeDataSource: NSObject {
 
         mutating func remove(at index: Int) {
             if index < 0 || index > (attachments.count - 1) {
-                Log.shared.errorAndCrash(component: #function, errorString: "Index out of bounds")
+                logger.errorAndCrash("Index out of bounds")
                 return
             }
             attachments.remove(at: index)

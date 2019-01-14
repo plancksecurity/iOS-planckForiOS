@@ -11,6 +11,8 @@ import CoreData
 import MessageModel
 
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {
+    private let logger = Logger(category: Logger.backend)
+
     public var folderNameToIgnore: String?
 
     let accountID: NSManagedObjectID
@@ -32,7 +34,7 @@ open class ImapFolderBuilder: NSObject, CWFolderBuilding {
 
     open func folder(withName: String) -> CWFolder {
         if folderNameToIgnore != nil && withName == folderNameToIgnore {
-            Log.warn(component: #function, content: "")
+            logger.warn("ignoring folder %{public}@", withName)
             return CWFolder(name: withName)
         } else {
             if let theFolder = PersistentImapFolder(

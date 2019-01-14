@@ -14,6 +14,8 @@ import MessageModel
  A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.
  */
 class PersistentImapFolder: CWIMAPFolder {
+    private let logger = Logger(category: Logger.backend)
+
     let accountID: NSManagedObjectID
     let folderID: NSManagedObjectID
 
@@ -25,8 +27,6 @@ class PersistentImapFolder: CWIMAPFolder {
     let logName: String
 
     let privateMOC: NSManagedObjectContext
-
-    private let logger = Logger(category: Logger.backend)
 
     override var nextUID: UInt {
         get {
@@ -102,8 +102,9 @@ class PersistentImapFolder: CWIMAPFolder {
         context.performAndWait() {
             guard let account = context.object(with: accountID)
                 as? CdAccount else {
-                    Log.error(component: functionName(logName: logName, functionName: #function),
-                              errorString: "Given objectID is not an account")
+                    Logger(category: Logger.backend).error(
+                        "Given objectID is not an account: %{public}@",
+                        accountID.description)
                     return
             }
             if let (fo, _) = CdFolder.insertOrUpdate(
@@ -136,8 +137,11 @@ class PersistentImapFolder: CWIMAPFolder {
     override func message(at theIndex: UInt) -> CWMessage? {
         var result: CWMessage?
         privateMOC.performAndWait({
-            let p = NSPredicate(
+            let isNotFake = CdMessage.PredicateFactory.isNotFakeMessage()
+            let msgAtIdx = NSPredicate(
                 format: "parent = %@ and imap.messageNumber = %d", self.folder, theIndex)
+            let p = NSCompoundPredicate(andPredicateWithSubpredicates: [isNotFake,
+                                                                        msgAtIdx])
             let msg = CdMessage.first(predicate: p)
             result = msg?.pantomimeQuick(folder: self)
         })
@@ -277,9 +281,9 @@ extension PersistentImapFolder: CWIMAPCache {
         }
         context.performAndWait() {
             if self.folder.uidValidity != Int32(theUIDValidity) {
-                Log.warn(component: self.functionName(#function),
-                         content: "UIValidity changed, deleting all messages. " +
-                    "Folder \(String(describing: self.folder.name))")
+                Logger(category: Logger.backend).warn(
+                    "UIValidity changed, deleting all messages. %{public}@",
+                    String(describing: self.folder.name))
                 // For some reason messages are not deleted when removing it from folder
                 // (even cascade is the delete rule). This causes crashes saving the context,
                 // as it holds invalid messages that have no parent folder.
@@ -302,8 +306,10 @@ extension PersistentImapFolder: CWIMAPCache {
             accountID: accountID, message: message, messageUpdate: messageUpdate,
             messageFetchedBlock: messageFetchedBlock)
         let opID = unsafeBitCast(opStore, to: UnsafeRawPointer.self)
-        Log.warn(component: functionName(#function),
-                 content: "Writing message \(message), \(messageUpdate) for \(opID)")
+        logger.warn("Writing message %{public}@, %{public}@ for %{public}@",
+                    message,
+                    messageUpdate,
+                    String(describing: opID))
         backgroundQueue.addOperation(opStore)
 
         // While it would be desirable to store messages asynchronously,

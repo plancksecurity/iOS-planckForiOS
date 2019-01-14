@@ -9,9 +9,9 @@
 import MessageModel
 
 public class ImapSyncOperation: ConcurrentBaseOperation {
-    let imapSyncData: ImapSyncData
-
     private let logger = Logger(category: Logger.backend)
+
+    let imapSyncData: ImapSyncData
 
     init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
                 imapSyncData: ImapSyncData) {

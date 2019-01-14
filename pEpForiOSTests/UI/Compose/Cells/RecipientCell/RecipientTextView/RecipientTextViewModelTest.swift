@@ -251,7 +251,7 @@ class RecipientTextViewModelTest: CoreDataDrivenTestBase {
                ignoreCallsResultDelegateCalledDidChangeRecipients: false)
         let addressFound = vm.handleAddressDelimiterTyped(range: emptyRange, of: attributedText)
         XCTAssertFalse(addressFound)
-        XCTAssertTrue(vm.isDirty)
+        XCTAssertFalse(vm.isDirty)
         waitForExpectations(timeout: UnitTestUtils.waitTime)
     }
 

@@ -10,33 +10,6 @@ import MessageModel
 
 extension FolderType {
 
-    // MARK: - Local or remote folder
-
-    /// Whether or not a folder of this type represents a remote folder
-    var isSyncedWithServer: Bool {
-        return FolderType.typesSyncedWithImapServer.contains(self)
-    }
-
-    var isLocalFolder: Bool {
-        return !isSyncedWithServer
-    }
-
-    /// Folder of those types mirror a remote IMAP folder and have to be synced.
-    static let typesSyncedWithImapServer = [FolderType.inbox,
-                                                    .normal,
-                                                    .sent,
-                                                    .drafts,
-                                                    .trash,
-                                                    .spam,
-                                                    .archive,
-                                                    .all,
-                                                    .flagged]
-
-    /// Raw values of typesSyncedWithImapServer
-    static let typesSyncedWithImapServerRawValues: [FolderType.RawValue] = {
-        typesSyncedWithImapServer.map { $0.rawValue }
-    }()
-
     // MARK: - Append Flags
 
     /// Flags that should be used when appending mails to a folder of this type.

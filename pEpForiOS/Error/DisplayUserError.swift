@@ -334,16 +334,19 @@ struct DisplayUserError: LocalizedError {
     public var errorDescription: String? {
         switch type {
         case .authenticationFailed:
-            var textToShow = ""
             if let account = extraInfo {
-                textToShow = "It was impossible to login to \(String(describing: account)). Username or password is wrong."
+                return String.localizedStringWithFormat(
+                    NSLocalizedString(
+                        "It was impossible to login to %1$@. Username or password is wrong.",
+                        comment:
+                        "Error message shown to the user in case the authentication to IMAP or SMTP server failed."),
+                    String(describing: account))
             } else {
-                textToShow = "It was impossible to login to the server. Username or password is wrong."
+                return NSLocalizedString(
+                    "It was impossible to login to the server. Username or password is wrong.",
+                    comment:
+                    "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
             }
-            return NSLocalizedString(
-                textToShow,
-                comment:
-                "Error message shown to the user in case the authentication to IMAP or SMTP server failed.")
         case .messageNotSent:
             return NSLocalizedString(
                 "The message could not be sent. Please try again later.",

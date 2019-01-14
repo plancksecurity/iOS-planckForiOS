@@ -15,9 +15,8 @@ extension ConnectionTransport {
         case .startTLS: self = .startTLS
         case .TLS: self = .TLS
         case .unknown:
-            Log.shared.errorAndCrash(
-                component: #function,
-                errorString: "Unsupported LAS transport: \(accountSettingsTransport)")
+            Logger(category: Logger.util).errorAndCrash(
+                "Unsupported LAS transport: %d", accountSettingsTransport.rawValue)
             self = .plain
         }
     }

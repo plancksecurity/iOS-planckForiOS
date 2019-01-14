@@ -78,7 +78,7 @@ extension RecipientTextViewModel {
                       attributes: attributes, context: nil)
 
             guard let createe = UIGraphicsGetImageFromCurrentImageContext() else {
-                Log.shared.errorAndCrash(component: #function, errorString: "No img")
+                Logger(category: Logger.frontend).errorAndCrash("No img")
                 return
             }
             UIGraphicsEndImageContext()

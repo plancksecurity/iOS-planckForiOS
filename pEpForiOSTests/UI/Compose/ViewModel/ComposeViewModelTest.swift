@@ -28,9 +28,9 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     override func setUp() {
         super.setUp()
         vm = ComposeViewModel(resultDelegate: nil,
-                                  composeMode: nil,
-                                  prefilledTo: nil,
-                                  originalMessage: nil)
+                              composeMode: nil,
+                              prefilledTo: nil,
+                              originalMessage: nil)
         assureOutboxExists()
         assureDraftsExists()
         assureSentExists()
@@ -629,8 +629,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         guard
             let draftsFolder = drafts,
             let testeeDrafted = Message.by(uid: 0,
-                                       folderName: draftsFolder.name,
-                                       accountAddress: account.user.address)
+                                           folderName: draftsFolder.name,
+                                           accountAddress: account.user.address)
             else {
                 XCTFail("Message not saved to drafts")
                 return
@@ -692,12 +692,13 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                documentAttachmentPickerDonePickerCalled: false,
                didComposeNewMailMustBeCalled: false,
                didModifyMessageMustBeCalled: true,
-               didDeleteMessageMustBeCalled: false)
+               didDeleteMessageMustBeCalled: true)
         vm?.handleSaveActionTriggered()
         let msgWithTestMessageId = Message.by(uid: originalMessage.uid,
                                               uuid: originalMessage.uuid,
                                               folderName: originalMessage.parent.name,
-                                              accountAddress: account.user.address)
+                                              accountAddress: account.user.address,
+                                              includingDeleted: true)
         XCTAssertTrue(msgWithTestMessageId?.imapFlags?.deleted ?? false,
                      "The user edited draft. Technically we save a new message, thus the original" +
             " must be deleted.")
@@ -990,7 +991,8 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             Message.by(uid: originalMessage.uid,
                        uuid: originalMessage.uuid,
                        folderName: originalMessage.parent.name,
-                       accountAddress: account.user.address)?.imapFlags?.deleted
+                       accountAddress: account.user.address,
+                       includingDeleted: true)?.imapFlags?.deleted
             else {
                 XCTFail()
                 return
@@ -1646,6 +1648,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             expDidDeleteMessageCalled =
                 expectation(description: "expDidDeleteMessageCalled")
             expDidDeleteMessageCalled?.isInverted = !exp
+            expDidDeleteMessageCalled?.assertForOverFulfill = false
         }
 
         testResultDelegate =

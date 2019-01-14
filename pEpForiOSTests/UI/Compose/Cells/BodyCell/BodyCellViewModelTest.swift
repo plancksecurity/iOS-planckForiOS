@@ -12,6 +12,8 @@ import XCTest
 import MessageModel
 
 class BodyCellViewModelTest: XCTestCase {
+    private let logger = Logger(category: Logger.frontend)
+
     var vm: BodyCellViewModel!
     private var testDelegate: TestDelegate?
     private var testResultDelegate: TestResultDelegate?
@@ -607,7 +609,7 @@ class BodyCellViewModelTest: XCTestCase {
 
     private func textAttachmentString(for attachment: Attachment) -> NSAttributedString {
         guard let image = attachment.image else {
-            Log.shared.errorAndCrash(component: #function, errorString: "No image")
+            XCTFail("No image")
             return NSAttributedString()
         }
         attachment.contentDisposition = .inline

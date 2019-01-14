@@ -60,9 +60,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertNotNil(m.uid)
             XCTAssertGreaterThan(m.uid, 0)
             XCTAssertNotNil(m.imap)
-            if m.sent == nil {
-                Log.warn(component: #function, content: "nil sent \(String(describing: m.shortMessage)) \(String(describing: m.uuid))")
-            }
             XCTAssertNotNil(m.sent)
             XCTAssertNotNil(m.received)
 
@@ -461,7 +458,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         })
         // Check sent status of all sent mails
         for sentUuid in sentUUIDs {
-            let msgs = CdMessage.search(byUUID: sentUuid)
+            let msgs = CdMessage.search(byUUID: sentUuid, includeFakeMessages: false)
             XCTAssertEqual(msgs.count, 1)
             guard let msg = msgs.first else {
                 XCTFail("Missing sent message")

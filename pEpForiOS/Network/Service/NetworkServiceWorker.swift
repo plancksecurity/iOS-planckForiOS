@@ -32,6 +32,8 @@ public protocol NetworkServiceWorkerDelegate: class {
 }
 
 open class NetworkServiceWorker {
+    private let logger = Logger(category: Logger.backend)
+
     public struct FolderInfo {
         public let name: String
         public let folderType: FolderType
@@ -241,7 +243,7 @@ open class NetworkServiceWorker {
                               errorContainer: ServiceErrorProtocol) -> Operation {
         let resultOp = SelfReferencingOperation() { operation in
             guard let operation = operation else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if operation.isCancelled {
@@ -277,7 +279,7 @@ open class NetworkServiceWorker {
                                        errorContainer: ServiceErrorProtocol) -> Operation {
         let resultOp = SelfReferencingOperation() { operation in
             guard let operation = operation else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if operation.isCancelled {
@@ -384,7 +386,7 @@ open class NetworkServiceWorker {
                                        onlySyncChangesTriggeredByUser: Bool) -> Operation {
         let resultOp = SelfReferencingOperation() { [weak self] operation in
             guard let me = self, let operation = operation else {
-                Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                Logger.lostMySelf(category: Logger.backend)
                 return
             }
             if operation.isCancelled {
@@ -398,8 +400,7 @@ open class NetworkServiceWorker {
                 if operation.isCancelled {
                     return
                 }
-                for fi in folderInfos {
-                    if let folderID = fi.folderID,
+                for fi in folderInfos {if let folderID = fi.folderID,
                         let firstUID = fi.firstUID,
                         let lastUID = fi.lastUID,
                         firstUID != 0, lastUID != 0, firstUID <= lastUID {
@@ -559,7 +560,7 @@ open class NetworkServiceWorker {
                         let me = self,
                         let decryptOp = opDecrypt,
                         let operation = operation else {
-                            Log.shared.errorAndCrash(component: #function, errorString: "Lost ...")
+                            Logger.lostMySelf(category: Logger.backend)
                             return
                     }
                     if operation.isCancelled {

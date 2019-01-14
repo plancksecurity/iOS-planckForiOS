@@ -139,7 +139,12 @@ class MoveToFolderOperation: ImapSyncOperation {
             if let sync = me.imapSyncData.sync {
                 imapFolder.setStore(sync.imapStore)
             }
-            imapFolder.moveMessage(withUid: message.uid, toFolderNamed: targetFolderName)
+            guard message.uid > 0 else {
+                me.handleIlligalStateErrorAndFinish(hint: "Invalid UID")
+                return
+            }
+            let uid = UInt(message.uid)
+            imapFolder.moveMessage(withUid: uid, toFolderNamed: targetFolderName)
         }
     }
 

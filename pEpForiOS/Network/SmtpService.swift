@@ -55,6 +55,8 @@ struct SmtpStatus {
 }
 
 open class SmtpSend: Service {
+    private let logger = Logger(category: Logger.backend)
+
     open override var comp: String { get { return "SmtpSend" } }
 
     private var smtpStatus: SmtpStatus = SmtpStatus()
@@ -202,7 +204,8 @@ extension SmtpSend: CWServiceClient {
                 group.enter()
                 token.performAction() { [weak self] error, freshToken in
                     if let err = error {
-                        Log.shared.error(component: #function, error: err)
+                        Logger(category: Logger.backend).error(
+                            "%{public}@", err.localizedDescription)
                         if let theSelf = self {
                             theSelf.delegate?.authenticationFailed(theSelf, theNotification: nil)
                         }
@@ -237,9 +240,11 @@ extension SmtpSend: CWServiceClient {
                 } else {
                     missingToken = "loginPassword"
                 }
-                Log.warn(
-                    component: #function,
-                    content: "Don't have \(missingToken) for \(connectInfo.networkAddress) (\(String(describing: connectInfo.emailProtocol)))")
+                logger.warn(
+                    "Don't have %{public}@ for %{public}@ (%{public}@)",
+                    missingToken,
+                    connectInfo.networkAddress,
+                    String(describing: connectInfo.emailProtocol))
                 authenticationFailed(nil)
             }
         }

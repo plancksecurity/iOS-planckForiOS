@@ -23,9 +23,7 @@ extension CdMessage {
         if let fl = PantomimeFlag(rawValue: UInt(flags)) {
             return CWFlags(flags: fl)
         }
-        Log.error(component:
-            "Message", errorString:
-            "Could not convert \(flags) to PantomimeFlag")
+        Logger(category: Logger.model).error("Could not convert %d to PantomimeFlag", flags)
         return CWFlags()
     }
 
@@ -61,13 +59,11 @@ extension CdMessage {
     /**
      - Returns: A `CWFlags object` for the given `Int16`
      */
-    static open func pantomimeFlags(flagsInt16: Int16) -> CWFlags {
+    static public func pantomimeFlags(flagsInt16: Int16) -> CWFlags {
         if let fl = PantomimeFlag(rawValue: UInt(flagsInt16)) {
             return CWFlags(flags: fl)
         }
-        Log.error(component:
-            "Message", errorString:
-            "Could not convert \(flagsInt16) to PantomimeFlag")
+        Logger(category: Logger.model).error("Could not convert %d to PantomimeFlag", flagsInt16)
         return CWFlags()
     }
 
@@ -489,10 +485,17 @@ extension CdMessage {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
         
-        guard let mail = quickInsertOrUpdate(
-            pantomimeMessage: pantomimeMessage, account: account, messageUpdate: messageUpdate)
-            else {
+        guard
+            let mail = quickInsertOrUpdate(pantomimeMessage: pantomimeMessage,
+                                           account: account,
+                                           messageUpdate: messageUpdate),
+            let mmMail = mail.message() else {
                 return nil
+        }
+
+        if mmMail.isFakeMessage {
+            //Update local fake message  with data from real, fetched message
+            mail.uid = Int32(pantomimeMessage.uid())
         }
 
         if messageUpdate.isFlagsOnly() || messageUpdate.isMsnOnly() {
@@ -504,8 +507,8 @@ extension CdMessage {
             // This is a contradiction in itself, a new message that already existed.
             // Can happen with yahoo IMAP servers when they send more messages in
             // FETCH responses than requested.
-            Log.warn(component: #function,
-                     content: "ignoring rfc2822 update for already decrypted message")
+            Logger(category: Logger.model).warn(
+                "ignoring rfc2822 update for already decrypted message")
             return mail
         }
 
@@ -528,9 +531,10 @@ extension CdMessage {
                 case .bccRecipient:
                     bccs.add(cdIdentity(pantomimeAddress: addr))
                 default:
-                    Log.warn(
-                        component: "Message",
-                        content: "Unsupported recipient type \(addr.type()) for \(addr.address())")
+                    Logger(category: Logger.model).warn(
+                        "Unsupported recipient type %d for %{public}@",
+                        addr.type().rawValue,
+                        addr.address())
                 }
             }
             mail.to = tos
@@ -630,8 +634,14 @@ extension CdMessage {
     /// - Returns: existing message
     static func search(message: CWIMAPMessage, inAccount account: CdAccount) -> CdMessage? {
         let uid = Int32(message.uid())
-        return search(uid: uid, uuid: message.messageID(),
-                      folderName: message.folder()?.name(), inAccount: account)
+        guard let uuid = message.messageID() else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No UUID")
+            return nil
+        }
+        return search(uid: uid,
+                      uuid: uuid,
+                      folderName: message.folder()?.name(),
+                      inAccount: account)
     }
 
     static func cdIdentity(pantomimeAddress: CWInternetAddress) -> CdIdentity {
