@@ -42,8 +42,6 @@ class BodyCellViewModel: CellViewModel {
         return restoreCursorPosition
     }
 
-    private let logger = Logger(category: Logger.frontend)
-
     init(resultDelegate: BodyCellViewModelResultDelegate?,
          initialPlaintext: String? = nil,
          initialAttributedText: NSAttributedString? = nil,
@@ -118,7 +116,7 @@ extension BodyCellViewModel {
 extension BodyCellViewModel {
     public func inline(attachment: Attachment) {
         guard let image = attachment.image else {
-            logger.errorAndCrash("No image")
+            Logger.frontendLogger.errorAndCrash("No image")
             return
         }
         attachment.contentDisposition = .inline
@@ -126,7 +124,7 @@ extension BodyCellViewModel {
         // performance issues (delay typing).
         guard let scaledImage = image.resized(newWidth: maxTextattachmentWidth / 2, useAlpha: false)
             else {
-                logger.errorAndCrash("Error resizing")
+                Logger.frontendLogger.errorAndCrash("Error resizing")
                 return
         }
         let textAttachment = TextAttachment()

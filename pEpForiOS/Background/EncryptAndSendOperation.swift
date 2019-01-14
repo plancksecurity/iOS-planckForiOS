@@ -20,8 +20,6 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
     /** The object ID of the last sent message, so we can move it on success */
     var lastSentMessageObjectID: NSManagedObjectID?
 
-    private let logger = Logger(category: Logger.backend)
-
     public init(parentName: String = #function, smtpSendData: SmtpSendData,
                 errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.smtpSendData = smtpSendData
@@ -58,7 +56,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         var outgoingMsgs = [CdMessage]()
         context.performAndWait {
             guard let cdAccount = context.object(with: cdAccountObjectId) as? CdAccount else {
-                Logger(category: Logger.backend).errorAndCrash(
+                Logger.backendLogger.errorAndCrash(
                     "No NSManagedObject for NSManagedObjectID")
                 outgoingMsgs = []
                 return
@@ -116,7 +114,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
             let sentFolder = CdFolder.by(folderType: .sent, account: cdAccount),
             let message = cdMessage.message()
             else {
-                logger.errorAndCrash("Problem moving last message")
+                Logger.backendLogger.errorAndCrash("Problem moving last message")
                 return
         }
         let rating = message.outgoingMessageRating().rawValue
@@ -151,7 +149,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         let moc = privateMOC
         moc.perform { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             me.moveLastMessageToSentFolder(context: moc)
@@ -198,7 +196,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
         guard
             let unencryptedCdMessage = privateMOC.object(with: objId) as? CdMessage,
             let unencryptedMessage = unencryptedCdMessage.message() else {
-            logger.errorAndCrash("No message")
+            Logger.backendLogger.errorAndCrash("No message")
             return
         }
 
@@ -297,7 +295,7 @@ extension Dictionary where Key == String {
                 if let newValue = newHeaders as? Value {
                     self[kPepOptFields] = newValue
                 } else {
-                    Logger(category: Logger.util).errorAndCrash("Can't cast to `Value`")
+                    Logger.backendLogger.errorAndCrash("Can't cast to `Value`")
                 }
             }
         }

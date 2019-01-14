@@ -9,8 +9,6 @@
 import MessageModel
 
 public class ImapSyncOperation: ConcurrentBaseOperation {
-    private let logger = Logger(category: Logger.backend)
-
     let imapSyncData: ImapSyncData
 
     init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
@@ -46,7 +44,7 @@ public class ImapSyncOperation: ConcurrentBaseOperation {
 
 extension ImapSyncOperation: ImapSyncDelegateErrorHandlerProtocol {
     func handle(error: Error) {
-        logger.error("%{public}@", error.localizedDescription)
+        Logger.backendLogger.error("%{public}@", error.localizedDescription)
         addIMAPError(error)
         markAsFinished()
     }

@@ -192,7 +192,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private func showEmail(forCellAt indexPath: IndexPath) {
         guard let vm = model,
             let message = vm.message(representedByRowAt: indexPath) else {
-            logger.errorAndCrash("No model.")
+            Logger.frontendLogger.errorAndCrash("No model.")
             return
         }
         if message.numberOfMessagesInThread() > 0 {
@@ -208,7 +208,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         }
         if splitViewController.isCollapsed {
             guard let vm = model else {
-                logger.errorAndCrash("Invalid state")
+                Logger.frontendLogger.errorAndCrash("Invalid state")
                 return
             }
             let unreadFilterActive = vm.unreadFilterEnabled()
@@ -428,7 +428,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     
     @IBAction func filterButtonHasBeenPressed(_ sender: UIBarButtonItem) {
         guard let vm = model else {
-            logger.errorAndCrash("We should have a model here")
+            Logger.frontendLogger.errorAndCrash("We should have a model here")
             return
         }
         vm.isFilterEnabled = !vm.isFilterEnabled
@@ -449,7 +449,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private func updateFilterButtonView() {
         guard let vm = model else {
-            logger.errorAndCrash("We should have a model here")
+            Logger.frontendLogger.errorAndCrash("We should have a model here")
             return
         }
 
@@ -495,7 +495,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             }
             theCell.configure(for:viewModel)
         } else {
-            logger.errorAndCrash("dequeued wrong cell")
+            Logger.frontendLogger.errorAndCrash("dequeued wrong cell")
         }
 
         return cell
@@ -515,7 +515,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         var swipeActions = [SwipeAction]()
 
         guard let model = model else {
-            logger.errorAndCrash("Should have VM")
+            Logger.frontendLogger.errorAndCrash("Should have VM")
             return nil
         }
 
@@ -526,7 +526,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
                         title: destructiveAction.title(forDisplayMode: .titleAndImage)) {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
 
@@ -542,7 +542,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             let flagAction = SwipeAction(style: .default, title: "Flag") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
                 me.flagAction(forCellAt: indexPath)
@@ -562,7 +562,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             let moreAction = SwipeAction(style: .default, title: "More") {
                 [weak self] action, indexPath in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
                 me.moreAction(forCellAt: indexPath)
@@ -598,7 +598,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             }
         } else {
             guard let model = model else {
-                logger.errorAndCrash("No folder")
+                Logger.frontendLogger.errorAndCrash("No folder")
                 return
             }
             lastSelectedIndexPath = indexPath
@@ -626,7 +626,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell,
                             forRowAt indexPath: IndexPath) {
         guard let vm = model else {
-            logger.errorAndCrash("No model.")
+            Logger.frontendLogger.errorAndCrash("No model.")
             return
         }
         vm.fetchOlderMessagesIfRequired(forIndexPath: indexPath)
@@ -669,7 +669,7 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 
     func didDismissSearchController(_ searchController: UISearchController) {
         guard let vm = model else {
-            logger.errorAndCrash("No chance to remove filter, sorry.")
+            Logger.frontendLogger.errorAndCrash("No chance to remove filter, sorry.")
             return
         }
         vm.removeSearchFilter()
@@ -693,7 +693,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
                 storyboard.instantiateViewController(withIdentifier: "threadViewController")
                     as? ThreadViewController
                 else {
-                    logger.errorAndCrash("Segue issue")
+                    Logger.frontendLogger.errorAndCrash("Segue issue")
                     return
             }
 
@@ -789,7 +789,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
     func emailListViewModel(viewModel: EmailListViewModel,
                             didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
         guard let isIphone = splitViewController?.isCollapsed, let vm = model else {
-            logger.errorAndCrash("Invalid state")
+            Logger.frontendLogger.errorAndCrash("Invalid state")
             return
         }
 
@@ -867,7 +867,7 @@ extension EmailListViewController {
         let title = NSLocalizedString("Move to Folder", comment: "EmailList action title")
         return UIAlertAction(title: title, style: .default) { [weak self] action in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueShowMoveToFolder, sender: me)
@@ -879,7 +879,7 @@ extension EmailListViewController {
         return  UIAlertAction(title: title, style: .cancel) {
             [weak self] action in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             me.tableView.beginUpdates()
@@ -893,7 +893,7 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueReply, sender: me)
@@ -906,7 +906,7 @@ extension EmailListViewController {
             return UIAlertAction(title: title, style: .default) {
                 [weak self] action in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyAll, sender: me)
@@ -921,7 +921,7 @@ extension EmailListViewController {
         return UIAlertAction(title: title, style: .default) {
             [weak self] action in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             me.performSegue(withIdentifier: .segueForward, sender: me)
@@ -945,11 +945,11 @@ extension EmailListViewController {
 
     func flagAction(forCellAt indexPath: IndexPath) {
         guard let row = model?.viewModel(for: indexPath.row) else {
-            logger.errorAndCrash("No data for indexPath!")
+            Logger.frontendLogger.errorAndCrash("No data for indexPath!")
             return
         }
         guard let cell = self.tableView.cellForRow(at: indexPath) as? EmailListViewCell else {
-            logger.errorAndCrash("No cell for indexPath!")
+            Logger.frontendLogger.errorAndCrash("No cell for indexPath!")
             return
         }
         if row.isFlagged {
@@ -1019,7 +1019,7 @@ extension EmailListViewController: SegueHandlerType {
                 let vc = nav.rootViewController as? EmailViewController,
                 let indexPath = lastSelectedIndexPath,
                 let message = model?.message(representedByRowAt: indexPath) else {
-                    logger.errorAndCrash("Segue issue")
+                    Logger.frontendLogger.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
@@ -1036,7 +1036,7 @@ extension EmailListViewController: SegueHandlerType {
                     return
             }
             guard let message = model?.message(representedByRowAt: indexPath) else {
-                logger.errorAndCrash("Segue issue")
+                Logger.frontendLogger.errorAndCrash("Segue issue")
                 return
             }
             vc.appConfig = appConfig
@@ -1047,7 +1047,7 @@ extension EmailListViewController: SegueHandlerType {
             model?.updateThreadListDelegate = viewModel*/
         case .segueShowFilter:
             guard let destiny = segue.destination as? FilterTableViewController  else {
-                logger.errorAndCrash("Segue issue")
+                Logger.frontendLogger.errorAndCrash("Segue issue")
                 return
             }
             destiny.appConfig = appConfig
@@ -1059,7 +1059,7 @@ extension EmailListViewController: SegueHandlerType {
             guard
                 let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? LoginViewController else {
-                    logger.errorAndCrash("Segue issue")
+                    Logger.frontendLogger.errorAndCrash("Segue issue")
                     return
             }
             vc.appConfig = appConfig
@@ -1068,7 +1068,7 @@ extension EmailListViewController: SegueHandlerType {
             break
         case .segueFolderViews:
             guard let vC = segue.destination as? FolderTableViewController  else {
-                logger.errorAndCrash("Segue issue")
+                Logger.frontendLogger.errorAndCrash("Segue issue")
                 return
             }
             vC.appConfig = appConfig
@@ -1086,7 +1086,7 @@ extension EmailListViewController: SegueHandlerType {
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController
                 else {
-                    logger.errorAndCrash("No DVC?")
+                    Logger.frontendLogger.errorAndCrash("No DVC?")
                     break
             }
 
@@ -1099,7 +1099,7 @@ extension EmailListViewController: SegueHandlerType {
             //No initialization needed
             break
         default:
-            logger.errorAndCrash("Unhandled segue")
+            Logger.frontendLogger.errorAndCrash("Unhandled segue")
             break
         }
     }
@@ -1115,7 +1115,7 @@ extension EmailListViewController: SegueHandlerType {
             let composeVc = nav.topViewController as? ComposeTableViewController,
             let composeMode = composeMode(for: segueId),
             let vm = model else {
-                logger.errorAndCrash("composeViewController setup issue")
+                Logger.frontendLogger.errorAndCrash("composeViewController setup issue")
                 return
         }
         composeVc.appConfig = appConfig
@@ -1124,7 +1124,7 @@ extension EmailListViewController: SegueHandlerType {
             // This is not a simple compose (but reply, forward or such),
             // thus we have to pass the original message.
             guard let indexPath = lastSelectedIndexPath else {
-                    logger.errorAndCrash("Invalid state")
+                    Logger.frontendLogger.errorAndCrash("Invalid state")
                     return
             }
 

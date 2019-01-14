@@ -23,7 +23,7 @@ open class LimitedOperationQueue: OperationQueue {
     open override func addOperation(_ op: Operation) {
         workerQueue.async { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             if me.operationCount < 2 {

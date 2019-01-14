@@ -17,7 +17,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didCreate(messageFolder: MessageFolder) {
         messageFolderDelegateHandlingQueue.async { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             me.didCreateInternal(messageFolder: messageFolder)
@@ -27,7 +27,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didUpdate(messageFolder: MessageFolder) {
         messageFolderDelegateHandlingQueue.async { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             me.didUpdateInternal(messageFolder: messageFolder)
@@ -37,7 +37,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
         messageFolderDelegateHandlingQueue.async { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             me.didDeleteInternal(
@@ -336,7 +336,7 @@ extension EmailListViewModel: MessageFolderDelegate {
 
         // We do have this message in our (top message) model, so we do have to update it
         guard let existingMessage = messages.object(at: indexExisting) else {
-            Logger(category: Logger.frontend).errorAndCrash(
+            Logger.frontendLogger.errorAndCrash(
                 "We should have the message at this point")
             return
         }
@@ -393,7 +393,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             // The updated message has to be shown. Add it to the model ...
             let indexInserted = me.messages.insert(object: previewMessage)
             if indexExisting != indexInserted {
-                Logger(category: Logger.frontend).warn(
+                Logger.frontendLogger.warn(
                     "When updating a message, the the new index of the message must be the same as the old index. Something is fishy here."
                 )
             }

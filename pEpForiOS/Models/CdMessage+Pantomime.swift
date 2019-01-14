@@ -23,7 +23,7 @@ extension CdMessage {
         if let fl = PantomimeFlag(rawValue: UInt(flags)) {
             return CWFlags(flags: fl)
         }
-        Logger(category: Logger.model).error("Could not convert %d to PantomimeFlag", flags)
+        Logger.modelLogger.error("Could not convert %d to PantomimeFlag", flags)
         return CWFlags()
     }
 
@@ -63,7 +63,7 @@ extension CdMessage {
         if let fl = PantomimeFlag(rawValue: UInt(flagsInt16)) {
             return CWFlags(flags: fl)
         }
-        Logger(category: Logger.model).error("Could not convert %d to PantomimeFlag", flagsInt16)
+        Logger.modelLogger.error("Could not convert %d to PantomimeFlag", flagsInt16)
         return CWFlags()
     }
 
@@ -81,7 +81,7 @@ extension CdMessage {
         var dict: [AnyHashable: Any] = [PantomimeMessagesKey: NSArray.init(object: pantomimeMail)]
 
         guard let imap = imap else {
-            Logger(category: Logger.model).errorAndCrash("imap == nil")
+            Logger.modelLogger.errorAndCrash("imap == nil")
             return [AnyHashable: Any]()
         }
 
@@ -423,7 +423,7 @@ extension CdMessage {
         // Bail out quickly if there is only a flag change needed
         if messageUpdate.isFlagsOnly() {
             guard isUpdate else {
-                Logger(category: Logger.model).errorAndCrash(
+                Logger.modelLogger.errorAndCrash(
                     "If only flags did change, the message must have existed before. Thus it must be an update.")
                 return nil
             }
@@ -507,7 +507,7 @@ extension CdMessage {
             // This is a contradiction in itself, a new message that already existed.
             // Can happen with yahoo IMAP servers when they send more messages in
             // FETCH responses than requested.
-            Logger(category: Logger.model).warn(
+            Logger.modelLogger.warn(
                 "ignoring rfc2822 update for already decrypted message")
             return mail
         }
@@ -531,7 +531,7 @@ extension CdMessage {
                 case .bccRecipient:
                     bccs.add(cdIdentity(pantomimeAddress: addr))
                 default:
-                    Logger(category: Logger.model).warn(
+                    Logger.modelLogger.warn(
                         "Unsupported recipient type %d for %{public}@",
                         addr.type().rawValue,
                         addr.address())
@@ -661,7 +661,7 @@ extension CdMessage {
         identity.save()
 
         guard let result = CdIdentity.search(address: theEmail) else {
-            Logger(category: Logger.model).errorAndCrash(
+            Logger.modelLogger.errorAndCrash(
                 "We have just saved this identity. It has to exist.")
             return CdIdentity.create()
         }

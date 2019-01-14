@@ -17,8 +17,6 @@ import MessageModel
  Use this operation to (down)load attachment content before sending such an image attachment.
  */
 public class FixAttachmentsOperation: ConcurrentBaseOperation {
-    private let logger = Logger(category: Logger.backend)
-
     let pInvalidLength = NSPredicate(format: "length = 0 and data != nil")
     let pInvalidData = NSPredicate(format: "data = nil and (fileName != nil or assetUrl != nil)")
 
@@ -79,7 +77,7 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
                         }
                     }
                 } else {
-                    logger.errorAndCrash("CdAttachment with invalid URL")
+                    Logger.backendLogger.errorAndCrash("CdAttachment with invalid URL")
                     openFetchCount -= 1
                 }
             }
@@ -94,7 +92,8 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
         let cdInvalidAttachments = CdAttachment.all(predicate: p, orderedBy: nil, in: context)
             as? [CdAttachment] ?? []
         if cdInvalidAttachments.count > 0 {
-            logger.error("Still %d invalid attachments", cdInvalidAttachments.count)
+            Logger.backendLogger.error("Still %d invalid attachments",
+                                       cdInvalidAttachments.count)
         }
     }
 
@@ -117,7 +116,7 @@ public class FixAttachmentsOperation: ConcurrentBaseOperation {
                 block(data)
                 return
             } catch let err {
-                Logger(category: Logger.backend).error("%@", err.localizedDescription)
+                Logger.backendLogger.error("%@", err.localizedDescription)
             }
             let assets = PHAsset.fetchAssets(withALAssetURLs: [theURL], options: nil)
             if let theAsset = assets.firstObject {

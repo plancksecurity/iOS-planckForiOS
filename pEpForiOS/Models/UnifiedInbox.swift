@@ -20,7 +20,7 @@ public class UnifiedInbox: Folder {
         }
         get {
             guard let safeAccount = Account.defaultAccount() else {
-                Logger(category: Logger.model).errorAndCrash("No default account")
+                Logger.modelLogger.errorAndCrash("No default account")
                 return fakeAccount()
             }
            return safeAccount

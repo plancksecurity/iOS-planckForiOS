@@ -19,8 +19,6 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
     let messageFetchedBlock: MessageFetchedBlock?
     let messageUpdate: CWMessageUpdate
 
-    private let logger = Logger(category: Logger.backend)
-
     public init(
         parentName: String = #function,
         accountID: NSManagedObjectID, message: CWIMAPMessage,
@@ -63,7 +61,8 @@ public class StorePrefetchedMailOperation: ConcurrentBaseOperation {
                 messageFetchedBlock?(msg)
             }
         } else {
-            logger.log("We could not store the message. This can happen if the belonging account just has been deleted.")
+            Logger.backendLogger.log(
+                "We could not store the message. This can happen if the belonging account just has been deleted.")
             self.addError(BackgroundError.CoreDataError.couldNotStoreMessage(info: #function))
         }
     }

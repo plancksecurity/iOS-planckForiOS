@@ -28,8 +28,6 @@ open class MySelfOperation: BaseOperation {
      */
     public static let taskNameSubOperation = "MySelfOperation.Sub"
 
-    private let logger = Logger(category: Logger.backend)
-
     public init(parentName: String = #function, backgrounder: BackgroundTaskProtocol? = nil) {
         self.backgrounder = backgrounder
         self.wholeOperationTaskID = backgrounder?.beginBackgroundTask(
@@ -60,7 +58,8 @@ open class MySelfOperation: BaseOperation {
             taskName: MySelfOperation.taskNameSubOperation)
             let session = PEPSession()
             if pEpIdent.userID != CdIdentity.pEpOwnUserID {
-                logger.errorAndCrash("We are about to call mySelf() on a identity with userID other than pEpOwnUserID.")
+                Logger.backendLogger.errorAndCrash(
+                    "We are about to call mySelf() on a identity with userID other than pEpOwnUserID.")
             }
             do {
                 try session.mySelf(pEpIdent)

@@ -9,8 +9,6 @@
 import MessageModel
 
 class AccountVerificationService: AccountVerificationServiceProtocol {
-    private let logger = Logger(category: Logger.backend)
-
     weak var delegate: AccountVerificationServiceDelegate?
     var accountVerificationState = AccountVerificationState.idle
 
@@ -60,7 +58,7 @@ class AccountVerificationService: AccountVerificationServiceProtocol {
         let moc = Record.Context.background
         moc.perform { [weak self] in
             guard let me = self else {
-                Logger(category: Logger.backend).errorAndCrash("I am lost")
+                Logger.backendLogger.errorAndCrash("I am lost")
                 return
             }
             guard let imapConnectInfo = account.imapConnectInfo else {

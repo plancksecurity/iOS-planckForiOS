@@ -51,7 +51,7 @@ extension PEP_rating {
         case PEP_rating_under_attack:
             return true
         default:
-            Logger(category: Logger.util).errorAndCrash(
+            Logger.utilLogger.errorAndCrash(
                 "cannot decide isUnderAttack() for %{public}@", self.rawValue)
             return false
         }
@@ -77,7 +77,7 @@ extension PEP_rating {
              PEP_rating_under_attack:
             return true
         default:
-            Logger(category: Logger.util).errorAndCrash(
+            Logger.utilLogger.errorAndCrash(
                 "cannot decide isUnderAttack() for %{public}@", self.rawValue)
             return false
         }
@@ -103,7 +103,7 @@ extension PEP_rating {
              PEP_rating_under_attack:
             return false
         default:
-            Logger(category: Logger.util).errorAndCrash(
+            Logger.utilLogger.errorAndCrash(
                 "cannot decide isUnderAttack() for %{public}@", self.rawValue)
             return false
         }
@@ -129,7 +129,7 @@ extension PEP_rating {
              PEP_rating_under_attack:
             return false
         default:
-            Logger(category: Logger.util).errorAndCrash(
+            Logger.utilLogger.errorAndCrash(
                 "cannot decide isUnderAttack() for %{public}@", self.rawValue)
             return false
         }

@@ -9,13 +9,11 @@
 import UIKit
 
 class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
-    public let logger = Logger(category: Logger.frontend)
-
     private var _appConfig: AppConfig?
     var appConfig: AppConfig! {
         get {
             guard _appConfig != nil else {
-                logger.errorAndCrash("No appConfig?")
+                Logger.frontendLogger.errorAndCrash("No appConfig?")
                 return nil
             }
             return _appConfig

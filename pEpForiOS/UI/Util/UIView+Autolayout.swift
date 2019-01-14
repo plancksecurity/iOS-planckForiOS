@@ -12,7 +12,7 @@ extension UIView {
     /// Sets up constraints to always stay the same size as the superview.
     func fullSizeInSuperView() {
         guard let superview = self.superview else {
-            Logger(category: Logger.frontend).errorAndCrash("No superview")
+            Logger.frontendLogger.errorAndCrash("No superview")
             return
         }
 

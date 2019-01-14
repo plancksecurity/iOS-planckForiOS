@@ -20,8 +20,6 @@ class AccountCell: TextViewContainingTableViewCell {
     }
     private var picker: AccountPickerView?
 
-    private let logger = Logger(category: Logger.frontend)
-
     public func setup(with viewModel: AccountCellViewModel) {
         self.viewModel = viewModel
         if viewModel.content != nil {
@@ -32,7 +30,7 @@ class AccountCell: TextViewContainingTableViewCell {
 
     private func setupPickerView() {
         guard let viewModel = viewModel else {
-            logger.errorAndCrash("No VM")
+            Logger.frontendLogger.errorAndCrash("No VM")
             return
         }
         picker = AccountPickerView()

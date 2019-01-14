@@ -162,12 +162,12 @@ extension ComposeViewModel {
         /// Is sutable for isDraftsOrOutbox || composeMode == .forward only.
         mutating private func setBodyPotetionallyTakingOverAttachments() {
             guard let msg = originalMessage else {
-                Logger(category: Logger.frontend).errorAndCrash("Inconsitant state")
+                Logger.frontendLogger.errorAndCrash("Inconsitant state")
                 return
             }
 
             guard isDraftsOrOutbox || composeMode == .forward else {
-                Logger(category: Logger.frontend).errorAndCrash("Unsupported mode or message")
+                Logger.frontendLogger.errorAndCrash("Unsupported mode or message")
                 return
             }
             if let html = msg.longMessageFormatted {
@@ -219,7 +219,7 @@ class InitDataHtmlToAttributedTextSaxParserAttachmentDelegate: HtmlToAttributedT
         // Assure the image is set.
         if attachment.image == nil {
             guard let safeData = attachment.data else {
-                Logger(category: Logger.frontend).errorAndCrash("No data")
+                Logger.frontendLogger.errorAndCrash("No data")
                 return
             }
             attachment.image = UIImage(data: safeData)

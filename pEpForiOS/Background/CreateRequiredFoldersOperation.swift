@@ -45,7 +45,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         }
         privateMOC.perform { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             me.process()
@@ -93,7 +93,7 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
         if let lastFolder = currentAttempt.folderToCreate {
             privateMOC.performAndWait { [weak self] in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.backend)
+                    Logger.backendLogger.lostMySelf()
                     return
                 }
                 me.createLocal(folderToCreate: lastFolder, context: me.privateMOC)
@@ -157,11 +157,9 @@ public class CreateRequiredFoldersOperation: ImapSyncOperation {
 }
 
 class CreateRequiredFoldersSyncDelegate: DefaultImapSyncDelegate {
-    private let logger = Logger(category: Logger.backend)
-
     public override func folderCreateCompleted(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
-            logger.errorAndCrash("Sorry, wrong number.")
+            Logger.backendLogger.errorAndCrash("Sorry, wrong number.")
             return
         }
         op.numberOfFoldersCreated += 1
@@ -170,7 +168,7 @@ class CreateRequiredFoldersSyncDelegate: DefaultImapSyncDelegate {
 
     public override func folderCreateFailed(_ sync: ImapSync, notification: Notification?) {
         guard let op = errorHandler as? CreateRequiredFoldersOperation else {
-            logger.errorAndCrash("Sorry, wrong number.")
+            Logger.backendLogger.errorAndCrash("Sorry, wrong number.")
             return
         }
         op.createFolderAgain(potentialError: ImapSyncError.illegalState(#function))

@@ -44,8 +44,6 @@ public protocol ImapSyncDelegate: class {
 }
 
 open class ImapSync: Service {
-    private let logger = Logger(category: Logger.backend)
-
     public struct ImapState {
         enum State {
             case initial
@@ -96,7 +94,7 @@ open class ImapSync: Service {
                 if newValue {
                     state = .error
                 } else {
-                    Logger(category: Logger.backend).error("clearing hasError")
+                    Logger.backendLogger.error("clearing hasError")
                 }
             }
         }
@@ -273,7 +271,7 @@ open class ImapSync: Service {
 
     private func runOnDelegate(logName: String = #function, block: (ImapSyncDelegate) -> ()) {
         guard let del = delegate else  {
-            logger.warn("No delegate")
+            Logger.backendLogger.warn("No delegate")
             return
         }
         block(del)
@@ -405,7 +403,7 @@ extension ImapSync: CWServiceClient {
             group.enter()
             token.performAction() { [weak self] error, freshToken in
                 if let err = error {
-                    Logger(category: Logger.backend).error("%{public}@", err.localizedDescription)
+                    Logger.backendLogger.error("%{public}@", err.localizedDescription)
                     if let theSelf = self {
                         theSelf.runOnDelegate(logName: #function) { theDelegate in
                             theDelegate.authenticationFailed(theSelf, notification: nil)
@@ -431,10 +429,10 @@ extension ImapSync: CWServiceClient {
                 loginName, password: loginPassword, mechanism: bestAuthMethod().rawValue)
         } else {
             if connectInfo.loginPassword == nil {
-                logger.error("Want to login, but don't have a password")
+                Logger.backendLogger.error("Want to login, but don't have a password")
             }
             if connectInfo.loginName == nil {
-                logger.error("Want to login, but don't have a login")
+                Logger.backendLogger.error("Want to login, but don't have a login")
             }
             runOnDelegate(logName: #function) { theDelegate in
                 theDelegate.authenticationFailed(self, notification: notification)

@@ -12,8 +12,6 @@ import XCTest
 @testable import MessageModel
 
 class MessageReevalutionTests: XCTestCase {
-    private let logger = Logger(category: Logger.frontend)
-
     var cdOwnAccount: CdAccount!
     var pEpOwnIdentity: PEPIdentity!
     var cdSenderIdentity: CdIdentity!

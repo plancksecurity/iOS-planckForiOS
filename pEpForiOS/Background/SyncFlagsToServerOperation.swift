@@ -41,8 +41,6 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     var changedMessageIDs = [NSManagedObjectID]()
     weak var delegate: SyncFlagsToServerOperationDelegate?
 
-    private let logger = Logger(category: Logger.backend)
-
     init(parentName: String = #function, errorContainer: ServiceErrorProtocol = ErrorContainer(),
          imapSyncData: ImapSyncData,  folderID: NSManagedObjectID) {
         self.folderID = folderID
@@ -62,7 +60,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
 
     func startSync() {
         guard let folderName = folderName else {
-            logger.errorAndCrash("No folder name")
+            Logger.backendLogger.errorAndCrash("No folder name")
             waitForBackgroundTasksToFinish()
             return
         }
@@ -103,7 +101,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     func syncNextMessage() {
         let op = BlockOperation() { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
 
@@ -144,7 +142,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
 
     private func updateFlags(to mode:UpdateFlagsMode) {
         guard let message = currentlyProcessedMessage else {
-            logger.errorAndCrash("No message")
+            Logger.backendLogger.errorAndCrash("No message")
             syncNextMessage()
             return
         }
@@ -167,7 +165,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
                                                   info: info,
                                                   string: string)
             } else {
-                logger.errorAndCrash("No IMAP store command")
+                Logger.backendLogger.errorAndCrash("No IMAP store command")
             }
         } else if mode == .add && currentMessageNeedSyncRemoveFlagsToServer() {
             updateFlags(to: .remove)
@@ -181,7 +179,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
     func messageStoreCompleted(_ sync: ImapSync, notification: Notification?) {
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             // flags to add have been synced, but we might need to sync flags to remove also before
@@ -196,7 +194,7 @@ public class SyncFlagsToServerOperation: ImapSyncOperation {
             }
             me.storeMessages(notification: n) { [weak self] in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.backend)
+                    Logger.backendLogger.lostMySelf()
                     return
                 }
                 me.syncNextMessage()

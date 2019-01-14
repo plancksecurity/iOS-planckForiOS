@@ -104,7 +104,7 @@ class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDe
             guard
                 let vm = viewModel[indexPath.section][indexPath.row] as? SettingsCellViewModel,
                 let cell = dequeuedCell as? SwipeTableViewCell else {
-                    logger.errorAndCrash("Invalid state.")
+                    Logger.frontendLogger.errorAndCrash("Invalid state.")
                     return dequeuedCell
             }
             cell.textLabel?.text = vm.title

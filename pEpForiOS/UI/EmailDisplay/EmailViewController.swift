@@ -185,7 +185,7 @@ class EmailViewController: BaseTableViewController {
     // Sets the destructive bottom bar item accordint to the message (trash/archive)
     private func setupDestructiveButtonIcon() {
         guard let msg = message else {
-            logger.errorAndCrash("No message")
+            Logger.frontendLogger.errorAndCrash("No message")
             return
         }
 
@@ -235,7 +235,7 @@ class EmailViewController: BaseTableViewController {
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
                 as? SecureWebViewController
             else {
-                logger.errorAndCrash("Cast error")
+                Logger.frontendLogger.errorAndCrash("Cast error")
                 return SecureWebViewController()
         }
         vc.zoomingEnabled = true
@@ -266,7 +266,7 @@ class EmailViewController: BaseTableViewController {
 
     private func setup(contentCell: MessageContentCell, rowData: ComposeFieldModel) {
         guard let m = message else {
-            logger.errorAndCrash("No msg.")
+            Logger.frontendLogger.errorAndCrash("No msg.")
             return
         }
         if let htmlBody = htmlBody(message: m) {
@@ -350,19 +350,19 @@ class EmailViewController: BaseTableViewController {
         let alert = ReplyAlertCreator(replyAllChecker: ReplyAllPossibleChecker())
             .withReplyOption { [weak self] action in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyFrom , sender: self)
             }.withReplyAllOption(forMessage: message) { [weak self] action in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
                 me.performSegue(withIdentifier: .segueReplyAllForm , sender: self)
             }.withFordwardOption { [weak self] action in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
                 me.performSegue(withIdentifier: .segueForward , sender: self)
@@ -481,7 +481,7 @@ extension EmailViewController {
         _ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard
             let row = tableData?.getRow(at: indexPath.row) else {
-                logger.errorAndCrash("Missing data")
+                Logger.frontendLogger.errorAndCrash("Missing data")
                 return tableView.estimatedRowHeight
         }
 
@@ -521,7 +521,7 @@ extension EmailViewController: SegueHandlerType {
         case .segueReplyFrom, .segueReplyAllForm, .segueForward:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? ComposeTableViewController else {
-                    logger.errorAndCrash("No DVC?")
+                    Logger.frontendLogger.errorAndCrash("No DVC?")
                     break
             }
             destination.appConfig = appConfig
@@ -532,7 +532,7 @@ extension EmailViewController: SegueHandlerType {
         case .segueShowMoveToFolder:
             guard  let nav = segue.destination as? UINavigationController,
                 let destination = nav.topViewController as? MoveToAccountViewController else {
-                    logger.errorAndCrash("No DVC?")
+                    Logger.frontendLogger.errorAndCrash("No DVC?")
                     break
             }
             destination.appConfig = appConfig
@@ -545,7 +545,7 @@ extension EmailViewController: SegueHandlerType {
             guard let nv = segue.destination as? UINavigationController,
                 let vc = nv.topViewController as? HandshakeViewController,
                 let titleView = navigationItem.titleView else {
-                logger.errorAndCrash("No DVC?")
+                Logger.frontendLogger.errorAndCrash("No DVC?")
                 break
             }
 
@@ -572,7 +572,7 @@ extension EmailViewController: SegueHandlerType {
         } else if segueId == .segueForward {
             return  .forward
         } else {
-            logger.errorAndCrash("Unsupported input")
+            Logger.frontendLogger.errorAndCrash("Unsupported input")
             return .replyFrom
         }
     }

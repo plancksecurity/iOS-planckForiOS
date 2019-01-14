@@ -12,8 +12,6 @@ import MessageModel
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    private let logger = Logger(category: "AppDelegate")
-
     var window: UIWindow?
 
     var appConfig: AppConfig?
@@ -60,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupInitialViewController() -> Bool {
         guard let appConfig = appConfig else {
-            logger.errorAndCrash("No AppConfig")
+            Logger.appDelegateLogger.errorAndCrash("No AppConfig")
             return false
         }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "FolderViews", bundle: nil)
@@ -68,7 +66,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let navController = initialNVC.viewControllers.first as? UINavigationController,
             let rootVC = navController.rootViewController as? FolderTableViewController
             else {
-                logger.errorAndCrash("Problem initializing UI")
+                Logger.appDelegateLogger.errorAndCrash("Problem initializing UI")
                 return false
         }
         rootVC.appConfig = appConfig
@@ -93,7 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         syncUserActionsAndCleanupbackgroundTaskId =
             application.beginBackgroundTask(expirationHandler: { [weak self] in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
                 Logger.init(category: "AppDelegate").errorAndCrash(
@@ -115,7 +113,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func kickOffMySelf() {
         mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             Logger.init(category: "AppDelegate").log(
@@ -128,7 +126,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let op = MySelfOperation()
         op.completionBlock = { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             // We might be the last service that finishes, so we have to cleanup.
@@ -152,7 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                          storeURL: nil,
                                          options: options)
         } catch {
-            logger.errorAndCrash("Error while Loading DataStack")
+            Logger.appDelegateLogger.errorAndCrash("Error while Loading DataStack")
         }
     }
 
@@ -240,7 +238,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        logger.log("applicationDidReceiveMemoryWarning")
+        Logger.appDelegateLogger.log("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -261,7 +259,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let pEpReInitialized = deleteManagementDBIfRequired()
 
         setupServices()
-        logger.log("Library url: %{public}@", String(describing: applicationDirectory()))
+        Logger.appDelegateLogger.log("Library url: %{public}@", String(describing: applicationDirectory()))
         deleteAllFolders(pEpReInitialized: pEpReInitialized)
 
         prepareUserNotifications()
@@ -323,13 +321,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
         guard let networkService = networkService else {
-            logger.error("no networkService")
+            Logger.appDelegateLogger.error("no networkService")
             return
         }
         
         networkService.checkForNewMails() {[weak self] (numMails: Int?) in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             guard let numMails = numMails else {

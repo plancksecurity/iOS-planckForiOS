@@ -11,8 +11,6 @@ import MessageModel
 /// Utils for composing a message. Helps finding out values depending on the original message
 /// (the correct recipients, cancle actions ...).
 struct ComposeUtil {
-    private let logger = Logger(category: Logger.util)
-
     enum ComposeMode: CaseIterable {
         case normal
         case replyFrom
@@ -36,7 +34,7 @@ struct ComposeUtil {
                 result = om.to
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
-                    Logger(category: Logger.util).errorAndCrash("No from")
+                    Logger.utilLogger.errorAndCrash("No from")
                     return result
                 }
                 let origTos = om.to
@@ -63,7 +61,7 @@ struct ComposeUtil {
                 result = om.cc
             } else {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
-                    Logger(category: Logger.util).errorAndCrash("No from")
+                    Logger.utilLogger.errorAndCrash("No from")
                     return result
                 }
                 let origCcs = om.cc
@@ -147,12 +145,12 @@ struct ComposeUtil {
         withDataFrom state: ComposeViewModel.ComposeViewModelState) -> Message? {
         guard let from = state.from,
             let account = Account.by(address: from.address) else {
-                Logger(category: Logger.frontend).errorAndCrash(
+                Logger.frontendLogger.errorAndCrash(
                     "We have a problem here getting the senders account.")
                 return nil
         }
         guard let f = Folder.by(account: account, folderType: .outbox) else {
-            Logger(category: Logger.util).errorAndCrash("No outbox")
+            Logger.utilLogger.errorAndCrash("No outbox")
             return nil
         }
 
@@ -181,7 +179,7 @@ struct ComposeUtil {
                                          accordingTo composeState:
         ComposeViewModel.ComposeViewModelState) {
         guard let composeMode = composeState.initData?.composeMode else {
-            Logger(category: Logger.util).errorAndCrash("No init data")
+            Logger.utilLogger.errorAndCrash("No init data")
             return
         }
         if composeMode == .replyFrom || composeMode == .replyAll,

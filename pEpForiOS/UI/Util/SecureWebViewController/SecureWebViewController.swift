@@ -84,8 +84,6 @@ class SecureWebViewController: UIViewController {
     /// Last time a size change has been reported to
     private var lastReportedSizeUpdate: Date?
 
-    private let logger = Logger(category: Logger.frontend)
-
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -169,13 +167,13 @@ class SecureWebViewController: UIViewController {
                 forIdentifier: "pep.security.SecureWebViewController.block_all_external_content",
                 encodedContentRuleList: blockRules) { (contentRuleList, error) in
                     if let error = error {
-                        Logger(category: Logger.frontend).errorAndCrash(
+                        Logger.frontendLogger.errorAndCrash(
                             "Compile error: %@", error.localizedDescription)
                         return
                     }
                     compiledBlockList = contentRuleList
                     guard let _ = compiledBlockList else {
-                        Logger(category: Logger.frontend).errorAndCrash(
+                        Logger.frontendLogger.errorAndCrash(
                             "Emergency exit. External content not blocked.")
                         completion()
                         return
@@ -229,7 +227,7 @@ class SecureWebViewController: UIViewController {
         let handler = {
             [weak self] (scrollView: UIScrollView, change: NSKeyValueObservedChange<CGSize>) in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
 
@@ -377,7 +375,7 @@ extension SecureWebViewController: WKNavigationDelegate {
             return
         case .linkActivated:
             guard let url = navigationAction.request.url else {
-                logger.errorAndCrash("Link to nonexisting URL has been clicked?")
+                Logger.frontendLogger.errorAndCrash("Link to nonexisting URL has been clicked?")
                 break
             }
             if url.scheme == "mailto" {

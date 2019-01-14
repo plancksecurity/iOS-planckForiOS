@@ -9,8 +9,6 @@
 import UIKit
 
 class RecipientTextView: UITextView {
-    private let logger = Logger(category: Logger.frontend)
-
     public var viewModel: RecipientTextViewModel?{
         didSet {
             viewModel?.delegate = self
@@ -49,7 +47,7 @@ extension RecipientTextView: UITextViewDelegate {
                          shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
         guard let vm = viewModel else {
-            logger.errorAndCrash("No VM")
+            Logger.frontendLogger.errorAndCrash("No VM")
             return true
         }
         if vm.isAddressDeliminator(str: text) {
@@ -65,7 +63,7 @@ extension RecipientTextView: UITextViewDelegate {
                     return true
             }
             guard let potentiallyReplacedText = textView.text(in: newRange) else {
-                logger.errorAndCrash("Invalid state")
+                Logger.frontendLogger.errorAndCrash("Invalid state")
                 return true
             }
             // Check if text is Attachment and select it
@@ -90,7 +88,7 @@ extension RecipientTextView: UITextViewDelegate {
                   shouldInteractWith textAttachment: NSTextAttachment,
                   in characterRange: NSRange) -> Bool {
         guard let vm = viewModel else {
-            logger.errorAndCrash("No VM")
+            Logger.frontendLogger.errorAndCrash("No VM")
             return true
         }
         return vm.shouldInteract(with: textAttachment)
