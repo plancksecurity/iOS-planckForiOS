@@ -65,9 +65,7 @@ extension FolderType {
         case .flagged:
             return ["Flagged"]
         case .outbox:
-            return [NSLocalizedString("Outbox",
-                                      comment:
-                "Name of folder that holds yet unsend messages (outbox)")]
+            return ["Outbox"]
         }
     }
 
