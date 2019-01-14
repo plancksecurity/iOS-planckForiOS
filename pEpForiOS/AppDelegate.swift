@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     Logger.frontendLogger.lostMySelf()
                     return
                 }
-                Logger.init(category: "AppDelegate").errorAndCrash(
+                Logger.appDelegateLogger.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
                     me.syncUserActionsAndCleanupbackgroundTaskId)
                 // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
@@ -116,7 +116,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
-            Logger.init(category: "AppDelegate").log(
+            Logger.appDelegateLogger.log(
                 "mySelfTaskId with ID %{public}@ expired.",
                 me.mySelfTaskId)
             // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here

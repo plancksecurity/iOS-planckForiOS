@@ -82,7 +82,7 @@ public class AppendMailsOperation: ImapSyncOperation {
                     me.privateMOC.delete(obj)
                     me.privateMOC.saveAndLogErrors()
                 } else {
-                    Logger.init(category: "Background").errorAndCrash("Message disappeared")
+                    Logger.backendLogger.errorAndCrash("Message disappeared")
                     me.handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
                                    message: "Cannot find message just stored.")
                     return
@@ -165,7 +165,7 @@ public class AppendMailsOperation: ImapSyncOperation {
             guard
                 let accountId = connectInfo.accountObjectID,
                 let cdAccount = privateMOC.object(with: accountId) as? CdAccount else {
-                    Logger(category: "Background").errorAndCrash("No account")
+                    Logger.backendLogger.errorAndCrash("No account")
                     return
             }
             let appendMessages = Message.allMessagesMarkedForAppend(inAccount: cdAccount.account())
