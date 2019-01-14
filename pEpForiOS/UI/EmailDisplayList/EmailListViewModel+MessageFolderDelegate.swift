@@ -408,7 +408,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
 
     private func shouldBeDisplayed(message: Message) -> Bool {
-        if message.isFakeMessage {
+        if message.isFakeMessage && isInFolderToShow(message: message) {
             return true
         }
         if (!message.parent.showsMessagesNeverSeenByEngine && message.isEncrypted) ||
