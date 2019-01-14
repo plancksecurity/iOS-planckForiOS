@@ -170,9 +170,19 @@ struct ComposeUtil {
             message.setOriginalRatingHeader(rating: state.rating)
         }
 
+        message.imapFlags?.seen = imapSeenState(forMessageToSend: message)
+
         updateReferences(of: message, accordingTo: state)
 
         return message
+    }
+
+    static private func imapSeenState(forMessageToSend msg: Message) -> Bool {
+        if msg.parent.folderType == .outbox || msg.parent.folderType == .sent {
+            return true
+        } else {
+            return false
+        }
     }
 
     static private func updateReferences(of message: Message,
