@@ -13,71 +13,105 @@ import XCTest
 
 class SecurePDFScreenshotTest: XCTestCase {
 
-    private enum Result<T> {
-        case success(result: T)
-        case failure()
-    }
-
-    var pdfURL: URL!
-    var bundle: Bundle!
+    private var javascriptDataSource: PDFDatasource!
+    private var nonJavascriptDataSource: PDFDatasource!
+    private var bundle: Bundle!
 
     //Time to wait to take the screenshot, necessary as the pdf shows a page indicator that fades away.
-    let screenshotDelay = 5.0
-    let currentScreenshotName = "PDFTestScreenshot"
+    private let screenshotDelay = 5.0
+
+    private let currentScreenshotFileName = "PDFTestScreenshot"
+    private let expectedScreenshotFileName = "PDFExpectedScreenshot"
+
 
     override func setUp() {
         bundle = Bundle(for: type(of: self))
-        pdfURL = bundle.url(forResource: "javascript", withExtension: "pdf")
+        let javascriptPDFUrl: URL! = bundle.url(forResource: "javascript", withExtension: "pdf")
+        let nonJavascriptPDFUrl: URL! = bundle.url(forResource: "nojavascript", withExtension: "pdf")
+        javascriptDataSource = PDFDatasource(url: javascriptPDFUrl)
+        nonJavascriptDataSource = PDFDatasource(url: nonJavascriptPDFUrl)
     }
 
-    //Test should be done with iPhone SE Simulator.
     func testJavascriptDoesNotRunOnQuickLook() {
-        let screenShotExpectation = expectation()
-        givenAScreenshotOfQuicklookWithAJavascriptPDF { (result) in
+        let screenShotsDidHappenExpectation = expectation(description: "Screenshots should happen")
+        givenScreenshotsOfNonJavascriptAndJavascriptPDFs { (result) in
             switch result {
-            case .failure():
-                XCTFail("could not load quicklook")
-            case .success(result: let imageData):
-
-                guard let expectedImageData = self.getBundleImageDataFor(name: "portraitExpected") else {
-                    XCTFail("expected image not in bundle")
-                    return
-                }
-
-                let areImagesTheSame = imageData == expectedImageData
-                XCTAssertTrue(areImagesTheSame)
-                screenShotExpectation.fulfill()
+            case .failure(let reason):
+                XCTFail(reason)
+            case .success(result: let screenshots):
+                let imagesAreTheSame = screenshots.0 == screenshots.1
+                XCTAssertTrue(imagesAreTheSame)
+                screenShotsDidHappenExpectation.fulfill()
             }
         }
-        wait(for: [screenShotExpectation], timeout: UnitTestUtils.asyncWaitTime)
+        wait(for: [screenShotsDidHappenExpectation], timeout: ScreenshotTestUtil.waitTime)
     }
 
     //PRAGMA MARK: GIVEN
 
     private func givenAScreenshotOfQuicklookWithAJavascriptPDF(completion: @escaping (Result<Data>) -> ()) {
-        let quickLook = givenAQuickLookLoadedWithJavascriptPDF()
-        present(viewController: quickLook) { (didSucceed) in
-            guard didSucceed else {
-                completion(.failure())
-                return
-            }
-            ScreenshotTestUtil.takeScreenshot(of: quickLook.view, after: self.screenshotDelay, name: self.currentScreenshotName) { maybeImageData in
-                guard let imageData = maybeImageData else {
-                    completion(.failure())
-                    return
+        let quickLook = givenAQuickLookLoadedWithAJavascriptPDF()
+        screenshotOfViewControllerToPresent(viewController: quickLook, name: self.currentScreenshotFileName, completion: completion)
+    }
+
+    private func givenAScreenshotOfQuicklookWithANonJavascriptPDF(completion: @escaping (Result<Data>) -> ()) {
+        let quickLook = givenAQuickLookLoadedWithANonJavascriptPDF()
+        screenshotOfViewControllerToPresent(viewController: quickLook, name: self.expectedScreenshotFileName, completion: completion)
+    }
+
+    private func givenScreenshotsOfNonJavascriptAndJavascriptPDFs(completion: @escaping (Result<(Data,Data)>) -> ()) {
+        givenAScreenshotOfQuicklookWithANonJavascriptPDF { (result) in
+            switch result {
+            case .failure(let reason):
+                completion(.failure(reason))
+
+            case .success(result: let nonJavascriptScreenshot):
+                self.givenAScreenshotOfQuicklookWithAJavascriptPDF {(result) in
+                    switch result {
+                    case .failure(let reason):
+                        completion(.failure(reason))
+                    case .success(result: let javascriptScreenshot):
+                        completion(.success(result: (nonJavascriptScreenshot, javascriptScreenshot)))
+                    }
                 }
-                completion(.success(result: imageData))
             }
         }
     }
 
-    private func givenAQuickLookLoadedWithJavascriptPDF() -> QLPreviewController {
+    private func screenshotOfViewControllerToPresent(viewController: UIViewController, name: String, completion: @escaping (Result<Data>) -> ()) {
+        present(viewController: viewController) { (didSucceed) in
+            guard didSucceed else {
+                completion(.failure("Could not present viewController"))
+                return
+            }
+            ScreenshotTestUtil.takeScreenshot(of: viewController.view, after: self.screenshotDelay, name: name) { maybeImageData in
+                guard let imageData = maybeImageData else {
+                    completion(.failure("There were problems creating the screenshot"))
+                    return
+                }
+                viewController.dismiss(animated: true) {
+                    completion(.success(result: imageData))
+                }
+            }
+        }
+    }
+
+    private func givenAQuickLookLoadedWithAJavascriptPDF() -> QLPreviewController {
+        return givenAQuickLookWith(dataSource: javascriptDataSource)
+
+    }
+
+    private func givenAQuickLookLoadedWithANonJavascriptPDF() -> QLPreviewController {
+        return givenAQuickLookWith(dataSource: nonJavascriptDataSource)
+    }
+
+    private func givenAQuickLookWith(dataSource: QLPreviewControllerDataSource) -> QLPreviewController {
         let quickLook = QLPreviewController()
-        quickLook.dataSource = self
+        quickLook.dataSource = dataSource
         return quickLook
     }
 
-    //PRAGMA MARK: INSTANCE UTILS
+    //PRAGMA MARK: UTILS
 
     private func present(viewController: UIViewController, completion: ((Bool) -> ())? = nil) {
         var didSucceed = false
@@ -96,14 +130,45 @@ class SecurePDFScreenshotTest: XCTestCase {
         let url = bundle.url(forResource: name, withExtension: nil)!
         return try? Data(contentsOf: url)
     }
-}
 
-extension SecurePDFScreenshotTest: QLPreviewControllerDataSource {
-    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 1
+    private enum Result<T> {
+        case success(result: T)
+        case failure(String)
     }
 
-    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        return pdfURL as QLPreviewItem
+    private class PDFDatasource: QLPreviewControllerDataSource {
+
+        class PreviewItem: NSObject, QLPreviewItem {
+
+            let title: String
+            let url: URL
+
+            var previewItemTitle: String? {
+                return title
+            }
+
+            var previewItemURL: URL? {
+                return url
+            }
+
+            init(title: String, url: URL) {
+                self.title = title
+                self.url = url
+            }
+        }
+
+        let url: URL
+
+        init(url: URL) {
+            self.url = url
+        }
+
+        func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+            return 1
+        }
+
+        func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+            return PreviewItem(title: "Test", url: url)
+        }
     }
 }

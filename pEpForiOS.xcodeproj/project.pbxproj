@@ -533,7 +533,6 @@
 		43FE802E209992B800E97AB3 /* QualifyServerIsLocalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */; };
 		43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */; };
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
-		49079D9921E3867A00D15A0D /* javascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49079D9821E3867900D15A0D /* javascript.pdf */; };
 		49079DC121E4C72B00D15A0D /* portraitExpected in Resources */ = {isa = PBXBuildFile; fileRef = 49079DC021E4C72B00D15A0D /* portraitExpected */; };
 		49079DC321E4C90F00D15A0D /* landscapeExpected in Resources */ = {isa = PBXBuildFile; fileRef = 49079DC221E4C90E00D15A0D /* landscapeExpected */; };
 		490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA62100EAD500E8579C /* SelfDismissable.swift */; };
@@ -549,12 +548,10 @@
 		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
 		495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D69BE20DBAEE900986007 /* ThreadViewController+SwipeCell.swift */; };
 		495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */; };
-		495F689A21E6600500A10C63 /* ScreenshotTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */; };
 		496355B120ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496355B020ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift */; };
 		49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49691B1420D7FD0200CA9367 /* MessageViewModelConfigurable.swift */; };
 		496C0EE720BC2A880009B5B9 /* EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496C0EE620BC2A880009B5B9 /* EmailDisplayDelegate.swift */; };
 		496C0EEB20BC4B370009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496C0EEA20BC4B360009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift */; };
-		49A2BC0D21DCE86200E10C1A /* SecurePDFScreenshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2BC0B21DCE78D00E10C1A /* SecurePDFScreenshotTest.swift */; };
 		49A6114E2179F3A1006BA3C5 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */; };
 		49C2750120C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C2750020C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift */; };
 		49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C34AF520E4F649009D11CC /* CellDetailTransition.swift */; };
@@ -562,6 +559,10 @@
 		49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3BECB20F8F7330043E05D /* LoginViewController.swift */; };
 		49D521541E73E1C20097987B /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; };
 		49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		49DCCD2521E8ABA900ABE487 /* SecurePDFScreenshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A2BC0B21DCE78D00E10C1A /* SecurePDFScreenshotTest.swift */; };
+		49DCCD2621E8ABD300ABE487 /* nojavascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */; };
+		49DCCD2721E8ABD600ABE487 /* javascript.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 49079D9821E3867900D15A0D /* javascript.pdf */; };
+		49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F689921E6600500A10C63 /* ScreenshotTestUtil.swift */; };
 		5D039A9C1D0EE7F900AD59EC /* PEPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */; };
 		5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */; };
 		5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */; };
@@ -1224,6 +1225,7 @@
 		49D3BECB20F8F7330043E05D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		49D521531E73E1C20097987B /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D521561E73E1C70097987B /* ServerConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = nojavascript.pdf; sourceTree = "<group>"; };
 		5D039A9B1D0EE7F900AD59EC /* PEPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPUtil.swift; sourceTree = "<group>"; };
 		5D039AA11D0EEA3700AD59EC /* DecryptMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptMessagesOperation.swift; sourceTree = "<group>"; };
 		5DEBAA471DE59C3B00FAE12C /* NetworkServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceTests.swift; sourceTree = "<group>"; };
@@ -2295,6 +2297,7 @@
 				49A2BC0B21DCE78D00E10C1A /* SecurePDFScreenshotTest.swift */,
 				49079DC221E4C90E00D15A0D /* landscapeExpected */,
 				49079DC021E4C72B00D15A0D /* portraitExpected */,
+				49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */,
 				49079D9821E3867900D15A0D /* javascript.pdf */,
 				43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */,
 				151F71EB202A06750057C74D /* TestUtils */,
@@ -3154,13 +3157,14 @@
 				43F7F07C1F6AD4FD00BDF151 /* HandshakeTests_mail_001.txt in Resources */,
 				43C3B16820038B2500ED48A4 /* IOS-884_001_test010@peptest.ch.pub.key in Resources */,
 				436795FB1EE98E9900B03E23 /* CommunicationTypeTests_test002@peptest.ch_sec.asc in Resources */,
+				49DCCD2721E8ABD600ABE487 /* javascript.pdf in Resources */,
 				43628766213D7A5E0066CD03 /* IOS-1300_odt_attachment.txt in Resources */,
 				436D0066215B5F3800966CC2 /* Undisplayable_HTML_Message.txt in Resources */,
 				438F4EE9215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc in Resources */,
 				430C80D61D0EAB6E00CD4582 /* pEpTrustWords.bundle in Resources */,
+				49DCCD2621E8ABD300ABE487 /* nojavascript.pdf in Resources */,
 				436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */,
 				436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */,
-				49079D9921E3867A00D15A0D /* javascript.pdf in Resources */,
 				438F4EE1215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt in Resources */,
 				15EBE43E20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc in Resources */,
 				4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */,
@@ -3722,7 +3726,6 @@
 				437795C82154D6FD00CC62C2 /* PEPMessage+TestExtension.swift in Sources */,
 				153CA6E41FB60D99003C9629 /* DercyptMessagesOperationTest.swift in Sources */,
 				151F71F7202A06760057C74D /* TestDataBase.swift in Sources */,
-				49A2BC0D21DCE86200E10C1A /* SecurePDFScreenshotTest.swift in Sources */,
 				15BBBC681FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift in Sources */,
 				1541D7F01FC81ED900D52A5D /* URL+ExtensionsTest.swift in Sources */,
 				00262056217DCCB200DDAFB5 /* TrustedServerSettingsViewModelTest.swift in Sources */,
@@ -3741,8 +3744,8 @@
 				151F71FF202A06760057C74D /* Message+TestUtils.swift in Sources */,
 				43C3B1602003851100ED48A4 /* DecryptImportedMessagesTests.swift in Sources */,
 				1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */,
-				495F689A21E6600500A10C63 /* ScreenshotTestUtil.swift in Sources */,
 				432F7D611D2102F10094F097 /* PEPSessionTest.swift in Sources */,
+				49DCCD2821E8ABDF00ABE487 /* ScreenshotTestUtil.swift in Sources */,
 				157743B8217885EA0007222C /* RecipientTextViewModelTest.swift in Sources */,
 				151F7205202A070E0057C74D /* PantomimeFolderAttribute+ExtensionsTest.swift in Sources */,
 				43504D4420E0DD0E00D11E52 /* EmailListViewModeTests+Threading.swift in Sources */,
@@ -3782,6 +3785,7 @@
 				43D86EB821BE62DD00C18418 /* Log+ASL.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
+				49DCCD2521E8ABA900ABE487 /* SecurePDFScreenshotTest.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
 				43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */,
 				15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */,

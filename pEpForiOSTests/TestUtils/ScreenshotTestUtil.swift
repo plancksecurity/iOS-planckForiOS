@@ -6,9 +6,12 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class ScreenshotTestUtil {
+
+    /// The maximum wait time for screenshot tests.
+    static let waitTime: TimeInterval = 30
 
     static func getImageData(image: UIImage) -> Data? {
         return UIImageJPEGRepresentation(image, 1)
