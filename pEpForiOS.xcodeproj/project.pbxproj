@@ -536,8 +536,6 @@
 		43FE802E209992B800E97AB3 /* QualifyServerIsLocalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */; };
 		43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */; };
 		4902244F20E50488000E8D7C /* ThreadNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */; };
-		49079DC121E4C72B00D15A0D /* portraitExpected in Resources */ = {isa = PBXBuildFile; fileRef = 49079DC021E4C72B00D15A0D /* portraitExpected */; };
-		49079DC321E4C90F00D15A0D /* landscapeExpected in Resources */ = {isa = PBXBuildFile; fileRef = 49079DC221E4C90E00D15A0D /* landscapeExpected */; };
 		490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA62100EAD500E8579C /* SelfDismissable.swift */; };
 		490CEBA921020BF900E8579C /* LoginViewController+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 490CEBA821020BF900E8579C /* LoginViewController+Keyboard.swift */; };
 		491116BD216E0DF4005A42D2 /* MessageViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */; };
@@ -1202,8 +1200,6 @@
 		43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceTest.swift; sourceTree = "<group>"; };
 		4902244E20E50488000E8D7C /* ThreadNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadNavigationDelegate.swift; sourceTree = "<group>"; };
 		49079D9821E3867900D15A0D /* javascript.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = javascript.pdf; sourceTree = "<group>"; };
-		49079DC021E4C72B00D15A0D /* portraitExpected */ = {isa = PBXFileReference; lastKnownFileType = file; path = portraitExpected; sourceTree = "<group>"; };
-		49079DC221E4C90E00D15A0D /* landscapeExpected */ = {isa = PBXFileReference; lastKnownFileType = file; path = landscapeExpected; sourceTree = "<group>"; };
 		490CEBA62100EAD500E8579C /* SelfDismissable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfDismissable.swift; sourceTree = "<group>"; };
 		490CEBA821020BF900E8579C /* LoginViewController+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+Keyboard.swift"; sourceTree = "<group>"; };
 		491116BC216E0DF4005A42D2 /* MessageViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModelTests.swift; sourceTree = "<group>"; };
@@ -2300,11 +2296,7 @@
 		43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */ = {
 			isa = PBXGroup;
 			children = (
-				49A2BC0B21DCE78D00E10C1A /* SecurePDFScreenshotTest.swift */,
-				49079DC221E4C90E00D15A0D /* landscapeExpected */,
-				49079DC021E4C72B00D15A0D /* portraitExpected */,
-				49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */,
-				49079D9821E3867900D15A0D /* javascript.pdf */,
+				49174CAD21EE408F006DBD63 /* PDF Security Tests */,
 				43FE802F209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift */,
 				151F71EB202A06750057C74D /* TestUtils */,
 				43B2C3151D2280ED00A08557 /* Resources */,
@@ -2672,6 +2664,16 @@
 				43497B39211C63CA00AC42B0 /* Message+MessageIdentitfying.swift */,
 			);
 			path = MessageThreading;
+			sourceTree = "<group>";
+		};
+		49174CAD21EE408F006DBD63 /* PDF Security Tests */ = {
+			isa = PBXGroup;
+			children = (
+				49A2BC0B21DCE78D00E10C1A /* SecurePDFScreenshotTest.swift */,
+				49DCCD1F21E75BE300ABE487 /* nojavascript.pdf */,
+				49079D9821E3867900D15A0D /* javascript.pdf */,
+			);
+			path = "PDF Security Tests";
 			sourceTree = "<group>";
 		};
 		4918EBF91E783C70006207FC /* Models */ = {
@@ -3183,11 +3185,9 @@
 				43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */,
 				43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */,
 				438F4EE5215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc in Resources */,
-				49079DC121E4C72B00D15A0D /* portraitExpected in Resources */,
 				153CA6EA1FB62195003C9629 /* IOS-211-pdfEmail.txt in Resources */,
 				43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */,
 				436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */,
-				49079DC321E4C90F00D15A0D /* landscapeExpected in Resources */,
 				153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */,
 				4322E82F1F9DE8260011FC55 /* Microsoft_Outlook_Probing_Message_001.txt in Resources */,
 				435F7C75215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt in Resources */,
