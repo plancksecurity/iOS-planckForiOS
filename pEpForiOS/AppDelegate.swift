@@ -238,7 +238,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - UIApplicationDelegate
 
     func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
-        Logger.appDelegateLogger.log("applicationDidReceiveMemoryWarning")
+        saveToDisk()
+        Logger.appDelegateLogger.warn("applicationDidReceiveMemoryWarning")
     }
 
     func application(
@@ -270,6 +271,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
+        saveToDisk()
         shutdownAndPrepareServicesForRestart()
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -311,6 +313,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
+
+        saveToDisk()
+
         shouldDestroySession = true
 
         // Just in case, last chance to clean up. Should not be necessary though.
@@ -367,6 +372,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                 result:UIBackgroundFetchResult) {
         PEPSession.cleanup()
         completionHandler(result)
+    }
+}
+
+// MARK: - Persistence
+
+extension AppDelegate {
+    /// Persists all changes.
+    func saveToDisk() {
+        Record.saveToDiskAndWait()
+        print("test")
     }
 }
 
