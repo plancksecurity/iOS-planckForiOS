@@ -10,8 +10,6 @@ import Foundation
 import MessageModel
 
 public class AccountSettingsViewModel {
-    private let logger = Logger(category: Logger.frontend)
-
     public struct ServerViewModel {
         var address: String?
         var port: String?
@@ -101,7 +99,7 @@ public class AccountSettingsViewModel {
                 smtp: ServerViewModel) {
         guard let serverImap = account.imapServer,
             let serverSmtp = account.smtpServer else {
-                logger.errorAndCrash("Account misses imap or smtp server.")
+                Logger.frontendLogger.errorAndCrash("Account misses imap or smtp server.")
                 return
         }
         let pass : String?
@@ -120,7 +118,7 @@ public class AccountSettingsViewModel {
                                           password: pass,
                                           key: serverSmtp.credentials.key)
             else {
-                logger.errorAndCrash("Invalid input.")
+                Logger.frontendLogger.errorAndCrash("Invalid input.")
                 return
         }
 
@@ -130,7 +128,7 @@ public class AccountSettingsViewModel {
         self.account.user.userName = name
 
         guard let ms = messageSyncService else {
-            logger.errorAndCrash("no MessageSyncService")
+            Logger.frontendLogger.errorAndCrash("no MessageSyncService")
             return
         }
         ms.requestVerification(account: account, delegate: self)
@@ -158,7 +156,7 @@ public class AccountSettingsViewModel {
         guard let viewModelPort = viewModel.port,
             let port = UInt16(viewModelPort),
             let address = viewModel.address else {
-                logger.errorAndCrash("viewModel misses required data.")
+                Logger.frontendLogger.errorAndCrash("viewModel misses required data.")
                 return nil
         }
         let transport = Server.Transport(fromString: viewModel.transport)
@@ -198,7 +196,7 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
         }
         GCD.onMainWait { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             me.delegate?.didVerify(result: result, accountInput: nil)

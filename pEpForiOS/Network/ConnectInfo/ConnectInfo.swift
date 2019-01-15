@@ -21,8 +21,6 @@ enum NetworkTransportType: String {
 }
 
 class ConnectInfo: Hashable {
-    private let logger = Logger(category: Logger.util)
-
     public let account: Account
     public let server: Server
     public let credentials: ServerCredentials

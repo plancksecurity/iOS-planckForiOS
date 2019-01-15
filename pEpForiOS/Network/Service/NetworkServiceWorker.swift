@@ -32,8 +32,6 @@ public protocol NetworkServiceWorkerDelegate: class {
 }
 
 open class NetworkServiceWorker {
-    private let logger = Logger(category: Logger.backend)
-
     public struct FolderInfo {
         public let name: String
         public let folderType: FolderType
@@ -119,7 +117,7 @@ open class NetworkServiceWorker {
 
         workerQueue.async {[weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             let observer = ObjectObserver(
@@ -147,7 +145,7 @@ open class NetworkServiceWorker {
         cancelled = true
         workerQueue.async { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             // Cancel the current sync loop ...
@@ -243,7 +241,7 @@ open class NetworkServiceWorker {
                               errorContainer: ServiceErrorProtocol) -> Operation {
         let resultOp = SelfReferencingOperation() { operation in
             guard let operation = operation else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             if operation.isCancelled {
@@ -279,7 +277,7 @@ open class NetworkServiceWorker {
                                        errorContainer: ServiceErrorProtocol) -> Operation {
         let resultOp = SelfReferencingOperation() { operation in
             guard let operation = operation else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             if operation.isCancelled {
@@ -386,7 +384,7 @@ open class NetworkServiceWorker {
                                        onlySyncChangesTriggeredByUser: Bool) -> Operation {
         let resultOp = SelfReferencingOperation() { [weak self] operation in
             guard let me = self, let operation = operation else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             if operation.isCancelled {
@@ -560,7 +558,7 @@ open class NetworkServiceWorker {
                         let me = self,
                         let decryptOp = opDecrypt,
                         let operation = operation else {
-                            Logger.lostMySelf(category: Logger.backend)
+                            Logger.backendLogger.lostMySelf()
                             return
                     }
                     if operation.isCancelled {
@@ -670,7 +668,7 @@ open class NetworkServiceWorker {
         }
         workerQueue.async { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             if me.cancelled {

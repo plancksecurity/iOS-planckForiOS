@@ -29,7 +29,7 @@ struct InfoPlist {
     
     static private func mainBundleInfoDictValue(forKey key: String) -> Any? {
         guard let infoDict = infoDictMainBundle else {
-            Logger(category: Logger.util).errorAndCrash("No info dict")
+            Logger.utilLogger.errorAndCrash("No info dict")
             return nil
         }
         return infoDict[key]

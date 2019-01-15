@@ -16,11 +16,11 @@ extension ConnectInfo {
         var result: NSManagedObjectID? = nil
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             guard let cdAccount = CdAccount.search(account: me.account) else {
-                Logger(category: Logger.util).errorAndCrash("No CdAccount")
+                Logger.utilLogger.errorAndCrash("No CdAccount")
                 return
             }
             result = cdAccount.objectID
@@ -33,14 +33,14 @@ extension ConnectInfo {
         var result: NSManagedObjectID? = nil
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             let serverType = me.server.serverType
             guard
                 let cdAccount = CdAccount.search(account: me.account),
                 let cdServer = cdAccount.server(type: serverType) else {
-                    Logger(category: Logger.util).errorAndCrash("No CdAccount")
+                    Logger.utilLogger.errorAndCrash("No CdAccount")
                     return
             }
             result = cdServer.objectID

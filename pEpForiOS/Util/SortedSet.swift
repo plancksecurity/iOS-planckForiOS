@@ -12,8 +12,6 @@ import UIKit
 /// The implementation is completely trival and unperformant.
 /// Has to be improved if this causes performance issue in the app.
 class SortedSet<T: Equatable>: Sequence {
-    private let logger = Logger(category: Logger.frontend)
-
     // MARK: - Public API
 
     typealias SortBlock = (_ first: T,_  second: T) -> ComparisonResult
@@ -53,7 +51,7 @@ class SortedSet<T: Equatable>: Sequence {
         defer { objc_sync_exit(self) }
 
         guard isValidIndex(index) else {
-            logger.errorAndCrash("Index out of range")
+            Logger.frontendLogger.errorAndCrash("Index out of range")
             return
         }
         set.removeObject(at: index)
@@ -64,7 +62,7 @@ class SortedSet<T: Equatable>: Sequence {
         defer { objc_sync_exit(self) }
 
         guard isValidIndex(index) else {
-            logger.errorAndCrash("Index out of range")
+            Logger.frontendLogger.errorAndCrash("Index out of range")
             return
         }
         set.replaceObject(at: index, with: object)
@@ -75,7 +73,7 @@ class SortedSet<T: Equatable>: Sequence {
         defer { objc_sync_exit(self) }
 
         guard isValidIndex(index) else {
-            logger.errorAndCrash("Index out of range")
+            Logger.frontendLogger.errorAndCrash("Index out of range")
             return nil
         }
 
@@ -103,7 +101,7 @@ class SortedSet<T: Equatable>: Sequence {
 
         for i in 0..<set.count {
             guard let testee = set.object(at: i) as? T else {
-                logger.errorAndCrash("error casting")
+                Logger.frontendLogger.errorAndCrash("error casting")
                 return NSNotFound
             }
             if testee == object {
@@ -189,7 +187,7 @@ class SortedSet<T: Equatable>: Sequence {
         set.sort { (first: Any, second: Any) -> ComparisonResult in
             guard let firstT = first as? T,
                 let secondT = second as? T else {
-                    logger.errorAndCrash("Error casting.")
+                    Logger.frontendLogger.errorAndCrash("Error casting.")
                     return .orderedSame
             }
             return sortBlock(firstT, secondT)
@@ -199,7 +197,7 @@ class SortedSet<T: Equatable>: Sequence {
     private func indexOfObjectIfInserted(obj: T) -> Int {
         for i in 0..<set.count {
             guard let testee = set.object(at: i) as? T else {
-                logger.errorAndCrash("Error casing")
+                Logger.frontendLogger.errorAndCrash("Error casing")
                 return 0
             }
             if set.count == 0 {

@@ -69,6 +69,13 @@ public class Logger {
         }
     }
 
+    public static let frontendLogger = Logger(category: "frontend")
+    public static let backendLogger = Logger(category: "backend")
+    public static let utilLogger = Logger(category: "util")
+    public static let htmlParsingLogger = Logger(category: "htmlParsing")
+    public static let modelLogger = Logger(category: "model")
+    public static let appDelegateLogger = Logger(category: "appDelegate")
+
     public init(subsystem: String = "security.pEp.app.iOS", category: String) {
         self.subsystem = subsystem
         self.category = category
@@ -187,6 +194,8 @@ public class Logger {
                 filePath: filePath,
                 fileLine: fileLine,
                 args: args)
+
+        // This will omit the arguments, but it's still matchable
         SystemUtils.crash("\(message)")
     }
 
@@ -220,14 +229,8 @@ public class Logger {
         }
     }
 
-    public static let frontend = "frontend"
-    public static let backend = "backend"
-    public static let util = "util"
-    public static let htmlParsing = "htmlParsing"
-    public static let model = "model"
-
-    public static func lostMySelf(category: String) {
-        Logger.init(category: category).errorAndCrash("Lost MySelf")
+    public func lostMySelf() {
+        errorAndCrash("Lost MySelf")
     }
 
     private let subsystem: String

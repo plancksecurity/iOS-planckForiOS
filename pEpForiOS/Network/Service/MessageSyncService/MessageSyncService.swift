@@ -64,7 +64,7 @@ extension MessageSyncService: AccountVerificationServiceDelegate {
     private func verifiedInternal(account: Account, service: AccountVerificationServiceProtocol,
                                   result: AccountVerificationResult) {
         guard let (service, delegate) = accountVerifications[account] else {
-            Logger(category: Logger.backend).error("no service")
+            Logger.backendLogger.error("no service")
             return
         }
         delegate.verified(account: account, service: service, result: result)

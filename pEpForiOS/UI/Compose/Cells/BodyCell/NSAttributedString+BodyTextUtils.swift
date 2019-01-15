@@ -15,7 +15,7 @@ extension NSAttributedString {
     public func assureMaxTextAttachmentImageWidth(_ maxWidth: CGFloat) {
         for textAttachment in textAttachments() {
             guard let image = textAttachment.image else {
-                Logger(category: Logger.util).errorAndCrash("No image?")
+                Logger.utilLogger.errorAndCrash("No image?")
                 return
             }
             if image.size.width > maxWidth {

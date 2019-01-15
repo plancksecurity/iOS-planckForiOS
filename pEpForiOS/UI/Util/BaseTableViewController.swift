@@ -11,12 +11,10 @@ import UIKit
 class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?
 
-    public let logger = Logger(category: Logger.frontend)
-
     var appConfig: AppConfig {
         get {
             guard let safeConfig = _appConfig else {
-                logger.errorAndCrash("No appConfig?")
+                Logger.frontendLogger.errorAndCrash("No appConfig?")
 
                 // We have no config. Return nonsense.
                 return AppConfig(
@@ -41,7 +39,7 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
         super.viewWillAppear(animated)
         guard _appConfig != nil else {
             if !MiscUtil.isUnitTest() {
-                logger.errorAndCrash("AppConfig is nil in viewWillAppear!")
+                Logger.frontendLogger.errorAndCrash("AppConfig is nil in viewWillAppear!")
             }
             return
         }
@@ -129,6 +127,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
 
 extension BaseTableViewController: KickOffMySelfProtocol {
     func startMySelf() {
-        logger.errorAndCrash("No appConfig?")
+        Logger.frontendLogger.errorAndCrash("No appConfig?")
     }
 }

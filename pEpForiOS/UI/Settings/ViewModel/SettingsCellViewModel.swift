@@ -22,8 +22,6 @@ extension SettingsCellViewModel {
 
 /// Cell for settings that are not only one on/off switch.
 public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
-    private let logger = Logger(category: Logger.frontend)
-
     var cellIdentifier = "SettingsCell"
     
     var type: SettingType
@@ -64,7 +62,7 @@ public class SettingsCellViewModel: ComplexSettingCellViewModelProtocol {
                     "Settings: Cell (button) title to view default account setting")
             case .account:
                 guard let acc = account else {
-                    logger.errorAndCrash("Should never be reached")
+                    Logger.frontendLogger.errorAndCrash("Should never be reached")
                     return nil
                 }
                 return acc.user.address

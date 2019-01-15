@@ -30,7 +30,7 @@ extension Account {
                 server.serverType == Server.ServerType.imap ||
                     server.serverType == Server.ServerType.smtp
                 else {
-                    Logger(category: Logger.model).errorAndCrash("Unsupported server type")
+                    Logger.modelLogger.errorAndCrash("Unsupported server type")
                     continue
             }
             let credentials = server.credentials
@@ -64,7 +64,7 @@ extension Account {
             let emailProtocol = EmailProtocol(serverType: server.serverType),
             let connectionTransport = server.transport
             else {
-                Logger(category: Logger.model).errorAndCrash("Missing emailProtocol")
+                Logger.modelLogger.errorAndCrash("Missing emailProtocol")
                 return nil
         }
 

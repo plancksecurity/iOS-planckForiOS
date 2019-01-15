@@ -9,8 +9,6 @@
 import Foundation
 
 open class MimeTypeUtil {
-    private let logger = Logger(category: Logger.util)
-
     public static let defaultMimeType = "application/octet-stream"
     public static let jpegMimeType = "image/jpeg"
 
@@ -44,7 +42,7 @@ open class MimeTypeUtil {
                 mimeTypeToExtension[MimeTypeUtil.jpegMimeType] = "jpg"
             }
         } catch {
-            logger.log(error: error)
+            Logger.utilLogger.log(error: error)
             return nil
         }
     }

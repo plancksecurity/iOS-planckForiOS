@@ -11,8 +11,6 @@ import Foundation
 import MessageModel
 
 class AttachmentToLocalURLOperation: Operation {
-    private let logger = Logger(category: Logger.backend)
-
     var fileURL: URL?
 
     let attachment: Attachment
@@ -23,7 +21,7 @@ class AttachmentToLocalURLOperation: Operation {
 
     override func main() {
         guard let data = attachment.data else {
-            logger.warn("Attachment without data")
+            Logger.backendLogger.warn("Attachment without data")
             return
         }
         var tmpDirURL: URL?
@@ -46,7 +44,7 @@ class AttachmentToLocalURLOperation: Operation {
             try data.write(to: theURL)
             fileURL = theURL
         } catch {
-            logger.log(error: error)
+            Logger.backendLogger.log(error: error)
         }
     }
 }

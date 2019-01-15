@@ -33,8 +33,6 @@ public class ConcurrentBaseOperation: BaseOperation {
 
     private var _state: OperationState = .ready
 
-    private let logger = Logger(category: "Background")
-
     // MARK: - LIFE CYCLE
 
     public override init(parentName: String = #function,
@@ -94,9 +92,9 @@ public class ConcurrentBaseOperation: BaseOperation {
     func handleError(_ error: Error, message: String? = nil) {
         addError(error)
         if let theMessage = message {
-            logger.error("%{public}@ %{public}@", error.localizedDescription, theMessage)
+            Logger.backendLogger.error("%{public}@ %{public}@", error.localizedDescription, theMessage)
         } else {
-            logger.error("%{public}@ %{public}@", error.localizedDescription)
+            Logger.backendLogger.error("%{public}@ %{public}@", error.localizedDescription)
         }
         cancel()
     }

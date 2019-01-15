@@ -8,16 +8,22 @@
 
 import MessageModel
 
-extension Folder{
+extension Folder {
 
     var localizedName: String {
-        switch realName.lowercased() {
-        case ImapSync.defaultImapInboxName.lowercased():
+        let validInboxNameVariations = [ImapSync.defaultImapInboxName, "INBOX", "Inbox", "inbox"]
+
+        switch realName {
+        case let tmp where  validInboxNameVariations.contains(tmp):
              return NSLocalizedString("Inbox", comment: "Name of INBOX mailbox (of one account)")
-        case UnifiedInbox.defaultUnifiedInboxName.lowercased():
+        case UnifiedInbox.defaultUnifiedInboxName:
             return NSLocalizedString("All",
                                      comment:
                 "Name of unified inbox (showing messages of all accoounts")
+        case FolderType.outbox.folderName():
+            return NSLocalizedString("Outbox",
+                                     comment:
+                "Name of outbox (showing messages to send")
         default:
             return realName
         }

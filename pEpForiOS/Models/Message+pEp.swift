@@ -34,7 +34,7 @@ extension Message {
         }
 
         guard let sender = from else {
-            Logger(category: Logger.model).errorAndCrash(
+            Logger.modelLogger.errorAndCrash(
                 "No sender for outgoing message?")
             return PEP_rating_undefined
         }
@@ -131,7 +131,7 @@ extension Message {
         var result = [Message]()
         for cdMessage in cdMessages {
             guard let message = cdMessage.message() else {
-                Logger(category: Logger.model).errorAndCrash(
+                Logger.modelLogger.errorAndCrash(
                     "No Message for CdMesssage")
                 continue
             }
@@ -146,7 +146,7 @@ extension Message {
         var result = [Message]()
         for cdMessage in cdMessages {
             guard let message = cdMessage.message() else {
-                Logger(category: Logger.model).errorAndCrash(
+                Logger.modelLogger.errorAndCrash(
                     "No Message for CdMesssage")
                 continue
             }

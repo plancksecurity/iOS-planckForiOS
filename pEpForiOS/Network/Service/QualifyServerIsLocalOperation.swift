@@ -13,8 +13,6 @@ import Foundation
  whether it is located network-local or not.
  */
 class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
-    private let logger = Logger(category: Logger.backend)
-
     enum IPAddress {
         case ipv4(UInt8, UInt8, UInt8, UInt8)
         case ipv6(UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
@@ -107,7 +105,7 @@ class QualifyServerIsLocalOperation: ConcurrentBaseOperation {
                                                     UInt8(addr >> 8 & 255), UInt8(addr & 255))
                     ipAddresses.append(ip4Address)
                 } else {
-                    logger.errorAndCrash("unknown address family")
+                    Logger.backendLogger.errorAndCrash("unknown address family")
                 }
             }
         }

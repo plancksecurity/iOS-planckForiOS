@@ -16,8 +16,6 @@ protocol DocumentAttachmentPickerViewModelResultDelegate: class {
 }
 
 class DocumentAttachmentPickerViewModel {
-    private let logger = Logger(category: Logger.frontend)
-
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
         "security.pep.DocumentAttachmentPickerViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
@@ -32,11 +30,11 @@ class DocumentAttachmentPickerViewModel {
             createAttachment(forSecurityScopedResource: url) {
                 [weak self] (attachment: Attachment?) in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.frontend)
+                    Logger.frontendLogger.lostMySelf()
                     return
                 }
                 guard let safeAttachment = attachment else {
-                    Logger(category: Logger.frontend).errorAndCrash("No attachment")
+                    Logger.frontendLogger.errorAndCrash("No attachment")
                     return
                 }
                 GCD.onMain {
@@ -64,7 +62,7 @@ class DocumentAttachmentPickerViewModel {
             CFURLStartAccessingSecurityScopedResource(cfUrl)
             defer { CFURLStopAccessingSecurityScopedResource(cfUrl) }
             guard  let resourceData = try? Data(contentsOf: resourceUrl)  else {
-                Logger(category: Logger.frontend).errorAndCrash("No data for URL.")
+                Logger.frontendLogger.errorAndCrash("No data for URL.")
                 completion(nil)
                 return
             }

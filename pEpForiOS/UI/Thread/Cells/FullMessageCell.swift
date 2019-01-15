@@ -13,7 +13,6 @@ import SwipeCellKit
 class FullMessageCell: SwipeTableViewCell,
     MessageViewModelConfigurable,
     NeedsRefreshDelegate {
-    private let logger = Logger(category: Logger.frontend)
 
     static var flaggedImage: UIImage? = nil
 
@@ -119,7 +118,7 @@ class FullMessageCell: SwipeTableViewCell,
             storyboard.instantiateViewController(withIdentifier: SecureWebViewController.storyboardId)
                 as? SecureWebViewController
             else {
-                logger.errorAndCrash("Cast error")
+                Logger.frontendLogger.errorAndCrash("Cast error")
                 return SecureWebViewController()
         }
         vc.zoomingEnabled = false

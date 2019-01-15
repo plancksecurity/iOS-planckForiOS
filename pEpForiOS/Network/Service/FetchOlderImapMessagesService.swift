@@ -9,8 +9,6 @@
 import MessageModel
 
 public class FetchOlderImapMessagesService {
-    private let logger = Logger(category: Logger.backend)
-
     var runningOperations = [Folder:BaseOperation]()
     let queue: OperationQueue
 
@@ -27,7 +25,7 @@ public class FetchOlderImapMessagesService {
 
         guard let cdFolder = CdFolder.search(folder: folder),
             let cdAccount = cdFolder.account else {
-                logger.error(
+                Logger.backendLogger.error(
                     "nconsistent DB state. CDFolder for Folder %{public}@ does not exist or its mandatory field \"account\" is not set.",
                     folder.name)
                 return

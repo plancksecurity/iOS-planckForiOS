@@ -75,7 +75,7 @@ public class AsyncStateMachine<S: Hashable, E: Hashable, M>: AsyncStateMachinePr
         if let handler = stateEnterHandlers[targetState] {
             return handler(targetState, model)
         } else {
-            Logger(category: Logger.util).warn("Entered state %{public}@, but no handler",
+            Logger.utilLogger.warn("Entered state %{public}@, but no handler",
                                                "\(targetState)")
         }
         return model

@@ -12,8 +12,6 @@
 open class BaseOperation: Operation, ServiceErrorProtocol {
     open var comp = "BaseOperation"
 
-    private let logger = Logger(category: "Background")
-
     let errorContainer: ServiceErrorProtocol
 
     static let moduleTitleRegex = try! NSRegularExpression(
@@ -53,6 +51,6 @@ open class BaseOperation: Operation, ServiceErrorProtocol {
     }
 
     func logSelf(functionName: String) {
-        logger.log("%{public}@: %{public}@", comp, self)
+        Logger.backendLogger.log("%{public}@: %{public}@", comp, self)
     }
 }

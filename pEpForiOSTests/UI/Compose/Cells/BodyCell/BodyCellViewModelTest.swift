@@ -12,8 +12,6 @@ import XCTest
 import MessageModel
 
 class BodyCellViewModelTest: XCTestCase {
-    private let logger = Logger(category: Logger.frontend)
-
     var vm: BodyCellViewModel!
     private var testDelegate: TestDelegate?
     private var testResultDelegate: TestResultDelegate?

@@ -27,8 +27,6 @@ public class AppendMailsOperation: ImapSyncOperation {
 
     private let folder: Folder
 
-    private let logger = Logger(category: "Background")
-
     init(parentName: String = #function, folder: Folder, imapSyncData: ImapSyncData,
          errorContainer: ServiceErrorProtocol = ErrorContainer()) {
         self.folder = folder
@@ -51,7 +49,7 @@ public class AppendMailsOperation: ImapSyncOperation {
         var result: (PEPMessageDict, PEPIdentity, NSManagedObjectID)? = nil
         privateMOC.performAndWait { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.backend)
+                Logger.backendLogger.lostMySelf()
                 return
             }
             guard
@@ -59,7 +57,7 @@ public class AppendMailsOperation: ImapSyncOperation {
                 let account = privateMOC.object(with: accountId) as? CdAccount,
                 let address = account.identity?.address
                 else {
-                    logger.errorAndCrash("Missing data")
+                    Logger.backendLogger.errorAndCrash("Missing data")
                     result = nil
                     return
             }
@@ -77,14 +75,14 @@ public class AppendMailsOperation: ImapSyncOperation {
         if let msgID = lastHandledMessageObjectID {
             privateMOC.performAndWait { [weak self] in
                 guard let me = self else {
-                    Logger.lostMySelf(category: Logger.backend)
+                    Logger.backendLogger.lostMySelf()
                     return
                 }
                 if let obj = me.privateMOC.object(with: msgID) as? CdMessage {
                     me.privateMOC.delete(obj)
                     me.privateMOC.saveAndLogErrors()
                 } else {
-                    Logger.init(category: "Background").errorAndCrash("Message disappeared")
+                    Logger.backendLogger.errorAndCrash("Message disappeared")
                     me.handleError(BackgroundError.GeneralError.invalidParameter(info: #function),
                                    message: "Cannot find message just stored.")
                     return
@@ -100,7 +98,7 @@ public class AppendMailsOperation: ImapSyncOperation {
             cwFolder.setStore(sync.imapStore)
         }
         guard let rawData = pantMail.dataValue() else {
-            logger.errorAndCrash("No data")
+            Logger.backendLogger.errorAndCrash("No data")
             markAsFinished()
             return
         }
@@ -143,7 +141,7 @@ public class AppendMailsOperation: ImapSyncOperation {
                 let session = PEPSession()
                 let (_, encMsg) = try encrypt(session: session, pEpMessageDict: msg, forSelf: ident)
                 guard let msgDict = encMsg as? PEPMessageDict else {
-                    logger.errorAndCrash("Error casting")
+                    Logger.backendLogger.errorAndCrash("Error casting")
                     handleError(BackgroundError.GeneralError.illegalState(info: "Eror casting"),
                                 message: "Error casting")
                     return
@@ -167,7 +165,7 @@ public class AppendMailsOperation: ImapSyncOperation {
             guard
                 let accountId = connectInfo.accountObjectID,
                 let cdAccount = privateMOC.object(with: accountId) as? CdAccount else {
-                    Logger(category: "Background").errorAndCrash("No account")
+                    Logger.backendLogger.errorAndCrash("No account")
                     return
             }
             let appendMessages = Message.allMessagesMarkedForAppend(inAccount: cdAccount.account())

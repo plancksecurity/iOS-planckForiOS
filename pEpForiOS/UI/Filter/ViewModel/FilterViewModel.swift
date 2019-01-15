@@ -13,8 +13,6 @@ public enum FilterSectionType {
     case accouts, include, other
 }
 public class FilterViewModel {
-    private let logger = Logger(category: Logger.frontend)
-
     private var items: [FilterCellViewModel]
     public var title: String
     public var filters: CompositeFilter<FilterBase>
@@ -47,7 +45,7 @@ public class FilterViewModel {
         case .accouts:
             for account in Account.all() {
                 guard let icon = UIImage(named: "folders-icon-inbox") else {
-                    logger.errorAndCrash("Error Loading images")
+                    Logger.frontendLogger.errorAndCrash("Error Loading images")
                     return
                 }
                 items.append(
@@ -60,7 +58,7 @@ public class FilterViewModel {
             break
         case .include:
             guard let unreadIcon = UIImage(named: "icon-unread") else {
-                logger.errorAndCrash("Error Loading images")
+                Logger.frontendLogger.errorAndCrash("Error Loading images")
                 return
             }
             items.append(
@@ -71,7 +69,7 @@ public class FilterViewModel {
                                     filter: UnreadFilter()))
 
             guard let flaggedIcon = UIImage(named: "icon-flagged") else {
-                logger.errorAndCrash("Error Loading images")
+                Logger.frontendLogger.errorAndCrash("Error Loading images")
                 return
             }
             items.append(
@@ -83,7 +81,7 @@ public class FilterViewModel {
             break
         case .other:
             guard let attachIcon = UIImage(named: "attachment-list-icon") else {
-                logger.errorAndCrash("Error Loading images")
+                Logger.frontendLogger.errorAndCrash("Error Loading images")
                 return
             }
             items.append(

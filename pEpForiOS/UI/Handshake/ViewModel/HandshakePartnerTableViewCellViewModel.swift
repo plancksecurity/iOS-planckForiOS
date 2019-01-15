@@ -11,8 +11,6 @@ import Foundation
 import MessageModel
 
 class HandshakePartnerTableViewCellViewModel {
-    private let logger = Logger(category: Logger.frontend)
-
     enum ExpandedState {
         case notExpanded
         case expanded
@@ -108,7 +106,7 @@ class HandshakePartnerTableViewCellViewModel {
         do {
             isPartnerpEpUser = try session.isPEPUser(pEpPartner).boolValue
         } catch let err as NSError {
-            logger.error("%{public}@", err.localizedDescription)
+            Logger.frontendLogger.error("%{public}@", err.localizedDescription)
             isPartnerpEpUser = false
         }
         setPartnerImage(for: partner)
@@ -149,7 +147,7 @@ class HandshakePartnerTableViewCellViewModel {
                 language: trustwordsLanguage,
                 full: trustwordsFull)
         } catch let err as NSError {
-            logger.error("%{public}@", err.localizedDescription)
+            Logger.frontendLogger.error("%{public}@", err.localizedDescription)
             return nil
         }
     }

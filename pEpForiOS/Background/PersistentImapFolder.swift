@@ -14,8 +14,6 @@ import MessageModel
  A `CWFolder`/`CWIMAPFolder` that is backed by core data. Use on the main thread.
  */
 class PersistentImapFolder: CWIMAPFolder {
-    private let logger = Logger(category: Logger.backend)
-
     let accountID: NSManagedObjectID
     let folderID: NSManagedObjectID
 
@@ -102,7 +100,7 @@ class PersistentImapFolder: CWIMAPFolder {
         context.performAndWait() {
             guard let account = context.object(with: accountID)
                 as? CdAccount else {
-                    Logger(category: Logger.backend).error(
+                    Logger.backendLogger.error(
                         "Given objectID is not an account: %{public}@",
                         accountID.description)
                     return
@@ -205,7 +203,7 @@ class PersistentImapFolder: CWIMAPFolder {
             let uid = cwImapMessage.uid()
             removeMessage(withUID: uid)
         } else {
-            logger.log("Should remove/expunge message that is not a CWIMAPMessage")
+            Logger.backendLogger.log("Should remove/expunge message that is not a CWIMAPMessage")
         }
     }
 
@@ -261,7 +259,7 @@ extension PersistentImapFolder: CWIMAPCache {
                     Record.saveAndWait(context: privateMOC)
                 }
             } else {
-                logger.log("Could not find message by UID for expunging.")
+                Logger.backendLogger.log("Could not find message by UID for expunging.")
             }
         }
     }
@@ -276,12 +274,12 @@ extension PersistentImapFolder: CWIMAPCache {
 
     override func setUIDValidity(_ theUIDValidity: UInt) {
         guard let context = self.folder.managedObjectContext else {
-            logger.errorAndCrash("Dangling folder")
+            Logger.backendLogger.errorAndCrash("Dangling folder")
             return
         }
         context.performAndWait() {
             if self.folder.uidValidity != Int32(theUIDValidity) {
-                Logger(category: Logger.backend).warn(
+                Logger.backendLogger.warn(
                     "UIValidity changed, deleting all messages. %{public}@",
                     String(describing: self.folder.name))
                 // For some reason messages are not deleted when removing it from folder
@@ -306,10 +304,10 @@ extension PersistentImapFolder: CWIMAPCache {
             accountID: accountID, message: message, messageUpdate: messageUpdate,
             messageFetchedBlock: messageFetchedBlock)
         let opID = unsafeBitCast(opStore, to: UnsafeRawPointer.self)
-        logger.warn("Writing message %{public}@, %{public}@ for %{public}@",
-                    message,
-                    messageUpdate,
-                    String(describing: opID))
+        Logger.backendLogger.warn("Writing message %{public}@, %{public}@ for %{public}@",
+                                  message,
+                                  messageUpdate,
+                                  String(describing: opID))
         backgroundQueue.addOperation(opStore)
 
         // While it would be desirable to store messages asynchronously,

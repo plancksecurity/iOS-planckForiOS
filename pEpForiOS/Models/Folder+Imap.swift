@@ -30,7 +30,7 @@ extension Folder {
         let pIsRemote = CdFolder.PredicateFactory.isSyncedWithServer()
         let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pInAccount, pIsRemote])
         guard let cdFolders = CdFolder.all(predicate: p) as? [CdFolder] else {
-            Logger(category: Logger.model).errorAndCrash("Error casting")
+            Logger.modelLogger.errorAndCrash("Error casting")
             return result
         }
         result =

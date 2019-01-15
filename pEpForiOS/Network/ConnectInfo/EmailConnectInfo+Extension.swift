@@ -18,7 +18,7 @@ extension EmailConnectInfo {
         var error: Error?
         MessageModel.performAndWait { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             let context = Record.Context.background

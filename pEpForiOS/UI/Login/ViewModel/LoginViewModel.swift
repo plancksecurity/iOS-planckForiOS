@@ -14,8 +14,6 @@ enum LoginCellType {
 }
 
 class LoginViewModel {
-    private let logger = Logger(category: Logger.frontend)
-
     struct OAuth2Parameters {
         let emailAddress: String
         let userName: String
@@ -104,7 +102,7 @@ class LoginViewModel {
 
         func statusOk() {
             if let error = AccountSettings.AccountSettingsError(accountSettings: acSettings) {
-                logger.error("%{public}@", error.localizedDescription)
+                Logger.frontendLogger.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
                 return
             }
@@ -138,7 +136,7 @@ class LoginViewModel {
             do {
                 try verifyAccount(model: newAccount)
             } catch {
-                logger.error("%{public}@", error.localizedDescription)
+                Logger.frontendLogger.error("%{public}@", error.localizedDescription)
                 loginViewModelLoginErrorDelegate?.handle(loginError: error)
             }
         }
@@ -166,11 +164,11 @@ class LoginViewModel {
 
     func accountHasBeenQualified(trusted: Bool) {
         guard let ms = messageSyncService else {
-            logger.errorAndCrash("no MessageSyncService")
+            Logger.frontendLogger.errorAndCrash("no MessageSyncService")
             return
         }
         guard let account = loginAccount else {
-            logger.errorAndCrash("have lost loginAccount")
+            Logger.frontendLogger.errorAndCrash("have lost loginAccount")
             return
         }
         account.imapServer?.trusted = trusted

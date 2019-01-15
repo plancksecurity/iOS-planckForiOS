@@ -18,8 +18,6 @@ protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
 }
 
 class MediaAttachmentPickerProviderViewModel {
-    private let logger = Logger(category: Logger.frontend)
-
     lazy private var attachmentFileIOQueue = DispatchQueue(label:
         "security.pep.MediaAttachmentPickerProviderViewModel.attachmentFileIOQueue",
                                                            qos: .userInitiated)
@@ -49,7 +47,7 @@ class MediaAttachmentPickerProviderViewModel {
         guard
             let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
             let url = info[UIImagePickerControllerReferenceURL] as? URL else {
-                logger.errorAndCrash("No Data")
+                Logger.frontendLogger.errorAndCrash("No Data")
                 return
         }
 
@@ -60,17 +58,17 @@ class MediaAttachmentPickerProviderViewModel {
 
     private func createMovieAttchmentAndInformResultDelegate(info: [String: Any]) {
         guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
-            logger.errorAndCrash("No URL")
+            Logger.frontendLogger.errorAndCrash("No URL")
             return
         }
 
         createAttachment(forResource: url) {[weak self] (attachment)  in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             guard let att = attachment else {
-                Logger(category: Logger.frontend).errorAndCrash("No Attachment")
+                Logger.frontendLogger.errorAndCrash("No Attachment")
                 return
             }
             let result = MediaAttachment(type: .movie, attachment: att)
@@ -84,11 +82,11 @@ class MediaAttachmentPickerProviderViewModel {
                                   completion: @escaping (Attachment?) -> Void) {
         attachmentFileIOQueue.async { [weak self] in
             guard let me = self else {
-                Logger.lostMySelf(category: Logger.frontend)
+                Logger.frontendLogger.lostMySelf()
                 return
             }
             guard let resourceData = try? Data(contentsOf: resourceUrl) else {
-                Logger(category: Logger.frontend).errorAndCrash("Cound not get data for URL")
+                Logger.frontendLogger.errorAndCrash("Cound not get data for URL")
                 completion(nil)
                 return
             }

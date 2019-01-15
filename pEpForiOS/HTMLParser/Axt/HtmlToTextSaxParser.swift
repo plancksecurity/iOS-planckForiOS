@@ -9,8 +9,6 @@
 import Foundation
 
 class HtmlToTextSaxParser: BasicSaxParser {
-    private let logger = Logger(category: Logger.htmlParsing)
-
     var tagStack = [String]()
 
     func parse(string: String) {
@@ -61,6 +59,6 @@ extension HtmlToTextSaxParser: AXHTMLParserDelegate {
     }
 
     func parser(_ parser: AXHTMLParser, parseErrorOccurred parseError: Error) {
-        logger.error("%@", parseError.localizedDescription)
+        Logger.htmlParsingLogger.error("%@", parseError.localizedDescription)
     }
 }
