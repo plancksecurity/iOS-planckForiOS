@@ -203,6 +203,41 @@ class DecryptImportedMessagesTests: XCTestCase {
     }
      */
 
+    // ENGINE-456 / IOS-1258
+    func test_ENGINE_459() {
+        let cdOwnAccount = DecryptionUtil.createLocalAccount(
+            ownUserName: "ThisIsMe",
+            ownUserID: "User_Me",
+            ownEmailAddress: "iostest010@peptest.ch")
+
+        self.backgroundQueue = OperationQueue()
+        let cdMessage = DecryptionUtil.decryptTheMessage(
+            testCase: self,
+            backgroundQueue: backgroundQueue,
+            cdOwnAccount: cdOwnAccount,
+            fileName: "ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt")
+
+        guard let theCdMessage = cdMessage else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.shortMessage,
+                       "Re: Help needed debugging segfault with Guile 1.8.7")
+        XCTAssertNil(theCdMessage.longMessage)
+
+        let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
+        XCTAssertEqual(attachments.count, 2)
+
+        guard let msg = theCdMessage.message() else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(msg.attachments.count, 1)
+    }
+
     // MARK: - Helpers
 
     func check(attachments: [MimeProtocol]) {
