@@ -618,6 +618,13 @@ open class NetworkServiceWorker {
             operations.append(syncExistingMessagesOP)
         }
 
+        // Persist changes
+        let saveToDiskOp = BlockOperation() {
+            Record.saveToDiskAndWait()
+        }
+        opAllFinished.addDependency(saveToDiskOp)
+        operations.append(saveToDiskOp)
+
         operations.append(contentsOf: [opSmtpFinished, opImapFinished, opAllFinished])
 
         return OperationLine(accountInfo: accountInfo, operations: operations,
