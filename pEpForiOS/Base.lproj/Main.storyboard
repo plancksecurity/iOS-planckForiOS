@@ -107,11 +107,10 @@
                                             </subviews>
                                         </stackView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" image="pEp-status-yellow" translatesAutoresizingMaskIntoConstraints="NO" id="m0u-Jn-mQU">
-                                            <rect key="frame" x="56" y="50" width="20" height="20"/>
+                                            <rect key="frame" x="56" y="52.5" width="20" height="20"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="20" id="Kc3-zI-6iP"/>
-                                                <constraint firstAttribute="width" secondItem="m0u-Jn-mQU" secondAttribute="height" multiplier="1:1" id="fnp-Yy-49g"/>
+                                                <constraint firstAttribute="width" secondItem="m0u-Jn-mQU" secondAttribute="height" multiplier="1:1" id="7pr-8F-BtP"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
@@ -122,15 +121,14 @@
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="top" secondItem="jgQ-nZ-h1r" secondAttribute="top" constant="5" id="HLH-Yf-Zeb"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="top" secondItem="5Py-55-oem" secondAttribute="bottom" constant="4" id="Hex-Vv-UnE"/>
                                         <constraint firstItem="8QD-qP-0hS" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tWZ-jW-sUg" secondAttribute="trailing" constant="8" id="Qdc-6I-SDj"/>
-                                        <constraint firstItem="m0u-Jn-mQU" firstAttribute="top" secondItem="YqR-ga-Tf9" secondAttribute="bottom" constant="-15" id="Sx7-Tx-Icx"/>
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="leading" secondItem="jgQ-nZ-h1r" secondAttribute="leadingMargin" id="UBA-wX-ANZ"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="leading" id="Wva-Nq-D3D"/>
                                         <constraint firstItem="5Py-55-oem" firstAttribute="top" secondItem="tWZ-jW-sUg" secondAttribute="bottom" constant="4" id="Xp7-Lw-Lqg"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="leading" secondItem="5Py-55-oem" secondAttribute="trailing" constant="3" id="acU-9j-7hJ"/>
-                                        <constraint firstItem="m0u-Jn-mQU" firstAttribute="leading" secondItem="YqR-ga-Tf9" secondAttribute="trailing" constant="-10" id="cBb-jj-QAm"/>
+                                        <constraint firstItem="BvI-Zi-zU6" firstAttribute="leading" secondItem="m0u-Jn-mQU" secondAttribute="trailing" constant="5" id="co3-bq-uE3"/>
                                         <constraint firstItem="tWZ-jW-sUg" firstAttribute="bottom" secondItem="8QD-qP-0hS" secondAttribute="bottom" id="dxm-I0-Sij"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="m0u-Jn-mQU" secondAttribute="bottom" constant="5" id="fh8-Hb-h3l"/>
                                         <constraint firstItem="MZJ-bg-Dw7" firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" id="hA7-ed-KYt"/>
+                                        <constraint firstItem="BvI-Zi-zU6" firstAttribute="bottom" secondItem="m0u-Jn-mQU" secondAttribute="bottom" id="jxk-IK-xXR"/>
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="centerY" secondItem="jgQ-nZ-h1r" secondAttribute="centerY" id="kzK-1E-vdU"/>
                                         <constraint firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" constant="8" id="n5I-Yb-okr"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" id="tYc-Ao-foD"/>
@@ -142,8 +140,6 @@
                                     <outlet property="attachmentIcon" destination="3BC-6k-zL0" id="ZMO-5d-OGj"/>
                                     <outlet property="contactImageView" destination="YqR-ga-Tf9" id="E2c-EP-D1U"/>
                                     <outlet property="dateLabel" destination="Wkg-wf-Dbd" id="TSP-tH-GR2"/>
-                                    <outlet property="fakeRatingImageToContactImageHorizontal" destination="cBb-jj-QAm" id="6Ij-h3-mrC"/>
-                                    <outlet property="fakeRatingImageToContactImageVertical" destination="Sx7-Tx-Icx" id="Lbz-1T-Kse"/>
                                     <outlet property="flaggedImageView" destination="BLq-0g-OgR" id="a6H-Fv-kDq"/>
                                     <outlet property="messageCountLabel" destination="DaU-dh-sn5" id="iBa-MU-sGd"/>
                                     <outlet property="ratingImage" destination="m0u-Jn-mQU" id="Xod-5v-9K3"/>
@@ -940,9 +936,9 @@
         <image name="unread-icon" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="RTR-We-Kc1"/>
+        <segue reference="d5O-Wk-gjZ"/>
         <segue reference="0zl-tV-6Kr"/>
         <segue reference="anx-J8-OKE"/>
-        <segue reference="Usl-iS-7fo"/>
+        <segue reference="fJ0-cY-ZEb"/>
     </inferredMetricsTieBreakers>
 </document>

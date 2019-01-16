@@ -85,7 +85,8 @@ class DecryptMessageOperation: Operation {
             delegate?.decryptMessageOperation(sender: self, didDecryptMessageWithResult: result)
 
         } catch {
-            Logger.backendLogger.errorAndCrash("Error decrypting")
+            Logger.backendLogger.errorAndCrash("Error decrypting: %{public}@",
+                                               error.localizedDescription)
             delegate?.decryptMessageOperation(sender: self, failed: error)
         }
     }
