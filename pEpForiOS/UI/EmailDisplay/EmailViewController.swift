@@ -328,6 +328,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
+        Logger.frontendLogger.log("next, will reload table view")
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -339,6 +340,7 @@ class EmailViewController: BaseTableViewController {
             message = m
         }
 
+        Logger.frontendLogger.log("previous, will reload table view")
         configureTableRows()
         tableView.reloadData()
         configureView()
@@ -455,6 +457,7 @@ class EmailViewController: BaseTableViewController {
 
 extension EmailViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        Logger.frontendLogger.log("number of rows -> %d", tableData?.numberOfRows() ?? 0)
         return tableData?.numberOfRows() ?? 0
     }
 

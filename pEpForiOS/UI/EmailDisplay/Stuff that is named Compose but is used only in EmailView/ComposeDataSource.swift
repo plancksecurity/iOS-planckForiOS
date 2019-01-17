@@ -40,6 +40,7 @@ class ComposeDataSource: NSObject {
         } else {
             filterRows(filter: { $0.type != .mailingList} )
         }
+        Logger.frontendLogger.log("filtering rows")
     }
 
     func numberOfRows() -> Int {
