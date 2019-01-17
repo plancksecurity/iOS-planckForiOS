@@ -16,7 +16,9 @@ class Model {
 class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        Timer.scheduledTimer(withTimeInterval: 0.001, repeats: true) { timer in
+            self.changeModel()
+        }
     }
 
     func changeModel() {
@@ -54,13 +56,6 @@ class ViewController: UITableViewController {
         if indexPath.section == 0 {
             let cell = UITableViewCell(style: .default, reuseIdentifier: cellId)
             cell.textLabel?.text = "\(indexPath.row)"
-
-            if indexPath.row == model.numRows - 1 {
-                DispatchQueue.main.async {
-                    self.changeModel()
-                }
-            }
-
             return cell
         } else {
             let cell = UITableViewCell(style: .default, reuseIdentifier: cellId)
