@@ -413,7 +413,6 @@
 		438F4EE1215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE0215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt */; };
 		438F4EE5215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE4215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc */; };
 		438F4EE9215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE8215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc */; };
-		4393673921C26F3D00FF8BB4 /* LogTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4393673821C26F3D00FF8BB4 /* LogTest.swift */; };
 		4395CDEC20AAB2E9003FC5F1 /* UIImage+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */; };
 		4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */; };
 		4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */; };
@@ -1062,7 +1061,6 @@
 		438F4EE0215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt; sourceTree = "<group>"; };
 		438F4EE4215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc"; sourceTree = "<group>"; };
 		438F4EE8215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Leon Kowalski (19B9EE3B) – Private.asc"; sourceTree = "<group>"; };
-		4393673821C26F3D00FF8BB4 /* LogTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTest.swift; sourceTree = "<group>"; };
 		4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+GIF.swift"; sourceTree = "<group>"; };
 		4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensionsTests.swift; sourceTree = "<group>"; };
 		4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_001.gif; sourceTree = "<group>"; };
@@ -2337,7 +2335,6 @@
 				4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */,
 				434DDC2A20D10F9A00755F44 /* EncryptionTests.swift */,
 				438BA0F4214F89CC001A4A82 /* MailParsingTests.swift */,
-				4393673821C26F3D00FF8BB4 /* LogTest.swift */,
 				43C273DC21C9024A002EB4C8 /* LoggerTest.swift */,
 			);
 			path = pEpForiOSTests;
@@ -3724,7 +3721,6 @@
 				F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */,
 				15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */,
 				43EC75B32164E97800048CFE /* DecryptionUtil.swift in Sources */,
-				4393673921C26F3D00FF8BB4 /* LogTest.swift in Sources */,
 				43C7B9D11CEC4DDF007A612F /* MiscTests.swift in Sources */,
 				434DDC2B20D10F9A00755F44 /* EncryptionTests.swift in Sources */,
 				151F71FA202A06760057C74D /* DecryptionAttemptCounterDelegate.swift in Sources */,
