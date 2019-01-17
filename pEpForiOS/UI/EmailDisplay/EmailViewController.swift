@@ -457,7 +457,6 @@ class EmailViewController: BaseTableViewController {
 
 extension EmailViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        Logger.frontendLogger.log("number of rows -> %d", tableData?.numberOfRows() ?? 0)
         return tableData?.numberOfRows() ?? 0
     }
 
