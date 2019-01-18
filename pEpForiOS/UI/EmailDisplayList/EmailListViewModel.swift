@@ -147,12 +147,12 @@ class EmailListViewModel {
             let previewMessages = messagesToDisplay.map {
                 MessageViewModel(with: $0)
             }
-            me.messages = SortedSet(array: previewMessages,
-                                    sortBlock: me.sortByDateSentAscending)
+            let sortedMessages = SortedSet(array: previewMessages, sortBlock: me.sortByDateSentAscending)
             if op.isCancelled {
                 return
             }
             DispatchQueue.main.sync {
+                me.messages = sortedMessages
                 me.emailListViewModelDelegate?.updateView()
                 me.startListeningToChanges()
             }
