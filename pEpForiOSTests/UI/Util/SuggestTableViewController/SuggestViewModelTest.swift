@@ -119,14 +119,7 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let existing2 = Identity(address: "\(common)2")
         existing2.save()
 
-        // Bring [existing1, existing2] into stored/database order
-        existingIdentities = Identity.all().filter {
-            // Looks like the addresses of stored `Identity`s are lowercased,
-            // whereas our original `existing1` and `existing2` have them mixed-case.
-            // Hence the use of `lowercased`.
-            return $0.address == existing1.address.lowercased() ||
-                $0.address == existing2.address.lowercased()
-        }
+        existingIdentities = dataBaseOrder(identities: [existing1, existing2])
         XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
 
         assertResults(for: common,
@@ -199,6 +192,24 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
             vm.handleRowSelected(at: selectRow)
         }
         waitForExpectations(timeout: TestUtil.waitTime)
+    }
+
+    /**
+     Sorts an `[Identity]` into database/stored order, that is, the order they
+     are stored in the database and would be returned in when using `Identity.all()`.
+     Note the use of `lowercased()`: Stored `Identity`s have their addresses lower-cased,
+     while self-created ones may not.
+     */
+    func dataBaseOrder(identities: [Identity]) -> [Identity] {
+        var addressSet = Set<String>()
+        for ident in identities {
+            let lcAddress = ident.address.lowercased()
+            addressSet = addressSet.union([lcAddress])
+        }
+
+        return Identity.all().filter {
+            return addressSet.contains($0.address.lowercased())
+        }
     }
 }
 
