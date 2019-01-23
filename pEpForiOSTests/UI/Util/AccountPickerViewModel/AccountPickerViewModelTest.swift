@@ -40,9 +40,13 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testAccountAt_1() {
-        let secondAccount = createAndSaveSecondAccount()
-        let testIdx = 1
-        assertPickerViewModel(accountAt: testIdx, expected: secondAccount)
+        let _ = createAndSaveSecondAccount()
+        let sndIdx = 1
+
+        let accounts = Account.all()
+        let secondAccount = accounts[sndIdx]
+
+        assertPickerViewModel(accountAt: sndIdx, expected: secondAccount)
     }
 
     func testAccountAt_not1() {
