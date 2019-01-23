@@ -77,8 +77,11 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleUserSelected_twoAccounts_correct() {
         let secondRowIdx = 1
-        let secondAccount = createAndSaveSecondAccount()
-        let pickedAccount = secondAccount
+        let _ = createAndSaveSecondAccount()
+
+        let accounts = Account.all()
+        let pickedAccount = accounts[secondRowIdx]
+
         assertUserSelection(selectIdx: secondRowIdx,
                             accountToCompare: pickedAccount,
                             mustEqualSelected: true)
