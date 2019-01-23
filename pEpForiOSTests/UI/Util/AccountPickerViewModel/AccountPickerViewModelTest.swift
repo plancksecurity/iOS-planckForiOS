@@ -48,8 +48,13 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
     func testAccountAt_not1() {
         createAndSaveSecondAccount()
         let testIdx = 1
-        let notSecondAccount = account
-        assertPickerViewModel(accountAt: testIdx, expected: notSecondAccount, shouldFail: true)
+
+        let accounts = Account.all()
+        let expectedToNotBeThisAccount = accounts[0]
+
+        assertPickerViewModel(accountAt: testIdx,
+                              expected: expectedToNotBeThisAccount,
+                              shouldFail: true)
     }
 
     // MARK: - handleUserSelected
