@@ -40,18 +40,16 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         // Create mails from cdAccount2 with both accounts in receipients (cdAccount & cdAccount2)
         let numMailsToSend = 2
         let mailsToSend = try! TestUtil.createOutgoingMails(
-            cdAccount: cdAccount2, testCase: self, numberOfMails: numMailsToSend,
-            withAttachments: false, encrypt: false)
+            cdAccount: cdAccount2,
+            fromIdentity: id2,
+            toIdentity: id1,
+            testCase: self,
+            numberOfMails: numMailsToSend,
+            withAttachments: false,
+            encrypt: false)
         XCTAssertEqual(mailsToSend.count, numMailsToSend)
 
         for mail in mailsToSend {
-            guard let currentReceipinets = mail.to?.array as? [CdIdentity] else {
-                    XCTFail("Should have receipients")
-                    return
-            }
-            mail.from = id2
-            mail.removeTos(cdIdentities: currentReceipinets)
-            mail.addTo(cdIdentity: id1)
             mail.addTo(cdIdentity: id2)
             mail.pEpProtected = false // force unencrypted
         }
