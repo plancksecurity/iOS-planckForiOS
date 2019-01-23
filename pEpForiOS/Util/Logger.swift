@@ -11,28 +11,49 @@ import os.log
 
 import MessageModel // For SystemUtils.crash only
 
+/**
+ Thin layer over `os_log` or `asl_logger` where not available.
+ The fallback to asl is only in effect for iOS 9, and currently
+ doesn't appear anywhere visible on that platform.
+ */
 public class Logger {
+    /**
+     Map `os_log` levels.
+     */
     public enum Severity {
         /**
+         - Note: Not persisted by default, but will be written in case of errors.
+         */
+        case info
+
+        /**
+         - Note: Not persisted by default, but will be written in case of errors.
+         */
+        case debug
+
+        /**
          This is the lowest priority that gets written to disk by default.
-         Used like WARN.
+         Used like WARN in this logger.
          */
         case `default`
 
-        case info
-        case debug
         case error
+
+        /**
+         - Note: As this is referring to inter-process problems, I don't see a use-case
+         for iOS.
+         */
         case fault
 
         @available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
         public func osLogType() -> OSLogType {
             switch self {
-            case .default:
-                return .default
             case .info:
                 return .info
             case .debug:
                 return .debug
+            case .default:
+                return .default
             case .error:
                 return .error
             case .fault:
@@ -229,6 +250,10 @@ public class Logger {
         }
     }
 
+    /**
+     Since this kind of logging is used so often in the codebase, it has its
+     own method.
+     */
     public func lostMySelf() {
         errorAndCrash("Lost MySelf")
     }
@@ -261,6 +286,10 @@ public class Logger {
         }
     }
 
+    /**
+     - Note: If the number of arguments to the format string exceeds 10,
+     the logging doesn't work correctly. Can be easily fixed though, if really needed.
+     */
     @available(iOS 10.0, macOS 10.12, tvOS 10.0, watchOS 3.0, *)
     private func osLog(message: StaticString,
                        severity: Severity,
@@ -270,12 +299,20 @@ public class Logger {
                        args: [CVarArg]) {
         let theLog = osLogger as! OSLog
         let theType = severity.osLogType()
+
+        // I haven't found a way of injecting `function` etc. into the original message for
+        // just one call to `os_log`, so the 'position' is logged on a separate line.
         os_log("%@:%d %@:",
                log: theLog,
                type: theType,
                filePath,
                fileLine,
                function)
+
+        // We have to expand the array of arguments into positional ones.
+        // There is no attempt of trying to format the string on our side
+        // in order to make use of `os_log`'s fast 'offline' formatting
+        // (that is, the work is delayed until actual log display).
         switch args.count {
         case 0:
             os_log(message,
