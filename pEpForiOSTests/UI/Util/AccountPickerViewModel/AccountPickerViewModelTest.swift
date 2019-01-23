@@ -43,21 +43,15 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
         let _ = createAndSaveSecondAccount()
         let sndIdx = 1
 
-        let accounts = Account.all()
-        let secondAccount = accounts[sndIdx]
-
-        assertPickerViewModel(accountAt: sndIdx, expected: secondAccount)
+        assertPickerViewModel(accountAt: sndIdx, expected: secondAccount())
     }
 
     func testAccountAt_not1() {
         createAndSaveSecondAccount()
         let testIdx = 1
 
-        let accounts = Account.all()
-        let expectedToNotBeThisAccount = accounts[0]
-
         assertPickerViewModel(accountAt: testIdx,
-                              expected: expectedToNotBeThisAccount,
+                              expected: firstAccount(),
                               shouldFail: true)
     }
 
@@ -83,11 +77,8 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
         let secondRowIdx = 1
         let _ = createAndSaveSecondAccount()
 
-        let accounts = Account.all()
-        let pickedAccount = accounts[secondRowIdx]
-
         assertUserSelection(selectIdx: secondRowIdx,
-                            accountToCompare: pickedAccount,
+                            accountToCompare: secondAccount(),
                             mustEqualSelected: true)
     }
 
@@ -96,11 +87,8 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
         let sndAccountIdx = 1
         let _ = createAndSaveSecondAccount()
 
-        let accounts = Account.all()
-        let notPickedAccount = accounts[sndAccountIdx]
-
         assertUserSelection(selectIdx: firstAccountIdx,
-                            accountToCompare: notPickedAccount,
+                            accountToCompare: secondAccount(),
                             mustEqualSelected: false)
     }
 
@@ -145,6 +133,18 @@ class AccountPickerViewModelTest: CoreDataDrivenTestBase {
         for account in Account.all() {
             account.delete()
         }
+    }
+
+    private func account(at: Int) -> Account {
+        return Account.all()[at]
+    }
+
+    private func firstAccount() -> Account {
+        return account(at: 0)
+    }
+
+    private func secondAccount() -> Account {
+        return account(at: 1)
     }
 }
 
