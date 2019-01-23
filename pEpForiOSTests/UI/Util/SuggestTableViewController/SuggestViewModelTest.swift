@@ -112,15 +112,27 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let numSuggestionsExpected = 2
         let selectRow = 0
         let common = "testUserSelection@oneExists.security"
+
         let existing1 = Identity(address: "\(common)1")
         existing1.save()
+
         let existing2 = Identity(address: "\(common)2")
         existing2.save()
-        existingIdentities = [existing1, existing2]
+
+        // Bring [existing1, existing2] into stored/database order
+        existingIdentities = Identity.all().filter {
+            // Looks like the addresses of stored `Identity`s are lowercased,
+            // whereas our original `existing1` and `existing2` have them mixed-case.
+            // Hence the use of `lowercased`.
+            return $0.address == existing1.address.lowercased() ||
+                $0.address == existing2.address.lowercased()
+        }
+        XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
+
         assertResults(for: common,
                       simulateUserSelectedRow: selectRow,
                       numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existing1,
+                      expectedSelection: existingIdentities[selectRow],
                       didToggleVisibilityMustBeCalled: true,
                       expectedDidToggleVisibilityToValue: true)
     }
