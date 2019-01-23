@@ -95,15 +95,20 @@ class SuggestViewModelTest: CoreDataDrivenTestBase {
         let numSuggestionsExpected = 2
         let selectRow = numSuggestionsExpected - 1
         let common = "testUserSelection@oneExists.security"
+
         let existing1 = Identity(address: "\(common)1")
         existing1.save()
+
         let existing2 = Identity(address: "\(common)2")
         existing2.save()
-        existingIdentities = [existing1, existing2]
+
+        existingIdentities = dataBaseOrder(identities: [existing1, existing2])
+        XCTAssertEqual(existingIdentities.count, numSuggestionsExpected)
+
         assertResults(for: common,
                       simulateUserSelectedRow: selectRow,
                       numExpectedResults: numSuggestionsExpected,
-                      expectedSelection: existing2,
+                      expectedSelection: existingIdentities[selectRow],
                       didToggleVisibilityMustBeCalled: true,
                       expectedDidToggleVisibilityToValue: true)
     }
