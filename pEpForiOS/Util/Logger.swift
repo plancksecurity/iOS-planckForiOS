@@ -227,13 +227,20 @@ public class Logger {
                     filePath: String = #file,
                     fileLine: Int = #line,
                     error: Error) {
+        // Error is not supported by "%@", because it doesn't conform to CVArg
+        // and CVArg is only meant for internal types.
+        // An alternative would be to use localizedDescription(),
+        // but if they are indeed localized you end up with international
+        // log messages.
+        // So we wrap it into an NSError which does suppord CVArg.
+        let nsErr = NSError(domain: subsystem, code: 0, userInfo: [NSUnderlyingErrorKey: error])
+
         saveLog(message: "%{public}@",
                 severity: .default,
                 function: function,
                 filePath: filePath,
                 fileLine: fileLine,
-                // TODO: Find a better way than localizedDescription
-                args: [error.localizedDescription])
+                args: [nsErr])
     }
 
     /**
