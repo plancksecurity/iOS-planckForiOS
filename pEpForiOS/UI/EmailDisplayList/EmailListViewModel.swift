@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import pEpUtilities
 import MessageModel
 
 protocol EmailListViewModelDelegate: TableViewUpdate {
