@@ -9,13 +9,13 @@
 import UIKit
 
 extension UIColor {
-    static let pEpGreenHex = "#03AA4B"
-    static let pEpDarkGreenHex = "#1AAA50"
-    static let pEpRedHex = "#FF3B30"
-    static let pEpGreyHex = "#8e8e93"
-    static let pEpYellowHex = "#FFCC00"
-    static let pEpLightBackgroundHex = "#F2F2F2"
-    static let pEpNavigationBarColor = "#f7f7f7"
+    public static let pEpGreenHex = "#03AA4B"
+    public static let pEpDarkGreenHex = "#1AAA50"
+    public static let pEpRedHex = "#FF3B30"
+    public static let pEpGreyHex = "#8e8e93"
+    public static let pEpYellowHex = "#FFCC00"
+    public static let pEpLightBackgroundHex = "#F2F2F2"
+    public static let pEpNavigationBarColor = "#f7f7f7"
 
     public static var pEpGreen = UIColor(hexString: pEpGreenHex)
     public static var pEpDarkGreen = UIColor(hexString: pEpDarkGreenHex)
@@ -29,14 +29,14 @@ extension UIColor {
      */
     public static var pEpLightBackground = UIColor(hexString: pEpLightBackgroundHex)
 
-    convenience init(redInt: Int, greenInt: Int, blueInt: Int, alpha: CGFloat = 1.0) {
+    public convenience init(redInt: Int, greenInt: Int, blueInt: Int, alpha: CGFloat = 1.0) {
         self.init(red: CGFloat(redInt) / 255.0,
                   green: CGFloat(greenInt) / 255.0,
                   blue: CGFloat(blueInt) / 255.0,
                   alpha: alpha)
     }
 
-    convenience init(hexString: String, alpha: CGFloat = 1.0) {
+    public convenience init(hexString: String, alpha: CGFloat = 1.0) {
         var theHexString = hexString
         if theHexString.hasPrefix("#") {
             theHexString = String(theHexString.dropFirst())
@@ -52,7 +52,7 @@ extension UIColor {
         self.init(red: r, green: g, blue: b, alpha: alpha)
     }
 
-    convenience init(intValue32: Int, alpha: CGFloat = 1.0) {
+    public convenience init(intValue32: Int, alpha: CGFloat = 1.0) {
         self.init(
             red: CGFloat((intValue32 & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((intValue32 & 0x00FF00) >> 8) / 255.0,

@@ -9,7 +9,7 @@
 import UIKit
 
 extension UITextField {
-    func convertToLoginField(placeholder: String, delegate: UITextFieldDelegate) {
+    public func convertToLoginField(placeholder: String, delegate: UITextFieldDelegate) {
         // common properties
         self.delegate = delegate
         self.placeholder = placeholder
@@ -22,20 +22,20 @@ extension UITextField {
         }
     }
 
-    func disableLoginField() {
+    public func disableLoginField() {
         enableOrDisableLoginField(enable: false)
     }
 
-    func enableLoginField() {
+    public func enableLoginField() {
         enableOrDisableLoginField(enable: true)
     }
 
-    func enableOrDisableLoginField(enable: Bool) {
+    public func enableOrDisableLoginField(enable: Bool) {
         let theColor = enable ? UIColor.white : UIColor.gray
         self.textColor = theColor
         if let ph = placeholder {
             self.attributedPlaceholder = NSAttributedString(
-                string: ph, attributes: [NSAttributedStringKey.foregroundColor: theColor])
+                string: ph, attributes: [NSAttributedString.Key.foregroundColor: theColor])
         }
     }
 }
