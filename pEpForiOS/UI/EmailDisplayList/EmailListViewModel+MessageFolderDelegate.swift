@@ -15,7 +15,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     // MARK: - MessageFolderDelegate (public)
 
     func didCreate(messageFolder: MessageFolder) {
-        messageFolderDelegateHandlingQueue.async { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
@@ -25,7 +25,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
 
     func didUpdate(messageFolder: MessageFolder) {
-        messageFolderDelegateHandlingQueue.async { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
@@ -35,7 +35,7 @@ extension EmailListViewModel: MessageFolderDelegate {
     }
 
     func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
-        messageFolderDelegateHandlingQueue.async { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
@@ -102,68 +102,66 @@ extension EmailListViewModel: MessageFolderDelegate {
         let referencedIndices = threadedMessageFolder.referenced(
             messageIdentifiers: messages.array(), message: message)
 
-        DispatchQueue.main.sync { [weak self] in
-            if let theSelf = self {
-                func insertAsTopMessage() {
-                    if !theSelf.isInFolderToShow(message: message){
-                        return
-                    }
-                    let index = theSelf.messages.insert(object: previewMessage)
-                    let indexPath = IndexPath(row: index, section: 0)
-                    theSelf.emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf, didInsertDataAt: [indexPath])
-                }
+        let theSelf = self
 
-                if referencedIndices.isEmpty && messagePassedFilter {
-                    insertAsTopMessage()
+        func insertAsTopMessage() {
+            if !theSelf.isInFolderToShow(message: message){
+                return
+            }
+            let index = theSelf.messages.insert(object: previewMessage)
+            let indexPath = IndexPath(row: index, section: 0)
+            theSelf.emailListViewModelDelegate?.emailListViewModel(
+                viewModel: theSelf, didInsertDataAt: [indexPath])
+        }
+
+        if referencedIndices.isEmpty && messagePassedFilter {
+            insertAsTopMessage()
+        } else {
+            var isReferencingDisplayedThread = false
+
+            if let currentlyDisplayedIndex =
+                theSelf.currentlyDisplayedIndex(of: referencedIndices) {
+                isReferencingDisplayedThread = true
+
+                if theSelf.isShowingSingleMessage() {
+                    // switch from single to thread
+                    if let theMessageViewModel =
+                        theSelf.messages[safe: currentlyDisplayedIndex],
+                        let theMsg = theMessageViewModel.message() {
+                        theSelf.screenComposer?.emailListViewModel(
+                            theSelf,
+                            requestsShowThreadViewFor: theMsg)
+                    }
                 } else {
-                    var isReferencingDisplayedThread = false
+                    // add the new message to the existing thread view
+                    theSelf.updateThreadListDelegate?.added(message: message)
+                }
+            }
 
-                    if let currentlyDisplayedIndex =
-                        theSelf.currentlyDisplayedIndex(of: referencedIndices) {
-                        isReferencingDisplayedThread = true
+            if let index = referencedIndices.first {
+                if messagePassedFilter {
+                    theSelf.messages.removeObject(at: index)
+                    let newIndex = theSelf.messages.insert(object: previewMessage)
 
-                        if theSelf.isShowingSingleMessage() {
-                            // switch from single to thread
-                            if let theMessageViewModel =
-                                theSelf.messages[safe: currentlyDisplayedIndex],
-                                let theMsg = theMessageViewModel.message() {
-                                theSelf.screenComposer?.emailListViewModel(
-                                    theSelf,
-                                    requestsShowThreadViewFor: theMsg)
-                            }
-                        } else {
-                            // add the new message to the existing thread view
-                            theSelf.updateThreadListDelegate?.added(message: message)
-                        }
+                    if newIndex != index {
+                        theSelf.emailListViewModelDelegate?.emailListViewModel(
+                            viewModel: theSelf,
+                            didMoveData: IndexPath(row: index, section: 0),
+                            toIndexPath: IndexPath(row: newIndex, section: 0))
                     }
 
-                    if let index = referencedIndices.first {
-                        if messagePassedFilter {
-                            theSelf.messages.removeObject(at: index)
-                            let newIndex = theSelf.messages.insert(object: previewMessage)
+                    theSelf.emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theSelf,
+                        didUpdateDataAt: [IndexPath(row: newIndex, section: 0)])
 
-                            if newIndex != index {
-                                theSelf.emailListViewModelDelegate?.emailListViewModel(
-                                    viewModel: theSelf,
-                                    didMoveData: IndexPath(row: index, section: 0),
-                                    toIndexPath: IndexPath(row: newIndex, section: 0))
-                            }
-
-                            theSelf.emailListViewModelDelegate?.emailListViewModel(
-                                viewModel: theSelf,
-                                didUpdateDataAt: [IndexPath(row: newIndex, section: 0)])
-
-                            if isReferencingDisplayedThread {
-                                theSelf.updateThreadListDelegate?.tipDidChange(to: message)
-                            }
-                        } else {
-                            theSelf.incThreadCount(at: index)
-                            theSelf.emailListViewModelDelegate?.emailListViewModel(
-                                viewModel: theSelf,
-                                didUpdateDataAt: [IndexPath(row: index, section: 0)])
-                        }
+                    if isReferencingDisplayedThread {
+                        theSelf.updateThreadListDelegate?.tipDidChange(to: message)
                     }
+                } else {
+                    theSelf.incThreadCount(at: index)
+                    theSelf.emailListViewModelDelegate?.emailListViewModel(
+                        viewModel: theSelf,
+                        didUpdateDataAt: [IndexPath(row: index, section: 0)])
                 }
             }
         }
@@ -247,21 +245,14 @@ extension EmailListViewModel: MessageFolderDelegate {
                 }
             }
 
-            DispatchQueue.main.sync { [weak self] in
-                if let theSelf = self {
-                    notifyUI(theModel: theSelf)
-                }
-            }
+            notifyUI(theModel: self)
         } else {
-            DispatchQueue.main.sync { [weak self] in
-                if let theSelf = self {
-                    theSelf.messages.removeObject(at: indexExisting)
-                    let indexPath = IndexPath(row: indexExisting, section: 0)
-                    emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf,
-                        didRemoveDataAt: [indexPath])
-                }
-            }
+            let theSelf = self
+            theSelf.messages.removeObject(at: indexExisting)
+            let indexPath = IndexPath(row: indexExisting, section: 0)
+            emailListViewModelDelegate?.emailListViewModel(
+                viewModel: theSelf,
+                didRemoveDataAt: [indexPath])
         }
     }
 
@@ -269,28 +260,25 @@ extension EmailListViewModel: MessageFolderDelegate {
                                    belongingToThread: Set<MessageID>) {
         let referencedIndices = threadedMessageFolder.referenced(
             messageIdentifiers: messages.array(), belongingToThread: belongingToThread)
+
+        let theSelf = self
+
         if !referencedIndices.isEmpty {
-            DispatchQueue.main.sync { [weak self] in
-                guard let theSelf = self else {
-                    return
+            if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedIndices) {
+                theSelf.updateThreadListDelegate?.deleted(message: notTopMessage)
+            }
+
+            if let index = referencedIndices.first {
+                // The thread count might need to be updated
+
+                if let topMessage = theSelf.messages[safe: index]?.message() {
+                    theSelf.messages.replaceObject(at: index, with: MessageViewModel(with: topMessage))
+                    requestEmailViewIfNeeded(for: topMessage)
                 }
 
-                if theSelf.isCurrentlyDisplayingDetailsOf(oneOf: referencedIndices) {
-                    theSelf.updateThreadListDelegate?.deleted(message: notTopMessage)
-                }
-
-                if let index = referencedIndices.first {
-                    // The thread count might need to be updated
-
-                    if let topMessage = theSelf.messages[safe: index]?.message() {
-                        theSelf.messages.replaceObject(at: index, with: MessageViewModel(with: topMessage))
-                        requestEmailViewIfNeeded(for: topMessage)
-                    }
-
-                    theSelf.emailListViewModelDelegate?.emailListViewModel(
-                        viewModel: theSelf,
-                        didUpdateDataAt: [IndexPath(row: index, section: 0)])
-                }
+                theSelf.emailListViewModelDelegate?.emailListViewModel(
+                    viewModel: theSelf,
+                    didUpdateDataAt: [IndexPath(row: index, section: 0)])
             }
         }
     }
@@ -372,38 +360,33 @@ extension EmailListViewModel: MessageFolderDelegate {
     private func update(topMessage: Message,
                         previewMessage: MessageViewModel,
                         atIndex indexExisting: Int) {
-        DispatchQueue.main.sync { [weak self] in
-            guard let me = self else {
-                // Assumtion taken over from original implementaion: It's ok here.
-                return
-            }
-            me.messages.removeObject(at: indexExisting)
+        let me = self
+        me.messages.removeObject(at: indexExisting)
 
-            if let filter = me.folderToShow.filter,
-                !filter.fulfillsFilter(message: topMessage) {
-                // The message was included in the model,
-                // but does not fulfil the filter criteria
-                // anymore after it has been updated.
-                // Remove it.
-                let indexPath = IndexPath(row: indexExisting, section: 0)
-                me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                                  didRemoveDataAt: [indexPath])
-                return
-            }
-            // The updated message has to be shown. Add it to the model ...
-            let indexInserted = me.messages.insert(object: previewMessage)
-            if indexExisting != indexInserted {
-                Logger.frontendLogger.warn(
-                    "When updating a message, the the new index of the message must be the same as the old index. Something is fishy here."
-                )
-            }
-            // ...  and inform the delegate.
-            let indexPath = IndexPath(row: indexInserted, section: 0)
+        if let filter = me.folderToShow.filter,
+            !filter.fulfillsFilter(message: topMessage) {
+            // The message was included in the model,
+            // but does not fulfil the filter criteria
+            // anymore after it has been updated.
+            // Remove it.
+            let indexPath = IndexPath(row: indexExisting, section: 0)
             me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
-                                                              didUpdateDataAt: [indexPath])
-            if me.currentDisplayedMessage?.messageModel == topMessage {
-                me.currentDisplayedMessage?.update(forMessage: topMessage)
-            }
+                                                              didRemoveDataAt: [indexPath])
+            return
+        }
+        // The updated message has to be shown. Add it to the model ...
+        let indexInserted = me.messages.insert(object: previewMessage)
+        if indexExisting != indexInserted {
+            Logger.frontendLogger.warn(
+                "When updating a message, the the new index of the message must be the same as the old index. Something is fishy here."
+            )
+        }
+        // ...  and inform the delegate.
+        let indexPath = IndexPath(row: indexInserted, section: 0)
+        me.emailListViewModelDelegate?.emailListViewModel(viewModel: me,
+                                                          didUpdateDataAt: [indexPath])
+        if me.currentDisplayedMessage?.messageModel == topMessage {
+            me.currentDisplayedMessage?.update(forMessage: topMessage)
         }
     }
 

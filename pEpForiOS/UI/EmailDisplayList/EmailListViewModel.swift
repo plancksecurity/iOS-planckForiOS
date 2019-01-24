@@ -34,8 +34,6 @@ extension EmailListViewModel: FilterUpdateProtocol {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel {
-    let messageFolderDelegateHandlingQueue = DispatchQueue(label:
-        "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
     let messageSyncService: MessageSyncServiceProtocol
     internal var messages: SortedSet<MessageViewModel>
