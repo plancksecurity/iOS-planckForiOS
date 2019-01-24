@@ -212,15 +212,11 @@ extension EmailListViewModel: MessageFolderDelegate {
             }
 
             if let replacementMessage = aReplacementMessage {
-                DispatchQueue.main.sync { [weak self] in
-                    self?.messages.replaceObject(
-                        at: indexExisting,
-                        with: MessageViewModel(with: replacementMessage))
-                }
+                self.messages.replaceObject(
+                    at: indexExisting,
+                    with: MessageViewModel(with: replacementMessage))
             } else {
-                DispatchQueue.main.sync { [weak self] in
-                        self?.messages.removeObject(at: indexExisting)
-                }
+                self.messages.removeObject(at: indexExisting)
             }
 
             func notifyUI(theModel: EmailListViewModel) {
