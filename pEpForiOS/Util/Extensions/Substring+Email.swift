@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpUtilities
 
 /**
  Methods for detecting parts of an email.

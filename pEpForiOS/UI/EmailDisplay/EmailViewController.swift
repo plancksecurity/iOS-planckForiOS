@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import pEpUtilities
 import QuickLook
 
 import MessageModel

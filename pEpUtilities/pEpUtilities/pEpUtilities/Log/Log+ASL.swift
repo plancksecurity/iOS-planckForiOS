@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import asl
 
 class ASLLogger: ActualLoggerProtocol {
     func saveLog(severity: LoggingSeverity,

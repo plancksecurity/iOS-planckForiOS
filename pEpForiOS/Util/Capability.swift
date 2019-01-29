@@ -8,6 +8,7 @@
 import Foundation
 import Contacts
 import Photos
+import pEpUtilities
 
 
 public struct Capability {

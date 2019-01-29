@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 /// Informs the one that triggered the segued to here.
 protocol ComposeViewModelResultDelegate: class {

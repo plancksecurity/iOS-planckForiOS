@@ -426,4 +426,9 @@ extension String {
 
         return String(newChars)
     }
+
+    public func wholeRange() -> NSRange {
+        return NSRange(location: 0, length: count)
+    }
+
 }

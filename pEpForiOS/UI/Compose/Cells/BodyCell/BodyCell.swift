@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpUtilities
 
 class BodyCell: TextViewContainingTableViewCell {
     static let reuseId = "BodyCell"

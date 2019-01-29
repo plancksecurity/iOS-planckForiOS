@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import pEpUtilities
 import MessageModel
 
 class SMTPSettingsTableViewController: BaseTableViewController, TextfieldResponder {

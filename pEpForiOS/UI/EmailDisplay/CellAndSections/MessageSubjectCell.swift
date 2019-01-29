@@ -7,6 +7,7 @@
 
 import UIKit
 import MessageModel
+import pEpUtilities
 
 open class MessageSubjectCell: MessageCell {
     public override func updateCell(model: ComposeFieldModel, message: Message) {

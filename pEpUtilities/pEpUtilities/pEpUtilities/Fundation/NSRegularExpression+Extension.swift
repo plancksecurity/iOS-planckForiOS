@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NSRegularExpression {
+public extension NSRegularExpression {
     /**
      Does the first match cover the whole string?
      */
