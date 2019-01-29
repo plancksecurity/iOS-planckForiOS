@@ -91,13 +91,7 @@ extension Message {
         guard ratingIsOkToShowAttachments else {
             return []
         }
-        let viewable = attachments.filter() { return $0.isViewable() }
-        let parentMessageAssured = viewable.map { attachment -> (Attachment) in
-            attachment.message = self
-            return attachment
-        }
-        
-        return parentMessageAssured
+        return attachments.filter() { return $0.isViewable() }
     }
 
     private var ratingIsOkToShowAttachments: Bool {

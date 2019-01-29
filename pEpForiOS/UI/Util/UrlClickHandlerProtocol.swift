@@ -31,7 +31,7 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
         }
     }
     /// View controller to act on.
-    private var actor: UIViewController
+    private weak var actor: UIViewController?
     private let appConfig: AppConfig
 
     required init(actor: UIViewController, appConfig: AppConfig) {
@@ -40,15 +40,19 @@ class UrlClickHandler: NSObject, UrlClickHandlerProtocol {
     }
 
     private func presentComposeView(forRecipientInUrl url: URL) {
-        UIUtils.presentComposeView(forRecipientInUrl: url, on: actor, appConfig: appConfig)
+        if let theActor = actor {
+            UIUtils.presentComposeView(forRecipientInUrl: url, on: theActor, appConfig: appConfig)
+        }
     }
 
     private func presentAvailableMailtoUrlHandlingChoices(for url: URL, at rect: CGRect, at view: UIView) {
-        UIUtils.presentActionSheetWithContactOptions(forUrl: url,
-                                                     on: actor,
-                                                     at: rect,
-                                                     at: view,
-                                                     appConfig: appConfig)
+        if let theActor = actor {
+            UIUtils.presentActionSheetWithContactOptions(forUrl: url,
+                                                         on: theActor,
+                                                         at: rect,
+                                                         at: view,
+                                                         appConfig: appConfig)
+        }
     }
 
     // MARK: - UITextViewDelegate
