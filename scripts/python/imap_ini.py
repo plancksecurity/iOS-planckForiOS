@@ -20,6 +20,12 @@ def connect_account(ini, account_name):
     password = data.get('password')
     port = data.get('port') or 993
     print('connecting to host: {}, port: {}'.format(hostname, port))
-    con = imaplib.IMAP4_SSL(hostname, port=port)
+    tls = data.get('tls') or 'yes'
+    con = None
+    theTls = tls.lower()
+    if theTls == 'yes' or theTls == 'true':
+        con = imaplib.IMAP4_SSL(hostname, port=port)
+    else:
+        con = imaplib.IMAP4(hostname, port=port)
     con.login(username, password)
     return con
