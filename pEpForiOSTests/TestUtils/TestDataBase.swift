@@ -16,10 +16,12 @@ class TestDataBase {
         var accountName: String?
         var idAddress: String
         var idUserName: String?
+        var smtpLoginName: String?
         var smtpServerAddress: String?
         var smtpServerType: Server.ServerType = .smtp
         var smtpServerTransport: Server.Transport = .tls
         var smtpServerPort: UInt16 = 587
+        var imapLoginName: String?
         var imapServerAddress: String?
         var imapServerType: Server.ServerType = .imap
         var imapServerTransport: Server.Transport = .startTls
@@ -38,10 +40,12 @@ class TestDataBase {
         init(accountName: String,
              idAddress: String,
              idUserName: String,
+             imapLoginName: String? = nil,
              imapServerAddress: String,
              imapServerType: Server.ServerType,
              imapServerTransport: Server.Transport,
              imapServerPort: UInt16,
+             smtpLoginName: String? = nil,
              smtpServerAddress: String,
              smtpServerType: Server.ServerType,
              smtpServerTransport: Server.Transport,
@@ -50,10 +54,12 @@ class TestDataBase {
             self.accountName = accountName
             self.idAddress = idAddress
             self.idUserName = idUserName
+            self.smtpLoginName = smtpLoginName
             self.smtpServerAddress = smtpServerAddress
             self.smtpServerType = smtpServerType
             self.smtpServerTransport = smtpServerTransport
             self.smtpServerPort = smtpServerPort
+            self.imapLoginName = imapLoginName
             self.imapServerAddress = imapServerAddress
             self.imapServerType = imapServerType
             self.imapServerTransport = imapServerTransport
@@ -79,7 +85,7 @@ class TestDataBase {
             let keySmtp = MessageID.generate()
             CdServerCredentials.add(password: password, forKey: keySmtp)
             let credSmtp = CdServerCredentials.create()
-            credSmtp.loginName = id.address
+            credSmtp.loginName = smtpLoginName ?? id.address
             credSmtp.key = keySmtp
             smtp.credentials = credSmtp
 
@@ -95,7 +101,7 @@ class TestDataBase {
             let keyImap = MessageID.generate()
             CdServerCredentials.add(password: password, forKey: keyImap)
             let credImap = CdServerCredentials.create()
-            credImap.loginName = id.address
+            credImap.loginName = imapLoginName ?? id.address
             credImap.key = keyImap
             imap.credentials = credImap
 
