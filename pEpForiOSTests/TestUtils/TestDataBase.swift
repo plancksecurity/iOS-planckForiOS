@@ -154,12 +154,18 @@ class TestDataBase {
     }
 
     private var testAccounts = [AccountSettings]()
+    private var verifiableTestAccounts = [AccountSettings]()
 
     func append(accountSettings: AccountSettings) {
         testAccounts.append(accountSettings)
     }
 
+    func append(verifiableAccountSettings: AccountSettings) {
+        verifiableTestAccounts.append(verifiableAccountSettings)
+    }
+
     /**
+     Add IMAP/SMTP accounts that are used for testing.
      - Note:
        * Add actual test accounts in SecretTestData.
        * The first 2 accounts play in tandem for some tests.
@@ -169,6 +175,31 @@ class TestDataBase {
     func populateAccounts() {
         // Some sample code, use this in your own implementation.
         append(accountSettings: AccountSettings(
+            accountName: "Whatever_you_want",
+            idAddress: "whatever_you_want@yahoo.com",
+            idUserName: "whatever_you_want@yahoo.com",
+
+            imapServerAddress: "imap.mail.yahoo.com",
+            imapServerType: Server.ServerType.imap,
+            imapServerTransport: Server.Transport.tls,
+            imapServerPort: 993,
+
+            smtpServerAddress: "smtp.mail.yahoo.com",
+            smtpServerType: Server.ServerType.smtp,
+            smtpServerTransport: Server.Transport.tls,
+            smtpServerPort: 465,
+
+            password: "whatever_you_want"))
+
+        fatalError("Abstract method. Must be overridden")
+    }
+
+    /**
+     Accounts needed for testing LAS, that is they need to be registered
+     in the LAS DB or provide (correct) DNS SRV for IMAP and SMTP.
+     */
+    func populateVerifiableAccounts() {
+        append(verifiableAccountSettings: AccountSettings(
             accountName: "Whatever_you_want",
             idAddress: "whatever_you_want@yahoo.com",
             idUserName: "whatever_you_want@yahoo.com",
@@ -199,6 +230,16 @@ class TestDataBase {
     }
 
     /**
+     - Returns: A valid `CdAccount`.
+     */
+    func createVerifiableCdAccount(number: Int = 0) -> CdAccount {
+        let result = createVerifiableAccountSettings(number: number).cdAccount()
+        // The identity of an account is mySelf by definion.
+        result.identity?.userID = CdIdentity.pEpOwnUserID
+        return result
+    }
+
+    /**
      - Returns: A valid `CdIdentity` without parent account.
      */
     func createWorkingCdIdentity(number: Int = 0, isMyself: Bool = false) -> CdIdentity {
@@ -223,11 +264,23 @@ class TestDataBase {
         return testAccounts[number]
     }
 
+    func createVerifiableAccountSettings(number: Int = 0) -> AccountSettings {
+        populateVerifiableAccounts()
+        return verifiableTestAccounts[number]
+    }
+
     /**
      - Returns: A valid `Account`.
      */
     func createWorkingAccount(number: Int = 0) -> Account {
         return createWorkingAccountSettings(number: number).account()
+    }
+
+    /**
+     - Returns: A valid `Account`.
+     */
+    func createVerifiableAccount(number: Int = 0) -> Account {
+        return createVerifiableAccountSettings(number: number).account()
     }
 
     /**
