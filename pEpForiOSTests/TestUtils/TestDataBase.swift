@@ -296,7 +296,7 @@ class TestDataBase {
      */
     func createSmtpTimeOutAccountSettings() -> AccountSettings {
         populateAccounts()
-        var accountSettings = createWorkingAccountSettings(number: 0)
+        var accountSettings = createVerifiableAccountSettings(number: 0)
         accountSettings.smtpServerAddress = "localhost"
         accountSettings.smtpServerPort = 2323
         return accountSettings
