@@ -40,7 +40,7 @@ class AccountVerificationServiceTests: XCTestCase {
     }
 
     func testDirectlySuccess() {
-        testVerification(account: SecretTestData().createWorkingAccount(),
+        testVerification(account: SecretTestData().createVerifiableAccount(),
                          expectedResult: AccountVerificationResult.ok,
                          testDirectly: true)
     }
