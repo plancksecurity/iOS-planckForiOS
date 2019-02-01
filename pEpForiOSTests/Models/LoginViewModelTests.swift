@@ -64,7 +64,7 @@ class LoginViewModelTests: CoreDataDrivenTestBase {
     /// Otherwize the test always succeeds.
     func testBasic() {
         let td = SecretTestData()
-        let accountSettings = td.createWorkingAccountSettings()
+        let accountSettings = td.createVerifiableAccountSettings()
         guard let passw = accountSettings.password else {
             XCTFail("expecting password for account")
             return
