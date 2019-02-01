@@ -161,8 +161,10 @@ class TestDataBase {
 
     /**
      - Note:
-       * Add test accounts in TestData.swift only!).
+       * Add actual test accounts in SecretTestData.
        * The first 2 accounts play in tandem for some tests.
+       * Some tests send emails to unittest.ios.1@peptest.ch,
+         this account has to exist but there's no need to query it.
      */
     func populateAccounts() {
         // Some sample code, use this in your own implementation.
