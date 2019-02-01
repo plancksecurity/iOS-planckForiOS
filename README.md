@@ -63,6 +63,9 @@ hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
 //Temp hot fix
 cd ~/ldns
 git checkout IOS-749
+cd ..
+cd ~/SwipeCellKit
+git checkout master
 ```
 
 ### Build Project
