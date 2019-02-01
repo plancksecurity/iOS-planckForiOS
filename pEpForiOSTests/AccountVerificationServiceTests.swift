@@ -62,7 +62,7 @@ class AccountVerificationServiceTests: XCTestCase {
     }
 
     func testMessageSyncServiceSuccess() {
-        testVerification(account: SecretTestData().createWorkingAccount(),
+        testVerification(account: SecretTestData().createVerifiableAccount(),
                          expectedResult: AccountVerificationResult.ok,
                          testDirectly: false)
     }
