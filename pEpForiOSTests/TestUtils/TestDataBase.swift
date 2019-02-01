@@ -71,6 +71,7 @@ class TestDataBase {
             let id = CdIdentity.create()
             id.address = idAddress
             id.userName = idUserName
+            id.userID = CdIdentity.pEpOwnUserID
 
             let acc = CdAccount.create()
             acc.identity = id
