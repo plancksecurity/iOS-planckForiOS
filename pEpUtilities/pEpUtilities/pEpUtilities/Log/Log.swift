@@ -94,10 +94,10 @@ protocol ActualLoggerProtocol {
         Log.shared.saveLog(severity:.error,
                            entity: component, description: errorString, comment: "error")
     }
-
+    //TODO: comentario a elimiar
     public static func log(comp: String, mySelf: AnyObject, functionName: String) {
         let selfDesc = unsafeBitCast(mySelf, to: UnsafeRawPointer.self)
-        Log.shared.info(component: comp, content: "\(functionName): \(selfDesc)")
+        //Log.shared.info(component: comp, content: "\(functionName): \(selfDesc)")
     }
 
     public func resume() {
@@ -140,85 +140,5 @@ protocol ActualLoggerProtocol {
                                    description: description,
                                    comment: comment)
         }
-    }
-}
-
-extension Log: MessageModelLogging {
-    public func verbose(component: String, content: String) {
-        Log.verbose(component: component, content: content)
-    }
-
-    public func info(component: String, content: String) {
-        Log.info(component: component, content: content)
-    }
-
-    public func warn(component: String, content: String) {
-        Log.warn(component: component, content: content)
-    }
-
-    public func error(component: String, error: Error) {
-        Log.error(component: component, error: error)
-    }
-
-    public func error(component: String, errorString: String, error: Error) {
-        Log.error(component: component, errorString: errorString, error: error)
-    }
-
-    public func error(component: String, errorString: String) {
-        Log.error(component: component, errorString: errorString)
-    }
-
-    /// Logs component and error.
-    ///
-    /// - note: If (and only if) in DEBUG configuration, it also calls fatalError().
-    ///
-    /// - Parameters:
-    ///   - component: caller information to log
-    ///   - error: error to log
-    public func errorAndCrash(component: String, error: Error) {
-        Log.error(component: component, error: error)
-        SystemUtils.crash("ERROR \(component): \(error.localizedDescription)")
-    }
-
-    /// Logs component and error.
-    ///
-    /// - note: If (and only if) in DEBUG configuration, it also calls fatalError().
-    ///
-    /// - Parameters:
-    ///   - component: caller information to log
-    ///   - errorString: error information to log
-    ///   - error: error to log
-    public func errorAndCrash(component: String, errorString: String, error: Error) {
-        Log.error(component: component, errorString: errorString, error: error)
-        SystemUtils.crash("ERROR \(component): \(errorString): \(error.localizedDescription)")
-    }
-
-    /// Logs component and error.
-    ///
-    /// - note: If (and only if) in DEBUG configuration, it also calls fatalError().
-    ///
-    /// - Parameters:
-    ///   - component: caller information to log
-    ///   - errorString: error information to log
-    public func errorAndCrash(component: String, errorString: String) {
-        Log.error(component: component, errorString: errorString)
-        SystemUtils.crash("ERROR \(component): \(errorString)")
-    }
-}
-//TODO: still in progress
-
-
- 
-extension Log: CWLogging {
-    @objc open func infoComponent(_ component: String, message: String) {
-        Log.info(component: component, content: message)
-    }
-
-    @objc open func warnComponent(_ component: String, message: String) {
-        Log.warn(component: component, content: message)
-    }
-
-    @objc open func errorComponent(_ component: String, message: String) {
-        Log.error(component: component, errorString: message)
     }
 }
