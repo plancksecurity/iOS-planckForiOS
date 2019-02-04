@@ -37,12 +37,6 @@ class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
     let messageSyncService: MessageSyncServiceProtocol
     internal var messages: SortedSet<MessageViewModel>
-    private let queue: OperationQueue = {
-        let createe = OperationQueue()
-        createe.qualityOfService = .userInitiated
-        createe.maxConcurrentOperationCount = 1
-        return createe
-    }()
 
     var lastSearchTerm = ""
 
@@ -131,31 +125,15 @@ class EmailListViewModel {
         // Ignore MessageModelConfig.messageFolderDelegate while reloading.
         self.stopListeningToChanges()
 
-        queue.cancelAllOperations()
-        let op = BlockOperation()
-        weak var weakOp = op
-        op.addExecutionBlock { [weak self] in
-            guard
-                let me = self,
-                let op = weakOp,
-                !op.isCancelled else {
-                return
-            }
-            let messagesToDisplay = me.folderToShow.allMessages()
-            let previewMessages = messagesToDisplay.map {
-                MessageViewModel(with: $0)
-            }
-            let sortedMessages = SortedSet(array: previewMessages, sortBlock: me.sortByDateSentAscending)
-            if op.isCancelled {
-                return
-            }
-            DispatchQueue.main.sync {
-                me.messages = sortedMessages
-                me.emailListViewModelDelegate?.updateView()
-                me.startListeningToChanges()
-            }
+        let messagesToDisplay = self.folderToShow.allMessages()
+        let previewMessages = messagesToDisplay.map {
+            MessageViewModel(with: $0)
         }
-        queue.addOperation(op)
+        let sortedMessages = SortedSet(array: previewMessages,
+                                       sortBlock: self.sortByDateSentAscending)
+        self.messages = sortedMessages
+        self.emailListViewModelDelegate?.updateView()
+        self.startListeningToChanges()
     }
 
     // MARK: - Public Data Access & Manipulation
