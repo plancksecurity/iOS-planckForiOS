@@ -19,7 +19,7 @@ def process(credentials, account_name):
     con = connect_account(credentials, account_name)
     status, _ = con.select()
     if status == 'OK':
-        status, data = con.uid('fetch', '1:*', '(UID, FLAGS)')
+        status, data = con.uid('fetch', '1:*', '(FLAGS)')
         if status == 'OK':
             pprint(data)
 

@@ -16,10 +16,12 @@ class TestDataBase {
         var accountName: String?
         var idAddress: String
         var idUserName: String?
+        var smtpLoginName: String?
         var smtpServerAddress: String?
         var smtpServerType: Server.ServerType = .smtp
         var smtpServerTransport: Server.Transport = .tls
         var smtpServerPort: UInt16 = 587
+        var imapLoginName: String?
         var imapServerAddress: String?
         var imapServerType: Server.ServerType = .imap
         var imapServerTransport: Server.Transport = .startTls
@@ -38,10 +40,12 @@ class TestDataBase {
         init(accountName: String,
              idAddress: String,
              idUserName: String,
+             imapLoginName: String? = nil,
              imapServerAddress: String,
              imapServerType: Server.ServerType,
              imapServerTransport: Server.Transport,
              imapServerPort: UInt16,
+             smtpLoginName: String? = nil,
              smtpServerAddress: String,
              smtpServerType: Server.ServerType,
              smtpServerTransport: Server.Transport,
@@ -50,10 +54,12 @@ class TestDataBase {
             self.accountName = accountName
             self.idAddress = idAddress
             self.idUserName = idUserName
+            self.smtpLoginName = smtpLoginName
             self.smtpServerAddress = smtpServerAddress
             self.smtpServerType = smtpServerType
             self.smtpServerTransport = smtpServerTransport
             self.smtpServerPort = smtpServerPort
+            self.imapLoginName = imapLoginName
             self.imapServerAddress = imapServerAddress
             self.imapServerType = imapServerType
             self.imapServerTransport = imapServerTransport
@@ -65,6 +71,7 @@ class TestDataBase {
             let id = CdIdentity.create()
             id.address = idAddress
             id.userName = idUserName
+            id.userID = CdIdentity.pEpOwnUserID
 
             let acc = CdAccount.create()
             acc.identity = id
@@ -79,7 +86,7 @@ class TestDataBase {
             let keySmtp = MessageID.generate()
             CdServerCredentials.add(password: password, forKey: keySmtp)
             let credSmtp = CdServerCredentials.create()
-            credSmtp.loginName = id.address
+            credSmtp.loginName = smtpLoginName ?? id.address
             credSmtp.key = keySmtp
             smtp.credentials = credSmtp
 
@@ -95,7 +102,7 @@ class TestDataBase {
             let keyImap = MessageID.generate()
             CdServerCredentials.add(password: password, forKey: keyImap)
             let credImap = CdServerCredentials.create()
-            credImap.loginName = id.address
+            credImap.loginName = imapLoginName ?? id.address
             credImap.key = keyImap
             imap.credentials = credImap
 
@@ -148,19 +155,52 @@ class TestDataBase {
     }
 
     private var testAccounts = [AccountSettings]()
+    private var verifiableTestAccounts = [AccountSettings]()
 
     func append(accountSettings: AccountSettings) {
         testAccounts.append(accountSettings)
     }
 
+    func append(verifiableAccountSettings: AccountSettings) {
+        verifiableTestAccounts.append(verifiableAccountSettings)
+    }
+
     /**
+     Add IMAP/SMTP accounts that are used for testing.
      - Note:
-       * Add test accounts in TestData.swift only!).
+       * Add actual test accounts in SecretTestData.
        * The first 2 accounts play in tandem for some tests.
+       * Some tests send emails to unittest.ios.1@peptest.ch,
+         this account has to exist but there's no need to query it.
      */
     func populateAccounts() {
         // Some sample code, use this in your own implementation.
         append(accountSettings: AccountSettings(
+            accountName: "Whatever_you_want",
+            idAddress: "whatever_you_want@yahoo.com",
+            idUserName: "whatever_you_want@yahoo.com",
+
+            imapServerAddress: "imap.mail.yahoo.com",
+            imapServerType: Server.ServerType.imap,
+            imapServerTransport: Server.Transport.tls,
+            imapServerPort: 993,
+
+            smtpServerAddress: "smtp.mail.yahoo.com",
+            smtpServerType: Server.ServerType.smtp,
+            smtpServerTransport: Server.Transport.tls,
+            smtpServerPort: 465,
+
+            password: "whatever_you_want"))
+
+        fatalError("Abstract method. Must be overridden")
+    }
+
+    /**
+     Accounts needed for testing LAS, that is they need to be registered
+     in the LAS DB or provide (correct) DNS SRV for IMAP and SMTP.
+     */
+    func populateVerifiableAccounts() {
+        append(verifiableAccountSettings: AccountSettings(
             accountName: "Whatever_you_want",
             idAddress: "whatever_you_want@yahoo.com",
             idUserName: "whatever_you_want@yahoo.com",
@@ -191,6 +231,16 @@ class TestDataBase {
     }
 
     /**
+     - Returns: A valid `CdAccount`.
+     */
+    func createVerifiableCdAccount(number: Int = 0) -> CdAccount {
+        let result = createVerifiableAccountSettings(number: number).cdAccount()
+        // The identity of an account is mySelf by definion.
+        result.identity?.userID = CdIdentity.pEpOwnUserID
+        return result
+    }
+
+    /**
      - Returns: A valid `CdIdentity` without parent account.
      */
     func createWorkingCdIdentity(number: Int = 0, isMyself: Bool = false) -> CdIdentity {
@@ -215,11 +265,23 @@ class TestDataBase {
         return testAccounts[number]
     }
 
+    func createVerifiableAccountSettings(number: Int = 0) -> AccountSettings {
+        populateVerifiableAccounts()
+        return verifiableTestAccounts[number]
+    }
+
     /**
      - Returns: A valid `Account`.
      */
     func createWorkingAccount(number: Int = 0) -> Account {
         return createWorkingAccountSettings(number: number).account()
+    }
+
+    /**
+     - Returns: A valid `Account`.
+     */
+    func createVerifiableAccount(number: Int = 0) -> Account {
+        return createVerifiableAccountSettings(number: number).account()
     }
 
     /**
@@ -235,7 +297,7 @@ class TestDataBase {
      */
     func createSmtpTimeOutAccountSettings() -> AccountSettings {
         populateAccounts()
-        var accountSettings = createWorkingAccountSettings(number: 0)
+        var accountSettings = createVerifiableAccountSettings(number: 0)
         accountSettings.smtpServerAddress = "localhost"
         accountSettings.smtpServerPort = 2323
         return accountSettings
