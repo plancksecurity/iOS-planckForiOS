@@ -558,6 +558,8 @@
 		B70A3A67220066C100EDCE61 /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A66220066C100EDCE61 /* String+Email.swift */; };
 		B70A3A6E220069F600EDCE61 /* Substring+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A6C220069F500EDCE61 /* Substring+Email.swift */; };
 		B70A3A7122006B2400EDCE61 /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7022006B2400EDCE61 /* String+Email.swift */; };
+		B70A3A9322089D5000EDCE61 /* Log+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A9122089D5000EDCE61 /* Log+ASL.swift */; };
+		B70A3A9422089D5000EDCE61 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A9222089D5000EDCE61 /* Log.swift */; };
 		B70A3C401E817CFA0036876F /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */; };
 		B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */; };
 		B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */; };
@@ -1210,6 +1212,8 @@
 		B70A3A66220066C100EDCE61 /* String+Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		B70A3A6C220069F500EDCE61 /* Substring+Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Substring+Email.swift"; sourceTree = "<group>"; };
 		B70A3A7022006B2400EDCE61 /* String+Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
+		B70A3A9122089D5000EDCE61 /* Log+ASL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Log+ASL.swift"; sourceTree = "<group>"; };
+		B70A3A9222089D5000EDCE61 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		B70A3C3F1E817CFA0036876F /* FolderViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderViewModel.swift; path = Folder/ViewModel/FolderViewModel.swift; sourceTree = "<group>"; };
 		B716055F20D3ECC900A733D6 /* MoveToFolderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderTableViewController.swift; sourceTree = "<group>"; };
 		B71EBBBB1E55E4AE00150177 /* FolderTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FolderTableViewController.swift; path = Folder/FolderTableViewController.swift; sourceTree = "<group>"; };
@@ -2345,6 +2349,7 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				B70A3A9022089D3C00EDCE61 /* Log */,
 				151F71D02029F9F80057C74D /* IMAP */,
 				4362398D1EAE08F400BD2EB9 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
@@ -2752,6 +2757,15 @@
 			);
 			name = StoryboardFiles;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		B70A3A9022089D3C00EDCE61 /* Log */ = {
+			isa = PBXGroup;
+			children = (
+				B70A3A9122089D5000EDCE61 /* Log+ASL.swift */,
+				B70A3A9222089D5000EDCE61 /* Log.swift */,
+			);
+			path = Log;
 			sourceTree = "<group>";
 		};
 		B70D32A5205BCC020094A92A /* ViewModel */ = {
@@ -3248,6 +3262,7 @@
 			files = (
 				002375D420DCF59D00663961 /* MoveToAccountViewController.swift in Sources */,
 				496C0EEB20BC4B370009B5B9 /* EmailListViewModel+EmailDisplayDelegate.swift in Sources */,
+				B70A3A9422089D5000EDCE61 /* Log.swift in Sources */,
 				4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */,
 				43264E9B1D76B7110098DCAC /* SyncFlagsToServerOperation.swift in Sources */,
 				4351C2D11F4441190053381F /* houdini_html_u.c in Sources */,
@@ -3580,6 +3595,7 @@
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				492EF92A20C18C6C004EAE14 /* DisplayedMessage.swift in Sources */,
 				15AA6016207CD71D00D57DB4 /* ImapFlags+Pantomime.swift in Sources */,
+				B70A3A9322089D5000EDCE61 /* Log+ASL.swift in Sources */,
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,
 				43497B38211C62DE00AC42B0 /* MessageIdentitfying.swift in Sources */,
 				4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */,
