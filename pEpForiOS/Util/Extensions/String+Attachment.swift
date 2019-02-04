@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpUtilities
 
 extension String {
     public func firstMatch(pattern: String, rangeNumber: Int = 1) -> String? {

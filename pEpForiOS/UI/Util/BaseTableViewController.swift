@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpUtilities
 
 class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?

@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 extension content_disposition_type {
 

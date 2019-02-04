@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import pEpUtilities
 
 struct TrustedServerSettingsViewModel {
     struct Row: Equatable {

@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 protocol ComposeViewModelStateDelegate: class {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,

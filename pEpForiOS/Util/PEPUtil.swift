@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 /**
  Simple `Hashable` implementation so PEP_rating can be put into dictionaries.

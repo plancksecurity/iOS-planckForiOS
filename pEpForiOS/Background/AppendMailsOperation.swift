@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-
+import pEpUtilities
 import MessageModel
 
 /// Operation for storing mails in any type of IMAP folder.

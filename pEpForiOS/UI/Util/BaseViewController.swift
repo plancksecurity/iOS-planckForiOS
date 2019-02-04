@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpUtilities
 
 class BaseViewController: UIViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?

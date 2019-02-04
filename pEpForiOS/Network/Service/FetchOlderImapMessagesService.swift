@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 public class FetchOlderImapMessagesService {
     var runningOperations = [Folder:BaseOperation]()

@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 public protocol ImapSyncDelegate: class {
     func authenticationCompleted(_ sync: ImapSync, notification: Notification?)

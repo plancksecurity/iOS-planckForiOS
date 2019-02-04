@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 extension Account {
     /// Returns the account that should be used as deafult when sending a message.

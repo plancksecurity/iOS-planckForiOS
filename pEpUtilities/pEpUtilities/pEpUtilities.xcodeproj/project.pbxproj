@@ -51,7 +51,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B70A3A5222005A7600EDCE61 /* Fundation */ = {
+		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
 				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
@@ -60,7 +60,7 @@
 				B7911ECB21F8B46600D7F66F /* GCD.swift */,
 				B70A3A5E220064EE00EDCE61 /* String+Extension+temp.swift */,
 			);
-			path = Fundation;
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 		B70A3A5322005B9600EDCE61 /* UIKit */ = {
@@ -106,7 +106,7 @@
 			children = (
 				B70A3A74220091C800EDCE61 /* Log */,
 				B70A3A5322005B9600EDCE61 /* UIKit */,
-				B70A3A5222005A7600EDCE61 /* Fundation */,
+				B70A3A5222005A7600EDCE61 /* Foundation */,
 				B7911EB821F7358500D7F66F /* Info.plist */,
 			);
 			path = pEpUtilities;

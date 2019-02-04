@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 class AccountVerificationService: AccountVerificationServiceProtocol {
     weak var delegate: AccountVerificationServiceDelegate?

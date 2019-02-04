@@ -8,6 +8,7 @@
 
 import WebKit
 import MessageModel
+import pEpUtilities
 
 @available(iOS, introduced: 11.0)
 

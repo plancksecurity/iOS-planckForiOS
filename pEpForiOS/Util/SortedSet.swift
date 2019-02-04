@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpUtilities
 
 /// Automatically keeps containted objects sorted to the criteria of a given sort block.
 /// The implementation is completely trival and unperformant.

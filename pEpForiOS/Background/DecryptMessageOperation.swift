@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpUtilities
 
 protocol DecryptMessageOperationDelegate: class {
 

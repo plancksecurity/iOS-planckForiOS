@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import pEpUtilities
 
 extension PrimarySplitViewController: ScreenComposerProtocol {
     func emailListViewModel(_ emailListViewModel: EmailListViewModel,

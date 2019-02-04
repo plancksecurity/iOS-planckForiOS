@@ -8,8 +8,6 @@
 
 import os.log
 import Foundation
-//import pEpUtilities
-//import MessageModel
 
 enum LoggingSeverity {
     case verbose
@@ -207,8 +205,8 @@ extension Log: MessageModelLogging {
         SystemUtils.crash("ERROR \(component): \(errorString)")
     }
 }
-//TODO: still in progress /*
-/*
+//TODO: still in progress
+
 
  
 extension Log: CWLogging {
@@ -223,4 +221,4 @@ extension Log: CWLogging {
     @objc open func errorComponent(_ component: String, message: String) {
         Log.error(component: component, errorString: message)
     }
-}*/
+}

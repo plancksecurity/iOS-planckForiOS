@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import pEpUtilities
+
 extension Data {
     public func stringEncodingFromIANACharset(_ charset: String) -> String.Encoding {
         let enc = CFStringConvertIANACharSetNameToEncoding(charset as CFString)

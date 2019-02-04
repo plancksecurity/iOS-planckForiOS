@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpUtilities
 
 /**
  A serialized `OperationQueue` that limits the number of operations in the queue to 2.

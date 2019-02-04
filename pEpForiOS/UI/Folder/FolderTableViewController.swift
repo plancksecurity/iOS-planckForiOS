@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpUtilities
 
 class FolderTableViewController: BaseTableViewController, FolderViewModelDelegate {
     var folderVM: FolderViewModel?

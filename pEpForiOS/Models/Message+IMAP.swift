@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 extension Message {
     static let uidNeedsAppend = 0

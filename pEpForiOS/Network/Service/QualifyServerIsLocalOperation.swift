@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpUtilities
 
 /**
  Qualifies the given server name re trusted or untrusted, depending on

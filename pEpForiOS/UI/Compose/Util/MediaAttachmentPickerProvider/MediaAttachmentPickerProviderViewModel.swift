@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 protocol MediaAttachmentPickerProviderViewModelResultDelegate: class {
     func mediaAttachmentPickerProviderViewModel(_ vm: MediaAttachmentPickerProviderViewModel,

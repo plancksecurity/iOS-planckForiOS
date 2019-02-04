@@ -7,7 +7,7 @@
 //
 
 import CoreData
-
+import pEpUtilities
 import MessageModel
 
 /// This is the base for concurrent `NSOperation`s, that is operations that handle asynchronicity

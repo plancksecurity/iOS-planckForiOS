@@ -7,6 +7,7 @@
 //
 
 import WebKit
+import pEpUtilities
 
 protocol SecureWebViewControllerDelegate: class {
     /// Called on content size changes while within loading time.

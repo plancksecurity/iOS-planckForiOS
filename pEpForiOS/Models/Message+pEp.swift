@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 extension Message {
     public var isEncrypted: Bool {

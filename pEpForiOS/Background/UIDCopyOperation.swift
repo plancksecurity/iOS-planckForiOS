@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpUtilities
 
 class UIDCopyOperation: ImapSyncOperation {
     var syncDelegate: UIDCopyOperationSyncDelegate?

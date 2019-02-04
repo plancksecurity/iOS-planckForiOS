@@ -7,6 +7,7 @@
 //
 
 import SwipeCellKit
+import pEpUtilities
 
 class SettingsTableViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let storyboardId = "SettingsTableViewController"

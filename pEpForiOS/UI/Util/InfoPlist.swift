@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpUtilities
 
 struct InfoPlist {
     static private var infoDictMainBundle: [String:Any]? {

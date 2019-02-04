@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpUtilities
 
 extension PEP_rating {
 

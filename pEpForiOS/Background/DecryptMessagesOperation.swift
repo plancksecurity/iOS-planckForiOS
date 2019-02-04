@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-
+import pEpUtilities
 import CoreData
 
 // Only used in Tests. Maybe refactor out.

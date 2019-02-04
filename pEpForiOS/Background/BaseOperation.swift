@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import pEpUtilities
+
 /**
  Basic NSOperation that can gather errors.
  */

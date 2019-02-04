@@ -9,9 +9,6 @@
 import Foundation
 import os.log
 import asl
-//import pEpUtilities
-
-//import MessageModel // For SystemUtils.crash only
 
 /**
  Thin layer over `os_log` or `asl_logger` where not available.

@@ -8,6 +8,7 @@
 
 import Foundation
 import ContactsUI
+import pEpUtilities
 
 /// Represents ContactsUI for "add a contact" to the system address book
 class AddToContactsViewController: BaseViewController {

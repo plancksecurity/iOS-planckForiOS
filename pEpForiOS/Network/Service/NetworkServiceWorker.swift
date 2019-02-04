@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreData
-
+import pEpUtilities
 import MessageModel
 
 public protocol NetworkServiceWorkerDelegate: class {

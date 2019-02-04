@@ -7,7 +7,7 @@
 //
 
 import CoreData
-
+import pEpUtilities
 import MessageModel
 
 public class DeleteFolderOperation: ImapSyncOperation {
