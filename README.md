@@ -74,10 +74,22 @@ Open pEpForiOS.xcworkspace and build schema "pEp".
 
 ### Unit Tests
 
-The non-existing file referenced in the unit test project, ./pEpForiOSTests/TestUtil/SecretTestData.swift, must be
-created, with a class named SecretTestData, derived from TestDataBase. Override populateAccounts().
+Out of the box, most tests expect a local test server:
 
-The tests will not compile without a syntactically correct SecretTestData.swift that inherits from TestDataBase.
+```
+cd ~/Downloads
+wget http://central.maven.org/maven2/com/icegreen/greenmail-standalone/1.5.9/greenmail-standalone-1.5.9.jar
+shasum -a 256 greenmail-standalone-1.5.9.jar
+8301b89007e986e8d5e93e2504aad866a58b07b53ac06abb87e6e43eb7646261  greenmail-standalone-1.5.9.jar
+java -Dgreenmail.setup.test.all -Dgreenmail.users=test001:pwd@localhost,test002:pwd@localhost,test003:pwd@localhost -jar ~/Downloads/greenmail-standalone-1.5.9.jar
+```
+
+The non-existing file referenced in the unit test project, ./pEpForiOSTests/TestUtil/SecretTestData.swift, must be
+created, with a class named SecretTestData, derived from TestDataBase.
+
+In `SecretTestData.swift`, you must override `populateVerifiableAccounts`, adding servers that are either registered in the LAS database or provide DNS SRV for IMAP and SMTP in order to test the "automatic account login".
+
+If you want to run the tests against your own servers, override `populateAccounts` accordingly.
 
 ### UI Tests
 

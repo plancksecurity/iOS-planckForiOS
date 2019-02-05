@@ -168,31 +168,39 @@ class TestDataBase {
     /**
      Add IMAP/SMTP accounts that are used for testing.
      - Note:
-       * Add actual test accounts in SecretTestData.
+       * These (local) accounts depend on a local greenmail server.
+         Please see the readme for details.
+       * Override this in SecretTestData if needed, for testing external servers.
        * The first 2 accounts play in tandem for some tests.
        * Some tests send emails to unittest.ios.1@peptest.ch,
          this account has to exist but there's no need to query it.
      */
     func populateAccounts() {
-        // Some sample code, use this in your own implementation.
+        addLocalTestAccount(userName: "test001")
+        addLocalTestAccount(userName: "test002")
+        addLocalTestAccount(userName: "test003")
+    }
+
+    private func addLocalTestAccount(userName: String) {
+        let address = "\(userName)@localhost"
         append(accountSettings: AccountSettings(
-            accountName: "Whatever_you_want",
-            idAddress: "whatever_you_want@yahoo.com",
-            idUserName: "whatever_you_want@yahoo.com",
+            accountName: "Unit Test \(address)",
+            idAddress: address,
+            idUserName: "User \(address)",
 
-            imapServerAddress: "imap.mail.yahoo.com",
+            imapLoginName: userName,
+            imapServerAddress: "localhost",
             imapServerType: Server.ServerType.imap,
-            imapServerTransport: Server.Transport.tls,
-            imapServerPort: 993,
+            imapServerTransport: Server.Transport.plain,
+            imapServerPort: 3143,
 
-            smtpServerAddress: "smtp.mail.yahoo.com",
+            smtpLoginName: userName,
+            smtpServerAddress: "localhost",
             smtpServerType: Server.ServerType.smtp,
-            smtpServerTransport: Server.Transport.tls,
-            smtpServerPort: 465,
+            smtpServerTransport: Server.Transport.plain,
+            smtpServerPort: 3025,
 
-            password: "whatever_you_want"))
-
-        fatalError("Abstract method. Must be overridden")
+            password: "pwd"))
     }
 
     /**
