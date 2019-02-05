@@ -18,7 +18,7 @@ extension Folder {
     }
 
     public func messageCount() -> Int {
-        return allCdMessagesNonThreaded(ignoringPepRating: showsMessagesNeverSeenByEngine).count
+        return allCdMessagesNonThreadedCount(ignoringPepRating: showsMessagesNeverSeenByEngine)
     }
 
     public func indexOf(message: Message) -> Int? {
