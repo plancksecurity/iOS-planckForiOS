@@ -49,7 +49,6 @@ class EmailListViewModel {
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     internal let folderToShow: Folder
-    internal let threadedMessageFolder: ThreadedMessageFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
     public var screenComposer: ScreenComposerProtocol?
@@ -86,12 +85,10 @@ class EmailListViewModel {
         self.messageSyncService = messageSyncService
 
         self.folderToShow = folderToShow
-        self.threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
         self.defaultFilter = folderToShow.filter?.clone()
         self.oldThreadSetting = AppSettings.threadedViewEnabled
         
-        resetViewModel()
-        
+        resetViewModel()        
     }
 
     func updateLastLookAt() {
@@ -352,9 +349,7 @@ class EmailListViewModel {
     }
 
     private func delete(message: Message) {
-        // The message to delete might be a single, unthreaded message,
-        // or the tip of a thread. `threadedMessageFolder` will figure it out.
-        threadedMessageFolder.deleteThread(message: message)
+        message.imapDelete()
     }
 
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
