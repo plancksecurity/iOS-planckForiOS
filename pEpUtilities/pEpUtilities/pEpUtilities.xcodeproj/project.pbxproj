@@ -17,6 +17,7 @@
 		B7911EC821F88D0200D7F66F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */; };
 		B7911ECA21F88D1900D7F66F /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC921F88D1900D7F66F /* UITableView+Extension.swift */; };
 		B7911ECC21F8B46600D7F66F /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911ECB21F8B46600D7F66F /* GCD.swift */; };
+		B7A46C50220C1F0C0027CCB5 /* MiscUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		B7911EC921F88D1900D7F66F /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		B7911ECB21F8B46600D7F66F /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
+		B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiscUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,7 @@
 			isa = PBXGroup;
 			children = (
 				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
+				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
 				B70A3A5422005BD400EDCE61 /* Date+Extension.swift */,
 				B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */,
 				B7911ECB21F8B46600D7F66F /* GCD.swift */,
@@ -182,6 +185,7 @@
 			files = (
 				B7911ECC21F8B46600D7F66F /* GCD.swift in Sources */,
 				B7911EC821F88D0200D7F66F /* UITextField+Extension.swift in Sources */,
+				B7A46C50220C1F0C0027CCB5 /* MiscUtil.swift in Sources */,
 				B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */,
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,

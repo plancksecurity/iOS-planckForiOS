@@ -5,6 +5,7 @@
 //  Created by Dirk Zimmermann on 27/06/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
+import Foundation
 
 open class MiscUtil {
     public static func optionalHashValue<T: Hashable>(_ someVar: T?) -> Int {
