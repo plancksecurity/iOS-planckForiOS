@@ -961,11 +961,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         vm?.state.toRecipients = [toRecipient]
         vm?.state.from = account.user
         let outMsgsBefore = Folder.by(account: account, folderType: .outbox)?
-            .allMessages()
+            .allMessagesNonThreaded()
             .count ?? -1
         vm?.handleUserClickedSendButton()
         let outMsgsAfter = Folder.by(account: account, folderType: .outbox)?
-            .allMessages()
+            .allMessagesNonThreaded()
             .count ?? -1
         XCTAssertEqual(outMsgsAfter, outMsgsBefore + 1)
         XCTAssertGreaterThan(outMsgsAfter, 0)

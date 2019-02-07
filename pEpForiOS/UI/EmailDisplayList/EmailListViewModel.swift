@@ -141,7 +141,7 @@ class EmailListViewModel {
                 !op.isCancelled else {
                 return
             }
-            let messagesToDisplay = me.folderToShow.allMessages()
+            let messagesToDisplay = me.folderToShow.allMessagesNonThreaded()
             let previewMessages = messagesToDisplay.map {
                 MessageViewModel(with: $0)
             }
@@ -363,10 +363,8 @@ class EmailListViewModel {
 
     internal func requestEmailViewIfNeeded(for message:Message) {
         MessageModel.performAndWait {
-            if (message.numberOfMessagesInThread() == 0) {
-                DispatchQueue.main.async {
-                    self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
-                }
+            DispatchQueue.main.async {
+                self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
             }
         }
     }

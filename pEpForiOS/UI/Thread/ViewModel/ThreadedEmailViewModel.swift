@@ -14,7 +14,7 @@ class ThreadedEmailViewModel {
     internal var tip: Message 
     weak var emailDisplayDelegate: EmailDisplayDelegate?
     weak var delegate: ThreadedEmailViewModelDelegate?
-    private let folder: ThreadedFolder
+    private let folder: Folder
     private var expandedMessages: [Bool]
     private var messageToReply: Message?
 
@@ -24,8 +24,8 @@ class ThreadedEmailViewModel {
     public let displayFolder: Folder
 
     init(tip: Message, folder: Folder) {
-        self.folder = ThreadedFolder(folder: folder)
-        messages = self.folder.messagesInThread(message: tip)
+        self.folder = folder
+        messages = []
         self.tip = tip
 
         //We get the same message reference if we can
@@ -59,7 +59,7 @@ class ThreadedEmailViewModel {
         }
         let isTheLastMessage = index == messages.count - 1
         let theMessageToDelete = messages[index]
-        folder.deleteSingle(message: theMessageToDelete)
+        theMessageToDelete.imapDelete()
         messages.remove(at: index)
         expandedMessages.remove(at: index)
         delegate?.emailViewModel(viewModel: self, didRemoveDataAt: index)
@@ -77,7 +77,7 @@ class ThreadedEmailViewModel {
     }
 
     func deleteAllMessages(){
-        folder.deleteThread(message: tip)
+        tip.imapDelete()
         emailDisplayDelegate?.emailDisplayDidDelete(message: tip)
     }
 

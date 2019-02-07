@@ -190,16 +190,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
 
     private func showEmail(forCellAt indexPath: IndexPath) {
-        guard let vm = model,
-            let message = vm.message(representedByRowAt: indexPath) else {
-            Logger.frontendLogger.errorAndCrash("No model.")
-            return
-        }
-        if message.numberOfMessagesInThread() > 0 {
-            performSegue(withIdentifier: SegueIdentifier.segueShowThreadedEmail, sender: self)
-        } else {
-            performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
-        }
+        performSegue(withIdentifier: SegueIdentifier.segueShowEmail, sender: self)
     }
 
     private func showNoMessageSelectedIfNeeded() {

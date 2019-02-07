@@ -34,7 +34,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                     return
             }
             XCTAssertEqual(allCdMesgs.count, 1, "Exactly one faked message exists in CD")
-            let all = folder.allMessages()
+            let all = folder.allMessagesNonThreaded()
             XCTAssertEqual(all.count, 1, "Fake message is shown")
             guard let testee = all.first else {
                 XCTFail()
@@ -54,7 +54,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                 else {
                     return
             }
-            let all = folder.allMessages()
+            let all = folder.allMessagesNonThreaded()
             guard let testee = all.first else {
                 XCTFail()
                 return
