@@ -34,15 +34,14 @@ extension EmailListViewModel: MessageFolderDelegate {
         }
     }
 
-    func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
+    func didDelete(messageFolder: MessageFolder) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
             me.didDeleteInternal(
-                messageFolder: messageFolder,
-                belongingToThread: belongingToThread)
+                messageFolder: messageFolder)
         }
     }
 
@@ -110,8 +109,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         insertAsTopMessage()
     }
 
-    private func didDeleteInternal(messageFolder: MessageFolder,
-                                   belongingToThread: Set<MessageID>) {
+    private func didDeleteInternal(messageFolder: MessageFolder) {
         // Make sure it is a Message (not a Folder). Flag must have changed
         guard let message = messageFolder as? Message else {
             // It is not a Message (probably it is a Folder).
@@ -125,14 +123,12 @@ extension EmailListViewModel: MessageFolderDelegate {
         if let indexExisting = index(of: message) {
             // This concerns a top message
             didDeleteInternal(topMessage: message,
-                              atIndex: indexExisting,
-                              belongingToThread: belongingToThread)
+                              atIndex: indexExisting)
         }
     }
 
     private func didDeleteInternal(topMessage: Message,
-                                   atIndex indexExisting: Int,
-                                   belongingToThread: Set<MessageID>) {
+                                   atIndex indexExisting: Int) {
         let theSelf = self
         theSelf.messages.removeObject(at: indexExisting)
         let indexPath = IndexPath(row: indexExisting, section: 0)

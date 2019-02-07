@@ -336,7 +336,7 @@ class EmailListViewModel {
                 "Not sure if this is a valid case. Remove this log if so.")
             return
         }
-        didDelete(messageFolder: deletedMessage, belongingToThread: Set())
+        didDelete(messageFolder: deletedMessage)
     }
 
     private func deleteMessage(at indexPath: IndexPath) -> Message? {

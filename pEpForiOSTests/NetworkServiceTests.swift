@@ -277,7 +277,7 @@ class NetworkServiceTests: XCTestCase {
             }
         }
 
-        func didDelete(messageFolder: MessageFolder, belongingToThread: Set<MessageID>) {
+        func didDelete(messageFolder: MessageFolder) {
             // this message has been deleted from the start, ignore
         }
 

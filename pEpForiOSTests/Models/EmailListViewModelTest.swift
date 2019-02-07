@@ -658,7 +658,7 @@ class TestServer {
     }
 
     func deleteData(message: Message) {
-        self.messageFolderDelegate.didDelete(messageFolder: message, belongingToThread: Set())
+        self.messageFolderDelegate.didDelete(messageFolder: message)
     }
 }
 
