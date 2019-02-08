@@ -6,6 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
+import Foundation
+
 extension OperationQueue {
     /**
      Adds all operations to the given queue, and calls the completion block once

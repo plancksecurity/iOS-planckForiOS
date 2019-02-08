@@ -21,6 +21,7 @@
 		B7A46C54220C73BE0027CCB5 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */; };
 		B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C55220DA5EA0027CCB5 /* Substring+Email.swift */; };
 		B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C57220DA6190027CCB5 /* String+Email.swift */; };
+		B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		B7A46C55220DA5EA0027CCB5 /* Substring+Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Substring+Email.swift"; sourceTree = "<group>"; };
 		B7A46C57220DA6190027CCB5 /* String+Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
+		B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				B70A3A5422005BD400EDCE61 /* Date+Extension.swift */,
 				B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */,
 				B7911ECB21F8B46600D7F66F /* GCD.swift */,
+				B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,
+				B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */,
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
 				B7911ECA21F88D1900D7F66F /* UITableView+Extension.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
