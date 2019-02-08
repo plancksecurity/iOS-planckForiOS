@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+@testable import pEpUtilities
 
 class LoggerTest: XCTestCase {
     func testSimple() {
