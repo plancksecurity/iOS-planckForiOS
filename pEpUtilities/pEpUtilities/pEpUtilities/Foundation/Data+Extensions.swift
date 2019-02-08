@@ -6,7 +6,8 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import pEpUtilities
+//import pEpUtilities
+import Foundation
 
 extension Data {
     public func stringEncodingFromIANACharset(_ charset: String) -> String.Encoding {

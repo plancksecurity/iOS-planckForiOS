@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import pEpUtilities
+//import pEpUtilities
 
 public extension String {
 
@@ -377,7 +377,7 @@ extension String {
      that is ideally the first letters of the given name and the last name.
      If that is not possible, improvisations are used.
      */
-    func initials() -> String {
+    public func initials() -> String {
         let words = tokens()
         if words.count == 0 {
             return "?"
@@ -404,10 +404,10 @@ extension String {
 
         let wholeRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
         let nsString = self as NSString
-        let textAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.strokeColor: color,
-            NSAttributedStringKey.foregroundColor: color,
-            NSAttributedStringKey.font: font]
+        let textAttributes: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.strokeColor: color,
+            NSAttributedString.Key.foregroundColor: color,
+            NSAttributedString.Key.font: font]
         let stringSize = nsString.size(withAttributes: textAttributes)
         let textRect = center(size: stringSize, inRect: wholeRect)
         nsString.draw(in: textRect, withAttributes: textAttributes)
@@ -416,7 +416,7 @@ extension String {
     /**
      - Returns: A string derived from the self with all spaces removed.
      */
-    func despaced() -> String {
+    public func despaced() -> String {
         var newChars = [Character]()
 
         for ch in self {
