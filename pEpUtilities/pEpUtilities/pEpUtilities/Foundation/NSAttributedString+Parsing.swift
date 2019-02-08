@@ -14,14 +14,14 @@ public protocol NSAttributedStringParsingDelegate: class {
     func stringFor(string: String) -> String?
 }
 
-extension NSAttributedString {
+public extension NSAttributedString {
     func convert(delegate: NSAttributedStringParsingDelegate) -> String {
         var resultString = ""
         let string = NSMutableAttributedString(attributedString: self)
         string.fixAttributes(in: string.wholeRange())
 
         string.enumerateAttributes(in: string.wholeRange(), options: []) { attrs, r, stop in
-            if let attachment = attrs[NSAttributedStringKey(rawValue:"NSAttachment")] as? NSTextAttachment {
+            if let attachment = attrs[NSAttributedString.Key(rawValue:"NSAttachment")] as? NSTextAttachment {
                 if let attachmentString = delegate.stringFor(attachment: attachment) {
                     resultString = "\(resultString)\(attachmentString)"
                 }
