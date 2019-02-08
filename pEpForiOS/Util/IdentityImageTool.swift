@@ -9,6 +9,7 @@
 import UIKit
 import AddressBook
 import MessageModel
+import pEpUtilities
 
 class IdentityImageTool {
     static private let queue = DispatchQueue.global(qos: .userInitiated)

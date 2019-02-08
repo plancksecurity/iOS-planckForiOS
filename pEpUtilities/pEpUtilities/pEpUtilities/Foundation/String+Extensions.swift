@@ -353,7 +353,7 @@ extension String {
     /**
      - Returns: The first part of a String, with a maximum length of `ofLength`.
      */
-    func prefix(ofLength: Int) -> String {
+    public func prefix(ofLength: Int) -> String {
         if self.count >= ofLength {
             let start = self.startIndex
             return String(prefix(upTo: self.index(start, offsetBy: ofLength)))
@@ -394,7 +394,7 @@ extension String {
      Draws `text` in the current context in the given `color`, centered in a rectangle with
      size `size`.
      */
-    func draw(centeredIn size: CGSize, color: UIColor, font: UIFont) {
+    public func draw(centeredIn size: CGSize, color: UIColor, font: UIFont) {
         func center(size: CGSize, inRect: CGRect) -> CGRect {
             let xStart = round(inRect.size.width / 2 - size.width / 2)
             let yStart = round(inRect.size.height / 2 - size.height / 2)
