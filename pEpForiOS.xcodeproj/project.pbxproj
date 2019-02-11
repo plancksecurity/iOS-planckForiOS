@@ -158,7 +158,6 @@
 		1568FEA11FACDCC600993EA3 /* IOS-211_hi_there.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */; };
 		1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569AEA420E14DC2002102A0 /* ReUploadTest.swift */; };
 		1569DDB8215395BE007A0398 /* NSAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */; };
-		157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */; };
 		1574D078211356E000FEDC93 /* UrlClickHandlerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */; };
 		1574D07A211464CC00FEDC93 /* URL+MailTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D079211464CC00FEDC93 /* URL+MailTo.swift */; };
 		1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */; };
@@ -766,7 +765,6 @@
 		1568FEA01FACDCC500993EA3 /* IOS-211_hi_there.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211_hi_there.txt"; sourceTree = "<group>"; };
 		1569AEA420E14DC2002102A0 /* ReUploadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReUploadTest.swift; sourceTree = "<group>"; };
 		1569DDB7215395BE007A0398 /* NSAttributedString+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "NSAttributedString+Extension.swift"; path = "pEpForiOS/Util/NSAttributedString+Extension.swift"; sourceTree = SOURCE_ROOT; };
-		157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlClickHandlerProtocol.swift; sourceTree = "<group>"; };
 		1574D079211464CC00FEDC93 /* URL+MailTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailTo.swift"; sourceTree = "<group>"; };
 		1574D07C2114696B00FEDC93 /* URL+MailToTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+MailToTest.swift"; sourceTree = "<group>"; };
@@ -2169,7 +2167,6 @@
 				43257C871F5067BE00DDC7F0 /* NSAttributedString+pEp.swift */,
 				1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */,
 				1541D7F21FC8292D00D52A5D /* URL+MIME.swift */,
-				157455C71FDFD2D4008CA78F /* NSAttributedString+Extensions.swift */,
 				155050F11FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift */,
 				4315E4C020120F1600F68763 /* NSSecureCoding+Extension.swift */,
 				439A23E420B40FAC00417AF5 /* PEP_rating+Extension.swift */,
@@ -3586,7 +3583,6 @@
 				0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */,
 				4356FFE721354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift in Sources */,
 				228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */,
-				157455C81FDFD2D4008CA78F /* NSAttributedString+Extensions.swift in Sources */,
 				4360282D1ED6F27600C95FC4 /* NetworkError.swift in Sources */,
 				433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */,
 				4323FE861E83D6FF006785E1 /* ImapFolderBuilder.swift in Sources */,
