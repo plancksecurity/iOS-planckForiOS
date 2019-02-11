@@ -16,7 +16,7 @@ extension Array {
      */
     public typealias ShouldInsertFunc = (Element, Element) -> Bool
 
-    typealias Comparator = (Element, Element) -> ComparisonResult
+    public typealias Comparator = (Element, Element) -> ComparisonResult
 
     /**
      At which position should the given item be added in order to maintain the sorting?
@@ -82,7 +82,7 @@ extension Array {
             element: element, from: 0, to: count - 1, shouldInsert: shouldInsert)
     }
 
-    func binarySearch(element: Element, comparator: Comparator) -> Int? {
+    public func binarySearch(element: Element, comparator: Comparator) -> Int? {
         var lowerIndex = 0;
         var upperIndex = count - 1
 
