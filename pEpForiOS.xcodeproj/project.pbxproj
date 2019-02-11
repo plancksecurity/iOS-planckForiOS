@@ -505,7 +505,6 @@
 		43F8D80820C53DBB0038ABD5 /* ThreadedMessageFolderFactoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8D80720C53DBB0038ABD5 /* ThreadedMessageFolderFactoryProtocol.swift */; };
 		43F8D80A20C549120038ABD5 /* FolderThreading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F8D80920C549120038ABD5 /* FolderThreading.swift */; };
 		43F9D99A1E92725700F78A1C /* AttachmentsViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43F9D9991E92725700F78A1C /* AttachmentsViewHelper.swift */; };
-		43FAA0D21EC9972B005BFC4B /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FAA0D11EC9972B005BFC4B /* Tuple.swift */; };
 		43FAA0D41EC9CBC0005BFC4B /* DecryptionTestsInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FAA0D31EC9CBC0005BFC4B /* DecryptionTestsInternal.swift */; };
 		43FC02121F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html in Resources */ = {isa = PBXBuildFile; fileRef = 43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */; };
 		43FE802E209992B800E97AB3 /* QualifyServerIsLocalService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */; };
@@ -531,7 +530,6 @@
 		49A6114E2179F3A1006BA3C5 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */; };
 		49C2750120C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C2750020C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift */; };
 		49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49C34AF520E4F649009D11CC /* CellDetailTransition.swift */; };
-		49D292A320F3ABA600F33C78 /* CredentialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D292A220F3ABA600F33C78 /* CredentialTextField.swift */; };
 		49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49D3BECB20F8F7330043E05D /* LoginViewController.swift */; };
 		49D521541E73E1C20097987B /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; };
 		49D521551E73E1C20097987B /* MessageModel.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 49D521531E73E1C20097987B /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1147,7 +1145,6 @@
 		43F8D80720C53DBB0038ABD5 /* ThreadedMessageFolderFactoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadedMessageFolderFactoryProtocol.swift; sourceTree = "<group>"; };
 		43F8D80920C549120038ABD5 /* FolderThreading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderThreading.swift; sourceTree = "<group>"; };
 		43F9D9991E92725700F78A1C /* AttachmentsViewHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentsViewHelper.swift; sourceTree = "<group>"; };
-		43FAA0D11EC9972B005BFC4B /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; };
 		43FAA0D31EC9CBC0005BFC4B /* DecryptionTestsInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecryptionTestsInternal.swift; sourceTree = "<group>"; };
 		43FC02111F4D913D00273304 /* NSHTML_2017-08-09 15_40_53 +0000.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "NSHTML_2017-08-09 15_40_53 +0000.html"; sourceTree = "<group>"; };
 		43FE802D209992B800E97AB3 /* QualifyServerIsLocalService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalService.swift; sourceTree = "<group>"; };
@@ -1177,7 +1174,6 @@
 		49A6114D2179F3A1006BA3C5 /* UnitTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitTestUtils.swift; sourceTree = "<group>"; };
 		49C2750020C04DDB0075F6FF /* EmailViewController+DisplayedMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailViewController+DisplayedMessage.swift"; sourceTree = "<group>"; };
 		49C34AF520E4F649009D11CC /* CellDetailTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellDetailTransition.swift; sourceTree = "<group>"; };
-		49D292A220F3ABA600F33C78 /* CredentialTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialTextField.swift; sourceTree = "<group>"; };
 		49D3BECB20F8F7330043E05D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		49D521531E73E1C20097987B /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D521561E73E1C70097987B /* ServerConfig.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2337,7 +2333,6 @@
 				8B69E3981E30F80E0022959E /* Appearance.swift */,
 				43F848481EAA09AE00DBE460 /* Weak.swift */,
 				434F40931EB0B173002FBF0D /* ObservableValue.swift */,
-				43FAA0D11EC9972B005BFC4B /* Tuple.swift */,
 				43AE48E61EEFC93900B92BB6 /* DebugMergePolicy.swift */,
 				15C5F2451F823752007DE086 /* SortedSet.swift */,
 				15255B021F825CD100A2CFC9 /* IdentityImageTool.swift */,
@@ -2370,7 +2365,6 @@
 			children = (
 				15D43998216E695500EB3933 /* AccountPicker */,
 				15265973216234C0006A78DF /* SuggestTableViewController */,
-				49D292A220F3ABA600F33C78 /* CredentialTextField.swift */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
 				43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */,
 				43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */,
@@ -3292,7 +3286,6 @@
 				15484B6A2105D5C500F9D962 /* EmailConnectInfo.swift in Sources */,
 				15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */,
 				1554756C213FE139005A52D0 /* UnifiedFilter.swift in Sources */,
-				49D292A320F3ABA600F33C78 /* CredentialTextField.swift in Sources */,
 				4341EBCF2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift in Sources */,
 				15265962216230B1006A78DF /* ContactCell.swift in Sources */,
 				43425EDF1FE3E052004A2728 /* OAuth2ProviderFactory.swift in Sources */,
@@ -3456,7 +3449,6 @@
 				4351C2D01F4441190053381F /* houdini_html_e.c in Sources */,
 				15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */,
 				15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */,
-				43FAA0D21EC9972B005BFC4B /* Tuple.swift in Sources */,
 				430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */,
 				4395CDEC20AAB2E9003FC5F1 /* UIImage+GIF.swift in Sources */,
 				15874BCC2127493E00A3A4A6 /* AccountSettingsViewModel.swift in Sources */,
