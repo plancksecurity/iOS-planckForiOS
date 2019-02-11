@@ -16,7 +16,7 @@ extension NSAttributedString {
     ///   - lhs: first string
     ///   - rhs: string to concatenate to first string
     /// - Returns: lhs + rhs concatenated
-    static func +(lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
+    static public func +(lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
         let result = NSMutableAttributedString()
         result.append(lhs)
         result.append(rhs)
@@ -29,7 +29,7 @@ extension NSAttributedString {
     ///   - lhs: first string
     ///   - rhs: string to concatenate to first string
     /// - Returns: lhs + rhs concatenated
-    static func +(lhs: NSAttributedString, rhs: String) -> NSAttributedString {
+    static public func +(lhs: NSAttributedString, rhs: String) -> NSAttributedString {
         let result = NSMutableAttributedString()
         result.append(lhs)
         let attributedRhs = NSAttributedString(string: rhs)
