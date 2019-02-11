@@ -64,7 +64,7 @@ extension Array {
         return x
     }
 
-   func insertIndexByTraversing(element: Element, from: Int, to: Int,
+    public func insertIndexByTraversing(element: Element, from: Int, to: Int,
                                         shouldInsert: ShouldInsertFunc) -> Int {
         if from == to {
             return from
@@ -77,7 +77,7 @@ extension Array {
         return to + 1
     }
 
-    func insertIndexByTraversing(element: Element, shouldInsert: ShouldInsertFunc) -> Int? {
+    public func insertIndexByTraversing(element: Element, shouldInsert: ShouldInsertFunc) -> Int? {
         return insertIndexByTraversing(
             element: element, from: 0, to: count - 1, shouldInsert: shouldInsert)
     }
