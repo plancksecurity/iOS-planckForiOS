@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpUtilities
 
 extension UIAlertController {
     func setupActionFromConnectionTransport(_ transport: ConnectionTransport,

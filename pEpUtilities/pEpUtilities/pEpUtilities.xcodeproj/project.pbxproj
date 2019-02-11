@@ -13,6 +13,7 @@
 		B70A3A77220091D400EDCE61 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A75220091D400EDCE61 /* Logger.swift */; };
 		B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DBD22119D39008A1708 /* Thread+Extension.swift */; };
 		B7465DC622119EB1008A1708 /* Array+SortingAndSearching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */; };
+		B7465DC82211A062008A1708 /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC72211A062008A1708 /* SegueHandlerType.swift */; };
 		B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC121F8694000D7F66F /* UIColor+Extension.swift */; };
 		B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */; };
 		B7911EC821F88D0200D7F66F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */; };
@@ -35,6 +36,7 @@
 		B70A3A75220091D400EDCE61 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		B7465DBD22119D39008A1708 /* Thread+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Thread+Extension.swift"; sourceTree = "<group>"; };
 		B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+SortingAndSearching.swift"; sourceTree = "<group>"; };
+		B7465DC72211A062008A1708 /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
 		B7911EB421F7358500D7F66F /* pEpUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = pEpUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7911EB821F7358500D7F66F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7911EC121F8694000D7F66F /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				B7911EC921F88D1900D7F66F /* UITableView+Extension.swift */,
 				B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */,
 				B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */,
+				B7465DC72211A062008A1708 /* SegueHandlerType.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 				B7911ECA21F88D1900D7F66F /* UITableView+Extension.swift in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
+				B7465DC82211A062008A1708 /* SegueHandlerType.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
