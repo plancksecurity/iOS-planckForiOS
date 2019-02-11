@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension UIBarButtonItem {
     public static func getPEPButton(action: Selector, target: Any) -> UIBarButtonItem {

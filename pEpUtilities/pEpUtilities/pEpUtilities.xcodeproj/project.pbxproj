@@ -16,6 +16,9 @@
 		B7465DC82211A062008A1708 /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC72211A062008A1708 /* SegueHandlerType.swift */; };
 		B7465DCA2211BB3C008A1708 /* CredentialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC92211BB3B008A1708 /* CredentialTextField.swift */; };
 		B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DCB2211BEE9008A1708 /* Tuple.swift */; };
+		B7465DDF2211C6C8008A1708 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DDE2211C6C8008A1708 /* UIBarButtonItem+Extension.swift */; };
+		B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */; };
+		B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DE22211C890008A1708 /* CGImageSource+Extension.swift */; };
 		B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC121F8694000D7F66F /* UIColor+Extension.swift */; };
 		B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */; };
 		B7911EC821F88D0200D7F66F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */; };
@@ -41,6 +44,9 @@
 		B7465DC72211A062008A1708 /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
 		B7465DC92211BB3B008A1708 /* CredentialTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialTextField.swift; sourceTree = "<group>"; };
 		B7465DCB2211BEE9008A1708 /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; };
+		B7465DDE2211C6C8008A1708 /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
+		B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+GIF.swift"; sourceTree = "<group>"; };
+		B7465DE22211C890008A1708 /* CGImageSource+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGImageSource+Extension.swift"; sourceTree = "<group>"; };
 		B7911EB421F7358500D7F66F /* pEpUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = pEpUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7911EB821F7358500D7F66F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7911EC121F8694000D7F66F /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -94,12 +100,15 @@
 		B70A3A5322005B9600EDCE61 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				B7465DE22211C890008A1708 /* CGImageSource+Extension.swift */,
 				B7911EC121F8694000D7F66F /* UIColor+Extension.swift */,
 				B7911EC921F88D1900D7F66F /* UITableView+Extension.swift */,
 				B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */,
 				B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */,
 				B7465DC72211A062008A1708 /* SegueHandlerType.swift */,
 				B7465DC92211BB3B008A1708 /* CredentialTextField.swift */,
+				B7465DDE2211C6C8008A1708 /* UIBarButtonItem+Extension.swift */,
+				B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -225,6 +234,7 @@
 				B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */,
 				B7A46C50220C1F0C0027CCB5 /* MiscUtil.swift in Sources */,
 				B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */,
+				B7465DDF2211C6C8008A1708 /* UIBarButtonItem+Extension.swift in Sources */,
 				B7936E3D220DD8F5003B39E6 /* NSAttributedString+Extensions.swift in Sources */,
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
@@ -237,6 +247,8 @@
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
 				B7465DC82211A062008A1708 /* SegueHandlerType.swift in Sources */,
 				B7465DCA2211BB3C008A1708 /* CredentialTextField.swift in Sources */,
+				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
+				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

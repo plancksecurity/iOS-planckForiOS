@@ -8,6 +8,7 @@
 
 import XCTest
 import Foundation
+import pEpUtilities
 
 @testable import pEpForiOS
 

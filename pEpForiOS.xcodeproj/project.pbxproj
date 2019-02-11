@@ -312,7 +312,6 @@
 		433BCD951D5388C100DD98EF /* ReplyUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BCD941D5388C100DD98EF /* ReplyUtil.swift */; };
 		433C51D31E66CCA900272E19 /* CreateRequiredFoldersOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433C51D11E66CB9C00272E19 /* CreateRequiredFoldersOperation.swift */; };
 		433F2E2A21E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt in Resources */ = {isa = PBXBuildFile; fileRef = 433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */; };
-		4341980520AB037E0062F7F6 /* CGImageSource+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */; };
 		4341EBCF2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */; };
 		4341EBD1208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */; };
 		43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */; };
@@ -399,7 +398,6 @@
 		438F4EE1215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE0215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt */; };
 		438F4EE5215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE4215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc */; };
 		438F4EE9215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc in Resources */ = {isa = PBXBuildFile; fileRef = 438F4EE8215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc */; };
-		4395CDEC20AAB2E9003FC5F1 /* UIImage+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */; };
 		4395CDEE20AAC909003FC5F1 /* UIImageExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */; };
 		4395CDF020AAD0D7003FC5F1 /* icon_001.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */; };
 		439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439680971D1855D400DA31D2 /* WebKit.framework */; };
@@ -558,7 +556,6 @@
 		B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */; };
 		B74F81021EB0E20000519FCC /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74F81011EB0E20000519FCC /* LoginViewModel.swift */; };
 		B75FF00B1EFD420F00C57289 /* EmailListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */; };
-		B761A80A20F5F0A6000832C2 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */; };
 		B76CF8B320D2739B002429A8 /* MoveToFolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
@@ -914,7 +911,6 @@
 		433BCD941D5388C100DD98EF /* ReplyUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyUtil.swift; sourceTree = "<group>"; };
 		433C51D11E66CB9C00272E19 /* CreateRequiredFoldersOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateRequiredFoldersOperation.swift; sourceTree = "<group>"; };
 		433F2E2921E3581800E1CA49 /* ENGINE-505_Mail_NullInnerMimeType.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ENGINE-505_Mail_NullInnerMimeType.txt"; sourceTree = "<group>"; };
-		4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImageSource+Extension.swift"; sourceTree = "<group>"; };
 		4341EBCE2089F674004CE6B8 /* QualifyServerIsLocalOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalOperation.swift; sourceTree = "<group>"; };
 		4341EBD0208A0961004CE6B8 /* QualifyServerIsLocalServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QualifyServerIsLocalServiceProtocol.swift; sourceTree = "<group>"; };
 		43425EDA1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2ProviderProtocol.swift; sourceTree = "<group>"; };
@@ -1024,7 +1020,6 @@
 		438F4EE0215F9CB300168B5E /* SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SimplifiedKeyImport_Harry_To_Rick_with_Leon.txt; sourceTree = "<group>"; };
 		438F4EE4215FAD0500168B5E /* Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Harry Bryant iostest002@peptest.ch (0x5716EA2D9AE32468) pub-sec.asc"; sourceTree = "<group>"; };
 		438F4EE8215FB99400168B5E /* Leon Kowalski (19B9EE3B) – Private.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Leon Kowalski (19B9EE3B) – Private.asc"; sourceTree = "<group>"; };
-		4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+GIF.swift"; sourceTree = "<group>"; };
 		4395CDED20AAC909003FC5F1 /* UIImageExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensionsTests.swift; sourceTree = "<group>"; };
 		4395CDEF20AAD0D6003FC5F1 /* icon_001.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = icon_001.gif; sourceTree = "<group>"; };
 		439680971D1855D400DA31D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -1197,7 +1192,6 @@
 		B740B75E1E4B1C46002585E1 /* MimeTypeUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeTypeUtil.swift; sourceTree = "<group>"; };
 		B74F81011EB0E20000519FCC /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
-		B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
@@ -2383,10 +2377,7 @@
 				150B8EB21FCEB93D00374438 /* UIUtils.swift */,
 				43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */,
 				150DF6D22052ED4800A9DCF7 /* UIView+Autolayout.swift */,
-				4341980420AB037E0062F7F6 /* CGImageSource+Extension.swift */,
-				4395CDEB20AAB2E9003FC5F1 /* UIImage+GIF.swift */,
 				490CEBA62100EAD500E8579C /* SelfDismissable.swift */,
-				B761A80920F5F0A6000832C2 /* UIBarButtonItem+Extension.swift */,
 				1574D077211356E000FEDC93 /* UrlClickHandlerProtocol.swift */,
 				1574D09A21186A1D00FEDC93 /* AddToContactsViewController.swift */,
 				4356FFE621354A4B00804089 /* ReplyAllPossibleCheckerProtocol.swift */,
@@ -3315,7 +3306,6 @@
 				1544BCFE215246F30075C5A0 /* AttachmentFilter.swift in Sources */,
 				43F848491EAA09AE00DBE460 /* Weak.swift in Sources */,
 				B716056020D3ECC900A733D6 /* MoveToFolderTableViewController.swift in Sources */,
-				4341980520AB037E0062F7F6 /* CGImageSource+Extension.swift in Sources */,
 				43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */,
 				15874BCB2127493E00A3A4A6 /* AccountVerificationResultDelegate.swift in Sources */,
 				4381D0FF1E51A124002743C3 /* NetworkServiceWorker.swift in Sources */,
@@ -3395,7 +3385,6 @@
 				15BBBC6C1FD05F4300B9DCC8 /* DisplayUserError.swift in Sources */,
 				43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */,
 				00BEC89720B85FD300A36E60 /* NoMessagesViewController.swift in Sources */,
-				B761A80A20F5F0A6000832C2 /* UIBarButtonItem+Extension.swift in Sources */,
 				43F84CD21CD899760092FCAE /* SyncFoldersFromServerOperation.swift in Sources */,
 				431C6E041FE7A85200E23BE0 /* OAuth2ConfigurationProtocol.swift in Sources */,
 				1541D7ED1FC81D4200D52A5D /* URL+Extensions.swift in Sources */,
@@ -3450,7 +3439,6 @@
 				15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */,
 				15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */,
 				430A2EEC1E81357A00878837 /* CdImapFlags+Pantomime.swift in Sources */,
-				4395CDEC20AAB2E9003FC5F1 /* UIImage+GIF.swift in Sources */,
 				15874BCC2127493E00A3A4A6 /* AccountSettingsViewModel.swift in Sources */,
 				436C232F1E02A52D00071430 /* LimitedOperationQueue.swift in Sources */,
 				434F40941EB0B173002FBF0D /* ObservableValue.swift in Sources */,

@@ -7,21 +7,22 @@
 //
 
 import Foundation
+import UIKit
 
 extension CGImageSource {
     /**
      Every image contained in this source interpreted as animation frame,
      together with its duration.
      */
-    struct AnimationFrame {
+    public struct AnimationFrame {
         /** The image representing this frame */
-        let cgImage: CGImage
+        public let cgImage: CGImage
 
         /** The duration of that frame, in seconds */
-        let durationSeconds: Double
+        public let durationSeconds: Double
 
         /** The duration of that frame, in deciseconds */
-        let durationDecis: Int64
+        public let durationDecis: Int64
 
         /**
          Greatest common denominator of two `Int64`s.
@@ -61,7 +62,7 @@ extension CGImageSource {
         /**
          Greatest common denominator of an array of `Int64`s.
          */
-        static func gcdDurationDecis(animationFrames: [AnimationFrame]) -> Int64? {
+        public static func gcdDurationDecis(animationFrames: [AnimationFrame]) -> Int64? {
             let theInts = animationFrames.map { return $0.durationDecis }
             return gcd(int64s: theInts)
         }
@@ -112,7 +113,7 @@ extension CGImageSource {
      Delivers the `AnimationFrame`s.
      - Returns: All contained `AnimationFrame`s
      */
-    func animationFrames() -> [AnimationFrame] {
+    public func animationFrames() -> [AnimationFrame] {
         var animationFrames = [AnimationFrame]()
         let imgCount = CGImageSourceGetCount(self)
         for index in 0..<imgCount {
