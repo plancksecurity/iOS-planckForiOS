@@ -9,7 +9,7 @@
 import UIKit
 
 extension CGRect {
-    static func rectAround(center: CGPoint, width: CGFloat, height: CGFloat) -> CGRect {
+    public static func rectAround(center: CGPoint, width: CGFloat, height: CGFloat) -> CGRect {
         let origin = CGPoint(x: round(center.x - width / 2), y: round(center.y - height / 2))
         return CGRect(origin: origin, size: CGSize(width: width, height: height))
     }
@@ -18,7 +18,7 @@ extension CGRect {
      - Returns: A CGRect in the center of the receiver,
      with (width, height) <= (maxWidth, maxWidth).
      */
-    func centerRect(maxWidth: CGFloat) -> CGRect {
+    public func centerRect(maxWidth: CGFloat) -> CGRect {
         let r = standardized
         var theWidth = maxWidth
         theWidth = min(theWidth, min(r.width, r.height))

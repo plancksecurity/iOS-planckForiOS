@@ -13,7 +13,7 @@ extension UIImageView {
      - Returns: The aspect ratio, like 16:9, as a float. That is the factor you
      have to multiply the height and receive the width.
      */
-    func aspectRatio() -> CGFloat {
+    public func aspectRatio() -> CGFloat {
         return bounds.width / bounds.height
     }
 
@@ -21,7 +21,7 @@ extension UIImageView {
      Sets up the necessary constraints to have the height always adopt to the width,
      while maintaining the correct aspect ratio.
      */
-    func activateAspectRatioConstraint() {
+    public func activateAspectRatioConstraint() {
         let factor = 1 / aspectRatio()
         heightAnchor.constraint(equalTo: widthAnchor, multiplier: factor).isActive = true
     }
@@ -29,7 +29,7 @@ extension UIImageView {
     /**
      Gives the image the uniform look of a contact image.
      */
-    func applyContactImageCornerRadius() {
+    public func applyContactImageCornerRadius() {
         let theWidth = bounds.size.width
         layer.cornerRadius = round(theWidth / 10)
         layer.masksToBounds = true

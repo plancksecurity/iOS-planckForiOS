@@ -12,7 +12,7 @@ extension UIButton {
     /**
      Makes the button the typical look for a pEp button used in the handshake dialogs.
      */
-    func pEpIfyForTrust(backgroundColor: UIColor, textColor: UIColor) {
+    public func pEpIfyForTrust(backgroundColor: UIColor, textColor: UIColor) {
         titleLabel?.numberOfLines = 0
         titleLabel?.lineBreakMode = .byWordWrapping
         titleLabel?.textAlignment = .center
@@ -22,10 +22,10 @@ extension UIButton {
         layer.cornerRadius = 2
         let insetV: CGFloat = 15
         let insetH: CGFloat = 15
-        contentEdgeInsets = UIEdgeInsetsMake(insetV, insetH, insetV, insetH)
+        contentEdgeInsets = UIEdgeInsets(top: insetV, left: insetH, bottom: insetV, right: insetH)
     }
 
-    func convertToLoginButton(placeholder: String) {
+    public func convertToLoginButton(placeholder: String) {
         self.backgroundColor = UIColor.clear
         self.tintColor = UIColor.pEpGreen
         self.setTitle(placeholder, for: .normal)
@@ -34,7 +34,7 @@ extension UIButton {
     /**
      Does the content fit the button bounds?
      */
-    func contentFitsWidth() -> Bool {
+    public func contentFitsWidth() -> Bool {
         let iSize = intrinsicContentSize
         let actSize = bounds.size
         return iSize.width < actSize.width
