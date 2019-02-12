@@ -40,7 +40,6 @@
 		B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C57220DA6190027CCB5 /* String+Email.swift */; };
 		B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */; };
 		B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */; };
-		B7DB7F4E2213098B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F4D2213098A003968DA /* SortedSet.swift */; };
 		B7DB7F5022130DE9003968DA /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F4F22130DE9003968DA /* Weak.swift */; };
 		B7DB7F522213120B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F512213120B003968DA /* SortedSet.swift */; };
 /* End PBXBuildFile section */
@@ -81,7 +80,6 @@
 		B7A46C57220DA6190027CCB5 /* String+Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Email.swift"; sourceTree = "<group>"; };
 		B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Parsing.swift"; sourceTree = "<group>"; };
-		B7DB7F4D2213098A003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		B7DB7F4F22130DE9003968DA /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		B7DB7F512213120B003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedSet.swift; path = ../../../../pEpForiOS/Util/SortedSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -100,7 +98,6 @@
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				B7DB7F4D2213098A003968DA /* SortedSet.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 				B7A46C51220C732E0027CCB5 /* Data+Extensions.swift */,
 				B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */,
@@ -278,7 +275,6 @@
 				B753907E2212D6B500B1FCF9 /* CGSize+Extension.swift in Sources */,
 				B75390802212DD0600B1FCF9 /* UIView+Util.swift in Sources */,
 				B7DB7F522213120B003968DA /* SortedSet.swift in Sources */,
-				B7DB7F4E2213098B003968DA /* SortedSet.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,

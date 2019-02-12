@@ -7,21 +7,20 @@
 //
 
 import UIKit
-import pEpUtilities
 
 /// Automatically keeps containted objects sorted to the criteria of a given sort block.
 /// The implementation is completely trival and unperformant.
 /// Has to be improved if this causes performance issue in the app.
-class SortedSet<T: Equatable>: Sequence {
+public class SortedSet<T: Equatable>: Sequence {
     // MARK: - Public API
 
-    typealias SortBlock = (_ first: T,_  second: T) -> ComparisonResult
+    public typealias SortBlock = (_ first: T,_  second: T) -> ComparisonResult
 
     public var count: Int {
         return set.count
     }
     
-    init(array: [T], sortBlock block: @escaping SortBlock) {
+    public init(array: [T], sortBlock block: @escaping SortBlock) {
         set = NSMutableOrderedSet(array: array)
         sortBlock = block
         sort()
