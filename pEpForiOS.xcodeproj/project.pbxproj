@@ -495,7 +495,6 @@
 		492EF92A20C18C6C004EAE14 /* DisplayedMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EF92920C18C6C004EAE14 /* DisplayedMessage.swift */; };
 		492EF92D20C6957D004EAE14 /* ThreadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EF92C20C6957D004EAE14 /* ThreadViewController.swift */; };
 		492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492EF92E20C699D0004EAE14 /* ThreadViewController+TableView.swift */; };
-		495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 495560851E7150ED0016579E /* libPantomimeStatic.a */; };
 		495D69BF20DBAEE900986007 /* ThreadViewController+SwipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495D69BE20DBAEE900986007 /* ThreadViewController+SwipeCell.swift */; };
 		495F607C20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495F607B20B564CD00F47BD6 /* EmailViewController+SizeClasses.swift */; };
 		496355B120ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 496355B020ECEA2900AA4387 /* ThreadedEmailViewModel+EmailDisplayDelegate.swift */; };
@@ -1168,7 +1167,6 @@
 				43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */,
 				43209B541ECC5A9B007E7E2E /* libpEpObjCAdapter.a in Frameworks */,
 				43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */,
-				495560861E7150ED0016579E /* libPantomimeStatic.a in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
@@ -3859,7 +3857,6 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
 					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(SRCROOT)/../libAccountSettings/include",
@@ -3900,7 +3897,6 @@
 				DEVELOPMENT_TEAM = NQLYU6MGPN;
 				FRAMEWORK_SEARCH_PATHS = "";
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/../pantomime-iOS/pantomime-lib/Framework",
 					"$(SRCROOT)/../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(SRCROOT)/../libAccountSettings/include",
