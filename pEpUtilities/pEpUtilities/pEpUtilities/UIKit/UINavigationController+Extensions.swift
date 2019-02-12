@@ -9,7 +9,7 @@
 import UIKit
 
 extension UINavigationController {
-    var rootViewController : UIViewController? {
+    public var rootViewController : UIViewController? {
         return viewControllers.first
     }
 }

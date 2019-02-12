@@ -7,11 +7,10 @@
 //
 
 import UIKit
-import pEpUtilities
 
 extension UIView {
     /// Sets up constraints to always stay the same size as the superview.
-    func fullSizeInSuperView() {
+    public func fullSizeInSuperView() {
         guard let superview = self.superview else {
             Logger.frontendLogger.errorAndCrash("No superview")
             return

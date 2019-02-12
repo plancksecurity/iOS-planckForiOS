@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpUtilities
 
 class PrimarySplitViewController: UISplitViewController, UISplitViewControllerDelegate {
     override func viewDidLoad() {
