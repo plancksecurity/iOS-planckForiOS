@@ -62,7 +62,7 @@ hg clone https://pep.foundation/dev/repos/libAccountSettings/
 
 hg clone https://pep-security.ch/dev/repos/pEp_for_iOS/
 
-//Temp hot fix
+# Temp hot fix
 cd ~/ldns
 git checkout IOS-749
 cd ..
