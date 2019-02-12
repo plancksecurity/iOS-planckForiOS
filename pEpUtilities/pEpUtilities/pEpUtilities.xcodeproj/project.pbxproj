@@ -41,6 +41,8 @@
 		B7A46C5E220DBAF00027CCB5 /* OperationQueue+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */; };
 		B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */; };
 		B7DB7F4E2213098B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F4D2213098A003968DA /* SortedSet.swift */; };
+		B7DB7F5022130DE9003968DA /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F4F22130DE9003968DA /* Weak.swift */; };
+		B7DB7F522213120B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F512213120B003968DA /* SortedSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +82,8 @@
 		B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Parsing.swift"; sourceTree = "<group>"; };
 		B7DB7F4D2213098A003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
+		B7DB7F4F22130DE9003968DA /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
+		B7DB7F512213120B003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedSet.swift; path = ../../../../pEpForiOS/Util/SortedSet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,8 +113,10 @@
 				B70A3A5422005BD400EDCE61 /* Date+Extension.swift */,
 				B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */,
 				B7911ECB21F8B46600D7F66F /* GCD.swift */,
+				B7DB7F4F22130DE9003968DA /* Weak.swift */,
 				B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */,
 				B7465DBD22119D39008A1708 /* Thread+Extension.swift */,
+				B7DB7F512213120B003968DA /* SortedSet.swift */,
 				B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */,
 			);
 			path = Foundation;
@@ -271,6 +277,7 @@
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
 				B753907E2212D6B500B1FCF9 /* CGSize+Extension.swift in Sources */,
 				B75390802212DD0600B1FCF9 /* UIView+Util.swift in Sources */,
+				B7DB7F522213120B003968DA /* SortedSet.swift in Sources */,
 				B7DB7F4E2213098B003968DA /* SortedSet.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
@@ -279,6 +286,7 @@
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
 				B7911ECA21F88D1900D7F66F /* UITableView+Extension.swift in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
+				B7DB7F5022130DE9003968DA /* Weak.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
 				B7465DC82211A062008A1708 /* SegueHandlerType.swift in Sources */,
 				B75390822212DFB600B1FCF9 /* UINavigationController+Extensions.swift in Sources */,
