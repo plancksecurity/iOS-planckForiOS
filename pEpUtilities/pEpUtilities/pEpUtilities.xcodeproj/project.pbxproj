@@ -26,6 +26,7 @@
 		B75390802212DD0600B1FCF9 /* UIView+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753907F2212DD0600B1FCF9 /* UIView+Util.swift */; };
 		B75390822212DFB600B1FCF9 /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75390812212DFB500B1FCF9 /* UINavigationController+Extensions.swift */; };
 		B75390842212DFD800B1FCF9 /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75390832212DFD800B1FCF9 /* UIView+Autolayout.swift */; };
+		B75390862212E20500B1FCF9 /* Collection+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75390852212E20500B1FCF9 /* Collection+Extensions.swift */; };
 		B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC121F8694000D7F66F /* UIColor+Extension.swift */; };
 		B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */; };
 		B7911EC821F88D0200D7F66F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */; };
@@ -61,6 +62,7 @@
 		B753907F2212DD0600B1FCF9 /* UIView+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Util.swift"; sourceTree = "<group>"; };
 		B75390812212DFB500B1FCF9 /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		B75390832212DFD800B1FCF9 /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
+		B75390852212E20500B1FCF9 /* Collection+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+Extensions.swift"; sourceTree = "<group>"; };
 		B7911EB421F7358500D7F66F /* pEpUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = pEpUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7911EB821F7358500D7F66F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7911EC121F8694000D7F66F /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				B753907F2212DD0600B1FCF9 /* UIView+Util.swift */,
 				B75390832212DFD800B1FCF9 /* UIView+Autolayout.swift */,
 				B75390812212DFB500B1FCF9 /* UINavigationController+Extensions.swift */,
+				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				B7465DDF2211C6C8008A1708 /* UIBarButtonItem+Extension.swift in Sources */,
 				B7936E3D220DD8F5003B39E6 /* NSAttributedString+Extensions.swift in Sources */,
 				B75390842212DFD800B1FCF9 /* UIView+Autolayout.swift in Sources */,
+				B75390862212E20500B1FCF9 /* Collection+Extensions.swift in Sources */,
 				B7465DE92212CCDB008A1708 /* UIButton+Extension.swift in Sources */,
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
 				B753907E2212D6B500B1FCF9 /* CGSize+Extension.swift in Sources */,
