@@ -22,6 +22,8 @@
 		B7465DE52211E08A008A1708 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DE42211E08A008A1708 /* UIImageView+Extension.swift */; };
 		B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DE62211E969008A1708 /* CGRect+Util.swift */; };
 		B7465DE92212CCDB008A1708 /* UIButton+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DE82212CCDB008A1708 /* UIButton+Extension.swift */; };
+		B753907E2212D6B500B1FCF9 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753907D2212D6B500B1FCF9 /* CGSize+Extension.swift */; };
+		B75390802212DD0600B1FCF9 /* UIView+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = B753907F2212DD0600B1FCF9 /* UIView+Util.swift */; };
 		B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC121F8694000D7F66F /* UIColor+Extension.swift */; };
 		B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */; };
 		B7911EC821F88D0200D7F66F /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */; };
@@ -53,6 +55,8 @@
 		B7465DE42211E08A008A1708 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		B7465DE62211E969008A1708 /* CGRect+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGRect+Util.swift"; sourceTree = "<group>"; };
 		B7465DE82212CCDB008A1708 /* UIButton+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Extension.swift"; sourceTree = "<group>"; };
+		B753907D2212D6B500B1FCF9 /* CGSize+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
+		B753907F2212DD0600B1FCF9 /* UIView+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Util.swift"; sourceTree = "<group>"; };
 		B7911EB421F7358500D7F66F /* pEpUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = pEpUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7911EB821F7358500D7F66F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7911EC121F8694000D7F66F /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -108,6 +112,7 @@
 			children = (
 				B7465DE22211C890008A1708 /* CGImageSource+Extension.swift */,
 				B7465DE62211E969008A1708 /* CGRect+Util.swift */,
+				B753907D2212D6B500B1FCF9 /* CGSize+Extension.swift */,
 				B7911EC121F8694000D7F66F /* UIColor+Extension.swift */,
 				B7465DE82212CCDB008A1708 /* UIButton+Extension.swift */,
 				B7911EC921F88D1900D7F66F /* UITableView+Extension.swift */,
@@ -118,6 +123,7 @@
 				B7465DDE2211C6C8008A1708 /* UIBarButtonItem+Extension.swift */,
 				B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */,
 				B7465DE42211E08A008A1708 /* UIImageView+Extension.swift */,
+				B753907F2212DD0600B1FCF9 /* UIView+Util.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -249,6 +255,8 @@
 				B7936E3D220DD8F5003B39E6 /* NSAttributedString+Extensions.swift in Sources */,
 				B7465DE92212CCDB008A1708 /* UIButton+Extension.swift in Sources */,
 				B7911EC221F8694100D7F66F /* UIColor+Extension.swift in Sources */,
+				B753907E2212D6B500B1FCF9 /* CGSize+Extension.swift in Sources */,
+				B75390802212DD0600B1FCF9 /* UIView+Util.swift in Sources */,
 				B7911EC621F88AF800D7F66F /* UIImage+Extension.swift in Sources */,
 				B70A3A77220091D400EDCE61 /* Logger.swift in Sources */,
 				B7A46C56220DA5EB0027CCB5 /* Substring+Email.swift in Sources */,

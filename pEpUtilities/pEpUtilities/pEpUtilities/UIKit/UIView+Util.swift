@@ -11,12 +11,12 @@ import UIKit
 /**
  A piece of data for tracking the "busyness" of a view.
  */
-struct ViewBusyState {
+public struct ViewBusyState {
     let views: [UIView]
 }
 
 extension UIView {
-    func dumpConstraints(axis: UILayoutConstraintAxis) {
+    func dumpConstraints(axis: NSLayoutConstraint.Axis) {
         let constrs = constraintsAffectingLayout(for: axis)
         if constrs.isEmpty {
             print("no constraints")
@@ -29,7 +29,7 @@ extension UIView {
     /**
      Marks the view as busy, e.g. by adding some spinning animation view.
      */
-    func displayAsBusy() -> ViewBusyState {
+    public func displayAsBusy() -> ViewBusyState {
         let darkView = UIView()
         darkView.translatesAutoresizingMaskIntoConstraints = false
         darkView.backgroundColor = .black
@@ -41,7 +41,7 @@ extension UIView {
         darkView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
 
         let activityView = UIActivityIndicatorView()
-        activityView.activityIndicatorViewStyle = .whiteLarge
+        activityView.style = .whiteLarge
         activityView.translatesAutoresizingMaskIntoConstraints = false
         darkView.addSubview(activityView)
         activityView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
@@ -53,7 +53,7 @@ extension UIView {
     /**
      Marks the given view as not busy anymore.
      */
-    func stopDisplayingAsBusy(viewBusyState: ViewBusyState) {
+    public func stopDisplayingAsBusy(viewBusyState: ViewBusyState) {
         for v in viewBusyState.views {
             v.removeFromSuperview()
         }
