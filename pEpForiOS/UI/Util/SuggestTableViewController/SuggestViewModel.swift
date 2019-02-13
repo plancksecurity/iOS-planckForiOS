@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 protocol SuggestViewModelResultDelegate: class {
     /// Will be called whenever the user selects an Identity.

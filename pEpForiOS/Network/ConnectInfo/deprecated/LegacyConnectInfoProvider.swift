@@ -8,7 +8,7 @@
 
 import MessageModel
 import CoreData
-import pEpUtilities
+import pEpIOSToolbox
 
 /// Supports usage of deprecated EmailConnectInfo.
 extension ConnectInfo {

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import pEpUtilities
+import pEpIOSToolbox
 
 extension ThreadViewController: SegueHandlerType {
 

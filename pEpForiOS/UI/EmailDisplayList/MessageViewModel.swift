@@ -8,7 +8,7 @@
 
 import Foundation
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 class MessageViewModel: CustomDebugStringConvertible {
 

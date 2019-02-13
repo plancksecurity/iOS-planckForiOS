@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 public class ImapSyncOperation: ConcurrentBaseOperation {
     let imapSyncData: ImapSyncData

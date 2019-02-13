@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import pEpUtilities
+import pEpIOSToolbox
 
 extension ConnectionTransport {
     init(accountSettingsTransport: AccountSettingsServerTransport) {

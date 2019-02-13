@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import pEpUtilities
+import pEpIOSToolbox
 import MessageModel
 
 class HandshakePartnerTableViewCellViewModel {

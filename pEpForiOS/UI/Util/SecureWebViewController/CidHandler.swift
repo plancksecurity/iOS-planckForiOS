@@ -8,7 +8,7 @@
 
 import WebKit
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 @available(iOS, introduced: 11.0)
 

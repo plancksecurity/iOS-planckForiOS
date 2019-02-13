@@ -6,7 +6,7 @@
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-import pEpUtilities
+import pEpIOSToolbox
 
 public protocol SmtpSendDelegate: class {
     func messageSent(_ smtp: SmtpSend, theNotification: Notification?)

@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 public typealias ImapStoreCommand = (command: String, pantomimeDict:[AnyHashable: Any])
 

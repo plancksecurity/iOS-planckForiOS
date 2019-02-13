@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import pEpUtilities
+import pEpIOSToolbox
 
 class RecipientTextView: UITextView {
     public var viewModel: RecipientTextViewModel?{

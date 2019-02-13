@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import pEpUtilities
+import pEpIOSToolbox
 
 open class MimeTypeUtil {
     public static let defaultMimeType = "application/octet-stream"

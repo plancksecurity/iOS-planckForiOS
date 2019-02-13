@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 enum NetworkAddressType: String {
     case ipv4 = "IPv4"

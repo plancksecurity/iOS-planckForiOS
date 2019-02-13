@@ -8,7 +8,7 @@
 
 import UIKit
 import SwipeCellKit
-import pEpUtilities
+import pEpIOSToolbox
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let FILTER_TITLE_MAX_XAR = 20

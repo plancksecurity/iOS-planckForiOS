@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import pEpUtilities
+import pEpIOSToolbox
 
 protocol ThreadedEmailViewModelDelegate: class, TableViewUpdate {
     func emailViewModel(viewModel: ThreadedEmailViewModel, didInsertDataAt index: Int)

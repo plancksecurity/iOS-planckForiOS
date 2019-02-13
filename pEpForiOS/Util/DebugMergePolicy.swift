@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-import pEpUtilities
+import pEpIOSToolbox
 
 class DebugMergePolicy: NSMergePolicy {
     override func resolve(mergeConflicts list: [Any]) throws {

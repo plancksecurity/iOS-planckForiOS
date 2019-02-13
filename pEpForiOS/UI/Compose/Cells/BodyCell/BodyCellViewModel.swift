@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 protocol BodyCellViewModelResultDelegate: class {
 

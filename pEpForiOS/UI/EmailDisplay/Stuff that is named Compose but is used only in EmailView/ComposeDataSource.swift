@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import pEpUtilities
+import pEpIOSToolbox
 import MessageModel
 
 class ComposeDataSource: NSObject {

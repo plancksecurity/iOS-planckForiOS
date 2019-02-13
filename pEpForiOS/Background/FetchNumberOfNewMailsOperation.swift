@@ -8,7 +8,7 @@
 
 import CoreData
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 /// Fetches UIDs of  new (to us) messages in a given folder and returns its count.
 class FetchNumberOfNewMailsOperation: ImapSyncOperation {

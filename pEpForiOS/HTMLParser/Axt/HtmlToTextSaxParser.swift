@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import pEpUtilities
+import pEpIOSToolbox
 
 class HtmlToTextSaxParser: BasicSaxParser {
     var tagStack = [String]()

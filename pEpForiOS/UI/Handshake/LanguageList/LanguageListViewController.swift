@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import pEpUtilities
+import pEpIOSToolbox
 
 class LanguageListViewController: BaseTableViewController {
     let defaultCellReuseIdentifier = "LanguageListCell"

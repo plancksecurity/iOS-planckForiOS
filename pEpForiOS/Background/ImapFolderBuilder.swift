@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import pEpUtilities
+import pEpIOSToolbox
 import MessageModel
 
 open class ImapFolderBuilder: NSObject, CWFolderBuilding {

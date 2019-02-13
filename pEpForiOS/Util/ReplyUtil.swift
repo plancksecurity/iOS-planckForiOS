@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 public struct ReplyUtil {
     private static let nameSeparator = ", "

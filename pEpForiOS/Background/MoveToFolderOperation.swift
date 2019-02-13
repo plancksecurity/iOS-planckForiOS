@@ -7,7 +7,7 @@
 //
 
 import CoreData
-import pEpUtilities
+import pEpIOSToolbox
 import MessageModel
 
 /// Moves all messages in the given folder to targetFolder if parent != tagetfolder.

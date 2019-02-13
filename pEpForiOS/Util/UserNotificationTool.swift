@@ -7,7 +7,7 @@
 //
 
 import UserNotifications
-import pEpUtilities
+import pEpIOSToolbox
 
 /// A simple wrapper around Local Notification stuff
 struct UserNotificationTool {

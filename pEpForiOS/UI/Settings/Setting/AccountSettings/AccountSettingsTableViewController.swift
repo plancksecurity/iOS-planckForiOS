@@ -8,7 +8,7 @@
 
 import UIKit
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 class AccountSettingsTableViewController: BaseTableViewController, UIPickerViewDelegate,
 UIPickerViewDataSource, UITextFieldDelegate {

@@ -8,7 +8,7 @@
 
 import CoreData
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 protocol SyncFlagsToServerOperationDelegate: class {
     func flagsUploaded(cdMessage: CdMessage)

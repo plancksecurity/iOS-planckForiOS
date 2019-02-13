@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 import Photos
-import pEpUtilities
+import pEpIOSToolbox
 import MessageModel
 
 /**

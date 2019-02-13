@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-import pEpUtilities
+import pEpIOSToolbox
 import MessageModel
 
 class MessageSyncService: MessageSyncServiceProtocol {

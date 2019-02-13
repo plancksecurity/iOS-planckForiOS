@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import pEpUtilities
+import pEpIOSToolbox
 
 class AccountCell: TextViewContainingTableViewCell {
     static let reuseId = "AccountCell"

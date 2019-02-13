@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-import pEpUtilities
+import pEpIOSToolbox
 
 protocol DocumentAttachmentPickerViewModelResultDelegate: class {
     func documentAttachmentPickerViewModel(_ vm: DocumentAttachmentPickerViewModel,
