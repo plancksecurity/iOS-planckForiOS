@@ -26,7 +26,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
-            me.didDelete(messageFolder: message, belongingToThread: message.threadMessageIdSet())
+            me.didDelete(messageFolder: message)
         }
     }
 

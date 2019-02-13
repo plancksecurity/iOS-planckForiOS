@@ -244,7 +244,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        FolderThreading.switchThreading(onOrOff: AppSettings.threadedViewEnabled)
 
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them

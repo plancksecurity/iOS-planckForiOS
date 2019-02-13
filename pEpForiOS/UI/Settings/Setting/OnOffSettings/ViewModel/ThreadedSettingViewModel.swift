@@ -18,8 +18,8 @@ struct ThreadedSwitchViewModel: SwitchSettingCellViewModelProtocol  {
                                            comment: "settings, enable thread view or not")
 
     func setSwitch(value: Bool) {
+        // For now, do nothing, just persist this.
         AppSettings.threadedViewEnabled = value
-        FolderThreading.switchThreading(onOrOff: value)
     }
 
     func switchValue() -> Bool {

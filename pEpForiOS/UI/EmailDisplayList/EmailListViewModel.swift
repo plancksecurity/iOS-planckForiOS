@@ -34,8 +34,6 @@ extension EmailListViewModel: FilterUpdateProtocol {
 // MARK: - EmailListViewModel
 
 class EmailListViewModel {
-    let messageFolderDelegateHandlingQueue = DispatchQueue(label:
-        "net.pep-security-EmailListViewModel-MessageFolderDelegateHandling")
     let contactImageTool = IdentityImageTool()
     let messageSyncService: MessageSyncServiceProtocol
     internal var messages: SortedSet<MessageViewModel>
@@ -51,7 +49,6 @@ class EmailListViewModel {
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
     internal let folderToShow: Folder
-    internal let threadedMessageFolder: ThreadedMessageFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
     public var screenComposer: ScreenComposerProtocol?
@@ -88,12 +85,10 @@ class EmailListViewModel {
         self.messageSyncService = messageSyncService
 
         self.folderToShow = folderToShow
-        self.threadedMessageFolder = FolderThreading.makeThreadAware(folder: folderToShow)
         self.defaultFilter = folderToShow.filter?.clone()
         self.oldThreadSetting = AppSettings.threadedViewEnabled
         
-        resetViewModel()
-        
+        resetViewModel()        
     }
 
     func updateLastLookAt() {
@@ -143,7 +138,7 @@ class EmailListViewModel {
                 !op.isCancelled else {
                 return
             }
-            let messagesToDisplay = me.folderToShow.allMessages()
+            let messagesToDisplay = me.folderToShow.allMessagesNonThreaded()
             let previewMessages = messagesToDisplay.map {
                 MessageViewModel(with: $0)
             }
@@ -341,7 +336,7 @@ class EmailListViewModel {
                 "Not sure if this is a valid case. Remove this log if so.")
             return
         }
-        didDelete(messageFolder: deletedMessage, belongingToThread: Set())
+        didDelete(messageFolder: deletedMessage)
     }
 
     private func deleteMessage(at indexPath: IndexPath) -> Message? {
@@ -354,9 +349,7 @@ class EmailListViewModel {
     }
 
     private func delete(message: Message) {
-        // The message to delete might be a single, unthreaded message,
-        // or the tip of a thread. `threadedMessageFolder` will figure it out.
-        threadedMessageFolder.deleteThread(message: message)
+        message.imapDelete()
     }
 
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
@@ -365,10 +358,8 @@ class EmailListViewModel {
 
     internal func requestEmailViewIfNeeded(for message:Message) {
         MessageModel.performAndWait {
-            if (message.numberOfMessagesInThread() == 0) {
-                DispatchQueue.main.async {
-                    self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
-                }
+            DispatchQueue.main.async {
+                self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
             }
         }
     }

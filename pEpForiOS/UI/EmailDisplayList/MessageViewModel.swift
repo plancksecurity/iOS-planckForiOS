@@ -330,11 +330,10 @@ extension MessageViewModel {
             MessageModel.performAndWait {
                 guard
                     let operation = operation,
-                    !operation.isCancelled,
-                    let message = me.message() else {
+                    !operation.isCancelled else {
                         return
                 }
-                let messageCount = message.numberOfMessagesInThread()
+                let messageCount = 0 // no threading
                 me.internalMessageCount = messageCount
                 if (!operation.isCancelled){
                     DispatchQueue.main.async {

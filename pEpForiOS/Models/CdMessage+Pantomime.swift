@@ -465,8 +465,7 @@ extension CdMessage {
             MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
         } else {
             MessageModelConfig.messageFolderDelegate?.didDelete(
-                messageFolder: msg,
-                belongingToThread: Set())
+                messageFolder: msg)
         }
     }
 
