@@ -130,6 +130,7 @@
 		1544BCFE215246F30075C5A0 /* AttachmentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1544BCFD215246F30075C5A0 /* AttachmentFilter.swift */; };
 		1544BD0221524C9F0075C5A0 /* AttachmentFilterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */; };
 		1547509A1FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */; };
+		15484B682105D5AA00F9D962 /* ConnectInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15484B672105D5AA00F9D962 /* ConnectInfo.swift */; };
 		15484B6C2105E26600F9D962 /* LegacyConnectInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15484B6B2105E26600F9D962 /* LegacyConnectInfoProvider.swift */; };
 		154D92CF20AC1745009A5868 /* MoveToFolderOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */; };
 		154F0A802085FC7D00C77D72 /* CdAttachment+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 154F0A7F2085FC7D00C77D72 /* CdAttachment+Pantomime.swift */; };
@@ -706,6 +707,7 @@
 		1544BCFD215246F30075C5A0 /* AttachmentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentFilter.swift; sourceTree = "<group>"; };
 		1544BD0121524C9F0075C5A0 /* AttachmentFilterTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AttachmentFilterTest.swift; path = pEpForiOSTests/Models/Filter/AttachmentFilterTest.swift; sourceTree = SOURCE_ROOT; };
 		154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchNumberOfNewMailsOperation.swift; sourceTree = "<group>"; };
+		15484B672105D5AA00F9D962 /* ConnectInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectInfo.swift; sourceTree = "<group>"; };
 		15484B6B2105E26600F9D962 /* LegacyConnectInfoProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyConnectInfoProvider.swift; sourceTree = "<group>"; };
 		154D92CE20AC1744009A5868 /* MoveToFolderOperationTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderOperationTest.swift; sourceTree = "<group>"; };
 		154F0A7F2085FC7D00C77D72 /* CdAttachment+Pantomime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Pantomime.swift"; sourceTree = "<group>"; };
@@ -1530,6 +1532,7 @@
 			isa = PBXGroup;
 			children = (
 				15484B662105D58800F9D962 /* deprecated */,
+				15484B672105D5AA00F9D962 /* ConnectInfo.swift */,
 				43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */,
 			);
 			path = ConnectInfo;
@@ -3442,6 +3445,7 @@
 				43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */,
 				43985D0A2044296D0080FA9A /* OAuth2AuthViewModel.swift in Sources */,
 				49691B1520D7FD0200CA9367 /* MessageViewModelConfigurable.swift in Sources */,
+				15484B682105D5AA00F9D962 /* ConnectInfo.swift in Sources */,
 				152A39CF21905C3E00D9F8E4 /* ComposeUtil.swift in Sources */,
 				152A39C821905C3E00D9F8E4 /* ComposeViewModel+InitData.swift in Sources */,
 				0038494C20D2587F008000EA /* PepPictureComposer.swift in Sources */,
