@@ -29,7 +29,6 @@ class ReachibilityUtilsTests: XCTestCase {
     
     func testGetConnectionStatusYesInternet() {
         // Given
-        
         // Then
         guard let result = try? yesReachability?.getConnectionStatus() else{
             XCTFail("should not get nil in getConnectionStatus")
@@ -41,7 +40,6 @@ class ReachibilityUtilsTests: XCTestCase {
     
     func testGetConnectionStatusNoInternet() {
         // Given
-        
         // When
         guard let result = try? noReachability?.getConnectionStatus() else{
             XCTFail("should not get nil in getConnectionStatus")
@@ -55,7 +53,6 @@ class ReachibilityUtilsTests: XCTestCase {
         // Given
         let exp = expectation(description: "delegate called for connected")
         let expectedConnected = Reachability.Connection.connected
-//        yesReachability?.flags = []
         
         let testDelegate = ReachibilityUtilsTestsDelegate(withExp: exp,
                                                           withExpectedConnected: expectedConnected)
@@ -70,7 +67,6 @@ class ReachibilityUtilsTests: XCTestCase {
         // Given
         let exp = expectation(description: "delegate called for not connected")
         let expectedNotConnected = Reachability.Connection.notConnected
-//        noReachability?.flags = [.reachable]
         
         let testDelegate = ReachibilityUtilsTestsDelegate(withExp: exp,
                                                           withExpectedConnected: expectedNotConnected)
@@ -81,7 +77,6 @@ class ReachibilityUtilsTests: XCTestCase {
         waitForExpectations(timeout: TestUtil.waitTime)
     }
 }
-
 
 // MARK: - ReachabilityDelegate
 class ReachibilityUtilsTestsDelegate {

@@ -9,22 +9,18 @@
 import Foundation
 import SystemConfiguration
 
-public class NetworkReachability: NetworkReachabilityProtocol {
-    public init(){}
+class NetworkReachability: NetworkReachabilityProtocol {
+    init(){}
     
-    public func networkReachabilityCreateWithName(_ allocator: CFAllocator?, _ nodename: UnsafePointer<Int8>) -> SCNetworkReachability? {
+    func networkReachabilityCreateWithName(_ allocator: CFAllocator?, _ nodename: UnsafePointer<Int8>) -> SCNetworkReachability? {
         return SCNetworkReachabilityCreateWithName(allocator, nodename)
     }
     
-    public func networkReachabilityCreateWithAddress(_ allocator: CFAllocator?, _ address: UnsafePointer<sockaddr>) -> SCNetworkReachability? {
-        return SCNetworkReachabilityCreateWithAddress(allocator, address)
-    }
-    
-    public func networkReachabilityGetFlags(_ target: SCNetworkReachability, _ flags: UnsafeMutablePointer<SCNetworkReachabilityFlags>) -> Bool {
+    func networkReachabilityGetFlags(_ target: SCNetworkReachability, _ flags: UnsafeMutablePointer<SCNetworkReachabilityFlags>) -> Bool {
         return SCNetworkReachabilityGetFlags(target, flags)
     }
     
-    @discardableResult public func networkReachabilitySetCallback(_ target: SCNetworkReachability, _ callout: SCNetworkReachabilityCallBack?, _ context: UnsafeMutablePointer<SCNetworkReachabilityContext>?) -> Bool {
+    @discardableResult func networkReachabilitySetCallback(_ target: SCNetworkReachability, _ callout: SCNetworkReachabilityCallBack?, _ context: UnsafeMutablePointer<SCNetworkReachabilityContext>?) -> Bool {
         return SCNetworkReachabilitySetCallback(target, callout, context)
     }
 }

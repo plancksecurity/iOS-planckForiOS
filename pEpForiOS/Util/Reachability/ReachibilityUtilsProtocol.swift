@@ -8,8 +8,8 @@
 
 import Foundation
 
-protocol ReachibilityUtilsProtocol {
-    var delegate: ReachabilityDelegate?    {get set}
+public protocol ReachibilityUtilsProtocol {
+    var delegate: ReachabilityDelegate? {get set}
     
     /// Get current connection status
     ///

@@ -43,7 +43,7 @@ public final class Reachability: ReachibilityUtilsProtocol {
     public weak var delegate: ReachabilityDelegate?
     
     private var notifierRunning = false
-    private let networkReachability: NetworkReachabilityProtocol
+    private var networkReachability: NetworkReachabilityProtocol
     private let reachabilityRef: SCNetworkReachability
     private let reachabilitySerialQueue: DispatchQueue
     
@@ -56,35 +56,33 @@ public final class Reachability: ReachibilityUtilsProtocol {
         }
     }
     
-    required public init(networkReachability: NetworkReachabilityProtocol = NetworkReachability(),
-                         reachabilityRef: SCNetworkReachability, queueQoS: DispatchQoS = .default,
+    required public init(reachabilityRef: SCNetworkReachability, queueQoS: DispatchQoS = .default,
                          targetQueue: DispatchQueue? = nil) {
-        self.networkReachability = networkReachability
         self.reachabilityRef = reachabilityRef
+        self.networkReachability = NetworkReachability()
         self.reachabilitySerialQueue =
             DispatchQueue(label: "pep.reachability", qos: queueQoS, target: targetQueue)
     }
     
-    public convenience init?(networkReachability: NetworkReachabilityProtocol =
-        NetworkReachability(), hostname: String, queueQoS: DispatchQoS = .default,
+    public convenience init?(hostname: String, queueQoS: DispatchQoS = .default,
                                targetQueue: DispatchQueue? = nil) {
-        guard let ref = networkReachability.networkReachabilityCreateWithName(nil, hostname) else {
-            return nil
-        }
-        self.init(networkReachability: networkReachability, reachabilityRef: ref,
-                  queueQoS: queueQoS, targetQueue: targetQueue)
+        guard let ref = SCNetworkReachabilityCreateWithName(nil, hostname) else { return nil }
+        
+        self.init(reachabilityRef: ref, queueQoS: queueQoS, targetQueue: targetQueue)
     }
     
-    public convenience init?(networkReachability: NetworkReachabilityProtocol =
-        NetworkReachability(), queueQoS: DispatchQoS = .default, targetQueue: DispatchQueue? = nil) {
+    public convenience init?(queueQoS: DispatchQoS = .default, targetQueue: DispatchQueue? = nil) {
         var zeroAddress = sockaddr()
         zeroAddress.sa_len = UInt8(MemoryLayout<sockaddr>.size)
         zeroAddress.sa_family = sa_family_t(AF_INET)
-        guard let ref = networkReachability.networkReachabilityCreateWithAddress(nil, &zeroAddress)
-            else { return nil }
+        guard let ref = SCNetworkReachabilityCreateWithAddress(nil, &zeroAddress) else { return nil }
         
-        self.init(networkReachability: networkReachability, reachabilityRef: ref,
-                  queueQoS: queueQoS, targetQueue: targetQueue)
+        self.init(reachabilityRef: ref,queueQoS: queueQoS, targetQueue: targetQueue)
+    }
+    
+    convenience init?(networkReachability: NetworkReachabilityProtocol) {
+        self.init()
+        self.networkReachability = networkReachability
     }
     
     deinit {
@@ -134,10 +132,11 @@ public final class Reachability: ReachibilityUtilsProtocol {
 }
 
 
-// MARK: - PRivate methods
+// MARK: - Private methods
 private extension Reachability {
     private func setReachabilityFlags() throws {
-        try reachabilitySerialQueue.sync { [unowned self] in
+        try reachabilitySerialQueue.sync { [weak self] in
+            guard let `self` = self else { return }
             var flags = SCNetworkReachabilityFlags()
             guard networkReachability.networkReachabilityGetFlags(self.reachabilityRef, &flags) else {
                 self.stopNotifier()
