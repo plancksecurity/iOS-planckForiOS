@@ -14,7 +14,6 @@
 		B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DBD22119D39008A1708 /* Thread+Extension.swift */; };
 		B7465DC622119EB1008A1708 /* Array+SortingAndSearching.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */; };
 		B7465DC82211A062008A1708 /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC72211A062008A1708 /* SegueHandlerType.swift */; };
-		B7465DCA2211BB3C008A1708 /* CredentialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DC92211BB3B008A1708 /* CredentialTextField.swift */; };
 		B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DCB2211BEE9008A1708 /* Tuple.swift */; };
 		B7465DDF2211C6C8008A1708 /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DDE2211C6C8008A1708 /* UIBarButtonItem+Extension.swift */; };
 		B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */; };
@@ -62,7 +61,6 @@
 		B7465DBD22119D39008A1708 /* Thread+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Thread+Extension.swift"; sourceTree = "<group>"; };
 		B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+SortingAndSearching.swift"; sourceTree = "<group>"; };
 		B7465DC72211A062008A1708 /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
-		B7465DC92211BB3B008A1708 /* CredentialTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialTextField.swift; sourceTree = "<group>"; };
 		B7465DCB2211BEE9008A1708 /* Tuple.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tuple.swift; sourceTree = "<group>"; };
 		B7465DDE2211C6C8008A1708 /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+GIF.swift"; sourceTree = "<group>"; };
@@ -150,7 +148,6 @@
 				B7911EC721F88D0200D7F66F /* UITextField+Extension.swift */,
 				B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */,
 				B7465DC72211A062008A1708 /* SegueHandlerType.swift */,
-				B7465DC92211BB3B008A1708 /* CredentialTextField.swift */,
 				B7465DDE2211C6C8008A1708 /* UIBarButtonItem+Extension.swift */,
 				B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */,
 				B7465DE42211E08A008A1708 /* UIImageView+Extension.swift */,
@@ -341,7 +338,6 @@
 				B7DB7F5022130DE9003968DA /* Weak.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
 				B7465DC82211A062008A1708 /* SegueHandlerType.swift in Sources */,
-				B7465DCA2211BB3C008A1708 /* CredentialTextField.swift in Sources */,
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
