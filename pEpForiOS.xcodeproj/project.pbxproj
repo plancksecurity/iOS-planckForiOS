@@ -242,7 +242,6 @@
 		430E5F201EBC87A700E5D5D3 /* LanguageListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430E5F1F1EBC87A700E5D5D3 /* LanguageListTableViewCell.swift */; };
 		43106A192045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43106A182045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift */; };
 		431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */; };
-		43122B191DF5B48B00610253 /* EmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B141DF5B48B00610253 /* EmailService.swift */; };
 		43122B1B1DF5B48B00610253 /* SmtpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B161DF5B48B00610253 /* SmtpService.swift */; };
 		43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3D1DF5BB6600610253 /* MySelfOperation.swift */; };
 		431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 431394A81E4B03AA00D92F33 /* Settings.bundle */; };
@@ -813,7 +812,6 @@
 		430E5F1F1EBC87A700E5D5D3 /* LanguageListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListTableViewCell.swift; sourceTree = "<group>"; };
 		43106A182045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2ConfigurationProtocol+Extension.swift"; sourceTree = "<group>"; };
 		431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorePrefetchedMailOperation.swift; sourceTree = "<group>"; };
-		43122B141DF5B48B00610253 /* EmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailService.swift; sourceTree = "<group>"; };
 		43122B161DF5B48B00610253 /* SmtpService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmtpService.swift; sourceTree = "<group>"; };
 		43122B3D1DF5BB6600610253 /* MySelfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySelfOperation.swift; sourceTree = "<group>"; };
 		431394A81E4B03AA00D92F33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -1872,7 +1870,6 @@
 				15484B652105D55600F9D962 /* ConnectInfo */,
 				43122B3A1DF5B75000610253 /* Service */,
 				4315E4BE2011FD6900F68763 /* AuthMethod.swift */,
-				43122B141DF5B48B00610253 /* EmailService.swift */,
 				43122B161DF5B48B00610253 /* SmtpService.swift */,
 				4360282C1ED6F27600C95FC4 /* NetworkError.swift */,
 				4360282E1ED6F33400C95FC4 /* ImapSyncError.swift */,
@@ -3296,7 +3293,6 @@
 				43C322071EA8E7AD005073FB /* UIButton+Extension.swift in Sources */,
 				4362399D1EAE0CE800BD2EB9 /* OperationQueue+Extension.swift in Sources */,
 				15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */,
-				43122B191DF5B48B00610253 /* EmailService.swift in Sources */,
 				0033C08320D7F41600224E61 /* ThreadedEmailViewModelDelegate.swift in Sources */,
 				43498CDD200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */,
 				152A39DF21905C3E00D9F8E4 /* WrappedBccViewModel.swift in Sources */,
