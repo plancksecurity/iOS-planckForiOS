@@ -401,7 +401,6 @@
 		439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
 		439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
 		43A0B2CF214006FC00FB779D /* ReplyUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */; };
-		43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */; };
 		43A384812153E4BF006AC8F8 /* 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43A384802153E4BF006AC8F8 /* 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt */; };
 		43A469FA21513B10002E1036 /* PEPSwipeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */; };
 		43A5DE381D631D49001153AF /* UnencryptedHTMLMail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */; };
@@ -1009,7 +1008,6 @@
 		439D40711CC78958009A4E7C /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		439D40731CC7897B009A4E7C /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = usr/lib/libiconv.2.tbd; sourceTree = SDKROOT; };
 		43A0B2CE214006FC00FB779D /* ReplyUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyUtilTests.swift; sourceTree = "<group>"; };
-		43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImapSyncOperation.swift; sourceTree = "<group>"; };
 		43A384802153E4BF006AC8F8 /* 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 8B691AD204E22FD1BF018E0D6C9EAD5A798018D1_pub_sec.txt; sourceTree = "<group>"; };
 		43A469F921513B10002E1036 /* PEPSwipeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PEPSwipeTableViewCell.swift; sourceTree = "<group>"; };
 		43A5DE371D631D49001153AF /* UnencryptedHTMLMail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UnencryptedHTMLMail.txt; sourceTree = "<group>"; };
@@ -1868,7 +1866,6 @@
 				4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */,
 				431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */,
 				43122B3D1DF5BB6600610253 /* MySelfOperation.swift */,
-				43A26FBE1E041BF200AF0B84 /* ImapSyncOperation.swift */,
 				4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */,
 				431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */,
 				43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */,
@@ -3447,7 +3444,6 @@
 				434E5A1B20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift in Sources */,
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
 				152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */,
-				43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */,
 				43826F87212FF91D00BF1F7B /* Substring+Email.swift in Sources */,
 				152A39CE21905C3E00D9F8E4 /* ComposeHelpers.swift in Sources */,
 				43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */,
