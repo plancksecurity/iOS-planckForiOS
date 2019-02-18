@@ -117,7 +117,6 @@
 		153CA6E81FB61B53003C9629 /* IOS-815_pep_rating_zero.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E71FB61B53003C9629 /* IOS-815_pep_rating_zero.txt */; };
 		153CA6EA1FB62195003C9629 /* IOS-211-pdfEmail.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */; };
 		153E4E471F500F650021CBD8 /* IOS-211-duplicated-attachments.txt in Resources */ = {isa = PBXBuildFile; fileRef = 153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */; };
-		153FC45D202A263D0053CCF1 /* FolderType+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */; };
 		15410D1D2199C2E500BBF65F /* SubjectCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15410D1C2199C2E500BBF65F /* SubjectCellViewModelTest.swift */; };
 		15410D1F2199CA1100BBF65F /* XCTTestCase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15410D1E2199CA1100BBF65F /* XCTTestCase+Utils.swift */; };
 		15410D222199D83200BBF65F /* AccountCellViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15410D212199D83200BBF65F /* AccountCellViewModelTest.swift */; };
@@ -677,7 +676,6 @@
 		153CA6E71FB61B53003C9629 /* IOS-815_pep_rating_zero.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-815_pep_rating_zero.txt"; sourceTree = "<group>"; };
 		153CA6E91FB62194003C9629 /* IOS-211-pdfEmail.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-pdfEmail.txt"; sourceTree = "<group>"; };
 		153E4E461F500F650021CBD8 /* IOS-211-duplicated-attachments.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "IOS-211-duplicated-attachments.txt"; sourceTree = "<group>"; };
-		153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FolderType+IMAP.swift"; sourceTree = "<group>"; };
 		15410D1C2199C2E500BBF65F /* SubjectCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectCellViewModelTest.swift; sourceTree = "<group>"; };
 		15410D1E2199CA1100BBF65F /* XCTTestCase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTTestCase+Utils.swift"; sourceTree = "<group>"; };
 		15410D212199D83200BBF65F /* AccountCellViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCellViewModelTest.swift; sourceTree = "<group>"; };
@@ -2359,7 +2357,6 @@
 				154F0A832087779200C77D72 /* ContentDispositionType + Conversion.swift */,
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				15AA6015207CD71D00D57DB4 /* ImapFlags+Pantomime.swift */,
-				153FC45C202A263D0053CCF1 /* FolderType+IMAP.swift */,
 				155475632137FD96005A52D0 /* FolderType+Extensions.swift */,
 				1554756521393036005A52D0 /* Folder+Extensions.swift */,
 				15F0F7AC213594FC002BE853 /* Folder+Imap.swift */,
@@ -3312,7 +3309,6 @@
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */,
 				4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */,
-				153FC45D202A263D0053CCF1 /* FolderType+IMAP.swift in Sources */,
 				15BA536A20A08B100090F126 /* Account+Extentions.swift in Sources */,
 				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
