@@ -13,8 +13,8 @@ class ReachibilityUtilsTests: XCTestCase {
     
     private var yesReachability: Reachability?
     private var noReachability:  Reachability?
-    private let yesInternetNetworkReachibilityMock = YesInternetNetworkReachibilityMock()
-    private let noInternetLocalNetworkReachibilityMock  = NoInternetLocalNetworkReachibilityMock()
+    private let yesInternetNetworkReachibilityMock = YesInternetReachibilityMock()
+    private let noInternetLocalNetworkReachibilityMock  = NoInternetReachibilityMock()
     
     override func setUp() {
         yesReachability = Reachability(networkReachability: yesInternetNetworkReachibilityMock)
@@ -29,7 +29,7 @@ class ReachibilityUtilsTests: XCTestCase {
     
     func testInit_ReachbilityRef_Hostname_QueueQoS_TargetQueue() {
         // Given
-        let hostName = "www.google.com"
+        let hostName = "google.com"
         guard let ref = yesInternetNetworkReachibilityMock.networkReachabilityCreateWithName(nil, hostName)
             else {
                 XCTFail()
@@ -70,35 +70,7 @@ class ReachibilityUtilsTests: XCTestCase {
         XCTAssertNotNil(reachibility)
     }
     
-    func testIsLocalNoInternet(){
-        // Given
-        guard let noReachability = noReachability else { XCTFail(); return }
-        // When
-        noReachability.isLocal(
-        completion: { isLocal in
-            // Then
-            XCTAssertTrue(isLocal)
-        },
-        failure: { error in
-            XCTFail()
-        })
-    }
-    
-    func testIsLocalYesInternet(){
-        // Given
-        guard let yesReachability = yesReachability else { XCTFail(); return }
-        // When
-        yesReachability.isLocal(
-            completion: { isLocal in
-                // Then
-                XCTAssertFalse(isLocal)
-        },
-            failure: { error in
-                XCTFail()
-        })
-    }
-    
-    func testIsLocalWithActualReachibilityLocalHost(){
+    func testIsLocalLocalHost(){
         // Given
         guard let reachability = Reachability(hostname: "localhost") else { XCTFail(); return }
         // When
@@ -112,7 +84,7 @@ class ReachibilityUtilsTests: XCTestCase {
         })
     }
     
-    func testIsLocalWithActualReachibilityNoLocalHost(){
+    func testIsLocalNoLocalHost(){
         // Given
         guard let reachability = Reachability(hostname: "google.com") else { XCTFail(); return }
         // When
@@ -134,7 +106,7 @@ class ReachibilityUtilsTests: XCTestCase {
         yesReachability.getConnectionStatus(
             completion: { result in
                 // Then
-                XCTAssertTrue(result == Reachability.Connection.connected)
+                XCTAssertTrue(result == Reachability.Connection.reachable)
         },
             failure: { error in
                 XCTFail()
@@ -148,7 +120,7 @@ class ReachibilityUtilsTests: XCTestCase {
         noReachability.getConnectionStatus(
             completion: { result in
                 // Then
-                XCTAssertFalse(result == Reachability.Connection.connected)
+                XCTAssertFalse(result == Reachability.Connection.reachable)
         },
             failure: { error in
                 XCTFail()
@@ -159,7 +131,7 @@ class ReachibilityUtilsTests: XCTestCase {
         // Given
         guard let yesReachability = yesReachability else { XCTFail(); return }
         let exp = expectation(description: "delegate called for connected")
-        let expectedConnected = Reachability.Connection.connected
+        let expectedConnected = Reachability.Connection.reachable
         let testDelegate = ReachibilityUtilsTestsDelegate(withExp: exp,
                                                           withExpectedConnected: expectedConnected)
         yesReachability.delegate = testDelegate
@@ -175,7 +147,7 @@ class ReachibilityUtilsTests: XCTestCase {
         // Given
         guard let noReachability = noReachability else { XCTFail(); return }
         let exp = expectation(description: "delegate called for no connected")
-        let expectedNotConnected = Reachability.Connection.notConnected
+        let expectedNotConnected = Reachability.Connection.notReachable
         let testDelegate = ReachibilityUtilsTestsDelegate(withExp: exp,
                                                           withExpectedConnected: expectedNotConnected)
         noReachability.delegate = testDelegate

@@ -11,7 +11,7 @@ import SystemConfiguration
 @testable import pEpForiOS
 
 
-class YesInternetNetworkReachibilityMock: NetworkReachabilityProtocol {
+class YesInternetReachibilityMock: NetworkReachabilityProtocol {
     let callback: SCNetworkReachabilityCallBack = { (reachability, flags, info) in
         guard let info = info else { return }
         
@@ -40,7 +40,7 @@ class YesInternetNetworkReachibilityMock: NetworkReachabilityProtocol {
     }
 }
 
-class NoInternetLocalNetworkReachibilityMock: NetworkReachabilityProtocol {
+class NoInternetReachibilityMock: NetworkReachabilityProtocol {
     let callback: SCNetworkReachabilityCallBack = { (reachability, flags, info) in
         guard let info = info else { return }
         
@@ -57,7 +57,7 @@ class NoInternetLocalNetworkReachibilityMock: NetworkReachabilityProtocol {
     func networkReachabilityGetFlags(_ target: SCNetworkReachability,
                                      _ flags: UnsafeMutablePointer<SCNetworkReachabilityFlags>)
         -> Bool {
-        flags.pointee = [.isLocalAddress]
+        flags.pointee = []
         return true
     }
     

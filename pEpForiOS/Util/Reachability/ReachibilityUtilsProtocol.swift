@@ -8,13 +8,13 @@
 
 import Foundation
 
-public protocol ReachibilityUtilsProtocol {
+protocol ReachibilityUtilsProtocol {
     var delegate: ReachabilityDelegate? {get set}
     
     /// Get current connection status
     ///
     /// - Parameters:
-    ///   - completion: Connection enum with notConnected for no internet connection otherwise connected
+    ///   - completion: reachable and not reachable to spefify host.
     ///   - failure: failToGetReachabilityState when failed to get current internet flags state
     func getConnectionStatus(completion: @escaping ((Reachability.Connection)->()),
                                 failure: @escaping ((Reachability.ReachabilityError) -> ()) )
@@ -22,14 +22,14 @@ public protocol ReachibilityUtilsProtocol {
     /// Check if current connection is local or not.
     ///
     /// - Parameters:
-    ///   - completion: true is connection is local, false otherwise
+    ///   - completion: true if specify host is a localhost, otherwise false
     ///   - failure: failToGetReachabilityState when failed to get current internet flags state
     func isLocal(completion: @escaping ((Bool)->()),
                     failure: @escaping ((Reachability.ReachabilityError) -> ()) )
     
-    /// /// Start updateing internet conection state value through ReachabilityDelegate
+    /// /// Start updateing reachable state value through ReachabilityDelegate
     func startNotifier()
     
-    /// Stop updating internet connection value
+    /// Stop updating reachable value
     func stopNotifier()
 }
