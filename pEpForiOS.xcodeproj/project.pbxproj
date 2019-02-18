@@ -240,7 +240,7 @@
 		37A3D61F221429DA00E11415 /* NetworkReachibilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D61E221429DA00E11415 /* NetworkReachibilityMock.swift */; };
 		37A3D6222214338300E11415 /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D6212214338300E11415 /* NetworkReachabilityProtocol.swift */; };
 		37A3D6242214372B00E11415 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D6232214372B00E11415 /* NetworkReachability.swift */; };
-		37A3D6262215695400E11415 /* ReachibilityUtilsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D6252215695400E11415 /* ReachibilityUtilsProtocol.swift */; };
+		37A3D6262215695400E11415 /* ReachabilityUtilsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D6252215695400E11415 /* ReachabilityUtilsProtocol.swift */; };
 		37FE82E92211D290008F8CF4 /* ReachabilityUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FE82E82211D290008F8CF4 /* ReachabilityUtils.swift */; };
 		37FE82ED22132B23008F8CF4 /* ReachabilityUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FE82EC22132B23008F8CF4 /* ReachabilityUtilsTests.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
@@ -856,7 +856,7 @@
 		37A3D61E221429DA00E11415 /* NetworkReachibilityMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachibilityMock.swift; sourceTree = "<group>"; };
 		37A3D6212214338300E11415 /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
 		37A3D6232214372B00E11415 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
-		37A3D6252215695400E11415 /* ReachibilityUtilsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachibilityUtilsProtocol.swift; sourceTree = "<group>"; };
+		37A3D6252215695400E11415 /* ReachabilityUtilsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityUtilsProtocol.swift; sourceTree = "<group>"; };
 		37FE82E82211D290008F8CF4 /* ReachabilityUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityUtils.swift; sourceTree = "<group>"; };
 		37FE82EC22132B23008F8CF4 /* ReachabilityUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityUtilsTests.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
@@ -1936,7 +1936,7 @@
 		37A3D6202214333200E11415 /* Reachability */ = {
 			isa = PBXGroup;
 			children = (
-				37A3D6252215695400E11415 /* ReachibilityUtilsProtocol.swift */,
+				37A3D6252215695400E11415 /* ReachabilityUtilsProtocol.swift */,
 				37FE82E82211D290008F8CF4 /* ReachabilityUtils.swift */,
 				37A3D6212214338300E11415 /* NetworkReachabilityProtocol.swift */,
 				37A3D6232214372B00E11415 /* NetworkReachability.swift */,
@@ -3296,7 +3296,7 @@
 				439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				439932291FEA7E7A00E92C35 /* String+Email.swift in Sources */,
-				37A3D6262215695400E11415 /* ReachibilityUtilsProtocol.swift in Sources */,
+				37A3D6262215695400E11415 /* ReachabilityUtilsProtocol.swift in Sources */,
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
 				1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */,
 				15874BC42127493E00A3A4A6 /* SettingsCellViewModel.swift in Sources */,

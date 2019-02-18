@@ -19,12 +19,6 @@ class YesInternetReachibilityMock: NetworkReachabilityProtocol {
         reachability.flags = [SCNetworkReachabilityFlags.reachable]
     }
     
-    func networkReachabilityCreateWithName(_ allocator: CFAllocator?,
-                                           _ nodename: UnsafePointer<Int8>)
-        -> SCNetworkReachability? {
-        return SCNetworkReachabilityCreateWithName(allocator, nodename)
-    }
-    
     func networkReachabilityGetFlags(_ target: SCNetworkReachability,
                                      _ flags: UnsafeMutablePointer<SCNetworkReachabilityFlags>)
         -> Bool {
@@ -46,12 +40,6 @@ class NoInternetReachibilityMock: NetworkReachabilityProtocol {
         
         let reachability = Unmanaged<Reachability>.fromOpaque(info).takeUnretainedValue()
         reachability.flags = []
-    }
-    
-    func networkReachabilityCreateWithName(_ allocator: CFAllocator?,
-                                           _ nodename: UnsafePointer<Int8>)
-        -> SCNetworkReachability? {
-        return SCNetworkReachabilityCreateWithName(allocator, nodename)
     }
     
     func networkReachabilityGetFlags(_ target: SCNetworkReachability,
