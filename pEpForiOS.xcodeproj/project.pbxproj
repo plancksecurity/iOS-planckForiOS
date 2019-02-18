@@ -176,7 +176,6 @@
 		15874BD22127493E00A3A4A6 /* TrustedServerSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BC02127493E00A3A4A6 /* TrustedServerSettingsViewController.swift */; };
 		15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */; };
 		1594C1D021281FCD00CB06E2 /* Server+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */; };
-		159F4C9C21BEB9ED00244903 /* Message+FakeMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 159F4C9B21BEB9ED00244903 /* Message+FakeMessage.swift */; };
 		15A536902155136800CF6204 /* PEPUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A5368F2155136800CF6204 /* PEPUtilTest.swift */; };
 		15A75CE1202B57BF00C0DA28 /* Folder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */; };
 		15A75CEA202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */; };
@@ -732,7 +731,6 @@
 		15874BC02127493E00A3A4A6 /* TrustedServerSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingsViewController.swift; sourceTree = "<group>"; };
 		15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingCell.swift; sourceTree = "<group>"; };
 		1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Server+Fetching.swift"; sourceTree = "<group>"; };
-		159F4C9B21BEB9ED00244903 /* Message+FakeMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+FakeMessage.swift"; sourceTree = "<group>"; };
 		15A5368F2155136800CF6204 /* PEPUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUtilTest.swift; sourceTree = "<group>"; };
 		15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+VirtualMailbox.swift"; sourceTree = "<group>"; };
 		15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSpecificInformationProtocol.swift; sourceTree = "<group>"; };
@@ -2361,7 +2359,6 @@
 				15F0F7B52136F6D1002BE853 /* CdFolderPredicateFactory+IMAP.swift */,
 				15547567213931BC005A52D0 /* Folder+Threading.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
-				159F4C9B21BEB9ED00244903 /* Message+FakeMessage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3251,7 +3248,6 @@
 				436239951EAE08F400BD2EB9 /* String+pEp.swift in Sources */,
 				152A39E421905C3E00D9F8E4 /* NSAttributedString+RecipientTextUtils.swift in Sources */,
 				43E88BE01EFA667600E0B224 /* AsyncStateMachine.swift in Sources */,
-				159F4C9C21BEB9ED00244903 /* Message+FakeMessage.swift in Sources */,
 				00EB89AD20E3D3C200CDFA0D /* ThreadedEmailViewModel+MoveToFolderDelegate.swift in Sources */,
 				431B04801DE5774800E40CD3 /* CdMessage+Pantomime.swift in Sources */,
 				155050F21FE95D8A009CEAD2 /* UserNotificationTool+pEp.swift in Sources */,
