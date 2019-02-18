@@ -177,6 +177,7 @@
 		15B220521FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */; };
 		15B483DB1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */; };
 		15B483E11F290B14000FB2CF /* LoginImapOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */; };
+		15BA536A20A08B100090F126 /* Account+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA536920A08B100090F126 /* Account+Extentions.swift */; };
 		15BA536E20A095410090F126 /* UnifiedInboxTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA536D20A095410090F126 /* UnifiedInboxTest.swift */; };
 		15BBBC681FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC671FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift */; };
 		15BBBC6B1FD0527200B9DCC8 /* DisplayUserErrorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BBBC6A1FD0527200B9DCC8 /* DisplayUserErrorTest.swift */; };
@@ -709,6 +710,7 @@
 		15B220511FC2DAE200CA52BA /* InfoPlist+pEpStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InfoPlist+pEpStrings.swift"; sourceTree = "<group>"; };
 		15B483DA1F28E2FC000FB2CF /* SpecialUseMailboxesTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpecialUseMailboxesTest.swift; sourceTree = "<group>"; };
 		15B483E01F290B14000FB2CF /* LoginImapOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginImapOperationTest.swift; sourceTree = "<group>"; };
+		15BA536920A08B100090F126 /* Account+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Account+Extentions.swift"; sourceTree = "<group>"; };
 		15BA536D20A095410090F126 /* UnifiedInboxTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnifiedInboxTest.swift; sourceTree = "<group>"; };
 		15BA537B20A1F5F50090F126 /* MoveToAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToAccountViewController.swift; sourceTree = "<group>"; };
 		15BBBC671FD04DFC00B9DCC8 /* ReportingErrorContainerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportingErrorContainerTest.swift; sourceTree = "<group>"; };
@@ -2273,6 +2275,7 @@
 			isa = PBXGroup;
 			children = (
 				15F0F7AB21359372002BE853 /* Filter */,
+				15BA536920A08B100090F126 /* Account+Extentions.swift */,
 				15F835231F34BE1300FCE887 /* AccountUserInput.swift */,
 				43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */,
 				431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */,
@@ -3210,6 +3213,7 @@
 				43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */,
 				438052871FE3E1B100ACF729 /* OAuth2AuthorizationFactoryProtocol.swift in Sources */,
 				4356FFE52135448600804089 /* ReplyAllPossibleChecker.swift in Sources */,
+				15BA536A20A08B100090F126 /* Account+Extentions.swift in Sources */,
 				15255B031F825CD100A2CFC9 /* IdentityImageTool.swift in Sources */,
 				43AA82531E9B925C00ABD5A8 /* UIView+Util.swift in Sources */,
 				152A39D121905C3E00D9F8E4 /* AttachmentViewModel.swift in Sources */,
