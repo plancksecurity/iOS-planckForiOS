@@ -542,6 +542,7 @@
 		B7DB7FC72215C57F003968DA /* UIView+Autolayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC52215C57F003968DA /* UIView+Autolayout.swift */; };
 		B7DB7FC82215C57F003968DA /* UIView+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC62215C57F003968DA /* UIView+Util.swift */; };
 		B7DB7FCA2215D69C003968DA /* CredentialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FC92215D69C003968DA /* CredentialTextField.swift */; };
+		B7DB7FD2221AD332003968DA /* SegueHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */; };
 		B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
@@ -1151,13 +1152,13 @@
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
 		B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
 		B78CF82A1E76E146008C1739 /* FilterCellViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterCellViewModel.swift; path = Filter/ViewModel/FilterCellViewModel.swift; sourceTree = "<group>"; };
-
 		B7D1EEC71E8BEC8D00F190E3 /* CollapsibleTableViewHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CollapsibleTableViewHeader.swift; path = Folder/CollapsibleTableViewHeader.swift; sourceTree = "<group>"; };
 		B7DB7FB422148585003968DA /* SecretUITestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretUITestData.swift; sourceTree = "<group>"; };
 		B7DB7FC32215C4FF003968DA /* UINavigationController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extensions.swift"; sourceTree = "<group>"; };
 		B7DB7FC52215C57F003968DA /* UIView+Autolayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Autolayout.swift"; sourceTree = "<group>"; };
 		B7DB7FC62215C57F003968DA /* UIView+Util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Util.swift"; sourceTree = "<group>"; };
 		B7DB7FC92215D69C003968DA /* CredentialTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialTextField.swift; sourceTree = "<group>"; };
+		B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegueHandlerType.swift; sourceTree = "<group>"; };
 		B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModelTest.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -2309,6 +2310,7 @@
 				15265973216234C0006A78DF /* SuggestTableViewController */,
 				150DF6D12052A99800A9DCF7 /* SecureWebViewController */,
 				43AAC2281F7A5AED00F435F4 /* BaseTableViewController.swift */,
+				B7DB7FD1221AD332003968DA /* SegueHandlerType.swift */,
 				43AAC2291F7A5AEE00F435F4 /* BaseViewController.swift */,
 				43C322081EA90192005073FB /* PEP+UI.swift */,
 				4330278D1F7BABFF00D685F8 /* GradientView.swift */,
@@ -3320,6 +3322,7 @@
 				152A39D421905C3E00D9F8E4 /* SubjectCell.swift in Sources */,
 				15F835241F34BE1300FCE887 /* AccountUserInput.swift in Sources */,
 				43122B191DF5B48B00610253 /* EmailService.swift in Sources */,
+				B7DB7FD2221AD332003968DA /* SegueHandlerType.swift in Sources */,
 				0033C08320D7F41600224E61 /* ThreadedEmailViewModelDelegate.swift in Sources */,
 				43498CDD200D0790006DC947 /* LoginViewModelOAuth2ErrorDelegate.swift in Sources */,
 				152A39DF21905C3E00D9F8E4 /* WrappedBccViewModel.swift in Sources */,
