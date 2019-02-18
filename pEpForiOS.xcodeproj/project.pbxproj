@@ -209,7 +209,6 @@
 		15EBE43E20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */; };
 		15EBE44220E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */; };
 		15EBE44320E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE44120E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc */; };
-		15F0F7AA21358B33002BE853 /* CdMessagePredicateFactory+Imap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F0F7A921358B33002BE853 /* CdMessagePredicateFactory+Imap.swift */; };
 		15F0F7AD213594FC002BE853 /* Folder+Imap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F0F7AC213594FC002BE853 /* Folder+Imap.swift */; };
 		15F0F7AF2135984C002BE853 /* Array+SortingAndSearching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F0F7AE2135984C002BE853 /* Array+SortingAndSearching.swift */; };
 		15F0F7B62136F6D1002BE853 /* CdFolderPredicateFactory+IMAP.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F0F7B52136F6D1002BE853 /* CdFolderPredicateFactory+IMAP.swift */; };
@@ -767,7 +766,6 @@
 		15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc; sourceTree = "<group>"; };
 		15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc; sourceTree = "<group>"; };
 		15EBE44120E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_sec.asc; sourceTree = "<group>"; };
-		15F0F7A921358B33002BE853 /* CdMessagePredicateFactory+Imap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessagePredicateFactory+Imap.swift"; sourceTree = "<group>"; };
 		15F0F7AC213594FC002BE853 /* Folder+Imap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+Imap.swift"; sourceTree = "<group>"; };
 		15F0F7AE2135984C002BE853 /* Array+SortingAndSearching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SortingAndSearching.swift"; sourceTree = "<group>"; };
 		15F0F7B52136F6D1002BE853 /* CdFolderPredicateFactory+IMAP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdFolderPredicateFactory+IMAP.swift"; sourceTree = "<group>"; };
@@ -2363,7 +2361,6 @@
 				15BA536B20A08D270090F126 /* UnifiedInbox.swift */,
 				1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */,
 				15547570213FEAB7005A52D0 /* CdMessagePredicateFactory+Extension.swift */,
-				15F0F7A921358B33002BE853 /* CdMessagePredicateFactory+Imap.swift */,
 				15F0F7B52136F6D1002BE853 /* CdFolderPredicateFactory+IMAP.swift */,
 				15547567213931BC005A52D0 /* Folder+Threading.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
@@ -3204,7 +3201,6 @@
 				0033C07F20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift in Sources */,
 				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
 				15175CEC205929FB00A8D9D0 /* CidHandler.swift in Sources */,
-				15F0F7AA21358B33002BE853 /* CdMessagePredicateFactory+Imap.swift in Sources */,
 				152A39CB21905C3E00D9F8E4 /* DocumentAttachmentPickerViewModel.swift in Sources */,
 				436239931EAE08F400BD2EB9 /* PEPSession+Extensions.swift in Sources */,
 				4382E6431CC600FF00AA27EA /* PersistentImapFolder.swift in Sources */,
