@@ -103,7 +103,6 @@
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 				B7A46C51220C732E0027CCB5 /* Data+Extensions.swift */,
 				B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */,
 				B7A46C57220DA6190027CCB5 /* String+Email.swift */,
@@ -133,7 +132,6 @@
 				B7911EC121F8694000D7F66F /* UIColor+Extension.swift */,
 				B7911EC521F88AF800D7F66F /* UIImage+Extension.swift */,
 				B7465DE02211C6E9008A1708 /* UIImage+GIF.swift */,
-				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -167,6 +165,7 @@
 		B7911EB621F7358500D7F66F /* pEpIOSToolbox */ = {
 			isa = PBXGroup;
 			children = (
+				B7DB7FEC221B086A003968DA /* Other */,
 				B70A3A74220091C800EDCE61 /* Log */,
 				B70A3A5322005B9600EDCE61 /* UIKit */,
 				B70A3A5222005A7600EDCE61 /* Foundation */,
@@ -183,6 +182,15 @@
 				B7DB7F5B221315BD003968DA /* Info.plist */,
 			);
 			path = pEpIOSToolboxTests;
+			sourceTree = "<group>";
+		};
+		B7DB7FEC221B086A003968DA /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
+				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
