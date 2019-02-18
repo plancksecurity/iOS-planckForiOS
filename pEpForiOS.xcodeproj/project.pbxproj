@@ -548,6 +548,7 @@
 		B7DB7FD8221AD3BB003968DA /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD5221AD3BB003968DA /* UITableView+Extension.swift */; };
 		B7DB7FDA221ADDAF003968DA /* UIBarButtonItem+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FD9221ADDAF003968DA /* UIBarButtonItem+Extension.swift */; };
 		B7DB7FDC221ADDBD003968DA /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7FDB221ADDBD003968DA /* UIImageView+Extension.swift */; };
+		B7DB7FEB221AFE10003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DB7FEA221AFE10003968DA /* pEpIOSToolbox.framework */; };
 		B7F4A793212DDFC500507B76 /* EmailListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */; };
 		F73E4F72217F238300CCFFED /* FolderSectionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */; };
 		F73E4F7A2180744700CCFFED /* FolderCellViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */; };
@@ -1169,6 +1170,7 @@
 		B7DB7FD5221AD3BB003968DA /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		B7DB7FD9221ADDAF003968DA /* UIBarButtonItem+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBarButtonItem+Extension.swift"; sourceTree = "<group>"; };
 		B7DB7FDB221ADDBD003968DA /* UIImageView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		B7DB7FEA221AFE10003968DA /* pEpIOSToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7F4A792212DDFC500507B76 /* EmailListViewModelTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModelTest.swift; sourceTree = "<group>"; };
 		F73E4F71217F238300CCFFED /* FolderSectionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderSectionViewModelTests.swift; sourceTree = "<group>"; };
 		F73E4F792180744700CCFFED /* FolderCellViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCellViewModelTests.swift; sourceTree = "<group>"; };
@@ -1183,6 +1185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7DB7FEB221AFE10003968DA /* pEpIOSToolbox.framework in Frameworks */,
 				439932301FEA9B7200E92C35 /* SwipeCellKit.framework in Frameworks */,
 				43B54F961FE02D02008EC427 /* AppAuth.framework in Frameworks */,
 				43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */,
@@ -2575,6 +2578,7 @@
 		495560841E7150ED0016579E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B7DB7FEA221AFE10003968DA /* pEpIOSToolbox.framework */,
 				43D86ECA21BE6C7B00C18418 /* CleanroomASL.framework */,
 				439932311FEA9B7200E92C35 /* SwipeCellKit.framework */,
 				43B54F971FE02D02008EC427 /* AppAuth.framework */,
