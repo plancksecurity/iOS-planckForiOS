@@ -447,7 +447,6 @@
 		43E7B6751DE4A53A0017D707 /* CdIdentity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */; };
 		43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */; };
 		43E88BE01EFA667600E0B224 /* AsyncStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E88BDF1EFA667600E0B224 /* AsyncStateMachine.swift */; };
-		43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */; };
 		43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC03471F4AE28F0026E152 /* String+Attachment.swift */; };
 		43EC75AC2164C26100048CFE /* SetOwnKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75AB2164C26100048CFE /* SetOwnKeyViewController.swift */; };
 		43EC75AE2164D03500048CFE /* SetOwnKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75AD2164D03500048CFE /* SetOwnKeyViewModel.swift */; };
@@ -1046,7 +1045,6 @@
 		43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdIdentity+pEp.swift"; sourceTree = "<group>"; };
 		43E88BDD1EFA665600E0B224 /* AsyncStateMachineProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncStateMachineProtocol.swift; sourceTree = "<group>"; };
 		43E88BDF1EFA667600E0B224 /* AsyncStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncStateMachine.swift; sourceTree = "<group>"; };
-		43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Extension.swift"; sourceTree = "<group>"; };
 		43EC03471F4AE28F0026E152 /* String+Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Attachment.swift"; sourceTree = "<group>"; };
 		43EC75AB2164C26100048CFE /* SetOwnKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOwnKeyViewController.swift; sourceTree = "<group>"; };
 		43EC75AD2164D03500048CFE /* SetOwnKeyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOwnKeyViewModel.swift; sourceTree = "<group>"; };
@@ -2355,7 +2353,6 @@
 				431B04791DE5772000E40CD3 /* CdMessage+pEp.swift */,
 				431B047F1DE5774800E40CD3 /* CdMessage+Pantomime.swift */,
 				43BB86931DB4E76D00980267 /* CdAccount+Extension.swift */,
-				43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */,
 				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
 				430A2EEB1E81357A00878837 /* CdImapFlags+Pantomime.swift */,
 				439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */,
@@ -3324,7 +3321,6 @@
 				15547568213931BC005A52D0 /* Folder+Threading.swift in Sources */,
 				4330278E1F7BABFF00D685F8 /* GradientView.swift in Sources */,
 				434F40961EB0DB5E002FBF0D /* HandshakePartnerTableViewCellViewModel.swift in Sources */,
-				43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */,
 				15F0F7B62136F6D1002BE853 /* CdFolderPredicateFactory+IMAP.swift in Sources */,
 				15874BD02127493E00A3A4A6 /* LogViewController.swift in Sources */,
 				152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */,
