@@ -332,7 +332,6 @@
 		435F7C75215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt in Resources */ = {isa = PBXBuildFile; fileRef = 435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */; };
 		4362398C1EADD61B00BD2EB9 /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */; };
 		436239931EAE08F400BD2EB9 /* PEPSession+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4362398F1EAE08F400BD2EB9 /* PEPSession+Extensions.swift */; };
-		436239941EAE08F400BD2EB9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436239901EAE08F400BD2EB9 /* String+Extensions.swift */; };
 		436239951EAE08F400BD2EB9 /* String+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436239911EAE08F400BD2EB9 /* String+pEp.swift */; };
 		4362399B1EAE0CE800BD2EB9 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436239971EAE0CE800BD2EB9 /* Date+Extension.swift */; };
 		4362399C1EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436239981EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift */; };
@@ -910,7 +909,6 @@
 		435F7C74215E05DA00F21EFD /* 1364_Mail_missing_attached_image.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1364_Mail_missing_attached_image.txt; sourceTree = "<group>"; };
 		4362398B1EADD61B00BD2EB9 /* CGSize+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
 		4362398F1EAE08F400BD2EB9 /* PEPSession+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEPSession+Extensions.swift"; sourceTree = "<group>"; };
-		436239901EAE08F400BD2EB9 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		436239911EAE08F400BD2EB9 /* String+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+pEp.swift"; sourceTree = "<group>"; };
 		436239971EAE0CE800BD2EB9 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		436239981EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
@@ -2014,7 +2012,6 @@
 				436239981EAE0CE800BD2EB9 /* NSRegularExpression+Extension.swift */,
 				436239991EAE0CE800BD2EB9 /* OperationQueue+Extension.swift */,
 				4362398F1EAE08F400BD2EB9 /* PEPSession+Extensions.swift */,
-				436239901EAE08F400BD2EB9 /* String+Extensions.swift */,
 				436239911EAE08F400BD2EB9 /* String+pEp.swift */,
 				43E657D01F3C33C30014CBEC /* String+HTML.swift */,
 				43EC03471F4AE28F0026E152 /* String+Attachment.swift */,
@@ -3082,7 +3079,6 @@
 				15874BCA2127493E00A3A4A6 /* UnecryptedSubjectViewModel.swift in Sources */,
 				43EE99481E438E320060EACE /* FlagImages.swift in Sources */,
 				220DCE341E0AB5CC002FE716 /* MailinglistCell.swift in Sources */,
-				436239941EAE08F400BD2EB9 /* String+Extensions.swift in Sources */,
 				43AA825D1E9BD60600ABD5A8 /* AttachmentsViewDelegate.swift in Sources */,
 				152A39D821905C3E00D9F8E4 /* BodyCellViewModel.swift in Sources */,
 				220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */,
