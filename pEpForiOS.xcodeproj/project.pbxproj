@@ -139,7 +139,6 @@
 		1554756621393036005A52D0 /* Folder+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1554756521393036005A52D0 /* Folder+Extensions.swift */; };
 		15547568213931BC005A52D0 /* Folder+Threading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15547567213931BC005A52D0 /* Folder+Threading.swift */; };
 		1554756C213FE139005A52D0 /* UnifiedFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1554756B213FE139005A52D0 /* UnifiedFilter.swift */; };
-		15547572213FEC4B005A52D0 /* CdMessagePredicateFactory+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15547570213FEAB7005A52D0 /* CdMessagePredicateFactory+Extension.swift */; };
 		1555361B207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1555361A207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift */; };
 		155F2D9E20530798001B4B1C /* Reusable.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 155F2DA020530798001B4B1C /* Reusable.storyboard */; };
 		1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */; };
@@ -683,7 +682,6 @@
 		1554756521393036005A52D0 /* Folder+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Folder+Extensions.swift"; path = "pEpForiOS/Models/Folder+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		15547567213931BC005A52D0 /* Folder+Threading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+Threading.swift"; sourceTree = "<group>"; };
 		1554756B213FE139005A52D0 /* UnifiedFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnifiedFilter.swift; sourceTree = "<group>"; };
-		15547570213FEAB7005A52D0 /* CdMessagePredicateFactory+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CdMessagePredicateFactory+Extension.swift"; sourceTree = "<group>"; };
 		1555361A207796CE00CDDAFA /* CWInternetAddress+TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CWInternetAddress+TestUtils.swift"; sourceTree = "<group>"; };
 		155F2D9F20530798001B4B1C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Reusable.storyboard; sourceTree = "<group>"; };
 		1560D16F1F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchOlderImapMessagesOperation.swift; sourceTree = "<group>"; };
@@ -2323,7 +2321,6 @@
 				15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */,
 				15BA536B20A08D270090F126 /* UnifiedInbox.swift */,
 				1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */,
-				15547570213FEAB7005A52D0 /* CdMessagePredicateFactory+Extension.swift */,
 				15F0F7B52136F6D1002BE853 /* CdFolderPredicateFactory+IMAP.swift */,
 				15547567213931BC005A52D0 /* Folder+Threading.swift */,
 				15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */,
@@ -3350,7 +3347,6 @@
 				43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */,
 				15874BCF2127493E00A3A4A6 /* AccountSettingsTableViewController.swift in Sources */,
 				43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */,
-				15547572213FEC4B005A52D0 /* CdMessagePredicateFactory+Extension.swift in Sources */,
 				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
 				492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */,
 				43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */,
