@@ -6,8 +6,6 @@
 //  Copyright © 2016 pEp Security S.A. All rights reserved.
 //
 
-//import UIKit
-
 extension Collection {
     /*
      * Returns the element at the specified index if it is within bounds, otherwise nil.

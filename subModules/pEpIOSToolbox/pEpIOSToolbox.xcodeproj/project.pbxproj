@@ -32,7 +32,6 @@
 		B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */; };
 		B7DB7F5022130DE9003968DA /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F4F22130DE9003968DA /* Weak.swift */; };
 		B7DB7F522213120B003968DA /* SortedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F512213120B003968DA /* SortedSet.swift */; };
-		B7DB7F5A221315BD003968DA /* pEpIOSToolboxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F59221315BD003968DA /* pEpIOSToolboxTests.swift */; };
 		B7DB7F5C221315BD003968DA /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7911EB421F7358500D7F66F /* pEpIOSToolbox.framework */; };
 		B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7DB7F8322144E4E003968DA /* SortedSetTest.swift */; };
 /* End PBXBuildFile section */
@@ -76,7 +75,6 @@
 		B7DB7F4F22130DE9003968DA /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
 		B7DB7F512213120B003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedSet.swift; path = ../../../../pEpForiOS/Util/SortedSet.swift; sourceTree = "<group>"; };
 		B7DB7F57221315BD003968DA /* pEpIOSToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpIOSToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B7DB7F59221315BD003968DA /* pEpIOSToolboxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pEpIOSToolboxTests.swift; sourceTree = "<group>"; };
 		B7DB7F5B221315BD003968DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7DB7F8322144E4E003968DA /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -178,7 +176,6 @@
 			isa = PBXGroup;
 			children = (
 				B7DB7F8322144E4E003968DA /* SortedSetTest.swift */,
-				B7DB7F59221315BD003968DA /* pEpIOSToolboxTests.swift */,
 				B7DB7F5B221315BD003968DA /* Info.plist */,
 			);
 			path = pEpIOSToolboxTests;
@@ -332,7 +329,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7DB7F5A221315BD003968DA /* pEpIOSToolboxTests.swift in Sources */,
 				B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
