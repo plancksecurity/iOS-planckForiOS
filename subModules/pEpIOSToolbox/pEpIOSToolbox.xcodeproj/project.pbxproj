@@ -134,14 +134,6 @@
 			path = UIKit;
 			sourceTree = "<group>";
 		};
-		B70A3A74220091C800EDCE61 /* Log */ = {
-			isa = PBXGroup;
-			children = (
-				B70A3A75220091D400EDCE61 /* Logger.swift */,
-			);
-			path = Log;
-			sourceTree = "<group>";
-		};
 		B7911EAA21F7358500D7F66F = {
 			isa = PBXGroup;
 			children = (
@@ -164,7 +156,6 @@
 			isa = PBXGroup;
 			children = (
 				B7DB7FEC221B086A003968DA /* Other */,
-				B70A3A74220091C800EDCE61 /* Log */,
 				B70A3A5322005B9600EDCE61 /* UIKit */,
 				B70A3A5222005A7600EDCE61 /* Foundation */,
 				B7911EB821F7358500D7F66F /* Info.plist */,
@@ -184,6 +175,7 @@
 		B7DB7FEC221B086A003968DA /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				B70A3A75220091D400EDCE61 /* Logger.swift */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 			);
