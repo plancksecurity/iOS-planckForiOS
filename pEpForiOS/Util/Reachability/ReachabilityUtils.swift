@@ -70,7 +70,7 @@ public final class Reachability: ReachibilityUtilsProtocol {
     ///   - queueQoS: targetQueue qos
     ///   - targetQueue: target queue to run SCNetworkReachabilityCallBack on and to get current
     ///      connection flags. Default if nil
-    required public init(reachabilityRef: SCNetworkReachability, queueQoS: DispatchQoS = .default,
+    required init(reachabilityRef: SCNetworkReachability, queueQoS: DispatchQoS = .default,
                          targetQueue: DispatchQueue? = nil) {
         self.reachabilityRef = reachabilityRef
         self.networkReachability = NetworkReachability()
