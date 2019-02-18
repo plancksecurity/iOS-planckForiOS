@@ -13,14 +13,22 @@ public protocol ReachibilityUtilsProtocol {
     
     /// Get current connection status
     ///
-    /// - Returns: Connection enum with none for no internet connection otherwise connected
-    /// - Throws: failToGetReachabilityState when failed to get current internet state
-    func getConnectionStatus() throws -> Reachability.Connection
+    /// - Parameters:
+    ///   - completion: Connection enum with notConnected for no internet connection otherwise connected
+    ///   - failure: failToGetReachabilityState when failed to get current internet flags state
+    func getConnectionStatus(completion: @escaping ((Reachability.Connection)->()),
+                                failure: @escaping ((Reachability.ReachabilityError) -> ()) )
     
-    /// Start updateing internet conection state value.
+    /// Check if current connection is local or not.
     ///
-    /// - Throws: failToGetReachabilityState when failed to start notifying current state
-    func startNotifier() throws
+    /// - Parameters:
+    ///   - completion: true is connection is local, false otherwise
+    ///   - failure: failToGetReachabilityState when failed to get current internet flags state
+    func isLocal(completion: @escaping ((Bool)->()),
+                    failure: @escaping ((Reachability.ReachabilityError) -> ()) )
+    
+    /// /// Start updateing internet conection state value through ReachabilityDelegate
+    func startNotifier()
     
     /// Stop updating internet connection value
     func stopNotifier()

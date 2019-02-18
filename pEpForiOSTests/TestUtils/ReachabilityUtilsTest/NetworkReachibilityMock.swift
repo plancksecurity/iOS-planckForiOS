@@ -40,7 +40,7 @@ class YesInternetNetworkReachibilityMock: NetworkReachabilityProtocol {
     }
 }
 
-class NoInternetNetworkReachibilityMock: NetworkReachabilityProtocol {
+class NoInternetLocalNetworkReachibilityMock: NetworkReachabilityProtocol {
     let callback: SCNetworkReachabilityCallBack = { (reachability, flags, info) in
         guard let info = info else { return }
         
@@ -57,7 +57,7 @@ class NoInternetNetworkReachibilityMock: NetworkReachabilityProtocol {
     func networkReachabilityGetFlags(_ target: SCNetworkReachability,
                                      _ flags: UnsafeMutablePointer<SCNetworkReachabilityFlags>)
         -> Bool {
-        flags.pointee = []
+        flags.pointee = [.isLocalAddress]
         return true
     }
     

@@ -14,6 +14,7 @@ public protocol ReachabilityDelegate: class {
     ///
     /// - Parameter status: new internet connection state
     func didChangeReachibility(status: Reachability.Connection)
+    func didFailToStartNotifier(error: Reachability.ReachabilityError)
 }
 
 /// # How to use:
@@ -49,10 +50,7 @@ public final class Reachability: ReachibilityUtilsProtocol {
     
     var flags: SCNetworkReachabilityFlags? {
         didSet {
-            let newState = getConnectionStatusFromFlags(fromFlags: flags)
-            let oldState = getConnectionStatusFromFlags(fromFlags: oldValue)
-            if newState != oldState, oldValue != nil { return }
-            delegate?.didChangeReachibility(status: newState)
+            callDelegateDidChangeReachibilityIfNeeded(newFlags: flags, oldFlags: oldValue)
         }
     }
     
@@ -65,7 +63,7 @@ public final class Reachability: ReachibilityUtilsProtocol {
     }
     
     public convenience init?(hostname: String, queueQoS: DispatchQoS = .default,
-                               targetQueue: DispatchQueue? = nil) {
+                             targetQueue: DispatchQueue? = nil) {
         guard let ref = SCNetworkReachabilityCreateWithName(nil, hostname) else { return nil }
         
         self.init(reachabilityRef: ref, queueQoS: queueQoS, targetQueue: targetQueue)
@@ -89,12 +87,31 @@ public final class Reachability: ReachibilityUtilsProtocol {
         stopNotifier()
     }
     
-    public func getConnectionStatus() throws -> Connection {
-        try setReachabilityFlags()
-        return getConnectionStatusFromFlags(fromFlags: flags)
+    public func getConnectionStatus(completion: @escaping ((Connection)->()),
+                                       failure: @escaping ((ReachabilityError) -> ()) ) {
+        setReachabilityFlags(
+            completion: { [weak self] flags in
+                guard let `self` = self else { return }
+                let connectionStatud = self.getConnectionStatus(fromFlags: flags)
+                completion(connectionStatud)},
+            failure: { error in
+                failure(error)
+        })
     }
     
-    public func startNotifier() throws {
+    public func isLocal(completion: @escaping ((Bool)->()),
+                           failure: @escaping ((ReachabilityError) -> ()) ) {
+        setReachabilityFlags(
+            completion: { [weak self] flags in
+                guard let `self` = self else { return }
+                let isLocal = self.isLocal(fromFlags: flags)
+                completion(isLocal)},
+            failure: { error in
+              failure(error)
+        })
+    }
+    
+    public func startNotifier() {
         guard !notifierRunning else { return }
         
         let callback: SCNetworkReachabilityCallBack = { (reachability, flags, info) in
@@ -109,17 +126,22 @@ public final class Reachability: ReachibilityUtilsProtocol {
         context.info = UnsafeMutableRawPointer(Unmanaged<Reachability>.passUnretained(self).toOpaque())
         if !networkReachability.networkReachabilitySetCallback(reachabilityRef, callback, &context) {
             stopNotifier()
-            throw ReachabilityError.failToGetReachabilityState
+            delegate?.didFailToStartNotifier(error: .failToGetReachabilityState)
         }
         
         if !SCNetworkReachabilitySetDispatchQueue(reachabilityRef, reachabilitySerialQueue) {
             stopNotifier()
-            throw ReachabilityError.failToGetReachabilityState
+            delegate?.didFailToStartNotifier(error: .failToGetReachabilityState)
         }
         
         // Perform an initial check
-        try setReachabilityFlags()
-        
+        setReachabilityFlags(
+            completion: { [weak self] flags in
+                self?.flags = flags },
+            failure: { [weak self] error in
+                self?.stopNotifier()
+                self?.delegate?.didFailToStartNotifier(error: error)
+        })
         notifierRunning = true
     }
     
@@ -134,21 +156,39 @@ public final class Reachability: ReachibilityUtilsProtocol {
 
 // MARK: - Private methods
 private extension Reachability {
-    private func setReachabilityFlags() throws {
-        try reachabilitySerialQueue.sync { [weak self] in
+    private func setReachabilityFlags(completion: @escaping ((SCNetworkReachabilityFlags)->()),
+                                         failure: @escaping ((ReachabilityError) -> ()) ) {
+        reachabilitySerialQueue.async { [weak self] in
             guard let `self` = self else { return }
             var flags = SCNetworkReachabilityFlags()
-            guard networkReachability.networkReachabilityGetFlags(self.reachabilityRef, &flags) else {
-                self.stopNotifier()
-                throw ReachabilityError.failToGetReachabilityState
+            guard self.networkReachability.networkReachabilityGetFlags(self.reachabilityRef, &flags) else {
+                failure(.failToGetReachabilityState)
+                return
             }
-            
-            self.flags = flags
+             completion(flags)
         }
     }
     
-    private func getConnectionStatusFromFlags(fromFlags flags: SCNetworkReachabilityFlags?) -> Connection {
-        guard let flags = flags else { return .notConnected }
-        return flags.contains(.reachable) ? .connected : .notConnected
+    private func getConnectionStatus(fromFlags: SCNetworkReachabilityFlags) -> Connection {
+        return fromFlags.contains(.reachable) ? .connected : .notConnected
+    }
+    
+    private func isLocal(fromFlags: SCNetworkReachabilityFlags) -> Bool {
+        return fromFlags.contains(.isLocalAddress)
+    }
+    
+    private func callDelegateDidChangeReachibilityIfNeeded(newFlags: SCNetworkReachabilityFlags?,
+                                                           oldFlags: SCNetworkReachabilityFlags?){
+        guard let newFlags = newFlags else { return }
+        let newState = getConnectionStatus(fromFlags: newFlags)
+        
+        guard let oldFlags = oldFlags else {
+            delegate?.didChangeReachibility(status: newState)
+            return
+        }
+        
+        let oldState = getConnectionStatus(fromFlags: oldFlags)
+        if newState == oldState { return }
+        delegate?.didChangeReachibility(status: newState)
     }
 }
