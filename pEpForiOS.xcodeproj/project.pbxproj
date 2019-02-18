@@ -177,7 +177,6 @@
 		15874BD421274BD400A3A4A6 /* TrustedServerSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */; };
 		1594C1D021281FCD00CB06E2 /* Server+Fetching.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */; };
 		15A536902155136800CF6204 /* PEPUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A5368F2155136800CF6204 /* PEPUtilTest.swift */; };
-		15A75CE1202B57BF00C0DA28 /* Folder+VirtualMailbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */; };
 		15A75CEA202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */; };
 		15A75CEC202DED2300C0DA28 /* GmailSpecificInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */; };
 		15A763D11F72D68000670313 /* KeyChainTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15A763D01F72D68000670313 /* KeyChainTest.swift */; };
@@ -732,7 +731,6 @@
 		15874BD321274BD400A3A4A6 /* TrustedServerSettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedServerSettingCell.swift; sourceTree = "<group>"; };
 		1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Server+Fetching.swift"; sourceTree = "<group>"; };
 		15A5368F2155136800CF6204 /* PEPUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PEPUtilTest.swift; sourceTree = "<group>"; };
-		15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Folder+VirtualMailbox.swift"; sourceTree = "<group>"; };
 		15A75CE9202DE6B300C0DA28 /* ProviderSpecificInformationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderSpecificInformationProtocol.swift; sourceTree = "<group>"; };
 		15A75CEB202DED2300C0DA28 /* GmailSpecificInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmailSpecificInformation.swift; sourceTree = "<group>"; };
 		15A763D01F72D68000670313 /* KeyChainTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainTest.swift; sourceTree = "<group>"; };
@@ -1650,7 +1648,6 @@
 			isa = PBXGroup;
 			children = (
 				15A75CED202E085E00C0DA28 /* ProviderSpecific */,
-				15A75CE0202B57BF00C0DA28 /* Folder+VirtualMailbox.swift */,
 			);
 			path = VirtualMailbox;
 			sourceTree = "<group>";
@@ -3206,7 +3203,6 @@
 				431D60DD1E93D580001266D7 /* MessageAttachmentsCell.swift in Sources */,
 				00AEB2F620DBA7DA00DA185A /* NeedsRefreshDelegate.swift in Sources */,
 				8B81BB901E03F73100D38C82 /* SegueHandlerType.swift in Sources */,
-				15A75CE1202B57BF00C0DA28 /* Folder+VirtualMailbox.swift in Sources */,
 				1526597821623637006A78DF /* SuggestTableViewController.swift in Sources */,
 				15874BD22127493E00A3A4A6 /* TrustedServerSettingsViewController.swift in Sources */,
 				1554755F2137F6F8005A52D0 /* SwipeActionDescriptor.swift in Sources */,
