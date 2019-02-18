@@ -27,7 +27,7 @@ protocol ReachibilityUtilsProtocol {
     func isLocal(completion: @escaping ((Bool)->()),
                     failure: @escaping ((Reachability.ReachabilityError) -> ()) )
     
-    /// /// Start updateing reachable state value through ReachabilityDelegate
+    /// Start updateing reachable state value through ReachabilityDelegate
     func startNotifier()
     
     /// Stop updating reachable value
