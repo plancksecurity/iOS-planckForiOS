@@ -416,7 +416,6 @@
 		43C98AC7219C3691006418B0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43C98AC5219C3691006418B0 /* InfoPlist.strings */; };
 		43CE63C51DE87FB200FAC505 /* Identity+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */; };
 		43CE63CB1DE8830100FAC505 /* CdAccount+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */; };
-		43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CE63D01DE8866C00FAC505 /* Message+pEp.swift */; };
 		43D0702F2133DB3F0013B120 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D0702E2133DB3F0013B120 /* AppSettings.swift */; };
 		43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070302133DB920013B120 /* AppSettingsProtocol.swift */; };
 		43D070332133DC500013B120 /* DefaultAppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D070322133DC500013B120 /* DefaultAppSettings.swift */; };
@@ -1001,7 +1000,6 @@
 		43C98AC8219C3691006418B0 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Handshake.strings; sourceTree = "<group>"; };
 		43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Identity+pEp.swift"; sourceTree = "<group>"; };
 		43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAccount+pEp.swift"; sourceTree = "<group>"; };
-		43CE63D01DE8866C00FAC505 /* Message+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+pEp.swift"; sourceTree = "<group>"; };
 		43D0702E2133DB3F0013B120 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		43D070302133DB920013B120 /* AppSettingsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsProtocol.swift; sourceTree = "<group>"; };
 		43D070322133DC500013B120 /* DefaultAppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppSettings.swift; sourceTree = "<group>"; };
@@ -2337,7 +2335,6 @@
 				1554756521393036005A52D0 /* Folder+Extensions.swift */,
 				15F0F7AC213594FC002BE853 /* Folder+Imap.swift */,
 				15865A8820319ADC00F7A4B5 /* Folder+pEp.swift */,
-				43CE63D01DE8866C00FAC505 /* Message+pEp.swift */,
 				15BA536B20A08D270090F126 /* UnifiedInbox.swift */,
 				1594C1CF21281FCD00CB06E2 /* Server+Fetching.swift */,
 				15547570213FEAB7005A52D0 /* CdMessagePredicateFactory+Extension.swift */,
@@ -3172,7 +3169,6 @@
 				F7C16A5B21A56DBA004B44F2 /* FetchImapFoldersService.swift in Sources */,
 				222B35581DF96389007A1F82 /* Capability.swift in Sources */,
 				4362398C1EADD61B00BD2EB9 /* CGSize+Extension.swift in Sources */,
-				43CE63D11DE8866C00FAC505 /* Message+pEp.swift in Sources */,
 				15874BC82127493E00A3A4A6 /* ThreadedSettingViewModel.swift in Sources */,
 				0033C07F20D7EBD500224E61 /* ThreadedEmailViewModel+UpdateThreadDelegate.swift in Sources */,
 				43BB86941DB4E76D00980267 /* CdAccount+Extension.swift in Sources */,
