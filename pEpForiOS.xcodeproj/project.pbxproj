@@ -440,7 +440,6 @@
 		43D755EB1F25D234006F933A /* MatchUidToMsnOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */; };
 		43D755F61F262B37006F933A /* PantomimeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755F51F262B37006F933A /* PantomimeError.swift */; };
 		43D755FC1F26382B006F933A /* EmailConnectInfo+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D755FB1F26382B006F933A /* EmailConnectInfo+Extension.swift */; };
-		43D86EB821BE62DD00C18418 /* Log+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75A3216498AD00048CFE /* Log+ASL.swift */; };
 		43DA52681CEF1B4F0023D540 /* NewAccountSetupUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DA52671CEF1B4F0023D540 /* NewAccountSetupUITest.swift */; };
 		43DFB0331E36083D00175C9C /* MessageHeapBufferOverflow.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43DFB0321E36083D00175C9C /* MessageHeapBufferOverflow.txt */; };
 		43E0CA2A1F4AB81600D9BB7E /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E0CA291F4AB81600D9BB7E /* Attachment+Extension.swift */; };
@@ -454,7 +453,6 @@
 		43E88BE01EFA667600E0B224 /* AsyncStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E88BDF1EFA667600E0B224 /* AsyncStateMachine.swift */; };
 		43E9BC641DB518A700AD2352 /* CdFolder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */; };
 		43EC03481F4AE28F0026E152 /* String+Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC03471F4AE28F0026E152 /* String+Attachment.swift */; };
-		43EC75A4216498AD00048CFE /* Log+ASL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75A3216498AD00048CFE /* Log+ASL.swift */; };
 		43EC75AC2164C26100048CFE /* SetOwnKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75AB2164C26100048CFE /* SetOwnKeyViewController.swift */; };
 		43EC75AE2164D03500048CFE /* SetOwnKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75AD2164D03500048CFE /* SetOwnKeyViewModel.swift */; };
 		43EC75B32164E97800048CFE /* DecryptionUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EC75B22164E97800048CFE /* DecryptionUtil.swift */; };
@@ -1057,7 +1055,6 @@
 		43E88BDF1EFA667600E0B224 /* AsyncStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncStateMachine.swift; sourceTree = "<group>"; };
 		43E9BC631DB518A700AD2352 /* CdFolder+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Extension.swift"; sourceTree = "<group>"; };
 		43EC03471F4AE28F0026E152 /* String+Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Attachment.swift"; sourceTree = "<group>"; };
-		43EC75A3216498AD00048CFE /* Log+ASL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Log+ASL.swift"; sourceTree = "<group>"; };
 		43EC75AB2164C26100048CFE /* SetOwnKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOwnKeyViewController.swift; sourceTree = "<group>"; };
 		43EC75AD2164D03500048CFE /* SetOwnKeyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetOwnKeyViewModel.swift; sourceTree = "<group>"; };
 		43EC75B22164E97800048CFE /* DecryptionUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptionUtil.swift; sourceTree = "<group>"; };
@@ -2202,7 +2199,6 @@
 		43980EDE1CBD24B000A7FC3C /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				43D86EA721BE5E5800C18418 /* Log+ASL */,
 				151F71D02029F9F80057C74D /* IMAP */,
 				4362398D1EAE08F400BD2EB9 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
@@ -2354,14 +2350,6 @@
 				43D0702E2133DB3F0013B120 /* AppSettings.swift */,
 			);
 			path = AppSettings;
-			sourceTree = "<group>";
-		};
-		43D86EA721BE5E5800C18418 /* Log+ASL */ = {
-			isa = PBXGroup;
-			children = (
-				43EC75A3216498AD00048CFE /* Log+ASL.swift */,
-			);
-			path = "Log+ASL";
 			sourceTree = "<group>";
 		};
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
@@ -3376,7 +3364,6 @@
 				152A39C521905C3E00D9F8E4 /* ComposeTableViewController.swift in Sources */,
 				150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */,
 				4337E52A21B68FCA00826CAB /* Thread+Extension.swift in Sources */,
-				43EC75A4216498AD00048CFE /* Log+ASL.swift in Sources */,
 				4351C2DE1F4457620053381F /* NSString+Markdown.m in Sources */,
 				43306EBE1FE125B50045DD00 /* OAuth2Authorization.swift in Sources */,
 				43980EFA1CBD415700A7FC3C /* AppConfig.swift in Sources */,
@@ -3547,7 +3534,6 @@
 				4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
-				43D86EB821BE62DD00C18418 /* Log+ASL.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
 				157C05482180756300E530DE /* DocumentAttachmentPickerViewModelTest.swift in Sources */,
 				49DCCD2521E8ABA900ABE487 /* SecurePDFScreenshotTest.swift in Sources */,
