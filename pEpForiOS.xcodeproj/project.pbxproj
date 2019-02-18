@@ -199,7 +199,6 @@
 		15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */; };
 		15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D994219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift */; };
 		15D7D997219C374600A1A2B9 /* ComposeViewModelStateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D996219C374600A1A2B9 /* ComposeViewModelStateTest.swift */; };
-		15DD3F75211EC68D00A8714D /* DecryptMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */; };
 		15EBE43B20E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */; };
 		15EBE43E20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */; };
 		15EBE44220E5353E00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc in Resources */ = {isa = PBXBuildFile; fileRef = 15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */; };
@@ -748,7 +747,6 @@
 		15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+Extensions.swift"; sourceTree = "<group>"; };
 		15D7D994219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComposeViewModel+InitDataTest.swift"; sourceTree = "<group>"; };
 		15D7D996219C374600A1A2B9 /* ComposeViewModelStateTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewModelStateTest.swift; sourceTree = "<group>"; };
-		15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptMessageOperation.swift; sourceTree = "<group>"; };
 		15EBE43920E5286500268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_sec.asc; sourceTree = "<group>"; };
 		15EBE43C20E5296900268859 /* unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_4_peptest_ch_66AF_5804_A879_1E01_B407_125A_CAF0_D838_1542_49C4_pub.asc; sourceTree = "<group>"; };
 		15EBE44020E5353D00268859 /* unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unittest_ios_3_peptest_ch_550A_9E62_6822_040E_57CB_151A_651C_4A5D_B15B_77A3_pub.asc; sourceTree = "<group>"; };
@@ -1810,7 +1808,6 @@
 				43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */,
 				154750991FE7C0B4000D8004 /* FetchNumberOfNewMailsOperation.swift */,
 				150B84C520A5DD0600D8B288 /* UIDCopyOperation.swift */,
-				15DD3F74211EC68D00A8714D /* DecryptMessageOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -3213,7 +3210,6 @@
 				001D366020C56524002434EB /* EmailListViewModel+MoveToFolderDelegate.swift in Sources */,
 				B722EC7A1E5C879000A2B9D5 /* FolderUiProtocols.swift in Sources */,
 				4307C4721ED826E400A276A4 /* SmtpSendError.swift in Sources */,
-				15DD3F75211EC68D00A8714D /* DecryptMessageOperation.swift in Sources */,
 				A1B50A841CD26FF100B1A997 /* Constants.swift in Sources */,
 				15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */,
 				43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */,
