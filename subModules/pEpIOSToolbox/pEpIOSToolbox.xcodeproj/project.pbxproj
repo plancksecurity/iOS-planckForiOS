@@ -101,6 +101,8 @@
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				B7911ECB21F8B46600D7F66F /* GCD.swift */,
+				B7DB7F4F22130DE9003968DA /* Weak.swift */,
 				B7A46C51220C732E0027CCB5 /* Data+Extensions.swift */,
 				B7A46C53220C73BE0027CCB5 /* String+Extensions.swift */,
 				B7A46C57220DA6190027CCB5 /* String+Email.swift */,
@@ -172,8 +174,6 @@
 			children = (
 				B70A3A75220091D400EDCE61 /* Logger.swift */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
-				B7911ECB21F8B46600D7F66F /* GCD.swift */,
-				B7DB7F4F22130DE9003968DA /* Weak.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
 				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
 				B7DB7F512213120B003968DA /* SortedSet.swift */,
