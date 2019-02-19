@@ -14,7 +14,7 @@ class ReachibilityUtilsTests: XCTestCase {
     private var yesReachability: Reachability?
     private var noReachability:  Reachability?
     private let yesInternetNetworkReachibilityMock = YesInternetReachabilityMock()
-    private let noInternetLocalNetworkReachibilityMock  = NoInternetReachabilityMock()
+    private let noInternetLocalNetworkReachibilityMock = NoInternetReachabilityMock()
     
     override func setUp() {
         yesReachability = Reachability(networkReachability: yesInternetNetworkReachibilityMock)
