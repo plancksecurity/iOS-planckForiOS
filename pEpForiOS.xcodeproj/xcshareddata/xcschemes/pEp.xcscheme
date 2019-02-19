@@ -217,16 +217,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E441CBD0BCA00A7FC3C"
-               BuildableName = "pEpForiOSUITests.xctest"
-               BlueprintName = "pEpForiOSUITests"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "B7DB7F56221315BD003968DA"
                BuildableName = "pEpIOSToolboxTests.xctest"
                BlueprintName = "pEpIOSToolboxTests"
