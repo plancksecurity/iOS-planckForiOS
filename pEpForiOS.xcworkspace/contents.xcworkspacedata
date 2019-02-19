@@ -2,13 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:pEpForiOS.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
