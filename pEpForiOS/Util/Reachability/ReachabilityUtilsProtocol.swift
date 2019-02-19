@@ -11,17 +11,8 @@ import Foundation
 protocol ReachabilityUtilsProtocol {
     var delegate: ReachabilityDelegate? {get set}
     
-    /// Get current connection status
-    ///
-    /// - Parameters:
-    ///   - completion: connected and not connected to internet
-    ///   - failure: failToGetReachabilityState when failed to get internet status
     func getConnectionStatus(completion: @escaping ((Reachability.Connection)->()),
                                 failure: @escaping ((Reachability.ReachabilityError) -> ()) )
-    
-    /// Start updating internet connection state through ReachabilityDelegate
     func startNotifier()
-    
-    /// Stop updating reachable value
     func stopNotifier()
 }

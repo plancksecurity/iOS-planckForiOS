@@ -87,6 +87,11 @@ public final class Reachability: ReachabilityUtilsProtocol {
         stopNotifier()
     }
     
+    /// Get current connection status
+    ///
+    /// - Parameters:
+    ///   - completion: connected and not connected to internet
+    ///   - failure: failToGetReachabilityState when failed to get internet status
     public func getConnectionStatus(completion: @escaping ((Connection)->()),
                                        failure: @escaping ((ReachabilityError) -> ()) ) {
         setReachabilityFlags(
@@ -99,6 +104,7 @@ public final class Reachability: ReachabilityUtilsProtocol {
         })
     }
     
+    /// Start updating internet connection state through ReachabilityDelegate
     public func startNotifier() {
         guard !notifierRunning else { return }
         
@@ -133,6 +139,7 @@ public final class Reachability: ReachabilityUtilsProtocol {
         notifierRunning = true
     }
     
+    /// Stop updating reachable value
     public func stopNotifier() {
         defer { notifierRunning = false }
         
