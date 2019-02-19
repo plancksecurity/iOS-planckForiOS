@@ -48,7 +48,6 @@
 		1500199F1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */; };
 		150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150707DB21006CD000AA213F /* ComposeUtilTest.swift */; };
 		1508AEAA1F862C85001D5230 /* SortedSetTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1508AEA91F862C85001D5230 /* SortedSetTest.swift */; };
-		150B84C620A5DD0600D8B288 /* UIDCopyOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B84C520A5DD0600D8B288 /* UIDCopyOperation.swift */; };
 		150B8E991FCDACBB00374438 /* AccountSettingsUserInputError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */; };
 		150B8EB31FCEB93D00374438 /* UIUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150B8EB21FCEB93D00374438 /* UIUtils.swift */; };
 		150DF6D02052A13700A9DCF7 /* SecureWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */; };
@@ -580,7 +579,6 @@
 		1500199E1F2BA2EF003E670A /* SyncFlagsToServerOperationTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncFlagsToServerOperationTest.swift; sourceTree = "<group>"; };
 		150707DB21006CD000AA213F /* ComposeUtilTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeUtilTest.swift; sourceTree = "<group>"; };
 		1508AEA91F862C85001D5230 /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
-		150B84C520A5DD0600D8B288 /* UIDCopyOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDCopyOperation.swift; sourceTree = "<group>"; };
 		150B8E971FCDACBB00374438 /* AccountSettingsUserInputError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettingsUserInputError.swift; sourceTree = "<group>"; };
 		150B8EB21FCEB93D00374438 /* UIUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIUtils.swift; sourceTree = "<group>"; };
 		150DF6CF2052A13700A9DCF7 /* SecureWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureWebViewController.swift; sourceTree = "<group>"; };
@@ -1772,7 +1770,6 @@
 				4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */,
 				431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */,
 				43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */,
-				150B84C520A5DD0600D8B288 /* UIDCopyOperation.swift */,
 			);
 			path = Background;
 			sourceTree = "<group>";
@@ -3200,7 +3197,6 @@
 				152A39CC21905C3E00D9F8E4 /* MediaAttachmentPickerProvider.swift in Sources */,
 				4351C2CD1F4441190053381F /* commonmark.c in Sources */,
 				B722EC651E5B49BA00A2B9D5 /* FolderSectionViewModel.swift in Sources */,
-				150B84C620A5DD0600D8B288 /* UIDCopyOperation.swift in Sources */,
 				490CEBA72100EAD500E8579C /* SelfDismissable.swift in Sources */,
 				152A39E321905C3E00D9F8E4 /* RecipientTextView.swift in Sources */,
 				1560D1701F6FC99B00A75B39 /* FetchOlderImapMessagesOperation.swift in Sources */,
