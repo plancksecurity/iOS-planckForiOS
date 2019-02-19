@@ -13,8 +13,8 @@ class ReachibilityUtilsTests: XCTestCase {
     
     private var yesReachability: Reachability?
     private var noReachability:  Reachability?
-    private let yesInternetNetworkReachibilityMock = YesInternetReachibilityMock()
-    private let noInternetLocalNetworkReachibilityMock  = NoInternetReachibilityMock()
+    private let yesInternetNetworkReachibilityMock = YesInternetReachabilityMock()
+    private let noInternetLocalNetworkReachibilityMock  = NoInternetReachabilityMock()
     
     override func setUp() {
         yesReachability = Reachability(networkReachability: yesInternetNetworkReachibilityMock)
@@ -38,8 +38,10 @@ class ReachibilityUtilsTests: XCTestCase {
     
     func testGetConnectionStatusYesInternet() {
         // Given
-        guard let yesReachability = yesReachability else { XCTFail(); return }
-        
+        guard let yesReachability = yesReachability else {
+            XCTFail()
+            return
+        }
         // When
         yesReachability.getConnectionStatus(
             completion: { result in
@@ -52,8 +54,10 @@ class ReachibilityUtilsTests: XCTestCase {
     }
     
     func testGetConnectionStatusNoInternet() {
-        guard let noReachability = noReachability else { XCTFail(); return }
-        
+        guard let noReachability = noReachability else {
+            XCTFail()
+            return
+        }
         // When
         noReachability.getConnectionStatus(
             completion: { result in
@@ -67,7 +71,10 @@ class ReachibilityUtilsTests: XCTestCase {
     
     func testStartNotifierYesInternet(){
         // Given
-        guard let yesReachability = yesReachability else { XCTFail(); return }
+        guard let yesReachability = yesReachability else {
+            XCTFail()
+            return
+        }
         let exp = expectation(description: "delegate called for connected")
         let expectedConnected = Reachability.Connection.connected
         let testDelegate = ReachibilityUtilsTestsDelegate(withExp: exp,
@@ -83,7 +90,10 @@ class ReachibilityUtilsTests: XCTestCase {
     
     func testStartNotifierNoInternet(){
         // Given
-        guard let noReachability = noReachability else { XCTFail(); return }
+        guard let noReachability = noReachability else {
+            XCTFail()
+            return
+        }
         let exp = expectation(description: "delegate called for no connected")
         let expectedNotConnected = Reachability.Connection.notConnected
         let testDelegate = ReachibilityUtilsTestsDelegate(withExp: exp,

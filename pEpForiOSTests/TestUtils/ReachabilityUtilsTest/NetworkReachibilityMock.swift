@@ -11,7 +11,7 @@ import SystemConfiguration
 @testable import pEpForiOS
 
 
-class YesInternetReachibilityMock: NetworkReachabilityProtocol {
+class YesInternetReachabilityMock: NetworkReachabilityProtocol {
     let callback: SCNetworkReachabilityCallBack = { (reachability, flags, info) in
         guard let info = info else { return }
         
@@ -34,7 +34,7 @@ class YesInternetReachibilityMock: NetworkReachabilityProtocol {
     }
 }
 
-class NoInternetReachibilityMock: NetworkReachabilityProtocol {
+class NoInternetReachabilityMock: NetworkReachabilityProtocol {
     let callback: SCNetworkReachabilityCallBack = { (reachability, flags, info) in
         guard let info = info else { return }
         
