@@ -4,16 +4,6 @@
 //
 //  Created by Alejandro Gelos on 11/02/2019.
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
-//
-//  This service allow an application to determine whether or not you have a working internet
-//  connection.
-//  Reachability supports asynchronous model. You get the internet connection status, in the
-//  completion block by calling the getConnectionStatus(completion:failure:) function. You can also
-//  call startNotifier() function, to start getting changes in internet connection status, on
-//  ReachabilityDelegate, didChangeReachability(status:) function. The client must implement
-//  ReachabilityDelegate to get new internet connection status. When startNotifier is call,
-//  ReachabilityDelegate didChangeReachability(status:) will be call with the current internet
-//  connection status.
 
 import Foundation
 import SystemConfiguration
@@ -26,6 +16,16 @@ public protocol ReachabilityDelegate: class {
     func didFailToStartNotifier(error: Reachability.ReachabilityError)
 }
 
+///  This service allow an application to determine whether or not you have a working internet
+///  connection.
+///  Reachability supports asynchronous model. You get the internet connection status, in the
+///  completion block by calling the getConnectionStatus(completion:failure:) function. You can also
+///  call startNotifier() function, to start getting changes in internet connection status, on
+///  ReachabilityDelegate, didChangeReachability(status:) function. The client must implement
+///  ReachabilityDelegate to get new internet connection status. When startNotifier is call,
+///  ReachabilityDelegate didChangeReachability(status:) will be call with the current internet
+///  connection status.
+///
 /// # How to use:
 ///
 /// # Start listening to new states
