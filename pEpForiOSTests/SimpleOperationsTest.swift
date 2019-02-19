@@ -503,7 +503,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
             message.sent = Date()
-            message.addTo(cdIdentity: to)
+            message.addToTo(to)
         }
         Record.saveAndWait()
 
@@ -581,7 +581,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             message.shortMessage = "Some subject \(i)"
             message.longMessage = "Long message \(i)"
             message.longMessageFormatted = "<h1>Long HTML \(i)</h1>"
-            message.addTo(cdIdentity: to)
+            message.addToTo(to)
         }
         Record.saveAndWait()
 

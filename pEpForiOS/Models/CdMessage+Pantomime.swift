@@ -708,7 +708,7 @@ extension CdMessage {
                                                   contentID: part.contentID(),
                                                   data: data,
                                                   contentDispositionRawValue: contentDispRawValue)
-                targetMail.addAttachment(cdAttachment: attachment)
+                targetMail.addToAttachments(attachment)
             }
         }
 

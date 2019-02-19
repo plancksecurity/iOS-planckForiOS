@@ -406,11 +406,11 @@ class TestUtil {
             } else {
                 message.sent = Date()
             }
-            message.addTo(cdIdentity: to)
+            message.addToTo(to)
 
             // add attachments
             if withAttachments {
-                message.addAttachment(cdAttachment: createCdAttachment(inlined: attachmentsInlined))
+                message.addToAttachments(createCdAttachment(inlined: attachmentsInlined))
             }
 
             messagesInTheQueue.append(message)

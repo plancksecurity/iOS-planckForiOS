@@ -50,7 +50,7 @@ class FetchMessagesOperationTest: CoreDataDrivenTestBase {
         XCTAssertEqual(mailsToSend.count, numMailsToSend)
 
         for mail in mailsToSend {
-            mail.addTo(cdIdentity: id2)
+            mail.addToTo(id2)
             mail.pEpProtected = false // force unencrypted
         }
         Record.saveAndWait()
