@@ -73,7 +73,7 @@
 		B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OperationQueue+Extension.swift"; sourceTree = "<group>"; };
 		B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Parsing.swift"; sourceTree = "<group>"; };
 		B7DB7F4F22130DE9003968DA /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
-		B7DB7F512213120B003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortedSet.swift; path = ../../../../pEpForiOS/Util/SortedSet.swift; sourceTree = "<group>"; };
+		B7DB7F512213120B003968DA /* SortedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSet.swift; sourceTree = "<group>"; };
 		B7DB7F57221315BD003968DA /* pEpIOSToolboxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = pEpIOSToolboxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7DB7F5B221315BD003968DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7DB7F8322144E4E003968DA /* SortedSetTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortedSetTest.swift; sourceTree = "<group>"; };
@@ -115,7 +115,6 @@
 				B7DB7F4F22130DE9003968DA /* Weak.swift */,
 				B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */,
 				B7465DBD22119D39008A1708 /* Thread+Extension.swift */,
-				B7DB7F512213120B003968DA /* SortedSet.swift */,
 				B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */,
 			);
 			path = Foundation;
@@ -178,6 +177,7 @@
 				B70A3A75220091D400EDCE61 /* Logger.swift */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
+				B7DB7F512213120B003968DA /* SortedSet.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";

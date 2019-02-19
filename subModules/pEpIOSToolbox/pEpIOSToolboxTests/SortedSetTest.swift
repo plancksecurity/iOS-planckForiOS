@@ -8,8 +8,6 @@
 
 import XCTest
 
-@testable import pEpForiOS
-
 
 struct TestObject: Equatable {
     let date: Date

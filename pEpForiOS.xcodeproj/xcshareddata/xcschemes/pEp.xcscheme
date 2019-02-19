@@ -223,6 +223,16 @@
                ReferencedContainer = "container:pEpForiOS.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B7DB7F56221315BD003968DA"
+               BuildableName = "pEpIOSToolboxTests.xctest"
+               BlueprintName = "pEpIOSToolboxTests"
+               ReferencedContainer = "container:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
