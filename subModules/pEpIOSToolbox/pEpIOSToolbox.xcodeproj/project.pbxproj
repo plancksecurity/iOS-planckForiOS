@@ -107,12 +107,8 @@
 				B7A46C55220DA5EA0027CCB5 /* Substring+Email.swift */,
 				B7A46C61220DCEA80027CCB5 /* NSAttributedString+Parsing.swift */,
 				B7936E3C220DD8F5003B39E6 /* NSAttributedString+Extensions.swift */,
-				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
-				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
 				B70A3A5422005BD400EDCE61 /* Date+Extension.swift */,
 				B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */,
-				B7911ECB21F8B46600D7F66F /* GCD.swift */,
-				B7DB7F4F22130DE9003968DA /* Weak.swift */,
 				B7A46C5D220DBAF00027CCB5 /* OperationQueue+Extension.swift */,
 				B7465DBD22119D39008A1708 /* Thread+Extension.swift */,
 				B7465DC522119EB1008A1708 /* Array+SortingAndSearching.swift */,
@@ -176,8 +172,12 @@
 			children = (
 				B70A3A75220091D400EDCE61 /* Logger.swift */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
+				B7911ECB21F8B46600D7F66F /* GCD.swift */,
+				B7DB7F4F22130DE9003968DA /* Weak.swift */,
 				B7465DCB2211BEE9008A1708 /* Tuple.swift */,
+				B7A46C4F220C1F0C0027CCB5 /* MiscUtil.swift */,
 				B7DB7F512213120B003968DA /* SortedSet.swift */,
+				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
