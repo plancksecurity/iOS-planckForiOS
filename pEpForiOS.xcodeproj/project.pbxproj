@@ -220,7 +220,6 @@
 		430E5F201EBC87A700E5D5D3 /* LanguageListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 430E5F1F1EBC87A700E5D5D3 /* LanguageListTableViewCell.swift */; };
 		43106A192045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43106A182045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift */; };
 		431144B91CC11DF30007639D /* StorePrefetchedMailOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */; };
-		43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43122B3D1DF5BB6600610253 /* MySelfOperation.swift */; };
 		431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 431394A81E4B03AA00D92F33 /* Settings.bundle */; };
 		4315E4C120120F1600F68763 /* NSSecureCoding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C020120F1600F68763 /* NSSecureCoding+Extension.swift */; };
 		4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
@@ -746,7 +745,6 @@
 		430E5F1F1EBC87A700E5D5D3 /* LanguageListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListTableViewCell.swift; sourceTree = "<group>"; };
 		43106A182045716000693144 /* OAuth2ConfigurationProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2ConfigurationProtocol+Extension.swift"; sourceTree = "<group>"; };
 		431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorePrefetchedMailOperation.swift; sourceTree = "<group>"; };
-		43122B3D1DF5BB6600610253 /* MySelfOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySelfOperation.swift; sourceTree = "<group>"; };
 		431394A81E4B03AA00D92F33 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4315E4C020120F1600F68763 /* NSSecureCoding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSSecureCoding+Extension.swift"; sourceTree = "<group>"; };
 		4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Extension.swift"; sourceTree = "<group>"; };
@@ -1749,7 +1747,6 @@
 				43313DFB1DEC7F6000C111C8 /* DeleteFoldersOperation.swift */,
 				4382E6421CC600FF00AA27EA /* PersistentImapFolder.swift */,
 				431144B81CC11DF30007639D /* StorePrefetchedMailOperation.swift */,
-				43122B3D1DF5BB6600610253 /* MySelfOperation.swift */,
 				4326D3FE1EFBC8DB0016AB0D /* FolderInfoOperation.swift */,
 				431E2B061F02550C000035FA /* CheckOutgoingMessagesOperation.swift */,
 				43D755EA1F25D234006F933A /* MatchUidToMsnOperation.swift */,
@@ -3279,7 +3276,6 @@
 				B722EC4D1E5B01B300A2B9D5 /* FolderCellViewModel.swift in Sources */,
 				43E88BDE1EFA665600E0B224 /* AsyncStateMachineProtocol.swift in Sources */,
 				15874BCF2127493E00A3A4A6 /* AccountSettingsTableViewController.swift in Sources */,
-				43122B3E1DF5BB6600610253 /* MySelfOperation.swift in Sources */,
 				B71EBBBC1E55E4AE00150177 /* FolderTableViewController.swift in Sources */,
 				492EF92F20C699D0004EAE14 /* ThreadViewController+TableView.swift in Sources */,
 				43D070312133DB920013B120 /* AppSettingsProtocol.swift in Sources */,
