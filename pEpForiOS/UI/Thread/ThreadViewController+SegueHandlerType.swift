@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import pEpIOSToolbox
+
 extension ThreadViewController: SegueHandlerType {
 
     enum SegueIdentifier: String {

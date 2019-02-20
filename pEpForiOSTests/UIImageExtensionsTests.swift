@@ -8,6 +8,7 @@
 
 import XCTest
 import Foundation
+import pEpIOSToolbox
 
 @testable import pEpForiOS
 

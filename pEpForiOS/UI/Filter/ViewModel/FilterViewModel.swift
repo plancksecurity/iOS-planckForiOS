@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import pEpIOSToolbox
 
 public enum FilterSectionType {
     case accouts, include, other

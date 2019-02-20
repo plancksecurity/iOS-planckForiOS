@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
 class TrustedServerSettingsViewController: BaseTableViewController {
     var viewModel = TrustedServerSettingsViewModel()

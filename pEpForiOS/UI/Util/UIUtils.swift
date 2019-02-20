@@ -9,6 +9,7 @@
 import UIKit
 import MessageModel
 import ContactsUI
+import pEpIOSToolbox
 
 struct UIUtils {
 
