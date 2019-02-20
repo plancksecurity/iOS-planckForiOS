@@ -17,7 +17,7 @@
 #import "pEpObjCAdapter/PEPLanguage.h"
 #import "pEpObjCAdapter/NSDictionary+Extension.h"
 #import "pEpObjCAdapter/NSDictionary+Debug.h"
-#import "pEpObjCAdapter/PEPIdentity.h"
+#import <pEpObjCAdapterFramework/pEpObjCAdapterFramework.h>
 #import "pEpObjCAdapter/PEPMessage.h"
 #import "pEpObjCAdapter/PEPAttachment.h"
 
