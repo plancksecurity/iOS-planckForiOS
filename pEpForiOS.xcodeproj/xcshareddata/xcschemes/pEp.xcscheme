@@ -170,26 +170,6 @@
                BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
                BuildableName = "MessageModelTests.xctest"
                BlueprintName = "MessageModelTests"
-               ReferencedContainer = "container:../MailModel/MessageModel/MessageModel.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "64415E161BE94FCB00F6CBB2"
-               BuildableName = "iOSTests.xctest"
-               BlueprintName = "iOSTests"
-               ReferencedContainer = "container:../pEpiOSAdapter/pEpiOSAdapter.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
-               BuildableName = "MessageModelTests.xctest"
-               BlueprintName = "MessageModelTests"
                ReferencedContainer = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
             </BuildableReference>
          </TestableReference>
