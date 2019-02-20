@@ -132,7 +132,7 @@
                                         <constraint firstItem="YqR-ga-Tf9" firstAttribute="centerY" secondItem="jgQ-nZ-h1r" secondAttribute="centerY" id="kzK-1E-vdU"/>
                                         <constraint firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" constant="8" id="n5I-Yb-okr"/>
                                         <constraint firstItem="BvI-Zi-zU6" firstAttribute="trailing" secondItem="8QD-qP-0hS" secondAttribute="trailing" id="tYc-Ao-foD"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BvI-Zi-zU6" secondAttribute="bottom" constant="5" id="zul-c0-54S"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BvI-Zi-zU6" secondAttribute="bottom" priority="950" constant="5" id="zul-c0-54S"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

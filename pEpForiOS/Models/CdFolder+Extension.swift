@@ -7,7 +7,7 @@
 //
 
 import CoreData
-
+import pEpIOSToolbox
 import MessageModel
 
 public extension CdFolder {

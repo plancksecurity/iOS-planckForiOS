@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 extension Message {
     static let uidNeedsAppend = 0

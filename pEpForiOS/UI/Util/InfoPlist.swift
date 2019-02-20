@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpIOSToolbox
 
 struct InfoPlist {
     static private var infoDictMainBundle: [String:Any]? {

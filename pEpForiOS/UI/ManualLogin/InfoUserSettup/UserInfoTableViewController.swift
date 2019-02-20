@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import pEpIOSToolbox
 import MessageModel
 
 class UserInfoTableViewController: BaseTableViewController, TextfieldResponder, UITextFieldDelegate {
