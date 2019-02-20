@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import pEpIOSToolbox
 
 extension SettingsCellViewModel {
     public enum SettingType {

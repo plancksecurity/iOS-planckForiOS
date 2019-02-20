@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import pEpIOSToolbox
 
 public class AccountSettingsViewModel {
     public struct ServerViewModel {

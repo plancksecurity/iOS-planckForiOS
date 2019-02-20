@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 /// Logic based on data MessageModel should not know.
 extension Folder {

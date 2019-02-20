@@ -20,7 +20,7 @@ sudo port install asn1c
 sudo port install py27-lxml
 
 sudo port install python_select
-sudo port select python python27
+0
 
 sudo port install autoconf
 sudo port install libtool
