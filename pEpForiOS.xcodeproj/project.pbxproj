@@ -229,6 +229,12 @@
 		220DCE371E0AB5CC002FE716 /* MessageSubjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */; };
 		222B35581DF96389007A1F82 /* Capability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222B35571DF96389007A1F82 /* Capability.swift */; };
 		228038681DC9DE6D00F1CB45 /* TextfieldResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */; };
+		37A3D61F221429DA00E11415 /* NetworkReachibilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D61E221429DA00E11415 /* NetworkReachibilityMock.swift */; };
+		37A3D6222214338300E11415 /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D6212214338300E11415 /* NetworkReachabilityProtocol.swift */; };
+		37A3D6242214372B00E11415 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D6232214372B00E11415 /* NetworkReachability.swift */; };
+		37A3D6262215695400E11415 /* ReachabilityUtilsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A3D6252215695400E11415 /* ReachabilityUtilsProtocol.swift */; };
+		37FE82E92211D290008F8CF4 /* ReachabilityUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FE82E82211D290008F8CF4 /* ReachabilityUtils.swift */; };
+		37FE82ED22132B23008F8CF4 /* ReachabilityUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37FE82EC22132B23008F8CF4 /* ReachabilityUtilsTests.swift */; };
 		43040A531E9776220083DED8 /* AttachmentSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43040A521E9776220083DED8 /* AttachmentSummaryView.swift */; };
 		4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */; };
 		4307C4701ED81F3100A276A4 /* DefaultImapSyncDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4307C46F1ED81F3100A276A4 /* DefaultImapSyncDelegate.swift */; };
@@ -815,6 +821,12 @@
 		220DCE331E0AB5CC002FE716 /* MessageSubjectCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSubjectCell.swift; sourceTree = "<group>"; };
 		222B35571DF96389007A1F82 /* Capability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Capability.swift; sourceTree = "<group>"; };
 		228038671DC9DE6D00F1CB45 /* TextfieldResponder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextfieldResponder.swift; sourceTree = "<group>"; };
+		37A3D61E221429DA00E11415 /* NetworkReachibilityMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachibilityMock.swift; sourceTree = "<group>"; };
+		37A3D6212214338300E11415 /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
+		37A3D6232214372B00E11415 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
+		37A3D6252215695400E11415 /* ReachabilityUtilsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityUtilsProtocol.swift; sourceTree = "<group>"; };
+		37FE82E82211D290008F8CF4 /* ReachabilityUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityUtils.swift; sourceTree = "<group>"; };
+		37FE82EC22132B23008F8CF4 /* ReachabilityUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityUtilsTests.swift; sourceTree = "<group>"; };
 		43040A521E9776220083DED8 /* AttachmentSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentSummaryView.swift; sourceTree = "<group>"; };
 		4304FCFE1EBB8C5A0086DADA /* LanguageListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageListViewController.swift; sourceTree = "<group>"; };
 		4307C46F1ED81F3100A276A4 /* DefaultImapSyncDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DefaultImapSyncDelegate.swift; path = ../DefaultImapSyncDelegate.swift; sourceTree = "<group>"; };
@@ -1304,6 +1316,7 @@
 		151F71EB202A06750057C74D /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
+				37A3D61D2214292B00E11415 /* ReachabilityUtilsTest */,
 				151F71F6202A06750057C74D /* CdAccount+TestUtils.swift */,
 				151F71F3202A06750057C74D /* CdMessage+TestUtils.swift */,
 				151F71F1202A06750057C74D /* CoreDataDrivenTestBase.swift */,
@@ -1863,6 +1876,26 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		37A3D61D2214292B00E11415 /* ReachabilityUtilsTest */ = {
+			isa = PBXGroup;
+			children = (
+				37FE82EC22132B23008F8CF4 /* ReachabilityUtilsTests.swift */,
+				37A3D61E221429DA00E11415 /* NetworkReachibilityMock.swift */,
+			);
+			path = ReachabilityUtilsTest;
+			sourceTree = "<group>";
+		};
+		37A3D6202214333200E11415 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				37A3D6252215695400E11415 /* ReachabilityUtilsProtocol.swift */,
+				37FE82E82211D290008F8CF4 /* ReachabilityUtils.swift */,
+				37A3D6212214338300E11415 /* NetworkReachabilityProtocol.swift */,
+				37A3D6232214372B00E11415 /* NetworkReachability.swift */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		4304FCFD1EBB8C2C0086DADA /* LanguageList */ = {
 			isa = PBXGroup;
 			children = (
@@ -2275,6 +2308,7 @@
 				4362398D1EAE08F400BD2EB9 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
 				43306EBC1FE125950045DD00 /* OAuth2 */,
+				37A3D6202214333200E11415 /* Reachability */,
 				43980EF91CBD415700A7FC3C /* AppConfig.swift */,
 				43C6F35A1CBE7496006A2A18 /* ConnectionManager.swift */,
 				A1B50A811CD26FF100B1A997 /* Constants.swift */,
@@ -3195,6 +3229,7 @@
 				5D039AA21D0EEA3700AD59EC /* DecryptMessagesOperation.swift in Sources */,
 				439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
+				37A3D6262215695400E11415 /* ReachabilityUtilsProtocol.swift in Sources */,
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
 				1560D1721F6FD1F600A75B39 /* FetchOlderImapMessagesService.swift in Sources */,
 				15874BC42127493E00A3A4A6 /* SettingsCellViewModel.swift in Sources */,
@@ -3205,6 +3240,7 @@
 				15874BC62127493E00A3A4A6 /* SettingsTableViewController.swift in Sources */,
 				B740B75F1E4B1C46002585E1 /* MimeTypeUtil.swift in Sources */,
 				1555E97C1FD587A300BF8E0E /* Message+IMAP.swift in Sources */,
+				37A3D6242214372B00E11415 /* NetworkReachability.swift in Sources */,
 				002375D320DCDC7300663961 /* FullMessageCell+SecureWebViewControllerDelegate.swift in Sources */,
 				4351C2C91F4441190053381F /* buffer.c in Sources */,
 				434B5D191DDF67E400BEDEF0 /* CdMessage+Extension.swift in Sources */,
@@ -3478,6 +3514,7 @@
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				492EF92A20C18C6C004EAE14 /* DisplayedMessage.swift in Sources */,
+				37A3D6222214338300E11415 /* NetworkReachabilityProtocol.swift in Sources */,
 				15AA6016207CD71D00D57DB4 /* ImapFlags+Pantomime.swift in Sources */,
 				B70A3A9322089D5000EDCE61 /* Log+ASL.swift in Sources */,
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,
@@ -3486,6 +3523,7 @@
 				00FD0CE82102014C00BA0C56 /* PrimarySplitViewcontroller+ScreenComposerProtocol.swift in Sources */,
 				434E5A1B20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift in Sources */,
 				431E58F61ED57F6500EFA77F /* AccountVerificationServiceProtocol.swift in Sources */,
+				37FE82E92211D290008F8CF4 /* ReachabilityUtils.swift in Sources */,
 				152A39E821905C3E00D9F8E4 /* RecipientCellViewModel.swift in Sources */,
 				43A26FBF1E041BF200AF0B84 /* ImapSyncOperation.swift in Sources */,
 				152A39CE21905C3E00D9F8E4 /* ComposeHelpers.swift in Sources */,
@@ -3626,11 +3664,13 @@
 				1569AEA520E14DC3002102A0 /* ReUploadTest.swift in Sources */,
 				00262058217DE97100DDAFB5 /* AccountSettingsViewModelTest.swift in Sources */,
 				004422C82179E3C500BDF6DF /* SettingsCellViewModelTest.swift in Sources */,
+				37A3D61F221429DA00E11415 /* NetworkReachibilityMock.swift in Sources */,
 				150707DC21006CD000AA213F /* ComposeUtilTest.swift in Sources */,
 				15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */,
 				1574D07D2114696B00FEDC93 /* URL+MailToTest.swift in Sources */,
 				43C273DD21C9024A002EB4C8 /* LoggerTest.swift in Sources */,
 				4356FFEC21356CB600804089 /* ReplyAllPossibleCheckerTest.swift in Sources */,
+				37FE82ED22132B23008F8CF4 /* ReachabilityUtilsTests.swift in Sources */,
 				430C80E01D0EADC200CD4582 /* PepAdapterTests.swift in Sources */,
 				00DF2C3B2164C53F004EBA6C /* FolderViewModelTest.swift in Sources */,
 				5DEBAA481DE59C3B00FAE12C /* NetworkServiceTests.swift in Sources */,
