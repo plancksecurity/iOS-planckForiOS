@@ -98,6 +98,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15175ED8221E9F3800C91DB8 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		15175ED9221E9F4200C91DB8 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		15175EDA221E9F4C00C91DB8 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				B7DB7F8322144E4E003968DA /* SortedSetTest.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,7 +184,9 @@
 		B7DB7F58221315BD003968DA /* pEpIOSToolboxTests */ = {
 			isa = PBXGroup;
 			children = (
-				B7DB7F8322144E4E003968DA /* SortedSetTest.swift */,
+				15175ED8221E9F3800C91DB8 /* Foundation */,
+				15175ED9221E9F4200C91DB8 /* UIKit */,
+				15175EDA221E9F4C00C91DB8 /* Other */,
 				B7DB7F5B221315BD003968DA /* Info.plist */,
 			);
 			path = pEpIOSToolboxTests;
