@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 /**
  pEp extension for CdIdentity

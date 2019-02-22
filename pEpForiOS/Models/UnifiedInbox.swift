@@ -6,6 +6,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 public class UnifiedInbox: Folder {
     static public let defaultUnifiedInboxName = "Unified Inbox"

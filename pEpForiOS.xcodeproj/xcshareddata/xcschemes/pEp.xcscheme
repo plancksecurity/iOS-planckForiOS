@@ -28,20 +28,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E5A1CBD1B3E00A7FC3C"
-               BuildableName = "libPantomimeStatic.a"
-               BlueprintName = "PantomimeStatic"
-               ReferencedContainer = "container:../pantomime-iOS/Pantomime.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "343AAA531E83463400F9D36E"
                BuildableName = "AppAuth.framework"
                BlueprintName = "AppAuth_iOS"
@@ -84,6 +70,48 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B7911EB321F7358500D7F66F"
+               BuildableName = "pEpIOSToolbox.framework"
+               BlueprintName = "pEpIOSToolbox"
+               ReferencedContainer = "container:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43FBB7621FC6D9630057A3BD"
+               BuildableName = "ldns_xcode.framework"
+               BlueprintName = "ldns-xcode"
+               ReferencedContainer = "container:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "43980E5A1CBD1B3E00A7FC3C"
+               BuildableName = "libPantomimeStatic.a"
+               BlueprintName = "PantomimeStatic"
+               ReferencedContainer = "container:../pantomime-iOS/Pantomime.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "352988A91AEF964100FA7E2E"
                BuildableName = "libpEpObjCAdapter.a"
                BlueprintName = "pEpObjCAdapter"
@@ -116,20 +144,6 @@
                BuildableName = "libAccountSettingsAdapter.a"
                BlueprintName = "AccountSettingsAdapter"
                ReferencedContainer = "container:../libAccountSettings/xcode/AccountSettingsAdapter/AccountSettingsAdapter.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43FBB7621FC6D9630057A3BD"
-               BuildableName = "ldns_xcode.framework"
-               BlueprintName = "ldns-xcode"
-               ReferencedContainer = "container:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -197,10 +211,10 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43980E441CBD0BCA00A7FC3C"
-               BuildableName = "pEpForiOSUITests.xctest"
-               BlueprintName = "pEpForiOSUITests"
-               ReferencedContainer = "container:pEpForiOS.xcodeproj">
+               BlueprintIdentifier = "B7DB7F56221315BD003968DA"
+               BuildableName = "pEpIOSToolboxTests.xctest"
+               BlueprintName = "pEpIOSToolboxTests"
+               ReferencedContainer = "container:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

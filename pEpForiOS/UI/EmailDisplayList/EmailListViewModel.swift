@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import pEpIOSToolbox
 import MessageModel
 
 protocol EmailListViewModelDelegate: TableViewUpdate {

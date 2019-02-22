@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpIOSToolbox
 import MessageModel
 
 let folderTypesNotAllowedToMoveTo = [FolderType.drafts, .sent]

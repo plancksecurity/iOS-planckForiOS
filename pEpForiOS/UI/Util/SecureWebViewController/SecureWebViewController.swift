@@ -7,6 +7,7 @@
 //
 
 import WebKit
+import pEpIOSToolbox
 
 protocol SecureWebViewControllerDelegate: class {
     /// Called on content size changes while within loading time.

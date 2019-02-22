@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 class AccountVerificationService: AccountVerificationServiceProtocol {
     weak var delegate: AccountVerificationServiceDelegate?

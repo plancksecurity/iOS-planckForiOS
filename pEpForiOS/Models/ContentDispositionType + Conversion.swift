@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import pEpIOSToolbox
 
 extension content_disposition_type {
 

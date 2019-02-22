@@ -7,7 +7,7 @@
 //
 
 import MessageModel
-
+import pEpIOSToolbox
 import CoreData
 
 // Only used in Tests. Maybe refactor out.

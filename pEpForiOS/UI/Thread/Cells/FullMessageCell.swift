@@ -9,6 +9,7 @@
 import UIKit
 import MessageModel
 import SwipeCellKit
+import pEpIOSToolbox
 
 class FullMessageCell: SwipeTableViewCell,
     MessageViewModelConfigurable,

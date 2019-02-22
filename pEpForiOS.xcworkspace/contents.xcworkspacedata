@@ -8,6 +8,9 @@
       location = "container:../MessageModel/MessageModel/MessageModel.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:subModules/pEpIOSToolbox/pEpIOSToolbox.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:../pEpObjCAdapter/pEpObjCAdapter.xcodeproj">
    </FileRef>
    <FileRef
