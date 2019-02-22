@@ -342,7 +342,6 @@
 		43985D0E204438480080FA9A /* AccountSettingsProtocol+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */; };
 		439932301FEA9B7200E92C35 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 439932311FEA9B7200E92C35 /* SwipeCellKit.framework */; };
 		439A23E520B40FAC00417AF5 /* PEP_rating+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439A23E420B40FAC00417AF5 /* PEP_rating+Extension.swift */; };
-		439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */; };
 		439D40701CC78930009A4E7C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D406F1CC78930009A4E7C /* libz.tbd */; };
 		439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40711CC78958009A4E7C /* libbz2.tbd */; };
 		439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 439D40731CC7897B009A4E7C /* libiconv.2.tbd */; };
@@ -885,7 +884,6 @@
 		43985D0D204438480080FA9A /* AccountSettingsProtocol+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountSettingsProtocol+Extension.swift"; sourceTree = "<group>"; };
 		439932311FEA9B7200E92C35 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		439A23E420B40FAC00417AF5 /* PEP_rating+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PEP_rating+Extension.swift"; sourceTree = "<group>"; };
-		439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdFolder+Pantomime.swift"; sourceTree = "<group>"; };
 		439D406F1CC78930009A4E7C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		439D40711CC78958009A4E7C /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		439D40731CC7897B009A4E7C /* libiconv.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.2.tbd; path = usr/lib/libiconv.2.tbd; sourceTree = SDKROOT; };
@@ -2214,7 +2212,6 @@
 				154F0A7F2085FC7D00C77D72 /* CdAttachment+Pantomime.swift */,
 				431B04791DE5772000E40CD3 /* CdMessage+pEp.swift */,
 				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
-				439AAC551F21D0CC0018A29E /* CdFolder+Pantomime.swift */,
 				154F0A832087779200C77D72 /* ContentDispositionType + Conversion.swift */,
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				15AA6015207CD71D00D57DB4 /* ImapFlags+Pantomime.swift */,
@@ -2972,7 +2969,6 @@
 				4351C2D71F4441190053381F /* node.c in Sources */,
 				00D3CD3E20B58976009ABBC9 /* PrimarySplitViewController.swift in Sources */,
 				43ED53771CC77F95006AB156 /* OneValueSettingCell.swift in Sources */,
-				439AAC561F21D0CC0018A29E /* CdFolder+Pantomime.swift in Sources */,
 				4351C2D51F4441190053381F /* latex.c in Sources */,
 				37A3D6262215695400E11415 /* ReachabilityUtilsProtocol.swift in Sources */,
 				43498CDB200CF20F006DC947 /* LoginViewModelLoginErrorDelegate.swift in Sources */,
