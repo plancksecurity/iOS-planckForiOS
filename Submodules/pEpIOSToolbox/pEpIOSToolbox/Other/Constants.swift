@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Constants {
+public struct Constants {
     /** MIME content type for plain text */
     static let contentTypeText = "text/plain"
 
