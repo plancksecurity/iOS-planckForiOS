@@ -10,47 +10,6 @@ struct Constants {
     /** Settings key for storing the email of the last used account */
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
 
-    /** MIME content type for plain text */
-    static let contentTypeText = "text/plain"
-
-    /** MIME content type for HTML */
-    static let contentTypeHtml = "text/html"
-
-    /**
-     Mime type for the "Version" attachment of PGP/MIME.
-     */
-    static let contentTypePGPEncrypted = "application/pgp-encrypted"
-
-    /**
-     Content type for MIME multipart/mixed.
-     */
-    static let contentTypeMultipartMixed = "multipart/mixed"
-
-    /**
-     Content type for MIME multipart/related.
-     */
-    static let contentTypeMultipartRelated = "multipart/related"
-
-    /**
-     Content type for MIME multipart/encrypted.
-     */
-    static let contentTypeMultipartEncrypted = "multipart/encrypted"
-
-    /**
-     Protocol for PGP/MIME application/pgp-encrypted.
-     */
-    static let protocolPGPEncrypted = "application/pgp-encrypted"
-
-    /**
-     Content type for MIME multipart/alternative.
-     */
-    static let contentTypeMultipartAlternative = "multipart/alternative"
-
-    /**
-     The MIME type for attached emails (e.g., when forwarding).
-     */
-    static let attachedEmailMimeType = "message/rfc822"
-
     static let defaultFileName = NSLocalizedString("unnamed",
                                                    comment:
         "file name used for unnamed attachments")
