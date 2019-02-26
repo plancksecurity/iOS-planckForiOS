@@ -13,7 +13,7 @@ import MessageModel
 extension UIAlertController {
     public func action(_ title: String,
                        _ style: UIAlertActionStyle = .default,
-                       _ closure: Tasks.simple? = nil) ->  UIAlertAction {
+                       _ closure: (() -> ())? = nil) ->  UIAlertAction {
         return UIAlertAction(title: title, style: style) { (action) in
             if let clos = closure {
                 clos()
