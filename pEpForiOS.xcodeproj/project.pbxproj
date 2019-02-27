@@ -3615,7 +3615,7 @@
 					"$(SRCROOT)/../AppAuth-iOS/Source/iOS",
 				);
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DDEBUG_LOGGING -D DEBUG $(inherited)";
@@ -3655,7 +3655,7 @@
 					"$(SRCROOT)/../AppAuth-iOS/Source/iOS",
 				);
 				INFOPLIST_FILE = pEpForiOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = security.pEp;

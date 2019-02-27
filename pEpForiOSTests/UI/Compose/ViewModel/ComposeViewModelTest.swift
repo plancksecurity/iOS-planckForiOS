@@ -1391,7 +1391,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         }
         XCTAssertNotEqual(afterCount, beforeCount)
         XCTAssertEqual(afterCount, newRecipients.count)
-        waitForExpectations(timeout: 0.5) // Async calls involved (get pEp color)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime) // Async calls involved (get pEp color)
     }
 
     private func viewmodel(ofType vmType: AnyClass) -> CellViewModel? {
