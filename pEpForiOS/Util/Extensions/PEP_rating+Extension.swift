@@ -45,7 +45,7 @@ extension PEP_rating {
              PEP_rating_reliable,
              PEP_rating_trusted,
              PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous,
+             PEPRatingFullyAnonymous,
              PEPRatingMistrust,
              PEPRatingBr0ken:
             return false
@@ -73,7 +73,7 @@ extension PEP_rating {
              PEP_rating_reliable,
              PEP_rating_trusted,
              PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous,
+             PEPRatingFullyAnonymous,
              PEPRatingMistrust,
              PEPRatingUnderAttack:
             return true
@@ -99,7 +99,7 @@ extension PEP_rating {
              PEP_rating_reliable,
              PEP_rating_trusted,
              PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous,
+             PEPRatingFullyAnonymous,
              PEPRatingMistrust,
              PEPRatingUnderAttack:
             return false
@@ -124,7 +124,7 @@ extension PEP_rating {
              PEP_rating_reliable,
              PEP_rating_trusted,
              PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous,
+             PEPRatingFullyAnonymous,
              PEPRatingMistrust,
              PEPRatingBr0ken,
              PEPRatingUnderAttack:
