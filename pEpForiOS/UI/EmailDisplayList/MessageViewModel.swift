@@ -252,7 +252,7 @@ class MessageViewModel: CustomDebugStringConvertible {
         }
         let finalText = NSMutableAttributedString()
         if message.underAttack {
-            let status = String.pEpRatingTranslation(pEpRating: PEP_rating_under_attack)
+            let status = String.pEpRatingTranslation(pEpRating: PEPRatingUnderAttack)
             let messageString = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n",

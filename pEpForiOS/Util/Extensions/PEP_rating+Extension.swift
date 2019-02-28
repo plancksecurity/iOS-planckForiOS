@@ -49,7 +49,7 @@ extension PEP_rating {
              PEP_rating_mistrust,
              PEP_rating_b0rken:
             return false
-        case PEP_rating_under_attack:
+        case PEPRatingUnderAttack:
             return true
         default:
             Logger.utilLogger.errorAndCrash(
@@ -75,7 +75,7 @@ extension PEP_rating {
              PEP_rating_trusted_and_anonymized,
              PEP_rating_fully_anonymous,
              PEP_rating_mistrust,
-             PEP_rating_under_attack:
+             PEPRatingUnderAttack:
             return true
         default:
             Logger.utilLogger.errorAndCrash(
@@ -101,7 +101,7 @@ extension PEP_rating {
              PEP_rating_trusted_and_anonymized,
              PEP_rating_fully_anonymous,
              PEP_rating_mistrust,
-             PEP_rating_under_attack:
+             PEPRatingUnderAttack:
             return false
         default:
             Logger.utilLogger.errorAndCrash(
@@ -127,7 +127,7 @@ extension PEP_rating {
              PEP_rating_fully_anonymous,
              PEP_rating_mistrust,
              PEP_rating_b0rken,
-             PEP_rating_under_attack:
+             PEPRatingUnderAttack:
             return false
         default:
             Logger.utilLogger.errorAndCrash(
