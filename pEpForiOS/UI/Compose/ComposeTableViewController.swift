@@ -108,7 +108,7 @@ class ComposeTableViewController: BaseTableViewController {
 // MARK: - PEP Color View
 
 extension ComposeTableViewController {
-    private func setupPepColorView(for pEpRating: PEP_rating, pEpProtected: Bool) {
+    private func setupPepColorView(for pEpRating: PEPRating, pEpProtected: Bool) {
         guard let vm = viewModel else {
             Logger.frontendLogger.errorAndCrash("No VM")
             return
@@ -242,7 +242,7 @@ extension ComposeTableViewController: ComposeViewModelDelegate {
         tableView.endUpdates()
     }
 
-    func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
+    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
         setupPepColorView(for: rating, pEpProtected: protectionEnabled)
     }
 

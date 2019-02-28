@@ -71,7 +71,7 @@ extension PEP_color {
     }
 }
 
-extension PEP_rating {
+extension PEPRating {
     func pEpColor() -> PEP_color {
         return PEPUtil.pEpColor(pEpRating: self)
     }

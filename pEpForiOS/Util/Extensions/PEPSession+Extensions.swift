@@ -102,7 +102,7 @@ public extension PEPSession {
      - Returns: The message rating, or PEPRatingUndefined in case of any error.
      */
     public func outgoingMessageRating(from: Identity, to: [Identity],
-                                      cc: [Identity], bcc: [Identity]) -> PEP_rating {
+                                      cc: [Identity], bcc: [Identity]) -> PEPRating {
         let msg = PEPMessage()
         msg.direction = PEP_dir_outgoing
         msg.from = from.pEpIdentity()

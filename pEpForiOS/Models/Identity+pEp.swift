@@ -25,7 +25,7 @@ extension Identity {
         return id
     }
 
-    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
+    public func pEpRating(session: PEPSession = PEPSession()) -> PEPRating {
         return PEPUtil.pEpRating(identity: self, session: session)
     }
 

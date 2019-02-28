@@ -15,7 +15,7 @@ class DecryptionDelegate: DecryptionAttemptCounterDelegate {
     var decryptedMessageDict: NSDictionary?
 
     override func decrypted(originalCdMessage: CdMessage, decryptedMessageDict: NSDictionary?,
-                   rating: PEP_rating, keys: [String]) {
+                   rating: PEPRating, keys: [String]) {
         super.decrypted(
             originalCdMessage: originalCdMessage, decryptedMessageDict: decryptedMessageDict,
             rating: rating, keys: keys)

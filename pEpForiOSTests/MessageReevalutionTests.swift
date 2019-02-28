@@ -156,7 +156,7 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertEqual(senderIdentity.pEpRating(), PEPRatingHaveNoKey)
     }
 
-    func reevaluateMessage(expectedRating: PEP_rating, inBackground: Bool = true,
+    func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
                            infoMessage: String) {
         guard let message = cdDecryptedMessage.message() else {
             XCTFail()

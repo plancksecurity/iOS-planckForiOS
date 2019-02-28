@@ -1495,7 +1495,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                         sectionChangedMustBeCalled: Bool? = nil,
                         expectedSection: Int? = nil,
                         colorBatchNeedsUpdateMustBeCalled: Bool? = nil,
-                        expectedRating: PEP_rating? = nil,
+                        expectedRating: PEPRating? = nil,
                         expectedProtectionEnabled: Bool? = nil,
                         hideSuggestionsMustBeCalled: Bool? = nil,
                         showSuggestionsMustBeCalled: Bool? = nil,
@@ -1719,7 +1719,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let expectedSection: Int?
 
         var expColorBatchNeedsUpdateCalled: XCTestExpectation?
-        let expectedRating: PEP_rating?
+        let expectedRating: PEPRating?
         let expectedProtectionEnabled: Bool?
 
         let expHideSuggestionsCalled: XCTestExpectation?
@@ -1747,7 +1747,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
              expSectionChangedCalled: XCTestExpectation?,
              expectedSection: Int?,
              expColorBatchNeedsUpdateCalled: XCTestExpectation?,
-             expectedRating: PEP_rating?,
+             expectedRating: PEPRating?,
              expectedProtectionEnabled: Bool?,
              expHideSuggestionsCalled: XCTestExpectation?,
              expShowSuggestionsCalled: XCTestExpectation?,
@@ -1830,7 +1830,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             }
         }
 
-        func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
+        func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
             guard let exp = expColorBatchNeedsUpdateCalled else {
                 // We ignore called or not
                 return

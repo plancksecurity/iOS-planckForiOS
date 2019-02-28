@@ -13,7 +13,7 @@ extension CdMessage {
     /**
      Updates the message to the given color rating.
      */
-    public func update(rating: PEP_rating) {
+    public func update(rating: PEPRating) {
         self.pEpRating = Int16(rating.rawValue)
     }
 
@@ -21,7 +21,7 @@ extension CdMessage {
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
      */
-    public func update(pEpMessageDict: PEPMessageDict, rating: PEP_rating? = nil) {
+    public func update(pEpMessageDict: PEPMessageDict, rating: PEPRating? = nil) {
         if let theRating = rating {
             update(rating: theRating)
         }

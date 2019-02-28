@@ -43,7 +43,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
 
     // MARK: - Helper
 
-    func assureMessagesDoNotPassFilter(with pEpRating: PEP_rating) {
+    func assureMessagesDoNotPassFilter(with pEpRating: PEPRating) {
         let f1 = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         f1.save()
         let messages = createMessages(in: f1, numMessages: 2)
@@ -69,7 +69,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
     }
 
     private func createMessages(in folder: Folder, numMessages: Int,
-                                pEpRating: PEP_rating = PEPRatingTrusted) -> [Message] {
+                                pEpRating: PEPRating = PEPRatingTrusted) -> [Message] {
         let id = Identity.create(address: "fake@mail.com")
         id.save()
 

@@ -1,5 +1,5 @@
 //
-//  PEP_rating+Extension.swift
+//  PEPRating+Extension.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 22.05.18.
@@ -9,9 +9,9 @@
 import Foundation
 import pEpIOSToolbox
 
-extension PEP_rating {
+extension PEPRating {
 
-    static func fromString(str: String) -> PEP_rating {
+    static func fromString(str: String) -> PEPRating {
         return PEPSession().rating(from:str)
     }
 
@@ -20,17 +20,17 @@ extension PEP_rating {
     }
     
     /**
-     The `PEP_rating`s that should trigger another decryption attempt later on.
+     The `PEPRating`s that should trigger another decryption attempt later on.
      */
-    static let retryDecriptionRatings: [PEP_rating] = [PEPRatingUndefined,
+    static let retryDecriptionRatings: [PEPRating] = [PEPRatingUndefined,
                                                        PEPRatingCannotDecrypt,
                                                        PEPRatingHaveNoKey]
 
-    static let neverShowAttachmentsForRatings: [PEP_rating] = [PEPRatingCannotDecrypt,
+    static let neverShowAttachmentsForRatings: [PEPRating] = [PEPRatingCannotDecrypt,
                                                                PEPRatingHaveNoKey]
 
     func dontShowAttachments() -> Bool {
-        return PEP_rating.neverShowAttachmentsForRatings.contains(self)
+        return PEPRating.neverShowAttachmentsForRatings.contains(self)
     }
 
     /** Does the given pEp rating mean the user is under attack? */

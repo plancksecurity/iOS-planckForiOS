@@ -14,7 +14,7 @@ protocol ComposeViewModelStateDelegate: class {
                                didChangeValidationStateTo isValid: Bool)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEP_rating)
+                               didChangePEPRatingTo newRating: PEPRating)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeProtection newValue: Bool)
@@ -182,7 +182,7 @@ extension ComposeViewModel.ComposeViewModelState {
                 // That is a valid case. Compose view is gone before this block started to run.
                 return
             }
-            let newRating: PEP_rating
+            let newRating: PEPRating
             let session = PEPSession()
             if let from = me.from {
                 newRating = session.outgoingMessageRating(from: from,

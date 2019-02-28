@@ -15,7 +15,7 @@ class DecryptionAttemptCounterDelegate: DecryptMessagesOperationDelegateProtocol
     var numberOfMessageDecryptAttempts = 0
 
     func decrypted(originalCdMessage: CdMessage, decryptedMessageDict: NSDictionary?,
-                   rating: PEP_rating, keys: [String]) {
+                   rating: PEPRating, keys: [String]) {
         numberOfMessageDecryptAttempts += 1
     }
 }

@@ -50,7 +50,7 @@ extension CdIdentity {
         return contacts
     }
 
-    public func pEpRating(session: PEPSession = PEPSession()) -> PEP_rating {
+    public func pEpRating(session: PEPSession = PEPSession()) -> PEPRating {
         return PEPUtil.pEpRating(cdIdentity: self, session: session)
     }
 

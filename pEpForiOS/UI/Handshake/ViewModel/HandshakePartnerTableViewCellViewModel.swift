@@ -43,7 +43,7 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      The rating of the partner.
      */
-    var partnerRating: PEP_rating
+    var partnerRating: PEPRating
 
     /**
      The color of the partner.
