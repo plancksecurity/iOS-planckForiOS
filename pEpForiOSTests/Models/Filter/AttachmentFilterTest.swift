@@ -34,7 +34,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
     // MARK: - Undecryptable Messages
 
     func testFilterShouldIgnoreUndecryptable_haveNoKey() {
-        assureMessagesDoNotPassFilter(with: PEP_rating_have_no_key)
+        assureMessagesDoNotPassFilter(with: PEPRatingHaveNoKey)
     }
 
     func testFilterShouldIgnoreUndecryptable_canNotDecrypt() {

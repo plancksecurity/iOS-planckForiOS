@@ -24,10 +24,10 @@ extension PEP_rating {
      */
     static let retryDecriptionRatings: [PEP_rating] = [PEPRatingUndefined,
                                                        PEP_rating_cannot_decrypt,
-                                                       PEP_rating_have_no_key]
+                                                       PEPRatingHaveNoKey]
 
     static let neverShowAttachmentsForRatings: [PEP_rating] = [PEP_rating_cannot_decrypt,
-                                                               PEP_rating_have_no_key]
+                                                               PEPRatingHaveNoKey]
 
     func dontShowAttachments() -> Bool {
         return PEP_rating.neverShowAttachmentsForRatings.contains(self)
@@ -38,7 +38,7 @@ extension PEP_rating {
         switch self {
         case PEPRatingUndefined,
              PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key,
+             PEPRatingHaveNoKey,
              PEPRatingUnencrypted,
              PEPRatingUnencrypted_for_some,
              PEP_rating_unreliable,
@@ -63,7 +63,7 @@ extension PEP_rating {
         switch self {
         case PEPRatingUndefined,
              PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key,
+             PEPRatingHaveNoKey,
              PEP_rating_b0rken:
             return false
 
@@ -89,7 +89,7 @@ extension PEP_rating {
         switch self {
         case PEPRatingUndefined,
              PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key,
+             PEPRatingHaveNoKey,
              PEP_rating_b0rken:
             return true
 
@@ -115,7 +115,7 @@ extension PEP_rating {
         switch self {
         case PEPRatingUndefined,
              PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key:
+             PEPRatingHaveNoKey:
             return true
 
         case PEPRatingUnencrypted,

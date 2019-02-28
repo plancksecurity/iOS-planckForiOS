@@ -125,9 +125,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Please ask your communication partner to use an encryption solution or install p≡p.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_have_no_key:
+         PEPRatingHaveNoKey:
             PEPStatusText(
-                rating: PEP_rating_have_no_key,
+                rating: PEPRatingHaveNoKey,
                 title: NSLocalizedString("Cannot Decrypt",
                                          comment: "Privacy status title"),
                 explanation:
