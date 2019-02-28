@@ -42,9 +42,9 @@ extension String {
                 NSLocalizedString("-",
                                   comment: "No privacy status explanation"),
                 suggestion: NSLocalizedString("-", comment: "No privacy status suggestion")),
-         PEP_rating_mistrust:
+         PEPRatingMistrust:
             PEPStatusText(
-                rating: PEP_rating_mistrust,
+                rating: PEPRatingMistrust,
                 title: NSLocalizedString("Mistrusted",
                                          comment: "Privacy status title"),
                 explanation:

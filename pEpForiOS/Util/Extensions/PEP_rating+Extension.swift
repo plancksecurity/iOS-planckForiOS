@@ -46,7 +46,7 @@ extension PEP_rating {
              PEP_rating_trusted,
              PEP_rating_trusted_and_anonymized,
              PEP_rating_fully_anonymous,
-             PEP_rating_mistrust,
+             PEPRatingMistrust,
              PEPRatingBr0ken:
             return false
         case PEPRatingUnderAttack:
@@ -74,7 +74,7 @@ extension PEP_rating {
              PEP_rating_trusted,
              PEP_rating_trusted_and_anonymized,
              PEP_rating_fully_anonymous,
-             PEP_rating_mistrust,
+             PEPRatingMistrust,
              PEPRatingUnderAttack:
             return true
         default:
@@ -100,7 +100,7 @@ extension PEP_rating {
              PEP_rating_trusted,
              PEP_rating_trusted_and_anonymized,
              PEP_rating_fully_anonymous,
-             PEP_rating_mistrust,
+             PEPRatingMistrust,
              PEPRatingUnderAttack:
             return false
         default:
@@ -125,7 +125,7 @@ extension PEP_rating {
              PEP_rating_trusted,
              PEP_rating_trusted_and_anonymized,
              PEP_rating_fully_anonymous,
-             PEP_rating_mistrust,
+             PEPRatingMistrust,
              PEPRatingBr0ken,
              PEPRatingUnderAttack:
             return false

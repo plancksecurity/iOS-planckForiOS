@@ -207,7 +207,7 @@ class MessageReevalutionTests: XCTestCase {
             try! session.keyMistrusted(senderIdent)
             XCTAssertEqual(senderIdentity.pEpRating(session: session), PEPRatingHaveNoKey)
             reevaluateMessage(
-                expectedRating: PEP_rating_mistrust,
+                expectedRating: PEPRatingMistrust,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after mistrust")
             try! session.update(senderIdent)
