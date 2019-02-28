@@ -31,10 +31,10 @@ extension String {
                 suggestion:
                 NSLocalizedString("Separately verify the content of this message with your communication partner.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_b0rken:
+         PEPRatingBr0ken:
             PEPStatusText(
                 rating:
-                PEP_rating_b0rken,
+                PEPRatingBr0ken,
                 title:
                 NSLocalizedString("Broken",
                                   comment: "Privacy status title"),
