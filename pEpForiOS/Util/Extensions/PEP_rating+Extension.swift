@@ -23,10 +23,10 @@ extension PEP_rating {
      The `PEP_rating`s that should trigger another decryption attempt later on.
      */
     static let retryDecriptionRatings: [PEP_rating] = [PEPRatingUndefined,
-                                                       PEP_rating_cannot_decrypt,
+                                                       PEPRatingCannotDecrypt,
                                                        PEPRatingHaveNoKey]
 
-    static let neverShowAttachmentsForRatings: [PEP_rating] = [PEP_rating_cannot_decrypt,
+    static let neverShowAttachmentsForRatings: [PEP_rating] = [PEPRatingCannotDecrypt,
                                                                PEPRatingHaveNoKey]
 
     func dontShowAttachments() -> Bool {
@@ -37,7 +37,7 @@ extension PEP_rating {
     func isUnderAttack() -> Bool {
         switch self {
         case PEPRatingUndefined,
-             PEP_rating_cannot_decrypt,
+             PEPRatingCannotDecrypt,
              PEPRatingHaveNoKey,
              PEPRatingUnencrypted,
              PEPRatingUnencrypted_for_some,
@@ -62,7 +62,7 @@ extension PEP_rating {
     func shouldUpdateMessageContent() -> Bool {
         switch self {
         case PEPRatingUndefined,
-             PEP_rating_cannot_decrypt,
+             PEPRatingCannotDecrypt,
              PEPRatingHaveNoKey,
              PEPRatingBr0ken:
             return false
@@ -88,7 +88,7 @@ extension PEP_rating {
     func shouldRetryToDecrypt() -> Bool {
         switch self {
         case PEPRatingUndefined,
-             PEP_rating_cannot_decrypt,
+             PEPRatingCannotDecrypt,
              PEPRatingHaveNoKey,
              PEPRatingBr0ken:
             return true
@@ -114,7 +114,7 @@ extension PEP_rating {
     func isUnDecryptable() -> Bool {
         switch self {
         case PEPRatingUndefined,
-             PEP_rating_cannot_decrypt,
+             PEPRatingCannotDecrypt,
              PEPRatingHaveNoKey:
             return true
 
