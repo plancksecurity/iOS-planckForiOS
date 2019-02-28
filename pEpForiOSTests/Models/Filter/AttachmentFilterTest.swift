@@ -69,7 +69,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
     }
 
     private func createMessages(in folder: Folder, numMessages: Int,
-                                pEpRating: PEP_rating = PEP_rating_trusted) -> [Message] {
+                                pEpRating: PEP_rating = PEPRatingTrusted) -> [Message] {
         let id = Identity.create(address: "fake@mail.com")
         id.save()
 
