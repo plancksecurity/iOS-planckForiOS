@@ -36,7 +36,7 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
                 message.longMessage = "long"
                 message.shortMessage = "short"
                 message.sent = theDate
-                message.pEpRatingInt = Int(PEP_rating_unencrypted.rawValue)
+                message.pEpRatingInt = Int(PEPRatingUnencrypted.rawValue)
                 message.save()
                 theDate = Date(timeInterval: -1, since: theDate)
                 originalMessages.append(message)

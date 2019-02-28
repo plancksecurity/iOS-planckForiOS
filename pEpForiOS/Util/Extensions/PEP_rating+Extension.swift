@@ -39,8 +39,8 @@ extension PEP_rating {
         case PEP_rating_undefined,
              PEP_rating_cannot_decrypt,
              PEP_rating_have_no_key,
-             PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
+             PEPRatingUnencrypted,
+             PEPRatingUnencrypted_for_some,
              PEP_rating_unreliable,
              PEP_rating_reliable,
              PEP_rating_trusted,
@@ -67,8 +67,8 @@ extension PEP_rating {
              PEP_rating_b0rken:
             return false
 
-        case PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
+        case PEPRatingUnencrypted,
+             PEPRatingUnencrypted_for_some,
              PEP_rating_unreliable,
              PEP_rating_reliable,
              PEP_rating_trusted,
@@ -93,8 +93,8 @@ extension PEP_rating {
              PEP_rating_b0rken:
             return true
 
-        case PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
+        case PEPRatingUnencrypted,
+             PEPRatingUnencrypted_for_some,
              PEP_rating_unreliable,
              PEP_rating_reliable,
              PEP_rating_trusted,
@@ -118,8 +118,8 @@ extension PEP_rating {
              PEP_rating_have_no_key:
             return true
 
-        case PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
+        case PEPRatingUnencrypted,
+             PEPRatingUnencrypted_for_some,
              PEP_rating_unreliable,
              PEP_rating_reliable,
              PEP_rating_trusted,

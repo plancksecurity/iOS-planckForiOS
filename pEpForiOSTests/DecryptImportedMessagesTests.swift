@@ -59,7 +59,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRatingUnencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "needed")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
@@ -91,7 +91,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRatingUnencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "blah")
         XCTAssertEqual(theCdMessage.longMessage, "\n\n")
 
@@ -186,7 +186,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRatingUnencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage,
                        "Re: Help needed debugging segfault with Guile 1.8.7")
         XCTAssertNil(theCdMessage.longMessage)
@@ -223,7 +223,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRatingUnencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage,
                        "Re: Help needed debugging segfault with Guile 1.8.7")
         XCTAssertNil(theCdMessage.longMessage)

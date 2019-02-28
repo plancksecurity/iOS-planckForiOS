@@ -61,7 +61,7 @@ class PepAdapterTests: XCTestCase {
                                        rating: &rating,
                                        extraKeys: &keys,
                                        status: nil)
-        XCTAssertEqual(rating, PEP_rating_unencrypted)
+        XCTAssertEqual(rating, PEPRatingUnencrypted)
     }
 
     func testIsPEPUser() {

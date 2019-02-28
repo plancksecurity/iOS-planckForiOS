@@ -104,9 +104,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_unencrypted_for_some:
+         PEPRatingUnencrypted_for_some:
             PEPStatusText(
-                rating: PEP_rating_unencrypted_for_some,
+                rating: PEPRatingUnencrypted_for_some,
                 title: NSLocalizedString("Unsecure for Some",
                                          comment: "Privacy status title"),
                 explanation:
@@ -115,9 +115,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Make sure the privacy status for each communication partner listed is at least secure",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_unencrypted:
+         PEPRatingUnencrypted:
             PEPStatusText(
-                rating: PEP_rating_unencrypted,
+                rating: PEPRatingUnencrypted,
                 title: NSLocalizedString("Unsecure",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message is unsecure.",
