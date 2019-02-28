@@ -99,7 +99,7 @@ public extension PEPSession {
 
     /**
      Calculates the outgoing message rating for a hypothetical mail.
-     - Returns: The message rating, or PEP_rating_undefined in case of any error.
+     - Returns: The message rating, or PEPRatingUndefined in case of any error.
      */
     public func outgoingMessageRating(from: Identity, to: [Identity],
                                       cc: [Identity], bcc: [Identity]) -> PEP_rating {
@@ -118,7 +118,7 @@ public extension PEPSession {
             return try outgoingRating(for: msg).pEpRating
         } catch let error as NSError {
             assertionFailure("\(error)")
-            return PEP_rating_undefined
+            return PEPRatingUndefined
         }
     }
 }

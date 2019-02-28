@@ -146,11 +146,11 @@ extension String {
                 suggestion:
                 NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
                                   comment: "Privacy status suggestion")),
-         PEP_rating_undefined: undefinedPEPMessageRating()]
+         PEPRatingUndefined: undefinedPEPMessageRating()]
 
     public static func undefinedPEPMessageRating() -> PEPStatusText {
         return PEPStatusText(
-            rating: PEP_rating_undefined,
+            rating: PEPRatingUndefined,
             title: NSLocalizedString("Unknown",
                                      comment: "Privacy status title"),
             explanation:
@@ -164,7 +164,7 @@ extension String {
         let defResult = undefinedPEPMessageRating()
         if let rating = pEpRating {
             return pEpRatingTranslations[rating] ??
-                pEpRatingTranslations[PEP_rating_undefined] ?? defResult
+                pEpRatingTranslations[PEPRatingUndefined] ?? defResult
         } else {
             return defResult
         }

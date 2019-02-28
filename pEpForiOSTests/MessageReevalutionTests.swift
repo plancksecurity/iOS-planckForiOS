@@ -152,7 +152,7 @@ class MessageReevalutionTests: XCTestCase {
 
         let senderDict2 = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
-        // ENGINE-343: At one point the rating was PEP_rating_undefined.
+        // ENGINE-343: At one point the rating was PEPRatingUndefined.
         XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_have_no_key)
     }
 

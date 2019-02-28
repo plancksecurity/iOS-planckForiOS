@@ -22,7 +22,7 @@ extension PEP_rating {
     /**
      The `PEP_rating`s that should trigger another decryption attempt later on.
      */
-    static let retryDecriptionRatings: [PEP_rating] = [PEP_rating_undefined,
+    static let retryDecriptionRatings: [PEP_rating] = [PEPRatingUndefined,
                                                        PEP_rating_cannot_decrypt,
                                                        PEP_rating_have_no_key]
 
@@ -36,7 +36,7 @@ extension PEP_rating {
     /** Does the given pEp rating mean the user is under attack? */
     func isUnderAttack() -> Bool {
         switch self {
-        case PEP_rating_undefined,
+        case PEPRatingUndefined,
              PEP_rating_cannot_decrypt,
              PEP_rating_have_no_key,
              PEPRatingUnencrypted,
@@ -61,7 +61,7 @@ extension PEP_rating {
     /** Should message content be updated (apart from the message rating)? */
     func shouldUpdateMessageContent() -> Bool {
         switch self {
-        case PEP_rating_undefined,
+        case PEPRatingUndefined,
              PEP_rating_cannot_decrypt,
              PEP_rating_have_no_key,
              PEP_rating_b0rken:
@@ -87,7 +87,7 @@ extension PEP_rating {
     /** Does this pEp rating mean that decryption should be tried again? */
     func shouldRetryToDecrypt() -> Bool {
         switch self {
-        case PEP_rating_undefined,
+        case PEPRatingUndefined,
              PEP_rating_cannot_decrypt,
              PEP_rating_have_no_key,
              PEP_rating_b0rken:
@@ -113,7 +113,7 @@ extension PEP_rating {
     /** Were there problems decrypting the message? */
     func isUnDecryptable() -> Bool {
         switch self {
-        case PEP_rating_undefined,
+        case PEPRatingUndefined,
              PEP_rating_cannot_decrypt,
              PEP_rating_have_no_key:
             return true

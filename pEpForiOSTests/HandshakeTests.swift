@@ -78,7 +78,7 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(foundXpEpVersion)
 
         var keys: NSArray?
-        var rating = PEP_rating_undefined
+        var rating = PEPRatingUndefined
         let theMessage = try! session.decryptMessage(pEpMessage,
                                                      flags: nil,
                                                      rating: &rating,
