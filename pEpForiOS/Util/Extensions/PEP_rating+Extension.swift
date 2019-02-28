@@ -41,7 +41,7 @@ extension PEP_rating {
              PEPRatingHaveNoKey,
              PEPRatingUnencrypted,
              PEPRatingUnencrypted_for_some,
-             PEP_rating_unreliable,
+             PEPRatingUnReliable,
              PEPRatingReliable,
              PEPRatingTrusted,
              PEPRatingTrustedAndAnonymized,
@@ -69,7 +69,7 @@ extension PEP_rating {
 
         case PEPRatingUnencrypted,
              PEPRatingUnencrypted_for_some,
-             PEP_rating_unreliable,
+             PEPRatingUnReliable,
              PEPRatingReliable,
              PEPRatingTrusted,
              PEPRatingTrustedAndAnonymized,
@@ -95,7 +95,7 @@ extension PEP_rating {
 
         case PEPRatingUnencrypted,
              PEPRatingUnencrypted_for_some,
-             PEP_rating_unreliable,
+             PEPRatingUnReliable,
              PEPRatingReliable,
              PEPRatingTrusted,
              PEPRatingTrustedAndAnonymized,
@@ -120,7 +120,7 @@ extension PEP_rating {
 
         case PEPRatingUnencrypted,
              PEPRatingUnencrypted_for_some,
-             PEP_rating_unreliable,
+             PEPRatingUnReliable,
              PEPRatingReliable,
              PEPRatingTrusted,
              PEPRatingTrustedAndAnonymized,
