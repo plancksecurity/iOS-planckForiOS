@@ -131,12 +131,12 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         var numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+        XCTAssertEqual(numRating.pEpRating, PEPRatingReliable)
 
         try! session.keyResetTrust(fromIdent)
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+        XCTAssertEqual(numRating.pEpRating, PEPRatingReliable)
     }
 }

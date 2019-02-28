@@ -847,7 +847,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testComposeViewModelDidChangePEPRatingTo() {
-        let expectedRating = PEP_rating_reliable
+        let expectedRating = PEPRatingReliable
         vm?.state.pEpProtection = true
         let expectedProtection = vm?.state.pEpProtection ?? false
         assert(contentChangedMustBeCalled: false,

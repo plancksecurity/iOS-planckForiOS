@@ -119,7 +119,7 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
         Record.Context.main.refreshAllObjects()
         cdDecryptedMessage = cdMessage
-        XCTAssertEqual(cdMessage.pEpRating, Int16(PEP_rating_reliable.rawValue))
+        XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRatingReliable.rawValue))
         XCTAssertEqual(cdMessage.shortMessage, "oh yeah, subject")
         XCTAssertTrue(cdMessage.longMessage?.startsWith("Some text body!") ?? false)
 
@@ -146,7 +146,7 @@ class MessageReevalutionTests: XCTestCase {
     func testCommunicationTypes() {
         let senderIdent = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)
-        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
+        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEPRatingReliable)
 
         try! session.keyMistrusted(senderIdent)
 
@@ -191,7 +191,7 @@ class MessageReevalutionTests: XCTestCase {
         try! session.keyResetTrust(senderIdent)
         XCTAssertFalse(senderIdent.isConfirmed)
         reevaluateMessage(
-            expectedRating: PEP_rating_reliable,
+            expectedRating: PEPRatingReliable,
             inBackground: runReevaluationInBackground,
             infoMessage: "in the beginning")
 

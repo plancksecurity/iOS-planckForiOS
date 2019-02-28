@@ -150,25 +150,25 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                                                         partner: partnerID,
                                                         session: session)
 
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
 
         vm.confirmTrust()
         XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
 
         vm.denyTrust()
         XCTAssertEqual(vm.partnerRating, PEPRatingHaveNoKey)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
 
         vm.confirmTrust()
         XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
     }
 
     /**
@@ -188,18 +188,18 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                                                         partner: partnerID,
                                                         session: session)
 
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
 
         vm.denyTrust()
         XCTAssertEqual(vm.partnerRating, PEPRatingHaveNoKey)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
 
         vm.confirmTrust()
         XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
     }
 }

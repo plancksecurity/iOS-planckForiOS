@@ -83,9 +83,9 @@ extension String {
                                                comment: "Privacy status explanation"),
                 suggestion: NSLocalizedString("No action needed!",
                                               comment: "Privacy status suggestion")),
-         PEP_rating_reliable:
+         PEPRatingReliable:
             PEPStatusText(
-                rating: PEP_rating_reliable,
+                rating: PEPRatingReliable,
                 title: NSLocalizedString("Secure",
                                          comment: "Privacy status title"),
                 explanation:
