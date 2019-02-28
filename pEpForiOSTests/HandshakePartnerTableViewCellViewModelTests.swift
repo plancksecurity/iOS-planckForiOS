@@ -153,7 +153,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
 
         vm.confirmTrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
         XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
@@ -165,7 +165,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
 
         vm.confirmTrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
         XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
@@ -197,7 +197,7 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
         XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
 
         vm.confirmTrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
         XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
