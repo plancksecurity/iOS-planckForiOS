@@ -10,19 +10,6 @@ import Foundation
 import pEpIOSToolbox
 
 extension PEPRating {
-
-    static func fromString(str: String) -> PEPRating {
-        return PEPSession().rating(from:str)
-    }
-
-    func asString() -> String {
-         return PEPSession().string(from: self)
-    }
-    
-    func dontShowAttachments() -> Bool {
-        return PEPRating.neverShowAttachmentsForRatings.contains(self)
-    }
-
     /** Does the given pEp rating mean the user is under attack? */
     func isUnderAttack() -> Bool {
         switch self {
