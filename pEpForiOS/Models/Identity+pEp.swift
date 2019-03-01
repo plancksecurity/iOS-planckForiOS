@@ -33,10 +33,6 @@ extension Identity {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
 
-    public func pEpIdentity() -> PEPIdentity {
-        return PEPUtil.pEp(identity: self)
-    }
-    
     open func fingerPrint(session: PEPSession = PEPSession()) throws -> String? {
         return try PEPUtil.fingerPrint(identity: self, session: session)
     }
