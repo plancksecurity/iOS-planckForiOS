@@ -35,32 +35,6 @@ extension PEPRating {
         }
     }
 
-    /** Should message content be updated (apart from the message rating)? */
-    func shouldUpdateMessageContent() -> Bool {
-        switch self {
-        case PEPRatingUndefined,
-             PEPRatingCannotDecrypt,
-             PEPRatingHaveNoKey,
-             PEPRatingBr0ken:
-            return false
-
-        case PEPRatingUnencrypted,
-             PEPRatingUnencrypted_for_some,
-             PEPRatingUnReliable,
-             PEPRatingReliable,
-             PEPRatingTrusted,
-             PEPRatingTrustedAndAnonymized,
-             PEPRatingFullyAnonymous,
-             PEPRatingMistrust,
-             PEPRatingUnderAttack:
-            return true
-        default:
-            Logger.utilLogger.errorAndCrash(
-                "cannot decide isUnderAttack() for %{public}@", self.rawValue)
-            return false
-        }
-    }
-
     /** Does this pEp rating mean that decryption should be tried again? */
     func shouldRetryToDecrypt() -> Bool {
         switch self {
