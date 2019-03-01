@@ -54,19 +54,4 @@ extension PEPColor {
             return nil
         }
     }
-
-    func uiColor() -> UIColor? {
-        switch self {
-        case PEPColorNoColor:
-            return UIColor.gray
-        case PEPColorRed:
-            return UIColor.pEpRed
-        case PEPColorYellow:
-            return UIColor.pEpYellow
-        case PEPColorGreen:
-            return UIColor.pEpGreen
-        default:
-            return nil
-        }
-    }
 }
