@@ -188,8 +188,7 @@ public class Logger {
                 fileLine: fileLine,
                 args: args)
 
-        // This will omit the arguments, but it's still matchable
-        SystemUtils.crash("\(message)")
+        SystemUtils.crash("\(filePath):\(function):\(fileLine) - \(message)")
     }
 
     /**
