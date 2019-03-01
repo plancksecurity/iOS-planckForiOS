@@ -19,16 +19,6 @@ extension PEPRating {
          return PEPSession().string(from: self)
     }
     
-    /**
-     The `PEPRating`s that should trigger another decryption attempt later on.
-     */
-    static let retryDecriptionRatings: [PEPRating] = [PEPRatingUndefined,
-                                                       PEPRatingCannotDecrypt,
-                                                       PEPRatingHaveNoKey]
-
-    static let neverShowAttachmentsForRatings: [PEPRating] = [PEPRatingCannotDecrypt,
-                                                               PEPRatingHaveNoKey]
-
     func dontShowAttachments() -> Bool {
         return PEPRating.neverShowAttachmentsForRatings.contains(self)
     }
