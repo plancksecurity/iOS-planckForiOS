@@ -16,12 +16,12 @@ extension PEPRating {
         case PEPRatingUndefined,
              PEPRatingCannotDecrypt,
              PEPRatingHaveNoKey,
-             PEPRatingBr0ken:
+             PEPRatingB0rken:
             return true
 
         case PEPRatingUnencrypted,
-             PEPRatingUnencrypted_for_some,
-             PEPRatingUnReliable,
+             PEPRatingUnencryptedForSome,
+             PEPRatingUnreliable,
              PEPRatingReliable,
              PEPRatingTrusted,
              PEPRatingTrustedAndAnonymized,
@@ -45,14 +45,14 @@ extension PEPRating {
             return true
 
         case PEPRatingUnencrypted,
-             PEPRatingUnencrypted_for_some,
-             PEPRatingUnReliable,
+             PEPRatingUnencryptedForSome,
+             PEPRatingUnreliable,
              PEPRatingReliable,
              PEPRatingTrusted,
              PEPRatingTrustedAndAnonymized,
              PEPRatingFullyAnonymous,
              PEPRatingMistrust,
-             PEPRatingBr0ken,
+             PEPRatingB0rken,
              PEPRatingUnderAttack:
             return false
         default:

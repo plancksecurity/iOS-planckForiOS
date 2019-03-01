@@ -31,10 +31,10 @@ extension String {
                 suggestion:
                 NSLocalizedString("Separately verify the content of this message with your communication partner.",
                                   comment: "Privacy status suggestion")),
-         PEPRatingBr0ken:
+         PEPRatingB0rken:
             PEPStatusText(
                 rating:
-                PEPRatingBr0ken,
+                PEPRatingB0rken,
                 title:
                 NSLocalizedString("Broken",
                                   comment: "Privacy status title"),
@@ -94,9 +94,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.",
                                   comment: "Privacy status suggestion")),
-         PEPRatingUnReliable:
+         PEPRatingUnreliable:
             PEPStatusText(
-                rating: PEPRatingUnReliable,
+                rating: PEPRatingUnreliable,
                 title: NSLocalizedString("Unreliable Security",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message has unreliable protection",
@@ -104,9 +104,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("This message has no reliable encryption or no signature. Ask your communication partner to upgrade their encryption solution or install p≡p.",
                                   comment: "Privacy status suggestion")),
-         PEPRatingUnencrypted_for_some:
+         PEPRatingUnencryptedForSome:
             PEPStatusText(
-                rating: PEPRatingUnencrypted_for_some,
+                rating: PEPRatingUnencryptedForSome,
                 title: NSLocalizedString("Unsecure for Some",
                                          comment: "Privacy status title"),
                 explanation:

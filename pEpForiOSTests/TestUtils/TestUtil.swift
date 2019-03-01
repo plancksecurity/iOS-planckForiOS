@@ -476,7 +476,7 @@ class TestUtil {
         msg.sent = dateSent
         msg.received = Date(timeIntervalSinceNow: minute)
         if engineProccesed {
-            msg.pEpRatingInt = Int(PEPRatingUnReliable.rawValue)
+            msg.pEpRatingInt = Int(PEPRatingUnreliable.rawValue)
         }
         msg.attachments = createAttachments(number: attachments)
         var result = msg
@@ -489,7 +489,7 @@ class TestUtil {
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
         let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
         XCTAssertEqual(msg.uid, uid)
-        msg.pEpRatingInt = Int(PEPRatingUnReliable.rawValue)
+        msg.pEpRatingInt = Int(PEPRatingUnreliable.rawValue)
         msg.received = Date(timeIntervalSince1970: Double(uid))
         msg.sent = msg.received
         return msg
@@ -580,7 +580,7 @@ class TestUtil {
                           parentFolder: folder)
         msg.from = blueprint.from
         msg.to = [receiver]
-        msg.pEpRatingInt = Int(PEPRatingUnReliable.rawValue)
+        msg.pEpRatingInt = Int(PEPRatingUnreliable.rawValue)
         msg.received = Date(timeIntervalSince1970: Double(number))
         msg.sent = msg.received
         msg.references = blueprint.references
