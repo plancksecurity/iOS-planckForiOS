@@ -10,31 +10,6 @@ import Foundation
 import pEpIOSToolbox
 
 extension PEPRating {
-    /** Does the given pEp rating mean the user is under attack? */
-    func isUnderAttack() -> Bool {
-        switch self {
-        case PEPRatingUndefined,
-             PEPRatingCannotDecrypt,
-             PEPRatingHaveNoKey,
-             PEPRatingUnencrypted,
-             PEPRatingUnencrypted_for_some,
-             PEPRatingUnReliable,
-             PEPRatingReliable,
-             PEPRatingTrusted,
-             PEPRatingTrustedAndAnonymized,
-             PEPRatingFullyAnonymous,
-             PEPRatingMistrust,
-             PEPRatingBr0ken:
-            return false
-        case PEPRatingUnderAttack:
-            return true
-        default:
-            Logger.utilLogger.errorAndCrash(
-                "cannot decide isUnderAttack() for %{public}@", self.rawValue)
-            return false
-        }
-    }
-
     /** Does this pEp rating mean that decryption should be tried again? */
     func shouldRetryToDecrypt() -> Bool {
         switch self {
