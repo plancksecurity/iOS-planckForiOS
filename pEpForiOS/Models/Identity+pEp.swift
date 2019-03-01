@@ -29,7 +29,7 @@ extension Identity {
         return PEPUtil.pEpRating(identity: self, session: session)
     }
 
-    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
+    public func pEpColor(session: PEPSession = PEPSession()) -> PEPColor {
         return PEPUtil.pEpColor(identity: self, session: session)
     }
 
@@ -52,12 +52,12 @@ extension Identity {
             return false
         }
         let color = pEpColor(session: session)
-        return color == PEP_color_yellow || color == PEP_color_green
+        return color == PEPColor_yellow || color == PEPColor_green
     }
 
     public func canResetTrust(session: PEPSession = PEPSession()) -> Bool {
         let color = pEpColor(session: session)
-        return color == PEP_color_green || color == PEP_color_red
+        return color == PEPColor_green || color == PEPColor_red
     }
 
     public func decorateButton(button: UIButton, session: PEPSession = PEPSession()) {

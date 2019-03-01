@@ -63,7 +63,7 @@ class PEPSessionTest: XCTestCase {
 
         try! session.encryptMessageDict(pepmessage,
                                         extraKeys: nil,
-                                        encFormat: PEP_enc_PEP,
+                                        encFormat: PEPEncPEP,
                                         status: nil)
         try! session.decryptMessageDict(pepmessage.mutableDictionary(),
                                         flags: nil,
@@ -88,7 +88,7 @@ class PEPSessionTest: XCTestCase {
         pEpMessage.references = references
         pEpMessage.shortMessage = mySubject
         pEpMessage.longMessage = "The text body"
-        pEpMessage.direction = PEP_dir_outgoing
+        pEpMessage.direction = PEPDirOutgoing
 
         let session = PEPSession()
 

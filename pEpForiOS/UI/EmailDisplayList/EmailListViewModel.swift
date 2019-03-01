@@ -194,7 +194,7 @@ class EmailListViewModel {
                 return nil
         }
         let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
-        if color != PEP_color_no_color {
+        if color != PEPColor_no_color {
             return color.statusIcon()
         } else {
             return nil

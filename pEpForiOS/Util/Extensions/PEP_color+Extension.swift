@@ -1,5 +1,5 @@
 //
-//  PEP_color+Extension.swift
+//  PEPColor+Extension.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 28.04.17.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension PEP_color {
+extension PEPColor {
     var privacyStatusTitle: String {
         switch self {
-        case PEP_color_red:
+        case PEPColor_red:
             return NSLocalizedString("Mistrusted", comment: "privacyStatusTitle red")
-        case PEP_color_yellow:
+        case PEPColor_yellow:
             return NSLocalizedString("Secure", comment: "privacyStatusTitle yellow")
-        case PEP_color_green:
+        case PEPColor_green:
             return NSLocalizedString("Secure & Trusted", comment: "privacyStatusTitle green")
-        case PEP_color_no_color:
+        case PEPColor_no_color:
             return NSLocalizedString("None", comment: "privacyStatusTitle no_color")
         default:
             return "Undefined"
@@ -26,18 +26,18 @@ extension PEP_color {
 
     var privacyStatusDescription: String {
         switch self {
-        case PEP_color_red:
+        case PEPColor_red:
             return NSLocalizedString("This communication partner is mistrusted",
                                      comment: "privacyStatusDescription red")
-        case PEP_color_yellow:
+        case PEPColor_yellow:
             return NSLocalizedString(
                 "Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call",
                 comment: "privacyStatusDescription yellow")
-        case PEP_color_green:
+        case PEPColor_green:
             return NSLocalizedString(
                 "This communication partner is secure and trusted",
                 comment: "privacyStatusDescription green")
-        case PEP_color_no_color:
+        case PEPColor_no_color:
             return NSLocalizedString("None", comment: "privacyStatusDescription no_color")
         default:
             return "Undefined"

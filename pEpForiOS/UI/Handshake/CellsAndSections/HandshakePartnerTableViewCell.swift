@@ -65,7 +65,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    var partnerColor: PEP_color { return viewModel?.partnerColor ?? PEP_color_no_color }
+    var partnerColor: PEPColor { return viewModel?.partnerColor ?? PEPColor_no_color }
 
     var showStopStartTrustButton: Bool {
         return viewModel?.showStopStartTrustButton ?? false
@@ -195,7 +195,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             "Stop Trusting",
             comment: "Stop/trust button in handshake overview")
 
-        if viewModel?.partnerColor == PEP_color_red ||
+        if viewModel?.partnerColor == PEPColor_red ||
             viewModel?.partnerRating == PEPRatingHaveNoKey {
             startStopTrustingButton.setTitle(titleMistrusted, for: .normal)
         } else {
@@ -237,7 +237,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateTitle(button: wrongButton)
     }
 
-    func updatePrivacyStatus(color: PEP_color) {
+    func updatePrivacyStatus(color: PEPColor) {
         privacyStatusTitle.text = color.privacyStatusTitle
         privacyStatusDescription.text = color.privacyStatusDescription
         pEpStatusImageView.image = color.statusIcon()

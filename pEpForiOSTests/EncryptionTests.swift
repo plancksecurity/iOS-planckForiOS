@@ -28,7 +28,7 @@ class EncryptionTests: XCTestCase {
         let session = PEPSession()
         try! session.mySelf(me)
         let msg = PEPMessage()
-        msg.direction = PEP_dir_outgoing
+        msg.direction = PEPDirOutgoing
         msg.from = me
         msg.to = [recipient]
         msg.shortMessage = "subject: whatever"

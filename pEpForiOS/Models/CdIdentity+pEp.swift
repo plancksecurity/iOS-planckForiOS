@@ -54,7 +54,7 @@ extension CdIdentity {
         return PEPUtil.pEpRating(cdIdentity: self, session: session)
     }
 
-    public func pEpColor(session: PEPSession = PEPSession()) -> PEP_color {
+    public func pEpColor(session: PEPSession = PEPSession()) -> PEPColor {
         return PEPUtil.pEpColor(cdIdentity: self, session: session)
     }
 
