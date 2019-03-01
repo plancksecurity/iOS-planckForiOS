@@ -14,17 +14,17 @@ extension PEPColor {
      */
     func statusIcon(enabled: Bool = true) -> UIImage? {
         switch self {
-        case PEPColor_no_color:
+        case PEPColorNoColor:
             return UIImage(named: "pEp-status-grey")
-        case PEPColor_red:
+        case PEPColorRed:
             return UIImage(named: "pEp-status-red")
-        case PEPColor_yellow:
+        case PEPColorYellow:
             if enabled {
                 return UIImage(named: "pEp-status-yellow")
             } else {
                 return UIImage(named: "pEp-status-yellow-disabled")
             }
-        case PEPColor_green:
+        case PEPColorGreen:
             if enabled {
                 return UIImage(named: "pEp-status-green")
             } else {
@@ -42,13 +42,13 @@ extension PEPColor {
      */
     func statusIconInContactPicture() -> UIImage? {
         switch self {
-        case PEPColor_no_color:
+        case PEPColorNoColor:
             return UIImage(named: "pEp-status-grey_white-border")
-        case PEPColor_red:
+        case PEPColorRed:
             return UIImage(named: "pEp-status-red_white-border")
-        case PEPColor_yellow:
+        case PEPColorYellow:
             return UIImage(named: "pEp-status-yellow_white-border")
-        case PEPColor_green:
+        case PEPColorGreen:
             return UIImage(named: "pEp-status-green_white-border")
         default:
             return nil
@@ -57,13 +57,13 @@ extension PEPColor {
 
     func uiColor() -> UIColor? {
         switch self {
-        case PEPColor_no_color:
+        case PEPColorNoColor:
             return UIColor.gray
-        case PEPColor_red:
+        case PEPColorRed:
             return UIColor.pEpRed
-        case PEPColor_yellow:
+        case PEPColorYellow:
             return UIColor.pEpYellow
-        case PEPColor_green:
+        case PEPColorGreen:
             return UIColor.pEpGreen
         default:
             return nil

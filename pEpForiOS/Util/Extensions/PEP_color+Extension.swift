@@ -11,13 +11,13 @@ import Foundation
 extension PEPColor {
     var privacyStatusTitle: String {
         switch self {
-        case PEPColor_red:
+        case PEPColorRed:
             return NSLocalizedString("Mistrusted", comment: "privacyStatusTitle red")
-        case PEPColor_yellow:
+        case PEPColorYellow:
             return NSLocalizedString("Secure", comment: "privacyStatusTitle yellow")
-        case PEPColor_green:
+        case PEPColorGreen:
             return NSLocalizedString("Secure & Trusted", comment: "privacyStatusTitle green")
-        case PEPColor_no_color:
+        case PEPColorNoColor:
             return NSLocalizedString("None", comment: "privacyStatusTitle no_color")
         default:
             return "Undefined"
@@ -26,18 +26,18 @@ extension PEPColor {
 
     var privacyStatusDescription: String {
         switch self {
-        case PEPColor_red:
+        case PEPColorRed:
             return NSLocalizedString("This communication partner is mistrusted",
                                      comment: "privacyStatusDescription red")
-        case PEPColor_yellow:
+        case PEPColorYellow:
             return NSLocalizedString(
                 "Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call",
                 comment: "privacyStatusDescription yellow")
-        case PEPColor_green:
+        case PEPColorGreen:
             return NSLocalizedString(
                 "This communication partner is secure and trusted",
                 comment: "privacyStatusDescription green")
-        case PEPColor_no_color:
+        case PEPColorNoColor:
             return NSLocalizedString("None", comment: "privacyStatusDescription no_color")
         default:
             return "Undefined"

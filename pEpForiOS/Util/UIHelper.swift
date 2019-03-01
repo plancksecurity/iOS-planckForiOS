@@ -54,11 +54,11 @@ class UIHelper {
      */
     static func sendButtonBackgroundColorFromPepColor(_ pepColor: PEPColor) -> UIColor? {
         switch pepColor {
-        case PEPColor_green:
+        case PEPColorGreen:
             return UIColor.green
-        case PEPColor_yellow:
+        case PEPColorYellow:
             return UIColor.yellow
-        case PEPColor_red:
+        case PEPColorRed:
             return UIColor.red
         default:
             return nil
@@ -79,11 +79,11 @@ class UIHelper {
      */
     static func textBackgroundUIColorFromPrivacyColor(_ pepColor: PEPColor) -> UIColor? {
         switch pepColor {
-        case PEPColor_green:
+        case PEPColorGreen:
             return UIColor.green
-        case PEPColor_yellow:
+        case PEPColorYellow:
             return UIColor.yellow
-        case PEPColor_red:
+        case PEPColorRed:
             return UIColor.red
         default:
             return nil
@@ -96,7 +96,7 @@ class UIHelper {
      */
     static func setBackgroundColor(
         _ privacyColor: PEPColor, forLabel label: UILabel, defaultColor: UIColor?) {
-        if privacyColor != PEPColor_no_color {
+        if privacyColor != PEPColorNoColor {
             let uiColor = UIHelper.textBackgroundUIColorFromPrivacyColor(privacyColor)
             label.backgroundColor = uiColor
         } else {
