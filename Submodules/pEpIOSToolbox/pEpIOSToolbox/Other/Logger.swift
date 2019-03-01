@@ -8,7 +8,6 @@
 
 import Foundation
 import os.log
-import asl
 
 /**
  Thin layer over `os_log` where not available.
@@ -59,7 +58,7 @@ public class Logger {
         }
     }
 
-    // move this loggers to the app
+    //!!!: remove this loggers  from to the app if any
 
     @available(*, deprecated, message: "Instead create a singleton per Xcode project (Module) yourself")
     public static let frontendLogger = Logger(category: "frontend")
@@ -334,14 +333,6 @@ public class Logger {
                    log: theLog,
                    type: theType,
                    args)
-        }
-    }
-
-    private let sender = "security.pEp.app.iOS"
-
-    private func checkASLSuccess(_ result: Int32, comment: String = "no comment") {
-        if result != 0 {
-            print("*** error: \(comment)")
         }
     }
 }
