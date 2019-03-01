@@ -9,19 +9,18 @@
 import MessageModel
 import pEpIOSToolbox
 
-extension content_disposition_type {
-
+extension PEPContentDisposition {
     var contentDisponitionType: Attachment.ContentDispositionType {
         return Attachment.ContentDispositionType(with: self)
     }
 
     var pantomimeContentDisposition: PantomimeContentDisposition {
         switch self {
-        case PEP_CONTENT_DISP_ATTACHMENT:
+        case PEPContentDispAttachment:
             return PantomimeAttachmentDisposition
-        case PEP_CONTENT_DISP_INLINE:
+        case PEPContentDispInline:
             return PantomimeInlineDisposition
-        case PEP_CONTENT_DISP_OTHER:
+        case PEPContentDispOther:
             return PantomimeAttachmentDisposition
         default:
             Logger.modelLogger.errorAndCrash("Unknown case")
@@ -32,11 +31,11 @@ extension content_disposition_type {
     init(with contentDisponitionType: Attachment.ContentDispositionType) {
         switch contentDisponitionType {
         case .attachment:
-            self = PEP_CONTENT_DISP_ATTACHMENT
+            self = PEPContentDispAttachment
         case .inline:
-            self = PEP_CONTENT_DISP_INLINE
+            self = PEPContentDispInline
         case .other:
-            self = PEP_CONTENT_DISP_OTHER
+            self = PEPContentDispOther
         }
     }
 }
@@ -54,17 +53,17 @@ extension Attachment.ContentDispositionType {
         }
     }
 
-    var pEpAdapterContentDisposition: content_disposition_type {
-        return content_disposition_type(rawValue: Int32(self.rawValue))
+    var pEpAdapterContentDisposition: PEPContentDisposition {
+        return PEPContentDisposition(rawValue: Int32(self.rawValue))
     }
 
-    init(with pEpAdapterContentDisposition: content_disposition_type) {
+    init(with pEpAdapterContentDisposition: PEPContentDisposition) {
         switch pEpAdapterContentDisposition {
-        case PEP_CONTENT_DISP_ATTACHMENT:
+        case PEPContentDispAttachment:
             self = .attachment
-        case PEP_CONTENT_DISP_INLINE:
+        case PEPContentDispInline:
             self = .inline
-        case PEP_CONTENT_DISP_OTHER:
+        case PEPContentDispOther:
             self = .attachment // This is probably wrong. Semantic of other not clear
         default:
             Logger.modelLogger.errorAndCrash("Unknown case")
