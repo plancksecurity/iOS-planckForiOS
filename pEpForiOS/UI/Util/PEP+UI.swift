@@ -54,4 +54,30 @@ extension PEPColor {
             return nil
         }
     }
+
+    func uiColor() -> UIColor? {
+        switch self {
+        case PEPColorNoColor:
+            return UIColor.gray
+        case PEPColorRed:
+            return UIColor.pEpRed
+        case PEPColorYellow:
+            return UIColor.pEpYellow
+        case PEPColorGreen:
+            return UIColor.pEpGreen
+        default:
+            return nil
+        }
+    }
+}
+
+extension PEPRating {
+    func uiColor() -> UIColor? {
+        return PEPUtil.pEpColor(pEpRating: self).uiColor()
+    }
+
+    func statusIcon() -> UIImage? {
+        let color = pEpColor()
+        return color.statusIcon()
+    }
 }
