@@ -70,18 +70,3 @@ extension PEPColor {
         }
     }
 }
-
-extension PEPRating {
-    func pEpColor() -> PEPColor {
-        return PEPUtil.pEpColor(pEpRating: self)
-    }
-
-    func uiColor() -> UIColor? {
-        return PEPUtil.pEpColor(pEpRating: self).uiColor()
-    }
-
-    func statusIcon() -> UIImage? {
-        let color = pEpColor()
-        return color.statusIcon()
-    }
-}
