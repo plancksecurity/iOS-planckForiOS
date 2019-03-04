@@ -175,7 +175,7 @@ extension ComposeViewModel.ComposeViewModelState {
 
     private func calculatePepRating() {
         guard !isForceUnprotectedDueToBccSet && pEpProtection else {
-            rating = PEPRatingUnencrypted
+            rating = .unencrypted
             return
         }
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in

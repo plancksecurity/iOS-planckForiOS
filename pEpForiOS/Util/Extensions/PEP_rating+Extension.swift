@@ -19,8 +19,8 @@ extension PEPRating {
              .b0rken:
             return true
 
-        case PEPRatingUnencrypted,
-             PEPRatingUnencryptedForSome,
+        case .unencrypted,
+             .unencryptedForSome,
              PEPRatingUnreliable,
              PEPRatingReliable,
              PEPRatingTrusted,
@@ -44,8 +44,8 @@ extension PEPRating {
              .HaveNoKey:
             return true
 
-        case PEPRatingUnencrypted,
-             PEPRatingUnencryptedForSome,
+        case .unencrypted,
+             .unencryptedForSome,
              PEPRatingUnreliable,
              PEPRatingReliable,
              PEPRatingTrusted,

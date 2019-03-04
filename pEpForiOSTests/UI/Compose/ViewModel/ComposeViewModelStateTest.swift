@@ -107,7 +107,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     func testValidate_changeTos_grey() {
         let recipients = [someone, account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEPRatingUnencrypted)
+                           expectedNewRating: .unencrypted)
         testee?.toRecipients = recipients
         waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
     }
@@ -123,7 +123,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     func testValidate_changeCcs_grey() {
         let recipients = [someone, account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEPRatingUnencrypted)
+                           expectedNewRating: .unencrypted)
         testee?.ccRecipients = recipients
         waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
     }

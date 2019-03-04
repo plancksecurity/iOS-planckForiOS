@@ -227,7 +227,7 @@ class DecryptionTestsInternal: XCTestCase {
                 XCTFail()
             }
         } else {
-            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPRatingUnencrypted.rawValue))
+            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(.unencrypted.rawValue))
         }
 
         XCTAssertEqual(cdMsg.uuid, messageID)

@@ -84,7 +84,7 @@ class HandshakeTests: XCTestCase {
                                                      rating: &rating,
                                                      extraKeys: &keys,
                                                      status: nil)
-        XCTAssertEqual(rating, PEPRatingUnencrypted)
+        XCTAssertEqual(rating, .unencrypted)
 
         guard let pEpFrom = theMessage.from else {
             XCTFail("expected from in message")

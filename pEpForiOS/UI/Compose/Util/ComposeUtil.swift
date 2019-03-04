@@ -166,7 +166,7 @@ struct ComposeUtil {
         message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
         message.pEpProtected = state.pEpProtection
         if !state.pEpProtection {
-            message.setOriginalRatingHeader(rating: PEPRatingUnencrypted)
+            message.setOriginalRatingHeader(rating: .unencrypted)
         } else {
             message.setOriginalRatingHeader(rating: state.rating)
         }
