@@ -139,7 +139,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        // After ENGINE-465 is done, this should be PEPRatingReliable
+        // After ENGINE-465 is done, this should be .reliable
         XCTAssertEqual(theCdMessage.pEpRating, Int16(.unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")

@@ -209,7 +209,7 @@ class DecryptionTestsInternal: XCTestCase {
 
         Record.Context.main.refreshAllObjects()
         if shouldEncrypt {
-            XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), PEPRatingReliable.rawValue)
+            XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), .reliable.rawValue)
             if useSubject {
                 XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
             } else {

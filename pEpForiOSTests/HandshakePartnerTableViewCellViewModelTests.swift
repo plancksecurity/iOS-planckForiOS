@@ -150,25 +150,25 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                                                         partner: partnerID,
                                                         session: session)
 
-        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.confirmTrust()
         XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.denyTrust()
         XCTAssertEqual(vm.partnerRating, .HaveNoKey)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.confirmTrust()
         XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
     }
 
     /**
@@ -188,18 +188,18 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                                                         partner: partnerID,
                                                         session: session)
 
-        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.denyTrust()
         XCTAssertEqual(vm.partnerRating, .HaveNoKey)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.confirmTrust()
         XCTAssertEqual(vm.partnerRating, PEPRatingTrustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEPRatingReliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
     }
 }
