@@ -29,28 +29,6 @@ extension Identity {
         return PEPUtil.pEpRating(identity: self, session: session)
     }
 
-    public func pEpColor(session: PEPSession = PEPSession()) -> PEPColor {
-        return PEPUtil.pEpColor(identity: self, session: session)
-    }
-
-    open func fingerPrint(session: PEPSession = PEPSession()) throws -> String? {
-        return try PEPUtil.fingerPrint(identity: self, session: session)
-    }
-
-    /**
-     Can a meaningful handshake action be invoked on this identity?
-     Like trust, mistrust, or reset?
-     Currently, you can't reset/undo a mistrust, so it's not included.
-     See ENGINE-409, ENGINE-355.
-     */
-    public func canInvokeHandshakeAction(session: PEPSession = PEPSession()) -> Bool {
-        if isMySelf {
-            return false
-        }
-        let color = pEpColor(session: session)
-        return color == PEPColorYellow || color == PEPColorGreen
-    }
-
     public func canResetTrust(session: PEPSession = PEPSession()) -> Bool {
         let color = pEpColor(session: session)
         return color == PEPColorGreen || color == PEPColorRed
