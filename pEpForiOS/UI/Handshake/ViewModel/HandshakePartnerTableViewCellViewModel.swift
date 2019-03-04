@@ -25,7 +25,7 @@ class HandshakePartnerTableViewCellViewModel {
     /** Do we show the trustwords for this identity? */
     var showTrustwords: Bool {
         switch partnerColor {
-        case PEPColorYellow:
+        case .yellow:
             return true
         default:
             return false

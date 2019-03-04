@@ -18,7 +18,7 @@ extension PEPColor {
             return UIImage(named: "pEp-status-grey")
         case PEPColorRed:
             return UIImage(named: "pEp-status-red")
-        case PEPColorYellow:
+        case .yellow:
             if enabled {
                 return UIImage(named: "pEp-status-yellow")
             } else {
@@ -46,7 +46,7 @@ extension PEPColor {
             return UIImage(named: "pEp-status-grey_white-border")
         case PEPColorRed:
             return UIImage(named: "pEp-status-red_white-border")
-        case PEPColorYellow:
+        case .yellow:
             return UIImage(named: "pEp-status-yellow_white-border")
         case PEPColorGreen:
             return UIImage(named: "pEp-status-green_white-border")
@@ -61,7 +61,7 @@ extension PEPColor {
             return UIColor.gray
         case PEPColorRed:
             return UIColor.pEpRed
-        case PEPColorYellow:
+        case .yellow:
             return UIColor.pEpYellow
         case PEPColorGreen:
             return UIColor.pEpGreen

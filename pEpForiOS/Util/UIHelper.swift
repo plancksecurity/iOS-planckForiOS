@@ -56,7 +56,7 @@ class UIHelper {
         switch pepColor {
         case PEPColorGreen:
             return UIColor.green
-        case PEPColorYellow:
+        case .yellow:
             return UIColor.yellow
         case PEPColorRed:
             return UIColor.red
@@ -81,7 +81,7 @@ class UIHelper {
         switch pepColor {
         case PEPColorGreen:
             return UIColor.green
-        case PEPColorYellow:
+        case .yellow:
             return UIColor.yellow
         case PEPColorRed:
             return UIColor.red

@@ -13,7 +13,7 @@ extension PEPColor {
         switch self {
         case PEPColorRed:
             return NSLocalizedString("Mistrusted", comment: "privacyStatusTitle red")
-        case PEPColorYellow:
+        case .yellow:
             return NSLocalizedString("Secure", comment: "privacyStatusTitle yellow")
         case PEPColorGreen:
             return NSLocalizedString("Secure & Trusted", comment: "privacyStatusTitle green")
@@ -29,7 +29,7 @@ extension PEPColor {
         case PEPColorRed:
             return NSLocalizedString("This communication partner is mistrusted",
                                      comment: "privacyStatusDescription red")
-        case PEPColorYellow:
+        case .yellow:
             return NSLocalizedString(
                 "Make this communication partner secure & trusted by comparing the trustwords below with your partner, for example by making a phone call",
                 comment: "privacyStatusDescription yellow")
