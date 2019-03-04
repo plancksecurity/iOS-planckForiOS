@@ -14,7 +14,7 @@ extension PEPRating {
     func shouldRetryToDecrypt() -> Bool {
         switch self {
         case .Undefined,
-             PEPRatingCannotDecrypt,
+             .CannotDecrypt,
              PEPRatingHaveNoKey,
              PEPRatingB0rken:
             return true
@@ -40,7 +40,7 @@ extension PEPRating {
     func isUnDecryptable() -> Bool {
         switch self {
         case .Undefined,
-             PEPRatingCannotDecrypt,
+             .CannotDecrypt,
              PEPRatingHaveNoKey:
             return true
 

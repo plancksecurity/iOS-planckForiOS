@@ -38,7 +38,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
     }
 
     func testFilterShouldIgnoreUndecryptable_canNotDecrypt() {
-        assureMessagesDoNotPassFilter(with: PEPRatingCannotDecrypt)
+        assureMessagesDoNotPassFilter(with: .CannotDecrypt)
     }
 
     // MARK: - Helper

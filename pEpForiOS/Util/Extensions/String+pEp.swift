@@ -136,9 +136,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
                                   comment: "Privacy status suggestion")),
-         PEPRatingCannotDecrypt:
+         .CannotDecrypt:
             PEPStatusText(
-                rating: PEPRatingCannotDecrypt,
+                rating: .CannotDecrypt,
                 title: NSLocalizedString("Cannot Decrypt",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message cannot be decrypted.",
