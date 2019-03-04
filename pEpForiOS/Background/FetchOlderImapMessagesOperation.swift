@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /// Fetches the next bunch of older messages (older than the allready fetched ones).
 public class FetchOlderImapMessagesOperation: FetchMessagesOperation {
     override func fetchMessages(_ sync: ImapSync) {
