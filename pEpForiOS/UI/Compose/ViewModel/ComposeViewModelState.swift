@@ -8,6 +8,7 @@
 
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 protocol ComposeViewModelStateDelegate: class {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
