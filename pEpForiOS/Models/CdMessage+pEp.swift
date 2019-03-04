@@ -11,13 +11,6 @@ import MessageModel
 
 extension CdMessage {
     /**
-     Updates the message to the given color rating.
-     */
-    public func update(rating: PEPRating) {
-        self.pEpRating = Int16(rating.rawValue)
-    }
-
-    /**
      Updates all properties from the given `PEPMessage`.
      Used after a message has been decrypted.
      */
@@ -112,17 +105,5 @@ extension CdMessage {
         } else {
             self.keysFromDecryption = nil
         }
-    }
-
-    public func pEpMessageDict(outgoing: Bool = true) -> PEPMessageDict {
-        return PEPUtil.pEpDict(cdMessage: self, outgoing: outgoing)
-    }
-
-    public func pEpMessage(outgoing: Bool = true) -> PEPMessage {
-        return PEPUtil.pEp(cdMessage: self, outgoing: outgoing)
-    }
-
-    public func isProbablyPGPMime() -> Bool {
-        return PEPUtil.isProbablyPGPMime(cdMessage: self)
     }
 }
