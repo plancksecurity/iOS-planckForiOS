@@ -110,7 +110,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
         }
 
         // After ENGINE-465 is done, this should be PEPRatingReliable
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRatingUnreliable.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
         XCTAssertEqual(

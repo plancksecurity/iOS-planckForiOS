@@ -94,9 +94,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Complete a handshake with your communication partner. A handshake is needed only once per partner and will ensure secure and trusted communication.",
                                   comment: "Privacy status suggestion")),
-         PEPRatingUnreliable:
+         .unreliable:
             PEPStatusText(
-                rating: PEPRatingUnreliable,
+                rating: .unreliable,
                 title: NSLocalizedString("Unreliable Security",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message has unreliable protection",

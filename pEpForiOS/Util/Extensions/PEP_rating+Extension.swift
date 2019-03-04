@@ -21,7 +21,7 @@ extension PEPRating {
 
         case .unencrypted,
              .unencryptedForSome,
-             PEPRatingUnreliable,
+             .unreliable,
              PEPRatingReliable,
              PEPRatingTrusted,
              PEPRatingTrustedAndAnonymized,
@@ -46,7 +46,7 @@ extension PEPRating {
 
         case .unencrypted,
              .unencryptedForSome,
-             PEPRatingUnreliable,
+             .unreliable,
              PEPRatingReliable,
              PEPRatingTrusted,
              PEPRatingTrustedAndAnonymized,
