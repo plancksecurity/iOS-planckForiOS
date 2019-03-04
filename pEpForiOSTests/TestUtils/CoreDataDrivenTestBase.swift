@@ -19,9 +19,9 @@ class CoreDataDrivenTestBase: XCTestCase {
     var cdAccount: CdAccount!
     var persistentSetup: PersistentSetup!
 
-    var imapConnectInfo: EmailConnectInfo!
-    var smtpConnectInfo: EmailConnectInfo!
-    var imapSyncData: ImapSyncData!
+    public var imapConnectInfo: EmailConnectInfo!
+    public var smtpConnectInfo: EmailConnectInfo!
+    public var imapSyncData: ImapSyncData!
 
     var session: PEPSession {
         return PEPSession()
