@@ -20,9 +20,9 @@ extension String {
      All privacy status strings, i18n ready.
      */
     static let pEpRatingTranslations: [PEPRating: PEPStatusText] =
-        [PEPRatingUnderAttack:
+        [.underAttack:
             PEPStatusText(
-                rating: PEPRatingUnderAttack,
+                rating: .underAttack,
                 title: NSLocalizedString("Under Attack",
                                          comment: "Privacy status title"),
                 explanation:

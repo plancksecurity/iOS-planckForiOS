@@ -27,7 +27,7 @@ extension PEPRating {
              .trustedAndAnonymized,
              .fullyAnonymous,
              .mistrust,
-             PEPRatingUnderAttack:
+             .underAttack:
             return false
         default:
             Logger.utilLogger.errorAndCrash(
@@ -53,7 +53,7 @@ extension PEPRating {
              .fullyAnonymous,
              .mistrust,
              .b0rken,
-             PEPRatingUnderAttack:
+             .underAttack:
             return false
         default:
             Logger.utilLogger.errorAndCrash(

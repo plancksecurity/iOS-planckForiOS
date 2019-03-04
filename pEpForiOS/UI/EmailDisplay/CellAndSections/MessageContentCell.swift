@@ -22,7 +22,7 @@ open class MessageContentCell: MessageCell {
 
         let finalText = NSMutableAttributedString()
         if message.underAttack {
-            let status = String.pEpRatingTranslation(pEpRating: PEPRatingUnderAttack)
+            let status = String.pEpRatingTranslation(pEpRating: .underAttack)
             let messageString = String.localizedStringWithFormat(
                 NSLocalizedString(
                     "\n%1$@\n\n%2$@\n\n%3$@\n\nAttachments are disabled.\n\n",
