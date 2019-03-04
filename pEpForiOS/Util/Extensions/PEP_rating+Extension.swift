@@ -15,7 +15,7 @@ extension PEPRating {
         switch self {
         case .Undefined,
              .CannotDecrypt,
-             PEPRatingHaveNoKey,
+             .HaveNoKey,
              PEPRatingB0rken:
             return true
 
@@ -41,7 +41,7 @@ extension PEPRating {
         switch self {
         case .Undefined,
              .CannotDecrypt,
-             PEPRatingHaveNoKey:
+             .HaveNoKey:
             return true
 
         case PEPRatingUnencrypted,

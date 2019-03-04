@@ -196,7 +196,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             comment: "Stop/trust button in handshake overview")
 
         if viewModel?.partnerColor == PEPColorRed ||
-            viewModel?.partnerRating == PEPRatingHaveNoKey {
+            viewModel?.partnerRating == .HaveNoKey {
             startStopTrustingButton.setTitle(titleMistrusted, for: .normal)
         } else {
             startStopTrustingButton.setTitle(titleTrusted, for: .normal)

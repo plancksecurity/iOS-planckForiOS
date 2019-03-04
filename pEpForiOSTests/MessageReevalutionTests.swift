@@ -153,7 +153,7 @@ class MessageReevalutionTests: XCTestCase {
         let senderDict2 = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
         // ENGINE-343: At one point the rating was .Undefined.
-        XCTAssertEqual(senderIdentity.pEpRating(), PEPRatingHaveNoKey)
+        XCTAssertEqual(senderIdentity.pEpRating(), .HaveNoKey)
     }
 
     func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
@@ -205,7 +205,7 @@ class MessageReevalutionTests: XCTestCase {
                 infoMessage: "after trust")
 
             try! session.keyMistrusted(senderIdent)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEPRatingHaveNoKey)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), .HaveNoKey)
             reevaluateMessage(
                 expectedRating: PEPRatingMistrust,
                 inBackground: runReevaluationInBackground,
