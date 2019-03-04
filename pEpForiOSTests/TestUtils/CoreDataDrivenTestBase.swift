@@ -12,7 +12,7 @@ import CoreData
 @testable import pEpForiOS
 @testable import MessageModel
 
-class CoreDataDrivenTestBase: XCTestCase {
+open class CoreDataDrivenTestBase: XCTestCase {
     var account: Account {
         return cdAccount.account()
     }
