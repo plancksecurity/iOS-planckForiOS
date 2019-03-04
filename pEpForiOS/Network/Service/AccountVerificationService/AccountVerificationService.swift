@@ -8,6 +8,7 @@
 
 import MessageModel
 import pEpIOSToolbox
+import PantomimeFramework
 
 class AccountVerificationService: AccountVerificationServiceProtocol {
     weak var delegate: AccountVerificationServiceDelegate?

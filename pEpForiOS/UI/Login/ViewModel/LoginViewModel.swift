@@ -7,8 +7,10 @@
 //
 
 import Foundation
+
 import MessageModel
 import pEpIOSToolbox
+import PantomimeFramework
 
 enum LoginCellType {
     case Text, Button

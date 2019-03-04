@@ -8,8 +8,10 @@
 
 import Foundation
 
+import PEPObjCAdapterFramework
+
 extension NSMutableDictionary {
     public var isConfirmed: Bool {
-        return (commType.rawValue & PEP_ct_confirmed.rawValue) > 0
+        return (commType.rawValue & PEPCtConfirmed.rawValue) > 0
     }
 }

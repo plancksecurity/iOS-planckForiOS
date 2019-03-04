@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import pEpIOSToolbox
+import MessageModel
 
 /**
  Qualifies the given server name re trusted or untrusted, depending on
