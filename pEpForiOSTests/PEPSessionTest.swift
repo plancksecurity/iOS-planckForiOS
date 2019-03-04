@@ -88,7 +88,7 @@ class PEPSessionTest: XCTestCase {
         pEpMessage.references = references
         pEpMessage.shortMessage = mySubject
         pEpMessage.longMessage = "The text body"
-        pEpMessage.direction = PEPDirOutgoing
+        pEpMessage.direction = .outgoing
 
         let session = PEPSession()
 
