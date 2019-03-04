@@ -26,7 +26,7 @@ extension PEPRating {
              .trusted,
              .trustedAndAnonymized,
              .fullyAnonymous,
-             PEPRatingMistrust,
+             .mistrust,
              PEPRatingUnderAttack:
             return false
         default:
@@ -51,7 +51,7 @@ extension PEPRating {
              .trusted,
              .trustedAndAnonymized,
              .fullyAnonymous,
-             PEPRatingMistrust,
+             .mistrust,
              .b0rken,
              PEPRatingUnderAttack:
             return false
