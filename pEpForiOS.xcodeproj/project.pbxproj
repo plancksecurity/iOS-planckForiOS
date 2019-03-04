@@ -216,7 +216,6 @@
 		431394A91E4B03AA00D92F33 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 431394A81E4B03AA00D92F33 /* Settings.bundle */; };
 		4315E4C3201242BB00F68763 /* OAuth2Type+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */; };
 		431798771CF87FE6007DD655 /* ReferenceCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431798761CF87FE6007DD655 /* ReferenceCounter.swift */; };
-		431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */; };
 		431BB9451E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */; };
 		431C2B171F387C4100D87FFD /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */; };
 		431C2B191F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */; };
@@ -719,7 +718,6 @@
 		4315E4C2201242BB00F68763 /* OAuth2Type+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OAuth2Type+Extension.swift"; sourceTree = "<group>"; };
 		431798761CF87FE6007DD655 /* ReferenceCounter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferenceCounter.swift; sourceTree = "<group>"; };
 		431799391CF8A39F007DD655 /* pEpForiOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "pEpForiOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
-		431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CdAttachment+Extension.swift"; sourceTree = "<group>"; };
 		431BB9441E49B7A9000BCBF1 /* PorpoiseGalaxy_HubbleFraile_960.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PorpoiseGalaxy_HubbleFraile_960.jpg; sourceTree = "<group>"; };
 		431C2B161F387C4100D87FFD /* LoginViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ConnectionTransport+AccountSettings.swift"; sourceTree = "<group>"; };
@@ -2184,7 +2182,6 @@
 				15F0F7AB21359372002BE853 /* Filter */,
 				15F835231F34BE1300FCE887 /* AccountUserInput.swift */,
 				43CE63CA1DE8830100FAC505 /* CdAccount+pEp.swift */,
-				431B04811DE583A000E40CD3 /* CdAttachment+Extension.swift */,
 				43E7B6741DE4A53A0017D707 /* CdIdentity+pEp.swift */,
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				155475632137FD96005A52D0 /* FolderType+Extensions.swift */,
@@ -3130,7 +3127,6 @@
 				152A39DE21905C3E00D9F8E4 /* AccountCellViewModel.swift in Sources */,
 				4304FD001EBB8EBB0086DADA /* LanguageListViewController.swift in Sources */,
 				430E5F201EBC87A700E5D5D3 /* LanguageListTableViewCell.swift in Sources */,
-				431B04821DE583A000E40CD3 /* CdAttachment+Extension.swift in Sources */,
 				49D3BECC20F8F7330043E05D /* LoginViewController.swift in Sources */,
 				43425EDB1FE3DE6E004A2728 /* OAuth2ProviderProtocol.swift in Sources */,
 				1526596A216230B1006A78DF /* ComposeDataSource.swift in Sources */,
