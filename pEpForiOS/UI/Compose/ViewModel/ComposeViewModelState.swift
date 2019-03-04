@@ -161,7 +161,7 @@ extension ComposeViewModel.ComposeViewModelState {
             return false
         }
         let outgoingRatingColor = rating.pEpColor()
-        return outgoingRatingColor == .yellow || outgoingRatingColor == PEPColorGreen
+        return outgoingRatingColor == .yellow || outgoingRatingColor == .green
     }
 }
 

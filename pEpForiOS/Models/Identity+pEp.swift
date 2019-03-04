@@ -31,7 +31,7 @@ extension Identity {
 
     public func canResetTrust(session: PEPSession = PEPSession()) -> Bool {
         let color = pEpColor(session: session)
-        return color == PEPColorGreen || color == PEPColorRed
+        return color == .green || color == PEPColorRed
     }
 
     public func decorateButton(button: UIButton, session: PEPSession = PEPSession()) {
