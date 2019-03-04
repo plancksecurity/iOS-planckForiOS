@@ -1,5 +1,5 @@
 //
-//  ContentDispositionType + Conversion.swift
+//  ContentDispositionType+Conversion.swift
 //  pEp
 //
 //  Created by Andreas Buff on 18.04.18.
