@@ -105,7 +105,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              cc: [],
                              bcc: []))
 
-        // PEPRatingFullyAnonymous?
+        // .fullyAnonymous?
         XCTAssertFalse(
             replyAllPossible(testName: #function,
                              folder: inbox,
@@ -269,7 +269,7 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
                              cc: [],
                              bcc: []))
 
-        // PEPRatingFullyAnonymous?
+        // .fullyAnonymous?
         XCTAssertFalse(
             replyAllPossible(testName: #function,
                              folder: inbox,

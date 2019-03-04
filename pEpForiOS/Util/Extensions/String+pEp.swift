@@ -53,9 +53,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Re-establish the connection with your communication partner and try to complete another handshake.",
                                   comment: "Privacy status suggestion")),
-         PEPRatingFullyAnonymous:
+         .fullyAnonymous:
             PEPStatusText(
-                rating: PEPRatingFullyAnonymous,
+                rating: .fullyAnonymous,
                 title:
                 NSLocalizedString("Secure & Trusted",
                                   comment: "Privacy status title"),
