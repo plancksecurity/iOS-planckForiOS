@@ -65,18 +65,18 @@ extension String {
                 suggestion:
                 NSLocalizedString("No action needed!",
                                   comment: "Privacy status suggestion")),
-         PEPRatingTrustedAndAnonymized:
+         .trustedAndAnonymized:
             PEPStatusText(
-                rating: PEPRatingTrustedAndAnonymized,
+                rating: .trustedAndAnonymized,
                 title: NSLocalizedString("Secure & Trusted",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message is secure and trusted.",
                                                comment: "Privacy status explanation"),
                 suggestion: NSLocalizedString("No action needed!",
                                               comment: "Privacy status suggestion")),
-         PEPRatingTrusted:
+         .trusted:
             PEPStatusText(
-                rating: PEPRatingTrusted,
+                rating: .trusted,
                 title: NSLocalizedString("Secure & Trusted",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message is secure and trusted.",

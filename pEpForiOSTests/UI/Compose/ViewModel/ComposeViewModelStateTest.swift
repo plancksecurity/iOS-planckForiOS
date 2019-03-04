@@ -115,7 +115,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     func testValidate_changeTos_green() {
         let recipients = [account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEPRatingTrustedAndAnonymized)
+                           expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
         waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
     }
@@ -131,7 +131,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     func testValidate_changeCCs_green() {
         let recipients = [account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEPRatingTrustedAndAnonymized)
+                           expectedNewRating: .trustedAndAnonymized)
         testee?.ccRecipients = recipients
         waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
     }
@@ -225,7 +225,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         // Setup green state ...
         let recipients = [account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEPRatingTrustedAndAnonymized)
+                           expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
         waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
         // ... and assert can toggle works correctly
@@ -242,7 +242,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         // Setup green state ...
         let recipients = [account.user]
         assertValidatation(expectedStateIsValid: true,
-                           expectedNewRating: PEPRatingTrustedAndAnonymized)
+                           expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
         waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
         // ... set BCC ...

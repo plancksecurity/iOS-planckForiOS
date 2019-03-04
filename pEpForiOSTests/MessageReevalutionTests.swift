@@ -198,9 +198,9 @@ class MessageReevalutionTests: XCTestCase {
         for _ in 0..<1 {
             try! session.trustPersonalKey(senderIdent)
             XCTAssertTrue(senderIdent.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEPRatingTrusted)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), .trusted)
             reevaluateMessage(
-                expectedRating: PEPRatingTrusted,
+                expectedRating: .trusted,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after trust")
 
