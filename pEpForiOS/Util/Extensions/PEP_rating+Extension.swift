@@ -16,7 +16,7 @@ extension PEPRating {
         case .Undefined,
              .CannotDecrypt,
              .HaveNoKey,
-             PEPRatingB0rken:
+             .b0rken:
             return true
 
         case PEPRatingUnencrypted,
@@ -52,7 +52,7 @@ extension PEPRating {
              PEPRatingTrustedAndAnonymized,
              PEPRatingFullyAnonymous,
              PEPRatingMistrust,
-             PEPRatingB0rken,
+             .b0rken,
              PEPRatingUnderAttack:
             return false
         default:
