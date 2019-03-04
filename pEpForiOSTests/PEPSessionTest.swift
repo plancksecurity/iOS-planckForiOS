@@ -63,7 +63,7 @@ class PEPSessionTest: XCTestCase {
 
         try! session.encryptMessageDict(pepmessage,
                                         extraKeys: nil,
-                                        encFormat: PEPEncPEP,
+                                        encFormat: .PEP,
                                         status: nil)
         try! session.decryptMessageDict(pepmessage.mutableDictionary(),
                                         flags: nil,
