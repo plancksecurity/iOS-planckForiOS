@@ -878,7 +878,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - Delegate Setter Side Effect
 
     func testDelegateSetter() {
-        let expectedRating = PEPRatingUndefined
+        let expectedRating = .Undefined
         let expectedProtection = true
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1028,7 +1028,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - handleUserChangedProtectionStatus
 
     func testHandleUserChangedProtectionStatus_change() {
-        let expectedRating = PEPRatingUndefined
+        let expectedRating = .Undefined
         let expectedProtection = false
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,

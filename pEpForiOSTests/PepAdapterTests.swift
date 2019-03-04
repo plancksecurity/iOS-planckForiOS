@@ -55,7 +55,7 @@ class PepAdapterTests: XCTestCase {
         pEpMessage.longMessage = "Long Message"
 
         var keys: NSArray?
-        var rating = PEPRatingUndefined
+        var rating = .Undefined
         try! pEpSession.decryptMessage(pEpMessage,
                                        flags: nil,
                                        rating: &rating,

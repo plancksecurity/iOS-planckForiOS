@@ -33,7 +33,7 @@ extension ComposeViewModel {
             }
         }
         public private(set) var edited = false
-        public private(set) var rating = PEPRatingUndefined {
+        public private(set) var rating = .Undefined {
             didSet {
                 if rating != oldValue {
                     delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
@@ -191,7 +191,7 @@ extension ComposeViewModel.ComposeViewModelState {
                                                        cc: me.ccRecipients,
                                                        bcc: me.bccRecipients)
             } else {
-                newRating = PEPRatingUndefined
+                newRating = .Undefined
             }
             DispatchQueue.main.async {
                 me.rating = newRating
