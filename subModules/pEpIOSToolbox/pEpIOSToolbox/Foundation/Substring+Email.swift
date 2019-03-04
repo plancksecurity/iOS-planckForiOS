@@ -8,8 +8,6 @@
 
 import Foundation
 
-import pEpIOSToolbox
-
 /**
  Methods for detecting parts of an email.
  - Note: The String equivalents should defer to these to avoid duplicate code.
