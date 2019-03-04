@@ -243,7 +243,6 @@
 		43293EFB1EB9DD6700EEE010 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */; };
 		432A24D71DE714A200DAAC5C /* MessagePantomimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */; };
 		432A5E261EB344C3007CB670 /* PEP_color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432A5E251EB344C3007CB670 /* PEP_color+Extension.swift */; };
-		432AC3061ECB0C44007DC418 /* CWIMAPMessage+pEp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432AC3051ECB0C44007DC418 /* CWIMAPMessage+pEp.swift */; };
 		432DA7441EE01E3300B30BAA /* MessageSyncServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432DA7431EE01E3300B30BAA /* MessageSyncServiceProtocol.swift */; };
 		432DA7461EE027EB00B30BAA /* MessageSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432DA7451EE027EB00B30BAA /* MessageSyncService.swift */; };
 		432E80FD2191AF5100359879 /* UniversLTStd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 432E80FB2191AF5100359879 /* UniversLTStd.otf */; };
@@ -751,7 +750,6 @@
 		43293EFA1EB9DD6700EEE010 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		432A24D61DE714A200DAAC5C /* MessagePantomimeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagePantomimeTests.swift; sourceTree = "<group>"; };
 		432A5E251EB344C3007CB670 /* PEP_color+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PEP_color+Extension.swift"; sourceTree = "<group>"; };
-		432AC3051ECB0C44007DC418 /* CWIMAPMessage+pEp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CWIMAPMessage+pEp.swift"; sourceTree = "<group>"; };
 		432DA7431EE01E3300B30BAA /* MessageSyncServiceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSyncServiceProtocol.swift; sourceTree = "<group>"; };
 		432DA7451EE027EB00B30BAA /* MessageSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageSyncService.swift; sourceTree = "<group>"; };
 		432E80FB2191AF5100359879 /* UniversLTStd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = UniversLTStd.otf; sourceTree = "<group>"; };
@@ -1900,7 +1898,6 @@
 				43E657D01F3C33C30014CBEC /* String+HTML.swift */,
 				430E0BE61EAF5E2600378EC2 /* NSMutableDictionary+pEp.swift */,
 				432A5E251EB344C3007CB670 /* PEP_color+Extension.swift */,
-				432AC3051ECB0C44007DC418 /* CWIMAPMessage+pEp.swift */,
 				431C2B181F38888B00D87FFD /* ConnectionTransport+AccountSettings.swift */,
 				43257C871F5067BE00DDC7F0 /* NSAttributedString+pEp.swift */,
 				1541D7EC1FC81D4200D52A5D /* URL+Extensions.swift */,
@@ -3137,7 +3134,6 @@
 				152A39E121905C3E00D9F8E4 /* RecipientCellViewModel+FieldType.swift in Sources */,
 				4351C2CC1F4441190053381F /* cmark_ctype.c in Sources */,
 				152A39DB21905C3E00D9F8E4 /* CellViewModel.swift in Sources */,
-				432AC3061ECB0C44007DC418 /* CWIMAPMessage+pEp.swift in Sources */,
 				431B047A1DE5772000E40CD3 /* CdMessage+pEp.swift in Sources */,
 				155050F01FE82356009CEAD2 /* UserNotificationTool.swift in Sources */,
 				430D73671E9CC54000EA6FA9 /* AttachmentToLocalURLOperation.swift in Sources */,
