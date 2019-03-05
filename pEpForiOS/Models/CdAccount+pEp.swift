@@ -10,7 +10,7 @@ import MessageModel
 
 extension CdAccount {
     open func pEpIdentity() -> PEPIdentity {
-        let _ = PEPUtil.identity(string: "hi")
+        let _ = PEPUtil.another(string: "hi")
         return PEPUtil.identity(account: self)
     }
 }
