@@ -8,6 +8,8 @@
 
 import UIKit
 
+import PEPObjCAdapterFramework
+
 extension PEPColor {
     /**
      The icon suitable for indicating the rating of an outgoing message.
