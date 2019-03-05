@@ -14,9 +14,9 @@ extension PEPColor {
      */
     func statusIcon(enabled: Bool = true) -> UIImage? {
         switch self {
-        case PEPColorNoColor:
+        case PEPColor.noColor:
             return UIImage(named: "pEp-status-grey")
-        case PEPColorRed:
+        case PEPColor.red:
             return UIImage(named: "pEp-status-red")
         case .yellow:
             if enabled {
@@ -42,9 +42,9 @@ extension PEPColor {
      */
     func statusIconInContactPicture() -> UIImage? {
         switch self {
-        case PEPColorNoColor:
+        case PEPColor.noColor:
             return UIImage(named: "pEp-status-grey_white-border")
-        case PEPColorRed:
+        case PEPColor.red:
             return UIImage(named: "pEp-status-red_white-border")
         case .yellow:
             return UIImage(named: "pEp-status-yellow_white-border")
@@ -57,9 +57,9 @@ extension PEPColor {
 
     func uiColor() -> UIColor? {
         switch self {
-        case PEPColorNoColor:
+        case PEPColor.noColor:
             return UIColor.gray
-        case PEPColorRed:
+        case PEPColor.red:
             return UIColor.pEpRed
         case .yellow:
             return UIColor.pEpYellow

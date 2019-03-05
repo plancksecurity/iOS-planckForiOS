@@ -65,7 +65,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    var partnerColor: PEPColor { return viewModel?.partnerColor ?? PEPColorNoColor }
+    var partnerColor: PEPColor { return viewModel?.partnerColor ?? PEPColor.noColor }
 
     var showStopStartTrustButton: Bool {
         return viewModel?.showStopStartTrustButton ?? false
@@ -195,7 +195,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             "Stop Trusting",
             comment: "Stop/trust button in handshake overview")
 
-        if viewModel?.partnerColor == PEPColorRed ||
+        if viewModel?.partnerColor == PEPColor.red ||
             viewModel?.partnerRating == .HaveNoKey {
             startStopTrustingButton.setTitle(titleMistrusted, for: .normal)
         } else {

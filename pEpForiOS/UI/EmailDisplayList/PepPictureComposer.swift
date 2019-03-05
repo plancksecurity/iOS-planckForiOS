@@ -32,7 +32,7 @@ class PepProfilePictureComposer: ProfilePictureComposer {
         DispatchQueue.global(qos: .userInitiated).async{
             let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
             var image: UIImage? = nil
-            if color != PEPColorNoColor {
+            if color != PEPColor.noColor {
                 image = color.statusIconInContactPicture()
             }
             DispatchQueue.main.async {
