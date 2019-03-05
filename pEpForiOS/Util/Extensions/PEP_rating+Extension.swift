@@ -13,9 +13,9 @@ extension PEPRating {
     /** Does this pEp rating mean that decryption should be tried again? */
     func shouldRetryToDecrypt() -> Bool {
         switch self {
-        case .Undefined,
-             .CannotDecrypt,
-             .HaveNoKey,
+        case .undefined,
+             .cannotDecrypt,
+             .haveNoKey,
              .b0rken:
             return true
 
@@ -39,9 +39,9 @@ extension PEPRating {
     /** Were there problems decrypting the message? */
     func isUnDecryptable() -> Bool {
         switch self {
-        case .Undefined,
-             .CannotDecrypt,
-             .HaveNoKey:
+        case .undefined,
+             .cannotDecrypt,
+             .haveNoKey:
             return true
 
         case .unencrypted,

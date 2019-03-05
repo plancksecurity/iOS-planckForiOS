@@ -35,7 +35,7 @@ class HandshakePartnerTableViewCellViewModel {
     /** Show the button for start/stop trusting? */
     var showStopStartTrustButton: Bool {
         return partnerColor == .green || partnerColor == PEPColor.red ||
-            partnerRating == .HaveNoKey
+            partnerRating == .haveNoKey
     }
 
     var expandedState: ExpandedState

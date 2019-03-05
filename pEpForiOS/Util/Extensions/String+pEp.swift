@@ -125,9 +125,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("Please ask your communication partner to use an encryption solution or install p≡p.",
                                   comment: "Privacy status suggestion")),
-         .HaveNoKey:
+         .haveNoKey:
             PEPStatusText(
-                rating: .HaveNoKey,
+                rating: .haveNoKey,
                 title: NSLocalizedString("Cannot Decrypt",
                                          comment: "Privacy status title"),
                 explanation:
@@ -136,9 +136,9 @@ extension String {
                 suggestion:
                 NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
                                   comment: "Privacy status suggestion")),
-         .CannotDecrypt:
+         .cannotDecrypt:
             PEPStatusText(
-                rating: .CannotDecrypt,
+                rating: .cannotDecrypt,
                 title: NSLocalizedString("Cannot Decrypt",
                                          comment: "Privacy status title"),
                 explanation: NSLocalizedString("This message cannot be decrypted.",
@@ -146,11 +146,11 @@ extension String {
                 suggestion:
                 NSLocalizedString("If this message was addressed to you, please inform the sender that you don't have the key.",
                                   comment: "Privacy status suggestion")),
-         .Undefined: undefinedPEPMessageRating()]
+         .undefined: undefinedPEPMessageRating()]
 
     public static func undefinedPEPMessageRating() -> PEPStatusText {
         return PEPStatusText(
-            rating: .Undefined,
+            rating: .undefined,
             title: NSLocalizedString("Unknown",
                                      comment: "Privacy status title"),
             explanation:
@@ -164,7 +164,7 @@ extension String {
         let defResult = undefinedPEPMessageRating()
         if let rating = pEpRating {
             return pEpRatingTranslations[rating] ??
-                pEpRatingTranslations[.Undefined] ?? defResult
+                pEpRatingTranslations[.undefined] ?? defResult
         } else {
             return defResult
         }
