@@ -77,14 +77,14 @@ public class DeleteFoldersOperation: ImapSyncOperation {
         markAsFinished()
     }
 
-    override func markAsFinished() {
+    override open func markAsFinished() {
         syncDelegate = nil
         super.markAsFinished()
     }
 }
 
 class DeleteFoldersSyncDelegate: DefaultImapSyncDelegate {
-    public override func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
+    override open func folderDeleteCompleted(_ sync: ImapSync, notification: Notification?) {
         (errorHandler as? DeleteFoldersOperation)?.deleteNextRemoteFolder(sync: sync)
     }
 }
