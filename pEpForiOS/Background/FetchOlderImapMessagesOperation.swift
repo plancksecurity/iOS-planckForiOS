@@ -12,7 +12,7 @@ import MessageModel
 
 /// Fetches the next bunch of older messages (older than the allready fetched ones).
 public class FetchOlderImapMessagesOperation: FetchMessagesOperation {
-    override func fetchMessages(_ sync: ImapSync) {
+    override open func fetchMessages(_ sync: ImapSync) {
         do {
             try sync.fetchOlderMessages()
         } catch {
