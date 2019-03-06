@@ -14,11 +14,18 @@ import pEpIOSToolbox
  */
 extension CdIdentity {
     public func pEpRating(session: PEPSession = PEPSession()) -> PEPRating {
-        return PEPUtil.pEpRating(cdIdentity: self, session: session)
+        let pepC = PEPUtil.pEpDict(cdIdentity: self)
+        do {
+            return try session.rating(for: pepC).pEpRating
+        } catch let error as NSError {
+            assertionFailure("\(error)")
+            return .undefined
+        }
     }
 
     public func pEpColor(session: PEPSession = PEPSession()) -> PEPColor {
-        return PEPUtil.pEpColor(cdIdentity: self, session: session)
+        let rating = self.pEpRating(session: session)
+        return session.color(from: rating)
     }
 
     public func fingerPrint(session: PEPSession = PEPSession()) throws -> String? {
