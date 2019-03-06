@@ -75,15 +75,12 @@ extension PEPColor {
 }
 
 extension PEPRating {
-    func pEpColor(session: PEPSession = PEPSession()) -> PEPColor {
-        return session.color(from: self)
-    }
-
-    func uiColor(session: PEPSession? = PEPSession()) -> UIColor? {
-        return pEpColor().uiColor()
+    func uiColor() -> UIColor? {
+        return PEPUtil.pEpColor(pEpRating: self).uiColor()
     }
 
     func statusIcon() -> UIImage? {
-        return pEpColor().statusIcon()
+        let color = pEpColor()
+        return color.statusIcon()
     }
 }
