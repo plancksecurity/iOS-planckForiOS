@@ -1,12 +1,14 @@
 //
-//  AppConstants.swift
+//  Constants.swift
 //  pEpForiOS
 //
 //  Created by Dirk Zimmermann on 28/04/16.
 //  Copyright © 2016 p≡p Security S.A. All rights reserved.
 //
 
-struct AppConstants {
+import MessageModel
+
+extension Constants {
     /** Settings key for storing the email of the last used account */
     static let kSettingLastAccountEmail = "kSettingLastAccountEmail"
 
