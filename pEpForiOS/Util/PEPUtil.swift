@@ -614,21 +614,3 @@ extension PEPUtil {
         return language!
     }
 }
-
-extension String {
-    public static var pepSignature: String {
-        let bottom = NSLocalizedString("sent with p≡p",
-                                       comment: "pEp mail signature. Newlines will be added by app")
-        return "\n\n\(bottom)\n"
-    }
-
-    static var pEpSignatureHtml: String {
-        let pEpSignatureTrimmed = String.pepSignature.trimmed()
-        return "<a href=\"https://pep.software/withiOS\" style=\"color:\(UIColor.pEpDarkGreenHex); text-decoration: none;\">\(pEpSignatureTrimmed)</a>"
-    }
-
-    public func replacingOccurrencesOfPepSignatureWithHtmlVersion() -> String {
-        let pEpSignatureTrimmed = String.pepSignature.trimmed()
-        return replacingOccurrences(of: pEpSignatureTrimmed, with: String.pEpSignatureHtml)
-    }
-}
