@@ -7,16 +7,9 @@
 //
 
 import MessageModel
-import pEpIOSToolbox
 
 extension CdAccount {
     open func pEpIdentity() -> PEPIdentity {
-        if let id = self.identity {
-            return pEpDict(cdIdentity: id)
-        } else {
-            Logger.utilLogger.errorAndCrash(
-                "account without identity: %{public}@", account)
-            return PEPIdentity(address: "none")
-        }
+        return PEPUtil.identity(account: self)
     }
 }
