@@ -34,11 +34,11 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
     // MARK: - Undecryptable Messages
 
     func testFilterShouldIgnoreUndecryptable_haveNoKey() {
-        assureMessagesDoNotPassFilter(with: .HaveNoKey)
+        assureMessagesDoNotPassFilter(with: .haveNoKey)
     }
 
     func testFilterShouldIgnoreUndecryptable_canNotDecrypt() {
-        assureMessagesDoNotPassFilter(with: .CannotDecrypt)
+        assureMessagesDoNotPassFilter(with: .cannotDecrypt)
     }
 
     // MARK: - Helper
