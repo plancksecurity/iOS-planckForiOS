@@ -85,10 +85,10 @@ struct UIUtils {
     static func presentComposeView(forRecipientWithAddress address: String?,
                                    on viewController: UIViewController,
                                    appConfig: AppConfig) {
-        let storyboard = UIStoryboard(name: Constants.composeSceneStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: AppConstants.composeSceneStoryboard, bundle: nil)
         guard
             let composeNavigationController = storyboard.instantiateViewController(withIdentifier:
-                Constants.composeSceneStoryboardId) as? UINavigationController,
+                AppConstants.composeSceneStoryboardId) as? UINavigationController,
             let composeVc = composeNavigationController.rootViewController
                 as? ComposeTableViewController
             else {
@@ -121,7 +121,7 @@ struct UIUtils {
     static func presentAddToContactsView(for contact: Identity,
                                          on viewController: UIViewController,
                                          appConfig: AppConfig) {
-        let storyboard = UIStoryboard(name: Constants.addToContactsStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: AppConstants.addToContactsStoryboard, bundle: nil)
         guard let contactVc = storyboard.instantiateViewController(withIdentifier:
             AddToContactsViewController.storyboardId) as? AddToContactsViewController else {
                 Logger.utilLogger.errorAndCrash("Missing required data")

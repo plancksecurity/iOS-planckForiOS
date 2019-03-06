@@ -67,7 +67,7 @@ class ComposeTableViewController: BaseTableViewController {
     }
 
     private final func setupRecipientSuggestionsTableViewController() {
-        let storyboard = UIStoryboard(name: Constants.suggestionsStoryboard, bundle: nil)
+        let storyboard = UIStoryboard(name: AppConstants.suggestionsStoryboard, bundle: nil)
         guard
             let vm = viewModel,
             let suggestVc = storyboard.instantiateViewController(
