@@ -13,15 +13,6 @@ import PantomimeFramework
 import PEPObjCAdapterFramework
 import MessageModel
 
-/**
- Simple `Hashable` implementation so PEPRating can be put into dictionaries.
- */
-extension PEPRating: Hashable {
-    public var hashValue: Int {
-        return Int(rawValue)
-    }
-}
-
 public class PEPUtil {
     static let comp = "PEPUtil"
 
