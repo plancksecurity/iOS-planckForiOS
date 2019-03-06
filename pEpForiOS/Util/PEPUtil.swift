@@ -27,15 +27,15 @@ extension PEPUtil {
     /**
      Default pEpRating value when there's none, i.e. the message has never been decrypted.
      */
-    public static let pEpRatingNone = CdMessage.pEpRatingNone
+    static let pEpRatingNone = CdMessage.pEpRatingNone
 
     /**
      Content type for MIME multipart/alternative.
      */
-    public static let kMimeTypeMultipartAlternative = "multipart/alternative"
+    static let kMimeTypeMultipartAlternative = "multipart/alternative"
 
     /** Delete pEp working data. */
-    public static func pEpClean() -> Bool {
+    static func pEpClean() -> Bool {
         PEPSession.cleanup()
 
         let homeURL = PEPObjCAdapter.homeURL() as URL
@@ -63,7 +63,7 @@ extension PEPUtil {
         return true
     }
 
-    public static func identity(account: CdAccount) -> PEPIdentity {
+    static func identity(account: CdAccount) -> PEPIdentity {
         if let id = account.identity {
             return pEpDict(cdIdentity: id)
         } else {
@@ -73,7 +73,7 @@ extension PEPUtil {
         }
     }
 
-    public static func pEp(identity: Identity) -> PEPIdentity {
+    static func pEp(identity: Identity) -> PEPIdentity {
         return PEPIdentity(
             address: identity.address, userID: identity.userID, userName: identity.userName,
             isOwn: identity.isMySelf, fingerPrint: nil,
@@ -83,7 +83,7 @@ extension PEPUtil {
     /**
      Like the corresponding `pEpDict(cdIdentity)`, but dealing with optional parameters.
      */
-    public static func pEpDict(cdIdentityOptional: CdIdentity?) -> PEPIdentity? {
+    static func pEpDict(cdIdentityOptional: CdIdentity?) -> PEPIdentity? {
         guard let cdIdentity = cdIdentityOptional else {
             return nil
         }
@@ -95,7 +95,7 @@ extension PEPUtil {
      - Parameter cdIdentity: The core data contact object.
      - Returns: An `PEPIdentity` contact for pEp.
      */
-    public static func pEpDict(cdIdentity: CdIdentity) -> PEPIdentity {
+    static func pEpDict(cdIdentity: CdIdentity) -> PEPIdentity {
         if let address = cdIdentity.address {
             return PEPIdentity(address: address, userID: cdIdentity.userID,
                                userName: cdIdentity.userName, isOwn: cdIdentity.isMySelf,
@@ -110,21 +110,21 @@ extension PEPUtil {
     /**
      Creates pEp contact just from name and address.
      */
-    public static func pEpIdentity(email: String, name: String) -> PEPIdentityDict {
+    static func pEpIdentity(email: String, name: String) -> PEPIdentityDict {
         var identity = PEPIdentityDict()
         identity[kPepAddress] = email as AnyObject
         identity[kPepUsername] = name as AnyObject
         return identity
     }
 
-    public static func pEpOptional(identity: Identity?) -> PEPIdentity? {
+    static func pEpOptional(identity: Identity?) -> PEPIdentity? {
         guard let id = identity else {
             return nil
         }
         return pEp(identity: id)
     }
 
-    public static func pEpAttachment(
+    static func pEpAttachment(
         fileName: String?, mimeType: String?, data: Data?,
         contentDispositionType: PEPContentDisposition) -> PEPAttachment {
         let attachment = PEPAttachment(data: data ?? Data())
@@ -137,7 +137,7 @@ extension PEPUtil {
     /**
      Converts a `CdAttachment` into a PEPAttachment.
      */
-    public static func pEpAttachment(cdAttachment: CdAttachment) -> PEPAttachment {
+    static func pEpAttachment(cdAttachment: CdAttachment) -> PEPAttachment {
         let contentDispoType = PEPContentDisposition(rawValue:
             Int(cdAttachment.contentDispositionTypeRawValue))
         if contentDispoType == nil {
@@ -154,7 +154,7 @@ extension PEPUtil {
     /**
      Converts a `Attachment` into a PEPAttachment.
      */
-    public static func pEpAttachment(attachment: Attachment) -> PEPAttachment {
+    static func pEpAttachment(attachment: Attachment) -> PEPAttachment {
         let contentDispoType = PEPContentDisposition(rawValue:
             Int(attachment.contentDisposition.rawValue))
         if contentDispoType == nil {
@@ -173,7 +173,7 @@ extension PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: An object (`NSMutableDictionary`) suitable for processing with pEp.
      */
-    public static func pEpDict(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessageDict {
+    static func pEpDict(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessageDict {
         var dict = PEPMessageDict()
 
         if let sent = cdMessage.sent {
@@ -247,7 +247,7 @@ extension PEPUtil {
     /**
      Converts a typical core data set of CdIdentities into pEp identities.
      */
-    public static func pEpIdentities(cdIdentitiesSet: NSOrderedSet?) -> [PEPIdentity]? {
+    static func pEpIdentities(cdIdentitiesSet: NSOrderedSet?) -> [PEPIdentity]? {
         guard let cdIdentities = cdIdentitiesSet?.array as? [CdIdentity] else {
             return nil
         }
@@ -261,7 +261,7 @@ extension PEPUtil {
      - Parameter message: The core data message to convert
      - Returns: A PEPMessage suitable for processing with pEp.
      */
-    public static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessage {
+    static func pEp(cdMessage: CdMessage, outgoing: Bool = true) -> PEPMessage {
         let pEpMessage = PEPMessage()
 
         pEpMessage.sentDate = cdMessage.sent
@@ -325,7 +325,7 @@ extension PEPUtil {
     /**
      For a PEPMessage, checks whether it is probably PGP/MIME encrypted.
      */
-    public static func isProbablyPGPMime(pEpMessageDict: PEPMessageDict) -> Bool {
+    static func isProbablyPGPMime(pEpMessageDict: PEPMessageDict) -> Bool {
         guard let attachments = pEpMessageDict[kPepAttachments] as? NSArray else {
             return false
         }
@@ -349,21 +349,21 @@ extension PEPUtil {
     /**
      For a CdMessage, checks whether it is probably PGP/MIME encrypted.
      */
-    public static func isProbablyPGPMime(cdMessage: CdMessage) -> Bool {
+    static func isProbablyPGPMime(cdMessage: CdMessage) -> Bool {
         return isProbablyPGPMime(pEpMessageDict: pEpDict(cdMessage: cdMessage))
     }
 
     /**
      Converts a pEp identity dict to a pantomime address.
      */
-    public static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
+    static func pantomime(pEpIdentity: PEPIdentity) -> CWInternetAddress {
         return CWInternetAddress(personal: pEpIdentity.userName, address: pEpIdentity.address)
     }
 
     /**
      Converts a list of pEp identities of a given receiver type to a list of pantomime recipients.
      */
-    public static func pantomime(pEpIdentities: [PEPIdentity], recipientType: PantomimeRecipientType)
+    static func pantomime(pEpIdentities: [PEPIdentity], recipientType: PantomimeRecipientType)
         -> [CWInternetAddress] {
             return pEpIdentities.map {
                 let pant = pantomime(pEpIdentity: $0)
@@ -372,7 +372,7 @@ extension PEPUtil {
             }
     }
 
-    public static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
+    static func add(pEpIdentities: [PEPIdentity], toPantomimeMessage: CWIMAPMessage,
                            recipientType: PantomimeRecipientType) {
         let addresses = pantomime(
             pEpIdentities: pEpIdentities, recipientType: recipientType)
@@ -384,11 +384,11 @@ extension PEPUtil {
     /**
      Converts a given `CdMessage` into the equivalent `CWIMAPMessage`.
      */
-    public static func pantomime(cdMessage: CdMessage) -> CWIMAPMessage {
+    static func pantomime(cdMessage: CdMessage) -> CWIMAPMessage {
         return pantomime(pEpMessageDict: pEpDict(cdMessage: cdMessage))
     }
 
-    public static func pantomime(pEpMessageDict: PEPMessageDict,
+    static func pantomime(pEpMessageDict: PEPMessageDict,
                                  mailboxName: String? = nil) -> CWIMAPMessage {
         return CWIMAPMessage(pEpMessageDict: pEpMessageDict, mailboxName: mailboxName)
     }
@@ -453,7 +453,7 @@ extension PEPUtil {
         return parts
     }
 
-    public static func pEpRating(cdIdentity: CdIdentity,
+    static func pEpRating(cdIdentity: CdIdentity,
                                  session: PEPSession = PEPSession()) -> PEPRating {
         let pepC = pEpDict(cdIdentity: cdIdentity)
         do {
@@ -464,12 +464,12 @@ extension PEPUtil {
         }
     }
 
-    public static func pEpColor(cdIdentity: CdIdentity,
+    static func pEpColor(cdIdentity: CdIdentity,
                                 session: PEPSession = PEPSession()) -> PEPColor {
         return pEpColor(pEpRating: pEpRating(cdIdentity: cdIdentity, session: session))
     }
 
-    public static func pEpRating(identity: Identity,
+    static func pEpRating(identity: Identity,
                                  session: PEPSession = PEPSession()) -> PEPRating {
         let pepC = pEp(identity: identity)
         do {
@@ -482,12 +482,12 @@ extension PEPUtil {
         }
     }
 
-    public static func pEpColor(identity: Identity,
+    static func pEpColor(identity: Identity,
                                 session: PEPSession = PEPSession()) -> PEPColor {
         return pEpColor(pEpRating: pEpRating(identity: identity, session: session))
     }
 
-    public static func pEpColor(pEpRating: PEPRating?,
+    static func pEpColor(pEpRating: PEPRating?,
                                 session: PEPSession = PEPSession()) -> PEPColor {
         if let rating = pEpRating {
             return session.color(from: rating)
@@ -496,7 +496,7 @@ extension PEPUtil {
         }
     }
 
-    public static func pEpRatingFromInt(_ i: Int?) -> PEPRating? {
+    static func pEpRatingFromInt(_ i: Int?) -> PEPRating? {
         guard let theInt = i else {
             return nil
         }
@@ -510,7 +510,7 @@ extension PEPUtil {
      Uses the adapter's update to determine the fingerprint of the given identity.
      - Note: Also works for own identities without triggering key generation.
      */
-    public static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) throws
+    static func fingerPrint(identity: Identity, session: PEPSession = PEPSession()) throws
         -> String? {
             let pEpID = pEp(identity: identity)
             if pEpID.isOwn {
@@ -522,7 +522,7 @@ extension PEPUtil {
             return pEpID.fingerPrint
     }
 
-    public static func fingerPrint(cdIdentity: CdIdentity,
+    static func fingerPrint(cdIdentity: CdIdentity,
                                    session: PEPSession = PEPSession()) throws -> String? {
         if let theID = cdIdentity.identity() {
             return try fingerPrint(identity: theID, session: session)
@@ -534,7 +534,7 @@ extension PEPUtil {
     /**
      Trust that contact (yellow to green).
      */
-    public static func trust(identity: Identity, session: PEPSession = PEPSession()) throws {
+    static func trust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
         try session.update(pEpID)
         try session.trustPersonalKey(pEpID)
@@ -543,7 +543,7 @@ extension PEPUtil {
     /**
      Mistrust the identity (yellow to red)
      */
-    public static func mistrust(identity: Identity, session: PEPSession = PEPSession()) throws {
+    static func mistrust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
         try session.update(pEpID)
         try session.keyMistrusted(pEpID)
@@ -553,13 +553,13 @@ extension PEPUtil {
      Resets the trust for the given `Identity`. Use both for trusting again after
      mistrusting a key, and for mistrusting a key after you have first trusted it.
      */
-    public static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) throws {
+    static func resetTrust(identity: Identity, session: PEPSession = PEPSession()) throws {
         let pEpID = pEp(identity: identity)
         try session.update(pEpID)
         try session.keyResetTrust(pEpID)
     }
 
-    public static func encrypt(
+    static func encrypt(
         pEpMessageDict: PEPMessageDict, encryptionFormat: PEPEncFormat = .PEP,
         forSelf: PEPIdentity? = nil,
         extraKeys: [String]? = nil,
@@ -583,7 +583,7 @@ extension PEPUtil {
         }
     }
 
-    public static func encrypt(
+    static func encrypt(
         pEpMessage: PEPMessage,
         forSelf: PEPIdentity? = nil,
         extraKeys: [String]? = nil,
@@ -605,11 +605,11 @@ extension PEPUtil {
         }
     }
 
-    public static func ownIdentity(message: Message) -> Identity? {
+    static func ownIdentity(message: Message) -> Identity? {
         return message.parent.account.user
     }
 
-    public static func systemLanguage() -> String {
+    static func systemLanguage() -> String {
         let language = Bundle.main.preferredLocalizations.first
         return language!
     }
