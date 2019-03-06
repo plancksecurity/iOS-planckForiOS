@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 extension Identity {
     public static func from(pEpIdentityDict: PEPIdentityDict) -> Identity? {
