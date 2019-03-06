@@ -220,3 +220,31 @@ extension ComposeViewModel.ComposeViewModelState {
         }
     }
 }
+
+extension PEPSession {
+    /**
+     Calculates the outgoing message rating for a hypothetical mail.
+     - Returns: The message rating, or .Undefined in case of any error.
+     - Note: TODO: This is a duplicate of a method found in MessageModel.
+     */
+    public func outgoingMessageRating(from: Identity, to: [Identity],
+                                      cc: [Identity], bcc: [Identity]) -> PEPRating {
+        let msg = PEPMessage()
+        msg.direction = .outgoing
+        msg.from = PEPUtil.pEp(identity: from)
+        let mapper: (Identity) -> PEPIdentity = { ident in
+            return PEPUtil.pEp(identity: ident)
+        }
+        msg.to = to.map(mapper)
+        msg.cc = cc.map(mapper)
+        msg.bcc = bcc.map(mapper)
+        msg.shortMessage = "short"
+        msg.longMessage = "long"
+        do {
+            return try outgoingRating(for: msg).pEpRating
+        } catch let error as NSError {
+            assertionFailure("\(error)")
+            return .undefined
+        }
+    }
+}
