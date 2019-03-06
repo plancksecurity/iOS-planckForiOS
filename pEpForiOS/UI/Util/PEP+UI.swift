@@ -9,6 +9,7 @@
 import UIKit
 
 import PEPObjCAdapterFramework
+import MessageModel
 
 extension PEPColor {
     /**
