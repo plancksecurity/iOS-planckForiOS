@@ -289,7 +289,7 @@ extension PEPUtil {
         if let r = cdMessage.replyTo {
             for ident in r.array {
                 if let cdIdent = ident as? CdIdentity {
-                    replyTos.append(cdIdent.pEpIdentity())
+                    replyTos.append(pEpDict(cdIdentity: cdIdent))
                 }
             }
             if !replyTos.isEmpty {
