@@ -34,35 +34,6 @@ extension PEPUtil {
      */
     static let kMimeTypeMultipartAlternative = "multipart/alternative"
 
-    /** Delete pEp working data. */
-    static func pEpClean() -> Bool {
-        PEPSession.cleanup()
-
-        let homeURL = PEPObjCAdapter.homeURL() as URL
-        let keyRingURL = homeURL.appendingPathComponent(".gnupg")
-
-        let pEpItemsToDelete: [URL] = [
-            homeURL.appendingPathComponent(".pEp_management.db"),
-            homeURL.appendingPathComponent(".pEp_management.db-shm"),
-            homeURL.appendingPathComponent(".pEp_management.db-wal"),
-            keyRingURL.appendingPathComponent("secring.gpg"),
-            keyRingURL.appendingPathComponent("pubring.gpg"),
-            ]
-
-        let fileManager: FileManager = FileManager.default
-        for itemToDelete in pEpItemsToDelete {
-            do {
-                if try itemToDelete.checkResourceIsReachable() {
-                    try fileManager.removeItem(at: itemToDelete)
-                }
-            }
-            catch {
-                continue
-            }
-        }
-        return true
-    }
-
     static func identity(account: CdAccount) -> PEPIdentity {
         if let id = account.identity {
             return pEpDict(cdIdentity: id)
