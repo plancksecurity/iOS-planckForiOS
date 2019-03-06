@@ -13,7 +13,7 @@ import PantomimeFramework
 import PEPObjCAdapterFramework
 import MessageModel
 
-public class PEPUtil {
+extension PEPUtil {
     static let comp = "PEPUtil"
 
     /**
@@ -622,25 +622,5 @@ extension String {
     public func replacingOccurrencesOfPepSignatureWithHtmlVersion() -> String {
         let pEpSignatureTrimmed = String.pepSignature.trimmed()
         return replacingOccurrences(of: pEpSignatureTrimmed, with: String.pEpSignatureHtml)
-    }
-}
-
-extension UIFont {
-    open class var pEpInput: UIFont {
-        get {
-            return UIFont.preferredFont(forTextStyle: .body)
-        }
-    }
-}
-
-extension NSDictionary {
-    func pEpIdentity() -> PEPIdentityDict {
-        var id = PEPIdentityDict()
-        for (k, v) in self {
-            if let ks = k as? String {
-                id[ks] = v as AnyObject
-            }
-        }
-        return id
     }
 }
