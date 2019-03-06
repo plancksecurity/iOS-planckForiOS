@@ -76,11 +76,11 @@ extension PEPColor {
 
 extension PEPRating {
     func uiColor() -> UIColor? {
-        return PEPUtil.pEpColor(pEpRating: self).uiColor()
+        return PEPSession().color(from: self).uiColor()
     }
 
     func statusIcon() -> UIImage? {
-        let color = pEpColor()
+        let color = PEPSession().color(from: self)
         return color.statusIcon()
     }
 }
