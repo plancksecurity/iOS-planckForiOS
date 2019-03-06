@@ -160,7 +160,7 @@ extension ComposeViewModel.ComposeViewModelState {
         if isForceUnprotectedDueToBccSet {
             return false
         }
-        let outgoingRatingColor = PEPSession().color(from: rating)
+        let outgoingRatingColor = rating.pEpColor()
         return outgoingRatingColor == .yellow || outgoingRatingColor == .green
     }
 }
