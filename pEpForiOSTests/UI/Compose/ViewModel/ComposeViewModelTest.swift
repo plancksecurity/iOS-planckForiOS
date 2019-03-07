@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import PEPObjCAdapterFramework
 
 class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
@@ -847,7 +848,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testComposeViewModelDidChangePEPRatingTo() {
-        let expectedRating = .reliable
+        let expectedRating = PEPRating.reliable
         vm?.state.pEpProtection = true
         let expectedProtection = vm?.state.pEpProtection ?? false
         assert(contentChangedMustBeCalled: false,
@@ -878,7 +879,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - Delegate Setter Side Effect
 
     func testDelegateSetter() {
-        let expectedRating = .Undefined
+        let expectedRating = PEPRating.undefined
         let expectedProtection = true
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1028,7 +1029,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - handleUserChangedProtectionStatus
 
     func testHandleUserChangedProtectionStatus_change() {
-        let expectedRating = .Undefined
+        let expectedRating = PEPRating.undefined
         let expectedProtection = false
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,

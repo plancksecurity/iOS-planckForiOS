@@ -9,7 +9,8 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 class HandshakeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -78,7 +79,7 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(foundXpEpVersion)
 
         var keys: NSArray?
-        var rating = .Undefined
+        var rating = PEPRating.undefined
         let theMessage = try! session.decryptMessage(pEpMessage,
                                                      flags: nil,
                                                      rating: &rating,

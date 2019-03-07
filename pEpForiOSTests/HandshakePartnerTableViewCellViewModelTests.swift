@@ -8,8 +8,9 @@
 
 import XCTest
 
-@testable import MessageModel
+@testable import MessageModel //FIXME:
 @testable import pEpForiOS
+import PEPObjCAdapterFramework
 
 class DecryptionDelegate: DecryptionAttemptCounterDelegate {
     var decryptedMessageDict: NSDictionary?

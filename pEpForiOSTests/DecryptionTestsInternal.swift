@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import PEPObjCAdapterFramework
 
 /**
  Tests internal encryption and decryption (that is, the test creates encrypted messages itself,
@@ -209,7 +210,7 @@ class DecryptionTestsInternal: XCTestCase {
 
         Record.Context.main.refreshAllObjects()
         if shouldEncrypt {
-            XCTAssertGreaterThanOrEqual(Int32(cdMsg.pEpRating), .reliable.rawValue)
+            XCTAssertGreaterThanOrEqual(cdMsg.pEpRating, Int16(PEPRating.reliable.rawValue))
             if useSubject {
                 XCTAssertEqual(cdMsg.shortMessage, msgShortMessage)
             } else {
@@ -227,7 +228,7 @@ class DecryptionTestsInternal: XCTestCase {
                 XCTFail()
             }
         } else {
-            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(.unencrypted.rawValue))
+            XCTAssertEqual(Int32(cdMsg.pEpRating), Int32(PEPRating.unencrypted.rawValue))
         }
 
         XCTAssertEqual(cdMsg.uuid, messageID)

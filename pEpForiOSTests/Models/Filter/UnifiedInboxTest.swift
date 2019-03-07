@@ -10,6 +10,7 @@ import XCTest
 
 import MessageModel
 @testable import pEpForiOS
+import PEPObjCAdapterFramework
 
 class UnifiedInboxTest: CoreDataDrivenTestBase {
 
@@ -36,7 +37,7 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
                 message.longMessage = "long"
                 message.shortMessage = "short"
                 message.sent = theDate
-                message.pEpRatingInt = Int(.unencrypted.rawValue)
+                message.pEpRatingInt = Int(PEPRating.unencrypted.rawValue)
                 message.save()
                 theDate = Date(timeInterval: -1, since: theDate)
                 originalMessages.append(message)

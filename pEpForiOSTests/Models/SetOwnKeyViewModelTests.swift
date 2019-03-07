@@ -9,7 +9,8 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 class SetOwnKeyViewModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -110,7 +111,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
         }
 
         // After ENGINE-465 is done, this should be .reliable
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unreliable.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
         XCTAssertEqual(

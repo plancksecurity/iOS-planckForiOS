@@ -9,7 +9,6 @@
 import XCTest
 
 import MessageModel
-import pEpForiOS
 @testable import pEpForiOS
 
 class NetworkServiceTests: XCTestCase {

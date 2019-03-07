@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+import PEPObjCAdapterFramework
 
 class DecryptImportedMessagesTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -59,7 +60,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "needed")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
@@ -91,7 +92,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "blah")
         XCTAssertEqual(theCdMessage.longMessage, "\n\n")
 
@@ -140,7 +141,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         }
 
         // After ENGINE-465 is done, this should be .reliable
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unreliable.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
         XCTAssertEqual(

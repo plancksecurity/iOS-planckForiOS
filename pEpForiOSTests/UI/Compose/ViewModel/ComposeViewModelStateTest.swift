@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import PEPObjCAdapterFramework
 
 class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     /// Async PEPSession calls that take quite some time

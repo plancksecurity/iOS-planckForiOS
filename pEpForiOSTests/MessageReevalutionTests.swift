@@ -9,7 +9,8 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 class MessageReevalutionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
@@ -119,7 +120,7 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
         Record.Context.main.refreshAllObjects()
         cdDecryptedMessage = cdMessage
-        XCTAssertEqual(cdMessage.pEpRating, Int16(.reliable.rawValue))
+        XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.reliable.rawValue))
         XCTAssertEqual(cdMessage.shortMessage, "oh yeah, subject")
         XCTAssertTrue(cdMessage.longMessage?.startsWith("Some text body!") ?? false)
 

@@ -9,7 +9,8 @@
 import Foundation
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 extension PEPMessage {
     public func isLikelyPEPEncrypted() -> Bool {

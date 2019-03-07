@@ -8,6 +8,8 @@
 
 import XCTest
 
+import PEPObjCAdapterFramework
+
 class EncryptionTests: XCTestCase {
     func testPassiveMode() {
         testPassiveModeHelper(enablePassiveMode: false)

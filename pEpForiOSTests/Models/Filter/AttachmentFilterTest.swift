@@ -10,6 +10,7 @@ import XCTest
 
 import MessageModel
 import pEpForiOS
+import PEPObjCAdapterFramework
 
 class AttachmentFilterTest: CoreDataDrivenTestBase {
 

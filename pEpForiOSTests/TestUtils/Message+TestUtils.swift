@@ -8,6 +8,7 @@
 
 import MessageModel
 import pEpForiOS
+import PEPObjCAdapterFramework
 
 extension Message {
     func isValidMessage() -> Bool {
