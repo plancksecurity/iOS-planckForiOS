@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import PEPObjCAdapterFramework
 
 extension UIViewController {
     var isModalViewCurrentlyShown: Bool {

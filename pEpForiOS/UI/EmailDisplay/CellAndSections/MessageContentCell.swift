@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import WebKit
 import MessageModel
+import PEPObjCAdapterFramework
 
 open class MessageContentCell: MessageCell {
     @IBOutlet weak var contentText: UITextView!

@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 class UIHelper {
     static func variableCellHeightsTableView(_ tableView: UITableView) {

@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
 class PepProfilePictureComposer: ProfilePictureComposer {
 

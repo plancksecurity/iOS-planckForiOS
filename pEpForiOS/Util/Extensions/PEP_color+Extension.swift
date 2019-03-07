@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PEPObjCAdapterFramework
 
 extension PEPColor {
     var privacyStatusTitle: String {

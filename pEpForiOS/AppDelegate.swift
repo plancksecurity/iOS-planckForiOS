@@ -9,6 +9,7 @@
 import CoreData
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

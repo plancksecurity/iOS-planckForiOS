@@ -8,6 +8,7 @@
 
 import Foundation
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 extension PEPRating {
     /** Does this pEp rating mean that decryption should be tried again? */

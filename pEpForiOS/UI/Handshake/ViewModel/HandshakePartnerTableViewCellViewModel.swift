@@ -9,6 +9,8 @@
 import Foundation
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
+import PEPObjCAdapterFramework
 
 class HandshakePartnerTableViewCellViewModel {
     enum ExpandedState {

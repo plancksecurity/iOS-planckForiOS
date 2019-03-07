@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 extension CdAccount {
     open func pEpIdentity() -> PEPIdentity {

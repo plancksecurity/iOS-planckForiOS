@@ -10,6 +10,7 @@ import Foundation
 
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 class MessageViewModel: CustomDebugStringConvertible {
 

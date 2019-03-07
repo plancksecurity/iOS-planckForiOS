@@ -12,6 +12,7 @@ import QuickLook
 
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 class EmailViewController: BaseTableViewController {
     @IBOutlet var flagButton: UIBarButtonItem!

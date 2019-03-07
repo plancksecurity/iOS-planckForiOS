@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import PEPObjCAdapterFramework
 
 public struct PEPStatusText {
     let rating: PEPRating

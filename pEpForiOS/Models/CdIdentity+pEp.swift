@@ -8,6 +8,7 @@
 
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 /**
  pEp extension for CdIdentity

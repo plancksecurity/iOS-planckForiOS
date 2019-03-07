@@ -8,6 +8,7 @@
 
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 /// Informs the one that triggered the segued to here.
 protocol ComposeViewModelResultDelegate: class {

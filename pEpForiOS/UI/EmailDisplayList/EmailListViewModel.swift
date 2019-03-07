@@ -9,6 +9,7 @@
 import Foundation
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath])

@@ -9,6 +9,7 @@
 import UIKit
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 /**
  That delegate is in control to handle the actual trust changes.

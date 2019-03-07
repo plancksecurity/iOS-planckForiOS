@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 /**
  Reevaluate the rating for messages whose trust status has changed (that is,
