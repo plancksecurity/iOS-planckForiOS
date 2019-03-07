@@ -9,10 +9,6 @@
 #ifndef pEpForiOS_Bridging_Header_h
 #define pEpForiOS_Bridging_Header_h
 
-#pragma mark - pEp Headers
-
-#import <pEpObjCAdapterFramework/pEpObjCAdapterFramework.h>
-
 #pragma mark - pEp AccountSettings Headers
 
 #import "AccountSettings.h"
