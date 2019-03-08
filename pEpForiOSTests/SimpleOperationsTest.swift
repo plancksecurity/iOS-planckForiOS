@@ -9,8 +9,9 @@
 import XCTest
 
 import CoreData
+
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testComp() {

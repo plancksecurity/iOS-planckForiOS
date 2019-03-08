@@ -10,7 +10,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class Message_FakeMessageTest: CoreDataDrivenTestBase {
     let testUuid = UUID().uuidString + #file
