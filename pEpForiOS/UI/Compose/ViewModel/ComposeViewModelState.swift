@@ -220,6 +220,3 @@ extension ComposeViewModel.ComposeViewModelState {
         }
     }
 }
-
-        msg.from = PEPUtil.pEp(identity: from)
-            return PEPUtil.pEp(identity: ident)
