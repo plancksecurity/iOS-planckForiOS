@@ -734,8 +734,7 @@ class TestUtil {
 
             guard let cdMessage = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantomimeMail, account: cdMyAccount,
-                messageUpdate: CWMessageUpdate(),
-                forceParseAttachments: true) else {
+                messageUpdate: CWMessageUpdate()) else {
                     XCTFail()
                     return nil
             }
@@ -802,8 +801,7 @@ class TestUtil {
 
         guard let cdMessage = CdMessage.insertOrUpdate(
             pantomimeMessage: pantomimeMail, account: cdOwnAccount,
-            messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+            messageUpdate: CWMessageUpdate()) else {
                 XCTFail()
                 return nil
         }

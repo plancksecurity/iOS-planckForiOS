@@ -155,15 +155,13 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         let msg = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true)
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate())
         XCTAssertNotNil(msg)
         if let m = msg {
             XCTAssertNotNil(m.longMessage)
             XCTAssertNotNil(m.longMessageFormatted)
         }
     }
-    
 
     //IOS-211 hi_there
     func testInsertOrUpdatePantomimeMessage_attachmentNotDuplicated_file1() {
@@ -180,8 +178,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let _ = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate()) else {
                 XCTFail("error parsing message")
                 return
         }
@@ -210,8 +207,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         guard let _ = CdMessage.insertOrUpdate(
-            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+            pantomimeMessage: message, account: cdAccount, messageUpdate: CWMessageUpdate()) else {
                 XCTFail("error parsing message")
                 return
         }

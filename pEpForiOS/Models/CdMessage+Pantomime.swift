@@ -474,13 +474,11 @@ extension CdMessage {
      (e.g., parsing of HTML and/or attachments).
      - Parameter message: The pantomime message to insert.
      - Parameter account: The account this email is supposed to be stored for.
-     - Parameter forceParseAttachments: If true, this will parse the attachments even
-     if the pantomime has not been initialized yet (useful for testing).
      - Returns: The newly created or updated Message
      */
-    public static func insertOrUpdate( pantomimeMessage: CWIMAPMessage, account: CdAccount,
-                                       messageUpdate: CWMessageUpdate,
-                                       forceParseAttachments: Bool = false) -> CdMessage? {
+    public static func insertOrUpdate(pantomimeMessage: CWIMAPMessage,
+                                      account: CdAccount,
+                                      messageUpdate: CWMessageUpdate) -> CdMessage? {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
         
@@ -560,11 +558,7 @@ extension CdMessage {
         // accidentally made its way until here.
         // Do *not* add the attachments again.
         if !containsAttachments(cdMessage: mail) {
-            if forceParseAttachments {
-                // Parsing attachments only makes sense once pantomime has received the
-                // mail body. Same goes for the snippet.
-                addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail)
-            }
+            addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail)
         }
 
         store(headerFieldNames: ["X-pEp-Version", "X-EncStatus", "X-KeyList"],
