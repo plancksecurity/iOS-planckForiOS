@@ -437,7 +437,6 @@ extension CdMessage {
         
         if !moreMessagesThanRequested(mail: mail, messageUpdate: messageUpdate) {
             mail.parent = folder
-            mail.bodyFetched = message.isInitialized()
             mail.sent = message.originationDate()
             mail.shortMessage = message.subject()
             
@@ -516,8 +515,6 @@ extension CdMessage {
             mail.from = cdIdentity(pantomimeAddress: from)
         }
 
-        mail.bodyFetched = pantomimeMessage.isInitialized()
-
         if let addresses = pantomimeMessage.recipients() as? [CWInternetAddress] {
             let tos: NSMutableOrderedSet = []
             let ccs: NSMutableOrderedSet = []
@@ -563,7 +560,7 @@ extension CdMessage {
         // accidentally made its way until here.
         // Do *not* add the attachments again.
         if !containsAttachments(cdMessage: mail) {
-            if forceParseAttachments || mail.bodyFetched {
+            if forceParseAttachments {
                 // Parsing attachments only makes sense once pantomime has received the
                 // mail body. Same goes for the snippet.
                 addAttachmentsFromPantomimePart(pantomimeMessage, targetMail: mail)

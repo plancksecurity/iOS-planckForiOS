@@ -26,8 +26,6 @@ extension CdMessage {
             update(rating: theRating)
         }
 
-        bodyFetched = true
-
         shortMessage = (pEpMessageDict[kPepShortMessage] as? String)?.applyingDos2Unix()
         longMessage = (pEpMessageDict[kPepLongMessage] as? String)?.applyingDos2Unix()
         longMessageFormatted = (pEpMessageDict[kPepLongMessageFormatted]
