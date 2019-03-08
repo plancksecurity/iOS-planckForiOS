@@ -36,7 +36,7 @@ class EncryptionTests: XCTestCase {
         msg.shortMessage = "subject: whatever"
         msg.longMessage = "text: whatever"
         let (status, encMsg) = try! session.encrypt(pEpMessage: msg)
-        XCTAssertEqual(status, PEP_UNENCRYPTED)
+        XCTAssertEqual(status, PEPStatus.unencrypted)
 
         guard let theEncryptedMessage = encMsg else {
             XCTFail()

@@ -9,7 +9,8 @@
 import Foundation
 
 import MessageModel
-@testable import pEpForiOS
+import pEpForiOS
+import PEPObjCAdapterFramework
 
 // TODO: Duplicate.
 public extension CdIdentity {

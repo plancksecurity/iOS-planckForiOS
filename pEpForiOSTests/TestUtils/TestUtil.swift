@@ -12,6 +12,7 @@ import XCTest
 @testable import pEpForiOS
 @testable import MessageModel //FIXME:
 import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class TestUtil {
     /**

@@ -13,6 +13,7 @@ import CoreData
 @testable import pEpForiOS
 @testable import MessageModel
 import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testComp() {

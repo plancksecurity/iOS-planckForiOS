@@ -123,8 +123,6 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testParseMessageHeapBufferOverflow() {
-        CWLogger.setLogger(Log.shared)
-
         let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
@@ -171,8 +169,6 @@ class PEPSessionTest: XCTestCase {
 
     // IOS-211
     func testAttachmentsDoNotGetDuplilcated() {
-        CWLogger.setLogger(Log.shared)
-
         let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
