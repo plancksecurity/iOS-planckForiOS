@@ -416,7 +416,7 @@ class EmailViewController: BaseTableViewController {
         if let p = partnerIdentity {
             let session = PEPSession()
             do {
-                try PEPUtil.trust(identity: p, session: session)
+                try PEPAppUtil.trust(identity: p, session: session)
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }
@@ -431,7 +431,7 @@ class EmailViewController: BaseTableViewController {
         if let p = partnerIdentity {
             let session = PEPSession()
             do {
-                try PEPUtil.mistrust(identity: p, session: session)
+                try PEPAppUtil.mistrust(identity: p, session: session)
             } catch let error as NSError {
                 assertionFailure("\(error)")
             }

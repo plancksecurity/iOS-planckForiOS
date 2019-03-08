@@ -1,5 +1,5 @@
 //
-//  PEPUtil.swift
+//  PEPAppUtil.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 06.03.19.
@@ -14,14 +14,13 @@ import PEPObjCAdapterFramework
 import MessageModel
 
 /**
- - Note: TODO: This is a duplicate of `PEPUtil` in MessageModel, disguised
- as extension.
+ - Note: TODO: This is a duplicate of `PEPUtil` in MessageModel.
  Whenever swiftc sorts out name mangling of methods involving 3rd frameworks
  (one framework using a class and its methods with parameters from a third framework),
  these methods might lead to errors. This is a feature, since you will then be able
  to delete this file and just use the MessageModel version.
  */
-extension PEPUtil {
+class PEPAppUtil {
     static let comp = "PEPUtil"
 
     /**

@@ -96,7 +96,7 @@ class HandshakePartnerTableViewCellViewModel {
         self.expandedState = .notExpanded
         self.trustwordsLanguage = "en"
         self.session = session
-        self.partnerRating = PEPUtil.pEpRating(identity: partner, session: session)
+        self.partnerRating = PEPAppUtil.pEpRating(identity: partner, session: session)
         self.partnerColor = partnerRating.pEpColor()
         self.ownIdentity = ownIdentity
 
@@ -164,7 +164,7 @@ class HandshakePartnerTableViewCellViewModel {
 
         do {
             partnerRating = try session.rating(for: pEpPartner).pEpRating
-            partnerColor = PEPUtil.pEpColor(pEpRating: partnerRating)
+            partnerColor = PEPAppUtil.pEpColor(pEpRating: partnerRating)
         } catch let error as NSError {
             assertionFailure("\(error)")
         }

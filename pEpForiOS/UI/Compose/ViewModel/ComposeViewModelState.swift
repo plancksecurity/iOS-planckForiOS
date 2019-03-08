@@ -231,9 +231,9 @@ extension PEPSession {
                                       cc: [Identity], bcc: [Identity]) -> PEPRating {
         let msg = PEPMessage()
         msg.direction = .outgoing
-        msg.from = PEPUtil.pEp(identity: from)
+        msg.from = PEPAppUtil.pEp(identity: from)
         let mapper: (Identity) -> PEPIdentity = { ident in
-            return PEPUtil.pEp(identity: ident)
+            return PEPAppUtil.pEp(identity: ident)
         }
         msg.to = to.map(mapper)
         msg.cc = cc.map(mapper)
