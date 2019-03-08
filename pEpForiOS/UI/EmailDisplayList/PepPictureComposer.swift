@@ -31,7 +31,7 @@ class PepProfilePictureComposer: ProfilePictureComposer {
 
     func securityBadge(for message: Message, completion: @escaping (UIImage?) ->()){
         DispatchQueue.global(qos: .userInitiated).async{
-            let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
+            let color = PEPAppUtil.pEpColor(pEpRating: message.pEpRating())
             var image: UIImage? = nil
             if color != PEPColor.noColor {
                 image = color.statusIconInContactPicture()

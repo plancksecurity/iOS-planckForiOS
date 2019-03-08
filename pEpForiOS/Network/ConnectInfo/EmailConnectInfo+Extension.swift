@@ -16,7 +16,7 @@ extension EmailConnectInfo {
     func folderBy(name: String) throws -> Folder? {
         var cdResult: CdFolder?
         var error: Error?
-        MessageModel.performAndWait { [weak self] in
+        MessageModelUtil.performAndWait { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return

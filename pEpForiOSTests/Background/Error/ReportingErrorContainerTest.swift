@@ -8,8 +8,8 @@
 
 import XCTest
 
-import pEpForiOS
-import MessageModel
+@testable import pEpForiOS
+@testable import MessageModel
 
 class TestDelegate: ReportingErrorContainerDelegate {
     var delegateCalled = false

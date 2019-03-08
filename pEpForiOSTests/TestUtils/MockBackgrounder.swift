@@ -10,7 +10,7 @@ import XCTest
 import Foundation
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 class MockBackgrounder: BackgroundTaskProtocol {
     let expBackgroundTaskFinished: XCTestExpectation?

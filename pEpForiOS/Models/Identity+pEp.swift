@@ -27,17 +27,17 @@ extension Identity {
     }
 
     public func pEpRating(session: PEPSession = PEPSession()) -> PEPRating {
-        return PEPUtil.pEpRating(identity: self, session: session)
+        return PEPAppUtil.pEpRating(identity: self, session: session)
     }
 
     public func canResetTrust(session: PEPSession = PEPSession()) -> Bool {
-        let color = PEPUtil.pEpColor(identity: self, session: session)
+        let color = PEPAppUtil.pEpColor(identity: self, session: session)
         return color == .green || color == PEPColor.red
     }
 
     public func decorateButton(button: UIButton, session: PEPSession = PEPSession()) {
         button.setTitleColor(.black, for: .normal)
-        if let color = PEPUtil.pEpColor(identity: self, session: session).uiColor() {
+        if let color = PEPAppUtil.pEpColor(identity: self, session: session).uiColor() {
             button.backgroundColor = color
         } else {
             let buttonDefault = UIButton()
@@ -51,7 +51,7 @@ extension Identity {
      Returns: A `PEPIdentity` that has been updated and thus should contain the fingerprint.
      */
     public func updatedIdentity(session: PEPSession = PEPSession()) -> PEPIdentity {
-        let md = PEPUtil.pEp(identity: self)
+        let md = PEPAppUtil.pEp(identity: self)
         do {
             if md.isOwn {
                 try session.mySelf(md)

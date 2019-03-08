@@ -9,8 +9,9 @@
 import XCTest
 
 import CoreData
+
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 import PEPObjCAdapterFramework
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {

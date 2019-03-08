@@ -21,7 +21,7 @@ extension EmailListViewModel: EmailDisplayDelegate {
 
     func emailDisplayDidDelete(message: Message) {
 
-        MessageModel.performAndWait { [weak self] in
+        MessageModelUtil.performAndWait { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return

@@ -10,7 +10,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 import PEPObjCAdapterFramework
 
 class Message_FakeMessageTest: CoreDataDrivenTestBase {

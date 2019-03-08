@@ -191,7 +191,7 @@ extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
                   service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 account.save()
             }
         }
