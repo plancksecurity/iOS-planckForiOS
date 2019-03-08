@@ -47,21 +47,6 @@ class TestUtil {
     static var initialNumberOfServices = 0
 
     /**
-     Waits and verifies that all connection threads are finished.
-     */
-    static func waitForConnectionShutdown() {
-        for _ in 1...numberOfTriesConnectonShutDown {
-            if CWTCPConnection.numberOfRunningConnections() == initialNumberOfRunningConnections {
-                break
-            }
-            Thread.sleep(forTimeInterval: connectonShutDownWaitTime)
-        }
-        // This only works if there are no accounts configured in the app.
-        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(),
-                       initialNumberOfRunningConnections)
-    }
-
-    /**
      Some code for accessing `NSBundle`s from Swift.
      */
     static func showBundles() {
