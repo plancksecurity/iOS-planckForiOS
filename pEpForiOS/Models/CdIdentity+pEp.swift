@@ -15,14 +15,14 @@ import PEPObjCAdapterFramework
  */
 extension CdIdentity {
     public func pEpRating(session: PEPSession = PEPSession()) -> PEPRating {
-        return PEPAppUtil.pEpRating(cdIdentity: self, session: session)
+        return PEPUtil.pEpRating(cdIdentity: self, session: session)
     }
 
     public func pEpColor(session: PEPSession = PEPSession()) -> PEPColor {
-        return PEPAppUtil.pEpColor(cdIdentity: self, session: session)
+        return PEPUtil.pEpColor(cdIdentity: self, session: session)
     }
 
     public func fingerPrint(session: PEPSession = PEPSession()) throws -> String? {
-        return try PEPAppUtil.fingerPrint(cdIdentity: self, session: session)
+        return try PEPUtil.fingerPrint(cdIdentity: self, session: session)
     }
 }

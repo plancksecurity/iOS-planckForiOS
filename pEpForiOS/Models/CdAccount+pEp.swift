@@ -11,6 +11,6 @@ import PEPObjCAdapterFramework
 
 extension CdAccount {
     open func pEpIdentity() -> PEPIdentity {
-        return PEPAppUtil.identity(account: self)
+        return PEPUtil.identity(account: self)
     }
 }

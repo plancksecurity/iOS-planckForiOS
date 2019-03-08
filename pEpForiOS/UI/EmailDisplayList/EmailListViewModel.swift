@@ -194,7 +194,7 @@ class EmailListViewModel {
                 // The model has been updated.
                 return nil
         }
-        let color = PEPAppUtil.pEpColor(pEpRating: message.pEpRating())
+        let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
         if color != PEPColor.noColor {
             return color.statusIcon()
         } else {

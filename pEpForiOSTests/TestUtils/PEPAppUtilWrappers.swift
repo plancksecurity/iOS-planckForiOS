@@ -14,7 +14,7 @@ import MessageModel
 // TODO: Duplicate.
 public extension CdIdentity {
     public func pEpIdentity() -> PEPIdentity {
-        return PEPAppUtil.pEpDict(cdIdentity: self)
+        return PEPUtil.pEpDict(cdIdentity: self)
     }
 }
 
@@ -23,7 +23,7 @@ public extension PEPSession {
     public func encrypt(pEpMessageDict: PEPMessageDict,
                         encryptionFormat: PEPEncFormat = .PEP,
                         forSelf: PEPIdentity? = nil) throws -> (PEPStatus, NSDictionary?) {
-        return try PEPAppUtil.encrypt(
+        return try PEPUtil.encrypt(
             pEpMessageDict: pEpMessageDict, encryptionFormat: encryptionFormat,
             forSelf: forSelf, session: self)
     }

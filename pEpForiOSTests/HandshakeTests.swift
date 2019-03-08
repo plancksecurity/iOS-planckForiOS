@@ -56,7 +56,7 @@ class HandshakeTests: XCTestCase {
                 return
         }
 
-        let pEpMessage = PEPAppUtil.pEp(cdMessage: cdMessage, outgoing: true)
+        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 1)
