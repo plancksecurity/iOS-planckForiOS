@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		435F5129221FF9D7006EB11F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5128221FF9D7006EB11F /* Constants.swift */; };
-		4370278222311C1D00A77AEC /* Fake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4370278122311C1D00A77AEC /* Fake.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
 		B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */; };
@@ -50,7 +49,6 @@
 
 /* Begin PBXFileReference section */
 		435F5128221FF9D7006EB11F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/Constants.swift; sourceTree = "<group>"; };
-		4370278122311C1D00A77AEC /* Fake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Fake.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/Fake.swift; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SystemUtils.swift; sourceTree = "<group>"; };
@@ -207,7 +205,6 @@
 				B7DB7F512213120B003968DA /* SortedSet.swift */,
 				B70A3A7222006B9E00EDCE61 /* SystemUtils.swift */,
 				435F5128221FF9D7006EB11F /* Constants.swift */,
-				4370278122311C1D00A77AEC /* Fake.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -343,7 +340,6 @@
 				B7DB7F5022130DE9003968DA /* Weak.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
-				4370278222311C1D00A77AEC /* Fake.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
 				B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */,
 			);
