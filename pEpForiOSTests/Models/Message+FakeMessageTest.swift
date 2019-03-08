@@ -239,7 +239,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
             }
             let allCdMessages = cdFolder.allMessages()
             for cdMsg in allCdMessages {
-                cdMsg.pEpRating = Int16(.trusted.rawValue)
+                cdMsg.pEpRating = Int16(PEPRating.trusted.rawValue)
             }
         }
         do {
