@@ -325,14 +325,13 @@ extension CdMessage {
      * If there were no local flag changes (in respect to the previous server flags version),
      the local flags will then be set to the same value.
      * If there were local changes, then the local flags will not change.
-     - Returns: true if the local flags were updated.
      */
-    public func updateFromServer(cwFlags: CWFlags) -> Bool {
+    public func updateFromServer(cwFlags: CWFlags) {
         // Since we frequently sync the flags, don't modify anything
         // if the version from the server has already been known,
         // since this could overwrite changes just made by the user.
         if cwFlags.rawFlagsAsShort() == imap?.serverFlags?.rawFlagsAsShort() {
-            return false
+            return
         }
 
         let theImap = imapFields()
@@ -346,26 +345,23 @@ extension CdMessage {
         let localFlags = theImap.localFlags ?? CdImapFlags.create()
         theImap.localFlags = localFlags
 
-        var changedLocalFlags = false
         if haveLocalChanges {
-            changedLocalFlags =  mergeOnConflict(localFlags: localFlags, serverFlags: serverFlags,
-                                                 newServerFlags: cwFlags)
+            mergeOnConflict(localFlags: localFlags, serverFlags: serverFlags,
+                            newServerFlags: cwFlags)
         } else {
             localFlags.update(cwFlags: cwFlags)
-            changedLocalFlags = true
         }
 
         serverFlags.update(cwFlags: cwFlags)
-
-        return changedLocalFlags
     }
 
     /**
      Tries to merge IMAP flags, basically taking into
      account which flags were changed locally if it makes any difference.
      */
-    func mergeOnConflict(localFlags: CdImapFlags, serverFlags: CdImapFlags,
-                         newServerFlags: CWFlags) -> Bool {
+    func mergeOnConflict(localFlags: CdImapFlags,
+                         serverFlags: CdImapFlags,
+                         newServerFlags: CWFlags) {
         localFlags.flagAnswered = localFlags.flagAnswered || serverFlags.flagAnswered ||
             newServerFlags.contain(.answered)
         localFlags.flagDraft = localFlags.flagDraft || serverFlags.flagDraft ||
@@ -379,7 +375,6 @@ extension CdMessage {
         }
         localFlags.flagDeleted = localFlags.flagDeleted || serverFlags.flagDeleted ||
             newServerFlags.contain(.deleted)
-        return localFlags.rawFlagsAsShort() != newServerFlags.rawFlagsAsShort()
     }
 
     /**
@@ -416,11 +411,8 @@ extension CdMessage {
             return mail
         }
         
-        if mail.updateFromServer(cwFlags: message.flags()) {
-            if mail.pEpRating != pEpRatingNone {
-                mail.serialNumber = mail.serialNumber + 1
-            }
-        }
+        mail.updateFromServer(cwFlags: message.flags())
+
         // Bail out quickly if there is only a flag change needed
         if messageUpdate.isFlagsOnly() {
             guard isUpdate else {
@@ -461,10 +453,9 @@ extension CdMessage {
             return
         }
         if !flags.deleted {
-            MessageModelConfig.messageFolderDelegate?.didUpdate(messageFolder: msg)
+            MessageModelConfig.messageFolderDelegate?.didUpdate(message: msg)
         } else {
-            MessageModelConfig.messageFolderDelegate?.didDelete(
-                messageFolder: msg)
+            MessageModelConfig.messageFolderDelegate?.didDelete(message: msg)
         }
     }
 
@@ -568,7 +559,7 @@ extension CdMessage {
         Record.saveAndWait()
         if mail.pEpRating != PEPUtil.pEpRatingNone,
             let msg = mail.message() {
-            MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: msg)
+            MessageModelConfig.messageFolderDelegate?.didCreate(message: msg)
         }
 
         return mail

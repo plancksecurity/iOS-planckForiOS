@@ -229,7 +229,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         localFlags.flagFlagged = true
         cwFlags.add(.seen)
         XCTAssertTrue(cwFlags.contain(.seen))
-        XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
+        m.updateFromServer(cwFlags: cwFlags)
         XCTAssertTrue(localFlags.flagFlagged)
         XCTAssertTrue(localFlags.flagSeen)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
@@ -237,7 +237,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         // No user action, server adds .seen -> .seen locally
         localFlags.reset()
         serverFlags.reset()
-        XCTAssertTrue(m.updateFromServer(cwFlags: cwFlags))
+        m.updateFromServer(cwFlags: cwFlags)
         XCTAssertTrue(localFlags.flagSeen)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
@@ -247,7 +247,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         cwFlags.removeAll()
         cwFlags.add(.flagged)
         serverFlags.flagFlagged = true
-        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
+        m.updateFromServer(cwFlags: cwFlags)
         XCTAssertFalse(localFlags.flagFlagged)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
 
@@ -258,7 +258,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         cwFlags.add(.recent)
         cwFlags.add(.flagged)
         serverFlags.flagRecent = true
-        XCTAssertFalse(m.updateFromServer(cwFlags: cwFlags))
+        m.updateFromServer(cwFlags: cwFlags)
         XCTAssertTrue(localFlags.flagRecent)
         XCTAssertTrue(localFlags.flagFlagged)
         XCTAssertEqual(serverFlags.rawFlagsAsShort(), cwFlags.rawFlagsAsShort())
