@@ -61,7 +61,7 @@ public class FolderViewModel {
     
     func refreshFolderList() {
         DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
+            MessageModelUtil.perform {
                 self.folderSyncService.requestFolders(inAccounts: Account.all())
             }
         }

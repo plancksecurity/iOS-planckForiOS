@@ -159,7 +159,7 @@ extension SMTPSettingsTableViewController: AccountVerificationServiceDelegate {
     func verified(account: Account, service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            MessageModel.performAndWait { [weak self] in
+            MessageModelUtil.performAndWait { [weak self] in
                 guard let me = self else {
                     Logger.frontendLogger.lostMySelf()
                     return

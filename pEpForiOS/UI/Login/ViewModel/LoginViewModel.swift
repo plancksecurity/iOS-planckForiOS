@@ -196,7 +196,7 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                   result: AccountVerificationResult) {
         if result == .ok {
             //remove obsolete code on EmailListViewController
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 account.save()
             }
             mySelfer?.startMySelf()

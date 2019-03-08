@@ -357,7 +357,7 @@ class EmailListViewModel {
     }
 
     internal func requestEmailViewIfNeeded(for message:Message) {
-        MessageModel.performAndWait {
+        MessageModelUtil.performAndWait {
             DispatchQueue.main.async {
                 self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
             }

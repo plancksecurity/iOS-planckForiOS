@@ -228,7 +228,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // The calls are nested to avoid simultaniously showing permissions alert for notifications
             // and contact access.
             DispatchQueue.global(qos: .userInitiated).async {
-                MessageModel.perform {
+                MessageModelUtil.perform {
                     AddressBook.checkAndTransfer()
                 }
             }
@@ -283,7 +283,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
+            MessageModelUtil.perform {
                 AddressBook.checkAndTransfer()
             }
         }

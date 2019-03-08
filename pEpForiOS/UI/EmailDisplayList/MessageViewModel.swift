@@ -328,7 +328,7 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 guard
                     let operation = operation,
                     !operation.isCancelled else {
@@ -354,7 +354,7 @@ extension MessageViewModel {
                 !operation.isCancelled else {
                     return
             }
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 guard !operation.isCancelled else {
                     return
                 }
@@ -379,7 +379,7 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 guard
                     let operation = operation,
                     !operation.isCancelled,
@@ -401,7 +401,7 @@ extension MessageViewModel {
             guard let me = self else {
                 return
             }
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 guard
                     let operation = operation,
                     !operation.isCancelled else {
