@@ -9,7 +9,7 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
 
 /**
  Tests internal encryption and decryption (that is, the test creates encrypted messages itself,
