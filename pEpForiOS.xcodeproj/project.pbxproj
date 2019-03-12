@@ -364,6 +364,8 @@
 		43D2132C2237BE6D00C060A1 /* pEpIOSToolbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43D2132E2237BE8000C060A1 /* MessageModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2132D2237BE8000C060A1 /* MessageModel.framework */; };
 		43D2132F2237BE8000C060A1 /* MessageModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2132D2237BE8000C060A1 /* MessageModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		43D213312237C86900C060A1 /* SwipeCellKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213302237C86900C060A1 /* SwipeCellKit.framework */; };
+		43D213322237C86900C060A1 /* SwipeCellKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213302237C86900C060A1 /* SwipeCellKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3378F21A3F32500E40114 /* ImapUtil.swift */; };
 		43D3F8A121EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
@@ -490,6 +492,7 @@
 			files = (
 				43D2132C2237BE6D00C060A1 /* pEpIOSToolbox.framework in Embed Frameworks */,
 				43D2132F2237BE8000C060A1 /* MessageModel.framework in Embed Frameworks */,
+				43D213322237C86900C060A1 /* SwipeCellKit.framework in Embed Frameworks */,
 				43D213282237BE4B00C060A1 /* AppAuth.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -894,6 +897,7 @@
 		43D213262237BE4B00C060A1 /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pEpIOSToolbox.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D2132D2237BE8000C060A1 /* MessageModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MessageModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D213302237C86900C060A1 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D3378F21A3F32500E40114 /* ImapUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapUtil.swift; sourceTree = "<group>"; };
 		43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt"; sourceTree = "<group>"; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
@@ -1002,6 +1006,7 @@
 			files = (
 				43D2132B2237BE6D00C060A1 /* pEpIOSToolbox.framework in Frameworks */,
 				43D2132E2237BE8000C060A1 /* MessageModel.framework in Frameworks */,
+				43D213312237C86900C060A1 /* SwipeCellKit.framework in Frameworks */,
 				43D213272237BE4B00C060A1 /* AppAuth.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1894,6 +1899,7 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
+				43D213302237C86900C060A1 /* SwipeCellKit.framework */,
 				43D2132D2237BE8000C060A1 /* MessageModel.framework */,
 				43D2132A2237BE6D00C060A1 /* pEpIOSToolbox.framework */,
 				43D213262237BE4B00C060A1 /* AppAuth.framework */,
