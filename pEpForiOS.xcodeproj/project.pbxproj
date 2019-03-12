@@ -300,6 +300,8 @@
 		436795FF1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FD1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc */; };
 		436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FE1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc */; };
 		436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */; };
+		436991D22237B6A9006B517E /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436991D12237B6A9006B517E /* PEPObjCAdapterFramework.framework */; };
+		436991D32237B6A9006B517E /* PEPObjCAdapterFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 436991D12237B6A9006B517E /* PEPObjCAdapterFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		436D0066215B5F3800966CC2 /* Undisplayable_HTML_Message.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
 		437027A122315B5700A77AEC /* PEPAppUtilWrappers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437027A022315B5700A77AEC /* PEPAppUtilWrappers.swift */; };
@@ -500,6 +502,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				B774583B221C320B00664282 /* pEpIOSToolbox.framework in CopyFiles */,
+				436991D32237B6A9006B517E /* PEPObjCAdapterFramework.framework in CopyFiles */,
 				15FE1F791FE19A3A00CC2D97 /* AppAuth.framework in CopyFiles */,
 				43754AC81FCD8348009A8E63 /* ldns_xcode.framework in CopyFiles */,
 				B73119001FEBE2DB0006573B /* SwipeCellKit.framework in CopyFiles */,
@@ -823,6 +826,7 @@
 		436795FD1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch_sec.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test001@peptest.ch_sec.asc"; sourceTree = "<group>"; };
 		436795FE1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "CommunicationTypeTests_test001@peptest.ch.asc"; sourceTree = "<group>"; };
 		436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CommunicationTypeTests_Message_test001_to_test002.txt; sourceTree = "<group>"; };
+		436991D12237B6A9006B517E /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		436C5A8D1CFEDF59006A195F /* UIHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIHelper.swift; sourceTree = "<group>"; };
 		436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Undisplayable_HTML_Message.txt; sourceTree = "<group>"; };
 		436F8E131D36706A007E9829 /* StringExtensionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensionsTest.swift; sourceTree = "<group>"; };
@@ -1024,6 +1028,7 @@
 				43B54F961FE02D02008EC427 /* AppAuth.framework in Frameworks */,
 				43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */,
 				43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */,
+				436991D22237B6A9006B517E /* PEPObjCAdapterFramework.framework in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
@@ -1923,6 +1928,7 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
+				436991D12237B6A9006B517E /* PEPObjCAdapterFramework.framework */,
 				43980ECE1CBD1CAD00A7FC3C /* Libraries */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
