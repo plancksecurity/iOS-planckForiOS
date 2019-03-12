@@ -354,6 +354,8 @@
 		43B0444C20077323007BCE3F /* OAuth2Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B0444B20077323007BCE3F /* OAuth2Configuration.swift */; };
 		43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */; };
 		43B10C801EC2EE7F003E849F /* CppDummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */; };
+		43B1A3A122366EA100C387DE /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B1A3A022366EA100C387DE /* PantomimeFramework.framework */; };
+		43B1A3A222366EA100C387DE /* PantomimeFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 43B1A3A022366EA100C387DE /* PantomimeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43B2C31B1D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc in Resources */ = {isa = PBXBuildFile; fileRef = 43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */; };
 		43B54F961FE02D02008EC427 /* AppAuth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B54F971FE02D02008EC427 /* AppAuth.framework */; };
 		43B7154D1CECAADA0027861A /* ViewWidthsAligner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */; };
@@ -503,6 +505,7 @@
 			files = (
 				B774583B221C320B00664282 /* pEpIOSToolbox.framework in CopyFiles */,
 				156BCD672231966A00A80C62 /* PEPObjCAdapterFramework.framework in CopyFiles */,
+				43B1A3A222366EA100C387DE /* PantomimeFramework.framework in CopyFiles */,
 				15FE1F791FE19A3A00CC2D97 /* AppAuth.framework in CopyFiles */,
 				43754AC81FCD8348009A8E63 /* ldns_xcode.framework in CopyFiles */,
 				B73119001FEBE2DB0006573B /* SwipeCellKit.framework in CopyFiles */,
@@ -891,6 +894,7 @@
 		43B0444B20077323007BCE3F /* OAuth2Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Configuration.swift; sourceTree = "<group>"; };
 		43B10C7C1EC2ECA3003E849F /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAccountSettingsAdapter.a; path = "../../../Library/Developer/Xcode/DerivedData/pEpForiOS-hgrtosyrynxrmfdxochylcgjfvka/Build/Products/Debug-iphonesimulator/libAccountSettingsAdapter.a"; sourceTree = "<group>"; };
 		43B10C7F1EC2EE7F003E849F /* CppDummy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CppDummy.cpp; sourceTree = "<group>"; };
+		43B1A3A022366EA100C387DE /* PantomimeFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PantomimeFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B2C3161D2280ED00A08557 /* 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 5A90_3590_0E48_AB85_F3DB__045E_4623_C5D1_EAB6_643E.asc; sourceTree = "<group>"; };
 		43B54F971FE02D02008EC427 /* AppAuth.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppAuth.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B7154C1CECAADA0027861A /* ViewWidthsAligner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewWidthsAligner.swift; sourceTree = "<group>"; };
@@ -1027,6 +1031,7 @@
 			files = (
 				439932301FEA9B7200E92C35 /* SwipeCellKit.framework in Frameworks */,
 				43B54F961FE02D02008EC427 /* AppAuth.framework in Frameworks */,
+				43B1A3A122366EA100C387DE /* PantomimeFramework.framework in Frameworks */,
 				43754AC61FCD7ABC009A8E63 /* ldns_xcode.framework in Frameworks */,
 				43B10C7D1EC2ECA3003E849F /* libAccountSettingsAdapter.a in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
@@ -1929,6 +1934,7 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
+				43B1A3A022366EA100C387DE /* PantomimeFramework.framework */,
 				43980ECE1CBD1CAD00A7FC3C /* Libraries */,
 				43980E251CBD0BC900A7FC3C /* pEpForiOS */,
 				43980E3D1CBD0BCA00A7FC3C /* pEpForiOSTests */,
