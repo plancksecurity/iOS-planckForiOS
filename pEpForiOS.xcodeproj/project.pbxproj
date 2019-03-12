@@ -370,6 +370,8 @@
 		43D213362237C90400C060A1 /* ldns_xcode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213352237C90400C060A1 /* ldns_xcode.framework */; };
 		43D213372237C90400C060A1 /* ldns_xcode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213352237C90400C060A1 /* ldns_xcode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
+		43D2133D2237CB1600C060A1 /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */; };
+		43D2133E2237CB1600C060A1 /* PEPObjCAdapterFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3378F21A3F32500E40114 /* ImapUtil.swift */; };
 		43D3F8A121EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
@@ -495,6 +497,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				43D2132C2237BE6D00C060A1 /* pEpIOSToolbox.framework in Embed Frameworks */,
+				43D2133E2237CB1600C060A1 /* PEPObjCAdapterFramework.framework in Embed Frameworks */,
 				43D2132F2237BE8000C060A1 /* MessageModel.framework in Embed Frameworks */,
 				43D213322237C86900C060A1 /* SwipeCellKit.framework in Embed Frameworks */,
 				43D213372237C90400C060A1 /* ldns_xcode.framework in Embed Frameworks */,
@@ -905,6 +908,7 @@
 		43D213302237C86900C060A1 /* SwipeCellKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwipeCellKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libAccountSettingsAdapter.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D213352237C90400C060A1 /* ldns_xcode.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ldns_xcode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = PEPObjCAdapterFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43D3378F21A3F32500E40114 /* ImapUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImapUtil.swift; sourceTree = "<group>"; };
 		43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt"; sourceTree = "<group>"; };
 		43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOperationsTest.swift; sourceTree = "<group>"; };
@@ -1016,6 +1020,7 @@
 				43D2132B2237BE6D00C060A1 /* pEpIOSToolbox.framework in Frameworks */,
 				43D2132E2237BE8000C060A1 /* MessageModel.framework in Frameworks */,
 				43D213312237C86900C060A1 /* SwipeCellKit.framework in Frameworks */,
+				43D2133D2237CB1600C060A1 /* PEPObjCAdapterFramework.framework in Frameworks */,
 				43D213272237BE4B00C060A1 /* AppAuth.framework in Frameworks */,
 				43D213362237C90400C060A1 /* ldns_xcode.framework in Frameworks */,
 			);
@@ -1909,6 +1914,7 @@
 		43980E1A1CBD0BC900A7FC3C = {
 			isa = PBXGroup;
 			children = (
+				43D2133C2237CB1600C060A1 /* PEPObjCAdapterFramework.framework */,
 				43D213352237C90400C060A1 /* ldns_xcode.framework */,
 				43D213302237C86900C060A1 /* SwipeCellKit.framework */,
 				43D2132D2237BE8000C060A1 /* MessageModel.framework */,
