@@ -301,9 +301,7 @@
 		436796001EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc in Resources */ = {isa = PBXBuildFile; fileRef = 436795FE1EE98F6E00B03E23 /* CommunicationTypeTests_test001@peptest.ch.asc */; };
 		436796021EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436796011EE9909100B03E23 /* CommunicationTypeTests_Message_test001_to_test002.txt */; };
 		436991D82237B850006B517E /* libAccountSettingsAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 436991D72237B850006B517E /* libAccountSettingsAdapter.a */; };
-		436991F02237BC0D006B517E /* PantomimeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436991EF2237BC00006B517E /* PantomimeFramework.framework */; };
 		436991F12237BC0D006B517E /* PantomimeFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 436991EF2237BC00006B517E /* PantomimeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		436991F62237BC20006B517E /* PEPObjCAdapterFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 436991F52237BC17006B517E /* PEPObjCAdapterFramework.framework */; };
 		436991F72237BC20006B517E /* PEPObjCAdapterFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 436991F52237BC17006B517E /* PEPObjCAdapterFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		436D0066215B5F3800966CC2 /* Undisplayable_HTML_Message.txt in Resources */ = {isa = PBXBuildFile; fileRef = 436D0065215B5F3800966CC2 /* Undisplayable_HTML_Message.txt */; };
 		436F8E141D36706A007E9829 /* StringExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436F8E131D36706A007E9829 /* StringExtensionsTest.swift */; };
@@ -1015,11 +1013,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				436991F02237BC0D006B517E /* PantomimeFramework.framework in Frameworks */,
 				436991D82237B850006B517E /* libAccountSettingsAdapter.a in Frameworks */,
 				439680981D1855D400DA31D2 /* WebKit.framework in Frameworks */,
 				43800D991D112A2A00821E34 /* libxml2.tbd in Frameworks */,
-				436991F62237BC20006B517E /* PEPObjCAdapterFramework.framework in Frameworks */,
 				43C046BF1CF48EA500BD0D9D /* AddressBook.framework in Frameworks */,
 				439D40741CC7897B009A4E7C /* libiconv.2.tbd in Frameworks */,
 				439D40721CC78958009A4E7C /* libbz2.tbd in Frameworks */,
