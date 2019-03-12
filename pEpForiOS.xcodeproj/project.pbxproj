@@ -369,6 +369,7 @@
 		43D213342237C8CA00C060A1 /* libAccountSettingsAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213332237C8CA00C060A1 /* libAccountSettingsAdapter.a */; };
 		43D213362237C90400C060A1 /* ldns_xcode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213352237C90400C060A1 /* ldns_xcode.framework */; };
 		43D213372237C90400C060A1 /* ldns_xcode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 43D213352237C90400C060A1 /* ldns_xcode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 43800D981D112A2A00821E34 /* libxml2.tbd */; };
 		43D3379021A3F32500E40114 /* ImapUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3378F21A3F32500E40114 /* ImapUtil.swift */; };
 		43D3F8A121EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt in Resources */ = {isa = PBXBuildFile; fileRef = 43D3F8A021EDDF19002D5AFC /* ENGINE-456_Mail_PEP_OUT_OF_MEMORY.txt */; };
 		43D51E891DD5D902008B77A8 /* SimpleOperationsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D51E881DD5D902008B77A8 /* SimpleOperationsTest.swift */; };
@@ -1010,6 +1011,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43D2133B2237CABD00C060A1 /* libxml2.tbd in Frameworks */,
 				43D213342237C8CA00C060A1 /* libAccountSettingsAdapter.a in Frameworks */,
 				43D2132B2237BE6D00C060A1 /* pEpIOSToolbox.framework in Frameworks */,
 				43D2132E2237BE8000C060A1 /* MessageModel.framework in Frameworks */,
