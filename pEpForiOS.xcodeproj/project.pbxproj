@@ -541,6 +541,7 @@
 		B7745839221C191600664282 /* SecretUITestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7745838221C191600664282 /* SecretUITestData.swift */; };
 		B774583A221C320B00664282 /* pEpIOSToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7DB7FEA221AFE10003968DA /* pEpIOSToolbox.framework */; };
 		B774583B221C320B00664282 /* pEpIOSToolbox.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = B7DB7FEA221AFE10003968DA /* pEpIOSToolbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B776A47B223962B50047A41D /* EmailListViewModel+MessageQueryResultsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B776A47A223962B50047A41D /* EmailListViewModel+MessageQueryResultsDelegate.swift */; };
 		B78309C81EAA09040051A2E0 /* AccountCreation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78309C61EAA09040051A2E0 /* AccountCreation.storyboard */; };
 		B78CF8251E76D706008C1739 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8241E76D706008C1739 /* FilterTableViewController.swift */; };
 		B78CF8291E76E0F1008C1739 /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */; };
@@ -1169,6 +1170,7 @@
 		B75FF00A1EFD420F00C57289 /* EmailListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailListViewModel.swift; sourceTree = "<group>"; };
 		B76CF8B220D2739B002429A8 /* MoveToFolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToFolderViewModel.swift; sourceTree = "<group>"; };
 		B7745838221C191600664282 /* SecretUITestData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecretUITestData.swift; sourceTree = "<group>"; };
+		B776A47A223962B50047A41D /* EmailListViewModel+MessageQueryResultsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailListViewModel+MessageQueryResultsDelegate.swift"; sourceTree = "<group>"; };
 		B78309C71EAA09040051A2E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountCreation.storyboard; sourceTree = "<group>"; };
 		B78CF8241E76D706008C1739 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterTableViewController.swift; path = Filter/FilterTableViewController.swift; sourceTree = "<group>"; };
 		B78CF8281E76E0F1008C1739 /* FilterViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Filter/ViewModel/FilterViewModel.swift; sourceTree = "<group>"; };
@@ -2853,6 +2855,7 @@
 				49691B1420D7FD0200CA9367 /* MessageViewModelConfigurable.swift */,
 				434E5A1A20DB9C4600D7F88A /* EmailListViewModel+MessageFolderDelegate.swift */,
 				43E1619020D7B2D6003F1514 /* UpdateThreadListDelegate.swift */,
+				B776A47A223962B50047A41D /* EmailListViewModel+MessageQueryResultsDelegate.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -3315,6 +3318,7 @@
 				B70A3A63220065F600EDCE61 /* String+pEp.swift in Sources */,
 				15874BC12127493E00A3A4A6 /* SettingSwitchTableViewCell.swift in Sources */,
 				152A39E721905C3E00D9F8E4 /* RecipientTextViewModel.swift in Sources */,
+				B776A47B223962B50047A41D /* EmailListViewModel+MessageQueryResultsDelegate.swift in Sources */,
 				43FE802E209992B800E97AB3 /* QualifyServerIsLocalService.swift in Sources */,
 				4351C2D41F4441190053381F /* iterator.c in Sources */,
 				43AA825B1E9BC5FF00ABD5A8 /* AttachmentViewContainer.swift in Sources */,

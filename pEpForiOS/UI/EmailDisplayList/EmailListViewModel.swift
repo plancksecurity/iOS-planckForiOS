@@ -18,6 +18,8 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath])
     func emailListViewModel(viewModel: EmailListViewModel,
                             didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
+    func willReceiveUpdates(viewModel: EmailListViewModel)
+    func allUpdatesReceived(viewModel: EmailListViewModel)
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)

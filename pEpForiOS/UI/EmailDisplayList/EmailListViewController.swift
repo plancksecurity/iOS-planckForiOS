@@ -667,6 +667,14 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+    func willReceiveUpdates(viewModel: EmailListViewModel) {
+        tableView.beginUpdates()
+    }
+
+    func allUpdatesReceived(viewModel: EmailListViewModel) {
+        tableView.endUpdates()
+    }
+
     func showThreadView(for indexPath: IndexPath) {
        /* guard let splitViewController = splitViewController else {
             return
