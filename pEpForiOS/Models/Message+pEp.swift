@@ -46,7 +46,7 @@ extension Message {
             return optionalFields[Headers.originalRating.rawValue]
     }
 
-    func getOriginalRatingHeaderRating() -> PEP_rating? {
+    func getOriginalRatingHeaderRating() -> PEP_rating? { //!!!: must all go to Message and message model (after adapter is there)
         guard let originalRatingStr = getOriginalRatingHeader() else {
             return nil
         }
