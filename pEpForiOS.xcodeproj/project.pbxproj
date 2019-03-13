@@ -175,7 +175,6 @@
 		15D4399A216E697700EB3933 /* AccountPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D43999216E697700EB3933 /* AccountPickerView.swift */; };
 		15D4399C216E698E00EB3933 /* AccountPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4399B216E698E00EB3933 /* AccountPickerViewModel.swift */; };
 		15D439A5216F7E0E00EB3933 /* AccountPickerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A4216F7E0E00EB3933 /* AccountPickerViewModelTest.swift */; };
-		15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D439A6216FB77600EB3933 /* UnitTestUtils.swift */; };
 		15D7D990219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D98F219AD38B00A1A2B9 /* MediaAttachmentPickerProviderViewModelTest.swift */; };
 		15D7D992219B154000A1A2B9 /* Attachment+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D991219B154000A1A2B9 /* Attachment+Extensions.swift */; };
 		15D7D995219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7D994219B2C5C00A1A2B9 /* ComposeViewModel+InitDataTest.swift */; };
@@ -2697,7 +2696,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "p≡p Security S.A.";
 				TargetAttributes = {
 					43980E221CBD0BC900A7FC3C = {
@@ -3297,7 +3296,6 @@
 				49DCCD2521E8ABA900ABE487 /* SecurePDFScreenshotTest.swift in Sources */,
 				151F7200202A06760057C74D /* TestUtil.swift in Sources */,
 				43FE8030209995AD00E97AB3 /* QualifyServerIsLocalServiceTest.swift in Sources */,
-				15D439A7216FB77600EB3933 /* UnitTestUtils.swift in Sources */,
 				15410D252199ECD700BBF65F /* AttachmentViewModelTest.swift in Sources */,
 				152B665C21E508F500FB925F /* Message+FakeMessageTest.swift in Sources */,
 				43257C861F50659200DDC7F0 /* StringHTMLExtensionTests.swift in Sources */,
@@ -3628,7 +3626,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)//pEpForiOS/pEpForiOS-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -3666,7 +3664,7 @@
 				ONLY_ACTIVE_ARCH = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.pep-security.apps.pEpForiOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "pEpForiOSTests/pEpForiOSTests-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
