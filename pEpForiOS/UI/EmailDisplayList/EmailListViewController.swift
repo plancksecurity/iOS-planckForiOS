@@ -749,9 +749,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
-        tableView.beginUpdates()
         tableView.insertRows(at: indexPaths, with: .automatic)
-        tableView.endUpdates()
     }
 
     func emailListViewModel(viewModel: EmailListViewModel, didRemoveDataAt indexPaths: [IndexPath]) {
