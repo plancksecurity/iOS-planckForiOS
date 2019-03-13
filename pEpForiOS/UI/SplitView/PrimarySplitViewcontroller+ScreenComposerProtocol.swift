@@ -47,11 +47,13 @@ extension PrimarySplitViewController: ScreenComposerProtocol {
             //Do nothing as it is not showing the detail we want
             return
         }
+        fatalError()
             guard let nav = threadViewController.navigationController,
             let vc: EmailViewController =
             storyboard.instantiateViewController(withIdentifier: "emailDetail")
-                as? EmailViewController,
-            let index = emailListViewModel.index(of: message)
+                as? EmailViewController
+        //!!!:, let index = emailListViewModel.index(of: message)
+
             else {
                 Logger.frontendLogger.errorAndCrash("Segue issues")
                 return
@@ -60,8 +62,8 @@ extension PrimarySplitViewController: ScreenComposerProtocol {
         vc.appConfig = threadViewController.appConfig
         vc.message = message
         vc.folderShow = emailListViewModel.folderToShow
-        vc.messageId = index
-        vc.delegate = emailListViewModel
+        //vc.messageId = index
+//        vc.delegate = emailListViewModel
         emailListViewModel.currentDisplayedMessage = vc
         nav.viewControllers[nav.viewControllers.count - 1 ] = vc
     }

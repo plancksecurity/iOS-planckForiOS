@@ -35,8 +35,9 @@ extension EmailListViewModel: FilterUpdateProtocol {
 
 class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
+    let messageQueryResults: MessageQueryResults
     let messageSyncService: MessageSyncServiceProtocol
-    internal var messages: SortedSet<MessageViewModel>
+
     private let queue: OperationQueue = {
         let createe = OperationQueue()
         createe.qualityOfService = .userInitiated
@@ -79,8 +80,10 @@ class EmailListViewModel {
     
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
-         folderToShow: Folder = UnifiedInbox()) {
-        self.messages = SortedSet(array: [], sortBlock: sortByDateSentAscending)
+         folderToShow: Folder = UnifiedInbox(),
+         messageQueryResults: MessageQueryResults) {
+        self.messageQueryResults = messageQueryResults
+
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 
@@ -116,83 +119,43 @@ class EmailListViewModel {
         return false
     }
 
-    internal func startListeningToChanges() {
-        MessageModelConfig.messageFolderDelegate = self
-    }
-
-    internal func stopListeningToChanges() {
-        MessageModelConfig.messageFolderDelegate = nil
-    }
-
     private func resetViewModel() {
-        // Ignore MessageModelConfig.messageFolderDelegate while reloading.
-        self.stopListeningToChanges()
 
-        queue.cancelAllOperations()
-        let op = BlockOperation()
-        weak var weakOp = op
-        op.addExecutionBlock { [weak self] in
-            guard
-                let me = self,
-                let op = weakOp,
-                !op.isCancelled else {
-                return
-            }
-            let messagesToDisplay = me.folderToShow.allMessagesNonThreaded()
-            let previewMessages = messagesToDisplay.map {
-                MessageViewModel(with: $0)
-            }
-            let sortedMessages = SortedSet(array: previewMessages, sortBlock: me.sortByDateSentAscending)
-            if op.isCancelled {
-                return
-            }
-            DispatchQueue.main.sync {
-                me.messages = sortedMessages
-                me.emailListViewModelDelegate?.updateView()
-                me.startListeningToChanges()
-            }
-        }
-        queue.addOperation(op)
     }
 
     // MARK: - Public Data Access & Manipulation
 
     func index(of message: Message) -> Int? {
-        return messages.index(of: MessageViewModel(with: message))
+        return nil
     }
 
     func viewModel(for index: Int) -> MessageViewModel? {
-        guard let messageViewModel = messages.object(at: index) else {
-            Logger.frontendLogger.errorAndCrash("InconsistencyviewModel vs. model")
-            return nil
-        }
+        let messageViewModel = MessageViewModel(with: messageQueryResults[index])
         return messageViewModel
     }
 
     var rowCount: Int {
-        return messages.count
+        return messageQueryResults.count()
     }
 
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
-        guard
-            indexPath.row < messages.count,
-            let previewMessage = messages.object(at: indexPath.row)
-            else {
+        guard indexPath.row < messageQueryResults.count() else {
             // The model has been updated.
             return nil
         }
-        return contactImageTool.cachedIdentityImage(for: previewMessage.identity)
+        let message = messageQueryResults[indexPath.row]
+        guard let from = message.from else {
+            return nil
+        }
+        return contactImageTool.cachedIdentityImage(for: from)
     }
 
     func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
-        guard
-            indexPath.row < messages.count,
-            let previewMessage = messages.object(at: indexPath.row),
-            let message = previewMessage.message()
-            else {
-                // The model has been updated.
-                return nil
+        guard indexPath.row < messageQueryResults.count() else {
+            // The model has been updated.
+            return nil
         }
+        let message = messageQueryResults[indexPath.row]
         let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
         if color != PEP_color_no_color {
             return color.statusIcon()
@@ -271,31 +234,22 @@ class EmailListViewModel {
     }
 
     public func deleteSelected(indexPaths: [IndexPath]) {
-        var deletees = [MessageViewModel]()
+        //disable get notifications
         indexPaths.forEach { (ip) in
-            guard let previewMessage = messages.object(at: ip.row)else {
-                    return
-            }
-            deletees.append(previewMessage)
-        }
-
-        for pvm in deletees {
-            guard let message = pvm.message() else {
-                Logger.frontendLogger.errorAndCrash("No mesage")
-                return
-            }
+            let message = messageQueryResults[ip.row]
             delete(message: message)
-            messages.remove(object: pvm)
         }
-        //emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: indexPaths)
+        //re-enable it?
     }
 
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
+        //disable get notifications
         var messages : [Message?] = []
         indexPaths.forEach { (ip) in
             messages.append(self.message(representedByRowAt: ip))
         }
         return messages
+        //re-enable it?
     }
     
     func setFlagged(forIndexPath indexPath: IndexPath) {
@@ -307,27 +261,23 @@ class EmailListViewModel {
     }
     
     func markRead(forIndexPath indexPath: IndexPath) {
-        guard let previewMessage = messages.object(at: indexPath.row) else {
-            return
-        }
+        //disable get notifications
+        let message = messageQueryResults[indexPath.row]
         DispatchQueue.main.async { [] in
-            previewMessage.isSeen = true
-            let message = previewMessage.message()
-            message?.imapFlags?.seen = true
-            message?.save()
+            message.imapFlags?.seen = true
+            message.save()
         }
+        //re-enable it?
     }
 
     func markUnread(forIndexPath indexPath: IndexPath) {
-        guard let previewMessage = messages.object(at: indexPath.row) else {
-            return
-        }
+        //disable get notifications
+        let message = messageQueryResults[indexPath.row]
         DispatchQueue.main.async { [] in
-            previewMessage.isSeen = false
-            let message = previewMessage.message()
-            message?.imapFlags?.seen = false
-            message?.save()
+            message.imapFlags?.seen = false
+            message.save()
         }
+        //re-enable it?
     }
 
     func delete(forIndexPath indexPath: IndexPath) {
@@ -336,14 +286,11 @@ class EmailListViewModel {
                 "Not sure if this is a valid case. Remove this log if so.")
             return
         }
-        didDelete(messageFolder: deletedMessage)
+        //didDelete(messageFolder: deletedMessage)
     }
 
     private func deleteMessage(at indexPath: IndexPath) -> Message? {
-        guard let previewMessage = messages.object(at: indexPath.row),
-            let message = previewMessage.message() else {
-                return nil
-        }
+        let message = messageQueryResults[indexPath.row]
         delete(message: message)
         return message
     }
@@ -353,7 +300,7 @@ class EmailListViewModel {
     }
 
     func message(representedByRowAt indexPath: IndexPath) -> Message? {
-        return messages.object(at: indexPath.row)?.message()
+        return messageQueryResults[indexPath.row]
     }
 
     internal func requestEmailViewIfNeeded(for message:Message) {
@@ -369,11 +316,7 @@ class EmailListViewModel {
     }
     
     internal func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
-        guard let previewMessage = messages.object(at: indexPath.row),
-            let message = previewMessage.message() else {
-                return
-        }
-        previewMessage.isFlagged = flagged
+        let message = messageQueryResults[indexPath.row]
         message.imapFlags?.flagged = flagged
         DispatchQueue.main.async {
             message.save()
@@ -403,10 +346,11 @@ class EmailListViewModel {
         if folderIsDraftOrOutbox(parentFolder) {
             return nil
         } else {
-            let flagged = messages.object(at: index)?.message()?.imapFlags?.flagged ?? false
+            let flagged = messageQueryResults[index].imapFlags?.flagged ?? false
             return flagged ? .unflag : .flag
         }
     }
+
 
     public func getMoreAction(forMessageAt index: Int) -> SwipeActionDescriptor? {
         let parentFolder = getParentFolder(forMessageAt: index)
@@ -439,10 +383,7 @@ class EmailListViewModel {
 
         if folderToShow is UnifiedInbox {
             // folderToShow is unified inbox, fetch parent folder from DB.
-            guard let folder = messages.object(at: index)?.message()?.parent else {
-                    Logger.frontendLogger.errorAndCrash("Dangling Message")
-                    return folderToShow
-            }
+            let folder = messageQueryResults[index].parent
             parentFolder = folder
         } else {
             // Do not bother our imperformant MessageModel if we already know the parent folder
@@ -654,7 +595,7 @@ extension EmailListViewModel: ReplyAllPossibleCheckerProtocol {
 extension EmailListViewModel {
     func composeViewModel(withOriginalMessageAt indexPath: IndexPath,
                           composeMode: ComposeUtil.ComposeMode? = nil) -> ComposeViewModel {
-        let message = messages.object(at: indexPath.row)?.message()
+        let message = messageQueryResults[indexPath.row]
         let composeVM = ComposeViewModel(resultDelegate: self,
                                          composeMode: composeMode,
                                          originalMessage: message)
@@ -692,4 +633,83 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
             reloadData()
         }
     }
+}
+
+
+
+
+/// A controller that you use to start monitoring a Folder (like Inbox) and get updates through the
+/// MessageQueryResultsDelegate.
+protocol MessageQueryResults {
+
+    /// Init
+    ///
+    /// - Parameter folder: set a folder to monitor, receive messages updates, apply filters and
+    /// do searches. Messages will be ordered by date.
+    init(withFolder folder: Folder)
+
+    var delegate: MessageQueryResultsDelegate? { get set }
+
+    /// Folder messages, after applying filter and search
+    subscript(index: Int) -> Message { get }
+
+    /// Folder messages amount, after applying filter and search
+    func count() -> Int
+
+    /// Fetches query results in results and starts monitoring changes.
+    ///
+    /// - Throws:   If the fetch is not successful, upon return contains an error object that
+    ///             describes the problem
+    func startMonitoring() throws
+
+    /// Set a filter to messages. When a new filter is set and already called startMonitoring(), results array
+    /// will be updated and ready to use. Filtered updates through MessageQueryResultsDelegate
+    ///
+    /// Note: must call startMonitoring() previously or after to get filter results and updates.
+    ///
+    /// - Parameter filter: filter to apply inside the folder. Set to nil to disable the filter.
+    /// - Throws:   If the fetch is not successful, upon return contains an error object that
+    ///             describes the problem
+    func set(filter: MessageQueryResultsFilter?) throws
+
+
+    /// Set a search in the folder. When a new search is set and already called startMonitoring(), results array
+    /// will be updated and ready to use. Search updates through MessageQueryResultsDelegate
+    ///
+    /// - Parameter search: search to do inside the folder. Set to nil to disable the search.
+    /// - Throws:   If the fetch is not successful, upon return contains an error object that
+    ///             describes the problem
+    func set(search: MessageQueryResultsSearch?) throws
+}
+
+
+/// Subscribers must conform to get notified about messages updates.
+///
+/// Note: filter and search should not be set, during updating results. That means after
+/// willChangeResults was call, and before didChangeResults is calls.
+///
+protocol MessageQueryResultsDelegate: class {
+    /// Call when an insert have been done in the results
+    /// - Parameter indexPath: indexPath of the new element inserted
+    func didInsert(indexPath: IndexPath)
+
+    /// Call when an element have been modify in the results
+    /// - Parameter indexPath: indexPath of the modified element
+    func didUpdate(indexPath: IndexPath)
+
+    /// Call when an element have been deleted of the results
+    /// - Parameter indexPath: indexPath of the deleted element
+    func didDelete(indexPath: IndexPath)
+
+    /// Call when an element have change position (moved) inside of the results
+    /// - Parameter from: original indexPath of the moved element
+    /// - Parameter to: destination indexPath of the moved element
+    func didMove(from: IndexPath, to: IndexPath)
+
+    /// Notifies the receiver that there will be one or more updates due to an insert, remove,
+    /// move, or update.
+    func willChangeResults()
+
+    /// Notifies the receiver that all updates have been completed. Results is updated
+    func didChangeResults()
 }
