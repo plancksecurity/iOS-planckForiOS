@@ -18,7 +18,7 @@ extension Folder {
     }
 
     public func messageCount() -> Int {
-        return allCdMessagesNonThreadedCount(ignoringPepRating: showsMessagesNeverSeenByEngine)
+        return allCdMessagesCount(ignoringPepRating: showsMessagesNeverSeenByEngine)
     }
 
     public func indexOf(message: Message) -> Int? {
@@ -46,7 +46,7 @@ extension Folder {
         guard let cdMsg = CdMessage.search(message: message) else {
             return nil
         }
-        let msgs = allCdMessagesNonThreaded(ignoringPepRating: showsMessagesNeverSeenByEngine)
+        let msgs = allCdMessages(ignoringPepRating: showsMessagesNeverSeenByEngine)
         return msgs.binarySearch(element: cdMsg, comparator: comparator)
     }
 }

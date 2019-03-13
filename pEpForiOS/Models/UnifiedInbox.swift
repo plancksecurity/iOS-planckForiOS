@@ -65,7 +65,7 @@ public class UnifiedInbox: Folder {
         filter = cf
     }
 
-    override open func allCdMessagesNonThreaded(includingDeleted: Bool = false,
+    override open func allCdMessages(includingDeleted: Bool = false,
                                                 includingMarkedForMoveToFolder: Bool = false,
                                                 ignoringPepRating: Bool = false)
         -> [CdMessage] {

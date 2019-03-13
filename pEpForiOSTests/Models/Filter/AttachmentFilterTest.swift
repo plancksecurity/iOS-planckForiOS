@@ -28,7 +28,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
         let _ = f1.updateFilter(filter: cf)
 
          let numOfEncryptableMessagesWithAttchment = 1
-        XCTAssertEqual(f1.allCdMessagesNonThreaded().count, numOfEncryptableMessagesWithAttchment)
+        XCTAssertEqual(f1.allCdMessages().count, numOfEncryptableMessagesWithAttchment)
     }
 
     // MARK: - Undecryptable Messages
@@ -61,7 +61,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
         let _ = f1.updateFilter(filter: cf)
 
         let numOfEncryptableMessagesWithAttchment = 1
-        XCTAssertEqual(f1.allCdMessagesNonThreaded().count, numOfEncryptableMessagesWithAttchment)
+        XCTAssertEqual(f1.allCdMessages().count, numOfEncryptableMessagesWithAttchment)
     }
 
     private func createDecryptedMessages(in folder: Folder, numMessages: Int) -> [Message] {

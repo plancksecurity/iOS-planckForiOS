@@ -15,7 +15,7 @@ extension Folder {
      that is no threading involved.
      */
     public func allMessagesNonThreaded() -> [Message] {
-        return allCdMessagesNonThreaded(ignoringPepRating: showsMessagesNeverSeenByEngine)
+        return allCdMessages(ignoringPepRating: showsMessagesNeverSeenByEngine)
             .compactMap {
                 return $0.message()
         }
