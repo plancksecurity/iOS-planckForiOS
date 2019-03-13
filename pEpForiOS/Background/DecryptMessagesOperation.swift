@@ -233,7 +233,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
             Logger.backendLogger.errorAndCrash("Error converting CDMesage")
             return
         }
-        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: message)
+        MessageModelConfig.messageFolderDelegate?.didCreate(message: message)
     }
 
     // MARK: - Handle DecryptMessageOperationDelegate Calls

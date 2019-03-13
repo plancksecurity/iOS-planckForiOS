@@ -650,15 +650,15 @@ class TestServer {
         self.messageFolderDelegate = messageFolderDelegate
     }
     func insertData(message: Message) {
-        self.messageFolderDelegate.didCreate(messageFolder: message)
+        self.messageFolderDelegate.didCreate(message: message)
     }
 
     func updateData(message: Message) {
-        self.messageFolderDelegate.didUpdate(messageFolder: message)
+        self.messageFolderDelegate.didUpdate(message: message)
     }
 
     func deleteData(message: Message) {
-        self.messageFolderDelegate.didDelete(messageFolder: message)
+        self.messageFolderDelegate.didDelete(message: message)
     }
 }
 

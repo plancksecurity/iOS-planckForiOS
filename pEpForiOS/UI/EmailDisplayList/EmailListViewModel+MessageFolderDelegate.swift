@@ -14,34 +14,33 @@ extension EmailListViewModel: MessageFolderDelegate {
 
     // MARK: - MessageFolderDelegate (public)
 
-    func didCreate(messageFolder: MessageFolder) {
+    func didCreate(message: Message) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
-            me.didCreateInternal(messageFolder: messageFolder)
+            me.didCreateInternal(message: message)
         }
     }
 
-    func didUpdate(messageFolder: MessageFolder) {
+    func didUpdate(message: Message) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
-            me.didUpdateInternal(messageFolder: messageFolder)
+            me.didUpdateInternal(message: message)
         }
     }
 
-    func didDelete(messageFolder: MessageFolder) {
+    func didDelete(message: Message) {
         DispatchQueue.main.async { [weak self] in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
-            me.didDeleteInternal(
-                messageFolder: messageFolder)
+            me.didDeleteInternal(message: message)
         }
     }
 
@@ -57,11 +56,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         return existingIndex != nil
     }
 
-    private func didCreateInternal(messageFolder: MessageFolder) {
-        guard let message = messageFolder as? Message else {
-            // The createe is no message. Ignore.
-            return
-        }
+    private func didCreateInternal(message: Message) {
         if !shouldBeDisplayed(message: message) {
             return
         }
@@ -109,13 +104,7 @@ extension EmailListViewModel: MessageFolderDelegate {
         insertAsTopMessage()
     }
 
-    private func didDeleteInternal(messageFolder: MessageFolder) {
-        // Make sure it is a Message (not a Folder). Flag must have changed
-        guard let message = messageFolder as? Message else {
-            // It is not a Message (probably it is a Folder).
-            return
-        }
-
+    private func didDeleteInternal(message: Message) {
         if !shouldBeDisplayed(message: message) {
             return
         }
@@ -137,12 +126,7 @@ extension EmailListViewModel: MessageFolderDelegate {
             didRemoveDataAt: [indexPath])
     }
 
-    private func didUpdateInternal(messageFolder: MessageFolder) {
-        // Make sure it is a Message (not a Folder). Flag must have changed
-        guard let message = messageFolder as? Message else {
-            // It is not a Message (probably it is a Folder).
-            return
-        }
+    private func didUpdateInternal(message: Message) {
         if !shouldBeDisplayed(message: message) {
             return
         }
