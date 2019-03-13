@@ -775,6 +775,12 @@ extension EmailListViewController: EmailListViewModelDelegate {
         }
     }
 
+    func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
+        lastSelectedIndexPath = tableView.indexPathForSelectedRow
+        tableView.moveRow(at: atIndexPath, to: toIndexPath)
+        moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)
+    }
+
     func emailListViewModel(viewModel: EmailListViewModel,
                             didChangeSeenStateForDataAt indexPaths: [IndexPath]) {
         guard let isIphone = splitViewController?.isCollapsed, let vm = model else {
@@ -796,16 +802,6 @@ extension EmailListViewController: EmailListViewModelDelegate {
             //  ... otherwize we forward to update
             emailListViewModel(viewModel: viewModel, didUpdateDataAt: indexPaths)
         }
-    }
-
-    func emailListViewModel(viewModel: EmailListViewModel, didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath) {
-        lastSelectedIndexPath = tableView.indexPathForSelectedRow
-
-        tableView.beginUpdates()
-        tableView.moveRow(at: atIndexPath, to: toIndexPath)
-        tableView.endUpdates()
-
-        moveSelectionIfNeeded(fromIndexPath: atIndexPath, toIndexPath: toIndexPath)
     }
 
     func updateView() {
