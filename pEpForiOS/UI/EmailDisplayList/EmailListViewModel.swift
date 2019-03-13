@@ -135,11 +135,11 @@ class EmailListViewModel {
     }
 
     var rowCount: Int {
-        return messageQueryResults.count()
+        return messageQueryResults.count
     }
 
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {
-        guard indexPath.row < messageQueryResults.count() else {
+        guard indexPath.row < messageQueryResults.count else {
             // The model has been updated.
             return nil
         }
@@ -151,7 +151,7 @@ class EmailListViewModel {
     }
 
     func pEpRatingColorImage(forCellAt indexPath: IndexPath) -> UIImage? {
-        guard indexPath.row < messageQueryResults.count() else {
+        guard indexPath.row < messageQueryResults.count else {
             // The model has been updated.
             return nil
         }
@@ -636,50 +636,34 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
 }
 
 
+//!!!: Mock to be removed
+public class MessageQueryResults {
+    let f : Folder
+    required init(withFolder folder: Folder) {
+        f = folder
+    }
 
+    var delegate: MessageQueryResultsDelegate?
 
-/// A controller that you use to start monitoring a Folder (like Inbox) and get updates through the
-/// MessageQueryResultsDelegate.
-protocol MessageQueryResults {
+    var count: Int {
+        return 0
+    }
 
-    /// Init
-    ///
-    /// - Parameter folder: set a folder to monitor, receive messages updates, apply filters and
-    /// do searches. Messages will be ordered by date.
-    init(withFolder folder: Folder)
+    subscript(index: Int) -> Message {
+        return Message(uuid: UUID.init().uuidString, parentFolder: f)
+    }
 
-    var delegate: MessageQueryResultsDelegate? { get set }
+    func startMonitoring() throws {
 
-    /// Folder messages, after applying filter and search
-    subscript(index: Int) -> Message { get }
+    }
 
-    /// Folder messages amount, after applying filter and search
-    func count() -> Int
+    func set(filter: MessageQueryResultsFilter?) throws {
 
-    /// Fetches query results in results and starts monitoring changes.
-    ///
-    /// - Throws:   If the fetch is not successful, upon return contains an error object that
-    ///             describes the problem
-    func startMonitoring() throws
+    }
 
-    /// Set a filter to messages. When a new filter is set and already called startMonitoring(), results array
-    /// will be updated and ready to use. Filtered updates through MessageQueryResultsDelegate
-    ///
-    /// Note: must call startMonitoring() previously or after to get filter results and updates.
-    ///
-    /// - Parameter filter: filter to apply inside the folder. Set to nil to disable the filter.
-    /// - Throws:   If the fetch is not successful, upon return contains an error object that
-    ///             describes the problem
-    func set(filter: MessageQueryResultsFilter?) throws
+    func set(search: MessageQueryResultsSearch?) throws {
 
-
-    /// Set a search in the folder. When a new search is set and already called startMonitoring(), results array
-    /// will be updated and ready to use. Search updates through MessageQueryResultsDelegate
-    ///
-    /// - Parameter search: search to do inside the folder. Set to nil to disable the search.
-    /// - Throws:   If the fetch is not successful, upon return contains an error object that
-    ///             describes the problem
-    func set(search: MessageQueryResultsSearch?) throws
+    }
 }
 
 

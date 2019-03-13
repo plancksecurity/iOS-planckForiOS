@@ -31,7 +31,7 @@ extension PrimarySplitViewController: ScreenComposerProtocol {
         }
         vc.appConfig = singleViewController.appConfig
         let viewModel = ThreadedEmailViewModel(tip:message, folder: folder)
-        viewModel.emailDisplayDelegate = emailListViewModel
+        viewModel.emailDisplayDelegate = emailListViewModel as! EmailDisplayDelegate
         vc.model = viewModel
         nav.viewControllers[nav.viewControllers.count - 1] = vc
         emailListViewModel.currentDisplayedMessage = viewModel

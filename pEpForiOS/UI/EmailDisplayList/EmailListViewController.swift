@@ -80,10 +80,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private func setup() {
 
-        if (model == nil) {
-            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
-        }
-
         if let accountExists = model?.noAccountsExist(),
             accountExists {
             // No account exists. Show account setup.
@@ -1018,7 +1014,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.message = message
             vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //that looks wrong
-            vc.delegate = model
+            vc.delegate = model as! EmailDisplayDelegate
             model?.currentDisplayedMessage = vc
       //  case .segueShowThreadedEmail:
         /*    guard let nav = segue.destination as? UINavigationController,

@@ -50,13 +50,15 @@ public class FolderViewModel {
 
     func createEmailListViewModel(forAccountAt accountIndex: Int?, andFolderAt folderIndex: Int?,
                                   messageSyncService: MessageSyncServiceProtocol)
-        -> EmailListViewModel {
+        -> EmailListViewModel? {
             guard let safeAccountIndex = accountIndex,
                 let safeFolderIndex = folderIndex else {
-                    return EmailListViewModel(messageSyncService: messageSyncService)
+                    return nil
             }
             return EmailListViewModel(messageSyncService: messageSyncService,
-                                      folderToShow: self[safeAccountIndex][safeFolderIndex].folder)
+                                      messageQueryResults: MessageQueryResults(withFolder:
+                self[safeAccountIndex][safeFolderIndex].folder)
+            )
     }
     
     func refreshFolderList() {
