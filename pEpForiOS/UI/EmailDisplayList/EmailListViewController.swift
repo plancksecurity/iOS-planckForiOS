@@ -769,10 +769,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
 
     func emailListViewModel(viewModel: EmailListViewModel, didUpdateDataAt indexPaths: [IndexPath]) {
         lastSelectedIndexPath = tableView.indexPathForSelectedRow
-
-        tableView.beginUpdates()
         tableView.reloadRows(at: indexPaths, with: .none)
-        tableView.endUpdates()
         for indexPath in indexPaths {
             resetSelectionIfNeeded(for: indexPath)
         }
