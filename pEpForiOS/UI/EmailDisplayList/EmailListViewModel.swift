@@ -84,8 +84,8 @@ class EmailListViewModel {
          messageSyncService: MessageSyncServiceProtocol,
          folderToShow: Folder = UnifiedInbox(),
          messageQueryResults: MessageQueryResults) {
-        self.messageQueryResults = messageQueryResults
 
+        self.messageQueryResults = messageQueryResults
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 
@@ -93,7 +93,17 @@ class EmailListViewModel {
         self.defaultFilter = folderToShow.filter?.clone()
         self.oldThreadSetting = AppSettings.threadedViewEnabled
         
-        resetViewModel()        
+        resetViewModel()
+
+    }
+
+    func startMonitoring() {
+        do {
+            try messageQueryResults.startMonitoring()
+        } catch {
+            Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")
+        }
+
     }
 
     func updateLastLookAt() {
