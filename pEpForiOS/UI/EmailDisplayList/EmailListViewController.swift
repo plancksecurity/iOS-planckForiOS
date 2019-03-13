@@ -759,9 +759,7 @@ extension EmailListViewController: EmailListViewModelDelegate {
             swipeDelete.fulfill(with: .delete)
             self.swipeDelete = nil
         } else {
-            tableView.beginUpdates()
             tableView.deleteRows(at: indexPaths, with: .automatic)
-            tableView.endUpdates()
         }
         if let lastSelectedIndexPath = lastSelectedIndexPath,
             indexPaths.contains(lastSelectedIndexPath) {
