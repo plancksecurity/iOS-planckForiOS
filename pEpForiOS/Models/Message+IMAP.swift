@@ -60,7 +60,7 @@ extension Message {
                 "This method must not be called for messages in local folders.")
             return
         }
-        guard let trashFolder = parent.account.folder(ofType: .trash) else {
+        guard let trashFolder = parent.account.firstFolder(ofType: .trash) else {
             Logger.modelLogger.errorAndCrash(
                 "We should have a trash folder at this point")
             return

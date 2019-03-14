@@ -16,13 +16,13 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testResultDelegate: TestResultDelegate?
     var vm: ComposeViewModel?
     var outbox: Folder? {
-        return account.folder(ofType: .outbox)
+        return account.firstFolder(ofType: .outbox)
     }
     var drafts: Folder? {
-        return account.folder(ofType: .drafts)
+        return account.firstFolder(ofType: .drafts)
     }
     var sent: Folder? {
-        return account.folder(ofType: .sent)
+        return account.firstFolder(ofType: .sent)
     }
 
     override func setUp() {
@@ -1418,7 +1418,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                          bccSet: Bool = false,
                          attachmentsSet: Bool = false) -> Message {
         let folder = Folder(name: "\(parentType)",
-            parent: parentType == .inbox ? nil : account.folder(ofType: .inbox),
+            parent: parentType == .inbox ? nil : account.firstFolder(ofType: .inbox),
             account: account,
             folderType: parentType)
         folder.save()

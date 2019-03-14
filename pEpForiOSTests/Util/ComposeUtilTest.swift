@@ -478,7 +478,7 @@ class ComposeUtilTest: CoreDataDrivenTestBase {
                                        tos: [Identity],
                                        ccs: [Identity],
                                        bccs: [Identity]) -> Message {
-        guard let parentFolder = account.folder(ofType: type) else {
+        guard let parentFolder = account.firstFolder(ofType: type) else {
             fatalError("No folder." +
                 "Sorry, I had to crash here. The burn or buy bill would be too negative " +
                 "returning an Optional ")
