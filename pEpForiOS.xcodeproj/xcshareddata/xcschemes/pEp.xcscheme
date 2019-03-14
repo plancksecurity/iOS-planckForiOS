@@ -56,20 +56,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4363AE8F2216CCBB00CCC988"
-               BuildableName = "PantomimeFramework.framework"
-               BlueprintName = "PantomimeFramework"
-               ReferencedContainer = "container:../pantomime-iOS/Pantomime.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43E3985A221D7E56008E7983"
                BuildableName = "PEPObjCAdapterFramework.framework"
                BlueprintName = "PEPObjCAdapterFramework"
@@ -116,6 +102,20 @@
                BuildableName = "ldns_xcode.framework"
                BlueprintName = "ldns-xcode"
                ReferencedContainer = "container:../ldns/xcode/ldns-xcode/ldns-xcode.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4329CA572238FCBF007D377E"
+               BuildableName = "PantomimeFramework.framework"
+               BlueprintName = "PantomimeFramework"
+               ReferencedContainer = "container:../pantomime-iOS/PantomimeFramework/PantomimeFramework.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
