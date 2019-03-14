@@ -60,7 +60,11 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         let account = givenThereIsAnAccountWithAFolder()
         givenThereIsAViewModel(withUniFiedInBox: false, and: [account])
         let emailListViewModel = viewmodel.createEmailListViewModel(forAccountAt: 0, andFolderAt: 0, messageSyncService: MessageSyncServiceMock())
-        let folderName = emailListViewModel.folderToShow.name
+        guard let emailListVM = emailListViewModel else {
+            XCTFail()
+            return
+        }
+        let folderName = emailListVM.folderToShow.name
         XCTAssertEqual(folderName, Input.folderName)
     }
     

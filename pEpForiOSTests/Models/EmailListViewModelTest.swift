@@ -464,12 +464,12 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let msgsyncservice = MessageSyncService()
         self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
                                               messageSyncService: msgsyncservice,
-                                              folderToShow: folder)
+                                              folderToShow: folder, messageQueryResults: MessageQueryResults(withFolder: folder))
 
     }
 
     fileprivate func setUpMessageFolderDelegate() {
-        self.server = TestServer(messageFolderDelegate: emailListVM)
+        //self.server = TestServer(messageFolderDelegate: emailListVM)
     }
 
     fileprivate func setupViewModel() {
@@ -564,6 +564,14 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 }
 
 class TestMasterViewController: EmailListViewModelDelegate {
+    func willReceiveUpdates(viewModel: EmailListViewModel) {
+        <#code#>
+    }
+
+    func allUpdatesReceived(viewModel: EmailListViewModel) {
+        <#code#>
+    }
+
     var expectationUpdateViewCalled: XCTestExpectation?
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
     var expectationDidUpdateDataAtCalled: XCTestExpectation?
