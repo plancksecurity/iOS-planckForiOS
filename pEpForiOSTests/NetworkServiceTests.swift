@@ -267,23 +267,19 @@ class NetworkServiceTests: XCTestCase {
             }
         }
 
-        func didUpdate(messageFolder: MessageFolder) {
-            if let msg = messageFolder as? Message {
-                // messages has been changed during the test
-                XCTAssertNotNil(messagesByID[msg.messageID])
-                add(message: msg)
-                changedMessagesByID[msg.messageID] = msg
-            }
+        func didUpdate(message: Message) {
+            // messages has been changed during the test
+            XCTAssertNotNil(messagesByID[message.messageID])
+            add(message: message)
+            changedMessagesByID[message.messageID] = message
         }
 
-        func didDelete(messageFolder: MessageFolder) {
+        func didDelete(message: Message) {
             // this message has been deleted from the start, ignore
         }
 
-        func didCreate(messageFolder: MessageFolder) {
-            if let msg = messageFolder as? Message {
-                add(message: msg)
-            }
+        func didCreate(message: Message) {
+            add(message: message)
         }
     }
 }

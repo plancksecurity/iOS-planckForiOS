@@ -175,9 +175,7 @@ class DecryptionTestsInternal: XCTestCase {
         }
 
         cdMsg.parent = cdInbox
-        cdMsg.bodyFetched = true
 
-        XCTAssertTrue(cdMsg.bodyFetched)
         XCTAssertFalse(cdMsg.imap?.localFlags?.flagDeleted ?? true)
         XCTAssertEqual(cdMsg.pEpRating, PEPUtil.pEpRatingNone)
         if shouldEncrypt {

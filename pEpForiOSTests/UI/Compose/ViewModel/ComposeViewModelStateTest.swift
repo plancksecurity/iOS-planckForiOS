@@ -13,8 +13,6 @@ import MessageModel
 import PEPObjCAdapterFramework
 
 class ComposeViewModelStateTest: CoreDataDrivenTestBase {
-    /// Async PEPSession calls that take quite some time
-    let asyncPEPSessionCallWaitTime = 2.0
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
     var draftedMessageAllButBccSet: Message?
@@ -102,7 +100,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         assertValidatation(expectedStateIsValid: false,
                            expectedNewRating: nil)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testValidate_changeTos_grey() {
@@ -110,7 +108,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .unencrypted)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testValidate_changeTos_green() {
@@ -118,7 +116,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testValidate_changeCcs_grey() {
@@ -126,7 +124,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .unencrypted)
         testee?.ccRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     func testValidate_changeCCs_green() {
@@ -134,7 +132,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .trustedAndAnonymized)
         testee?.ccRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
     }
 
     // MARK: - edited
@@ -228,7 +226,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
         // ... and assert can toggle works correctly
         guard let canToggleProtection = testee?.userCanToggleProtection() else {
             XCTFail()
@@ -245,7 +243,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
-        waitForExpectations(timeout: asyncPEPSessionCallWaitTime)
+        waitForExpectations(timeout: UnitTestUtils.asyncWaitTime)
         // ... set BCC ...
         testDelegate?.ignoreAll = true
         testee?.bccRecipients = recipients

@@ -18,7 +18,7 @@ import PantomimeFramework
 class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testComp() {
         guard let f = SyncFoldersFromServerOperation(parentName: #function,
-                                                                 imapSyncData: imapSyncData)
+                                                     imapSyncData: imapSyncData)
             else {
                 XCTFail()
                 return

@@ -107,7 +107,7 @@ class EmailListViewModel {
             return false
         }
     }
-    
+
     //check if there are some important settings that have changed to force a reload
     func checkIfSettingsChanged() -> Bool {
         if AppSettings.threadedViewEnabled != oldThreadSetting {
@@ -337,7 +337,7 @@ class EmailListViewModel {
                 "Not sure if this is a valid case. Remove this log if so.")
             return
         }
-        didDelete(messageFolder: deletedMessage)
+        didDelete(message: deletedMessage)
     }
 
     private func deleteMessage(at indexPath: IndexPath) -> Message? {
