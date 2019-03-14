@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import MessageModel
 
+import MessageModel
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {
