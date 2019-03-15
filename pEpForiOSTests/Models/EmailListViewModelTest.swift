@@ -17,7 +17,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     var emailListVM : EmailListViewModel!
     var server: TestServer!
     var masterViewController: TestMasterViewController!
-    var messageQueryResults: MessageQueryResults!
+    //var messageQueryResults: MessageQueryResults!
 
     /** this set up a view model with one account and one folder saved **/
     override func setUp() {
@@ -32,8 +32,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
                              account: folder.account,
                              folderType: .trash)
         trashFolder.save()
-        messageQueryResults = MessageQueryResults(withFolder: folder)
-        test
+        //messageQueryResults = MessageQueryResults(withFolder: folder)
+        server = TestServer(withFolder: folder)
     }
 
     // MARK: - Test section
@@ -337,7 +337,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
-        setUpMessageFolderDelegate()
+        //setUpMessageFolderDelegate()
         setUpViewModelExpectations(expectationDidInsertDataAt: true)
         let msg = TestUtil.createMessage(inFolder: folder, from: folder.account.user)
         msg.save()
@@ -365,7 +365,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertFalse((msg.imapFlags?.flagged)!)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 11)
-        setUpMessageFolderDelegate()
+        //setUpMessageFolderDelegate()
         setUpViewModelExpectations(expectationDidUpdateDataAt: true)
         msg.imapFlags?.flagged = true
         msg.save()
@@ -398,7 +398,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertFalse((msg.imapFlags?.flagged)!)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 11)
-        setUpMessageFolderDelegate()
+        //setUpMessageFolderDelegate()
         setUpViewModelExpectations(expectationDidDeleteDataAt: true)
         msg.delete()
         server.deleteData(message: msg)
@@ -468,18 +468,12 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let msgsyncservice = MessageSyncService()
         self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
                                               messageSyncService: msgsyncservice,
-                                              folderToShow: folder, messageQueryResults: messageQueryResults)
-
-    }
-
-    fileprivate func setServer() {
-        self.server = TestServer(messageQueryResults: messageQueryResults)
+                                              folderToShow: folder, messageQueryResults: server)
 
     }
 
     fileprivate func setupViewModel() {
         createViewModelWithExpectations(expectedUpdateView: true)
-        setServer()
     }
 
     fileprivate func setSearchFilter(text: String) {
@@ -660,28 +654,42 @@ class TestMasterViewController: EmailListViewModelDelegate {
     }
 }
 
-class TestServer {
-    var messageQueryResults : MessageQueryResults
+class TestServer: MessageQueryResults {
     var results: [Message] = [Message]()
-    init(messageQueryResults: MessageQueryResults) {
-        self.messageQueryResults = messageQueryResults
+
+    required init(withFolder folder: Folder) {
+        super.init(withFolder: folder)
     }
+
+
+    override var count: Int {
+        return results.count
+    }
+
+    override subscript(index: Int) -> Message {
+        return results[index]
+    }
+
+    override func startMonitoring() throws {
+
+    }
+
     func insertData(message: Message) {
         results.append(message)
         let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
-        self.messageQueryResults.delegate?.didInsert(indexPath: ip)
+        delegate?.didInsert(indexPath: ip)
     }
 
     func updateData(message: Message) {
         let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
-        self.messageQueryResults.delegate?.didUpdate(indexPath: ip)
+        delegate?.didUpdate(indexPath: ip)
     }
 
     func deleteData(message: Message) {
         let index = results.firstIndex(of: message)
         results.remove(at: index!)
         let ip = IndexPath(row: index!, section: 0)
-        self.messageQueryResults.delegate?.didDelete(indexPath: ip)
+        delegate?.didDelete(indexPath: ip)
     }
 
     func insertMessagesWithoutDelegate(messages: [Message]) {
