@@ -564,13 +564,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 }
 
 class TestMasterViewController: EmailListViewModelDelegate {
-    func willReceiveUpdates(viewModel: EmailListViewModel) {
-        <#code#>
-    }
 
-    func allUpdatesReceived(viewModel: EmailListViewModel) {
-        <#code#>
-    }
 
     var expectationUpdateViewCalled: XCTestExpectation?
     var excpectationDidInsertDataAtCalled: XCTestExpectation?
@@ -586,6 +580,14 @@ class TestMasterViewController: EmailListViewModelDelegate {
         self.excpectationDidInsertDataAtCalled = expectationDidInsertDataAt
         self.expectationDidUpdateDataAtCalled = expectationDidUpdateDataAt
         self.expectationDidRemoveDataAtCalled = expectationDidRemoveDataAt
+    }
+
+    func willReceiveUpdates(viewModel: EmailListViewModel) {
+        //not yet defined
+    }
+
+    func allUpdatesReceived(viewModel: EmailListViewModel) {
+        //not yet defined
     }
 
     func emailListViewModel(viewModel: EmailListViewModel,
@@ -653,20 +655,27 @@ class TestMasterViewController: EmailListViewModelDelegate {
 }
 
 class TestServer {
-    var messageFolderDelegate : MessageFolderDelegate
-    init(messageFolderDelegate: MessageFolderDelegate) {
+    var messageFolderDelegate : MessageQueryResults
+    var results: [Message] = [Message]()
+    init(messageFolderDelegate: MessageQueryResults) {
         self.messageFolderDelegate = messageFolderDelegate
     }
     func insertData(message: Message) {
-        self.messageFolderDelegate.didCreate(messageFolder: message)
+        results.append(message)
+        let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
+        self.messageFolderDelegate.delegate?.didInsert(indexPath: ip)
     }
 
     func updateData(message: Message) {
-        self.messageFolderDelegate.didUpdate(messageFolder: message)
+        let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
+        self.messageFolderDelegate.delegate?.didUpdate(indexPath: ip)
     }
 
     func deleteData(message: Message) {
-        self.messageFolderDelegate.didDelete(messageFolder: message)
+        let index = results.firstIndex(of: message)
+        results.remove(at: index!)
+        let ip = IndexPath(row: index!, section: 0)
+        self.messageFolderDelegate.delegate?.didDelete(indexPath: ip)
     }
 }
 
