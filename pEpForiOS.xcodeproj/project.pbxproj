@@ -1576,13 +1576,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		15F0F7AB21359372002BE853 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Filter;
-			sourceTree = "<group>";
-		};
 		15F82A072006552B0084F9EA /* Tests from MessageModel in Exile due to Apple Bug */ = {
 			isa = PBXGroup;
 			children = (
@@ -2071,7 +2064,6 @@
 		43E58EB21CBF8301008AA7A7 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				15F0F7AB21359372002BE853 /* Filter */,
 				15F835231F34BE1300FCE887 /* AccountUserInput.swift */,
 				43CE63C41DE87FB200FAC505 /* Identity+pEp.swift */,
 				155475632137FD96005A52D0 /* FolderType+Extensions.swift */,
