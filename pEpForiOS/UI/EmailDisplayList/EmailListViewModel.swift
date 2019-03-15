@@ -99,6 +99,7 @@ class EmailListViewModel {
 
     func startMonitoring() {
         do {
+            self.messageQueryResults.delegate = self
             try messageQueryResults.startMonitoring()
         } catch {
             Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")

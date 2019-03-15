@@ -45,7 +45,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     func test10MessagesInInitialSetup() {
-        TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
+        let msg = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
@@ -655,27 +655,31 @@ class TestMasterViewController: EmailListViewModelDelegate {
 }
 
 class TestServer {
-    var messageFolderDelegate : MessageQueryResults
+    var messageQueryResults : MessageQueryResults
     var results: [Message] = [Message]()
-    init(messageFolderDelegate: MessageQueryResults) {
-        self.messageFolderDelegate = messageFolderDelegate
+    init(messageQueryResults: MessageQueryResults) {
+        self.messageQueryResults = messageQueryResults
     }
     func insertData(message: Message) {
         results.append(message)
         let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
-        self.messageFolderDelegate.delegate?.didInsert(indexPath: ip)
+        self.messageQueryResults.delegate?.didInsert(indexPath: ip)
     }
 
     func updateData(message: Message) {
         let ip = IndexPath(row: results.firstIndex(of: message)!, section: 0)
-        self.messageFolderDelegate.delegate?.didUpdate(indexPath: ip)
+        self.messageQueryResults.delegate?.didUpdate(indexPath: ip)
     }
 
     func deleteData(message: Message) {
         let index = results.firstIndex(of: message)
         results.remove(at: index!)
         let ip = IndexPath(row: index!, section: 0)
-        self.messageFolderDelegate.delegate?.didDelete(indexPath: ip)
+        self.messageQueryResults.delegate?.didDelete(indexPath: ip)
+    }
+
+    func insertMessagesWithoutDelegate(messages: [Message]) {
+        results.append(contentsOf: messages)
     }
 }
 
