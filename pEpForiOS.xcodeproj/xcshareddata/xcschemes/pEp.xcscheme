@@ -171,16 +171,6 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "43E854CE1CB7EA9B006867C0"
-               BuildableName = "PantomimeTests.xctest"
-               BlueprintName = "PantomimeTests"
-               ReferencedContainer = "container:../pantomime-iOS/Pantomime.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "43CB608A1DA4EB4E0015281E"
                BuildableName = "MessageModelTests.xctest"
                BlueprintName = "MessageModelTests"
