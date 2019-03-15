@@ -17,6 +17,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     var emailListVM : EmailListViewModel!
     var server: TestServer!
     var masterViewController: TestMasterViewController!
+    var messageQueryResults: MessageQueryResults!
 
     /** this set up a view model with one account and one folder saved **/
     override func setUp() {
@@ -31,6 +32,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
                              account: folder.account,
                              folderType: .trash)
         trashFolder.save()
+        messageQueryResults = MessageQueryResults(withFolder: folder)
+        test
     }
 
     // MARK: - Test section
@@ -46,6 +49,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func test10MessagesInInitialSetup() {
         let msg = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
+        server.insertMessagesWithoutDelegate(messages: msg)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
@@ -464,16 +468,18 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let msgsyncservice = MessageSyncService()
         self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
                                               messageSyncService: msgsyncservice,
-                                              folderToShow: folder, messageQueryResults: MessageQueryResults(withFolder: folder))
+                                              folderToShow: folder, messageQueryResults: messageQueryResults)
 
     }
 
-    fileprivate func setUpMessageFolderDelegate() {
-        //self.server = TestServer(messageFolderDelegate: emailListVM)
+    fileprivate func setServer() {
+        self.server = TestServer(messageQueryResults: messageQueryResults)
+
     }
 
     fileprivate func setupViewModel() {
         createViewModelWithExpectations(expectedUpdateView: true)
+        setServer()
     }
 
     fileprivate func setSearchFilter(text: String) {
