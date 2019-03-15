@@ -494,20 +494,8 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     }
 
     fileprivate func createViewModelWithExpectations(expectedUpdateView: Bool) {
-        var viewModelTestDelegate : TestMasterViewController?
-
-        if expectedUpdateView {
-            let updateViewExpectation = expectation(description: "UpdateViewCalled")
-            viewModelTestDelegate = TestMasterViewController(
-                expectationUpdateView: updateViewExpectation)
-        }
-        guard let vmTestDelegate = viewModelTestDelegate else {
-            XCTFail()
-            return
-        }
-        self.masterViewController = viewModelTestDelegate
-        setUpViewModel(masterViewController: vmTestDelegate)
-        waitForExpectations(timeout: TestUtil.waitTime)
+        let viewModelTestDelegate = TestMasterViewController()
+        setUpViewModel(masterViewController: viewModelTestDelegate)
     }
 
     fileprivate func setUpViewModelExpectations(expectedUpdateView: Bool = false,
