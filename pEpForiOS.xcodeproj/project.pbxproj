@@ -1072,14 +1072,6 @@
 			path = SecureWebViewController;
 			sourceTree = "<group>";
 		};
-		151F71D02029F9F80057C74D /* IMAP */ = {
-			isa = PBXGroup;
-			children = (
-				15A75CE7202DE65700C0DA28 /* VirtualMailbox */,
-			);
-			path = IMAP;
-			sourceTree = "<group>";
-		};
 		151F71EB202A06750057C74D /* TestUtils */ = {
 			isa = PBXGroup;
 			children = (
@@ -1931,7 +1923,6 @@
 			isa = PBXGroup;
 			children = (
 				B70A3A9022089D3C00EDCE61 /* Log */,
-				151F71D02029F9F80057C74D /* IMAP */,
 				4362398D1EAE08F400BD2EB9 /* Extensions */,
 				B740B7571E4B1B80002585E1 /* MimeTypes */,
 				43306EBC1FE125950045DD00 /* OAuth2 */,
