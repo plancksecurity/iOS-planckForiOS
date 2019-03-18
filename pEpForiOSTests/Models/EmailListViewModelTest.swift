@@ -122,6 +122,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertFalse(unreadActive)
 
         setupViewModel()
+        emailListVM.startMonitoring()
 
         let filter = CompositeFilter<FilterBase>()
         filter.add(filter: UnreadFilter())
@@ -139,7 +140,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testGetFlagAndMoreAction() {
         let messages = TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
         setupViewModel()
-
+        emailListVM.startMonitoring()
         var flagAction = emailListVM.getFlagAction(forMessageAt: 0)
         let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
 
@@ -157,6 +158,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testGetFlagAndMoreActionInOutgoingFolderIsNil() {
         givenThereIsAMessageIn(folderType: .outbox)
         setupViewModel()
+        emailListVM.startMonitoring()
 
         let flagAction = emailListVM.getFlagAction(forMessageAt: 0)
         let moreAction = emailListVM.getMoreAction(forMessageAt: 0)
@@ -226,6 +228,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testSetSearchFilterWith0results() {
         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder)
         setupViewModel()
+        emailListVM.startMonitoring()
         setSearchFilter(text: "blabla@blabla.com")
         XCTAssertEqual(emailListVM.rowCount, 0)
     }
