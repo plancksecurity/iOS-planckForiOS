@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MessageModel
 
 extension EmailListViewModel : MessageQueryResultsDelegate {
     

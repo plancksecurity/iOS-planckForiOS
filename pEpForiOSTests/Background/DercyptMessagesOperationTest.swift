@@ -33,10 +33,10 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         message.setUID(1)
         guard let msg = CdMessage.insertOrUpdate(  pantomimeMessage: message,
                                                    account: cdAccount,
-                                                   messageUpdate: CWMessageUpdate.newComplete(),
-                                                   forceParseAttachments: true) else {
-                                                    XCTFail("error parsing message")
-                                                    return
+                                                   messageUpdate: CWMessageUpdate.newComplete())
+            else {
+                XCTFail("error parsing message")
+                return
         }
 
         guard let cur = CdMessage.search(message: message, inAccount: cdAccount) else {

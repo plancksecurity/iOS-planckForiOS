@@ -86,7 +86,7 @@ public class UnifiedInbox: Folder {
             return theFilter.fulfillsFilter(message: message)
         }
 
-        var result = !message.isGhost && message.parent.folderType == .inbox
+        var result = !(message.imapFlags?.deleted ?? false) && message.parent.folderType == .inbox
         if !markedForMoveToFolderAreContained {
             result =
                 result && (message.targetFolder == nil || message.targetFolder == message.parent)

@@ -122,7 +122,7 @@ class EmailListViewModel {
             return false
         }
     }
-    
+
     //check if there are some important settings that have changed to force a reload
     func checkIfSettingsChanged() -> Bool {
         if AppSettings.threadedViewEnabled != oldThreadSetting {
@@ -646,67 +646,4 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
             reloadData()
         }
     }
-}
-
-
-//!!!: Mock to be removed
-public class MessageQueryResults {
-    let f : Folder
-    required init(withFolder folder: Folder) {
-        f = folder
-    }
-
-    var delegate: MessageQueryResultsDelegate?
-
-    var count: Int {
-        return 0
-    }
-
-    subscript(index: Int) -> Message {
-        return Message(uuid: UUID.init().uuidString, parentFolder: f)
-    }
-
-    func startMonitoring() throws {
-
-    }
-
-    func set(filter: MessageQueryResultsFilter?) throws {
-
-    }
-
-    func set(search: MessageQueryResultsSearch?) throws {
-
-    }
-}
-
-
-/// Subscribers must conform to get notified about messages updates.
-///
-/// Note: filter and search should not be set, during updating results. That means after
-/// willChangeResults was call, and before didChangeResults is calls.
-///
-protocol MessageQueryResultsDelegate: class {
-    /// Call when an insert have been done in the results
-    /// - Parameter indexPath: indexPath of the new element inserted
-    func didInsert(indexPath: IndexPath)
-
-    /// Call when an element have been modify in the results
-    /// - Parameter indexPath: indexPath of the modified element
-    func didUpdate(indexPath: IndexPath)
-
-    /// Call when an element have been deleted of the results
-    /// - Parameter indexPath: indexPath of the deleted element
-    func didDelete(indexPath: IndexPath)
-
-    /// Call when an element have change position (moved) inside of the results
-    /// - Parameter from: original indexPath of the moved element
-    /// - Parameter to: destination indexPath of the moved element
-    func didMove(from: IndexPath, to: IndexPath)
-
-    /// Notifies the receiver that there will be one or more updates due to an insert, remove,
-    /// move, or update.
-    func willChangeResults()
-
-    /// Notifies the receiver that all updates have been completed. Results is updated
-    func didChangeResults()
 }

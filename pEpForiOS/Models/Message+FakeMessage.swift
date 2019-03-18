@@ -29,7 +29,7 @@ extension Message {
         fakeMsg.uuid = uuid
         CdMessage.create(withContentOf: fakeMsg)
         Record.saveAndWait()
-        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
+        MessageModelConfig.messageFolderDelegate?.didCreate(message: fakeMsg)
     }
 
     static public func createCdFakeMessage(for msg: Message) {
@@ -40,7 +40,7 @@ extension Message {
         fakeMsg.uuid = msg.uuid
         CdMessage.create(withContentOf: fakeMsg)
         Record.saveAndWait()
-        MessageModelConfig.messageFolderDelegate?.didCreate(messageFolder: fakeMsg)
+        MessageModelConfig.messageFolderDelegate?.didCreate(message: fakeMsg)
     }
 
     func saveFakeMessage(in targetFolder: Folder) {
