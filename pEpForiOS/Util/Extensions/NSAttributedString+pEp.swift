@@ -22,7 +22,15 @@ class ToMarkdownDelegate: NSAttributedStringParsingDelegate {
             let count = attachments.count
 
             let theID = MessageID.generateUUID()
-            let theExt = mimeUtil?.fileExtension(mimeType: theAttachment.mimeType) ?? "jpg"
+
+            let randomDefaultExtension = "jpg"
+            let theExt: String
+            if let mimeType = theAttachment.mimeType {
+                theExt = mimeUtil?.fileExtension(mimeType: mimeType) ?? randomDefaultExtension
+            } else {
+                theExt = randomDefaultExtension
+            }
+
             let cidBase = "attached-inline-image-\(count)-\(theExt)-\(theID)"
             let cidSrc = "cid:\(cidBase)"
             let cidUrl = "cid://\(cidBase)"

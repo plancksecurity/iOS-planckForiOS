@@ -449,10 +449,10 @@ extension CdMessage {
     }
     
     static private func informDelegate(messageUpdated cdMmessage:CdMessage) {
-        guard let msg = cdMmessage.message(), let flags = msg.imapFlags else {
+        guard let msg = cdMmessage.message() else {
             return
         }
-        if !flags.deleted {
+        if !msg.imapFlags.deleted {
             MessageModelConfig.messageFolderDelegate?.didUpdate(message: msg)
         } else {
             MessageModelConfig.messageFolderDelegate?.didDelete(message: msg)

@@ -18,7 +18,7 @@ extension Folder {
     }
 
     public func messageCount() -> Int {
-        return allCdMessagesCount(ignoringPepRating: showsMessagesNeverSeenByEngine)
+        return  allMessagesNonThreaded().count //allCdMessagesCount(ignoringPepRating: showsMessagesNeverSeenByEngine) //!!!: let CD count please
     }
 
     public func indexOf(message: Message) -> Int? {

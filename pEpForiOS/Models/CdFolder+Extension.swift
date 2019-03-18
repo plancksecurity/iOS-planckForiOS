@@ -141,7 +141,6 @@ public extension CdFolder {
         let folder = CdFolder.create(context: context)
         folder.name = folderName
         folder.account = account
-        folder.uuid = MessageID.generate()
         if let type = folderType {
             folder.folderType = type
         }

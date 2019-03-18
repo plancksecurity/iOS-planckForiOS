@@ -38,7 +38,7 @@ class ThreadedEmailViewModel {
         expandedMessages = Array(repeating: false, count: messages.count)
         
         for i in 0..<messages.count {
-            if !(messages[i].imapFlags?.seen ?? true) || i == messages.count - 1 {
+            if !messages[i].imapFlags.seen || i == messages.count - 1 {
                 markSeen(message: messages[i])
                 expandedMessages[i] = true
             }
@@ -117,7 +117,7 @@ class ThreadedEmailViewModel {
             return
         }
 
-        let flagStatus = (messages[index].imapFlags?.flagged ?? false)
+        let flagStatus = (messages[index].imapFlags.flagged ?? false)
         setFlag(to: !flagStatus, for: messages[index])
 
     }
@@ -129,7 +129,7 @@ class ThreadedEmailViewModel {
     }
 
     func setFlag(to status: Bool, for message: Message){
-        message.imapFlags?.flagged = status
+        message.imapFlags.flagged = status
         message.save()
         notifyFlag(status, message: message)
         delegate?.emailViewModeldidChangeFlag(viewModel: self)
@@ -137,7 +137,7 @@ class ThreadedEmailViewModel {
 
     func allMessagesFlagged() -> Bool {
         for message in messages {
-            if message.imapFlags?.flagged == false {
+            if message.imapFlags.flagged == false {
                 return false
             }
         }
@@ -195,9 +195,9 @@ class ThreadedEmailViewModel {
     }
 
     private func markSeen(message: Message?) {
-        let currentSeen = message?.imapFlags?.seen ?? false
+        let currentSeen = message?.imapFlags.seen ?? false
         if !currentSeen {
-            message?.imapFlags?.seen = true
+            message?.imapFlags.seen = true
             MessageModel.performAndWait {
                 message?.save()
             }

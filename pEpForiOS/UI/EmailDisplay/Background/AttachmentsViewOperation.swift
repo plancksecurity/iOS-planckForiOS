@@ -57,7 +57,14 @@ class AttachmentsViewOperation: Operation {
                     continue
                 }
             }
-            if (mimeTypes?.isImage(mimeType: att.mimeType) ?? false),
+
+            let isImage: Bool
+            if let mimeType = att.mimeType {
+                isImage = mimeTypes?.isImage(mimeType: mimeType) ?? false
+            } else {
+                isImage = false
+            }
+            if (isImage),
                 let imgData = att.data,
                 let img = UIImage.image(gifData: imgData) ?? UIImage(data: imgData) {
                 attachmentContainers.append(.imageAttachment(att, img))

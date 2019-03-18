@@ -53,7 +53,7 @@ extension Message {
         return PEP_rating.fromString(str: originalRatingStr)
     }
 
-    private func setOriginalRatingHeader(rating: String) {
+    private func setOriginalRatingHeader(rating: String) { //!!!: to MM please
         return optionalFields[Headers.originalRating.rawValue] = rating
     }
 
@@ -97,7 +97,8 @@ extension Message {
 
     private var ratingIsOkToShowAttachments: Bool {
         var isOkToShowAttachments = true
-        if let msgRatingInt = pEpRatingInt, let rating = PEPUtil.pEpRatingFromInt(msgRatingInt) {
+        let msgRatingInt = pEpRatingInt
+        if let rating = PEPUtil.pEpRatingFromInt(msgRatingInt) {
             isOkToShowAttachments = !rating.dontShowAttachments()
         }
         return isOkToShowAttachments

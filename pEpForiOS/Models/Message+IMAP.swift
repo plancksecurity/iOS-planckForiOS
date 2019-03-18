@@ -45,7 +45,7 @@ extension Message {
                 "This method must not be called for messages in local folders.")
             return
         }
-        let theFlags = imapFlags ?? ImapFlags()
+        let theFlags = imapFlags
         theFlags.deleted = true
         self.save()
     }

@@ -56,7 +56,7 @@ extension CdMessage {
         return msg
     }
 
-    @discardableResult public static func create(withContentOf msg: Message) -> CdMessage? {
+    @discardableResult public static func create(withContentOf msg: Message) -> CdMessage? {  //!!!: MUST NOT, be in app!?
         guard
             let cdParentFolder = msg.parent.cdFolder(),
             let from = msg.from?.cdIdentity() else {
@@ -69,14 +69,13 @@ extension CdMessage {
         createe.parent = cdParentFolder
 
         createe.imap = CdImapFields.create()
-        createe.imap?.imapFlags().uid = Int32(msg.uid)
 
-        createe.imap?.localFlags?.flagAnswered = msg.imapFlags?.answered ?? false
-        createe.imap?.localFlags?.flagDeleted = msg.imapFlags?.deleted ?? false
-        createe.imap?.localFlags?.flagDraft = msg.imapFlags?.draft ?? false
-        createe.imap?.localFlags?.flagFlagged = msg.imapFlags?.flagged ?? false
-        createe.imap?.localFlags?.flagRecent = msg.imapFlags?.recent ?? false
-        createe.imap?.localFlags?.flagSeen = msg.imapFlags?.seen ?? false
+        createe.imap?.localFlags?.flagAnswered = msg.imapFlags.answered
+        createe.imap?.localFlags?.flagDeleted = msg.imapFlags.deleted
+        createe.imap?.localFlags?.flagDraft = msg.imapFlags.draft
+        createe.imap?.localFlags?.flagFlagged = msg.imapFlags.flagged
+        createe.imap?.localFlags?.flagRecent = msg.imapFlags.recent
+        createe.imap?.localFlags?.flagSeen = msg.imapFlags.seen
 
         createe.shortMessage = msg.shortMessage
         createe.longMessage = msg.longMessage
@@ -86,7 +85,6 @@ extension CdMessage {
         createe.attachments = NSOrderedSet(array: cdAttachments)
 
         createe.sent = msg.sent
-        createe.received = msg.received
         createe.from = from
 
         let cdTos = msg.to.compactMap { $0.cdIdentity() }
@@ -98,18 +96,7 @@ extension CdMessage {
         let cdBccs = msg.bcc.compactMap { $0.cdIdentity() }
         createe.bcc = NSOrderedSet(array: cdBccs)
 
-        createe.receivedBy = msg.receivedBy?.cdIdentity()
-
-        let cdReplyTo = msg.replyTo.compactMap { $0.cdIdentity() }
-        createe.replyTo = NSOrderedSet(array: cdReplyTo)
-
-        createe.replace(referenceStrings: msg.references)
-        createe.keywords = NSSet(array: msg.keywords)
-        createe.comments = msg.comments
-
         createe.pEpRating = Int16(msg.pEpRating().rawValue)
-
-        createe.keysFromDecryption = NSOrderedSet(array: msg.keyListFromDecryption)
 
         return createe
     }

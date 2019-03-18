@@ -16,10 +16,10 @@ extension FolderType {
     ///
     /// - Returns:  If flags are defined for this type:: the flags.
     ///             nil otherwize
-    func defaultAppendImapFlags() -> Message.ImapFlags? {
+    func defaultAppendImapFlags() -> ImapFlags? {
         switch self {
         case .sent:
-            let result = Message.ImapFlags()
+            let result = ImapFlags()
             result.seen = true
             return result
         case .archive, .drafts, .inbox, .normal, .trash, .spam, .all, .flagged, .outbox:

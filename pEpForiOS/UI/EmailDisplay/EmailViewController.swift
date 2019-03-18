@@ -68,7 +68,7 @@ class EmailViewController: BaseTableViewController {
     // MARK: - UTIL
 
     private func updateFlaggedStatus() {
-        changeFlagButtonTo(flagged: message?.imapFlags?.flagged ?? false)
+        changeFlagButtonTo(flagged: message?.imapFlags.flagged ?? false)
     }
 
     internal func changeFlagButtonTo(flagged: Bool) {
@@ -147,7 +147,7 @@ class EmailViewController: BaseTableViewController {
         DispatchQueue.main.async {
             self.checkMessageReEvaluation()
 
-            if let message = self.message, !(message.imapFlags?.seen ?? false) {
+            if let message = self.message, !message.imapFlags.seen{
                 message.markAsSeen()
                 self.delegate?.emailDisplayDidChangeMarkSeen(message: message)
             }
@@ -387,11 +387,11 @@ class EmailViewController: BaseTableViewController {
             return
         }
 
-        if (message.imapFlags?.flagged == true) {
-            message.imapFlags?.flagged = false
+        if (message.imapFlags.flagged == true) {
+            message.imapFlags.flagged = false
             delegate?.emailDisplayDidUnflag(message: message)
         } else {
-            message.imapFlags?.flagged = true
+            message.imapFlags.flagged = true
             delegate?.emailDisplayDidFlag(message: message)
         }
         message.save()

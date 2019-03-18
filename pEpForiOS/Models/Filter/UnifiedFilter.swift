@@ -29,7 +29,7 @@ public class UnifiedFilter: FilterBase {
     public override func fulfillsFilter(message: Message) -> Bool {
         return message.parent.folderType == .inbox &&
             message.targetFolder == nil &&
-            !(message.imapFlags?.deleted ?? false)
+            !message.imapFlags.deleted
     }
 
     public override var hashValue: Int {

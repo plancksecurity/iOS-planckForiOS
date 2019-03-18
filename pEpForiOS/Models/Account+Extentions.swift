@@ -61,10 +61,7 @@ extension Account {
 
     static func emailConnectInfo(account: Account, server: Server,
                           credentials: ServerCredentials) -> EmailConnectInfo? {
-        guard
-            let emailProtocol = EmailProtocol(serverType: server.serverType),
-            let connectionTransport = server.transport
-            else {
+        guard let emailProtocol = EmailProtocol(serverType: server.serverType) else {
                 Logger.modelLogger.errorAndCrash("Missing emailProtocol")
                 return nil
         }
@@ -82,7 +79,7 @@ extension Account {
                                 networkAddressType: nil,
                                 networkTransportType: nil,
                                 emailProtocol: emailProtocol,
-                                connectionTransport: ConnectionTransport(fromInt: Int(connectionTransport.rawValue)),
+                                connectionTransport: ConnectionTransport(fromInt: Int(server.transport.rawValue)),
                                 authMethod: AuthMethod(string: server.authMethod),
                                 trusted: trusedServer)
     }

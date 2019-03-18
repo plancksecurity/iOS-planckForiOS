@@ -313,7 +313,7 @@ class EmailListViewModel {
         DispatchQueue.main.async { [] in
             previewMessage.isSeen = true
             let message = previewMessage.message()
-            message?.imapFlags?.seen = true
+            message?.imapFlags.seen = true
             message?.save()
         }
     }
@@ -325,7 +325,7 @@ class EmailListViewModel {
         DispatchQueue.main.async { [] in
             previewMessage.isSeen = false
             let message = previewMessage.message()
-            message?.imapFlags?.seen = false
+            message?.imapFlags.seen = false
             message?.save()
         }
     }
@@ -374,7 +374,7 @@ class EmailListViewModel {
                 return
         }
         previewMessage.isFlagged = flagged
-        message.imapFlags?.flagged = flagged
+        message.imapFlags.flagged = flagged
         DispatchQueue.main.async {
             message.save()
         }
@@ -403,7 +403,7 @@ class EmailListViewModel {
         if folderIsDraftOrOutbox(parentFolder) {
             return nil
         } else {
-            let flagged = messages.object(at: index)?.message()?.imapFlags?.flagged ?? false
+            let flagged = messages.object(at: index)?.message()?.imapFlags.flagged ?? false
             return flagged ? .unflag : .flag
         }
     }

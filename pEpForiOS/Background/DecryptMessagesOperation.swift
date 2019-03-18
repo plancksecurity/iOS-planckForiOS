@@ -179,7 +179,7 @@ public class DecryptMessagesOperation: ConcurrentBaseOperation {
         updateMessage(cdMessage: cdMessage, keys: keys, pEpMessageDict: decrypted, rating: rating)
     }
 
-    private func setFlags(_ flags: Message.ImapFlags?,
+    private func setFlags(_ flags: ImapFlags?,
                           toCdMessage cdMessage: CdMessage) {
         guard let imapFlags = flags else {
             // That's OK.

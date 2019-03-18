@@ -28,7 +28,7 @@ public class AttachmentFilter: FilterBase {
 
     public override func fulfillsFilter(message: Message) -> Bool {
         let viewableAttachments = message.attachments.filter {
-            !AttachmentFilter.unviewableMimeTypes.contains($0.mimeType.lowercased())
+            !AttachmentFilter.unviewableMimeTypes.contains($0.mimeType?.lowercased() ?? "DIRTY FIX - FILTER WILL BE REMOVED ANYWAY") //!!!:
         }
         return viewableAttachments.count > 0
     }

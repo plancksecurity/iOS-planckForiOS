@@ -74,7 +74,7 @@ public class AccountSettingsViewModel {
             if let server = account.smtpServer {
                 return ServerViewModel(address: server.address,
                                        port: "\(server.port)",
-                    transport: server.transport?.asString())
+                    transport: server.transport.asString())
             }
             return ServerViewModel()
         }
@@ -85,7 +85,7 @@ public class AccountSettingsViewModel {
             if let server = account.imapServer {
                 return ServerViewModel(address: server.address,
                                        port: "\(server.port)",
-                    transport: server.transport?.asString())
+                    transport: server.transport.asString())
             }
             return ServerViewModel()
         }
@@ -160,7 +160,10 @@ public class AccountSettingsViewModel {
                 Logger.frontendLogger.errorAndCrash("viewModel misses required data.")
                 return nil
         }
-        let transport = Server.Transport(fromString: viewModel.transport)
+        guard let transport = Server.Transport(fromString: viewModel.transport) else {
+            Log.shared.errorAndCrash(component: #function, errorString: "No transport")
+            return nil
+        }
 
         let credentials = ServerCredentials.create(loginName: loginName, key: key)
         if password != nil && password != "" {

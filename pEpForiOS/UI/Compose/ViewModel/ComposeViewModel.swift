@@ -169,7 +169,7 @@ class ComposeViewModel {
         }
         // Make sure the "draft" flag is not set to avoid the original msg will keep in virtual
         // mailboxes, that show all flagged messages.
-        om.imapFlags?.draft = false
+        om.imapFlags.draft = false
         om.imapMarkDeleted()
         resultDelegate?.composeViewModelDidDeleteMessage()
     }
@@ -576,7 +576,7 @@ extension ComposeViewModel {
             return
         }
         msg.parent = f
-        msg.imapFlags?.draft = true
+        msg.imapFlags.draft = true
         msg.sent = Date()
         Message.saveForAppend(msg: msg)
         if data.isDrafts {

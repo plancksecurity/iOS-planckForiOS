@@ -8,7 +8,7 @@
 
 import MessageModel
 
-extension Message.ImapFlags {
+extension ImapFlags {
 
     open func pantomimeFlags() -> CWFlags? {
         let n = Int(rawFlagsAsShort())

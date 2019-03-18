@@ -14,8 +14,11 @@ extension Attachment {
     /**
      Can this attachment be shown in the app?
      */
-    public func isViewable() -> Bool {  
-        if data == nil || AttachmentFilter.unviewableMimeTypes.contains(mimeType.lowercased()) {
+    public func isViewable() -> Bool {
+        guard let type = mimeType else {
+            return false
+        }
+        if data == nil || AttachmentFilter.unviewableMimeTypes.contains(type.lowercased()) {
             return false
         }
         return true

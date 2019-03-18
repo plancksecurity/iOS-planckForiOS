@@ -171,9 +171,7 @@ struct ComposeUtil {
             message.setOriginalRatingHeader(rating: state.rating)
         }
 
-        message.imapFlags?.seen = imapSeenState(forMessageToSend: message)
-
-        updateReferences(of: message, accordingTo: state)
+        message.imapFlags.seen = imapSeenState(forMessageToSend: message)
 
         return message
     }
@@ -183,25 +181,6 @@ struct ComposeUtil {
             return true
         } else {
             return false
-        }
-    }
-
-    static private func updateReferences(of message: Message,
-                                         accordingTo composeState:
-        ComposeViewModel.ComposeViewModelState) {
-        guard let composeMode = composeState.initData?.composeMode else {
-            Logger.utilLogger.errorAndCrash("No init data")
-            return
-        }
-        if composeMode == .replyFrom || composeMode == .replyAll,
-            let om = composeState.initData?.originalMessage {
-            // According to https://cr.yp.to/immhf/thread.html
-            var refs = om.references
-            refs.append(om.messageID)
-            if refs.count > 11 {
-                refs.remove(at: 1)
-            }
-            message.references = refs
         }
     }
 }

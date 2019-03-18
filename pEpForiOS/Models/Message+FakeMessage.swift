@@ -47,12 +47,12 @@ extension Message {
         let fakeMsg = Message(uid: Message.uidFakeResponsivenes,
                               message: self,
                               parentFolder: targetFolder)
-        if let origFlags = self.imapFlags {
-            // Take over user editable flags
-            fakeMsg.imapFlags?.flagged = origFlags.flagged
-            fakeMsg.imapFlags?.seen = origFlags.seen
-            fakeMsg.imapFlags?.answered = origFlags.answered
-        }
+        let origFlags = self.imapFlags
+        // Take over user editable flags
+        fakeMsg.imapFlags.flagged = origFlags.flagged
+        fakeMsg.imapFlags.seen = origFlags.seen
+        fakeMsg.imapFlags.answered = origFlags.answered
+
         fakeMsg.targetFolder = nil
         fakeMsg.save()
     }

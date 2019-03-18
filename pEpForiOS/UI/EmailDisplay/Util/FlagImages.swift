@@ -125,7 +125,7 @@ class FlagImages {
 
 extension FlagImages {
     public func flagsImage(message: Message) -> UIImage? {
-        let flagged = message.imapFlags?.flagged ?? false
+        let flagged = message.imapFlags.flagged
         if flagged {
             return flaggedImage
         } else {
