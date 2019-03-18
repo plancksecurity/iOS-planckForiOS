@@ -406,11 +406,11 @@ class TestUtil {
             } else {
                 message.sent = Date()
             }
-            message.addTo(cdIdentity: to)
+            message.addToTo(to)
 
             // add attachments
             if withAttachments {
-                message.addAttachment(cdAttachment: createCdAttachment(inlined: attachmentsInlined))
+                message.addToAttachments(createCdAttachment(inlined: attachmentsInlined))
             }
 
             messagesInTheQueue.append(message)
@@ -734,8 +734,7 @@ class TestUtil {
 
             guard let cdMessage = CdMessage.insertOrUpdate(
                 pantomimeMessage: pantomimeMail, account: cdMyAccount,
-                messageUpdate: CWMessageUpdate(),
-                forceParseAttachments: true) else {
+                messageUpdate: CWMessageUpdate()) else {
                     XCTFail()
                     return nil
             }
@@ -802,8 +801,7 @@ class TestUtil {
 
         guard let cdMessage = CdMessage.insertOrUpdate(
             pantomimeMessage: pantomimeMail, account: cdOwnAccount,
-            messageUpdate: CWMessageUpdate(),
-            forceParseAttachments: true) else {
+            messageUpdate: CWMessageUpdate()) else {
                 XCTFail()
                 return nil
         }

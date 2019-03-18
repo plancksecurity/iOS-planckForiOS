@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import pEpIOSToolbox
 
 class AttachmentSummaryView: UIView {
     /**

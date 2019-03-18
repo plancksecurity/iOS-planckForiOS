@@ -8,7 +8,7 @@
 
 import Foundation
 import XCTest
-
+@testable import pEpIOSToolbox
 @testable import pEpForiOS
 import MessageModel
 

@@ -7,7 +7,7 @@
 //
 
 import CoreData
-
+import pEpIOSToolbox
 import MessageModel
 
 /**
@@ -118,7 +118,7 @@ public class EncryptAndSendOperation: ConcurrentBaseOperation {
                 return
         }
         let rating = message.outgoingMessageRating().rawValue
-        MessageModelConfig.messageFolderDelegate?.didDelete(messageFolder: message)
+        MessageModelConfig.messageFolderDelegate?.didDelete(message: message)
         cdMessage.parent = sentFolder
         cdMessage.imap?.localFlags?.flagSeen = true
         cdMessage.pEpRating = Int16(rating)

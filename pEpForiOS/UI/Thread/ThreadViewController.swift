@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pEpIOSToolbox
 
 class ThreadViewController: BaseViewController {
     var barItems: [UIBarButtonItem]?

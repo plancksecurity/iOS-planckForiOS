@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import pEpIOSToolbox
 
 enum LoginCellType {
     case Text, Button
