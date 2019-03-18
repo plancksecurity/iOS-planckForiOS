@@ -40,23 +40,27 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testViewModelSetUp() {
         setupViewModel()
+        emailListVM.startMonitoring()
     }
 
     func testCleanInitialSetup() {
         setupViewModel()
+        emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 0)
     }
 
     func test10MessagesInInitialSetup() {
-        let msg = TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
-        server.insertMessagesWithoutDelegate(messages: msg)
+         TestUtil.createMessages(number: 10, engineProccesed: true, inFolder: folder, setUids: true)
+        //server.insertMessagesWithoutDelegate(messages: msg)
         setupViewModel()
+        emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 10)
     }
 
     func test10MessagesThatEngineHasNotProcessedYet() {
         TestUtil.createMessages(number: 10, engineProccesed: false, inFolder: folder)
         setupViewModel()
+        emailListVM.startMonitoring()
         XCTAssertEqual(emailListVM.rowCount, 0)
     }
 
@@ -82,6 +86,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     func testGetDestructiveAction() {
         TestUtil.createMessages(number: 1, engineProccesed: true, inFolder: folder)
         setupViewModel()
+        emailListVM.startMonitoring()
         let destructiveAction = emailListVM.getDestructiveActtion(forMessageAt: 0)
 
         XCTAssertEqual(destructiveAction, .trash)
@@ -468,7 +473,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let msgsyncservice = MessageSyncService()
         self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
                                               messageSyncService: msgsyncservice,
-                                              folderToShow: folder, messageQueryResults: server)
+                                              folderToShow: folder, messageQueryResults: MessageQueryResults(withFolder: folder))
 
     }
 
