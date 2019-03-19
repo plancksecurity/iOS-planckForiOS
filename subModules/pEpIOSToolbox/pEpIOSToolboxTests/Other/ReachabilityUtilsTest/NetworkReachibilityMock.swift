@@ -6,9 +6,8 @@
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-import XCTest
 import SystemConfiguration
-@testable import pEpForiOS
+@testable import pEpIOSToolbox
 
 
 class YesInternetReachabilityMock: NetworkReachabilityProtocol {

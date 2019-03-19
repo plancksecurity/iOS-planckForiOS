@@ -1,5 +1,5 @@
 //
-//  ReachabilityUtils.swift
+//  Reachability.swift
 //  pEp
 //
 //  Created by Alejandro Gelos on 11/02/2019.
@@ -40,7 +40,7 @@ public protocol ReachabilityDelegate: class {
 /// * call yourReachability.getConnectionStatus(
 ///    completion: { result in ...},
 ///    failure: { error in ...})
-public final class Reachability: ReachabilityUtilsProtocol {
+public final class Reachability: ReachabilityProtocol {
     public enum Connection: String {
         case notConnected, connected
     }

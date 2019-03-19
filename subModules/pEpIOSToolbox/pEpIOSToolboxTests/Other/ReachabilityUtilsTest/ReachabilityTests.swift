@@ -1,5 +1,5 @@
 //
-//  ReachabilityUtilsTests.swift
+//  ReachabilityTests.swift
 //  pEpForiOSTests
 //
 //  Created by Alejandro Gelos on 12/02/2019.
@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import pEpForiOS
+@testable import pEpIOSToolbox
 
 class ReachibilityUtilsTests: XCTestCase {
     
@@ -85,7 +85,7 @@ class ReachibilityUtilsTests: XCTestCase {
         yesReachability.startNotifier()
         
         // Then
-        waitForExpectations(timeout: TestUtil.waitTime)
+        waitForExpectations(timeout: TestUtils.waitTimeLocal)
     }
     
     func testStartNotifierNoInternet(){
@@ -104,7 +104,7 @@ class ReachibilityUtilsTests: XCTestCase {
         noReachability.startNotifier()
         
         // Then
-        waitForExpectations(timeout: TestUtil.waitTime)
+        waitForExpectations(timeout: TestUtils.waitTimeLocal)
     }
 }
 
