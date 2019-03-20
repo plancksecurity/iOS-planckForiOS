@@ -76,15 +76,21 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
          NotificationCenter.default.removeObserver(self)
     }
 
+    private func showLoginScreen() {
+        performSegue(withIdentifier:.segueAddNewAccount, sender: self)
+        return
+    }
+
     // MARK: - Setup
 
     private func setup() {
 
-        if let accountExists = model?.noAccountsExist(),
-            accountExists {
-            // No account exists. Show account setup.
-            performSegue(withIdentifier:.segueAddNewAccount, sender: self)
-            return
+        if let vm = model {
+            if vm.noAccountsExist() {
+                showLoginScreen()
+            }
+        } else {
+            showLoginScreen()
         }
 
         title = model?.getFolderName()
