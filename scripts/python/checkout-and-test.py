@@ -70,19 +70,19 @@ def install_secret_test_data(src_dir, target_dir):
         shutil.copyfile(src_path, target_path)
         print("copy {} -> {}".format(src_path, target_path))
 
-def run_tests(target_dir):
+def run_tests(target_dir, device_name):
     exec_path = os.path.join(target_dir, 'pEp_for_iOS')
 
     completed = subprocess.run(
         ['bash', '-l', '-c',
-         'xcodebuild test -workspace pEpForiOS.xcworkspace -scheme pEp -destination "name=iPhone X"'],
+         'xcodebuild test -workspace pEpForiOS.xcworkspace -scheme pEp -destination "name={}"'.format(device_name)],
         cwd=exec_path
     )
     return completed
 
-def run_tests_multiple(target_dir):
+def run_tests_multiple(target_dir, device_name):
     while True:
-        success = run_tests(target_dir)
+        success = run_tests(target_dir, device_name)
         if success.returncode == 0:
             break
 
@@ -103,16 +103,22 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Check out the project and build it.')
     parser.add_argument('--src-dir',
         dest='src_dir',
+        required=True,
         type=os.path.abspath,
         help='The pEp for iOS src directory for getting secret test data')
     parser.add_argument('--target-dir',
         dest='target_dir',
+        required=True,
         type=os.path.abspath,
         help='The target directory to which to checkout everything. WILL BE ERASED!')
+    parser.add_argument('--device-name',
+        dest='device_name',
+        required=True,
+        help='The device name to run the tests on. Run `instruments -s` to find out what you have.')
     args = parser.parse_args()
     
     rm_sub_dirs(args.target_dir)
     clone_repos(repos)
     install_secret_test_data(args.src_dir, args.target_dir)
     
-    run_tests_multiple(args.target_dir)
+    run_tests_multiple(args.target_dir, args.device_name)
