@@ -101,10 +101,12 @@ def clone_repos(repos):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Check out the project and build it.')
-    parser.add_argument('src_dir',
+    parser.add_argument('--src-dir',
+        dest='src_dir',
         type=os.path.abspath,
         help='The pEp for iOS src directory for getting secret test data')
-    parser.add_argument('target_dir',
+    parser.add_argument('--target-dir',
+        dest='target_dir',
         type=os.path.abspath,
         help='The target directory to which to checkout everything. WILL BE ERASED!')
     args = parser.parse_args()
