@@ -82,7 +82,7 @@ def run_tests(target_dir):
         ['xcodebuild','test','-workspace',
         'pEpForiOS.xcworkspace','-scheme','pEp',
         '-destination "name=iPhone X"'],
-        env=locale_env,
+        env=locale_env, shell=True
     )
     return completed
 
