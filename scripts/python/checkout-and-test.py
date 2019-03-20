@@ -5,7 +5,7 @@ import argparse
 import shutil
 from urllib.parse import urlparse
 
-# python3 scripts/python/checkout-and-build-all.py ~/projects/pEp/pEp_for_iOS ~/tmp/tmp-build/
+# python3 ~/projects/pEp/pEp_for_iOS/scripts/python/checkout-and-test.py ~/projects/pEp/pEp_for_iOS ~/tmp/tmp-build/
 
 class Repo:
     def __init__(self, url, branch = 'default'):
