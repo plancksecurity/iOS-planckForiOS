@@ -71,18 +71,12 @@ def install_secret_test_data(src_dir, target_dir):
         print("copy {} -> {}".format(src_path, target_path))
 
 def run_tests(target_dir):
-    os.chdir(target_dir)
-    os.chdir('pEp_for_iOS')
-
-    locale_env = os.environ
-    locale_env['LC_ALL'] = 'en_US.UTF-8'
-    locale_env['LANG'] = 'en_US.UTF-8'
+    exec_path = os.path.join(target_dir, 'pEp_for_iOS')
 
     completed = subprocess.run(
-        ['xcodebuild','test','-workspace',
-        'pEpForiOS.xcworkspace','-scheme','pEp',
-        '-destination "name=iPhone X"'],
-        env=locale_env, shell=True
+        ['bash', '-l', '-c',
+         'xcodebuild test -workspace pEpForiOS.xcworkspace -scheme pEp -destination "name=iPhone X"'],
+        cwd=exec_path
     )
     return completed
 
@@ -119,4 +113,4 @@ if __name__ == '__main__':
     clone_repos(repos)
     install_secret_test_data(args.src_dir, args.target_dir)
     
-    #run_tests_multiple(args.target_dir)
+    run_tests_multiple(args.target_dir)
