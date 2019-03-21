@@ -39,6 +39,7 @@ class EmailListViewModel {
     let contactImageTool = IdentityImageTool()
     let messageQueryResults: MessageQueryResults
     let messageSyncService: MessageSyncServiceProtocol
+    var dataSourceIsUsable = false
 
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -100,6 +101,7 @@ class EmailListViewModel {
         do {
             self.messageQueryResults.delegate = self
             try messageQueryResults.startMonitoring()
+            dataSourceIsUsable = false
         } catch {
             Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")
         }
@@ -147,7 +149,11 @@ class EmailListViewModel {
     }
 
     var rowCount: Int {
-        return messageQueryResults.count
+        if dataSourceIsUsable {
+            return messageQueryResults.count
+        } else {
+            return 0
+        }
     }
 
     private func cachedSenderImage(forCellAt indexPath:IndexPath) -> UIImage? {

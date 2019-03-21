@@ -63,7 +63,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         setUpTextFilter()
         // Mark this folder as having been looked at by the user
 
-        if let vm = model {
+        if let vm = model, !vm.noAccountsExist() {
             updateFilterButtonView()
             vm.updateLastLookAt()
             vm.startMonitoring()
