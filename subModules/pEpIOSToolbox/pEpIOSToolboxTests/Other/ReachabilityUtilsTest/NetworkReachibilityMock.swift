@@ -1,5 +1,5 @@
 //
-//  NetworkReachibilityMock.swift
+//  NetworkReachabilityMock.swift
 //  pEpForiOSTests
 //
 //  Created by Alejandro Gelos on 13/02/2019.

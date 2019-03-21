@@ -61,7 +61,7 @@ public final class Reachability: ReachabilityProtocol {
     
     var flags: SCNetworkReachabilityFlags? {
         didSet {
-            callDelegateDidChangeReachibilityIfNeeded(newFlags: flags, oldFlags: oldValue)
+            callDelegateDidChangeReachabilityIfNeeded(newFlags: flags, oldFlags: oldValue)
         }
     }
     
@@ -168,7 +168,7 @@ private extension Reachability {
         return fromFlags.contains(.reachable) ? .connected : .notConnected
     }
     
-    private func callDelegateDidChangeReachibilityIfNeeded(newFlags: SCNetworkReachabilityFlags?,
+    private func callDelegateDidChangeReachabilityIfNeeded(newFlags: SCNetworkReachabilityFlags?,
                                                            oldFlags: SCNetworkReachabilityFlags?){
         guard let newFlags = newFlags else { return }
         let newState = getConnectionStatus(fromFlags: newFlags)

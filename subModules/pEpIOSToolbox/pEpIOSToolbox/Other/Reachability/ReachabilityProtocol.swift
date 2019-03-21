@@ -1,5 +1,5 @@
 //
-//  ReachibilityProtocol.swift
+//  ReachabilityProtocol.swift
 //  pEp
 //
 //  Created by Alejandro Gelos on 14/02/2019.
