@@ -66,6 +66,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         if let vm = model {
             updateFilterButtonView()
             vm.updateLastLookAt()
+            vm.startMonitoring()
             if vm.checkIfSettingsChanged() {
                 settingsChanged()
             }
@@ -85,12 +86,14 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
     private func setup() {
 
+        if model == nil {
+            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
+        }
+
         if let vm = model {
             if vm.noAccountsExist() {
                 showLoginScreen()
             }
-        } else {
-            showLoginScreen()
         }
 
         title = model?.getFolderName()

@@ -82,10 +82,9 @@ class EmailListViewModel {
     
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
-         folderToShow: Folder = UnifiedInbox(),
-         messageQueryResults: MessageQueryResults) {
+         folderToShow: Folder = UnifiedInbox()) {
 
-        self.messageQueryResults = messageQueryResults
+        self.messageQueryResults = MessageQueryResults(withFolder: folderToShow)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 

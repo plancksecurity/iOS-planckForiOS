@@ -55,9 +55,7 @@ public class FolderViewModel {
                 let safeFolderIndex = folderIndex else {
                     return nil
             }
-            return EmailListViewModel(messageSyncService: messageSyncService,
-                                      messageQueryResults: MessageQueryResults(withFolder:
-                self[safeAccountIndex][safeFolderIndex].folder)
+            return EmailListViewModel(messageSyncService: messageSyncService, folderToShow: self[safeAccountIndex][safeFolderIndex].folder
             )
     }
     
