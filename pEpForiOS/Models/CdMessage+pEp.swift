@@ -62,7 +62,6 @@ extension CdMessage {
                 }
                 let attach = CdAttachment.create()
                 attach.data = at.data
-                attach.length = Int64(at.data.count)
                 attach.mimeType = at.mimeType?.lowercased()
                 attach.fileName = at.filename
                 attach.contentDispositionTypeRawValue = Int16(at.contentDisposition.rawValue)

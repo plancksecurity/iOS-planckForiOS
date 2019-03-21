@@ -25,7 +25,6 @@ extension CdAttachment {
 
     override open var description: String {
         let s = NSMutableString()
-        s.append("Part \(length) bytes")
         if let fn = fileName {
             s.append(", \(fn)")
         }
