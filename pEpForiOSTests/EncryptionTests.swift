@@ -8,6 +8,8 @@
 
 import XCTest
 
+import PEPObjCAdapterFramework
+
 class EncryptionTests: XCTestCase {
     func testPassiveMode() {
         testPassiveModeHelper(enablePassiveMode: false)
@@ -28,13 +30,13 @@ class EncryptionTests: XCTestCase {
         let session = PEPSession()
         try! session.mySelf(me)
         let msg = PEPMessage()
-        msg.direction = PEP_dir_outgoing
+        msg.direction = .outgoing
         msg.from = me
         msg.to = [recipient]
         msg.shortMessage = "subject: whatever"
         msg.longMessage = "text: whatever"
         let (status, encMsg) = try! session.encrypt(pEpMessage: msg)
-        XCTAssertEqual(status, PEP_UNENCRYPTED)
+        XCTAssertEqual(status, PEPStatus.unencrypted)
 
         guard let theEncryptedMessage = encMsg else {
             XCTFail()

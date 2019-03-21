@@ -7,7 +7,9 @@
 //
 
 import UIKit
+
 import pEpIOSToolbox
+import MessageModel
 
 class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber {
     private var _appConfig: AppConfig?

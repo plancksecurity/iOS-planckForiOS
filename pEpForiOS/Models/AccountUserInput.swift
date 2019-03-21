@@ -7,6 +7,7 @@
 //
 
 import MessageModel
+import PantomimeFramework
 
 public struct AccountUserInput {
     public var address: String?

@@ -10,7 +10,9 @@ import Foundation
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class TestUtil {
     /**
@@ -43,21 +45,6 @@ class TestUtil {
 
     static var initialNumberOfRunningConnections = 0
     static var initialNumberOfServices = 0
-
-    /**
-     Waits and verifies that all connection threads are finished.
-     */
-    static func waitForConnectionShutdown() {
-        for _ in 1...numberOfTriesConnectonShutDown {
-            if CWTCPConnection.numberOfRunningConnections() == initialNumberOfRunningConnections {
-                break
-            }
-            Thread.sleep(forTimeInterval: connectonShutDownWaitTime)
-        }
-        // This only works if there are no accounts configured in the app.
-        XCTAssertEqual(CWTCPConnection.numberOfRunningConnections(),
-                       initialNumberOfRunningConnections)
-    }
 
     /**
      Some code for accessing `NSBundle`s from Swift.
@@ -476,7 +463,7 @@ class TestUtil {
         msg.sent = dateSent
         msg.received = Date(timeIntervalSinceNow: minute)
         if engineProccesed {
-            msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+            msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         }
         msg.attachments = createAttachments(number: attachments)
         var result = msg
@@ -489,7 +476,7 @@ class TestUtil {
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
         let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
         XCTAssertEqual(msg.uid, uid)
-        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         msg.received = Date(timeIntervalSince1970: Double(uid))
         msg.sent = msg.received
         return msg
@@ -580,7 +567,7 @@ class TestUtil {
                           parentFolder: folder)
         msg.from = blueprint.from
         msg.to = [receiver]
-        msg.pEpRatingInt = Int(PEP_rating_unreliable.rawValue)
+        msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         msg.received = Date(timeIntervalSince1970: Double(number))
         msg.sent = msg.received
         msg.references = blueprint.references

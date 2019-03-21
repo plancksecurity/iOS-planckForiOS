@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import pEpIOSToolbox
+import PantomimeFramework
 
 extension ConnectionTransport {
     init(accountSettingsTransport: AccountSettingsServerTransport) {
