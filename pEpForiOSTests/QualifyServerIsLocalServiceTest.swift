@@ -8,6 +8,8 @@
 
 import XCTest
 
+import MessageModel
+
 @testable import pEpForiOS
 
 class QualifyTestDelegate: QualifyServerIsLocalServiceDelegate {

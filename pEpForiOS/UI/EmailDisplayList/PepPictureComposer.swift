@@ -8,6 +8,7 @@
 
 import Foundation
 import MessageModel
+import PEPObjCAdapterFramework
 
 class PepProfilePictureComposer: ProfilePictureComposer {
 
@@ -32,7 +33,7 @@ class PepProfilePictureComposer: ProfilePictureComposer {
         DispatchQueue.global(qos: .userInitiated).async{
             let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
             var image: UIImage? = nil
-            if color != PEP_color_no_color {
+            if color != PEPColor.noColor {
                 image = color.statusIconInContactPicture()
             }
             DispatchQueue.main.async {

@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 extension URL {
     public func mimeType() -> String? {
         return MimeTypeUtil()?.mimeType(fileExtension: self.pathExtension)

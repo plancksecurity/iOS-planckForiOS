@@ -7,7 +7,9 @@
 //
 
 import UIKit
+
 import pEpIOSToolbox
+import MessageModel
 
 extension LoginViewController {
     enum LoginError: Error {

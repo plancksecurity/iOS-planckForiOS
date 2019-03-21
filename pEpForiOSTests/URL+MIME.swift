@@ -9,6 +9,8 @@
 import XCTest
 
 @testable import pEpForiOS
+import pEpIOSToolbox
+import MessageModel
 
 class URL_MIME: XCTestCase {
     let pathBuilder = "file://ma/path/to/nice_pic"

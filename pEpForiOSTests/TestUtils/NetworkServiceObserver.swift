@@ -7,8 +7,9 @@
 //
 
 import XCTest
-import MessageModel
 import CoreData
+
+@testable import MessageModel
 @testable import pEpForiOS
 
 class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDelegate, CustomDebugStringConvertible {

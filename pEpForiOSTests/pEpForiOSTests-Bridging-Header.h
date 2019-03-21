@@ -4,4 +4,4 @@
 
 #import "pEpForiOS-Bridging-Header.h"
 
-#import "Pantomime/NSData+Extensions.h"
+#import <PantomimeFramework/PantomimeFramework.h>

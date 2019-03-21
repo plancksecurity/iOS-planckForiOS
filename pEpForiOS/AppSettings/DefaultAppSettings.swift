@@ -9,6 +9,7 @@
 import Foundation
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 public class DefaultAppSettings: AppSettingsProtocol {
     init() {

@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import PEPObjCAdapterFramework
 
 class ComposeViewModelTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
@@ -847,7 +848,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testComposeViewModelDidChangePEPRatingTo() {
-        let expectedRating = PEP_rating_reliable
+        let expectedRating = PEPRating.reliable
         vm?.state.pEpProtection = true
         let expectedProtection = vm?.state.pEpProtection ?? false
         assert(contentChangedMustBeCalled: false,
@@ -878,7 +879,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - Delegate Setter Side Effect
 
     func testDelegateSetter() {
-        let expectedRating = PEP_rating_undefined
+        let expectedRating = PEPRating.undefined
         let expectedProtection = true
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1028,7 +1029,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     // MARK: - handleUserChangedProtectionStatus
 
     func testHandleUserChangedProtectionStatus_change() {
-        let expectedRating = PEP_rating_undefined
+        let expectedRating = PEPRating.undefined
         let expectedProtection = false
         assert(contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -1495,7 +1496,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                         sectionChangedMustBeCalled: Bool? = nil,
                         expectedSection: Int? = nil,
                         colorBatchNeedsUpdateMustBeCalled: Bool? = nil,
-                        expectedRating: PEP_rating? = nil,
+                        expectedRating: PEPRating? = nil,
                         expectedProtectionEnabled: Bool? = nil,
                         hideSuggestionsMustBeCalled: Bool? = nil,
                         showSuggestionsMustBeCalled: Bool? = nil,
@@ -1719,7 +1720,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         let expectedSection: Int?
 
         var expColorBatchNeedsUpdateCalled: XCTestExpectation?
-        let expectedRating: PEP_rating?
+        let expectedRating: PEPRating?
         let expectedProtectionEnabled: Bool?
 
         let expHideSuggestionsCalled: XCTestExpectation?
@@ -1747,7 +1748,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
              expSectionChangedCalled: XCTestExpectation?,
              expectedSection: Int?,
              expColorBatchNeedsUpdateCalled: XCTestExpectation?,
-             expectedRating: PEP_rating?,
+             expectedRating: PEPRating?,
              expectedProtectionEnabled: Bool?,
              expHideSuggestionsCalled: XCTestExpectation?,
              expShowSuggestionsCalled: XCTestExpectation?,
@@ -1830,7 +1831,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
             }
         }
 
-        func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool) {
+        func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool) {
             guard let exp = expColorBatchNeedsUpdateCalled else {
                 // We ignore called or not
                 return

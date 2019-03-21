@@ -23,7 +23,7 @@ class CdMessagePEPMessageTests: CoreDataDrivenTestBase {
 
         let pEpReceiver = cdReceiver.pEpIdentity()
 
-        let pEpMsg = cdMsg.pEpMessage(outgoing: true)
+        let pEpMsg = PEPUtil.pEp(cdMessage: cdMsg, outgoing: true)
 
         XCTAssertEqual(pEpMsg.to?[0], pEpReceiver)
     }
