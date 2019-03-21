@@ -84,7 +84,7 @@ class TestDataBase {
             smtp.address = smtpServerAddress
             smtp.transport = smtpServerTransport
 
-            let keySmtp = MessageID.generate()
+            let keySmtp = UUID().uuidString
             CdServerCredentials.add(password: password, forKey: keySmtp)
             let credSmtp = CdServerCredentials.create()
             credSmtp.loginName = smtpLoginName ?? id.address
@@ -100,7 +100,7 @@ class TestDataBase {
             imap.address = imapServerAddress
             imap.transport = imapServerTransport
 
-            let keyImap = MessageID.generate()
+            let keyImap = UUID().uuidString
             CdServerCredentials.add(password: password, forKey: keyImap)
             let credImap = CdServerCredentials.create()
             credImap.loginName = imapLoginName ?? id.address
