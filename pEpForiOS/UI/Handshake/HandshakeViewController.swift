@@ -7,8 +7,10 @@
 //
 
 import UIKit
+
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 class HandshakeViewController: BaseTableViewController {
     var ratingReEvaluator: RatingReEvaluator?

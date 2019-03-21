@@ -190,11 +190,11 @@ public class AccountSettingsViewModel {
 // MARK: - AccountVerificationServiceDelegate
 
 extension AccountSettingsViewModel: AccountVerificationServiceDelegate {
-    func verified(account: Account,
+    public func verified(account: Account,
                   service: AccountVerificationServiceProtocol,
                   result: AccountVerificationResult) {
         if result == .ok {
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 account.save()
             }
         }

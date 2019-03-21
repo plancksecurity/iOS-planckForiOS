@@ -10,7 +10,8 @@
 import XCTest
 
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
+import PEPObjCAdapterFramework
 
 class Message_FakeMessageTest: CoreDataDrivenTestBase {
     let testUuid = UUID().uuidString + #file
@@ -238,7 +239,7 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
             }
             let allCdMessages = cdFolder.allMessages()
             for cdMsg in allCdMessages {
-                cdMsg.pEpRating = Int16(PEP_rating_trusted.rawValue)
+                cdMsg.pEpRating = Int16(PEPRating.trusted.rawValue)
             }
         }
         do {

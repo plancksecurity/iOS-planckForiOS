@@ -8,7 +8,8 @@
 
 import XCTest
 import CoreData
-import MessageModel
+
+@testable import MessageModel
 @testable import pEpForiOS
 
 class SyncFlagsToServerOperationTest: CoreDataDrivenTestBase {

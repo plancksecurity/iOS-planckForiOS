@@ -8,13 +8,14 @@
 
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 protocol ComposeViewModelStateDelegate: class {
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeValidationStateTo isValid: Bool)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEP_rating)
+                               didChangePEPRatingTo newRating: PEPRating)
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModel.ComposeViewModelState,
                                didChangeProtection newValue: Bool)
@@ -32,7 +33,7 @@ extension ComposeViewModel {
             }
         }
         public private(set) var edited = false
-        public private(set) var rating = PEP_rating_undefined {
+        public private(set) var rating = PEPRating.undefined {
             didSet {
                 if rating != oldValue {
                     delegate?.composeViewModelState(self, didChangePEPRatingTo: rating)
@@ -160,7 +161,7 @@ extension ComposeViewModel.ComposeViewModelState {
             return false
         }
         let outgoingRatingColor = rating.pEpColor()
-        return outgoingRatingColor == PEP_color_yellow || outgoingRatingColor == PEP_color_green
+        return outgoingRatingColor == .yellow || outgoingRatingColor == .green
     }
 }
 
@@ -174,7 +175,7 @@ extension ComposeViewModel.ComposeViewModelState {
 
     private func calculatePepRating() {
         guard !isForceUnprotectedDueToBccSet && pEpProtection else {
-            rating = PEP_rating_unencrypted
+            rating = .unencrypted
             return
         }
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
@@ -182,7 +183,7 @@ extension ComposeViewModel.ComposeViewModelState {
                 // That is a valid case. Compose view is gone before this block started to run.
                 return
             }
-            let newRating: PEP_rating
+            let newRating: PEPRating
             let session = PEPSession()
             if let from = me.from {
                 newRating = session.outgoingMessageRating(from: from,
@@ -190,7 +191,7 @@ extension ComposeViewModel.ComposeViewModelState {
                                                        cc: me.ccRecipients,
                                                        bcc: me.bccRecipients)
             } else {
-                newRating = PEP_rating_undefined
+                newRating = PEPRating.undefined
             }
             DispatchQueue.main.async {
                 me.rating = newRating

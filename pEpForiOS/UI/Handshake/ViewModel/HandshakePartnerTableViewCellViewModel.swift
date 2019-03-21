@@ -9,6 +9,8 @@
 import Foundation
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
+import PEPObjCAdapterFramework
 
 class HandshakePartnerTableViewCellViewModel {
     enum ExpandedState {
@@ -25,7 +27,7 @@ class HandshakePartnerTableViewCellViewModel {
     /** Do we show the trustwords for this identity? */
     var showTrustwords: Bool {
         switch partnerColor {
-        case PEP_color_yellow:
+        case .yellow:
             return true
         default:
             return false
@@ -34,8 +36,8 @@ class HandshakePartnerTableViewCellViewModel {
 
     /** Show the button for start/stop trusting? */
     var showStopStartTrustButton: Bool {
-        return partnerColor == PEP_color_green || partnerColor == PEP_color_red ||
-            partnerRating == PEP_rating_have_no_key
+        return partnerColor == .green || partnerColor == PEPColor.red ||
+            partnerRating == .haveNoKey
     }
 
     var expandedState: ExpandedState
@@ -43,12 +45,12 @@ class HandshakePartnerTableViewCellViewModel {
     /**
      The rating of the partner.
      */
-    var partnerRating: PEP_rating
+    var partnerRating: PEPRating
 
     /**
      The color of the partner.
      */
-    var partnerColor: PEP_color
+    var partnerColor: PEPColor
 
     var trustwordsLanguage: String{
         didSet{

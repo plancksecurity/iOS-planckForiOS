@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 @testable import MessageModel
+import PEPObjCAdapterFramework
 
 class DecryptImportedMessagesTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -59,7 +60,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "needed")
 
         let attachments = theCdMessage.attachments?.array as? [CdAttachment] ?? []
@@ -91,7 +92,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage, "blah")
         XCTAssertEqual(theCdMessage.longMessage, "\n\n")
 
@@ -139,8 +140,8 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        // After ENGINE-465 is done, this should be PEP_rating_reliable
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
+        // After ENGINE-465 is done, this should be .reliable
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
         XCTAssertEqual(
@@ -158,7 +159,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         XCTAssertEqual(msg.attachments.count, 0)
 
         let leon = PEPIdentity(address: "iostest002@peptest.ch",
-                               userID: PEP_OWN_USERID,
+                               userID: CdIdentity.pEpOwnUserID,
                                userName: "Leon Kowalski",
                                isOwn: true)
         try! session.update(leon)
@@ -186,7 +187,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage,
                        "Re: Help needed debugging segfault with Guile 1.8.7")
         XCTAssertNil(theCdMessage.longMessage)
@@ -223,7 +224,7 @@ class DecryptImportedMessagesTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unencrypted.rawValue))
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(.unencrypted.rawValue))
         XCTAssertEqual(theCdMessage.shortMessage,
                        "Re: Help needed debugging segfault with Guile 1.8.7")
         XCTAssertNil(theCdMessage.longMessage)

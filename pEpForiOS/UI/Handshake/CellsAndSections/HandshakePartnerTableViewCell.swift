@@ -9,6 +9,7 @@
 import UIKit
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 /**
  That delegate is in control to handle the actual trust changes.
@@ -65,7 +66,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         }
     }
 
-    var partnerColor: PEP_color { return viewModel?.partnerColor ?? PEP_color_no_color }
+    var partnerColor: PEPColor { return viewModel?.partnerColor ?? PEPColor.noColor }
 
     var showStopStartTrustButton: Bool {
         return viewModel?.showStopStartTrustButton ?? false
@@ -195,8 +196,8 @@ class HandshakePartnerTableViewCell: UITableViewCell {
             "Stop Trusting",
             comment: "Stop/trust button in handshake overview")
 
-        if viewModel?.partnerColor == PEP_color_red ||
-            viewModel?.partnerRating == PEP_rating_have_no_key {
+        if viewModel?.partnerColor == PEPColor.red ||
+            viewModel?.partnerRating == .haveNoKey {
             startStopTrustingButton.setTitle(titleMistrusted, for: .normal)
         } else {
             startStopTrustingButton.setTitle(titleTrusted, for: .normal)
@@ -237,7 +238,7 @@ class HandshakePartnerTableViewCell: UITableViewCell {
         updateTitle(button: wrongButton)
     }
 
-    func updatePrivacyStatus(color: PEP_color) {
+    func updatePrivacyStatus(color: PEPColor) {
         privacyStatusTitle.text = color.privacyStatusTitle
         privacyStatusDescription.text = color.privacyStatusDescription
         pEpStatusImageView.image = color.statusIcon()

@@ -198,7 +198,7 @@ class ThreadedEmailViewModel {
         let currentSeen = message?.imapFlags.seen ?? false
         if !currentSeen {
             message?.imapFlags.seen = true
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 message?.save()
             }
         }

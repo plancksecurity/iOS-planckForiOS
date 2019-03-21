@@ -10,6 +10,7 @@ import XCTest
 
 import MessageModel
 import pEpForiOS
+import PEPObjCAdapterFramework
 
 class AttachmentFilterTest: CoreDataDrivenTestBase {
 
@@ -34,16 +35,16 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
     // MARK: - Undecryptable Messages
 
     func testFilterShouldIgnoreUndecryptable_haveNoKey() {
-        assureMessagesDoNotPassFilter(with: PEP_rating_have_no_key)
+        assureMessagesDoNotPassFilter(with: .haveNoKey)
     }
 
     func testFilterShouldIgnoreUndecryptable_canNotDecrypt() {
-        assureMessagesDoNotPassFilter(with: PEP_rating_cannot_decrypt)
+        assureMessagesDoNotPassFilter(with: .cannotDecrypt)
     }
 
     // MARK: - Helper
 
-    func assureMessagesDoNotPassFilter(with pEpRating: PEP_rating) {
+    func assureMessagesDoNotPassFilter(with pEpRating: PEPRating) {
         let f1 = Folder(name: "inbox", parent: nil, account: account, folderType: .inbox)
         f1.save()
         let messages = createMessages(in: f1, numMessages: 2)
@@ -69,7 +70,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
     }
 
     private func createMessages(in folder: Folder, numMessages: Int,
-                                pEpRating: PEP_rating = PEP_rating_trusted) -> [Message] {
+                                pEpRating: PEPRating = .trusted) -> [Message] {
         let id = Identity.create(address: "fake@mail.com")
         id.save()
 

@@ -255,19 +255,19 @@ import CoreData
 //
 //        let senderRatingOnServer = PEPUtil.pEpRatingFromInt(msg.pEpRatingInt)
 //        if expectedSenderRatingOnServerEncrypted {
-//            XCTAssertFalse(senderRatingOnServer == PEP_rating_unencrypted,
+//            XCTAssertFalse(senderRatingOnServer == .unencrypted,
 //                           "assumed stored rating on sever")
 //        } else {
-//            XCTAssertTrue(senderRatingOnServer == PEP_rating_unencrypted,
+//            XCTAssertTrue(senderRatingOnServer == .unencrypted,
 //                           "assumed stored rating on sever")
 //        }
 //
 //        let senderRatingToDisplay = msg.pEpRating()
 //        if expectedSenderRatingToDisplayEncrypted {
-//            XCTAssertFalse(senderRatingToDisplay == PEP_rating_unencrypted,
+//            XCTAssertFalse(senderRatingToDisplay == .unencrypted,
 //                           "Color to display to user is correct")
 //        } else {
-//            XCTAssertTrue(senderRatingToDisplay == PEP_rating_unencrypted,
+//            XCTAssertTrue(senderRatingToDisplay == .unencrypted,
 //                          "Color to display to user is correct")
 //        }
 //
@@ -310,19 +310,19 @@ import CoreData
 //            return
 //        }
 //        if expectedReceiverRatingOnServerEncrypted {
-//            XCTAssertFalse(receiverRatingOnServer == PEP_rating_unencrypted,
+//            XCTAssertFalse(receiverRatingOnServer == .unencrypted,
 //                           "rating on sever")
 //        } else {
-//            XCTAssertTrue(receiverRatingOnServer == PEP_rating_unencrypted,
+//            XCTAssertTrue(receiverRatingOnServer == .unencrypted,
 //                          "rating on sever")
 //        }
 //
 //        let receiverRatingToDisplay = receivedMsg.pEpRating()
 //        if expectedReceiverRatingToDisplayEncrypted {
-//            XCTAssertFalse(receiverRatingToDisplay == PEP_rating_unencrypted,
+//            XCTAssertFalse(receiverRatingToDisplay == .unencrypted,
 //                           "Color to display to user is correct")
 //        } else {
-//            XCTAssertTrue(receiverRatingToDisplay == PEP_rating_unencrypted,
+//            XCTAssertTrue(receiverRatingToDisplay == .unencrypted,
 //                          "Color to display to user is correct")
 //        }
 //    }

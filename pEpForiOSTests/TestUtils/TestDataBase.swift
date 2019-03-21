@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 
 import MessageModel
+import PEPObjCAdapterFramework
 
 class TestDataBase {
     struct AccountSettings {

@@ -10,24 +10,25 @@ import XCTest
 
 import CoreData
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
-class CoreDataDrivenTestBase: XCTestCase {
+open class CoreDataDrivenTestBase: XCTestCase {
     var account: Account {
         return cdAccount.account()
     }
     var cdAccount: CdAccount!
     var persistentSetup: PersistentSetup!
 
-    var imapConnectInfo: EmailConnectInfo!
-    var smtpConnectInfo: EmailConnectInfo!
-    var imapSyncData: ImapSyncData!
+    public var imapConnectInfo: EmailConnectInfo!
+    public var smtpConnectInfo: EmailConnectInfo!
+    public var imapSyncData: ImapSyncData!
 
     var session: PEPSession {
         return PEPSession()
     }
 
-    override func setUp() {
+    override open func setUp() {
         super.setUp()
 
         XCTAssertTrue(PEPUtil.pEpClean())
@@ -46,7 +47,7 @@ class CoreDataDrivenTestBase: XCTestCase {
         XCTAssertNotNil(smtpConnectInfo)
     }
 
-    override func tearDown() {
+    override open func tearDown() {
         imapSyncData?.sync?.close()
         persistentSetup.tearDownCoreDataStack()
         persistentSetup = nil
