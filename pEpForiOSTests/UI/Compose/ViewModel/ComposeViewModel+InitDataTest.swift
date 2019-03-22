@@ -17,10 +17,13 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
     var outbox: Folder?
     var messageAllButBccSet: Message?
     var testee: ComposeViewModel.InitData?
-    let someone = Identity(address: "someone@someone.someone")
+    var someone: Identity!
 
     override func setUp() {
         super.setUp()
+
+        someone = Identity(address: "someone@someone.someone")
+
         // Folders
         let inbox = Folder(name: "Inbox", parent: nil, account: account, folderType: .inbox)
         inbox.save()
@@ -66,7 +69,7 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         testee = ComposeViewModel.InitData(withPrefilledToRecipient: someone,
                                            orForOriginalMessage: nil,
                                            composeMode: mode)
-        let expectedTo = [someone]
+        let expectedTo: [Identity] = [someone]
         assertTesteeForExpectedValues(composeMode: mode,
                                       isDraftsOrOutbox: false,
                                       isDrafts: false,
