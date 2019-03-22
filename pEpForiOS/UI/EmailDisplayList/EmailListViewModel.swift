@@ -85,27 +85,6 @@ class EmailListViewModel {
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
          folderToShow: Folder /*= nil */= UnifiedInbox()) {
-/*
-        var folderToShowTemp: Folder
-
-        if !Account.all().isEmpty {
-            if let cdaccount = CdAccount.first(),
-                let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
-                folderToShowTemp = Folder.from(cdFolder: cdfolder)
-
-            } else {
-
-            }
-        } else {
-        }
-
-        var folderToShowTemp: Folder
-        if folderToShow == nil {
-
-        } else {
-            folderToShowTemp = folderToShow!
-        }
-*/
         var folderToShowTemp = folderToShow
         if !Account.all().isEmpty {
             if let cdaccount = CdAccount.first(), let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
@@ -166,10 +145,6 @@ class EmailListViewModel {
             return true
         }
         return false
-    }
-
-    private func resetViewModel() {
-
     }
 
     // MARK: - Public Data Access & Manipulation
