@@ -98,8 +98,6 @@ class EmailListViewModel {
         self.folderToShow = folderToShowTemp
         self.defaultFilter = folderToShowTemp.filter?.clone()
         self.oldThreadSetting = AppSettings.threadedViewEnabled
-        
-        resetViewModel()
 
     }
 
@@ -352,7 +350,7 @@ class EmailListViewModel {
     }
 
     public func reloadData() {
-        resetViewModel()
+
     }
 
     public func shouldShowToolbarEditButtons() -> Bool {
@@ -488,7 +486,7 @@ class EmailListViewModel {
             let folderFilter = assuredFilterOfFolderToShow()
             folderFilter.without(filters: filterViewFilter)
             folderFilter.with(filters: filter)
-            resetViewModel()
+            reloadData()
         }
         filterViewFilter = filter
     }
@@ -500,7 +498,7 @@ class EmailListViewModel {
         } else {
             self.folderToShow.filter = defaultFilter?.clone()
         }
-        resetViewModel()
+        reloadData()
     }
 
     public func setSearchFilter(forSearchText txt: String = "") {
@@ -517,7 +515,7 @@ class EmailListViewModel {
             let searchFilter = SearchFilter(searchTerm: txt)
             folderFilter.add(filter: searchFilter)
         }
-        resetViewModel()
+        reloadData()
     }
 
     public func removeSearchFilter() {
@@ -527,7 +525,7 @@ class EmailListViewModel {
         }
         let filtersChanged = filter.removeSearchFilter()
         if filtersChanged {
-            resetViewModel()
+            reloadData()
         }
     }
 
