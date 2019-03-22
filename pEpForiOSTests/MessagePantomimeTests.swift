@@ -83,7 +83,6 @@ class MessagePantomimeTests: XCTestCase {
         let folderName = "inbox"
         cdFolder.folderType = FolderType.inbox
         cdFolder.name = folderName
-        cdFolder.uuid = MessageID.generate()
         cdFolder.account = cdAccount
 
         let cwFolder = CWFolder(name: folderName)
@@ -103,12 +102,12 @@ class MessagePantomimeTests: XCTestCase {
         let cdRefs = cdMsg.references?.array as? [CdMessageReference] ?? []
         XCTAssertEqual(cdRefs.count, refs.count + 1)
 
-        guard let msg = cdMsg.message() else {
+        guard let testee = cdMsg.references?.array as? [CdMessageReference] else {
             XCTFail()
             return
         }
-        XCTAssertEqual(msg.references.count, refs.count + 1)
-        XCTAssertEqual(msg.references, allRefs)
+        XCTAssertEqual(testee.count, refs.count + 1)
+        XCTAssertEqual(testee.map { $0.reference }, allRefs)
 
         let pEpMsgDict = cdMsg.pEpMessageDict()
         XCTAssertEqual(pEpMsgDict[kPepReferences] as? [String] ?? [], allRefs)

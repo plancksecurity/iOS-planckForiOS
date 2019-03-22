@@ -700,7 +700,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                                               folderName: originalMessage.parent.name,
                                               accountAddress: account.user.address,
                                               includingDeleted: true)
-        XCTAssertTrue(msgWithTestMessageId?.imapFlags?.deleted ?? false,
+        XCTAssertTrue(msgWithTestMessageId?.imapFlags.deleted ?? false,
                      "The user edited draft. Technically we save a new message, thus the original" +
             " must be deleted.")
         waitForExpectations(timeout: UnitTestUtils.waitTime)
@@ -993,7 +993,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
                        uuid: originalMessage.uuid,
                        folderName: originalMessage.parent.name,
                        accountAddress: account.user.address,
-                       includingDeleted: true)?.imapFlags?.deleted
+                       includingDeleted: true)?.imapFlags.deleted
             else {
                 XCTFail()
                 return
@@ -1448,13 +1448,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         if type == .inline {
             createe = Attachment(data: imageData,
                        mimeType: "image/jpg",
-                       size: imageData.count,
                        image: image,
                        contentDisposition: type)
         } else {
             createe = Attachment(data: imageData,
                                  mimeType: "video/quicktime",
-                                 size: imageData.count,
                                  contentDisposition: type)
         }
         createe.fileName = UUID().uuidString

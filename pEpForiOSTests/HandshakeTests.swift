@@ -30,7 +30,6 @@ class HandshakeTests: XCTestCase {
 
         let cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
         Record.saveAndWait()
 

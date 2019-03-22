@@ -707,7 +707,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testFixAttachmentsOperation() {
         let cdFolder = CdFolder.create()
         cdFolder.name = "AttachmentTestFolder"
-        cdFolder.uuid = "1"
         cdFolder.folderType = FolderType.inbox
         cdFolder.account = cdAccount
 
@@ -716,7 +715,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let cdAttachWithoutSize = CdAttachment.create()
         cdAttachWithoutSize.data = "Some bytes for an attachment".data(using: .utf8)
         cdAttachWithoutSize.message = cdMsg
-        cdAttachWithoutSize.length = 0
         
         Record.saveAndWait()
         
@@ -742,8 +740,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         }
         for cdAttach in allAttachments {
             XCTAssertNotNil(cdAttach.data)
-            XCTAssertNotNil(cdAttach.length)
-            XCTAssertGreaterThan(cdAttach.length, 0)
+            XCTAssertGreaterThan(cdAttach.data?.count ?? 0, 0)
         }
     }
 

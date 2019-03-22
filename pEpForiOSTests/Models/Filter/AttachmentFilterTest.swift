@@ -79,7 +79,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
             let message = Message(uuid: UUID().uuidString, uid: i, parentFolder: folder)
             message.from = id
             message.to = [account.user]
-            message.imapFlags?.seen = false
+            message.imapFlags.seen = false
             message.pEpRatingInt = Int(pEpRating.rawValue)
             message.save()
             messages.append(message)

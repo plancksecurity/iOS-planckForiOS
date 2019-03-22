@@ -152,7 +152,7 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
                                         mimeType: "image/jpeg",
                                         fileName:
                 "I have no idea what file name is actually expecdted, thus I ignore it in tests.",
-                                        size: data.count, url: nil,
+                                        url: nil,
                                         image: img,
                                         assetUrl: url,
                                         contentDisposition: .inline)

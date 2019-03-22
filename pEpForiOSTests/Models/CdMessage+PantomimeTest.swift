@@ -145,7 +145,6 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
 
         guard
             let data = TestUtil.loadData(fileName: "UnencryptedHTMLMail.txt"),
@@ -168,7 +167,6 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
 
         guard
             let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211_hi_there.txt"),
@@ -198,7 +196,7 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
+        
         guard
             let messageWithKeyAndPdfAttached = TestUtil.loadData(fileName: "IOS-211-pdfEmail.txt"),
             let message = CWIMAPMessage(data: messageWithKeyAndPdfAttached) else {

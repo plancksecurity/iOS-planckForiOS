@@ -53,8 +53,6 @@ extension Message {
             return PEPUtil.pEpAttachment(attachment: $0)
         })
 
-        dict[kPepReferences] = references as AnyObject
-
         return dict
     }
 

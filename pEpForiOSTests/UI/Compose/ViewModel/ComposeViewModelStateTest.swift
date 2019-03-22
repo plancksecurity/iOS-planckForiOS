@@ -16,10 +16,11 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     private var testDelegate: TestDelegate?
     var testee: ComposeViewModel.ComposeViewModelState?
     var draftedMessageAllButBccSet: Message?
-    let someone = Identity(address: "someone@someone.someone")
+    var someone: Identity!
 
     override func setUp() {
         super.setUp()
+        someone = Identity(address: "someone@someone.someone")
         let drafts = Folder(name: "Inbox", parent: nil, account: account, folderType: .drafts)
         drafts.save()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)

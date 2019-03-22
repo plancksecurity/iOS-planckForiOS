@@ -137,7 +137,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         XCTAssertEqual(flagAction, .flag)
         XCTAssertEqual(moreAction, .more)
 
-        messages[0].imapFlags?.flagged = true
+        messages[0].imapFlags.flagged = true
         messages[0].save()
 
         flagAction = emailListVM.getFlagAction(forMessageAt: 0)
@@ -356,21 +356,21 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let msg = TestUtil.createMessage(inFolder: folder,
                                          from: folder.account.user,
                                          uid: numMails + 1)
-        msg.imapFlags?.flagged = false
+        msg.imapFlags.flagged = false
         msg.save()
-        XCTAssertFalse((msg.imapFlags?.flagged)!)
+        XCTAssertFalse(msg.imapFlags.flagged)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 11)
         setUpMessageFolderDelegate()
         setUpViewModelExpectations(expectationDidUpdateDataAt: true)
-        msg.imapFlags?.flagged = true
+        msg.imapFlags.flagged = true
         msg.save()
         server.updateData(message: msg)
         waitForExpectations(timeout: TestUtil.waitTime)
         var index = emailListVM.index(of: msg)
         if let ind = index {
             let newMsg = emailListVM.message(representedByRowAt: IndexPath(row: ind, section: 0))
-            XCTAssertTrue((newMsg?.imapFlags?.flagged)!)
+            XCTAssertTrue((newMsg?.imapFlags.flagged)!)
         } else {
             XCTFail()
         }
@@ -389,9 +389,9 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
         let msg = TestUtil.createMessage(inFolder: folder,
                                          from: folder.account.user,
                                          uid: numMails + 1)
-        msg.imapFlags?.flagged = false
+        msg.imapFlags.flagged = false
         msg.save()
-        XCTAssertFalse((msg.imapFlags?.flagged)!)
+        XCTAssertFalse(msg.imapFlags.flagged)
         setupViewModel()
         XCTAssertEqual(emailListVM.rowCount, 11)
         setUpMessageFolderDelegate()

@@ -461,7 +461,6 @@ class TestUtil {
         msg.longMessageFormatted = longMessageFormatted
         let minute:TimeInterval = 60.0
         msg.sent = dateSent
-        msg.received = Date(timeIntervalSinceNow: minute)
         if engineProccesed {
             msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         }
@@ -477,8 +476,6 @@ class TestUtil {
         let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
         XCTAssertEqual(msg.uid, uid)
         msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
-        msg.received = Date(timeIntervalSince1970: Double(uid))
-        msg.sent = msg.received
         return msg
     }
 
@@ -568,9 +565,7 @@ class TestUtil {
         msg.from = blueprint.from
         msg.to = [receiver]
         msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
-        msg.received = Date(timeIntervalSince1970: Double(number))
-        msg.sent = msg.received
-        msg.references = blueprint.references
+        msg.sent = Date(timeIntervalSince1970: Double(number))
         msg.save()
 
         return msg
@@ -701,7 +696,6 @@ class TestUtil {
 
             let cdInbox = CdFolder.create()
             cdInbox.name = ImapSync.defaultImapInboxName
-            cdInbox.uuid = MessageID.generate()
             cdInbox.account = cdMyAccount
 
             guard let pantFrom = pantomimeMail.from() else {

@@ -20,7 +20,6 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
         Record.saveAndWait()
 
         guard

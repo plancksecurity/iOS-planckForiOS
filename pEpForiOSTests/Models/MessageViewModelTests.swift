@@ -375,8 +375,8 @@ class MessageViewModelTests: CoreDataDrivenTestBase {
 
     private func givenThereIsAFlaggedAndSeenMessage() -> Message {
         let message = TestUtil.createMessage(inFolder: folder, from: Defaults.Inputs.fromIdentity)
-        message.imapFlags?.seen = true
-        message.imapFlags?.flagged = true
+        message.imapFlags.seen = true
+        message.imapFlags.flagged = true
         message.save()
         return message
     }

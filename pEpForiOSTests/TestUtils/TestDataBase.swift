@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-import MessageModel
+@testable import MessageModel
 import PEPObjCAdapterFramework
 
 class TestDataBase {
@@ -80,7 +80,7 @@ class TestDataBase {
             //SMTP
             let smtp = CdServer.create()
             smtp.serverType = smtpServerType
-            smtp.port = NSNumber(value: smtpServerPort)
+            smtp.port = Int16(smtpServerPort)
             smtp.address = smtpServerAddress
             smtp.transport = smtpServerTransport
 
@@ -96,7 +96,7 @@ class TestDataBase {
             //IMAP
             let imap = CdServer.create()
             imap.serverType = imapServerType
-            imap.port = NSNumber(value: imapServerPort)
+            imap.port = Int16(imapServerPort)
             imap.address = imapServerAddress
             imap.transport = imapServerTransport
 
@@ -343,5 +343,4 @@ class TestDataBase {
     func createImapTimeOutAccount() -> Account {
         return createImapTimeOutAccountSettings().account()
     }
-
 }

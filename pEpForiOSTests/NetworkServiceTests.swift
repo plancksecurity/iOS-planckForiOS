@@ -94,7 +94,7 @@ class NetworkServiceTests: XCTestCase {
 
             XCTAssertTrue(msg.isValidMessage())
 
-            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
+            let pEpRating = Int16(msg.pEpRatingInt)
             XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
             if !modelDelegate.contains(messageID: msg.messageID) {
                 XCTFail()
@@ -106,7 +106,7 @@ class NetworkServiceTests: XCTestCase {
         XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
 
         for msg in modelDelegate.messages {
-            let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
+            let msgIsFlaggedDeleted = msg.imapFlags.deleted ?? false
             XCTAssertTrue(!msgIsFlaggedDeleted)
             XCTAssertTrue(inbox.contains(message: msg))
             if !unifiedInbox.contains(message: msg) {
@@ -231,7 +231,7 @@ class NetworkServiceTests: XCTestCase {
                 }
             }
             return messages.sorted { m1, m2 in
-                if let d1 = m1.received, let d2 = m2.received {
+                if let d1 = m1.sent, let d2 = m2.sent {
                     return areInIncreasingOrder(d1: d1, d2: d2)
                 } else if let d1 = m1.sent, let d2 = m2.sent {
                     return areInIncreasingOrder(d1: d1, d2: d2)

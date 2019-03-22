@@ -48,7 +48,6 @@ class MessageReevalutionTests: XCTestCase {
         // Inbox
         cdInbox = CdFolder.create()
         cdInbox.name = ImapSync.defaultImapInboxName
-        cdInbox.uuid = MessageID.generate()
         cdInbox.account = cdMyAccount
         self.cdOwnAccount = cdMyAccount
 

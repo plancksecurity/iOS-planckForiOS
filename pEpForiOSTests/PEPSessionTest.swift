@@ -40,7 +40,6 @@ class PEPSessionTest: XCTestCase {
 
         let uuid = MessageID.generate()
         let message = Message.fakeMessage(uuid: uuid)
-        message.comments = "comment"
         message.shortMessage = "short message"
         message.longMessage = "long message"
         message.longMessageFormatted = "long message"
@@ -49,9 +48,6 @@ class PEPSessionTest: XCTestCase {
         message.cc = [account.user]
         message.parent = folder
         message.sent = Date()
-        message.received = Date()
-        message.replyTo = [account.user]
-        message.references = ["ref1"]
         message.save()
         let session = PEPSession()
         guard let first = CdMessage.first() else {
@@ -128,7 +124,6 @@ class PEPSessionTest: XCTestCase {
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "MessageHeapBufferOverflow.txt", cdOwnAccount: cdAccount) else {
@@ -150,7 +145,6 @@ class PEPSessionTest: XCTestCase {
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
         Record.saveAndWait()
 
         guard let cdMessage = TestUtil.cdMessage(
@@ -174,7 +168,6 @@ class PEPSessionTest: XCTestCase {
         let folder = CdFolder.create()
         folder.account = cdAccount
         folder.name = ImapSync.defaultImapInboxName
-        folder.uuid = MessageID.generate()
 
         guard let cdMessage = TestUtil.cdMessage(
             fileName: "IOS-211-duplicated-attachments.txt", cdOwnAccount: cdAccount) else {

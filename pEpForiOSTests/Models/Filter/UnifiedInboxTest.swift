@@ -66,7 +66,7 @@ class UnifiedInboxTest: CoreDataDrivenTestBase {
             let msg = uf.messageAt(index: Int(uidRun - 1))
             let cdMsg = allTheCdMessages[Int(uidRun - 1)]
             XCTAssertEqual(cdMsg.uid, uidRun)
-            XCTAssertEqual(msg?.imapFlags?.uid, uidRun)
+            XCTAssertEqual(msg?.uid, Int(uidRun))
         }
 
         var index = 0

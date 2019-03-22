@@ -22,16 +22,16 @@ class FlagImageTests: XCTestCase {
 
         let msg = Message.fakeMessage(uuid: MessageID.generate())
 
-        msg.imapFlags?.seen = true
+        msg.imapFlags.seen = true
         XCTAssertNil(fi.flagsImage(message: msg))
 
-        msg.imapFlags?.flagged = true
+        msg.imapFlags.flagged = true
         XCTAssertEqual(fi.flagsImage(message: msg), fi.flaggedImage)
 
-        msg.imapFlags?.seen = false
+        msg.imapFlags.seen = false
         XCTAssertEqual(fi.flagsImage(message: msg), fi.flaggedImage)
 
-        msg.imapFlags?.flagged = false
+        msg.imapFlags.flagged = false
         XCTAssertNil(fi.flagsImage(message: msg))
     }
 }
