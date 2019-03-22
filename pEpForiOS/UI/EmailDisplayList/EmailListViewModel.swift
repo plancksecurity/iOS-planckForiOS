@@ -80,32 +80,67 @@ class EmailListViewModel {
     var oldThreadSetting : Bool
     
     // MARK: - Life Cycle
-    
+
+    //!!!: This init must be reviewed when unifiedInobx works again
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
-         folderToShow: Folder = UnifiedInbox()) {
+         folderToShow: Folder /*= nil */= UnifiedInbox()) {
+/*
+        var folderToShowTemp: Folder
 
-        self.messageQueryResults = MessageQueryResults(withFolder: folderToShow)
+        if !Account.all().isEmpty {
+            if let cdaccount = CdAccount.first(),
+                let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
+                folderToShowTemp = Folder.from(cdFolder: cdfolder)
+
+            } else {
+
+            }
+        } else {
+        }
+
+        var folderToShowTemp: Folder
+        if folderToShow == nil {
+
+        } else {
+            folderToShowTemp = folderToShow!
+        }
+*/
+        var folderToShowTemp = folderToShow
+        if !Account.all().isEmpty {
+            if let cdaccount = CdAccount.first(), let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
+                folderToShowTemp = Folder.from(cdFolder: cdfolder)
+            }
+        }
+        self.messageQueryResults = MessageQueryResults(withFolder: folderToShowTemp)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 
-        self.folderToShow = folderToShow
-        self.defaultFilter = folderToShow.filter?.clone()
+        self.folderToShow = folderToShowTemp
+        self.defaultFilter = folderToShowTemp.filter?.clone()
         self.oldThreadSetting = AppSettings.threadedViewEnabled
         
         resetViewModel()
 
     }
 
-    func startMonitoring() {
-        do {
-            self.messageQueryResults.delegate = self
-            try messageQueryResults.startMonitoring()
-            dataSourceIsUsable = false
-        } catch {
-            Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")
+    func isFolderReady() -> Bool {
+        if let cdaccount = CdAccount.first(), let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
+            return true
         }
+        return false
+    }
 
+    func startMonitoring() {
+        if isFolderReady() {
+            do {
+                self.messageQueryResults.delegate = self
+                try messageQueryResults.startMonitoring()
+                dataSourceIsUsable = true
+            } catch {
+                Logger.frontendLogger.errorAndCrash("MessageQueryResult crash")
+            }
+        }
     }
 
     func updateLastLookAt() {
