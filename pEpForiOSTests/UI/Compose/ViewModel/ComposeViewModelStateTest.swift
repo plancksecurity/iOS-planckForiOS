@@ -105,7 +105,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testValidate_changeTos_grey() {
-        let recipients = [someone, account.user]
+        let recipients: [Identity] = [someone, account.user]
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .unencrypted)
         testee?.toRecipients = recipients
@@ -113,7 +113,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testValidate_changeTos_green() {
-        let recipients = [account.user]
+        let recipients: [Identity] = [account.user]
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .trustedAndAnonymized)
         testee?.toRecipients = recipients
@@ -121,7 +121,7 @@ class ComposeViewModelStateTest: CoreDataDrivenTestBase {
     }
 
     func testValidate_changeCcs_grey() {
-        let recipients = [someone, account.user]
+        let recipients: [Identity] = [someone, account.user]
         assertValidatation(expectedStateIsValid: true,
                            expectedNewRating: .unencrypted)
         testee?.ccRecipients = recipients
