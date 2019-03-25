@@ -20,6 +20,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
                             didMoveData atIndexPath: IndexPath, toIndexPath: IndexPath)
     func willReceiveUpdates(viewModel: EmailListViewModel)
     func allUpdatesReceived(viewModel: EmailListViewModel)
+    func reloadData(viewModel: EmailListViewModel)
     func toolbarIs(enabled: Bool)
     func showUnflagButton(enabled: Bool)
     func showUnreadButton(enabled: Bool)
@@ -347,7 +348,7 @@ class EmailListViewModel {
     }
 
     public func reloadData() {
-
+        emailListViewModelDelegate?.reloadData(viewModel: self)
     }
 
     public func shouldShowToolbarEditButtons() -> Bool {

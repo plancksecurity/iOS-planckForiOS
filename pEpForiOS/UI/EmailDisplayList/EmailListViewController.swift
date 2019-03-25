@@ -677,6 +677,10 @@ extension EmailListViewController: UISearchResultsUpdating, UISearchControllerDe
 // MARK: - EmailListViewModelDelegate
 
 extension EmailListViewController: EmailListViewModelDelegate {
+    func reloadData(viewModel: EmailListViewModel) {
+        tableView.reloadData()
+    }
+
     func willReceiveUpdates(viewModel: EmailListViewModel) {
         tableView.beginUpdates()
     }
