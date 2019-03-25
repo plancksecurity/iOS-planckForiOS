@@ -82,10 +82,11 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
         return
     }
 
+
     // MARK: - Setup
 
     private func setup() {
-
+        
         if model == nil {
             model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
         }

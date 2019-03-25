@@ -49,6 +49,7 @@ class EmailListViewModel {
     }()
 
     var lastSearchTerm = ""
+    var updatesEnabled = true
 
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
@@ -260,22 +261,20 @@ class EmailListViewModel {
     }
 
     public func deleteSelected(indexPaths: [IndexPath]) {
-        //disable get notifications
+        updatesEnabled = false
         indexPaths.forEach { (ip) in
             let message = messageQueryResults[ip.row]
             delete(message: message)
         }
-        //re-enable it?
     }
 
     public func messagesToMove(indexPaths: [IndexPath]) -> [Message?] {
-        //disable get notifications
+        updatesEnabled = false
         var messages : [Message?] = []
         indexPaths.forEach { (ip) in
             messages.append(self.message(representedByRowAt: ip))
         }
         return messages
-        //re-enable it?
     }
     
     func setFlagged(forIndexPath indexPath: IndexPath) {
@@ -287,23 +286,21 @@ class EmailListViewModel {
     }
     
     func markRead(forIndexPath indexPath: IndexPath) {
-        //disable get notifications
+        updatesEnabled = false
         let message = messageQueryResults[indexPath.row]
         DispatchQueue.main.async { [] in
             message.imapFlags?.seen = true
             message.save()
         }
-        //re-enable it?
     }
 
     func markUnread(forIndexPath indexPath: IndexPath) {
-        //disable get notifications
+        updatesEnabled = false
         let message = messageQueryResults[indexPath.row]
         DispatchQueue.main.async { [] in
             message.imapFlags?.seen = false
             message.save()
         }
-        //re-enable it?
     }
 
     func delete(forIndexPath indexPath: IndexPath) {
@@ -342,6 +339,7 @@ class EmailListViewModel {
     }
     
     internal func setFlaggedValue(forIndexPath indexPath: IndexPath, newValue flagged: Bool) {
+        updatesEnabled = false
         let message = messageQueryResults[indexPath.row]
         message.imapFlags?.flagged = flagged
         DispatchQueue.main.async {

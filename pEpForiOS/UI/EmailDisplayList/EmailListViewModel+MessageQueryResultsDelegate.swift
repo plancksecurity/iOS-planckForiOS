@@ -12,27 +12,41 @@ import MessageModel
 extension EmailListViewModel : MessageQueryResultsDelegate {
     
     func didInsert(indexPath: IndexPath) {
-        emailListViewModelDelegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
+        if updatesEnabled {
+            emailListViewModelDelegate?.emailListViewModel(viewModel: self, didInsertDataAt: [indexPath])
+        }
     }
 
     func didUpdate(indexPath: IndexPath) {
-        emailListViewModelDelegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
+        if updatesEnabled {
+            emailListViewModelDelegate?.emailListViewModel(viewModel: self, didUpdateDataAt: [indexPath])
+        }
     }
 
     func didDelete(indexPath: IndexPath) {
-        emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
+        if updatesEnabled {
+            emailListViewModelDelegate?.emailListViewModel(viewModel: self, didRemoveDataAt: [indexPath])
+        }
     }
 
     func didMove(from: IndexPath, to: IndexPath) {
-        emailListViewModelDelegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
+        if updatesEnabled {
+            emailListViewModelDelegate?.emailListViewModel(viewModel: self, didMoveData: from, toIndexPath: to)
+        }
     }
 
     func willChangeResults() {
-        emailListViewModelDelegate?.willReceiveUpdates(viewModel: self)
+        if updatesEnabled {
+            emailListViewModelDelegate?.willReceiveUpdates(viewModel: self)
+        }
     }
 
     func didChangeResults() {
-        emailListViewModelDelegate?.allUpdatesReceived(viewModel: self)
+        if updatesEnabled {
+            emailListViewModelDelegate?.allUpdatesReceived(viewModel: self)
+        } else {
+            updatesEnabled = true
+        }
     }
 
 
