@@ -212,7 +212,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         networkService = NetworkService(mySelfer: self, errorPropagator: errorPropagator)
         networkService?.sendLayerDelegate = sendLayerDelegate
         networkService?.delegate = self
-        CdAccount.sendLayer = networkService
+//        CdAccount.sendLayer = networkService //???
     }
 
     // Safely restarts all services

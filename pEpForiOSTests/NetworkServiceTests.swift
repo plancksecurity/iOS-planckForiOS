@@ -21,7 +21,6 @@ class NetworkServiceTests: XCTestCase {
 
     override func tearDown() {
         persistenceSetup = nil
-        CdAccount.sendLayer = nil
         super.tearDown()
     }
 

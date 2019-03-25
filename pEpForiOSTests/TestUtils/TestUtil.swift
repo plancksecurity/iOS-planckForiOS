@@ -277,8 +277,8 @@ class TestUtil {
                                     attachmentsInlined: Bool = false,
                                     encrypt: Bool = true,
                                     forceUnencrypted: Bool = false) throws -> [Message] {
+        let cdAccount = account.cdAccount()
         guard
-            let cdAccount = account.cdAccount(),
             let cdFromIdentity = fromIdentity?.cdIdentity(),
             let cdToIdentity = toIdentity?.cdIdentity()
             else {
