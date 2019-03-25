@@ -37,6 +37,11 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
             return
         }
 
+        guard let cdInbox = inbox.cdFolder() else {
+            XCTFail()
+            return
+        }
+
         let partnerId = Identity(address: "somepartner@example.com",
                                  userID: "ID_somepartner@example.com",
                                  addressBookID: nil,
@@ -50,7 +55,7 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         mail1.longMessage = "Hi there!"
         mail1.save()
 
-        appendMailsIMAP(folder: inbox,
+        appendMailsIMAP(folder: cdInbox,
                         imapSyncData: imapSyncData,
                         errorContainer: errorContainer,
                         queue: queue)

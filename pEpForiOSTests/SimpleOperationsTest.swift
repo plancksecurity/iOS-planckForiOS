@@ -519,7 +519,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
         }
 
-        appendMailsIMAP(folder: folder.folder(),
+        appendMailsIMAP(folder: folder,
                         imapSyncData: imapSyncData,
                         errorContainer: errorContainer,
                         queue: queue)
@@ -600,7 +600,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         let expDraftsStored = expectation(description: "expDraftsStored")
 
         let appendOp = AppendMailsOperation(parentName: #function,
-                                            folder: folder.folder(),
+                                            folder: folder,
                                             imapSyncData: imapSyncData,
                                             errorContainer: errorContainer)
         appendOp.completionBlock = {
