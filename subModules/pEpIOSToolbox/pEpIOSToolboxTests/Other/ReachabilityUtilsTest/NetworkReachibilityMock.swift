@@ -1,14 +1,13 @@
 //
-//  NetworkReachibilityMock.swift
+//  NetworkReachabilityMock.swift
 //  pEpForiOSTests
 //
 //  Created by Alejandro Gelos on 13/02/2019.
 //  Copyright © 2019 p≡p Security S.A. All rights reserved.
 //
 
-import XCTest
 import SystemConfiguration
-@testable import pEpForiOS
+@testable import pEpIOSToolbox
 
 
 class YesInternetReachabilityMock: NetworkReachabilityProtocol {

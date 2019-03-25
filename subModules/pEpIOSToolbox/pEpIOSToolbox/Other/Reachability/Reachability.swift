@@ -1,5 +1,5 @@
 //
-//  ReachabilityUtils.swift
+//  Reachability.swift
 //  pEp
 //
 //  Created by Alejandro Gelos on 11/02/2019.
@@ -40,7 +40,7 @@ public protocol ReachabilityDelegate: class {
 /// * call yourReachability.getConnectionStatus(
 ///    completion: { result in ...},
 ///    failure: { error in ...})
-public final class Reachability: ReachabilityUtilsProtocol {
+public final class Reachability: ReachabilityProtocol {
     public enum Connection: String {
         case notConnected, connected
     }
@@ -61,7 +61,7 @@ public final class Reachability: ReachabilityUtilsProtocol {
     
     var flags: SCNetworkReachabilityFlags? {
         didSet {
-            callDelegateDidChangeReachibilityIfNeeded(newFlags: flags, oldFlags: oldValue)
+            callDelegateDidChangeReachabilityIfNeeded(newFlags: flags, oldFlags: oldValue)
         }
     }
     
@@ -168,7 +168,7 @@ private extension Reachability {
         return fromFlags.contains(.reachable) ? .connected : .notConnected
     }
     
-    private func callDelegateDidChangeReachibilityIfNeeded(newFlags: SCNetworkReachabilityFlags?,
+    private func callDelegateDidChangeReachabilityIfNeeded(newFlags: SCNetworkReachabilityFlags?,
                                                            oldFlags: SCNetworkReachabilityFlags?){
         guard let newFlags = newFlags else { return }
         let newState = getConnectionStatus(fromFlags: newFlags)

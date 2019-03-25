@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		378B76552240F93A00D6662C /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378B76542240F93A00D6662C /* TestUtils.swift */; };
+		37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */; };
+		37904563223FA486006DAB3B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3790455F223FA486006DAB3B /* Reachability.swift */; };
+		37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904560223FA486006DAB3B /* NetworkReachability.swift */; };
+		37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904561223FA486006DAB3B /* ReachabilityProtocol.swift */; };
+		37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */; };
+		3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37904568223FA52B006DAB3B /* ReachabilityTests.swift */; };
 		435F5129221FF9D7006EB11F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5128221FF9D7006EB11F /* Constants.swift */; };
 		B70A3A5522005BD400EDCE61 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5422005BD400EDCE61 /* Date+Extension.swift */; };
 		B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */; };
@@ -48,6 +55,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		378B76542240F93A00D6662C /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TestUtils.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolboxTests/TestUtils/TestUtils.swift; sourceTree = "<group>"; };
+		3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachabilityProtocol.swift; sourceTree = "<group>"; };
+		3790455F223FA486006DAB3B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		37904560223FA486006DAB3B /* NetworkReachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
+		37904561223FA486006DAB3B /* ReachabilityProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityProtocol.swift; sourceTree = "<group>"; };
+		37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkReachibilityMock.swift; sourceTree = "<group>"; };
+		37904568223FA52B006DAB3B /* ReachabilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReachabilityTests.swift; sourceTree = "<group>"; };
 		435F5128221FF9D7006EB11F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../../Submodules/pEpIOSToolbox/pEpIOSToolbox/Other/Constants.swift; sourceTree = "<group>"; };
 		B70A3A5422005BD400EDCE61 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B70A3A5622005BE300EDCE61 /* NSRegularExpression+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Extension.swift"; sourceTree = "<group>"; };
@@ -117,9 +131,38 @@
 		15175EDA221E9F4C00C91DB8 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				37904566223FA52B006DAB3B /* ReachabilityUtilsTest */,
 				B7DB7F8322144E4E003968DA /* SortedSetTest.swift */,
 			);
 			path = Other;
+			sourceTree = "<group>";
+		};
+		378B76532240F8B900D6662C /* TestUtils */ = {
+			isa = PBXGroup;
+			children = (
+				378B76542240F93A00D6662C /* TestUtils.swift */,
+			);
+			path = TestUtils;
+			sourceTree = "<group>";
+		};
+		3790455D223FA486006DAB3B /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				3790455E223FA486006DAB3B /* NetworkReachabilityProtocol.swift */,
+				3790455F223FA486006DAB3B /* Reachability.swift */,
+				37904560223FA486006DAB3B /* NetworkReachability.swift */,
+				37904561223FA486006DAB3B /* ReachabilityProtocol.swift */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
+		37904566223FA52B006DAB3B /* ReachabilityUtilsTest */ = {
+			isa = PBXGroup;
+			children = (
+				37904567223FA52B006DAB3B /* NetworkReachibilityMock.swift */,
+				37904568223FA52B006DAB3B /* ReachabilityTests.swift */,
+			);
+			path = ReachabilityUtilsTest;
 			sourceTree = "<group>";
 		};
 		B70A3A5222005A7600EDCE61 /* Foundation */ = {
@@ -186,6 +229,7 @@
 		B7DB7F58221315BD003968DA /* pEpIOSToolboxTests */ = {
 			isa = PBXGroup;
 			children = (
+				378B76532240F8B900D6662C /* TestUtils */,
 				15175ED8221E9F3800C91DB8 /* Foundation */,
 				15175ED9221E9F4200C91DB8 /* UIKit */,
 				15175EDA221E9F4C00C91DB8 /* Other */,
@@ -197,6 +241,7 @@
 		B7DB7FEC221B086A003968DA /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				3790455D223FA486006DAB3B /* Reachability */,
 				B7DB7F4F22130DE9003968DA /* Weak.swift */,
 				B70A3A75220091D400EDCE61 /* Logger.swift */,
 				B75390852212E20500B1FCF9 /* Collection+Extensions.swift */,
@@ -317,12 +362,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7465DC622119EB1008A1708 /* Array+SortingAndSearching.swift in Sources */,
+				37904563223FA486006DAB3B /* Reachability.swift in Sources */,
 				B7911ECC21F8B46600D7F66F /* GCD.swift in Sources */,
 				B7A46C54220C73BE0027CCB5 /* String+Extensions.swift in Sources */,
 				B7A46C58220DA6190027CCB5 /* String+Email.swift in Sources */,
+				37904565223FA486006DAB3B /* ReachabilityProtocol.swift in Sources */,
 				B7A46C62220DCEA80027CCB5 /* NSAttributedString+Parsing.swift in Sources */,
 				B7465DE72211E969008A1708 /* CGRect+Util.swift in Sources */,
 				B7465DCC2211BEEA008A1708 /* Tuple.swift in Sources */,
+				37904562223FA486006DAB3B /* NetworkReachabilityProtocol.swift in Sources */,
 				435F5129221FF9D7006EB11F /* Constants.swift in Sources */,
 				B7A46C50220C1F0C0027CCB5 /* MiscUtil.swift in Sources */,
 				B70A3A7322006B9F00EDCE61 /* SystemUtils.swift in Sources */,
@@ -338,6 +386,7 @@
 				B70A3A5722005BE300EDCE61 /* NSRegularExpression+Extension.swift in Sources */,
 				B7465DBE22119D3A008A1708 /* Thread+Extension.swift in Sources */,
 				B7DB7F5022130DE9003968DA /* Weak.swift in Sources */,
+				37904564223FA486006DAB3B /* NetworkReachability.swift in Sources */,
 				B7A46C52220C732E0027CCB5 /* Data+Extensions.swift in Sources */,
 				B7465DE32211C890008A1708 /* CGImageSource+Extension.swift in Sources */,
 				B7465DE12211C6E9008A1708 /* UIImage+GIF.swift in Sources */,
@@ -349,7 +398,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3790456A223FA52B006DAB3B /* ReachabilityTests.swift in Sources */,
 				B7DB7F8422144E4E003968DA /* SortedSetTest.swift in Sources */,
+				37904569223FA52B006DAB3B /* NetworkReachibilityMock.swift in Sources */,
+				378B76552240F93A00D6662C /* TestUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
