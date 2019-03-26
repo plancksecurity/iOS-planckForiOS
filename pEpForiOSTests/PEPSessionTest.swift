@@ -67,7 +67,8 @@ class PEPSessionTest: XCTestCase {
                                         rating: nil,
                                         extraKeys: nil,
                                         status: nil)
-        cdmessage2.update(pEpMessageDict: pepmessage)
+        let moc = cdmessage2.managedObjectContext! //!!!: not nice
+        cdmessage2.update(pEpMessageDict: pepmessage, context: moc)
         XCTAssertEqual(cdmessage2, cdmessage1)
     }
 

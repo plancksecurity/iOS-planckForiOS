@@ -688,7 +688,7 @@ class TestUtil {
             let mySelfID = Identity(identity: safeOptId, isMySelf: true)
             mySelfID.save()
 
-            let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
+            let cdMySelfIdentity = CdIdentity.search(address: mySelfID.address)
             XCTAssertNotNil(cdMySelfIdentity)
 
             let cdMyAccount = CdAccount.create()
