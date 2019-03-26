@@ -481,7 +481,7 @@ class TestUtil {
 
     static func createCdAttachment(inlined: Bool = true) -> CdAttachment {
         let attachment = createAttachment(inlined: inlined)
-        return CdAttachment.create(attachment: attachment)
+        return attachment.cdObject
     }
 
     static func createAttachments(number: Int) -> [Attachment] {
