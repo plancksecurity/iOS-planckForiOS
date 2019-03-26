@@ -303,3 +303,15 @@ class CdMessage_PantomimeTest: CoreDataDrivenTestBase {
         flags.flagDraft = isEnabled
     }
 }
+
+extension CdImapFlags {
+
+    public func reset() {
+        flagAnswered = false
+        flagDraft = false
+        flagFlagged = false
+        flagRecent = false
+        flagSeen = false
+        flagDeleted = false
+    }
+}
