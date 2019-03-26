@@ -42,6 +42,7 @@ class EmailListViewModel {
     let messageQueryResults: MessageQueryResults
     let messageSyncService: MessageSyncServiceProtocol
     var dataSourceIsUsable = false
+    var indexPathShown: IndexPath?
 
     private let queue: OperationQueue = {
         let createe = OperationQueue()
@@ -105,7 +106,7 @@ class EmailListViewModel {
     }
 
     func isFolderReady() -> Bool {
-        if let cdaccount = CdAccount.first(), let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
+        if let cdaccount = CdAccount.first(), let _ = CdFolder.by(folderType: .inbox, account: cdaccount) {
             return true
         }
         return false

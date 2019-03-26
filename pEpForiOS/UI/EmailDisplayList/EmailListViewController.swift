@@ -1027,6 +1027,7 @@ extension EmailListViewController: SegueHandlerType {
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model as! EmailDisplayDelegate
             model?.currentDisplayedMessage = vc
+            model?.indexPathShown = indexPath
       //  case .segueShowThreadedEmail:
         /*    guard let nav = segue.destination as? UINavigationController,
                 let vc = nav.rootViewController as? ThreadViewController,
