@@ -12,7 +12,6 @@ import MessageModel
 
 extension EmailListViewModel: EmailDisplayDelegate {
     func emailDisplayDidFlag(message: Message) {
-        //updateRow(for: message)
         guard let index = indexPathShown?.row else {
             //something has gone wrong
             reloadData()
@@ -22,7 +21,6 @@ extension EmailListViewModel: EmailDisplayDelegate {
     }
 
     func emailDisplayDidUnflag(message: Message) {
-        //updateRow(for: message)
         guard let index = indexPathShown?.row else {
             //something has gone wrong
             reloadData()
@@ -33,13 +31,6 @@ extension EmailListViewModel: EmailDisplayDelegate {
 
     func emailDisplayDidDelete(message: Message) {
 
-//        MessageModel.performAndWait { [weak self] in
-//            guard let me = self else {
-//                Logger.frontendLogger.lostMySelf()
-//                return
-//            }
-//            me.didDelete(messageFolder: message)
-//        }
         guard let index = indexPathShown?.row else {
             //something has gone wrong
             reloadData()
@@ -84,8 +75,10 @@ extension EmailListViewModel: EmailDisplayDelegate {
     ///!!!: change this to work with the proccees like messageQuery
     private func informUpdateRow(at index: Int) {
         let indexPath = self.indexPath(for: index)
+        emailListViewModelDelegate?.willReceiveUpdates(viewModel: self)
         emailListViewModelDelegate?.emailListViewModel(viewModel: self,
                                                        didUpdateDataAt: [indexPath])
+        emailListViewModelDelegate?.allUpdatesReceived(viewModel: self)
     }
 
     private func informSeenStateChangeForRow(at index: Int) {
