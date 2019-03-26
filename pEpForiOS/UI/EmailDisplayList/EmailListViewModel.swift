@@ -9,6 +9,7 @@
 import Foundation
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 protocol EmailListViewModelDelegate: TableViewUpdate {
     func emailListViewModel(viewModel: EmailListViewModel, didInsertDataAt indexPaths: [IndexPath])
@@ -185,7 +186,7 @@ class EmailListViewModel {
         }
         let message = messageQueryResults[indexPath.row]
         let color = PEPUtil.pEpColor(pEpRating: message.pEpRating())
-        if color != PEP_color_no_color {
+        if color != PEPColor.noColor {
             return color.statusIcon()
         } else {
             return nil
@@ -327,7 +328,7 @@ class EmailListViewModel {
     }
 
     internal func requestEmailViewIfNeeded(for message:Message) {
-        MessageModel.performAndWait {
+        MessageModelUtil.performAndWait {
             DispatchQueue.main.async {
                 self.screenComposer?.emailListViewModel(self, requestsShowEmailViewFor: message)
             }

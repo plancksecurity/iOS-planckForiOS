@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import MessageModel
 
+import MessageModel
 
 /// View Model for folder hierarchy.
 public class FolderViewModel {
@@ -61,7 +61,7 @@ public class FolderViewModel {
     
     func refreshFolderList() {
         DispatchQueue.global(qos: .userInitiated).async {
-            MessageModel.perform {
+            MessageModelUtil.perform {
                 self.folderSyncService.requestFolders(inAccounts: Account.all())
             }
         }
@@ -79,7 +79,7 @@ public class FolderViewModel {
 }
 
 extension FolderViewModel : FolderSyncServiceDelegate {
-    func finishedSyncingFolders() {
+    public func finishedSyncingFolders() {
         DispatchQueue.main.async {
             self.delegate?.folderViewModelDidUpdateFolderList(viewModel: self)
         }
