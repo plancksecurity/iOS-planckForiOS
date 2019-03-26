@@ -63,6 +63,9 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
     }
 
     func testUpdate() {
+        XCTFail()
+        return //!!!: crashes due to CD multithreading violation
+
         let address = "fakeAddress"
         let login = "fakelogin"
         let name = "fakeName"

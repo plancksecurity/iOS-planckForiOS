@@ -87,6 +87,9 @@ class AccountVerificationServiceTests: XCTestCase {
 
     func testVerification(account: Account, expectedResult: AccountVerificationResult,
                           testDirectly: Bool) {
+        XCTFail()
+        return //!!!: crash. Probalby CD multithreading
+
         let expVerified = expectation(description: "account verified")
         let delegate = AccountVerificationTestDelegate(expVerified: expVerified)
 
