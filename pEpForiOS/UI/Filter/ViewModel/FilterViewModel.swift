@@ -70,8 +70,7 @@ public class FilterViewModel {
                 FilterCellViewModel(image: flaggedIcon,
                                     title: NSLocalizedString("Flagged",
                                                              comment: "title unread filter cell"),
-                                    enabled: filters.contains(type: FlaggedFilter.self),
-                                    filter: FlaggedFilter()))
+                                    enabled: filters?.mustBeFlagged))
             break
         case .other:
             guard let attachIcon = UIImage(named: "attachment-list-icon") else {
