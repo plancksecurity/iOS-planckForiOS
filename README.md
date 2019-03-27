@@ -127,3 +127,47 @@ ASN1C_INC=/opt/local/share/asn1c/
 ~~~
 
 Note that some of these variables may be overridden in the build system elsewhere, for example the variable `YML2_PATH`. Check the build steps in `pEpEngine.xcodeproj` for details.
+
+# Misc
+For a quick update of all the code repositories cloned in the instructions above, use this shell script snipped:
+
+~~~
+cd ~/yml2/
+hg pull -u
+
+cd ~/src/libetpan/
+git pull
+
+cd ~/src/OpenSSL-for-iPhone/
+git pull
+
+cd ~/src/SwipeCellKit/
+git pull
+
+cd ~/src/AppAuth-iOS/
+git pull
+
+cd ~/src/ldns/
+git pull
+
+cd ~/src/pantomime-iOS/
+hg pull -u
+
+cd ~/src/netpgp-et/
+hg pull -u
+
+cd ~/src/pEpEngine/
+hg pull -u
+
+cd ~/src/pEpObjCAdapter/
+hg pull -u
+
+cd ~/src/MessageModel/
+hg pull -u
+
+cd ~/src/libAccountSettings/
+hg pull -u
+
+cd ~/src/pEp_for_iOS/
+hg pull -u
+~~~
