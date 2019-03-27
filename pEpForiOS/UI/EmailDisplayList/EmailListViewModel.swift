@@ -467,13 +467,10 @@ class EmailListViewModel {
         return folderToShow.filter
     }
 
-    static let defaultFilterViewFilter = CompositeFilter<FilterBase>.defaultFilter()
-    private var _filterViewFilter: CompositeFilter = defaultFilterViewFilter
-    private var filterViewFilter: CompositeFilter<FilterBase> {
+    static let defaultFilterViewFilter = MessageQueryResultsFilter.defaultFilter()
+    private var _filterViewFilter: MessageQueryResultsFilter = defaultFilterViewFilter
+    private var filterViewFilter: MessageQueryResultsFilter {
         get {
-            if _filterViewFilter.isEmpty() {
-                _filterViewFilter = EmailListViewModel.defaultFilterViewFilter
-            }
             return _filterViewFilter
         }
         set {
@@ -484,8 +481,8 @@ class EmailListViewModel {
     private func setFilterViewFilter(filter: MessageQueryResultsFilter) {
         if isFilterEnabled {
             let folderFilter = assuredFilterOfFolderToShow()
-            folderFilter.without(filters: filterViewFilter)
-            folderFilter.with(filters: filter)
+           /* folderFilter.without(filters: filterViewFilter)
+            folderFilter.with(filters: filter)*/
             reloadData()
         }
         filterViewFilter = filter
