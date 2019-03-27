@@ -489,11 +489,10 @@ class EmailListViewModel {
     }
 
     private func handleFilterEnabledSwitch() {
-        let folderFilter = assuredFilterOfFolderToShow()
-        if isFilterEnabled {
-            folderFilter.with(filters: filterViewFilter)
-        } else {
-            self.folderToShow.filter = defaultFilter?.clone()
+        do {
+            try self.messageQueryResults.set(filter: self.filterViewFilter)
+        } catch {
+            Logger.frontendLogger.errorAndCrash("crash from messageQuery at set filter")
         }
         reloadData()
     }
