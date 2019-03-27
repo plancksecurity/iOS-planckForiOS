@@ -16,14 +16,11 @@ public enum FilterSectionType {
 public class FilterViewModel {
     private var items: [FilterCellViewModel]
     public var title: String
-    public var filters: CompositeFilter<FilterBase>
+    public var filters: MessageQueryResultsFilter?
 
-    public init(type: FilterSectionType, filter: CompositeFilter<FilterBase>? = nil) {
-
-        if let f = filter {
-            filters = f
-        } else {
-            filters = CompositeFilter()
+    public init(type: FilterSectionType, filter: MessageQueryResultsFilter? = nil) {
+        if let previousFilter = filter {
+            filters = previousFilter
         }
 
         items = [FilterCellViewModel]()
@@ -51,10 +48,7 @@ public class FilterViewModel {
                 }
                 items.append(
                     FilterCellViewModel(image: icon, title: account.user.address,
-                                        enabled: filters.contains(Address: account.user.address)
-                                            ||
-                                            (filters.isUnified() && !filters.contains(type: AccountFilter.self)),
-                                        filter: AccountFilter(address: account.user.address)))
+                                        enabled: filters?.accounts.contains(account)))
             }
             break
         case .include:

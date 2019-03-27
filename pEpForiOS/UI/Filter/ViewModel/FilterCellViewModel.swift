@@ -7,13 +7,15 @@ public class FilterCellViewModel {
     var icon: UIImage?
     var title: String
     var enabled: Bool
-    var filter: FilterBase
 
-    public init(image: UIImage, title: String, enabled: Bool = false, filter: FilterBase) {
+    public init(image: UIImage, title: String, enabled: Bool? = false) {
         self.icon = image
         self.title = title
-        self.enabled = enabled
-        self.filter = filter
+        if let filterEnabled = enabled {
+            self.enabled = filterEnabled
+        } else {
+            self.enabled = false
+        }
     }
 
 }
