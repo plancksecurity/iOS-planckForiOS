@@ -22,7 +22,6 @@ public class FilterViewModel {
         if let previousFilter = filter {
             filters = previousFilter
         }
-
         items = [FilterCellViewModel]()
         switch type {
         case .accouts:
@@ -48,7 +47,7 @@ public class FilterViewModel {
                 }
                 items.append(
                     FilterCellViewModel(image: icon, title: account.user.address,
-                                        enabled: filters?.accounts.contains(account)))
+                                        enabled: filters?.accounts.contains(account), type: .Account))
             }
             break
         case .include:
@@ -60,7 +59,7 @@ public class FilterViewModel {
                 FilterCellViewModel(image: unreadIcon,
                                     title: NSLocalizedString("Unread",
                                                              comment: "title unread filter cell"),
-                                    enabled: filters.contains(type: filters?.mustBeUnread)))
+                                    enabled: filters?.mustBeUnread, type: .Unread))
 
             guard let flaggedIcon = UIImage(named: "icon-flagged") else {
                 Logger.frontendLogger.errorAndCrash("Error Loading images")
@@ -70,7 +69,7 @@ public class FilterViewModel {
                 FilterCellViewModel(image: flaggedIcon,
                                     title: NSLocalizedString("Flagged",
                                                              comment: "title unread filter cell"),
-                                    enabled: filters?.mustBeFlagged))
+                                    enabled: filters?.mustBeFlagged, type: .Flagg))
             break
         case .other:
             guard let attachIcon = UIImage(named: "attachment-list-icon") else {
@@ -81,18 +80,31 @@ public class FilterViewModel {
                 FilterCellViewModel(image: attachIcon,
                                     title: NSLocalizedString("Attachments",
                                                              comment: "title attachments filter cell"),
-                                    enabled: filters?.mustContainAttachments))
+                                    enabled: filters?.mustContainAttachments, type: .Attachments))
             break
         }
     }
 
-    func getFilters() -> CompositeFilter<FilterBase> {
-        let filter = CompositeFilter<FilterBase>()
+    func getFilters() -> MessageQueryResultsFilter {
+
+        var flagged: Bool? = nil
+        var unread: Bool? = nil
+        var attachments: Bool? = nil
+        var accounts: [Account] = []
         for item in items {
-            if item.enabled {
-                filter.add(filter: item.filter)
+            switch item.filterType {
+            case .Account:
+                //!!!: accounts must be rethink
+                break;
+            case .Attachments:
+                attachments = item.enabled
+            case .Flagg:
+                flagged = item.enabled
+            case .Unread:
+                unread = item.enabled
             }
         }
+        let filter = MessageQueryResultsFilter(mustBeFlagged: flagged, mustBeUnread: unread, mustContainAttachments: attachments, accounts: accounts)
         return filter
     }
 
