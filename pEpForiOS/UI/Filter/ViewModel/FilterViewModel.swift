@@ -81,8 +81,7 @@ public class FilterViewModel {
                 FilterCellViewModel(image: attachIcon,
                                     title: NSLocalizedString("Attachments",
                                                              comment: "title attachments filter cell"),
-                                    enabled: filters.contains(type: AttachmentFilter.self),
-                                    filter: AttachmentFilter()))
+                                    enabled: filters?.mustContainAttachments))
             break
         }
     }
