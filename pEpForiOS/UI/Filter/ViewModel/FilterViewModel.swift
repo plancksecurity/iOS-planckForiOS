@@ -60,8 +60,7 @@ public class FilterViewModel {
                 FilterCellViewModel(image: unreadIcon,
                                     title: NSLocalizedString("Unread",
                                                              comment: "title unread filter cell"),
-                                    enabled: filters.contains(type: UnreadFilter.self),
-                                    filter: UnreadFilter()))
+                                    enabled: filters.contains(type: filters?.mustBeUnread)))
 
             guard let flaggedIcon = UIImage(named: "icon-flagged") else {
                 Logger.frontendLogger.errorAndCrash("Error Loading images")
