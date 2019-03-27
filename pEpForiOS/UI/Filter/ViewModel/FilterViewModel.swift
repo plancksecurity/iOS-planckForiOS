@@ -118,11 +118,12 @@ public class FilterViewModel {
         return accountsSelected
     }
 
+    @available(*, deprecated)
     func getInvalidFilters() -> CompositeFilter<FilterBase> {
         let filter = CompositeFilter<FilterBase>()
         for item in items {
             if !item.enabled {
-                filter.add(filter: item.filter)
+                //filter.add(filter: item.filter)
             }
         }
         return filter
