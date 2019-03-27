@@ -9,43 +9,43 @@
 import Foundation
 import pEpIOSToolbox
 import MessageModel
-
+//!!!: this delegates must be fixed
 extension EmailListViewModel: EmailDisplayDelegate {
     func emailDisplayDidFlag(message: Message) {
-        guard let index = indexPathShown?.row else {
+        /*guard let index = indexPathShown?.row else {
             //something has gone wrong
             reloadData()
             return
         }
-        informUpdateRow(at: index)
+        informUpdateRow(at: index)*/
     }
 
     func emailDisplayDidUnflag(message: Message) {
-        guard let index = indexPathShown?.row else {
+        /*guard let index = indexPathShown?.row else {
             //something has gone wrong
             reloadData()
             return
         }
-        informUpdateRow(at: index)
+        informUpdateRow(at: index)*/
     }
 
     func emailDisplayDidDelete(message: Message) {
 
-        guard let index = indexPathShown?.row else {
+        /*guard let index = indexPathShown?.row else {
             //something has gone wrong
             reloadData()
             return
         }
-        informDeleteRow(at: index)
+        informDeleteRow(at: index)*/
 
     }
 
     func emailDisplayDidChangeMarkSeen(message: Message) {
-        updateRow(for: message, isSeenStateChange: true)
+        //updateRow(for: message, isSeenStateChange: true)
     }
 
     func emailDisplayDidChangeRating(message: Message) {
-        updateRow(for: message)
+        //updateRow(for: message)
     }
 
     private func deleteRow(for message: Message) {
