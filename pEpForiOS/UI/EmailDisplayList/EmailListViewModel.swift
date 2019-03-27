@@ -30,7 +30,7 @@ protocol EmailListViewModelDelegate: TableViewUpdate {
 // MARK: - FilterUpdateProtocol
 
 extension EmailListViewModel: FilterUpdateProtocol {
-    public func addFilter(_ filter: CompositeFilter<FilterBase>) {
+    public func addFilter(_ filter: MessageQueryResultsFilter) {
         setFilterViewFilter(filter: filter)
     }
 }
@@ -481,7 +481,7 @@ class EmailListViewModel {
         }
     }
 
-    private func setFilterViewFilter(filter: CompositeFilter<FilterBase>) {
+    private func setFilterViewFilter(filter: MessageQueryResultsFilter) {
         if isFilterEnabled {
             let folderFilter = assuredFilterOfFolderToShow()
             folderFilter.without(filters: filterViewFilter)
