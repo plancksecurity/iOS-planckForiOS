@@ -109,14 +109,7 @@ class FilterTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cellvm = sections[indexPath.section][indexPath.row]
-        if(cellvm.filter is AccountFilter){
-            let willDisable = !cellvm.enabled
-            if(willDisable || canDisable(accountFilters: sections[indexPath.section])){
-                cellvm.enabled = !cellvm.enabled
-            }
-        } else {
-            cellvm.enabled = !cellvm.enabled
-        }
+        cellvm.enabled = !cellvm.enabled
         let cell = self.tableView.cellForRow(at: indexPath)
         cell?.accessoryType = (cellvm.enabled) ? .checkmark : .none
     }
