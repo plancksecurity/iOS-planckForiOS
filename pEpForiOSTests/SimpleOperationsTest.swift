@@ -635,10 +635,13 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         try! session.mySelf(myself)
         XCTAssertNotNil(myself.fingerPrint)
 
-        let id = Identity.from(pEpIdentity: myself)
-        let account = SecretTestData().createWorkingAccount()
-        account.user = id
-        account.save()
+        guard let id = CdIdentity.from(pEpContact: myself) else {
+            XCTFail()
+            return
+        }
+        let account = SecretTestData().createWorkingCdAccount()
+        account.identity = id
+        Record.saveAndWait()
 
         self.measure {
             for _ in [1...1000] {
