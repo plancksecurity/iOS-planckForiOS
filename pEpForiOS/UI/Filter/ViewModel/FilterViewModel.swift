@@ -38,6 +38,10 @@ public class FilterViewModel {
     }
 
     public func getFilters() -> MessageQueryResultsFilter {
+
+        for item in sections {
+            //item.
+        }
         return MessageQueryResultsFilter(mustBeFlagged: false, mustBeUnread: false, mustContainAttachments: false, accounts: [])
     }
 

@@ -34,22 +34,12 @@ class FilterTableViewController: BaseTableViewController {
 
 
     @objc func ok(sender: UIBarButtonItem) {
-/*
-        for section in sections {
-
+        guard let model = viewModel else {
+            fatalError("no view model")
+            return
         }
 
-        let filters = CompositeFilter<FilterBase>()
-        if let f = filterEnabled, f.isUnified() {
-            filters.add(filter: UnifiedFilter())
-        }
-        for section in sections {
-            filters.with(filters: section.getFilters())
-            filters.without(filters: section.getInvalidFilters())
-        }
-        filterEnabled = filters
-        filterDelegate?.addFilter(filters)*/
-
+        filterDelegate?.addFilter(model.getFilters())
        _ = self.navigationController?.popViewController(animated: true)
     }
 
