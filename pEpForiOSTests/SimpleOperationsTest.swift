@@ -639,6 +639,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTFail()
             return
         }
+
         let account = SecretTestData().createWorkingCdAccount()
         account.identity = id
         Record.saveAndWait()
@@ -652,10 +653,12 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
 
     func testOutgoingMessageColor() {
         let account = SecretTestData().createWorkingCdAccount()
+
         guard let identity = account.identity else {
             XCTFail()
             return
         }
+
         self.measure {
             for _ in [1...1000] {
                 let _ = self.session.outgoingMessageRating(from: identity, to: [identity],
