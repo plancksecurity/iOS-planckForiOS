@@ -66,15 +66,6 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
             XCTAssertNotNil(m.sent)
             XCTAssertNotNil(m.received)
 
-            // Transform the message from CdMessage to Message to check conversion
-            guard let normalMessage = Message.from(cdMessage: m) else {
-                XCTFail()
-                return
-            }
-
-            XCTAssertEqual(m.from?.address, normalMessage.from?.address)
-            XCTAssertNotNil(normalMessage.uuid)
-
             guard let uuid = m.uuid else {
                 XCTFail()
                 continue
