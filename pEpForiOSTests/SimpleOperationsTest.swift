@@ -665,12 +665,17 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMailColorPerformanceWithoutMySelf() {
-        let (identity, _, _, _, _) = TestUtil.setupSomeIdentities(session)
+        let (myself, _, _, _, _) = TestUtil.setupSomeIdentities(session)
 
-        let id = Identity.from(pEpIdentity: identity)
-        let account = SecretTestData().createWorkingAccount()
-        account.user = id
-        account.save()
+        guard let id = CdIdentity.from(pEpContact: myself) else {
+            XCTFail()
+            return
+        }
+
+        let account = SecretTestData().createWorkingCdAccount()
+        account.identity = id
+        Record.saveAndWait()
+
         self.measure {
             for _ in [1...1000] {
                 let _ = self.session.outgoingMessageRating(from: id, to: [id], cc: [id], bcc: [id])
