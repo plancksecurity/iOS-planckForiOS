@@ -8,6 +8,7 @@
 
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 /// Utils for composing a message. Helps finding out values depending on the original message
 /// (the correct recipients, cancle actions ...).
@@ -166,7 +167,7 @@ struct ComposeUtil {
         message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
         message.pEpProtected = state.pEpProtection
         if !state.pEpProtection {
-            message.setOriginalRatingHeader(rating: PEP_rating_unencrypted)
+            message.setOriginalRatingHeader(rating: PEPRating.unencrypted)
         } else {
             message.setOriginalRatingHeader(rating: state.rating)
         }

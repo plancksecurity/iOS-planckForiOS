@@ -2944,6 +2944,8 @@
 				43A6E0581E57400E005BEE69 /* RatingReEvaluator.swift in Sources */,
 				49C34AF620E4F649009D11CC /* CellDetailTransition.swift in Sources */,
 				492EF92A20C18C6C004EAE14 /* DisplayedMessage.swift in Sources */,
+				15AA6016207CD71D00D57DB4 /* ImapFlags+Pantomime.swift in Sources */,
+				37A3D6222214338300E11415 /* NetworkReachabilityProtocol.swift in Sources */,
 				B70A3A9322089D5000EDCE61 /* Log+ASL.swift in Sources */,
 				49228A5520D4035100A51E9D /* DetailCellSegue.swift in Sources */,
 				43497B38211C62DE00AC42B0 /* MessageIdentitfying.swift in Sources */,

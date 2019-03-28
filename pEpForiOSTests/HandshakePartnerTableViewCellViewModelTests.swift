@@ -8,14 +8,15 @@
 
 import XCTest
 
-@testable import MessageModel
+@testable import MessageModel //FIXME:
 @testable import pEpForiOS
+import PEPObjCAdapterFramework
 
 class DecryptionDelegate: DecryptionAttemptCounterDelegate {
     var decryptedMessageDict: NSDictionary?
 
     override func decrypted(originalCdMessage: CdMessage, decryptedMessageDict: NSDictionary?,
-                   rating: PEP_rating, keys: [String]) {
+                   rating: PEPRating, keys: [String]) {
         super.decrypted(
             originalCdMessage: originalCdMessage, decryptedMessageDict: decryptedMessageDict,
             rating: rating, keys: keys)
@@ -150,25 +151,25 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                                                         partner: partnerID,
                                                         session: session)
 
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.confirmTrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.denyTrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
+        XCTAssertEqual(vm.partnerRating, .haveNoKey)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.confirmTrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
     }
 
     /**
@@ -188,18 +189,18 @@ class HandshakePartnerTableViewCellViewModelTests: XCTestCase {
                                                         partner: partnerID,
                                                         session: session)
 
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.denyTrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_have_no_key)
+        XCTAssertEqual(vm.partnerRating, .haveNoKey)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
 
         vm.confirmTrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_trusted_and_anonymized)
+        XCTAssertEqual(vm.partnerRating, .trustedAndAnonymized)
 
         vm.resetOrUndoTrustOrMistrust()
-        XCTAssertEqual(vm.partnerRating, PEP_rating_reliable)
+        XCTAssertEqual(vm.partnerRating, .reliable)
     }
 }

@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /**
  Base implementation of OAuth2AuthorizationProtocol and OAuth2AuthorizationURLHandlerProtocol.
  */

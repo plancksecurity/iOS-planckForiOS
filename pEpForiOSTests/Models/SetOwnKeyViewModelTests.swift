@@ -9,7 +9,8 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 class SetOwnKeyViewModelTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -48,7 +49,7 @@ class SetOwnKeyViewModelTests: XCTestCase {
     func testSetOwnKeyDirectly() {
         doTestSetOwnKey() {
             let leon = PEPIdentity(address: "iostest003@peptest.ch",
-                                   userID: PEP_OWN_USERID,
+                                   userID: CdIdentity.pEpOwnUserID,
                                    userName: "Leon Kowalski",
                                    isOwn: true)
             try! session.update(leon)
@@ -109,8 +110,8 @@ class SetOwnKeyViewModelTests: XCTestCase {
             return
         }
 
-        // After ENGINE-465 is done, this should be PEP_rating_reliable
-        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEP_rating_unreliable.rawValue))
+        // After ENGINE-465 is done, this should be .reliable
+        XCTAssertEqual(theCdMessage.pEpRating, Int16(PEPRating.unreliable.rawValue))
 
         XCTAssertEqual(theCdMessage.shortMessage, "Simplified Key Import")
         XCTAssertEqual(

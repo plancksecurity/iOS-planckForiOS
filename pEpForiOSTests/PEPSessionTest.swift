@@ -10,6 +10,7 @@ import XCTest
 
 @testable import pEpForiOS
 import MessageModel
+import PEPObjCAdapterFramework
 
 class PEPSessionTest: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -63,7 +64,7 @@ class PEPSessionTest: XCTestCase {
 
         try! session.encryptMessageDict(pepmessage,
                                         extraKeys: nil,
-                                        encFormat: PEP_enc_PEP,
+                                        encFormat: .PEP,
                                         status: nil)
         try! session.decryptMessageDict(pepmessage.mutableDictionary(),
                                         flags: nil,
@@ -88,7 +89,7 @@ class PEPSessionTest: XCTestCase {
         pEpMessage.references = references
         pEpMessage.shortMessage = mySubject
         pEpMessage.longMessage = "The text body"
-        pEpMessage.direction = PEP_dir_outgoing
+        pEpMessage.direction = .outgoing
 
         let session = PEPSession()
 
@@ -122,8 +123,6 @@ class PEPSessionTest: XCTestCase {
     }
 
     func testParseMessageHeapBufferOverflow() {
-        CWLogger.setLogger(Log.shared)
-
         let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()
@@ -170,8 +169,6 @@ class PEPSessionTest: XCTestCase {
 
     // IOS-211
     func testAttachmentsDoNotGetDuplilcated() {
-        CWLogger.setLogger(Log.shared)
-
         let cdAccount = SecretTestData().createWorkingCdAccount()
 
         let folder = CdFolder.create()

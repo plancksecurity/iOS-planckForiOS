@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /**
  Errors that are not directly reported by the used OAuth2 lib, but detected internally.
  */

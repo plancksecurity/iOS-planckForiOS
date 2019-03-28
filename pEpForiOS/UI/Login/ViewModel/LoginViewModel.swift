@@ -7,8 +7,10 @@
 //
 
 import Foundation
+
 import MessageModel
 import pEpIOSToolbox
+import PantomimeFramework
 
 enum LoginCellType {
     case Text, Button
@@ -194,7 +196,7 @@ extension LoginViewModel: AccountVerificationServiceDelegate {
                   result: AccountVerificationResult) {
         if result == .ok {
             //remove obsolete code on EmailListViewController
-            MessageModel.performAndWait {
+            MessageModelUtil.performAndWait {
                 account.save()
             }
             mySelfer?.startMySelf()

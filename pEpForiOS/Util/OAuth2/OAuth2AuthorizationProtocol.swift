@@ -8,6 +8,8 @@
 
 import Foundation
 
+import MessageModel
+
 /**
  The error that gets delegated when there was no error during authorization, but
  neither a valid access token.

@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import pEpIOSToolbox
 import MessageModel
+import PEPObjCAdapterFramework
 
 /**
  Reevaluate the rating for messages whose trust status has changed (that is,
@@ -48,7 +49,7 @@ class ReevaluateMessageRatingOperation: ConcurrentBaseOperation {
         let pepMessage = cdMsg.pEpMessageDict()
         do {
             let keys = cdMsg.keysFromDecryption?.array as? [String] // Needs to be extented when implementing "Extra Keys" feature to take X-KeyList header into account
-            var newRating = PEP_rating_undefined
+            var newRating = PEPRating.undefined
             try theSession.reEvaluateMessageDict(pepMessage,
                                                  xKeyList: keys,
                                                  rating: &newRating,

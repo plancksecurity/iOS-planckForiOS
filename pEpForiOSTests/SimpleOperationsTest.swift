@@ -9,8 +9,11 @@
 import XCTest
 
 import CoreData
+
 @testable import pEpForiOS
-import MessageModel
+@testable import MessageModel
+import PEPObjCAdapterFramework
+import PantomimeFramework
 
 class SimpleOperationsTest: CoreDataDrivenTestBase {
     func testComp() {
@@ -624,7 +627,7 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
         XCTAssertNotNil(myself.fingerPrint)
 
         let numRating = try! session.rating(for: myself)
-        XCTAssertGreaterThanOrEqual(numRating.pEpRating.rawValue, PEP_rating_reliable.rawValue)
+        XCTAssertGreaterThanOrEqual(numRating.pEpRating.rawValue, PEPRating.reliable.rawValue)
     }
 
     func testOutgoingMailColorPerformanceWithMySelf() {

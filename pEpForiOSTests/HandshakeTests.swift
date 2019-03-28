@@ -9,7 +9,8 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 class HandshakeTests: XCTestCase {
     var persistentSetup: PersistentSetup!
@@ -55,7 +56,7 @@ class HandshakeTests: XCTestCase {
                 return
         }
 
-        let pEpMessage = cdMessage.pEpMessage()
+        let pEpMessage = PEPUtil.pEp(cdMessage: cdMessage, outgoing: true)
 
         let theAttachments = pEpMessage.attachments ?? []
         XCTAssertEqual(theAttachments.count, 1)
@@ -78,13 +79,13 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(foundXpEpVersion)
 
         var keys: NSArray?
-        var rating = PEP_rating_undefined
+        var rating = PEPRating.undefined
         let theMessage = try! session.decryptMessage(pEpMessage,
                                                      flags: nil,
                                                      rating: &rating,
                                                      extraKeys: &keys,
                                                      status: nil)
-        XCTAssertEqual(rating, PEP_rating_unencrypted)
+        XCTAssertEqual(rating, .unencrypted)
 
         guard let pEpFrom = theMessage.from else {
             XCTFail("expected from in message")
@@ -131,12 +132,12 @@ class HandshakeTests: XCTestCase {
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         var numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+        XCTAssertEqual(numRating.pEpRating, .reliable)
 
         try! session.keyResetTrust(fromIdent)
         XCTAssertTrue(try! session.isPEPUser(fromIdent).boolValue)
 
         numRating = try! session.rating(for: fromIdent)
-        XCTAssertEqual(numRating.pEpRating, PEP_rating_reliable)
+        XCTAssertEqual(numRating.pEpRating, .reliable)
     }
 }

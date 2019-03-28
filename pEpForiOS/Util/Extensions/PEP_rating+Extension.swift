@@ -1,5 +1,5 @@
 //
-//  PEP_rating+Extension.swift
+//  PEPRating+Extension.swift
 //  pEp
 //
 //  Created by Dirk Zimmermann on 22.05.18.
@@ -8,100 +8,27 @@
 
 import Foundation
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
-extension PEP_rating {
-
-    static func fromString(str: String) -> PEP_rating {
-        return PEPSession().rating(from:str)
-    }
-
-    func asString() -> String {
-         return PEPSession().string(from: self)
-    }
-    
-    /**
-     The `PEP_rating`s that should trigger another decryption attempt later on.
-     */
-    static let retryDecriptionRatings: [PEP_rating] = [PEP_rating_undefined,
-                                                       PEP_rating_cannot_decrypt,
-                                                       PEP_rating_have_no_key]
-
-    static let neverShowAttachmentsForRatings: [PEP_rating] = [PEP_rating_cannot_decrypt,
-                                                               PEP_rating_have_no_key]
-
-    func dontShowAttachments() -> Bool {
-        return PEP_rating.neverShowAttachmentsForRatings.contains(self)
-    }
-
-    /** Does the given pEp rating mean the user is under attack? */
-    func isUnderAttack() -> Bool {
-        switch self {
-        case PEP_rating_undefined,
-             PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key,
-             PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
-             PEP_rating_unreliable,
-             PEP_rating_reliable,
-             PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous,
-             PEP_rating_mistrust,
-             PEP_rating_b0rken:
-            return false
-        case PEP_rating_under_attack:
-            return true
-        default:
-            Logger.utilLogger.errorAndCrash(
-                "cannot decide isUnderAttack() for %{public}@", self.rawValue)
-            return false
-        }
-    }
-
-    /** Should message content be updated (apart from the message rating)? */
-    func shouldUpdateMessageContent() -> Bool {
-        switch self {
-        case PEP_rating_undefined,
-             PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key,
-             PEP_rating_b0rken:
-            return false
-
-        case PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
-             PEP_rating_unreliable,
-             PEP_rating_reliable,
-             PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous,
-             PEP_rating_mistrust,
-             PEP_rating_under_attack:
-            return true
-        default:
-            Logger.utilLogger.errorAndCrash(
-                "cannot decide isUnderAttack() for %{public}@", self.rawValue)
-            return false
-        }
-    }
-
+extension PEPRating {
     /** Does this pEp rating mean that decryption should be tried again? */
     func shouldRetryToDecrypt() -> Bool {
         switch self {
-        case PEP_rating_undefined,
-             PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key,
-             PEP_rating_b0rken:
+        case .undefined,
+             .cannotDecrypt,
+             .haveNoKey,
+             .b0rken:
             return true
 
-        case PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
-             PEP_rating_unreliable,
-             PEP_rating_reliable,
-             PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous,
-             PEP_rating_mistrust,
-             PEP_rating_under_attack:
+        case .unencrypted,
+             .unencryptedForSome,
+             .unreliable,
+             .reliable,
+             .trusted,
+             .trustedAndAnonymized,
+             .fullyAnonymous,
+             .mistrust,
+             .underAttack:
             return false
         default:
             Logger.utilLogger.errorAndCrash(
@@ -113,21 +40,21 @@ extension PEP_rating {
     /** Were there problems decrypting the message? */
     func isUnDecryptable() -> Bool {
         switch self {
-        case PEP_rating_undefined,
-             PEP_rating_cannot_decrypt,
-             PEP_rating_have_no_key:
+        case .undefined,
+             .cannotDecrypt,
+             .haveNoKey:
             return true
 
-        case PEP_rating_unencrypted,
-             PEP_rating_unencrypted_for_some,
-             PEP_rating_unreliable,
-             PEP_rating_reliable,
-             PEP_rating_trusted,
-             PEP_rating_trusted_and_anonymized,
-             PEP_rating_fully_anonymous,
-             PEP_rating_mistrust,
-             PEP_rating_b0rken,
-             PEP_rating_under_attack:
+        case .unencrypted,
+             .unencryptedForSome,
+             .unreliable,
+             .reliable,
+             .trusted,
+             .trustedAndAnonymized,
+             .fullyAnonymous,
+             .mistrust,
+             .b0rken,
+             .underAttack:
             return false
         default:
             Logger.utilLogger.errorAndCrash(

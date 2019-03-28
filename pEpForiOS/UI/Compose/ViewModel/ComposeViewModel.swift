@@ -8,6 +8,7 @@
 
 import MessageModel
 import pEpIOSToolbox
+import PEPObjCAdapterFramework
 
 /// Informs the one that triggered the segued to here.
 protocol ComposeViewModelResultDelegate: class {
@@ -41,7 +42,7 @@ protocol ComposeViewModelDelegate: class {
 
     func sectionChanged(section: Int)
 
-    func colorBatchNeedsUpdate(for rating: PEP_rating, protectionEnabled: Bool)
+    func colorBatchNeedsUpdate(for rating: PEPRating, protectionEnabled: Bool)
 
     func hideSuggestions()
 
@@ -205,7 +206,7 @@ extension ComposeViewModel: ComposeViewModelStateDelegate {
     }
 
     func composeViewModelState(_ composeViewModelState: ComposeViewModelState,
-                               didChangePEPRatingTo newRating: PEP_rating) {
+                               didChangePEPRatingTo newRating: PEPRating) {
         delegate?.colorBatchNeedsUpdate(for: newRating, protectionEnabled: state.pEpProtection)
     }
 

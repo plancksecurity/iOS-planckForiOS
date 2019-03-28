@@ -9,7 +9,8 @@
 import XCTest
 
 @testable import pEpForiOS
-@testable import MessageModel
+@testable import MessageModel //FIXME:
+import PEPObjCAdapterFramework
 
 class MessageReevalutionTests: XCTestCase {
     var cdOwnAccount: CdAccount!
@@ -119,7 +120,7 @@ class MessageReevalutionTests: XCTestCase {
         XCTAssertEqual(decryptDelegate.numberOfMessageDecryptAttempts, 1)
         Record.Context.main.refreshAllObjects()
         cdDecryptedMessage = cdMessage
-        XCTAssertEqual(cdMessage.pEpRating, Int16(PEP_rating_reliable.rawValue))
+        XCTAssertEqual(cdMessage.pEpRating, Int16(PEPRating.reliable.rawValue))
         XCTAssertEqual(cdMessage.shortMessage, "oh yeah, subject")
         XCTAssertTrue(cdMessage.longMessage?.startsWith("Some text body!") ?? false)
 
@@ -146,17 +147,17 @@ class MessageReevalutionTests: XCTestCase {
     func testCommunicationTypes() {
         let senderIdent = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(try! senderIdent.isPEPUser(session).boolValue)
-        XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_reliable)
+        XCTAssertEqual(senderIdentity.pEpRating(session: session), .reliable)
 
         try! session.keyMistrusted(senderIdent)
 
         let senderDict2 = senderIdentity.updatedIdentity(session: session)
         XCTAssertFalse(try! senderDict2.isPEPUser(session).boolValue)
-        // ENGINE-343: At one point the rating was PEP_rating_undefined.
-        XCTAssertEqual(senderIdentity.pEpRating(), PEP_rating_have_no_key)
+        // ENGINE-343: At one point the rating was .Undefined.
+        XCTAssertEqual(senderIdentity.pEpRating(), .haveNoKey)
     }
 
-    func reevaluateMessage(expectedRating: PEP_rating, inBackground: Bool = true,
+    func reevaluateMessage(expectedRating: PEPRating, inBackground: Bool = true,
                            infoMessage: String) {
         guard let message = cdDecryptedMessage.message() else {
             XCTFail()
@@ -191,23 +192,23 @@ class MessageReevalutionTests: XCTestCase {
         try! session.keyResetTrust(senderIdent)
         XCTAssertFalse(senderIdent.isConfirmed)
         reevaluateMessage(
-            expectedRating: PEP_rating_reliable,
+            expectedRating: .reliable,
             inBackground: runReevaluationInBackground,
             infoMessage: "in the beginning")
 
         for _ in 0..<1 {
             try! session.trustPersonalKey(senderIdent)
             XCTAssertTrue(senderIdent.isConfirmed)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_trusted)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), .trusted)
             reevaluateMessage(
-                expectedRating: PEP_rating_trusted,
+                expectedRating: .trusted,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after trust")
 
             try! session.keyMistrusted(senderIdent)
-            XCTAssertEqual(senderIdentity.pEpRating(session: session), PEP_rating_have_no_key)
+            XCTAssertEqual(senderIdentity.pEpRating(session: session), .haveNoKey)
             reevaluateMessage(
-                expectedRating: PEP_rating_mistrust,
+                expectedRating: .mistrust,
                 inBackground: runReevaluationInBackground,
                 infoMessage: "after mistrust")
             try! session.update(senderIdent)
