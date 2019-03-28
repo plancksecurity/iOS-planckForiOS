@@ -651,10 +651,11 @@ class SimpleOperationsTest: CoreDataDrivenTestBase {
     }
 
     func testOutgoingMessageColor() {
-        let identity = SecretTestData().createWorkingAccount().user
-        let account = SecretTestData().createWorkingAccount()
-        account.user = identity
-        account.save()
+        let account = SecretTestData().createWorkingCdAccount()
+        guard let identity = account.identity else {
+            XCTFail()
+            return
+        }
         self.measure {
             for _ in [1...1000] {
                 let _ = self.session.outgoingMessageRating(from: identity, to: [identity],
