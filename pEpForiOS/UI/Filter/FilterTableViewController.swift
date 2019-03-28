@@ -12,10 +12,10 @@ import MessageModel
 class FilterTableViewController: BaseTableViewController {
 
     open var inFolder: Bool = false
-    open var filterEnabled: CompositeFilter<FilterBase>?
+    open var filterEnabled: MessageQueryResultsFilter?
     open var filterDelegate: FilterUpdateProtocol?
 
-    var sections = [FilterViewModel]()
+    var sections = [FilterSectionViewModel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +25,11 @@ class FilterTableViewController: BaseTableViewController {
     }
 
     @objc func ok(sender: UIBarButtonItem) {
+
+        for section in sections {
+
+        }
+
         let filters = CompositeFilter<FilterBase>()
         if let f = filterEnabled, f.isUnified() {
             filters.add(filter: UnifiedFilter())
@@ -46,10 +51,10 @@ class FilterTableViewController: BaseTableViewController {
     func initViewModel() {
 
         if inFolder {
-            sections.append(FilterViewModel(type: .accouts, filter: filterEnabled))
+            sections.append(FilterSectionViewModel(type: .accouts, filter: filterEnabled))
         }
-        sections.append(FilterViewModel(type: .include, filter: filterEnabled))
-        sections.append(FilterViewModel(type: .other, filter: filterEnabled))
+        sections.append(FilterSectionViewModel(type: .include, filter: filterEnabled))
+        sections.append(FilterSectionViewModel(type: .other, filter: filterEnabled))
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,12 +65,10 @@ class FilterTableViewController: BaseTableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return sections[section].count
     }
 
@@ -106,7 +109,7 @@ class FilterTableViewController: BaseTableViewController {
         cell?.accessoryType = (cellvm.enabled) ? .checkmark : .none
     }
 
-    func canDisable(accountFilters: FilterViewModel) -> Bool{
+    func canDisable(accountFilters: FilterSectionViewModel) -> Bool{
         return accountFilters.accountsEnabled() > 1
     }
 }
