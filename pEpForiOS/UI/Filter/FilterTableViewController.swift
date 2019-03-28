@@ -11,9 +11,13 @@ import MessageModel
 
 class FilterTableViewController: BaseTableViewController {
 
+
+
     open var inFolder: Bool = false
     open var filterEnabled: MessageQueryResultsFilter?
     open var filterDelegate: FilterUpdateProtocol?
+
+    var viewModel : FilterViewModel?
 
     var sections = [FilterSectionViewModel]()
 
@@ -23,6 +27,11 @@ class FilterTableViewController: BaseTableViewController {
         self.navigationItem.rightBarButtonItem =  UIBarButtonItem(title: NSLocalizedString("OK", comment: "Filter accept text"), style: .plain, target: self, action: #selector(ok(sender:)))
 
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        initViewModel()
+    }
+
 
     @objc func ok(sender: UIBarButtonItem) {
 
@@ -44,17 +53,9 @@ class FilterTableViewController: BaseTableViewController {
        _ = self.navigationController?.popViewController(animated: true)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        initViewModel()
-    }
 
     func initViewModel() {
-
-        if inFolder {
-            sections.append(FilterSectionViewModel(type: .accouts, filter: filterEnabled))
-        }
-        sections.append(FilterSectionViewModel(type: .include, filter: filterEnabled))
-        sections.append(FilterSectionViewModel(type: .other, filter: filterEnabled))
+        FilterViewModel(inFolder: inFolder, filter: MessageQueryResultsFilter)
     }
 
     override func didReceiveMemoryWarning() {

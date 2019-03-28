@@ -12,10 +12,15 @@ import MessageModel
 public class FilterViewModel {
 
     var sections: [FilterSectionViewModel] = []
-    //let inFolder: Bool
+    let filter : MessageQueryResultsFilter
 
-    init (inFolder: Bool = false, filter: MessageQueryResultsFilter) {
+    init (inFolder: Bool = false, filter: MessageQueryResultsFilter?) {
 
+        if let f = filter {
+            self.filter = f
+        } else {
+            self.filter = MessageQueryResultsFilter.defaultFilter()
+        }
         if !inFolder {
             sections.append(FilterSectionViewModel(type: .accouts, filter: filter))
         }
@@ -31,6 +36,11 @@ public class FilterViewModel {
             return self.sections[index]
         }
     }
+
+    public func getFilters() -> MessageQueryResultsFilter {
+        return MessageQueryResultsFilter(mustBeFlagged: false, mustBeUnread: false, mustContainAttachments: false, accounts: [])
+    }
+
     var count : Int {
         return self.sections.count
     }
