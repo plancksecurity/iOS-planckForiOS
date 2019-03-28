@@ -103,13 +103,6 @@ class MessagePantomimeTests: XCTestCase {
         let cdRefs = cdMsg.references?.array as? [CdMessageReference] ?? []
         XCTAssertEqual(cdRefs.count, refs.count + 1)
 
-        guard let msg = cdMsg.message() else {
-            XCTFail()
-            return
-        }
-        XCTAssertEqual(msg.references.count, refs.count + 1)
-        XCTAssertEqual(msg.references, allRefs)
-
         let pEpMsgDict = cdMsg.pEpMessageDict()
         XCTAssertEqual(pEpMsgDict[kPepReferences] as? [String] ?? [], allRefs)
 
