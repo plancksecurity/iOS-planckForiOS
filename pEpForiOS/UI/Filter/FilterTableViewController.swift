@@ -34,7 +34,7 @@ class FilterTableViewController: BaseTableViewController {
 
 
     @objc func ok(sender: UIBarButtonItem) {
-
+/*
         for section in sections {
 
         }
@@ -48,14 +48,14 @@ class FilterTableViewController: BaseTableViewController {
             filters.without(filters: section.getInvalidFilters())
         }
         filterEnabled = filters
-        filterDelegate?.addFilter(filters)
+        filterDelegate?.addFilter(filters)*/
 
        _ = self.navigationController?.popViewController(animated: true)
     }
 
 
     func initViewModel() {
-        FilterViewModel(inFolder: inFolder, filter: MessageQueryResultsFilter)
+        self.viewModel = FilterViewModel(inFolder: inFolder, filter: filterEnabled)
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,16 +66,27 @@ class FilterTableViewController: BaseTableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        if let model = viewModel {
+            return model.count
+        } else {
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].count
+        if let model = viewModel {
+            return model[section].count
+        } else {
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].title
-    }
+        if let model = viewModel {
+            return model[section].title
+        } else {
+            return ""
+        }    }
 
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
 

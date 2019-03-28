@@ -85,29 +85,6 @@ public class FilterSectionViewModel {
         }
     }
 
-    func getFilters() -> MessageQueryResultsFilter {
-
-        var flagged: Bool? = nil
-        var unread: Bool? = nil
-        var attachments: Bool? = nil
-        var accounts: [Account] = []
-        for item in items {
-            switch item.filterType {
-            case .Account:
-                //!!!: accounts must be rethink
-                break;
-            case .Attachments:
-                attachments = item.enabled
-            case .Flagg:
-                flagged = item.enabled
-            case .Unread:
-                unread = item.enabled
-            }
-        }
-        let filter = MessageQueryResultsFilter(mustBeFlagged: flagged, mustBeUnread: unread, mustContainAttachments: attachments, accounts: accounts)
-        return filter
-    }
-
     func accountsEnabled() -> Int {
         var accountsSelected = 0
         for filter in items {
