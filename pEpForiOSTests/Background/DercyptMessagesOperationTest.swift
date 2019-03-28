@@ -31,9 +31,9 @@ class DercyptMessagesOperationTest: CoreDataDrivenTestBase {
         }
         message.setFolder(CWIMAPFolder(name: ImapSync.defaultImapInboxName))
         message.setUID(1)
-        guard let msg = CdMessage.insertOrUpdate(  pantomimeMessage: message,
-                                                   account: cdAccount,
-                                                   messageUpdate: CWMessageUpdate.newComplete())
+        guard let msg = CdMessage.insertOrUpdate(pantomimeMessage: message,
+                                                 account: cdAccount,
+                                                 messageUpdate: CWMessageUpdate.newComplete())
             else {
                 XCTFail("error parsing message")
                 return
