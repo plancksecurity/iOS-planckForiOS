@@ -678,7 +678,7 @@ class TestUtil {
      */
     static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
-        -> (mySelf: Identity, partner: Identity, message: CdMessage)? {
+        -> (mySelf: CdIdentity, partner: CdIdentity, message: CdMessage)? {
             guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
                 XCTFail()
                 return nil
@@ -688,20 +688,20 @@ class TestUtil {
                 XCTFail("Expected array of recipients")
                 return nil
             }
-            var mySelfIdentityOpt: Identity?
+            var mySelfIdentityOpt: CdIdentity?
             for rec in recipients {
                 if rec.type() == .toRecipient {
-                    mySelfIdentityOpt = rec.identity(userID: "!MYSELF!")
+                    mySelfIdentityOpt = rec.cdIdentity(userID: "!MYSELF!")
                 }
             }
             guard let safeOptId = mySelfIdentityOpt else {
                 XCTFail("Could not derive own identity from message")
                 return nil
             }
-            let mySelfID = Identity(identity: safeOptId, isMySelf: true)
-            mySelfID.save()
 
-            let cdMySelfIdentity = CdIdentity.search(identity: mySelfID)
+            Record.saveAndWait()
+
+            let cdMySelfIdentity = safeOptId
             XCTAssertNotNil(cdMySelfIdentity)
 
             let cdMyAccount = CdAccount.create()
@@ -716,13 +716,12 @@ class TestUtil {
                 XCTFail("Expected the mail to have a sender")
                 return nil
             }
-            let partnerID = pantFrom.identity(userID: "THE PARTNER ID")
-            partnerID.save()
+            let partnerID = pantFrom.cdIdentity(userID: "THE PARTNER ID")
 
             Record.saveAndWait()
 
             let session = PEPSession()
-            let mySelfIdentity = mySelfID.pEpIdentity()
+            let mySelfIdentity = cdMySelfIdentity.pEpIdentity()
             try! session.mySelf(mySelfIdentity)
             XCTAssertNotNil(mySelfIdentity.fingerPrint)
             XCTAssertTrue(try! mySelfIdentity.isPEPUser(session).boolValue)
@@ -755,7 +754,7 @@ class TestUtil {
                 XCTAssertEqual(ownDecryptDelegate.numberOfMessageDecryptAttempts, 1)
             }
 
-            return (mySelf: mySelfID, partner: partnerID, message: cdMessage)
+            return (mySelf: cdMySelfIdentity, partner: partnerID, message: cdMessage)
     }
 
     /**
@@ -767,8 +766,10 @@ class TestUtil {
         -> (mySelf: Identity, partner: Identity, message: Message)? {
             if let (mySelfID, partnerID, message) = cdMessageAndSetUpPepFromMail(
                 emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
-                let msg = message.message() {
-                return (mySelf: mySelfID, partner: partnerID, message: msg)
+                let msg = message.message(),
+                let mySelf = mySelfID.identity(),
+                let partner = partnerID.identity() {
+                return (mySelf: mySelf, partner: partner, message: msg)
             }
             return nil
     }
