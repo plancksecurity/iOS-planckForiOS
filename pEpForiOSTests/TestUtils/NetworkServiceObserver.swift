@@ -66,8 +66,8 @@ class SendLayerObserver: SendLayerDelegate {
     var messageIDs = [String]()
 
     func didFetch(cdMessage: CdMessage) {
-        if let msg = cdMessage.message() {
-            messageIDs.append(msg.messageID)
+        if let theUuid = cdMessage.uuid {
+            messageIDs.append(theUuid)
         } else {
             XCTFail()
         }
