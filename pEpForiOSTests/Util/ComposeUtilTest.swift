@@ -485,9 +485,9 @@ class ComposeUtilTest: CoreDataDrivenTestBase {
         }
         let createe = Message(uuid: MessageID.generate(), parentFolder: parentFolder)
         createe.from = from
-        createe.to = tos
-        createe.cc = ccs
-        createe.bcc = bccs
+        createe.replaceTo(with: tos)
+        createe.replaceCc(with: ccs)
+        createe.replaceBcc(with: bccs)
         let id = "Test Message - Created by ComposeUtilTest"
         createe.shortMessage = id
         createe.longMessage = id

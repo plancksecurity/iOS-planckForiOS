@@ -45,7 +45,7 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
 
         let mail1 = Message(uuid: "message_1", uid: 0, parentFolder: inbox)
         mail1.from = account.user
-        mail1.to = [partnerId]
+        mail1.replaceTo(with: [partnerId])
         mail1.shortMessage = "Are you ok?"
         mail1.longMessage = "Hi there!"
         mail1.save()

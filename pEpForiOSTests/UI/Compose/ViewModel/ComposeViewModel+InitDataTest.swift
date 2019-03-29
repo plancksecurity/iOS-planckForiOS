@@ -36,17 +36,17 @@ class ComposeViewModel_InitDataTest: CoreDataDrivenTestBase {
         self.outbox = outbox
         let msg = Message(uuid: UUID().uuidString, parentFolder: inbox)
         msg.from = account.user
-        msg.to = [account.user, someone]
-        msg.cc = [someone]
+        msg.replaceTo(with: [account.user, someone])
+        msg.replaceCc(with: [someone])
         msg.shortMessage = "shortMessage"
         msg.longMessage = "longMessage"
         msg.longMessageFormatted = "longMessageFormatted"
-        msg.attachments = [Attachment(data: Data(),
-                                      mimeType: "image/jpg",
-                                      contentDisposition: .attachment)]
-        msg.attachments.append(Attachment(data: Data(),
-                                          mimeType: "image/jpg",
-                                          contentDisposition: .inline))
+        msg.replaceAttachments(with: [Attachment(data: Data(),
+                                                 mimeType: "image/jpg",
+                                                 contentDisposition: .attachment)])
+        msg.appendToAttachments(Attachment(data: Data(),
+                                           mimeType: "image/jpg",
+                                           contentDisposition: .inline))
         msg.save()
         messageAllButBccSet = msg
 

@@ -27,13 +27,13 @@ struct ComposeUtil {
         switch composeMode {
         case .replyFrom:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts {
-                result = om.to
+                result = om.to.allObjects
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 result = [omFrom]
             }
         case .replyAll:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts  {
-                result = om.to
+                result = om.to.allObjects
             } else if om.parent.folderType != .sent, let omFrom = om.from {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
                     Logger.utilLogger.errorAndCrash("No from")
@@ -47,7 +47,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox  {
-                result = om.to
+                result = om.to.allObjects
             }
         case .forward:
             break
@@ -60,7 +60,7 @@ struct ComposeUtil {
         switch composeMode {
         case .replyAll:
             if om.parent.folderType == .sent || om.parent.folderType == .drafts {
-                result = om.cc
+                result = om.cc.allObjects
             } else {
                 guard let me = initialFrom(composeMode: composeMode, originalMessage: om) else {
                     Logger.utilLogger.errorAndCrash("No from")
@@ -75,7 +75,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox  {
-                result = om.cc
+                result = om.cc.allObjects
             }
         }
         return result
@@ -88,7 +88,7 @@ struct ComposeUtil {
             if om.parent.folderType == .sent ||
                 om.parent.folderType == .drafts ||
                 om.parent.folderType == .outbox {
-                result = om.bcc
+                result = om.bcc.allObjects
             }
         case .replyFrom, .forward, .replyAll:
             break
@@ -158,13 +158,13 @@ struct ComposeUtil {
 
         let message = Message(uuid: MessageID.generate(), parentFolder: f)
         message.from = from
-        message.to = state.toRecipients
-        message.cc = state.ccRecipients
-        message.bcc = state.bccRecipients
+        message.replaceTo(with: state.toRecipients)
+        message.replaceCc(with: state.ccRecipients)
+        message.replaceBcc(with: state.bccRecipients)
         message.shortMessage = state.subject
         message.longMessage = state.bodyPlaintext
         message.longMessageFormatted = !state.bodyHtml.isEmpty ? state.bodyHtml : nil
-        message.attachments = state.inlinedAttachments + state.nonInlinedAttachments
+        message.replaceAttachments(with: state.inlinedAttachments + state.nonInlinedAttachments)
         message.pEpProtected = state.pEpProtection
         if !state.pEpProtection {
             message.setOriginalRatingHeader(rating: PEPRating.unencrypted)

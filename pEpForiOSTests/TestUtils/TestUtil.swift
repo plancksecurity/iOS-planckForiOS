@@ -452,9 +452,9 @@ class TestUtil {
                                    uid: Int? = nil) -> Message {
         let msg = Message(uuid: MessageID.generate(), parentFolder: folder)
         msg.from = from
-        msg.to = tos
-        msg.cc = ccs
-        msg.bcc = bccs
+        msg.replaceTo(with: tos)
+        msg.replaceCc(with: ccs)
+        msg.replaceBcc(with: bccs)
         msg.messageID = MessageID.generate()
         msg.shortMessage = shortMessage
         msg.longMessage = longMessage
@@ -464,7 +464,7 @@ class TestUtil {
         if engineProccesed {
             msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         }
-        msg.attachments = createAttachments(number: attachments)
+        msg.replaceAttachments(with: createAttachments(number: attachments))
         var result = msg
         if let uid = uid {
             result =  Message(uid: uid, message: msg)
@@ -563,7 +563,7 @@ class TestUtil {
                           uid: number + 1,
                           parentFolder: folder)
         msg.from = blueprint.from
-        msg.to = [receiver]
+        msg.replaceTo(with: [receiver])
         msg.pEpRatingInt = Int(PEPRating.unreliable.rawValue)
         msg.sent = Date(timeIntervalSince1970: Double(number))
         msg.save()

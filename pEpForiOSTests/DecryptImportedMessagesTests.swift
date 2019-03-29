@@ -106,7 +106,7 @@ class DecryptImportedMessagesTests: XCTestCase {
         }
 
         XCTAssertEqual(msg.attachments.count, 2)
-        check(attachments: msg.attachments as [MimeProtocol])
+        check(attachments: msg.attachments.allObjects as [MimeProtocol])
     }
 
     /**

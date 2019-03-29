@@ -44,8 +44,8 @@ class PEPSessionTest: XCTestCase {
         message.longMessage = "long message"
         message.longMessageFormatted = "long message"
         message.from = account.user
-        message.to = [account.user]
-        message.cc = [account.user]
+        message.replaceTo(with: [account.user])
+        message.replaceCc(with: [account.user])
         message.parent = folder
         message.sent = Date()
         message.save()

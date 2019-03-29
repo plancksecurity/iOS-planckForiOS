@@ -21,7 +21,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
 
         let attachment = Attachment.create(data: nil, mimeType: "type", fileName: "name")
         let firstMessage = messages.first!
-        firstMessage.attachments = [attachment]
+        firstMessage.replaceAttachments(with: [attachment])
         firstMessage.save()
 
         let cf = CompositeFilter<FilterBase>()
@@ -50,7 +50,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
         let messages = createMessages(in: f1, numMessages: 2)
         let attachment = Attachment.create(data: nil, mimeType: "type", fileName: "name")
         let firstMessage = messages.first!
-        firstMessage.attachments = [attachment]
+        firstMessage.replaceAttachments(with: [attachment])
         firstMessage.save()
 
         let _ = createMessages(in: f1,
@@ -78,7 +78,7 @@ class AttachmentFilterTest: CoreDataDrivenTestBase {
         for i in 1...numMessages {
             let message = Message(uuid: UUID().uuidString, uid: i, parentFolder: folder)
             message.from = id
-            message.to = [account.user]
+            message.replaceTo(with: [account.user])
             message.imapFlags.seen = false
             message.pEpRatingInt = Int(pEpRating.rawValue)
             message.save()

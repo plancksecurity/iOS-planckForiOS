@@ -190,7 +190,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testDidSelectMediaAttachment_image() {
         let msg = draftMessage()
         let imageAttachment = attachment(ofType: .inline)
-        msg.attachments = [imageAttachment]
+        msg.replaceAttachments(with: [imageAttachment])
         assert(originalMessage: msg,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -223,7 +223,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testDidSelectMediaAttachment_video() {
         let msg = draftMessage()
         let imageAttachment = attachment(ofType: .inline)
-        msg.attachments = [imageAttachment]
+        msg.replaceAttachments(with: [imageAttachment])
 
         let attachmentSectionSection = 4
 
@@ -355,7 +355,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
     func testBodyCellViewModelInlinedAttachmentsChanged_lessAttachments() {
         let msg = draftMessage()
         let imageAttachment = attachment(ofType: .inline)
-        msg.attachments = [imageAttachment]
+        msg.replaceAttachments(with: [imageAttachment])
         assert(originalMessage: msg,
                contentChangedMustBeCalled: false,
                focusSwitchedMustBeCalled: false,
@@ -923,10 +923,10 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testHandleRemovedRow_removeAttachment() {
         let msgWithAttachments = draftMessage(attachmentsSet: true)
-        msgWithAttachments.attachments.append(attachment(ofType: .attachment))
+        msgWithAttachments.appendToAttachments(attachment(ofType: .attachment))
         msgWithAttachments.save()
         assert(originalMessage: msgWithAttachments)
-        vm?.state.nonInlinedAttachments = msgWithAttachments.attachments
+        vm?.state.nonInlinedAttachments = msgWithAttachments.attachments.allObjects
         guard
             let lastSectionBefore = vm?.sections.last,
             let numSectionsBefore = vm?.sections.count,
@@ -1209,7 +1209,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testInitialFocus_emptyTo() {
         let originalMessage = draftMessage()
-        originalMessage.to = []
+        originalMessage.replaceTo(with: [])
         originalMessage.save()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
@@ -1238,7 +1238,7 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
 
     func testInitialFocus_toSet() {
         let originalMessage = draftMessage()
-        originalMessage.to = [account.user]
+        originalMessage.replaceTo(with: [account.user])
         originalMessage.save()
         assert(originalMessage: originalMessage,
                contentChangedMustBeCalled: false,
@@ -1425,11 +1425,11 @@ class ComposeViewModelTest: CoreDataDrivenTestBase {
         folder.save()
         let createe = Message(uuid: UUID().uuidString, parentFolder: folder)
         if bccSet {
-            createe.bcc = [account.user]
+            createe.replaceBcc(with: [account.user])
         }
         if attachmentsSet {
             let att = attachment()
-            createe.attachments = [att]
+            createe.replaceAttachments(with: [att])
         }
         createe.save()
         return createe

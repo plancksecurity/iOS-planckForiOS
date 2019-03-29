@@ -366,15 +366,15 @@ class ReplyAllPossibleCheckerTest: CoreDataDrivenTestBase {
         msg.from = from
 
         if !to.isEmpty {
-            msg.to = to
+            msg.replaceTo(with: to)
         }
 
         if !cc.isEmpty {
-            msg.cc = cc
+            msg.replaceCc(with: cc)
         }
 
         if !bcc.isEmpty {
-            msg.bcc = bcc
+            msg.replaceBcc(with: bcc)
         }
 
         return replyAllChecker.isReplyAllPossible(forMessage: msg)

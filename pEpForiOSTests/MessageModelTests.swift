@@ -21,7 +21,7 @@ class MessageModelTests: CoreDataDrivenTestBase {
         let msg = outbox.createMessage()
         msg.shortMessage = "Some subject"
         msg.from = account.user
-        msg.to.append(account.user)
+        msg.appendToTo(account.user)
         msg.save()
 
         guard let cdMsg = CdMessage.first() else {

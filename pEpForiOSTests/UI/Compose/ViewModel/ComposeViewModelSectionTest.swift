@@ -211,13 +211,13 @@ class ComposeViewModelSectionTest: CoreDataDrivenTestBase {
         drafts.save()
         let msg = Message(uuid: UUID().uuidString, parentFolder: drafts)
         msg.from = account.user
-        msg.to = toRecipients
-        msg.cc = ccRecipients
-        msg.bcc = bccRecipients
+        msg.replaceTo(with: toRecipients)
+        msg.replaceCc(with: ccRecipients)
+        msg.replaceBcc(with: bccRecipients)
         msg.shortMessage = "shortMessage"
         msg.longMessage = "longMessage"
         msg.longMessageFormatted = "longMessageFormatted"
-        msg.attachments = []
+        msg.replaceAttachments(with: [])
         msg.save()
         let initData = ComposeViewModel.InitData(withPrefilledToRecipient: nil,
                                                  orForOriginalMessage: msg,
