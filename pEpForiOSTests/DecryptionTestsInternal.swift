@@ -272,7 +272,7 @@ class DecryptionTestsInternal: XCTestCase {
     }
 
     func testIncomingUnencryptedOutlookProbingMessage() {
-        guard let _ = TestUtil.setUpPepFromMail(
+        guard let _ = TestUtil.cdMessageAndSetUpPepFromMail(
             emailFilePath: "Microsoft_Outlook_Probing_Message_001.txt") else {
                 XCTFail()
                 return
