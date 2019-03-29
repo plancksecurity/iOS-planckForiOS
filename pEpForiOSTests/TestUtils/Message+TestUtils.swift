@@ -18,6 +18,7 @@ extension Message {
             || self.shortMessage != nil
     }
 
+    @available(*, deprecated, message: "777")
     static public func fakeMessage(uuid: MessageID) -> Message {
         // miss use unifiedInbox() to create fake folder
         let fakeFolder = UnifiedInbox()
@@ -58,6 +59,7 @@ extension Message {
         return dict
     }
 
+    @available(*, deprecated, message: "777")
     public static func by(uid: Int, folderName: String, accountAddress: String) -> Message? {
         let pAccount =
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: accountAddress)

@@ -11,6 +11,7 @@ import Foundation
 import MessageModel
 
 extension CWInternetAddress {
+    @available(*, deprecated, message: "777")
     func identity(userID: String?) -> Identity {
         return Identity.create(address: address(), userID: userID,
                                userName: personal()?.fullyUnquoted())

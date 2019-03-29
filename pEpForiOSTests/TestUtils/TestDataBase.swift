@@ -124,6 +124,7 @@ class TestDataBase {
             return id
         }
 
+        @available(*, deprecated, message: "777")
         func account() -> Account {
             let id = Identity.create(address: idAddress, userName: idUserName, isMySelf: true)
 
@@ -282,6 +283,7 @@ class TestDataBase {
     /**
      - Returns: A valid `Account`.
      */
+    @available(*, deprecated, message: "777")
     func createWorkingAccount(number: Int = 0) -> Account {
         return createWorkingAccountSettings(number: number).account()
     }
@@ -289,6 +291,7 @@ class TestDataBase {
     /**
      - Returns: A valid `Account`.
      */
+    @available(*, deprecated, message: "777")
     func createVerifiableAccount(number: Int = 0) -> Account {
         return createVerifiableAccountSettings(number: number).account()
     }
@@ -333,6 +336,7 @@ class TestDataBase {
     /**
      - Returns: An `Account` around `createSmtpTimeOutAccountSettings`.
      */
+    @available(*, deprecated, message: "777")
     func createSmtpTimeOutAccount() -> Account {
         return createSmtpTimeOutAccountSettings().account()
     }
@@ -340,6 +344,7 @@ class TestDataBase {
     /**
      - Returns: An `Account` around `createImapTimeOutAccountSettings`.
      */
+    @available(*, deprecated, message: "777")
     func createImapTimeOutAccount() -> Account {
         return createImapTimeOutAccountSettings().account()
     }
