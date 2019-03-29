@@ -14,7 +14,6 @@ public enum FilterSectionType {
     case accouts, include, other
 }
 public class FilterSectionViewModel {
-    private var items: [FilterCellViewModel]
     public var title: String
     public var filters: MessageQueryResultsFilter?
 
@@ -82,6 +81,39 @@ public class FilterSectionViewModel {
                                                              comment: "title attachments filter cell"),
                                     enabled: filters?.mustContainAttachments, type: .Attachments))
             break
+        }
+    }
+
+    func getFlagValue() -> Bool? {
+        for item in items {
+            if item.filterType == FilterTypeCell.Flagg {
+                return item.enabled
+            }
+        }
+        return nil
+    }
+
+    func getUnreadValue() -> Bool? {
+        for item in items {
+            if item.filterType == FilterTypeCell.Unread {
+                return item.enabled
+            }
+        }
+        return nil
+    }
+
+    func getAttachmentsValue() -> Bool? {
+        for item in items {
+            if item.filterType == FilterTypeCell.Attachments {
+                return item.enabled
+            }
+        }
+        return nil
+    }
+
+    func getAccountsValue() -> [Account] {
+        for item in items {
+            <#code#>
         }
     }
 

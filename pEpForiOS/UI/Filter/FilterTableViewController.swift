@@ -14,7 +14,7 @@ class FilterTableViewController: BaseTableViewController {
 
 
     open var inFolder: Bool = false
-    open var filterEnabled: MessageQueryResultsFilter?
+    open var filterEnabled: MessageQueryResultsFilter
     open var filterDelegate: FilterUpdateProtocol?
 
     var viewModel : FilterViewModel?
