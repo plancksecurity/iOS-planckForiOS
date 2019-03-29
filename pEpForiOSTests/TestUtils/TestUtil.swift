@@ -668,18 +668,17 @@ class TestUtil {
 
     /**
      Does the following steps:
-     
-      * Loads an Email from the given path
-      * Creates a self-Identity according to the receiver of the mail
-      * Decrypts the mail, which should import the key
-     
+
+     * Loads an Email from the given path
+     * Creates a self-Identity according to the receiver of the mail
+     * Decrypts the mail, which should import the key
+
      After this function, you should have a self with generated key, and a partner ID
      you can do handshakes on.
      */
-    @available(*, deprecated, message: "777")
-    static func setUpPepFromMail(emailFilePath: String,
+    static func cdMessageAndSetUpPepFromMail(emailFilePath: String,
                                  decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
-        -> (mySelf: Identity, partner: Identity, message: Message)? {
+        -> (mySelf: Identity, partner: Identity, message: CdMessage)? {
             guard let pantomimeMail = cwImapMessage(fileName: emailFilePath) else {
                 XCTFail()
                 return nil
@@ -756,12 +755,22 @@ class TestUtil {
                 XCTAssertEqual(ownDecryptDelegate.numberOfMessageDecryptAttempts, 1)
             }
 
-        guard let msg = cdMessage.message() else {
-            XCTFail("Need to be able to convert the CdMessage into a Message")
-            return nil
-        }
+            return (mySelf: mySelfID, partner: partnerID, message: cdMessage)
+    }
 
-        return (mySelf: mySelfID, partner: partnerID, message: msg)
+    /**
+     Uses 'cdMessageAndSetUpPepFromMail', but returns the message as 'Message'.
+     */
+    @available(*, deprecated, message: "777")
+    static func setUpPepFromMail(emailFilePath: String,
+                                 decryptDelegate: DecryptMessagesOperationDelegateProtocol? = nil)
+        -> (mySelf: Identity, partner: Identity, message: Message)? {
+            if let (mySelfID, partnerID, message) = cdMessageAndSetUpPepFromMail(
+                emailFilePath: emailFilePath, decryptDelegate: decryptDelegate),
+                let msg = message.message() {
+                return (mySelf: mySelfID, partner: partnerID, message: msg)
+            }
+            return nil
     }
 
     /**
