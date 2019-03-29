@@ -11,15 +11,10 @@ import MessageModel
 
 class FilterTableViewController: BaseTableViewController {
 
-
-
-    open var inFolder: Bool = false
     open var filterEnabled: MessageQueryResultsFilter
     open var filterDelegate: FilterUpdateProtocol?
 
     var viewModel : FilterViewModel?
-
-    var sections = [FilterSectionViewModel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,13 +29,13 @@ class FilterTableViewController: BaseTableViewController {
 
 
     @objc func ok(sender: UIBarButtonItem) {
-        guard let model = viewModel else {
-            fatalError("no view model")
-            return
-        }
-
-        filterDelegate?.addFilter(model.getFilters())
-       _ = self.navigationController?.popViewController(animated: true)
+//        guard let model = viewModel else {
+//            fatalError("no view model")
+//            return
+//        }
+//
+//        filterDelegate?.addFilter(model.getFilters())
+//       _ = self.navigationController?.popViewController(animated: true)
     }
 
 
