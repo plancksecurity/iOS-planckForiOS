@@ -13,9 +13,10 @@ import CoreData
 @testable import pEpForiOS
 
 class ContentDispositionTest: CoreDataDrivenTestBase {
-    func testInlinedAttachmentRoundTrip() {
-        attchmentRoundTrip(attachmentsInlined: true)
-    }
+    // Commented as randomly failing and crashing. See IOS-1465.
+//    func testInlinedAttachmentRoundTrip() {
+//        attchmentRoundTrip(attachmentsInlined: true)
+//    }
 
     // Commented as randomly failing. See IOS-1382.
 //    func testNonInlinedAttachmentRoundTrip() {
