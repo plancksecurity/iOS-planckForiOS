@@ -1050,10 +1050,11 @@ extension EmailListViewController: SegueHandlerType {
                 Logger.frontendLogger.errorAndCrash("Segue issue")
                 return
             }
+            //!!!:warning
             destiny.appConfig = appConfig
             destiny.filterDelegate = model
-            destiny.inFolder = model?.getFolderIsUnified() ?? false
-            destiny.filterEnabled = model?.getFolderFilters()
+            //destiny.inFolder = model?.getFolderIsUnified() ?? false
+            //destiny.filterEnabled = model?.getFolderFilters()
             destiny.hidesBottomBarWhenPushed = true
         case .segueAddNewAccount:
             guard

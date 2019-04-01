@@ -11,10 +11,10 @@ import MessageModel
 
 class FilterTableViewController: BaseTableViewController {
 
-    open var filterEnabled: MessageQueryResultsFilter
+    open var filterEnabled: MessageQueryResultsFilter?
     open var filterDelegate: FilterUpdateProtocol?
 
-    var viewModel : FilterViewModel?
+    open var viewModel : FilterViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +40,8 @@ class FilterTableViewController: BaseTableViewController {
 
 
     func initViewModel() {
-        self.viewModel = FilterViewModel(inFolder: inFolder, filter: filterEnabled)
+        //self.viewModel = FilterViewModel(inFolder: inFolder, filter: filterEnabled)
+        self.viewModel = FilterViewModel(filter: filterEnabled)
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,23 +84,27 @@ class FilterTableViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "filterCell", for: indexPath)
-        let cellvm = sections[indexPath.section][indexPath.row]
-        cell.textLabel?.text = cellvm.title
-        cell.imageView?.image = cellvm.icon
-        cell.tintColor = UIColor.pEpGreen
-        cell.accessoryType = (cellvm.enabled) ? .checkmark : .none
-        cell.selectionStyle = .none
+        if let model = viewModel {
+            let cellvm = model[indexPath.section][indexPath.row]
+            cell.textLabel?.text = cellvm.title
+            cell.imageView?.image = cellvm.icon
+            cell.tintColor = UIColor.pEpGreen
+            cell.accessoryType = (cellvm.state) ? .checkmark : .none
+            cell.selectionStyle = .none
+        }
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cellvm = sections[indexPath.section][indexPath.row]
-        cellvm.enabled = !cellvm.enabled
-        let cell = self.tableView.cellForRow(at: indexPath)
-        cell?.accessoryType = (cellvm.enabled) ? .checkmark : .none
+        if let model = viewModel {
+            var cellvm = model[indexPath.section][indexPath.row]
+            cellvm.state = !cellvm.state
+            let cell = self.tableView.cellForRow(at: indexPath)
+            cell?.accessoryType = (cellvm.state) ? .checkmark : .none
+        }
     }
 
-    func canDisable(accountFilters: FilterSectionViewModel) -> Bool{
+    /*func canDisable(accountFilters: FilterSectionViewModel) -> Bool{
         return accountFilters.accountsEnabled() > 1
-    }
+    }*/
 }

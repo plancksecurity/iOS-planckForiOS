@@ -46,7 +46,7 @@ extension FilterViewModel {
         let type: RowType
         let title: String
         let icon: UIImage
-        let state: Bool
+        var state: Bool
     }
 }
 
@@ -76,11 +76,6 @@ public class FilterViewModel {
                 return self.sections[index]
         }
     }
-
-
-
-
-
 
     private func generateStructure() {
         if filter.accounts.count > 1 {
