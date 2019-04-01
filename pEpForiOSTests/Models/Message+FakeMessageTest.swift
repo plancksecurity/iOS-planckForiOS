@@ -156,7 +156,11 @@ class Message_FakeMessageTest: CoreDataDrivenTestBase {
                 XCTFail()
                 return
             }
-            let p  = NSPredicate(format: "uid = %d AND parent = %@", uid, cdFolder)
+            let p  = NSPredicate(format: "%K = %d AND %K = %@",
+                                 CdMessage.AttributeName.uid,
+                                 uid,
+                                 CdMessage.RelationshipName.parent,
+                                 cdFolder)
             guard
                 let allCdMesgs = CdMessage.all(predicate: p) as? [CdMessage],
                 let msg = allCdMesgs.first?.message()

@@ -237,7 +237,9 @@ class DecryptionTestsInternal: XCTestCase {
             XCTAssertNotNil(optFields)
         }
         for header in [kXEncStatus, kXpEpVersion, kXKeylist] {
-            let p = NSPredicate(format: "message = %@ and name = %@", cdMsg, header)
+            let p = NSPredicate(format: "%K = %@ and %K = %@",
+                                 CdHeaderField.RelationshipName.message, cdMsg,
+                                 CdHeaderField.AttributeName.name, header)
             let headerField = CdHeaderField.first(predicate: p)
             if shouldEncrypt {
                 // check header in core data
