@@ -79,7 +79,7 @@ class EmailListViewModel {
     private var selectedItems: Set<IndexPath>?
 
     weak var updateThreadListDelegate: UpdateThreadListDelegate?
-    var defaultFilter: CompositeFilter<FilterBase>?
+    var defaultFilter: MessageQueryResultsFilter
 
     var oldThreadSetting : Bool
     
@@ -423,7 +423,7 @@ class EmailListViewModel {
         return parentFolder.folderType == .drafts
     }
 
-    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
+    private func folderIsDraftOrOutbox(_ parentFoldder: DisplayableFolderProtocol) -> Bool {
         return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
     }
 
@@ -447,8 +447,9 @@ class EmailListViewModel {
     }
 
     //TODO: remove when Segues of EmailListViewController are refactored.
-    public func getFolderFilters() -> CompositeFilter<FilterBase>? {
-        return folderToShow.filter
+    public func getFolderFilters() -> MessageQueryResultsFilter {
+        //!!!: do not know yet if will need another filter
+        return folderToShow.defaultFilter
     }
 
     // MARK: - Filter
@@ -458,7 +459,7 @@ class EmailListViewModel {
             handleFilterEnabledSwitch()
         }
     }
-    public var activeFilter : CompositeFilter<FilterBase>? {
+    public var activeFilter : MessageQueryResultsFilter {
         return folderToShow.filter
     }
 
