@@ -125,8 +125,8 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
     }
 
     private func infoDict(mediaType: MediaAttachmentPickerProviderViewModel.MediaAttachment.MediaAttachmentType)
-        -> (infoDict: [String: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
-            var createe = [String:Any]()
+        -> (infoDict: [UIImagePickerController.InfoKey: Any], forAttachment: MediaAttachmentPickerProviderViewModel.MediaAttachment)? {
+            var createe = [UIImagePickerController.InfoKey:Any]()
             let testBundle = Bundle(for: type(of:self))
             let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
             guard let keyPath = testBundle.path(forResource: imageFileName, ofType: nil) else {
@@ -143,10 +143,10 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             }
 
             if mediaType == .movie {
-                createe[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] = url
+                createe[UIImagePickerController.InfoKey.mediaURL] = url
             } else {
-                createe[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.referenceURL)] = url
-                createe[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] = img
+                createe[UIImagePickerController.InfoKey.referenceURL] = url
+                createe[UIImagePickerController.InfoKey.originalImage] = img
             }
             let attachment = Attachment(data: data,
                                         mimeType: "image/jpeg",
@@ -204,9 +204,4 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             exp.fulfill()
         }
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
-	return input.rawValue
 }
