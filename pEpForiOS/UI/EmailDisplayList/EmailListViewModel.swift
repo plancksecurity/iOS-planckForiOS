@@ -89,7 +89,6 @@ class EmailListViewModel {
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
          folderToShow: VirtualFolderProtocol = UnifiedInbox()) {
-        var folderToShowTemp = folderToShow
         /*if !Account.all().isEmpty {
             if let cdaccount = CdAccount.first(), let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
                 folderToShowTemp = Folder.from(cdFolder: cdfolder)
@@ -99,7 +98,7 @@ class EmailListViewModel {
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 
-        self.folderToShow = folderToShowTemp
+        self.folderToShow = folderToShow
         self.defaultFilter = folderToShowTemp.filter?.clone()
         self.oldThreadSetting = AppSettings.threadedViewEnabled
 
