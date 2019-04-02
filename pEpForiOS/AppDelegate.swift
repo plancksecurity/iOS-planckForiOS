@@ -101,7 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     me.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
                 // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
                 // that brutally shuts down everything.
-                me.application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(me.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+                me.application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: me.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
             })
         networkService?.processAllUserActionsAndstop()
     }
@@ -121,7 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Logger.appDelegateLogger.log("mySelfTaskId with ID expired.")
             // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
             // that brutally shuts down everything.
-            me.application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(me.mySelfTaskId.rawValue))
+            me.application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue:me.mySelfTaskId.rawValue))
         })
         let op = MySelfOperation()
         op.completionBlock = { [weak self] in
@@ -134,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if me.mySelfTaskId == UIBackgroundTaskIdentifier.invalid {
                 return
             }
-            me.application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(me.mySelfTaskId.rawValue))
+            me.application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: me.mySelfTaskId.rawValue))
             me.mySelfTaskId = UIBackgroundTaskIdentifier.invalid
 
         }
@@ -391,7 +391,7 @@ extension AppDelegate: NetworkServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
@@ -420,9 +420,4 @@ extension AppDelegate {
             completion()
         }
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-	return UIBackgroundTaskIdentifier(rawValue: input)
 }
