@@ -467,7 +467,11 @@ class EmailListViewModel {
         return folderToShow.filter
     }
 
-    static let defaultFilterViewFilter = MessageQueryResultsFilter.defaultFilter()
+    public static func defaultFilter() -> MessageQueryResultsFilter {
+        return MessageQueryResultsFilter(mustBeFlagged: false, mustBeUnread: true, mustContainAttachments: false, accounts: [])
+    }
+
+    static let defaultFilterViewFilter = defaultFilter()
     private var _filterViewFilter: MessageQueryResultsFilter = defaultFilterViewFilter
     private var filterViewFilter: MessageQueryResultsFilter {
         get {

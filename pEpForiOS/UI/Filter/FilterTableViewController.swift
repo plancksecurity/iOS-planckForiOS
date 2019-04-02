@@ -41,7 +41,8 @@ class FilterTableViewController: BaseTableViewController {
 
     func initViewModel() {
         //self.viewModel = FilterViewModel(inFolder: inFolder, filter: filterEnabled)
-        self.viewModel = FilterViewModel(filter: filterEnabled)
+        //!!!: remove!
+        self.viewModel = FilterViewModel(filter: filterEnabled!)
     }
 
     override func didReceiveMemoryWarning() {
