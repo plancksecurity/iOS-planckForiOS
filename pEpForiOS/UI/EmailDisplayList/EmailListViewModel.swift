@@ -56,7 +56,7 @@ class EmailListViewModel {
 
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
-    internal let folderToShow: Folder
+    internal let folderToShow: VirtualFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
     public var screenComposer: ScreenComposerProtocol?
@@ -88,13 +88,13 @@ class EmailListViewModel {
     //!!!: This init must be reviewed when unifiedInobx works again
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
-         folderToShow: Folder /*= nil */= UnifiedInbox()) {
+         folderToShow: VirtualFolderProtocol = UnifiedInbox()) {
         var folderToShowTemp = folderToShow
-        if !Account.all().isEmpty {
+        /*if !Account.all().isEmpty {
             if let cdaccount = CdAccount.first(), let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
                 folderToShowTemp = Folder.from(cdFolder: cdfolder)
             }
-        }
+        }*/
         self.messageQueryResults = MessageQueryResults(withFolder: folderToShowTemp)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
@@ -129,7 +129,7 @@ class EmailListViewModel {
     }
 
     func getFolderName() -> String {
-        return folderToShow.localizedName
+        return Folder.localizedName(folder: folderToShow)
     }
 
     func shouldEditMessage() -> Bool {

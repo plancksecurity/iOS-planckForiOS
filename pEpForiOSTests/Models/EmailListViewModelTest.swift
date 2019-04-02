@@ -80,7 +80,7 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
 
     func testGetFolderName() {
         setupViewModel()
-        XCTAssertEqual(folder.localizedName, emailListVM.getFolderName())
+        XCTAssertEqual(Folder.localizedName(folder:self.folder), emailListVM.getFolderName())
     }
 
     func testGetDestructiveAction() {
