@@ -65,7 +65,7 @@ extension NSAttributedString {
         var allAttachments = [TextAttachment]()
         if theRange.location != NSNotFound {
             enumerateAttribute(
-                NSAttributedStringKey.attachment, in: theRange,
+                NSAttributedString.Key.attachment, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
                     value, range, stop in
                     if let attachment = value as? TextAttachment {
@@ -87,7 +87,7 @@ extension NSAttributedString {
         var allAttachments = [RecipientTextViewModel.TextAttachment]()
         if theRange.location != NSNotFound {
             enumerateAttribute(
-                NSAttributedStringKey.attachment, in: theRange,
+                NSAttributedString.Key.attachment, in: theRange,
                 options: NSAttributedString.EnumerationOptions(rawValue: 0)) {
                     value, range, stop in
                     if let attachment = value as? RecipientTextViewModel.TextAttachment {
@@ -109,11 +109,11 @@ extension NSAttributedString {
                 new.append(attachString)
             }
 
-            new.addAttribute(NSAttributedStringKey.font,
+            new.addAttribute(NSAttributedString.Key.font,
                              value: UIFont.pEpInput,
                              range: NSRange(location: 0, length: new.length)
             )
-            new.addAttribute(NSAttributedStringKey.baselineOffset,
+            new.addAttribute(NSAttributedString.Key.baselineOffset,
                              value: 3.0,
                              range: NSRange(location: 0, length: new.length))
             result = new
@@ -127,7 +127,7 @@ extension NSAttributedString {
 
     public func baselineOffsetRemoved() -> NSAttributedString {
         let createe = NSMutableAttributedString(attributedString: self)
-        createe.addAttribute(NSAttributedStringKey.baselineOffset,
+        createe.addAttribute(NSAttributedString.Key.baselineOffset,
                                                    value: 0.0,
                                                    range: NSRange(location: 0,
                                                                   length: createe.length)
@@ -138,8 +138,8 @@ extension NSAttributedString {
 
 extension NSMutableAttributedString {
     @discardableResult public func bold(_ text:String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedStringKey: Any] =
-            [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .callout)]
+        let attrs:[NSAttributedString.Key: Any] =
+            [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .callout)]
 
         let boldString = NSMutableAttributedString(string: text, attributes: attrs)
         self.append(boldString)
@@ -147,8 +147,8 @@ extension NSMutableAttributedString {
     }
 
     @discardableResult public func normal(_ text: String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedStringKey: Any] =
-            [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .body)]
+        let attrs:[NSAttributedString.Key: Any] =
+            [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body)]
 
         let normal =  NSMutableAttributedString(string: text, attributes: attrs)
         self.append(normal)

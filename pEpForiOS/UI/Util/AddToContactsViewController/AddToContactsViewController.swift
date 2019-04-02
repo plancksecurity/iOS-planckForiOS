@@ -43,7 +43,7 @@ class AddToContactsViewController: BaseViewController {
         contactVC.allowsActions = false
         contactVC.view.tintColor = UIColor.pEpDarkGreen
 
-        addChildViewController(contactVC)
+        addChild(contactVC)
         view.addSubview(contactVC.view)
         contactVC.view.fullSizeInSuperView()
     }

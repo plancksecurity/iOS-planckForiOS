@@ -48,7 +48,7 @@ public struct ReplyUtil {
 
         let defaultFont = UIFont.preferredFont(forTextStyle: .body)
         var result = NSAttributedString(string: "\n\n\(footer())\n\n\(citation)\n\n",
-            attributes: [NSAttributedStringKey(rawValue: "NSFont"): defaultFont])
+            attributes: [NSAttributedString.Key(rawValue: "NSFont"): defaultFont])
         result = result + textToCite
         return result
     }

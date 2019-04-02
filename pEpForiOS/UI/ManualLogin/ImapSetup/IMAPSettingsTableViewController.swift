@@ -64,7 +64,7 @@ class IMAPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     private func updateView() {
         serverValue.text = model.serverIMAP
         portValue.text = String(model.portIMAP)
-        transportSecurity.setTitle(model.transportIMAP.localizedString(), for: UIControlState())
+        transportSecurity.setTitle(model.transportIMAP.localizedString(), for: UIControl.State())
     }
 
     @IBAction func alertWithSecurityValues(_ sender: UIButton) {

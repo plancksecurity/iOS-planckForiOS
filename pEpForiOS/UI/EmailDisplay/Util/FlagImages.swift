@@ -96,9 +96,9 @@ class FlagImages {
     }
     
     func addTextToImage(image: UIImage?, text: NSString) -> UIImage? {
-        let textFontAttributes: [NSAttributedStringKey : Any] = [
-            NSAttributedStringKey.font: UIFont(name: "Helvetica Bold", size: 10)!,
-            NSAttributedStringKey.foregroundColor: UIColor.white,
+        let textFontAttributes: [NSAttributedString.Key : Any] = [
+            NSAttributedString.Key.font: UIFont(name: "Helvetica Bold", size: 10)!,
+            NSAttributedString.Key.foregroundColor: UIColor.white,
             ] 
         
         UIGraphicsBeginImageContextWithOptions((image?.size)!, false, 0.0)
