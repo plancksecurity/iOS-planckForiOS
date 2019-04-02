@@ -44,7 +44,7 @@ class FetchNumberOfNewMailsServiceTest: CoreDataDrivenTestBase {
         partnerId.userName = "USER_somepartner@example.com"
 
         let mail1 = CdMessage.create()
-        mail1.uuid = "message_1"
+        mail1.uuid = MessageID.generateUUID(localPart: "testUnreadMail")
         mail1.uid = 0
         mail1.parent = cdInbox
         mail1.addToTo(partnerId)
