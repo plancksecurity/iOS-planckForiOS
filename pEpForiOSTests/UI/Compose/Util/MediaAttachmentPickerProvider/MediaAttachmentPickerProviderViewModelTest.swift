@@ -143,10 +143,10 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             }
 
             if mediaType == .movie {
-                createe[UIImagePickerControllerMediaURL] = url
+                createe[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] = url
             } else {
-                createe[UIImagePickerControllerReferenceURL] = url
-                createe[UIImagePickerControllerOriginalImage] = img
+                createe[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.referenceURL)] = url
+                createe[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] = img
             }
             let attachment = Attachment(data: data,
                                         mimeType: "image/jpeg",
@@ -204,4 +204,9 @@ class MediaAttachmentPickerProviderViewModelTest: XCTestCase {
             exp.fulfill()
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

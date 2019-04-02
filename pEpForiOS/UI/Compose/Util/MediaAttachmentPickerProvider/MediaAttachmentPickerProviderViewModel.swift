@@ -30,7 +30,7 @@ class MediaAttachmentPickerProviderViewModel {
     }
 
     public func handleDidFinishPickingMedia(info: [String: Any]) {
-        let isImage = (info[UIImagePickerControllerOriginalImage] as? UIImage) != nil
+        let isImage = (info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage) != nil
         if isImage {
             // We got an image.
             createImageAttchmentAndInformResultDelegate(info: info)
@@ -46,8 +46,8 @@ class MediaAttachmentPickerProviderViewModel {
 
     private func createImageAttchmentAndInformResultDelegate(info: [String: Any]) {
         guard
-            let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
-            let url = info[UIImagePickerControllerReferenceURL] as? URL else {
+            let image = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage,
+            let url = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.referenceURL)] as? URL else {
                 Logger.frontendLogger.errorAndCrash("No Data")
                 return
         }
@@ -58,7 +58,7 @@ class MediaAttachmentPickerProviderViewModel {
     }
 
     private func createMovieAttchmentAndInformResultDelegate(info: [String: Any]) {
-        guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
+        guard let url = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as? URL else {
             Logger.frontendLogger.errorAndCrash("No URL")
             return
         }
@@ -132,4 +132,9 @@ extension MediaAttachmentPickerProviderViewModel {
         let type: MediaAttachmentType
         let attachment: Attachment
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

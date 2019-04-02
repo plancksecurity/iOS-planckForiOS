@@ -18,7 +18,7 @@ class LanguageListViewController: BaseTableViewController {
 
     override func awakeFromNib() {
         tableView.estimatedRowHeight = 44.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
     // MARK: - Table view data source

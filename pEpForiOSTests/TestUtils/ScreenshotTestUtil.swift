@@ -14,7 +14,7 @@ class ScreenshotTestUtil {
     static let waitTime: TimeInterval = 30
 
     static func getImageData(image: UIImage) -> Data? {
-        return UIImageJPEGRepresentation(image, 1)
+        return image.jpegData(compressionQuality: 1)
     }
 
     static func takeScreenshot(of view: UIView, after seconds:TimeInterval, name: String = "screenshot", completion: @escaping (Data?) -> () ) {

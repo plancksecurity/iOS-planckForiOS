@@ -14,7 +14,7 @@ import Foundation
 
 class MockBackgrounder: BackgroundTaskProtocol {
     let expBackgroundTaskFinished: XCTestExpectation?
-    var currentTaskID = 1
+    var currentTaskID = BackgroundTaskID(rawValue: 1)
     var taskIDs = Set<BackgroundTaskID>()
     var totalNumberOfBackgroundTasksStarted = 0
     var totalNumberOfBackgroundTasksFinished = 0
@@ -33,15 +33,15 @@ class MockBackgrounder: BackgroundTaskProtocol {
         totalNumberOfBackgroundTasksStarted += 1
         let taskID = currentTaskID
         print("\(#function): \(taskID) task \(taskName ?? "unknown")")
-        taskNames[taskID] = taskName
+        taskNames[taskID.rawValue] = taskName
         taskIDs.insert(taskID)
-        currentTaskID += 1
+        currentTaskID = BackgroundTaskID(rawValue:  currentTaskID.rawValue + 1)
         return taskID
     }
 
     func endBackgroundTask(_ taskID: BackgroundTaskID?) {
         if let theID = taskID, taskIDs.contains(theID) {
-            let taskName = taskNames[theID]
+            let taskName = taskNames[theID.rawValue]
             print("\(#function): \(theID) task \(taskName ?? "unknown")")
             totalNumberOfBackgroundTasksFinished += 1
             taskIDs.remove(theID)
