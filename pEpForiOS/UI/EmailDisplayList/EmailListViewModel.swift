@@ -104,6 +104,7 @@ class EmailListViewModel {
 
     }
 
+    //!!!: workarround for unified inbox missing rm when it's usable
     func isFolderReady() -> Bool {
         if let cdaccount = CdAccount.first(), let _ = CdFolder.by(folderType: .inbox, account: cdaccount) {
             return true
@@ -396,23 +397,11 @@ class EmailListViewModel {
 
     public func unreadFilterEnabled() -> Bool {
         return isFilterEnabled &&
-            activeFilter?.contains(type: UnreadFilter.self) ?? false
+            activeFilter.contains(type: UnreadFilter.self) ?? false
     }
 
-    private func getParentFolder(forMessageAt index: Int) -> DisplayableFolderProtocol {
-        var parentFolder: DisplayableFolderProtocol
-
-        if folderToShow is UnifiedInbox {
-            // folderToShow is unified inbox, fetch parent folder from DB.
-            let folder = messageQueryResults[index].parent
-            parentFolder = folder
-        } else {
-            // Do not bother our imperformant MessageModel if we already know the parent folder
-            // folderToShow is unified inbox, fetch parent folder from DB.
-            parentFolder = folderToShow
-        }
-
-        return parentFolder
+    private func getParentFolder(forMessageAt index: Int) -> Folder {
+        return messageQueryResults[index].parent
     }
 
     private func folderIsOutbox(_ parentFolder: DisplayableFolderProtocol) -> Bool {
@@ -437,7 +426,7 @@ class EmailListViewModel {
     }
 
     //TODO: remove when Segues of EmailListViewController are refactored.
-    public func getFolderToShow() -> Folder {
+    public func getFolderToShow() -> DisplayableFolderProtocol {
         return folderToShow
     }
 
@@ -460,7 +449,8 @@ class EmailListViewModel {
         }
     }
     public var activeFilter : MessageQueryResultsFilter {
-        return folderToShow.filter
+        //!!!: always is used default filter could be wrong check latter
+        return folderToShow.defaultFilter
     }
 
     public static func defaultFilter() -> MessageQueryResultsFilter {
@@ -624,6 +614,7 @@ extension EmailListViewModel {
         return composeVM
     }
 
+    //if it's virutalfolder user is nil, compose must select the default account.
     func composeViewModelForNewMessage() -> ComposeViewModel {
         let user = folderToShow.account.user
         let composeVM = ComposeViewModel(resultDelegate: self,
