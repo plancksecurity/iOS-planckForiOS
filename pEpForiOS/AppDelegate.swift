@@ -37,8 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let mySelfQueue = LimitedOperationQueue()
 
-    let sendLayerDelegate = DefaultUISendLayerDelegate()
-
     /**
      This is used to handle OAuth2 requests.
      */
@@ -208,11 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
-
         networkService = NetworkService(mySelfer: self, errorPropagator: errorPropagator)
-        networkService?.sendLayerDelegate = sendLayerDelegate
-        networkService?.delegate = self
-        CdAccount.sendLayer = networkService
     }
 
     // Safely restarts all services
