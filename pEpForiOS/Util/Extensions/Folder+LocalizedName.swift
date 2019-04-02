@@ -11,10 +11,10 @@ import MessageModel
 
 extension Folder {
 
-    public static func localizedName(folder: Folder) -> String {
+    public static func localizedName(realName: String) -> String {
         let validInboxNameVariations = [ "INBOX", "Inbox", "inbox"]
 
-        switch folder.realName {
+        switch realName {
         case let tmp where  validInboxNameVariations.contains(tmp):
             return NSLocalizedString("Inbox", comment: "Name of INBOX mailbox (of one account)")
         case UnifiedInbox.defaultUnifiedInboxName:
@@ -26,7 +26,7 @@ extension Folder {
                                      comment:
                 "Name of outbox (showing messages to send")
         default:
-            return folder.realName
+            return realName
         }
     }
 

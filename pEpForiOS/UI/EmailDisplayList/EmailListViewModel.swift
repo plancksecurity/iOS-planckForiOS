@@ -94,12 +94,12 @@ class EmailListViewModel {
                 folderToShowTemp = Folder.from(cdFolder: cdfolder)
             }
         }*/
-        self.messageQueryResults = MessageQueryResults(withFolder: folderToShowTemp)
+        self.messageQueryResults = MessageQueryResults(withFolder: folderToShow)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 
         self.folderToShow = folderToShow
-        self.defaultFilter = folderToShowTemp.filter?.clone()
+        self.defaultFilter = folderToShow.defaultFilter
         self.oldThreadSetting = AppSettings.threadedViewEnabled
 
     }
@@ -123,12 +123,8 @@ class EmailListViewModel {
         }
     }
 
-    func updateLastLookAt() {
-        folderToShow.updateLastLookAt()
-    }
-
     func getFolderName() -> String {
-        return Folder.localizedName(folder: folderToShow)
+        return Folder.localizedName(realName: folderToShow.title)
     }
 
     func shouldEditMessage() -> Bool {
@@ -403,8 +399,8 @@ class EmailListViewModel {
             activeFilter?.contains(type: UnreadFilter.self) ?? false
     }
 
-    private func getParentFolder(forMessageAt index: Int) -> Folder {
-        var parentFolder: Folder
+    private func getParentFolder(forMessageAt index: Int) -> DisplayableFolderProtocol {
+        var parentFolder: DisplayableFolderProtocol
 
         if folderToShow is UnifiedInbox {
             // folderToShow is unified inbox, fetch parent folder from DB.
@@ -419,11 +415,11 @@ class EmailListViewModel {
         return parentFolder
     }
 
-    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
+    private func folderIsOutbox(_ parentFolder: DisplayableFolderProtocol) -> Bool {
         return parentFolder.folderType == .outbox
     }
 
-    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
+    private func folderIsDraft(_ parentFolder: DisplayableFolderProtocol) -> Bool {
         return parentFolder.folderType == .drafts
     }
 
