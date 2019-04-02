@@ -61,7 +61,7 @@ extension Message {
     public static func by(uid: Int, folderName: String, accountAddress: String) -> Message? {
         let pAccount =
             CdMessage.PredicateFactory.belongingToAccountWithAddress(address: accountAddress)
-        let pUid = NSPredicate(format: "uid = %d", uid)
+        let pUid = NSPredicate(format: "%K = %d", CdMessage.AttributeName.uid, uid)
         let pFolder =
             CdMessage.PredicateFactory.belongingToParentFolderNamed(parentFolderName: folderName)
         let p = NSCompoundPredicate(andPredicateWithSubpredicates: [pAccount, pUid, pFolder])
