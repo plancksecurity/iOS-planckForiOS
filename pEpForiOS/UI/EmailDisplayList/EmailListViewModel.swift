@@ -489,44 +489,44 @@ class EmailListViewModel {
         reloadData()
     }
 
+    //!!!: search is not a filter
     public func setSearchFilter(forSearchText txt: String = "") {
-        if txt == lastSearchTerm {
-            // Happens e.g. when initially setting the cursor in search bar.
-            return
-        }
-        lastSearchTerm = txt
-        if txt == "" {
-            assuredFilterOfFolderToShow().removeSearchFilter()
-        } else {
-            let folderFilter = assuredFilterOfFolderToShow()
-            folderFilter.removeSearchFilter()
-            let searchFilter = SearchFilter(searchTerm: txt)
-            folderFilter.add(filter: searchFilter)
-        }
+//        if txt == lastSearchTerm {
+//            // Happens e.g. when initially setting the cursor in search bar.
+//            return
+//        }
+//        lastSearchTerm = txt
+//        if txt == "" {
+//            assuredFilterOfFolderToShow().removeSearchFilter()
+//        } else {
+//            let folderFilter = assuredFilterOfFolderToShow()
+//            folderFilter.removeSearchFilter()
+//            let searchFilter = SearchFilter(searchTerm: txt)
+//            folderFilter.add(filter: searchFilter)
+//        }
         reloadData()
     }
-
+    //!!!:searchh is not a filter rename
     public func removeSearchFilter() {
-        guard let filter = folderToShow.filter else {
-            Logger.frontendLogger.errorAndCrash("No folder.")
-            return
-        }
-        let filtersChanged = filter.removeSearchFilter()
-        if filtersChanged {
-            reloadData()
+        do {
+            try messageQueryResults.set(search: nil)
+        } catch {
+            Logger.frontendLogger.error("SearchFilter can not be removed")
         }
     }
 
-    private func assuredFilterOfFolderToShow() -> CompositeFilter<FilterBase> {
-        if folderToShow.filter == nil {
-            folderToShow.resetFilter()
-        }
-
-        guard let folderFilter = folderToShow.filter else {
-            Logger.frontendLogger.errorAndCrash("We just set the filter but do not have one?")
-            return CompositeFilter<FilterBase>.defaultFilter()
-        }
-        return folderFilter
+    //!!!: this is needed?
+    private func assuredFilterOfFolderToShow() -> MessageQueryResultsFilter {
+//        if folderToShow.filter == nil {
+//            folderToShow.resetFilter()
+//        }
+//
+//        guard let folderFilter = folderToShow.filter else {
+//            Logger.frontendLogger.errorAndCrash("We just set the filter but do not have one?")
+//            return defaultFilter
+//        }
+//        return folderFilter
+        return MessageQueryResultsFilter.init()
     }
 
     // MARK: - Util
