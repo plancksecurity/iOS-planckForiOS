@@ -128,6 +128,7 @@ class EmailListViewModel {
         return Folder.localizedName(realName: folderToShow.title)
     }
 
+    //instead using actual folder, use the message parent folder.
     func shouldEditMessage() -> Bool {
         if folderToShow.folderType == .drafts || folderToShow.folderType == .outbox {
             return true
@@ -350,7 +351,7 @@ class EmailListViewModel {
     }
 
     public func shouldShowToolbarEditButtons() -> Bool {
-        return !folderIsOutbox(folderToShow)
+        return !folderIsOutbox(getParentFolder(forMessageAt: 0))
     }
 
     public func getDestructiveActtion(forMessageAt index: Int) -> SwipeActionDescriptor {
@@ -406,11 +407,11 @@ class EmailListViewModel {
         return messageQueryResults[index].parent
     }
 
-    private func folderIsOutbox(_ parentFolder: DisplayableFolderProtocol) -> Bool {
+    private func folderIsOutbox(_ parentFolder: Folder) -> Bool {
         return parentFolder.folderType == .outbox
     }
 
-    private func folderIsDraft(_ parentFolder: DisplayableFolderProtocol) -> Bool {
+    private func folderIsDraft(_ parentFolder: Folder) -> Bool {
         return parentFolder.folderType == .drafts
     }
 
@@ -588,6 +589,7 @@ class EmailListViewModel {
     private func requestFetchOlder(forFolders folders: [Folder]) {
         DispatchQueue.main.async { [weak self] in
             for folder in folders {
+                folder.fetchOlder()
                 self?.messageSyncService.requestFetchOlderMessages(inFolder: folder)
             }
         }
