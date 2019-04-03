@@ -12,7 +12,7 @@ UINavigationControllerDelegate {
     func navigationController(
         _ navigationController: UINavigationController,
         animationControllerFor operation:
-        UINavigationControllerOperation,
+        UINavigationController.Operation,
         from fromVC: UIViewController,
         to toVC: UIViewController
         ) -> UIViewControllerAnimatedTransitioning? {

@@ -57,7 +57,7 @@ struct UserNotificationTool {
             if let batch = batch as NSNumber? {
                 content.badge = batch
             }
-            content.sound = UNNotificationSound.default()
+            content.sound = UNNotificationSound.default
             let identifier = "PEPLocalNotification"
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: now, repeats: false)
             let request = UNNotificationRequest(identifier: identifier,

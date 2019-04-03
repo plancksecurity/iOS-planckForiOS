@@ -30,7 +30,7 @@ UIPickerViewDataSource, UITextFieldDelegate {
     private let spinner: UIActivityIndicatorView = {
         let createe = UIActivityIndicatorView()
         createe.hidesWhenStopped = true
-        createe.activityIndicatorViewStyle = .gray
+        createe.style = .gray
         return createe
     }()
 
@@ -352,7 +352,7 @@ extension AccountSettingsTableViewController {
                     y:
                 (tableView.frame.height / 2) - (navigationController?.navigationBar.frame.height
                     ?? 0.0))
-        spinner.superview?.bringSubview(toFront: spinner)
+        spinner.superview?.bringSubviewToFront(spinner)
         tableView.isUserInteractionEnabled = false
         spinner.startAnimating()
     }

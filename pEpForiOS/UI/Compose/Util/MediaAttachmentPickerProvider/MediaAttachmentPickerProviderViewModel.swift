@@ -29,8 +29,8 @@ class MediaAttachmentPickerProviderViewModel {
         self.resultDelegate = resultDelegate
     }
 
-    public func handleDidFinishPickingMedia(info: [String: Any]) {
-        let isImage = (info[UIImagePickerControllerOriginalImage] as? UIImage) != nil
+    public func handleDidFinishPickingMedia(info: [UIImagePickerController.InfoKey: Any]) {
+        let isImage = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage) != nil
         if isImage {
             // We got an image.
             createImageAttchmentAndInformResultDelegate(info: info)
@@ -44,10 +44,10 @@ class MediaAttachmentPickerProviderViewModel {
         resultDelegate?.mediaAttachmentPickerProviderViewModelDidCancel(self)
     }
 
-    private func createImageAttchmentAndInformResultDelegate(info: [String: Any]) {
+    private func createImageAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
         guard
-            let image = info[UIImagePickerControllerOriginalImage] as? UIImage,
-            let url = info[UIImagePickerControllerReferenceURL] as? URL else {
+            let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage,
+            let url = info[UIImagePickerController.InfoKey.referenceURL] as? URL else {
                 Logger.frontendLogger.errorAndCrash("No Data")
                 return
         }
@@ -57,8 +57,8 @@ class MediaAttachmentPickerProviderViewModel {
         resultDelegate?.mediaAttachmentPickerProviderViewModel(self, didSelect: result)
     }
 
-    private func createMovieAttchmentAndInformResultDelegate(info: [String: Any]) {
-        guard let url = info[UIImagePickerControllerMediaURL] as? URL else {
+    private func createMovieAttchmentAndInformResultDelegate(info: [UIImagePickerController.InfoKey: Any]) {
+        guard let url = info[UIImagePickerController.InfoKey.mediaURL] as? URL else {
             Logger.frontendLogger.errorAndCrash("No URL")
             return
         }
