@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var appConfig: AppConfig?
 
     /** The SMTP/IMAP backend */
-    var networkService: NetworkService?
+    var messageModelService: MessageModelService?
 
     /**
      UI triggerable actions for syncing messages.
@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// Signals al services to start/resume.
     /// Also signals it is save to use PEPSessions (again)
     private func startServices() {
-        networkService?.start()
+        messageModelService?.start()
     }
 
     /// Signals all PEPSession users to stop using a session as soon as possible.
@@ -101,7 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // that brutally shuts down everything.
                 me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
             })
-        networkService?.processAllUserActionsAndstop()
+        messageModelService?.processAllUserActionsAndStop()
     }
 
     func cleanupPEPSessionIfNeeded() {
@@ -206,14 +206,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
-        networkService = NetworkService(mySelfer: self, errorPropagator: errorPropagator)
+        messageModelService = MessageModelService()
+        messageModelService?.delegate = self
     }
 
     // Safely restarts all services
     private func shutdownAndPrepareServicesForRestart() {
         // We cancel the Network Service to make sure it is idle and ready for a clean restart.
         // The actual restart of the services happens in NetworkServiceDelegate callbacks.
-        networkService?.cancel()
+        messageModelService?.cancel()
     }
 
     private func prepareUserNotifications() {
@@ -315,12 +316,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, performFetchWithCompletionHandler
         completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         
-        guard let networkService = networkService else {
+        guard let messageModelService = messageModelService else {
             Logger.appDelegateLogger.error("no networkService")
             return
         }
         
-        networkService.checkForNewMails() {[weak self] (numMails: Int?) in
+        messageModelService.checkForNewMails() {[weak self] (numMails: Int?) in
             guard let me = self else {
                 Logger.frontendLogger.lostMySelf()
                 return
@@ -375,8 +376,9 @@ extension AppDelegate: KickOffMySelfProtocol {
 
 // MARK: - NetworkServiceDelegate
 
-extension AppDelegate: NetworkServiceDelegate {
-    func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
+extension AppDelegate: MessageModelServiceDelegate {
+
+    func messageModelServiceDidFinishLastSyncLoop() {
         // Cleanup sessions.
         PEPSession.cleanup()
         if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskInvalid {
@@ -391,7 +393,7 @@ extension AppDelegate: NetworkServiceDelegate {
         syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
     }
 
-    func networkServiceDidCancel(service: NetworkService) {
+    func messageModelServiceDidCancel() {
         switch UIApplication.shared.applicationState {
         case .background:
             // We have been cancelled because we are entering background.
