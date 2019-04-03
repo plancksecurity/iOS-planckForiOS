@@ -396,8 +396,10 @@ class EmailListViewModel {
     }
 
     public func unreadFilterEnabled() -> Bool {
-        return isFilterEnabled &&
-            activeFilter.contains(type: UnreadFilter.self) ?? false
+        guard let unread = activeFilter.mustBeUnread else {
+            return false
+        }
+        return isFilterEnabled && unread
     }
 
     private func getParentFolder(forMessageAt index: Int) -> Folder {
