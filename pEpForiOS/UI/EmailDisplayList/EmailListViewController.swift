@@ -81,7 +81,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private func setup() {
 
         if (model == nil) {
-            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
+            model = EmailListViewModel(
+                fetchOlderImapMessagesService: appConfig.fetchOlderImapMessagesService)
         }
 
         if let accountExists = model?.noAccountsExist(),

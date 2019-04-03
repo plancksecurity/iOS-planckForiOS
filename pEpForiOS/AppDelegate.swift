@@ -192,11 +192,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func setupServices() {
         let theMessageSyncService = MessageSyncService()
+        let fetchOlderImapMessagesService = FetchOlderImapMessagesService()
         messageSyncService = theMessageSyncService
-        let theAppConfig = AppConfig(mySelfer: self,
-                                     messageSyncService: theMessageSyncService,
-                                     errorPropagator: errorPropagator,
-                                     oauth2AuthorizationFactory: oauth2Provider)
+        let theAppConfig = AppConfig(
+            mySelfer: self,
+            messageSyncService: theMessageSyncService,
+            fetchOlderImapMessagesService: fetchOlderImapMessagesService,
+            errorPropagator: errorPropagator,
+            oauth2AuthorizationFactory: oauth2Provider)
         appConfig = theAppConfig
         // This is a very dirty hack!! See SecureWebViewController docs for details.
         SecureWebViewController.appConfigDirtyHack = theAppConfig

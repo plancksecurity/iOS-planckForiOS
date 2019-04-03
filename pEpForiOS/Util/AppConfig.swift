@@ -13,6 +13,7 @@ import MessageModel
  */
 class AppConfig {
     let messageSyncService: MessageSyncServiceProtocol
+    let fetchOlderImapMessagesService: FetchOlderImapMessagesService
 
     var showedAccountsError: [String:Bool]
 
@@ -30,9 +31,11 @@ class AppConfig {
 
     init(mySelfer: KickOffMySelfProtocol,
          messageSyncService: MessageSyncServiceProtocol,
+         fetchOlderImapMessagesService: FetchOlderImapMessagesService,
          errorPropagator: ErrorPropagator,
          oauth2AuthorizationFactory: OAuth2AuthorizationFactoryProtocol) {
         self.messageSyncService = messageSyncService
+        self.fetchOlderImapMessagesService = fetchOlderImapMessagesService
         self.mySelfer = mySelfer
         self.errorPropagator = errorPropagator
         self.oauth2AuthorizationFactory = oauth2AuthorizationFactory
