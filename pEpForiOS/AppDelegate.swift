@@ -84,17 +84,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /// and call it's delegate (me) after the last sync operation has finished.
     private func stopUsingPepSession() {
         syncUserActionsAndCleanupbackgroundTaskId =
-            application.beginBackgroundTask(expirationHandler: { [weak self] in
-                guard let me = self else {
-                    Logger.frontendLogger.lostMySelf()
-                    return
-                }
+            application.beginBackgroundTask(expirationHandler: { [unowned self] in
                 Logger.appDelegateLogger.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    me.syncUserActionsAndCleanupbackgroundTaskId)
+                    self.syncUserActionsAndCleanupbackgroundTaskId)
                 // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
                 // that brutally shuts down everything.
-                me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
+                self.application.endBackgroundTask(self.syncUserActionsAndCleanupbackgroundTaskId)
             })
         messageModelService?.processAllUserActionsAndStop()
     }
@@ -106,32 +102,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func kickOffMySelf() {
-        mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [weak self] in
-            guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
-                return
-            }
+        mySelfTaskId = application.beginBackgroundTask(expirationHandler: { [unowned self] in
             Logger.appDelegateLogger.log(
                 "mySelfTaskId with ID %{public}@ expired.",
-                me.mySelfTaskId)
+                self.mySelfTaskId)
             // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
             // that brutally shuts down everything.
-            me.application.endBackgroundTask(me.mySelfTaskId)
+            self.application.endBackgroundTask(self.mySelfTaskId)
         })
         let op = MySelfOperation()
-        op.completionBlock = { [weak self] in
-            guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
-                return
-            }
+        op.completionBlock = { [unowned self] in
             // We might be the last service that finishes, so we have to cleanup.
-            self?.cleanupPEPSessionIfNeeded()
-            if me.mySelfTaskId == UIBackgroundTaskInvalid {
+            self.cleanupPEPSessionIfNeeded()
+            if self.mySelfTaskId == UIBackgroundTaskInvalid {
                 return
             }
-            me.application.endBackgroundTask(me.mySelfTaskId)
-            me.mySelfTaskId = UIBackgroundTaskInvalid
-
+            self.application.endBackgroundTask(self.mySelfTaskId)
+            self.mySelfTaskId = UIBackgroundTaskInvalid
         }
         mySelfQueue.addOperation(op)
     }
@@ -314,21 +301,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         
-        messageModelService.checkForNewMails() {[weak self] (numMails: Int?) in
-            guard let me = self else {
-                Logger.frontendLogger.lostMySelf()
-                return
-            }
+        messageModelService.checkForNewMails() {[unowned self] (numMails: Int?) in
             guard let numMails = numMails else {
-                me.cleanupAndCall(completionHandler: completionHandler, result: .failed)
+                self.cleanupAndCall(completionHandler: completionHandler, result: .failed)
                 return
             }
             switch numMails {
             case 0:
-                me.cleanupAndCall(completionHandler: completionHandler, result: .noData)
+                self.cleanupAndCall(completionHandler: completionHandler, result: .noData)
             default:
-                me.informUser(numNewMails: numMails) {
-                    me.cleanupAndCall(completionHandler: completionHandler, result: .newData)
+                self.informUser(numNewMails: numMails) {
+                    self.cleanupAndCall(completionHandler: completionHandler, result: .newData)
                 }
             }
         }
