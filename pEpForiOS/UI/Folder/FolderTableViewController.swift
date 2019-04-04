@@ -8,6 +8,7 @@
 
 import UIKit
 import pEpIOSToolbox
+import MessageModel
 
 class FolderTableViewController: BaseTableViewController, FolderViewModelDelegate {
     var folderVM: FolderViewModel?
@@ -196,7 +197,7 @@ class FolderTableViewController: BaseTableViewController, FolderViewModelDelegat
             folderVM?.createEmailListViewModel(
                 forAccountAt: indexPath?.section,
                 andFolderAt: indexPath?.row,
-                fetchOlderImapMessagesService: appConfig.fetchOlderImapMessagesService)
+                fetchOlderImapMessagesService: FetchOlderImapMessagesService())
         vc.model = emailListViewModel
         vc.hidesBottomBarWhenPushed = false
 

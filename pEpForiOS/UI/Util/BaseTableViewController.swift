@@ -22,8 +22,6 @@ class BaseTableViewController: UITableViewController, ErrorPropagatorSubscriber 
                 // We have no config. Return nonsense.
                 return AppConfig(
                     mySelfer: self,
-                    messageSyncService: MessageSyncService(),
-                    fetchOlderImapMessagesService: FetchOlderImapMessagesService(),
                     errorPropagator: ErrorPropagator(),
                     oauth2AuthorizationFactory: OAuth2ProviderFactory().oauth2Provider())
             }

@@ -22,11 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var messageModelService: MessageModelService?
 
     /**
-     UI triggerable actions for syncing messages.
-     */
-    var messageSyncService: MessageSyncService?
-
-    /**
      Error Handler to connect backend with UI
      */
     var errorPropagator = ErrorPropagator()
@@ -191,13 +186,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func setupServices() {
-        let theMessageSyncService = MessageSyncService()
-        let fetchOlderImapMessagesService = FetchOlderImapMessagesService()
-        messageSyncService = theMessageSyncService
         let theAppConfig = AppConfig(
             mySelfer: self,
-            messageSyncService: theMessageSyncService,
-            fetchOlderImapMessagesService: fetchOlderImapMessagesService,
             errorPropagator: errorPropagator,
             oauth2AuthorizationFactory: oauth2Provider)
         appConfig = theAppConfig

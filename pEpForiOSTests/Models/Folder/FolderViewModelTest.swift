@@ -100,16 +100,10 @@ class FolderViewModelTest: CoreDataDrivenTestBase {
         viewmodel = FolderViewModel(withFoldersIn: nil, includeUnifiedInbox: withUnifiedInbox)
     }
     
-    class MessageSyncServiceMock: MessageSyncServiceProtocol {
+    class VerificationServiceMock: VerificationServiceProtocol {
         func requestVerification(account: Account, delegate: AccountVerificationServiceDelegate) {
             
         }
-        
-        func requestFetchOlderMessages(inFolder folder: Folder) {
-            
-        }
-        
-        
     }
 
 }

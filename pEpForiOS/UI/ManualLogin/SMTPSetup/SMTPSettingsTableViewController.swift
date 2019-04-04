@@ -79,7 +79,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
         isCurrentlyVerifying =  true
         let account = try model.account()
         currentlyVerifiedAccount = account
-        appConfig.messageSyncService.requestVerification(account: account, delegate: self)
+        VerificationService().requestVerification(account: account, delegate: self)
     }
 
     private func informUser(about error: Error, title: String) {

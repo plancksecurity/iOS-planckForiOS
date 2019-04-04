@@ -131,7 +131,7 @@ class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 
     private func setUpViewModel(){
         viewModel = AccountSettingsViewModel(account: account)
-        viewModel.messageSyncService = MessageSyncService()
+        viewModel.verificationService = VerificationService()
     }
 }
 
