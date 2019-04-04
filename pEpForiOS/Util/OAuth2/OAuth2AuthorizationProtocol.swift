@@ -31,7 +31,7 @@ protocol OAuth2AuthorizationDelegateProtocol: class {
  authorization.
  */
 protocol OAuth2AuthorizationProtocol {
-    weak var delegate: OAuth2AuthorizationDelegateProtocol? { get set }
+    var delegate: OAuth2AuthorizationDelegateProtocol? { get set }
 
     /**
      Trigger an authorization request. When it was successful, or on error,

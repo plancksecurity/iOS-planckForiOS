@@ -62,7 +62,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
     private func updateView() {
         serverValue.text = model.serverSMTP
         portValue.text = String(model.portSMTP)
-        transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControlState())
+        transportSecurity.setTitle(model.transportSMTP.localizedString(), for: UIControl.State())
 
         if isCurrentlyVerifying {
             activityIndicatorView.startAnimating()
@@ -86,7 +86,7 @@ class SMTPSettingsTableViewController: BaseTableViewController, TextfieldRespond
         let alert = UIAlertController.pEpAlertController(
             title: title,
             message: error.localizedDescription,
-            preferredStyle: UIAlertControllerStyle.alert)
+            preferredStyle: UIAlertController.Style.alert)
         let cancelAction = UIAlertAction(title:
             NSLocalizedString("OK", comment: "OK button for invalid accout settings user input alert"),
                                          style: .cancel, handler: nil)

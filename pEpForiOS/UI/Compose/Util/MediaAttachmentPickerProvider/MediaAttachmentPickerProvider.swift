@@ -34,7 +34,7 @@ class MediaAttachmentPickerProvider: NSObject {
 extension MediaAttachmentPickerProvider: UIImagePickerControllerDelegate {
 
     public func imagePickerController( _ picker: UIImagePickerController,
-                                       didFinishPickingMediaWithInfo info: [String: Any]) {
+                                       didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         viewModel?.handleDidFinishPickingMedia(info: info)
     }
 

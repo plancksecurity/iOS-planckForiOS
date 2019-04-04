@@ -44,8 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
      */
     let oauth2Provider = OAuth2ProviderFactory().oauth2Provider()
 
-    var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
-    var mySelfTaskId = UIBackgroundTaskInvalid
+    var syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+    var mySelfTaskId = UIBackgroundTaskIdentifier.invalid
 
     /**
      Set to true whever the app goes into background, so the main session gets cleaned up.
@@ -98,10 +98,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 Logger.appDelegateLogger.errorAndCrash(
                     "syncUserActionsAndCleanupbackgroundTask with ID %{public}@ expired",
-                    me.syncUserActionsAndCleanupbackgroundTaskId)
+                    me.syncUserActionsAndCleanupbackgroundTaskId as CVarArg)
                 // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
                 // that brutally shuts down everything.
-                me.application.endBackgroundTask(me.syncUserActionsAndCleanupbackgroundTaskId)
+                me.application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: me.syncUserActionsAndCleanupbackgroundTaskId.rawValue))
             })
         networkService?.processAllUserActionsAndstop()
     }
@@ -118,12 +118,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Logger.frontendLogger.lostMySelf()
                 return
             }
-            Logger.appDelegateLogger.log(
-                "mySelfTaskId with ID %{public}@ expired.",
-                me.mySelfTaskId)
+            Logger.appDelegateLogger.log("mySelfTaskId with ID expired.")
             // We migh want to call some (yet unexisting) emergency shutdown on NetworkService here
             // that brutally shuts down everything.
-            me.application.endBackgroundTask(me.mySelfTaskId)
+            me.application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue:me.mySelfTaskId.rawValue))
         })
         let op = MySelfOperation()
         op.completionBlock = { [weak self] in
@@ -133,11 +131,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             // We might be the last service that finishes, so we have to cleanup.
             self?.cleanupPEPSessionIfNeeded()
-            if me.mySelfTaskId == UIBackgroundTaskInvalid {
+            if me.mySelfTaskId == UIBackgroundTaskIdentifier.invalid {
                 return
             }
-            me.application.endBackgroundTask(me.mySelfTaskId)
-            me.mySelfTaskId = UIBackgroundTaskInvalid
+            me.application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: me.mySelfTaskId.rawValue))
+            me.mySelfTaskId = UIBackgroundTaskIdentifier.invalid
 
         }
         mySelfQueue.addOperation(op)
@@ -245,7 +243,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(
         _ application: UIApplication, didFinishLaunchingWithOptions
-        launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
         if MiscUtil.isUnitTest() {
             // If unit tests are running, leave the stage for them
@@ -347,14 +345,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL,
-                     options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         // Unclear if this is needed, presumabley doesn't get invoked for OAuth2 because
         // SFSafariViewController is involved there.
         return oauth2Provider.processAuthorizationRedirect(url: url)
     }
 
     func application(_ application: UIApplication, continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
             let theUrl = userActivity.webpageURL {
             return oauth2Provider.processAuthorizationRedirect(url: theUrl)
@@ -385,7 +383,7 @@ extension AppDelegate: NetworkServiceDelegate {
     func networkServiceDidFinishLastSyncLoop(service: NetworkService) {
         // Cleanup sessions.
         PEPSession.cleanup()
-        if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskInvalid {
+        if syncUserActionsAndCleanupbackgroundTaskId == UIBackgroundTaskIdentifier.invalid {
             return
         }
         if UIApplication.shared.applicationState != .background {
@@ -393,8 +391,8 @@ extension AppDelegate: NetworkServiceDelegate {
             // No problem, start regular sync loop.
             startServices()
         }
-        application.endBackgroundTask(syncUserActionsAndCleanupbackgroundTaskId)
-        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskInvalid
+        application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: syncUserActionsAndCleanupbackgroundTaskId.rawValue))
+        syncUserActionsAndCleanupbackgroundTaskId = UIBackgroundTaskIdentifier.invalid
     }
 
     func networkServiceDidCancel(service: NetworkService) {

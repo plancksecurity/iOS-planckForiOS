@@ -58,7 +58,7 @@ class ComposeTableViewController: BaseTableViewController {
 
     private func setupView() {
         registerXibs()
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
          //An arbitrary value auto resize seems to require for some reason.
         tableView.estimatedRowHeight = 1000
     }
@@ -81,7 +81,7 @@ class ComposeTableViewController: BaseTableViewController {
         suggestionsChildViewController = suggestVc
         suggestionsChildViewController?.appConfig = appConfig
         suggestionsChildViewController?.viewModel = vm.suggestViewModel()
-        addChildViewController(suggestVc)
+        addChild(suggestVc)
         suggestView.isHidden = true
         tableView.addSubview(suggestView)
     }
