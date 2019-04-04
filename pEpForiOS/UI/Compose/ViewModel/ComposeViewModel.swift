@@ -13,13 +13,13 @@ import PEPObjCAdapterFramework
 /// Informs the one that triggered the segued to here.
 protocol ComposeViewModelResultDelegate: class {
     /// Called after a valid mail has been composed and saved for sending.
-    func composeViewModelDidComposeNewMail()
+    func composeViewModelDidComposeNewMail(message: Message)
     /// Called after saving a modified version of the original message.
     /// (E.g. after editing a drafted message)
-    func composeViewModelDidModifyMessage()
+    func composeViewModelDidModifyMessage(message: Message)
     /// Called after permanentaly deleting the original message.
     /// (E.g. saving an edited oubox mail to drafts. It's permanentaly deleted from outbox.)
-    func composeViewModelDidDeleteMessage()
+    func composeViewModelDidDeleteMessage(message: Message)
 }
 
 protocol ComposeViewModelDelegate: class {
@@ -143,7 +143,7 @@ class ComposeViewModel {
             // delete the original, previously drafted one.
             deleteOriginalMessage()
         }
-        resultDelegate?.composeViewModelDidComposeNewMail()
+        resultDelegate?.composeViewModelDidComposeNewMail(message: msg)
     }
 
     public func isAttachmentSection(indexPath: IndexPath) -> Bool {
@@ -172,7 +172,7 @@ class ComposeViewModel {
         // mailboxes, that show all flagged messages.
         om.imapFlags?.draft = false
         om.imapMarkDeleted()
-        resultDelegate?.composeViewModelDidDeleteMessage()
+        resultDelegate?.composeViewModelDidDeleteMessage(message: om)
     }
 
     private func setup() {
@@ -546,7 +546,7 @@ extension ComposeViewModel {
         }
         if data.isOutbox {
             data.originalMessage?.delete()
-            resultDelegate?.composeViewModelDidDeleteMessage()
+            resultDelegate?.composeViewModelDidDeleteMessage(message: data.originalMessage)
         }
     }
 

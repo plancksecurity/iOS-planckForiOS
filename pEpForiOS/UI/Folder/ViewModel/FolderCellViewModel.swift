@@ -10,12 +10,8 @@ import Foundation
 import MessageModel
 
 public class FolderCellViewModel {
-    let folder: Folder
+    let folder: DisplayableFolderProtocol
     let level : Int
-
-    public var icon: UIImage {
-        return self.folder.folderType.getIcon()
-    }
 
     public var title : String {
         return self.name
@@ -26,7 +22,7 @@ public class FolderCellViewModel {
     }
 
     private var name: String {
-        return Folder.localizedName(folder: self.folder)
+        return Folder.localizedName(realName: self.folder.title)
     }
 
     var leftPadding: Int {
@@ -34,15 +30,19 @@ public class FolderCellViewModel {
     }
 
     public var isSelectable: Bool {
-        if folder is UnifiedInbox {
+        if folder.selectable {
+            return true
+        }
+        return false
+        /*if folder is UnifiedInbox {
             return true
         } else if folder.isLocalFolder {
             return true
         }
-        return folder.selectable
+        return folder.selectable*/
     }
 
-    public init(folder: Folder, level: Int) {
+    public init(folder: DisplayableFolderProtocol, level: Int) {
         self.folder = folder
         self.level = level
     }

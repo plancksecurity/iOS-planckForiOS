@@ -65,7 +65,6 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
 
         if let vm = model, !vm.noAccountsExist() {
             updateFilterButtonView()
-            vm.updateLastLookAt()
             vm.startMonitoring()
             if vm.checkIfSettingsChanged() {
                 settingsChanged()
@@ -462,7 +461,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     }
     
     private func updateFilterText() {
-        if let vm = model, var txt = vm.activeFilter?.title {
+        if let vm = model, var txt = vm.activeFilter.title {
             if(txt.count > EmailListViewController.FILTER_TITLE_MAX_XAR){
                 let prefix = txt.prefix(ofLength: EmailListViewController.FILTER_TITLE_MAX_XAR)
                 txt = String(prefix)
@@ -601,7 +600,7 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
             }
             lastSelectedIndexPath = indexPath
             tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            if model.shouldEditMessage() {
+            if model.shouldEditMessage(indexPath: indexPath) {
                 showComposeView()
             } else {
                 showEmail(forCellAt: indexPath)
@@ -1023,7 +1022,7 @@ extension EmailListViewController: SegueHandlerType {
             }
             vc.appConfig = appConfig
             vc.message = message
-            vc.folderShow = model?.getFolderToShow()
+            //vc.folderShow = model?.getFolderToShow()
             vc.messageId = indexPath.row //that looks wrong
             vc.delegate = model as! EmailDisplayDelegate
             model?.currentDisplayedMessage = vc

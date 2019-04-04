@@ -56,7 +56,7 @@ class EmailListViewModel {
 
     public var emailListViewModelDelegate: EmailListViewModelDelegate?
 
-    internal let folderToShow: VirtualFolderProtocol
+    internal let folderToShow: DisplayableFolderProtocol
 
     public var currentDisplayedMessage: DisplayedMessage?
     public var screenComposer: ScreenComposerProtocol?
@@ -88,12 +88,9 @@ class EmailListViewModel {
     //!!!: This init must be reviewed when unifiedInobx works again
     init(emailListViewModelDelegate: EmailListViewModelDelegate? = nil,
          messageSyncService: MessageSyncServiceProtocol,
-         folderToShow: VirtualFolderProtocol = UnifiedInbox()) {
-        /*if !Account.all().isEmpty {
-            if let cdaccount = CdAccount.first(), let cdfolder = CdFolder.by(folderType: .inbox, account: cdaccount) {
-                folderToShowTemp = Folder.from(cdFolder: cdfolder)
-            }
-        }*/
+         folderToShow: DisplayableFolderProtocol = UnifiedInbox()) {
+
+
         self.messageQueryResults = MessageQueryResults(withFolder: folderToShow)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
@@ -129,12 +126,13 @@ class EmailListViewModel {
     }
 
     //instead using actual folder, use the message parent folder.
-    func shouldEditMessage() -> Bool {
-        if folderToShow.folderType == .drafts || folderToShow.folderType == .outbox {
+    func shouldEditMessage(indexPath: IndexPath) -> Bool {
+        /*if folderToShow.folderType == .drafts || folderToShow.folderType == .outbox {
             return true
         } else {
             return false
-        }
+        }*/
+        
     }
 
     //check if there are some important settings that have changed to force a reload
@@ -388,13 +386,13 @@ class EmailListViewModel {
         return Account.all().isEmpty
     }
 
-    public func folderIsDraft() -> Bool {
-        return folderIsDraft( folderToShow)
-    }
-
-    public func folderIsOutbox() -> Bool {
-        return folderIsOutbox(folderToShow)
-    }
+//    public func folderIsDraft() -> Bool {
+//        return folderIsDraft( folderToShow)
+//    }
+//
+//    public func folderIsOutbox() -> Bool {
+//        return folderIsOutbox(folderToShow)
+//    }
 
     public func unreadFilterEnabled() -> Bool {
         guard let unread = activeFilter.mustBeUnread else {
@@ -415,7 +413,7 @@ class EmailListViewModel {
         return parentFolder.folderType == .drafts
     }
 
-    private func folderIsDraftOrOutbox(_ parentFoldder: DisplayableFolderProtocol) -> Bool {
+    private func folderIsDraftOrOutbox(_ parentFoldder: Folder) -> Bool {
         return folderIsDraft(parentFoldder) || folderIsOutbox(parentFoldder)
     }
 
@@ -630,14 +628,17 @@ extension EmailListViewModel {
 // MARK: - ComposeViewModelResultDelegate
 
 extension EmailListViewModel: ComposeViewModelResultDelegate {
-    func composeViewModelDidComposeNewMail() {
+    func composeViewModelDidComposeNewMail(message: Message) {
+        if folderIsOutbox(message.parent) {
+
+        }
         if folderIsDraftsOrOutbox(folderToShow){
             // In outbox, a new mail must show up after composing it.
             reloadData()
         }
     }
 
-    func composeViewModelDidDeleteMessage() {
+    func composeViewModelDidDeleteMessage(message: Message) {
         if folderIsDraftOrOutbox(folderToShow) {
             // A message from outbox has been deleted in outbox
             // (e.g. because the user saved it to drafts).
@@ -645,7 +646,7 @@ extension EmailListViewModel: ComposeViewModelResultDelegate {
         }
     }
 
-    func composeViewModelDidModifyMessage() {
+    func composeViewModelDidModifyMessage(message: Message) {
         if folderIsDraft(folderToShow) {
             reloadData()
         }
