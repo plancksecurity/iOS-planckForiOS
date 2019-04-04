@@ -15,7 +15,7 @@ public class UnifiedInbox: VirtualFolderProtocol {
     }
 
     
-    public func fetchFolder(Folder: Folder) {
+    public func fetchFolder() {
         //missing get all the folders
     }
 

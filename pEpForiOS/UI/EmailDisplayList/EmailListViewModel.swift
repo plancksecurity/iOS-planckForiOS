@@ -90,8 +90,8 @@ class EmailListViewModel {
          messageSyncService: MessageSyncServiceProtocol,
          folderToShow: DisplayableFolderProtocol = UnifiedInbox()) {
 
-
-        self.messageQueryResults = MessageQueryResults(withFolder: folderToShow)
+        //!!!: need a fix on messageQueryResults
+        //self.messageQueryResults = MessageQueryResults(withFolder: folderToShow)
         self.emailListViewModelDelegate = emailListViewModelDelegate
         self.messageSyncService = messageSyncService
 
@@ -577,11 +577,7 @@ class EmailListViewModel {
         if !triggerFetchOlder(lastDisplayedRow: indexPath.row) {
             return
         }
-        if let unifiedFolder = folderToShow as? UnifiedInbox {
-            requestFetchOlder(forFolders: unifiedFolder.folders)
-        } else {
-            requestFetchOlder(forFolders: [folderToShow])
-        }
+        folderToShow.fetchOlder()
     }
 
     private func requestFetchOlder(forFolders folders: [Folder]) {
@@ -618,6 +614,7 @@ extension EmailListViewModel {
 
     //if it's virutalfolder user is nil, compose must select the default account.
     func composeViewModelForNewMessage() -> ComposeViewModel {
+        //!!!: composite must get the account from the messsage or from the defoult one
         let user = folderToShow.account.user
         let composeVM = ComposeViewModel(resultDelegate: self,
                                          prefilledFrom: user)
@@ -629,26 +626,32 @@ extension EmailListViewModel {
 
 extension EmailListViewModel: ComposeViewModelResultDelegate {
     func composeViewModelDidComposeNewMail(message: Message) {
-        if folderIsOutbox(message.parent) {
-
-        }
-        if folderIsDraftsOrOutbox(folderToShow){
-            // In outbox, a new mail must show up after composing it.
+        if folderIsOutbox(message.parent) || folderIsDraft(message.parent){
             reloadData()
         }
+//        if folderIsDraftsOrOutbox(folderToShow){
+//            // In outbox, a new mail must show up after composing it.
+//            reloadData()
+//        }
     }
 
     func composeViewModelDidDeleteMessage(message: Message) {
-        if folderIsDraftOrOutbox(folderToShow) {
-            // A message from outbox has been deleted in outbox
-            // (e.g. because the user saved it to drafts).
+        if folderIsOutbox(message.parent) || folderIsDraft(message.parent){
             reloadData()
         }
+//        if folderIsDraftOrOutbox(folderToShow) {
+//            // A message from outbox has been deleted in outbox
+//            // (e.g. because the user saved it to drafts).
+//            reloadData()
+//        }
     }
 
     func composeViewModelDidModifyMessage(message: Message) {
-        if folderIsDraft(folderToShow) {
+        if folderIsDraft(message.parent){
             reloadData()
         }
+//        if folderIsDraft(folderToShow) {
+//            reloadData()
+//        }
     }
 }

@@ -61,9 +61,9 @@ extension PrimarySplitViewController: ScreenComposerProtocol {
 
         vc.appConfig = threadViewController.appConfig
         vc.message = message
-        vc.folderShow = emailListViewModel.folderToShow
+        //vc.folderShow = emailListViewModel.folderToShow
         //vc.messageId = index
-//        vc.delegate = emailListViewModel
+        //vc.delegate = emailListViewModel
         emailListViewModel.currentDisplayedMessage = vc
         nav.viewControllers[nav.viewControllers.count - 1 ] = vc
     }

@@ -546,7 +546,9 @@ extension ComposeViewModel {
         }
         if data.isOutbox {
             data.originalMessage?.delete()
-            resultDelegate?.composeViewModelDidDeleteMessage(message: data.originalMessage)
+            if let message = data.originalMessage {
+                resultDelegate?.composeViewModelDidDeleteMessage(message: message)
+            }
         }
     }
 
@@ -563,7 +565,9 @@ extension ComposeViewModel {
             if data.isOutbox {
                 // Message will be saved (moved from user perspective) to drafts, but we are in
                 // outbox folder.
-                resultDelegate?.composeViewModelDidDeleteMessage()
+                if let message = data.originalMessage {
+                    resultDelegate?.composeViewModelDidDeleteMessage(message: message)
+                }
             }
         }
 
@@ -583,7 +587,9 @@ extension ComposeViewModel {
         if data.isDrafts {
             // We save a modified version of a drafted message. The UI might want to updtate
             // its model.
-            resultDelegate?.composeViewModelDidModifyMessage()
+            if let message = data.originalMessage {
+                resultDelegate?.composeViewModelDidModifyMessage(message: message)
+            }
         }
     }
 }
