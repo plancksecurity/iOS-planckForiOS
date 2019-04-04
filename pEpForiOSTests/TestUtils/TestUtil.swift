@@ -402,7 +402,86 @@ class TestUtil {
 
             messagesInTheQueue.append(message)
         }
-        Record.saveAndWait()
+        Record.saveAndWait() //!!!: crash saving. Probalby mandatory field missing. Repro: testSyncOutgoing
+        /*
+         //!!!:
+         Fatal error: ERROR #file - saveAndLogErrors()[23]: Error Domain=NSCocoaErrorDomain Code=1570 "The operation couldn’t be completed. (Cocoa error 1570.)" UserInfo={NSValidationErrorObject=<CdMessage: 0x607000045370> (entity: CdMessage; id: 0x6030001aeea0 <x-coredata:///CdMessage/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79187> ; data: {
+         attachments =     (
+         "0x6030001b0310 <x-coredata:///CdAttachment/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79188>"
+         );
+         bcc =     (
+         );
+         cc =     (
+         );
+         comments = nil;
+         from = "0x60300019d800 <x-coredata:///CdIdentity/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79185>";
+         imap = nil;
+         keysFromDecryption =     (
+         );
+         keywords =     (
+         );
+         longMessage = "Long message 1";
+         longMessageFormatted = "<h1>Long HTML 1</h1>";
+         optionalFields =     (
+         );
+         pEpProtected = 1;
+         pEpRating = "-32768";
+         parent = "0x6030000dfc30 <x-coredata://960270F0-7D2C-4D2A-A99E-BAED675E33EA/CdFolder/p12>";
+         received = nil;
+         receivedBy = nil;
+         references =     (
+         );
+         replyTo =     (
+         );
+         sent = "2019-04-04 18:13:24 +0000";
+         shortMessage = "Some subject 1";
+         targetFolder = nil;
+         to =     (
+         "0x6030001aecf0 <x-coredata:///CdIdentity/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79186>"
+         );
+         uid = 0;
+         underAttack = 0;
+         uuid = "7C44DC5B.C2EF.4C19.B166.FBC3978ECCAB@pretty.Easy.privacy";
+         }), NSValidationErrorKey=imap, NSLocalizedDescription=The operation couldn’t be completed. (Cocoa error 1570.)}: file /Users/buff/workspace/pEp/src/MessageModel/MessageModel/MessageModel/Util/SystemUtils.swift, line 15
+         2019-04-04 20:13:24.708745+0200 pEp[66099:2009000] Fatal error: ERROR #file - saveAndLogErrors()[23]: Error Domain=NSCocoaErrorDomain Code=1570 "The operation couldn’t be completed. (Cocoa error 1570.)" UserInfo={NSValidationErrorObject=<CdMessage: 0x607000045370> (entity: CdMessage; id: 0x6030001aeea0 <x-coredata:///CdMessage/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79187> ; data: {
+         attachments =     (
+         "0x6030001b0310 <x-coredata:///CdAttachment/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79188>"
+         );
+         bcc =     (
+         );
+         cc =     (
+         );
+         comments = nil;
+         from = "0x60300019d800 <x-coredata:///CdIdentity/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79185>";
+         imap = nil;
+         keysFromDecryption =     (
+         );
+         keywords =     (
+         );
+         longMessage = "Long message 1";
+         longMessageFormatted = "<h1>Long HTML 1</h1>";
+         optionalFields =     (
+         );
+         pEpProtected = 1;
+         pEpRating = "-32768";
+         parent = "0x6030000dfc30 <x-coredata://960270F0-7D2C-4D2A-A99E-BAED675E33EA/CdFolder/p12>";
+         received = nil;
+         receivedBy = nil;
+         references =     (
+         );
+         replyTo =     (
+         );
+         sent = "2019-04-04 18:13:24 +0000";
+         shortMessage = "Some subject 1";
+         targetFolder = nil;
+         to =     (
+         "0x6030001aecf0 <x-coredata:///CdIdentity/t04E43D11-80A8-4C4D-BA8E-60F54AD8F79186>"
+         );
+         uid = 0;
+         underAttack = 0;
+         uuid = "7C44DC5B.C2EF.4C19.B166.FBC3978ECCAB@pretty.Easy.privacy";
+         }), NSValidationErrorKey=imap, NSLocalizedDescription=The operation couldn’t be completed. (Cocoa error 1570.)}: file /Users/buff/workspace/pEp/src/MessageModel/MessageModel/MessageModel/Util/SystemUtils.swift, line 15
+         */
 
         if let cdOutgoingMsgs = outbox.messages?.sortedArray(
             using: [NSSortDescriptor(key: "uid", ascending: true)]) as? [CdMessage] {
