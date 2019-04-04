@@ -267,7 +267,6 @@ class TestUtil {
     // MARK: - Messages
 
     /// Calls createOutgoingMails for Cd...Objcets. See docs there.
-    @available(*, deprecated, message: "777")
     static func createOutgoingMails(account: Account,
                                     fromIdentity: Identity? = nil,
                                     toIdentity: Identity? = nil,
@@ -420,7 +419,6 @@ class TestUtil {
         return messagesInTheQueue
     }
 
-    @available(*, deprecated, message: "777")
     @discardableResult static func createMessages(number: Int,
                                     engineProccesed: Bool = true,
                                     inFolder: Folder,
@@ -440,7 +438,6 @@ class TestUtil {
         return messages
     }
 
-    @available(*, deprecated, message: "777")
     static func createMessage(inFolder folder: Folder,
                                    from: Identity,
                                    tos: [Identity] = [],
@@ -476,7 +473,6 @@ class TestUtil {
         return result
     }
 
-    @available(*, deprecated, message: "777")
     static func createMessage(uid: Int, inFolder folder: Folder) -> Message {
         let msg = Message(uuid: "\(uid)", uid: uid, parentFolder: folder)
         XCTAssertEqual(msg.uid, uid)
@@ -486,13 +482,11 @@ class TestUtil {
         return msg
     }
 
-    @available(*, deprecated, message: "777")
     static func createCdAttachment(inlined: Bool = true) -> CdAttachment {
         let attachment = createAttachment(inlined: inlined)
         return CdAttachment.create(attachment: attachment)
     }
 
-    @available(*, deprecated, message: "777")
     static func createAttachments(number: Int) -> [Attachment] {
         var attachments: [Attachment] = []
 
@@ -502,7 +496,6 @@ class TestUtil {
         return attachments
     }
 
-    @available(*, deprecated, message: "777")
     static func createAttachment(inlined: Bool = true) -> Attachment {
 
         let imageFileName = "PorpoiseGalaxy_HubbleFraile_960.jpg"
@@ -522,7 +515,6 @@ class TestUtil {
     /**
      Creates one of 3 special messages that form a thread that caused some problems.
      */
-    @available(*, deprecated, message: "777")
     static func createSpecialMessage(number: Int, folder: Folder, receiver: Identity) -> Message {
         struct Blueprint {
             let uuid: String
