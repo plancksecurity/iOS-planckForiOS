@@ -61,13 +61,13 @@ class AccountVerificationServiceTests: XCTestCase {
             testDirectly: true)
     }
 
-    func testMessageSyncServiceSuccess() {
+    func testVerificationServiceSuccess() {
         testVerification(account: SecretTestData().createVerifiableAccount(),
                          expectedResult: AccountVerificationResult.ok,
                          testDirectly: false)
     }
 
-    func testMessageSyncServiceImapFailures() {
+    func testVerificationServiceImapFailures() {
         testVerification(
             account: SecretTestData().createImapTimeOutAccount(),
             expectedResult: AccountVerificationResult.imapError(
@@ -75,7 +75,7 @@ class AccountVerificationServiceTests: XCTestCase {
             testDirectly: false)
     }
 
-    func testMessageSyncServiceSmtpFailures() {
+    func testVerificationServiceSmtpFailures() {
         testVerification(
             account: SecretTestData().createSmtpTimeOutAccount(),
             expectedResult: AccountVerificationResult.smtpError(
@@ -94,13 +94,13 @@ class AccountVerificationServiceTests: XCTestCase {
         let delegate = AccountVerificationTestDelegate(expVerified: expVerified)
 
         let asService = AccountVerificationService()
-        let msService = MessageSyncService(parentName: #function)
+        let verificationService = VerificationService(parentName: #function)
 
         if testDirectly {
             asService.delegate = delegate
             asService.verify(account: account)
         } else {
-            msService.requestVerification(account: account, delegate: delegate)
+            verificationService.requestVerification(account: account, delegate: delegate)
         }
 
         waitForExpectations(timeout: TestUtil.waitTime, handler: { error in

@@ -61,23 +61,3 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
         expCanceled?.fulfill()
     }
 }
-
-class SendLayerObserver: SendLayerDelegate {
-    var messageIDs = [String]()
-
-    func didFetch(cdMessage: CdMessage) {
-        if let msg = cdMessage.message() {
-            messageIDs.append(msg.messageID)
-        } else {
-            XCTFail()
-        }
-    }
-
-    func didRemove(cdFolder: CdFolder) {
-        XCTFail()
-    }
-
-    func didRemove(cdMessage: CdMessage) {
-        XCTFail()
-    }
-}

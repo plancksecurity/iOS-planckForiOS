@@ -9,6 +9,7 @@
 import UIKit
 import SwipeCellKit
 import pEpIOSToolbox
+import MessageModel
 
 class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelegate {
     static let FILTER_TITLE_MAX_XAR = 20
@@ -81,7 +82,8 @@ class EmailListViewController: BaseTableViewController, SwipeTableViewCellDelega
     private func setup() {
 
         if (model == nil) {
-            model = EmailListViewModel(messageSyncService: appConfig.messageSyncService)
+            model = EmailListViewModel(
+                fetchOlderImapMessagesService: FetchOlderImapMessagesService())
         }
 
         if let accountExists = model?.noAccountsExist(),

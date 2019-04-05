@@ -93,6 +93,12 @@
 //import MessageModel
 //@testable import pEpForiOS
 //
+//
+//import XCTest
+//
+//import MessageModel
+//@testable import pEpForiOS
+//
 //class NetworkServiceTests: XCTestCase {
 //    var persistenceSetup: PersistentSetup!
 //
@@ -122,16 +128,12 @@
 //        let modelDelegate = MessageModelObserver()
 //        MessageModelConfig.messageFolderDelegate = modelDelegate
 //
-//        let sendLayerDelegate = SendLayerObserver()
-//
 //        let networkService = NetworkService(parentName: #function)
 //
 //        let del = NetworkServiceObserver(
 //            expAccountsSynced: expectation(description: "expSingleAccountSynced"))
 //        networkService.unitTestDelegate = del
 //        networkService.delegate = del
-//
-//        networkService.sendLayerDelegate = sendLayerDelegate
 //
 //        _ = SecretTestData().createWorkingCdAccount()
 //        Record.saveAndWait()
@@ -175,7 +177,7 @@
 //
 //            XCTAssertTrue(msg.isValidMessage())
 //
-//            let pEpRating = Int16(msg.pEpRatingInt)
+//            let pEpRating = Int16(msg.pEpRatingInt ?? -1)
 //            XCTAssertNotEqual(pEpRating, PEPUtil.pEpRatingNone)
 //            if !modelDelegate.contains(messageID: msg.messageID) {
 //                XCTFail()
@@ -183,11 +185,10 @@
 //        }
 //
 //        let inbox = Folder.from(cdFolder: cdFolder)
-//        XCTAssertGreaterThanOrEqual(sendLayerDelegate.messageIDs.count, unifiedMessageCount)
 //        XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
 //
 //        for msg in modelDelegate.messages {
-//            let msgIsFlaggedDeleted = msg.imapFlags.deleted ?? false
+//            let msgIsFlaggedDeleted = msg.imapFlags?.deleted ?? false
 //            XCTAssertTrue(!msgIsFlaggedDeleted)
 //            XCTAssertTrue(inbox.contains(message: msg))
 //            if !unifiedInbox.contains(message: msg) {
@@ -312,7 +313,7 @@
 //                }
 //            }
 //            return messages.sorted { m1, m2 in
-//                if let d1 = m1.sent, let d2 = m2.sent {
+//                if let d1 = m1.received, let d2 = m2.received {
 //                    return areInIncreasingOrder(d1: d1, d2: d2)
 //                } else if let d1 = m1.sent, let d2 = m2.sent {
 //                    return areInIncreasingOrder(d1: d1, d2: d2)

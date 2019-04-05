@@ -91,7 +91,7 @@ public class AccountSettingsViewModel {
         }
     }
 
-    var messageSyncService: MessageSyncServiceProtocol?
+    var verificationService: VerificationService?
     weak var delegate: AccountVerificationResultDelegate?
 
     //Currently we assume imap and smtp servers exist already (update).
@@ -128,11 +128,11 @@ public class AccountSettingsViewModel {
 
         self.account.user.userName = name
 
-        guard let ms = messageSyncService else {
-            Logger.frontendLogger.errorAndCrash("no MessageSyncService")
+        guard let verificationService = verificationService else {
+            Logger.frontendLogger.errorAndCrash("no VerificationService")
             return
         }
-        ms.requestVerification(account: account, delegate: self)
+        verificationService.requestVerification(account: account, delegate: self)
     }
 
     func sectionIsValid(section: Int) -> Bool {

@@ -14,6 +14,13 @@
 //
 //class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
 //
+//
+//import XCTest
+//@testable import pEpForiOS
+//@testable import MessageModel
+//
+//class AccountSettingsViewModelTest: CoreDataDrivenTestBase {
+//
 //    var viewModel: AccountSettingsViewModel!
 //
 //    public func testEmail() {
@@ -49,7 +56,7 @@
 //        let port =  account.smtpServer?.port
 //        XCTAssertNotNil(port)
 //        XCTAssertEqual(smptServer.port, "\(String(describing: port!))")
-//        XCTAssertEqual(smptServer.transport, account.smtpServer?.transport.asString())
+//        XCTAssertEqual(smptServer.transport, account.smtpServer?.transport?.asString())
 //    }
 //
 //    public func testImapServer() {
@@ -61,13 +68,10 @@
 //        let port =  account.imapServer?.port
 //        XCTAssertNotNil(port)
 //        XCTAssertEqual(imapServer.port, "\(String(describing: port!))")
-//        XCTAssertEqual(imapServer.transport, account.imapServer?.transport.asString())
+//        XCTAssertEqual(imapServer.transport, account.imapServer?.transport?.asString())
 //    }
 //
 //    func testUpdate() {
-//        XCTFail()
-//        return //!!!: crashes due to CD multithreading violation
-//
 //        let address = "fakeAddress"
 //        let login = "fakelogin"
 //        let name = "fakeName"
@@ -136,7 +140,7 @@
 //
 //    private func setUpViewModel(){
 //        viewModel = AccountSettingsViewModel(account: account)
-//        viewModel.messageSyncService = MessageSyncService()
+//        viewModel.verificationService = VerificationService()
 //    }
 //}
 //

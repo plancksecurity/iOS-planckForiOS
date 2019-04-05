@@ -13,6 +13,12 @@
 //@testable import pEpForiOS
 //@testable import MessageModel
 //
+//
+//
+//import XCTest
+//@testable import pEpForiOS
+//@testable import MessageModel
+//
 //class EmailListViewModelTest: CoreDataDrivenTestBase {
 //    var folder: Folder!
 //    var trashFolder: Folder!
@@ -67,7 +73,7 @@
 //        emailListVM.updateLastLookAt()
 //        let lastLookAtAfterUpdate: Date = getSafeLastLookAt()
 //
-//        //Check dates are diferent and after is greater than before.
+//        //Check dates are diferent and after is greater than before. 
 //        let comparison = lastLookAtBeforeUpdate.compare(lastLookAtAfterUpdate)
 //        XCTAssertEqual(comparison, ComparisonResult.orderedAscending)
 //    }
@@ -139,7 +145,7 @@
 //        XCTAssertEqual(flagAction, .flag)
 //        XCTAssertEqual(moreAction, .more)
 //
-//        messages[0].imapFlags.flagged = true
+//        messages[0].imapFlags?.flagged = true
 //        messages[0].save()
 //
 //        flagAction = emailListVM.getFlagAction(forMessageAt: 0)
@@ -358,21 +364,21 @@
 //        let msg = TestUtil.createMessage(inFolder: folder,
 //                                         from: folder.account.user,
 //                                         uid: numMails + 1)
-//        msg.imapFlags.flagged = false
+//        msg.imapFlags?.flagged = false
 //        msg.save()
-//        XCTAssertFalse(msg.imapFlags.flagged)
+//        XCTAssertFalse((msg.imapFlags?.flagged)!)
 //        setupViewModel()
 //        XCTAssertEqual(emailListVM.rowCount, 11)
 //        setUpMessageFolderDelegate()
 //        setUpViewModelExpectations(expectationDidUpdateDataAt: true)
-//        msg.imapFlags.flagged = true
+//        msg.imapFlags?.flagged = true
 //        msg.save()
 //        server.updateData(message: msg)
 //        waitForExpectations(timeout: TestUtil.waitTime)
 //        var index = emailListVM.index(of: msg)
 //        if let ind = index {
 //            let newMsg = emailListVM.message(representedByRowAt: IndexPath(row: ind, section: 0))
-//            XCTAssertTrue((newMsg?.imapFlags.flagged)!)
+//            XCTAssertTrue((newMsg?.imapFlags?.flagged)!)
 //        } else {
 //            XCTFail()
 //        }
@@ -391,9 +397,9 @@
 //        let msg = TestUtil.createMessage(inFolder: folder,
 //                                         from: folder.account.user,
 //                                         uid: numMails + 1)
-//        msg.imapFlags.flagged = false
+//        msg.imapFlags?.flagged = false
 //        msg.save()
-//        XCTAssertFalse(msg.imapFlags.flagged)
+//        XCTAssertFalse((msg.imapFlags?.flagged)!)
 //        setupViewModel()
 //        XCTAssertEqual(emailListVM.rowCount, 11)
 //        setUpMessageFolderDelegate()
@@ -463,10 +469,10 @@
 //    // Mark: - setting up
 //
 //    fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
-//        let msgsyncservice = MessageSyncService()
-//        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
-//                                              messageSyncService: msgsyncservice,
-//                                              folderToShow: folder)
+//        self.emailListVM = EmailListViewModel(
+//            emailListViewModelDelegate: masterViewController,
+//            fetchOlderImapMessagesService: FetchOlderImapMessagesService(),
+//            folderToShow: folder)
 //
 //    }
 //
