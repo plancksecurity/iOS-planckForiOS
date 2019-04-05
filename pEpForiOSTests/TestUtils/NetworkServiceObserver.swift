@@ -61,6 +61,3 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
         expCanceled?.fulfill()
     }
 }
-
-        if let theUuid = cdMessage.uuid {
-            messageIDs.append(theUuid)
