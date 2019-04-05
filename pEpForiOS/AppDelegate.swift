@@ -187,7 +187,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // TODO: IOS-1276 set MessageModelConfig.logger
 
         loadCoreDataStack()
-        messageModelService = MessageModelService()
+        messageModelService = MessageModelService(mySelfer: self, errorPropagator: errorPropagator)
         messageModelService?.delegate = self
     }
 
