@@ -62,22 +62,5 @@ class NetworkServiceObserver: NetworkServiceUnitTestDelegate, NetworkServiceDele
     }
 }
 
-class SendLayerObserver: SendLayerDelegate {
-    var messageIDs = [String]()
-
-    func didFetch(cdMessage: CdMessage) {
         if let theUuid = cdMessage.uuid {
             messageIDs.append(theUuid)
-        } else {
-            XCTFail()
-        }
-    }
-
-    func didRemove(cdFolder: CdFolder) {
-        XCTFail()
-    }
-
-    func didRemove(cdMessage: CdMessage) {
-        XCTFail()
-    }
-}

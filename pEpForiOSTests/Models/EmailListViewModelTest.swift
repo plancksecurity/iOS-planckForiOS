@@ -461,10 +461,10 @@ class EmailListViewModelTest: CoreDataDrivenTestBase {
     // Mark: - setting up
 
     fileprivate func setUpViewModel(masterViewController: TestMasterViewController) {
-        let msgsyncservice = MessageSyncService()
-        self.emailListVM = EmailListViewModel(emailListViewModelDelegate: masterViewController,
-                                              messageSyncService: msgsyncservice,
-                                              folderToShow: folder)
+        self.emailListVM = EmailListViewModel(
+            emailListViewModelDelegate: masterViewController,
+            fetchOlderImapMessagesService: FetchOlderImapMessagesService(),
+            folderToShow: folder)
 
     }
 

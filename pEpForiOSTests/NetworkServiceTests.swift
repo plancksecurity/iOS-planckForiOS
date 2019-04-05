@@ -21,7 +21,6 @@ class NetworkServiceTests: XCTestCase {
 
     override func tearDown() {
         persistenceSetup = nil
-        CdAccount.sendLayer = nil
         super.tearDown()
     }
 
@@ -41,16 +40,12 @@ class NetworkServiceTests: XCTestCase {
         let modelDelegate = MessageModelObserver()
         MessageModelConfig.messageFolderDelegate = modelDelegate
 
-        let sendLayerDelegate = SendLayerObserver()
-
         let networkService = NetworkService(parentName: #function)
 
         let del = NetworkServiceObserver(
             expAccountsSynced: expectation(description: "expSingleAccountSynced"))
         networkService.unitTestDelegate = del
         networkService.delegate = del
-
-        networkService.sendLayerDelegate = sendLayerDelegate
 
         _ = SecretTestData().createWorkingCdAccount()
         Record.saveAndWait()
@@ -102,7 +97,6 @@ class NetworkServiceTests: XCTestCase {
         }
 
         let inbox = Folder.from(cdFolder: cdFolder)
-        XCTAssertGreaterThanOrEqual(sendLayerDelegate.messageIDs.count, unifiedMessageCount)
         XCTAssertEqual(modelDelegate.messages.count, unifiedMessageCount)
 
         for msg in modelDelegate.messages {

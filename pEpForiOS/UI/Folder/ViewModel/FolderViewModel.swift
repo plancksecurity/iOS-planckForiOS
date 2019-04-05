@@ -48,15 +48,17 @@ public class FolderViewModel {
         return Account.all().isEmpty
     }
 
-    func createEmailListViewModel(forAccountAt accountIndex: Int?, andFolderAt folderIndex: Int?,
-                                  messageSyncService: MessageSyncServiceProtocol)
+    func createEmailListViewModel(forAccountAt accountIndex: Int?,
+                                  andFolderAt folderIndex: Int?,
+                                  fetchOlderImapMessagesService: FetchOlderImapMessagesService)
         -> EmailListViewModel {
             guard let safeAccountIndex = accountIndex,
                 let safeFolderIndex = folderIndex else {
-                    return EmailListViewModel(messageSyncService: messageSyncService)
+                    return EmailListViewModel(fetchOlderImapMessagesService: fetchOlderImapMessagesService)
             }
-            return EmailListViewModel(messageSyncService: messageSyncService,
-                                      folderToShow: self[safeAccountIndex][safeFolderIndex].folder)
+            return EmailListViewModel(
+                fetchOlderImapMessagesService: fetchOlderImapMessagesService,
+                folderToShow: self[safeAccountIndex][safeFolderIndex].folder)
     }
     
     func refreshFolderList() {
